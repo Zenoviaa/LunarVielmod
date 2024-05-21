@@ -49,7 +49,9 @@ namespace Stellamod.Projectiles.GunHolster
             }
             else
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3"), Projectile.position);
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3");
+                soundStyle.PitchVariance = 0.5f;
+                SoundEngine.PlaySound(soundStyle, Projectile.position);
             }
         }
     }

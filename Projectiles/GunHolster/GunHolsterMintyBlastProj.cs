@@ -45,7 +45,10 @@ namespace Stellamod.Projectiles.GunHolster
             }
 
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 2f);
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/gun1"), Projectile.position);
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunLaser");
+            soundStyle.PitchVariance = 0.5f;
+            SoundEngine.PlaySound(soundStyle, Projectile.position);
         }
     }
 }

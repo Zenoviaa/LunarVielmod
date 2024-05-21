@@ -48,16 +48,9 @@ namespace Stellamod.Projectiles.GunHolster
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 8, projToShoot, Projectile.damage, Projectile.knockBack, Projectile.owner);
 
 
-            int Sound = Main.rand.Next(1, 3);
-            if (Sound == 1)
-            {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol"), Projectile.position);
-            }
-            else
-            {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3"), Projectile.position);
-            }
-
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/HarmonicBlasphemy1");
+            soundStyle.PitchVariance = 0.5f;
+            SoundEngine.PlaySound(soundStyle, Projectile.position);
 
         }
 

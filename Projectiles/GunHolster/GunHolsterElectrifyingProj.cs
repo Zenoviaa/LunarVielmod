@@ -52,7 +52,9 @@ namespace Stellamod.Projectiles.GunHolster
                     ModContent.ProjectileType<ElectrifyingProj>(), Projectile.damage, Projectile.knockBack, player.whoAmI);
             }
 
-            SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.position);
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunElectric");
+            soundStyle.PitchVariance = 0.5f;
+            SoundEngine.PlaySound(soundStyle, Projectile.position);
         }
     }
 }

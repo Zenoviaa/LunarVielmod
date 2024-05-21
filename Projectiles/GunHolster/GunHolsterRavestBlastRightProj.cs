@@ -41,16 +41,9 @@ namespace Stellamod.Projectiles.GunHolster
             player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int useAmmoItemId, true);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 8, ModContent.ProjectileType<RavestblastProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
 
-
-            int Sound = Main.rand.Next(1, 3);
-            if (Sound == 1)
-            {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol"), Projectile.position);
-            }
-            else
-            {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3"), Projectile.position);
-            }
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunRaving");
+            soundStyle.PitchVariance = 0.5f;
+            SoundEngine.PlaySound(soundStyle, Projectile.position);
         }
     }
 }
