@@ -171,16 +171,16 @@ namespace Stellamod.Projectiles.Steins
 				switch (Main.rand.Next(3))
 				{
 					case 0:
-						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GoldenSlice1") { Pitch = Main.rand.NextFloat(-0.5f, 0.5f) });
-						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Steinhit1"), Projectile.Center);
+						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_BoneSpawn1") { Pitch = Main.rand.NextFloat(-0.5f, 0.5f) });
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Dreadmire__Skulls"), Projectile.Center);
 						break;
 					case 1:
-						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GoldenSlice2") { Pitch = Main.rand.NextFloat(-0.5f, 0.5f) });
-						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Steinhit2"), Projectile.Center);
+						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_Fire1") { Pitch = Main.rand.NextFloat(-0.5f, 0.5f) });
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Dreadmire__Skulls"), Projectile.Center);
 						break;
 					case 2:
-						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GoldenSlice3") { Pitch = Main.rand.NextFloat(-0.5f, 0.5f) });
-						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Steinhit3"), Projectile.Center);
+						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain2") { Pitch = Main.rand.NextFloat(-0.5f, 0.5f) });
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Dreadmire__Skulls"), Projectile.Center);
 						break;
 
 				}
@@ -221,7 +221,7 @@ namespace Stellamod.Projectiles.Steins
                             float rot2 = MathHelper.TwoPi * progress;
                             Vector2 direction2 = Vector2.UnitY.RotatedBy(rot2);
                             Vector2 velocity = direction2 * 10;
-                            int projectile = Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center.X, player.Center.Y, velocity.X, velocity.Y, ModContent.ProjectileType<DreadSineSkull>(), Projectile.damage, 0f, Owner: Main.myPlayer);
+                            int projectile = Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center.X, player.Center.Y, velocity.X, velocity.Y, ModContent.ProjectileType<DreadSineSkull>(), Projectile.damage / 2, 0f, Owner: Main.myPlayer);
                             Main.projectile[projectile].timeLeft = 300;
                             Projectile ichor = Main.projectile[projectile];
                             ichor.hostile = false;
@@ -263,7 +263,7 @@ namespace Stellamod.Projectiles.Steins
                             float rot2 = MathHelper.TwoPi * progress;
                             Vector2 direction2 = Vector2.UnitY.RotatedBy(rot2);
                             Vector2 velocity = direction2 * 10;
-                            int projectile = Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center.X, player.Center.Y, velocity.X, velocity.Y, ModContent.ProjectileType<DreadSineSkull>(), Projectile.damage, 0f, Owner: Main.myPlayer);
+                            int projectile = Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center.X, player.Center.Y, velocity.X, velocity.Y, ModContent.ProjectileType<DreadSineSkull>(), Projectile.damage / 2, 0f, Owner: Main.myPlayer);
                             Main.projectile[projectile].timeLeft = 300;
                             Projectile ichor = Main.projectile[projectile];
                             ichor.hostile = false;
@@ -306,7 +306,7 @@ namespace Stellamod.Projectiles.Steins
                             float rot2 = MathHelper.TwoPi * progress;
                             Vector2 direction2 = Vector2.UnitY.RotatedBy(rot2);
                             Vector2 velocity = direction2 * 10;
-                            int projectile = Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center.X, player.Center.Y, velocity.X, velocity.Y, ModContent.ProjectileType<DreadSineSkull>(), Projectile.damage, 0f, Owner: Main.myPlayer);
+                            int projectile = Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center.X, player.Center.Y, velocity.X, velocity.Y, ModContent.ProjectileType<DreadSineSkull>(), Projectile.damage / 2, 0f, Owner: Main.myPlayer);
                             Main.projectile[projectile].timeLeft = 300;
                             Projectile ichor = Main.projectile[projectile];
                             ichor.hostile = false;
