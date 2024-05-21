@@ -1,4 +1,7 @@
+using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Magic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -23,13 +26,28 @@ namespace Stellamod.Items.Weapons.Mage
             Item.height = 32;
             Item.useTime = 36;
             Item.useAnimation = 36;
-            Item.useStyle = ItemUseStyleID.Swing;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.UseSound = SoundID.Item43;
             Item.value = Item.sellPrice(0, 0, 33, 0);
             Item.rare = ItemRarityID.Green;
 
             // These below are needed for a minion weapon
             Item.noMelee = true;
             Item.DamageType = DamageClass.Magic;
+            Item.shoot = ModContent.ProjectileType<SwarmerStaffProj>();
+            Item.shootSpeed = 12;
+        }
+
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            int numProjectiles = 3;
+            for(int i = 0; i < numProjectiles; i++)
+            {
+                Vector2 shootVelocity = velocity.RotatedByRandom(MathHelper.PiOver4);
+                Projectile.NewProjectile(source, position, shootVelocity, type, damage, knockback, player.whoAmI);
+            }
+
+            return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
     }
 }

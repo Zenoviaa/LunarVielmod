@@ -60,13 +60,15 @@ namespace Stellamod.Items.Weapons.Summon
 				if (Main.projectile[i].active && Main.projectile[i].owner == Main.myPlayer && Main.projectile[i].type == Item.shoot)
 					return false;
 			}
-			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
+
+            position = Main.MouseWorld;
+            var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
 			projectile.originalDamage = Item.damage;
 
 			player.AddBuff(Item.buffType, 2);
 			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GSummon"), player.position);
 			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position.
-			position = Main.MouseWorld;
+
 			return false;
 		}
 

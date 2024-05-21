@@ -49,6 +49,7 @@ namespace Stellamod.Items.Weapons.Summon
             player.AddBuff(Item.buffType, 2);
 
             // Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
+            position = Main.MouseWorld;
             var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
             projectile.originalDamage = Item.damage;
 

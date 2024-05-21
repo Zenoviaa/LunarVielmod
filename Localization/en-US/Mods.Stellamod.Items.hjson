@@ -2708,7 +2708,11 @@ JellyStaff: {
 
 SwarmerStaff: {
 	DisplayName: Swarmer Staff
-	Tooltip: Swarm them, now.
+	Tooltip:
+		'''
+		Shoots a spread of antlion teeth
+		Swarm them, NOW!
+		'''
 }
 
 VoidStaff: {
