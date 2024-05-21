@@ -152,7 +152,7 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
                 float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
 
                 //Smooth it some more
-                float swingProgress = Easing.OutExpo(lerpValue, 8f);
+                float swingProgress = Easing.InExpo(lerpValue, 8f);
 
                 // the actual rotation it should have
                 float defRot = Projectile.velocity.ToRotation();
