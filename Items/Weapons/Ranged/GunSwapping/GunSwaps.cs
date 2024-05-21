@@ -360,6 +360,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.damage = 50;
             RightHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterBubbleBussyProj>();
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/TentacleBubbleOut");
+            soundStyle.PitchVariance = 0.5f;
+            Item.UseSound = soundStyle;
         }
 
         public override void AddRecipes()
@@ -448,6 +452,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.damage = 49;
             RightHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterAzureWrathProj>();
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/TON618");
+            soundStyle.PitchVariance = 0.5f;
+            Item.UseSound = soundStyle;
         }
     }
 }

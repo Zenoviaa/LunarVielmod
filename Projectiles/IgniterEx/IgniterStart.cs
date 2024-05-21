@@ -277,8 +277,8 @@ namespace Stellamod.Projectiles.IgniterEx
 
 				for (int j = 0; j < 1; j++)
 				{
-					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GhostExcalibur1"));
-					Projectile.scale = 1.5f;
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StaalkerDescend") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
+                    Projectile.scale = 1.5f;
 					ShakeModSystem.Shake = 6;
 					npc.SimpleStrikeNPC(Projectile.damage * 4, 1, crit: false, Projectile.knockBack);
 					npc.SimpleStrikeNPC(Projectile.damage * 4, 1, crit: false, Projectile.knockBack);
@@ -323,8 +323,8 @@ namespace Stellamod.Projectiles.IgniterEx
 
 				for (int j = 0; j < 1; j++)
 				{
-					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GhostExcalibur1"));
-					Projectile.scale = 1.5f;
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GhostExcalibur1") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
+                    Projectile.scale = 1.5f;
 					ShakeModSystem.Shake = 5;
 					npc.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, Projectile.knockBack);
 					npc.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, Projectile.knockBack);
