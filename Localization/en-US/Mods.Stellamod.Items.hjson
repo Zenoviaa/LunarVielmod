@@ -7454,8 +7454,5 @@ IllurineBrew: {
 
 IllurianBible: {
 	DisplayName: Illurian Bible
-	Tooltip:
-		'''
-		Summons prismatic comets to chase your enemies!
-		'''
+	Tooltip: Summons prismatic comets to chase your enemies!
 }
