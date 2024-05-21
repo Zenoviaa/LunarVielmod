@@ -4,6 +4,7 @@ using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Summon;
 using Stellamod.Utilis;
 using Stellamod.WorldG;
 using Terraria;
@@ -152,6 +153,7 @@ namespace Stellamod.NPCs.Event.GreenSun
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CentipedeStaff>(), 7, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GraftedSoul>(), 2, 1, 5));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VirulentPlating>(), minimumDropped: 1, maximumDropped: 3));
         }

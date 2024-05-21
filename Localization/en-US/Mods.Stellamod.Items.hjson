@@ -7504,3 +7504,13 @@ DreadsVile: {
 		If you miss though you most likely will get hit by contact damage and you'll be on cooldown!.
 		'''
 }
+
+CentipedeStaff: {
+	DisplayName: Centipede Staff
+	Tooltip:
+		'''
+		Summons an Irravheil Landworm to fight for you!
+		The landworm grabs enemies and violently drags them around
+		It grows much longer and stronger with the number of minion slots used!
+		'''
+}
