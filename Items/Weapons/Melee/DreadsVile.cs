@@ -45,9 +45,9 @@ namespace Stellamod.Items.Weapons.Melee
             Item.useAnimation = 45;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 2;
-            Item.value = 10000;
+            Item.value = Item.sellPrice(0, 2, 50, 0);
             Item.noMelee = false;
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ModContent.RarityType<GothiviaSpecialRarity>();
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<VileFist>();
