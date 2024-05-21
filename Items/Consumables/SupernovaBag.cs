@@ -55,7 +55,7 @@ namespace Stellamod.Items.Consumables
                 ModContent.ItemType<Dulahaun>(),
                 ModContent.ItemType<Iknoctstein>()));
             itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<SupernovaFragment>()));
-            itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<IrradiaBossRel>()));
+            itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<SupernovaBossRel>()));
         }
 
         // Below is code for the visuals
