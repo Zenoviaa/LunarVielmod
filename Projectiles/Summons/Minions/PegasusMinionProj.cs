@@ -37,8 +37,8 @@ namespace Stellamod.Projectiles.Summons.Minions
         private Player Owner => Main.player[Projectile.owner];
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Type] = 6;
-            ProjectileID.Sets.TrailCacheLength[Type] = 2;
+            ProjectileID.Sets.TrailCacheLength[Type] = 12;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
 
             // This is necessary for right-click targeting
             ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
@@ -142,6 +142,8 @@ namespace Stellamod.Projectiles.Summons.Minions
             //Should be between 0-1
             //1 being fully opaque
             //0 being the original color
+            if (WhiteTimer <= 0)
+                WhiteTimer = 0f;
             shader.UseSaturation(WhiteTimer);
 
             // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
