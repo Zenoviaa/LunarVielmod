@@ -191,6 +191,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 
             LeftHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterEagleProj>();
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3");
+            soundStyle.PitchVariance = 0.5f;
+            Item.UseSound = soundStyle;
         }
     }
 
@@ -241,6 +245,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.damage = 10;
             RightHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterMsFreezeProj>();
+
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/HarmonicBlasphemy1");
+            soundStyle.PitchVariance = 0.5f;
+            Item.UseSound = soundStyle;
         }
 
         public override void AddRecipes()
@@ -262,6 +271,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.damage = 52;
             LeftHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterMintyBlastProj>();
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunLaser");
+            soundStyle.PitchVariance = 0.5f;
+            Item.UseSound = soundStyle;
         }
     }
 
@@ -337,6 +350,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.damage = 20;
             LeftHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterCinderNeedleProj>();
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/Gunsotp");
+            soundStyle.PitchVariance = 0.5f;
+            Item.UseSound = soundStyle;
         }
     }
 
