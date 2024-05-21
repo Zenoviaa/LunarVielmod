@@ -48,7 +48,7 @@ namespace Stellamod.Brooches
         public bool hasIgniteron;
         public bool hasVillagersBrooch;
         public bool hasAmberBrooch;
-
+        public bool hasWoodyBrooch;
 
 
         public bool hasHeatVer;
@@ -98,7 +98,7 @@ namespace Stellamod.Brooches
             hasIgniteron = false;
             hasVillagersBrooch = false;
             hasAmberBrooch = false;
-
+            hasWoodyBrooch = false;
 
 
             hasHeatVer = false;
@@ -158,6 +158,10 @@ namespace Stellamod.Brooches
                     Player.GetDamage(DamageClass.Generic) *= 1.12f;
                 }
 
+                if (hasWoodyBrooch)
+                {
+                    KeepBroochAlive<WoodyBrooch, WoodyB>(ref hasWoodyBrooch);
+                }
 
 
             }
@@ -168,12 +172,15 @@ namespace Stellamod.Brooches
 
 
 
-          if (hasRadiantBrooches)
+            if (hasRadiantBrooches)
            {
                 MyPlayer myPlayer = Player.GetModPlayer<MyPlayer>();
 
 
-
+                if (hasWoodyBrooch)
+                {
+                    KeepBroochAlive<WoodyBrooch, WoodyB>(ref hasWoodyBrooch);
+                }
 
                 if (hasLuckyWBrooch)
                 {
