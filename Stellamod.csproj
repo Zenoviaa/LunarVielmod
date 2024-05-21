@@ -48,6 +48,7 @@
     <None Remove="Buffs\Irradiation.png" />
     <None Remove="Buffs\Lacerated.png" />
     <None Remove="Buffs\Minions\JacksonPollockMinionBuff.png" />
+    <None Remove="Buffs\Minions\PegasusMinionBuff.png" />
     <None Remove="Buffs\Minions\PotOfGreedMinionBuff.png" />
     <None Remove="Buffs\Minions\SerpentMinionBuff.png" />
     <None Remove="Buffs\Minions\XScissorMinionBuff.png" />
@@ -558,6 +559,10 @@
     <None Remove="Projectiles\Steins\ShadingShot.png" />
     <None Remove="Projectiles\Steins\SHShot.png" />
     <None Remove="Projectiles\Steins\SSShot.png" />
+    <None Remove="Projectiles\Summons\Minions\PegasusMinionProj.png" />
+    <None Remove="Projectiles\Summons\Minions\PegasusMinionProj_Frost.png" />
+    <None Remove="Projectiles\Summons\Minions\PegasusMinionProj_Lightning.png" />
+    <None Remove="Projectiles\Summons\Minions\PegasusMinionProj_Stars.png" />
     <None Remove="Projectiles\Summons\MiracleSoul\MiracleSoulCollectibleProj.png" />
     <None Remove="Projectiles\Summons\Orbs\SineSireProj.png" />
     <None Remove="Projectiles\Summons\Starbombing.png" />

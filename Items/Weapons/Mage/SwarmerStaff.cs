@@ -19,7 +19,8 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetDefaults()
         {
-            Item.damage = 9;
+            Item.staff[Item.type] = true;
+            Item.damage = 12;
             Item.knockBack = 3f;
             Item.mana = 10;
             Item.width = 32;
@@ -43,7 +44,7 @@ namespace Stellamod.Items.Weapons.Mage
             int numProjectiles = 3;
             for(int i = 0; i < numProjectiles; i++)
             {
-                Vector2 shootVelocity = velocity.RotatedByRandom(MathHelper.PiOver4);
+                Vector2 shootVelocity = velocity.RotatedByRandom(MathHelper.PiOver4 /2);
                 Projectile.NewProjectile(source, position, shootVelocity, type, damage, knockback, player.whoAmI);
             }
 

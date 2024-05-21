@@ -742,3 +742,8 @@ IlluriasBlessing: {
 	DisplayName: Illuria's Blessing
 	Description: Outer space cannot hinder you!
 }
+
+PegasusMinionBuff: {
+	DisplayName: The Crystal Trio
+	Description: Niivi's elemental crystals protect you!
+}

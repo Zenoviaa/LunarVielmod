@@ -2689,7 +2689,12 @@ DripplerStaff: {
 
 IrradiatedCreeperStaff: {
 	DisplayName: Irradiated Creeper Staff
-	Tooltip: I see the resemblence..
+	Tooltip:
+		'''
+		Summons an irradiated creeper to fight for you!
+		Irradiated creepers irradiate enemies and move quite interestingly
+		I see the resemblence..
+		'''
 }
 
 IvyakenStaff: {
@@ -7467,6 +7472,15 @@ SupernovaBag: {
 }
 
 SupernovaBossRel: {
-	DisplayName: Supernova Boss Rel
+	DisplayName: Supernova Relic
 	Tooltip: ""
+}
+
+Pegasus: {
+	DisplayName: Pegasus
+	Tooltip:
+		'''
+		Summons Niivi's 3 crystals around you, shooting several elemental based attacks!
+		There can only be one set of crystals
+		'''
 }

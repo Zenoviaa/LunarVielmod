@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using System;
 using Terraria;
@@ -28,7 +29,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Irradiated Creeper");
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
 
             // Sets the amount of frames this minion has on its spritesheet
@@ -95,11 +96,25 @@ namespace Stellamod.Projectiles.Summons.Minions
             if (foundTarget && Timer <= 0)
             {
                 float distance = 15f;
-                Vector2 initialSpeed = Projectile.Center.DirectionTo(targetCenter) * 8;
+                float speed = 13;
+
+                Vector2 initialSpeed = Projectile.Center.DirectionTo(targetCenter);
+                if(distanceFromTarget < speed)
+                {
+                    speed = distanceFromTarget;
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Vector2 randVelocity = Main.rand.NextVector2CircularEdge(2, 2);
+                        Dust.NewDustPerfect(Projectile.Center, DustID.CursedTorch, randVelocity);
+                    }
+                }
+                initialSpeed*= speed;
+
                 Vector2 offset = initialSpeed.RotatedBy(Math.PI / 2);
                 offset.Normalize();
                 offset *= (float)(Math.Cos(Timer* (Math.PI / 180)) * (distance / 3));
                 Projectile.velocity = initialSpeed + offset;
+
             }
             else if (Timer > 0)
             {
@@ -118,13 +133,15 @@ namespace Stellamod.Projectiles.Summons.Minions
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
+            Projectile.velocity += Main.rand.NextVector2CircularEdge(8, 8);
             Projectile.velocity = Projectile.velocity.RotatedByRandom(MathHelper.TwoPi);
-            Timer = 15;
+            Timer = 30;
             for (int i = 0; i < 8; i++)
             {
                 Vector2 randVelocity = Main.rand.NextVector2CircularEdge(2, 2);
                 Dust.NewDustPerfect(Projectile.Center, DustID.CursedTorch, randVelocity);
             }
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<JungleBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             target.AddBuff(ModContent.BuffType<AcidFlame>(), 60);
         }
 
@@ -158,7 +175,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(ColorFunctions.AcidFlame, Color.Transparent, completionRatio) * 0.4f;
+            return Color.Lerp(ColorFunctions.AcidFlame, Color.Transparent, completionRatio) * 0.7f;
         }
 
         public override bool PreDraw(ref Color lightColor)

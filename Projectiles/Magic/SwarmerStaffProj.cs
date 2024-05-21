@@ -47,7 +47,7 @@ namespace Stellamod.Projectiles.Magic
             Vector2 textureSize = texture.Size();
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, -Main.screenPosition, Projectile.oldPos.Length);
+            TrailDrawer.DrawPrims(Projectile.oldPos, texture.Size() * 0.5f - Main.screenPosition, Projectile.oldPos.Length);
             return base.PreDraw(ref lightColor);
         }
 
