@@ -84,6 +84,9 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
 
             }
 
+
+
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwingyWind") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
             return false;
