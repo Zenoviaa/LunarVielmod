@@ -1,10 +1,8 @@
-﻿using Accord.Statistics.Distributions.Univariate;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
