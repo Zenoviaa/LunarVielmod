@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.Personalities;
@@ -469,7 +470,7 @@ namespace Stellamod.NPCs.Town
 
 
 				if (Main.LocalPlayer.HasItem(ModContent.ItemType<CompletionIdol>()) && DownedBossSystem.downedDreadBoss)
-                {
+				{
 
 					Main.npcChatText = $"YESSS, we're getting closer to our goals!! Aren't you excited <3";
 
@@ -497,43 +498,106 @@ namespace Stellamod.NPCs.Town
 
 					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
 
-					if (!DownedBossSystem.downedGothBoss)
-				{
-
-					switch (Main.rand.Next(3))
-					{
-						case 0:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Maelstrom>(), 1);
-
-							break;
-
-						case 1:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ReflectionSeeker>(), 1);
-
-							break;
-
-						case 2:
-
-							break;
-
-					}
-
-				}
-
-					else if (DownedBossSystem.downedGothBoss)
+					if (DownedBossSystem.downedDreadBoss)
 					{
 
 						switch (Main.rand.Next(3))
 						{
 							case 0:
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<StickyCards>(), 1);
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Maelstrom>(), 1);
 
-                                break;
+								break;
 
 							case 1:
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mordred>(), 1);
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ReflectionSeeker>(), 1);
 
-                                break;
+								break;
+
+							case 2:
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
+								break;
+
+						}
+
+
+						if (DownedBossSystem.downedIrradiaBoss)
+						{
+
+							switch (Main.rand.Next(3))
+							{
+								case 0:
+									Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<StickyCards>(), 1);
+
+									break;
+
+								case 1:
+									Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mordred>(), 1);
+
+									break;
+
+								case 2:
+
+									break;
+
+							}
+
+
+
+
+
+
+
+
+
+
+
+							if (DownedBossSystem.downedAzurewrathBoss)
+							{
+
+								switch (Main.rand.Next(3))
+								{
+									case 0:
+										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SineSire>(), 1);
+
+										break;
+
+									case 1:
+										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RavestBlast>(), 1);
+
+										break;
+
+									case 2:
+										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
+										break;
+
+								}
+
+							}
+						}
+
+					}
+
+
+
+
+
+
+
+
+					else if (DownedBossSystem.downedIrradiaBoss)
+					{
+
+						switch (Main.rand.Next(3))
+						{
+							case 0:
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<StickyCards>(), 1);
+
+								break;
+
+							case 1:
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mordred>(), 1);
+
+								break;
 
 							case 2:
 
@@ -541,39 +605,74 @@ namespace Stellamod.NPCs.Town
 
 						}
 
-					}
 
 
-					else if (DownedBossSystem.downedAzurewrathBoss)
-					{
 
-						switch (Main.rand.Next(3))
+
+
+
+
+
+
+
+						if (DownedBossSystem.downedAzurewrathBoss)
 						{
-							case 0:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SineSire>(), 1);
 
-								break;
+							switch (Main.rand.Next(3))
+							{
+								case 0:
+									Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SineSire>(), 1);
 
-							case 1:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RavestBlast>(), 1);
+									break;
 
-								break;
+								case 1:
+									Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RavestBlast>(), 1);
 
-							case 2:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
-								break;
+									break;
+
+								case 2:
+									Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
+									break;
+
+							}
 
 						}
-
 					}
-				}
-				else
-                {
+
+                    else if (DownedBossSystem.downedAzurewrathBoss)
+                    {
+
+                        switch (Main.rand.Next(3))
+                        {
+                            case 0:
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SineSire>(), 1);
+
+                                break;
+
+                            case 1:
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RavestBlast>(), 1);
+
+                                break;
+
+                            case 2:
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
+                                break;
+
+                        }
+
+                    }
+                    else
+					{
 
 
-					Main.npcChatText = $"Please go do something for me, we don't have all day you know ;P";
+						Main.npcChatText = $"Please go do something for me, we don't have all day you know ;P";
+					}
+
+
+
+
+
 				}
-				
 				
 
 				// Reforge/Anvil sound
