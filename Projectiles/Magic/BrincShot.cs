@@ -11,6 +11,7 @@ using static Terraria.ModLoader.ModContent;
 using ParticleLibrary;
 using Stellamod.Particles;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 
 namespace Stellamod.Projectiles.Magic
 {
@@ -83,7 +84,9 @@ namespace Stellamod.Projectiles.Magic
                 }
                 if (Sound == 3)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CinderBraker"), Projectile.position);
+                    SoundStyle soundStyle = SoundRegistry.ExplosionCrystalShard;
+                    soundStyle.PitchVariance = 0.33f;
+                    SoundEngine.PlaySound(soundStyle, Projectile.position);
 
                 }
                 Spin = Main.rand.Next(0, 2);

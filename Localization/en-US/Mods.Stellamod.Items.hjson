@@ -7482,5 +7482,15 @@ Pegasus: {
 		'''
 		Summons Niivi's 3 crystals around you, shooting several elemental based attacks!
 		There can only be one set of crystals
+		Requires 3 minion slots to use
+		'''
+}
+
+WoodyBroochA: {
+	DisplayName: Woody Brooch A
+	Tooltip:
+		'''
+		30% increased damage while grounded! 
+		But- you have 30% decreased damage while airborne
 		'''
 }

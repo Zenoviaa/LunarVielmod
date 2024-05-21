@@ -747,3 +747,8 @@ PegasusMinionBuff: {
 	DisplayName: The Crystal Trio
 	Description: Niivi's elemental crystals protect you!
 }
+
+WoodyB: {
+	DisplayName: Woody
+	Description: You're stronger while grounded!
+}

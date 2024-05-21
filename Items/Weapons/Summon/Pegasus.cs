@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    internal class Pegasus : ModItem
+    internal class Pegasus : ClassSwapItem
     {
         public override void SetStaticDefaults()
         {
@@ -19,6 +19,12 @@ namespace Stellamod.Items.Weapons.Summon
             // Tooltip.SetDefault("Summons an Jelly boi to fight for you");
             ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
             ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
+        }
+
+        public override DamageClass AlternateClass => DamageClass.Summon;
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 136;
         }
 
         public override void SetDefaults()
