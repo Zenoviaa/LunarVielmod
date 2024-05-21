@@ -5,6 +5,7 @@ using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
+using Stellamod.NPCs.Catacombs;
 using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
@@ -132,11 +133,11 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			// Custom AI, 0 is "bound town NPC" AI which slows the NPC down and changes sprite orientation towards the target
 			NPC.aiStyle = -1;
 
-			// Custom boss bar
-			NPC.BossBar = ModContent.GetInstance<BossBarTest2>();
+            // Custom boss bar
+            NPC.BossBar = ModContent.GetInstance<MiniBossBar>();
 
-			// The following code assigns a music track to the boss in a simple way.
-			if (!Main.dedServ)
+            // The following code assigns a music track to the boss in a simple way.
+            if (!Main.dedServ)
 			{
 				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Veriplant");
 			}

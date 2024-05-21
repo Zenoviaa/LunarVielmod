@@ -50,8 +50,8 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 			NPC.knockBackResist = 0f;
 			NPC.npcSlots = 10f;
 			NPC.value = Item.buyPrice(gold: 10);
-			NPC.BossBar = ModContent.GetInstance<BossBarTest2>();
-			if (!Main.dedServ)
+            NPC.BossBar = ModContent.GetInstance<MiniBossBar>();
+            if (!Main.dedServ)
 			{
 				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/CatacombsBoss");
 			}

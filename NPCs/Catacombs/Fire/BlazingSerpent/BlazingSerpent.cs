@@ -47,9 +47,9 @@ namespace Stellamod.NPCs.Catacombs.Fire.BlazingSerpent
 			{
 				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/CatacombsBoss");
 			}
-			NPC.BossBar = ModContent.GetInstance<BossBarTest2>();
+            NPC.BossBar = ModContent.GetInstance<MiniBossBar>();
 
-			NPC.aiStyle = -1;
+            NPC.aiStyle = -1;
 		}
 
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)

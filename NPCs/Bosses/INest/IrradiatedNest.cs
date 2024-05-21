@@ -15,6 +15,7 @@ using Stellamod.Items.Weapons.Melee.Spears;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.INest.IEagle;
+using Stellamod.NPCs.Catacombs;
 using Stellamod.Utilis;
 using System.IO;
 using Terraria;
@@ -83,6 +84,7 @@ namespace Stellamod.NPCs.Bosses.INest
             NPC.knockBackResist = 0.0f;
             NPC.noGravity = false;
             NPC.boss = true;
+            NPC.BossBar = ModContent.GetInstance<MiniBossBar>();
             if (!Main.dedServ)
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Irradiated_Nest");
