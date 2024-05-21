@@ -4,6 +4,8 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
+using Terraria.Audio;
+using Stellamod.Helpers;
 
 namespace Stellamod.Items.Weapons.Mage
 {
@@ -23,11 +25,15 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.useTime = 23;
 			Item.useAnimation = 23;
 			Item.useStyle = ItemUseStyleID.Shoot;
+
+			SoundStyle soundStyle = SoundRegistry.JellyTome;
+			soundStyle.PitchVariance = 0.33f;
+			Item.UseSound = soundStyle;
 			Item.knockBack = 6;
 			Item.value = 10000;
 			Item.rare = ItemRarityID.Green;
 			Item.autoReuse = true;
-			Item.shoot = ProjectileType<Gelatin>();
+			Item.shoot = ModContent.ProjectileType<Gelatin>();
 			Item.shootSpeed = 6f;
 			Item.mana = 15;
 		}

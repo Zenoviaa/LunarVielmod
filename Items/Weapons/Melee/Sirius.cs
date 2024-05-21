@@ -33,7 +33,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.knockBack = 6;
             Item.value = Item.sellPrice(0, 20, 0, 0);
             Item.noUseGraphic = true;
-
+            Item.UseSound = SoundID.DD2_GhastlyGlaivePierce;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<SiriusProj>();
             Item.shootSpeed = 30;

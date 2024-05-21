@@ -21,6 +21,14 @@ namespace Stellamod.Helpers
         public static SoundStyle BubbleIn => new SoundStyle($"{Path}BubbleIn");
         public static SoundStyle CombusterBoom => new SoundStyle($"{Path}CombusterBoom");
         public static SoundStyle LaserChannel => new SoundStyle($"{Path}LaserChannel");
+        public static SoundStyle ExplosionCrystalShard => new SoundStyle($"{Path}ExplosionCrystalShard");
+        public static SoundStyle QuickHit => new SoundStyle($"{Path}QuickHit");
+
+
+        public static SoundStyle JellyBow => new SoundStyle($"{Path}JellyBow");
+        public static SoundStyle JellyTome => new SoundStyle($"{Path}JellyTome");
+        public static SoundStyle JellyStaff => new SoundStyle($"{Path}JellyStaff");
+        public static SoundStyle JellyLance => new SoundStyle($"{Path}JellyLance");
 
         //Niivi Sounds
         public static SoundStyle Niivi_LaserBlastReady => new SoundStyle($"{Path}DreamCharge");
