@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
+using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
@@ -58,8 +59,8 @@ namespace Stellamod.Projectiles.Magic
 
         public override void OnKill(int timeLeft)
         {
-            ShakeModSystem.Shake = 30;
-            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"));
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.position, 2048, 32);
+            SoundEngine.PlaySound(SoundRegistry.CombusterBoom, Projectile.position);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<CombustionBoom>(), Projectile.damage * 8, Projectile.knockBack * 2, Projectile.owner);
             for (int i = 0; i < Main.rand.Next(10, 15); i++)

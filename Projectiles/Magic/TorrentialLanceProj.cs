@@ -141,6 +141,11 @@ namespace Stellamod.Projectiles.Magic
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            if (!SpawnBubbles)
+            {
+                SoundEngine.PlaySound(SoundRegistry.BubbleIn, target.position);
+            }
+
             SpawnBubbles = true;
             for (int i = 0; i < 4; i++)
             {

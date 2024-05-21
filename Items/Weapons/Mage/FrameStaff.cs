@@ -22,6 +22,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.useStyle = ItemUseStyleID.Swing;
             Item.rare = ItemRarityID.Lime;
             Item.autoReuse = false;
+            Item.UseSound = SoundID.DD2_BookStaffCast;
             Item.shoot = ModContent.ProjectileType<FrameStaffConnectorProj>();
             Item.shootSpeed = 0;
             Item.channel = true;
