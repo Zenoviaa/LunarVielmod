@@ -7,12 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
     internal class FrameStaffConnectorProj : ModProjectile
     {
+        private ref float Timer => ref Projectile.ai[0];
         Vector2[] ConnectorPos;
         int FrameTick;
         int FrameCounter;
@@ -37,8 +39,16 @@ namespace Stellamod.Projectiles.Magic
 
         private void AI_Channel()
         {
+
             //Channeling
             Player player = Main.player[Projectile.owner];
+
+            Timer++;
+            if (Timer % 58 == 0)
+            {
+                SoundEngine.PlaySound(SoundRegistry.LaserChannel, player.position);
+            }
+
             if (player.noItems || player.CCed || player.dead || !player.active)
                 Projectile.Kill();
 
@@ -103,7 +113,8 @@ namespace Stellamod.Projectiles.Magic
                 if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, 6, ref collisionPoint))
                     return true;
             }
-            return base.Colliding(projHitbox, targetHitbox);
+
+            return false;
         }
 
         public override bool PreDraw(ref Color lightColor)

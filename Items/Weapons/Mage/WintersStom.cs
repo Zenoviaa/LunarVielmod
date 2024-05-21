@@ -30,7 +30,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.rare = ItemRarityID.Blue;
             Item.shootSpeed = 20;
             Item.autoReuse = true;
-
+            Item.UseSound = SoundID.DD2_BookStaffCast;
             Item.DamageType = DamageClass.Magic;
             Item.shoot = ModContent.ProjectileType<WinterStormProg>();
             Item.shootSpeed = 10f;
