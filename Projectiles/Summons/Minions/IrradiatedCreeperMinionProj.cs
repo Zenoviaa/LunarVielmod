@@ -1,6 +1,4 @@
-﻿using Accord.Math;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
@@ -8,7 +6,6 @@ using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using System;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;

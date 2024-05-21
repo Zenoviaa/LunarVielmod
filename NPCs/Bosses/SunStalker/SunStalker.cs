@@ -95,7 +95,12 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             NPC.scale = 1f;
             NPC.aiStyle = 0;
 
-            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SunStalker");
+            NPC.BossBar = ModContent.GetInstance<SunStalkerBossBar>();
+            if (!Main.dedServ)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SunStalker");
+            }
+     
         }
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
         {
