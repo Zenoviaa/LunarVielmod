@@ -131,7 +131,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Morrowarrow") { PitchVariance = 0.15f}, Projectile.position);
 
-
+                OrbHelper.PlaySummonSound(Projectile.position);
                 Reset();
                 SwingVelocity = Owner.DirectionTo(SwingTarget);
                 SwingStart = Owner.Center;
@@ -185,7 +185,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
                     soundStyle.PitchVariance = 0.15f;
                     SoundEngine.PlaySound(soundStyle, Projectile.position);
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Morrowarrow") { PitchVariance = 0.15f }, Projectile.position);
-
+                    OrbHelper.PlaySummonSound(Projectile.position);
                     Reset();
                     SwingVelocity = Owner.DirectionTo(SwingTarget);
                     float distance = 180;
@@ -229,7 +229,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
 
                     SoundEngine.PlaySound(soundStyle, Projectile.position);
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Morrowarrow") { PitchVariance = 0.15f, Pitch = -0.25f }, Projectile.position);
-                    
+                    OrbHelper.PlaySummonSound(Projectile.position);
                     Reset();
                     SwingVelocity = Owner.DirectionTo(SwingTarget);
                     SwingStart = Projectile.Center;
@@ -319,7 +319,6 @@ namespace Stellamod.Projectiles.Summons.Orbs
                     soundStyle.PitchVariance = 0.15f;
                     SoundEngine.PlaySound(soundStyle, Projectile.position);
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/OverGrowth_Thorn1") { PitchVariance = 0.15f }, Projectile.position);
-
                     break;
             }
         }

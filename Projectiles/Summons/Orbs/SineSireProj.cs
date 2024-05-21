@@ -137,7 +137,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
                 soundStyle.PitchVariance = 0.15f;
                 soundStyle.Pitch = -0.5f;
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
-
+                OrbHelper.PlaySummonSound(Projectile.position);
                 Reset();
                 SwingVelocity = Owner.DirectionTo(SwingTarget);
                 SwingStart = Owner.Center;
@@ -196,7 +196,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
                     soundStyle.PitchVariance = 0.15f;
                     soundStyle.Pitch = -0.5f;
                     SoundEngine.PlaySound(soundStyle, Projectile.position);
-
+                    OrbHelper.PlaySummonSound(Projectile.position);
                     Reset();
                     SwingVelocity = Owner.DirectionTo(SwingTarget);
                     float distance = 180;
@@ -250,7 +250,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
                     soundStyle.PitchVariance = 0.15f;
                     soundStyle.Pitch = -0.25f;
                     SoundEngine.PlaySound(soundStyle, Projectile.position);
-
+                    OrbHelper.PlaySummonSound(Projectile.position);
                     Reset();
                     SwingVelocity = Owner.DirectionTo(SwingTarget);
                     SwingStart = Projectile.Center;
