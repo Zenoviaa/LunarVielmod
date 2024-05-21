@@ -294,13 +294,166 @@ namespace Stellamod.Items.Special.Sirestias
 
 
 
+                                if (Main.hardMode)
+                                {
+
+                                    switch (Main.rand.Next(1))
+                                    {
+
+
+                                        case 0:
+                                            CallDialogue12 exampleDialogue = new CallDialogue12();
+
+
+                                            dialogueSystem.StartDialogue(exampleDialogue);
+                                            break;
+
+
+                                 
+                                    }
 
 
 
 
 
 
-                            }
+
+
+                                    if (DownedBossSystem.downedZuiBoss)
+                                    {
+
+                                        switch (Main.rand.Next(1))
+                                        {
+
+
+                                            case 0:
+                                                CallDialogue13 exampleDialogue = new CallDialogue13();
+
+
+                                                dialogueSystem.StartDialogue(exampleDialogue);
+                                                break;
+
+
+
+                                        }
+
+
+
+                                        if (DownedBossSystem.downedAzurewrathBoss)
+                                        {
+
+                                            switch (Main.rand.Next(1))
+                                            {
+
+
+                                                case 0:
+                                                    CallDialogue14 exampleDialogue = new CallDialogue14();
+
+
+                                                    dialogueSystem.StartDialogue(exampleDialogue);
+                                                    break;
+
+
+
+                                            }
+
+
+
+                                            if (NPC.downedMoonlord)
+                                            {
+
+                                                switch (Main.rand.Next(1))
+                                                {
+
+
+                                                    case 0:
+                                                        CallDialogue15 exampleDialogue = new CallDialogue15();
+
+
+                                                        dialogueSystem.StartDialogue(exampleDialogue);
+                                                        break;
+
+
+
+                                                }
+
+
+                                                if (DownedBossSystem.downedRekBoss)
+                                                {
+
+                                                    switch (Main.rand.Next(1))
+                                                    {
+
+
+                                                        case 0:
+                                                            CallDialogue16 exampleDialogue = new CallDialogue16();
+
+
+                                                            dialogueSystem.StartDialogue(exampleDialogue);
+                                                            break;
+
+
+
+                                                    }
+
+
+                                                    if (DownedBossSystem.downedGothBoss)
+                                                    {
+
+                                                        switch (Main.rand.Next(1))
+                                                        {
+
+
+                                                            case 0:
+                                                                CallDialogue17 exampleDialogue = new CallDialogue17();
+
+
+                                                                dialogueSystem.StartDialogue(exampleDialogue);
+                                                                break;
+
+
+
+                                                        }
+
+
+
+
+
+                                                    }
+
+
+                                                }
+
+
+                                            }
+
+
+                                        }
+
+                                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    }
+
+
+
+
+
+
+                                }
 
 
 
@@ -547,6 +700,349 @@ namespace Stellamod.Items.Special.Sirestias
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    internal class CallDialogue12 : Dialogue
+    {
+        //The number of steps in this dialogue
+        public override int Length => 1;
+
+        public override void Next(int index)
+        {
+            base.Next(index);
+
+            //This starts the dialogue
+            switch (index)
+            {
+                case 0:
+                    //Set the texture of the portrait
+                   // DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk20"));
+                    break;
+
+
+                
+
+            }
+        }
+
+        public override void Update(int index)
+        {
+            base.Update(index);
+            //If you want stuff to happen while they're talking you can do it here ig
+            //But that might not be a good idea since you can just speed through dialogues
+        }
+
+        public override void Complete()
+        {
+
+            //Do something when the dialogue is completely finished
+
+
+            base.Complete();
+        }
+
+
+
+
+
+    }
+
+
+
+
+    internal class CallDialogue13 : Dialogue
+    {
+        //The number of steps in this dialogue
+        public override int Length => 2;
+
+        public override void Next(int index)
+        {
+            base.Next(index);
+
+            //This starts the dialogue
+            switch (index)
+            {
+                case 0:
+                    //Set the texture of the portrait
+                     DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk21"));
+                    break;
+
+                case 1:
+                    //Set the texture of the portrait
+                    DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk22"));
+                    break;
+
+
+            }
+        }
+
+        public override void Update(int index)
+        {
+            base.Update(index);
+            //If you want stuff to happen while they're talking you can do it here ig
+            //But that might not be a good idea since you can just speed through dialogues
+        }
+
+        public override void Complete()
+        {
+
+            //Do something when the dialogue is completely finished
+
+
+            base.Complete();
+        }
+
+
+
+
+
+    }
+
+    internal class CallDialogue14 : Dialogue
+    {
+        //The number of steps in this dialogue
+        public override int Length => 3;
+
+        public override void Next(int index)
+        {
+            base.Next(index);
+
+            //This starts the dialogue
+            switch (index)
+            {
+                case 0:
+                    //Set the texture of the portrait
+                    DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk23"));
+                    break;
+
+                case 1:
+                    //Set the texture of the portrait
+                    DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk24"));
+                    break;
+
+                case 2:
+                    //Set the texture of the portrait
+                    DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk25"));
+                    break;
+            }
+        }
+
+        public override void Update(int index)
+        {
+            base.Update(index);
+            //If you want stuff to happen while they're talking you can do it here ig
+            //But that might not be a good idea since you can just speed through dialogues
+        }
+
+        public override void Complete()
+        {
+
+            //Do something when the dialogue is completely finished
+
+
+            base.Complete();
+        }
+
+
+
+
+
+    }
+
+
+
+
+
+
+    internal class CallDialogue15 : Dialogue
+    {
+        //The number of steps in this dialogue
+        public override int Length => 3;
+
+        public override void Next(int index)
+        {
+            base.Next(index);
+
+            //This starts the dialogue
+            switch (index)
+            {
+                case 0:
+                    //Set the texture of the portrait
+                    DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk26"));
+                    break;
+
+                case 1:
+                    //Set the texture of the portrait
+                    DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk27"));
+                    break;
+
+                case 2:
+                    //Set the texture of the portrait
+                    DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk28"));
+                    break;
+            }
+        }
+
+        public override void Update(int index)
+        {
+            base.Update(index);
+            //If you want stuff to happen while they're talking you can do it here ig
+            //But that might not be a good idea since you can just speed through dialogues
+        }
+
+        public override void Complete()
+        {
+
+            //Do something when the dialogue is completely finished
+
+
+            base.Complete();
+        }
+
+
+
+
+
+    }
+
+
+
+    internal class CallDialogue16 : Dialogue
+    {
+        //The number of steps in this dialogue
+        public override int Length => 1;
+
+        public override void Next(int index)
+        {
+            base.Next(index);
+
+            //This starts the dialogue
+            switch (index)
+            {
+                case 0:
+                    //Set the texture of the portrait
+                    DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk29"));
+                    break;
+
+
+            }
+        }
+
+        public override void Update(int index)
+        {
+            base.Update(index);
+            //If you want stuff to happen while they're talking you can do it here ig
+            //But that might not be a good idea since you can just speed through dialogues
+        }
+
+        public override void Complete()
+        {
+
+            //Do something when the dialogue is completely finished
+
+
+            base.Complete();
+        }
+
+
+
+
+
+    }
+
+
+    internal class CallDialogue17 : Dialogue
+    {
+        //The number of steps in this dialogue
+        public override int Length => 1;
+
+        public override void Next(int index)
+        {
+            base.Next(index);
+
+            //This starts the dialogue
+            switch (index)
+            {
+                case 0:
+                    //Set the texture of the portrait
+              //      DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk30"));
+                    break;
+
+
+            }
+        }
+
+        public override void Update(int index)
+        {
+            base.Update(index);
+            //If you want stuff to happen while they're talking you can do it here ig
+            //But that might not be a good idea since you can just speed through dialogues
+        }
+
+        public override void Complete()
+        {
+
+            //Do something when the dialogue is completely finished
+
+
+            base.Complete();
+        }
+
+
+
+
+
+    }
+
+
+
+
+
+
 
 
 }
