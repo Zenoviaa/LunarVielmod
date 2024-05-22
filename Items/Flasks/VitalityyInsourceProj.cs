@@ -1,5 +1,4 @@
-﻿using Stellamod.Items.Accessories.Brooches;
-using Terraria;
+﻿using Terraria;
 
 namespace Stellamod.Items.Flasks
 {

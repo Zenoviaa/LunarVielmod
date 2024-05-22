@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Terraria;
 using Terraria.Audio;
@@ -75,6 +76,7 @@ namespace Stellamod.Projectiles.Gun
             {
                 Projectile.spriteDirection = Projectile.direction;
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
+                SoundEngine.PlaySound(SoundRegistry.BubbleIn, Projectile.position);
                 Moved = true;
             }
             if (Projectile.ai[1] >= 20)

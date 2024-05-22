@@ -1,12 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Charms;
-using Stellamod.NPCs.Town;
 using Stellamod.Projectiles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -48,7 +42,7 @@ namespace Stellamod.Brooches
         public bool hasIgniteron;
         public bool hasVillagersBrooch;
         public bool hasAmberBrooch;
-
+        public bool hasWoodyBrooch;
 
 
         public bool hasHeatVer;
@@ -98,7 +92,7 @@ namespace Stellamod.Brooches
             hasIgniteron = false;
             hasVillagersBrooch = false;
             hasAmberBrooch = false;
-
+            hasWoodyBrooch = false;
 
 
             hasHeatVer = false;
@@ -158,6 +152,10 @@ namespace Stellamod.Brooches
                     Player.GetDamage(DamageClass.Generic) *= 1.12f;
                 }
 
+                if (hasWoodyBrooch)
+                {
+                    KeepBroochAlive<WoodyBrooch, WoodyB>(ref hasWoodyBrooch);
+                }
 
 
             }
@@ -168,12 +166,15 @@ namespace Stellamod.Brooches
 
 
 
-          if (hasRadiantBrooches)
+            if (hasRadiantBrooches)
            {
                 MyPlayer myPlayer = Player.GetModPlayer<MyPlayer>();
 
 
-
+                if (hasWoodyBrooch)
+                {
+                    KeepBroochAlive<WoodyBrooch, WoodyB>(ref hasWoodyBrooch);
+                }
 
                 if (hasLuckyWBrooch)
                 {

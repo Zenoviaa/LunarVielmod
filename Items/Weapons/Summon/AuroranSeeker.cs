@@ -1,7 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs.Minions;
 using Stellamod.Items.Ores;
-using Stellamod.Projectiles.Summons;
+using Stellamod.Projectiles.Summons.Minions;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -9,29 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class AuroranSeekerMinionBuff : ModBuff
-	{
-		public override void SetStaticDefaults()
-		{
-			Main.buffNoSave[Type] = true; // This buff won't save when you exit the world
-			Main.buffNoTimeDisplay[Type] = true; // The time remaining won't display on this buff
-		}
-
-		public override void Update(Player player, ref int buffIndex)
-		{
-			// If the minions exist reset the buff time, otherwise remove the buff from the player
-			if (player.ownedProjectileCounts[ModContent.ProjectileType<AuroranSeekerProj>()] > 0)
-			{
-				player.buffTime[buffIndex] = 18000;
-			}
-			else
-			{
-				player.DelBuff(buffIndex);
-				buffIndex--;
-			}
-		}
-	}
-	public class AuroranSeeker : ModItem
+    public class AuroranSeeker : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -59,7 +38,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.value = 10000; // how much the Item sells for (measured in copper)
 			Item.UseSound = SoundID.AbigailSummon; // The sound that this Item plays when used.
 			Item.autoReuse = true; // if you can hold click to automatically use it again
-			Item.shoot = ModContent.ProjectileType<AuroranSeekerProj>();
+			Item.shoot = ModContent.ProjectileType<AuroranSeekerMinionProj>();
 			Item.shootSpeed = 0f; // the speed of the projectile (measured in pixels per frame)
 			Item.channel = true;
 			Item.buffType = ModContent.BuffType<AuroranSeekerMinionBuff>();
@@ -70,16 +49,17 @@ namespace Stellamod.Items.Weapons.Summon
 		}
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
-			player.AddBuff(Item.buffType, 2);
+            // This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
+            player.AddBuff(Item.buffType, 2);
 
-			// Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
-			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
-			projectile.originalDamage = Item.damage;
+            // Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
+            position = Main.MouseWorld;
+            var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
+            projectile.originalDamage = Item.damage;
 
-			// Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
-			return false;
-		}
+            // Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
+            return false;
+        }
 
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
 		{
@@ -91,14 +71,10 @@ namespace Stellamod.Items.Weapons.Summon
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.Anvils);
-
-
 			recipe.AddIngredient(ItemID.Chain, 10);
 			recipe.AddIngredient(ItemID.Leather, 10);
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 15);
 			recipe.AddIngredient(ItemID.FallenStar, 10);
-
-
 			recipe.Register();
 		}
 	}

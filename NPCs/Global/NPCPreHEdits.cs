@@ -4,6 +4,7 @@ using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Special.MinerLogs;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee.Safunais;
 using Stellamod.Items.Weapons.PowdersItem;
@@ -251,7 +252,36 @@ namespace Stellamod.NPCs.Global
 			}
 
 
-			if (npc.type == NPCID.SkeletronHead)
+            if (npc.type == NPCID.GraniteFlyer)
+            {
+
+
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VeiledScriptureMiner7>(), 5, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+            }
+
+            if (npc.type == NPCID.Nymph)
+            {
+
+
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VeiledScriptureMiner2>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+            }
+
+            if (npc.type == NPCID.RockGolem)
+            {
+
+
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VeiledScriptureMiner3>(), 3, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+            }
+
+            if (npc.type == NPCID.Tim)
+            {
+
+
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VeiledScriptureMiner4>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+            }
+
+
+            if (npc.type == NPCID.SkeletronHead)
 			{
 
 

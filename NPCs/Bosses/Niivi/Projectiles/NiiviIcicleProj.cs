@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Particles;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -11,6 +12,12 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
     internal class NiiviIcicleProj : ModProjectile
     {
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Type] = 8;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
+        }
+
         public override void SetDefaults()
         {
             Projectile.width = 18;
@@ -18,13 +25,14 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             Projectile.tileCollide = true;
             Projectile.friendly = false;
             Projectile.hostile = true;
+            Projectile.light = 0.4f;
         }
 
         public override void AI()
         {
             Projectile.velocity.Y += 0.25f;
             Projectile.rotation = Projectile.velocity.ToRotation();
-            if (Main.rand.NextBool(8))
+            if (Main.rand.NextBool(60))
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Snow);
             }

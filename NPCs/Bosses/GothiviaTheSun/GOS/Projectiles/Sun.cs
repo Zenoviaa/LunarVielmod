@@ -45,8 +45,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 			NPC.value = 0f;
 			NPC.timeLeft = 450;
 			NPC.knockBackResist = .0f;
-			NPC.aiStyle = 85;
-			AIType = NPCID.StardustCellBig;
+			NPC.aiStyle = -1;
 			NPC.noTileCollide = true;
 			NPC.noGravity = true;
 			NPC.dontTakeDamage = true;
@@ -117,12 +116,50 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 		public float distortStrength = 300f;
 		int gr = 58;
 		public bool HHH = false;
-		public override void AI()
-		{
+
+
+    private void AI_Movement(Vector2 targetCenter, float moveSpeed, float accel = 1f)
+    {
+        //This code should give quite interesting movement
+        //Accelerate to being on top of the player
+
+        float distX = targetCenter.X - NPC.Center.X;
+        if (NPC.Center.X < targetCenter.X && NPC.velocity.X < moveSpeed)
+        {
+            NPC.velocity.X += accel;
+        }
+        else if (NPC.Center.X > targetCenter.X && NPC.velocity.X > -moveSpeed)
+        {
+                NPC.velocity.X -= accel;
+        }
+
+        //Accelerate to being above the player.
+        float distY = targetCenter.Y - NPC.Center.Y;
+        if (NPC.Center.Y < targetCenter.Y && NPC.velocity.Y < moveSpeed)
+        {
+                NPC.velocity.Y += accel;
+        }
+        else if (NPC.Center.Y > targetCenter.Y && NPC.velocity.Y > -moveSpeed)
+        {
+                NPC.velocity.Y -= accel;
+        }
+    }
+
+        public override bool CheckActive()
+        {
+			return false;
+        }
+
+        public override void AI()
+	{
 			var entitySource = NPC.GetSource_FromAI();
 			timer++;
 			NPC.TargetClosest();
 			NPC.spriteDirection = NPC.direction;
+			Player target = Main.player[NPC.target];
+			float maxMoveSpeed = 5;
+			float accel = 0.3f;
+			AI_Movement(target.Center, maxMoveSpeed, accel);
 
 			Shooting++;
 			if (Shooting == 1)
@@ -150,7 +187,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 }
 				invisibilityTimer = 0;
 			}
-			NPC.rotation -= 0.2f;
+			NPC.rotation -= 0.02f;
 			UpdateFrame(0.4f, 1, 288);
 			bee2--;
 			gr++;

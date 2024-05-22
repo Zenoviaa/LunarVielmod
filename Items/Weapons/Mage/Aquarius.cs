@@ -51,7 +51,6 @@ namespace Stellamod.Items.Weapons.Mage
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<PureHeart>(), 1);
-            recipe.AddIngredient(ItemID.FragmentNebula, 12);
             recipe.AddTile(TileID.LunarCraftingStation);
             recipe.Register();
         }

@@ -20,6 +20,7 @@ using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
+using Stellamod.NPCs.Bosses.Zui.Projectiles;
 using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
@@ -186,7 +187,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
         {
             NPC.Size = new Vector2(44, 80);
             NPC.damage = 1;
-            NPC.defense = 110;
+            NPC.defense = 120;
             NPC.lifeMax = 240000;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath1;
@@ -616,7 +617,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 NPC.TargetClosest();
                 if (!NPC.HasValidTarget)
                 {               // If the targeted player is dead, flee
-                    NPC.velocity.Y += 1f;
+                    NPC.velocity.Y += 3f;
                     NPC.noTileCollide = true;
                     NPC.noGravity = true;
                     // This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
@@ -1029,12 +1030,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
              
             }
-            if (timer < 50)
+            if (timer < 80)
             {
                 NPC.damage = 0;
             }
         
-            if (timer < 50 && NPC.HasValidTarget)
+            if (timer < 80 && NPC.HasValidTarget)
             {
 
                
@@ -1047,12 +1048,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 float yVelocity = VectorHelper.Osc(1, -1, hoverSpeed);
                 NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, yVelocity), 0.2f);
             }
-            if (timer == 90)
+            if (timer == 120)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WavingGoth2") { Pitch = Main.rand.NextFloat(-3f, 3f) }, NPC.Center);
             }
 
-            if (timer > 90 && timer < 470)
+            if (timer > 120 && timer < 500)
             {
                 NPC.damage = 1600;
                 NPC.rotation = NPC.velocity.ToRotation();
@@ -1077,7 +1078,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 NPC.velocity = targetVelocity;
             }
        
-            if (timer == 510)
+            if (timer == 540)
             {
                 NPC.velocity *= 0.2f;
                 ResetTimers();
@@ -1411,7 +1412,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             float speed = 1;
             if (NPC.life < NPC.lifeMax / 2)
             {
-                speed = 20f;
+                speed = 26f;
             }
             if (NPC.life > NPC.lifeMax / 2)
             {
@@ -1480,7 +1481,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             float speed = 1;
             if (NPC.life < NPC.lifeMax / 2)
             {
-                speed = 24f;
+                speed = 30f;
             }
             if (NPC.life > NPC.lifeMax / 2)
             {
@@ -1626,11 +1627,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (NPC.life < NPC.lifeMax / 2)
             {
-                speed = 25f;
+                speed = 26f;
             }
             if (NPC.life > NPC.lifeMax / 2)
             {
-                speed = 24f;
+                speed = 23f;
             }
 
 
@@ -1828,41 +1829,18 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (timer == 150)
             {
-                if (Wtimes < 4)
+                if (NPC.life < NPC.lifeMax / 2)
                 {
-                   
-                    Wtimes += 1;
-                    timer = 0;
-                }
-
-                if (Wtimes >= 4)
-                {
-                    ResetTimers();
-                    if (NPC.life > NPC.lifeMax / 2)
+                    if (Wtimes < 8)
                     {
-                        switch (Main.rand.Next(3))
-                        {
-                            case 0:
-                                State = ActionState.BoostBounce1;
-                                break;
 
-                            case 1:
-                                State = ActionState.BoostBounce1;
-                                //BonfireRight and Left
-                                break;
-
-                            case 2:
-                                State = ActionState.BoostBounce1;
-                                break;
-
-
-                        }
-
+                        Wtimes += 1;
+                        timer = 0;
                     }
 
-
-                    if (NPC.life < NPC.lifeMax / 2)
+                    if (Wtimes >= 8)
                     {
+                        ResetTimers();
                         switch (Main.rand.Next(2))
                         {
                             case 0:
@@ -1878,12 +1856,50 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
                         }
+                    }
+                }
 
+
+
+
+                if (NPC.life > NPC.lifeMax / 2)
+                {
+                    if (Wtimes < 4)
+                    {
+
+                        Wtimes += 1;
+                        timer = 0;
                     }
 
+                    if (Wtimes >= 4)
+                    {
+                        ResetTimers();
+                        
+                            switch (Main.rand.Next(3))
+                            {
+                                case 0:
+                                    State = ActionState.BoostBounce1;
+                                    break;
+
+                                case 1:
+                                    State = ActionState.BoostBounce1;
+                                    //BonfireRight and Left
+                                    break;
+
+                                case 2:
+                                    State = ActionState.BoostBounce1;
+                                    break;
 
 
-                }
+                            }
+
+                        
+                    }
+                 }
+
+               
+
+               
 
                 NPC.velocity *= 0.3f;
 
@@ -3258,7 +3274,16 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
                 Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
             }
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedIrradiaBoss, -1);
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedGothBoss, -1);
+
+
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Spawn"), NPC.position);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 128f);
+            var entitySource = NPC.GetSource_FromThis();
+            if (StellaMultiplayer.IsHost)
+            {
+                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<GothiviaDeath>());
+            }
         }
 
     }

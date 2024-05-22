@@ -373,9 +373,14 @@ namespace Stellamod.NPCs.Town
 
 
 
-              
-				
-					.Add(new Item(ModContent.ItemType<Vixyl>())
+                    .Add(new Item(ModContent.ItemType<DreadsVile>())
+                    {
+                        shopCustomPrice = 3,
+                        shopSpecialCurrency = Stellamod.MOACurrencyID // omit this line if shopCustomPrice should be in regular coins.
+                    })
+
+
+                    .Add(new Item(ModContent.ItemType<Vixyl>())
 					 {
 						shopCustomPrice = 3,
 						shopSpecialCurrency = Stellamod.MOBCurrencyID // omit this line if shopCustomPrice should be in regular coins.
@@ -393,10 +398,39 @@ namespace Stellamod.NPCs.Town
 					 shopCustomPrice = 1,
 					 shopSpecialCurrency = Stellamod.MOLCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					 })
+                    .Add(new Item(ModContent.ItemType<VulcanBreaker>())
+                    {
+                        shopCustomPrice = 1,
+                        shopSpecialCurrency = Stellamod.MOLCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+                    })
+                    .Add(new Item(ModContent.ItemType<Incinerator>())
+                    {
+                        shopCustomPrice = 1,
+                        shopSpecialCurrency = Stellamod.MOLCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+                    })
+                    .Add(new Item(ModContent.ItemType<BlackEye>())
+                    {
+                        shopCustomPrice = 1,
+                        shopSpecialCurrency = Stellamod.MOLCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+                    })
+		
+                     .Add(new Item(ModContent.ItemType<SerpentStaff>())
+                     {
+                         shopCustomPrice = 1,
+                         shopSpecialCurrency = Stellamod.MOLCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+                     })
+
+
+
+                         .Add(new Item(ModContent.ItemType<YourFired>())
+                         {
+                             shopCustomPrice = 1,
+                             shopSpecialCurrency = Stellamod.MOLCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+                         })
 
                       .Add(new Item(ModContent.ItemType<Vhel>())
                       {
-                          shopCustomPrice = 2,
+                          shopCustomPrice = 3,
                           shopSpecialCurrency = Stellamod.MOLCurrencyID // omit this line if shopCustomPrice should be in regular coins.
                       })
 

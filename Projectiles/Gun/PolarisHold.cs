@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
 using ParticleLibrary;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Particles;
 using System;
 using Terraria;
@@ -132,10 +133,7 @@ namespace Stellamod.Projectiles.Gun
             ChargeTimer++;
             if(ChargeTimer == 1)
             {
-                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormSpiritCharge");
-                soundStyle.PitchVariance = 0.15f;
-                soundStyle.Pitch = -0.25f;
-                SoundEngine.PlaySound(soundStyle, Projectile.position);
+                SoundEngine.PlaySound(SoundRegistry.Niivi_LaserBlastReady, Projectile.position);
             }
 
             ChargeVisuals(ChargeTimer, Max_Charge_Time);

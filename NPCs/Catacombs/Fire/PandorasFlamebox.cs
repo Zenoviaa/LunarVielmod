@@ -19,6 +19,7 @@ using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Stellamod.NPCs.Bosses.StarrVeriplant;
 using Stellamod.Items.Consumables;
+using Stellamod.NPCs.Bosses.Jack;
 
 namespace Stellamod.NPCs.Catacombs.Fire
 {
@@ -63,12 +64,13 @@ namespace Stellamod.NPCs.Catacombs.Fire
 			NPC.boss = true;
 			NPC.npcSlots = 10f;
 			NPC.aiStyle = -1;
+
 			if (!Main.dedServ)
 			{
 				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/CatacombsBoss");
 			}
-			NPC.BossBar = ModContent.GetInstance<BossBarTest2>();
-		}
+            NPC.BossBar = ModContent.GetInstance<MiniBossBar>();
+        }
 
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
         {

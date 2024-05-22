@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.Personalities;
@@ -356,19 +357,64 @@ namespace Stellamod.NPCs.Town
 
 														Main.npcChatText = $"It was a void witch... Interesting. Must be related to that Merena person Aimacra talked about. I haven't been to the Royal Capital much, mainly because it's so far out but maybe we should kill the Queen there, she is definitely extremely powerful but I don't really know how to talk to her, I haven't seen her yet. If you can could you go kill her for us? ";
 
-
-
-														if (DownedBossSystem.downedFenixBoss)
+														if (DownedBossSystem.downedZuiBoss)
 														{
 
-															Main.npcChatText = $"I did not expect you to want to kill her honestly. I went and explored around and she seemed nice. Wait you didn't kill her? Oh dang, well she isn't on our list anyway so it's fine lmao.";
+															Main.npcChatText = $"Ereshkigal huh? I think I know her, she also isn't supposed to be here. However she got lost I guess we can give her some sense";
+
+                                                            if (DownedBossSystem.downedAzurewrathBoss)
+                                                            {
+
+                                                                Main.npcChatText = $"Weheeee! You're doing so well! I can like get off to this! I'm kidding :(. Maybe you can try and explore around some more. We need to prepare for moonlord!";
+
+
+
+                                                                if (DownedBossSystem.downedFenixBoss)
+                                                                {
+
+                                                                    Main.npcChatText = $"I did not expect you to want to kill her honestly. I went and explored around and she seemed nice. Wait you didn't kill her? Oh dang, well she isn't on our list anyway so it's fine lmao. She isn't causing us any issues.";
+
+
+                                                                    if (DownedBossSystem.downedRekBoss)
+                                                                    {
+
+                                                                        Main.npcChatText = $"Ok ok we got some good stuff done. Time for Gothivia as she's not particularly the worst but she keeps inspiring bad people to do ad things and we need to teach her not to do that.";
+
+
+                                                                        if (DownedBossSystem.downedNiiviBoss)
+                                                                        {
+
+                                                                            Main.npcChatText = $"Maybe we shouldn't have killed her, I don't know if there was a reason to kill Niivi. You just wanted weapons and gear? I mean if it helps I guess. She was doing more good than harm";
+
+
+
+                                                                            if (DownedBossSystem.downedGothiviaBoss)
+                                                                            {
+
+                                                                                Main.npcChatText = $"Okie dokie, Gothivia has agree to stay calm so we aren't going to assassinate her anymore, I feel bad for killing her sister now. I hope Vixyl doesn't find out.";
 
 
 
 
 
+                                                                            }
+
+                                                                        }
+
+
+                                                                    }
+
+
+                                                                   
+
+                                                                }
+
+
+
+                                                            }
+
+                                                           
 														}
-
 													}
 
 												}
@@ -424,7 +470,7 @@ namespace Stellamod.NPCs.Town
 
 
 				if (Main.LocalPlayer.HasItem(ModContent.ItemType<CompletionIdol>()) && DownedBossSystem.downedDreadBoss)
-                {
+				{
 
 					Main.npcChatText = $"YESSS, we're getting closer to our goals!! Aren't you excited <3";
 
@@ -452,83 +498,104 @@ namespace Stellamod.NPCs.Town
 
 					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
 
-					if (!DownedBossSystem.downedGothBoss)
-				{
-
-					switch (Main.rand.Next(3))
-					{
-						case 0:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Maelstrom>(), 1);
-
-							break;
-
-						case 1:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ReflectionSeeker>(), 1);
-
-							break;
-
-						case 2:
-
-							break;
-
-					}
-
-				}
-
-					else if (DownedBossSystem.downedGothBoss)
+					if (DownedBossSystem.downedDreadBoss)
 					{
 
 						switch (Main.rand.Next(3))
 						{
 							case 0:
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<StickyCards>(), 1);
-
-                                break;
-
-							case 1:
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mordred>(), 1);
-
-                                break;
-
-							case 2:
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Maelstrom>(), 1);
 
 								break;
+
+							case 1:
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ReflectionSeeker>(), 1);
+
+								break;
+
+							case 2:
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
+                                Main.npcChatText = $"I couldnt find anything more so I'll give you an extra token!";
+                                break;
 
 						}
 
 					}
+					else if (DownedBossSystem.downedIrradiaBoss)
+					{
+
+						switch (Main.rand.Next(3))
+						{
+							case 0:
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<StickyCards>(), 1);
+								break;
+
+							case 1:
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mordred>(), 1);
+								break;
+
+							case 2:
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasMask>(), 1);
+                                break;
+
+						}
+
+
+
+
+
+
+
+					}
+
 
 
 					else if (DownedBossSystem.downedAzurewrathBoss)
 					{
 
-						switch (Main.rand.Next(3))
-						{
-							case 0:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SineSire>(), 1);
+								switch (Main.rand.Next(3))
+								{
+									case 0:
+										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SineSire>(), 1);
 
-								break;
+										break;
 
-							case 1:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RavestBlast>(), 1);
+									case 1:
+										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RavestBlast>(), 1);
 
-								break;
+										break;
 
-							case 2:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
-								break;
+									case 2:
+										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
+										break;
 
-						}
+								}
 
 					}
-				}
-				else
-                {
+						
+
+					
 
 
-					Main.npcChatText = $"Please go do something for me, we don't have all day you know ;P";
+
+
+
+
+
+
+					
+                    else
+					{
+
+
+						Main.npcChatText = $"Please go do something for me, we don't have all day you know ;P";
+					}
+
+
+
+
+
 				}
-				
 				
 
 				// Reforge/Anvil sound

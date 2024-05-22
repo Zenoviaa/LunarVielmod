@@ -3,7 +3,7 @@ VoidMinionBuff: {
 	DisplayName: Void Minion Buff
 }
 
-TheBurningRodBuff: {
+TheBurningRodMinionBuff: {
 	Description: It burns with passion
 	DisplayName: The Burning Rod Buff
 }
@@ -13,17 +13,17 @@ SwarmerMinionBuff: {
 	DisplayName: Swarmer Minion Buff
 }
 
-SolMothBuff: {
+SolMothMinionBuff: {
 	Description: Ooo a moth!~
 	DisplayName: Sol Moth Buff
 }
 
-ProbeBuff: {
-	Description: Getting probed might be actually really hot.
-	DisplayName: Probe Buff
+ProbeMinionBuff: {
+	DisplayName: Probe Minion Buff
+	Description: Pew pew pew pew~
 }
 
-MushroomStaveBuff: {
+MushroomStaveMinionBuff: {
 	Description: Im not on shrooms I promise officer!
 	DisplayName: Mushroom Stave Buff
 }
@@ -43,12 +43,12 @@ JellyMinionBuff: {
 	DisplayName: Jelly Minion Buff
 }
 
-IvyakenBuff: {
+IvyakenMinionBuff: {
 	Description: Really powerful bow!
 	DisplayName: Ivyaken Buff
 }
 
-IrradiatedCreeperBuff: {
+IrradiatedCreeperMinionBuff: {
 	Description: Its a creeper what did you think?
 	DisplayName: Irradiated Creeper Buff
 }
@@ -63,12 +63,12 @@ HMMinionBuff: {
 	DisplayName: H M Minion Buff
 }
 
-FCBuff: {
+FCMinionBuff: {
 	Description: Getting powerful now aren't we?
 	DisplayName: F C Buff
 }
 
-DripperBuff: {
+DripplerMinionBuff: {
 	Description: Drippin out.
 	DisplayName: Dripper Buff
 }
@@ -373,7 +373,7 @@ AbyssalFlame: {
 	DisplayName: Abyssal Flame
 }
 
-VehementBuff: {
+VehementMinionBuff: {
 	Description: Mods.Stellamod.Buffs.VehementBuff.Description
 	DisplayName: Vehement Buff
 }
@@ -649,7 +649,7 @@ ShadeWrathCooldown: {
 }
 
 BabySwarmerMinionBuff: {
-	DisplayName: Baby Swarmer Minion Buff
+	DisplayName: Swarming
 	Description: They're everywhere!
 }
 
@@ -711,4 +711,49 @@ StarSuper: {
 VixylDodgeBuff: {
 	DisplayName: Sonata of the Moon
 	Description: Check out my Verlia cosplay!
+}
+
+JacksonPollockMinionBuff: {
+	DisplayName: The Jackson Pollock
+	Description: Such a great way to make art :)
+}
+
+PotOfGreedMinionBuff: {
+	DisplayName: Greedy
+	Description: I activate POT OF GREED!
+}
+
+ReflectionSeekerMinionBuff: {
+	DisplayName: Reflection Seeker Minion Buff
+	Description: Why are you staring at yourself?
+}
+
+XScissorMinionBuff: {
+	DisplayName: X Rift
+	Description: Opening a rift through space!
+}
+
+SerpentMinionBuff: {
+	DisplayName: Snake Serpent Raven Thing
+	Description: He's long, and he breathes fire!
+}
+
+IlluriasBlessing: {
+	DisplayName: Illuria's Blessing
+	Description: Outer space cannot hinder you!
+}
+
+PegasusMinionBuff: {
+	DisplayName: The Crystal Trio
+	Description: Niivi's elemental crystals protect you!
+}
+
+WoodyB: {
+	DisplayName: Woody
+	Description: You're stronger while grounded!
+}
+
+CentipedeMinionBuff: {
+	DisplayName: Don't Skip Leg Day
+	Description: It has so many legs!
 }

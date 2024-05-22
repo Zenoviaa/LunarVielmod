@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -39,7 +40,8 @@ namespace Stellamod.Tiles.Structures
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
 			TileObjectData.addTile(Type);
-			LocalizedText name = CreateMapEntryName();
+            RegisterItemDrop(ModContent.ItemType<Stick>());
+            LocalizedText name = CreateMapEntryName();
 
 			// name.SetDefault("LogS");
 			AddMapEntry(new Color(200, 200, 200), name);

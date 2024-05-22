@@ -50,8 +50,8 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 			NPC.SpawnWithHigherTime(30);
 			NPC.boss = true;
 			NPC.scale = 1f;
-			NPC.BossBar = ModContent.GetInstance<BossBarTest2>();
-			if (!Main.dedServ)
+            NPC.BossBar = ModContent.GetInstance<MiniBossBar>();
+            if (!Main.dedServ)
 			{
 				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/CatacombsBoss");
 			}

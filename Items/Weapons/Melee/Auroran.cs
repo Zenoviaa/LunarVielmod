@@ -77,6 +77,10 @@ namespace Stellamod.Items.Weapons.Melee
 
             }
             AttackCounter = -AttackCounter;
+            SoundStyle soundStyle = SoundRegistry.IceyWind;
+            soundStyle.PitchVariance = 0.33f;
+            SoundEngine.PlaySound(soundStyle, position);
+
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
             Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<AuroranBullet>(), damage * 2, knockback, player.whoAmI, 1, dir);
             Projectile.NewProjectile(source, position, velocity * 0.8f, ModContent.ProjectileType<AuroranBullet2>(), damage * 2, knockback, player.whoAmI, 1, dir);

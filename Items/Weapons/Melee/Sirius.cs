@@ -33,7 +33,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.knockBack = 6;
             Item.value = Item.sellPrice(0, 20, 0, 0);
             Item.noUseGraphic = true;
-
+            Item.UseSound = SoundID.DD2_GhastlyGlaivePierce;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<SiriusProj>();
             Item.shootSpeed = 30;
@@ -43,7 +43,6 @@ namespace Stellamod.Items.Weapons.Melee
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<PureHeart>(), 1);
-            recipe.AddIngredient(ItemID.FragmentSolar, 12);
             recipe.AddTile(TileID.LunarCraftingStation);
             recipe.Register();
         }

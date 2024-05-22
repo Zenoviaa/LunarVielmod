@@ -113,7 +113,9 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
                     Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<MaelstromShotProj>(), damage, Item.knockBack, player.whoAmI);
                 }
             }
-                return false;
+
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwingyMael") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
+            return false;
         }
 
 

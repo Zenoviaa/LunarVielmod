@@ -32,7 +32,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 
             if (spawnInfo.Player.InModBiome<VeriplantUndergroundBiome>())
             {
-                return SpawnCondition.Cavern.Chance * 0.3f;
+                return SpawnCondition.Cavern.Chance * 0.6f;
             }
 
             return SpawnCondition.Cavern.Chance * 0f;

@@ -40,7 +40,9 @@ namespace Stellamod.Projectiles.GunHolster
             velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 15);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity,
                 ModContent.ProjectileType<BubbleBussyProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/gun1"), Projectile.position);
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/TentacleBubbleOut");
+            soundStyle.PitchVariance = 0.5f;
+            SoundEngine.PlaySound(soundStyle, Projectile.position);
         }
     }
 }

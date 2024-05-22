@@ -321,7 +321,10 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 
 					}
 
-					return base.Shoot(player, source, position, velocity, type, damage, knockback);
+
+                 
+
+                    return base.Shoot(player, source, position, velocity, type, damage, knockback);
 				}
 
 				if (player.HasBuff<VireShow>())
@@ -375,6 +378,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 
 					}
 
+
 					return base.Shoot(player, source, position, velocity, type, damage, knockback);
 				}
 
@@ -387,9 +391,9 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 				if (player.HasBuff<YireShow>())
 				{
 					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<YireProj>(), damage, knockback, player.whoAmI, 1, dir);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwingyAr") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
 
-
-					float numberProjectiles = 3;
+                    float numberProjectiles = 3;
 					float rotation = MathHelper.ToRadians(20);
 					position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 15f;
 					for (int i = 0; i < numberProjectiles; i++)

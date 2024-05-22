@@ -92,11 +92,7 @@ namespace Stellamod.Items.Accessories
 
 			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
 			float swordRotation = 0f;
-			if (Main.myPlayer == Projectile.owner)
-			{
-				player.ChangeDir(Projectile.direction);
-				swordRotation = (Main.MouseWorld - player.Center).ToRotation();
-			}
+
 
 			Projectile.velocity = swordRotation.ToRotationVector2();
 			Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position			

@@ -62,7 +62,7 @@ namespace Stellamod.Items.Accessories
 			player.maxRunSpeed *= 1.4f;
 			player.GetCritChance(DamageClass.Generic) *= 1.15f;
 			player.statLifeMax2 += 30;
-			player.moveSpeed += 1f;
+			player.moveSpeed += 0.8f;
 			player.fairyBoots = true;
 			player.lavaImmune = true;
 		

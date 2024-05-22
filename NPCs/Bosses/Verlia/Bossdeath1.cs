@@ -115,8 +115,9 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			Shooting++;
 			if (Shooting == 1)
 			{
-				//NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<ALCADSWIRL>());
-			}
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/BiggerCharge"));
+                //NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<ALCADSWIRL>());
+            }
 			NPC.noTileCollide = true;
 			invisibilityTimer++;
 			if (invisibilityTimer == 5)
@@ -155,8 +156,13 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					var dab = Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), speed * 20, 0, Color.White, Scale: 3f);
 					dab.noGravity = false;
 				}
+                ActiveSound sound = SoundEngine.FindActiveSound(new SoundStyle("Stellamod/Assets/Sounds/BiggerCharge"));
+                if (sound != null)
+                {
+                    sound.Stop();
+                }
 
-				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/STARGROP"));
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/NStarblast"));
 				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
 				{
 					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();

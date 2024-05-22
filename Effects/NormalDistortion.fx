@@ -20,6 +20,9 @@ float uSaturation;
 float4 uSourceRect;
 float2 uZoom;
 float2 scroll;
+matrix uWorldViewProjection;
+float4 uShaderSpecificData;
+float uStretchReverseFactor;
 
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0

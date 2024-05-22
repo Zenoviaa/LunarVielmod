@@ -99,6 +99,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             }
         }
 
+
         private void Orbit()
         {
             //Orbiting
@@ -121,16 +122,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             Projectile.Center = Vector2.Lerp(Projectile.Center, targetCenter, 0.12f / Swing_Speed_Multiplier);
             if (ComboCounter >= 1)
             {
-                switch (Main.rand.Next(2))
-                {
-                    case 0:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SoftSummon"), Projectile.position);
-                        break;
-                    case 1:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2"), Projectile.position);
-                        break;
-                }
-
+                OrbHelper.PlaySummonSound(Projectile.position);
                 Reset();
                 SwingVelocity = Owner.DirectionTo(SwingTarget);
                 SwingStart = Owner.Center;
@@ -180,16 +172,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             {
                 if (ComboCounter >= 1)
                 {
-                    switch (Main.rand.Next(2))
-                    {
-                        case 0:
-                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SoftSummon"), Projectile.position);
-                            break;
-                        case 1:
-                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2"), Projectile.position);
-                            break;
-                    }
-
+                    OrbHelper.PlaySummonSound(Projectile.position);
                     Reset();
                     SwingVelocity = Owner.DirectionTo(SwingTarget);
                     float distance = 180;
@@ -228,16 +211,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             {
                 if (ComboCounter >= 1)
                 {
-                    switch (Main.rand.Next(2))
-                    {
-                        case 0:
-                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SoftSummon"), Projectile.position);
-                            break;
-                        case 1:
-                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2"), Projectile.position);
-                            break;
-                    }
-
+                    OrbHelper.PlaySummonSound(Projectile.position);
                     Reset();
                     SwingVelocity = Owner.DirectionTo(SwingTarget);
                     SwingStart = Projectile.Center;

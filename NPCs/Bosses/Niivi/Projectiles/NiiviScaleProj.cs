@@ -24,6 +24,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             Projectile.height = 26;
             Projectile.friendly = false;
             Projectile.hostile = false;
+            Projectile.light = 0.38f;
         }
 
         public override void AI()

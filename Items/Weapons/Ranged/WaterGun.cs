@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Particles;
 using Stellamod.Projectiles.Gun;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -14,6 +16,7 @@ namespace Stellamod.Items.Weapons.Ranged
     public class WaterGun : ClassSwapItem
     {
         private int _index;
+        private int _comboCounter;
         public override DamageClass AlternateClass => DamageClass.Magic;
         public override void SetClassSwappedDefaults()
         {
@@ -33,7 +36,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.knockBack = 6;
             Item.value = 10000;
             Item.rare = ItemRarityID.Lime;
-            Item.UseSound = SoundID.Item11;
+          //  Item.UseSound = SoundID.Item11;
             Item.autoReuse = true;
 
             Item.shoot = ModContent.ProjectileType<WaterGunNodeProj>();
@@ -57,7 +60,13 @@ namespace Stellamod.Items.Weapons.Ranged
                     break;
                 }
             }
-
+            _comboCounter++;
+            if (_comboCounter % 9 == 0)
+            {
+                SoundStyle soundStyle = SoundRegistry.BubbleIn;
+                soundStyle.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(soundStyle, position);
+            }
 
             float rot = velocity.ToRotation();
             float distance = 16;

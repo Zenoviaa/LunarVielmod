@@ -41,10 +41,10 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 switch (Main.rand.Next(2))
                 {
                     case 0:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/M38F30Bomb1"), Projectile.position);
+                        SoundEngine.PlaySound(SoundRegistry.Niivi_LaserBlast1, Projectile.position);
                         break;
                     case 1:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/M38F30Bomb2"), Projectile.position);
+                        SoundEngine.PlaySound(SoundRegistry.Niivi_LaserBlast2, Projectile.position);
                         break;
                 }
 
@@ -66,7 +66,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                     velocity = velocity.RotatedByRandom(MathHelper.PiOver4 * 3f);
                     velocity *= Main.rand.NextFloat(0.5f, 1f);
                     int type = ModContent.ProjectileType<NiiviIcicleProj>();
-                    int damage = Projectile.damage / 2;
+                    int damage = Projectile.damage / 12;
                     float knockback = Projectile.knockBack / 2;
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), explosionCenter, velocity,
                         type, damage, knockback, Projectile.owner);

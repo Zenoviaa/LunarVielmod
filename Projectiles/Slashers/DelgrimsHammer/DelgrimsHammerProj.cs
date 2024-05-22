@@ -9,6 +9,7 @@ using Stellamod.Trails;
 using System;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,6 +21,7 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
         public static bool swung = false;
 
         private bool _initialized;
+        private float _hitCount;
         private int timer;
 
         //Swing Stats
@@ -180,7 +182,24 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
             Player player = Main.player[Projectile.owner];
             Vector2 oldMouseWorld = Main.MouseWorld;
 
-            for(int i = 0; i < 8; i++)
+            _hitCount++;
+            float pitch = MathHelper.Clamp(_hitCount * 0.05f, 0f, 1f);
+            SoundStyle jugglerHit = SoundRegistry.JugglerHit;
+            jugglerHit.Pitch = pitch;
+            jugglerHit.PitchVariance = 0.1f;
+            jugglerHit.Volume = 0.5f;
+            SoundEngine.PlaySound(jugglerHit, Projectile.position);
+
+            if (_hitCount >= 7)
+            {
+                SoundStyle jugglerHitMax = SoundRegistry.JugglerHitMax;
+                pitch = MathHelper.Clamp(_hitCount * 0.02f, 0f, 1f);
+                jugglerHitMax.Pitch = pitch;
+                jugglerHitMax.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(jugglerHitMax, Projectile.position);
+            }
+
+            for (int i = 0; i < 8; i++)
             {
                 //Get a random velocity
                 Vector2 velocity = Main.rand.NextVector2Circular(4, 4);

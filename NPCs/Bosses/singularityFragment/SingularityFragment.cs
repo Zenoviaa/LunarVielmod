@@ -53,7 +53,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             // Influences how the NPC looks in the Bestiary
 
             NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
-            drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/SingularityFragment/SingularityFragmentBestiary";
+            drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/singularityFragment/SingularityFragmentBestiary";
             drawModifiers.PortraitScale = 1f; // Portrait refers to the full picture when clicking on the icon in the bestiary
             drawModifiers.PortraitPositionYOverride = 0f;
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);

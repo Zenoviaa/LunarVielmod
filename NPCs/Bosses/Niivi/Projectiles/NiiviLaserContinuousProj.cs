@@ -7,6 +7,7 @@ using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ModLoader;
 using static tModPorter.ProgressUpdate;
 
@@ -31,7 +32,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             Projectile.width = Projectile.height = 128;
             Projectile.friendly = false;
             Projectile.hostile = true;
-            Projectile.tileCollide = true;
+            Projectile.tileCollide = false;
             Projectile.penetrate = -1;
             Projectile.timeLeft = (int)LifeTime;
         }
@@ -70,6 +71,11 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             }
 
             Timer++;
+            if(Timer == 1)
+            {
+                SoundEngine.PlaySound(SoundRegistry.Niivi_PrimRay, Projectile.position);
+            }
+
             if(Timer % 4 == 0)
             {
                 float starRadius = 1024;
@@ -80,7 +86,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                     ParticleManager.NewParticle<StarParticle>(pos, vel, Color.White, 1f);
                 }
             }
-            if (Timer % (int)(LifeTime / 6) == 0)
+            if (Timer % (int)(LifeTime / 4) == 0)
             {
                 //Spawn the things
                 Vector2 spikeVelocity = Projectile.velocity;
@@ -91,7 +97,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                     float rot = MathHelper.Lerp(0f, MathHelper.TwoPi, progress);
                     spikeVelocity = spikeVelocity.RotatedBy(rot);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, spikeVelocity * 1048,
-                        ModContent.ProjectileType<NiiviLaserSpikeProj>(), Projectile.damage / 6, Projectile.knockBack, Projectile.owner);
+                        ModContent.ProjectileType<NiiviLaserSpikeProj>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
                 }
             }
         }
@@ -122,8 +128,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public override bool ShouldUpdatePosition() => false;
         public Color ColorFunction(float completionRatio)
         {
-            Color color = Color.Lerp(Color.LightSkyBlue, Color.White, VectorHelper.Osc(0, 1));
-            return color;
+            return Main.DiscoColor;
         }
 
         public override bool PreDraw(ref Color lightColor)

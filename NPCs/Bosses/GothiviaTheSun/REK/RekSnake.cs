@@ -4,6 +4,12 @@ using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Wings;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Placeable;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Summon;
+using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles;
 using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
@@ -154,9 +160,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
         {
             NPC.width = 90;
             NPC.height = 90;
-            NPC.lifeMax = 126000;
+            NPC.lifeMax = 138000;
            
             NPC.damage = 900;
+            NPC.defense = 175;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.aiStyle = -1;
@@ -1114,9 +1121,17 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
 
             // ItemDropRule.MasterModeCommonDrop for the relic
-
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 13, 25));
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<RekBossRel>()));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 13, 25));    
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SerpentWings>(), 1, 1, 1));
+            npcLoot.Add(ItemDropRule.OneFromOptions(1,
+                ModContent.ItemType<SerpentStaff>(),
+                ModContent.ItemType<Incinerator>(),
+                ModContent.ItemType<YourFired>(),
+                ModContent.ItemType<BlackEye>(),
+                ModContent.ItemType<VulcanBreaker>()
+                ));
+
             // ItemDropRule.MasterModeDropOnAllPlayers for the pet
             //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
 

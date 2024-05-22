@@ -96,19 +96,7 @@ namespace Stellamod.Items.Weapons.Mage.Stein
 		}
 
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.MythrilAnvil);
-
-			recipe.AddIngredient(ItemID.FragmentNebula, 10);
-			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 250);
-			recipe.AddIngredient(ModContent.ItemType<Hultinstein>(), 1);
-			//recipe.AddIngredient(ModContent.ItemType<MiracleThread>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 30);
-
-			recipe.Register();
-		}
+		
 
 
 	}

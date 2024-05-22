@@ -2,19 +2,58 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.Niivi.Projectiles;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi
 {
+    internal class NiiviCrystalDraw
+    {
+        public NiiviCrystalDraw(NPC npc, Texture2D texture)
+        {
+            DrawPosition = npc.Center;
+            Npc = npc;
+            Texture = texture;
+        }
+
+        private bool _draw;
+        public bool Draw
+        {
+            get
+            {
+                return _draw;
+            }
+            set
+            {
+                if(value == false && _draw != false)
+                {
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        Projectile.NewProjectile(Npc.GetSource_FromThis(), DrawPosition, Vector2.Zero,
+                            ModContent.ProjectileType<NiiviCrystalWarpExplosionProj>(), 0, 0, Main.myPlayer);
+                    }
+                }
+
+                _draw = value;
+            }
+        }
+        public Vector2 DrawPosition;
+        public Texture2D Texture;
+        public NPC Npc;
+    }
+
     internal partial class Niivi 
     {
         private int _segmentIndex;
         public const string BaseTexturePath = "Stellamod/NPCs/Bosses/Niivi/";
+        private string BaseProjectileTexturePath => $"{BaseTexturePath}Projectiles/";
 
         public Vector2 NextSegmentPos;
         public float NextSegmentRot;
         public Vector2 StartSegmentDirection = new Vector2(-1, 0);
+
         public Vector2[] SegmentPos = new Vector2[Total_Segments];
         public Vector2 SegmentCorrection;
         public float[] SegmentRot = new float[Total_Segments];
@@ -25,12 +64,16 @@ namespace Stellamod.NPCs.Bosses.Niivi
         public float SegmentTurnRotation;
         public float HeadRotation;
 
+        //Crystals
+        public NiiviCrystalDraw[] Crystals;
+
         // Wing Animation Frame Counters
         public int WingFrameCounter;
         public int WingFrameTick;
         public int WingDrawIndex;
         public int FlightDirection;
-        public SpriteEffects Effects => FlightDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+        public float CurrentFlightDirection;
+        public SpriteEffects Effects => CurrentFlightDirection < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
         public const int Total_Segments = Neck_Segments + Body_Segments + Tail_Segments + 4;
         public const int Neck_Segments = 3;
@@ -78,8 +121,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
         public Texture2D NiiviWingBack => ModContent.Request<Texture2D>($"{BaseTexturePath}NiiviWingBack").Value;
         public Vector2 NiiviWingSize => new Vector2(336, 464);
 
-     
-
+        private bool ChargeCrystals;
+        private float ChargeCrystalTimer;
+        private bool Black;
 
         private void SetSegmentPosition(Vector2 segmentSize, float scale = 1f)
         {
@@ -97,7 +141,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     .SafeNormalize(Vector2.Zero)
                     .RotatedBy(NextSegmentRot * rotMultiplier);
 
-                NextSegmentPos += segmentDirection * segmentWidth;
+                NextSegmentPos += segmentDirection * segmentWidth * Math.Abs(StartSegmentDirection.X);
                 NextSegmentRot += SegmentTurnRotation * rotMultiplier;
             }
             else
@@ -105,7 +149,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 SegmentPos[_segmentIndex] = NextSegmentPos;
                 SegmentRot[_segmentIndex] = NextSegmentRot;
 
-                NextSegmentPos += StartSegmentDirection * segmentWidth;
+                NextSegmentPos += StartSegmentDirection * segmentWidth * Math.Abs(StartSegmentDirection.X);
                 NextSegmentRot += SegmentTurnRotation;
             }
 
@@ -113,6 +157,113 @@ namespace Stellamod.NPCs.Bosses.Niivi
         }
 
         private void DrawAllSegments(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+
+            var shader = ShaderRegistry.MiscSilPixelShader;
+
+            //The color to lerp to
+            shader.UseColor(Main.DiscoColor);
+
+            //Should be between 0-1
+            //1 being fully opaque
+            //0 being the original color
+            shader.UseSaturation(ChargeCrystalTimer);
+
+            // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
+            shader.Apply(null);
+
+            DrawSegments(spriteBatch, screenPos, drawColor, true);
+
+     
+            spriteBatch.End();
+            spriteBatch.Begin();
+
+            //Draw Normal Niivi
+            DrawSegments(spriteBatch, screenPos, drawColor, false);
+
+
+            if (Black)
+            {
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+                shader = ShaderRegistry.MiscSilPixelShader;
+
+                //The color to lerp to
+                shader.UseColor(Color.Black);
+
+                //Should be between 0-1
+                //1 being fully opaque
+                //0 being the original color
+                shader.UseSaturation(ChargeCrystalTimer);
+
+                // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
+                shader.Apply(null);
+
+                DrawSegments(spriteBatch, screenPos, drawColor, true);
+
+                spriteBatch.End();
+                spriteBatch.Begin();
+            }
+
+            if (SpecialTimer >= 2500 || State == ActionState.Laser_Blast_V2 || State == ActionState.Star_Wrath_V2 || State == ActionState.Space_Circle)
+            {
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+                shader = ShaderRegistry.MiscFireWhitePixelShader;
+
+                shader.UseOpacity(1f);
+
+                //How intense the colors are
+                //Should be between 0-1
+                shader.UseIntensity(1f);
+
+                //How fast the extra texture animates
+                float speed = 5f;
+                shader.UseSaturation(speed);
+
+                //Color
+                shader.UseColor(Main.DiscoColor);
+
+                //Texture itself
+                shader.UseImage1(TextureRegistry.CloudTexture);
+
+                // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
+                shader.Apply(null);
+
+                DrawSegments(spriteBatch, screenPos, drawColor, false);
+
+                spriteBatch.End();
+                spriteBatch.Begin();
+            }
+
+            if(State == ActionState.Transition_P2)
+            {
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+                shader = ShaderRegistry.MiscSilPixelShader;
+
+                //The color to lerp to
+                shader.UseColor(Color.Black);
+
+                //Should be between 0-1
+                //1 being fully opaque
+                //0 being the original color
+                shader.UseSaturation(0.5f);
+
+                // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
+                shader.Apply(null);
+
+                DrawSegments(spriteBatch, screenPos, drawColor, true);
+
+                spriteBatch.End();
+                spriteBatch.Begin();
+            }
+        }
+
+
+        private void DrawSegments(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor, bool animate)
         {
             _segmentIndex = SegmentPos.Length - 1;
             SegmentCorrection = (SegmentPos[1] - SegmentPos[0]);
@@ -130,18 +281,15 @@ namespace Stellamod.NPCs.Bosses.Niivi
             DrawSegment(spriteBatch, NiiviBodyBack, NiiviBodyBackSize, drawColor, Body_Min_Scale);
             Vector2 rightWingDrawOrigin = new Vector2(226, 190);
             Vector2 flippedWingDrawOrigin = new Vector2(110, 190);
-            Vector2 wingDrawOrigin = FlightDirection == -1 ? flippedWingDrawOrigin : rightWingDrawOrigin;
+            Vector2 wingDrawOrigin = CurrentFlightDirection < 0 ? flippedWingDrawOrigin : rightWingDrawOrigin;
 
+            int animationSpeed = State == ActionState.Spare_Me ? 12 : 4;
             WingDrawIndex = _segmentIndex - Body_Segments - 1;
             Rectangle drawRectangle;
             switch (State)
             {
                 default:
-                    drawRectangle = NiiviWingBack.AnimationFrame(ref WingFrameCounter, ref WingFrameTick, 4, 9, true);
-                    break;
-                case ActionState.Sleeping:
-                    WingFrameCounter = 7;
-                    drawRectangle = NiiviWingBack.AnimationFrame(ref WingFrameCounter, ref WingFrameTick, 4, 9, false);
+                    drawRectangle = NiiviWingBack.AnimationFrame(ref WingFrameCounter, ref WingFrameTick, animationSpeed, 9, animate);
                     break;
             }
 
@@ -173,7 +321,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 drawOffset: backArmOffset,
                 overrideIndex: armDrawIndex - 1);
 
-    
+
             //Draw Body Front
             DrawSegment(spriteBatch, NiiviBodyFront, NiiviBodyFrontSize, drawColor, 1f + Body_Min_Scale);
             for (int i = 0; i < Neck_Segments; i++)
@@ -202,77 +350,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
             //Draw4 Head
             DrawSegment(spriteBatch, NiiviHead, NiiviHeadSize, drawColor);
-        }
-
-        private void DrawSegmentGlow(SpriteBatch spriteBatch, Texture2D segmentTexture, Vector2 segmentSize, Color drawColor,
-            Vector2? drawOrigin = null,
-            Rectangle? sourceRectangle = null,
-            Vector2? drawOffset = null,
-            int overrideIndex = -1)
-        {
-            Vector2 origin = segmentSize / 2;
-            if (drawOrigin != null)
-            {
-                origin = (Vector2)drawOrigin;
-            }
-
-            if (_segmentIndex == SegmentRot.Length - 1)
-            {
-                SegmentRot[_segmentIndex] += MathHelper.PiOver2;
-            }
-
-            Vector2 drawPos;
-            if (overrideIndex != -1)
-            {
-                drawPos = SegmentPos[overrideIndex];
-            }
-            else
-            {
-                drawPos = SegmentPos[_segmentIndex];
-            }
-
-            if (drawOffset != null)
-            {
-                drawPos += (Vector2)drawOffset;
-            }
-
-            if (_segmentIndex != 0 || overrideIndex != -1)
-            {
-                drawPos -= SegmentCorrection;
-            }
-
-
-            Color rotatedColor = Color.LightSkyBlue;
-            rotatedColor = rotatedColor.MultiplyAlpha(0.1f);
-            float glowDistance = Glow_Distance;
-            if (overrideIndex != -1)
-            {
-                Vector2 posOsc = SegmentPosOsc * (overrideIndex + 1);
-                float rotationOsc = SegmentRotationOsc * (overrideIndex + 1);
-
-
-                float time = Main.GlobalTimeWrappedHourly;
-                float timer = Main.GlobalTimeWrappedHourly / 2f + time * 0.04f;
-                float rotationOffset = VectorHelper.Osc(1f, 2f, 5);
-                time %= 4f;
-                time /= 2f;
-
-                if (time >= 1f)
-                {
-                    time = 2f - time;
-                }
-
-                time = time * 0.5f + 0.5f;
-                for (float i = 0f; i < 1f; i += 0.25f)
-                {
-                    float radians = (i + timer) * MathHelper.TwoPi;
-                    Vector2 rotatedPos = drawPos + posOsc + new Vector2(0f, glowDistance * rotationOffset).RotatedBy(radians) * time;
-                    spriteBatch.Draw(segmentTexture, rotatedPos, sourceRectangle, rotatedColor, SegmentRot[overrideIndex] + rotationOsc, origin, 1, Effects, 0);
-                }
-
-
-                spriteBatch.Draw(segmentTexture, drawPos + posOsc, sourceRectangle, drawColor, SegmentRot[overrideIndex] + rotationOsc, origin, 1, Effects, 0);
-            }
         }
 
         private void DrawSegment(SpriteBatch spriteBatch, Texture2D segmentTexture, Vector2 segmentSize, Color drawColor,
@@ -415,23 +492,76 @@ namespace Stellamod.NPCs.Bosses.Niivi
         {
             SetSegmentPositions(screenPos);
             DrawAllSegments(spriteBatch, screenPos, drawColor);
+            DrawCrystals(spriteBatch, screenPos, drawColor);
             Lighting.AddLight(NPC.Center, Color.White.ToVector3() * 1.75f * Main.essScale);
             return false;
         }
 
-    
-        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        private void DrawCrystals(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            /*
-            Rectangle drawRectangle = NiiviWingBack.AnimationFrame(ref WingFrameCounter, ref WingFrameTick, 4, 9, false);
-            Vector2 wingDrawOffset = FlightDirection * Vector2.UnitY.RotatedBy(-SegmentRot[WingDrawIndex] - MathHelper.PiOver2) * -24;
-            Vector2 wingDrawOrigin = new Vector2(226, 190);
 
-            DrawSegmentGlow(spriteBatch, NiiviWingFront, NiiviWingSize, drawColor,
-                drawOrigin: wingDrawOrigin,
-                drawOffset: wingDrawOffset,
-                sourceRectangle: drawRectangle,
-                overrideIndex: WingDrawIndex);*/
+            float speed = ChargeCrystals ? 0.3f : 0.015f;
+            for(float i = 0; i < Crystals.Length; i++)
+            {
+                var crystal = Crystals[(int)i];
+                if (!crystal.Draw)
+                    continue;
+
+                float progress = i / (float)Crystals.Length;
+                float rot = progress * MathHelper.TwoPi;
+                float orbitRadius = 128;
+                Vector2 drawPosition = NPC.Center + Vector2.UnitX.RotatedBy(rot + (CrystalTimer * speed)) * orbitRadius;
+                drawPosition += new Vector2(0, VectorHelper.Osc(0f, 32, offset: i));
+                drawPosition -= screenPos;
+                crystal.DrawPosition = NPC.Center + Vector2.UnitX.RotatedBy(rot + (CrystalTimer * speed)) * orbitRadius;
+                crystal.DrawPosition += new Vector2(0, VectorHelper.Osc(0f, 32f, offset: i));
+
+                Vector2 drawOrigin = crystal.Texture.Size() / 2;
+                float drawScale = 1f;
+                spriteBatch.Draw(crystal.Texture, drawPosition, null, Color.White, 0, drawOrigin, drawScale, SpriteEffects.None, 0);
+            }
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+
+            if (ChargeCrystals || ChargeCrystalTimer > 0f)
+            {
+                var shader = ShaderRegistry.MiscSilPixelShader;
+
+                //The color to lerp to
+                shader.UseColor(Color.White);
+
+                //Should be between 0-1
+                //1 being fully opaque
+                //0 being the original color
+                shader.UseSaturation(ChargeCrystalTimer);
+
+                // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
+                shader.Apply(null);
+
+                for (float i = 0; i < Crystals.Length; i++)
+                {
+                    var crystal = Crystals[(int)i];
+                    if (!crystal.Draw)
+                        continue;
+
+                    float progress = i / (float)Crystals.Length;
+                    float rot = progress * MathHelper.TwoPi;
+                    float orbitRadius = 128;
+                    Vector2 drawPosition = NPC.Center + Vector2.UnitX.RotatedBy(rot + (CrystalTimer * speed)) * orbitRadius;
+                    drawPosition += new Vector2(0, VectorHelper.Osc(0f, 32, offset: i));
+                    drawPosition -= screenPos;
+                    crystal.DrawPosition = NPC.Center + Vector2.UnitX.RotatedBy(rot + (CrystalTimer * speed)) * orbitRadius;
+                    crystal.DrawPosition += new Vector2(0, VectorHelper.Osc(0f, 32f, offset: i));
+
+                    Vector2 drawOrigin = crystal.Texture.Size() / 2;
+                    float drawScale = 1f;
+                    spriteBatch.Draw(crystal.Texture, drawPosition, null, Color.White, 0, drawOrigin, drawScale, SpriteEffects.None, 0);
+                }
+
+                spriteBatch.End();
+                spriteBatch.Begin();
+            }
         }
     }
 }

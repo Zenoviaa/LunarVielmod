@@ -230,7 +230,8 @@ namespace Stellamod.Projectiles.IgniterEx
 
                 for (int j = 0; j < 1; j++)
                 {
-                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GhostExcalibur1"));
+                    //ExplosionHolyNecklaceWave
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ExplosionGaseous") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
                     Projectile.scale = 1.5f;
                     ShakeModSystem.Shake = 6;
                     npc.SimpleStrikeNPC(Projectile.damage * 4, 1, crit: false, Projectile.knockBack);
@@ -276,8 +277,8 @@ namespace Stellamod.Projectiles.IgniterEx
 
 				for (int j = 0; j < 1; j++)
 				{
-					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GhostExcalibur1"));
-					Projectile.scale = 1.5f;
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StaalkerDescend") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
+                    Projectile.scale = 1.5f;
 					ShakeModSystem.Shake = 6;
 					npc.SimpleStrikeNPC(Projectile.damage * 4, 1, crit: false, Projectile.knockBack);
 					npc.SimpleStrikeNPC(Projectile.damage * 4, 1, crit: false, Projectile.knockBack);
@@ -322,8 +323,8 @@ namespace Stellamod.Projectiles.IgniterEx
 
 				for (int j = 0; j < 1; j++)
 				{
-					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GhostExcalibur1"));
-					Projectile.scale = 1.5f;
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GhostExcalibur1") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
+                    Projectile.scale = 1.5f;
 					ShakeModSystem.Shake = 5;
 					npc.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, Projectile.knockBack);
 					npc.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, Projectile.knockBack);
@@ -463,7 +464,7 @@ namespace Stellamod.Projectiles.IgniterEx
                         Vector2 velocity = npc.velocity;
                         if (npc.active && npc.HasBuff<EXPtime>())
                         {
-                            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"));
+                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Green") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
                             Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity * 0, ProjectileID.DaybreakExplosion, Projectile.damage, Projectile.knockBack);
                             Projectile.scale = 1.5f;
                             ShakeModSystem.Shake = 10;
@@ -538,7 +539,7 @@ namespace Stellamod.Projectiles.IgniterEx
                         Vector2 velocity = npc.velocity;
                         if (npc.active && npc.HasBuff<EXPtime>())
                         {
-                            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"));
+                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Green") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
                             Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity * 0, ProjectileID.DaybreakExplosion, Projectile.damage, Projectile.knockBack);
                             Projectile.scale = 1.5f;
                             ShakeModSystem.Shake = 10;
@@ -695,7 +696,7 @@ namespace Stellamod.Projectiles.IgniterEx
 						Vector2 velocity = npc.velocity;
 						if (npc.active && npc.HasBuff<EXPtime>())
 						{
-							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Briskfly"));
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ExplosionBurstBomb"));
 							Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity * 0, ProjectileID.NebulaArcanumExplosionShot, Projectile.damage, Projectile.knockBack);
 							Projectile.scale = 1.5f;
 							ShakeModSystem.Shake = 10;
@@ -967,7 +968,7 @@ namespace Stellamod.Projectiles.IgniterEx
 						Vector2 velocity = npc.velocity;
 						if (npc.active && npc.HasBuff<EXPtime2>())
 						{
-							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"));
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ExplosionBurstBomb"));
 							Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity * 0, ProjectileID.DaybreakExplosion, Projectile.damage, Projectile.knockBack);
 							Projectile.scale = 1.5f;
 							ShakeModSystem.Shake = 10;

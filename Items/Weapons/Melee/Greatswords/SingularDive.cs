@@ -152,9 +152,9 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
 				}
 
 			}
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwingyAr") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
 
-
-			return false;
+            return false;
 		}
 
 

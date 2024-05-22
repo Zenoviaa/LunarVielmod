@@ -16,7 +16,7 @@ namespace Stellamod.Helpers
         public static string VampKnives_Light_Beam_Vertex_Shader => "VampKnives:LightBeamVertexShader";
         public static string VampKnives_Artemis_Laser_Shader => "VampKnives:ArtemisLaserShader";
         public static string VampKnives_Fire => "VampKnives:Fire";
-        public static string StellamodFireWhiteShader => "Stellamod:FireWhite";
+        public static string StellamodFireWhiteShader => "VampKnives:FireWhite";
 
 
         private static string Silhouette_Shader => "Stellamod:SilhouetteShader";
@@ -38,6 +38,9 @@ namespace Stellamod.Helpers
 
         private static string SilShaderName => "Stellamod:SilShader";
         public static MiscShaderData MiscSilPixelShader => GameShaders.Misc[SilShaderName];
+
+        private static string DistortionShaderName => "Stellamod:DistortionShader";
+        public static MiscShaderData MiscDistortionShader => GameShaders.Misc[DistortionShaderName];
 
         public static AssetRepository Assets => Stellamod.Instance.Assets;
 
@@ -104,6 +107,9 @@ namespace Stellamod.Helpers
 
             //Sil Shader
             RegisterMiscShader(SilShaderName, "Effects/SilShader", "PixelPass");
+
+            //Distortion Shader
+            RegisterMiscShader(DistortionShaderName, "Effects/NormalDistortion", "ScreenPass");
 
             //Skies
             SkyManager.Instance["Stellamod:NaxtrinSky"] = new NaxtrinSky();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
@@ -49,7 +50,10 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             float rot = velocity.ToRotation();
             float spread = 0.4f;
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3"), position);
+
+            SoundStyle soundStyle = SoundRegistry.ExplosionCrystalShard;
+            soundStyle.PitchVariance = 0.33f;
+            SoundEngine.PlaySound(soundStyle, position);
             Vector2 offset = new Vector2(2, -0f * player.direction).RotatedBy(rot);
             float distance = 32;
             int numProjectiles = 3;

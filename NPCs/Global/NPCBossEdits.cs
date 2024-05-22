@@ -2,6 +2,7 @@
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Thrown.Jugglers;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
@@ -115,6 +116,7 @@ namespace Stellamod.NPCs.Global
                         npcLoot.Remove(rule);
                     }
                 }
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LilStinger>(), chanceDenominator: 4));
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TempleKeyMold>()));
             }
 

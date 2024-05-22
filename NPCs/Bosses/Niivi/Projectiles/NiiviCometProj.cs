@@ -40,6 +40,8 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             }
         }
 
+        private ref float VelTimer => ref Projectile.ai[2];
+
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Type] = 16;
@@ -55,11 +57,20 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
+            Projectile.timeLeft = 360;
         }
 
         public override void AI()
         {
             Timer++;
+            VelTimer++;
+            if(Timer == 1)
+            {
+                SoundStyle soundStyle = SoundRegistry.Niivi_StarSummon;
+                soundStyle.PitchVariance = 0.15f;
+                SoundEngine.PlaySound(soundStyle, Projectile.position);
+            }
+
             if(!HasBounced && Main.myPlayer == Projectile.owner && Main.rand.NextBool(600))
             {
                 //This should make them sometimes bounce upwards
@@ -100,15 +111,15 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.White * 0.3f, Color.Transparent, completionRatio);
+            return Color.Lerp(Main.DiscoColor * 0.3f, Color.Transparent, completionRatio);
         }
 
         public override Color? GetAlpha(Color lightColor)
         {
             return new Color(
                 Color.White.R,
-                Color.LightCyan.G,
-                Color.LightCyan.B, 0) * (1f - Projectile.alpha / 50f);
+                Color.White.G,
+                Color.White.B, 0) * (1f - Projectile.alpha / 50f);
         }
 
 
@@ -150,11 +161,14 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
         public override void OnKill(int timeLeft)
         {
+            SoundStyle soundStyle = SoundRegistry.Niivi_StarringDeath;
+            soundStyle.PitchVariance = 0.1f;
+            SoundEngine.PlaySound(soundStyle, Projectile.position);
             for (int i = 0; i < 8; i++)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                 float scale = Main.rand.NextFloat(0.3f, 0.5f);
-                ParticleManager.NewParticle<StarParticle2>(Projectile.Center, velocity, Color.White, scale);
+                ParticleManager.NewParticle<StarParticle2>(Projectile.Center, velocity, Main.DiscoColor, scale);
             }
         }
     }

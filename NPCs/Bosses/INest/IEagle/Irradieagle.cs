@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.NPCs.Catacombs;
 using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
@@ -43,6 +44,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.aiStyle = 0;
+            NPC.BossBar = ModContent.GetInstance<MiniBossBar>();
 
         }
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)

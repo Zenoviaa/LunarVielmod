@@ -169,7 +169,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
             Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
 
-            /*
+           
             if (gr == 80 && !HHH)
             {
 
@@ -179,7 +179,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 }
                 gr = 0;
             }
-            */
+           
             if (bee2 <= 90)
             {
                 HHH = true;

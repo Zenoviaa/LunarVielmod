@@ -33,6 +33,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             Projectile.timeLeft = (int)LifeTime;
             Projectile.hide = true;
             LinePos = new Vector2[5];
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 5;
         }
         public override void AI()
         {
@@ -109,7 +111,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             {
                 Vector2 position = positions[i];
                 Vector2 previousPosition = positions[i - 1];
-                if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, 6, ref collisionPoint))
+                if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, 64, ref collisionPoint))
                     return true;
             }
 

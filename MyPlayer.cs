@@ -2,6 +2,7 @@
 using ParticleLibrary;
 using Stellamod.Brooches;
 using Stellamod.Buffs;
+using Stellamod.Buffs.Minions;
 using Stellamod.Dusts;
 using Stellamod.Gores.Foreground;
 using Stellamod.Helpers;
@@ -17,20 +18,15 @@ using Stellamod.Items.Armors.Terric;
 using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.Caeva;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.NPCs.Bosses.Fenix;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
-using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
-using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Bosses.singularityFragment;
-using Stellamod.NPCs.Bosses.STARBOMBER;
 using Stellamod.NPCs.Bosses.SupernovaFragment;
-using Stellamod.NPCs.Bosses.Veiizal;
 using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.NPCs.Event.Luminull;
 using Stellamod.NPCs.Minibosses;
@@ -39,6 +35,7 @@ using Stellamod.Projectiles;
 using Stellamod.Projectiles.Ambient;
 using Stellamod.Projectiles.Gun;
 using Stellamod.Projectiles.Paint;
+using Stellamod.Projectiles.Summons.Minions;
 using Stellamod.Projectiles.Swords;
 using Stellamod.UI.Dialogue;
 using Stellamod.WorldG;
@@ -253,6 +250,8 @@ namespace Stellamod
 		public bool ZoneVeil;
         public bool ZoneGreenSun;
 
+
+
         public float AssassinsSlashes;
         public float AssassinsTime;
         public bool AssassinsSlash;
@@ -296,10 +295,12 @@ namespace Stellamod
 
 
         public bool Dead;
+		public bool DreadMonOne = false;
+        public bool DreadMonTwo = false;
+        public bool DreadMonThree = false;
 
 
-
-		public bool Teric = false;
+        public bool Teric = false;
 		public int TericGramTime = 0;
         public int TericGramLevel = 0;
         public bool TericGram = false;
@@ -719,7 +720,7 @@ namespace Stellamod
         public static float AuroreanB = 0.5f;
         public override void PostUpdateMiscEffects()
 		{
-
+	
             Player.ManageSpecialBiomeVisuals("Stellamod:VeilSky", ZoneVeil);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
 
@@ -785,7 +786,50 @@ namespace Stellamod
 				Zuitalk = true;
 			}
 
-			if(VoidBlasterHits >= 0)
+
+            if (!DreadMonOne && DownedBossSystem.downedDreadMonolith1)
+            {
+
+                DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+                //2. Create a new instance of your dialogue
+                DreadDialogue1 exampleDialogue = new DreadDialogue1();
+				
+                //3. Start it
+                dialogueSystem.StartDialogue(exampleDialogue);
+
+                DreadMonOne = true;
+            }
+
+            if (!DreadMonTwo && DownedBossSystem.downedDreadMonolith2)
+            {
+
+                DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+                //2. Create a new instance of your dialogue
+                DreadDialogue2 exampleDialogue = new DreadDialogue2();
+
+                //3. Start it
+                dialogueSystem.StartDialogue(exampleDialogue);
+
+                DreadMonTwo = true;
+            }
+
+            if (!DreadMonThree && DownedBossSystem.downedDreadMonolith3)
+            {
+
+                DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+                //2. Create a new instance of your dialogue
+                DreadDialogue3 exampleDialogue = new DreadDialogue3();
+
+                //3. Start it
+                dialogueSystem.StartDialogue(exampleDialogue);
+
+                DreadMonThree = true;
+            }
+
+            if (VoidBlasterHits >= 0)
 			{
 				VoidBlasterHitsTime++;
 				if(VoidBlasterHitsTime >= 100)
@@ -1001,8 +1045,8 @@ namespace Stellamod
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone3"), player.position);
 					var EntitySource = Player.GetSource_FromThis();
 
-					Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionRight>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
-                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionLeft>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
+					Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionRightProj>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
+                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionLeftProj>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
                     player.AddBuff(ModContent.BuffType<HMMinionBuff>(), 99999);
                 }
 
@@ -1043,27 +1087,18 @@ namespace Stellamod
                 {
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CorsageRune1"), Player.position);
                     var EntitySource = Player.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<FCMinion>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
-                    player.AddBuff(ModContent.BuffType<FCBuff>(), 99999);
+                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<FCMinionProj>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
+                    player.AddBuff(ModContent.BuffType<FCMinionBuff>(), 99999);
                 }
 
             }
             else
             {
-                player.ClearBuff(ModContent.BuffType<FCBuff>());
+                player.ClearBuff(ModContent.BuffType<FCMinionBuff>());
                 FCArmorTime = 0;
             }
-
-
-			if (ZoneIlluria)
-			{
 			
-
-				//Update Rain
-				
-			}
-
-				if (ZoneAcid　|| ZoneLab)
+			if (ZoneAcid　|| ZoneLab)
             {
                 if (player.wet)
                 {
@@ -2739,13 +2774,18 @@ namespace Stellamod
 		public override void SaveData(TagCompound tag)
 		{
 			tag["Sirestiastalk"] = Sirestiastalk;
-			tag["Zuitalk"] = Zuitalk;
+            tag["MonO"] = DreadMonOne;
+            tag["MonTw"] = DreadMonTwo;
+            tag["MonTh"] = DreadMonThree;
+            tag["Zuitalk"] = Zuitalk;
 		}
 
 		public override void LoadData(TagCompound tag)
 		{
-
-			Sirestiastalk = tag.GetBool("Sirestiastalk");
+            DreadMonOne = tag.GetBool("MonO");
+            DreadMonTwo = tag.GetBool("MonTw");
+            DreadMonThree = tag.GetBool("MonTh");
+            Sirestiastalk = tag.GetBool("Sirestiastalk");
 			Zuitalk = tag.GetBool("Zuitalk");
 		}
 
