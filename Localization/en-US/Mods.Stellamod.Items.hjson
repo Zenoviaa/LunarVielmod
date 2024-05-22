@@ -7527,8 +7527,14 @@ VoidalPassageway: {
 
 BlackEye: {
 	DisplayName: The Black Eye
+	Tooltip: Summons Rek's Eye to blast lasers at nearby enemies!
+}
+
+VulcanBreaker: {
+	DisplayName: Vulcan Breaker
 	Tooltip:
 		'''
-		Summons Rek's Eye to blast lasers at nearby enemies!
+		Swings a molten hammer that erupts inside of enemies!
+		Bursting with flames :P
 		'''
 }
