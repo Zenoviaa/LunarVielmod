@@ -5,6 +5,7 @@ using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Wings;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable;
+using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
@@ -1125,7 +1126,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             npcLoot.Add(ItemDropRule.OneFromOptions(1,
                 ModContent.ItemType<SerpentStaff>(),
                 ModContent.ItemType<Incinerator>(),
-                ModContent.ItemType<YourFired>()
+                ModContent.ItemType<YourFired>(),
+                ModContent.ItemType<BlackEye>()
                 ));
 
             // ItemDropRule.MasterModeDropOnAllPlayers for the pet

@@ -7524,3 +7524,11 @@ VoidalPassageway: {
 	DisplayName: Voidal Passageway
 	Tooltip: Use this to open a doorway, calling down Supernova Fragment!
 }
+
+BlackEye: {
+	DisplayName: The Black Eye
+	Tooltip:
+		'''
+		Summons Rek's Eye to blast lasers at nearby enemies!
+		'''
+}
