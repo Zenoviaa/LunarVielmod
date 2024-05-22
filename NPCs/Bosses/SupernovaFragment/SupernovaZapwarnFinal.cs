@@ -54,7 +54,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             alphaCounter = MathHelper.Lerp(alphaCounter, 0, 0.05f);
             if (RotSpeed >= 0)
             {
-                RotSpeed = MathHelper.Lerp(RotSpeed, 0, 0.07f);
+                RotSpeed = MathHelper.Lerp(RotSpeed, 0, 0.06f);
             }
             NPC.ai[2] = NPC.rotation;
 
@@ -72,7 +72,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SupernovaFragment_EndLazer2"), NPC.position);
                 }
 
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 424f);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 64f);
 
                 LightPos.X = NPC.position.X;
                 LightPos.Y = NPC.position.Y - 500;
