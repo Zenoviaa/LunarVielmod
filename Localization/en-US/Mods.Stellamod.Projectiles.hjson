@@ -1180,4 +1180,79 @@ ExampleShaderOrbProjectile.DisplayName: Example Shader Orb Projectile
 GothinWingsProj.DisplayName: Gothin Wings Proj
 GothLightBlastProj.DisplayName: Goth Light Blast Proj
 GothCircleExpand.DisplayName: Goth Circle Expand
-
+WhiteStrikeCircle.DisplayName: White Strike Circle
+YourFiredProj.DisplayName: Your Fired Proj
+YourFiredExplosionProj.DisplayName: Your Fired Explosion Proj
+LilStingerProj.DisplayName: Lil Stinger Proj
+LilStingerExplosionProj.DisplayName: Lil Stinger Explosion Proj
+FlinchMachineProj.DisplayName: Flinch Machine Proj
+FlinchMachineExplosionProj.DisplayName: Flinch Machine Explosion Proj
+CinderBomberProj.DisplayName: Cinder Bomber Proj
+GintelzeSwingProj.DisplayName: Gintelze Swing Proj
+ExampleVoidProjectile.DisplayName: Example Void Projectile
+ExampleDistortionProjectile.DisplayName: Example Distortion Projectile
+SOJGCustomSwingProjectile.DisplayName: S O J G Custom Swing Projectile
+AcidBlast3.DisplayName: Acid Blast3
+XScissorMinionProj.DisplayName: X Scissor Minion Proj
+PotOfGreedMinionProj.DisplayName: Pot Of Greed Minion Proj
+VoidMinionProj.DisplayName: Void Minion Proj
+VehementMinionProj.DisplayName: Vehement Minion Proj
+VampireTorchMinionProj.DisplayName: Vampire Torch Minion Proj
+ToxicHornetMinionProj.DisplayName: Toxic Hornet Minion Proj
+TheBurningRodMinionProj.DisplayName: The Burning Rod Minion Proj
+SolMothMinionProj.DisplayName: Sol Moth Minion Proj
+SerpentMinionProj.DisplayName: Serpent Minion Proj
+SerpentMinionFireBreathProj.DisplayName: Serpent Minion Fire Breath Proj
+ReflectionSeekerMinionProj.DisplayName: Reflection Seeker Minion Proj
+ProbeMinionProj.DisplayName: Probe Minion Proj
+PegasusMinionStarProj.DisplayName: Pegasus Minion Star Proj
+PegasusMinionProj.DisplayName: Pegasus Minion Proj
+PegasusMinionLightningProj.DisplayName: Pegasus Minion Lightning Proj
+PegasusMinionFrostBombProj.DisplayName: Pegasus Minion Frost Bomb Proj
+MushroomStaveMinionProj.DisplayName: Mushroom Stave Minion Proj
+ManaWandMinionProj.DisplayName: Mana Wand Minion Proj
+LifeWandMinionProj.DisplayName: Life Wand Minion Proj
+JellyMinionProj.DisplayName: Jelly Minion Proj
+JacksonPollockMinionProj.DisplayName: Jackson Pollock Minion Proj
+IvyakenMinionProj.DisplayName: Ivyaken Minion Proj
+IrradiatedCreeperMinionProj.DisplayName: Irradiated Creeper Minion Proj
+IceboundMinionProj.DisplayName: Icebound Minion Proj
+HMArncharMinionRightProj.DisplayName: H M Arnchar Minion Right Proj
+HMArncharMinionLeftProj.DisplayName: H M Arnchar Minion Left Proj
+HallowWandMinionProj.DisplayName: Hallow Wand Minion Proj
+FireflyMinionProj.DisplayName: Firefly Minion Proj
+FCMinionProj.DisplayName: F C Minion Proj
+DripplerMinionProj.DisplayName: Drippler Minion Proj
+CloudMinionProj.DisplayName: Cloud Minion Proj
+ClimateLightningProj.DisplayName: Climate Lightning Proj
+ChromaCutterMinionProj.DisplayName: Chroma Cutter Minion Proj
+CentipedeMinionProj.DisplayName: Centipede Minion Proj
+BucketScrapperMinionProj.DisplayName: Bucket Scrapper Minion Proj
+BabySwarmerMinionProj.DisplayName: Baby Swarmer Minion Proj
+AuroranSeekerMinionProj.DisplayName: Auroran Seeker Minion Proj
+ArncharMinionProj.DisplayName: Arnchar Minion Proj
+AlcadWandMinionProj.DisplayName: Alcad Wand Minion Proj
+VileFist.DisplayName: Vile Fist
+VulcanBreakerSwingProj.DisplayName: Vulcan Breaker Swing Proj
+VulcanBreakerBlowtorchProj.DisplayName: Vulcan Breaker Blowtorch Proj
+MagicDoor.DisplayName: Magic Door
+SwarmerStaffProj.DisplayName: Swarmer Staff Proj
+IllurianBibleProj.DisplayName: Illurian Bible Proj
+BlackEyeProj.DisplayName: Black Eye Proj
+BlackEyeLaserProj.DisplayName: Black Eye Laser Proj
+CinderBoom.DisplayName: Cinder Boom
+IrrasprayProj.DisplayName: Irraspray Proj
+IncineratorProj.DisplayName: Incinerator Proj
+IrradiatedDeathSpray.DisplayName: Irradiated Death Spray
+TulacroweFireball.DisplayName: Tulacrowe Fireball
+TulacBombProj.DisplayName: Tulac Bomb Proj
+NiiviStarsBoom.DisplayName: Niivi Stars Boom
+NiiviStarFieldProj.DisplayName: Niivi Star Field Proj
+NiiviStarFieldBombProj.DisplayName: Niivi Star Field Bomb Proj
+NiiviStarBounceProj.DisplayName: Niivi Star Bounce Proj
+NiiviSpawnExplosionProj.DisplayName: Niivi Spawn Explosion Proj
+NiiviCrystalWarpExplosionProj.DisplayName: Niivi Crystal Warp Explosion Proj
+NiiviCosmicBombProj.DisplayName: Niivi Cosmic Bomb Proj
+NiiviCosmicBombAbsorbProj.DisplayName: Niivi Cosmic Bomb Absorb Proj
+DaedusFireball.DisplayName: Daedus Fireball
+WoodyBrooch.DisplayName: Woody Brooch

@@ -4,10 +4,13 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Melee.Spears;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.DreadMire;
@@ -128,18 +131,17 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ItemType<Items.Placeable.SOMBossRel>()));
-            npcLoot.Add(ItemDropRule.Common(ItemType<VoidLantern>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.BossBag(ItemType<SingularityBag>()));
-
+            
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<SupernovaBag>()));
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.SupernovaBossRel>()));
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-            notExpertRule.OnSuccess(ItemDropRule.Common(ItemType<SpacialDistortionFragments>(), minimumDropped: 40, maximumDropped: 65));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ItemType<TomeOfTheSingularity>(), chanceDenominator: 2));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ItemType<VoidBlaster>(), chanceDenominator: 2));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ItemType<VoidStaff>(), chanceDenominator: 2));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ItemType<EventHorizon>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Iknoctstein>(), 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Dulahaun>()));
+            //notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StalkersTallon>(), 2));
+         //   notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SunBlastStaff>(), 2));
             npcLoot.Add(notExpertRule);
-        }
+        
+    }
 
         public void CasuallyApproachChild()
         {
