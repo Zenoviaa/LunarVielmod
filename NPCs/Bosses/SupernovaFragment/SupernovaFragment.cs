@@ -637,31 +637,40 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                             {
                                 int Ofset = Main.rand.Next(1, 100);
 
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver4 + Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver2 + Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, -MathHelper.PiOver4 + Ofset);
+                                if (StellaMultiplayer.IsHost)
+                                {
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver4 + Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver2 + Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, -MathHelper.PiOver4 + Ofset);
+                                }
+
 
                             }
 
                             if (NPC.ai[0] == 150)
                             {
                                 int Ofset = Main.rand.Next(1, 100);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver4 + Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver2 + Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, -MathHelper.PiOver4 + Ofset);
-
+                                if (StellaMultiplayer.IsHost)
+                                {
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver4 + Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver2 + Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, -MathHelper.PiOver4 + Ofset);
+                                }
 
                             }
                             if (NPC.ai[0] == 250)
                             {
                                 int Ofset = Main.rand.Next(1, 100);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver4 + Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver2 + Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, -MathHelper.PiOver4 + Ofset);
 
+                                if (StellaMultiplayer.IsHost)
+                                {
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver4 + Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver2 + Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, -MathHelper.PiOver4 + Ofset);
+                                }
                             }
 
                             if (NPC.ai[0] >= 300)
