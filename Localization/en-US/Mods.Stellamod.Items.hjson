@@ -7574,3 +7574,13 @@ JianxinPants: {
 		+3 Increased Summons
 		'''
 }
+
+IllurineHoops: {
+	DisplayName: Illurine Hoops
+	Tooltip:
+		'''
+		Nearby lunar enemies are striked, cutting their health in half
+		+10% Magic Damage
+		Increased mana regeneration and reduce mana cost
+		'''
+}

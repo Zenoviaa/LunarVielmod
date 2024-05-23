@@ -757,3 +757,8 @@ CentipedeMinionBuff: {
 	DisplayName: Don't Skip Leg Day
 	Description: It has so many legs!
 }
+
+MoonFlame: {
+	DisplayName: Moon Flame
+	Description: Mods.Stellamod.Buffs.MoonFlame.Description
+}
