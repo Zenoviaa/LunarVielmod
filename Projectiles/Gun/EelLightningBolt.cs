@@ -1,5 +1,4 @@
-﻿using Accord.Math;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Trails;
 using Terraria;
