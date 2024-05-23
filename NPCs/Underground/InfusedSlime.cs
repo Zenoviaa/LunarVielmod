@@ -122,7 +122,7 @@ namespace Stellamod.NPCs.Underground
                     {
                         Vector2 velocity = NPC.DirectionTo(target.Center) * 10;
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
-                                ModContent.ProjectileType<InfusedSlimeBolt>(), 42, 1, Owner: Main.myPlayer);
+                                ModContent.ProjectileType<InfusedSlimeBolt>(), 34, 1, Owner: Main.myPlayer);
                     }
 
                     SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, NPC.position);
