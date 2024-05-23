@@ -65,7 +65,7 @@ namespace Stellamod.NPCs.Acidic
 
         public override void FindFrame(int frameHeight)
         {
-            NPC.frameCounter += 0.5f;
+            NPC.frameCounter += 0.2f;
             NPC.frameCounter %= Main.npcFrameCount[NPC.type];
             int frame = (int)NPC.frameCounter;
             NPC.frame.Y = frame * frameHeight;
@@ -112,7 +112,7 @@ namespace Stellamod.NPCs.Acidic
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
             Vector2 frameOrigin = NPC.frame.Size();
-            Vector2 offset = new Vector2(NPC.width - frameOrigin.X + 5, NPC.height - NPC.frame.Height + 3);
+            Vector2 offset = new Vector2(NPC.width - frameOrigin.X + 5, NPC.height - NPC.frame.Height - 16);
             Vector2 DrawPos = NPC.position - screenPos + frameOrigin + offset;
 
             float time = Main.GlobalTimeWrappedHourly;
