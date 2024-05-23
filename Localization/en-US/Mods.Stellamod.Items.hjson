@@ -6296,7 +6296,7 @@ SplashAttack: {
 }
 
 CozmirePaintingI: {
-	DisplayName: Cozmire Painting 
+	DisplayName: Cozmire Painting
 	Tooltip: ""
 }
 
@@ -6786,9 +6786,7 @@ TempleKeyMold: {
 
 TempleKeyPart: {
 	DisplayName: Temple Key Part
-	Tooltip: '''
-	It seems Ereshkigal broke the key and attached it to the singularity. How cruel.
-	'''
+	Tooltip: It seems Ereshkigal broke the key and attached it to the singularity. How cruel.
 }
 
 M38F30: {
@@ -7370,7 +7368,7 @@ YourFired: {
 
 LumiPaintingI: {
 	Tooltip: ""
-	DisplayName: Lumi Painting 
+	DisplayName: Lumi Painting
 }
 
 VeiledScriptureLumi: {
@@ -7541,4 +7539,9 @@ VulcanBreaker: {
 		Swings a molten hammer that erupts inside of enemies!
 		Bursting with flames :P
 		'''
+}
+
+Superfragment: {
+	Tooltip: A voidal essence made from the combination of the stars and void.
+	DisplayName: Superfragment
 }
