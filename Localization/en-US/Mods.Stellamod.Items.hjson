@@ -7545,3 +7545,32 @@ Superfragment: {
 	Tooltip: A voidal essence made from the combination of the stars and void.
 	DisplayName: Superfragment
 }
+
+JianxinCoat: {
+	DisplayName: Jianxin Coat
+	Tooltip:
+		'''
+		+25 Armor Penetration
+		+10% Increased Damage
+		+20 Increased Critical Strike Chance
+		'''
+}
+
+JianxinMask: {
+	DisplayName: Jianxin Mask
+	Tooltip:
+		'''
+		+30 Armor Penetration
+		+10% Increased Damage
+		'''
+}
+
+JianxinPants: {
+	DisplayName: Jianxin Pants
+	Tooltip:
+		'''
+		+30 Armor Penetration
+		+10% Increased Damage
+		+3 Increased Summons
+		'''
+}

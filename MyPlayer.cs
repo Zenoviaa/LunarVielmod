@@ -307,11 +307,11 @@ namespace Stellamod
         public bool TericGram = false;
 
 		public bool HasAlcaliteSet;
+        public bool Waterwhisps;
 
 
 
-
-		public NPC VoidBlasterNPC;
+        public NPC VoidBlasterNPC;
         public int VoidBlasterHits;
         public int VoidBlasterHitsTime;
 
@@ -614,7 +614,8 @@ namespace Stellamod
 			ArcaneM = false;
 			PlantH = false;
 			ThornedBook = false;
-			Dice = false;
+            Waterwhisps = false;
+            Dice = false;
 			NotiaB = false;
 			Lovestruck = false;
 			ADisease = false;

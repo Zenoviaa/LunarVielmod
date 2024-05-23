@@ -55,7 +55,7 @@ namespace Stellamod.Items.Armors.Mardenths
 		public override void UpdateArmorSet(Player player)
 		{
 			player.setBonus = "Increases life regen" +
-				"\nTake 15% Less damage"; // This is the setbonus tooltip
+				"\nTake 10% Less damage"; // This is the setbonus tooltip
 			player.lifeRegen += 1;
             player.endurance += 0.10f;
 
