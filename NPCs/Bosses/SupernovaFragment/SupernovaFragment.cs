@@ -131,6 +131,9 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
+
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 5, 13));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Superfragment>(), 1, 20, 45));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TempleKeyPart>()));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<SupernovaBag>()));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.SupernovaBossRel>()));

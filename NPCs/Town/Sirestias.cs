@@ -550,7 +550,7 @@ namespace Stellamod.NPCs.Town
 
 
 
-					else if (DownedBossSystem.downedAzurewrathBoss)
+					else if (DownedBossSystem.downedSupernovaFragmentBoss)
 					{
 
 								switch (Main.rand.Next(3))

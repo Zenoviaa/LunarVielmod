@@ -44,7 +44,7 @@ namespace Stellamod.Items.Materials
             Recipe recipe3 = CreateRecipe(1);
             recipe3.AddIngredient(ModContent.ItemType<VeiledScriptureAzurerin>(), 1);
             recipe3.AddIngredient(ModContent.ItemType<LuminullSpiritFragments>(), 10);
-            recipe3.AddIngredient(ModContent.ItemType<RadianuiBar>(), 10);
+            recipe3.AddIngredient(ModContent.ItemType<Superfragment>(), 10);
             recipe3.Register();
         }
 

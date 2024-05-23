@@ -339,7 +339,7 @@ namespace Stellamod.Items.Special.Sirestias
 
 
 
-                                        if (DownedBossSystem.downedAzurewrathBoss)
+                                        if (DownedBossSystem.downedSupernovaFragmentBoss)
                                         {
 
                                             switch (Main.rand.Next(1))
