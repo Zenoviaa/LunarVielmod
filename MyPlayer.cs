@@ -760,7 +760,12 @@ namespace Stellamod
 				new Item(ModContent.ItemType<SiresMail>(), 1, 0),
             };
 		}
-		public override void PostUpdate()
+
+        public override void OnEnterWorld()
+        {
+            Main.NewText("[Lunar Veil] Hi hi! Thank you for checking out the mod! If you want more, you can check out my game Diari!");
+        }
+        public override void PostUpdate()
         {
             if (!Sirestiastalk)
             {
