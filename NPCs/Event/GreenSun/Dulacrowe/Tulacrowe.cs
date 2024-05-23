@@ -291,14 +291,17 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                         break;
                     case 2:
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RibbonStaffBoom1"), NPC.position);
-                        float num = 64;
-                        for (float i = 0; i < num; i++)
+                        if (StellaMultiplayer.IsHost)
                         {
-                            float progress = i / num;
-                            float rot = MathHelper.TwoPi * progress;
-                            Vector2 direction2 = Vector2.UnitY.RotatedBy(rot);
-                            Vector2 velocity = direction2 * 10;
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 100, velocity.X, velocity.Y, ModContent.ProjectileType<TulacroweFireball>(), 50, 0f, Owner: Main.myPlayer);
+                            float num = 64;
+                            for (float i = 0; i < num; i++)
+                            {
+                                float progress = i / num;
+                                float rot = MathHelper.TwoPi * progress;
+                                Vector2 direction2 = Vector2.UnitY.RotatedBy(rot);
+                                Vector2 velocity = direction2 * 10;
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 100, velocity.X, velocity.Y, ModContent.ProjectileType<TulacroweFireball>(), 50, 0f, Owner: Main.myPlayer);
+                            }
                         }
                         break;
                     case 3:
