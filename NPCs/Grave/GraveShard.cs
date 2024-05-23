@@ -50,7 +50,7 @@ namespace Stellamod.NPCs.Grave
             NPC.velocity = new Vector2(0, ySpeed);
 
             SpawnTimer--;
-            if(SpawnTimer <= 0)
+            if(SpawnTimer <= 0 && NPC.CountNPCS(ModContent.NPCType<GraveSeeker>()) < 7)
             {
                 if (StellaMultiplayer.IsHost)
                 {
