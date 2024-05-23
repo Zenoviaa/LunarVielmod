@@ -139,13 +139,16 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
                 }
 
+                if (StellaMultiplayer.IsHost)
+                {
+                    int type = ModContent.ProjectileType<GreenSunsSuckingProj>();
+                    int damage = 10;
+                    int knockback = 1;
+                    Vector2 pos = NPC.Center;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
+                     type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
 
-                int type = ModContent.ProjectileType<GreenSunsSuckingProj>();
-                int damage = 10;
-                int knockback = 1;
-                Vector2 pos = NPC.Center;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
-                 type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
+                }
 
 
 
@@ -198,12 +201,15 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 shaderSystem.UnDistortScreen();
                 shaderSystem.UnVignetteScreen();
 
-                int type = ModContent.ProjectileType<GreenSunsBoomProj>();
-                int damage = 10;
-                int knockback = 1;
-                Vector2 pos = NPC.Center;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
-                 type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
+                if (StellaMultiplayer.IsHost)
+                {
+                    int type = ModContent.ProjectileType<GreenSunsBoomProj>();
+                    int damage = 10;
+                    int knockback = 1;
+                    Vector2 pos = NPC.Center;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
+                     type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
+                }
 
 
                 for (int i = 0; i < 150; i++)

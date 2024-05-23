@@ -182,7 +182,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 {
                     float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-20, 20);
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedYa * 0, speedYa * 0, 
-						ModContent.ProjectileType<Starbombing>(), 0, 0f, 0, 0f, 0f);
+						ModContent.ProjectileType<Starbombing>(), 0, 0f, Owner: Main.myPlayer);
                 }
 				invisibilityTimer = 0;
 			}

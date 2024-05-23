@@ -144,12 +144,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 int damage = 10;
                 int knockback = 1;
                 Vector2 pos = NPC.Center;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
-                 type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
+                             type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
+                }
 
 
-
-          
 
 
 
@@ -200,8 +201,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 int damage = 10;
                 int knockback = 1;
                 Vector2 pos = NPC.Center;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
-                 type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
+
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
+                     type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
+
+                }
 
 
                 for (int i = 0; i < 150; i++)
