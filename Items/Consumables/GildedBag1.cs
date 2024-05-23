@@ -65,7 +65,12 @@ namespace Stellamod.Items.Consumables
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<MOTT>());
 			}
 
-			if (NPC.downedBoss2)
+            if (Main.rand.NextBool(20))
+            {
+                player.QuickSpawnItem(entitySource, ItemID.SeashellHairpin);
+            }
+
+            if (NPC.downedBoss2)
             {
 				
 

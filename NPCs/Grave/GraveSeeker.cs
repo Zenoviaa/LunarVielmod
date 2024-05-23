@@ -50,26 +50,7 @@ namespace Stellamod.NPCs.Grave
 			AIType = NPCID.Flocko;
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
-			if (spawnInfo.Player.ZoneJungle)
-			{			
-				return SpawnCondition.OverworldNight.Chance * 0.2f;
-			}
-
-			if (spawnInfo.Player.InModBiome<FableBiome>())
-			{
-				return SpawnCondition.Overworld.Chance * 0.5f;
-			}
-
-			if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
-			{
-				return SpawnCondition.Underground.Chance * 0.5f;
-			}
-
-			return SpawnCondition.OverworldNight.Chance * 0f;
-		}
-
+		
 		int invisibilityTimer;
 		public override void HitEffect(NPC.HitInfo hit)
 		{
@@ -83,7 +64,7 @@ namespace Stellamod.NPCs.Grave
 
 		public override void FindFrame(int frameHeight)
 		{
-			NPC.frameCounter += 0.15f;
+			NPC.frameCounter += 0.2f;
 			NPC.frameCounter %= Main.npcFrameCount[NPC.type];
 			int frame = (int)NPC.frameCounter;
 			NPC.frame.Y = frame * frameHeight;

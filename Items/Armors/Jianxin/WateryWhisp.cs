@@ -85,7 +85,7 @@ namespace Stellamod.Items.Armors.Jianxin
             Vector2 origin = new Vector2(rectangle.Width / 2, rectangle.Height / 2);
             SpriteBatch spriteBatch = Main.spriteBatch;
             float drawRotation = Projectile.rotation;
-            float drawScale = 1f;
+            float drawScale = 0.6f;
 
             spriteBatch.Draw(texture, drawPosition,
                rectangle,
