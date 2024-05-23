@@ -24,18 +24,22 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override void Load()
         {
-            using var eventSlim = new ManualResetEventSlim();
-
-            Main.QueueMainThreadAction(() =>
+            if(Main.netMode != NetmodeID.Server)
             {
-                playerRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
+                using var eventSlim = new ManualResetEventSlim();
 
-                eventSlim.Set();
-            });
+                Main.QueueMainThreadAction(() =>
+                {
+                    playerRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
 
-            eventSlim.Wait();
+                    eventSlim.Set();
+                });
 
-            Main.graphics.GraphicsDevice.DeviceReset += OnDeviceReset;
+                eventSlim.Wait();
+
+                Main.graphics.GraphicsDevice.DeviceReset += OnDeviceReset;
+            }
+
         }
 
         private static void OnDeviceReset(object sender, EventArgs eventArgs)
@@ -50,21 +54,24 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override void Unload()
         {
-            Main.graphics.GraphicsDevice.DeviceReset -= OnDeviceReset;
-
-            if (playerRT is not null)
+            if (Main.netMode != NetmodeID.Server)
             {
-                using var eventSlim = new ManualResetEventSlim();
+                Main.graphics.GraphicsDevice.DeviceReset -= OnDeviceReset;
 
-                Main.QueueMainThreadAction(() =>
+                if (playerRT is not null)
                 {
-                    playerRT.Dispose();
-                    eventSlim.Set();
-                });
+                    using var eventSlim = new ManualResetEventSlim();
 
-                eventSlim.Wait();
+                    Main.QueueMainThreadAction(() =>
+                    {
+                        playerRT.Dispose();
+                        eventSlim.Set();
+                    });
 
-                playerRT = null;
+                    eventSlim.Wait();
+
+                    playerRT = null;
+                }
             }
         }
 
