@@ -39,13 +39,15 @@ namespace Stellamod.NPCs.Grave
 			NPC.height = 20;
 			NPC.damage = 30;
 			NPC.defense = 8;
+			NPC.noTileCollide = true;
+			NPC.noGravity = true;
 			NPC.lifeMax = 185;
 			NPC.HitSound = SoundID.NPCHit32;
 			NPC.DeathSound = SoundID.NPCDeath6;
 			NPC.value = 563f;
 			NPC.knockBackResist = .45f;
-			NPC.aiStyle = 10;
-			AIType = NPCID.CursedSkull;
+			NPC.aiStyle = 63;
+			AIType = NPCID.Flocko;
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
