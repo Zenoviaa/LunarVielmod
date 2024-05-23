@@ -1,4 +1,5 @@
-﻿using Stellamod.Assets.Biomes;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Assets.Biomes;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
@@ -12,6 +13,7 @@ namespace Stellamod.NPCs.Grave
 {
     public class GraveSeeker : ModNPC
 	{
+		private float Spawner;
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Morrowed Swampster");
@@ -46,8 +48,8 @@ namespace Stellamod.NPCs.Grave
 			NPC.DeathSound = SoundID.NPCDeath6;
 			NPC.value = 563f;
 			NPC.knockBackResist = .45f;
-			NPC.aiStyle = 63;
-			AIType = NPCID.Flocko;
+			NPC.aiStyle = NPCAIStyleID.HoveringFighter;
+			AIType = NPCID.Ghost;
 		}
 
 		
@@ -72,8 +74,17 @@ namespace Stellamod.NPCs.Grave
 
 		public override void AI()
 		{
+			Spawner++;
+			if(Spawner == 1)
+			{
+                for (int k = 0; k < 32; k++)
+                {
+					Vector2 velocity = Main.rand.NextVector2CircularEdge(16, 16);
+					Dust.NewDustPerfect(NPC.Center, DustID.Plantera_Green, velocity); // 1, -1f, 1, default, .61f);
+                }
+            }
 
-			timer++;
+            timer++;
 			NPC.spriteDirection = NPC.direction;
 			
 			invisibilityTimer++;
