@@ -6786,7 +6786,9 @@ TempleKeyMold: {
 
 TempleKeyPart: {
 	DisplayName: Temple Key Part
-	Tooltip: A part from Ereshkigal, she broke the key...
+	Tooltip: '''
+	It seems Ereshkigal broke the key and attached it to the singularity. How cruel.
+	'''
 }
 
 M38F30: {

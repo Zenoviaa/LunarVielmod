@@ -131,7 +131,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TempleKeyPart>()));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<SupernovaBag>()));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.SupernovaBossRel>()));
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
