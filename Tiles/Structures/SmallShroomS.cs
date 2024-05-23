@@ -29,10 +29,11 @@ namespace Stellamod.Tiles.Structures
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x2);
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18, };
-			TileObjectData.addTile(Type);
+            TileObjectData.newTile.StyleWrapLimit = 2; //not really necessary but allows me to add more subtypes of chairs below the example chair texture
+            TileObjectData.newTile.StyleMultiplier = 2; //same as above
+            TileObjectData.addTile(Type);
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
-			TileObjectData.newTile.StyleWrapLimit = 2; //not really necessary but allows me to add more subtypes of chairs below the example chair texture
-			TileObjectData.newTile.StyleMultiplier = 2; //same as above
+
 
 			// Etc
 			LocalizedText name = CreateMapEntryName();
