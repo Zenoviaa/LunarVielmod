@@ -11,7 +11,8 @@ namespace Stellamod.Projectiles.Gun
 {
     internal class ClockworkBomb : ModProjectile
     {
-        float Speeb;
+        private ref float Timer => ref Projectile.ai[0];
+        private ref float Speed => ref Projectile.ai[1];
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
@@ -36,19 +37,18 @@ namespace Stellamod.Projectiles.Gun
         public override void AI()
         {
             //Projectile.spriteDirection = Projectile.velocity.X < 0 ? -1 : 1; 
-            Projectile.ai[0]++;
-            if(Projectile.ai[0] <= 2)
+            Timer++;
+            if(Timer <= 2 && Main.myPlayer == Projectile.owner)
             {
-                Speeb = Main.rand.NextFloat(0.92f, 0.94f);
+                Speed = Main.rand.NextFloat(0.92f, 0.94f);
+                Projectile.netUpdate = true;
             }
-            Projectile.velocity *= Speeb;
+            Projectile.velocity *= Speed;
             Projectile.rotation = Projectile.velocity.ToRotation();
             if(Projectile.velocity.Length() <= 0.1f && Projectile.active)
             {
                 Projectile.Kill();
             }
-
-
         }
 
         public override void OnKill(int timeLeft)
@@ -61,7 +61,7 @@ namespace Stellamod.Projectiles.Gun
             float damage = Projectile.damage;
             damage *= 0.5f;
             var p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<KaBoomMagic2>(), (int)damage, 3);
+                ModContent.ProjectileType<KaBoomMagic2>(), (int)damage, 3, Projectile.owner);
             p.friendly = true;
             p.usesLocalNPCImmunity = true;
             p.localNPCHitCooldown = -1;

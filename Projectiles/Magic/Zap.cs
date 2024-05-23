@@ -39,16 +39,6 @@ namespace Stellamod.Projectiles.Magic
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-			/* 
-			 * This will always be true, so it's a nothing statement
-			 * It translates to if 0 == 0
-			 if (Main.rand.Next(1) == 0)
-			 {
-				 target.AddBuff(BuffID.Frostburn2, 380);
-				 target.AddBuff(BuffID.Chilled, 380);
-				 target.AddBuff(BuffID.Frozen, 380);
-			 }*/
-
 			target.AddBuff(BuffID.Frostburn2, 380);
 			target.AddBuff(BuffID.Chilled, 380);
 			target.AddBuff(BuffID.Frozen, 380);

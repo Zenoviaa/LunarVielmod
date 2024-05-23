@@ -42,8 +42,8 @@ namespace Stellamod.Projectiles.Magic
             for (int i = 0; i < 5; i++)
             {
                 Projectile.timeLeft = 2;
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-4, 5), ModContent.ProjectileType<LarveinScriputeProg2>(), 52, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-4, 5),
+                    ModContent.ProjectileType<LarveinScriputeProg2>(), Projectile.damage, 1, Projectile.owner, 0, 0);
             }
 
 

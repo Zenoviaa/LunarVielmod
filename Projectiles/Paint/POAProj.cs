@@ -61,10 +61,10 @@ namespace Stellamod.Projectiles.Paint
             player.RotatedRelativePoint(Projectile.Center);
 
 
-            if (Main.mouseLeft)
+            if (Main.myPlayer == Projectile.owner && Main.mouseLeft)
             {
-
                 Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * Projectile.Distance(Main.MouseWorld) / 12;
+                Projectile.netUpdate = true;
             }
             else
             {

@@ -12,7 +12,6 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.Crossbows;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Acidic;
-using Stellamod.Projectiles.Bow;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;

@@ -90,14 +90,11 @@ namespace Stellamod.Projectiles.Summons.Minions
                 if (Projectile.ai[1] >= 14)
                 {
                     var entitySource = Projectile.GetSource_FromThis();
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                    {
-                        float xVelocity = Main.rand.NextFloat(-2f, 2f);
-                        float yVelocity = Main.rand.NextFloat(-12f, 0f);
-                        Vector2 velocity = new Vector2(xVelocity, yVelocity);
-                        Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y, velocity.X, velocity.Y,
-                            ModContent.ProjectileType<HallowRain>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
-                    }
+                    float xVelocity = Main.rand.NextFloat(-2f, 2f);
+                    float yVelocity = Main.rand.NextFloat(-12f, 0f);
+                    Vector2 velocity = new Vector2(xVelocity, yVelocity);
+                    Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y, velocity.X, velocity.Y,
+                        ModContent.ProjectileType<HallowRain>(), Projectile.damage, 1, Projectile.owner, 0, 0);
 
                     Projectile.ai[1] = 0;
                 }

@@ -47,7 +47,7 @@ namespace Stellamod.Projectiles.Slashers.Hyua
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
-            if (!_initialized && Main.myPlayer == Projectile.owner)
+            if (!_initialized)
             {
                 timer++;
 
@@ -56,8 +56,6 @@ namespace Stellamod.Projectiles.Slashers.Hyua
                 Projectile.timeLeft = SwingTime;
                 _initialized = true;
                 Projectile.damage -= 9999;
-                //Projectile.netUpdate = true;
-
             }
             else if (_initialized)
             {

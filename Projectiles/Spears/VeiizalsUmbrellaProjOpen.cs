@@ -17,16 +17,18 @@ namespace Stellamod.Projectiles.Spears
 {
     public class VeiizalsUmbrellaProjOpen : ModProjectile
     {
-        public override void SetStaticDefaults()
-        {
-            Main.projFrames[Projectile.type] = 1;//number of frames the animation has
-        }
-
         public float Timer
         {
             get => Projectile.ai[0];
             set => Projectile.ai[0] = value;
         }
+        private ref float SwordRotation => ref Projectile.ai[1];
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Projectile.type] = 1;//number of frames the animation has
+        }
+
+
 
         public override void SetDefaults()
         {
@@ -64,16 +66,16 @@ namespace Stellamod.Projectiles.Spears
                 Projectile.Kill();
 
             Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-            float swordRotation = 0f;
             if (Main.myPlayer == Projectile.owner)
             {
                 player.ChangeDir(Projectile.direction);
-                swordRotation = (Main.MouseWorld - player.Center).ToRotation();
+                SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+                Projectile.netUpdate = true;
                 if (!Main.mouseRight)
                     Projectile.Kill();
             }
 
-            Projectile.velocity = swordRotation.ToRotationVector2();
+            Projectile.velocity = SwordRotation.ToRotationVector2();
             Projectile.spriteDirection = player.direction;
             if (Projectile.spriteDirection == 1)
                 Projectile.rotation = Projectile.velocity.ToRotation();

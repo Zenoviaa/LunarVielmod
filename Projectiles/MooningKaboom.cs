@@ -5,8 +5,14 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles
 {
     public class MooningKaboom : ModProjectile
-	{
-		public override void SetStaticDefaults()
+    {
+        public float Timer
+        {
+            get => Projectile.ai[0];
+            set => Projectile.ai[0] = value;
+        }
+
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("FrostShotIN");
 			Main.projFrames[Projectile.type] = 28;
@@ -19,14 +25,9 @@ namespace Stellamod.Projectiles
 			Projectile.height = 220;
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 56;
-			Projectile.scale = 1f;
-			
+			Projectile.scale = 1f;		
 		}
-		public float Timer
-		{
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
-		}
+
         public override void AI()
         {
 			
@@ -47,16 +48,12 @@ namespace Stellamod.Projectiles
 					Projectile.frame = 0;
 				}
 			}
-			return true;
-
-			
+			return true;	
 		}
+
 		public override Color? GetAlpha(Color lightColor)
 		{
 			return new Color(200, 200, 200, 0) * (1f - Projectile.alpha / 50f);
 		}
-
-	
 	}
-
 }

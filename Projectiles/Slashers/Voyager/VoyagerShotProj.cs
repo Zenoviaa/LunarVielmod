@@ -61,15 +61,11 @@ namespace Stellamod.Projectiles.Slashers.Voyager
 
 
 			Projectile.direction = Projectile.spriteDirection = Projectile.velocity.X > 0f ? 1 : -1;
-
 		}
 
 		public override Color? GetAlpha(Color lightColor)
 		{
 			return new Color(200, 200, 200, 0) * (1f - Projectile.alpha / 50f);
-		}
-
-		
-	
+		}	
 	}
 }

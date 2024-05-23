@@ -64,7 +64,7 @@ namespace Stellamod.Projectiles.Slashers.Chillrend
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
-            if (!_initialized && Main.myPlayer == Projectile.owner)
+            if (!_initialized)
             {
                 timer++;
 

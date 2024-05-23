@@ -8,8 +8,14 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles
 {
     public class PetalDance : ModProjectile
-	{
-		public override void SetStaticDefaults()
+    {
+        public float Timer
+        {
+            get => Projectile.ai[0];
+            set => Projectile.ai[0] = value;
+        }
+		private ref float SwordRotation => ref Projectile.ai[1];
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("death");
 			Main.projFrames[Projectile.type] = 14;
@@ -28,11 +34,7 @@ namespace Stellamod.Projectiles
 			DrawOriginOffsetX = -90;
 			DrawOriginOffsetY = -8;
 		}
-		public float Timer
-		{
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
-		}
+
 		public override void AI()
 		{
 			Timer++;
@@ -41,22 +43,20 @@ namespace Stellamod.Projectiles
 				Projectile.Kill();
 
 			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-			float swordRotation = 0f;
 			if (Main.myPlayer == Projectile.owner)
 			{
 				player.ChangeDir(Projectile.direction);
-				swordRotation = (Main.MouseWorld - player.Center).ToRotation();
-
+				SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+				Projectile.netUpdate = true;
 			}
-			Projectile.velocity = swordRotation.ToRotationVector2();
-			
+
+			Projectile.velocity = SwordRotation.ToRotationVector2();		
 			if (Timer == 1)
 				player.AddBuff(ModContent.BuffType<Elegance>(), 600);
 			if (!Projectile.active)
 				player.ClearBuff(ModContent.BuffType<Elegance>());
 
 			Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position
-
 			if (++Projectile.frameCounter >= 4)
 			{
 				Projectile.frameCounter = 0;
@@ -66,6 +66,7 @@ namespace Stellamod.Projectiles
 				}
 			}
 		}
+
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{
 			overPlayers.Add(index);

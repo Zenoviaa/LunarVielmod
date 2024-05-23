@@ -7,6 +7,7 @@ using Stellamod.Items.Weapons.Summon.Orbs;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -45,6 +46,24 @@ namespace Stellamod.Projectiles.Summons.Orbs
         Vector2 SwingTarget;
         Vector2 SwingVelocity;
         int DustTimer;
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.WriteVector2(SwingStart);
+            writer.WriteVector2(SwingTarget);
+            writer.WriteVector2(SwingVelocity);
+            writer.Write(SwingTime);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            SwingStart = reader.ReadVector2();
+            SwingTarget = reader.ReadVector2();
+            SwingVelocity = reader.ReadVector2();
+            SwingTime = reader.ReadSingle();
+        }
+
+
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 64;
@@ -126,7 +145,12 @@ namespace Stellamod.Projectiles.Summons.Orbs
                 Reset();
                 SwingVelocity = Owner.DirectionTo(SwingTarget);
                 SwingStart = Owner.Center;
-                SwingTarget = GetSwingTarget();
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    SwingTarget = GetSwingTarget();
+                    Projectile.netUpdate = true;
+                }
+
                 SwingTime = Swing_Time;
                 State = ActionState.Swing_1;
                 ComboCounter = 0;
@@ -181,7 +205,12 @@ namespace Stellamod.Projectiles.Summons.Orbs
                     SwingVelocity = Owner.DirectionTo(SwingTarget);
                     float distance = 180;
                     SwingStart = Owner.Center + SwingVelocity.RotatedByRandom(MathHelper.TwoPi) * distance;
-                    SwingTarget = GetSwingTarget();
+                    if (Main.myPlayer == Projectile.owner)
+                    {
+                        SwingTarget = GetSwingTarget();
+                        Projectile.netUpdate = true;
+                    }
+
                     SwingTime = Swing_Time;
                     State = ActionState.Swing_2;
                     ComboCounter = 0;
@@ -219,7 +248,12 @@ namespace Stellamod.Projectiles.Summons.Orbs
                     Reset();
                     SwingVelocity = Owner.DirectionTo(SwingTarget);
                     SwingStart = Projectile.Center;
-                    SwingTarget = GetSwingTarget();
+                    if (Main.myPlayer == Projectile.owner)
+                    {
+                        SwingTarget = GetSwingTarget();
+                        Projectile.netUpdate = true;
+                    }
+
                     SwingTime = Swing_Time_2;
                     State = ActionState.Swing_3;
                     ComboCounter = 0;

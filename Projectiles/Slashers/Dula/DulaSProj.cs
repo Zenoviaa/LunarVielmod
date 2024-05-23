@@ -87,13 +87,10 @@ namespace Stellamod.Projectiles.Slashers.Dula
             return val == 1f ? 1f : (val == 1f ? 1f : (float)Math.Pow(2, val * 10f - 10f) / 2f);
         }
 
-        int Timeddeath = 0;
         public override void AI()
         {
-            
-
             Player player = Main.player[Projectile.owner];
-            if (!_initialized && Main.myPlayer == Projectile.owner)
+            if (!_initialized)
             {
                 timer++;
 

@@ -6,11 +6,13 @@ namespace Stellamod.Projectiles
 {
     public class ScissorianSlash : ModProjectile
 	{
+		private ref float SwordRotation => ref Projectile.ai[1];
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("SalfaCirle");
 			Main.projFrames[Projectile.type] = 60;
 		}
+
 		public override void SetDefaults()
 		{
 			Projectile.friendly = true;
@@ -24,42 +26,36 @@ namespace Stellamod.Projectiles
 			Projectile.timeLeft = 600;
 			Projectile.localNPCHitCooldown = 5;
 		}
-		public int Goob = 0;
+
 		public override bool PreAI()
-		{
-			
-			Projectile.tileCollide = false;
-			
+		{			
+			Projectile.tileCollide = false;		
 			return true;
 		}
+
 		public override Color? GetAlpha(Color lightColor)
 		{
 			return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 50f);
 		}
+
 		public override void AI()
-		{
-
-			Goob++;
+		{	
+			Projectile.alpha++;
 				
-			Projectile.alpha ++;
-				
-
-			
-
 			Player player = Main.player[Projectile.owner];
 			if (player.noItems || player.CCed || player.dead || !player.active)
 				Projectile.Kill();
 
 			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-			float swordRotation = 0f;
 			if (Main.myPlayer == Projectile.owner)
 			{
-				
-				swordRotation = (Main.MouseWorld - player.Center).ToRotation();
+
+                SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+				Projectile.netUpdate = true;
 				if (!player.channel)
 					Projectile.Kill();
 			}
-			Projectile.velocity = swordRotation.ToRotationVector2();
+			Projectile.velocity = SwordRotation.ToRotationVector2();
 
 			
 			if (Projectile.spriteDirection == 1)
@@ -67,7 +63,7 @@ namespace Stellamod.Projectiles
 			else
 				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
 
-			Projectile.Center = playerCenter + new Vector2(180, 0).RotatedBy(swordRotation);
+			Projectile.Center = playerCenter + new Vector2(180, 0).RotatedBy(SwordRotation);
 
 			if (++Projectile.frameCounter >= 1)
 			{

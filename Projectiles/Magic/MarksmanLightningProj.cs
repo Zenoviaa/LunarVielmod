@@ -7,6 +7,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Utilities;
 
 namespace Stellamod.Projectiles.Magic
 {
@@ -14,6 +15,7 @@ namespace Stellamod.Projectiles.Magic
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];
+        private ref float Seed => ref Projectile.ai[1];
         private float Lifetime => 60;
         private Vector2[] LightningPos;
 
@@ -28,29 +30,39 @@ namespace Stellamod.Projectiles.Magic
             Projectile.timeLeft = (int)Lifetime;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
+            Seed = -1;
         }
 
         public override void AI()
         {
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1 && Main.myPlayer == Projectile.owner)
             {
-                //Calculate
+                Seed = Main.rand.Next(0, int.MaxValue);
+                Projectile.netUpdate = true;
+            }
+
+            if(Seed != -1)
+            {                //Calculate
                 List<Vector2> points = new List<Vector2>();
                 Vector2 currentPoint = Projectile.Center;
                 points.Add(currentPoint);
 
                 int numPoints = 80;
+                UnifiedRandom random = new UnifiedRandom((int)Seed);
                 for (int i = 0; i < numPoints; i++)
                 {
                     Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
-                    direction = direction.RotatedByRandom(MathHelper.ToRadians(30));
-                    float distance = Main.rand.NextFloat(2, 64);
+                    float maxRadians = MathHelper.ToRadians(30);
+                    double radians = random.NextDouble() * maxRadians - random.NextDouble() * maxRadians;
+                    direction = direction.RotatedByRandom(radians);
+                    float distance = random.NextFloat(2, 64);
                     currentPoint = currentPoint + direction * distance;
                     points.Add(currentPoint);
                 }
 
                 LightningPos = points.ToArray();
+                Seed = -1;
             }
         }
 
@@ -86,6 +98,8 @@ namespace Stellamod.Projectiles.Magic
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
+            if (LightningPos == null)
+                return false;
             //This damages everything in the trail
             Vector2[] positions = LightningPos;
             float collisionPoint = 0;

@@ -95,15 +95,8 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
         {
             Timeddeath++;
 
-
-
-            //   if (Timeddeath >= 45)
-            // {
-            //       Projectile.Kill();
-            //  }
-
             Player player = Main.player[Projectile.owner];
-            if (!_initialized && Main.myPlayer == Projectile.owner)
+            if (!_initialized)
             {
                 timer++;
 

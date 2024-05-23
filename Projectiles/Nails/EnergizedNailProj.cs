@@ -61,7 +61,7 @@ namespace Stellamod.Projectiles.Nails
 
 			Vector2 oldMouseWorld = Main.MouseWorld;
 			Timer++;
-			if (Timer < 5)
+			if (Timer < 5 && Main.myPlayer == Projectile.owner)
 				player.velocity = Projectile.DirectionTo(oldMouseWorld) * 10f;
 
 

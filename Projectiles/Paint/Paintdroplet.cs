@@ -1,9 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Stellamod.Dusts;
+﻿using Stellamod.Dusts;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Paint
@@ -15,6 +11,7 @@ namespace Stellamod.Projectiles.Paint
 			// DisplayName.SetDefault("FrostShotIN");
 			Main.projFrames[Projectile.type] = 28;
 		}
+
 		public override void SetDefaults()
 		{
 			Projectile.width = 10;
@@ -26,16 +23,7 @@ namespace Stellamod.Projectiles.Paint
 			Projectile.timeLeft = 56;
 			Projectile.scale = 0.8f;
 			Projectile.tileCollide = true;
-
 		}
-
-		public float Timer
-		{
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
-		}
-	
-		
 
 		public override bool PreAI()
 		{

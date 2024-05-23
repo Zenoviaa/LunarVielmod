@@ -55,9 +55,10 @@ namespace Stellamod.Projectiles
             }
             if (Timer < 30)
             {
-                if (Main.mouseLeft)
+                if (Main.mouseLeft && Main.myPlayer == Projectile.owner)
                 {
                     Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * Projectile.Distance(Main.MouseWorld) / 12;
+                    Projectile.netUpdate = true;
                 }
    
                 player.heldProj = Projectile.whoAmI;

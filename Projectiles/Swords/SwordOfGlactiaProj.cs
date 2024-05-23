@@ -58,8 +58,13 @@ namespace Stellamod.Projectiles.Swords
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia3"), Projectile.position);
                 }
                 Projectile.alpha = 255;
-                Projectile.position.X = Main.rand.NextFloat(Projectile.position.X - 50, Projectile.position.X + 50);
-                Projectile.position.Y = Main.rand.NextFloat(Projectile.position.Y - 50, Projectile.position.Y + 50);
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.position.X = Main.rand.NextFloat(Projectile.position.X - 50, Projectile.position.X + 50);
+                    Projectile.position.Y = Main.rand.NextFloat(Projectile.position.Y - 50, Projectile.position.Y + 50);
+                    Projectile.netUpdate = true;
+                }
+               
             }
             if (Projectile.ai[1] == 2)
             {

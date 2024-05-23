@@ -36,12 +36,16 @@ namespace Stellamod.Projectiles.Magic
             Projectile.ai[0]++;
             if (Projectile.ai[0] == 2)
             {
-                float offsetX = Main.rand.Next(-200, 200) * 0.01f;
-                float offsetY = Main.rand.Next(-200, 200) * 0.01f;
+                if(Main.myPlayer  == Projectile.owner)
+                {
+                    float offsetX = Main.rand.Next(-200, 200) * 0.01f;
+                    float offsetY = Main.rand.Next(-200, 200) * 0.01f;
 
+                    Projectile.velocity.X += offsetX;
+                    Projectile.velocity.Y += offsetY;
+                    Projectile.netUpdate = true;
+                }
 
-                Projectile.velocity.X += offsetX;
-                Projectile.velocity.Y += offsetY;
                 int Sound = Main.rand.Next(1, 4);
                 if (Sound == 1)
                 {
@@ -59,13 +63,8 @@ namespace Stellamod.Projectiles.Magic
                 Spin = Main.rand.Next(0, 2);
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
             }
-            if (Projectile.ai[0] >= 30)
-            {
-
-
-            }
-
         }
+
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 20; i++)

@@ -9,6 +9,12 @@ namespace Stellamod.Projectiles
 {
     public class SandSlacerProj : ModProjectile
     {
+        public float Timer
+        {
+            get => Projectile.ai[0];
+            set => Projectile.ai[0] = value;
+        }
+
         public override void SetDefaults()
         {
             
@@ -25,12 +31,6 @@ namespace Stellamod.Projectiles
             Projectile.timeLeft = 100;    
         }
 
-        public float Timer
-        {
-            get => Projectile.ai[0];
-            set => Projectile.ai[0] = value;
-        }
-
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
@@ -38,7 +38,7 @@ namespace Stellamod.Projectiles
             Timer++;
 
             player.RotatedRelativePoint(Projectile.Center);
-            Projectile.rotation  -= 0.5f;
+            Projectile.rotation -= 0.5f;
             Projectile.velocity *= 1.03f;
             ParticleManager.NewParticle(Projectile.Center, Projectile.velocity * 0, ParticleManager.NewInstance<DustaParticle>(), Color.Purple, 0.4f, Projectile.whoAmI);
 
@@ -48,10 +48,10 @@ namespace Stellamod.Projectiles
             }
             if (Timer < 30)
             {
-                if (Main.mouseLeft)
+                if (Main.mouseLeft && Main.myPlayer == Projectile.owner)
                 {
                     Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * Projectile.Distance(Main.MouseWorld) / 12;
-
+                    Projectile.netUpdate = true;
                 }
 
                 player.heldProj = Projectile.whoAmI;
@@ -64,17 +64,6 @@ namespace Stellamod.Projectiles
             Vector3 RGB = new(2.55f, 2.55f, 0.94f);
             // The multiplication here wasn't doing anything
             Lighting.AddLight(Projectile.Center, RGB.X, RGB.Y, RGB.Z);
-
-            //Projectile.netUpdate = true;
-        }
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-       
-
-
-
-
         }
     }
 }

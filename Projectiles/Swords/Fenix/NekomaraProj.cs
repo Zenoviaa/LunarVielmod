@@ -53,7 +53,12 @@ namespace Stellamod.Projectiles.Swords.Fenix
             Projectile.ai[1]++;
             if (!Moved && Projectile.ai[1] >= 0)
             {
-                Projectile.velocity.X = Main.rand.NextFloat(-5, 5);
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.velocity.X = Main.rand.NextFloat(-5, 5);
+                    Projectile.netUpdate = true;
+                }
+   
                 Projectile.velocity.Y = 10;
                 Projectile.spriteDirection = Projectile.direction;
                 Projectile.alpha = 255;

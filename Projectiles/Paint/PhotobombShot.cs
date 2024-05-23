@@ -203,6 +203,7 @@ namespace Stellamod.Projectiles.Paint
                 Main.dust[dustnumber].velocity *= 0.3f;
             }
         }
+
         public override void OnKill(int timeLeft)
         {
             Player player = Main.player[Projectile.owner];

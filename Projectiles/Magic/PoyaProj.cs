@@ -55,9 +55,8 @@ namespace Stellamod.Projectiles.Magic
                 var EntitySource = Projectile.GetSource_FromThis();
                 if (Main.rand.NextBool(8))
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                        Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<Poyashot2>(), Projectile.damage * 4, 1, Main.myPlayer, 0, 0);
-
+                    Projectile.NewProjectile(EntitySource, Projectile.Center, StartVelocity, 
+                        ModContent.ProjectileType<Poyashot2>(), Projectile.damage * 4, 1, Projectile.owner, 0, 0);
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/bloodlamp"), Projectile.position);
                 }
                 else

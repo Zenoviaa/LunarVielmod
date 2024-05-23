@@ -10,7 +10,13 @@ using Stellamod.Helpers;
 namespace Stellamod.Projectiles.Magic
 {
 	public class RadiantOrb : ModProjectile
-	{
+    {
+        public float Timer
+        {
+            get => Projectile.ai[0];
+            set => Projectile.ai[0] = value;
+        }
+        private ref float SwordRotation => ref Projectile.ai[1];
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("SalfaCirle");
@@ -56,11 +62,6 @@ namespace Stellamod.Projectiles.Magic
 			return false;
 		}
 
-		public float Timer
-		{
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
-		}
 
 		public override bool PreAI()
 		{
@@ -98,15 +99,15 @@ namespace Stellamod.Projectiles.Magic
 				Projectile.Kill();
 
 			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-			float swordRotation = 0f;
 			if (Main.myPlayer == Projectile.owner)
 			{
 				player.ChangeDir(Projectile.direction);
-				swordRotation = (Main.MouseWorld - player.Center).ToRotation();
+				SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+				Projectile.netUpdate = true;
 				if (!player.channel)
 					Projectile.Kill();
 			}
-			Projectile.velocity = swordRotation.ToRotationVector2();
+			Projectile.velocity = SwordRotation.ToRotationVector2();
 
 			Projectile.spriteDirection = player.direction;
 			if (Projectile.spriteDirection == 1)
@@ -114,7 +115,7 @@ namespace Stellamod.Projectiles.Magic
 			else
 				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
 
-			Projectile.Center = playerCenter + new Vector2(65, 0).RotatedBy(swordRotation);
+			Projectile.Center = playerCenter + new Vector2(65, 0).RotatedBy(SwordRotation);
 
 			if (++Projectile.frameCounter >= 1)
 			{

@@ -7,6 +7,7 @@ using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Trails;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Graphics.Shaders;
@@ -64,6 +65,18 @@ namespace Stellamod.Projectiles.Summons.Minions
         }
 
         public ref float AI_Timer => ref Projectile.ai[2];
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.WriteVector2(_targetCenter);
+            writer.WriteVector2(_prepareCenter);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            _targetCenter = reader.ReadVector2();
+            _prepareCenter = reader.ReadVector2();
+        }
 
         public override void SetStaticDefaults()
         {
@@ -242,14 +255,22 @@ namespace Stellamod.Projectiles.Summons.Minions
                 case ActionState.Red:
                     if (AI_Timer < 12)
                     {
-                        Vector2 directionToMouse = owner.Center.DirectionTo(Main.MouseWorld);
-                        _prepareCenter = owner.Center - (directionToMouse * 128 * (AI_Timer / 12));
+                        if (Main.myPlayer == Projectile.owner)
+                        {
+                            Vector2 directionToMouse = owner.Center.DirectionTo(Main.MouseWorld);
+                            _prepareCenter = owner.Center - (directionToMouse * 128 * (AI_Timer / 12));
+                            Projectile.netUpdate = true;
+                        }
                         Projectile.velocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, _prepareCenter, 45);
                         Projectile.rotation = Projectile.Center.DirectionTo(Main.MouseWorld).ToRotation() + MathHelper.ToRadians(45);
                     }
                     else if (AI_Timer == 12)
                     {
-                        _targetCenter = Main.MouseWorld;
+                        if (Main.myPlayer == Projectile.owner)
+                        {
+                            _targetCenter = Main.MouseWorld;
+                            Projectile.netUpdate = true;
+                        }
                         Projectile.velocity = VectorHelper.VelocityDirectTo(Projectile.Center, _targetCenter, 36);
                         Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
                         PlayShootSound();
@@ -263,16 +284,27 @@ namespace Stellamod.Projectiles.Summons.Minions
                 case ActionState.Yellow:
                     if (AI_Timer < 12)
                     {
-                        Vector2 directionToMouse = owner.Center.DirectionTo(Main.MouseWorld);
-                        _prepareCenter = owner.Center - (directionToMouse * 128 * (AI_Timer / 12));
+                        if (Main.myPlayer == Projectile.owner)
+                        {
+                            Vector2 directionToMouse = owner.Center.DirectionTo(Main.MouseWorld);
+                            _prepareCenter = owner.Center - (directionToMouse * 128 * (AI_Timer / 12));
+                            Projectile.netUpdate = true;
+                        }
                         Projectile.velocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, _prepareCenter, 45);
                         Projectile.rotation = Projectile.Center.DirectionTo(Main.MouseWorld).ToRotation() + MathHelper.ToRadians(45);
+                        Projectile.netUpdate = true;
                     }
                     else if (AI_Timer == 12)
                     {
-                        _targetCenter = Main.MouseWorld;
+                        if(Main.myPlayer == Projectile.owner)
+                        {
+                            _targetCenter = Main.MouseWorld;
+                            Projectile.netUpdate = true;
+                        }
+                   
                         Projectile.velocity = VectorHelper.VelocityDirectTo(Projectile.Center, _targetCenter, 36);
                         Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
+               
                         PlayShootSound();
                     }
                     else if (AI_Timer > 128)
@@ -284,14 +316,23 @@ namespace Stellamod.Projectiles.Summons.Minions
                 case ActionState.Green:
                     if (AI_Timer < 12)
                     {
-                        Vector2 directionToMouse = owner.Center.DirectionTo(Main.MouseWorld);
-                        _prepareCenter = owner.Center - (directionToMouse * 128 * (AI_Timer / 12));
+                        if(Main.myPlayer == Projectile.owner)
+                        {
+                            Vector2 directionToMouse = owner.Center.DirectionTo(Main.MouseWorld);
+                            _prepareCenter = owner.Center - (directionToMouse * 128 * (AI_Timer / 12));
+                            Projectile.netUpdate = true;
+                        }
+       
                         Projectile.velocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, _prepareCenter, 45);
                         Projectile.rotation = Projectile.Center.DirectionTo(Main.MouseWorld).ToRotation() + MathHelper.ToRadians(45);
                     }
                     else if (AI_Timer == 12)
                     {
-                        _targetCenter = Main.MouseWorld;
+                        if (Main.myPlayer == Projectile.owner)
+                        {
+                            _targetCenter = Main.MouseWorld;
+                            Projectile.netUpdate = true;
+                        }
                         Projectile.velocity = VectorHelper.VelocityDirectTo(Projectile.Center, _targetCenter, 36);
                         Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
                         PlayShootSound();
@@ -306,14 +347,22 @@ namespace Stellamod.Projectiles.Summons.Minions
                 case ActionState.Blue:
                     if (AI_Timer < 12)
                     {
-                        Vector2 directionToMouse = owner.Center.DirectionTo(Main.MouseWorld);
-                        _prepareCenter = owner.Center - (directionToMouse * 128 * (AI_Timer / 12));
+                        if (Main.myPlayer == Projectile.owner)
+                        {
+                            Vector2 directionToMouse = owner.Center.DirectionTo(Main.MouseWorld);
+                            _prepareCenter = owner.Center - (directionToMouse * 128 * (AI_Timer / 12));
+                            Projectile.netUpdate = true;
+                        }
                         Projectile.velocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, _prepareCenter, 45);
                         Projectile.rotation = Projectile.Center.DirectionTo(Main.MouseWorld).ToRotation() + MathHelper.ToRadians(45);
                     }
                     else if (AI_Timer == 12)
                     {
-                        _targetCenter = Main.MouseWorld;
+                        if (Main.myPlayer == Projectile.owner)
+                        {
+                            _targetCenter = Main.MouseWorld;
+                            Projectile.netUpdate = true;
+                        }
                         Projectile.velocity = VectorHelper.VelocityDirectTo(Projectile.Center, _targetCenter, 36);
                         Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
                         PlayShootSound();

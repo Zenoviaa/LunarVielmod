@@ -76,7 +76,6 @@ namespace Stellamod.Projectiles.Magic
             return false;
         }
 
-        float alphaCounter;
         public override void AI()
         {
             Projectile.ai[1]++;
@@ -84,9 +83,9 @@ namespace Stellamod.Projectiles.Magic
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Aurora"), Projectile.position);
             }
-            alphaCounter += 0.04f;
             Projectile.rotation += 0.3f;
         }
+
         public override void OnKill(int timeLeft)
         {
 

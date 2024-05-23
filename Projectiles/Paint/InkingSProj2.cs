@@ -163,7 +163,7 @@ namespace Stellamod.Projectiles.Paint
 
 
 		
-			if (Timer < 3)
+			if (Timer < 3 && Main.myPlayer == Projectile.owner)
 			{
 
 				player.velocity = Projectile.DirectionTo(oldMouseWorld) * 20f;

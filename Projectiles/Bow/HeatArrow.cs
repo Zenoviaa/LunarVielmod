@@ -43,8 +43,6 @@ namespace Stellamod.Projectiles.Bow
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 256f, 16f);
                 Projectile.spriteDirection = Projectile.direction;
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
-                Projectile.position.X = Main.rand.NextFloat(Projectile.position.X - 50, Projectile.position.X + 50);
-                Projectile.position.Y = Main.rand.NextFloat(Projectile.position.Y - 50, Projectile.position.Y + 50);
                 for (int j = 0; j < 10; j++)
                 {
                     Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;

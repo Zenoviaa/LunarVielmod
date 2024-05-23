@@ -85,7 +85,7 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
             }
 
             Player player = Main.player[Projectile.owner];
-            if (!_initialized && Main.myPlayer == Projectile.owner)
+            if (!_initialized)
             {
                 timer++;
 

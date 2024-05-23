@@ -38,23 +38,26 @@ namespace Stellamod.Projectiles.Summons
             if (AI_Timer % 2 == 0)
             {
                 float degrees = 12;
-                if (AI_Pattern == 0)
-                {              //Randomly teleport to make the jagged effect
-                    Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
-                    direction = direction.RotatedBy(MathHelper.ToRadians(degrees));
-                    float distance = Main.rand.NextFloat(16, 180);
-                    Projectile.Center = Projectile.Center + direction * distance;
-                    AI_Pattern++;
-                }
-                else if (AI_Pattern == 1)
+                if(Main.myPlayer == Projectile.owner)
                 {
-                    Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
-                    direction = direction.RotatedBy(MathHelper.ToRadians(-degrees));
-                    float distance = Main.rand.NextFloat(16, 180);
-                    Projectile.Center = Projectile.Center + direction * distance;
-                    AI_Pattern--;
+                    if (AI_Pattern == 0)
+                    {              //Randomly teleport to make the jagged effect
+                        Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
+                        direction = direction.RotatedBy(MathHelper.ToRadians(degrees));
+                        float distance = Main.rand.NextFloat(16, 180);
+                        Projectile.Center = Projectile.Center + direction * distance;
+                        AI_Pattern++;
+                    }
+                    else if (AI_Pattern == 1)
+                    {
+                        Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
+                        direction = direction.RotatedBy(MathHelper.ToRadians(-degrees));
+                        float distance = Main.rand.NextFloat(16, 180);
+                        Projectile.Center = Projectile.Center + direction * distance;
+                        AI_Pattern--;
+                    }
+                    Projectile.netUpdate = true;
                 }
-                Projectile.netUpdate = true;
             }
 
             //Dunno if this is needed but whatever

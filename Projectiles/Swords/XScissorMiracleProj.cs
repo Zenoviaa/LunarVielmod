@@ -62,7 +62,7 @@ namespace Stellamod.Projectiles.Swords
         {
             base.AI();
             Player player = Main.player[Projectile.owner];
-            if (!_init && Main.myPlayer == Projectile.owner)
+            if (!_init)
             {
                 SwingTime = (int)(SwingTime / player.GetAttackSpeed(DamageClass.Melee) / Speed);
                 SwingRangeOffset = MathHelper.PiOver4 + MathHelper.PiOver2;

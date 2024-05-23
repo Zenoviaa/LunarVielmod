@@ -65,7 +65,7 @@ namespace Stellamod.Projectiles.Slashers.ArchariliteRaysword
             {
                 Projectile.oldPos[i] += player.velocity;
             }
-            if (!_initialized && Main.myPlayer == Projectile.owner)
+            if (!_initialized)
             {
                 timer++;
 
@@ -147,10 +147,6 @@ namespace Stellamod.Projectiles.Slashers.ArchariliteRaysword
 
         public override bool ShouldUpdatePosition() => false;
 
-        public void AttachToPlayer()
-        {
-
-        }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -160,19 +156,18 @@ namespace Stellamod.Projectiles.Slashers.ArchariliteRaysword
             player.GetModPlayer<MyPlayer>().SwordComboR = 480;
         }
 
-        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-        {
-        }
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width * 0.6f;
             return MathHelper.SmoothStep(baseWidth, baseWidth * 0.8f, completionRatio);
         }
+
         public Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(Color.LightYellow, Color.Transparent, completionRatio) * 0.7f;

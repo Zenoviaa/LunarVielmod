@@ -35,6 +35,7 @@ namespace Stellamod.Projectiles
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
 		}
+
 		public override bool PreAI()
 		{
 			int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.CursedTorch, 0f, 0f);
@@ -42,6 +43,7 @@ namespace Stellamod.Projectiles
 			Main.dust[dust].scale = 0.5f;
 			return true;
 		}
+
 		public override void AI()
 		{
 			Timer++;
@@ -127,6 +129,7 @@ namespace Stellamod.Projectiles
 			
 			return closestNPC;
 		}
+
 		public override bool PreDraw(ref Color lightColor)
 		{
 			Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
@@ -175,6 +178,7 @@ namespace Stellamod.Projectiles
 			// It's important to return false, otherwise we also draw the original texture.
 			return false;
 		}
+
 		public override void OnKill(int timeLeft)
 		{
 			for (int i = 0; i < 10; i++)
@@ -185,19 +189,10 @@ namespace Stellamod.Projectiles
 				dust.scale = 0.2f;
 			}
 		}
+
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			Projectile.Kill();
 		}
-
-
-
-
-
-
 	}
-
-
-
-
 }

@@ -30,9 +30,10 @@ namespace Stellamod.Projectiles
         {
             ref float ai_Counter = ref Projectile.ai[0];
             ai_Counter++;
-            if (ai_Counter % 20 == 0)
+            if (ai_Counter % 20 == 0 && Main.myPlayer == Projectile.owner)
             {
                 Projectile.velocity.X += Main.rand.NextFloat(-0.05f, 0.05f);
+                Projectile.netUpdate = true;
             }
 
             Projectile.velocity.Y += 0.1f;

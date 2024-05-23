@@ -21,6 +21,7 @@ namespace Stellamod.Projectiles.Magic
         private ref float ai_suckTimer => ref Projectile.ai[2];
         public bool IsCharged => ai_suckTimer >= 60;
 
+
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 7;
@@ -36,6 +37,7 @@ namespace Stellamod.Projectiles.Magic
             Projectile.localNPCHitCooldown = 30;
             Projectile.friendly = true;
             Projectile.hostile = false;
+            Projectile.timeLeft = int.MaxValue;
         }
 
         private void AI_KeepAlive()
@@ -56,7 +58,7 @@ namespace Stellamod.Projectiles.Magic
 
                     float moveSpeed = completion * 6;
                     Projectile.velocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, Main.MouseWorld, moveSpeed);
-                    Projectile.timeLeft = 2;
+                    Projectile.netUpdate = true;         
                     if (Main.rand.NextBool(5))
                     {
                         Dust.QuickDustLine(Projectile.Center, player.Center, 48, Color.DarkBlue);

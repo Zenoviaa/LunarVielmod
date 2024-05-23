@@ -49,13 +49,11 @@ namespace Stellamod.Projectiles.Magic
 			set => Projectile.ai[0] = value;
 		}
 		public float Timer2;
-		bool Moved;
 
 		public override void OnKill(int timeLeft)
 		{
 			float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 			float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcadizBombExplosion>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
 			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Starexplosion"), Projectile.position);
 		}
@@ -147,11 +145,12 @@ namespace Stellamod.Projectiles.Magic
 			Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * projSpeed;
 			Projectile.rotation = Projectile.velocity.ToRotation();
 		}
+
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{
 			overPlayers.Add(index);
-
 		}
+
 		// Finding the closest NPC to attack within maxDetectDistance range
 		// If not found then returns null
 		public NPC FindClosestNPC(float maxDetectDistance)

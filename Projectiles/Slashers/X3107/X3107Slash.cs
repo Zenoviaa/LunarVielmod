@@ -65,7 +65,7 @@ namespace Stellamod.Projectiles.Slashers.X3107
             {
                 Projectile.oldPos[i] += player.velocity;
             }
-            if (!_initialized && Main.myPlayer == Projectile.owner)
+            if (!_initialized)
             {
                 timer++;
 
@@ -75,7 +75,6 @@ namespace Stellamod.Projectiles.Slashers.X3107
                 _initialized = true;
                 Projectile.damage -= 9999;
                 //Projectile.netUpdate = true;
-
             }
             else if (_initialized)
             {

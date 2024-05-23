@@ -92,7 +92,7 @@ namespace Stellamod.Projectiles.Slashers.ThefirstAurora
           
 
             Player player = Main.player[Projectile.owner];
-            if (!_initialized && Main.myPlayer == Projectile.owner)
+            if (!_initialized)
             {
                 timer++;
 

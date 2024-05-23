@@ -50,7 +50,7 @@ namespace Stellamod.Projectiles.Slashers.Ixy
         {
             Player player = Main.player[Projectile.owner];
 
-            if (!_initialized && Main.myPlayer == Projectile.owner)
+            if (!_initialized)
             {
                 timer++;
 

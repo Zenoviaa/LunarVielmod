@@ -45,21 +45,15 @@ namespace Stellamod.Projectiles.Slashers.Voyager
         }
         int timer2 = 0;
         public override void AI()
-        {
-
-            
-
+        {  
             Player player = Main.player[Projectile.owner];
-
             timer2++;
             if (timer2 == 1)
             {
                 player.GetModPlayer<MyPlayer>().SwordComboSlash += 1;
-
             }
 
-
-            if (!_initialized && Main.myPlayer == Projectile.owner)
+            if (!_initialized)
             {
                 timer++;
 
@@ -69,7 +63,6 @@ namespace Stellamod.Projectiles.Slashers.Voyager
                 _initialized = true;
                 Projectile.damage -= 9999;
                 //Projectile.netUpdate = true;
-
             }
             else if (_initialized)
             {

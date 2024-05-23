@@ -74,9 +74,7 @@ namespace Stellamod.Projectiles.Magic
             var EntitySource = Projectile.GetSource_Death();
             for (int i = 0; i < 5; i++)
             {
-                Projectile.timeLeft = 2;
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-8, -1), ModContent.ProjectileType<SunDeathGPar>(), 5, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-8, -1), ModContent.ProjectileType<SunDeathGPar>(), 5, 1, Projectile.owner, 0, 0);
             }
             for (int i = 0; i < 50; i++)
             {

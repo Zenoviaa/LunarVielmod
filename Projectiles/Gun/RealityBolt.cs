@@ -31,12 +31,13 @@ namespace Stellamod.Projectiles.Gun
 
         public override void OnKill(int timeLeft)
         {
-            if (Main.rand.NextBool(4))
+            if (Main.myPlayer == Projectile.owner && Main.rand.NextBool(4))
             {
-                Item.NewItem(Projectile.GetSource_Death(), Projectile.getRect(), ItemID.Star, Main.rand.Next(1, 2), false, 0, false, false);
+                int itemIndex = Item.NewItem(Projectile.GetSource_Death(), Projectile.getRect(), ItemID.Star, Main.rand.Next(1, 2), false, 0, false, false);
+                NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
             }
-
         }
+
         public override void AI()
 		{
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;

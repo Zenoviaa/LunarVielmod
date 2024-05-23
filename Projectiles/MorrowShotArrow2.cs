@@ -71,6 +71,7 @@ namespace Stellamod.Projectiles
 
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 		}
+
 		public override void OnKill(int timeLeft)
 		{
 			for (int i = 0; i < 10; i++)
@@ -81,6 +82,7 @@ namespace Stellamod.Projectiles
 				dust.scale = 0.2f;
 			}
 		}
+
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			Projectile.Kill();

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Accord.Math;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Trails;
 using Terraria;
@@ -30,30 +31,40 @@ namespace Stellamod.Projectiles.Gun
 
         private ref float AI_Timer => ref Projectile.ai[0];
         private ref float AI_Pattern => ref Projectile.ai[1];
+        private ref float Distance => ref Projectile.ai[2];
         public override void AI()
         {
             AI_Timer++;
             //This runs every other frame
             if(AI_Timer % 2 == 0)
             {
+
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Distance = Main.rand.NextFloat(16, 180);
+                    Projectile.netUpdate = true;
+                }
+            }
+
+            if (Distance != 0)
+            {
                 float degrees = 14;
-                if(AI_Pattern == 0)
+                if (AI_Pattern == 0)
                 {              //Randomly teleport to make the jagged effect
                     Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
                     direction = direction.RotatedBy(MathHelper.ToRadians(degrees));
-                    float distance = Main.rand.NextFloat(16, 180);
-                    Projectile.Center = Projectile.Center + direction * distance;
+                    Distance = Main.rand.NextFloat(16, 180);
+                    Projectile.Center = Projectile.Center + direction * Distance;
                     AI_Pattern++;
                 }
-                else if(AI_Pattern == 1)
+                else if (AI_Pattern == 1)
                 {
                     Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
                     direction = direction.RotatedBy(MathHelper.ToRadians(-degrees));
-                    float distance = Main.rand.NextFloat(16, 180);
-                    Projectile.Center = Projectile.Center + direction * distance;
+                    Projectile.Center = Projectile.Center + direction * Distance;
                     AI_Pattern--;
                 }
-                Projectile.netUpdate = true;
+                Distance = 0;
             }
 
             //Dunno if this is needed but whatever

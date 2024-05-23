@@ -74,7 +74,7 @@ namespace Stellamod.Projectiles.Swords.Fenix
 
 
             Player player = Main.player[Projectile.owner];
-            if (!_initialized && Main.myPlayer == Projectile.owner)
+            if (!_initialized)
             {
                 timer++;
 

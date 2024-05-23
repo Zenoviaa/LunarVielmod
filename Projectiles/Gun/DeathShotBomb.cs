@@ -61,11 +61,8 @@ namespace Stellamod.Projectiles.Gun
 
                 for (int i = 0; i < 13; i++)
                 {
-
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                    {
-                        Projectile.NewProjectile(EntitySource, ProjectilePos.X += Main.rand.Next(-10, 10), ProjectilePos.Y += Main.rand.Next(-10, 10), Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), ModContent.ProjectileType<DeathShotBombFX>(), Projectile.damage / 2, 1, Main.myPlayer, 0, 0);
-                    }
+                    Projectile.NewProjectile(EntitySource, ProjectilePos.X += Main.rand.Next(-10, 10), ProjectilePos.Y += Main.rand.Next(-10, 10), Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), 
+                        ModContent.ProjectileType<DeathShotBombFX>(), Projectile.damage / 2, 1, Projectile.owner, 0, 0);
                 }
             }
 

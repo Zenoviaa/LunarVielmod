@@ -9,6 +9,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 {
     public class CharmSpragald : ModProjectile
 	{
+		private ref float SwordRotation => ref Projectile.ai[1];
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Charm Spragald");
@@ -44,14 +45,13 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 				Projectile.Kill();
 
 			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-			float swordRotation = 0f;
 			if (Main.myPlayer == Projectile.owner)
 			{
 				player.ChangeDir(Projectile.direction);
-				swordRotation = (Main.MouseWorld - player.Center).ToRotation();
-
+                SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+				Projectile.netUpdate = true;
 			}
-			Projectile.velocity = swordRotation.ToRotationVector2();
+			Projectile.velocity = SwordRotation.ToRotationVector2();
 			if (Timer == 1)
 			{
 				player.AddBuff(ModContent.BuffType<Goldren>(), 600);

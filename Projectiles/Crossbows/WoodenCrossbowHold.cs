@@ -12,16 +12,12 @@ namespace Stellamod.Projectiles.Crossbows
 {
     public class WoodenCrossbowHold : ModProjectile
     {
+        private ref float Timer => ref Projectile.ai[0];
+        private ref float SwordRotation => ref Projectile.ai[1];
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 1;//number of frames the animation has
         }
-
-		public float Timer
-		{
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
-		}
 
 		public override void SetDefaults()
         {
@@ -59,16 +55,16 @@ namespace Stellamod.Projectiles.Crossbows
 				Projectile.Kill();
 
 			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-			float swordRotation = 0f;
 			if (Main.myPlayer == Projectile.owner)
 			{
 				player.ChangeDir(Projectile.direction);
-				swordRotation = (Main.MouseWorld - player.Center).ToRotation();
+				SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+				Projectile.netUpdate = true;
 				if (!player.channel)
 					Projectile.Kill();
 			}
 
-			Projectile.velocity = swordRotation.ToRotationVector2();
+			Projectile.velocity = SwordRotation.ToRotationVector2();
 			Projectile.spriteDirection = player.direction;
 			if (Projectile.spriteDirection == 1)
 				Projectile.rotation = Projectile.velocity.ToRotation();
@@ -126,19 +122,6 @@ namespace Stellamod.Projectiles.Crossbows
 				}
 			}		
 		}
-
-        private void UpdatePlayerVisuals(Player player, Vector2 playerhandpos)
-        {
-            Projectile.Center = playerhandpos;
-            Projectile.spriteDirection = Projectile.direction;
-
-            // Constantly resetting player.itemTime and player.itemAnimation prevents the player from switching items or doing anything else.
-            player.ChangeDir(Projectile.direction);
-            player.heldProj = Projectile.whoAmI;
-            player.itemTime = 3;
-            player.itemAnimation = 3;
-            player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
-        }
 
         public override bool PreDraw(ref Color lightColor)
         {

@@ -86,13 +86,8 @@ namespace Stellamod.Projectiles.Swords
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/EventHorizon2"), Projectile.position);
                 }
             }
-            for (int i = 0; i < 4; i++)
-            {
-                float x = Projectile.Center.X - Projectile.velocity.X / 10f * i;
-                float y = Projectile.Center.Y - Projectile.velocity.Y / 10f * i;
-            }
-
         }
+
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);

@@ -72,12 +72,7 @@ namespace Stellamod.Projectiles.Magic
             Projectile.spriteDirection = Projectile.direction;
             Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
         }
-        public override bool PreAI()
-        {
-            int num1222 = 74;
 
-            return true;
-        }
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             Projectile.timeLeft = 1;
