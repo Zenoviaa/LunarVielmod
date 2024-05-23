@@ -37,7 +37,7 @@ namespace Stellamod.Items.Armors.Jianxin
 
 		public override void UpdateEquip(Player player)
 		{
-			player.GetArmorPenetration(DamageClass.Generic) += 25f;
+			player.GetArmorPenetration(DamageClass.Generic) += 10;
             player.GetDamage(DamageClass.Generic) *= 1.1f;
             player.GetCritChance(DamageClass.Generic) += 20f;
         }
