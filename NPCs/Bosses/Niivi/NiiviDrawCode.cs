@@ -490,6 +490,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            if (SegmentPos == null)
+                return false;
             SetSegmentPositions(screenPos);
             DrawAllSegments(spriteBatch, screenPos, drawColor);
             DrawCrystals(spriteBatch, screenPos, drawColor);

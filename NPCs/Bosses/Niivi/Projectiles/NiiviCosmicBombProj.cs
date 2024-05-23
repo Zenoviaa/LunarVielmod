@@ -133,7 +133,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<NiiviCosmicBombAbsorbProj>(), 0, 0, Projectile.owner);
-                screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 15);
+                screenShaderSystem.TintScreen(Color.White, 0.3f, timer: 15);
             }
             if(Timer > 120 && Timer < 240)
             {
@@ -145,7 +145,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<NiiviCosmicBombAbsorbProj>(), 0, 0, Projectile.owner);
-                screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 15);
+                screenShaderSystem.TintScreen(Color.White, 0.3f, timer: 15);
             }
             if (Timer > 240 && Timer < 360)
             {
@@ -158,7 +158,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<NiiviCosmicBombAbsorbProj>(), 0, 0, Projectile.owner);
-                screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 15);
+                screenShaderSystem.TintScreen(Color.White, 0.3f, timer: 15);
             }
             if (Timer > 360 && Timer < 480)
             {
@@ -178,10 +178,11 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             Timer++;
             if(Timer == 1)
             {
-                screenShaderSystem.VignetteScreen(-3f);
+                screenShaderSystem.VignetteScreen(-3f, timer: 600);
+                screenShaderSystem.TintScreen(Main.DiscoColor, 0.2f, timer: 600);
             }
 
-            screenShaderSystem.TintScreen(Main.DiscoColor, 0.2f);
+         
             float maxDetectDistance = 3000;
             float maxSpeed = 9;
             Player player = PlayerHelper.FindClosestPlayer(Projectile.position, maxDetectDistance);

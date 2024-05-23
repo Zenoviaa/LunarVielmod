@@ -60,7 +60,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                 killYoSelf = true;
             }
 
-            if (killYoSelf)
+            if (killYoSelf || !NPC.AnyNPCs(ModContent.NPCType<RekSnake>()))
             {
                 NPC.Kill();
             }

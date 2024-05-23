@@ -244,6 +244,7 @@ namespace Stellamod.WorldG
                     NetworkText txt = NetworkText.FromLiteral(message);
                     ChatHelper.BroadcastChatMessage(txt, new Color(34, 121, 100));
                     GreenSun = true;
+                    NetMessage.SendData(MessageID.WorldData);
                 }
             }
             /*

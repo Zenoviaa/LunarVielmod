@@ -1896,7 +1896,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             if (timer == 1)
             {
                 ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-                shaderSystem.VignetteScreen(2f);
+                shaderSystem.VignetteScreen(2f, timer: 150);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothSummon") { Pitch = Main.rand.NextFloat(-1f, 1f) }, NPC.Center);
 
                 if (StellaMultiplayer.IsHost)
@@ -2419,6 +2419,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
     {
         public override void PostUpdateMiscEffects()
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
             if (NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()))
             {
                 ActivateGothSky();

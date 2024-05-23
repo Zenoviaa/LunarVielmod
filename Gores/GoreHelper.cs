@@ -5,29 +5,29 @@ namespace Stellamod.Gores
 {
     internal class GoreHelper
     {
-        public static int TypeFallingLeafWhite => ModContent.Find<ModGore>("Stellamod/FallingLeafWhite").Type;
-        public static int TypeFallingLeafRed => ModContent.Find<ModGore>("Stellamod/FallingLeafRed").Type;
-        public static int TypeFallingIllurianVine => ModContent.Find<ModGore>("Stellamod/FallingIllurianVine").Type;
-        public static int TypeSplashBlack => ModContent.Find<ModGore>("Stellamod/SplashBlack").Type;
-        public static int TypeSplashBlue => ModContent.Find<ModGore>("Stellamod/SplashBlue").Type;
-        public static int TypeSplashGreen => ModContent.Find<ModGore>("Stellamod/SplashGreen").Type;
-        public static int TypeSplashOrange => ModContent.Find<ModGore>("Stellamod/SplashOrange").Type;
-        public static int TypeSplashRed => ModContent.Find<ModGore>("Stellamod/SplashRed").Type;
-        public static int TypeSplashYellow => ModContent.Find<ModGore>("Stellamod/SplashYellow").Type;
-        public static int TypePaper => ModContent.Find<ModGore>("Stellamod/Paper").Type;
+        public static int TypeFallingLeafWhite => ModContent.GoreType<FallingLeafWhite>();
+        public static int TypeFallingLeafRed => ModContent.GoreType<FallingLeafRed>();
+        public static int TypeFallingIllurianVine => ModContent.GoreType<FallingIllurianVine>();
+        public static int TypeSplashBlack => ModContent.GoreType<SplashBlack>();
+        public static int TypeSplashBlue => ModContent.GoreType<SplashBlue>();
+        public static int TypeSplashGreen => ModContent.GoreType<SplashGreen>();
+        public static int TypeSplashOrange => ModContent.GoreType<SplashOrange>();
+        public static int TypeSplashRed => ModContent.GoreType<SplashRed>();
+        public static int TypeSplashYellow => ModContent.GoreType<SplashYellow>();
+        public static int TypePaper => ModContent.GoreType<Paper>();
         public static int TypeRibbonRed => ModContent.GoreType<RibbonRed>();
 
 
-        public static int Niivi1 => ModContent.Find<ModGore>("Stellamod/Niivi1").Type;
-        public static int Niivi2 => ModContent.Find<ModGore>("Stellamod/Niivi2").Type;
-        public static int Niivi3 => ModContent.Find<ModGore>("Stellamod/Niivi3").Type;
-        public static int Niivi4 => ModContent.Find<ModGore>("Stellamod/Niivi4").Type;
-        public static int Niivi5 => ModContent.Find<ModGore>("Stellamod/Niivi5").Type;
-        public static int Niivi6 => ModContent.Find<ModGore>("Stellamod/Niivi6").Type;
-        public static int Niivi7 => ModContent.Find<ModGore>("Stellamod/Niivi7").Type;
+        public static int Niivi1 => ModContent.GoreType<Niivi1>();
+        public static int Niivi2 => ModContent.GoreType<Niivi2>();
+        public static int Niivi3 => ModContent.GoreType<Niivi3>();
+        public static int Niivi4 => ModContent.GoreType<Niivi4>();
+        public static int Niivi5 => ModContent.GoreType<Niivi5>();
+        public static int Niivi6 => ModContent.GoreType<Niivi6>();
+        public static int Niivi7 => ModContent.GoreType<Niivi7>();
 
-        public static int Fan1 => ModContent.Find<ModGore>("Stellamod/Fan1").Type;
-        public static int Fan2 => ModContent.Find<ModGore>("Stellamod/Fan2").Type;
-        public static int Fan3 => ModContent.Find<ModGore>("Stellamod/Fan3").Type;
+        public static int Fan1 => ModContent.GoreType<Fan1>();
+        public static int Fan2 => ModContent.GoreType<Fan2>();
+        public static int Fan3 => ModContent.GoreType<Fan3>();
     }
 }

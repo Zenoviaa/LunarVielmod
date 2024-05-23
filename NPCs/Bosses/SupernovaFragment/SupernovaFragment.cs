@@ -200,7 +200,20 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                     }
                 }
             }
-           
+
+            if (SingularityPhaze == 2)
+            {
+                int buffType = ModContent.BuffType<SupernovaChained>();
+                int buffIndex = NPC.FindBuffIndex(buffType);
+                if (buffIndex != -1)
+                {
+                    NPC.DelBuff(buffIndex);
+                }
+            } else if (SingularityPhaze == 1)
+            {
+                int buffType = ModContent.BuffType<SupernovaChained>();
+                NPC.AddBuff(buffType, 99999);
+            }
 
 
             PH2 = NPC.life < NPC.lifeMax * 0.6f;
@@ -378,7 +391,6 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                                         if(SingularityPhaze == 1 && SingularityOrbs == 0)
                                         {
                                             NPC.life = NPC.lifeMax / 3;
-                                            NPC.DelBuff(NPC.FindBuffIndex(ModContent.BuffType<SupernovaChained>()));
                                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode"), NPC.position);
                                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
                                             for (int i = 0; i < 14; i++)
@@ -797,9 +809,10 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                             else
                             {
                                 NPC.scale += 0.015f;
+                                NPC.AddBuff(ModContent.BuffType<SupernovaChained>(), 9999999);
                                 if (NPC.scale >= 1)
                                 {
-                                    NPC.AddBuff(ModContent.BuffType<SupernovaChained>(), 9999999);
+                        
                                     float radius = 900;
                                     float rot = MathHelper.TwoPi / 7;
                                     for (int I = 0; I < 7; I++)
@@ -934,7 +947,12 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         {
             if (!Dead)
             {
-                NPC.DelBuff(NPC.FindBuffIndex(ModContent.BuffType<SupernovaChained>()));
+                int buffIndex = NPC.FindBuffIndex(ModContent.BuffType<SupernovaChained>());
+                if(buffIndex != -1)
+                {
+                    NPC.DelBuff(buffIndex);
+                }
+            
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPOut"), NPC.position);
                 Dead = true;
             }

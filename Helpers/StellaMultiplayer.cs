@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Melee;
+using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
+using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Town;
 using System;
 using System.Collections.Generic;
@@ -171,6 +173,29 @@ namespace Stellamod
                     {
                         TeleportSystem.RefreshPortals();
 					}
+                    break;
+				case MessageType.StartVerlia:
+                    foreach (NPC npc in Main.ActiveNPCs)
+                    {
+                        if (npc.type == ModContent.NPCType<StarteV>())
+                        {
+                            StarteV verlia = npc.ModNPC as StarteV;
+                            verlia.State = StarteV.ActionState.Death;
+                            verlia.ResetTimers();
+                        }
+                    }
+                    break;
+				case MessageType.StartIrradia:
+                    foreach (NPC npc in Main.ActiveNPCs)
+                    {
+                        if (npc.type == ModContent.NPCType<StartIrradia>())
+                        {
+                            StartIrradia verlia = npc.ModNPC as StartIrradia;
+                            verlia.State = StartIrradia.ActionState.Death;
+                            verlia.ResetTimers();
+                        }
+                    }
+
                     break;
 			}
 		}

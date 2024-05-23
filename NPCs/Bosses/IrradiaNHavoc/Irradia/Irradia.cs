@@ -182,12 +182,14 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 		{
 			writer.Write((float)_state);
 			writer.Write(_resetTimers);
+            writer.Write(Jumpin);
         }
 
 		public override void ReceiveExtraAI(BinaryReader reader)
 		{
 			_state = (ActionState)reader.ReadSingle();
 			_resetTimers = reader.ReadBoolean();
+            Jumpin = reader.ReadInt32();
         }
 
 		bool axed = false;
@@ -679,56 +681,61 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             {
                if (Jumpin < 1)
 				{
-                    switch (Main.rand.Next(6))
+                    if (StellaMultiplayer.IsHost)
                     {
-                        case 0:
-                            NPC.velocity.Y -= 6.0f;
-                            NPC.velocity.X -= 18;
+                        switch (Main.rand.Next(6))
+                        {
+                            case 0:
+                                NPC.velocity.Y -= 6.0f;
+                                NPC.velocity.X -= 18;
 
-                            Jumpin = 2;
-                            break;
+                                Jumpin = 2;
+                                break;
 
-                        case 1:
-                            NPC.velocity.Y -= 5.0f;
-                            NPC.velocity.X -= 18;
-
-
-							Jumpin = 1;
-                            break;
-
-                        case 2:
-                            NPC.velocity.Y -= 10.0f;
-                            NPC.velocity.X -= 18;
-                          
-							Jumpin = 3;
-
-                            break;
+                            case 1:
+                                NPC.velocity.Y -= 5.0f;
+                                NPC.velocity.X -= 18;
 
 
-                        case 3:
-                            NPC.velocity.Y -= 6.0f;
-                            NPC.velocity.X += 18;
+                                Jumpin = 1;
+                                break;
 
-                            Jumpin = 5;
-                            break;
+                            case 2:
+                                NPC.velocity.Y -= 10.0f;
+                                NPC.velocity.X -= 18;
 
-                        case 4:
-                            NPC.velocity.Y -= 5.0f;
-                            NPC.velocity.X += 18;
+                                Jumpin = 3;
+
+                                break;
 
 
-                            Jumpin = 4;
-                            break;
+                            case 3:
+                                NPC.velocity.Y -= 6.0f;
+                                NPC.velocity.X += 18;
 
-                        case 5:
-                            NPC.velocity.Y -= 10.0f;
-                            NPC.velocity.X += 18;
+                                Jumpin = 5;
+                                break;
 
-                            Jumpin = 6;
+                            case 4:
+                                NPC.velocity.Y -= 5.0f;
+                                NPC.velocity.X += 18;
 
-                            break;
+
+                                Jumpin = 4;
+                                break;
+
+                            case 5:
+                                NPC.velocity.Y -= 10.0f;
+                                NPC.velocity.X += 18;
+
+                                Jumpin = 6;
+
+                                break;
+                        }
+
+
+                        NPC.netUpdate = true;
                     }
-
 
 
                 }
@@ -739,126 +746,137 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                 if (Jumpin == 1)
                 {
-                    switch (Main.rand.Next(3))
+                    if (StellaMultiplayer.IsHost)
                     {
-                        case 0:
-                            NPC.velocity.Y -= 6.0f;
-                            NPC.velocity.X += 20;
+                        switch (Main.rand.Next(3))
+                        {
+                            case 0:
+                                NPC.velocity.Y -= 6.0f;
+                                NPC.velocity.X += 20;
 
-                            Jumpin = 2;
-                            break;
+                                Jumpin = 2;
+                                break;
 
-                        case 1:
-                            NPC.velocity.Y -= 5.0f;
-                            NPC.velocity.X += 18;
+                            case 1:
+                                NPC.velocity.Y -= 5.0f;
+                                NPC.velocity.X += 18;
 
 
-                            Jumpin = 0;
-                            break;
+                                Jumpin = 0;
+                                break;
 
-                        case 2:
-                            NPC.velocity.Y -= 10.0f;
-                            NPC.velocity.X += 30;
+                            case 2:
+                                NPC.velocity.Y -= 10.0f;
+                                NPC.velocity.X += 30;
 
-                            Jumpin = 6;
+                                Jumpin = 6;
 
-                            break;                 
+                                break;
+                        }
+                        NPC.netUpdate = true;
                     }
-
-
 
                 }
 
                 if (Jumpin == 2)
                 {
-                    switch (Main.rand.Next(3))
+                    if (StellaMultiplayer.IsHost)
                     {
-                        case 0:
-                            NPC.velocity.Y += 9.0f;
-                            NPC.velocity.X += 30;
+                        switch (Main.rand.Next(3))
+                        {
+                            case 0:
+                                NPC.velocity.Y += 9.0f;
+                                NPC.velocity.X += 30;
 
-                            Jumpin = 1;
-                            break;
+                                Jumpin = 1;
+                                break;
 
-                        case 1:
-                            NPC.velocity.Y += 6.0f;
-                            NPC.velocity.X += 18;
+                            case 1:
+                                NPC.velocity.Y += 6.0f;
+                                NPC.velocity.X += 18;
 
 
-                            Jumpin = 0;
-                            break;
+                                Jumpin = 0;
+                                break;
 
-                        case 2:
-                            NPC.velocity.Y += 1.0f;
-                            NPC.velocity.X += 30;
+                            case 2:
+                                NPC.velocity.Y += 1.0f;
+                                NPC.velocity.X += 30;
 
-                            Jumpin = 4;
+                                Jumpin = 4;
 
-                            break;
+                                break;
+                        }
+                        NPC.netUpdate = true;
                     }
-
-
 
                 }
 
                 if (Jumpin == 3)
                 {
-                    switch (Main.rand.Next(3))
+                    if (StellaMultiplayer.IsHost)
                     {
-                        case 0:
-                            NPC.velocity.Y += 9.0f;
-                            NPC.velocity.X += 20;
+                        switch (Main.rand.Next(3))
+                        {
+                            case 0:
+                                NPC.velocity.Y += 9.0f;
+                                NPC.velocity.X += 20;
 
-                            Jumpin = 1;
-                            break;
+                                Jumpin = 1;
+                                break;
 
-                        case 1:
-                            NPC.velocity.Y -= 2f;
-                            NPC.velocity.X += 30;
+                            case 1:
+                                NPC.velocity.Y -= 2f;
+                                NPC.velocity.X += 30;
 
 
-                            Jumpin = 6;
-                            break;
+                                Jumpin = 6;
+                                break;
 
-                        case 2:
-                            NPC.velocity.Y += 3.0f;
-                            NPC.velocity.X += 30;
+                            case 2:
+                                NPC.velocity.Y += 3.0f;
+                                NPC.velocity.X += 30;
 
-                            Jumpin = 5;
+                                Jumpin = 5;
 
-                            break;
+                                break;
+                        }
+                        NPC.netUpdate = true;
                     }
-
-
 
                 }
 
                 if (Jumpin == 4)
                 {
-                    switch (Main.rand.Next(3))
+                    if (StellaMultiplayer.IsHost)
                     {
-                        case 0:
-                            NPC.velocity.Y -= 12.0f;
-                            NPC.velocity.X -= 0;
+                        switch (Main.rand.Next(3))
+                        {
+                            case 0:
+                                NPC.velocity.Y -= 12.0f;
+                                NPC.velocity.X -= 0;
 
-                            Jumpin = 5;
-                            break;
+                                Jumpin = 5;
+                                break;
 
-                        case 1:
-                            NPC.velocity.Y -= 5.0f;
-                            NPC.velocity.X -= 30;
+                            case 1:
+                                NPC.velocity.Y -= 5.0f;
+                                NPC.velocity.X -= 30;
 
 
-                            Jumpin = 0;
-                            break;
+                                Jumpin = 0;
+                                break;
 
-                        case 2:
-                            NPC.velocity.Y -= 20.0f;
-                            NPC.velocity.X -= 30;
+                            case 2:
+                                NPC.velocity.Y -= 20.0f;
+                                NPC.velocity.X -= 30;
 
-                            Jumpin = 3;
+                                Jumpin = 3;
 
-                            break;
+                                break;
+                        }
+
+                        NPC.netUpdate = true;
                     }
 
 
@@ -867,30 +885,35 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                 if (Jumpin == 5)
                 {
-                    switch (Main.rand.Next(3))
+                    if (StellaMultiplayer.IsHost)
                     {
-                        case 0:
-                            NPC.velocity.Y += 9.0f;
-                            NPC.velocity.X -= 0;
+                        switch (Main.rand.Next(3))
+                        {
+                            case 0:
+                                NPC.velocity.Y += 9.0f;
+                                NPC.velocity.X -= 0;
 
-                            Jumpin = 4;
-                            break;
+                                Jumpin = 4;
+                                break;
 
-                        case 1:
-                            NPC.velocity.Y += 12.0f;
-                            NPC.velocity.X -= 20;
+                            case 1:
+                                NPC.velocity.Y += 12.0f;
+                                NPC.velocity.X -= 20;
 
 
-                            Jumpin = 0;
-                            break;
+                                Jumpin = 0;
+                                break;
 
-                        case 2:
-                            NPC.velocity.Y += 4.0f;
-                            NPC.velocity.X -= 30;
+                            case 2:
+                                NPC.velocity.Y += 4.0f;
+                                NPC.velocity.X -= 30;
 
-                            Jumpin = 1;
+                                Jumpin = 1;
 
-                            break;
+                                break;
+                        }
+
+                        NPC.netUpdate = true;
                     }
 
 
@@ -901,30 +924,35 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                 if (Jumpin == 6)
                 {
-                    switch (Main.rand.Next(3))
+                    if (StellaMultiplayer.IsHost)
                     {
-                        case 0:
-                            NPC.velocity.Y += 18.0f;
-                            NPC.velocity.X -= 0;
+                        switch (Main.rand.Next(3))
+                        {
+                            case 0:
+                                NPC.velocity.Y += 18.0f;
+                                NPC.velocity.X -= 0;
 
-                            Jumpin = 4;
-                            break;
+                                Jumpin = 4;
+                                break;
 
-                        case 1:
-                            NPC.velocity.Y += 0f;
-                            NPC.velocity.X -= 30;
+                            case 1:
+                                NPC.velocity.Y += 0f;
+                                NPC.velocity.X -= 30;
 
 
-                            Jumpin = 3;
-                            break;
+                                Jumpin = 3;
+                                break;
 
-                        case 2:
-                            NPC.velocity.Y += 3.0f;
-                            NPC.velocity.X -= 30;
+                            case 2:
+                                NPC.velocity.Y += 3.0f;
+                                NPC.velocity.X -= 30;
 
-                            Jumpin = 2;
+                                Jumpin = 2;
 
-                            break;
+                                break;
+                        }
+
+                        NPC.netUpdate = true;
                     }
 
 
@@ -975,37 +1003,41 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
             if (timer == 50)
             {
-            
-                switch (Main.rand.Next(6))
+
+                if (StellaMultiplayer.IsHost)
                 {
-                    case 0:
-                        State = ActionState.STARTAXE;
-                        break;
+                    switch (Main.rand.Next(6))
+                    {
+                        case 0:
+                            State = ActionState.STARTAXE;
+                            break;
 
-                    case 1:
-                        State = ActionState.STARTLASER;
-                        break;
+                        case 1:
+                            State = ActionState.STARTLASER;
+                            break;
 
-                    case 2:
-                        State = ActionState.STARTNODES;
+                        case 2:
+                            State = ActionState.STARTNODES;
 
-                        break;
+                            break;
 
-                    case 3:
-                        State = ActionState.STARTSPIKE;
+                        case 3:
+                            State = ActionState.STARTSPIKE;
 
-                        break;
+                            break;
 
-                    case 4:
-                        State = ActionState.STARTNODES;
+                        case 4:
+                            State = ActionState.STARTNODES;
 
-                        break;
+                            break;
 
-                    case 5:
-                        State = ActionState.STARTSPIKE;
+                        case 5:
+                            State = ActionState.STARTSPIKE;
 
-                        break;
+                            break;
+                    }
                 }
+
                 ResetTimers();
 
             }

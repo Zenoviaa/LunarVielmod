@@ -49,7 +49,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
                 SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, Projectile.position);
                 ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-                screenShaderSystem.FlashTintScreen(Color.Turquoise, 0.05f, 30f);
+                screenShaderSystem.TintScreen(Color.Turquoise, 0.05f, timer: 30f);
                 screenShaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.5f, 0.5f), timer: 15);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16f);
             }

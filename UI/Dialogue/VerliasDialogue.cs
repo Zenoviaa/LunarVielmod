@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.UI.Dialogue
@@ -42,20 +44,26 @@ namespace Stellamod.UI.Dialogue
 
         public override void Complete()
         {
-          
+
             //Do something when the dialogue is completely finished
-           
-            foreach (NPC npc in Main.ActiveNPCs)
+            if(Main.netMode != NetmodeID.SinglePlayer)
             {
-                if (npc.type == ModContent.NPCType<StarteV>())
+                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.StartVerlia).Send(-1);
+            }
+            else
+            {
+                foreach (NPC npc in Main.ActiveNPCs)
                 {
-                    StarteV verlia = npc.ModNPC as StarteV;
-                    verlia.State = StarteV.ActionState.Death;
-                    verlia.ResetTimers();
+                    if (npc.type == ModContent.NPCType<StarteV>())
+                    {
+                        StarteV verlia = npc.ModNPC as StarteV;
+                        verlia.State = StarteV.ActionState.Death;
+                        verlia.ResetTimers();
+                    }
                 }
             }
-         
-              base.Complete();
+       
+            base.Complete();
         }
     }
 }

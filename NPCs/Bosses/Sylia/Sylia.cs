@@ -23,6 +23,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
     {
         public override void PostUpdateMiscEffects()
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
             if (NPC.AnyNPCs(ModContent.NPCType<Sylia>()))
             {
 				ActivateSyliaSky();

@@ -123,7 +123,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
               //  SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow1, Projectile.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
 
-                screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 15);
+                screenShaderSystem.TintScreen(Color.White, 0.3f, timer: 15);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower1") { Pitch = Main.rand.NextFloat(-10f, 10f) }, Projectile.Center);
                 float num = 4;
                 for (float i = 0; i < num; i++)
@@ -146,7 +146,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower1") { Pitch = Main.rand.NextFloat(-10f, 10f) }, Projectile.Center);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
 
-                screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 15);
+                screenShaderSystem.TintScreen(Color.White, 0.3f, timer: 15);
 
                 float num = 8;
                 for (float i = 0; i < num; i++)
@@ -171,7 +171,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower1") { Pitch = Main.rand.NextFloat(-10f, 10f) }, Projectile.Center);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
 
-                screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 15);
+                screenShaderSystem.TintScreen(Color.White, 0.3f, timer: 15);
 
                 float num = 64;
                 for (float i = 0; i < num; i++)

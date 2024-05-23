@@ -15,10 +15,10 @@ using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent.Animations;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.Shaders;
@@ -35,7 +35,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
         public Color GlowWhiteColor;
         public bool GlowWhite;
         public float GlowTimer;
-        public Vector2 Size => Texture.Size();
+        public Vector2 Size;
         public Vector2 Position;
         public Vector2 Center => Position + Size / 2;
         public Vector2 Velocity;
@@ -104,9 +104,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
         private Player Target => Main.player[NPC.target];
         private IEntitySource EntitySource => NPC.GetSource_FromThis();
         private Vector2 CrystalPosition;
-        private Vector2 GothiviaPosition;
-        private float GothiviaOrbitRadius;
-
 
         public override void SetStaticDefaults()
         {
@@ -124,7 +121,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                     BuffID.Confused // Most NPCs have this
 				}
             };
-            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+     
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn2] = true;
@@ -176,75 +173,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Rek");
             }
-
-            //Initialize Segments
-            int bodySegments = 4;
-            int bodFrontExtraSegments = 7;
-            int bodyExtraSegments = 6;
-            int tailSegments = 8;
-            List<RekSegment> segments = new List<RekSegment>();
-            //Set the textures
-            
-            //Head
-            RekSegment segment = new RekSegment(NPC);
-            segment.TexturePath = Texture;
-            segments.Add(segment);
-
-            //Neck
-            segment = new RekSegment(NPC);
-            segment.TexturePath = $"{BaseTexturePath}RekNeck";
-            segments.Add(segment);
-
-            for(int i = 0; i < bodySegments; i++)
-            {
-                segment = new RekSegment(NPC);
-                segment.TexturePath = $"{BaseTexturePath}RekBody{i + 1}";
-                segments.Add(segment);
-            }
-
-            for(int i = 0; i < bodFrontExtraSegments; i++)
-            {
-                segment = new RekSegment(NPC);
-                segment.TexturePath = $"{BaseTexturePath}RekBody{Main.rand.Next(2, 4)}";
-                segments.Add(segment);
-            }
-
-            //Front Tail Segments
-            for(int i = 0; i < bodyExtraSegments; i++)
-            {
-                segment = new RekSegment(NPC);
-                string texturePath = $"{BaseTexturePath}RekBody4";
-                if (i > bodyExtraSegments / 2)
-                {
-                    texturePath = $"{BaseTexturePath}RekBody5";
-                }
-
-                segment.TexturePath = texturePath;
-                segments.Add(segment);
-            }
-
-            //Tail Segments
-            for(int i = 0; i < tailSegments; i++)
-            {
-     
-                float p = i;
-                float progress = p / tailSegments;
-                progress = 1 - progress;
-                string texturePath = $"{BaseTexturePath}RekBody6";
-                if(i > 2)
-                {
-                    texturePath =  $"{BaseTexturePath}RekBody7";
-                }
-                segment = new RekSegment(NPC);
-                segment.TexturePath = texturePath;
-                segment.Scale = Math.Max(0.5f, progress);
-                segments.Add(segment);
-            }
-
-            segment = new RekSegment(NPC);
-            segment.TexturePath = $"{BaseTexturePath}RekTail";
-            segments.Add(segment);
-            Segments = segments.ToArray();
         }
 
         private void FinishResetTimers()
@@ -277,31 +205,195 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             }
         }
 
-        public override void OnSpawn(IEntitySource source)
-        {
-            base.OnSpawn(source);
-            GothiviaPosition = NPC.position;
-            GothiviaOrbitRadius = 384;
-        }
-
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             return State == ActionState.Dash;
         }
 
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.WriteVector2(CrystalPosition);
+            if (Segments == null)
+            {
+                writer.Write(false);
+            }
+            else
+            {
+                writer.Write(true);
+                writer.Write(Segments.Length);
+                for (int i = 0; i < Segments.Length; i++)
+                {
+                    writer.WriteVector2(Segments[i].Position);
+                    writer.WriteVector2(Segments[i].Velocity);
+                }
+            }
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            CrystalPosition = reader.ReadVector2();
+            bool hasSegments = reader.ReadBoolean();
+            if (hasSegments)
+            {
+                int length = reader.ReadInt32();
+                for (int i = 0; i < length; i++)
+                {
+                    Vector2 pos = reader.ReadVector2();
+                    Vector2 vel = reader.ReadVector2();
+                    if(Segments != null && Segments.Length <= length)
+                    {
+                        Segments[i].Position = pos;
+                        Segments[i].Velocity = vel;
+                    }
+                }
+            }
+        }
+
         public override void AI()
         {
             FinishResetTimers();
-            if(InPhase2 && !PoppedOutEye)
+
+            if (Segments == null)
+            {
+                //Initialize Segments
+                int bodySegments = 4;
+                int bodFrontExtraSegments = 7;
+                int bodyExtraSegments = 6;
+                int tailSegments = 8;
+                List<RekSegment> segments = new List<RekSegment>();
+                //Set the textures
+
+                //Head
+                float offset = 0.1f;
+                RekSegment segment = new RekSegment(NPC);
+                segment.TexturePath = Texture;
+                segment.Size = new Vector2(204, 204);
+                segment.Position = segment.Position + new Vector2(offset, 0);
+                segments.Add(segment);
+                offset += 0.1f;
+
+                //Neck
+                segment = new RekSegment(NPC);
+                segment.TexturePath = $"{BaseTexturePath}RekNeck";
+                segment.Size = new Vector2(74, 90);
+                segment.Position = segment.Position + new Vector2(offset, 0);
+                segments.Add(segment);
+                offset += 0.1f;
+                for (int i = 0; i < bodySegments; i++)
+                {
+                    segment = new RekSegment(NPC);
+                    segment.TexturePath = $"{BaseTexturePath}RekBody{i + 1}";
+                    segment.Position = segment.Position + new Vector2(offset, 0);
+                    offset += 0.1f;
+                    switch (i)
+                    {
+                        case 0:
+                            segment.Size = new Vector2(118, 106);
+                            break;
+                        case 1:
+                            segment.Size = new Vector2(118, 106);
+                            break;
+                        case 2:
+                            segment.Size = new Vector2(84, 98);
+                            break;
+                        case 3:
+                            segment.Size = new Vector2(68, 58);
+                            break;
+                        case 4:
+                            segment.Size = new Vector2(62, 50);
+                            break;
+                        case 5:
+                            segment.Size = new Vector2(36, 32);
+                            break;
+                        case 6:
+                            segment.Size = new Vector2(36, 46);
+                            break;
+                    }
+
+                    segments.Add(segment);
+                }
+
+                for (int i = 0; i < bodFrontExtraSegments; i++)
+                {
+                    segment = new RekSegment(NPC);
+                    if(i % 2 == 0)
+                    {
+                        segment.TexturePath = $"{BaseTexturePath}RekBody2";
+                        segment.Size = new Vector2(118, 106);
+                    }
+                    else
+                    {
+                        segment.TexturePath = $"{BaseTexturePath}RekBody3";
+                        segment.Size = new Vector2(84, 98);
+                    }
+                    segment.Position = segment.Position + new Vector2(offset, 0);
+                    offset += 0.1f;
+                    segments.Add(segment);
+                }
+
+                //Front Tail Segments
+                for (int i = 0; i < bodyExtraSegments; i++)
+                {
+                    segment = new RekSegment(NPC);
+                    string texturePath = $"{BaseTexturePath}RekBody4";
+                    segment.Size = new Vector2(68, 58);
+                    if (i > bodyExtraSegments / 2)
+                    {
+                        texturePath = $"{BaseTexturePath}RekBody5";
+                        segment.Size = new Vector2(62, 50);
+                    }
+                    segment.Position = segment.Position + new Vector2(offset, 0);
+                    offset += 0.1f;
+                    segment.TexturePath = texturePath;
+                    segments.Add(segment);
+                }
+
+                //Tail Segments
+                for (int i = 0; i < tailSegments; i++)
+                {
+
+                    float p = i;
+                    float progress = p / tailSegments;
+                    progress = 1 - progress;
+                    string texturePath = $"{BaseTexturePath}RekBody6";
+                    segment.Size = new Vector2(36, 32);
+                    if (i > 2)
+                    {
+                        texturePath = $"{BaseTexturePath}RekBody7";
+                        segment.Size = new Vector2(36, 46);
+                    }
+                    segment = new RekSegment(NPC);
+                    segment.Position = segment.Position + new Vector2(offset, 0);
+                    offset += 0.1f;
+                    segment.TexturePath = texturePath;
+                    segment.Scale = Math.Max(0.5f, progress);
+                    segments.Add(segment);
+                }
+
+                segment = new RekSegment(NPC);
+                segment.Position = segment.Position + new Vector2(offset, 0);
+                offset += 0.1f;
+                segment.TexturePath = $"{BaseTexturePath}RekTail";
+                segment.Size = new Vector2(88, 18);
+                segments.Add(segment);
+                Segments = segments.ToArray();
+
+                NPC.TargetClosest();
+                return;
+            }
+
+
+            if (InPhase2 && !PoppedOutEye)
             {
                 Head.TexturePath = $"{BaseTexturePath}RekSnakeNoEye";
                 if (StellaMultiplayer.IsHost)
                 {
-                    NPC.NewNPC(EntitySource, (int)NPC.Center.X, (int)NPC.Center.Y, 
+                    NPC.NewNPC(EntitySource, (int)NPC.Center.X, (int)NPC.Center.Y,
                         ModContent.NPCType<RekFireEye>(), ai1: NPC.whoAmI);
                 }
                 PoppedOutEye = true;
             }
+
 
             if (!NPC.HasValidTarget)
             {
@@ -678,7 +770,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 myPlayer.ShakeAtPosition(NPC.Center, 3000, 128);
                 ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                 screenShaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.2f, 0.2f), blend: 0.15f, timer: 30);
-                screenShaderSystem.FlashTintScreen(Color.Red, 0.3f, 30);
+                screenShaderSystem.TintScreen(Color.Red, 0.3f, timer: 30);
 
                 if (StellaMultiplayer.IsHost)
                 {
@@ -930,14 +1022,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                     }
 
                     ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-                    screenShaderSystem.FlashTintScreen(Color.Orange, 0.3f, 30f);
+                    screenShaderSystem.TintScreen(Color.Orange, 0.3f, timer: 30f);
                     screenShaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.5f, 0.5f), timer: 30);
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 3000f, 48);
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekOuroborosExplosion"), NPC.Center);
                     float num = 8;
                     for (int i = 0; i < num; i++)
                     {
-                        float progress = (float)i / num;
+                        float progress = i / num;
                         float rot = progress * MathHelper.TwoPi;
                         Vector2 velocity = rot.ToRotationVector2();
                         if (StellaMultiplayer.IsHost)
@@ -993,6 +1085,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 NPC.TargetClosest();
                 CrystalPosition = Target.Center;
                 StartSegmentGlow(Color.White);
+                NPC.netUpdate = true;
             }
 
 
@@ -1093,7 +1186,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 myPlayer.ShakeAtPosition(NPC.position, 6000, 128);
 
                 ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-                screenShaderSystem.FlashTintScreen(Color.Orange, 0.3f, 5);
+                screenShaderSystem.TintScreen(Color.Orange, 0.3f, timer: 5);
                 screenShaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.5f, 0.5f), timer: 15);
 
                 if (StellaMultiplayer.IsHost)
@@ -1182,6 +1275,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
         private void GlowWhite(float speed)
         {
+            if (Segments == null)
+                return;
             for(int i = 0; i < Segments.Length; i++)
             {
                 RekSegment segment = Segments[i];
@@ -1202,6 +1297,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
         private void MakeLikeWorm()
         {
+            if (Segments == null)
+                return;
+
             //Segments
             Head.Position = NPC.position;
             Head.Rotation = NPC.rotation;
@@ -1210,6 +1308,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
         private void StartSegmentGlow( Color color)
         {
+            if (Segments == null)
+                return;
             for(int i = 0; i < Segments.Length; i++)
             {
                 StartSegmentGlow(i, color);
@@ -1218,6 +1318,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
         private void StartSegmentGlow(int index, Color color)
         {
+            if (Segments == null)
+                return;
             RekSegment segment = Segments[index];
             segment.GlowWhiteColor = color;
             segment.GlowWhite = true;
@@ -1225,7 +1327,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
         private void StopSegmentGlow()
         {
-            for(int i = 0; i < Segments.Length; i++)
+            if (Segments == null)
+                return;
+            for (int i = 0; i < Segments.Length; i++)
             {
                 StopSegmentGlow(i);
             }
@@ -1233,13 +1337,17 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
         private void StopSegmentGlow(int index)
         {
+            if (Segments == null)
+                return;
             RekSegment segment = Segments[index];
             segment.GlowWhite = false;
         }
 
         private void ResetSegmentGlow()
         {
-            for(int i = 0; i < Segments.Length; i++)
+            if (Segments == null)
+                return;
+            for (int i = 0; i < Segments.Length; i++)
             {
                 ResetSegmentGlow(i);
             }
@@ -1247,6 +1355,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
         private void ResetSegmentGlow(int index)
         {
+            if (Segments == null)
+                return;
             RekSegment segment = Segments[index];
             segment.GlowWhite = false;
             segment.GlowTimer = 0;
@@ -1254,6 +1364,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
         private void MoveSegmentsLikeWorm()
         {
+            if (Segments == null)
+                return;
             for (int i = 1; i < Segments.Length; i++)
             {
                 MoveSegmentLikeWorm(i);
@@ -1262,6 +1374,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
         private void MoveSegmentLikeWorm(int index)
         {
+            if (Segments == null)
+                return;
             int inFrontIndex = index - 1;
             if (inFrontIndex < 0)
                 return;
@@ -1279,6 +1393,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             segment.Rotation = (float)Math.Atan2(dirY, dirX);
             // We also get the length of the direction vector.
             float length = (float)Math.Sqrt(dirX * dirX + dirY * dirY);
+            if (length == 0)
+                length = 1;
+
             // We calculate a new, correct distance.
 
             float fixer = 1;
@@ -1327,6 +1444,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            if (Segments == null)
+                return false;
             if (TrailDrawer == null)
             {
                 TrailDrawer = new PrimDrawer(WidthFunctionCharge, ColorFunctionCharge, GameShaders.Misc["VampKnives:BasicTrail"]);
@@ -1356,7 +1475,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-
+            if (Segments == null)
+                return;
             for (int i = Segments.Length - 1; i > -1; i--)
             {
                 RekSegment segment = Segments[i];

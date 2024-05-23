@@ -768,75 +768,79 @@ namespace Stellamod
         }
         public override void PostUpdate()
         {
-            if (!Sirestiastalk)
-            {
-
-				DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
-
-				//2. Create a new instance of your dialogue
-				SirestiasBeginDialogue exampleDialogue = new SirestiasBeginDialogue();
-
-				//3. Start it
-				dialogueSystem.StartDialogue(exampleDialogue);
-
-				Sirestiastalk = true;
-			}
-			if (NPC.downedPlantBoss && Sirestiastalk && !Zuitalk)
+			if (Main.netMode != NetmodeID.Server)
 			{
 
-				DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+				if (!Sirestiastalk)
+				{
 
-				//2. Create a new instance of your dialogue
-				ZuiPlantDialogue exampleDialogue = new ZuiPlantDialogue();
+					DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
 
-				//3. Start it
-				dialogueSystem.StartDialogue(exampleDialogue);
+					//2. Create a new instance of your dialogue
+					SirestiasBeginDialogue exampleDialogue = new SirestiasBeginDialogue();
 
-				Zuitalk = true;
+					//3. Start it
+					dialogueSystem.StartDialogue(exampleDialogue);
+
+					Sirestiastalk = true;
+				}
+				if (NPC.downedPlantBoss && Sirestiastalk && !Zuitalk)
+				{
+
+					DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+					//2. Create a new instance of your dialogue
+					ZuiPlantDialogue exampleDialogue = new ZuiPlantDialogue();
+
+					//3. Start it
+					dialogueSystem.StartDialogue(exampleDialogue);
+
+					Zuitalk = true;
+				}
+
+
+				if (!DreadMonOne && DownedBossSystem.downedDreadMonolith1)
+				{
+
+					DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+					//2. Create a new instance of your dialogue
+					DreadDialogue1 exampleDialogue = new DreadDialogue1();
+
+					//3. Start it
+					dialogueSystem.StartDialogue(exampleDialogue);
+
+					DreadMonOne = true;
+				}
+
+				if (!DreadMonTwo && DownedBossSystem.downedDreadMonolith2)
+				{
+
+					DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+					//2. Create a new instance of your dialogue
+					DreadDialogue2 exampleDialogue = new DreadDialogue2();
+
+					//3. Start it
+					dialogueSystem.StartDialogue(exampleDialogue);
+
+					DreadMonTwo = true;
+				}
+
+				if (!DreadMonThree && DownedBossSystem.downedDreadMonolith3)
+				{
+
+					DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+					//2. Create a new instance of your dialogue
+					DreadDialogue3 exampleDialogue = new DreadDialogue3();
+
+					//3. Start it
+					dialogueSystem.StartDialogue(exampleDialogue);
+
+					DreadMonThree = true;
+				}
 			}
-
-
-            if (!DreadMonOne && DownedBossSystem.downedDreadMonolith1)
-            {
-
-                DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
-
-                //2. Create a new instance of your dialogue
-                DreadDialogue1 exampleDialogue = new DreadDialogue1();
-				
-                //3. Start it
-                dialogueSystem.StartDialogue(exampleDialogue);
-
-                DreadMonOne = true;
-            }
-
-            if (!DreadMonTwo && DownedBossSystem.downedDreadMonolith2)
-            {
-
-                DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
-
-                //2. Create a new instance of your dialogue
-                DreadDialogue2 exampleDialogue = new DreadDialogue2();
-
-                //3. Start it
-                dialogueSystem.StartDialogue(exampleDialogue);
-
-                DreadMonTwo = true;
-            }
-
-            if (!DreadMonThree && DownedBossSystem.downedDreadMonolith3)
-            {
-
-                DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
-
-                //2. Create a new instance of your dialogue
-                DreadDialogue3 exampleDialogue = new DreadDialogue3();
-
-                //3. Start it
-                dialogueSystem.StartDialogue(exampleDialogue);
-
-                DreadMonThree = true;
-            }
 
             if (VoidBlasterHits >= 0)
 			{
