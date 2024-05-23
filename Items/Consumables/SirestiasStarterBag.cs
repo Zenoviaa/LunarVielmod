@@ -106,7 +106,7 @@ namespace Stellamod.Items.Consumables
             player.QuickSpawnItem(entitySource, ModContent.ItemType<AnotherRock>(), Main.rand.Next(1, 1));
 			player.QuickSpawnItem(entitySource, ModContent.ItemType<XixianFlask>(), Main.rand.Next(1, 1));
 			player.QuickSpawnItem(entitySource, ModContent.ItemType<HealthyInsource>(), Main.rand.Next(1, 1));
-			player.QuickSpawnItem(entitySource, ModContent.ItemType<SiresMail>(), Main.rand.Next(1, 1));
+
 		}
 
 		// Below is code for the visuals
