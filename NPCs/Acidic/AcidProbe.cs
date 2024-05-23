@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.DropRules;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
@@ -9,6 +10,7 @@ using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.Utilis;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -25,9 +27,20 @@ namespace Stellamod.NPCs.Acidic
         public bool Rocks;
         public float Timer;
         public float RotSpeed = 0.3f;
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(Timer);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            Timer = reader.ReadSingle();
+        }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Acid Probe");
+            Main.npcFrameCount[Type] = 7;
             NPCID.Sets.TrailCacheLength[NPC.type] = 10;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
         }
@@ -48,6 +61,14 @@ namespace Stellamod.NPCs.Acidic
             NPC.alpha = 0;
             NPC.knockBackResist = .75f;
             NPC.aiStyle = -1;
+        }
+
+        public override void FindFrame(int frameHeight)
+        {
+            NPC.frameCounter += 0.5f;
+            NPC.frameCounter %= Main.npcFrameCount[NPC.type];
+            int frame = (int)NPC.frameCounter;
+            NPC.frame.Y = frame * frameHeight;
         }
 
         public override void HitEffect(NPC.HitInfo hit)
@@ -147,15 +168,12 @@ namespace Stellamod.NPCs.Acidic
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            base.ModifyNPCLoot(npcLoot);
+            LeadingConditionRule hardmodeDropRule = new LeadingConditionRule(new HardmodeDropRule());
+            hardmodeDropRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GraftedSoul>(), 2, minimumDropped: 1, maximumDropped: 5));
+            hardmodeDropRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SrTetanus>(), 20, minimumDropped: 1, maximumDropped: 1));
 
-            if (Main.hardMode)
-            {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GraftedSoul>(), 2, 1, 5));
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SrTetanus>(), 20, 1, 1));
-            }
-            npcLoot.Add(ItemDropRule.Common(ItemType<VirulentPlating>(), minimumDropped: 1, maximumDropped: 4));
-            npcLoot.Add(ItemDropRule.Common(ItemType<AcidStaketers>(), chanceDenominator: 30));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VirulentPlating>(), minimumDropped: 1, maximumDropped: 4));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AcidStaketers>(), chanceDenominator: 30));
         }
 
         public override void AI()
@@ -178,7 +196,6 @@ namespace Stellamod.NPCs.Acidic
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AcidProbe1"), NPC.position);
                 RotSpeed = 0.3f;
                 NPC.ai[3] = 35;
-                NPC.netUpdate = true;
             }
             if (Timer >= 350 && Timer <= 450)
             {
@@ -209,7 +226,7 @@ namespace Stellamod.NPCs.Acidic
                     float offsetX = Main.rand.Next(-350, 350) * 0.01f;
                     float offsetY = Main.rand.Next(-350, 350) * 0.01f;
 
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (StellaMultiplayer.IsHost)
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, 
                             ModContent.ProjectileType<ToxicMissile>(), 12, 1, Main.myPlayer, 0, 0);
                 }
