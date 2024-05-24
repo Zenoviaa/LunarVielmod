@@ -43,7 +43,7 @@ namespace Stellamod.NPCs.Grave
 			NPC.defense = 8;
 			NPC.noTileCollide = true;
 			NPC.noGravity = true;
-			NPC.lifeMax = 185;
+			NPC.lifeMax = 140;
 			NPC.HitSound = SoundID.NPCHit32;
 			NPC.DeathSound = SoundID.NPCDeath6;
 			NPC.value = 563f;
