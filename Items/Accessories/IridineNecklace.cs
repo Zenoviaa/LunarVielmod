@@ -24,7 +24,7 @@ namespace Stellamod.Items.Accessories
         {
             Player player = Player;
             if (player.whoAmI == Main.myPlayer 
-                && player.statLife <= 0 && !player.HasBuff<IridineNecklaceCDBuff>())
+                && player.statLife <= 0 && !player.HasBuff<IridineNecklaceCDBuff>() && hasIridineNecklace)
             {
                 Revive(player);
                 return false;
