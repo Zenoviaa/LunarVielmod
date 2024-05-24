@@ -623,8 +623,9 @@ RippedFabric: {
 	DisplayName: Quest Leaf
 	Tooltip:
 		'''
-		Gathered from doing quests from Merena, Gia and Zui!
+		Gathered from doing quests from Merena, Sirestias, Gia and Zui!
 		Do some quests to gather more 
+		Rarely can be obtained through gilded bags in Hardmode!
 		'''
 }
 
@@ -722,12 +723,12 @@ CathedralChestI: {
 }
 
 Crystal1I: {
-	DisplayName: Crystal1
+	DisplayName: Crystal
 	Tooltip: You arent meant to collect this :(
 }
 
 Crystal2I: {
-	DisplayName: Crystal2
+	DisplayName: Crystal
 	Tooltip: You arent meant to collect this :(
 }
 
@@ -737,8 +738,8 @@ FlowerMultiI: {
 }
 
 Orb1I: {
-	DisplayName: Orb1 I
-	Tooltip: You arent meant to collect this :(
+	DisplayName: Orb of light
+	Tooltip: makes for some cool furniture!
 }
 
 ShrineI: {
@@ -788,7 +789,7 @@ MorrowChesti: {
 
 MorrowChestKey: {
 	DisplayName: Fabled Chest Key
-	Tooltip: ""
+	Tooltip: Use at fabled chests all around the world at night!
 }
 
 MorrowDeath: {
