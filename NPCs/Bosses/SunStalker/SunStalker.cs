@@ -68,6 +68,44 @@ namespace Stellamod.NPCs.Bosses.SunStalker
         float PrevAttack = 0;
         bool Glow;
         bool TPChance;
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(TPChance);
+            writer.Write(Attack);
+            writer.Write(_invincible);
+            writer.WriteVector2(targetPos);
+            writer.Write(moveSpeed);
+            writer.Write(moveSpeedY);
+            writer.Write(HomeY);
+            writer.Write(PrevAttack);
+            writer.Write(Attacks);
+            writer.Write(DashSpeed);
+            writer.Write(Dashing);
+            writer.Write(Dir);
+            writer.Write(Intro);
+            writer.Write(DrugRidus);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            TPChance = reader.ReadBoolean();
+            Attack = reader.ReadInt32();
+            _invincible = reader.ReadBoolean();
+            targetPos = reader.ReadVector2();
+            moveSpeed = reader.ReadInt32();
+            moveSpeedY = reader.ReadInt32();
+            HomeY = reader.ReadSingle();
+            PrevAttack = reader.ReadSingle();
+            Attacks = reader.ReadInt32();
+            DashSpeed = reader.ReadSingle();
+            Dashing = reader.ReadBoolean();
+            Dir = reader.ReadBoolean();
+            Intro = reader.ReadBoolean();
+            DrugRidus = reader.ReadSingle();
+        }
+
+
         public void Movement(Vector2 Player2, float PosX, float PosY, float Speed)
         {
             Player player = Main.player[NPC.target];
@@ -119,19 +157,6 @@ namespace Stellamod.NPCs.Bosses.SunStalker
         }
 
         public float Spawner = 0;
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-            writer.Write(TPChance);
-            writer.Write(Attack);
-            writer.Write(_invincible);
-        }
-
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            TPChance = reader.ReadBoolean();
-            Attack = reader.ReadInt32();
-            _invincible = reader.ReadBoolean();
-        }
 
         public override void AI()
         {

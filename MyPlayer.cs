@@ -1408,23 +1408,15 @@ namespace Stellamod
 						RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
 						RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
 
-						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-						Vector2 speed2 = Main.rand.NextVector2Square(1f, 1f);
-						ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<windline>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
+						Vector2 speed = new Vector2(4, 0);
+						ParticleManager.NewParticle(Player.Center - RandomOrig, speed, ParticleManager.NewInstance<WindParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 					}
 				}
 			
 
 				Main.GraveyardVisualIntensity = 0.8f;
 				Main.windPhysicsStrength = 90;
-
-
 			}
-
-
-
 
 			if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && ZoneMechanics)
 			{

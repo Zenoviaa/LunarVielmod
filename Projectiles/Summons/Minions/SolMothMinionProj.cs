@@ -78,10 +78,6 @@ namespace Stellamod.Projectiles.Summons.Minions
         {
             return false;
         }
-        public override void OnKill(int timeLeft)
-        {
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1"), Projectile.position);
-        }
 
         // This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
         public override bool MinionContactDamage()
@@ -118,7 +114,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 {
                     SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/SoftSummon");
                     soundStyle.PitchVariance = 0.15f;
-                    SoundEngine.PlaySound(soundStyle);
+                    SoundEngine.PlaySound(soundStyle, Projectile.position);
                     for (int i = 0; i < 5; i++)
                     {
                         Dust.NewDustPerfect(targetCenter, DustID.GoldFlame, (Vector2.One * Main.rand.Next(1, 5))
@@ -141,7 +137,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
                     SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2");
                     soundStyle.PitchVariance = 0.15f;
-                    SoundEngine.PlaySound(soundStyle);
+                    SoundEngine.PlaySound(soundStyle, Projectile.position);
                     Dust.QuickDustLine(Projectile.Center, targetCenter, 50, Color.Goldenrod);
                     for (int i = 0; i < 2; i++)
                     {
