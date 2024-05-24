@@ -7584,3 +7584,13 @@ IllurineHoops: {
 		Increased mana regeneration and reduce mana cost
 		'''
 }
+
+IridineNecklace: {
+	DisplayName: Iridine Necklace
+	Tooltip:
+		'''
+		Restores you to full health instead when you would have died!
+		Has a 5 minute cooldown
+		Worn by the mightiest Illurian priests
+		'''
+}

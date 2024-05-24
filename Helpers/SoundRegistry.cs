@@ -30,7 +30,7 @@ namespace Stellamod.Helpers
         public static SoundStyle JellyTome => new SoundStyle($"{Path}JellyTome");
         public static SoundStyle JellyStaff => new SoundStyle($"{Path}JellyStaff");
         public static SoundStyle JellyLance => new SoundStyle($"{Path}JellyLance");
-
+        public static SoundStyle IridineRevive => new SoundStyle($"{Path}IridineRevive");
         //Niivi Sounds
         public static SoundStyle Niivi_LaserBlastReady => new SoundStyle($"{Path}DreamCharge");
         public static SoundStyle Niivi_LaserBlast1 => new SoundStyle($"{Path}NStarblast");

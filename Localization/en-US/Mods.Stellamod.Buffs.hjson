@@ -762,3 +762,8 @@ MoonFlame: {
 	DisplayName: Moon Flame
 	Description: Mods.Stellamod.Buffs.MoonFlame.Description
 }
+
+IridineNecklaceCDBuff: {
+	DisplayName: Iridine Necklace Cooldown
+	Description: You cannot revive!
+}

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Gores;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.Niivi.Projectiles;
@@ -1686,7 +1687,15 @@ namespace Stellamod.NPCs.Bosses.Niivi
             if(Timer == 1)
             {
                 NPC.velocity = -Vector2.UnitY;
+                if (StellaMultiplayer.IsHost)
+                {
+                    int itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(),
+                        ModContent.ItemType<IridineNecklace>(), Main.rand.Next(1, 1));
+                    NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
+                }
+
             }
+            NPC.dontTakeDamage = true;
             NPC.velocity *= 1.05f;
             TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
             if(Timer >= 120)
@@ -1695,7 +1704,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 {
                     NPC.SetEventFlagCleared(ref DownedBossSystem.downedNiiviBoss, -1);
                 }
-     
+
+    
                 NPC.active = false;
             }
         }
