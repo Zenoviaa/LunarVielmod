@@ -119,32 +119,17 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         public override void AI()
         {
             NPC.damage = 0;
-
-
-
-            var entitySource = NPC.GetSource_FromAI();
-
-
             for (int k = 0; k < Main.maxNPCs; k++)
             {
                 NPC target = Main.npc[k];
                 if (target.HasBuff<StarSuper>())
                 {
                     NPC.Center = target.Center;
-
-
-                    if (!target.active && target.type == ModContent.NPCType<SupernovaFragment>())
-                    {
-                        NPC.Kill();
-                    }
-
                 }
-
-               
-
             }
 
-
+            if (!NPC.AnyNPCs(ModContent.NPCType<SupernovaFragment>()))
+                NPC.Kill();
 
 
             timer++;
