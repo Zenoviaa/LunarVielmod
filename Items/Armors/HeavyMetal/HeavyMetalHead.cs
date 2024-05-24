@@ -50,7 +50,7 @@ namespace Stellamod.Items.Armors.HeavyMetal
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemType<GintzlMetal>(), 18);
-            recipe.AddTile(TileID.HeavyWorkBench);
+            recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
     }

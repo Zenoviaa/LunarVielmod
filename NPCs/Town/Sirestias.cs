@@ -505,16 +505,19 @@ namespace Stellamod.NPCs.Town
 						{
 							case 0:
 								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Maelstrom>(), 1);
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
 
-								break;
+                                break;
 
 							case 1:
 								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ReflectionSeeker>(), 1);
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
 
-								break;
+                                break;
 
 							case 2:
 								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
                                 Main.npcChatText = $"I couldnt find anything more so I'll give you an extra token!";
                                 break;
 
@@ -527,15 +530,18 @@ namespace Stellamod.NPCs.Town
 						switch (Main.rand.Next(3))
 						{
 							case 0:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<StickyCards>(), 1);
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<StickyCards>(), 1);
 								break;
 
 							case 1:
 								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mordred>(), 1);
-								break;
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
+                                break;
 
 							case 2:
                                 Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasMask>(), 1);
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
                                 break;
 
 						}
@@ -558,16 +564,20 @@ namespace Stellamod.NPCs.Town
 									case 0:
 										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SineSire>(), 1);
 
-										break;
+								       Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
+	
+
+                                break;
 
 									case 1:
 										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RavestBlast>(), 1);
-
-										break;
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
+                                break;
 
 									case 2:
 										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
-										break;
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
+                                break;
 
 								}
 
