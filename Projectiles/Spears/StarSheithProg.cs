@@ -26,6 +26,7 @@ namespace Stellamod.Projectiles.Spears
             Projectile.DamageType = DamageClass.Melee;
             Projectile.CloneDefaults(ProjectileID.Spear); // Clone the default values for a vanilla spear. Spear specific values set for width, height, aiStyle, friendly, penetrate, tileCollide, scale, hide, ownerHitCheck, and melee.
         }
+
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.LightGoldenrodYellow.ToVector3() * 1.75f * Main.essScale);
@@ -34,7 +35,6 @@ namespace Stellamod.Projectiles.Spears
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Yellow, 0f, 0f, 150, Color.LightGoldenrodYellow, 1f);
                 Main.dust[dustnumber].velocity *= 0.3f;
             }
-
         }
 
 

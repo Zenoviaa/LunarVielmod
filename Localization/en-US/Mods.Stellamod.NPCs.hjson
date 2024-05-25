@@ -366,10 +366,23 @@ Sun2.DisplayName: Sun2
 GothiviaIyx.DisplayName: Gothivia Iyx
 Carmody.DisplayName: Carmody
 CarmodyGreen.DisplayName: Carmody Green
-<<<<<<< HEAD
 SupernovaZapwarnFinal.DisplayName: Supernova Zapwarn Final
-=======
 GothiviaIdle.DisplayName: Gothivia Idle
 StartGoth.DisplayName: Start Goth
 RekSnakeIdle.DisplayName: Rek Snake Idle
->>>>>>> 3413c5f950e597718f163c6664a54e38032cf064
+CentipedeTail.DisplayName: Centipede Tail
+CentipedeHead.DisplayName: Centipede Head
+CentipedeBody.DisplayName: Centipede Body
+IrravheilSlime.DisplayName: Irravheil Slime
+IrravheilLandwormTail.DisplayName: Irravheil Landworm Tail
+IrravheilLandwormHead.DisplayName: Irravheil Landworm Head
+IrravheilLandwormBody.DisplayName: Irravheil Landworm Body
+IrravheilSprayer.DisplayName: Irravheil Sprayer
+Tulacrowe.DisplayName: Tulacrowe
+NiiviCrystalStars.DisplayName: Niivi Crystal Stars
+NiiviCrystalLightning.DisplayName: Niivi Crystal Lightning
+NiiviCrystalFrost.DisplayName: Niivi Crystal Frost
+NiiviRoaming.DisplayName: Niivi Roaming
+GothiviaDeath.DisplayName: Gothivia Death
+EreshkigalIdle.DisplayName: Ereshkigal Idle
+GraveSeeker.DisplayName: Grave Seeker

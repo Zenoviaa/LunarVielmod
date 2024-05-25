@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -57,8 +58,28 @@ namespace Stellamod.Projectiles.GunHolster
         private float StartRotation;
         private float FireStartRotation;
         private float HideStartRotation;
+        private float SpriteDirection;
+        private float HoldRotation;
         private float Recoil;
-        
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(StartRotation);
+            writer.Write(FireStartRotation);
+            writer.Write(HideStartRotation);
+            writer.Write(SpriteDirection);
+            writer.Write(HoldRotation);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            StartRotation = reader.ReadSingle();
+            FireStartRotation = reader.ReadSingle();
+            HideStartRotation = reader.ReadSingle();
+            SpriteDirection = reader.ReadSingle();
+            HoldRotation = reader.ReadSingle();
+        }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -74,17 +95,22 @@ namespace Stellamod.Projectiles.GunHolster
 
         public override void AI()
         {
-            int type = ModContent.ItemType<Items.Weapons.Ranged.GunSwapping.GunHolster>();
-            if (Owner.HeldItem.type != type
-                && Main.mouseItem.type != type)
-                Projectile.Kill();
-
             Player player = Main.player[Projectile.owner];
             if (player.noItems || player.CCed || player.dead || !player.active)
                 Projectile.Kill();
 
+            int type = ModContent.ItemType<Items.Weapons.Ranged.GunSwapping.GunHolster>();
+            if (Main.myPlayer == Projectile.owner && Owner.HeldItem.type != type
+                && Main.mouseItem.type != type)
+                Projectile.Kill();
 
-            Projectile.spriteDirection = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
+            if(Main.myPlayer == Projectile.owner)
+            {
+                SpriteDirection = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
+                Projectile.netUpdate = true;
+            }
+
+            Projectile.spriteDirection = (int)SpriteDirection;
             switch (State)
             {
                 case ActionState.Holster:
@@ -106,9 +132,14 @@ namespace Stellamod.Projectiles.GunHolster
 
         private void AI_Holster()
         {
-            Vector2 direction = Owner.Center.DirectionTo(Main.MouseWorld);
-            Projectile.rotation = direction.ToRotation();
-
+            if(Projectile.owner == Main.myPlayer)
+            {
+                Vector2 direction = Owner.Center.DirectionTo(Main.MouseWorld);
+                HoldRotation = direction.ToRotation();
+                Projectile.netUpdate = true;
+            }
+ 
+            Projectile.rotation = HoldRotation;
             bool mouseInput = IsRightHand ? Main.mouseRight : Main.mouseLeft;
             if (Projectile.owner == Main.myPlayer 
                 && mouseInput 
@@ -127,7 +158,7 @@ namespace Stellamod.Projectiles.GunHolster
                     HideStartRotation = StartRotation - RecoilRotation;
                 }
 
-
+                Projectile.netUpdate = true;
                 State = ActionState.Prepare;
                 Timer = 0;
             }
@@ -244,7 +275,11 @@ namespace Stellamod.Projectiles.GunHolster
             }
         
 
-            Owner.direction = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
+            if(Main.myPlayer == Projectile.owner)
+            {
+                Owner.direction = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
+            }
+          
             if (!IsRightHand)
             {
                 Owner.heldProj = Projectile.whoAmI;

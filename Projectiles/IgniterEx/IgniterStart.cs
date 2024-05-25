@@ -39,31 +39,6 @@ namespace Stellamod.Projectiles.IgniterEx
 
 		public override void AI()
 		{
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 			float maxDetectRadius = 2000f; // The maximum radius at which a projectile can detect a target
 			float projSpeed = 22f; // The speed at which the projectile moves towards the target
 

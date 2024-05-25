@@ -1,10 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Paint
 {
-	public class PaintBomb7 : ModProjectile
+    public class PaintBomb7 : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -20,20 +19,6 @@ namespace Stellamod.Projectiles.Paint
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 56;
 			Projectile.scale = 1.5f;
-
-		}
-		public float Timer
-		{
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
-		}
-		public override void AI()
-		{
-
-			//Vector3 RGB = new(0.89f, 2.53f, 2.55f);
-			/// The multiplication here wasn't doing anything
-			//Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-
 		}
 
 		public override bool PreAI()
@@ -48,12 +33,6 @@ namespace Stellamod.Projectiles.Paint
 				}
 			}
 			return true;
-
-
 		}
-
-
-
 	}
-
 }

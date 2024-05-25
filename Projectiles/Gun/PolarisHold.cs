@@ -35,6 +35,7 @@ namespace Stellamod.Projectiles.Gun
                 Projectile.ai[0] = (float)value;
             }
         }
+        private ref float SwordRotation => ref Projectile.ai[1];
         float ChargeTimer;
         float FireTimer;
         public override void SetDefaults()
@@ -92,14 +93,14 @@ namespace Stellamod.Projectiles.Gun
             //Aiming Code
             Player player = Main.player[Projectile.owner];
             Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-            float swordRotation = 0f;
             if (Main.myPlayer == Projectile.owner)
             {
                 player.ChangeDir(Projectile.direction);
-                swordRotation = (Main.MouseWorld - player.Center).ToRotation();
+                SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+                Projectile.netUpdate = true;
             }
 
-            Projectile.velocity = swordRotation.ToRotationVector2();
+            Projectile.velocity = SwordRotation.ToRotationVector2();
             Projectile.spriteDirection = player.direction;
             if (Projectile.spriteDirection == 1)
                 Projectile.rotation = Projectile.velocity.ToRotation();

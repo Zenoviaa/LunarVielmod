@@ -73,10 +73,8 @@ namespace Stellamod.Projectiles.Magic
             if (Projectile.ai[1] == 120)
             {
                 var EntitySource = Projectile.GetSource_Death();
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<StarFlowerproj2>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
-                }
+                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, 
+                    ModContent.ProjectileType<StarFlowerproj2>(), Projectile.damage, 1,Projectile.owner, 0, 0);
             }
             if (Projectile.ai[1] == 160)
             {

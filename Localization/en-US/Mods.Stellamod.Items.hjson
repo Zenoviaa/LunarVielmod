@@ -623,8 +623,9 @@ RippedFabric: {
 	DisplayName: Quest Leaf
 	Tooltip:
 		'''
-		Gathered from doing quests from Merena, Gia and Zui!
+		Gathered from doing quests from Merena, Sirestias, Gia and Zui!
 		Do some quests to gather more 
+		Rarely can be obtained through gilded bags in Hardmode!
 		'''
 }
 
@@ -722,12 +723,12 @@ CathedralChestI: {
 }
 
 Crystal1I: {
-	DisplayName: Crystal1
+	DisplayName: Crystal
 	Tooltip: You arent meant to collect this :(
 }
 
 Crystal2I: {
-	DisplayName: Crystal2
+	DisplayName: Crystal
 	Tooltip: You arent meant to collect this :(
 }
 
@@ -737,8 +738,8 @@ FlowerMultiI: {
 }
 
 Orb1I: {
-	DisplayName: Orb1 I
-	Tooltip: You arent meant to collect this :(
+	DisplayName: Orb of light
+	Tooltip: makes for some cool furniture!
 }
 
 ShrineI: {
@@ -788,7 +789,7 @@ MorrowChesti: {
 
 MorrowChestKey: {
 	DisplayName: Fabled Chest Key
-	Tooltip: ""
+	Tooltip: Use at fabled chests all around the world at night!
 }
 
 MorrowDeath: {
@@ -6296,7 +6297,7 @@ SplashAttack: {
 }
 
 CozmirePaintingI: {
-	DisplayName: Cozmire Painting I
+	DisplayName: Cozmire Painting
 	Tooltip: ""
 }
 
@@ -6786,7 +6787,7 @@ TempleKeyMold: {
 
 TempleKeyPart: {
 	DisplayName: Temple Key Part
-	Tooltip: A part from Ereshkigal, she broke the key...
+	Tooltip: It seems Ereshkigal broke the key and attached it to the singularity. How cruel.
 }
 
 M38F30: {
@@ -7368,7 +7369,7 @@ YourFired: {
 
 LumiPaintingI: {
 	Tooltip: ""
-	DisplayName: Lumi Painting I
+	DisplayName: Lumi Painting
 }
 
 VeiledScriptureLumi: {
@@ -7378,17 +7379,19 @@ VeiledScriptureLumi: {
 		'''
 		---------------------------------------
 
-		This higher being is of the Iyx family. Related to Verlia and Vixyl they hold a high amount of skill and passion for the things they love.
-		They are to be believed to be seperated at birth from Rosemary of Ekrose from their other sister. 
+		This higher being is of the Veil family. Related to Azurerin and Cozmire as they ascend all those that come before them. 
+		They are to be believed to be the strongest on this planet. Aside from me :p 
 
-		This specimen bears heavy grudges and will attempt to do anything to reconcile. 
-		She had her village (Govheil Castle) taken away from her as the acidic corruption took her people, her ginzte army and her friends.
-		After Fenix took and trapped her sister this beig took a journey to go seek power from Lumi Veil, another benounced god to save her.
-		I believe she may have taken a weak singularity and bounded it to Daedus for protection meaning she is most likely the strongest being over
-		Fenix without using a singularity's power. 
+		This specimen is lively but patient, being a creator of the sorts and caring for her family.
+		She gifted her two sisters both life and singularities to prove that she cares for both of them. Being a collector of singularities
+		has it's issues as we can see though.
 
-		She currently is gone but the people who escaped the acid from taking over ended up going to the fable, they pay their respects to her here.
-		We can only assume she has been training to save her sister for the past 30 years...
+		Azurerin took up the stars and obtained the Supernova fragment while Cozmire had the power of the cosmos having the Singularity fragment.
+		Although she is gifted and powerful, we all know that these singularities are the reason that the world is crumbling with evil
+		power and fantasies that cost the lives of many. Hence so we shall bring her off her throne and slay her.
+
+		She currently is above the world, residing with her sister in the space of the void. Only being able to be brought down by a catastrophic
+		accident. SO we shall incure this to happen to get to her ;p
 
 		- Love Sirestias
 		'''
@@ -7536,5 +7539,59 @@ VulcanBreaker: {
 		'''
 		Swings a molten hammer that erupts inside of enemies!
 		Bursting with flames :P
+		'''
+}
+
+Superfragment: {
+	Tooltip: A voidal essence made from the combination of the stars and void.
+	DisplayName: Superfragment
+}
+
+JianxinCoat: {
+	DisplayName: Jianxin Coat
+	Tooltip:
+		'''
+		+10 Armor Penetration
+		+10% Increased Damage
+		+20 Increased Critical Strike Chance
+		'''
+}
+
+JianxinMask: {
+	DisplayName: Jianxin Mask
+	Tooltip:
+		'''
+		+10 Armor Penetration
+		+10% Increased Damage
+		'''
+}
+
+JianxinPants: {
+	DisplayName: Jianxin Pants
+	Tooltip:
+		'''
+		+10 Armor Penetration
+		+10% Increased Damage
+		+3 Increased Summons
+		'''
+}
+
+IllurineHoops: {
+	DisplayName: Illurine Hoops
+	Tooltip:
+		'''
+		Nearby lunar enemies are striked, cutting their health in half
+		+10% Magic Damage
+		Increased mana regeneration and reduce mana cost
+		'''
+}
+
+IridineNecklace: {
+	DisplayName: Iridine Necklace
+	Tooltip:
+		'''
+		Restores you to full health instead when you would have died!
+		Has a 5 minute cooldown
+		Worn by the mightiest Illurian priests
 		'''
 }

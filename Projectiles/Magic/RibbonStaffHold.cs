@@ -13,6 +13,7 @@ namespace Stellamod.Projectiles.Magic
     {
         private Vector2[] BungeeGumPos = new Vector2[4];
         private PrimDrawer TrailDrawer { get; set; } = null;
+        private ref float SwordRotation => ref Projectile.ai[1];
         public override void SetDefaults()
         {
             Projectile.width = 56;
@@ -40,16 +41,16 @@ namespace Stellamod.Projectiles.Magic
 
 
             Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-            float swordRotation = 0f;
             if (Main.myPlayer == Projectile.owner)
             {
                 player.ChangeDir(Projectile.direction);
-                swordRotation = (Main.MouseWorld - player.Center).ToRotation();
+                SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+                Projectile.netUpdate = true;
                 if (!player.channel)
                     Projectile.Kill();
             }
 
-            Projectile.velocity = swordRotation.ToRotationVector2();
+            Projectile.velocity = SwordRotation.ToRotationVector2();
             Projectile.spriteDirection = player.direction;
             if (Projectile.spriteDirection == 1)
                 Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;

@@ -6,6 +6,7 @@ namespace Stellamod.Projectiles
 {
     public class ScissorianSlash2 : ModProjectile
 	{
+		private ref float SwordRotation => ref Projectile.ai[1];
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("SalfaCirle");
@@ -52,15 +53,14 @@ namespace Stellamod.Projectiles
 				Projectile.Kill();
 
 			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-			float swordRotation = 0f;
 			if (Main.myPlayer == Projectile.owner)
 			{
-				
-				swordRotation = (Main.MouseWorld - player.Center).ToRotation();
+                SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+				Projectile.netUpdate = true;
 				if (!player.channel)
 					Projectile.Kill();
 			}
-			Projectile.velocity = swordRotation.ToRotationVector2();
+			Projectile.velocity = SwordRotation.ToRotationVector2();
 
 			
 			if (Projectile.spriteDirection == 1)
@@ -68,7 +68,7 @@ namespace Stellamod.Projectiles
 			else
 				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
 
-			Projectile.Center = playerCenter + new Vector2(180, 0).RotatedBy(swordRotation);
+			Projectile.Center = playerCenter + new Vector2(180, 0).RotatedBy(SwordRotation);
 
 			if (++Projectile.frameCounter >= 1)
 			{

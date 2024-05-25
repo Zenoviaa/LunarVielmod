@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Gores;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.Niivi.Projectiles;
@@ -25,6 +26,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
     {
         public override void PostUpdateMiscEffects()
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
             if (NPC.AnyNPCs(ModContent.NPCType<Niivi>()))
             {
                 ActivateSkye();
@@ -850,9 +853,18 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     LaserAttackPos = Target.Center + directionToTarget * 384;
                     TargetHeadRotation = directionToTarget.ToRotation();
 
-                    AI_MoveToward(Target.Center, 3);
-                    //Slowly accelerate up while charging
-                    NPC.velocity *= 1.002f;
+                    float distanceToTarget = Vector2.Distance(Target.Center, NPC.Center);
+                    if(distanceToTarget > 128)
+                    {
+                        AI_MoveToward(Target.Center, 3);
+                        //Slowly accelerate up while charging
+                        NPC.velocity *= 1.002f;
+                    }
+                    else
+                    {
+                        NPC.velocity *= 0.98f;
+                    }
+         
 
                     //Charge up
                     ChargeVisuals<StarParticle2>(Timer, 60);
@@ -952,7 +964,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 //Taking aim
                 Timer++;
                 ChargeCrystals = true;
-                shaderSystem.VignetteScreen(-0.5f);
+                shaderSystem.VignetteScreen(-0.5f, timer: 60);
                 //Rotate Head
                 TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
                 if (Timer >= 60)
@@ -964,7 +976,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
             else if (AttackTimer == 1)
             {
-                shaderSystem.UnVignetteScreen();
                 //Rotate head 90-ish degrees upward
                 Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
 
@@ -1013,9 +1024,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
                 //Get the shader system!
 
-                shaderSystem.TintScreen(Color.Cyan, 0.1f);
-                shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.025f);
-                shaderSystem.VignetteScreen(-1f);
+                shaderSystem.TintScreen(Color.Cyan, 0.1f, timer: 720);
+                shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.025f, timer: 720);
+                shaderSystem.VignetteScreen(-1f, timer: 720);
 
                 //Slowdown over time
                 float length = 720;
@@ -1156,7 +1167,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 Timer++;
                 if(Timer == 1)
                 {
-                    shaderSystem.VignetteScreen(1);
+                    shaderSystem.VignetteScreen(1, timer: 60);
                 }
 
                 //Slowdown over time
@@ -1176,8 +1187,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 Timer++;
                 if(Timer % 30 == 0)
                 {
-                    shaderSystem.UnVignetteScreen();
-                    shaderSystem.FlashTintScreen(Color.White, 0.2f, 15);
+                    shaderSystem.TintScreen(Color.White, 0.2f, timer: 15);
                     NPC.velocity = -NPC.Center.DirectionTo(Target.Center) * 16;
                     if (StellaMultiplayer.IsHost)
                     {
@@ -1237,7 +1247,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             else if (AttackTimer == 1)
             {
                 Timer++;
-                shaderSystem.TintScreen(Color.Black, 0.5f);
+                shaderSystem.TintScreen(Color.Black, 0.5f, timer: 450);
                 //Rotate Head
                 TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
 
@@ -1299,7 +1309,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         {
             ResetShaders();
             ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-            screenShaderSystem.FlashTintScreen(Color.White, 0.5f, 5);
+            screenShaderSystem.TintScreen(Color.White, 0.5f, timer: 15);
             SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, NPC.position);
             ResetState(ActionState.Transition_P2);
             SpecialTimer = 0;
@@ -1309,7 +1319,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private void AI_Phase2_SpecialReset()
         {
             ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-            screenShaderSystem.FlashTintScreen(Color.White, 0.5f, 5);
+            screenShaderSystem.TintScreen(Color.White, 0.5f, timer: 15);
             SoundStyle soundStyle = SoundRegistry.Niivi_PrismaticCharge;
             SoundEngine.PlaySound(soundStyle, NPC.position);
         }
@@ -1396,12 +1406,12 @@ namespace Stellamod.NPCs.Bosses.Niivi
                             ModContent.ProjectileType<NiiviCosmicBombAbsorbProj>(), 0, 0, Main.myPlayer);
                     }
       
-                    screenShaderSystem.FlashTintScreen(Color.Black, 0.3f, 7);
+                    screenShaderSystem.TintScreen(Color.Black, 0.3f, timer: 7);
                 }
 
                 if (Timer >= 120)
                 {
-                    screenShaderSystem.VignetteScreen(1f);
+                    screenShaderSystem.VignetteScreen(1f, timer: 560);
                     Vector2 velocity = Vector2.Zero;
                     int type = ModContent.ProjectileType<NiiviStarFieldProj>();
                     if (StellaMultiplayer.IsHost)
@@ -1513,7 +1523,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
 
                     ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-                    shaderSystem.TintScreen(Color.White, 0.3f);
+                    shaderSystem.TintScreen(Color.White, 0.3f, timer: 600);
                 }
                 else if (Timer >= 120)
                 {
@@ -1604,7 +1614,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private void AI_Phase3_Reset()
         {
             ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-            screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 5);
+            screenShaderSystem.TintScreen(Color.White, 0.3f, timer: 15);
             SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, NPC.position);
             ResetShaders();
             NextAttack = ActionState.Spare_Me;
@@ -1620,7 +1630,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             progress = 1f - progress;
 
             ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-            screenShaderSystem.VignetteScreen(progress * 2.5f);
+            screenShaderSystem.VignetteScreen(progress * 2.5f, timer: 450);
 
             float length = 450;
             SpecialTimer++;
@@ -1677,7 +1687,15 @@ namespace Stellamod.NPCs.Bosses.Niivi
             if(Timer == 1)
             {
                 NPC.velocity = -Vector2.UnitY;
+                if (StellaMultiplayer.IsHost)
+                {
+                    int itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(),
+                        ModContent.ItemType<IridineNecklace>(), Main.rand.Next(1, 1));
+                    NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
+                }
+
             }
+            NPC.dontTakeDamage = true;
             NPC.velocity *= 1.05f;
             TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
             if(Timer >= 120)
@@ -1686,7 +1704,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 {
                     NPC.SetEventFlagCleared(ref DownedBossSystem.downedNiiviBoss, -1);
                 }
-     
+
+    
                 NPC.active = false;
             }
         }
@@ -1709,6 +1728,10 @@ namespace Stellamod.NPCs.Bosses.Niivi
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             base.ModifyNPCLoot(npcLoot);
+            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<PureHeart>(), minimumDropped: 1, maximumDropped: 1));
+            npcLoot.Add(notExpertRule);
+
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<PureHeart>()));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<NiiviBossRel>()));
         }

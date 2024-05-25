@@ -69,27 +69,32 @@ namespace Stellamod.Projectiles.Bow
             double offsetAngle;
             for (int i = 0; i < 4; i++)
             {
-
                 offsetAngle = (startAngle + deltaAngle * (i + i * i) / 2f) + 32f * i + offsetRandom;
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, (float)(Math.Sin(offsetAngle) * Speed), (float)(Math.Cos(offsetAngle) * Speed), ModContent.ProjectileType<DreadSkullBonesProg>(), 16, 0, Main.myPlayer);
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, (float)(-Math.Sin(offsetAngle) * Speed), (float)(-Math.Cos(offsetAngle) * Speed), ModContent.ProjectileType<DreadSkullBonesProg>(), 16, 0, Main.myPlayer);
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, (float)(Math.Sin(offsetAngle) * Speed), (float)(Math.Cos(offsetAngle) * Speed), 
+                    ModContent.ProjectileType<DreadSkullBonesProg>(), 16, 0, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, (float)(-Math.Sin(offsetAngle) * Speed), (float)(-Math.Cos(offsetAngle) * Speed),
+                    ModContent.ProjectileType<DreadSkullBonesProg>(), 16, 0, Projectile.owner);
                 Projectile.netUpdate = true;
             }
         }
+
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width * 1.3f;
             return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
         }
+
         public Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(Color.DarkRed, Color.Transparent, completionRatio) * 0.7f;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             if (Main.rand.NextBool(5))
@@ -107,13 +112,10 @@ namespace Stellamod.Projectiles.Bow
             return false;
         }
 
-
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.Red.ToVector3() * 0.75f * Main.essScale);
-
         }
     }
-
 }
 

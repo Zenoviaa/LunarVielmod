@@ -2,7 +2,7 @@ PLEASE PLAY MASTERMODE or EXPERTMODE FOR THIS MOD!
 MULTIPLAYER COMPATIBLE!!!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The Lunar Veil is an expansive mod for the world of Aimacra. As a crossover from a personal game Diari, 
-Sirestias has sought to expand her skills in the world of terraria and she wants to eliminate all false gods and goddesses on the planet.
+Sirestias has sought to expand her skills in the world of terraria and she wants to eliminate all false gods and goddesses on the planet who cause harm to others.
 
 The ones that pose a threat to existence on the planet of terraria would be gods who own singularities. They cause inreversible damage and often corrupts the worlds and the minds within them.
 People go out to worship these gods and protect them, and nobody dare stand up to the ones who rule their domains.
@@ -12,7 +12,7 @@ But your job is to eliminate all of them
 
 This is a content/quality of life mod which includes:
 - Many new enemies and npcs
-- 300+ New interesting weapons
+- 400+ New interesting weapons
 - New systems for weapons and gameplay including Harvesting Spots, Weapon Powders, igniters, brooches and more!
 - A Gambling feature for post bosses
 - 4 New main town NPC
@@ -24,7 +24,7 @@ This is a content/quality of life mod which includes:
 - Many main armors to flesh out prehardmode's lack of class armors
 - A fully immersive soundtrack from both me and Azza (Go check out my Diari Soundtrack, please lol)
 - Pretty much made by three people, Me, Azzalea and Scolon!
-- Over 900 new items!
+- Over 1000 new items!
 - Many new quality of life addons to make the terraria experience better :)
 
 Keep in mind this mod is still in progress!
@@ -58,7 +58,7 @@ small little parts, quests and remakes to make everything up to standard! Much b
 1.5.2.5 - A lot of bug fixes and config option fixes 
 -----
 Green Sun Update: 1.6 Has been released!
-Introducing many new systems like weapon swapping, reworked undergrounds and environments and quests! 4 New Post plant - Post ML bosses! Gothivia, Azurewrath, Supernova fragment and Niivi!
+Introducing many new systems like weapon swapping, reworked undergrounds and environments and quests! 4 New Post plant - Post ML bosses! Gothivia, Rek, Supernova fragment and Niivi!
 Many reworks to old bosses such as Verlia, Sylia and Irradia! More npcs and many more structures as well as structure fixing from old bugs. Over 100+ new weapons with new weapon types such as 
 Steins, Greatswords, Orbs, Gun Holstering and more! Overhauls to many of the old weapons and recipes while gearing the game more towards our new systems! New biomes such as the Illuria, Veil Towers, Worshipping
 spots! Green Sun is the main event during this update and it's a long lasting event that covers through Irradia to Gothivia (Our new God tier boss!). More connected lore and overall even more

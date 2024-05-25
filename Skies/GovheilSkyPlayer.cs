@@ -25,6 +25,8 @@ namespace Stellamod.Skies
 
         public override void PostUpdateMiscEffects()
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
             // If underwater and not in the last zone of the abyss.
             if (Player.InModBiome<FableBiome>())
                 Lighting.AddLight((int)(Player.Center.X / 3f), (int)(Player.Center.Y / 3f), TorchID.Yellow, 10f);

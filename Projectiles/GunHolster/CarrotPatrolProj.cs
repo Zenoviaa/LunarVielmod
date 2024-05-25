@@ -40,7 +40,6 @@ namespace Stellamod.Projectiles.GunHolster
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Plantera_Green);
           
             }
-
         }
 
         public float WidthFunction(float completionRatio)

@@ -14,7 +14,7 @@ namespace Stellamod.Items.Weapons.Mage
 	internal class Dulahaun : ClassSwapItem
 	{
 		//Alternate class you want it to change to
-		public override DamageClass AlternateClass => DamageClass.Melee;
+		public override DamageClass AlternateClass => DamageClass.Magic;
 
 		//Defaults for the other class
 		public override void SetClassSwappedDefaults()
@@ -23,7 +23,7 @@ namespace Stellamod.Items.Weapons.Mage
 			//Stats to have when in the other class
 			Item.damage = 270;
 			Item.knockBack = 12;
-			Item.mana = 0;
+			Item.mana = 20;
 		}
 		public override void SetStaticDefaults()
 		{
@@ -41,7 +41,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.noMelee = true;
 			Item.knockBack = 0f;
-			Item.DamageType = DamageClass.Magic;
+			Item.DamageType = DamageClass.Melee;
 			Item.value = 200;
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/OverGrowth_TP2");

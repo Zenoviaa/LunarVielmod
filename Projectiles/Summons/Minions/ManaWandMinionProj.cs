@@ -82,7 +82,12 @@ namespace Stellamod.Projectiles.Summons.Minions
             Heart++;
             if (Heart == 1260)
             {
-                Item.NewItem(Projectile.GetSource_FromThis(), Projectile.Center, new Vector2(10, 10), ItemID.Star, 1);
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    int itemIndex = Item.NewItem(Projectile.GetSource_FromThis(), Projectile.Center, new Vector2(10, 10), ItemID.Star, 1);
+                    NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
+                }
+             
                 Heart = 0;
             }
         }

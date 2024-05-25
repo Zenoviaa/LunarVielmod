@@ -4,10 +4,13 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Melee.Spears;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.DreadMire;
@@ -128,18 +131,20 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ItemType<Items.Placeable.SOMBossRel>()));
-            npcLoot.Add(ItemDropRule.Common(ItemType<VoidLantern>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.BossBag(ItemType<SingularityBag>()));
 
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 5, 13));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Superfragment>(), 1, 20, 45));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TempleKeyPart>()));
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<SupernovaBag>()));
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.SupernovaBossRel>()));
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-            notExpertRule.OnSuccess(ItemDropRule.Common(ItemType<SpacialDistortionFragments>(), minimumDropped: 40, maximumDropped: 65));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ItemType<TomeOfTheSingularity>(), chanceDenominator: 2));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ItemType<VoidBlaster>(), chanceDenominator: 2));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ItemType<VoidStaff>(), chanceDenominator: 2));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ItemType<EventHorizon>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Iknoctstein>(), 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Dulahaun>()));
+            //notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StalkersTallon>(), 2));
+         //   notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SunBlastStaff>(), 2));
             npcLoot.Add(notExpertRule);
-        }
+        
+    }
 
         public void CasuallyApproachChild()
         {
@@ -195,7 +200,20 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                     }
                 }
             }
-           
+
+            if (SingularityPhaze == 2)
+            {
+                int buffType = ModContent.BuffType<SupernovaChained>();
+                int buffIndex = NPC.FindBuffIndex(buffType);
+                if (buffIndex != -1)
+                {
+                    NPC.DelBuff(buffIndex);
+                }
+            } else if (SingularityPhaze == 1)
+            {
+                int buffType = ModContent.BuffType<SupernovaChained>();
+                NPC.AddBuff(buffType, 99999);
+            }
 
 
             PH2 = NPC.life < NPC.lifeMax * 0.6f;
@@ -373,7 +391,6 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                                         if(SingularityPhaze == 1 && SingularityOrbs == 0)
                                         {
                                             NPC.life = NPC.lifeMax / 3;
-                                            NPC.DelBuff(NPC.FindBuffIndex(ModContent.BuffType<SupernovaChained>()));
                                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode"), NPC.position);
                                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
                                             for (int i = 0; i < 14; i++)
@@ -632,31 +649,40 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                             {
                                 int Ofset = Main.rand.Next(1, 100);
 
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver4 + Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver2 + Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, -MathHelper.PiOver4 + Ofset);
+                                if (StellaMultiplayer.IsHost)
+                                {
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver4 + Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver2 + Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, -MathHelper.PiOver4 + Ofset);
+                                }
+
 
                             }
 
                             if (NPC.ai[0] == 150)
                             {
                                 int Ofset = Main.rand.Next(1, 100);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver4 + Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver2 + Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, -MathHelper.PiOver4 + Ofset);
-
+                                if (StellaMultiplayer.IsHost)
+                                {
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver4 + Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver2 + Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, -MathHelper.PiOver4 + Ofset);
+                                }
 
                             }
                             if (NPC.ai[0] == 250)
                             {
                                 int Ofset = Main.rand.Next(1, 100);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver4 + Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver2 + Ofset);
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, -MathHelper.PiOver4 + Ofset);
 
+                                if (StellaMultiplayer.IsHost)
+                                {
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver4 + Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver2 + Ofset);
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, -MathHelper.PiOver4 + Ofset);
+                                }
                             }
 
                             if (NPC.ai[0] >= 300)
@@ -783,9 +809,10 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                             else
                             {
                                 NPC.scale += 0.015f;
+                                NPC.AddBuff(ModContent.BuffType<SupernovaChained>(), 9999999);
                                 if (NPC.scale >= 1)
                                 {
-                                    NPC.AddBuff(ModContent.BuffType<SupernovaChained>(), 9999999);
+                        
                                     float radius = 900;
                                     float rot = MathHelper.TwoPi / 7;
                                     for (int I = 0; I < 7; I++)
@@ -920,7 +947,12 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         {
             if (!Dead)
             {
-                NPC.DelBuff(NPC.FindBuffIndex(ModContent.BuffType<SupernovaChained>()));
+                int buffIndex = NPC.FindBuffIndex(ModContent.BuffType<SupernovaChained>());
+                if(buffIndex != -1)
+                {
+                    NPC.DelBuff(buffIndex);
+                }
+            
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPOut"), NPC.position);
                 Dead = true;
             }

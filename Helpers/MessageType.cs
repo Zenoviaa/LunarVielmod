@@ -12,6 +12,8 @@
 		CompleteMerenaQuest,
 		CompleteZuiQuest,
 		CreatePortal,
+		StartVerlia,
+		StartIrradia
 	}
 
 	public enum QuestMessageType : byte

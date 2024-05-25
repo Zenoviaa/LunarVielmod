@@ -62,10 +62,7 @@ namespace Stellamod.Projectiles.Magic
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower3"), Projectile.position);
                 var EntitySource = Projectile.GetSource_Death();
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<StarFlowerproj3>(), Projectile.damage * 2, 1, Main.myPlayer, 0, 0);
-                }
+                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<StarFlowerproj3>(), Projectile.damage * 2, 1, Projectile.owner, 0, 0);
 
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 524f, 44f);
                 for (int i = 0; i < 50; i++)

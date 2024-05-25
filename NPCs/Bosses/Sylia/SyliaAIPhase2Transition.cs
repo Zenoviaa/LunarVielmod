@@ -19,10 +19,14 @@ namespace Stellamod.NPCs.Bosses.Sylia
             AttackCycle = 0;
             Timer++;
             Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(NPC.Center, 1f);
-            FilterManager filterManager = Terraria.Graphics.Effects.Filters.Scene;
-            filterManager[ShaderRegistry.Screen_Black].GetShader()
-             .UseProgress(1f - (Timer / 240));
-            filterManager.Activate(ShaderRegistry.Screen_Black);
+            if(Main.netMode != NetmodeID.Server)
+            {
+                FilterManager filterManager = Terraria.Graphics.Effects.Filters.Scene;
+                filterManager[ShaderRegistry.Screen_Black].GetShader()
+                 .UseProgress(1f - (Timer / 240));
+                filterManager.Activate(ShaderRegistry.Screen_Black);
+            }
+  
 
             //Kill the barrier
             if (Timer == 1)
@@ -50,7 +54,11 @@ namespace Stellamod.NPCs.Bosses.Sylia
             if(Timer == 240)
             {
                 //Void Wall Spawn Here
-                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y + 128, ModContent.NPCType<VoidWall>());
+                if (StellaMultiplayer.IsHost)
+                {
+                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y + 128, ModContent.NPCType<VoidWall>());
+                }
+               
                 SoundEngine.PlaySound(SoundID.NPCDeath62, NPC.position);
                 ShakeModSystem.Shake = 0;
                 Phase = ActionPhase.Phase_2;

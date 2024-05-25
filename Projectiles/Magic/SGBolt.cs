@@ -75,11 +75,8 @@ namespace Stellamod.Projectiles.Magic
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             NPC npc = target;
-            float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-            float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
             npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), npc.Center, Vector2.Zero, ModContent.ProjectileType<Skullboom>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-
         }
 
         public override void OnKill(int timeLeft)

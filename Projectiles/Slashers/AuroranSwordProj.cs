@@ -19,13 +19,7 @@ namespace Stellamod.Projectiles.Slashers
         private bool _initialized;
         private int timer;
         private bool ParticleSpawned;
-      /*  public override void SetStaticDefaults()
-        {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 25;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
-        }
 
-        */
         public override void SetDefaults()
         {
 
@@ -55,7 +49,7 @@ namespace Stellamod.Projectiles.Slashers
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
-            if (!_initialized && Main.myPlayer == Projectile.owner)
+            if (!_initialized)
             {
                 timer++;
 
@@ -65,7 +59,6 @@ namespace Stellamod.Projectiles.Slashers
                 _initialized = true;
                 Projectile.damage -= 9999;
                 //Projectile.netUpdate = true;
-
             }
             else if (_initialized)
             {

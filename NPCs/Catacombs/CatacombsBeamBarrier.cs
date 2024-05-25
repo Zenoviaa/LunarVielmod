@@ -31,6 +31,7 @@ namespace Stellamod.NPCs.Catacombs
 
         //No texture for this
         public override string Texture => TextureRegistry.EmptyTexture;
+        private ref float Timer => ref Projectile.ai[0];
 
         public override void SetDefaults()
         {
@@ -66,9 +67,15 @@ namespace Stellamod.NPCs.Catacombs
                 }
             }
 
+         
             if (!hasNpc)
             {
-                Projectile.Kill();
+                Timer++;
+                if(Timer >= 60)
+                {
+                    Projectile.Kill();
+                }
+            
                 return;
             }
 

@@ -49,17 +49,6 @@ namespace Stellamod.Projectiles.GunHolster
             Timer++;
             if (Timer == 1)
             {
-                /*
-                switch (Main.rand.Next(2))
-                {
-                    case 0:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/M38F30Bomb1"), Projectile.position);
-                        break;
-                    case 1:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/M38F30Bomb2"), Projectile.position);
-                        break;
-                }*/
-
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
                 Vector2 explosionCenter = Projectile.Center + direction * BeamLength;
 

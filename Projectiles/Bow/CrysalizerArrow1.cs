@@ -66,9 +66,9 @@ namespace Stellamod.Projectiles.Bow
                     }
                     if (player.GetModPlayer<MyPlayer>().CrysalizerHits == 4)
                     {
-
                         Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 2048f, 32f);
-                        Utilities.NewProjectileBetter(target.Center.X, target.Center.Y, 0, 0, ModContent.ProjectileType<CrysalizerExplosion>(), 50, 0f, -1, 0, Projectile.whoAmI);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, 
+                            ModContent.ProjectileType<CrysalizerExplosion>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                         player.GetModPlayer<MyPlayer>().CrysalizerHits = 0;
                     }
                 }

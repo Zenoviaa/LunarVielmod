@@ -169,9 +169,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
 
                 ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-                shaderSystem.TintScreen(Color.DarkOrange, 0.2f);
-                shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.05f);
-                shaderSystem.VignetteScreen(-1f);
+                shaderSystem.TintScreen(Color.DarkOrange, 0.2f, timer: 560);
+                shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.05f, timer: 560);
+                shaderSystem.VignetteScreen(-1f, timer: 560);
 
                 //NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<ALCADSWIRL>());
             }
@@ -183,7 +183,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 {
                     float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-20, 20);
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedYa * 0, speedYa * 0, 
-						ModContent.ProjectileType<Starbombing>(), 0, 0f, 0, 0f, 0f);
+						ModContent.ProjectileType<Starbombing>(), 0, 0f, Owner: Main.myPlayer);
                 }
 				invisibilityTimer = 0;
 			}

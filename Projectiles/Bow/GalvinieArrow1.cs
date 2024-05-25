@@ -30,32 +30,25 @@ namespace Stellamod.Projectiles.Bow
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;
         }
+
         public override void AI()
         {
             Projectile.ai[1]++;
             Projectile.velocity *= 1.02f;
-
-            if (Projectile.ai[1] == 100)
-            {
-
-
-            }
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-           
-             Utilities.NewProjectileBetter(target.Center.X, target.Center.Y, 0, 0, ModContent.ProjectileType<AlcadizBombExplosion>(), 7, 0f, -1, 0, Projectile.whoAmI);
-                
-
-              
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<AlcadizBombExplosion>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);                       
         }
+
         public override void OnKill(int timeLeft)
         {
-
             for (int i = 0; i < 20; i++)
             {
                 Dust.NewDustPerfect(Projectile.Center, DustID.YellowTorch, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default, 1f).noGravity = false;
             }
+
             for (int i = 0; i < 50; i++)
             {
                 int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.YellowStarDust, 0f, -2f, 0, default(Color), 1.5f);
@@ -66,7 +59,6 @@ namespace Stellamod.Projectiles.Bow
                     Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
                 }
             }
-
         }
 
         public override Color? GetAlpha(Color lightColor)
@@ -79,10 +71,12 @@ namespace Stellamod.Projectiles.Bow
             float baseWidth = Projectile.scale * Projectile.width * 1.3f;
             return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
         }
+
         public Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(Color.Goldenrod, Color.Transparent, completionRatio) * 0.7f;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             if (Main.rand.NextBool(5))

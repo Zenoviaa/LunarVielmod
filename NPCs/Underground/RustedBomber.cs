@@ -28,16 +28,16 @@ namespace Stellamod.NPCs.Underground
             NPC.height = 58;
             NPC.damage = 51;
             NPC.defense = 12;
-            NPC.lifeMax = 270;
+            NPC.lifeMax = 70;
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
             NPC.DeathSound = SoundID.NPCDeath14;
-            NPC.value = 563f;
+            NPC.value = 63f;
             NPC.knockBackResist = 0f;
         }
 
         public override void FindFrame(int frameHeight)
         {
-            NPC.frameCounter += 0.28f;
+            NPC.frameCounter += 0.15f;
             NPC.frameCounter %= Main.npcFrameCount[NPC.type];
             int frame = (int)NPC.frameCounter;
             NPC.frame.Y = frame * frameHeight;
@@ -65,7 +65,7 @@ namespace Stellamod.NPCs.Underground
                         Vector2 velocity = new Vector2(0, -10);
                         velocity = velocity.RotatedByRandom(MathHelper.ToRadians(45));
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), fireCenter, velocity,
-                            ModContent.ProjectileType<RustedBomb>(), 19, 4, Main.myPlayer);
+                            ModContent.ProjectileType<RustedBomb>(), 10, 4, Main.myPlayer);
                     }
              
                 }

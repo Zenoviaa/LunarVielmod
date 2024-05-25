@@ -132,19 +132,19 @@ namespace Stellamod.NPCs.Morrow
 			{
 				case ActionState.Asleep:
 					rect = new(0, 22 * 84, 72, 8 * 84);
-					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 6, 8, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - new Vector2(0, 24), texture.AnimationFrame(ref frameCounter, ref frameTick, 6, 8, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 				case ActionState.Notice:
 					rect = new Rectangle(0, 29 * 84, 72, 6 * 84);
-					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 6, 6, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - new Vector2(0, 24), texture.AnimationFrame(ref frameCounter, ref frameTick, 6, 6, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 				case ActionState.Jump:
 					rect = new Rectangle(0, 0, 72, 7 * 84);
-					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - new Vector2(0, 24), texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 				case ActionState.Fall:
 					rect = new Rectangle(0, 7 * 84, 72, 14 * 84);
-					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 2, 14, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - new Vector2(0, 24), texture.AnimationFrame(ref frameCounter, ref frameTick, 2, 14, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 			}
 			return false;

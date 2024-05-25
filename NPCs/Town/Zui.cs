@@ -269,9 +269,9 @@ namespace Stellamod.NPCs.Town
 
 			}
 
-			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(5));
+            Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 3);
 
-			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
+            int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 

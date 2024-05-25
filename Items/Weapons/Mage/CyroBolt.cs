@@ -6,7 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-namespace Stellamod.Projectiles.Bow
+namespace Stellamod.Items.Weapons.Mage
 {
     public class CyroBolt : ModItem
     {

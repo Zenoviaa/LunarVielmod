@@ -27,9 +27,9 @@ namespace Stellamod.NPCs.Underground
             NPC.width = 42;
             NPC.height = 48;
             NPC.aiStyle = 3;
-            NPC.damage = 64;
+            NPC.damage = 40;
             NPC.defense = 12;
-            NPC.lifeMax = 270;
+            NPC.lifeMax = 170;
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
             NPC.value = 563f;

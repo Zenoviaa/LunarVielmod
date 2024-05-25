@@ -17,8 +17,8 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
     internal class ExecutionRay : ModProjectile, IPixelPrimitiveDrawer
     {
         internal PrimitiveTrail BeamDrawer;
-        public ref float Time => ref Projectile.ai[0];
-        public NPC Owner => Main.npc[(int)Projectile.ai[1]];
+        private ref float Timer => ref Projectile.ai[0];
+        private ref float SwordRotation => ref Projectile.ai[1];
         public const float LaserLength = 2400f;
 
 
@@ -43,16 +43,16 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
                 Projectile.Kill();
 
             Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-            float swordRotation = 0f;
             if (Main.myPlayer == Projectile.owner)
             {
                 player.ChangeDir(Projectile.direction);
-                swordRotation = (Main.MouseWorld - player.Center).ToRotation();
+                SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+                Projectile.netUpdate = true;
                 if (!player.channel)
                     Projectile.Kill();
             }
 
-            Projectile.velocity = swordRotation.ToRotationVector2();
+            Projectile.velocity = SwordRotation.ToRotationVector2();
             Projectile.spriteDirection = player.direction;
             if (Projectile.spriteDirection == 1)
                 Projectile.rotation = Projectile.velocity.ToRotation();
@@ -65,20 +65,17 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
             // Fade in.
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
 
-            Projectile.scale = MathF.Sin(Time / 600f * MathHelper.Pi) * 3f;
+            Projectile.scale = MathF.Sin(Timer / 600f * MathHelper.Pi) * 3f;
             if (Projectile.scale > 1f)
                 Projectile.scale = 1f;
 
 
             // And create bright light.
             Lighting.AddLight(Projectile.Center, Color.Goldenrod.ToVector3() * 1.5f);
-
-
-
             CreateDustAtBeginning();
-
-            Time++;
+            Timer++;
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Player player = Main.player[Projectile.owner];
@@ -175,7 +172,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
             Color middleColor = Color.Lerp(Color.White, Color.LightYellow, 0.6f);
             Color middleColor2 = Color.Lerp(Color.OrangeRed, Color.Goldenrod, 0.5f);
-            Color finalColor = Color.Lerp(middleColor, middleColor2, Time / 600);
+            Color finalColor = Color.Lerp(middleColor, middleColor2, Timer / 600);
 
             TrailRegistry.LaserShader.UseColor(Color.LightSkyBlue);
             TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
@@ -192,6 +189,6 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
             Main.spriteBatch.ExitShaderRegion();
         }
 
-        public override bool? CanDamage() => Time >= 12f;
+        public override bool? CanDamage() => Timer >= 12f;
     }
 }

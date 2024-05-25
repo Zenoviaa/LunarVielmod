@@ -201,17 +201,20 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 			timer++;
 			if (timer == 1)
 			{
+				if (Main.netMode != NetmodeID.Server)
+				{
 
-				DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+					DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
 
-				//2. Create a new instance of your dialogue
-				IrradiaDialogue exampleDialogue = new IrradiaDialogue();
+					//2. Create a new instance of your dialogue
+					IrradiaDialogue exampleDialogue = new IrradiaDialogue();
 
-				//3. Start it
-				dialogueSystem.StartDialogue(exampleDialogue);
+					//3. Start it
+					dialogueSystem.StartDialogue(exampleDialogue);
 
+				}
 
-				Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 25f);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 25f);
 				NPC.netUpdate = true;
 			}
 

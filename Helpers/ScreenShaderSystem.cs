@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria;
 using Terraria.Graphics.Effects;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
@@ -11,6 +13,7 @@ namespace Stellamod.Helpers
         private bool _useVignette;
         private float _vignetteStrength;
         private float _vignetteOpacity;
+        private float _vignetteTimer;
         private float _targetVignetteStrength;
         private float _targetVignetteOpacity;
 
@@ -36,26 +39,38 @@ namespace Stellamod.Helpers
         /// Negative strength makes it white, positive strength makes it black
         /// </summary>
         /// <param name="strength"></param>
-        public void VignetteScreen(float strength, float opacity = 1f)
+        public void VignetteScreen(float strength, float opacity = 1f, float timer = -1f)
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
             _useVignette = true;
             _targetVignetteOpacity = opacity;
             _targetVignetteStrength = strength;
+            if(timer != -1)
+            {
+                _vignetteTimer = timer;
+            }
         }
 
         public void UnVignetteScreen()
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
             _useVignette = false;
         }
 
         public void DistortScreen(string normalTexture, Vector2 scrollSpeed, float blend = 0.05f, float timer = -1f)
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
             Texture2D texture = ModContent.Request<Texture2D>(normalTexture).Value;
             DistortScreen(texture, scrollSpeed, blend, timer);
         }
 
         public void DistortScreen(Texture2D normalTexture, Vector2 scrollSpeed, float blend = 0.05f, float timer = -1f)
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
             _useDistortion = true;
             _distortionScrollSpeed = scrollSpeed;
             _targetDistortionBlend = blend;
@@ -71,31 +86,35 @@ namespace Stellamod.Helpers
 
         public void UnDistortScreen()
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
             _useDistortion = false;
         }
 
-        public void FlashTintScreen(Color color, float targetOpacity, float time)
+        public void TintScreen(Color color, float targetOpacity, float timer = -1f)
         {
-            _useTint = true;
-            _tintColor = color;
-            _tintOpacity = _targetTintOpacity;
-            _targetTintOpacity = targetOpacity;
-            _tintTimer = time;
-        }
-        public void TintScreen(Color color, float targetOpacity)
-        {
+            if (Main.netMode == NetmodeID.Server)
+                return;
             _useTint = true;
             _tintColor = color;
             _targetTintOpacity = targetOpacity;
+            if(timer != -1)
+            {
+                _tintTimer = timer;
+            }
         }
 
         public void UnTintScreen()
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
             _useTint = false;
         }
 
         public override void PostUpdateEverything()
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
             UpdateDistortion();
             UpdateTint();
             UpdateVignette();
@@ -103,6 +122,15 @@ namespace Stellamod.Helpers
 
         private void UpdateVignette()
         {
+            if (_vignetteTimer > 0)
+            {
+                _vignetteTimer--;
+                if (_vignetteTimer <= 0)
+                {
+                    _useVignette = false;
+                }
+            }
+
             if (_useVignette)
             {
                 if (!FilterManager[ShaderRegistry.Screen_Vignette].IsActive())
@@ -192,6 +220,15 @@ namespace Stellamod.Helpers
 
         private void UpdateTint()
         {
+            if (_tintTimer > 0)
+            {
+                _tintTimer--;
+                if (_tintTimer <= 0)
+                {
+                    _useTint = false;
+                }
+            }
+
             if (_useTint)
             {
                 if (!FilterManager[ShaderRegistry.Screen_Tint].IsActive())
@@ -203,15 +240,6 @@ namespace Stellamod.Helpers
                 if(_tintOpacity >= _targetTintOpacity)
                 {
                     _tintOpacity = _targetTintOpacity;
-                }
-
-                if(_tintTimer > 0)
-                {
-                    _tintTimer--;
-                    if(_tintTimer <= 0)
-                    {
-                        _useTint = false;
-                    }
                 }
 
                 var shaderData = FilterManager[ShaderRegistry.Screen_Tint].GetShader();

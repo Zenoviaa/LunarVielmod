@@ -11,17 +11,14 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles.Crossbows.Eckasect
 {
 	public class EckasectLiberatorHold : ModProjectile
-	{
-		public override void SetStaticDefaults()
+    {
+        private ref float Timer => ref Projectile.ai[0];
+        private ref float SwordRotation => ref Projectile.ai[1];
+        public override void SetStaticDefaults()
 		{
 			Main.projFrames[Projectile.type] = 1;//number of frames the animation has
 		}
 
-		public float Timer
-		{
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
-		}
 
 		public override void SetDefaults()
 		{
@@ -58,16 +55,16 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 				Projectile.Kill();
 
 			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-			float swordRotation = 0f;
 			if (Main.myPlayer == Projectile.owner)
 			{
 				player.ChangeDir(Projectile.direction);
-				swordRotation = (Main.MouseWorld - player.Center).ToRotation();
+                SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+				Projectile.netUpdate = true;
 				if (!player.channel)
 					Projectile.Kill();
 			}
 
-			Projectile.velocity = swordRotation.ToRotationVector2();
+			Projectile.velocity = SwordRotation.ToRotationVector2();
 			Projectile.spriteDirection = player.direction;
 			if (Projectile.spriteDirection == 1)
 				Projectile.rotation = Projectile.velocity.ToRotation();
@@ -171,9 +168,9 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 				ShakeModSystem.Shake = 4;
 			}
 
-			Projectile.Center = playerCenter + new Vector2(80, 0).RotatedBy(swordRotation); ;// customization of the hitbox position
+			Projectile.Center = playerCenter + new Vector2(80, 0).RotatedBy(SwordRotation);
 
-			player.heldProj = Projectile.whoAmI;
+            player.heldProj = Projectile.whoAmI;
 			player.itemTime = 2;
 			player.itemAnimation = 2;
 			player.itemRotation = (float)Math.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);

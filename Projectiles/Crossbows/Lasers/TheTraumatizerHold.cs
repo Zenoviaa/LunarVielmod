@@ -12,18 +12,13 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles.Crossbows.Lasers
 {
 	public class TheTraumatizerHold : ModProjectile
-	{
-		public override void SetStaticDefaults()
+    {
+        private ref float Timer => ref Projectile.ai[0];
+        private ref float SwordRotation => ref Projectile.ai[1];
+        public override void SetStaticDefaults()
 		{
 			Main.projFrames[Projectile.type] = 1;//number of frames the animation has
 		}
-
-		public float Timer
-		{
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
-		}
-
 		public override void SetDefaults()
 		{
 			Projectile.damage = 0;
@@ -66,16 +61,16 @@ namespace Stellamod.Projectiles.Crossbows.Lasers
 				Projectile.Kill();
 
 			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-			float swordRotation = 0f;
 			if (Main.myPlayer == Projectile.owner)
 			{
 				player.ChangeDir(Projectile.direction);
-				swordRotation = (Main.MouseWorld - player.Center).ToRotation();
+				SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+				Projectile.netUpdate = true;
 				if (!player.channel)
 					Projectile.Kill();
 			}
 
-			Projectile.velocity = swordRotation.ToRotationVector2();
+			Projectile.velocity = SwordRotation.ToRotationVector2();
 			Projectile.spriteDirection = player.direction;
 			if (Projectile.spriteDirection == 1)
 			{
@@ -100,7 +95,7 @@ namespace Stellamod.Projectiles.Crossbows.Lasers
 			}
 
 
-			Projectile.Center = playerCenter + new Vector2(40, 0).RotatedBy(swordRotation); ;// customization of the hitbox position
+			Projectile.Center = playerCenter + new Vector2(40, 0).RotatedBy(SwordRotation);// customization of the hitbox position
 
 			player.heldProj = Projectile.whoAmI;
 			player.itemTime = 2;

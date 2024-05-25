@@ -6,6 +6,7 @@ namespace Stellamod.Projectiles.Magic
 {
 	public class BincleProj : ModProjectile
 	{
+		private ref float SwordRotation => ref Projectile.ai[0];
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("SalfaCirle");
@@ -58,15 +59,16 @@ namespace Stellamod.Projectiles.Magic
 				Projectile.Kill();
 
 			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-			float swordRotation = 0f;
 			if (Main.myPlayer == Projectile.owner)
 			{
 				player.ChangeDir(Projectile.direction);
-				swordRotation = (Main.MouseWorld - player.Center).ToRotation();
+				SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
 				if (!player.channel)
 					Projectile.Kill();
+				Projectile.netUpdate = true;
 			}
-			Projectile.velocity = swordRotation.ToRotationVector2();
+
+			Projectile.velocity = SwordRotation.ToRotationVector2();
 
 			Projectile.spriteDirection = player.direction;
 			if (Projectile.spriteDirection == 1)
@@ -74,7 +76,7 @@ namespace Stellamod.Projectiles.Magic
 			else
 				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
 
-			Projectile.Center = playerCenter + new Vector2(120, 0).RotatedBy(swordRotation);
+			Projectile.Center = playerCenter + new Vector2(120, 0).RotatedBy(SwordRotation);
 
 			if (++Projectile.frameCounter >= 2)
 			{

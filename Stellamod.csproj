@@ -45,6 +45,7 @@
     <None Remove="Buffs\FlowerPower.png" />
     <None Remove="Buffs\Gintzingwinds.png" />
     <None Remove="Buffs\IlluriasBlessing.png" />
+    <None Remove="Buffs\IridineNecklaceCDBuff.png" />
     <None Remove="Buffs\Irradiation.png" />
     <None Remove="Buffs\Lacerated.png" />
     <None Remove="Buffs\Minions\JacksonPollockMinionBuff.png" />
@@ -54,6 +55,7 @@
     <None Remove="Buffs\Minions\XScissorMinionBuff.png" />
     <None Remove="Buffs\MiracleBoost.png" />
     <None Remove="Buffs\MiracleLiquid.png" />
+    <None Remove="Buffs\MoonFlame.png" />
     <None Remove="Buffs\Rekin.png" />
     <None Remove="Buffs\RibbonWrapped.png" />
     <None Remove="Buffs\SFBuff.png" />
@@ -115,6 +117,7 @@
     <None Remove="Items\Accessories\EaglesGrace_Wings.png" />
     <None Remove="Items\Accessories\GhostExcalibur.png" />
     <None Remove="Items\Accessories\GiftOfLife.png" />
+    <None Remove="Items\Accessories\IllurineHoops.png" />
     <None Remove="Items\Accessories\LeatherGlove.png" />
     <None Remove="Items\Accessories\LunarBand.png" />
     <None Remove="Items\Accessories\OceanScroll.png" />
@@ -498,6 +501,7 @@
     <None Remove="Projectiles\Magic\ImperfectionProj.png" />
     <None Remove="Projectiles\Magic\LampShot.png" />
     <None Remove="Projectiles\Magic\LightSpandProg.png" />
+    <None Remove="Projectiles\Magic\MoonFlameSlashProj.png" />
     <None Remove="Projectiles\Magic\PoyaProj.png" />
     <None Remove="Projectiles\Magic\Poyashot.png" />
     <None Remove="Projectiles\Magic\Poyashot2.png" />

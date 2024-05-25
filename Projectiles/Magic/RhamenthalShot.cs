@@ -60,9 +60,6 @@ namespace Stellamod.Projectiles.Magic
             Projectile.ai[1]++;
             if (!Moved && Projectile.ai[1] >= 0)
             {
-                int Sound = Main.rand.Next(1, 3);
-              
-
                 Projectile.spriteDirection = Projectile.direction;
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
                 Projectile.alpha = 255;

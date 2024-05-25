@@ -23,7 +23,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
         public string TexturePath;
         public Texture2D Texture => ModContent.Request<Texture2D>(TexturePath).Value;
         public Texture2D GlowTexture => ModContent.Request<Texture2D>(TexturePath + "_Glow").Value;
-        public Vector2 Size => Texture.Size();
+        public Vector2 Size;
         public Vector2 Position;
         public Vector2 Center => Position + Size / 2;
         public Vector2 Velocity;
@@ -114,23 +114,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             NPC.noTileCollide = true;
             NPC.aiStyle = -1;
             NPC.knockBackResist = 0f;
-
-            //Initialize Segments
-            Segments = new HavocSegment[5];
-            for (int i = 0; i < Segments.Length; i++)
-            {
-                Segments[i] = new HavocSegment();
-                Segments[i].Position = NPC.position;
-                Segments[i].Rotation = 0;
-                Segments[i].Velocity = Vector2.Zero;
-            }
-
-            //Set the textures
-            Segments[0].TexturePath = Texture;
-            Segments[1].TexturePath = $"{BaseTexturePath}HavocSegmentFront";
-            Segments[2].TexturePath = $"{BaseTexturePath}HavocSegmentMiddle";
-            Segments[3].TexturePath = $"{BaseTexturePath}HavocSegmentBack";
-            Segments[4].TexturePath = $"{BaseTexturePath}HavocTail";
         }
 
         public override bool CheckActive()
@@ -140,6 +123,37 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
 
         public override void AI()
         {
+            if(Segments == null)
+            {
+                //Initialize Segments
+                Segments = new HavocSegment[5];
+                for (int i = 0; i < Segments.Length; i++)
+                {
+                    Segments[i] = new HavocSegment();
+                    Segments[i].Position = NPC.position;
+                    Segments[i].Rotation = 0;
+                    Segments[i].Velocity = Vector2.Zero;
+                }
+
+                //Set the textures
+                Segments[0].TexturePath = Texture;
+                Segments[0].Position = Segments[0].Position + new Vector2(0.98f, 0);
+                Segments[0].Size = new Vector2(170, 90);
+                Segments[1].TexturePath = $"{BaseTexturePath}HavocSegmentFront";
+                Segments[1].Position = Segments[1].Position + new Vector2(1, 0);
+                Segments[1].Size = new Vector2(54, 74);
+                Segments[2].TexturePath = $"{BaseTexturePath}HavocSegmentMiddle";
+                Segments[2].Position = Segments[2].Position + new Vector2(1, 0);
+                Segments[2].Size = new Vector2(54, 74);
+                Segments[3].TexturePath = $"{BaseTexturePath}HavocSegmentBack";
+                Segments[3].Position = Segments[3].Position + new Vector2(1, 0);
+                Segments[3].Size = new Vector2(54, 78);
+                Segments[4].TexturePath = $"{BaseTexturePath}HavocTail";
+                Segments[4].Position = Segments[4].Position + new Vector2(1, 0);
+                Segments[4].Size = new Vector2(136, 58);
+                return;
+            }
+
             if (ArenaCenter == default(Vector2) && StellaMultiplayer.IsHost)
             {
                 ArenaCenter = NPC.position;
@@ -178,6 +192,20 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             writer.Write(LaserAttackDistance);
             writer.WriteVector2(ArenaCenter);
             writer.Write(OrbitDistance);
+            if (Segments == null)
+            {
+                writer.Write(false);
+            }
+            else
+            {
+                writer.Write(true);
+                writer.Write(Segments.Length);
+                for (int i = 0; i < Segments.Length; i++)
+                {
+                    writer.WriteVector2(Segments[i].Position);
+                    writer.WriteVector2(Segments[i].Velocity);
+                }
+            }
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -185,6 +213,21 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             LaserAttackDistance = reader.ReadSingle();
             ArenaCenter = reader.ReadVector2();
             OrbitDistance = reader.ReadSingle();
+            bool hasSegments = reader.ReadBoolean();
+            if (hasSegments)
+            {
+                int length = reader.ReadInt32();
+                for (int i = 0; i < length; i++)
+                {
+                    Vector2 pos = reader.ReadVector2();
+                    Vector2 vel = reader.ReadVector2();
+                    if (Segments != null && Segments.Length <= length)
+                    {
+                        Segments[i].Position = pos;
+                        Segments[i].Velocity = vel;
+                    }
+                }
+            }
         }
 
         private void ResetState(ActionState state)
@@ -587,6 +630,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
 
         public override void PostAI()
         {
+            if (Segments == null)
+                return;
             //Move segments according to velocity
             for (int i = 0; i < Segments.Length; i++)
             {
@@ -596,6 +641,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
 
         private void MoveSegmentsLikeWorm()
         {
+            if (Segments == null)
+                return;
             for (int i = 1; i < Segments.Length; i++)
             {
                 MoveSegmentLikeWorm(i);
@@ -604,6 +651,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
 
         private void MoveSegmentLikeWorm(int index)
         {
+            if (Segments == null)
+                return;
             int inFrontIndex = index - 1;
             if (inFrontIndex < 0)
                 return;
@@ -621,6 +670,9 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             segment.Rotation = (float)Math.Atan2(dirY, dirX) * 0.33f;
             // We also get the length of the direction vector.
             float length = (float)Math.Sqrt(dirX * dirX + dirY * dirY);
+            if (length == 0)
+                length = 1;
+
             // We calculate a new, correct distance.
 
             float fixer = 1;
@@ -689,7 +741,9 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
         int warningFrameTick;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            if(State == ActionState.Charge)
+            if (Segments == null)
+                return false;
+            if (State == ActionState.Charge)
             {
                 Texture2D warningTexture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/IrradiaNHavoc/Havoc/Projectiles/HavocWarnChargeProj").Value;
                 Player target = Main.player[NPC.target];
@@ -747,6 +801,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
 
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            if (Segments == null)
+                return;
             for (int i = Segments.Length - 1; i > -1; i--)
             {
                 HavocSegment segment = Segments[i];

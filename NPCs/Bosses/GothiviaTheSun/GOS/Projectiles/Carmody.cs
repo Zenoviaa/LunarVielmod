@@ -144,19 +144,20 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 int damage = 10;
                 int knockback = 1;
                 Vector2 pos = NPC.Center;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
-                 type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
+                             type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
+                }
 
 
-
-          
 
 
 
                 ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-                shaderSystem.TintScreen(Color.DarkOrange, 0.2f);
-                shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.05f);
-                shaderSystem.VignetteScreen(-1f);
+                shaderSystem.TintScreen(Color.DarkOrange, 0.2f, timer: 320);
+                shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.05f, timer: 320);
+                shaderSystem.VignetteScreen(-1f, timer: 320);
 
                 //NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<ALCADSWIRL>());
             }
@@ -200,8 +201,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 int damage = 10;
                 int knockback = 1;
                 Vector2 pos = NPC.Center;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
-                 type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
+
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
+                     type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
+
+                }
 
 
                 for (int i = 0; i < 150; i++)

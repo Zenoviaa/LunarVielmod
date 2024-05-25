@@ -16,8 +16,7 @@ using Stellamod.Trails;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class ThePenetratorMiracleArrowProj : ModProjectile,
-        IPixelPrimitiveDrawer
+    internal class ThePenetratorMiracleArrowProj : ModProjectile
     {
         internal PrimitiveTrail BeamDrawer;
         ref float Timer => ref Projectile.ai[0];
@@ -89,19 +88,6 @@ namespace Stellamod.Projectiles.Bow
             Color startColor = Color.White;
             Color endColor = Color.Transparent;
             return Color.Lerp(startColor, endColor, completionRatio);
-        }
-
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            /*
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.Black);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
-
-            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
-            */
         }
     }
 }

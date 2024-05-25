@@ -65,11 +65,19 @@ namespace Stellamod.Items.Consumables
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<MOTT>());
 			}
 
-			if (NPC.downedBoss2)
+            if (Main.rand.NextBool(20))
             {
-				
+                player.QuickSpawnItem(entitySource, ItemID.SeashellHairpin);
+            }
 
-				if (Main.rand.NextBool(10))
+            if (NPC.downedBoss2)
+            {
+                if (Main.rand.NextBool(4))
+                {
+                    player.QuickSpawnItem(entitySource, ModContent.ItemType<LuminullSpiritFragments>(), Main.rand.Next(1, 10));
+                }
+
+                if (Main.rand.NextBool(10))
 				{
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<BoneNail>());
 				}
@@ -122,7 +130,12 @@ namespace Stellamod.Items.Consumables
 				{
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<KaleidoscopicInk>(), Main.rand.Next(10, 30));
 				}
-			}
+
+                if (Main.rand.NextBool(10))
+                {
+                    player.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(1, 3));
+                }
+            }
 		}
 
 		// Below is code for the visuals

@@ -99,7 +99,7 @@ namespace Stellamod.NPCs.Global
                 npcLoot.Add(notExpertRule);// In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
-			if (npc.type == NPCID.QueenBee)
+            if (npc.type == NPCID.QueenBee)
 			{
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
@@ -177,10 +177,16 @@ namespace Stellamod.NPCs.Global
 			if (npc.type == NPCID.CultistBoss)
 			{
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 5, 9));
+            }
 
-			}
+            if (npc.type == NPCID.MoonLordCore)
+            {
+                LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+                notExpertRule.OnSuccess(ItemDropRule.Common(ItemID.LunarOre, chanceDenominator: 1, 80, 120));
+                npcLoot.Add(notExpertRule);// In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+            }
 
-			if (npc.type == NPCID.Deerclops)
+            if (npc.type == NPCID.Deerclops)
 			{
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}

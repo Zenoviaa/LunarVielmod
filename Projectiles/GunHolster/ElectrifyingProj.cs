@@ -6,6 +6,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria;
+using Terraria.Utilities;
 
 namespace Stellamod.Projectiles.GunHolster
 {
@@ -36,7 +37,8 @@ namespace Stellamod.Projectiles.GunHolster
         }
 
         private ref float AI_Timer => ref Projectile.ai[0];
-
+        private ref float Distance => ref Projectile.ai[1];
+        private ref float Seed => ref Projectile.ai[2];
         public override void OnSpawn(IEntitySource source)
         {
             for (int i = 0; i < Projectile.oldPos.Length; i++)
@@ -51,12 +53,25 @@ namespace Stellamod.Projectiles.GunHolster
 
             if (AI_Timer % 2 == 0)
             {
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Distance = Main.rand.NextFloat(2, 8);
+                    Seed = Main.rand.Next(0, int.MaxValue);
+                    Projectile.netUpdate = true;
+                }
+            }
+
+            if(Distance != 0)
+            {
                 //Randomly teleport to make the jagged effect
+                UnifiedRandom random = new UnifiedRandom((int)Seed);
+                float maxRadians = MathHelper.ToRadians(210);
+                double radians = random.NextDouble() * maxRadians - Main.rand.NextDouble() * maxRadians;
+
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
-                direction = direction.RotatedByRandom(MathHelper.ToRadians(210));
-                float distance = Main.rand.NextFloat(2, 8);
-                Projectile.Center = Projectile.Center + direction * distance;
-                Projectile.netUpdate = true;
+                direction = direction.RotatedByRandom(radians);
+                Projectile.Center = Projectile.Center + direction * Distance;
+                Distance = 0;
             }
 
             if (FadeOut)

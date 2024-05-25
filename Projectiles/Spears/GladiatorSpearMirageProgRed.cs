@@ -44,8 +44,13 @@ namespace Stellamod.Projectiles.Spears
             if (Projectile.ai[1] == 1)
             {
                 Projectile.alpha = 255;
-                Projectile.position.X = Main.rand.NextFloat(Projectile.position.X - 150, Projectile.position.X + 150);
-                Projectile.position.Y = Main.rand.NextFloat(Projectile.position.Y - 150, Projectile.position.Y + 150);
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.position.X = Main.rand.NextFloat(Projectile.position.X - 150, Projectile.position.X + 150);
+                    Projectile.position.Y = Main.rand.NextFloat(Projectile.position.Y - 150, Projectile.position.Y + 150);
+                    Projectile.netUpdate = true;
+                }
+               
             }
             if (Projectile.ai[1] == 2)
             {

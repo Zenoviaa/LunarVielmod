@@ -299,8 +299,8 @@ namespace Stellamod.NPCs.Town
 					var entitySource = NPC.GetSource_GiftOrReward();
 
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
-					switch (Main.rand.Next(7))
+                    Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 2);
+                    switch (Main.rand.Next(7))
 					{
 
 
@@ -373,8 +373,8 @@ namespace Stellamod.NPCs.Town
 					var entitySource = NPC.GetSource_GiftOrReward();
 
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(5));
-					switch (Main.rand.Next(8))
+                    Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 3);
+                    switch (Main.rand.Next(8))
 					{
 
 
@@ -446,8 +446,8 @@ namespace Stellamod.NPCs.Town
 					var entitySource = NPC.GetSource_GiftOrReward();
 
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
-					switch (Main.rand.Next(10))
+                    Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 1);
+                    switch (Main.rand.Next(10))
 					{
 
 
@@ -535,7 +535,7 @@ namespace Stellamod.NPCs.Town
 
 					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<OverworldRuneI>());
 					var entitySource = NPC.GetSource_GiftOrReward();
-					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(2));
+					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 1);
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 
 					switch (Main.rand.Next(16))
@@ -679,8 +679,8 @@ namespace Stellamod.NPCs.Town
 
 					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<OceanRuneI>());
 					var entitySource = NPC.GetSource_GiftOrReward();
-					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
-					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
+                    Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 2);
+                    Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 					switch (Main.rand.Next(17))
 					{
 						case 0:
@@ -788,8 +788,8 @@ namespace Stellamod.NPCs.Town
 
 					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<JungleRuneI>());
 					var entitySource = NPC.GetSource_GiftOrReward();
-					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
-					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
+                    Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 2);
+                    Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 					switch (Main.rand.Next(16))
 					{
 

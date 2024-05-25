@@ -19,6 +19,11 @@ namespace Stellamod.NPCs.Global
                 itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<CatacombsKey>()));
             }
 
+            if(item.type == ItemID.MoonLordBossBag)
+            {
+                itemLoot.Add(ItemDropRule.Common(ItemID.LunarOre, 1, 80, 120));
+            }
+
             //This code checks for and removes a specific item
             if(item.type == ItemID.PlanteraBossBag)
             {

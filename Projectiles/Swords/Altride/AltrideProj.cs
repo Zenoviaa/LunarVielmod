@@ -55,10 +55,8 @@ namespace Stellamod.Projectiles.Swords.Altride
                 var EntitySource = Projectile.GetSource_FromThis();
                 if (Main.rand.NextBool(8))
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                        Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-50, 50), Projectile.Center.Y + Main.rand.Next(-50, 50), StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<Altride2>(), Projectile.damage * 4, 1, Projectile.owner, 0, 0);
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-50, 50), Projectile.Center.Y + Main.rand.Next(-50, 50), StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<Altride2>(), Projectile.damage * 4, 1, Projectile.owner, 0, 0);
 
-                   
                 }
 
                 if (Main.rand.NextBool(3))

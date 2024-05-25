@@ -10,9 +10,8 @@ namespace Stellamod.Projectiles.Summons.Minions
 {
     public class MushroomStaveMinionProg : ModProjectile
     {
-        public bool VELAdd;
         public float VELXStart;
-        public float VEL;
+        private ref float VEL => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
@@ -72,10 +71,13 @@ namespace Stellamod.Projectiles.Summons.Minions
             Projectile.velocity.Y += 0.01f;
             if (Projectile.ai[1] >= 60)
             {
-                VEL = Main.rand.NextFloat(-0.06f, 0.06f);
-                Projectile.ai[1] = 0;
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    VEL = Main.rand.NextFloat(-0.06f, 0.06f);
+                    Projectile.ai[1] = 0;
 
-                VELAdd = true;
+                    Projectile.netUpdate = true;
+                }
             }
         }
     }

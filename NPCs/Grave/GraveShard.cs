@@ -27,9 +27,8 @@ namespace Stellamod.NPCs.Grave
 
     public class GraveShard : ModNPC
     {
-
-        private Vector2 BloodCystPos;
-
+        private ref float Timer => ref NPC.ai[0];
+        private ref float SpawnTimer => ref NPC.ai[1];
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             if (spawnInfo.Player.ZoneGraveyard)
@@ -45,25 +44,21 @@ namespace Stellamod.NPCs.Grave
         {
 
             NPC.damage = 0;
-            NPC.ai[0] += 0.5f;
-            if (NPC.ai[0] == 2)
-            {
-                BloodCystPos = NPC.position;
-            }
-            if (NPC.ai[0] >= 3 && NPC.ai[0] <= 50)
-            {
-                Movement(BloodCystPos, 0f, 50f, 0.05f);
-            }
-            if (NPC.ai[0] >= 50 && NPC.ai[0] <= 100)
-            {
-                Movement(BloodCystPos, 0f, 0f, 0.05f);
-            }
-            if (NPC.ai[0] == 100)
-            {
-                NPC.ai[0] = 3;
-            }
+            Timer++;
+            //Oscillate movement
+            float ySpeed = MathF.Sin(Timer * 0.05f);
+            NPC.velocity = new Vector2(0, ySpeed);
 
-
+            SpawnTimer--;
+            if(SpawnTimer <= 0 && NPC.CountNPCS(ModContent.NPCType<GraveSeeker>()) < 7)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, 
+                        ModContent.NPCType<GraveSeeker>());
+                }
+                SpawnTimer = 450;
+            }
             float num = 1f - NPC.alpha / 255f;
             Lighting.AddLight(NPC.Center, 1.6f * num, 0.4f * num, 0.8f * num);
         }
@@ -71,13 +66,6 @@ namespace Stellamod.NPCs.Grave
 
 
 
-
-
-        public void Movement(Vector2 Player2, float PosX, float PosY, float Speed)
-        {
-            Vector2 target = Player2 + new Vector2(PosX, PosY);
-            NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, target, 0.3f), NPC.Center.Distance(target) * Speed), 0.03f);
-        }
 
 
         public override void SetDefaults()

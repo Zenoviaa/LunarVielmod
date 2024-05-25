@@ -15,20 +15,18 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 		public override void SetStaticDefaults()
 		{
 			Main.projFrames[Projectile.type] = 60;
-			// DisplayName.SetDefault("Flask of KABOOM");
 		}
 
 		public override void SetDefaults()
 		{
 			Projectile.width = 20;
 			Projectile.height = 20;
-
 			Projectile.aiStyle = 2;
-
 			Projectile.friendly = true;
 			Projectile.hostile = false;
 			Projectile.tileCollide = true;
 		}
+
 		public override void AI()
 		{
 			Vector3 RGB = new(1.00f, 0.37f, 0.30f);
@@ -51,11 +49,10 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 				Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 				Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
 				ParticleManager.NewParticle(Projectile.Center, speed2 * 5, ParticleManager.NewInstance<ShadeParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
 			}
+
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/flameup"), Projectile.position);
 			Projectile.Kill();
-
 		}
 
 		public override bool OnTileCollide(Vector2 oldVelocity)
@@ -70,15 +67,14 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 				Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
 				ParticleManager.NewParticle(Projectile.Center, speed2 * 5, ParticleManager.NewInstance<ShadeParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/flameup"));
-
 			}
+
 			Projectile.Kill();
 			return false;
 		}
 
 		public override bool PreAI()
-		{
-			
+		{	
 			if (++Projectile.frameCounter >= 1)
 			{
 				Projectile.frameCounter = 0;
@@ -87,10 +83,8 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 					Projectile.frame = 0;
 				}
 			}
+
 			return true;
-
-
 		}
-
 	}
 }

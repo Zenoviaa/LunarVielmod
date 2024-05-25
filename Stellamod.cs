@@ -181,7 +181,7 @@ namespace Stellamod
 
 
 
-            if (!Main.dedServ && ModContent.GetInstance<LunarVeilClientConfig>().VanillaTexturesToggle == true)
+            if (!Main.dedServ && Main.netMode != NetmodeID.Server && ModContent.GetInstance<LunarVeilClientConfig>().VanillaTexturesToggle == true)
             {
                 Main.instance.LoadTiles(TileID.Dirt);
                 TextureAssets.Tile[TileID.Dirt] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/DirtRE");

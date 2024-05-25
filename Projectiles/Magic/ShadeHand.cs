@@ -47,8 +47,14 @@ namespace Stellamod.Projectiles.Magic
                 Projectile.spriteDirection = Projectile.direction;
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
                 Projectile.alpha = 255;
-                Projectile.position.X = Main.rand.NextFloat(Projectile.position.X - 50, Projectile.position.X + 50);
-                Projectile.position.Y = Main.rand.NextFloat(Projectile.position.Y - 50, Projectile.position.Y + 50);
+
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.position.X = Main.rand.NextFloat(Projectile.position.X - 50, Projectile.position.X + 50);
+                    Projectile.position.Y = Main.rand.NextFloat(Projectile.position.Y - 50, Projectile.position.Y + 50);
+                    Projectile.netUpdate = true;
+                }
+
                 for (int j = 0; j < 10; j++)
                 {
                     Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;

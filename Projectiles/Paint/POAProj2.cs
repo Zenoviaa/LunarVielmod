@@ -58,28 +58,24 @@ namespace Stellamod.Projectiles.Paint
             float rotation = Projectile.rotation;
             player.RotatedRelativePoint(Projectile.Center);
 
-         
-                if (Main.mouseLeft)
+      
+            if (Main.myPlayer == Projectile.owner && Main.mouseLeft)
+            {
+                Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * Projectile.Distance(Main.MouseWorld) / 15;
+                Projectile.netUpdate = true;
+            }
+            else
+            {
+                Projectile.velocity = Projectile.DirectionTo(player.Center) * 20;
+                if (Projectile.Hitbox.Intersects(player.Hitbox))
                 {
-                    Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * Projectile.Distance(Main.MouseWorld) / 15;
+                    Projectile.Kill();
                 }
-                else
-                {
-                    Projectile.velocity = Projectile.DirectionTo(player.Center) * 20;
-                    if (Projectile.Hitbox.Intersects(player.Hitbox))
-                    {
-                        Projectile.Kill();
-                    }
-                }
+            }
             
-         
-
-
             Vector3 RGB = new(2.55f, 2.55f, 0.94f);
             // The multiplication here wasn't doing anything
             Lighting.AddLight(Projectile.Center, RGB.X, RGB.Y, RGB.Z);
-
-
 
             player.heldProj = Projectile.whoAmI;
             player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);

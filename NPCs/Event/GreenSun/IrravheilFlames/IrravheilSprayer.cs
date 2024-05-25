@@ -204,15 +204,19 @@ namespace Stellamod.NPCs.Event.GreenSun.IrravheilFlames
             if (Tti == 60)
             {
 
-                float num = 8;
-                for (float i = 0; i < num; i++)
+                if (StellaMultiplayer.IsHost)
                 {
-                    float progress = i / num;
-                    float rot = MathHelper.TwoPi * progress;
-                    Vector2 direction2 = Vector2.UnitY.RotatedBy(rot);
-                    Vector2 velocity = direction2 * 10;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, velocity.X, velocity.Y, ModContent.ProjectileType<IrradiatedDeathSpray>(), 80, 0f, Owner: Main.myPlayer);
+                    float num = 8;
+                    for (float i = 0; i < num; i++)
+                    {
+                        float progress = i / num;
+                        float rot = MathHelper.TwoPi * progress;
+                        Vector2 direction2 = Vector2.UnitY.RotatedBy(rot);
+                        Vector2 velocity = direction2 * 10;
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, velocity.X / 2, velocity.Y / 2, ModContent.ProjectileType<IrradiatedDeathSpray>(), 60, 0f, Owner: Main.myPlayer);
+                    }
                 }
+
             }
 
 
@@ -278,7 +282,7 @@ namespace Stellamod.NPCs.Event.GreenSun.IrravheilFlames
                 if (StellaMultiplayer.IsHost)
                 {
 
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<IrradiatedDeathSpray>(), 60, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<IrradiatedDeathSpray>(), 50, 1, Main.myPlayer, 0, 0);
                 }
 
 

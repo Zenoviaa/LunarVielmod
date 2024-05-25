@@ -1,23 +1,14 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
-using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Gun
 {
     public class VoidBlasterExsplosion : ModProjectile
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Rune Spawn Effect");
-        }
-        public bool Kill;
         public float Rot;
         public override void SetDefaults()
         {
@@ -32,7 +23,6 @@ namespace Stellamod.Projectiles.Gun
             Projectile.extraUpdates = 1;
         }
 
-        private float alphaCounter = 5;
         private NPC Owner => Main.npc[(int)Projectile.ai[1]];
         public override void AI()
         {

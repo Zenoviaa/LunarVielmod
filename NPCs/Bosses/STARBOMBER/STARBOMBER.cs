@@ -499,7 +499,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
                     myPlayer.ShakeAtPosition(NPC.position, 6000, 128);
 
                     ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-                    screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 5);
+                    screenShaderSystem.TintScreen(Color.White, 0.3f, timer: 5);
 
 					if (StellaMultiplayer.IsHost)
 					{

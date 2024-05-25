@@ -10,8 +10,15 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles
 {
     public class EbistarProj : ModProjectile
-	{
-		public override void SetStaticDefaults()
+    {
+        public float Timer
+        {
+            get => Projectile.ai[0];
+            set => Projectile.ai[0] = value;
+        }
+
+		private ref float SwordRotation => ref Projectile.ai[1];
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("dead");
 			Main.projFrames[Projectile.type] = 1;
@@ -31,11 +38,6 @@ namespace Stellamod.Projectiles
 			Projectile.ownerHitCheck = true;
 		}
 
-		public float Timer
-		{
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
-		}
 
 		public override void AI()
 		{
@@ -53,15 +55,15 @@ namespace Stellamod.Projectiles
 			if (player.noItems || player.CCed || player.dead || !player.active)
 				Projectile.Kill();
 			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-			float swordRotation = 0f;
 			if (Main.myPlayer == Projectile.owner)
 			{
 				player.ChangeDir(Projectile.direction);
-				swordRotation = (Main.MouseWorld - player.Center).ToRotation();
+				SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+				Projectile.netUpdate = true;
 				if (!player.channel)
 					Projectile.Kill();
 			}
-			Projectile.velocity = swordRotation.ToRotationVector2();
+			Projectile.velocity = SwordRotation.ToRotationVector2();
 
 			Projectile.spriteDirection = player.direction;
 			if (Projectile.spriteDirection == 1)

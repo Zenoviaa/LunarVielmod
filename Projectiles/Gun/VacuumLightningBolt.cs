@@ -15,6 +15,7 @@ namespace Stellamod.Projectiles.Gun
     {
         private Vector2[] _lightningArcPos = new Vector2[1]; 
         public const int Trail_Width = 24;
+        private ref float SwordRotation => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
             // Sets the amount of frames this minion has on its spritesheet
@@ -45,18 +46,19 @@ namespace Stellamod.Projectiles.Gun
             }
 
             Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-            float swordRotation = 0f;
             if (Main.myPlayer == Projectile.owner)
             {
                 player.ChangeDir(Projectile.direction);
-                swordRotation = (Main.MouseWorld - player.Center).ToRotation();
+                SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+                Projectile.netUpdate = true;
                 if (!player.channel)
                     Projectile.Kill();
             }
 
             alphaCounter = VectorHelper.Osc(0.5f, 1.00f, 3);
-            Projectile.velocity = swordRotation.ToRotationVector2();
+            Projectile.velocity = SwordRotation.ToRotationVector2();
             Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position
+           
             //Dunno if this is needed but whatever
             Projectile.rotation = Projectile.velocity.ToRotation();
 

@@ -16,12 +16,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             set => Projectile.ai[0] = value;
         }
 
-        private float Direction
-        {
-            get => Projectile.ai[1];
-            set => Projectile.ai[1] = value;
-        }
-
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Type] = 16;
@@ -43,19 +37,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             if(Timer == 1)
             {
                 initialSpeed = Projectile.velocity;
-            }
-
-            if(Main.myPlayer == Projectile.owner)
-            {
-                if (Main.rand.NextBool(2))
-                {
-                    Direction = -1;
-                }
-                else
-                {
-                    Direction = 1;
-                }
-                Projectile.netUpdate = true;
             }
 
             float distance = 8;

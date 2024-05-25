@@ -50,16 +50,6 @@ namespace Stellamod.Projectiles.GunHolster
 		{
 			Timer2++;
 			Projectile.rotation += 0.2f;
-
-
-			float maxDetectRadius = 0f; // The maximum radius at which a projectile can detect a target
-			float projSpeed = 24f; // The speed at which the projectile moves towards the target
-
-
-
-		
-
-
 			if (Timer2 < 30)
             {
 				for (int j = 0; j < 10; j++)

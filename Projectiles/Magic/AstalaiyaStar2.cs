@@ -44,13 +44,14 @@ namespace Stellamod.Projectiles.Magic
             Projectile.ai[0] += 0.55f;
 
             Projectile.ai[1]++;
-            if (Projectile.ai[1] == 2)
+            if (Projectile.ai[1] == 2 && Main.myPlayer == Projectile.owner)
             {
                 float offsetX = Main.rand.Next(-200, 200) * 0.01f;
                 float offsetY = Main.rand.Next(-200, 200) * 0.01f;
 
                 Projectile.velocity.X += offsetX;
                 Projectile.velocity.Y += offsetY;
+                Projectile.netUpdate = true;
             }
         }
 

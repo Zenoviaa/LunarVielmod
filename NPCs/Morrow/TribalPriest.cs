@@ -55,8 +55,8 @@ namespace Stellamod.NPCs.Morrow
 			NPC.height = 92; // The height of the npc's hitbox (in pixels)
 			NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
 			NPC.damage = 1; // The amount of damage that this npc deals
-			NPC.defense = 20; // The amount of defense that this npc has
-			NPC.lifeMax = 210; // The amount of health that this npc has
+			NPC.defense = 2; // The amount of defense that this npc has
+			NPC.lifeMax = 200; // The amount of health that this npc has
 			NPC.HitSound = SoundID.NPCHit1; // The sound the NPC will make when being hit.
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
             NPC.value = 500f; // How many copper coins the NPC will drop when killed.

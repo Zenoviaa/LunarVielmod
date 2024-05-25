@@ -757,3 +757,13 @@ CentipedeMinionBuff: {
 	DisplayName: Don't Skip Leg Day
 	Description: It has so many legs!
 }
+
+MoonFlame: {
+	DisplayName: Moon Flame
+	Description: Mods.Stellamod.Buffs.MoonFlame.Description
+}
+
+IridineNecklaceCDBuff: {
+	DisplayName: Iridine Necklace Cooldown
+	Description: You cannot revive!
+}

@@ -139,13 +139,16 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
                 }
 
+                if (StellaMultiplayer.IsHost)
+                {
+                    int type = ModContent.ProjectileType<GreenSunsSuckingProj>();
+                    int damage = 10;
+                    int knockback = 1;
+                    Vector2 pos = NPC.Center;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
+                     type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
 
-                int type = ModContent.ProjectileType<GreenSunsSuckingProj>();
-                int damage = 10;
-                int knockback = 1;
-                Vector2 pos = NPC.Center;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
-                 type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
+                }
 
 
 
@@ -153,9 +156,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
 
                 ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-                shaderSystem.TintScreen(Color.DarkTurquoise, 0.2f);
-                shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.05f);
-                shaderSystem.VignetteScreen(-1f);
+                shaderSystem.TintScreen(Color.DarkTurquoise, 0.2f, timer: 320);
+                shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.05f, timer: 320);
+                shaderSystem.VignetteScreen(-1f, timer: 320);
 
                 //NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<ALCADSWIRL>());
             }
@@ -198,12 +201,15 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 shaderSystem.UnDistortScreen();
                 shaderSystem.UnVignetteScreen();
 
-                int type = ModContent.ProjectileType<GreenSunsBoomProj>();
-                int damage = 10;
-                int knockback = 1;
-                Vector2 pos = NPC.Center;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
-                 type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
+                if (StellaMultiplayer.IsHost)
+                {
+                    int type = ModContent.ProjectileType<GreenSunsBoomProj>();
+                    int damage = 10;
+                    int knockback = 1;
+                    Vector2 pos = NPC.Center;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
+                     type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
+                }
 
 
                 for (int i = 0; i < 150; i++)

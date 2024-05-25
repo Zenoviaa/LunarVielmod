@@ -12,7 +12,6 @@ namespace Stellamod.Projectiles.Magic
     internal class RibbonStaffStreamerProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
-        private ref float Timer => ref Projectile.ai[0];
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetStaticDefaults()
         {
@@ -32,7 +31,6 @@ namespace Stellamod.Projectiles.Magic
 
         public override void AI()
         {
-            Timer++;
             Projectile.velocity.Y += 0.3f;
             Projectile.rotation = Projectile.velocity.ToRotation();
         }

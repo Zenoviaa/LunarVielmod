@@ -193,17 +193,20 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
 
             _blackProgress += 0.01f;
-            FilterManager filterManager = Terraria.Graphics.Effects.Filters.Scene;
-            if (_blackProgress >= 1 && filterManager[ShaderRegistry.Screen_Black].IsActive())
+            if(Main.netMode != NetmodeID.Server)
             {
-                filterManager.Deactivate(ShaderRegistry.Screen_Black);
+                FilterManager filterManager = Terraria.Graphics.Effects.Filters.Scene;
+                if (_blackProgress >= 1 && filterManager[ShaderRegistry.Screen_Black].IsActive())
+                {
+                    filterManager.Deactivate(ShaderRegistry.Screen_Black);
+                }
+                else
+                {
+                    filterManager[ShaderRegistry.Screen_Black].GetShader()
+                     .UseProgress(_blackProgress);
+                }
             }
-            else
-            {
-                filterManager[ShaderRegistry.Screen_Black].GetShader()
-                 .UseProgress(_blackProgress);
-            }
- 
+
             Movement();
             PullPlayer();
 

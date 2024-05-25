@@ -414,6 +414,9 @@ namespace Stellamod.Projectiles.Summons.Minions
             segment.Rotation = (float)Math.Atan2(dirY, dirX);
             // We also get the length of the direction vector.
             float length = (float)Math.Sqrt(dirX * dirX + dirY * dirY);
+            if (length == 0)
+                length = 1;
+
             // We calculate a new, correct distance.
 
             float fixer = 1;

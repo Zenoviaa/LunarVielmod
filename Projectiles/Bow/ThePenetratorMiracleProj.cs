@@ -13,6 +13,7 @@ namespace Stellamod.Projectiles.Bow
         public override string Texture => "Stellamod/Items/Weapons/Ranged/PenetratorMiracle";
         Vector2 HoldOffset;
         ref float Timer => ref Projectile.ai[0];
+        ref float Rotation => ref Projectile.ai[1];
         public override void SetDefaults()
         {
             Projectile.width = 54;
@@ -48,11 +49,14 @@ namespace Stellamod.Projectiles.Bow
             Projectile.Center = player.Center + holdOffset;
 
             float rotationOffset = MathHelper.Lerp(MathHelper.TwoPi, 0, easedProgress);
-            if(Timer < 44)
+            if(Timer < 44 && Main.myPlayer == Projectile.owner)
             {
-                Projectile.rotation = Projectile.Center.DirectionTo(Main.MouseWorld).ToRotation();
-                Projectile.rotation += rotationOffset;
+                Rotation = Projectile.Center.DirectionTo(Main.MouseWorld).ToRotation();
+                Rotation += rotationOffset;
+                Projectile.netUpdate = true;
             }
+
+            Projectile.rotation = Rotation;
             if (Timer == 44)
             {
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/SoftSummon");
@@ -73,8 +77,7 @@ namespace Stellamod.Projectiles.Bow
                 soundStyle.Pitch = 0.75f;
                 SoundEngine.PlaySound(soundStyle);
                 Projectile.Kill();
-            }
-     
+            } 
         }
 
         public override void OnKill(int timeLeft)

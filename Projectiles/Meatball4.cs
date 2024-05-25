@@ -6,7 +6,13 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles
 {
     public class Meatball4 : ModProjectile
-	{
+    {
+        public float Timer
+        {
+            get => Projectile.ai[0];
+            set => Projectile.ai[0] = value;
+        }
+        private ref float SwordRotation => ref Projectile.ai[1];
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Balls");
@@ -24,11 +30,7 @@ namespace Stellamod.Projectiles
 			Projectile.scale = 1f;
 			
 		}
-		public float Timer
-		{
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
-		}
+
         public override void AI()
         {
 
@@ -41,14 +43,14 @@ namespace Stellamod.Projectiles
 				Projectile.Kill();
 
 			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-			float swordRotation = 0f;
 			if (Main.myPlayer == Projectile.owner)
 			{
 				player.ChangeDir(Projectile.direction);
-				swordRotation = (Main.MouseWorld - player.Center).ToRotation();
+				SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+				Projectile.netUpdate = true;
 			}
 
-			Projectile.velocity = swordRotation.ToRotationVector2();
+			Projectile.velocity = SwordRotation.ToRotationVector2();
 			Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position			
 		
 		}

@@ -193,7 +193,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         {
             base.OnKill(timeLeft);
             ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-            shaderSystem.FlashTintScreen(Color.Black, 0.5f, 60);
+            shaderSystem.TintScreen(Color.Black, 0.5f, timer: 60);
             SoundEngine.PlaySound(SoundRegistry.Niivi_PrimAm, Projectile.position);
             if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
             {

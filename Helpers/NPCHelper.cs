@@ -63,8 +63,9 @@ namespace Stellamod.Helpers
                 NPC target = Main.npc[k];
                 if (!target.active)
                     continue;
-                if (target.type != npcType)
+                if (npcType != -1 && target.type != npcType)
                     continue;
+
                 // Check if NPC able to be targeted. It means that NPC is
                 // 1. active (alive)
                 // 2. chaseable (e.g. not a cultist archer)

@@ -1,15 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Core.Utils;
 using Stellamod.Helpers;
-using Stellamod.Projectiles.Magic;
 using Stellamod.Trails;
-using System;
-using System.IO;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -63,7 +56,7 @@ namespace Stellamod.Projectiles.Swords
         {
             base.AI();
             Player player = Main.player[Projectile.owner];
-            if (!_init && Main.myPlayer == Projectile.owner)
+            if (!_init)
             {
                 SwingTime = (int)(SwingTime / player.GetAttackSpeed(DamageClass.Melee));
    

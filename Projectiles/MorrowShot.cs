@@ -8,13 +8,20 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles
 {
     public class MorrowShot : ModProjectile
-	{
-		public override void SetStaticDefaults()
+    {
+        public float Timer
+        {
+            get => Projectile.ai[0];
+            set => Projectile.ai[0] = value;
+        }
+
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("morrowshot");
 			Main.projFrames[Projectile.type] = 1;
 			//The recording mode
 		}
+
 		public override void SetDefaults()
 		{
 			Projectile.damage = 12;
@@ -28,17 +35,6 @@ namespace Stellamod.Projectiles
 			Projectile.maxPenetrate = 3;
 			Projectile.ownerHitCheck = true;
 		}
-		public float Timer
-		{
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
-		}
-	//	public override bool PreAI()
-	//	{
-			//int moredust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.SilverCoin, 0f, 0f);
-		//	Main.dust[moredust].scale = 0.5f;
-		//	return true;
-	//	}
 
 		public override void AI()
 		{
@@ -63,6 +59,7 @@ namespace Stellamod.Projectiles
 
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 		}
+
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
@@ -70,6 +67,7 @@ namespace Stellamod.Projectiles
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.Spark, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 			Projectile.Kill();
 		}
+
 		public override bool PreDraw(ref Color lightColor)
 		{
 			int height = Main.player[Projectile.owner].height / 1; // 5 is frame count
@@ -83,6 +81,7 @@ namespace Stellamod.Projectiles
 				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 				Main.EntitySpriteDraw((Texture2D)TextureAssets.Projectile[Projectile.type], drawPos, rect, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
 			}
+
 			return true;
 		}
 	}

@@ -40,13 +40,13 @@ namespace Stellamod.Projectiles.Swords
             Projectile.ai[1]++;
             if (Projectile.ai[1] == 2)
             {
-                float offsetX = Main.rand.Next(-200, 200) * 0.01f;
-                float offsetY = Main.rand.Next(-200, 200) * 0.01f;
-
-
-                Projectile.velocity.X += offsetX;
-                Projectile.velocity.Y += offsetY;
-
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    float offsetX = Main.rand.Next(-200, 200) * 0.01f;
+                    float offsetY = Main.rand.Next(-200, 200) * 0.01f;
+                    Projectile.velocity.X += offsetX;
+                    Projectile.velocity.Y += offsetY;
+                }
             }
             if (Projectile.ai[1] >= 180)
             {

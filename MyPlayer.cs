@@ -17,6 +17,7 @@ using Stellamod.Items.Armors.Lovestruck;
 using Stellamod.Items.Armors.Terric;
 using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Special.Sirestias;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.NPCs.Bosses.Caeva;
 using Stellamod.NPCs.Bosses.DaedusRework;
@@ -306,11 +307,11 @@ namespace Stellamod
         public bool TericGram = false;
 
 		public bool HasAlcaliteSet;
+        public bool Waterwhisps;
 
 
 
-
-		public NPC VoidBlasterNPC;
+        public NPC VoidBlasterNPC;
         public int VoidBlasterHits;
         public int VoidBlasterHitsTime;
 
@@ -613,7 +614,8 @@ namespace Stellamod
 			ArcaneM = false;
 			PlantH = false;
 			ThornedBook = false;
-			Dice = false;
+            Waterwhisps = false;
+            Dice = false;
 			NotiaB = false;
 			Lovestruck = false;
 			ADisease = false;
@@ -751,83 +753,94 @@ namespace Stellamod
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
 		{
 
-			return (IEnumerable<Item>)(object)new Item[1]
+			return (IEnumerable<Item>)(object)new Item[2]
 			{
 				new Item(ModContent.ItemType<SirestiasStarterBag>(), 1, 0),
-	
-			};
+			   
+				
+				new Item(ModContent.ItemType<SiresMail>(), 1, 0),
+            };
 		}
-		public override void PostUpdate()
+
+        public override void OnEnterWorld()
         {
-            if (!Sirestiastalk)
-            {
-
-				DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
-
-				//2. Create a new instance of your dialogue
-				SirestiasBeginDialogue exampleDialogue = new SirestiasBeginDialogue();
-
-				//3. Start it
-				dialogueSystem.StartDialogue(exampleDialogue);
-
-				Sirestiastalk = true;
-			}
-			if (NPC.downedPlantBoss && Sirestiastalk && !Zuitalk)
+            Main.NewText("[Lunar Veil] Hi hi! Thank you for checking out the mod! If you want more, you can check out my game Diari!");
+        }
+        public override void PostUpdate()
+        {
+			if (Main.netMode != NetmodeID.Server)
 			{
 
-				DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+				if (!Sirestiastalk)
+				{
 
-				//2. Create a new instance of your dialogue
-				ZuiPlantDialogue exampleDialogue = new ZuiPlantDialogue();
+					DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
 
-				//3. Start it
-				dialogueSystem.StartDialogue(exampleDialogue);
+					//2. Create a new instance of your dialogue
+					SirestiasBeginDialogue exampleDialogue = new SirestiasBeginDialogue();
 
-				Zuitalk = true;
+					//3. Start it
+					dialogueSystem.StartDialogue(exampleDialogue);
+
+					Sirestiastalk = true;
+				}
+				if (NPC.downedPlantBoss && Sirestiastalk && !Zuitalk)
+				{
+
+					DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+					//2. Create a new instance of your dialogue
+					ZuiPlantDialogue exampleDialogue = new ZuiPlantDialogue();
+
+					//3. Start it
+					dialogueSystem.StartDialogue(exampleDialogue);
+
+					Zuitalk = true;
+				}
+
+
+				if (!DreadMonOne && DownedBossSystem.downedDreadMonolith1)
+				{
+
+					DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+					//2. Create a new instance of your dialogue
+					DreadDialogue1 exampleDialogue = new DreadDialogue1();
+
+					//3. Start it
+					dialogueSystem.StartDialogue(exampleDialogue);
+
+					DreadMonOne = true;
+				}
+
+				if (!DreadMonTwo && DownedBossSystem.downedDreadMonolith2)
+				{
+
+					DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+					//2. Create a new instance of your dialogue
+					DreadDialogue2 exampleDialogue = new DreadDialogue2();
+
+					//3. Start it
+					dialogueSystem.StartDialogue(exampleDialogue);
+
+					DreadMonTwo = true;
+				}
+
+				if (!DreadMonThree && DownedBossSystem.downedDreadMonolith3)
+				{
+
+					DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+					//2. Create a new instance of your dialogue
+					DreadDialogue3 exampleDialogue = new DreadDialogue3();
+
+					//3. Start it
+					dialogueSystem.StartDialogue(exampleDialogue);
+
+					DreadMonThree = true;
+				}
 			}
-
-
-            if (!DreadMonOne && DownedBossSystem.downedDreadMonolith1)
-            {
-
-                DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
-
-                //2. Create a new instance of your dialogue
-                DreadDialogue1 exampleDialogue = new DreadDialogue1();
-				
-                //3. Start it
-                dialogueSystem.StartDialogue(exampleDialogue);
-
-                DreadMonOne = true;
-            }
-
-            if (!DreadMonTwo && DownedBossSystem.downedDreadMonolith2)
-            {
-
-                DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
-
-                //2. Create a new instance of your dialogue
-                DreadDialogue2 exampleDialogue = new DreadDialogue2();
-
-                //3. Start it
-                dialogueSystem.StartDialogue(exampleDialogue);
-
-                DreadMonTwo = true;
-            }
-
-            if (!DreadMonThree && DownedBossSystem.downedDreadMonolith3)
-            {
-
-                DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
-
-                //2. Create a new instance of your dialogue
-                DreadDialogue3 exampleDialogue = new DreadDialogue3();
-
-                //3. Start it
-                dialogueSystem.StartDialogue(exampleDialogue);
-
-                DreadMonThree = true;
-            }
 
             if (VoidBlasterHits >= 0)
 			{
@@ -1395,23 +1408,15 @@ namespace Stellamod
 						RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
 						RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
 
-						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-						Vector2 speed2 = Main.rand.NextVector2Square(1f, 1f);
-						ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<windline>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
+						Vector2 speed = new Vector2(4, 0);
+						ParticleManager.NewParticle(Player.Center - RandomOrig, speed, ParticleManager.NewInstance<WindParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 					}
 				}
 			
 
 				Main.GraveyardVisualIntensity = 0.8f;
 				Main.windPhysicsStrength = 90;
-
-
 			}
-
-
-
 
 			if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && ZoneMechanics)
 			{
