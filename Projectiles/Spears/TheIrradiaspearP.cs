@@ -8,7 +8,7 @@ namespace Stellamod.Projectiles.Spears
     internal class TheIrradiaspearP : ModProjectile
     {
         protected virtual float HoldoutRangeMin => 24f;
-        protected virtual float HoldoutRangeMax => 96f;
+        protected virtual float HoldoutRangeMax => 186f;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Star Sheith");
@@ -18,7 +18,10 @@ namespace Stellamod.Projectiles.Spears
         {
             Projectile.DamageType = DamageClass.Melee;
             Projectile.CloneDefaults(ProjectileID.Spear); // Clone the default values for a vanilla spear. Spear specific values set for width, height, aiStyle, friendly, penetrate, tileCollide, scale, hide, ownerHitCheck, and melee.
+            Projectile.width = 35;
+            Projectile.height = 67;
         }
+
 
         public override void PostDraw(Color lightColor)
         {

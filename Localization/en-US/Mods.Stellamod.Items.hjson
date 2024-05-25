@@ -7595,3 +7595,8 @@ IridineNecklace: {
 		Worn by the mightiest Illurian priests
 		'''
 }
+
+GlocketRouncher: {
+	DisplayName: Glocket Rouncher
+	Tooltip: ""
+}

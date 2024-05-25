@@ -31,7 +31,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.UseSound = SoundID.Item5;
             Item.autoReuse = true;
 			Item.useAmmo = AmmoID.Arrow;
-			Item.scale = 0.5f;
+			Item.scale = 0.9f;
             Item.noMelee = true;
         }
 
