@@ -34,37 +34,47 @@ namespace Stellamod.NPCs.Global
 			{
 				if (Timerboss == 180)
 				{
-					float speedXb = npc.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
-					float speedYb = npc.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+					if (StellaMultiplayer.IsHost)
+					{
+                        float speedXb = npc.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+                        float speedYb = npc.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
 
-					float speedXnpc = npc.velocity.X;
-					float speedYnpc = npc.velocity.Y;
+                        float speedXnpc = npc.velocity.X;
+                        float speedYnpc = npc.velocity.Y;
 
-					int fireball = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position.X, npc.position.Y, speedXnpc, speedYnpc, ProjectileID.IchorSplash, 13, 0f, 0, 0f, 0f);
-					Projectile ichor = Main.projectile[fireball];
-					ichor.hostile = true;
-					ichor.friendly = false;
+                        int fireball = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position.X, npc.position.Y, speedXnpc, speedYnpc,
+							ProjectileID.IchorSplash, 13, 0f, Owner: Main.myPlayer);
+                        Projectile ichor = Main.projectile[fireball];
+                        ichor.hostile = true;
+                        ichor.friendly = false;
 
-					Timerboss = 0;
+                    }
+
+
+                    Timerboss = 0;
 				}
 			}
 
 			if (npc.type == NPCID.EaterofWorldsHead)
 			{
 				if (Timerboss == 100)
-				{
+                {
+					if (StellaMultiplayer.IsHost)
+					{
 
-					float speedXb = npc.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
-					float speedYb = npc.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+						float speedXb = npc.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+						float speedYb = npc.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
 
-					float speedXnpc = npc.velocity.X;
-					float speedYnpc = npc.velocity.Y;
+						float speedXnpc = npc.velocity.X;
+						float speedYnpc = npc.velocity.Y;
 
-					int fireball = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position.X, npc.position.Y, speedXnpc, speedYnpc, ProjectileID.CursedFlameFriendly, 20, 0f, 0, 0f, 0f);
+						int fireball = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position.X, npc.position.Y, speedXnpc, speedYnpc,
+							ProjectileID.CursedFlameFriendly, 20, 0f, Owner: Main.myPlayer);
 
-					Projectile ichor = Main.projectile[fireball];
-					ichor.hostile = true;
-					ichor.friendly = false;
+						Projectile ichor = Main.projectile[fireball];
+						ichor.hostile = true;
+						ichor.friendly = false;
+					}
 					Timerboss = 0;
 				}
 			}
@@ -74,63 +84,71 @@ namespace Stellamod.NPCs.Global
 				if (npc.life > npc.lifeMax / 2)
 				{
 					if (Timerboss == 60)
-					{
+                    {
+						if (StellaMultiplayer.IsHost)
+						{
 
-						float speedXb = npc.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
-						float speedYb = npc.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+							float speedXb = npc.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+							float speedYb = npc.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
 
-						float speedXnpc = npc.velocity.X;
-						float speedYnpc = npc.velocity.Y;
+							float speedXnpc = npc.velocity.X;
+							float speedYnpc = npc.velocity.Y;
 
-						int fireball = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position.X, npc.position.Y, speedXnpc, speedYnpc, ProjectileID.Skull, 40, 0f, 0, 0f, 0f);
+							int fireball = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position.X, npc.position.Y, speedXnpc, speedYnpc, 
+								ProjectileID.Skull, 40, 0f, Owner: Main.myPlayer);
 
-						Projectile ichor = Main.projectile[fireball];
-						ichor.hostile = true;
-						ichor.friendly = false;
+							Projectile ichor = Main.projectile[fireball];
+							ichor.hostile = true;
+							ichor.friendly = false;
+						}
 						Timerboss = 0;
 					}
 				}
 
-                    if (npc.life < npc.lifeMax / 2)
+                    
+				if (npc.life < npc.lifeMax / 2)
                 {
 
 					if (Timerboss == 30)
 					{
+						if (StellaMultiplayer.IsHost)
+						{
+							float speedXb = npc.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+							float speedYb = npc.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
 
-						float speedXb = npc.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
-						float speedYb = npc.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+							float speedXnpc = npc.velocity.X;
+							float speedYnpc = npc.velocity.Y;
 
-						float speedXnpc = npc.velocity.X;
-						float speedYnpc = npc.velocity.Y;
+							int fireball = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position.X, npc.position.Y, speedXnpc, speedYnpc, 
+								ProjectileID.DeathLaser, 50, 0f, Owner: Main.myPlayer);
 
-						int fireball = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position.X, npc.position.Y, speedXnpc, speedYnpc, ProjectileID.DeathLaser, 50, 0f, 0, 0f, 0f);
-
-						Projectile ichor = Main.projectile[fireball];
-						ichor.hostile = true;
-						ichor.friendly = false;
-
-
-					
+							Projectile ichor = Main.projectile[fireball];
+							ichor.hostile = true;
+							ichor.friendly = false;
+						}
 					}
 
 
 					if (Timerboss == 60)
 					{
+						if (StellaMultiplayer.IsHost)
+						{
+                            float speedXb = npc.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+                            float speedYb = npc.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
 
-						float speedXb = npc.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
-						float speedYb = npc.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+                            float speedXnpc = npc.velocity.X;
+                            float speedYnpc = npc.velocity.Y;
 
-						float speedXnpc = npc.velocity.X;
-						float speedYnpc = npc.velocity.Y;
+                            int fireball = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position.X, npc.position.Y, speedXnpc, speedYnpc,
+                                ProjectileID.Skull, 40, 0f, Owner: Main.myPlayer);
 
-						int fireball = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position.X, npc.position.Y, speedXnpc, speedYnpc, ProjectileID.Skull, 40, 0f, 0, 0f, 0f);
+                            Projectile ichor = Main.projectile[fireball];
+                            ichor.hostile = true;
+                            ichor.friendly = false;
+                        }
 
-						Projectile ichor = Main.projectile[fireball];
-						ichor.hostile = true;
-						ichor.friendly = false;
 
-
-						Timerboss = 0;
+                        Timerboss = 0;
 					}
 
 				}

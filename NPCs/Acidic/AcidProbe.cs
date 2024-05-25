@@ -40,15 +40,15 @@ namespace Stellamod.NPCs.Acidic
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Acid Probe");
-            Main.npcFrameCount[Type] = 7;
+            Main.npcFrameCount[Type] = 1;
             NPCID.Sets.TrailCacheLength[NPC.type] = 10;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
         }
 
         public override void SetDefaults()
         {
-            NPC.width = 54;
-            NPC.height = 96;
+            NPC.width = 44;
+            NPC.height = 54;
             NPC.damage = 30;
             NPC.defense = 14;
             NPC.lifeMax = 130;
