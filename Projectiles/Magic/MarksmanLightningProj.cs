@@ -35,14 +35,9 @@ namespace Stellamod.Projectiles.Magic
         public override void AI()
         {
             Timer++;
-            if(Timer == 1 && Main.myPlayer == Projectile.owner)
-            {
-                Seed = Main.rand.Next(1, int.MaxValue);
-                Projectile.netUpdate = true;
-            }
-
             if(Seed != 0)
-            {                //Calculate
+            {                
+                //Calculate
                 List<Vector2> points = new List<Vector2>();
                 Vector2 currentPoint = Projectile.Center;
                 points.Add(currentPoint);

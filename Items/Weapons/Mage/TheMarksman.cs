@@ -2,6 +2,7 @@
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -37,6 +38,14 @@ namespace Stellamod.Items.Weapons.Mage
             Vector2 spawnOffset = new Vector2(0, -768);
             position = Main.MouseWorld + spawnOffset;
             velocity = Vector2.UnitY;
+        }
+
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            //Passing in a seed so the rng is the same for everyone
+            float seed = Main.rand.Next(1, int.MaxValue);
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai1: seed);
+            return false;
         }
     }
 }
