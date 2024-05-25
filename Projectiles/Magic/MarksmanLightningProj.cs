@@ -30,7 +30,6 @@ namespace Stellamod.Projectiles.Magic
             Projectile.timeLeft = (int)Lifetime;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
-            Seed = -1;
         }
 
         public override void AI()
@@ -38,11 +37,11 @@ namespace Stellamod.Projectiles.Magic
             Timer++;
             if(Timer == 1 && Main.myPlayer == Projectile.owner)
             {
-                Seed = Main.rand.Next(0, int.MaxValue);
+                Seed = Main.rand.Next(1, int.MaxValue);
                 Projectile.netUpdate = true;
             }
 
-            if(Seed != -1)
+            if(Seed != 0)
             {                //Calculate
                 List<Vector2> points = new List<Vector2>();
                 Vector2 currentPoint = Projectile.Center;
@@ -62,7 +61,7 @@ namespace Stellamod.Projectiles.Magic
                 }
 
                 LightningPos = points.ToArray();
-                Seed = -1;
+                Seed = 0;
             }
         }
 
