@@ -288,12 +288,16 @@ namespace Stellamod.NPCs.Town
 				.Add(new Item(ModContent.ItemType<AivanPowder>()) { shopCustomPrice = Item.buyPrice(gold: 7) })
 				.Add(new Item(ModContent.ItemType<MalShieldBroochA>()) { shopCustomPrice = Item.buyPrice(gold: 10) })
 				.Add(new Item(ItemID.HermesBoots) { shopCustomPrice = Item.buyPrice(gold: 4) })
-				.Add(new Item(ItemID.CloudinaBottle) { shopCustomPrice = Item.buyPrice(gold: 1) });
+				.Add(new Item(ItemID.CloudinaBottle) { shopCustomPrice = Item.buyPrice(gold: 1) })
+                .Add(new Item(ItemID.Chest) { shopCustomPrice = Item.buyPrice(gold: 5) })
+                .Add(new Item(ItemID.Diamond) { shopCustomPrice = Item.buyPrice(gold: 10) })
+                .Add(new Item(ItemID.Emerald) { shopCustomPrice = Item.buyPrice(gold: 8) })
+                .Add(new Item(ItemID.Sapphire) { shopCustomPrice = Item.buyPrice(gold: 1) });
 
 
 
 
-			npcShop.Register(); // Name of this shop tab
+            npcShop.Register(); // Name of this shop tab
 		}
 
 		public override void ModifyActiveShop(string shopName, Item[] items)

@@ -257,7 +257,7 @@ namespace Stellamod.NPCs.Town
 
 			}
 
-            Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 3);
+            Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 2);
 
             int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
@@ -299,7 +299,7 @@ namespace Stellamod.NPCs.Town
 			}
 
             ZuiQuestSystem.CompleteQuest();
-            Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(4));
+            Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
 
 			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
