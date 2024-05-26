@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Magic;
 using Stellamod.Projectiles.Spears;
 using Terraria;
 using Terraria.DataStructures;
