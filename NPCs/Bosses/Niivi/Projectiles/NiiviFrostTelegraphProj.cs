@@ -56,7 +56,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             float scale = easedProgress * MaxScale;
 
             //This should make it fade in and then out
-            float alpha = Easing.SpikeCirc(progress);
+            float alpha = Easing.SpikeInOutCirc(progress);
             Color drawColor = (Color)GetAlpha(lightColor);
             drawColor = drawColor * alpha;
 

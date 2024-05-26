@@ -70,7 +70,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
             if (invisibilityTimer <= 40)
 			{
 				float alphaProgress = invisibilityTimer / 40f;
-				float easedAlphaProgress = Easing.SpikeCirc(alphaProgress);
+				float easedAlphaProgress = Easing.SpikeInOutCirc(alphaProgress);
 				drawColor *= easedAlphaProgress;
 				DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(20, 20));
                 DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(-20, -20));
@@ -81,7 +81,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			if(invisibilityTimer > 40 && invisibilityTimer <= 140)
             {
                 float alphaProgress = (invisibilityTimer - 40) / 100f;
-                float easedAlphaProgress = Easing.SpikeCirc(alphaProgress);
+                float easedAlphaProgress = Easing.SpikeInOutCirc(alphaProgress);
                 drawColor *= easedAlphaProgress;
                 DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(20, 20));
                 DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(-20, -20));
@@ -98,7 +98,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
             if (invisibilityTimer > 140 && invisibilityTimer <= 220)
             {
                 float alphaProgress = (invisibilityTimer - 140) / 80f;
-                float easedAlphaProgress = Easing.SpikeCirc(alphaProgress);
+                float easedAlphaProgress = Easing.SpikeInOutCirc(alphaProgress);
                 drawColor *= easedAlphaProgress;
                 DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(20, 20));
                 DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(-20, -20));

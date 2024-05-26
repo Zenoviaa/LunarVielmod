@@ -188,7 +188,7 @@ namespace Stellamod.Projectiles.Swords
             float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
 
             //Smooth it some more
-            float a = Easing.SpikeCirc(lerpValue);
+            float a = Easing.SpikeInOutCirc(lerpValue);
             return a;
         }
 
@@ -206,7 +206,7 @@ namespace Stellamod.Projectiles.Swords
             {
                 SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(4), 
                     (p) => new Color(ColorFunctions.MiracleVoid.R, ColorFunctions.MiracleVoid.G, ColorFunctions.MiracleVoid.B, 255) 
-                    * Easing.SpikeCirc(p) * 0.4f * GetAlpha());
+                    * Easing.SpikeInOutCirc(p) * 0.4f * GetAlpha());
                 SwordSlash.drawOffset = Projectile.Size / 1.8f;
             }
 
@@ -214,7 +214,7 @@ namespace Stellamod.Projectiles.Swords
             {
                 SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, (p) => new Vector2(5),
                     (p) => new Color(0, 0, 0, 255)
-                    * Easing.SpikeCirc(p) * 0.4f * GetAlpha());
+                    * Easing.SpikeInOutCirc(p) * 0.4f * GetAlpha());
                 SwordSlash2.drawOffset = Projectile.Size / 1.9f;
             }
 
@@ -222,7 +222,7 @@ namespace Stellamod.Projectiles.Swords
             {
                 SwordSlash3 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, (p) => new Vector2(3),
                     (p) => Color.White
-                    * Easing.SpikeCirc(p) * GetAlpha());
+                    * Easing.SpikeInOutCirc(p) * GetAlpha());
                 SwordSlash3.drawOffset = Projectile.Size / 2f;
             }
 

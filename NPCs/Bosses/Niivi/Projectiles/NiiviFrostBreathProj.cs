@@ -93,7 +93,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             float scale = easedProgress * MaxScale;
 
             //This should make it fade in and then out
-            float alpha = Easing.SpikeCirc(progress);
+            float alpha = Easing.SpikeInOutCirc(progress);
             alpha += 0.05f;
             Color drawColor = (Color)GetAlpha(lightColor);
             drawColor = drawColor * alpha;
@@ -104,7 +104,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
             // Retrieve reference to shader
             var shader = ShaderRegistry.MiscFireWhitePixelShader;
-            float opacityProgress = Easing.SpikeCirc(progress);
+            float opacityProgress = Easing.SpikeInOutCirc(progress);
 
             //You have to set the opacity/alpha here, alpha in the spritebatch won't do anything
             //Should be between 0-1

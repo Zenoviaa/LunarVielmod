@@ -1,25 +1,30 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using ReLogic.Content;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Terraria;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
+using Terraria;
+using Terraria.Audio;
 
-namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
+namespace Stellamod.Projectiles.Spears
 {
-    internal class NiiviCrystalWarpExplosionProj : ModProjectile,
+    internal class TheIrradiaspearExplosionBigProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture
         public override string Texture => TextureRegistry.EmptyTexture;
 
         //AI
-        private float LifeTime => 32f;
+        private float LifeTime => 24f;
         private ref float Timer => ref Projectile.ai[0];
-
         private float Progress
         {
             get
@@ -35,43 +40,49 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         private bool SpawnDustCircle;
 
         //Trailing
-        private Asset<Texture2D> FrontTrailTexture => TrailRegistry.WaterTrail;
+        private Asset<Texture2D> FrontTrailTexture => TrailRegistry.FadedStreak;
         private MiscShaderData FrontTrailShader => TrailRegistry.LaserShader;
 
-        private Asset<Texture2D> BackTrailTexture => TrailRegistry.WhispyTrail;
+        private Asset<Texture2D> BackTrailTexture => TrailRegistry.SimpleTrail;
         private MiscShaderData BackTrailShader => TrailRegistry.LaserShader;
 
         //Radius
         private float StartRadius => 4;
-        private float EndRadius => 196;
-        private float Width => 32;
+        private float EndRadius => 252;
+        private float Width => 64;
 
         //Colors
         private Color FrontCircleStartDrawColor => Color.White;
-        private Color FrontCircleEndDrawColor => Color.Transparent;
-        private Color BackCircleStartDrawColor => Color.Lerp(Color.White, Color.LightCyan, 0.4f);
-        private Color BackCircleEndDrawColor => Color.Lerp(Color.DarkCyan, Color.BlueViolet, 0.7f);
+        private Color FrontCircleEndDrawColor => Color.White;
+        private Color BackCircleStartDrawColor => Color.Lerp(Color.White, ColorFunctions.AcidFlame, 0.4f);
+        private Color BackCircleEndDrawColor => Color.Lerp(ColorFunctions.AcidFlame, Color.DarkGreen, 0.7f);
         private Vector2[] CirclePos;
 
         public override void SetDefaults()
         {
-            Projectile.width = 384;
-            Projectile.height = 384;
+            Projectile.width = 252;
+            Projectile.height = 252;
             Projectile.hostile = false;
-            Projectile.friendly = false;
+            Projectile.friendly = true;
             Projectile.timeLeft = (int)LifeTime;
-            Projectile.tileCollide = false;
             Projectile.penetrate = -1;
+            Projectile.tileCollide = false;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
 
             //Points on the circle
-            CirclePos = new Vector2[64];
+            CirclePos = new Vector2[96];
         }
 
         public override void AI()
         {
             Timer++;
+            if(Timer == 1)
+            {
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Missile_Land");
+                SoundEngine.PlaySound(soundStyle, Projectile.position);
+            }
+
             AI_ExpandCircle();
             AI_DustCircle();
         }
@@ -87,11 +98,11 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         {
             if (!SpawnDustCircle && Timer >= 15)
             {
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 8; i++)
                 {
                     Vector2 rand = Main.rand.NextVector2CircularEdge(EndRadius, EndRadius);
-                    Vector2 pos = Projectile.Center;
-                    Dust d = Dust.NewDustPerfect(pos, ModContent.DustType<GlowDust>(), rand * 0.1f,
+                    Vector2 pos = Projectile.Center + rand;
+                    Dust d = Dust.NewDustPerfect(pos, ModContent.DustType<GlowDust>(), Vector2.Zero,
                         newColor: BackCircleStartDrawColor,
                         Scale: Main.rand.NextFloat(0.3f, 0.6f));
                     d.noGravity = true;
@@ -111,7 +122,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             for (int i = 0; i < CirclePos.Length; i++)
             {
                 float circleProgress = i / (float)CirclePos.Length;
-                float radiansToRotateBy = circleProgress * (MathHelper.TwoPi + MathHelper.PiOver4 / 2);
+                float radiansToRotateBy = circleProgress * (MathHelper.TwoPi + MathHelper.PiOver4);
                 CirclePos[i] = Projectile.Center + startDirection.RotatedBy(radiansToRotateBy) * radius;
             }
         }

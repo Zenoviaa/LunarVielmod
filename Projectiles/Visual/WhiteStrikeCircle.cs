@@ -123,9 +123,9 @@ namespace Stellamod.Projectiles.Visual
             {
                 default:
                 case 0:
-                    return Projectile.scale * scale * width * Easing.SpikeCirc(Progress);
+                    return Projectile.scale * scale * width * Easing.SpikeInOutCirc(Progress);
                 case 1:
-                    return Projectile.scale * width * 2.2f * Easing.SpikeCirc(Progress);
+                    return Projectile.scale * width * 2.2f * Easing.SpikeInOutCirc(Progress);
 
             }
         }

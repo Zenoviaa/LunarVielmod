@@ -18,8 +18,8 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 			Item.damage = 53;
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 40;
-			Item.height = 40;
+			Item.width = 78;
+			Item.height = 130;
 			Item.useTime = 27;
 			Item.useAnimation = 27;
 			Item.useStyle = ItemUseStyleID.Shoot;

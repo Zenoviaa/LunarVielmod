@@ -181,8 +181,62 @@ namespace Stellamod.Helpers
                 : (2 - MathF.Pow(2, -(p * 2) * t + p)) / 2;
         }
 
+        ///<Summary>
+        /// Useful easing function for making things smooth! <see href="https://easings.net/">Ease Functions</see>           
+        ///</Summary>
+        public static float SpikeInBack(float t)
+        {
+            if (t <= .5f)
+                return InBack(t / .5f);
+            else
+            {
+                return InBack((1 - t) / 0.5f);
+            }
+        }
 
-        public static float SpikeOrb(float t)
+        ///<Summary>
+        /// Useful easing function for making things smooth! <see href="https://easings.net/">Ease Functions</see>           
+        ///</Summary>
+        public static float SpikeOutBack(float t)
+        {
+            if (t <= .5f)
+                return OutBack(t / .5f);
+            else
+            {
+                return OutBack((1 - t) / 0.5f);
+            }
+        }
+
+        ///<Summary>
+        /// Useful easing function for making things smooth! <see href="https://easings.net/">Ease Functions</see>           
+        ///</Summary>
+        public static float SpikeInExpo(float t)
+        {
+            if (t <= .5f)
+                return InExpo(t / .5f, 8);
+            else
+            {
+                return InExpo((1 - t) / 0.5f, 8);
+            }
+        }
+
+        ///<Summary>
+        /// Useful easing function for making things smooth! <see href="https://easings.net/">Ease Functions</see>           
+        ///</Summary>
+        public static float SpikeOutExpo(float t, float p = 8)
+        {
+            if (t <= .5f)
+                return OutExpo(t / .5f, 8);
+            else
+            {
+                return OutExpo((1 - t) / 0.5f, 8);
+            }
+        }
+
+        ///<Summary>
+        /// Useful easing function for making things smooth! <see href="https://easings.net/">Ease Functions</see>           
+        ///</Summary>
+        public static float SpikeInOutExpo(float t)
         {
             if (t <= .5f)
                 return InOutExpo(t / .5f, 8);
@@ -192,13 +246,120 @@ namespace Stellamod.Helpers
             }
         }
 
-        public static float SpikeCirc(float t)
+        ///<Summary>
+        /// Useful easing function for making things smooth! <see href="https://easings.net/">Ease Functions</see>           
+        ///</Summary>
+        public static float SpikeInCirc(float t)
+        {
+            if (t <= .5f)
+                return InCirc(t / .5f);
+            else
+            {
+                return InCirc((1 - t) / 0.5f);
+            }
+        }
+
+        ///<Summary>
+        /// Useful easing function for making things smooth! <see href="https://easings.net/">Ease Functions</see>           
+        ///</Summary>
+        public static float SpikeOutCirc(float t)
+        {
+            if (t <= .5f)
+                return OutCirc(t / .5f);
+            else
+            {
+                return OutCirc((1 - t) / 0.5f);
+            }
+        }
+
+        ///<Summary>
+        /// Useful easing function for making things smooth! <see href="https://easings.net/">Ease Functions</see>           
+        ///</Summary>
+        public static float SpikeInOutCirc(float t)
         {
             if (t <= .5f)
                 return InOutCirc(t / .5f);
             else
             {
                 return InOutCirc((1 - t) / 0.5f);
+            }
+        }
+
+        ///<Summary>
+        /// Useful easing function for making things smooth! <see href="https://easings.net/">Ease Functions</see>           
+        ///</Summary>
+        public static float SpikeInElastic(float t)
+        {
+            if (t <= .5f)
+                return InElastic(t / .5f);
+            else
+            {
+                return InElastic((1 - t) / 0.5f);
+            }
+        }
+
+        ///<Summary>
+        /// Useful easing function for making things smooth! <see href="https://easings.net/">Ease Functions</see>           
+        ///</Summary>
+        public static float SpikeOutElastic(float t)
+        {
+            if (t <= .5f)
+                return OutElastic(t / .5f);
+            else
+            {
+                return OutElastic((1 - t) / 0.5f);
+            }
+        }
+
+        ///<Summary>
+        /// Useful easing function for making things smooth! <see href="https://easings.net/">Ease Functions</see>           
+        ///</Summary>
+        public static float SpikeInOutElastic(float t)
+        {
+            if (t <= .5f)
+                return InOutElastic(t / .5f);
+            else
+            {
+                return InOutElastic((1 - t) / 0.5f);
+            }
+        }
+
+        ///<Summary>
+        /// Useful easing function for making things smooth! <see href="https://easings.net/">Ease Functions</see>           
+        ///</Summary>
+        public static float SpikeInBounce(float t)
+        {
+            if (t <= .5f)
+                return InBounce(t / .5f);
+            else
+            {
+                return InBounce((1 - t) / 0.5f);
+            }
+        }
+
+        ///<Summary>
+        /// Useful easing function for making things smooth! <see href="https://easings.net/">Ease Functions</see>           
+        ///</Summary>
+        public static float SpikeOutBounce(float t)
+        {
+            if (t <= .5f)
+                return OutBounce(t / .5f);
+            else
+            {
+                return OutBounce((1 - t) / 0.5f);
+            }
+        }
+
+        ///<Summary>
+        /// Useful easing function for making things smooth! <see href="https://easings.net/">Ease Functions</see>           
+        ///</Summary>
+        public static float SpikeInOutBounce(float t)
+        {
+            if (t <= .5f)
+                return InOutBounce(t / .5f);
+            else
+            {
+                return InOutBounce((1 - t) / 0.5f);
             }
         }
 

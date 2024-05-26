@@ -36,7 +36,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
             float progress = Timer / LifeTime;
             float easedProgress = Easing.OutExpo(progress);
-            float alphaProgress = Easing.SpikeCirc(progress);
+            float alphaProgress = Easing.SpikeInOutCirc(progress);
             Main.spriteBatch.Draw(texture.Value, Projectile.Center - Main.screenPosition + Main.rand.NextVector2Circular(8, 8), null, new Color(255, 255, 255, 0) * alphaProgress, Projectile.rotation, new Vector2(24, 24), easedProgress * 3, SpriteEffects.None, 0f);
             return false;
         }

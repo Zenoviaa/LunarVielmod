@@ -39,7 +39,7 @@ namespace Stellamod.Projectiles.Test
                 }
 
                 float progress = Timer / LifeTime;
-                float easedProgress = Easing.SpikeCirc(progress);
+                float easedProgress = Easing.SpikeInOutCirc(progress);
                 Projectile.width = Projectile.height = (int)(64 * easedProgress);
                 if (progress >= 0.75f)
                 {

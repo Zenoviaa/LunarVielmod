@@ -169,7 +169,7 @@ namespace Stellamod.Projectiles.Swords
             float scale = easedProgress * MaxScale;
 
             //This should make it fade in and then out
-            float alpha = Easing.SpikeOrb(progress);
+            float alpha = Easing.SpikeInOutExpo(progress);
             alpha += 0.05f;
             Color drawColor = (Color)GetAlpha(lightColor);
             drawColor = drawColor * alpha;
@@ -180,7 +180,7 @@ namespace Stellamod.Projectiles.Swords
 
             // Retrieve reference to shader
             var shader = ShaderRegistry.MiscFireWhitePixelShader;
-            float opacityProgress = Easing.SpikeCirc(progress + 0.25f);
+            float opacityProgress = Easing.SpikeInOutCirc(progress + 0.25f);
 
             //You have to set the opacity/alpha here, alpha in the spritebatch won't do anything
             //Should be between 0-1
