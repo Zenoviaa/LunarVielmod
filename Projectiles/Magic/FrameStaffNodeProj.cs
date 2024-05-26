@@ -50,13 +50,13 @@ namespace Stellamod.Projectiles.Magic
             if(Timer < 60)
             {
                 float ySpeed = Timer / 60;
-                ySpeed = Easing.SpikeCirc(ySpeed);
+                ySpeed = Easing.SpikeInOutCirc(ySpeed);
                 Projectile.velocity = new Vector2(0, -ySpeed);
             } else if (Timer < 120)
             {
                 //Inverse
                 float ySpeed = 1f - ((Timer - 60) / 60);
-                ySpeed = Easing.SpikeCirc(ySpeed);
+                ySpeed = Easing.SpikeInOutCirc(ySpeed);
                 Projectile.velocity = new Vector2(0, ySpeed);
             }
             if(Timer == 120)

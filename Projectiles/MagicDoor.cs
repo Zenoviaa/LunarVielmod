@@ -51,7 +51,7 @@ namespace Stellamod.Projectiles
         {
             Timer++;
             float progress = Timer / 144f;
-            float easedProgress = Easing.SpikeCirc(progress);
+            float easedProgress = Easing.SpikeInOutCirc(progress);
             Projectile.scale = easedProgress;
             if(easedProgress >= 0.5f && !_hasSpawned && Main.myPlayer == Projectile.owner)
             {

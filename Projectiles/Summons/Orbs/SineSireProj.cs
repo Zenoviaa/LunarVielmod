@@ -202,7 +202,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             Timer++;
 
             float progress = Timer / SwingTime;
-            EasedProgress = Easing.SpikeCirc(progress);
+            EasedProgress = Easing.SpikeInOutCirc(progress);
 
             Vector2 start = Owner.Center;
             Vector2 end = SwingTarget + (SwingTarget - start).SafeNormalize(Vector2.Zero) * Final_Swing_Distance;
@@ -261,7 +261,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             Timer++;
 
             float progress = Timer / SwingTime;
-            EasedProgress = Easing.SpikeCirc(progress);
+            EasedProgress = Easing.SpikeInOutCirc(progress);
 
             Vector2 start = Owner.Center;
             Vector2 end = SwingTarget + (SwingTarget - start).SafeNormalize(Vector2.Zero) * Final_Swing_Distance;
@@ -318,7 +318,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             SwingDusts();
             Timer++;
             float progress = Timer / SwingTime;
-            EasedProgress = Easing.SpikeCirc(progress);
+            EasedProgress = Easing.SpikeInOutCirc(progress);
 
             Vector2 start = Owner.Center;
             Vector2 end = SwingTarget + (SwingTarget - start).SafeNormalize(Vector2.Zero) * Final_Swing_Distance;
@@ -396,21 +396,21 @@ namespace Stellamod.Projectiles.Summons.Orbs
             {
                 SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass,
                     (p) => Vector2.Lerp(new Vector2(width), new Vector2(0), p),
-                    (p) => Color.DarkBlue * (Easing.SpikeCirc(p)) * 0.66f);
+                    (p) => Color.DarkBlue * (Easing.SpikeInOutCirc(p)) * 0.66f);
                 SwordSlash.drawOffset = Projectile.Size / 2f;
             }
             if (SwordSlash2 == null)
             {
                 SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass,
                     (p) => Vector2.Lerp(new Vector2(width), new Vector2(0), p),
-                    (p) => Color.Blue * (Easing.SpikeCirc(p)) * 0.66f);
+                    (p) => Color.Blue * (Easing.SpikeInOutCirc(p)) * 0.66f);
                 SwordSlash2.drawOffset = Projectile.Size / 2f;
             }
             if (SwordSlash3 == null)
             {
                 SwordSlash3 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass,
                     (p) => Vector2.Lerp(new Vector2(width), new Vector2(0), p),
-                    (p) => Color.Teal * (Easing.SpikeCirc(p)) * 0.66f);
+                    (p) => Color.Teal * (Easing.SpikeInOutCirc(p)) * 0.66f);
                 SwordSlash3.drawOffset = Projectile.Size / 2f;
             }
 

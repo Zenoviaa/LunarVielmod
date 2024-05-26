@@ -180,7 +180,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             Timer++;
 
             float progress = Timer / SwingTime;
-            EasedProgress = Easing.SpikeOrb(progress);
+            EasedProgress = Easing.SpikeInOutExpo(progress);
             float orbitRotation = MathHelper.Lerp(-MathHelper.TwoPi * Swing_Revolutions , 0, EasedProgress);
             float orbitDistance = MathHelper.Lerp(0, OrbitSwingDistance, EasedProgress);
 
@@ -223,7 +223,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
 
 
             float progress = Timer / SwingTime;
-            EasedProgress = Easing.SpikeOrb(progress);
+            EasedProgress = Easing.SpikeInOutExpo(progress);
             float orbitRotation = MathHelper.Lerp(MathHelper.TwoPi * Swing_Revolutions, 0, EasedProgress);
             float orbitDistance = MathHelper.Lerp(0, OrbitSwingDistance, EasedProgress);
 
@@ -263,7 +263,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             SwingDusts();
             Timer++;
             float progress = Timer / SwingTime;
-            EasedProgress = Easing.SpikeOrb(progress);
+            EasedProgress = Easing.SpikeInOutExpo(progress);
 
             Vector2 start = Owner.Center;
             Vector2 end = SwingTarget + (SwingTarget - start).SafeNormalize(Vector2.Zero) * Final_Swing_Distance;

@@ -215,7 +215,7 @@ namespace Stellamod.Projectiles.GunHolster
             }
 
 
-            Recoil = MathHelper.Lerp(0, RecoilDistance, Easing.SpikeOrb(progress));
+            Recoil = MathHelper.Lerp(0, RecoilDistance, Easing.SpikeInOutExpo(progress));
             if (Timer >= ExecTime)
             {
                 State = ActionState.Hide;

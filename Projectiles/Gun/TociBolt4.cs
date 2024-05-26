@@ -75,7 +75,7 @@ namespace Stellamod.Projectiles.Gun
             float scale = easedProgress * MaxScale;
 
             //This should make it fade in and then out
-            float alpha = Easing.SpikeCirc(progress);
+            float alpha = Easing.SpikeInOutCirc(progress);
             alpha += 0.05f;
             Color drawColor = (Color)GetAlpha(lightColor);
             drawColor = drawColor * alpha;

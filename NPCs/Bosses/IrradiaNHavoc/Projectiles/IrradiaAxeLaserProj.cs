@@ -62,7 +62,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
         public float WidthFunction(float completionRatio)
         {
             float progress = Time / 60;
-            float easedProgress = Easing.SpikeCirc(progress);
+            float easedProgress = Easing.SpikeInOutCirc(progress);
             return Projectile.width * Projectile.scale * 1.3f * easedProgress;
         }
 

@@ -96,7 +96,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             Vector2 origin = rect.Size() / 2;
             //Calculate the scale with easing
             float progress = Timer / LifeTime;
-            float easedProgress = Easing.SpikeCirc(progress);
+            float easedProgress = Easing.SpikeInOutCirc(progress);
             float scale = easedProgress * MaxScale;
 
             SpriteBatch spriteBatch = Main.spriteBatch;

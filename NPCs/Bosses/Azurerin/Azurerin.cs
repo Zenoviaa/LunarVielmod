@@ -98,7 +98,7 @@ namespace Stellamod.NPCs.Bosses.Azurerin
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            SpriteEffects Effects = NPC.spriteDirection != 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            SpriteEffects Effects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Lighting.AddLight(NPC.Center, Color.Blue.ToVector3() * 2.25f * Main.essScale);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -137,7 +137,7 @@ namespace Stellamod.NPCs.Bosses.Azurerin
                 0
             );
 
-            SpriteEffects spriteEffects3 = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            SpriteEffects spriteEffects3 = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             //Vector2 vector33 = new Vector2(NPC.Center.X, NPC.Center.Y) - Main.screenPosition + Drawoffset - NPC.velocity;
             Color color29 = new Color(127 - NPC.alpha, 127 - NPC.alpha, 127 - NPC.alpha, 0).MultiplyRGBA(Color.Pink);
             for (int num103 = 0; num103 < 4; num103++)
@@ -158,6 +158,12 @@ namespace Stellamod.NPCs.Bosses.Azurerin
         Vector2 targetPos;
         public override void AI()
         {
+            if (!NPC.HasValidTarget)
+            {
+
+            }
+            NPC.TargetClosest();
+            NPC.spriteDirection = NPC.direction;
 
             Player player = Main.player[NPC.target];
             bool expertMode = Main.expertMode;
@@ -210,7 +216,7 @@ namespace Stellamod.NPCs.Bosses.Azurerin
                 switch (NPC.ai[1])
                 {
                     case 0:
-                        NPC.spriteDirection = NPC.direction;
+
 
                         NPC.alpha -= 8;
                         NPC.ai[0]++;
@@ -244,12 +250,7 @@ namespace Stellamod.NPCs.Bosses.Azurerin
                     case 3:
                         break;
                 }
-
             }
-
-
         }
-
-
     }
 }

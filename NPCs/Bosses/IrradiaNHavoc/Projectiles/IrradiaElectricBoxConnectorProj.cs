@@ -164,7 +164,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * 8;
-            return 3.5f + Easing.SpikeCirc(completionRatio) * baseWidth;
+            return 3.5f + Easing.SpikeInOutCirc(completionRatio) * baseWidth;
         }
 
         public Color ColorFunction(float completionRatio)

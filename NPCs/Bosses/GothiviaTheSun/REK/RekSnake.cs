@@ -1078,7 +1078,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             Timer++;
             float rotationProgress = Timer / 180f;
             rotationProgress = MathHelper.Clamp(rotationProgress, 0, 1);
-            rotationProgress = Easing.SpikeOrb(rotationProgress);
+            rotationProgress = Easing.SpikeInOutExpo(rotationProgress);
             float rotationSpeed = MathHelper.Lerp(180, 30, rotationProgress);
             if (Timer == 1)
             {

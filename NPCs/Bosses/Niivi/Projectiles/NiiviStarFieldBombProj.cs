@@ -74,7 +74,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             Color drawColor = (Color)GetAlpha(lightColor);
             float drawScale = Projectile.scale * MaxScale * Scale;
             float progress = Timer / LifeTime;
-            float easedProgress = Easing.SpikeCirc(progress);
+            float easedProgress = Easing.SpikeInOutCirc(progress);
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);

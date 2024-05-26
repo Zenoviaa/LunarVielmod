@@ -79,7 +79,7 @@ namespace Stellamod.Projectiles.Magic
             float baseWidth = Projectile.scale * 194;
             float timeLeft = Projectile.timeLeft;
             float progress = timeLeft / Lifetime;
-            float easedProgress = Easing.SpikeCirc(1f - progress);
+            float easedProgress = Easing.SpikeInOutCirc(1f - progress);
             return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio) * easedProgress;
         }
 

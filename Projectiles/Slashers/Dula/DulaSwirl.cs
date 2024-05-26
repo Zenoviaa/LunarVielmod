@@ -96,7 +96,7 @@ namespace Stellamod.Projectiles.Slashers.Dula
             scale *= easedProgress;
 
             Color drawColor = (Color)GetAlpha(lightColor);
-            drawColor *= Easing.SpikeCirc((1 - progress)) * 0.3f;
+            drawColor *= Easing.SpikeInOutCirc((1 - progress)) * 0.3f;
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture, drawPosition, null, drawColor, Projectile.rotation,
                 drawOrigin, scale, SpriteEffects.None, 0f);
