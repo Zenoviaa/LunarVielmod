@@ -31,7 +31,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.autoReuse = true;
 
             Item.DamageType = DamageClass.Magic;
-            Item.shoot = ModContent.ProjectileType<AcidFlameG>();
+            Item.shoot = ModContent.ProjectileType<ITProj>();
             Item.shootSpeed = 15f;
             Item.mana = 10;
             Item.useAnimation = 20;
