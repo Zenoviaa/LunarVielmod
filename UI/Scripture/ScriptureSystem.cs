@@ -17,7 +17,7 @@ namespace Stellamod.UI.Scripture
         public override void PostUpdateEquips()
         {
             ScriptureSystem scriptureSystem = ModContent.GetInstance<ScriptureSystem>();
-            if (!hasScripture && scriptureSystem.IsVisible)
+            if (Main.myPlayer == Main.LocalPlayer.whoAmI && !hasScripture && scriptureSystem.IsVisible)
             {
                 scriptureSystem.IsVisible = false;
             }
