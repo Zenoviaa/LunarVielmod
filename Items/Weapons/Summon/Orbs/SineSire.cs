@@ -55,13 +55,8 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
         public override void UpdateInventory(Player player)
         {
             base.UpdateInventory(player);
-            if (player.HeldItem.type == ModContent.ItemType<SineSire>()
-                && player.ownedProjectileCounts[ModContent.ProjectileType<SineSireProj>()] == 0)
-            {
-                var projectile = Projectile.NewProjectileDirect(player.GetSource_FromThis(), player.Center, Vector2.Zero,
-                    ModContent.ProjectileType<SineSireProj>(), Item.damage, Item.knockBack, player.whoAmI);
-                projectile.originalDamage = Item.damage;
-            }
+            OrbPlayer orbPlayer = player.GetModPlayer<OrbPlayer>();
+            orbPlayer.EquipOrbSlot1(Type);
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

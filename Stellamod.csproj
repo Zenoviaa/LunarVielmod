@@ -48,6 +48,7 @@
     <None Remove="Buffs\IridineNecklaceCDBuff.png" />
     <None Remove="Buffs\Irradiation.png" />
     <None Remove="Buffs\Lacerated.png" />
+    <None Remove="Buffs\MarksMan.png" />
     <None Remove="Buffs\Minions\JacksonPollockMinionBuff.png" />
     <None Remove="Buffs\Minions\PegasusMinionBuff.png" />
     <None Remove="Buffs\Minions\PotOfGreedMinionBuff.png" />
@@ -56,6 +57,7 @@
     <None Remove="Buffs\MiracleBoost.png" />
     <None Remove="Buffs\MiracleLiquid.png" />
     <None Remove="Buffs\MoonFlame.png" />
+    <None Remove="Buffs\OrbMaster.png" />
     <None Remove="Buffs\Rekin.png" />
     <None Remove="Buffs\RibbonWrapped.png" />
     <None Remove="Buffs\SFBuff.png" />

@@ -27,6 +27,8 @@ namespace Stellamod.NPCs.Bosses.DreadMire
     [AutoloadBossHead]
     internal class DreadMireR : ModNPC
     {
+        private float _teleportX;
+        private float _teleportY;
         private bool _resetTimers;
         private enum ActionState
         {
@@ -204,12 +206,16 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         {
             writer.Write(_resetTimers);
             writer.Write(_invincible);
+            writer.Write(_teleportX);
+            writer.Write(_teleportY);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             _resetTimers = reader.ReadBoolean();
             _invincible = reader.ReadBoolean();
+            _teleportX = reader.ReadSingle();
+            _teleportY = reader.ReadSingle();
         }
 
         private void Animate(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor, int startFrame, int endFrame, int frameTime)
@@ -342,6 +348,16 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 frameCounter = 0;
                 frameTick = 0;
                 _resetTimers = false;
+            }
+
+            if (_teleportX != 0 || _teleportY != 0)
+            {
+                NPC.position.X = _teleportX;
+                NPC.position.Y = _teleportY;
+                NPC.velocity.X = 0f;
+                NPC.velocity.Y = 0f;
+                _teleportX = 0f;
+                _teleportY = 0f;
             }
 
             //Select music
@@ -636,8 +652,14 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
             if(Timer == waitTime)
             {
-                Vector2 randEdge = Main.rand.NextVector2CircularEdge(252, 252);
-                NPC.Center = Target.Center + randEdge;
+                if (StellaMultiplayer.IsHost)
+                {
+                    Vector2 randEdge = Main.rand.NextVector2CircularEdge(252, 252);
+                    Vector2 targetPos = Target.Center + randEdge;
+                    _teleportX = targetPos.X;
+                    _teleportY = targetPos.Y;
+                    NPC.netUpdate = true;
+                }
                 ResetState(ActionState.Idle);
             }
 
@@ -706,7 +728,13 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
             if(Timer >= 60)
             {
-                NPC.Center = Target.Center + new Vector2(0, 200);
+                if (StellaMultiplayer.IsHost)
+                {
+                    Vector2 targetPos = Target.Center + new Vector2(0, 200);
+                    _teleportX = targetPos.X;
+                    _teleportY = targetPos.Y;
+                    NPC.netUpdate = true;
+                }
             }
 
             if(Timer >= 60 && !NPC.AnyNPCs(dreadMiresHeartType))

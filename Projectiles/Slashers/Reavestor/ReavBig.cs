@@ -13,17 +13,15 @@ namespace Stellamod.Projectiles.Slashers.Reavestor
 {
 	public class ReavBig : ModProjectile
 	{
-		public bool OptionallySomeCondition { get; private set; }
-
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Wind Sythe");
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
 		}
+
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
-
 			Projectile.penetrate--;
 			if (Projectile.penetrate <= 0)
 				Projectile.Kill();
@@ -45,6 +43,7 @@ namespace Stellamod.Projectiles.Slashers.Reavestor
 			}
 			return false;
 		}
+
 		public override void AI()
 		{
 			Projectile.ai[1]++;
@@ -69,10 +68,6 @@ namespace Stellamod.Projectiles.Slashers.Reavestor
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<GoldsSpawnEffect>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<GoldsSlashProj>(), (int)(Projectile.damage * 1.1), 0f, Projectile.owner, 0f, 0f);
 			SoundEngine.PlaySound(SoundID.DD2_CrystalCartImpact, Projectile.position);
-
-
-
-
 		}
 
 		public override bool PreDraw(ref Color lightColor)
@@ -90,6 +85,7 @@ namespace Stellamod.Projectiles.Slashers.Reavestor
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 			return false;
 		}
+
 		public override void SetDefaults()
 		{
 			Projectile.scale = 1f;

@@ -118,8 +118,8 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
 		{
 			if (player.altFunctionUse == 2)
 			{
-
-				return true;
+                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<SingularDiveDive>(), damage * 3, knockback, player.whoAmI);
+                return false;
 			}
 
 
@@ -139,7 +139,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
 
 				}
 				AttackCounter = -AttackCounter;
-				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<SingularDiveProj>(), damage, knockback, player.whoAmI, 1, dir);
+				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<SingularDiveProj>(), damage * 3, knockback, player.whoAmI, 1, dir);
 
 
 				float numberProjectiles = 2;

@@ -14,20 +14,16 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
 {
     public class SingularDiveDive : ModProjectile
     {
-        public static bool swung = false;
-
         public float holdOffset = 60f;
         public int combowombo;
-        private bool _initialized;
-        private int timer;
-        private bool ParticleSpawned;
 
+        private bool Bounced = false;
         private Player Owner => Main.player[Projectile.owner];
 
         //Swing Stats
         public float SwingDistance;
         public const int Swing_Speed_Multiplier = 8;
-        public int SwingTime = 360 * Swing_Speed_Multiplier;
+        private int SwingTime => (int)((360 * Swing_Speed_Multiplier) / Owner.GetAttackSpeed(DamageClass.Melee));
 
         public override void SetStaticDefaults()
         {
@@ -79,95 +75,53 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
                     d.noGravity = true;
                 }
 
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-10, 10), Projectile.Center.Y + Main.rand.Next(-10, 10), Main.rand.Next(-4, 5), Main.rand.Next(-4, 5), ModContent.ProjectileType<SingularOrb>(), Projectile.damage * 2, 1, 
+                Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-10, 10), 
+                    Projectile.Center.Y + Main.rand.Next(-10, 10), Main.rand.Next(-4, 5), Main.rand.Next(-4, 5), ModContent.ProjectileType<SingularOrb>(), Projectile.damage * 2, 1, 
                     Projectile.owner);
                 Grenber = 0;
             }
 
-            Player player = Main.player[Projectile.owner];
-            if (!_initialized)
-            {
-                timer++;
+            Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
+            float multiplier = 0.2f;
+            RGB *= multiplier;
 
-                SwingTime = (int)(SwingTime / player.GetAttackSpeed(DamageClass.Melee));
-                Projectile.alpha = 255;
-                Projectile.timeLeft = SwingTime;
-                _initialized = true;
-                Projectile.damage -= 9999;
-            }
-            else if (_initialized)
-            {
-                if (!player.active || player.dead || player.CCed || player.noItems)
-                {
-                    return;
-                }
-                Projectile.alpha = 0;
-                if (timer == 1)
-                {
-
-                    Projectile.damage += 9999;
-                    Projectile.damage *= 3;
-
-                    timer++;
-                }
-
-                Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
-                float multiplier = 0.2f;
-                RGB *= multiplier;
-
-                Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+            Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
 
 
-                int dir = (int)Projectile.ai[1];
-                float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true));
-                // the actual rotation it should have
-                float defRot = Projectile.velocity.ToRotation();
-                // starting rotation
-                float endSet = ((MathHelper.Pi) * 6 / 0.2f);
-                float start = defRot - endSet;
+            int dir = (int)Projectile.ai[1];
+            float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true));
+            // the actual rotation it should have
+            float defRot = Projectile.velocity.ToRotation();
+            // starting rotation
+            float endSet = ((MathHelper.Pi) * 6 / 0.2f);
+            float start = defRot - endSet;
 
-                // ending rotation
-                float end = (defRot + endSet);
-                // current rotation obv
-                float rotation = dir == 1 ? start.AngleLerp(end, swingProgress) : start.AngleLerp(end, 1f - swingProgress);
-                // offsetted cuz sword sprite
-                Vector2 position = player.RotatedRelativePoint(player.MountedCenter);
-                position += rotation.ToRotationVector2() * holdOffset;
-                Projectile.Center = position;
-                Projectile.rotation = (position - player.Center).ToRotation() + MathHelper.PiOver4;
+            // ending rotation
+            float end = (defRot + endSet);
+            // current rotation obv
+            float rotation = dir == 1 ? start.AngleLerp(end, swingProgress) : start.AngleLerp(end, 1f - swingProgress);
+            // offsetted cuz sword sprite
+            Vector2 position = Owner.RotatedRelativePoint(Owner.MountedCenter);
+            position += rotation.ToRotationVector2() * holdOffset;
+            Projectile.Center = position;
+            Projectile.rotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
 
-                player.heldProj = Projectile.whoAmI;
-                player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
-                player.itemRotation = rotation * player.direction;
-                player.itemTime = 2;
-                player.itemAnimation = 2;
-
-                /*
-                //Projectile.netUpdate = true;
-                for (int i = 0; i < Projectile.oldPos.Length; i++)
-                {
-                    Projectile.oldPos[i] += player.velocity / (Swing_Speed_Multiplier + 1);
-                }*/
-
-                if (!ParticleSpawned)
-                {
-
-
-                    ParticleSpawned = true;
-                }
-
-            }
+            Owner.heldProj = Projectile.whoAmI;
+            Owner.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
+            Owner.itemRotation = rotation * Owner.direction;
+            Owner.itemTime = 2;
+            Owner.itemAnimation = 2;
         }
 
         public override bool ShouldUpdatePosition() => false;
-        public bool bounced = false;
+
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Player player = Main.player[Projectile.owner];
 
             Vector2 oldMouseWorld = Main.MouseWorld;
-            if (!bounced)
+            if (!Bounced)
             {
                 player.velocity = Projectile.DirectionTo(oldMouseWorld) * -10f;
 
@@ -206,7 +160,7 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
                     }
                 }
                 target.SimpleStrikeNPC(200, 1, crit: false, 1);
-                bounced = true;
+                Bounced = true;
                
 
             }
@@ -219,11 +173,7 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
                 }
             }
 
-
-
-
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
-
         }
 
 
@@ -292,9 +242,6 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
             SwordSlash2.Draw(Projectile.oldPos, rotation);
             SwordSlash3.Draw(Projectile.oldPos, rotation);
             SwordSlash4.Draw(Projectile.oldPos, rotation);
-
-
-
             Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
 
             int frameHeight = texture.Height / Main.projFrames[Projectile.type];
@@ -315,12 +262,8 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
 
             Main.spriteBatch.End();
-
             Main.spriteBatch.Begin();
-
-
             return false;
-
         }
 
         public override void PostDraw(Color lightColor)
@@ -364,18 +307,6 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             return;
-        }
-
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-            writer.Write(SwingTime);
-            writer.Write(SwingDistance);
-        }
-
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            SwingTime = reader.ReadInt32();
-            SwingDistance = reader.ReadSingle();
         }
     }
 }

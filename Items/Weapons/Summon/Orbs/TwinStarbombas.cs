@@ -53,20 +53,9 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
         public override void UpdateInventory(Player player)
         {
             base.UpdateInventory(player);
-            if (player.HeldItem.type == ModContent.ItemType<TwinStarbombas>() 
-                && player.ownedProjectileCounts[ModContent.ProjectileType<TwinStarbombasProj1>()] == 0)
-            {
-                var projectile = Projectile.NewProjectileDirect(player.GetSource_FromThis(), player.Center, Vector2.Zero,
-                    ModContent.ProjectileType<TwinStarbombasProj1>(), Item.damage, Item.knockBack, player.whoAmI);
-                projectile.originalDamage = Item.damage;
-            }
-            if (player.HeldItem.type == ModContent.ItemType<TwinStarbombas>()
-                && player.ownedProjectileCounts[ModContent.ProjectileType<TwinStarbombasProj2>()] == 0)
-            {
-                var projectile = Projectile.NewProjectileDirect(player.GetSource_FromThis(), player.Center, Vector2.Zero,
-                    ModContent.ProjectileType<TwinStarbombasProj2>(), Item.damage, Item.knockBack, player.whoAmI);
-                projectile.originalDamage = Item.damage;
-            }
+            OrbPlayer orbPlayer = player.GetModPlayer<OrbPlayer>();
+            orbPlayer.EquipOrbSlot1(Type);
+            orbPlayer.EquipOrbSlot2(Type, ModContent.ProjectileType<TwinStarbombasProj2>());
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

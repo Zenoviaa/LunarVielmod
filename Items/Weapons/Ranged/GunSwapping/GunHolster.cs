@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
@@ -17,37 +18,55 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 
         private void HolsterGun(Player player, int projectileType, int baseDamage, float knockBack)
         {
-            //   player.damage
             int newDamage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(baseDamage);
-            if (player.HeldItem.type == ModContent.ItemType<GunHolster>()
-                && player.ownedProjectileCounts[projectileType] == 0)
+            if (player.ownedProjectileCounts[projectileType] == 0)
             {
                 Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
                     projectileType, newDamage, knockBack, player.whoAmI);
             }
         }
 
-        public override void PostUpdateEquips()
+        public override void PostUpdate()
         {
-            base.PostUpdateEquips();
-            if (RightHand != -1)
+            if(Main.myPlayer == Player.whoAmI)
             {
-                if(RightHandItem is MiniGun miniGun)
+                int buffType = ModContent.BuffType<MarksMan>();
+                int itemType = ModContent.ItemType<GunHolster>();
+                if (!Player.HasBuff(buffType))
                 {
-                    int toHolster = miniGun.GunHolsterProjectile;
-                    if (miniGun.GunHolsterProjectile2 != -1)
+                    if ((Player.HeldItem.type == itemType || Main.mouseItem.type == itemType))
                     {
-                        toHolster = miniGun.GunHolsterProjectile2;
+                        Player.AddBuff(buffType, 2, false);
                     }
-                    HolsterGun(Player, toHolster, RightHandItem.Item.damage, RightHandItem.Item.knockBack);
                 }
-            }
-
-            if (LeftHand != -1)
-            {
-                if (LeftHandItem is MiniGun miniGun)
+                else
                 {
-                    HolsterGun(Player, miniGun.GunHolsterProjectile, LeftHandItem.Item.damage, LeftHandItem.Item.knockBack);
+                    if (RightHand != -1)
+                    {
+                        if (RightHandItem is MiniGun miniGun)
+                        {
+                            int toHolster = miniGun.GunHolsterProjectile;
+                            if (miniGun.GunHolsterProjectile2 != -1)
+                            {
+                                toHolster = miniGun.GunHolsterProjectile2;
+                            }
+                            HolsterGun(Player, toHolster, RightHandItem.Item.damage, RightHandItem.Item.knockBack);
+                        }
+                    }
+
+                    if (LeftHand != -1)
+                    {
+                        if (LeftHandItem is MiniGun miniGun)
+                        {
+                            HolsterGun(Player, miniGun.GunHolsterProjectile, LeftHandItem.Item.damage, LeftHandItem.Item.knockBack);
+                        }
+                    }
+
+                    if ((Player.HeldItem.type != itemType) && Main.mouseItem.type != itemType)
+                    {
+                        Player.ClearBuff(buffType);
+                        NetMessage.SendData(MessageID.PlayerBuffs);
+                    }
                 }
             }
         }

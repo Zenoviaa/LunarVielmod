@@ -1,24 +1,18 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary;
+using Stellamod.Buffs;
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Dusts;
-using Stellamod.Gores;
 using Stellamod.Helpers;
-using Stellamod.Items.Weapons.Summon.Orbs;
+using Stellamod.Particles;
 using Stellamod.Trails;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
-using ParticleLibrary;
-using Stellamod.Particles;
-using Stellamod.Projectiles.IgniterExplosions;
-using System.IO;
 
 namespace Stellamod.Projectiles.Summons.Orbs
 {
@@ -103,7 +97,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
         public override void AI()
         {
             //Kill yourself if not holding the item
-            if (Owner.HeldItem.type != ModContent.ItemType<SineSire>())
+            if (!Owner.HasBuff(ModContent.BuffType<OrbMaster>()))
             {
                 Projectile.Kill();
                 return;

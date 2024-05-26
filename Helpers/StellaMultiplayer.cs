@@ -124,44 +124,12 @@ namespace Stellamod
 					}
 					break;
 				case MessageType.CompleteMerenaQuest:
-                    bool con1 = reader.ReadBoolean();
-                    bool con2 = reader.ReadBoolean();
-                    bool con3 = reader.ReadBoolean();
-                    bool con4 = reader.ReadBoolean();
-                    bool con5 = reader.ReadBoolean();
-
-                    if (!MerenaQuestSystem.KillVerliaCompleted)
-                        MerenaQuestSystem.KillVerliaCompleted = con1;
-                    if (!MerenaQuestSystem.ExploreMorrowedVillageCompleted)
-                        MerenaQuestSystem.ExploreMorrowedVillageCompleted = con2;
-                    if (!MerenaQuestSystem.Give100DustBagsCompleted)
-                        MerenaQuestSystem.Give100DustBagsCompleted = con3;
-                    if (!MerenaQuestSystem.MakeMagicPaperCompleted)
-                        MerenaQuestSystem.MakeMagicPaperCompleted = con4;
-                    if (!MerenaQuestSystem.MakeTomeOfInfiniteSorceryCompleted)
-                        MerenaQuestSystem.MakeTomeOfInfiniteSorceryCompleted = con5;
+					var questType = (MerenaQuestSystem.QuestType)reader.ReadByte();
+					MerenaQuestSystem.HandleCompleteQuest(questType);
                     break;
 
 				case MessageType.CompleteZuiQuest:
-                    bool ccon1 = reader.ReadBoolean();
-                    bool ccon2 = reader.ReadBoolean();
-                    bool ccon3 = reader.ReadBoolean();
-                    bool ccon4 = reader.ReadBoolean();
-                    bool ccon5 = reader.ReadBoolean();
-                    int questsCompleted = reader.ReadInt32();
-
-                    if (!ZuiQuestSystem.ThreeQuestsCompleted)
-                        ZuiQuestSystem.ThreeQuestsCompleted = ccon1;
-                    if (!ZuiQuestSystem.SixQuestsCompleted)
-                        ZuiQuestSystem.SixQuestsCompleted = ccon2;
-                    if (!ZuiQuestSystem.TenQuestsCompleted)
-                        ZuiQuestSystem.TenQuestsCompleted = ccon3;
-                    if (!ZuiQuestSystem.TwentyQuestsCompleted)
-                        ZuiQuestSystem.TwentyQuestsCompleted = ccon4;
-                    if (!ZuiQuestSystem.ThirtyQuestsCompleted)
-                        ZuiQuestSystem.ThirtyQuestsCompleted = ccon5;
-                    if (ZuiQuestSystem.QuestsCompleted <= questsCompleted)
-                        ZuiQuestSystem.QuestsCompleted = questsCompleted;
+					ZuiQuestSystem.QuestsCompleted++;
                     break;
 				case MessageType.CreatePortal:
 					float altarX = reader.ReadSingle();

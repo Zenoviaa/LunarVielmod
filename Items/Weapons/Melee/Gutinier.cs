@@ -87,7 +87,13 @@ namespace Stellamod.Items.Weapons.Melee
 
             }
             AttackCounter = -AttackCounter;
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
+
+            int mult = 3;
+            if (player.GetModPlayer<MyPlayer>().SwordCombo >= 4)
+            {
+                mult = 4;
+            }
+            Projectile.NewProjectile(source, position, velocity, type, damage * mult, knockback, player.whoAmI, 1, dir);
             Projectile.NewProjectile(source, position, velocity, ProjectileID.ThrowingKnife, damage * 5, knockback, player.whoAmI, 1, dir);
 
             return false;

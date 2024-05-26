@@ -2235,11 +2235,8 @@ namespace Stellamod.NPCs.Bosses.Zui
             }
 
 			NPC.SetEventFlagCleared(ref DownedBossSystem.downedZuiBoss, -1);
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThirtyQuestsCompleted, -1);
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.TwentyQuestsCompleted, -1);
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.TenQuestsCompleted, -1);
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
+			ZuiQuestSystem.QuestsCompleted += 30;
+			ZuiQuestSystem.SendCompleteQuestPacket();
 		}
 	}
 }

@@ -1,23 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Trails;
-
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
-
+using Terraria.ID;
+using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-
 
 namespace Stellamod.Projectiles.Slashers.Maelstrom
 {
-	public class MaelstromShotProj : ModProjectile
+    public class MaelstromShotProj : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -64,16 +60,19 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
 		{
 			return Color.White;
 		}
+
 		public PrimDrawer TrailDrawer { get; private set; } = null;
 		public float WidthFunction(float completionRatio)
 		{
 			float baseWidth = Projectile.scale * Projectile.width * 1.3f;
 			return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
 		}
+
 		public Color ColorFunction(float completionRatio)
 		{
 			return Color.Lerp(Color.LightPink, Color.Transparent, completionRatio) * 0.7f;
 		}
+
 		public override bool PreDraw(ref Color lightColor)
 		{
 			if (Main.rand.NextBool(5))
@@ -99,7 +98,6 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
 			Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(5f * alphaCounter), (int)(45f * alphaCounter), (int)(35f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (7 + 0.6f), SpriteEffects.None, 0f);
 			Lighting.AddLight(Projectile.Center, Color.LightPink.ToVector3() * 1.0f * Main.essScale);
 		}
-
 
 		public override void AI()
 		{
@@ -154,11 +152,12 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
 			Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * projSpeed;
 			Projectile.rotation = Projectile.velocity.ToRotation();
 		}
+
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{
 			overPlayers.Add(index);
-
 		}
+
 		// Finding the closest NPC to attack within maxDetectDistance range
 		// If not found then returns null
 		public NPC FindClosestNPC(float maxDetectDistance)

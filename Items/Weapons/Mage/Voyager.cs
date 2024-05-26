@@ -76,7 +76,7 @@ namespace Stellamod.Items.Weapons.Mage
 
             }
             AttackCounter = -AttackCounter;
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
+            Projectile.NewProjectile(source, position, velocity, type, damage * 3, knockback, player.whoAmI, 1, dir);
            
 
            

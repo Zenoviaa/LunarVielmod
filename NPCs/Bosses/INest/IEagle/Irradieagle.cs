@@ -44,9 +44,9 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.aiStyle = 0;
-            NPC.BossBar = ModContent.GetInstance<MiniBossBar>();
-
+            NPC.BossBar = ModContent.GetInstance<NestBossBar>();
         }
+
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
         {
             NPC.lifeMax = (int)(NPC.lifeMax * balance);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs;
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -94,7 +95,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
         public override void AI()
         {
             //Kill yourself if not holding the item
-            if (Owner.HeldItem.type != ModContent.ItemType<AuroreanStarball>())
+            if (!Owner.HasBuff(ModContent.BuffType<OrbMaster>()))
             {
                 Projectile.Kill();
                 return;

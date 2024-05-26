@@ -83,6 +83,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
                 type = ModContent.ProjectileType<MaelstromProj2>();
                 damage = 60;
                 SoundEngine.PlaySound(SoundID.Item34, player.position);
+
             }
         }
 
@@ -100,7 +101,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
 
             }
             AttackCounter = -AttackCounter;
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
+            Projectile.NewProjectile(source, position, velocity, type, damage * 3, knockback, player.whoAmI, 1, dir);
 
             if (player.GetModPlayer<MyPlayer>().SwordCombo >= 4)
             {
@@ -112,6 +113,13 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
                     Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
                     Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<MaelstromShotProj>(), damage, Item.knockBack, player.whoAmI);
                 }
+
+                player.GetModPlayer<MyPlayer>().SwordCombo = 0;
+                player.GetModPlayer<MyPlayer>().SwordComboR = 0;
+            } else
+            {
+                player.GetModPlayer<MyPlayer>().SwordCombo++;
+                player.GetModPlayer<MyPlayer>().SwordComboR = 240;
             }
 
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwingyMael") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);

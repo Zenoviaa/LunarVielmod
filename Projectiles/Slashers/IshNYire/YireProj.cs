@@ -1,33 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
+using Stellamod.Trails;
 using System;
-using System.IO;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Dusts;
-using Stellamod.Trails;
-using Stellamod.Utilis;
-using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
-using Stellamod.Items.Accessories.Players;
-using ParticleLibrary;
-using Stellamod.Particles;
-using Stellamod.Helpers;
 
 namespace Stellamod.Projectiles.Slashers.IshNYire
 {
     public class YireProj : ModProjectile
     {
-        public static bool swung = false;
-
-        private bool _initialized;
-        private int timer;
-
         //Swing Stats
         public float SwingDistance;
-        public int SwingTime = 15 * Swing_Speed_Multiplier;
+
+        private int SwingTime => (int)((15 * Swing_Speed_Multiplier) / Owner.GetAttackSpeed(DamageClass.Melee));
+
         public float holdOffset = 60f;
 
         //Ending Swing Time so it doesn't immediately go away after the swing ends, makes it look cleaner I think
@@ -35,6 +25,7 @@ namespace Stellamod.Projectiles.Slashers.IshNYire
 
         //This is for smoothin the trail
         public const int Swing_Speed_Multiplier = 8;
+        private Player Owner => Main.player[Projectile.owner];
 
         public override void SetStaticDefaults()
         {
@@ -64,12 +55,6 @@ namespace Stellamod.Projectiles.Slashers.IshNYire
             Projectile.localNPCHitCooldown = 15 * Swing_Speed_Multiplier;
         }
 
-        public float Timer
-        {
-            get => Projectile.ai[0];
-            set => Projectile.ai[0] = value;
-        }
-
         public virtual float Lerp(float val)
         {
             return val == 1f ? 1f : (val == 1f ? 1f : (float)Math.Pow(2, val * 10f - 10f) / 2f);
@@ -77,82 +62,49 @@ namespace Stellamod.Projectiles.Slashers.IshNYire
 
         public override void AI()
         {
-            Player player = Main.player[Projectile.owner];
-            if (!_initialized)
-            {
-                timer++;
+            Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
+            float multiplier = 0.2f;
+            RGB *= multiplier;
 
-                SwingTime = (int)(SwingTime / player.GetAttackSpeed(DamageClass.Melee));
-                Projectile.alpha = 255;
-                Projectile.timeLeft = SwingTime + EndSwingTime;
-                _initialized = true;
-                Projectile.damage -= 9999;
-                //Projectile.netUpdate = true;
+            Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
 
-            }
-            else if (_initialized)
-            {
-                if (!player.active || player.dead || player.CCed || player.noItems)
-                {
-                    return;
-                }
-                Projectile.alpha = 0;
-                if (timer == 1)
-                {
+            int dir = (int)Projectile.ai[1];
 
-                    Projectile.damage += 9999;
-                    Projectile.damage *= 3;
+            //Get the swing progress
+            float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
 
-                    timer++;
-                }
+            //Smooth it some more
+            float swingProgress = Easing.InOutExpo(lerpValue, 10f);
 
-                Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
-                float multiplier = 0.2f;
-                RGB *= multiplier;
+            // the actual rotation it should have
+            float defRot = Projectile.velocity.ToRotation();
+            // starting rotation
 
-                Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+            //How wide is the swing, in radians
+            float swingRange = MathHelper.PiOver2 + MathHelper.PiOver4;
+            float start = defRot - swingRange;
 
-                int dir = (int)Projectile.ai[1];
+            // ending rotation
+            float end = (defRot + swingRange);
 
-                //Get the swing progress
-                float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
+            // current rotation obv
+            // angle lerp causes some weird things here, so just use a normal lerp
+            float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
 
-                //Smooth it some more
-                float swingProgress = Easing.InOutExpo(lerpValue, 10f);
+            // offsetted cuz sword sprite
+            Vector2 position = Owner.RotatedRelativePoint(Owner.MountedCenter);
+            position += rotation.ToRotationVector2() * holdOffset;
+            Projectile.Center = position;
+            Projectile.rotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
 
-                // the actual rotation it should have
-                float defRot = Projectile.velocity.ToRotation();
-                // starting rotation
-
-                //How wide is the swing, in radians
-                float swingRange = MathHelper.PiOver2 + MathHelper.PiOver4;
-                float start = defRot - swingRange;
-
-                // ending rotation
-                float end = (defRot + swingRange);
-
-                // current rotation obv
-                // angle lerp causes some weird things here, so just use a normal lerp
-                float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
-
-                // offsetted cuz sword sprite
-                Vector2 position = player.RotatedRelativePoint(player.MountedCenter);
-                position += rotation.ToRotationVector2() * holdOffset;
-                Projectile.Center = position;
-                Projectile.rotation = (position - player.Center).ToRotation() + MathHelper.PiOver4;
-
-
-                player.heldProj = Projectile.whoAmI;
-                player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
-                player.itemRotation = rotation * player.direction;
-                player.itemTime = 2;
-                player.itemAnimation = 2;
-            }
+            Owner.heldProj = Projectile.whoAmI;
+            Owner.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
+            Owner.itemRotation = rotation * Owner.direction;
+            Owner.itemTime = 2;
+            Owner.itemAnimation = 2;
         }
 
-
         public override bool ShouldUpdatePosition() => false;
-        public bool bounced = false;
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -341,18 +293,6 @@ namespace Stellamod.Projectiles.Slashers.IshNYire
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             return;
-        }
-
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-            writer.Write(SwingTime);
-            writer.Write(SwingDistance);
-        }
-
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            SwingTime = reader.ReadInt32();
-            SwingDistance = reader.ReadSingle();
         }
     }
 }

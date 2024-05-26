@@ -84,7 +84,7 @@ namespace Stellamod.NPCs.Bosses.INest
             NPC.knockBackResist = 0.0f;
             NPC.noGravity = false;
             NPC.boss = true;
-            NPC.BossBar = ModContent.GetInstance<MiniBossBar>();
+            NPC.BossBar = ModContent.GetInstance<NestBossBar>();
             if (!Main.dedServ)
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Irradiated_Nest");

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Buffs;
 using Stellamod.Helpers;
 using System;
 using System.IO;
@@ -27,9 +28,9 @@ namespace Stellamod.Projectiles.GunHolster
         protected float ShootCount;
 
 
-        private float PrepTime => 4 / Owner.GetTotalAttackSpeed(Projectile.DamageType);
-        private float ExecTime => AttackSpeed / Owner.GetTotalAttackSpeed(Projectile.DamageType);
-        private float HideTime => AttackSpeed / Owner.GetTotalAttackSpeed(Projectile.DamageType) / 2;
+        private float PrepTime => 4 / Owner.GetTotalAttackSpeed(DamageClass.Ranged);
+        private float ExecTime => AttackSpeed / Owner.GetTotalAttackSpeed(DamageClass.Ranged);
+        private float HideTime => AttackSpeed / Owner.GetTotalAttackSpeed(DamageClass.Ranged) / 2;
         private Player Owner => Main.player[Projectile.owner];
 
         private float Timer
@@ -85,6 +86,7 @@ namespace Stellamod.Projectiles.GunHolster
             base.SetDefaults();
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
+            Projectile.timeLeft = int.MaxValue;
         }
 
 
@@ -95,14 +97,13 @@ namespace Stellamod.Projectiles.GunHolster
 
         public override void AI()
         {
-            Player player = Main.player[Projectile.owner];
-            if (player.noItems || player.CCed || player.dead || !player.active)
+            if (!Owner.HasBuff(ModContent.BuffType<MarksMan>()))
                 Projectile.Kill();
 
-            int type = ModContent.ItemType<Items.Weapons.Ranged.GunSwapping.GunHolster>();
-            if (Main.myPlayer == Projectile.owner && Owner.HeldItem.type != type
-                && Main.mouseItem.type != type)
+            if (Owner.noItems || Owner.CCed || Owner.dead || !Owner.active)
                 Projectile.Kill();
+
+  
 
             if(Main.myPlayer == Projectile.owner)
             {

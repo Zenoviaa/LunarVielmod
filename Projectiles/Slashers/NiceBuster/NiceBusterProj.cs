@@ -25,7 +25,7 @@ namespace Stellamod.Projectiles.Slashers.NiceBuster
 
         //Swing Stats
         public float SwingDistance;
-        public int SwingTime = 10 * Swing_Speed_Multiplier;
+        private int SwingTime => (int)((10 * Swing_Speed_Multiplier) / Owner.GetAttackSpeed(DamageClass.Melee));
         public float holdOffset = 60f;
 
         //Ending Swing Time so it doesn't immediately go away after the swing ends, makes it look cleaner I think
@@ -33,7 +33,7 @@ namespace Stellamod.Projectiles.Slashers.NiceBuster
 
         //This is for smoothin the trail
         public const int Swing_Speed_Multiplier = 8;
-
+        private Player Owner => Main.player[Projectile.owner];
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 20;
@@ -61,74 +61,54 @@ namespace Stellamod.Projectiles.Slashers.NiceBuster
 
         public override void AI()
         {
-            base.AI();
-            Player player = Main.player[Projectile.owner];
-            if (!_init)
+            Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
+            float multiplier = 0.2f;
+            RGB *= multiplier;
+
+            Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+
+            int dir = (int)Dir;
+
+            //Get the swing progress
+            float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
+
+            //Smooth it some more
+            float swingProgress = Easing.InOutExpo(lerpValue, 10f);
+
+            // the actual rotation it should have
+            float defRot = Projectile.velocity.ToRotation();
+            // starting rotation
+
+            //How wide is the swing, in radians
+            float swingRange = MathHelper.PiOver2 + MathHelper.PiOver4;
+            float start = defRot - swingRange;
+
+            // ending rotation
+            float end = (defRot + swingRange);
+
+            // current rotation obv
+            // angle lerp causes some weird things here, so just use a normal lerp
+            float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
+
+            // offsetted cuz sword sprite
+            Vector2 position = Owner.RotatedRelativePoint(Owner.MountedCenter);
+            position += rotation.ToRotationVector2() * holdOffset;
+            Projectile.Center = position;
+            Projectile.rotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
+
+            Timer++;
+            if (Timer >= 6 * Swing_Speed_Multiplier)
             {
-                SwingTime = (int)(SwingTime / player.GetAttackSpeed(DamageClass.Melee));
-
-                _init = true;
-                Projectile.alpha = 255;
-                Projectile.timeLeft = SwingTime + EndSwingTime;
+                Vector2 offset = Projectile.rotation.ToRotationVector2();
+                Vector2 starSpawnCenter = Projectile.Center + offset;
+                Timer = 0;
             }
-            else if (_init)
-            {
-                if (!player.active || player.dead || player.CCed || player.noItems)
-                {
-                    return;
-                }
 
-                Projectile.alpha = 0;
-                Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
-                float multiplier = 0.2f;
-                RGB *= multiplier;
-
-                Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-
-                int dir = (int)Dir;
-
-                //Get the swing progress
-                float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
-
-                //Smooth it some more
-                float swingProgress = Easing.InOutExpo(lerpValue, 10f);
-
-                // the actual rotation it should have
-                float defRot = Projectile.velocity.ToRotation();
-                // starting rotation
-
-                //How wide is the swing, in radians
-                float swingRange = MathHelper.PiOver2 + MathHelper.PiOver4;
-                float start = defRot - swingRange;
-
-                // ending rotation
-                float end = (defRot + swingRange);
-
-                // current rotation obv
-                // angle lerp causes some weird things here, so just use a normal lerp
-                float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
-
-                // offsetted cuz sword sprite
-                Vector2 position = player.RotatedRelativePoint(player.MountedCenter);
-                position += rotation.ToRotationVector2() * holdOffset;
-                Projectile.Center = position;
-                Projectile.rotation = (position - player.Center).ToRotation() + MathHelper.PiOver4;
-
-                Timer++;
-                if (Timer >= 6 * Swing_Speed_Multiplier)
-                {
-                    Vector2 offset = Projectile.rotation.ToRotationVector2();
-                    Vector2 starSpawnCenter = Projectile.Center + offset;
-                    Timer = 0;
-                }
-
-
-                player.heldProj = Projectile.whoAmI;
-                player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
-                player.itemRotation = rotation * player.direction;
-                player.itemTime = 2;
-                player.itemAnimation = 2;
-            }
+            Owner.heldProj = Projectile.whoAmI;
+            Owner.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
+            Owner.itemRotation = rotation * Owner.direction;
+            Owner.itemTime = 2;
+            Owner.itemAnimation = 2;
         }
 
         public PrimDrawer TrailDrawer { get; private set; } = null;
@@ -207,6 +187,5 @@ namespace Stellamod.Projectiles.Slashers.NiceBuster
             return false;
 
         }
-
     }
 }

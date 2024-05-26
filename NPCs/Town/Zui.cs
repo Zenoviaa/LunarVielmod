@@ -208,17 +208,6 @@ namespace Stellamod.NPCs.Town
 
 		}
 
-        private void SendQuestPacket()
-        {
-			Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.CompleteZuiQuest,
-				ZuiQuestSystem.ThreeQuestsCompleted,
-				ZuiQuestSystem.SixQuestsCompleted,
-				ZuiQuestSystem.TenQuestsCompleted,
-				ZuiQuestSystem.TwentyQuestsCompleted,
-				ZuiQuestSystem.ThirtyQuestsCompleted,
-				ZuiQuestSystem.QuestsCompleted).Send(-1);
-        }
-
         private void Quest_NotCheckmarked()
         {
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
@@ -260,9 +249,8 @@ namespace Stellamod.NPCs.Town
 				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), 9);
 			}
 
-			ZuiQuestSystem.QuestsCompleted += 1;
-
-			if (ZuiQuestSystem.QuestsCompleted == 1)
+            ZuiQuestSystem.CompleteQuest();
+            if (ZuiQuestSystem.QuestsCompleted == 1)
 			{
 
 				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CanOfLeaves>(), 1);
@@ -309,8 +297,9 @@ namespace Stellamod.NPCs.Town
 				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FungalFlace>(), 1);
 
 			}
-				ZuiQuestSystem.QuestsCompleted += 1;
-				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(4));
+
+            ZuiQuestSystem.CompleteQuest();
+            Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(4));
 
 			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
@@ -322,8 +311,6 @@ namespace Stellamod.NPCs.Town
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 			Main.npcChatText = $"Ok ok, 3 quests is kind of good, thanks for caring a lot about this! I've got more items in my shop for you, bring me 3 more and I'll get more for ya!";
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
-			ZuiQuestSystem.QuestsCompleted += 1;
             int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 
 			var entitySource = NPC.GetSource_GiftOrReward();
@@ -331,22 +318,18 @@ namespace Stellamod.NPCs.Town
 
 
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-			SendQuestPacket();
-
+            ZuiQuestSystem.CompleteQuest();
         }
+
 		private void Quest_6Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 			Main.npcChatText = $"6 Quests is actually kind of crazy, I've opened up with a few more items for you if you want! Bring me 4 more ;p";
-			ZuiQuestSystem.QuestsCompleted += 1;
 
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
-			ZuiQuestSystem.QuestsCompleted += 1;
             int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-            SendQuestPacket();
+            ZuiQuestSystem.CompleteQuest();
         }
 		private void Quest_10Complete()
 		{
@@ -357,13 +340,9 @@ namespace Stellamod.NPCs.Town
             Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Hookarama>(), 1);
 
             //Setting all previous quests to be complete, so it's backwards compatible with the old version.
-            NPC.SetEventFlagCleared(ref ZuiQuestSystem.TenQuestsCompleted, -1);
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
-			ZuiQuestSystem.QuestsCompleted += 1;
             int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-            SendQuestPacket();
+            ZuiQuestSystem.CompleteQuest();
         }
 
 		private void Quest_20Complete()
@@ -373,44 +352,34 @@ namespace Stellamod.NPCs.Town
 
 
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.TwentyQuestsCompleted, -1);
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.TenQuestsCompleted, -1);
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
-
             var entitySource = NPC.GetSource_GiftOrReward();
             Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CarrotPatrol>(), 1);
 
 
-            ZuiQuestSystem.QuestsCompleted += 1;
             int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-            SendQuestPacket();
+            ZuiQuestSystem.CompleteQuest();
         }
+
 		private void Quest_30Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 			Main.npcChatText = $"My graditude is of the utmost thanks, in return you can have anything in my shop! And I'll help you out personally sometime if you need me ;p ";
 			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-			ZuiQuestSystem.QuestsCompleted += 1;
-			if (ZuiQuestSystem.QuestsCompleted == 30)
+
+            ZuiQuestSystem.CompleteQuest();
+            if (ZuiQuestSystem.QuestsCompleted == 30)
 			{
 
 				var entitySource = NPC.GetSource_GiftOrReward();
 				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
             
             }
-			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThirtyQuestsCompleted, -1);
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.TwentyQuestsCompleted, -1);
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.TenQuestsCompleted, -1);
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
-			
-            SendQuestPacket();
-        }
 
+            //Setting all previous quests to be complete, so it's backwards compatible with the old version.
+
+        }
 
 		private bool CompleteQuests()
 		{
@@ -462,16 +431,16 @@ namespace Stellamod.NPCs.Town
 			Player player = Main.LocalPlayer;
 
 			//Go through the list of quests in a specific order and see if any need to be started
-			if (!ZuiQuestSystem.TenQuestsCompleted && !player.HasItem(ModContent.ItemType<CompletedFlowerBag>()))
+			if (ZuiQuestSystem.QuestsCompleted < 10 && !player.HasItem(ModContent.ItemType<CompletedFlowerBag>()))
 			{
 				Quest_NotCheckmarked();
 			}
 
-			if (ZuiQuestSystem.TenQuestsCompleted && !ZuiQuestSystem.ThirtyQuestsCompleted && !player.HasItem(ModContent.ItemType<CompletedFlowerBag>()))
+			if (ZuiQuestSystem.QuestsCompleted >= 10 && ZuiQuestSystem.QuestsCompleted < 30 && !player.HasItem(ModContent.ItemType<CompletedFlowerBag>()))
 			{
 				Quest_NotCheckmarkedHardmode();
 			}
-			else if (ZuiQuestSystem.ThirtyQuestsCompleted)
+			else if (ZuiQuestSystem.QuestsCompleted >= 30)
 			{
 				//All Quests completed
 				Main.npcChatText = $"Hiya! I think that's all the things I need, you can get some stuff in my shop but thanks babe!";
@@ -482,17 +451,11 @@ namespace Stellamod.NPCs.Town
 			timer++;
 			NPC.CheckActive();
 			NPC.spriteDirection = NPC.direction;
-
-
-
 			if (NPC.AnyNPCs(ModContent.NPCType<ZuiTheTraveller>()))
 			{
 
 				NPC.Kill();
-			}
-
-
-			
+			}	
 		}
 
 		

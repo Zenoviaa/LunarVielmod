@@ -13,7 +13,7 @@ namespace Stellamod.Projectiles.Slashers.Chillrend
 {
     public class ChillrendProj2 : ModProjectile
     {
-        public int SwingTime = 32 * Swing_Speed_Multiplier;
+        private int SwingTime => (int)((32 * Swing_Speed_Multiplier) / Owner.GetAttackSpeed(DamageClass.Melee));
         public float holdOffset = 60f;
 
         //Ending Swing Time so it doesn't immediately go away after the swing ends, makes it look cleaner I think
@@ -21,9 +21,7 @@ namespace Stellamod.Projectiles.Slashers.Chillrend
 
         //This is for smoothin the trail
         public const int Swing_Speed_Multiplier = 8;
-        public int combowombo;
-        private bool _initialized;
-        private int timer;
+        private Player Owner => Main.player[Projectile.owner];
 
         public override void SetStaticDefaults()
         {
@@ -50,12 +48,6 @@ namespace Stellamod.Projectiles.Slashers.Chillrend
             Projectile.localNPCHitCooldown = 10 * Swing_Speed_Multiplier;
         }
 
-        public float Timer
-        {
-            get => Projectile.ai[0];
-            set => Projectile.ai[0] = value;
-        }
-
         public virtual float Lerp(float val)
         {
             return val == 1f ? 1f : (val == 1f ? 1f : (float)Math.Pow(2, val * 10f - 10f) / 2f);
@@ -63,112 +55,67 @@ namespace Stellamod.Projectiles.Slashers.Chillrend
 
         public override void AI()
         {
-            Player player = Main.player[Projectile.owner];
-            if (!_initialized)
+            if (Projectile.timeLeft % (SwingTime / 4) == 0)
             {
-                timer++;
+                if (Main.rand.NextBool(2))
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
+                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Owner.Center, velocity,
+                        ProjectileID.LostSoulFriendly, Projectile.damage / 12, 0f, Projectile.owner);
 
-                SwingTime = (int)(SwingTime / player.GetAttackSpeed(DamageClass.Melee));
-                Projectile.alpha = 255;
-                Projectile.timeLeft = SwingTime + EndSwingTime;
-                _initialized = true;
-                Projectile.damage -= 9999;
-                //Projectile.netUpdate = true;
+                }
+
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Vector2.Zero,
+                    ModContent.ProjectileType<ChillrendBlizzardProj>(), Projectile.damage / 6, 1, Owner.whoAmI);
             }
-            else if (_initialized)
-            {
-                if (!player.active || player.dead || player.CCed || player.noItems)
-                {
-                    Projectile.Kill();
-                    return;
-                }
 
-                Projectile.alpha = 0;
-                if (timer == 1)
-                {
-                    player.GetModPlayer<MyPlayer>().SwordCombo++;
-                    player.GetModPlayer<MyPlayer>().SwordComboR = 240;
-                    Projectile.damage += 9999;
-                    Projectile.damage *= 3;
+            Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
+            float multiplier = 0.2f;
+            RGB *= multiplier;
 
-                    timer++;
-                }
-                if(Projectile.timeLeft % (SwingTime / 4) == 0)
-                {
-                    if (Main.rand.NextBool(2))
-                    {
-                        Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                        Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), player.Center, velocity,
-                            ProjectileID.LostSoulFriendly, Projectile.damage / 12, 0f, Projectile.owner);
+            Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
 
-                    }
+            int dir = (int)Projectile.ai[1];
+            float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
 
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center, Vector2.Zero,
-                        ModContent.ProjectileType<ChillrendBlizzardProj>(), Projectile.damage / 6, 1, player.whoAmI);
-                }
-                Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
-                float multiplier = 0.2f;
-                float max = 2.25f;
-                float min = 1.0f;
-                RGB *= multiplier;
+            //Smooth it some more
+            float swingProgress = Easing.InOutExpo(lerpValue, 8f);
 
-                Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+            // the actual rotation it should have
+            float defRot = Projectile.velocity.ToRotation();
+            // starting rotation
 
-                int dir = (int)Projectile.ai[1];
-                float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
+            //How wide is the swing, in radians
+            float swingRange = MathHelper.TwoPi + MathHelper.PiOver2 + MathHelper.PiOver4;
+            float start = defRot - swingRange;
 
-                //Smooth it some more
-                float swingProgress = Easing.InOutExpo(lerpValue, 8f);
+            // ending rotation
+            float end = (defRot + swingRange);
 
-                // the actual rotation it should have
-                float defRot = Projectile.velocity.ToRotation();
-                // starting rotation
+            // current rotation obv
+            // angle lerp causes some weird things here, so just use a normal lerp
+            float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
 
-                //How wide is the swing, in radians
-                float swingRange = MathHelper.TwoPi + MathHelper.PiOver2 + MathHelper.PiOver4;
-                float start = defRot - swingRange;
+            // offsetted cuz sword sprite
+            Vector2 position = Owner.RotatedRelativePoint(Owner.MountedCenter);
+            position += rotation.ToRotationVector2() * holdOffset;
+            Projectile.Center = position;
+            Projectile.rotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
 
-                // ending rotation
-                float end = (defRot + swingRange);
-
-                // current rotation obv
-                // angle lerp causes some weird things here, so just use a normal lerp
-                float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
-
-                // offsetted cuz sword sprite
-                Vector2 position = player.RotatedRelativePoint(player.MountedCenter);
-                position += rotation.ToRotationVector2() * holdOffset;
-                Projectile.Center = position;
-                Projectile.rotation = (position - player.Center).ToRotation() + MathHelper.PiOver4;
-
-                player.heldProj = Projectile.whoAmI;
-                player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
-                player.itemRotation = rotation * player.direction;
-                player.itemTime = 2;
-                player.itemAnimation = 2;
-            }
+            Owner.heldProj = Projectile.whoAmI;
+            Owner.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
+            Owner.itemRotation = rotation * Owner.direction;
+            Owner.itemTime = 2;
+            Owner.itemAnimation = 2;
         }
 
         public override bool ShouldUpdatePosition() => false;
-        public bool bounced = false;
 
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Player player = Main.player[Projectile.owner];
-            Vector2 oldMouseWorld = Main.MouseWorld;
-            if (!bounced)
-            {
-                player.velocity = Projectile.DirectionTo(oldMouseWorld) * -2f;
-                bounced = true;
-            }
-
-
-
-
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 16f);
         }
-
 
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
@@ -176,11 +123,11 @@ namespace Stellamod.Projectiles.Slashers.Chillrend
             float baseWidth = Projectile.scale * Projectile.width * 0.5f;
             return MathHelper.SmoothStep(baseWidth, 1.5f, completionRatio);
         }
+
         public Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(Color.LightCyan, Color.Transparent, completionRatio) * 0.7f;
         }
-
 
         public TrailRenderer SwordSlash;
         public TrailRenderer SwordSlash2;
@@ -265,12 +212,8 @@ namespace Stellamod.Projectiles.Slashers.Chillrend
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
 
             Main.spriteBatch.End();
-
             Main.spriteBatch.Begin();
-
-
             return false;
-
         }
 
         public override void PostDraw(Color lightColor)
@@ -312,18 +255,7 @@ namespace Stellamod.Projectiles.Slashers.Chillrend
             }
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
             return;
-        }
-
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-            writer.Write(SwingTime);
-        }
-
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            SwingTime = reader.ReadInt32();
         }
     }
 }

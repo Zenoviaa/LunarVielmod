@@ -1,7 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Dusts;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;
@@ -24,7 +21,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useAnimation = 72;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 6;
-            Item.value = Item.buyPrice(0, 15, 0, 0);
+            Item.value = Item.buyPrice(0, 25, 0, 0);
             Item.rare = ItemRarityID.LightRed;
             Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/GlocketRouncher");
             Item.autoReuse = true;

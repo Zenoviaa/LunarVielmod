@@ -32,6 +32,8 @@ namespace Stellamod.NPCs.Bosses.Verlia
     [AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
 	public class VerliaB : ModNPC
 	{
+		private float _teleportX;
+		private float _teleportY;
 		private bool _resetTimers;
 		public enum ActionState
 		{
@@ -204,6 +206,8 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			writer.WriteVector2(dashDirection);
 			writer.Write(dashDistance);
 			writer.Write(_resetTimers);
+			writer.Write(_teleportX);
+			writer.Write(_teleportY);
 			//writer.Write(frameCounter);
 			//writer.Write(frameTick);
 			//writer.Write(counter);
@@ -215,9 +219,11 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			dashDirection = reader.ReadVector2();
 			dashDistance = reader.ReadSingle();
 			_resetTimers = reader.ReadBoolean();
-			//frameCounter = reader.ReadInt32();
-			//frameTick = reader.ReadInt32();
-			//counter = reader.ReadInt32();
+			_teleportX = reader.ReadSingle();
+			_teleportY = reader.ReadSingle();
+            //frameCounter = reader.ReadInt32();
+            //frameTick = reader.ReadInt32();
+            //counter = reader.ReadInt32();
         }
 
 		Vector2 dashDirection = Vector2.Zero;
@@ -432,7 +438,17 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			}
 
 			FinishResetTimers();
-			switch (State)
+            if (_teleportX != 0 || _teleportY != 0)
+            {
+                NPC.position.X = _teleportX;
+                NPC.position.Y = _teleportY;
+                NPC.velocity.X = 0f;
+                NPC.velocity.Y = 0f;
+                _teleportX = 0f;
+                _teleportY = 0f;
+            }
+
+            switch (State)
 			{
 				case ActionState.StartVerlia:
 					NPC.damage = 0;
@@ -1676,8 +1692,8 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				if (StellaMultiplayer.IsHost)
                 {
                     int distanceY = Main.rand.Next(-125, -125);
-                    NPC.position.X = player.Center.X;
-                    NPC.position.Y = player.Center.Y + distanceY;
+					_teleportX = player.Center.X;
+                    _teleportY = player.Center.Y + distanceY;
                     NPC.netUpdate = true;
 				}			
 			}
@@ -1712,8 +1728,8 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				if (StellaMultiplayer.IsHost)
 				{
                     int distanceY = Main.rand.Next(-30, -30);
-                    NPC.position.X = player.Center.X;
-                    NPC.position.Y = player.Center.Y + distanceY;
+                    _teleportX = player.Center.X;
+                    _teleportY = player.Center.Y + distanceY;
                     NPC.netUpdate = true;
                 }
 			}

@@ -26,7 +26,7 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
 
         //Swing Stats
         public float SwingDistance;
-        public int SwingTime = 40 * Swing_Speed_Multiplier;
+        private int SwingTime => (int)((50 * Swing_Speed_Multiplier) / Owner.GetAttackSpeed(DamageClass.Melee));
         public float holdOffset = 60f;
 
         //Ending Swing Time so it doesn't immediately go away after the swing ends, makes it look cleaner I think
@@ -36,6 +36,19 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
         public const int Swing_Speed_Multiplier = 8;
         public int BounceTimer;
         public int BounceDelay;
+        private Player Owner => Main.player[Projectile.owner];
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(BounceTimer);
+            writer.Write(BounceDelay);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            BounceTimer = reader.ReadInt32();
+            BounceDelay = reader.ReadInt32();
+        }
+
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 24;
@@ -86,40 +99,13 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
         }
         public override void AI()
         {
-            Player player = Main.player[Projectile.owner];
-            if (!_initialized)
-            {
-                timer++;
+            Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
+            float multiplier = 0.2f;
+            RGB *= multiplier;
 
-                SwingTime = (int)(SwingTime / player.GetAttackSpeed(DamageClass.Melee));
-                Projectile.alpha = 255;
-                Projectile.timeLeft = SwingTime + EndSwingTime;
-                _initialized = true;
-                Projectile.damage -= 9999;
-            }
-            else if (_initialized)
-            {
-                if (!player.active || player.dead || player.CCed || player.noItems)
-                {
-                    return;
-                }
+            Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
 
-                Projectile.alpha = 0;
-                if (timer == 1)
-                {
-                    Projectile.damage += 9999;
-                    Projectile.damage *= 3;
-                    timer++;
-                }
-
-                Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
-                float multiplier = 0.2f;
-                RGB *= multiplier;
-
-                Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-
-                Swing();
-            }
+            Swing();
         }
 
         private void Swing()
@@ -211,9 +197,14 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
 
             if (BounceTimer <= 0)
             {
-                player.velocity = Projectile.DirectionTo(oldMouseWorld) * -2f;
+                if(Main.myPlayer == player.whoAmI)
+                {
+                    player.velocity = Projectile.DirectionTo(oldMouseWorld) * -2f;
+                }
+ 
                 BounceTimer = 10 * Swing_Speed_Multiplier;
                 BounceDelay = 2 * Swing_Speed_Multiplier;
+                Projectile.netUpdate = true;
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 16f);
             }
         }
@@ -364,18 +355,6 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             return;
-        }
-
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-            writer.Write(SwingTime);
-            writer.Write(SwingDistance);
-        }
-
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            SwingTime = reader.ReadInt32();
-            SwingDistance = reader.ReadSingle();
         }
     }
 }

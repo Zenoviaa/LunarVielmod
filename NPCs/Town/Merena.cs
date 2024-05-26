@@ -194,17 +194,6 @@ namespace Stellamod.NPCs.Town
 
 		}
 
-		private void SendQuestPacket()
-		{
-			Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.CompleteMerenaQuest,
-				MerenaQuestSystem.KillVerliaCompleted,
-				MerenaQuestSystem.ExploreMorrowedVillageCompleted,
-				MerenaQuestSystem.Give100DustBagsCompleted,
-				MerenaQuestSystem.MakeMagicPaperCompleted,
-				MerenaQuestSystem.MakeTomeOfInfiniteSorceryCompleted).Send(-1);
-
-        }
-
 		private void Quest_VerliaStart()
         {
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
@@ -226,9 +215,9 @@ namespace Stellamod.NPCs.Town
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ExploreMorrowedVillage>(), 1);
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(20));
+			
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
-			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
-			SendQuestPacket();
+			MerenaQuestSystem.CompleteQuest(MerenaQuestSystem.QuestType.KillVerlia);
         }
 
 		private void Quest_MorrowStart()
@@ -252,10 +241,8 @@ namespace Stellamod.NPCs.Town
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Give100DustBags>(), 1);
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(20));
-			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
-			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
-			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
-			SendQuestPacket();
+            //Setting all previous quests to be complete, so it's backwards compatible with the old version.
+            MerenaQuestSystem.CompleteQuest(MerenaQuestSystem.QuestType.ExploreMorrowedVillage);
         }
 
 		private void Quest_DustBagsStart()
@@ -279,11 +266,8 @@ namespace Stellamod.NPCs.Town
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeMagicPaper>(), 1);
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(20));
-			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
-			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
-			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
-			NPC.SetEventFlagCleared(ref MerenaQuestSystem.Give100DustBagsCompleted, -1);
-            SendQuestPacket();
+            //Setting all previous quests to be complete, so it's backwards compatible with the old version.
+            MerenaQuestSystem.CompleteQuest(MerenaQuestSystem.QuestType.Give100DustBags);
         }
 
 		private void Quest_MagicPaperStart()
@@ -307,12 +291,8 @@ namespace Stellamod.NPCs.Town
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeUltimateScroll>(), 1);
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(20));
-			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
-			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
-			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
-			NPC.SetEventFlagCleared(ref MerenaQuestSystem.Give100DustBagsCompleted, -1);
-			NPC.SetEventFlagCleared(ref MerenaQuestSystem.MakeMagicPaperCompleted, -1);
-            SendQuestPacket();
+            //Setting all previous quests to be complete, so it's backwards compatible with the old version.
+            MerenaQuestSystem.CompleteQuest(MerenaQuestSystem.QuestType.MagicPaper);
         }
 
 		private void Quest_TomeStart()
@@ -329,13 +309,8 @@ namespace Stellamod.NPCs.Town
 			Main.npcChatText = $"THANK YOU THANK YOU THANK YOU, omg this is the best day of my life! I never knew this actually existed! Were the rumors true??! dsfjhnbhfribdhs- Nevermind who cares anymore, we can both be the best mages ever! I open my shop to you and here, a token of my graditude. ";
 			var entitySource = NPC.GetSource_GiftOrReward();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(100));
-			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
-			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
-			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
-			NPC.SetEventFlagCleared(ref MerenaQuestSystem.Give100DustBagsCompleted, -1);
-			NPC.SetEventFlagCleared(ref MerenaQuestSystem.MakeMagicPaperCompleted, -1);
-			NPC.SetEventFlagCleared(ref MerenaQuestSystem.MakeTomeOfInfiniteSorceryCompleted, -1);
-            SendQuestPacket();
+            //Setting all previous quests to be complete, so it's backwards compatible with the old version.
+            MerenaQuestSystem.CompleteQuest(MerenaQuestSystem.QuestType.TomeOfInfiniteSorcery);
         }
 
 

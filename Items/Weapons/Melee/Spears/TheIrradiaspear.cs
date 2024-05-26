@@ -19,7 +19,7 @@ namespace Stellamod.Items.Weapons.Melee.Spears
 
         public override void SetDefaults()
         {
-            Item.damage = 42;
+            Item.damage = 51;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Swing;

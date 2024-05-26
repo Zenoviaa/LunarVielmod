@@ -33,6 +33,10 @@ namespace Stellamod.NPCs.Global
 
 			};
 
+			if(shop.NpcType == NPCID.Cyborg)
+			{
+                shop.Add(ModContent.ItemType<GlocketRouncher>());
+            }
             if (shop.NpcType == NPCID.Clothier)
             {
                 shop.Add(ModContent.ItemType<VeiledScriptureMiner10>());

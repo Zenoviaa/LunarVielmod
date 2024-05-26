@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Particles;
 using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,20 +11,10 @@ namespace Stellamod.Projectiles.Slashers.Reavestor
 {
     public class ReavestorSwordProj : ModProjectile
     {
-        public static bool swung = false;
-        public int SwingTime = 35;
         public float holdOffset = 30f;
-        public int combowombo;
-        private bool _initialized;
-        private int timer;
         private bool ParticleSpawned;
-      /*  public override void SetStaticDefaults()
-        {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 25;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
-        }
-
-        */
+        private int SwingTime => (int)((40 / Owner.GetAttackSpeed(DamageClass.Melee)));
+        private Player Owner => Main.player[Projectile.owner];
         public override void SetDefaults()
         {
 
@@ -39,12 +28,8 @@ namespace Stellamod.Projectiles.Slashers.Reavestor
             Projectile.width = 74;
             Projectile.friendly = true;
             Projectile.scale = 1f;
-        }
-
-        public float Timer
-        {
-            get => Projectile.ai[0];
-            set => Projectile.ai[0] = value;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
         }
 
         public virtual float Lerp(float val)
@@ -55,97 +40,53 @@ namespace Stellamod.Projectiles.Slashers.Reavestor
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
-            if (!_initialized)
+            Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
+            float multiplier = 0.2f;
+            RGB *= multiplier;
+            Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+
+            for (int i = 0; i < 1; i++)
             {
-                timer++;
-
-                SwingTime = (int)(40 / player.GetAttackSpeed(DamageClass.Melee));
-                Projectile.alpha = 255;
-                Projectile.timeLeft = SwingTime;
-                _initialized = true;
-                Projectile.damage -= 9999;
-                //Projectile.netUpdate = true;
-
+                Dust dust = Dust.NewDustDirect(Projectile.position - Projectile.velocity, Projectile.width, Projectile.height, DustID.IceTorch, 0, 0, 100, Color.Violet, 1f);
+                dust.noGravity = true;
+                dust.velocity *= 2f;
+                dust = Dust.NewDustDirect(Projectile.position - Projectile.velocity, Projectile.width, Projectile.height, DustID.IceTorch, 0f, 0f, 1000, Color.Violet, 1f);
             }
-            else if (_initialized)
+
+            int dir = (int)Projectile.ai[1];
+            float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft));
+            // the actual rotation it should have
+            float defRot = Projectile.velocity.ToRotation();
+            // starting rotation
+            float endSet = ((MathHelper.PiOver2) / 0.2f);
+            float start = defRot - endSet;
+
+            // ending rotation
+            float end = defRot + endSet;
+            // current rotation obv
+            float rotation = dir == 1 ? start.AngleLerp(end, swingProgress) : start.AngleLerp(end, 1f - swingProgress);
+            // offsetted cuz sword sprite
+            Vector2 position = player.RotatedRelativePoint(player.MountedCenter);
+            position += rotation.ToRotationVector2() * holdOffset;
+            Projectile.Center = position;
+            Projectile.rotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
+
+            Owner.heldProj = Projectile.whoAmI;
+            Owner.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
+            Owner.itemRotation = rotation * Owner.direction;
+            Owner.itemTime = 2;
+            Owner.itemAnimation = 2;
+            //Projectile.netUpdate = true;
+
+
+            if (!ParticleSpawned)
             {
-                if (!player.active || player.dead || player.CCed || player.noItems)
-                {
-                    return;
-                }
-                Projectile.alpha = 0;
-                if (timer == 1)
-                {
-                    Projectile.damage += 9999;
-                    Projectile.damage *= 3;
-
-                    timer++;
-                }
-                Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
-                float multiplier = 0.2f;
-                float max = 2.25f;
-                float min = 1.0f;
-                RGB *= multiplier;
-                if (RGB.X > max)
-                {
-                    multiplier = 0.5f;
-                }
-                if (RGB.X < min)
-                {
-                    multiplier = 1.5f;
-                }
-                Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-                Projectile.usesLocalNPCImmunity = true;
-                Projectile.localNPCHitCooldown = 10000;
-                for (int i = 0; i < 1; i++)
-                {
-                    Dust dust = Dust.NewDustDirect(Projectile.position - Projectile.velocity, Projectile.width, Projectile.height, DustID.IceTorch, 0, 0, 100, Color.Violet, 1f);
-                    dust.noGravity = true;
-                    dust.velocity *= 2f;
-                    dust = Dust.NewDustDirect(Projectile.position - Projectile.velocity, Projectile.width, Projectile.height, DustID.IceTorch, 0f, 0f, 1000, Color.Violet, 1f);
-                }
-                int dir = (int)Projectile.ai[1];
-                float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft));
-                // the actual rotation it should have
-                float defRot = Projectile.velocity.ToRotation();
-                // starting rotation
-                float endSet = ((MathHelper.PiOver2) / 0.2f);
-                float start = defRot - endSet;
-
-                // ending rotation
-                float end = defRot + endSet;
-                // current rotation obv
-                float rotation = dir == 1 ? start.AngleLerp(end, swingProgress) : start.AngleLerp(end, 1f - swingProgress);
-                // offsetted cuz sword sprite
-                Vector2 position = player.RotatedRelativePoint(player.MountedCenter);
-                position += rotation.ToRotationVector2() * holdOffset;
-                Projectile.Center = position;
-                Projectile.rotation = (position - player.Center).ToRotation() + MathHelper.PiOver4;
-
-                player.heldProj = Projectile.whoAmI;
-                player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
-                player.itemRotation = rotation * player.direction;
-                player.itemTime = 2;
-                player.itemAnimation = 2;
-                //Projectile.netUpdate = true;
-
-
-                if (!ParticleSpawned)
-                {
-                 
-                    ParticleManager.NewParticle(player.Center, player.DirectionTo(Main.MouseWorld), ParticleManager.NewInstance<AuroranSlashParticle>(), Color.Purple, 0.7f, Projectile.whoAmI, Projectile.whoAmI);
-                    ParticleSpawned = true;
-                }
-
+                ParticleManager.NewParticle(Owner.Center, Owner.DirectionTo(Main.MouseWorld), ParticleManager.NewInstance<AuroranSlashParticle>(), Color.Purple, 0.7f, Projectile.whoAmI, Projectile.whoAmI);
+                ParticleSpawned = true;
             }
         }
 
         public override bool ShouldUpdatePosition() => false;
-
-        public void AttachToPlayer()
-        {
-
-        }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -153,10 +94,6 @@ namespace Stellamod.Projectiles.Slashers.Reavestor
 
             player.GetModPlayer<MyPlayer>().SwordCombo++;
             player.GetModPlayer<MyPlayer>().SwordComboR = 480;
-        }
-
-        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-        {
         }
 
         public override bool PreDraw(ref Color lightColor)

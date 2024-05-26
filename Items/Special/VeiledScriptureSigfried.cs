@@ -30,11 +30,8 @@ namespace Stellamod.Items.Special
         public override void UpdateInventory(Player player)
         {
             base.UpdateInventory(player);
-            if (player.HeldItem.type == Type)
-            {
-                ScripturePlayer scripturePlayer = player.GetModPlayer<ScripturePlayer>();
-                scripturePlayer.hasScripture = true;
-            }
+            ScripturePlayer scripturePlayer = player.GetModPlayer<ScripturePlayer>();
+            scripturePlayer.hasScripture = true;
         }
 
         public override bool? UseItem(Player player)

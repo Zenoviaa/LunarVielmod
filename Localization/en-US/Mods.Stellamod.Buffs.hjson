@@ -767,3 +767,13 @@ IridineNecklaceCDBuff: {
 	DisplayName: Iridine Necklace Cooldown
 	Description: You cannot revive!
 }
+
+MarksMan: {
+	DisplayName: Marks Man
+	Description: Behold, the power of TWO guns!
+}
+
+OrbMaster: {
+	DisplayName: Orb Master
+	Description: You are controlling a magical orb!
+}

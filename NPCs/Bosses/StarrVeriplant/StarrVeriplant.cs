@@ -24,8 +24,9 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
     [AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
     public class StarrVeriplant : ModNPC
     {
-
-		public enum ActionState
+        private float _teleportX;
+        private float _teleportY;
+        public enum ActionState
 		{
 
 			Dash,
@@ -161,12 +162,16 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 		{
 			writer.Write((float)State);
 			writer.Write(_resetTimers);
+			writer.Write(_teleportX);
+            writer.Write(_teleportY);
         }
 
 		public override void ReceiveExtraAI(BinaryReader reader)
 		{
 			_state = (ActionState)reader.ReadSingle();
 			_resetTimers = reader.ReadBoolean();
+			_teleportX = reader.ReadSingle();
+			_teleportY = reader.ReadSingle();
         }
 		
 
@@ -371,7 +376,17 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			}
 
 			FinishResetTimers();
-			switch (State)
+            if (_teleportX != 0 || _teleportY != 0)
+            {
+                NPC.position.X = _teleportX;
+                NPC.position.Y = _teleportY;
+                NPC.velocity.X = 0f;
+                NPC.velocity.Y = 0f;
+                _teleportX = 0f;
+                _teleportY = 0f;
+            }
+
+            switch (State)
 			{
 				case ActionState.Pulse:
 					NPC.damage = 0;
@@ -640,9 +655,14 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 			if (timer == 1)	
 			{
-				int distanceY = -250;
-                NPC.position.X = player.Center.X;
-                NPC.position.Y = player.Center.Y + distanceY;
+				if (StellaMultiplayer.IsHost)
+				{
+                    int distanceY = -250;
+                    _teleportX = player.Center.X;
+                    _teleportY = player.Center.Y + distanceY;
+                    NPC.netUpdate = true;
+                }
+
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veriappear"));
 			}
 
@@ -663,9 +683,13 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 			if (timer == 1)
             {
-				int distanceY = -250;
-                NPC.position.X = player.Center.X;
-                NPC.position.Y = player.Center.Y + distanceY;
+				if (StellaMultiplayer.IsHost)
+				{
+					int distanceY = -250;
+                    _teleportX = player.Center.X;
+                    _teleportY = player.Center.Y + distanceY;
+					NPC.netUpdate = true;
+				}
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veriappear"));
 			}
 
@@ -686,9 +710,15 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			if (timer == 1)
 			{
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veriappear"));
-				int distanceY = -300;
-                NPC.position.X = player.Center.X;
-                NPC.position.Y = player.Center.Y + distanceY;
+
+				if (StellaMultiplayer.IsHost)
+                {
+                    int distanceY = -300;
+					_teleportX = player.Center.X;
+                    _teleportY = player.Center.Y + distanceY;
+                    NPC.netUpdate = true;
+				}
+
             }
 
 			if (timer == 27)
@@ -718,8 +748,8 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
                         case 0:
                             int distance = Main.rand.Next(20, 20);
                             int distanceY = Main.rand.Next(-110, -110);
-                            NPC.position.X = player.Center.X + distance;
-                            NPC.position.Y = player.Center.Y + distanceY;
+							_teleportX = player.Center.X + distance;
+							_teleportY = player.Center.Y + distanceY;
 							NPC.netUpdate = true;
                             break;
 
@@ -727,8 +757,8 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
                         case 1:
                             int distance2 = Main.rand.Next(-120, -120);
                             int distanceY2 = Main.rand.Next(-110, -110);
-                            NPC.position.X = player.Center.X + distance2;
-                            NPC.position.Y = player.Center.Y + distanceY2;
+                            _teleportX = player.Center.X + distance2;
+                            _teleportY = player.Center.Y + distanceY2;
                             NPC.netUpdate = true;
                             break;
                     }
@@ -1270,6 +1300,5 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
                 NPC.netUpdate = true;
             }
         }
-
     }
 }
