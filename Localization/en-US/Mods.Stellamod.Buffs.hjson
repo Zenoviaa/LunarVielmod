@@ -264,7 +264,7 @@ DeathMultiplier: {
 }
 
 DarkHold: {
-	Description: Something has a grasp on your eyes.
+	Description: Something has a grasp on your eyes. Hurts at nighttime...
 	DisplayName: Dark Hold
 }
 
@@ -615,11 +615,11 @@ MiracleLiquid: {
 
 SplashAttackDebuff: {
 	DisplayName: Splash Attack Debuff
-	Description: Mods.Stellamod.Buffs.SplashAttackDebuff.Description
+	Description: Splashy
 }
 
 SineSireDebuff: {
-	Description: Mods.Stellamod.Buffs.SineSireDebuff.Description
+	Description: Sired
 	DisplayName: Sine Sire Debuff
 }
 
@@ -634,7 +634,7 @@ FlowerPower: {
 }
 
 SigfriedsInsanity: {
-	Description: Mods.Stellamod.Buffs.SigfriedsInsanity.Description
+	Description: Sigfried burns you with high insanity that you yourself can't understand
 	DisplayName: Sigfrieds Insanity
 }
 
@@ -654,13 +654,13 @@ BabySwarmerMinionBuff: {
 }
 
 FlamesOfIlluria: {
-	Description: Mods.Stellamod.Buffs.FlamesOfIlluria.Description
+	Description: Burn
 	DisplayName: Flames Of Illuria
 }
 
 ISHNYIREShow: {
 	DisplayName: I S H N Y I R E Show
-	Description: Mods.Stellamod.Buffs.ISHNYIREShow.Description
+	Description: Mode for the Sirestias weapon
 }
 
 IshShow: {
@@ -670,22 +670,22 @@ IshShow: {
 
 VireShow: {
 	DisplayName: Vire Show
-	Description: Mods.Stellamod.Buffs.VireShow.Description
+	Description: Mode for the Sirestias weapon
 }
 
 YireShow: {
 	DisplayName: Yire Show
-	Description: Mods.Stellamod.Buffs.YireShow.Description
+	Description: Mode for the Sirestias weapon
 }
 
 ColdheartAnklebiterDebuff: {
 	DisplayName: Coldheart Anklebiter Debuff
-	Description: Mods.Stellamod.Buffs.ColdheartAnklebiterDebuff.Description
+	Description: Gettin bitten
 }
 
 IlluBuff: {
 	DisplayName: Illu Buff
-	Description: Mods.Stellamod.Buffs.IlluBuff.Description
+	Description: Illusive
 }
 
 IshyBuff: {
@@ -704,7 +704,7 @@ RibbonWrapped: {
 }
 
 StarSuper: {
-	Description: Mods.Stellamod.Buffs.StarSuper.Description
+	Description: Youre my superstar
 	DisplayName: Star Super
 }
 

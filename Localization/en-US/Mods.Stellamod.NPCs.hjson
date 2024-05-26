@@ -356,14 +356,14 @@ GraveShard.DisplayName: Grave Shard
 IncresianDisc.DisplayName: Incresian Disc
 Mardenth.DisplayName: Mardenth
 Ordin.DisplayName: Ordin
-DustNadoSpawner.DisplayName: Dust Nado Spawner
+DustNadoSpawner.DisplayName: Dust Nado Spawn
 Stalker.DisplayName: Stalker
-StalkerSpawner.DisplayName: Stalker Spawner
-RekSnake.DisplayName: Rek Snake
+StalkerSpawner.DisplayName: Stalker Spawning
+RekSnake.DisplayName: Rek, The Burning Serpent
 RekFireCrystal.DisplayName: Rek Fire Crystal
-RekFireEye.DisplayName: Rek Fire Eye
+RekFireEye.DisplayName: Flamed Eye
 Sun2.DisplayName: Sun2
-GothiviaIyx.DisplayName: Gothivia Iyx
+GothiviaIyx.DisplayName: Gothivia Iyx, The Green Sun
 Carmody.DisplayName: Carmody
 CarmodyGreen.DisplayName: Carmody Green
 SupernovaZapwarnFinal.DisplayName: Supernova Zapwarn Final
@@ -375,7 +375,7 @@ CentipedeHead.DisplayName: Centipede Head
 CentipedeBody.DisplayName: Centipede Body
 IrravheilSlime.DisplayName: Irravheil Slime
 IrravheilLandwormTail.DisplayName: Irravheil Landworm Tail
-IrravheilLandwormHead.DisplayName: Irravheil Landworm Head
+IrravheilLandwormHead.DisplayName: Irravheil Landworm
 IrravheilLandwormBody.DisplayName: Irravheil Landworm Body
 IrravheilSprayer.DisplayName: Irravheil Sprayer
 Tulacrowe.DisplayName: Tulacrowe

@@ -8,7 +8,7 @@ namespace Stellamod.NPCs
     {
         public const float Mechanical_Enemy_Spawn_Chance = 0.07f;
         public const float Flower_Spawn_Chance = 0.02f;
-        public const float Rune_Spawn_Chance = 0.04f;
+        public const float Rune_Spawn_Chance = 0.03f;
 
         public static float GetFlowerSpawnChance(NPCSpawnInfo spawnInfo)
         {
