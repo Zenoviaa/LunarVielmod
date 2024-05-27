@@ -72,9 +72,15 @@ namespace Stellamod.Particles
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
+            float alpha = timeLeft <= 20 ? 1f - 1f / 20f * (20 - timeLeft) : 1f;
+
+            if (alpha < 0f)
+                alpha = 0f;
+
+            Color drawColor = Color.Multiply(new(color.R, color.G, color.B, 0), alpha);
             Vector2 origin = this.OriginCenter();
             spriteBatch.Draw(texture, screenPos,
-                null, Color.White,
+                null, drawColor,
                 velocity.ToRotation(),
                 origin,
                 1.35f * scale, SpriteEffects.None, 0f);
