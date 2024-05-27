@@ -7,6 +7,7 @@ using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Accessories.Igniter;
 using Stellamod.Items.Armors.Vanity.Aimacra;
 using Stellamod.Items.Armors.Vanity.Gia;
+using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
@@ -537,8 +538,15 @@ namespace Stellamod.NPCs.Town
 						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					})
 
-				
-				;
+
+                     .Add(new Item(ModContent.ItemType<IllurineBrew>())
+                     {
+                         shopCustomPrice = 3,
+                         shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+                     })
+
+
+                ;
 
 
 
