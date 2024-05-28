@@ -96,35 +96,35 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen Morrowed Structures", WorldGenMorrowedStructures));
 				tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen More skies", WorldGenBig));
 				tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen More skies", WorldGenMed));
-				tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
-				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
-				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
-				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Stone Castle", WorldGenStoneCastle));
-				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Veil Underground", WorldGenVU));
-				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Veldris", WorldGenVeldris));
-				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
-				tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
-				tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Catacombs Fire", WorldGenCatacombsFlames));
-				tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Catacombs Trap", WorldGenCatacombsTrap));
-				tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Catacombs Water 1", WorldGenCatacombsWater));
-				tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Catacombs Water 2", WorldGenCatacombsWater2));
-				tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Sylia", WorldGenSylia));
-				tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Rallad", WorldGenRallad));
-				tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
-				tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
-				tasks.Insert(CathedralGen2 + 23, new PassLegacy("World Gen Manor", WorldGenManor));
-				tasks.Insert(CathedralGen2 + 24, new PassLegacy("World Gen Mechanic spot", WorldGenMechShop));
-				tasks.Insert(CathedralGen2 + 25, new PassLegacy("World Gen Gia's House", WorldGenGiaHouse));
-                tasks.Insert(CathedralGen2 + 26, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
-				tasks.Insert(CathedralGen2 + 27, new PassLegacy("World Gen GothiviaTower", WorldGenTG));
-                tasks.Insert(CathedralGen2 + 28, new PassLegacy("World Gen SigfriedTower", WorldGenTS));
-                tasks.Insert(CathedralGen2 + 29, new PassLegacy("World Gen AzurerinTower", WorldGenTA));
-                tasks.Insert(CathedralGen2 + 30, new PassLegacy("World Gen CozmireTower", WorldGenTC));
-                tasks.Insert(CathedralGen2 + 31, new PassLegacy("World Gen CozmireTower", WorldGenTL));
-                tasks.Insert(CathedralGen2 + 32, new PassLegacy("World Gen Bridget", WorldGenBridget));
-				tasks.Insert(CathedralGen2 + 33, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
-                tasks.Insert(CathedralGen2 + 34, new PassLegacy("World Gen Dread Monoliths", WorldGenDreadMonoliths));
-                tasks.Insert(CathedralGen2 + 35, new PassLegacy("World Gen Graving", WorldGenGraving));
+				tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
+				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
+				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Stone Castle", WorldGenStoneCastle));
+				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Veil Underground", WorldGenVU));
+				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Veldris", WorldGenVeldris));
+				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
+				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
+				tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Catacombs Fire", WorldGenCatacombsFlames));
+				tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Catacombs Trap", WorldGenCatacombsTrap));
+				tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Catacombs Water 1", WorldGenCatacombsWater));
+				tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Catacombs Water 2", WorldGenCatacombsWater2));
+				tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Sylia", WorldGenSylia));
+				tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Rallad", WorldGenRallad));
+				tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
+				tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
+				tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Manor", WorldGenManor));
+				tasks.Insert(CathedralGen2 + 23, new PassLegacy("World Gen Mechanic spot", WorldGenMechShop));
+				tasks.Insert(CathedralGen2 + 24, new PassLegacy("World Gen Gia's House", WorldGenGiaHouse));
+                tasks.Insert(CathedralGen2 + 25, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
+				tasks.Insert(CathedralGen2 + 26, new PassLegacy("World Gen GothiviaTower", WorldGenTG));
+                tasks.Insert(CathedralGen2 + 27, new PassLegacy("World Gen SigfriedTower", WorldGenTS));
+                tasks.Insert(CathedralGen2 + 28, new PassLegacy("World Gen AzurerinTower", WorldGenTA));
+                tasks.Insert(CathedralGen2 + 29, new PassLegacy("World Gen CozmireTower", WorldGenTC));
+                tasks.Insert(CathedralGen2 + 30, new PassLegacy("World Gen CozmireTower", WorldGenTL));
+                tasks.Insert(CathedralGen2 + 31, new PassLegacy("World Gen Bridget", WorldGenBridget));
+				tasks.Insert(CathedralGen2 + 32, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
+                tasks.Insert(CathedralGen2 + 33, new PassLegacy("World Gen Dread Monoliths", WorldGenDreadMonoliths));
+                tasks.Insert(CathedralGen2 + 34, new PassLegacy("World Gen Graving", WorldGenGraving));
+                tasks.Insert(CathedralGen2 + 35, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
             }
 
 
@@ -2041,21 +2041,13 @@ namespace Stellamod.WorldG
 						continue;
 					}
 
-
-					// place the Rogue
-					//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-					//Main.npc[num].homeTileX = -1;
-					//	Main.npc[num].homeTileY = -1;
-					//	Main.npc[num].direction = 1;
-					//	Main.npc[num].homeless = true;
-
-
+                    Point Loc = new Point(smx, smy + 10);
+                    string path = "Struct/Ocean/SunAlter2";
+					if (!StructureLoader.TryPlaceAndProtectStructure(Loc, path))
+						continue; 
 
 					for (int da = 0; da < 1; da++)
-					{
-						Point Loc = new Point(smx, smy + 10);
-                        string path = "Struct/Ocean/SunAlter2";//                 
-                        StructureLoader.ProtectStructure(Loc, path);
+					{          
                         int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path, tileBlend);
                         foreach (int chestIndex in ChestIndexs)
 						{

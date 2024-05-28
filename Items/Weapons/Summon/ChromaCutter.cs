@@ -11,6 +11,7 @@ using Stellamod.Projectiles.Swords;
 using Stellamod.Projectiles.Swords.Ripper;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -42,7 +43,7 @@ namespace Stellamod.Items.Weapons.Summon
             Item.noUseGraphic = true;
             Item.shootSpeed = 20f;
             Item.buffType = ModContent.BuffType<ChromaCutterMinionBuff>();
-            Item.shoot = ModContent.ProjectileType<ChromaCutterMinionProj>();
+            Item.shoot = ModContent.ProjectileType<ChromaCutterProj>();
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -114,6 +115,7 @@ namespace Stellamod.Items.Weapons.Summon
             if (player.altFunctionUse != 2)
             {
                 bool doSummonMinions = player.ownedProjectileCounts[ModContent.ProjectileType<ChromaCutterMinionProj>()] == 0;
+      
                 if (doSummonMinions)
                 {
                     player.AddBuff(Item.buffType, 2);
@@ -156,7 +158,8 @@ namespace Stellamod.Items.Weapons.Summon
                     for (int i = 0; i < Main.maxProjectiles; i++)
                     {
                         Projectile proj = Main.projectile[i];
-                        if (proj.owner == player.whoAmI && proj.type == ModContent.ProjectileType<ChromaCutterMinionProj>())
+                        if (proj.owner == player.whoAmI && 
+                            proj.type == ModContent.ProjectileType<ChromaCutterMinionProj>())
                         {
                             if (_chromaCounter == chromaCount)
                             {

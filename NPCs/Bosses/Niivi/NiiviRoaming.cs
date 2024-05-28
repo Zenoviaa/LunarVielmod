@@ -100,7 +100,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         {
             //Stats
             NPC.lifeMax = 232000;
-            NPC.defense = 90;
+            NPC.defense = 110;
             NPC.damage = 240;
             NPC.width = (int)NiiviHeadSize.X;
             NPC.height = (int)NiiviHeadSize.Y;
@@ -158,8 +158,26 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 }
             }
         }
+
+
+        private void OnlyTakeDamageWhenClose()
+        {
+            float immuneDistance = 16 * 80;
+            NPC.dontTakeDamage = true;
+            for (int i = 0; i < Main.maxPlayers; i++)
+            {
+                Player player = Main.player[i];
+                if (Vector2.Distance(NPC.Center, player.Center) < immuneDistance)
+                {
+                    NPC.dontTakeDamage = false;
+                    break;
+                }
+            }
+        }
+
         public override void AI()
         {
+            OnlyTakeDamageWhenClose();
             NPC.TargetClosest();
             switch (State)
             {

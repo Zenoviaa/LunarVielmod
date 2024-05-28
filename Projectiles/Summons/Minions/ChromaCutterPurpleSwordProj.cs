@@ -162,7 +162,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override void OnKill(int timeLeft)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Main.rand.NextVector2Circular(1, 1),
               ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, Projectile.owner,
               ai1: Projectile.velocity.ToRotation() + MathHelper.ToRadians(45));
             for (int i = 0; i < 16; i++)

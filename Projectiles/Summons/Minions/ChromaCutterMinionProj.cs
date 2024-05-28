@@ -472,7 +472,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                     break;
 
                 case ActionState.Green:
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Main.rand.NextVector2Circular(1,1),
                         ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, Projectile.owner, 0f, 0f);
 
                     break;
