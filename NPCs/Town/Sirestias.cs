@@ -338,7 +338,7 @@ namespace Stellamod.NPCs.Town
 
 
 
-											if (DownedBossSystem.downedGothBoss)
+											if (DownedBossSystem.downedIrradiaBoss)
 											{
 
 												Main.npcChatText = $"There was a person down there claiming to be Gothiva? Thats strange. Gothivia seems to be making an appearance on the world. Apparently things are changing the skies and things are falling from them, Beware of STARBOMBERS, Aimacra warned me that they were manufactured here as well as Ekrose and you have experience with them.";
