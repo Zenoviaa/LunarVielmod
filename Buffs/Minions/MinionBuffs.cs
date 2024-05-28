@@ -39,7 +39,7 @@ namespace Stellamod.Buffs.Minions
 
     internal class BabySwarmerMinionBuff : MinionBuff<BabySwarmerMinionProj> { }
 
-    internal class ChromaCutterMinionBuff : MinionBuff<ChromaCutterProj> { }
+    internal class ChromaCutterMinionBuff : MinionBuff<ChromaCutterMinionProj> { }
 
     internal class CloudMinionBuff : MinionBuff<CloudMinionProj> { }
 
