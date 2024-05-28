@@ -388,7 +388,7 @@ namespace Stellamod.NPCs.Town
 
 
 
-                                                                            if (DownedBossSystem.downedGothiviaBoss)
+                                                                            if (DownedBossSystem.downedGothBoss)
                                                                             {
 
                                                                                 Main.npcChatText = $"Okie dokie, Gothivia has agree to stay calm so we aren't going to assassinate her anymore, I feel bad for killing her sister now. I hope Vixyl doesn't find out.";

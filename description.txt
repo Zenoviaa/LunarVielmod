@@ -15,9 +15,9 @@ This is a content/quality of life mod which includes:
 - 400+ New interesting weapons
 - New systems for weapons and gameplay including Harvesting Spots, Weapon Powders, igniters, brooches and more!
 - A Gambling feature for post bosses
-- 4 New main town NPC
+- 4 New main town NPCs
 - Many Shop NPC's around the world!
-- 70+ Accessories that will indefinetly help you with battles
+- 100+ Accessories that will indefinetly help you with battles
 - Many fleshed out biomes and structures around the world to keep you searching and exploring
 - Castles, Dungeons and a very open and treasure filled world that makes it feel like a metroidvania!
 - Many new bosses around both prehardmode and hardmode now!
