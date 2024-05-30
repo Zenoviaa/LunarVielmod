@@ -4,12 +4,15 @@ using Stellamod.Items.Weapons.Melee;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Town;
+using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Chat;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace Stellamod
@@ -164,6 +167,15 @@ namespace Stellamod
                         }
                     }
 
+					break;
+				case MessageType.STARBLOCK:
+					EventWorld.Aurorean = false;
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        NetworkText auroeanStarfallEnded = NetworkText.FromLiteral("The Aurorean Starfall has been blocked! :(");
+                        ChatHelper.BroadcastChatMessage(auroeanStarfallEnded, new Color(234, 96, 114));
+                    }
+                   
                     break;
 			}
 		}

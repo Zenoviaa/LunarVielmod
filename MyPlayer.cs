@@ -317,6 +317,9 @@ namespace Stellamod
 
         public void ShakeAtPosition(Vector2 position, float distance, float strength)
         {
+			LunarVeilClientConfig config = ModContent.GetInstance<LunarVeilClientConfig>();
+			if (!config.ShakeToggle)
+				return;
             shakeDrama = strength * (1f - base.Player.Center.Distance(position) / distance) * 0.5f;
         }
 
