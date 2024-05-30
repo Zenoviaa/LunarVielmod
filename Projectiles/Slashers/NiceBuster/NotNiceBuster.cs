@@ -46,11 +46,7 @@ namespace Stellamod.Projectiles.Slashers.NiceBuster
         {
 
             var EntitySource = Projectile.GetSource_Death();
-            if (Main.netMode != NetmodeID.MultiplayerClient)
-            {
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<SuranBoom>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
-            }
-
+            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<SuranBoom>(), Projectile.damage, 1, Projectile.owner, 0, 0);
         }
 
         public override void AI()

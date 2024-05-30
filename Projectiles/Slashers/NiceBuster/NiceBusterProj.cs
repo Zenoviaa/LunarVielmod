@@ -57,6 +57,7 @@ namespace Stellamod.Projectiles.Slashers.NiceBuster
 
             //Multiplying by the thing so it's still 10 ticks
             Projectile.localNPCHitCooldown = 10 * Swing_Speed_Multiplier;
+            Projectile.timeLeft = SwingTime;
         }
 
         public override void AI()
