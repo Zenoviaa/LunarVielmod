@@ -31,7 +31,7 @@ namespace Stellamod.Items.Armors.Daeden
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 10); // How many coins the item is worth
 			Item.rare = ItemRarityID.Green; // The rarity of the item
-			Item.defense = 22; // The amount of defense the item will give when equipped
+			Item.defense = 18; // The amount of defense the item will give when equipped
 		}
 
 		public override void UpdateEquip(Player player)

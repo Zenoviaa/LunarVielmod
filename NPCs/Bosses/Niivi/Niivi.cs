@@ -223,8 +223,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
         {
             //Stats
             NPC.lifeMax = 232000;
-            NPC.defense = 110;
-            NPC.damage = 240;
+            NPC.defense = 140;
+            NPC.damage = 260;
             NPC.width = (int)NiiviHeadSize.X;
             NPC.height = (int)NiiviHeadSize.Y;
             //It won't be considered a boss or take up slots until the fight actually starts

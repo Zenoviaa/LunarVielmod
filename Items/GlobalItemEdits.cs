@@ -35,6 +35,11 @@ namespace Stellamod.Items
             {
                 entity.damage -= 20;
             }
+
+            else if (entity.type == ItemID.SparkleGuitar)
+            {
+                entity.damage -= 20;
+            }
         }
 
         public override void UpdateEquip(Item item, Player player)
