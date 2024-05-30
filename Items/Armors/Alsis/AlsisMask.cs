@@ -37,10 +37,10 @@ namespace Stellamod.Items.Armors.Alsis
 		public override void UpdateEquip(Player player)
 		{
 
-			player.GetDamage(DamageClass.Magic) *= 1.1f;
+			player.GetDamage(DamageClass.Magic) *= 0.95f;
 			player.GetCritChance(DamageClass.Magic) += 1f;
 		
-			player.statLifeMax2 += 10;
+			player.statLifeMax2 -= 10;
 
 
 
@@ -56,11 +56,9 @@ namespace Stellamod.Items.Armors.Alsis
 		{
 			player.setBonus = "You are a true mage..." +
 			"\nGain the effects of a mana flower, magic cuffs, and retrieve magic stars from afar " +
-			"\n25% More magic damage!" +
-			"\nMana costs are reduced by 70% and super increased magic regeneration";  // This is the setbonus tooltip
-			player.GetDamage(DamageClass.Magic) *= 1.25f;
+			"\nMana costs are reduced by 70% and increased magic regeneration";  // This is the setbonus tooltip
 			player.manaCost *= 0.3f;
-			player.manaRegen += 30;
+			player.manaRegen += 1;
 			player.magicCuffs = true;
 			player.manaFlower = true;
 			player.manaMagnet = true;

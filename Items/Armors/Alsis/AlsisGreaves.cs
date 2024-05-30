@@ -35,9 +35,9 @@ namespace Stellamod.Items.Armors.Alsis
 
 		public override void UpdateEquip(Player player)
 		{
-			player.moveSpeed += 0.8f;
-			player.maxRunSpeed += 0.8f;
-			player.statLifeMax2 += 10;
+			player.moveSpeed += 0.4f;
+			player.maxRunSpeed += 0.4f;
+			player.statLifeMax2 -= 10;
 		}
 
 		public override void AddRecipes()

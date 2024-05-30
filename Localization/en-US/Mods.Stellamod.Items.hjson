@@ -3566,9 +3566,9 @@ AlsisChestplate: {
 	DisplayName: Alsis Chestplate
 	Tooltip:
 		'''
-		+25 Health
+		-25 Health
 		+5% Magic Critical Strike Chance
-		+10% Magic Damage
+		-5% Magic Damage
 		'''
 }
 
@@ -3576,7 +3576,7 @@ AlsisGreaves: {
 	DisplayName: Alsis Greaves
 	Tooltip:
 		'''
-		+10 Health
+		-10 Health
 		Supa Speed
 		'''
 }
@@ -3585,9 +3585,9 @@ AlsisMask: {
 	DisplayName: Alsis Mask
 	Tooltip:
 		'''
-		+10 Health
+		-10 Health
 		+1% Magic Critical Strike Chance
-		+10% Magic Damage
+		-5% Magic Damage
 		'''
 }
 
