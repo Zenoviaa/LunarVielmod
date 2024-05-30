@@ -1507,9 +1507,9 @@ GovheilChainplate: {
 GovheilBreastplate: {
 	Tooltip:
 		'''
-		12% Increased Magic and Summon damage!
+		6% Increased Magic and Summon damage!
 		+50 Mana and increased Mana regeneration
-		+30 Life!
+		+10 Life!
 		+1 Summon
 		'''
 	DisplayName: Govheil Breastplate
