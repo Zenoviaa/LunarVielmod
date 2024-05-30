@@ -11,7 +11,7 @@ namespace Stellamod.Items.Weapons.Ranged
     {
         public override void SetDefaults()
         {
-            Item.damage = 10;
+            Item.damage = 5;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.UseSound = SoundID.Item5;
             Item.useAnimation = 12;
             Item.useTime = 4; // one third of useAnimation
-            Item.reuseDelay = 14;
+            Item.reuseDelay = 28;
             Item.noMelee = true;
         }
 

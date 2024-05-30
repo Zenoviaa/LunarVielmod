@@ -181,8 +181,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		{
 			NPC.Size = new Vector2(96, 65);
 			NPC.damage = 1;
-			NPC.defense = 40;
-			NPC.lifeMax = 10500;
+			NPC.defense = 45;
+			NPC.lifeMax = 11000;
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
             NPC.knockBackResist = 0f;

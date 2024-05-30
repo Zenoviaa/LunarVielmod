@@ -624,7 +624,7 @@ SineSireDebuff: {
 }
 
 IllurianB: {
-	Description: Mods.Stellamod.Buffs.IllurianB.Description
+	Description: Get illured
 	DisplayName: Illurian B
 }
 
@@ -634,7 +634,7 @@ FlowerPower: {
 }
 
 SigfriedsInsanity: {
-	Description: Sigfried burns you with high insanity that you yourself can't understand
+	Description: Sigfried burns you with high insanity that you yourself can't understand. Come back after Zui.
 	DisplayName: Sigfrieds Insanity
 }
 
@@ -665,7 +665,7 @@ ISHNYIREShow: {
 
 IshShow: {
 	DisplayName: Ish Show
-	Description: Mods.Stellamod.Buffs.IshShow.Description
+	Description: Mode for the Sirestias weapon 
 }
 
 VireShow: {

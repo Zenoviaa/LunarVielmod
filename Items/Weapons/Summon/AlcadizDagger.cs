@@ -26,7 +26,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.rare = ItemRarityID.Blue;
 			Item.value = Terraria.Item.sellPrice(0, 5, 80, 0);
 			Item.CloneDefaults(ItemID.Arkhalis);
-			Item.damage = 16; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
+			Item.damage = 7; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
 			Item.DamageType = DamageClass.Summon;
 			Item.mana = 50;
 			Item.useTime = 90; // The Item's use time in ticks (60 ticks == 1 second.)
