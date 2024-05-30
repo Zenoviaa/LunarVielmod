@@ -119,7 +119,7 @@ Yumikoo.DisplayName: Yumiko
 FlameArrow.DisplayName: Flame Arrow
 FlameBlast.DisplayName: Flame Blast
 Helios.DisplayName: Helios
-LaserShooterFirstPhase.DisplayName: Laser Shooter 
+LaserShooterFirstPhase.DisplayName: Laser Shooter
 Music1.DisplayName: Music
 Music2.DisplayName: Music
 Speechbubble.DisplayName: Speechbubble
@@ -260,9 +260,9 @@ BonfireProj.DisplayName: Bonfire Proj
 BoomCircle.DisplayName: Boom Circle
 BoomMorrow.DisplayName: Boom Morrow
 ArchariliteArrow.DisplayName: Archarilite Arrow
-ArchariliteArrowSC.DisplayName: Archarilite Arrow 
+ArchariliteArrowSC.DisplayName: Archarilite Arrow
 ArchariliteArrowSmall.DisplayName: Archarilite Arrow Small
-ArchariliteArrowSmallSC.DisplayName: Archarilite Arrow Small 
+ArchariliteArrowSmallSC.DisplayName: Archarilite Arrow Small
 CloudBolt.DisplayName: Cloud Bolt
 CrysalizerArrow1.DisplayName: Crysalizer Arrow1
 CrysalizerArrow2.DisplayName: Crysalizer Arrow2
@@ -699,9 +699,9 @@ MooningProj.DisplayName: Mooning Proj
 Radial.DisplayName: Radial
 Radial2.DisplayName: Radial2
 ArchariliteHeatBlast.DisplayName: Archarilite Heat Blast
-ArchariliteHeatBlastSC.DisplayName: Archarilite Heat Blast 
+ArchariliteHeatBlastSC.DisplayName: Archarilite Heat Blast
 ArchariliteRaysWave.DisplayName: Archarilite Rays Wave
-ArchariliteRaysWaveSC.DisplayName: Archarilite Rays Wave 
+ArchariliteRaysWaveSC.DisplayName: Archarilite Rays Wave
 AssassinsSlashProj.DisplayName: Assassins Slash Proj
 AssassinsSpawnEffect.DisplayName: Assassins Spawn Effect
 CinderBrakerSword.DisplayName: Cinder Braker Sword
@@ -760,16 +760,16 @@ DarkButcherP.DisplayName: Dark Butcher P
 GintzeSpear.DisplayName: Gintze Spear
 GintzeSpearMini.DisplayName: Gintze Spear Mini
 GlassBreak.DisplayName: Glass Break
-GreyBricksP.DisplayName: Grey Bricks 
-LarvaeSpearP.DisplayName: Larvae Spear 
+GreyBricksP.DisplayName: Grey Bricks
+LarvaeSpearP.DisplayName: Larvae Spear
 LifeSeekingVialProj.DisplayName: Life Seeking Vial Proj
-MetalAlloyP.DisplayName: Metal Alloy 
+MetalAlloyP.DisplayName: Metal Alloy
 Plantius2.DisplayName: Plantius2
 Plateproj.DisplayName: Plateproj
-PunkedUpChopsP.DisplayName: Punked Up Chops 
-RagsawP.DisplayName: Ragsaw 
-RockerP.DisplayName: Rocker 
-SpiritCapsuleP.DisplayName: Spirit Capsule 
+PunkedUpChopsP.DisplayName: Punked Up Chops
+RagsawP.DisplayName: Ragsaw
+RockerP.DisplayName: Rocker
+SpiritCapsuleP.DisplayName: Spirit Capsule
 Vulcanius2.DisplayName: Vulcanius2
 WindmillShurikenProj.DisplayName: Windmill Shuriken Proj
 ZthoKnife.DisplayName: Ztho Knife
@@ -1129,23 +1129,23 @@ IceCubeMakerProj.DisplayName: Ice Cube Maker Proj
 VixylSwordProj.DisplayName: Vixyl Sword Proj
 VixylSlashProj.DisplayName: Vixyl Slash Proj
 VixylParryProj.DisplayName: Vixyl Parry Proj
-RekFireCrystalLaserProj.DisplayName: Crystal Laser 
+RekFireCrystalLaserProj.DisplayName: Crystal Laser
 RekFireCrystalCircleProj.DisplayName: Rek Fire Crystal Circle Proj
-RekFireBlowtorchProj.DisplayName:  Blowtorch Proj
-RekFireBlowtorchBlastProj.DisplayName:  Blowtorch Blast 
-RekFireBlowtorchBlastDeathProj.DisplayName:  Blowtorch Blast 
+RekFireBlowtorchProj.DisplayName: Blowtorch Proj
+RekFireBlowtorchBlastProj.DisplayName: Blowtorch Blast
+RekFireBlowtorchBlastDeathProj.DisplayName: Blowtorch Blast
 RekFireBallProj.DisplayName: Rek FireBall
 SunLaserProj2.DisplayName: Sun Laser
 RazorSuns.DisplayName: Razor Suns
 RazorRingSun.DisplayName: Razor Ring Sun
 RazorRingFire.DisplayName: Razor Ring Fire
 RazorBurns.DisplayName: Razor Burns
-GothSunBlowtorchBlastProj.DisplayName: Blowtorch Blast 
-GothFireBlowtorchBlastProj.DisplayName: Blowtorch Blast 
+GothSunBlowtorchBlastProj.DisplayName: Blowtorch Blast
+GothFireBlowtorchBlastProj.DisplayName: Blowtorch Blast
 GothCircleShrink.DisplayName: Goth Circle Shrink
-RekFireEyeLaserMiniProj.DisplayName: Eye Laser Miniman 
-RekFireEyeLaserProj.DisplayName: Eye Laser 
-RekFireOuroborosProj.DisplayName:  Ouroboros
+RekFireEyeLaserMiniProj.DisplayName: Eye Laser Miniman
+RekFireEyeLaserProj.DisplayName: Eye Laser
+RekFireOuroborosProj.DisplayName: Ouroboros
 RekFireShockWave.DisplayName: Fire Shockwave
 VoidBlasterExplosionBomb.DisplayName: Void Blaster Explosion Bomb
 VoidBlasterExsplosion.DisplayName: Void Blaster Exsplosion
@@ -1166,19 +1166,19 @@ WingRazor.DisplayName: Wing Razor
 GreenSunsBoomProj.DisplayName: Green Suns Boom Proj
 GreenSunsSuckingProj.DisplayName: Green Suns Sucking Proj
 ExampleSinSwingProj.DisplayName: Example Sin Swing Proj
-SunsBoomProj.DisplayName: Suns Boom 
-SunsSuckingProj.DisplayName: Suns Sucking 
-GothDarkBlastProj.DisplayName: Goth Dark Blast 
+SunsBoomProj.DisplayName: Suns Boom
+SunsSuckingProj.DisplayName: Suns Sucking
+GothDarkBlastProj.DisplayName: Goth Dark Blast
 SwirlingKick.DisplayName: Swirling Kick
 GREENLS.DisplayName: G R E E N L S
 ORANGELS.DisplayName: O R A N G E L S
 SupernovaBeamFinal.DisplayName: Supernova Beam Final
 SupernovaFinalExplosion.DisplayName: Supernova Final Explosion
-NiiviFrostBreathLaserProj.DisplayName: Frost Breath Laser 
+NiiviFrostBreathLaserProj.DisplayName: Frost Breath Laser
 ExampleSilhouetteProjectile.DisplayName: Example Silhouette Projectile
 ExampleShaderOrbProjectile.DisplayName: Example Shader Orb Projectile
-GothinWingsProj.DisplayName: Gothin Wings 
-GothLightBlastProj.DisplayName: Goth Light Blast 
+GothinWingsProj.DisplayName: Gothin Wings
+GothLightBlastProj.DisplayName: Goth Light Blast
 GothCircleExpand.DisplayName: Goth Circle Expand
 WhiteStrikeCircle.DisplayName: White Strike Circle
 YourFiredProj.DisplayName: Your Fired
@@ -1245,14 +1245,14 @@ IrrasprayProj.DisplayName: Irraspray Proj
 IncineratorProj.DisplayName: Incinerator Proj
 IrradiatedDeathSpray.DisplayName: Irradiated Death Spray
 TulacroweFireball.DisplayName: Tulacrowe Fireball
-TulacBombProj.DisplayName: Tulac Bomb 
+TulacBombProj.DisplayName: Tulac Bomb
 NiiviStarsBoom.DisplayName: Stars Boom
-NiiviStarFieldProj.DisplayName: Niivi Star Field 
+NiiviStarFieldProj.DisplayName: Niivi Star Field
 NiiviStarFieldBombProj.DisplayName: Niivi Star Field Bomb Proj
 NiiviStarBounceProj.DisplayName: Niivi Star Bounce Proj
 NiiviSpawnExplosionProj.DisplayName: Spawn Explosion
-NiiviCrystalWarpExplosionProj.DisplayName:  Crystal Warp Explosion 
-NiiviCosmicBombProj.DisplayName:  Cosmic Bomb 
+NiiviCrystalWarpExplosionProj.DisplayName: Crystal Warp Explosion
+NiiviCosmicBombProj.DisplayName: Cosmic Bomb
 NiiviCosmicBombAbsorbProj.DisplayName: Cosmic Bomb Absorbtion
 DaedusFireball.DisplayName: Veiled Fireball
 WoodyBrooch.DisplayName: Woody Brooch
