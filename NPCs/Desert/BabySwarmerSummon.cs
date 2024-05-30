@@ -44,7 +44,7 @@ namespace Stellamod.NPCs.Desert
         {
             //You can't be in the surface and underground at the same time so this should work
             //0.05f should make it 20 less common than normal spawns.
-            if (!Main.hardMode)
+            if (!NPC.downedPlantBoss)
                 return 0;
           
             return (SpawnCondition.DesertCave.Chance * 0.05f) + (SpawnCondition.OverworldDayDesert.Chance * 0.05f);
