@@ -13,7 +13,8 @@
 		CompleteZuiQuest,
 		CreatePortal,
 		StartVerlia,
-		StartIrradia
+		StartIrradia,
+		STARBLOCK
 	}
 
 	public enum QuestMessageType : byte

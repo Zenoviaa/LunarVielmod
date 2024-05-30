@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.WorldG;
 using Terraria;
@@ -34,17 +35,16 @@ namespace Stellamod.Items.Consumables
         {
             if (EventWorld.Aurorean)
             {
-                EventWorld.Aurorean = false;
-                if (Main.netMode == NetmodeID.Server)
+                if(Main.netMode != NetmodeID.SinglePlayer)
                 {
-                    NetworkText auroeanStarfallEnded = NetworkText.FromLiteral("The Aurorean Starfall has been blocked! :(");
-                    ChatHelper.BroadcastChatMessage(auroeanStarfallEnded, new Color(234, 96, 114));
+                    Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.STARBLOCK).Send(-1);
                 }
                 else
                 {
                     Main.NewText("The Aurorean Starfall has been blocked! :(", 234, 96, 114);
                 }
-                NetMessage.SendData(MessageID.WorldData);
+
+                EventWorld.Aurorean = false;
             }
 
             return true;

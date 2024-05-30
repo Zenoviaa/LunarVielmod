@@ -4,6 +4,7 @@ using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Projectiles;
 using Stellamod.Utilis;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -284,38 +285,54 @@ namespace Stellamod.WorldG
             */
         }
 
-
-        private void SpawnAuroreanStars()
+        private Player[] GetActivePlayers()
         {
-            if (!Aurorean)
-                return;
-
-            for(int i = 0; i < Main.maxPlayers; i++)
+            List<Player> players = new List<Player>();
+            for (int i = 0; i < Main.maxPlayers; i++)
             {
                 Player player = Main.player[i];
                 if (!player.active)
                     continue;
                 if (player.ZoneOverworldHeight || player.ZoneSkyHeight)
                 {
-                    if (Main.rand.NextBool(90))
-                    {
-                        int offsetX = Main.rand.Next(-1000, 1000) * 2;
-                        int offsetY = Main.rand.Next(-1000, 1000) - 1700;
-                        int damage = Main.expertMode ? 0 : 0;
-                        Projectile.NewProjectile(player.GetSource_FromThis(), player.Center.X + offsetX, player.Center.Y + offsetY, 0f, 10f, 
-                            ModContent.ProjectileType<AuroreanStar>(), damage, 1, Main.myPlayer, 0, 0);
-                    }
 
-                    //Don't spawn the npc if it already exists
-                    if (Main.rand.NextBool(4500) && !NPCHelper.IsBossAlive() && Main.hardMode)
-                    {
-                        int offsetX = Main.rand.Next(-10, 10) * 2;
-                        int offsetY = Main.rand.Next(-500, 500) - 1700;
-                        int damage = Main.expertMode ? 0 : 0;
-                        Projectile.NewProjectile(player.GetSource_FromThis(), player.Center.X + offsetX, player.Center.Y + offsetY, 0f, 10f, 
-                            ModContent.ProjectileType<AuroreanStarbomber>(), damage, 1, Main.myPlayer, 0, 0);
-                    }
+                    players.Add(player);
                 }
+            }
+            return players.ToArray();
+        }
+
+        private void SpawnAuroreanStars()
+        {
+            if (!Aurorean)
+                return;
+
+            if (Main.rand.NextBool(90))
+            {
+                Player[] players = GetActivePlayers();
+                if (players.Length == 0)
+                    return;
+
+                Player randPlayer = players[Main.rand.Next(0, players.Length)];
+                int offsetX = Main.rand.Next(-1000, 1000) * 2;
+                int offsetY = Main.rand.Next(-1000, 1000) - 1700;
+                int damage = Main.expertMode ? 0 : 0;
+                Projectile.NewProjectile(randPlayer.GetSource_FromThis(), randPlayer.Center.X + offsetX, randPlayer.Center.Y + offsetY, 0f, 10f,
+                    ModContent.ProjectileType<AuroreanStar>(), damage, 1, Main.myPlayer, 0, 0);
+            }
+
+            if (Main.rand.NextBool(4500) && !NPCHelper.IsBossAlive() && Main.hardMode)
+            {
+                Player[] players = GetActivePlayers();
+                if (players.Length == 0)
+                    return;
+
+                Player randPlayer = players[Main.rand.Next(0, players.Length)];
+                int offsetX = Main.rand.Next(-10, 10) * 2;
+                int offsetY = Main.rand.Next(-500, 500) - 1700;
+                int damage = Main.expertMode ? 0 : 0;
+                Projectile.NewProjectile(randPlayer.GetSource_FromThis(), randPlayer.Center.X + offsetX, randPlayer.Center.Y + offsetY, 0f, 10f,
+                    ModContent.ProjectileType<AuroreanStarbomber>(), damage, 1, Main.myPlayer, 0, 0);
             }
         }
 
