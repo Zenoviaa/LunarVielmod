@@ -32,7 +32,7 @@ namespace Stellamod.Items.Armors.Jianxin
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 10); // How many coins the item is worth
 			Item.rare = ItemRarityID.Pink; // The rarity of the item
-			Item.defense = 24; // The amount of defense the item will give when equipped
+			Item.defense = 26; // The amount of defense the item will give when equipped
 		}
 
 		public override void UpdateEquip(Player player)
