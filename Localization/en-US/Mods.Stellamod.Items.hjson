@@ -5530,10 +5530,9 @@ MagiciansCodeHat: {
 	DisplayName: Magicians Code Hat
 	Tooltip:
 		'''
-		30% Increased Damage for Magicians and Summoners
+		20% Increased Damage for Magicians and Summoners
 		+3 Max Minions
-		Mana cost is no more!
-		You take 20% less damage!
+		You take 10% less damage!
 		Increased life regeneration.
 		+100 Life.
 		'''

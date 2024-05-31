@@ -34,17 +34,16 @@ namespace Stellamod.Items.Armors.Vanity.Verlia
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 30); // How many coins the item is worth
 			Item.rare = ItemRarityID.Orange; // The rarity of the item
-			Item.defense = 25; // The amount of defense the item will give when equipped
+			Item.defense = 15; // The amount of defense the item will give when equipped
 		}
 		public override void UpdateEquip(Player player)
 		{
 			player.statLifeMax2 += 100;
-			player.GetDamage(DamageClass.Magic) *= 1.30f;
-			player.GetDamage(DamageClass.Summon) *= 1.30f;
+			player.GetDamage(DamageClass.Magic) *= 1.20f;
+			player.GetDamage(DamageClass.Summon) *= 1.20f;
 			player.maxMinions += 3;
 			player.lifeRegen += 1;
-			player.manaCost *= 0;
-			player.endurance += 0.2f;
+			player.endurance += 0.1f;
 			
 
 

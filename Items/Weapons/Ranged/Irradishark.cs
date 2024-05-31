@@ -15,7 +15,7 @@ namespace Stellamod.Items.Weapons.Ranged
 	{
         public override void SetDefaults()
         {
-            Item.damage = 17;
+            Item.damage = 20;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 40;
             Item.height = 40;
@@ -52,7 +52,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
 			if (Main.rand.NextBool(6))
 			{
-				Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Item.Center, 512f, 32f);
+				Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Item.Center, 512f, 12f);
 				velocity = velocity / 2;
 				damage = damage * 3;
 				SoundEngine.PlaySound(SoundID.Item84, player.position);
