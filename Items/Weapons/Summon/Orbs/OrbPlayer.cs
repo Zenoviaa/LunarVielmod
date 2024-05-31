@@ -34,6 +34,9 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
 
         public void EquipOrbSlot1(int itemType)
         {
+            if (Player.HeldItem.type != itemType)
+                return;
+
             if (ItemType != -1)
                 return;
 
@@ -42,6 +45,9 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
 
         public void EquipOrbSlot2(int itemType, int projType2Override)
         {
+            if (Player.HeldItem.type != itemType)
+                return;
+
             if (ItemType2 != -1)
                 return;
 
