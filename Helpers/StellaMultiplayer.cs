@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Melee;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Town;
+using Stellamod.UI.Dialogue;
 using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
@@ -134,6 +136,7 @@ namespace Stellamod
 				case MessageType.CompleteZuiQuest:
 					ZuiQuestSystem.QuestsCompleted++;
                     break;
+
 				case MessageType.CreatePortal:
 					float altarX = reader.ReadSingle();
 					float altarY = reader.ReadSingle();
@@ -145,7 +148,33 @@ namespace Stellamod
                         TeleportSystem.RefreshPortals();
 					}
                     break;
-				case MessageType.StartVerlia:
+
+
+				case MessageType.StartBossFromDialogue:
+					StartBossFromDialogue((DialogueType)reader.ReadInt32());
+                    break;
+
+				case MessageType.StartDialogue:
+					StartDialogue((DialogueType)reader.ReadInt32());
+                    break;
+
+				case MessageType.STARBLOCK:
+					EventWorld.Aurorean = false;
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        NetworkText auroeanStarfallEnded = NetworkText.FromLiteral("The Aurorean Starfall has been blocked! :(");
+                        ChatHelper.BroadcastChatMessage(auroeanStarfallEnded, new Color(234, 96, 114));
+                    }
+                   
+                    break;
+			}
+		}
+
+		private static void StartBossFromDialogue(DialogueType dialogueType)
+		{
+			switch (dialogueType)
+			{
+                case DialogueType.Start_Verlia:
                     foreach (NPC npc in Main.ActiveNPCs)
                     {
                         if (npc.type == ModContent.NPCType<StarteV>())
@@ -156,7 +185,8 @@ namespace Stellamod
                         }
                     }
                     break;
-				case MessageType.StartIrradia:
+
+                case DialogueType.Start_Irradia:
                     foreach (NPC npc in Main.ActiveNPCs)
                     {
                         if (npc.type == ModContent.NPCType<StartIrradia>())
@@ -167,16 +197,60 @@ namespace Stellamod
                         }
                     }
 
-					break;
-				case MessageType.STARBLOCK:
-					EventWorld.Aurorean = false;
-                    if (Main.netMode == NetmodeID.Server)
-                    {
-                        NetworkText auroeanStarfallEnded = NetworkText.FromLiteral("The Aurorean Starfall has been blocked! :(");
-                        ChatHelper.BroadcastChatMessage(auroeanStarfallEnded, new Color(234, 96, 114));
-                    }
-                   
                     break;
+                case DialogueType.Start_Goth:
+                    foreach (NPC npc in Main.ActiveNPCs)
+                    {
+                        if (npc.type == ModContent.NPCType<StartGoth>())
+                        {
+                            StartGoth verlia = npc.ModNPC as StartGoth;
+                            verlia.State = StartGoth.ActionState.Death;
+                            verlia.ResetTimers();
+                        }
+                    }
+
+                    break;
+            }
+		}
+		private static void StartDialogue(DialogueType dialogueType)
+		{
+			if (Main.netMode == NetmodeID.Server)
+				return;
+			switch (dialogueType)
+			{
+				case DialogueType.Start_Verlia:
+					{
+						DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+						//2. Create a new instance of your dialogue
+						VerliasDialogue exampleDialogue = new VerliasDialogue();
+
+						//3. Start it
+						dialogueSystem.StartDialogue(exampleDialogue);
+					}
+					break;
+				case DialogueType.Start_Irradia:
+					{
+						DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+						//2. Create a new instance of your dialogue
+						IrradiaDialogue exampleDialogue = new IrradiaDialogue();
+
+						//3. Start it
+						dialogueSystem.StartDialogue(exampleDialogue);
+					}
+					break;
+				case DialogueType.Start_Goth:
+					{
+                        DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+                        //2. Create a new instance of your dialogue
+                        GothiviaDialogue exampleDialogue = new GothiviaDialogue();
+
+                        //3. Start it
+                        dialogueSystem.StartDialogue(exampleDialogue);
+                    }
+					break;
 			}
 		}
 

@@ -241,19 +241,22 @@ namespace Stellamod.NPCs.Town
         }
 
 
-
-        public override void PostUpdateWorld()
+        
+        public override void PostUpdateEverything()
         {
-            base.PostUpdateWorld();
-            if (TargetBossAlive())
+            base.PostUpdateEverything();
+            if (StellaMultiplayer.IsHost)
             {
-                SpawnDelay = 10;
-            }
+                if (TargetBossAlive())
+                {
+                    SpawnDelay = 10;
+                }
 
-            SpawnDelay--;
-            if(SpawnDelay <= 0)
-            {
-                Spawn();
+                SpawnDelay--;
+                if (SpawnDelay <= 0)
+                {
+                    Spawn();
+                }
             }
         }
 
@@ -280,13 +283,11 @@ namespace Stellamod.NPCs.Town
                 if (!player.active)
                     continue;
 
-
                 if (!NPC.AnyNPCs(ModContent.NPCType<Merena>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)MerenaSpawnWorld.X, (int)MerenaSpawnWorld.Y,
                         ModContent.NPCType<Merena>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<LonelySorceress>()) &&
                     !NPC.AnyNPCs(ModContent.NPCType<Fenix>()))
@@ -294,35 +295,30 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)LonelySorceressSpawnWorld.X, (int)LonelySorceressSpawnWorld.Y,
                         ModContent.NPCType<LonelySorceress>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Zui>()) && !NPC.AnyNPCs(ModContent.NPCType<ZuiTheTraveller>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                             (int)LittleWitchSpawnWorld.X, (int)LittleWitchSpawnWorld.Y,
                             ModContent.NPCType<Zui>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<UnderworldRift>()) && !NPC.AnyNPCs(ModContent.NPCType<Sylia>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)UnderworldRiftSpawnWorld.X, (int)UnderworldRiftSpawnWorld.Y,
                         ModContent.NPCType<UnderworldRift>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Delgrim>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)DelgrimSpawnWorld.X, (int)DelgrimSpawnWorld.Y,
                         ModContent.NPCType<Delgrim>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<CellConverter>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)CellConverterSpawnWorld.X, (int)CellConverterSpawnWorld.Y,
                         ModContent.NPCType<CellConverter>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<UnknownSignal>()) && Main.hardMode &&
                     !NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()))
@@ -330,22 +326,18 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)LabSpawnWorld.X, (int)LabSpawnWorld.Y,
                         ModContent.NPCType<UnknownSignal>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Gia>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)GiaSpawnWorld.X, (int)GiaSpawnWorld.Y,
                         ModContent.NPCType<Gia>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
-
                 else if (!NPC.AnyNPCs(ModContent.NPCType<EreshkigalIdle>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)EreshSpawnWorld.X, (int)EreshSpawnWorld.Y,
                         ModContent.NPCType<EreshkigalIdle>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<NiiviRoaming>()) 
                     && !NPC.AnyNPCs(ModContent.NPCType<Niivi>()) 
@@ -354,15 +346,12 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)NiiviSpawnWorld.X, (int)NiiviSpawnWorld.Y,
                         ModContent.NPCType<NiiviRoaming>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
-
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Veldris>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)VelSpawnWorld.X, (int)VelSpawnWorld.Y,
                         ModContent.NPCType<Veldris>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
 
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Bordoc>()) && Main.hardMode)
@@ -370,7 +359,6 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)BORDOCSpawnWorld.X, (int)BORDOCSpawnWorld.Y,
                         ModContent.NPCType<Bordoc>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
 
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Sirestias>()))
@@ -378,7 +366,6 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)SireSpawnWorld.X, (int)SireSpawnWorld.Y,
                         ModContent.NPCType<Sirestias>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
 
                 else if (!NPC.AnyNPCs(ModContent.NPCType<IrradiaIdle>()) && !NPC.AnyNPCs(ModContent.NPCType<Irradia>()) && !NPC.AnyNPCs(ModContent.NPCType<StartIrradia>()))
@@ -386,7 +373,6 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)IrrSpawnWorld.X, (int)IrrSpawnWorld.Y,
                         ModContent.NPCType<IrradiaIdle>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
 
                 else if (!NPC.AnyNPCs(ModContent.NPCType<GothiviaIdle>()) && !NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()) && !NPC.AnyNPCs(ModContent.NPCType<StartGoth>()) && EventWorld.GreenSun)
@@ -394,21 +380,18 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)GothSpawnWorld.X, (int)GothSpawnWorld.Y,
                         ModContent.NPCType<GothiviaIdle>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
                 else if (NPC.AnyNPCs(ModContent.NPCType<GothiviaIdle>()) && !NPC.AnyNPCs(ModContent.NPCType<RekSnake>()) && !NPC.AnyNPCs(ModContent.NPCType<RekSnakeIdle>()) && !DownedBossSystem.downedRekBoss)
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)GothSpawnWorld.X, (int)GothSpawnWorld.Y,
                         ModContent.NPCType<RekSnakeIdle>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Havoc>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)IrrSpawnWorld.X, (int)IrrSpawnWorld.Y,
                         ModContent.NPCType<Havoc>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
 
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Ordin>()))
@@ -416,7 +399,6 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)OrdinSpawnWorld.X, (int)OrdinSpawnWorld.Y,
                         ModContent.NPCType<Ordin>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
 
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Mardenth>()))
@@ -424,7 +406,6 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)LiberatSpawnWorld.X, (int)LiberatSpawnWorld.Y,
                         ModContent.NPCType<Mardenth>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
 
                 else if (!NPC.AnyNPCs(ModContent.NPCType<PULSARHOLE>()) && DownedBossSystem.downedZuiBoss)
@@ -432,7 +413,6 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)PULSESpawnWorld.X, (int)PULSESpawnWorld.Y,
                         ModContent.NPCType<PULSARHOLE>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
 
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Ishtar>()) && DownedBossSystem.downedZuiBoss)
@@ -440,7 +420,6 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)IshPinSpawnWorld.X, (int)IshPinSpawnWorld.Y,
                         ModContent.NPCType<Ishtar>());
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
 
                 else  if (!DownedBossSystem.downedDreadMonolith1 && !IsDreadMonolithAlive(0))
@@ -448,7 +427,6 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)DreadMonolithSpawnWorld1.X, (int)DreadMonolithSpawnWorld1.Y,
                         ModContent.NPCType<DreadMonolith>(), ai1: 0);
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
 
                 else if (!DownedBossSystem.downedDreadMonolith2 && !IsDreadMonolithAlive(1))
@@ -456,7 +434,6 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)DreadMonolithSpawnWorld2.X, (int)DreadMonolithSpawnWorld2.Y,
                         ModContent.NPCType<DreadMonolith>(), ai1: 1);
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
 
                 else if (!DownedBossSystem.downedDreadMonolith3 && !IsDreadMonolithAlive(2))
@@ -464,7 +441,6 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)DreadMonolithSpawnWorld3.X, (int)DreadMonolithSpawnWorld3.Y,
                         ModContent.NPCType<DreadMonolith>(), ai1: 2);
-                    NetMessage.SendData(MessageID.SyncNPC);
                 }
             }
         }

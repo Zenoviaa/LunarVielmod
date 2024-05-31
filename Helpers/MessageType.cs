@@ -12,9 +12,16 @@
 		CompleteMerenaQuest,
 		CompleteZuiQuest,
 		CreatePortal,
-		StartVerlia,
-		StartIrradia,
+		StartBossFromDialogue,
+		StartDialogue,
 		STARBLOCK
+	}
+
+	public enum DialogueType : byte
+	{
+		Start_Verlia,
+		Start_Irradia,
+		Start_Goth
 	}
 
 	public enum QuestMessageType : byte

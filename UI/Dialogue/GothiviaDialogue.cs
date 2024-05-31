@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.UI.Dialogue
@@ -46,18 +48,27 @@ namespace Stellamod.UI.Dialogue
         {
           
             //Do something when the dialogue is completely finished
-           
-            foreach (NPC npc in Main.ActiveNPCs)
+          
+            if (Main.netMode != NetmodeID.SinglePlayer)
             {
-                if (npc.type == ModContent.NPCType<StartGoth>())
+                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(),
+                    (byte)MessageType.StartBossFromDialogue, 
+                    (int)DialogueType.Start_Goth).Send(-1);
+            }
+            else
+            {
+                foreach (NPC npc in Main.ActiveNPCs)
                 {
-                    StartGoth verlia = npc.ModNPC as StartGoth;
-                    verlia.State = StartGoth.ActionState.Death;
-                    verlia.ResetTimers();
+                    if (npc.type == ModContent.NPCType<StartGoth>())
+                    {
+                        StartGoth verlia = npc.ModNPC as StartGoth;
+                        verlia.State = StartGoth.ActionState.Death;
+                        verlia.ResetTimers();
+                    }
                 }
             }
-         
-              base.Complete();
+
+            base.Complete();
         }
     }
 }

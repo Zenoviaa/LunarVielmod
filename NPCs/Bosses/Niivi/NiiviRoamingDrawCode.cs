@@ -161,18 +161,25 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         private void LookAtTarget()
         {
-            Player target = Main.player[NPC.target];
-            float distanceToTarget = Vector2.Distance(NPC.Center, target.Center);
-            float tiles = 32f;
-            Vector2 directionToTarget = NPC.Center.DirectionTo(target.Center);
-            if (distanceToTarget < tiles.TilesToDistance())
+            if (NPC.HasValidTarget)
             {
-                TargetHeadRotation = NPC.Center.DirectionTo(target.Center).ToRotation() * LookDirection;
+                Player target = Main.player[NPC.target];
+                float distanceToTarget = Vector2.Distance(NPC.Center, target.Center);
+                float tiles = 32f;
+                if (distanceToTarget < tiles.TilesToDistance())
+                {
+                    TargetHeadRotation = NPC.Center.DirectionTo(target.Center).ToRotation() * LookDirection;
+                }
+                else
+                {
+                    TargetHeadRotation = MathHelper.PiOver4;
+                }
             }
             else
             {
                 TargetHeadRotation = MathHelper.PiOver4;
             }
+
         }
         #endregion
 

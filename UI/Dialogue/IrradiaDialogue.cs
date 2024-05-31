@@ -50,7 +50,9 @@ namespace Stellamod.UI.Dialogue
 
             if(Main.netMode != NetmodeID.SinglePlayer)
             {
-                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.StartIrradia).Send(-1);
+                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), 
+                    (byte)MessageType.StartBossFromDialogue, 
+                    (int)DialogueType.Start_Irradia).Send(-1);
             } else
             {
                 foreach (NPC npc in Main.ActiveNPCs)

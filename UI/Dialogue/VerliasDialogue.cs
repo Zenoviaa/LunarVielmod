@@ -48,7 +48,9 @@ namespace Stellamod.UI.Dialogue
             //Do something when the dialogue is completely finished
             if(Main.netMode != NetmodeID.SinglePlayer)
             {
-                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.StartVerlia).Send(-1);
+                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), 
+                    (byte)MessageType.StartBossFromDialogue, 
+                    (int)DialogueType.Start_Verlia).Send(-1);
             }
             else
             {

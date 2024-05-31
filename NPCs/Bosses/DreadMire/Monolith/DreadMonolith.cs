@@ -179,6 +179,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Monolith
                     NPC.SetEventFlagCleared(ref DownedBossSystem.downedDreadMonolith3, -1);
                     break;
             }
+            NetMessage.SendData(MessageID.WorldData);
         }
 
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
