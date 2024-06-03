@@ -33,7 +33,8 @@ namespace Stellamod.Items.Tools
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.Wood, 8);
-			recipe.AddIngredient(ItemType<VirulentPlating>(), 14);
+            recipe.AddRecipeGroup(nameof(ItemID.ShadowScale), 12);
+            recipe.AddIngredient(ItemType<VirulentPlating>(), 14);
 			recipe.AddIngredient(ItemType<LostScrap>(), 14);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
