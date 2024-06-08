@@ -3,9 +3,29 @@ using Stellamod.Tiles;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
+using Stellamod.Projectiles.Gun;
 
 namespace Stellamod.Items.Accessories.Runes
 {
+    internal class RuneOfRealityPlayer : ModPlayer
+    {
+        public bool hasRuneOfReality;
+        public override void ResetEffects()
+        {
+            hasRuneOfReality = false;
+        }
+
+        public override void OnHitAnything(float x, float y, Entity victim)
+        {
+            if (Main.rand.NextBool(7) && hasRuneOfReality)
+            {
+                var EntitySource = Player.GetSource_FromThis();
+                Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, 
+                    ModContent.ProjectileType<RealityBolt>(), Player.HeldItem.damage / 4, 1, Player.whoAmI, 0, 0);
+            }
+        }
+    }
+
     internal class RuneOfReality : ModItem
     {
         public override void SetStaticDefaults()
@@ -30,14 +50,11 @@ namespace Stellamod.Items.Accessories.Runes
             recipe.AddIngredient(ModContent.ItemType<BlankRune>(), 1);
             recipe.AddTile(ModContent.TileType<BroochesTable>());
             recipe.Register();
-
-
         }
+
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-
-            player.GetModPlayer<MyPlayer>().RealityRune = true;
-
+            player.GetModPlayer<RuneOfRealityPlayer>().hasRuneOfReality = true;
         }
     }
 }

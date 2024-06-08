@@ -9,16 +9,7 @@ namespace Stellamod.Items.Special.MinerLogs
 {
     internal abstract class VeiledScriptureMiner : ModItem
     {
-        public static LocalizedText ContentText { get; private set; }
         public override string Texture => "Stellamod/Items/Special/MinerLogs/VeiledScriptureMiner1";
-
-        public override void SetStaticDefaults()
-        {
-            // Step 2: Assign RestoreLifeText to the result of GetLocalization
-            ContentText = this.GetLocalization("Content");
-        }
-
-
         public override void SetDefaults()
         {
             Item.width = 24;
@@ -42,7 +33,7 @@ namespace Stellamod.Items.Special.MinerLogs
             scriptureSystem.IsVisible = !scriptureSystem.IsVisible;
             scriptureSystem.Panel.Popup.Texture = "Stellamod/UI/Scripture/MinerScripture";
 
-            string localizedText = ContentText.Value;
+            string localizedText = this.GetLocalization("Content").Value;
             scriptureSystem.Panel.Text.SetText(localizedText);
             return true;
         }

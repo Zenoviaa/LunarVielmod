@@ -276,7 +276,6 @@ namespace Stellamod
         public bool WindRuneOn;
         public bool WindRune;
         public bool ShadeRune = false;
-        public bool RealityRune = false;
         public bool SpiritPendent = false;
 
         public NPC CrysalizerNpc;
@@ -453,15 +452,6 @@ namespace Stellamod
                 {
                     var EntitySource = Player.GetSource_FromThis();
                     Projectile.NewProjectile(EntitySource, victim.Center.X, victim.Center.Y, 0, 0, ModContent.ProjectileType<DetonationBomb>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
-
-                }
-            }
-            if (RealityRune)
-            {
-                if (Main.rand.NextBool(7))
-                {
-                    var EntitySource = Player.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, ModContent.ProjectileType<RealityBolt>(), Player.HeldItem.damage / 4, 1, Player.whoAmI, 0, 0);
 
                 }
             }

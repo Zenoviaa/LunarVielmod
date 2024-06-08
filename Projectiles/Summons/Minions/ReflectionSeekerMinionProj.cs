@@ -24,36 +24,24 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override void Load()
         {
-            if(Main.netMode != NetmodeID.Server)
+            if(!Main.dedServ)
             {
                 using var eventSlim = new ManualResetEventSlim();
-
                 Main.QueueMainThreadAction(() =>
                 {
+                    if (playerRT != null && !playerRT.IsDisposed)
+                        playerRT.Dispose();
                     playerRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
-
                     eventSlim.Set();
                 });
 
                 eventSlim.Wait();
-
-                Main.graphics.GraphicsDevice.DeviceReset += OnDeviceReset;
             }
-
-        }
-
-        private static void OnDeviceReset(object sender, EventArgs eventArgs)
-        {
-            var gd = (GraphicsDevice)sender;
-
-            var parameters = gd.PresentationParameters;
-
-            playerRT?.Dispose();
-            playerRT = new RenderTarget2D(gd, parameters.BackBufferWidth, parameters.BackBufferHeight);
         }
 
         public override void Unload()
         {
+            /*
             if (Main.netMode != NetmodeID.Server)
             {
                 Main.graphics.GraphicsDevice.DeviceReset -= OnDeviceReset;
@@ -72,7 +60,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
                     playerRT = null;
                 }
-            }
+            }*/
         }
 
         public override void SetStaticDefaults()
