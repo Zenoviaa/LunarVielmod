@@ -123,6 +123,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private int SpecialCycle;
         int ScaleDamageCounter;
         int AggroDamageCounter;
+        int SpecialDamageCounter;
 
         private Player Target => Main.player[NPC.target];
         private IEntitySource EntitySource => NPC.GetSource_FromThis();
@@ -182,6 +183,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             writer.Write(_resetTimers);
             writer.Write(ScaleDamageCounter);
             writer.Write(AggroDamageCounter);
+            writer.Write(SpecialDamageCounter);
             writer.Write(CrystalTimer);
             writer.Write(SpecialTimer);
             writer.Write(SpecialCycle);
@@ -192,6 +194,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             _resetTimers = reader.ReadBoolean();
             ScaleDamageCounter = reader.ReadInt32();
             AggroDamageCounter = reader.ReadInt32();
+            SpecialDamageCounter = reader.ReadInt32();
             CrystalTimer = reader.ReadSingle();
             SpecialTimer = reader.ReadSingle();
             SpecialCycle = reader.ReadInt32();
@@ -267,6 +270,11 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         public override void HitEffect(NPC.HitInfo hit)
         {
+            if (InPhase2)
+            {
+                SpecialDamageCounter += hit.Damage;
+            }
+
             int lifeToGiveIllurineScaleInBoss = NPC.lifeMax / 100;
             if (StellaMultiplayer.IsHost)
             {
@@ -379,6 +387,12 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 if (SpecialTimer == 2500)
                 {
                     AI_Phase2_SpecialReset();
+                }
+
+                if(SpecialDamageCounter > (NPC.lifeMax / 2 / 3))
+                {
+                    SpecialTimer = 2500;
+                    SpecialDamageCounter = 0;
                 }
             }
 

@@ -1,22 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
-using Stellamod.Particles;
-using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Projectiles.Slashers.Ixy;
 using Stellamod.Projectiles.Summons.Minions;
-using Stellamod.Projectiles.Swords;
-using Stellamod.Projectiles.Swords.Ripper;
-using Stellamod.Trails;
-using Stellamod.UI.Systems;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -29,7 +18,7 @@ namespace Stellamod.Items.Weapons.Summon
         public int combowombo = 0;
         public override void SetDefaults()
         {
-            Item.width = 90;
+            Item.width = 72;
             Item.height = 98;
             Item.damage = 71;
             Item.DamageType = DamageClass.Summon;

@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Stellamod.Buffs;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
 using Stellamod.Projectiles.Swords;
@@ -103,7 +104,7 @@ namespace Stellamod.Items.Weapons.Ranged
             }
             Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125,  Color.DarkRed, 1);
             Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, Color.White * 0.5f, Main.rand.NextFloat(0.5f, 1));
-            if (LAZERMode)
+            if (LAZERMode && !player.HasBuff(ModContent.BuffType<Overheated>()))
             {
                 int Sound2 = Main.rand.Next(1, 3);
                 if (Sound2 == 1)
@@ -141,14 +142,13 @@ namespace Stellamod.Items.Weapons.Ranged
                     if(LAZERAlpha <= 7)
                     {
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol2"));
-                        Overheated = true;
+                        player.AddBuff(ModContent.BuffType<Overheated>(), 1500);
                         Item.useTime = 105;
                         Item.useAnimation = 105;
                         LAZERMode = false;
                         LAZERAlpha = 255;
                     }
                 }
-
 
                 Item.damage = 25;
                 Item.shootSpeed = 3f;
@@ -159,10 +159,8 @@ namespace Stellamod.Items.Weapons.Ranged
             }
             else
             {
-
-
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 15f);
-                if (Overheated)
+                if (player.HasBuff(ModContent.BuffType<Overheated>()))
                 {
                     Item.damage = 10;
                     Item.shootSpeed = 35f;

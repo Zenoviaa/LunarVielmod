@@ -14,6 +14,7 @@ using Stellamod.Dusts;
 using Terraria.ID;
 using System.Threading;
 using Terraria.Audio;
+using Stellamod.Buffs;
 
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
@@ -95,6 +96,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             Time++;
         }
 
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(ModContent.BuffType<GothivianFlames>(), 50);
+        }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {

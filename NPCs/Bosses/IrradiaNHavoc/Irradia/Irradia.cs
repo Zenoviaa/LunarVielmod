@@ -138,6 +138,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 			NPC.npcSlots = 10f;
 			NPC.scale = 1f;
 			NPC.BossBar = ModContent.GetInstance<IrradiaBossBar>();
+            NPC.takenDamageMultiplier = 0.8f;
 
 			// Take up open spawn slots, preventing random NPCs from spawning during the fight
 
