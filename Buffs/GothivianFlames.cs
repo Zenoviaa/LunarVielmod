@@ -24,7 +24,7 @@ namespace Stellamod.Buffs
             {
                 _maxHealthLoss--;
             }
-            if (NPC.AnyNPCs(ModContent.NPCType<RekSnake>()))
+            if (!NPC.AnyNPCs(ModContent.NPCType<RekSnake>()) || Player.dead)
             {
                 _maxHealthLoss = 0;
             }
@@ -34,6 +34,7 @@ namespace Stellamod.Buffs
         {
             base.PostUpdateEquips();
             Player.statLifeMax2 += _maxHealthLoss;
+            
         }
     }
 

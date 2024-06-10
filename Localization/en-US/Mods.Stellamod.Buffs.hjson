@@ -777,3 +777,14 @@ OrbMaster: {
 	DisplayName: Orb Master
 	Description: You are controlling a magical orb!
 }
+
+Overheated: {
+	DisplayName: Overheated
+	Description: You cannot use your laser mode!
+}
+
+GothivianFlames: {
+	
+	DisplayName: Gothivian Flames
+	Description: Your soul is burning away...
+}
