@@ -6019,7 +6019,7 @@ IllurianCrestpants: {
 		'''
 		+1 Minion and 10% increased movement speed!
 		20% more damage and +15 Armor penetration
-		-40 Health
+		-90 Health
 		'''
 	DisplayName: Illurian Crestpants
 }
@@ -6027,6 +6027,7 @@ IllurianCrestpants: {
 IllurianCrestmask: {
 	Tooltip:
 		'''
+		-50 Health
 		12% Magic and Summon damage!
 		10% Critical Strike Chance!
 		A very dissapointed Niivi.

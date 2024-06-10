@@ -37,8 +37,8 @@ namespace Stellamod.Items.Armors.Illurian
 
 		public override void UpdateEquip(Player player)
 		{
-
-			player.GetDamage(DamageClass.Summon) *= 1.12f;
+            player.statLifeMax2 -= 50;
+            player.GetDamage(DamageClass.Summon) *= 1.12f;
 			player.GetDamage(DamageClass.Magic) *= 1.12f;
 			player.GetCritChance(DamageClass.Generic) += 10f;
 			player.autoReuseGlove = true;

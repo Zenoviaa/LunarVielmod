@@ -36,7 +36,7 @@ namespace Stellamod.Items.Armors.Illurian
 		{
 			player.maxMinions += 1;
 			player.moveSpeed *= 1.1f; // Increase the movement speed of the player
-			player.statLifeMax2 -= 40;
+			player.statLifeMax2 -= 90;
 			player.GetArmorPenetration(DamageClass.Generic) += 15f;
 			player.GetDamage(DamageClass.Generic) *= 1.2f;
 		}
