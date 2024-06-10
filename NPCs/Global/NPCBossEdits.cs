@@ -2,6 +2,7 @@
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Thrown.Jugglers;
 using System.Collections.Generic;
 using Terraria;
@@ -123,8 +124,7 @@ namespace Stellamod.NPCs.Global
 			if (npc.type == NPCID.SkeletronPrime)
 			{
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 5));
-
-			}
+            }
 
 			if (npc.type == NPCID.Retinazer)
 			{

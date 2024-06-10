@@ -24,7 +24,7 @@ namespace Stellamod.Buffs
             {
                 _maxHealthLoss--;
             }
-            if (NPC.AnyNPCs(ModContent.NPCType<RekSnake>()))
+            if (!NPC.AnyNPCs(ModContent.NPCType<RekSnake>()))
             {
                 _maxHealthLoss = 0;
             }

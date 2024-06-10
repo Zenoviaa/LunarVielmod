@@ -4672,7 +4672,7 @@ OceancrestShield: {
 
 Panacea: {
 	DisplayName: Panacea
-	Tooltip: 
+	Tooltip:
 		'''
 		Immune to poison, venom and bleeding!
 		Increases max life by 40

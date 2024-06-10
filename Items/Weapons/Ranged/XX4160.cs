@@ -75,6 +75,15 @@ namespace Stellamod.Items.Weapons.Ranged
             return base.CanUseItem(player);
         }
 
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
+            recipe.AddIngredient(ItemID.SoulofFright, 20);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
+        }
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
 
