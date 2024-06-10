@@ -237,6 +237,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             NPC.noTileCollide = true;
             NPC.noGravity = true;
             NPC.knockBackResist = 0;
+            NPC.takenDamageMultiplier = 0.7f;
 
             NPC.BossBar = ModContent.GetInstance<NiiviBossBar>();
             NPC.HitSound = SoundID.DD2_WitherBeastCrystalImpact;
