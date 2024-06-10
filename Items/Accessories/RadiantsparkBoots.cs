@@ -44,7 +44,17 @@ namespace Stellamod.Items.Accessories
 			recipe.AddIngredient(ItemID.FrostsparkBoots, 1);
 			recipe.AddTile(TileID.TinkerersWorkbench);
 			recipe.Register();
-		}
+
+
+            Recipe recipe2 = CreateRecipe();
+            recipe2.AddIngredient(ModContent.ItemType<ShadeScarf>(), 1);
+            recipe2.AddIngredient(ModContent.ItemType<SoulStrideres>(), 1);
+            recipe2.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
+            recipe2.AddIngredient(ModContent.ItemType<RadianuiBar>(), 25);
+            recipe2.AddIngredient(ItemID.TerrasparkBoots, 1);
+            recipe2.AddTile(TileID.TinkerersWorkbench);
+            recipe2.Register();
+        }
 
 		public override bool CanEquipAccessory(Player player, int slot, bool modded)
 		{
