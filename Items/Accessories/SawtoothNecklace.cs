@@ -22,9 +22,6 @@ namespace Stellamod.Items.Accessories
 
             //Increased armor pen
             player.GetArmorPenetration(DamageClass.Generic) += 12;
-
-            //Increased attack speed
-            player.GetAttackSpeed(DamageClass.Generic) += 0.10f;
         }
 
         public override void AddRecipes()
@@ -32,11 +29,9 @@ namespace Stellamod.Items.Accessories
             base.AddRecipes();
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.SharkToothNecklace, 1);
-            recipe.AddIngredient(ItemID.FeralClaws, 1);
-            recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 12);
-            recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
+            recipe.AddIngredient(ItemID.SoulofMight, 15);
+            recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 20);
             recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-            recipe.AddIngredient(ItemID.SharkFin, 5);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
         }

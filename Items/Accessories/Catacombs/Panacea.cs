@@ -30,6 +30,7 @@ namespace Stellamod.Items.Accessories.Catacombs
             player.ClearBuff(BuffID.Bleeding);
             player.ClearBuff(BuffID.Poisoned);
             player.ClearBuff(BuffID.Venom);
+            player.statLifeMax2 += 40;
         }
     }
 }

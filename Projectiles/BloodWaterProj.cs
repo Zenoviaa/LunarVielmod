@@ -16,8 +16,8 @@ namespace Stellamod.Projectiles
             Projectile.friendly = true;
             Projectile.penetrate = 32;
             Projectile.timeLeft = 150;
-			Projectile.usesLocalNPCImmunity = true;
-			Projectile.localNPCHitCooldown = 24;
+			Projectile.usesIDStaticNPCImmunity = true;
+			Projectile.idStaticNPCHitCooldown = 24;
         }
 
 		public override bool OnTileCollide(Vector2 oldVelocity)

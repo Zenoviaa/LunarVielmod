@@ -22,6 +22,7 @@ namespace Stellamod.Items.Accessories.Runes
             Item.rare = ItemRarityID.Blue;
             Item.accessory = true;
         }
+        
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -31,9 +32,8 @@ namespace Stellamod.Items.Accessories.Runes
             recipe.AddIngredient(ModContent.ItemType<BlankRune>(), 1);
             recipe.AddTile(ModContent.TileType<BroochesTable>());
             recipe.Register();
-
-
         }
+
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<MyPlayer>().DetonationRune = true;

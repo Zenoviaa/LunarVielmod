@@ -56,7 +56,7 @@ namespace Stellamod.Projectiles.Swords
             Projectile.usesLocalNPCImmunity = true;
 
             //Multiplying by the thing so it's still 10 ticks
-            Projectile.localNPCHitCooldown = 10 * Swing_Speed_Multiplier;
+            Projectile.localNPCHitCooldown = 120 * Swing_Speed_Multiplier;
         }
 
         public override void AI()

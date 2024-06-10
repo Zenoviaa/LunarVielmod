@@ -80,10 +80,10 @@ namespace Stellamod.Items.Accessories
         {
             base.AddRecipes();
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.StarCloak, 1);
+            recipe.AddIngredient(ItemID.Robe, 1);
+            recipe.AddIngredient(ItemID.SoulofSight, 15);
             recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 30);
             recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 12);
-            recipe.AddIngredient(ItemID.SoulofNight, 7);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
         }

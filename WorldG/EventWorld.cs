@@ -189,7 +189,7 @@ namespace Stellamod.WorldG
             if (!Main.dayTime && !Aurorean && !AuroreanSpawn)
             {
                 AuroreanSpawn = true;
-                if (Main.rand.NextBool(5))
+                if (Main.rand.NextBool(6))
                 {
                     Aurorean = true;
                     if(Main.netMode == NetmodeID.Server)

@@ -54,7 +54,7 @@ namespace Stellamod.Items.Accessories.Catacombs
                         ModContent.ProjectileType<FireBoom>(), damageDone / 2, hit.Knockback, Player.whoAmI);
                 }
 
-                fireEmblemCooldown = 30;
+                fireEmblemCooldown = 120;
             }
         }
     }

@@ -3747,7 +3747,6 @@ SawtoothNecklace: {
 	Tooltip:
 		'''
 		Increases armor penetration by 12
-		10% increased attack speed
 		I should have saw that coming!
 		'''
 }
@@ -3767,10 +3766,8 @@ VampireCharm: {
 	DisplayName: Vampire Charm
 	Tooltip:
 		'''
-		8% increased critical strike chance
-		Critical strikes have a chance to heal you
-		Critical strikes explode with damaging blood water
-		Critical...
+		4% increased critical strike chance
+		Critical strikes have a chance to heal you and explode with bloodwater.
 		'''
 }
 
@@ -4675,7 +4672,11 @@ OceancrestShield: {
 
 Panacea: {
 	DisplayName: Panacea
-	Tooltip: Immune to poison, venom and bleeding!
+	Tooltip: 
+		'''
+		Immune to poison, venom and bleeding!
+		Increases max life by 40
+		'''
 }
 
 SpikedEmblem: {
