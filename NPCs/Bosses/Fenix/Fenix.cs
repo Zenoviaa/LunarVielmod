@@ -449,6 +449,11 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			bee--;
 			//Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
 
+			if(NPC.life <= NPC.lifeMax / 2)
+			{
+				NPC.takenDamageMultiplier = 0.6f;
+			}
+
 			FenixPos = NPC.Center;
 			if (bee == 0)
 			{

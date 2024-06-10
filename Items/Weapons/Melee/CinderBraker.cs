@@ -20,9 +20,10 @@ namespace Stellamod.Items.Weapons.Melee
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 32;
+            Item.damage = 19;
             Item.mana = 3;
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Cinder Braker");

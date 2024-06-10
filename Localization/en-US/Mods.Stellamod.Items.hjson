@@ -3767,7 +3767,7 @@ VampireCharm: {
 	Tooltip:
 		'''
 		4% increased critical strike chance
-		Critical strikes have a chance to heal you and explode with bloodwater.
+		Critical strikes have a chance to heal you and explode with bloodwater
 		'''
 }
 
