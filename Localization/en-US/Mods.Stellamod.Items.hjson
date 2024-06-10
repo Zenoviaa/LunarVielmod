@@ -1476,8 +1476,8 @@ GovheilMask: {
 	DisplayName: Govheil Mask
 	Tooltip:
 		'''
-		12% Increased Magic and Summon damage!
-		+50 Mana and increased Mana regeneration
+		8% Increased Magic and Summon damage!
+		+10 Mana
 		+12% Crit strike change
 		I've heard rumors that the flower gives a special affection bonus..
 		'''
@@ -1508,7 +1508,7 @@ GovheilBreastplate: {
 	Tooltip:
 		'''
 		6% Increased Magic and Summon damage!
-		+50 Mana and increased Mana regeneration
+		+50 Mana
 		+10 Life!
 		+1 Summon
 		'''
@@ -1520,8 +1520,8 @@ GovheilThighs: {
 	Tooltip:
 		'''
 		7% Increased Movement speed
-		+30 Life!
-		+10% Damage
+		+10 Life!
+		+5% Damage
 		+15 Armor Penetration
 		Mega thicc!
 		'''
@@ -2061,12 +2061,12 @@ ElagentLegs: {
 
 ForestCoreBody: {
 	DisplayName: Forest Core Chestplate
-	Tooltip: Increases ranged crit chance by 2%
+	Tooltip: Increases crit chance by 2%
 }
 
 ForestCoreHead: {
 	DisplayName: Forest Core Mask
-	Tooltip: Increases ranged damage by 2
+	Tooltip: Increases damage by 2
 }
 
 ForestCoreLegs: {
@@ -2114,7 +2114,7 @@ LeatherLegs: {
 
 ShadeWraithBody: {
 	DisplayName: Shade Wraith Chainplate
-	Tooltip: Increased endurance and life by 20!
+	Tooltip: Increased life by 20!
 }
 
 ShadeWraithHead: {

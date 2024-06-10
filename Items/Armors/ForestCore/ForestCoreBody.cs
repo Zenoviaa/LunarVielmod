@@ -25,7 +25,7 @@ namespace Stellamod.Items.Armors.ForestCore
 
         public override void UpdateEquip(Player player)
         {
-            player.GetCritChance(DamageClass.Ranged) += 2f;
+            player.GetCritChance(DamageClass.Generic) += 2f;
         }
 
         public override void AddRecipes()

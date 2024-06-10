@@ -55,16 +55,16 @@ namespace Stellamod.Items.Armors.Jianxin
             player.setBonus = "Increases life regen by a great amount!" +
                 "\nMove faster and go along with the watery winds." +
                 "\nSummons in watery dragons to come and swirl around your character." +
-                "\nThese dragons emit a great becoming amongst the lost dynasty and give 100 Health." +
-                "\nThis aura also lessens enemy damage by 15% and damages enemies." +
+                "\nThese dragons emit a great becoming amongst the lost dynasty and give 50 Health." +
+                "\nThis aura also lessens enemy damage by 10% and damages enemies." +
                 "\nEnemies are less likely to target you!"; // This is the setbonus tooltip
            
-            player.statLifeMax2 += 100;
+            player.statLifeMax2 += 50;
             player.moveSpeed += 0.3f;
             player.maxRunSpeed += 0.3f;
-            player.lifeRegen += 3;  // This is the setbonus tooltip
+            player.lifeRegen += 2;  // This is the setbonus tooltip
             player.aggro *= 2;
-            player.endurance += 0.15f;
+            player.endurance += 0.10f;
 
             player.GetModPlayer<MyPlayer>().Waterwhisps = true;
 

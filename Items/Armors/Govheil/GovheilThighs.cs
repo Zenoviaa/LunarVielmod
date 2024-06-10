@@ -35,9 +35,9 @@ namespace Stellamod.Items.Armors.Govheil
 		public override void UpdateEquip(Player player)
 		{
 			player.moveSpeed *= 1.07f; // Increase the movement speed of the player
-			player.statLifeMax2 += 30;
+			player.statLifeMax2 += 10;
 			player.GetArmorPenetration(DamageClass.Generic) += 15f;
-			player.GetDamage(DamageClass.Generic) *= 1.1f;
+			player.GetDamage(DamageClass.Generic) *= 1.05f;
 		}
 
 		public override void AddRecipes()

@@ -197,7 +197,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             NPC.Size = new Vector2(44, 80);
             NPC.damage = 1;
             NPC.defense = 150;
-            NPC.lifeMax = 245000;
+            NPC.lifeMax = 255000;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath1;
             NPC.knockBackResist = 0f;

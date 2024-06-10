@@ -33,7 +33,7 @@ namespace Stellamod.Items.Armors.ShadeWraith
 
             public override void UpdateEquip(Player player)
             {
-                player.endurance += 0.2f;
+              
                 player.statLifeMax2 += 20;
 
             }

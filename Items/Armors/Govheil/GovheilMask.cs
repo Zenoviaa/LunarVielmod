@@ -37,11 +37,10 @@ namespace Stellamod.Items.Armors.Govheil
 
 		public override void UpdateEquip(Player player)
 		{
-			player.GetDamage(DamageClass.Magic) *= 1.12f;
-			player.GetDamage(DamageClass.Summon) *= 1.12f;
+			player.GetDamage(DamageClass.Magic) *= 1.08f;
+			player.GetDamage(DamageClass.Summon) *= 1.08f;
 			player.GetCritChance(DamageClass.Generic) += 10f;
-			player.manaRegen += 30;
-			player.statManaMax2 += 50;
+			player.statManaMax2 += 10;
 		}
 
 		public override bool IsArmorSet(Item head, Item body, Item legs)
