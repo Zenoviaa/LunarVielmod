@@ -320,7 +320,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                     Vector2 bulletVelocity = Projectile.Center.DirectionTo(targetCenter) * 52;
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, bulletVelocity,
                         ModContent.ProjectileType<EldritchBolt>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-                    SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Laserlock") { Pitch = Main.rand.NextFloat(-5f, 5f) }, Projectile.Center);
 
 
 
