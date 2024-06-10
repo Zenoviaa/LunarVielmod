@@ -26,6 +26,7 @@ namespace Stellamod.Items.Accessories.Runes
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 15);
+            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 5);
             recipe.AddIngredient(ModContent.ItemType<BlankRune>(), 1);
             recipe.AddTile(ModContent.TileType<BroochesTable>());

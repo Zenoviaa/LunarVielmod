@@ -46,7 +46,8 @@ namespace Stellamod.Items.Accessories.Igniter
 			recipe.AddIngredient(ModContent.ItemType<TomedDustingFlames>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 50);
 			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 15);
+            recipe.AddIngredient(ModContent.ItemType<Superfragment>(), 15);
+            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 15);
 			recipe.AddIngredient(ItemID.SoulofFright, 20);
 			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 			recipe.Register();

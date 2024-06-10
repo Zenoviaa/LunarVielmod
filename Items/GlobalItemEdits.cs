@@ -18,7 +18,11 @@ namespace Stellamod.Items
             else if (entity.type == ItemID.Celeb2)
             {
                 entity.damage -= 20;
-            } 
+            }
+            else if (entity.type == ItemID.EmpressBlade)
+            {
+                entity.damage -= 40;
+            }
             else if (entity.type == ItemID.LastPrism)
             {
                 entity.damage -= 56;
