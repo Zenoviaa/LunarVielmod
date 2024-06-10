@@ -6,9 +6,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class GildedStaff : ModItem
-	{
-		public override void SetStaticDefaults()
+    internal class GildedStaff : ClassSwapItem
+    {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 20;
+            Item.mana = 6;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Gilded Staff");
 			// Tooltip.SetDefault("Shoots two spinning pieces of spiritual magic at your foes!\nThe fabric is super magical, it turned wood into something like a flamethrower! :>");

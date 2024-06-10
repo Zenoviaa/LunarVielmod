@@ -10,9 +10,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class wowgun : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class wowgun : ClassSwapItem
+    {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Summon;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 13;
+            Item.mana = 10;
+        }
+        public override void SetStaticDefaults()
 		{
 			/* Tooltip.SetDefault("You made a gun out of wood what did you expect.." +
 				"\nFor your efforts I commend you, now use my voice as a weapon :)"); */
