@@ -8,12 +8,15 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class VoidsGrasp : ModItem
+    internal class VoidsGrasp : ClassSwapItem
     {
-        public override void SetStaticDefaults()
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Summon;
+
+        public override void SetClassSwappedDefaults()
         {
-            // DisplayName.SetDefault("Void's Grasp");
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+            Item.damage = 30;
+            Item.mana = 0;
         }
 
         public override void SetDefaults()

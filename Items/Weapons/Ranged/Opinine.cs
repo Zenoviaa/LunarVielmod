@@ -9,8 +9,16 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class Opinine : ModItem
+    internal class Opinine : ClassSwapItem
     {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 100;
+            Item.mana = 10;
+        }
         public override void SetDefaults()
         {
             Item.damage = 110;

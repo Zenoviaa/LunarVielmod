@@ -11,7 +11,7 @@ namespace Stellamod.Items.Weapons.Mage
 {
     public class LeadGauntlets : ClassSwapItem
 	{
-		public override DamageClass AlternateClass => DamageClass.Ranged;
+		public override DamageClass AlternateClass => DamageClass.Melee;
 
         public override void SetClassSwappedDefaults()
         {

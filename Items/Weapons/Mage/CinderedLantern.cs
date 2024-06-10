@@ -11,8 +11,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class CinderedLantern : ModItem
+    internal class CinderedLantern : ClassSwapItem
     {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 10;
+            Item.mana = 0;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Fungal Flace");

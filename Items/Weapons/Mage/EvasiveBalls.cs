@@ -6,9 +6,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class EvasiveBalls : ModItem
-	{
-		public override void SetStaticDefaults()
+    internal class EvasiveBalls : ClassSwapItem
+    {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 9;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Pearlescent Ice Ball");
 			// Tooltip.SetDefault("Shoots fast homing sparks of light!");

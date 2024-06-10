@@ -8,14 +8,18 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    public class TheShrieker : ModItem
-	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("The Deafening"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-		}
+    public class TheShrieker : ClassSwapItem
+    {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Summon;
 
-		public override void SetDefaults()
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 30;
+            Item.mana = 0;
+        }
+
+        public override void SetDefaults()
 		{
 			Item.damage = 45;
 			Item.DamageType = DamageClass.Magic;

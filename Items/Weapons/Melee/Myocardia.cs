@@ -8,8 +8,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class Myocardia : ModItem
+    public class Myocardia : ClassSwapItem
     {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 18;
+            Item.mana = 6;
+        }
         public override void SetStaticDefaults()
         {
 

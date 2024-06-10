@@ -8,9 +8,17 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    public class BookOfSkullsII : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class BookOfSkullsII : ClassSwapItem
+    {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Summon;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 54;
+            Item.mana = 6;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Jelly Tome"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
 		}

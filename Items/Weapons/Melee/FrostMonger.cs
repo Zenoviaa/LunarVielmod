@@ -19,10 +19,18 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-	public class FrostMonger : ModItem
-	{
+	public class FrostMonger : ClassSwapItem
+    {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Throwing;
 
-		public int AttackCounter = 1;
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 35;
+           
+        }
+
+        public int AttackCounter = 1;
 		public int combowombo = 0;
 
 		public override void SetStaticDefaults()

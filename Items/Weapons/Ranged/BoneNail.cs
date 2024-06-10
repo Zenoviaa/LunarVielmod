@@ -7,9 +7,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class BoneNail : ModItem
-	{
-		public int AttackCounter = 1;
+    public class BoneNail : ClassSwapItem
+    {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 50;
+            Item.mana = 0;
+        }
+        public int AttackCounter = 1;
 		public int combowombo = 1;
 
 		public override void SetStaticDefaults()

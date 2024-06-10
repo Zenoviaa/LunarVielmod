@@ -7,8 +7,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    internal class WindmillShuriken : ModItem
+    internal class WindmillShuriken : ClassSwapItem
     {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 20;
+
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Assassin's Shuriken");

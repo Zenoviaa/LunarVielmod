@@ -14,8 +14,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class Hearstspire : ModItem
+    public class Hearstspire : ClassSwapItem
     {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 9;
+           
+        }
         public int AttackCounter = 1;
         public int combowombo = 0;
 

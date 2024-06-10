@@ -9,8 +9,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class StaffOFlame : ModItem
+    internal class StaffOFlame : ClassSwapItem
     {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Summon;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 20;
+            Item.mana = 6;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Sun Blast Staff");

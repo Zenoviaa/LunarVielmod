@@ -11,9 +11,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-	public class ClockworkCity : ModItem
-	{
-		public override void SetDefaults() 
+	public class ClockworkCity : ClassSwapItem
+    {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 20;
+            Item.mana = 20;
+        }
+        public override void SetDefaults() 
 		{
 			Item.damage = 25;
 			Item.DamageType = DamageClass.Ranged;

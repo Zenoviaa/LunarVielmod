@@ -8,9 +8,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-	internal class SpiritCapsule : ModItem
-	{
-		public override void SetStaticDefaults()
+	internal class SpiritCapsule : ClassSwapItem
+    {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 100;
+
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Pearlescent Ice Ball");
 			// Tooltip.SetDefault("Shoots fast homing sparks of light!");

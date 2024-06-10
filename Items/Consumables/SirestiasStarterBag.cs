@@ -74,18 +74,19 @@ namespace Stellamod.Items.Consumables
 						break;
 					case 3:
 
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<PaperPaws>());
 
-						break;
+                        player.QuickSpawnItem(entitySource, ItemID.BabyBirdStaff, Main.rand.Next(1, 1));
+
+                        break;
 					case 4:
 
 						player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 7));
 						break;
 					case 5:
 
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>());
+                        player.QuickSpawnItem(entitySource, ItemID.ManaCrystal, Main.rand.Next(1, 15));
 
-						break;
+                        break;
 
 					case 6:
 

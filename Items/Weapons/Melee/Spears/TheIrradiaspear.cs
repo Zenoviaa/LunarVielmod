@@ -9,8 +9,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Spears
 {
-    internal class TheIrradiaspear : ModItem
+    internal class TheIrradiaspear : ClassSwapItem
     {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 40;
+          
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Gladiator Spear");

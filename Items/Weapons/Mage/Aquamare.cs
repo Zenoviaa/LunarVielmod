@@ -9,8 +9,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class Aquamare : ModItem
+    internal class Aquamare : ClassSwapItem
     {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 90;
+            Item.mana = 0;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Fungal Flace");

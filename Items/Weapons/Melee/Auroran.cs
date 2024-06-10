@@ -14,8 +14,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class Auroran : ModItem
+    public class Auroran : ClassSwapItem
     {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 15;
+     
+        }
         public int AttackCounter = 1;
         public int combowombo = 0;
 

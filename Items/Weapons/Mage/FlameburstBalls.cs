@@ -6,9 +6,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class FlameburstBalls : ModItem
-	{
-		public override void SetStaticDefaults()
+    internal class FlameburstBalls : ClassSwapItem
+    {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 10;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Molted Crust Ball");
 			// Tooltip.SetDefault("Shoots fast homing sparks of fire!");

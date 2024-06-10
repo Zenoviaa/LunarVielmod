@@ -8,9 +8,17 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    public class DreadGauntlets : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class DreadGauntlets : ClassSwapItem
+    {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Melee;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 20;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Jelly Tome"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
 		}

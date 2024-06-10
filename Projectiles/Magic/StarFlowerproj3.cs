@@ -18,8 +18,8 @@ namespace Stellamod.Projectiles.Magic
         {
             Projectile.penetrate = 150;
             Projectile.hide = true;
-            Projectile.width = 150;
-            Projectile.height = 150;
+            Projectile.width = 300;
+            Projectile.height = 300;
             Projectile.timeLeft = 3;
             Projectile.friendly = true;
             Projectile.hostile = false;

@@ -12,8 +12,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    public class Voyager : ModItem
+    public class Voyager : ClassSwapItem
     {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 230;
+            Item.mana = 0;
+        }
         public int AttackCounter = 1;
         public int combowombo = 0;
 

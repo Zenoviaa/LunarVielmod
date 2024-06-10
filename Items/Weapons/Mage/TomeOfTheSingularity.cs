@@ -6,8 +6,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class TomeOfTheSingularity : ModItem
+    internal class TomeOfTheSingularity : ClassSwapItem
     {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Summon;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 9;
+            Item.mana = 0;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Void's Grasp");

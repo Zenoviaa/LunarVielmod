@@ -10,7 +10,7 @@ namespace Stellamod.Items.Weapons.Thrown
 {
     internal class Stonen : ClassSwapItem
 	{
-		public override DamageClass AlternateClass => DamageClass.Ranged;
+		public override DamageClass AlternateClass => DamageClass.Melee;
 
         public override void SetDefaults()
 		{

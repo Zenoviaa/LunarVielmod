@@ -9,9 +9,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-	internal class TheButcher : ModItem
-	{
-		public override void SetStaticDefaults()
+	internal class TheButcher : ClassSwapItem
+    {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Melee;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 50;
+
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Palm Tomahawks");
 			// Tooltip.SetDefault("Throw around tomahawks forged from palm, sounds boring :(");

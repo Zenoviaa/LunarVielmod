@@ -14,8 +14,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class DevilsPeak : ModItem
+    public class DevilsPeak : ClassSwapItem
     {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 15;
+            Item.mana = 20;
+        }
         public int AttackCounter = 1;
         public int combowombo = 0;
         public override void SetDefaults()

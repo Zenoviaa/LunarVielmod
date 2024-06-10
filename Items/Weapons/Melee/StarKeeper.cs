@@ -10,8 +10,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class StarKeeper : ModItem
+    public class StarKeeper : ClassSwapItem
     {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 15;
+            Item.mana = 6;
+        }
         public override void SetStaticDefaults()
         {
 

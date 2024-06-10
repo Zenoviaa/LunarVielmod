@@ -14,11 +14,11 @@ namespace Stellamod.Items.Weapons.Ranged
 {
     public class Teraciz : ClassSwapItem
 	{
-		public override DamageClass AlternateClass => DamageClass.Magic;
+		public override DamageClass AlternateClass => DamageClass.Summon;
         public override void SetClassSwappedDefaults()
         {
 			Item.mana = 8;
-			Item.damage = 25;
+			Item.damage = 10;
         }
 
         public override void SetDefaults()
