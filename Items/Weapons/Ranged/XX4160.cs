@@ -25,7 +25,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void SetDefaults()
         {
 
-            Item.damage = 20;
+            Item.damage = 18;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 40;
             Item.height = 40;
@@ -53,14 +53,14 @@ namespace Stellamod.Items.Weapons.Ranged
             {
                 if (LAZERMode)
                 {
-                    Item.damage = 20;
+                    Item.damage = 18;
                     Item.shootSpeed = 35f;
                     LAZERMode = false;
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/XX41604"));
                 }
                 else
                 {
-                    Item.damage = 25;
+                    Item.damage = 20;
                     Item.shootSpeed = 3f;
                     LAZERMode = true;
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/XX41603"));
