@@ -255,8 +255,8 @@ namespace Stellamod.Projectiles.IgniterEx
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StaalkerDescend") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
                     Projectile.scale = 1.5f;
 					ShakeModSystem.Shake = 6;
-					npc.SimpleStrikeNPC(Projectile.damage * 4, 1, crit: false, Projectile.knockBack);
-					npc.SimpleStrikeNPC(Projectile.damage * 4, 1, crit: false, Projectile.knockBack);
+					npc.SimpleStrikeNPC(Projectile.damage * 3, 1, crit: false, Projectile.knockBack);
+					npc.SimpleStrikeNPC(Projectile.damage * 3, 1, crit: false, Projectile.knockBack);
 					float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 					float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<JungleBoom>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
