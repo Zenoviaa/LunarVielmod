@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Buffs;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -67,6 +68,11 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/NPCs/Bosses/DaedusRework/DRay").Value;
             Main.spriteBatch.Draw(texture2D4, NPC.Center - Main.screenPosition, null, new Color((int)(55f * alphaCounter), (int)(45f * alphaCounter), (int)(05f * alphaCounter), 0), -NPC.rotation, new Vector2(30, 122), 0.25f * (counter + 0.3f), SpriteEffects.None, 0f);
             return true;
+        }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(ModContent.BuffType<GothivianFlames>(), 40);
         }
         public override void AI()
         {

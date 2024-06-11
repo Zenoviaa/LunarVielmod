@@ -86,7 +86,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
-            target.AddBuff(ModContent.BuffType<GothivianFlames>(), 50);
+            target.AddBuff(ModContent.BuffType<GothivianFlames>(), 80);
         }
 
         public float WidthFunction(float completionRatio)

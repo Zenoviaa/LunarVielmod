@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Buffs;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
@@ -23,6 +24,11 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             Projectile.penetrate = 15;
             Projectile.width = 104;
             Projectile.height = 104;
+        }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(ModContent.BuffType<GothivianFlames>(), 20);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)

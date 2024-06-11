@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
 using Stellamod.Dusts;
+using Stellamod.NPCs.Bosses.DaedusRework;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.REK;
 using Stellamod.Particles;
 using System;
@@ -24,7 +26,7 @@ namespace Stellamod.Buffs
             {
                 _maxHealthLoss--;
             }
-            if (!NPC.AnyNPCs(ModContent.NPCType<RekSnake>()) || Player.dead)
+            if (!NPC.AnyNPCs(ModContent.NPCType<RekSnake>())  && !NPC.AnyNPCs(ModContent.NPCType<DaedusR>()) && !NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()) || Player.dead)
             {
                 _maxHealthLoss = 0;
             }

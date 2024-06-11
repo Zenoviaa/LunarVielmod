@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
@@ -34,7 +35,10 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             Projectile.timeLeft = 180;
             Projectile.light = 0.3f;
         }
-
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(ModContent.BuffType<GothivianFlames>(), 40);
+        }
         public override void AI()
         {
             Projectile.velocity.Y += 0.1f;

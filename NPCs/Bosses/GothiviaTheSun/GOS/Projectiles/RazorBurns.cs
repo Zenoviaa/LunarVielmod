@@ -19,6 +19,7 @@ using Stellamod.Projectiles.IgniterExplosions.Stein;
 using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Visual;
+using Stellamod.Buffs;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 {
@@ -194,6 +195,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
                 }
             }
+        }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(ModContent.BuffType<GothivianFlames>(), 40);
         }
         public override void OnKill(int timeLeft)
         {

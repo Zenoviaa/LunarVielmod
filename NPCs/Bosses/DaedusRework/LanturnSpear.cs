@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent;
@@ -30,6 +31,11 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             Projectile.hostile = true;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
+        }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(ModContent.BuffType<GothivianFlames>(), 10);
         }
         public override void AI()
         {
