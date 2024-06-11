@@ -199,7 +199,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
-            target.AddBuff(ModContent.BuffType<GothivianFlames>(), 25);
+            target.AddBuff(ModContent.BuffType<GothivianFlames>(), 4 * 25);
         }
         public override void OnKill(int timeLeft)
         {

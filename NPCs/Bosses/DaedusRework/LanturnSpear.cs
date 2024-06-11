@@ -35,7 +35,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
-            target.AddBuff(ModContent.BuffType<GothivianFlames>(), 10);
+            target.AddBuff(ModContent.BuffType<GothivianFlames>(), 4 * 10);
         }
         public override void AI()
         {

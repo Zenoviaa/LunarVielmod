@@ -28,7 +28,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
-            target.AddBuff(ModContent.BuffType<GothivianFlames>(), 20);
+            target.AddBuff(ModContent.BuffType<GothivianFlames>(), 4 * 20);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)

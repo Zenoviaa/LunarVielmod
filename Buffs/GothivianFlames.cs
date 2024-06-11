@@ -18,15 +18,21 @@ namespace Stellamod.Buffs
 {
     internal class GothivianPlayer : ModPlayer
     {
+        private int _timer;
         private int _maxHealthLoss;
         public override void PostUpdateBuffs()
         {
             base.PostUpdateBuffs();
             if (Player.HasBuff<GothivianFlames>())
             {
-                _maxHealthLoss--;
+                _timer++;
+                if(_timer >= 4)
+                {
+                    _maxHealthLoss--;
+                    _timer = 0;
+                }
             }
-            if (!NPC.AnyNPCs(ModContent.NPCType<RekSnake>())  && !NPC.AnyNPCs(ModContent.NPCType<DaedusR>()) && !NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()) || Player.dead)
+            if ((!NPC.AnyNPCs(ModContent.NPCType<RekSnake>()) && !NPC.AnyNPCs(ModContent.NPCType<DaedusR>()) && !NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>())) || Player.dead)
             {
                 _maxHealthLoss = 0;
             }
