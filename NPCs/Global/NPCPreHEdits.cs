@@ -1,4 +1,5 @@
-﻿using Stellamod.DropRules;
+﻿using Stellamod.Buffs.Dusteffects;
+using Stellamod.DropRules;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
@@ -222,9 +223,9 @@ namespace Stellamod.NPCs.Global
 
 			if (npc.type == NPCID.GoblinSummoner)
 			{
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadowFlamePowder>(), 1, 1, 1));
 
-
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
 
@@ -269,7 +270,7 @@ namespace Stellamod.NPCs.Global
 			{
 
 
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Vinger>(), 20, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Vinger>(), 15, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
 			if (npc.type == NPCID.IceElemental)
@@ -299,8 +300,13 @@ namespace Stellamod.NPCs.Global
 
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DustedSilk>(), 1, 1, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
+            if (npc.type == NPCID.GoblinShark)
+            {
 
-			if (npc.type == NPCID.WallCreeperWall)
+
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BloodPowder>(), 2, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+            }
+            if (npc.type == NPCID.WallCreeperWall)
 			{
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DustedSilk>(), 1, 1, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}

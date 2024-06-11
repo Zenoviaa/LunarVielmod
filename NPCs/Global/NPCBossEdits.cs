@@ -2,6 +2,7 @@
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Thrown.Jugglers;
 using System.Collections.Generic;
@@ -209,7 +210,9 @@ namespace Stellamod.NPCs.Global
 						normalDropRule.chanceDenominator = 2;
 				}
 
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+
+               
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 30)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.																		  // Remove the rule, then add another rule: Change the Normal mode drop rate from 50% to 16.6%
 				/*
 				npcLoot.RemoveWhere(

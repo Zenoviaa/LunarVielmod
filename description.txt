@@ -64,7 +64,8 @@ Many reworks to older bosses such as Verlia, Sylia, Dreadmire and Irradia! More 
 Steins, Greatswords, Orbs, Gun Holstering and more! Overhauls to many of the old weapons (60+) and recipes while gearing the game more towards our new systems! New biomes such as the Illuria, Veil Towers, 
 Worshipping spots! Green Sun is the main event during this update and it's a long lasting event that covers through Irradia to Gothivia (Our new God tier boss!). More connected lore and overall even more
 polish.
-
+--------------
+1.6.1 - Many boss buffs and nerfs, new weapons, 70+ More switchable weapons and balancing to accessories!
 
 
 
