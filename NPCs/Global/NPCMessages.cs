@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
+using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
 using Terraria;
 using Terraria.Chat;
 using Terraria.ID;
@@ -72,9 +73,9 @@ namespace Stellamod.NPCs.Global
                 }
             }
 
-            if (npc.type == ModContent.NPCType<Gothiviab>() && !DownedBossSystem.downedGothBoss)
+            if (npc.type == ModContent.NPCType<Irradia>() && !DownedBossSystem.downedIrradiaBoss)
             {
-                string text = "The toxic reunion begins! Gothivia's love bleeds through.";
+                string text = "The toxic reunion begins! Gothivia's love bleeds through as the sun burns with everlasting hue.";
                 if (Main.netMode == NetmodeID.Server)
                 {
                     NetworkText nText = NetworkText.FromLiteral(text);
