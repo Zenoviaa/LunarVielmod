@@ -195,20 +195,20 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			NPC.scale = 2f;
 			NPC.alpha = 255;
 			NPC.aiStyle = 0;
+            NPC.takenDamageMultiplier = 0.75f;
 
 
 
 
 
+            // Take up open spawn slots, preventing random NPCs from spawning during the fight
 
-			// Take up open spawn slots, preventing random NPCs from spawning during the fight
+            // Don't set immunities like this as of 1.4:
+            // NPC.buffImmune[BuffID.Confused] = true;
+            // immunities are handled via dictionaries through NPCID.Sets.DebuffImmunitySets
 
-			// Don't set immunities like this as of 1.4:
-			// NPC.buffImmune[BuffID.Confused] = true;
-			// immunities are handled via dictionaries through NPCID.Sets.DebuffImmunitySets
-
-			// Custom AI, 0 is "bound town NPC" AI which slows the NPC down and changes sprite orientation towards the target
-			NPC.aiStyle = -1;
+            // Custom AI, 0 is "bound town NPC" AI which slows the NPC down and changes sprite orientation towards the target
+            NPC.aiStyle = -1;
 
 			// Custom boss bar
 			NPC.BossBar = ModContent.GetInstance<AlcaBossBar>();
