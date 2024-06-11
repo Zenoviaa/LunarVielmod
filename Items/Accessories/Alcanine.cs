@@ -23,7 +23,7 @@ namespace Stellamod.Items.Accessories
 			Item.width = 24;
 			Item.height = 28;
 			Item.value = Item.sellPrice(silver: 25);
-			Item.rare = ItemRarityID.Orange;
+			Item.rare = ItemRarityID.LightPurple;
 			Item.accessory = true;
 
 
@@ -33,22 +33,19 @@ namespace Stellamod.Items.Accessories
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<CharmofRot>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 5);
+            recipe.AddIngredient(ItemID.SoulofSight, 15);
+            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 15);
+            recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-			recipe.AddTile(TileID.Anvils);
+			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetDamage(DamageClass.Summon) *= 1.10f; // Increase ALL player damage by 100%
+			player.GetDamage(DamageClass.Summon) += 0.10f; 
 			player.maxMinions += 2;
 		}
-
-
-
-
 	}
 }

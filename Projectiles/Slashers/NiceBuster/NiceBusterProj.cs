@@ -25,7 +25,7 @@ namespace Stellamod.Projectiles.Slashers.NiceBuster
 
         //Swing Stats
         public float SwingDistance;
-        private int SwingTime => (int)((10 * Swing_Speed_Multiplier) / Owner.GetAttackSpeed(DamageClass.Melee));
+        private int SwingTime => (int)((20 * Swing_Speed_Multiplier) / Owner.GetAttackSpeed(DamageClass.Melee));
         public float holdOffset = 60f;
 
         //Ending Swing Time so it doesn't immediately go away after the swing ends, makes it look cleaner I think
@@ -56,7 +56,7 @@ namespace Stellamod.Projectiles.Slashers.NiceBuster
             Projectile.usesLocalNPCImmunity = true;
 
             //Multiplying by the thing so it's still 10 ticks
-            Projectile.localNPCHitCooldown = 10 * Swing_Speed_Multiplier;
+            Projectile.localNPCHitCooldown = 20 * Swing_Speed_Multiplier;
             Projectile.timeLeft = SwingTime;
         }
 

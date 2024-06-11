@@ -425,7 +425,14 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 			
 
-
+			if(NPC.life > NPC.lifeMax / 2)
+			{
+				NPC.takenDamageMultiplier = 0.85f;
+			}
+			else
+			{
+                NPC.takenDamageMultiplier = 1f;
+            }
 
 			if (player.dead)
 			{

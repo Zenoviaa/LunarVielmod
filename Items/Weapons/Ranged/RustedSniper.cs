@@ -18,8 +18,8 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.rare = ItemRarityID.LightRed;
             Item.damage = 162;
             Item.DamageType = DamageClass.Ranged;
-            Item.useTime = 72;
-            Item.useAnimation = 72;
+            Item.useTime = 288;
+            Item.useAnimation = 288;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.shoot = ModContent.ProjectileType<RustedSnipe>();
             Item.shootSpeed = 10f;
@@ -57,7 +57,7 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>());
-            recipe.AddIngredient(ModContent.ItemType<BrokenTech>(), 20);
+            recipe.AddIngredient(ModContent.ItemType<BrokenTech>(), 8);
             recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 2);
             recipe.AddIngredient(ItemID.Musket, 1);
             recipe.AddTile(TileID.Anvils);
@@ -65,7 +65,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
             Recipe recipe2 = CreateRecipe();
             recipe2.AddIngredient(ModContent.ItemType<BasicGunParts>());
-            recipe2.AddIngredient(ModContent.ItemType<BrokenTech>(), 20);
+            recipe2.AddIngredient(ModContent.ItemType<BrokenTech>(), 8);
             recipe2.AddIngredient(ModContent.ItemType<WeaponDrive>(), 2);
             recipe2.AddIngredient(ItemID.TheUndertaker, 1);
             recipe2.AddTile(TileID.Anvils);

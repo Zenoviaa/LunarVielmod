@@ -20,6 +20,7 @@ using Stellamod.NPCs.Bosses.Zui;
 using Stellamod.NPCs.Bosses.Niivi;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.REK;
 using Stellamod.NPCs.Bosses.SupernovaFragment;
+using Stellamod.Items.Consumables;
 
 namespace Stellamod
 {
@@ -158,8 +159,11 @@ namespace Stellamod
 
 			// Used for tracking checklist progress
 			Func<bool> downed3 = () => DownedBossSystem.downedDreadBoss;
-          
-			Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+
+            int summonItem8 = ModContent.ItemType<DreadMedalion>();
+
+
+            Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
                 Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/DreadMire/DreadMireBestiary").Value;
                 Vector2 centered = new Vector2(
                     rect.X + (rect.Width / 2) - (texture.Width / 2),
@@ -190,7 +194,8 @@ namespace Stellamod
 				bossType3,
 				new Dictionary<string, object>()
 				{
-					["spawnInfo"] = spawnConditionText,
+					["spawnItems"]= summonItem8,
+                    ["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -608,8 +613,6 @@ namespace Stellamod
 
 			// Used for tracking checklist progress
 			Func<bool> downed = () => DownedBossSystem.downedSyliaBoss;
-
-			int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
            
 			Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
                 Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Sylia/SyliaPreview").Value;
@@ -631,7 +634,6 @@ namespace Stellamod
 				bossType,
 				new Dictionary<string, object>()
 				{
-					["spawnItems"] = summonItem8,
 					["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
@@ -719,7 +721,6 @@ namespace Stellamod
 				bossType,
 				new Dictionary<string, object>()
 				{
-					["spawnItems"] = summonItem8,
 					["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
@@ -743,7 +744,7 @@ namespace Stellamod
 			// Used for tracking checklist progress
 			Func<bool> downed = () => DownedBossSystem.downedZuiBoss;
 
-			int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
+			int summonItem8 = ModContent.ItemType<RadianceStone>();
 
 
             Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
@@ -1085,6 +1086,8 @@ namespace Stellamod
             // Used for tracking checklist progress
             Func<bool> downed = () => DownedBossSystem.downedSupernovaFragmentBoss;
 
+            int summonItem8 = ModContent.ItemType<VoidalPassageway>();
+
 
             Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
                 Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/SupernovaFragment/SupernovaFragmentBestiary").Value;
@@ -1097,7 +1100,7 @@ namespace Stellamod
 
             // By default, it draws the first frame of the boss, omit if you don't need custom drawing
             // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-            LocalizedText spawnConditionText = Language.GetText($"Use Ereskigal's magical door to summon Supernova Fragment");
+            LocalizedText spawnConditionText = Language.GetText($"Go down to the Cinderspark and nag Ordin to get a gift for Ereshkigal and she may give you something in return...");
             bossChecklistMod.Call(
                 "LogBoss",
                 Mod,
@@ -1107,6 +1110,7 @@ namespace Stellamod
                 bossType,
                 new Dictionary<string, object>()
                 {
+                    ["spawnItems"] = summonItem8,
                     ["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki

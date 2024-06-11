@@ -22,7 +22,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
             {
                 SoundEngine.PlaySound(SoundID.Item176, Player.position);
                 type = ModContent.ProjectileType<VoidArrow>();
-                damage += 5;
+                damage += 3;
                 velocity *= 2f;
             }
         }

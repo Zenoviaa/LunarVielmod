@@ -465,7 +465,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                                 {
                                     float offsetX = Main.rand.Next(-5, 5);
                                     float offsetY = Main.rand.Next(-5, 5);
-                                    int damage = Main.expertMode ? 6 : 10;
+                                    int damage = 32;
                                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, (direction.X * 1.5f) + offsetX, (direction.Y * 1.5f) + offsetY, 
                                         ModContent.ProjectileType<SingularitySparkProj>(), damage, 1, Owner: Main.myPlayer);
                                 }
@@ -537,7 +537,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
                                 float offsetX = Main.rand.Next(-1, 1);
                                 float offsetY = Main.rand.Next(-1, 1);
-                                int damage = Main.expertMode ? 11 : 15;
+                                int damage = 30;
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, (direction.X * 1.5f) + offsetX, (direction.Y * 1.5f) + offsetY, 
                                     ModContent.ProjectileType<VoidFlame>(), damage, 1, Owner: Main.myPlayer);
                             }
@@ -586,9 +586,9 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
                             if (StellaMultiplayer.IsHost)
                             {
-                                float offsetX = Main.rand.Next(-5, 5);
-                                float offsetY = Main.rand.Next(-5, 5);
-                                int damage = Main.expertMode ? 11 : 15;
+                                float offsetX = Main.rand.Next(-50, 50) * 0.01f;
+                                float offsetY = Main.rand.Next(-50, 50) * 0.01f;
+                                int damage = 30;
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, (LastDirection.X * 1.5f) + offsetX, (LastDirection.Y * 1.5f) + offsetY, 
                                     ModContent.ProjectileType<PulsarBeam>(), damage, 1, Owner: Main.myPlayer);
                             }
@@ -612,7 +612,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             {
                                 float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                                 float offsetY = Main.rand.Next(-50, 50) * 0.01f;
-                                int damage = Main.expertMode ? 10 : 28;
+                                int damage = 30;
 
                                 Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Zero,
                                     ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
@@ -628,7 +628,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             {
                                 Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
                                 direction.Normalize();
-                                int damage = Main.expertMode ? 10 : 28;
+                                int damage = 30;
                                 Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Zero, 
                                     ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
                                 Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Zero, 

@@ -53,7 +53,6 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
             recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 50);
-            recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 5);
             recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
@@ -64,7 +63,7 @@ namespace Stellamod.Items.Weapons.Ranged
             if (player.GetModPlayer<MyPlayer>().ArchariliteSC)
             {
                 Item.useTime = 5;
-                Item.damage = 15;
+                Item.damage = 21;
                 Item.knockBack = 4;
                 Item.useAnimation = 5;
                 Item.mana = 7;
@@ -73,7 +72,7 @@ namespace Stellamod.Items.Weapons.Ranged
             }
             else
             {
-                Item.damage = 9;
+                Item.damage = 15;
                 Item.knockBack = 14;
                 Item.useAnimation = 10;
                 Item.useTime = 10;
