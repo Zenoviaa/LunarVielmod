@@ -107,6 +107,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private int P1_LaserDamage => 500;
         private int P1_StarStormDamage => 62;
         private int P1_CosmicBombDamage => 500;
+        private int P2_VoidField => 72;
 
         //AI
         private bool _resetTimers;
@@ -1429,10 +1430,11 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     screenShaderSystem.VignetteScreen(1f, timer: 560);
                     Vector2 velocity = Vector2.Zero;
                     int type = ModContent.ProjectileType<NiiviStarFieldProj>();
+                    int damage = P2_VoidField;
                     if (StellaMultiplayer.IsHost)
                     {
                         Projectile.NewProjectile(EntitySource, NPC.Center + HeadRotation.ToRotationVector2() * 256, velocity, type,
-                            0, 0, Main.myPlayer);
+                            damage, 0, Main.myPlayer);
                     }
                     AttackTimer++;
                     Timer = 0;

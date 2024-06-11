@@ -213,7 +213,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                         Vector2 direction = projSpawn.DirectionTo(player.Center).RotatedByRandom(MathHelper.PiOver4);
                         Vector2 velocity = direction * 22;
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), projSpawn, velocity,
-                            ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
+                            ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 7, Projectile.knockBack, Projectile.owner);
                     }
                     Vector2 diffVelocity = player.velocity - player.oldVelocity;
                     Projectile.position += diffVelocity;
@@ -337,7 +337,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 Vector2 direction = Vector2.UnitY.RotatedBy(rot);
                 Vector2 velocity = direction * 33;
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, 
-                    ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
+                    ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 7, Projectile.knockBack, Projectile.owner);
             }
 
             num = 16;
@@ -348,7 +348,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 Vector2 direction = Vector2.UnitY.RotatedBy(rot);
                 Vector2 velocity = direction * 15;
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                    ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
+                    ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 7, Projectile.knockBack, Projectile.owner);
             }
 
             num = 8;
@@ -359,7 +359,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 Vector2 direction = Vector2.UnitY.RotatedBy(rot);
                 Vector2 velocity = direction * 12;
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                    ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
+                    ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 7, Projectile.knockBack, Projectile.owner);
             }
 
             num = 4;
@@ -370,7 +370,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 Vector2 direction = Vector2.UnitY.RotatedBy(rot);
                 Vector2 velocity = direction * 6;
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                    ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
+                    ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 7, Projectile.knockBack, Projectile.owner);
             }
 
             for (int i = 0; i < 150; i++)
