@@ -75,7 +75,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             NPC.width = 100;
             NPC.height = 60;
             NPC.damage = 2;
-            NPC.defense = 33;
+            NPC.defense = 52;
             NPC.lifeMax = 61000;
             NPC.scale = 0.9f;
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/VoidDead1") with { PitchVariance = 0.1f };
@@ -90,6 +90,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             NPC.BossBar = GetInstance<SUPBossBar>();
             NPC.aiStyle = 0;
         }
+
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
         {
             NPC.lifeMax = (int)(NPC.lifeMax * balance);
@@ -390,7 +391,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                                         NPC.scale = 1;
                                         if(SingularityPhaze == 1 && SingularityOrbs == 0)
                                         {
-                                            NPC.life = NPC.lifeMax / 3;
+                                            NPC.life = NPC.lifeMax / 2;
                                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode"), NPC.position);
                                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
                                             for (int i = 0; i < 14; i++)
