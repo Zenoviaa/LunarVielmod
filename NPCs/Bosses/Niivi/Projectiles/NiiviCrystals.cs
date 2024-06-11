@@ -171,8 +171,8 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
     internal class NiiviCrystalFrost : NiiviCrystal
     {
         //Damage Values
-        private int Damage_FrostBreath => 52;
-        private int Damage_FrostBomb => 32;
+        private int Damage_FrostBreath => 102;
+        private int Damage_FrostBomb => 64;
 
         public override Color AfterImageStartColor => Color.LightCyan;
 
@@ -283,8 +283,8 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
     internal class NiiviCrystalLightning : NiiviCrystal
     {
-        private int Damage_Lightning_Small => 60;
-        private int Damage_Lightning_Big => 60;
+        private int Damage_Lightning_Small => 120;
+        private int Damage_Lightning_Big => 150;
 
         private ref float AttackTimer => ref NPC.ai[1];
         public override Color AfterImageStartColor => Color.White;
@@ -344,7 +344,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
     internal class NiiviCrystalStars : NiiviCrystal
     {
         //Damage Values
-        private int Damage_Comet => 40;
+        private int Damage_Comet => 72;
 
         public override Color AfterImageStartColor => Color.White;
 
@@ -369,14 +369,29 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 int knockback = 1;
 
                 float height = 768;
-                Vector2 targetCenter = target.Center;
-                Vector2 cometOffset = -Vector2.UnitY * height + new Vector2(Main.rand.NextFloat(512, 1750), 0);
-                Vector2 cometPos = targetCenter + cometOffset;
 
-                float speed = 12;
-                Vector2 velocity = new Vector2(-1, 1) * speed;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), cometPos, velocity,
-                    type, damage, knockback, Main.myPlayer);
+                if (Main.rand.NextBool(2))
+                {
+                    Vector2 targetCenter = target.Center;
+                    Vector2 cometOffset = -Vector2.UnitY * height + new Vector2(Main.rand.NextFloat(512, 1750), 0);
+                    Vector2 cometPos = targetCenter + cometOffset;
+
+                    float speed = 12;
+                    Vector2 velocity = new Vector2(-1, 1) * speed;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), cometPos, velocity,
+                        type, damage, knockback, Main.myPlayer);
+                }
+                else
+                {
+                    Vector2 targetCenter = target.Center;
+                    Vector2 cometOffset = -Vector2.UnitY * height + new Vector2(Main.rand.NextFloat(-1750, -512), 0);
+                    Vector2 cometPos = targetCenter + cometOffset;
+
+                    float speed = 12;
+                    Vector2 velocity = new Vector2(1, 1) * speed;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), cometPos, velocity,
+                        type, damage, knockback, Main.myPlayer);
+                }
             }
 
             if(Timer >= length)

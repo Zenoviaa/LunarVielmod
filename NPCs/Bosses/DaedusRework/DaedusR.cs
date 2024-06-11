@@ -114,6 +114,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPC.value = Item.buyPrice(gold: 1);
             NPC.boss = true;
             NPC.npcSlots = 10f;
+            NPC.takenDamageMultiplier = 0.9f;
             NPC.BossBar = ModContent.GetInstance<DaedusBossBar>();
 
             NPC.aiStyle = 0;

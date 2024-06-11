@@ -8,7 +8,6 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.Niivi.Projectiles;
 using Stellamod.Particles;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -104,9 +103,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
         //Damage Values
         private int P1_LightningDamage => 240;
         private int P1_FrostBreathDamage => 120;
-        private int P1_StarWrathDamage => 40;
+        private int P1_StarWrathDamage => 70;
         private int P1_LaserDamage => 500;
-        private int P1_StarStormDamage => 40;
+        private int P1_StarStormDamage => 62;
         private int P1_CosmicBombDamage => 500;
 
         //AI
@@ -118,6 +117,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             get => (ActionState)NPC.ai[3];
             set => NPC.ai[3] = (float)value;
         }
+
         private float CrystalTimer;
         private float SpecialTimer;
         private int SpecialCycle;
@@ -1095,7 +1095,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     Vector2 spawnPos = NPC.Center + Main.rand.NextVector2Circular(128, 128);
                     velocity *= Main.rand.NextFloat(0.5f, 1f);
 
-                    int damage = P1_FrostBreathDamage / 2;
+                    int damage = P1_FrostBreathDamage;
                     float knockback = 1;
 
                     if (StellaMultiplayer.IsHost)
