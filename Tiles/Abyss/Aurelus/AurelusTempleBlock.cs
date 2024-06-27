@@ -28,25 +28,7 @@ namespace Stellamod.Tiles.Abyss.Aurelus
         }
 
 
-        private List<Point> OpenAdjacents(int i, int j, int type)
-        {
-            var p = new List<Point>();
-            for (int k = -1; k < 2; ++k)
-                for (int l = -1; l < 2; ++l)
-                    if (!(l == 0 && k == 0) && Framing.GetTileSafely(i + k, j + l).HasTile && Framing.GetTileSafely(i + k, j + l).TileType == type)
-                        p.Add(new Point(i + k, j + l));
-            return p;
-        }
-
-        private bool HasOpening(int i, int j)
-        {
-            for (int k = -1; k < 2; ++k)
-                for (int l = -1; l < 2; ++l)
-                    if (!Framing.GetTileSafely(i + k, j + l).HasTile)
-                        return true;
-            return false;
-        }
-
+        public override bool CanExplode(int i, int j) => false;
         public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
         {
         }
