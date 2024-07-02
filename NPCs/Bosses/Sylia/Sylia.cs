@@ -140,11 +140,11 @@ namespace Stellamod.NPCs.Bosses.Sylia
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Someone who was consumed by their dark magic, even more so than Fenix would bother with."),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Someone who was consumed by their dark magic, even more so than Fenix would bother with.")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Sylia, Merena's Sister.")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Sylia, Merena's Sister.", "2"))
             });
         }
 

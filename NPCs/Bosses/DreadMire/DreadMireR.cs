@@ -121,11 +121,11 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Traded her singularity in turn for more dreadful power, ridden of anxiety and all things dreadful"),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Traded her singularity in turn for more dreadful power, ridden of anxiety and all things dreadful")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Cozmire- Dreadmire Veil??")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Cozmire- Dreadmire Veil??", "2"))
             });
         }
 

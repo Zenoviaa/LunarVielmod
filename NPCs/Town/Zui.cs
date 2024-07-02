@@ -122,11 +122,11 @@ namespace Stellamod.NPCs.Town
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("A traveller of the lands who may hold great power"),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A traveller of the lands who may hold great power")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Zui the Traveller")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Zui the Traveller", "2"))
 			});
 		}
 
@@ -155,27 +155,27 @@ namespace Stellamod.NPCs.Town
 			int partyGirl = NPC.FindFirstNPC(NPCID.Dryad);
 			if (partyGirl >= 0 && Main.rand.NextBool(4))
 			{
-				chat.Add(Language.GetTextValue("The dryad is pretty fun after all, she's pretty sweet and helps us with the gardening!", Main.npc[partyGirl].GivenName));
+				chat.Add(LangText.Chat(this, "Basic1", Main.npc[partyGirl].GivenName));
 			}
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("We've had to kick a few witches out of this town you know, its quite a shame.."));
-			chat.Add(Language.GetTextValue("I keep going out to find more plants but somehow you're always here when I return. "));
-			chat.Add(Language.GetTextValue("I'm trying to find a way to stop the corruption and virulent from spreading but I have no fix currently."));
-			chat.Add(Language.GetTextValue("Hey love, you know you could be collecting stuff for me!"), 1.0);
-			chat.Add(Language.GetTextValue("Sirestias? Oh um yeahh we go pretty far back."), 0.4);
-			chat.Add(Language.GetTextValue("Aimacra is cool too, this is my first time meeting her lol"), 0.5);
-			chat.Add(Language.GetTextValue("I wouldn't say I'm too powerful, afterall I a just a traveller"), 0.1);
-			chat.Add(Language.GetTextValue("Sometimes I wonder what they did in Vodhome after we all left. I really have to catch up with Sirestias and the others."), 0.1);
-			chat.Add(Language.GetTextValue("Are you here with Sirestias?"), 0.1);
-			chat.Add(Language.GetTextValue("All these plants are so cool! I did just arrive here before Sirestias, there was some commotion and I think people here are trying to disrupt time and power."), 0.5);
-			chat.Add(Language.GetTextValue("Sirestias is a balancer, same goes for me but I like to just collect things."), 0.1);
-			chat.Add(Language.GetTextValue("Hey if you collect some items for me I can give you some stuff!"), 2.0);
+			chat.Add(LangText.Chat(this, "Basic2"));
+			chat.Add(LangText.Chat(this, "Basic3"));
+			chat.Add(LangText.Chat(this, "Basic4"));
+			chat.Add(LangText.Chat(this, "Basic5"), 1.0);
+			chat.Add(LangText.Chat(this, "Basic6"), 0.4);
+			chat.Add(LangText.Chat(this, "Basic7"), 0.5);
+			chat.Add(LangText.Chat(this, "Basic8"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic9"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic10"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic11"), 0.5);
+			chat.Add(LangText.Chat(this, "Basic12"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic13"), 2.0);
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 10)
 			{
 				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("Hey can you go collect for me?"));
+				chat.Add(LangText.Chat(this, "Basic14"));
 			}
 
 			return chat; // chat is implicitly cast to a string.
@@ -204,14 +204,14 @@ namespace Stellamod.NPCs.Town
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
 			button2 = Language.GetTextValue("LegacyInterface.28");
-			button = "Zui's Quests";
+			button = LangText.Chat(this, "Button");
 
 		}
 
         private void Quest_NotCheckmarked()
         {
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-			Main.npcChatText = $"Hi hii! Thanks for asking! Could you fetch me some plants, you can use this bag! Just fill it up with some different types of plants and I'll give you some stuff afterwards!";
+			Main.npcChatText = LangText.Chat(this, "Special1");
 			var entitySource = NPC.GetSource_GiftOrReward();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyFlowerBag>(), 1);
 		}
@@ -219,7 +219,7 @@ namespace Stellamod.NPCs.Town
 		private void Quest_NotCheckmarkedHardmode()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-			Main.npcChatText = $"Hehe I'm gonna up the difficulty of these, I'm gonna need some bigger plants, so you'll need to fill up this bag! Thanks!";
+			Main.npcChatText = LangText.Chat(this, "Special2");
 			var entitySource = NPC.GetSource_GiftOrReward();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyCollectorsBag>(), 1);
 		}
@@ -227,7 +227,7 @@ namespace Stellamod.NPCs.Town
 		private void Quest_1Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-			Main.npcChatText = $"Nice nice, I'll take these, could you fetch some more for me!  ";
+			Main.npcChatText = LangText.Chat(this, "Special3");
 			var entitySource = NPC.GetSource_GiftOrReward();
 			if (Main.rand.NextBool(1))
 			{
@@ -268,7 +268,7 @@ namespace Stellamod.NPCs.Town
 		private void Quest_16Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-			Main.npcChatText = $"Nice nice, I'll take these, could you fetch some more for me!  ";
+			Main.npcChatText = LangText.Chat(this, "Special4");
 			var entitySource = NPC.GetSource_GiftOrReward();
 			if (Main.rand.NextBool(1))
 			{
@@ -309,7 +309,7 @@ namespace Stellamod.NPCs.Town
 		private void Quest_3Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-			Main.npcChatText = $"Ok ok, 3 quests is kind of good, thanks for caring a lot about this! I've got more items in my shop for you, bring me 3 more and I'll get more for ya!";
+			Main.npcChatText = LangText.Chat(this, "Special5");
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
             int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 
@@ -324,7 +324,7 @@ namespace Stellamod.NPCs.Town
 		private void Quest_6Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-			Main.npcChatText = $"6 Quests is actually kind of crazy, I've opened up with a few more items for you if you want! Bring me 4 more ;p";
+			Main.npcChatText = LangText.Chat(this, "Special6");
 
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
             int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
@@ -334,7 +334,7 @@ namespace Stellamod.NPCs.Town
 		private void Quest_10Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-			Main.npcChatText = $"Damn, 10 quests? You're on a role you know! I've got some more items for you in my shop actually, I went travelling and Sirestias gave me a few items! I'll give you some more items if you can do 10 more!";
+			Main.npcChatText = LangText.Chat(this, "Special7");
 
             var entitySource = NPC.GetSource_GiftOrReward();
             Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Hookarama>(), 1);
@@ -348,7 +348,7 @@ namespace Stellamod.NPCs.Town
 		private void Quest_20Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-			Main.npcChatText = $"You have finished 20 quests for me! Thank you! I've got more items in my shop because of it too! If you want more from me bring me ten more and maybe we can have some fun! ";
+			Main.npcChatText = LangText.Chat(this, "Special8");
 
 
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
@@ -364,7 +364,7 @@ namespace Stellamod.NPCs.Town
 		private void Quest_30Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-			Main.npcChatText = $"My graditude is of the utmost thanks, in return you can have anything in my shop! And I'll help you out personally sometime if you need me ;p ";
+			Main.npcChatText = LangText.Chat(this, "Special9");
 			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 
@@ -443,7 +443,7 @@ namespace Stellamod.NPCs.Town
 			else if (ZuiQuestSystem.QuestsCompleted >= 30)
 			{
 				//All Quests completed
-				Main.npcChatText = $"Hiya! I think that's all the things I need, you can get some stuff in my shop but thanks babe!";
+				Main.npcChatText = LangText.Chat(this, "Special10");
 			}
 		}
 		public override void AI()
@@ -484,7 +484,7 @@ namespace Stellamod.NPCs.Town
 				if (!Main.LocalPlayer.HasItem(ModContent.ItemType<TomeOfInfiniteSorcery>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<MakeMagicPaperC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<Give100DustBagsC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<KillVerliaC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<ExploreMorrowedVillageC>()))
 				{
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-					Main.npcChatText = $"Hey you wanna do a quest? I'll open up my expansive magic shop for you if you do.. I have quite some great goodies in store but I want to become the best witch in all of the Lunar Veil, and I want you to help me make a tome, but first I need you to kill Verlia first for me.";
+					Main.npcChatText = LangText.Chat(this, "Special11");
 
 					var entitySource = NPC.GetSource_GiftOrReward();
 					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<KillVerlia>(), 1);

@@ -348,7 +348,7 @@ namespace Stellamod.NPCs.Event.GreenSun.IrravheilFlames
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
             {
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("A lowly civilian who bought old parts from Irradia before being contaminated. They now seek revenge after having their minds altered by the acid.")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A lowly civilian who bought old parts from Irradia before being contaminated. They now seek revenge after having their minds altered by the acid."))
             });
         }
     }

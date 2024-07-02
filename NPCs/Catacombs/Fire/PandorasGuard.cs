@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Stellamod.WorldG;
@@ -88,7 +89,7 @@ namespace Stellamod.NPCs.Catacombs.Fire
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
 			{
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("They guard what is theirs!")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "They guard what is theirs!"))
 			});
 		}
 		int frame = 0;

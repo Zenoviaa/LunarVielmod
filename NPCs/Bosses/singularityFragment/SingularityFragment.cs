@@ -67,11 +67,11 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundSnow,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("A powerful gift that was given to Cozmire, yet was stolen away by Fenix to seal away Verlia."),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A powerful gift that was given to Cozmire, yet was stolen away by Fenix to seal away Verlia.")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Singularity Fragment")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Singularity Fragment", "2"))
             });
         }
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)

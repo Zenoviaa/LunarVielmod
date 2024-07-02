@@ -379,7 +379,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
 			{
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("A Captain of Gofria's ranks, be careful")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A Captain of Gofria's ranks, be careful"))
 			});
 		}
 	}

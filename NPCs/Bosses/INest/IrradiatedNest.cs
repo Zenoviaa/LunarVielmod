@@ -63,11 +63,11 @@ namespace Stellamod.NPCs.Bosses.INest
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("A abomination housing the eggs for what seems to be a mechanical bird, born from the acid and a creation of Gia."),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A abomination housing the eggs for what seems to be a mechanical bird, born from the acid and a creation of Gia.")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Irradiated Nest")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Irradiated Nest", "2"))
             });
         }
         public override void SetDefaults()

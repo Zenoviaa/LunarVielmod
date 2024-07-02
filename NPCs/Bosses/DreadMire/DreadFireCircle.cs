@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Terraria;
 using Terraria.Audio;
@@ -43,7 +44,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
-                new FlavorTextBestiaryInfoElement("A poisonous slime mutated from normal green slimes"),
+                new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A poisonous slime mutated from normal green slimes")),
             });
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
@@ -118,7 +119,7 @@ namespace Stellamod.NPCs.Town
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
 			{
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("A bound scientist lurking in the Virulent")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A bound scientist lurking in the Virulent"))
 			});
 		}
 

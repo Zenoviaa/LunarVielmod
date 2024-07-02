@@ -67,7 +67,7 @@ namespace Stellamod.NPCs.Bosses.Azurerin
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Graveyard,
-                new FlavorTextBestiaryInfoElement("A scarecrow reanimated by the passion of wandering flames"),
+                new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A scarecrow reanimated by the passion of wandering flames")),
             });
         }
 

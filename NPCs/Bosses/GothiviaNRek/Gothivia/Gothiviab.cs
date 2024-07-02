@@ -152,7 +152,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			// Sets the description of this NPC that is listed in the bestiary
 			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
 				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("This person isn't the real gothivia, where is she?")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "This person isn't the real gothivia, where is she?"))
 			});
 		}
 

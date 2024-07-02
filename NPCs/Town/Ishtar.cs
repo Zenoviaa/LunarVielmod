@@ -172,11 +172,11 @@ namespace Stellamod.NPCs.Town
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Underground,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Entrance"),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Entrance")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("The entrance to the Ishtar Citadel")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "The entrance to the Ishtar Citadel", "2"))
 			});
 		}
 

@@ -891,7 +891,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Events.BloodMoon,
-                new FlavorTextBestiaryInfoElement("One of the three powerful cosmic deities that has been tainted by devilish intent"),
+                new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "One of the three powerful cosmic deities that has been tainted by devilish intent")),
             });
         }
 

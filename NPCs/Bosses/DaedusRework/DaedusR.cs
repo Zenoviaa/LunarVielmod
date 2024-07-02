@@ -179,11 +179,11 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Graveyard,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("One who followed power, exchanging their freedom for a taste of a singularity. Trapped forever guarding whats left of the Govheil."),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "One who followed power, exchanging their freedom for a taste of a singularity. Trapped forever guarding whats left of the Govheil.")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("The aspiring forgotten puppet")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "The aspiring forgotten puppet", "2"))
             });
         }
 

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
@@ -32,7 +33,7 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime,
-                new FlavorTextBestiaryInfoElement("Powerful skulls sent by skeletron to roam the darkness for the next pray")
+                new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Powerful skulls sent by skeletron to roam the darkness for the next pray"))
             });
         }
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using Stellamod.Items.Ores;
 using Stellamod.WorldG;
 using System;
@@ -84,7 +85,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
 			{
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("Lowest of the Gintze but can wipe you out fast! They need food too yknow :(")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Lowest of the Gintze but can wipe you out fast! They need food too yknow :("))
 			});
 		}
 		int frame = 0;

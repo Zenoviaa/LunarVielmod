@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets.Biomes;
+using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Terraria;
@@ -31,7 +32,7 @@ namespace Stellamod.NPCs.Govheil
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime,
-                new FlavorTextBestiaryInfoElement("The last protectors of the govheil, and they are pretty formidable...")
+                new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "The last protectors of the govheil, and they are pretty formidable..."))
             });
         }
       

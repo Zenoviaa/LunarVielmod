@@ -11,6 +11,7 @@ using Terraria.ModLoader.Utilities;
 using Terraria.ModLoader;
 using Terraria;
 using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 
 namespace Stellamod.NPCs.Critters
 {
@@ -79,7 +80,7 @@ namespace Stellamod.NPCs.Critters
             public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
             {
                 bestiaryEntry.AddTags(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheUnderworld,
-                    new FlavorTextBestiaryInfoElement("The most adorable goodest spicy child. Do not dare be mean to him!"));
+                    new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "The most adorable goodest spicy child. Do not dare be mean to him!")));
             }
 
             public override float SpawnChance(NPCSpawnInfo spawnInfo)
