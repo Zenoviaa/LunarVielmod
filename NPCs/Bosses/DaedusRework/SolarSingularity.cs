@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using System.IO;
 using Terraria;
 using Terraria.GameContent.Bestiary;
@@ -99,7 +100,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Graveyard,
-                new FlavorTextBestiaryInfoElement("A small singularity granted to Daedus in exchange for where he lives and protects for."),
+                new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A small singularity granted to Daedus in exchange for where he lives and protects for.")),
             });
         }
 

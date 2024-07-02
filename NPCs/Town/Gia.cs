@@ -158,11 +158,11 @@ namespace Stellamod.NPCs.Town
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Wow you done messed up this time with the Virulent spill huh."),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Wow you done messed up this time with the Virulent spill huh.")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Gia the Scientist")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Gia the Scientist", "2"))
 			});
 		}
 
@@ -195,23 +195,23 @@ namespace Stellamod.NPCs.Town
 			int partyGirl = NPC.FindFirstNPC(NPCID.Steampunker);
 			if (partyGirl >= 0 && Main.rand.NextBool(4))
 			{
-				chat.Add(Language.GetTextValue("So many cool contraptions she has, I love them!", Main.npc[partyGirl].GivenName));
+				chat.Add(LangText.Chat(this, "Basic1", Main.npc[partyGirl].GivenName));
 			}
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("A long time ago, I used to experiment with Biotech. It went wrong, and teleported pieces of itself all over the world. You might have found some by now."));
-			chat.Add(Language.GetTextValue("Maybe if you find some of my lost tech, you could craft my original biotech and retry my experiments!"));
-			chat.Add(Language.GetTextValue("The guide seems to know too much for a human being. I feel like he has something else connected to him…"));
-			chat.Add(Language.GetTextValue("The merchant keeps telling me about this dangerous eye thing. I could just zap it with my Bio laser."), 5.0);
-			chat.Add(Language.GetTextValue("Aimacra seems pretty neat, too bad she's taken"), 0.4);
-			chat.Add(Language.GetTextValue("I wouldn't mind hooking up with the Steampunker :)"), 0.1);
-			chat.Add(Language.GetTextValue("So many spare parts and materials, bring them all to me!"), 0.1);
-			chat.Add(Language.GetTextValue("I can't believe I let it get loose, I've complicated too many things."), 0.1);
+			chat.Add(LangText.Chat(this, "Basic2"));
+			chat.Add(LangText.Chat(this, "Basic3"));
+			chat.Add(LangText.Chat(this, "Basic4"));
+			chat.Add(LangText.Chat(this, "Basic5"), 5.0);
+			chat.Add(LangText.Chat(this, "Basic6"), 0.4);
+			chat.Add(LangText.Chat(this, "Basic7"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic8"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic9"), 0.1);
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 10)
 			{
 				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("Can you go collect some runes for me? I'd love for you to get working."));
+				chat.Add(LangText.Chat(this, "Basic10"));
 			}
 
 			return chat; // chat is implicitly cast to a string.
@@ -252,7 +252,7 @@ namespace Stellamod.NPCs.Town
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
 			button = Language.GetTextValue("LegacyInterface.28");
-			button2 = "Trade Rune";
+			button2 = LangText.Chat(this, "Button2");
 			
 		}
 
@@ -293,7 +293,7 @@ namespace Stellamod.NPCs.Town
 				{
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
 
-					Main.npcChatText = $"I give you my thanks for this Desert artifact, it'll help further my reserch to fixing this mess!";
+					Main.npcChatText = LangText.Chat(this, "Special1");
 
 					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<DesertRuneI>());
 					var entitySource = NPC.GetSource_GiftOrReward();
@@ -367,7 +367,7 @@ namespace Stellamod.NPCs.Town
 				{
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
 
-					Main.npcChatText = $"I give you my thanks for this Sky artifact, it'll help further my reserch to fixing this mess!";
+					Main.npcChatText = LangText.Chat(this, "Special2");
 
 					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<SkyRuneI>());
 					var entitySource = NPC.GetSource_GiftOrReward();
@@ -440,7 +440,7 @@ namespace Stellamod.NPCs.Town
 				{
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
 
-					Main.npcChatText = $"I give you my thanks for this Sky artifact, it'll help further my reserch to fixing this mess!";
+					Main.npcChatText = LangText.Chat(this, "Special3");
 
 					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<IceRuneI>());
 					var entitySource = NPC.GetSource_GiftOrReward();
@@ -531,7 +531,7 @@ namespace Stellamod.NPCs.Town
 				{
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
 
-					Main.npcChatText = $"I give you my thanks for this Overworld artifact, it'll help further my reserch to fixing this mess!";
+					Main.npcChatText = LangText.Chat(this, "Special4");
 
 					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<OverworldRuneI>());
 					var entitySource = NPC.GetSource_GiftOrReward();
@@ -675,7 +675,7 @@ namespace Stellamod.NPCs.Town
 				{
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
 
-					Main.npcChatText = $"I give you my thanks for this Ocean artifact, I'll research it greatly, heres something in return..";
+					Main.npcChatText = LangText.Chat(this, "Special5");
 
 					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<OceanRuneI>());
 					var entitySource = NPC.GetSource_GiftOrReward();
@@ -784,7 +784,7 @@ namespace Stellamod.NPCs.Town
 				{
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
 
-					Main.npcChatText = $"I give you my thanks for this Jungle artifact, it'll help further my reserch to fixing this mess!";
+					Main.npcChatText = LangText.Chat(this, "Special6");
 
 					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<JungleRuneI>());
 					var entitySource = NPC.GetSource_GiftOrReward();

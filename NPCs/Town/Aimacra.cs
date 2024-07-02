@@ -121,11 +121,11 @@ namespace Stellamod.NPCs.Town
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Desert,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Aimacra??? From Diari?? Crazy"),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Aimacra??? From Diari?? Crazy")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Aimacra")
+				new FlavorTextBestiaryInfoElement(NPC.FullName)
 			});
 		}
 		public override bool CanTownNPCSpawn(int numTownNPCs)
@@ -174,24 +174,24 @@ namespace Stellamod.NPCs.Town
 			int partyGirl = NPC.FindFirstNPC(NPCID.BestiaryGirl);
 			if (partyGirl >= 0 && Main.rand.NextBool(4))
 			{
-				chat.Add(Language.GetTextValue("They also have fox ears like me lmao", Main.npc[partyGirl].GivenName));
+				chat.Add(LangText.Chat(this, "Basic1", Main.npc[partyGirl].GivenName));
 			}
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("This world seems a bit off don't you think?"));
-			chat.Add(Language.GetTextValue("I'm not one to brag but this place is so much better than Ekrose"));
-			chat.Add(Language.GetTextValue("Did Sirestias ask me to find her again?"));
-			chat.Add(Language.GetTextValue("Yeah I've been traveling while you were out."), 5.0);
-			chat.Add(Language.GetTextValue("Go play Diari on steam? I have no idea what that means"), 4.0);
-			chat.Add(Language.GetTextValue("Do people think I'm not into pans?"), 0.4);
-			chat.Add(Language.GetTextValue("Sooo can we forget about everything that happened in Ekrose?"), 0.1);
-			chat.Add(Language.GetTextValue("I am really sorry for what we went through but now were here you know?"), 0.1);
-			chat.Add(Language.GetTextValue("Sirestias went out again, and this time I'm not finding her."), 0.1);
+			chat.Add(LangText.Chat(this, "Basic2"));
+			chat.Add(LangText.Chat(this, "Basic3"));
+			chat.Add(LangText.Chat(this, "Basic4"));
+			chat.Add(LangText.Chat(this, "Basic5"), 5.0);
+			chat.Add(LangText.Chat(this, "Basic6"), 4.0);
+			chat.Add(LangText.Chat(this, "Basic7"), 0.4);
+			chat.Add(LangText.Chat(this, "Basic8"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic9"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic10"), 0.1);
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 20)
 			{
 				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("Hey could you go do something, I'm about to get dressed, but honestly I say that like you haven't seen me before."));
+				chat.Add(LangText.Chat(this, "Basic11"));
 			}
 
 			return chat; // chat is implicitly cast to a string.
@@ -231,7 +231,7 @@ namespace Stellamod.NPCs.Town
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
 			button = Language.GetTextValue("LegacyInterface.28");
-			button2 = "Talk";
+			button2 = LangText.Chat(this, "Button2");
 
 		}
 
@@ -268,79 +268,8 @@ namespace Stellamod.NPCs.Town
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2"));
 
 				//-----------------------------------------------------------------------------------------------	
-				switch (Main.rand.Next(10))
-				{
-					case 0:
-						Main.npcChatText = $"Heyyy at least we're out of Ekrose alive! I'm glad Vixyl is safe back at the main house.";
-
-						break;
-
-					case 1:
-						Main.npcChatText = $"I hate being Sirestias's Assassin.. Speaking of I met a guy named Veldris and he's totally cool!";
-
-						break;
-
-					case 2:
-						Main.npcChatText = $"I'll be back I may go to look for some new stuff underground. ";
-
-						break;
-
-					case 3:
-						Main.npcChatText = $"What is a thug shaker? To shake or not to shake? Sometimes I wonder if life truly does give lemons.";
-
-						break;
-
-					case 4:
-						Main.npcChatText = $"What class would I even be? ";
-
-						break;
-
-					case 5:
-						Main.npcChatText = $"Hey sorry for what may of happened on Ekrose but I hope we can still be friends and make up to each other.";
-
-						break;
-
-					case 6:
-						Main.npcChatText = $"STARBOMBERS ARE ON THIS PLANET TOOOOO!!!";
-
-						break;
-
-					case 7:
-						Main.npcChatText = $"I totally haven't been playing geometry dash.";
-
-						break;
-
-					case 8:
-						Main.npcChatText = $"I've seen some weird things in my life, but never would I have thought Fenix would be more chronically horny than Sirestias, but to be fair Sirestias just gets more power doing that.";
-
-						break;
-
-					case 9:
-						Main.npcChatText = $"I hate being part human.";
-
-						break;
-
-					
-				}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+				Main.npcChatText = LangText.Chat(this, "Special" + Main.rand.Next(1,11));
 			}
-
-
 		}
 
 

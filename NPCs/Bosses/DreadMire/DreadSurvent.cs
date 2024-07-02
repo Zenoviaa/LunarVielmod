@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using System;
 using Terraria;
 using Terraria.GameContent;
@@ -26,7 +27,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Events.BloodMoon,
-                new FlavorTextBestiaryInfoElement("Powerful skulls tainted by devilish intent (dreadmire mustÕve got bored with this one)"),
+                new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Powerful skulls tainted by devilish intent (dreadmire mustï¿½ve got bored with this one)")),
             });
         }
 

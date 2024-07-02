@@ -105,11 +105,11 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.SolarPillar,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("A powerful gift from Lumi V. to her trusted sisters."),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A powerful gift from Lumi V. to her trusted sisters.")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Supernova Fragment")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Supernova Fragment", "2"))
             });
         }
 

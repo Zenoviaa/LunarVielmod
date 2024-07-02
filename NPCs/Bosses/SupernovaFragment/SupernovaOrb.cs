@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.Trails;
 using System;
@@ -31,7 +32,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
-                new FlavorTextBestiaryInfoElement("A poisonous slime mutated from normal green slimes"),
+                new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A poisonous slime mutated from normal green slimes")),
             });
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)

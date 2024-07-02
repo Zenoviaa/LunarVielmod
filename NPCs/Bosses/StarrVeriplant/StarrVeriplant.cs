@@ -154,7 +154,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			// Sets the description of this NPC that is listed in the bestiary
 			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
 				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("A beloved magical stone guardian, protected the natural life and would petrify anyone who disturbs it.")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A beloved magical stone guardian, protected the natural life and would petrify anyone who disturbs it."))
 			});
 		}
 

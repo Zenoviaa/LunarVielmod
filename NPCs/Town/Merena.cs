@@ -108,11 +108,11 @@ namespace Stellamod.NPCs.Town
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Magic Magic MAGIC"),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Magic Magic MAGIC")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Merena the bewitched sorcerer")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Merena the bewitched sorcerer", "2"))
 			});
 		}
 
@@ -141,27 +141,27 @@ namespace Stellamod.NPCs.Town
 			int partyGirl = NPC.FindFirstNPC(NPCID.Clothier);
 			if (partyGirl >= 0 && Main.rand.NextBool(4))
 			{
-				chat.Add(Language.GetTextValue("Funny enough the clothier used to come through here all the time for some of our amazing fabrics", Main.npc[partyGirl].GivenName));
+				chat.Add(LangText.Chat(this, "Basic1", Main.npc[partyGirl].GivenName));
 			}
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("I wonder what my sister Sylia is up to nowadays, do you know her?"));
-			chat.Add(Language.GetTextValue("I'm gonna be the very best, like no one ever was... "));
-			chat.Add(Language.GetTextValue("Fenix is the best queen there will ever be! She gives us all what we want :P"));
-			chat.Add(Language.GetTextValue("This place is so calming, I can't stand it but I would give everything to be near Fenix"), 5.0);
-			chat.Add(Language.GetTextValue("Aimacra seems pretty cool, she came here recently looking for some brooches"), 0.4);
-			chat.Add(Language.GetTextValue("Hey uh could you do something for me? I have a little favor, just ask what it is!"), 0.1);
-			chat.Add(Language.GetTextValue("I've always wanted to be the best witch there is! I've always been outshined by exiles though, including my sisters sadly."), 0.1);
-			chat.Add(Language.GetTextValue("I really need to beat my sister in a battle someday."), 0.1);
-			chat.Add(Language.GetTextValue("It's strange, the economic system here is almost like communism"), 0.1);
-			chat.Add(Language.GetTextValue("Damn we have some cool shit here"), 0.1);
-			chat.Add(Language.GetTextValue("No doubt about it but Fenix is truly the strongest witch in all of the lands, maybe even more powerful than the witch of light in the hallow, I don't like her."), 0.1);
-			chat.Add(Language.GetTextValue("Hahh, I remember that goon Verlia, she's kind of dumb but shes at least powerful, I remember she got exiled for stealing tomes, I might need that from her."), 0.1);
+			chat.Add(LangText.Chat(this, "Basic2"));
+			chat.Add(LangText.Chat(this, "Basic3"));
+			chat.Add(LangText.Chat(this, "Basic4"));
+			chat.Add(LangText.Chat(this, "Basic5"));
+			chat.Add(LangText.Chat(this, "Basic6"));
+			chat.Add(LangText.Chat(this, "Basic7"));
+			chat.Add(LangText.Chat(this, "Basic8"));
+			chat.Add(LangText.Chat(this, "Basic9"));
+			chat.Add(LangText.Chat(this, "Basic10"));
+			chat.Add(LangText.Chat(this, "Basic11"));
+			chat.Add(LangText.Chat(this, "Basic12"));
+			chat.Add(LangText.Chat(this, "Basic13"));
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 10)
 			{
 				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("Can you go collect some runes for me? I'd love for you to get working."));
+				chat.Add(LangText.Chat(this, "Basic14"));
 			}
 
 			return chat; // chat is implicitly cast to a string.
@@ -190,14 +190,14 @@ namespace Stellamod.NPCs.Town
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
 			button2 = Language.GetTextValue("LegacyInterface.28");
-			button = "Merenas Quest";
+			button = LangText.Chat(this, "Button");
 
 		}
 
 		private void Quest_VerliaStart()
         {
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
-			Main.npcChatText = $"What are you standing there for, go kill Verlia! She's an enemy of the royal capital and she has a book I need lmao";
+			Main.npcChatText = LangText.Chat(this, "Special1");
 			var entitySource = NPC.GetSource_GiftOrReward();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<KillVerlia>(), 1);
 		}
@@ -207,7 +207,7 @@ namespace Stellamod.NPCs.Town
         {
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 
-			Main.npcChatText = $"Oh damn thanks! Next on the list I need you to steal an orb from a village in an underground morrowed village, the orb contains a magic unlike any other. I have no idea how it was manifested but it's needed for this tome.";
+			Main.npcChatText = LangText.Chat(this, "Special2");
 
 			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<KillVerliaC>());
 			var entitySource = NPC.GetSource_GiftOrReward();
@@ -223,7 +223,7 @@ namespace Stellamod.NPCs.Town
 		private void Quest_MorrowStart()
         {
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-			Main.npcChatText = $"Oh damn thanks! Next on the list I need you to steal an orb from a village in an underground morrowed village, the orb contains a magic unlike any other. I have no idea how it was manifested but it's needed for this tome.";
+			Main.npcChatText = LangText.Chat(this, "Special2");
 			var entitySource = NPC.GetSource_GiftOrReward();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ExploreMorrowedVillage>(), 1);
 
@@ -233,7 +233,7 @@ namespace Stellamod.NPCs.Town
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 
-			Main.npcChatText = $"Woa, the energy is pouring out of this one with seamless orange stripes! How did you even get your hands on this?? Either way thanks, now I just need 100 dust bags, it helps with the brewery.";
+			Main.npcChatText = LangText.Chat(this, "Special3");
 
 			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<ExploreMorrowedVillageC>());
 			var entitySource = NPC.GetSource_GiftOrReward();
@@ -248,7 +248,7 @@ namespace Stellamod.NPCs.Town
 		private void Quest_DustBagsStart()
         {
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-			Main.npcChatText = $"Woa, the energy is pouring out of this one with seamless orange stripes! How did you even get your hands on this?? Either way thanks, now I just need 100 dust bags, it helps with the brewery.";
+			Main.npcChatText = LangText.Chat(this, "Special3");
 			var entitySource = NPC.GetSource_GiftOrReward();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Give100DustBags>(), 1);
 			
@@ -258,7 +258,7 @@ namespace Stellamod.NPCs.Town
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 
-			Main.npcChatText = $"Neat neat, that shouldn't have been too bad for you I think. Next I need some magical paper, there are magical creatures all over the world of hardmode who drop these, most of them being rare and unique creatures, go get em'!";
+			Main.npcChatText = LangText.Chat(this, "Special4");
 
 			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<Give100DustBagsC>());
 			var entitySource = NPC.GetSource_GiftOrReward();
@@ -273,7 +273,7 @@ namespace Stellamod.NPCs.Town
 		private void Quest_MagicPaperStart()
         {
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-			Main.npcChatText = $"Neat neat, that shouldn't have been too bad for you I think. Next I need some magical paper, there are magical creatures all over the world of hardmode who drop these, most of them being rare and unique creatures, go get em'!";
+			Main.npcChatText = LangText.Chat(this, "Special4");
 			var entitySource = NPC.GetSource_GiftOrReward();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeMagicPaper>(), 1);
 			
@@ -283,7 +283,7 @@ namespace Stellamod.NPCs.Town
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 
-			Main.npcChatText = $"OHH Great lmao. Ok we have one more thing we need to do. Legend has it an old thief of this Royal Capital stole an extremely special Carian tome, they stay deep underground hidden far away underneath the abyss. Even if the rumors arent true I'd love for you to find this scroll, it may take years...";
+			Main.npcChatText = LangText.Chat(this, "Special5");
 
 			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<MakeMagicPaperC>());
 			var entitySource = NPC.GetSource_GiftOrReward();
@@ -298,7 +298,7 @@ namespace Stellamod.NPCs.Town
 		private void Quest_TomeStart()
         {
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-			Main.npcChatText = $"OHH Great lmao. Ok we have one more thing we need to do. Legend has it an old thief of this Royal Capital stole an extremely special Carian tome, they stay deep underground hidden far away underneath the abysm. Even if the rumors arent true I'd love for you to find this scroll, it may take years...";
+			Main.npcChatText = LangText.Chat(this, "Special5");
 			var entitySource = NPC.GetSource_GiftOrReward();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeUltimateScroll>(), 1);
 		}
@@ -306,7 +306,7 @@ namespace Stellamod.NPCs.Town
 		private void Quest_TomeComplete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-			Main.npcChatText = $"THANK YOU THANK YOU THANK YOU, omg this is the best day of my life! I never knew this actually existed! Were the rumors true??! dsfjhnbhfribdhs- Nevermind who cares anymore, we can both be the best mages ever! I open my shop to you and here, a token of my graditude. ";
+			Main.npcChatText = LangText.Chat(this, "Special6");
 			var entitySource = NPC.GetSource_GiftOrReward();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(100));
             //Setting all previous quests to be complete, so it's backwards compatible with the old version.
@@ -390,7 +390,7 @@ namespace Stellamod.NPCs.Town
 			else
 			{
 				//All Quests completed
-				Main.npcChatText = $"Hey, I have nothing else for you to do! Thanks for all of your help, have you checked out my shop yet?";
+				Main.npcChatText = LangText.Chat(this, "Special7");
 			}
 		}
 

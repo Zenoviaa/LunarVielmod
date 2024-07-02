@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets.Biomes;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.NPCs.Catacombs.Trap.Cogwork;
@@ -136,7 +137,7 @@ namespace Stellamod.NPCs.Underground
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
             {
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("An old rusted cog with some magical abilities")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "An old rusted cog with some magical abilities"))
             });
         }
 

@@ -381,7 +381,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
             {
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("The highest form of worshippers of Gothivia corrupted and risen from the grounds of the fallen Govheil Castle")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "The highest form of worshippers of Gothivia corrupted and risen from the grounds of the fallen Govheil Castle"))
             });
         }
     }

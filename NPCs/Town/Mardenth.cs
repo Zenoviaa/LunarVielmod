@@ -160,11 +160,11 @@ namespace Stellamod.NPCs.Town
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Snow,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("One of the 3 Children of Daeden, this one being the most useless"),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "One of the 3 Children of Daeden, this one being the most useless")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Mardenth of the Veil")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Mardenth of the Veil", "2"))
 			});
 		}
 
@@ -197,23 +197,23 @@ namespace Stellamod.NPCs.Town
 			int partyGirl = NPC.FindFirstNPC(NPCID.Steampunker);
 			if (partyGirl >= 0 && Main.rand.NextBool(4))
 			{
-				chat.Add(Language.GetTextValue("So many cool contraptions she has, I love them!", Main.npc[partyGirl].GivenName));
+				chat.Add(LangText.Chat(this, "Basic1", Main.npc[partyGirl].GivenName));
 			}
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("Damn that Sigfried guy."));
-			chat.Add(Language.GetTextValue("Where's Ereshkigal?"));
-			chat.Add(Language.GetTextValue("Daedus, Jovhia, Daeden? Where'd you all go?"));
-			chat.Add(Language.GetTextValue("I'm quite formiddable you see. I can destroy anything with my hands."), 5.0);
-			chat.Add(Language.GetTextValue("I need to study up on my electric magic. If my dad wasn't dead he'd be proud of me. Gosh I wish you were here Daeden"), 0.4);
-			chat.Add(Language.GetTextValue("I never knew my mom.."), 0.1);
-			chat.Add(Language.GetTextValue("Why is Jovhia always in the sky?"), 0.1);
-			chat.Add(Language.GetTextValue("Hey you, get out of here!"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic2"));
+			chat.Add(LangText.Chat(this, "Basic3"));
+			chat.Add(LangText.Chat(this, "Basic4"));
+			chat.Add(LangText.Chat(this, "Basic5"), 5.0);
+			chat.Add(LangText.Chat(this, "Basic6"), 0.4);
+			chat.Add(LangText.Chat(this, "Basic7"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic8"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic9"), 0.1);
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 10)
 			{
 				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("Scadabble you women harrasser."));
+				chat.Add(LangText.Chat(this, "Basic10"));
 			}
 
 			return chat; // chat is implicitly cast to a string.
@@ -251,7 +251,7 @@ namespace Stellamod.NPCs.Town
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
 			button = Language.GetTextValue("LegacyInterface.28");
-			button2 = "Talk";
+			button2 = LangText.Chat(this, "Button2");
 
 		}
 
@@ -288,60 +288,7 @@ namespace Stellamod.NPCs.Town
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2"));
 
 				//-----------------------------------------------------------------------------------------------	
-				switch (Main.rand.Next(10))
-				{
-					case 0:
-						Main.npcChatText = $"Heheheh, I like to eat little wormy guys but they won't stop squiggling. Reminds me of when our dad Daeden left us. ";
-
-						break;
-
-					case 1:
-						Main.npcChatText = $"Where did Daedus go?  He left us so long ago. I hope he wasn't swayed by that Harlet Gothivia. She seemed power obsessed and hungry. Maybe that's just me though";
-
-						break;
-
-					case 2:
-						Main.npcChatText = $"I might be the only one but, Ereshkigal is kind of hot isn't she? Hell you wouldn't even know would you. You're taste in women is flat.";
-
-						break;
-
-					case 3:
-						Main.npcChatText = $"You don't understand how we are. We're higher than all below us, which is everyone except a god. Only they can be held to such high status. Squirm off you worm.";
-
-						break;
-
-					case 4:
-						Main.npcChatText = $"I wish Sigfried didn't go insane. He's such an asshole, even our dear Ereshkigal left with him to seal him away...  ";
-
-						break;
-
-					case 5:
-						Main.npcChatText = $"Maybe I may be the only person to question the gene pools of these people. Like where do they all look so pretty from??? Im wearing this mask cuz I look like a goblin.";
-
-						break;
-
-					case 6:
-						Main.npcChatText = $"I want a beach episode with Zui and Ereshkigal now! ";
-
-						break;
-
-					case 7:
-						Main.npcChatText = $"I would want to be more powerful but that takes a lot of training. Anyone who dares to take more than what they are given should be punished. ";
-
-						break;
-
-					case 8:
-						Main.npcChatText = $"Those guys in the well? They are trapped down there because they made some goofy deals in their lives to get more power and just like the great Veil people we are, we trapped them away for good.";
-
-						break;
-
-					case 9:
-						Main.npcChatText = $"I don't know what the outside world is like.";
-
-						break;
-
-					
-				}
+				Main.npcChatText = Main.npcChatText = LangText.Chat(this, "Special" + Main.rand.Next(1,11));
 			}
 
 

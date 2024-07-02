@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets.Biomes;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
@@ -138,11 +139,11 @@ namespace Stellamod.NPCs.Town
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Burning in a magical laboratory"),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Burning in a magical laboratory")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("The Cell converter")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "The Cell converter", "2"))
 			});
 		}
 
@@ -170,15 +171,15 @@ namespace Stellamod.NPCs.Town
 
 
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("KRTTCAVSJKSC"));
-			chat.Add(Language.GetTextValue("I WANT SCRAP"));
-			chat.Add(Language.GetTextValue("MAKE YOUR SCRAP TOKENS FOR TRADE. KRM"));
+			chat.Add(LangText.Chat(this, "Basic1"));
+			chat.Add(LangText.Chat(this, "Basic2"));
+			chat.Add(LangText.Chat(this, "Basic3"));
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 20)
 			{
 				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("YEEERRRM"));
+				chat.Add(LangText.Chat(this, "Basic4"));
 			}
 
 			return chat; // chat is implicitly cast to a string.
@@ -212,7 +213,7 @@ namespace Stellamod.NPCs.Town
 
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
-			button = "Put in scrap token";
+			button = LangText.Chat(this, "Button");
 
 		}
 
@@ -260,7 +261,7 @@ namespace Stellamod.NPCs.Town
 				{
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Converted")); // Reforge/Anvil sound
 
-					Main.npcChatText = $"KRRRT, Sensors say you have inputed a token, here you go per request.";
+					Main.npcChatText = LangText.Chat(this, "Special1");
 
 					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<ScrapToken>());
 					var entitySource = NPC.GetSource_GiftOrReward();
@@ -292,7 +293,7 @@ namespace Stellamod.NPCs.Town
 
 						case 4:
 
-							CombatText.NewText(NPC.getRect(), Color.White, "Womp womp, looks like nothing for you!", true, false);
+							CombatText.NewText(NPC.getRect(), Color.White, LangText.Chat(this, "Special2"), true, false);
 
 							break;
 
@@ -313,13 +314,13 @@ namespace Stellamod.NPCs.Town
 							break;
 						case 8:
 
-							CombatText.NewText(NPC.getRect(), Color.White, "Error, try again.", true, false);
+							CombatText.NewText(NPC.getRect(), Color.White, LangText.Chat(this, "Special3"), true, false);
 
 							break;
 
 						case 9:
 
-							CombatText.NewText(NPC.getRect(), Color.White, "Put in another token.", true, false);
+							CombatText.NewText(NPC.getRect(), Color.White, LangText.Chat(this, "Special4"), true, false);
 
 							break;
 
@@ -373,13 +374,13 @@ namespace Stellamod.NPCs.Town
 
 						case 18:
 
-							CombatText.NewText(NPC.getRect(), Color.White, "Put in another token.", true, false);
+							CombatText.NewText(NPC.getRect(), Color.White, LangText.Chat(this, "Special4"), true, false);
 
 							break;
 
 						case 19:
 
-							CombatText.NewText(NPC.getRect(), Color.White, "Put in another token.", true, false);
+							CombatText.NewText(NPC.getRect(), Color.White, LangText.Chat(this, "Special4"), true, false);
 
 							break;
 					}

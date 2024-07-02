@@ -134,11 +134,11 @@ namespace Stellamod.NPCs.RoyalCapital
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("A strange lady, she seems to overflow with magical energy!"),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A strange lady, she seems to overflow with magical energy!")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Lonely Feeble Sorceress")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Lonely Feeble Sorceress", "2"))
 			});
 		}
 
@@ -167,27 +167,27 @@ namespace Stellamod.NPCs.RoyalCapital
 			int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
 			if (partyGirl >= 0 && Main.rand.NextBool(4))
 			{
-				chat.Add(Language.GetTextValue("I wanna be like her", Main.npc[partyGirl].GivenName));
+				chat.Add(LangText.Chat(this, "Basic1", Main.npc[partyGirl].GivenName));
 			}
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("Mmm it's soo nice to meet you, wanna play with me :3"));
-			chat.Add(Language.GetTextValue("I'm all alone in this castle, if only someone could have fun with me :> "));
-			chat.Add(Language.GetTextValue("Mwhahahahaha I am the most evil sorceress on the planet!!!"));
-			chat.Add(Language.GetTextValue("Obviously I want you to stay! Can you just stay here for a while- no, forever? I mean it isn't too much of an ask. "), 5.0);
-			chat.Add(Language.GetTextValue("There were these two that came by, one of them looked like me and had fox ears too! I wonder what breed she is."), 0.4);
-			chat.Add(Language.GetTextValue("This place can be shared by only us two you know, you can be here for me :)"), 0.1);
-			chat.Add(Language.GetTextValue("Nobody really gets me you know, but I can see it in your eyes, we'll be made for each other :p"), 0.1);
-			chat.Add(Language.GetTextValue("I think if you want to, maybe we can spar??? It would be so fun with you!"), 0.1);
-			chat.Add(Language.GetTextValue("I think this place is accidently communistic..."), 0.1);
-			chat.Add(Language.GetTextValue("Where did that Carian tome go?"), 0.1);
-			chat.Add(Language.GetTextValue("Hii babe! Can we pleaseee fight? I haven't been able to do anything for sooo long and I just wanna have fun but nobody lets me do anything around here, so pretty pleasee"), 0.1);
-			chat.Add(Language.GetTextValue("Funny enough I'm actually older than I act, take a guess I bet you didn't answer 26 lol!!"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic2"));
+			chat.Add(LangText.Chat(this, "Basic3"));
+			chat.Add(LangText.Chat(this, "Basic4"));
+			chat.Add(LangText.Chat(this, "Basic5"), 5.0);
+			chat.Add(LangText.Chat(this, "Basic6"), 0.4);
+			chat.Add(LangText.Chat(this, "Basic7"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic8"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic9"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic10"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic11"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic12"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic13"), 0.1);
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 30)
 			{
 				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("Shhh hush hun, we should try to spar instead :3"));
+				chat.Add(LangText.Chat(this, "Basic14"));
 			}
 
 			return chat; // chat is implicitly cast to a string.
@@ -223,7 +223,7 @@ namespace Stellamod.NPCs.RoyalCapital
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
 			
-			button = "Spar with your new wife";
+			button = LangText.Chat(this, "Button");
 
 		}
 

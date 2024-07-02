@@ -124,11 +124,11 @@ namespace Stellamod.NPCs.Bosses.Fenix
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Searching for a lover, this particular Queen lacks anyone she can socialize with as she tries to gain power of the void to kill Sigfried for revenge, so much power yet so lonely."),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Searching for a lover, this particular Queen lacks anyone she can socialize with as she tries to gain power of the void to kill Sigfried for revenge, so much power yet so lonely.")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Fenix the Vengeful")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Fenix the Vengeful", "2"))
             });
         }
         public override void ModifyNPCLoot(NPCLoot npcLoot)

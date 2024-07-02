@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets.Biomes;
+using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Accessories.Wings;
@@ -136,11 +137,11 @@ namespace Stellamod.NPCs.Town
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Steaming from the depths"),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Steaming from the depths")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Ordin, The New Monarch")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Ordin, The New Monarch", "2"))
 			});
 		}
 
@@ -169,20 +170,20 @@ namespace Stellamod.NPCs.Town
 			int partyGirl = NPC.FindFirstNPC(NPCID.Steampunker);
 			if (partyGirl >= 0 && Main.rand.NextBool(4))
 			{
-				chat.Add(Language.GetTextValue("Shes got some great cogs", Main.npc[partyGirl].GivenName));
+				chat.Add(LangText.Chat(this, "Basic1", Main.npc[partyGirl].GivenName));
 			}
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("Remove yourself from my sight"));
-			chat.Add(Language.GetTextValue("You walk like an infant with no tucas"));
-			chat.Add(Language.GetTextValue("What a pitiful endearment, praise to the ones above."));
-			chat.Add(Language.GetTextValue("..."), 5.0);
-			chat.Add(Language.GetTextValue("You are not fit to become a god"), 2.0);
-			chat.Add(Language.GetTextValue("Oh Sigfried, return in good health or I shall slay you with my own hands from such a succubus!"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic2"));
+			chat.Add(LangText.Chat(this, "Basic3"));
+			chat.Add(LangText.Chat(this, "Basic4"));
+			chat.Add("...", 5.0);
+			chat.Add(LangText.Chat(this, "Basic5"), 2.0);
+			chat.Add(LangText.Chat(this, "Basic6"), 0.1);
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 10)
 			{
 				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("Bring me their Manifestations"));
+				chat.Add(LangText.Chat(this, "Basic7"));
 			}
 
 			return chat; // chat is implicitly cast to a string.
@@ -217,7 +218,7 @@ namespace Stellamod.NPCs.Town
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
 			button2 = Language.GetTextValue("LegacyInterface.28");
-			button = "Reminisce of Sigfried";
+			button = LangText.Chat(this, "Button");
 
 		}
 
@@ -254,66 +255,59 @@ namespace Stellamod.NPCs.Town
 
 
 				//-----------------------------------------------------------------------------------------------	
-
-
-
-
 				switch (Main.rand.Next(10))
 				{
 					case 0:
 						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 
-						Main.npcChatText = $"Thy is so resilient, unhand me from these this trecherous nagging and take this for thy shall not be astute to your prescence no longer.";
+						Main.npcChatText = LangText.Chat(this, "Special1");
 
 						var entitySource = NPC.GetSource_GiftOrReward();
 						Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SigfriedsPhotoAlbum>(), 1);
-
-
-
 						break;
 
 					case 1:
-						Main.npcChatText = $"To be one of the forth or forward, the lands that I rest in reek of falsification of hypocrisy and power.";
+						Main.npcChatText = LangText.Chat(this, "Special2");
 
 						break;
 
 					case 2:
-						Main.npcChatText = $"Sigfried was once a young fellow, thy brother in one's eye's and a villian in anothers'.";
+						Main.npcChatText = LangText.Chat(this, "Special3");
 
 						break;
 
 					case 3:
-						Main.npcChatText = $"Our sacred castle falls ill to such burning. Our wishes have been grafted under the curse of Sigfried's unveiling.";
+						Main.npcChatText = LangText.Chat(this, "Special4");
 
 						break;
 
 					case 4:
-						Main.npcChatText = $"Fall away, dear brother ";
+						Main.npcChatText = LangText.Chat(this, "Special5");
 
 						break;
 
 					case 5:
-						Main.npcChatText = $"Mark thy words with caution. Ereshkigal is a loveless harlet who took the life of the brother of many. Yet thy fulfills their prophecy among lovers, hence she is not a false goddess.";
+						Main.npcChatText = LangText.Chat(this, "Special6");
 
 						break;
 
 					case 6:
-						Main.npcChatText = $"All our goals are put to rest following the lands of the veil. Finish all those who have wronged our beloved world.";
+						Main.npcChatText = LangText.Chat(this, "Special7");
 
 						break;
 
 					case 7:
-						Main.npcChatText = $"Manifest their souls and bring them to my company. You shall be rewarded until the rekoning begs for your place to be silenced. ";
+						Main.npcChatText = LangText.Chat(this, "Special8");
 
 						break;
 
 					case 8:
-						Main.npcChatText = $"Niivi, the protector of the lands of the veil, yet curse all upon thy brother to be selfish and steal among those of power and wealth. He was greedy and in his expense payed the lovers' prison.";
+						Main.npcChatText = LangText.Chat(this, "Special9");
 
 						break;
 
 					case 9:
-						Main.npcChatText = $"Now I sit ill waiting for the lands of the veil to change.";
+						Main.npcChatText = LangText.Chat(this, "Special10");
 
 						break;
 

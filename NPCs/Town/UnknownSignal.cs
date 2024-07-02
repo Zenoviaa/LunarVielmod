@@ -158,13 +158,13 @@ namespace Stellamod.NPCs.Town
 			WeightedRandom<string> chat = new WeightedRandom<string>();
 			
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("A static voice confirms the identity of the user, you are in the right place."));
-			chat.Add(Language.GetTextValue("A static voice confirms the identity of the user, you are in the right place."));
+			chat.Add(LangText.Chat(this, "Basic"));
+			chat.Add(LangText.Chat(this, "Basic"));
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 10)
 			{
 				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("..."));
+				chat.Add("...");
 			}
 
 			return chat; // chat is implicitly cast to a string.
@@ -178,7 +178,7 @@ namespace Stellamod.NPCs.Town
 
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
-			button = "Touch Unknown Circuitry";
+			button = LangText.Chat(this, "Button");
 		}
 
 		public override void OnChatButtonClicked(bool firstButton, ref string shop)
@@ -213,11 +213,11 @@ namespace Stellamod.NPCs.Town
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("An Unknown Signal"),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "An Unknown Signal")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Unknown Signal")
+				new FlavorTextBestiaryInfoElement(NPC.FullName)
 			});
 		}
 
