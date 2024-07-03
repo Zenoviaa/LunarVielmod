@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Placeable;
 using Terraria;
 using Terraria.Audio;
@@ -86,7 +87,7 @@ namespace Stellamod.Tiles
 				
 
 
-			Main.NewText("Heavy chest opened!", Color.Orange);
+			Main.NewText(LangText.Misc("CinderChest"), Color.Orange);
 			return true;
 		}
 

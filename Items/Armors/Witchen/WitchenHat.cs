@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Harvesting;
+﻿using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -54,11 +55,7 @@ namespace Stellamod.Items.Armors.Witchen
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "Truly a giver of society! The witches respect you :P" +
-			"\nGain the effects of a mana flower, magic cuffs" +
-			"\nExtreme mana regeneration" +
-			"\nMana costs are reduced by 50%" +
-			"\nFlowery Rhythm!";  // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"Truly a giver of society! The witches respect you :P" + "\nGain the effects of a mana flower, magic cuffs" + "\nExtreme mana regeneration" + "\nMana costs are reduced by 50%" + "\nFlowery Rhythm!");  // This is the setbonus tooltip
 			player.manaCost *= 0.5f;
 			player.manaRegen += 70;
 			player.magicCuffs = true;

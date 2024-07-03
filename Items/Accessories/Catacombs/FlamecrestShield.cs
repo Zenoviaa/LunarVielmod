@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
+using Stellamod.Helpers;
 using Stellamod.NPCs.Catacombs.Fire;
 using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
 using Stellamod.Particles;
@@ -23,7 +24,7 @@ namespace Stellamod.Items.Accessories.Catacombs
             SoundEngine.PlaySound(SoundID.NPCHit42, Player.position);
             SoundEngine.PlaySound(SoundID.Item45, Player.position);
 
-            int combatText = CombatText.NewText(Player.getRect(), Color.OrangeRed, "Resisted!", true);
+            int combatText = CombatText.NewText(Player.getRect(), Color.OrangeRed, LangText.Misc("FlamecrestPlayer"), true);
             CombatText numText = Main.combatText[combatText];
             numText.lifeTime = 60;
 

@@ -124,8 +124,7 @@ namespace Stellamod.Items.Armors.Eldritchian
 
 
 
-			player.setBonus = "Grants immunity to knockback!\n" +
-                "When you take a hit, gain a temporary attack speed boost based on the amount of damage you took!";
+			player.setBonus = LangText.SetBonus(this);//"Grants immunity to knockback!\n" + "When you take a hit, gain a temporary attack speed boost based on the amount of damage you took!");
 
 			player.noKnockback = true;
 			player.GetModPlayer<EldritchianPlayer>().hasEldritchian = true;

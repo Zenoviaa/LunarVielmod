@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using System;
 using Terraria;
@@ -78,57 +79,57 @@ namespace Stellamod.NPCs
                 switch (Main.rand.Next(10))
                 {
                     case 0:
-                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Wohooo", true, false);
+                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, LangText.Misc("DiceinNPC.1"), true, false);
                         itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 1));
                         if(Main.netMode == NetmodeID.MultiplayerClient)
                             NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
                         break;
                     case 1:
-                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Omg, its something!", true, false);
+                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, LangText.Misc("DiceinNPC.2"), true, false);
                         itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 2));
                         if (Main.netMode == NetmodeID.MultiplayerClient)
                             NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
                         break;
                     case 2:
-                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Are you disappointed? You should be.", true, false);
+                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, LangText.Misc("DiceinNPC.3"), true, false);
                         itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(0, 1));
                         if (Main.netMode == NetmodeID.MultiplayerClient)
                             NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
                         break;
                     case 3:
-                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Wow, you have no maidens and no luck..", true, false);
+                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, LangText.Misc("DiceinNPC.4"), true, false);
                         break;
                     case 4:
-                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Sooo lucky!", true, false);
+                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, LangText.Misc("DiceinNPC.5"), true, false);
                         itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(2, 2));
                         if (Main.netMode == NetmodeID.MultiplayerClient)
                             NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
                         break;
 
                     case 5:
-                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, "WHATTT, you should not be this lucky..", true, false);
+                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, LangText.Misc("DiceinNPC.6"), true, false);
                         itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(2, 2));
                         if (Main.netMode == NetmodeID.MultiplayerClient)
                             NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
                         break;
 
                     case 6:
-                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Pfffft HAHA, laugh at this user.", true, false);
+                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, LangText.Misc("DiceinNPC.7"), true, false);
                         itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(0, 1));
                         if (Main.netMode == NetmodeID.MultiplayerClient)
                             NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
                         break;
 
                     case 7:
-                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Sometimes, you just have to tie your hair back and get on your knees.", true, false);
+                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, LangText.Misc("DiceinNPC.8"), true, false);
                         break;
 
                     case 8:
-                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Womp womp", true, false);
+                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, LangText.Misc("DiceinNPC.9"), true, false);
                         break;
 
                     case 9:
-                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, "NOW THIS IS AMAZEBALLS", true, false);
+                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, LangText.Misc("DiceinNPC.10"), true, false);
                         itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(0, 5));
                         if (Main.netMode == NetmodeID.MultiplayerClient)
                             NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);

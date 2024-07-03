@@ -39,12 +39,7 @@ namespace Stellamod.Items.Armors.Miracle
 
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = 
-                "Increases summon damage by 16%"+
-                "\n+2 Max Sentries" +
-                "\nYour attacks have a chance to cleave out a part of the enemy's soul" +
-                "\nCollect these to gain a stacking increase to your whip speed and summon damage!" +
-                "\nTaking damage resets the stack";  // This is the setbonus tooltip
+            player.setBonus = LangText.SetBonus(this);//"Increases summon damage by 16%" + "\n+2 Max Sentries" + "\nYour attacks have a chance to cleave out a part of the enemy's soul" +  "\nCollect these to gain a stacking increase to your whip speed and summon damage!" + "\nTaking damage resets the stack");  // This is the setbonus tooltip
             player.maxTurrets += 2;
             player.GetDamage(DamageClass.Summon) += 0.16f;
             player.GetModPlayer<MiraclePlayer>().hasMiracleSet = true;

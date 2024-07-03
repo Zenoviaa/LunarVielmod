@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
@@ -74,7 +75,7 @@ namespace Stellamod.Items.Armors.Winterborn
         }
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = "Up to three icicles surround you to protect you from attacks!";
+            player.setBonus = LangText.SetBonus(this);//"Up to three icicles surround you to protect you from attacks!");
             player.GetModPlayer<WinterbornPlayer>().hasSetBonus = true;
         }
 

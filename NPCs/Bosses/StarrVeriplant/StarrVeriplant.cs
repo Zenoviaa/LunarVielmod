@@ -1235,26 +1235,26 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
                     switch (Main.rand.Next(4))
                     {
                         case 0:
-                            CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Weak!", true, false);
+                            CombatText.NewText(NPC.getRect(), Color.YellowGreen, LangText.Misc("StarrVeriplant.1"), true, false);
                             player.AddBuff(BuffID.Weak, 60);
                             break;
 
 
                         case 1:
-                            CombatText.NewText(NPC.getRect(), Color.MistyRose, "Armor Broke!", true, false);
+                            CombatText.NewText(NPC.getRect(), Color.MistyRose, LangText.Misc("StarrVeriplant.2"), true, false);
                             player.AddBuff(BuffID.BrokenArmor, 60);
                             break;
 
 
                         case 2:
-                            CombatText.NewText(NPC.getRect(), Color.Coral, "Player Wrath UP!", true, false);
+                            CombatText.NewText(NPC.getRect(), Color.Coral, LangText.Misc("StarrVeriplant.3"), true, false);
                             player.AddBuff(BuffID.Wrath, 300);
                             break;
 
 
                         case 3:
 
-                            CombatText.NewText(NPC.getRect(), Color.Purple, "Player Speed UP!", true, false);
+                            CombatText.NewText(NPC.getRect(), Color.Purple, LangText.Misc("StarrVeriplant4."), true, false);
                             player.AddBuff(BuffID.Swiftness, 600);
                             break;
                     }

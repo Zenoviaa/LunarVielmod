@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.StarrVeriplant;
@@ -105,7 +106,7 @@ namespace Stellamod.Tiles
 			player.cursorItemIconID = -1;
 			if (chest < 0)
 			{
-				player.cursorItemIconText = Language.GetTextValue("Old Guard's Shrine");
+				player.cursorItemIconText = LangText.Misc("FlowerSummon.2");
 			}
 			else
 			{
@@ -168,7 +169,7 @@ namespace Stellamod.Tiles
 			{
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
-					Main.NewText("The Stone Guardian has awoken!", Color.Gold);
+					Main.NewText(LangText.Misc("FlowerSummon.1"), Color.Gold);
 					int npcID = NPC.NewNPC(new EntitySource_TileBreak(i + 10, j), i * 16, j * 16, ModContent.NPCType<StarrVeriplant>());
 					Main.npc[npcID].netUpdate2 = true;
 				}

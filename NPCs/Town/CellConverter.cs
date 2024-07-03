@@ -240,7 +240,7 @@ namespace Stellamod.NPCs.Town
 
 					//Effects
                     SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Converted"));
-					CombatText.NewText(NPC.getRect(), Color.White, "Weapon Converted!", true, false);
+					CombatText.NewText(NPC.getRect(), Color.White, LangText.Chat(this, "Special0"), true, false);
 					Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1024f, 16f);
                     for (int i = 0; i < 4; i++)
                     {

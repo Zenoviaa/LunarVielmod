@@ -81,55 +81,55 @@ namespace Stellamod.Items.Consumables
                 {
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                     {
-                        Main.NewText("Zui has come to have some fun!", Color.Gold);
+                        Main.NewText(LangText.Misc("RadianceStone.1"), Color.Gold);
                         int npcID = NPC.NewNPC(player.GetSource_FromThis(), (int)player.position.X, (int)player.position.Y, ModContent.NPCType<ZuiTheTraveller>());
                         Main.npc[npcID].netUpdate2 = true;
                     }
                     else
                     {
-                        Main.NewText("Zui has come to have some fun!", Color.Gold);
+                        Main.NewText(LangText.Misc("RadianceStone.1"), Color.Gold);
                         StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<ZuiTheTraveller>(), (int)player.position.X, (int)player.position.Y);
                     }
 
                     int TextToSpawn = Main.rand.Next(1, 8 + 1);
                     if (TextToSpawn == 1)
                     {
-                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Lets get started!");
+                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), LangText.Misc("RadianceStone.2"));
                     }
                     if (TextToSpawn == 2)
                     {
-                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Lets have some fun shall we?");
+                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), LangText.Misc("RadianceStone.3"));
                     }
                     if (TextToSpawn == 3)
                     {
-                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Zui is coming to party!");
+                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), LangText.Misc("RadianceStone.4"));
                     }
                     if (TextToSpawn == 4)
                     {
-                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "You wanna fight today??");
+                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), LangText.Misc("RadianceStone.5"));
                     }
                     if (TextToSpawn == 5)
                     {
-                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Here I come :)");
+                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), LangText.Misc("RadianceStone.6"));
                     }
                     if (TextToSpawn == 6)
                     {
-                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "I don't wanna fight right now :(");
+                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), LangText.Misc("RadianceStone.7"));
                     }
                     if (TextToSpawn == 7)
                     {
-                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Prepare to get rekted");
+                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), LangText.Misc("RadianceStone.8"));
                     }
                     if (TextToSpawn == 8)
                     {
-                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "You're gonna have a good time");
+                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), LangText.Misc("RadianceStone.9"));
                     }
 
                 }
                 else
                 {
 
-                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Womp womp you used the item :)");
+                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), LangText.Misc("RadianceStone.10"));
                 }
 
             }

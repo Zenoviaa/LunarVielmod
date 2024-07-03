@@ -531,6 +531,7 @@ BoundGia: {
 		Princess_LovesNPC: I like {NPCName}.
 	}
 
+	Basic: Oh goodness thank you for saving me. I dont know how long I was tied up... I got stranded down here by a bunch of scouts I presume are from the morrow. I really caused a mess this time but I am really glad you saved me. D'you have a place to stay?
 	Bestiary: A bound scientist lurking in the Virulent
 	Button2: Trade Rune
 }
@@ -544,6 +545,7 @@ CellConverter: {
 	Basic2: I WANT SCRAP
 	Basic3: MAKE YOUR SCRAP TOKENS FOR TRADE. KRM
 	Basic4: YEEERRRM
+	Special0: Weapon Converted!
 	Special1: KRRRT, Sensors say you have inputed a token, here you go per request.
 	Special2: Womp womp, looks like nothing for you!
 	Special3: Error, try again.

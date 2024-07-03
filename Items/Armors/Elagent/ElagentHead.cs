@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.NPCs.Bosses.Niivi;
 using Terraria;
@@ -76,7 +77,7 @@ namespace Stellamod.Items.Armors.Elagent
 
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = "+1 Max Minions\n+45 Max Life \nHit enemies have a rare chance to be assaulted by angelic power!";
+            player.setBonus = LangText.SetBonus(this);//"+1 Max Minions\n+45 Max Life \nHit enemies have a rare chance to be assaulted by angelic power!");
             player.maxMinions += 1;
             player.statLifeMax2 += 45;
             player.GetModPlayer<ElegantPlayer>().hasSetBonus = true;

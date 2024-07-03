@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Materials;
+﻿using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -53,11 +54,7 @@ namespace Stellamod.Items.Armors.Xexterian
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "Gain the accessory effects of desert boots!" +
-				"\nAutomatically run at fast speeds without boots! " +
-				"\n +5 Defense!"+
-				"\nGain the effects if Forbidden armor!" +
-				"\nArrows are heated up with the effects of a molten quiver!"; // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"Gain the accessory effects of desert boots!" + "\nAutomatically run at fast speeds without boots! " + "\n +5 Defense!"+ "\nGain the effects if Forbidden armor!" + "\nArrows are heated up with the effects of a molten quiver!"); // This is the setbonus tooltip
 			
 			player.maxRunSpeed += 0.5f;
 			player.statDefense += 5;

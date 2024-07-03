@@ -132,7 +132,7 @@ namespace Stellamod.Projectiles
         {
             if(Main.myPlayer == Projectile.owner)
             {
-                Main.NewText("STARBOMBER crashes down!", Color.Pink);
+                Main.NewText(LangText.Misc("AuroreanStarbomber"), Color.Pink);
                 int npcID = NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y, 
                     ModContent.NPCType<STARBOMBER>());
                 NetMessage.SendData(MessageID.SyncNPC);

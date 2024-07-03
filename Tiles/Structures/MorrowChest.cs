@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Placeable;
 using Terraria;
 using Terraria.Audio;
@@ -84,7 +85,7 @@ namespace Stellamod.Tiles.Structures
 			DustType = dustType;
 			if (Main.dayTime)
 			{
-				Main.NewText("The chest cannot be open in the light of the day due to a lock, apparently these feral creatures use their weapons at night. Try again at night.", Color.Orange);
+				Main.NewText(LangText.Misc("MorrowChest"), Color.Orange);
 				return false;
 			}
 			else
@@ -178,7 +179,7 @@ namespace Stellamod.Tiles.Structures
 				//It's daytime, cannot open the chest.
                 if (Main.dayTime)
                 {
-					Main.NewText("The chest cannot be open in the light of the day due to a lock, apparently these feral creatures use their weapons at night. Try again at night.", Color.Orange);
+					Main.NewText(LangText.Misc("MorrowChest"), Color.Orange);
 					
 					//Gotta return out of here
 					return true;

@@ -1,4 +1,3 @@
-using System;
 using Terraria.Localization;
 using Terraria.ModLoader;
 namespace Stellamod.Helpers
@@ -31,7 +30,16 @@ namespace Stellamod.Helpers
 
         public static string Tooltip(ModItem item, string key)
         {
-            return Language.GetTextValue($"Mods.Stellamod.NPCs.{item.Name}." + key);
+            return Language.GetTextValue($"Mods.Stellamod.Items.{item.Name}." + key);
+        }
+        public static string SetBonus(ModItem item)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.Items.SetBonus.{item.Name}");
+        }
+
+        public static string Misc(string key)
+        {
+            return Language.GetTextValue("Mods.Stellamod.Misc." + key);
         }
     }
 }

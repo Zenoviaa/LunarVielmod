@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using ParticleLibrary;
 using Stellamod.Buffs;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Particles;
 using Terraria;
@@ -80,7 +81,7 @@ namespace Stellamod.Items.Armors.ShadeWraith
 
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = "Become greatly empowered for a short time when low on health!\nJust one last breath...";
+            player.setBonus = LangText.SetBonus(this);//"Become greatly empowered for a short time when low on health!\nJust one last breath...");
             player.GetModPlayer<ShadeWraithPlayer>().hasSetBonus = true;
         }
 
