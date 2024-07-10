@@ -282,46 +282,50 @@ namespace Stellamod
             Instance = this;
         }
 
+        private void UnloadTile(int tileID)
+        {
+            TextureAssets.Tile[tileID] = ModContent.Request<Texture2D>($"Terraria/Images/Tiles_{tileID}");
+        }
+
+        private void UnloadWall(int wallID)
+        {
+            TextureAssets.Wall[wallID] = ModContent.Request<Texture2D>($"Terraria/Images/Wall_{wallID}");
+        }
+
         public override void Unload()
         {
             StellaMultiplayer.Unload();
             if (!Main.dedServ)
             {
-                /*  Main.tileFrame[TileID.Dirt] = 0;
-                  Main.tilesLoaded(TileID.Dirt) = false; 
-                  Main.wallFrame[WallID.Dirt] = 0;
-                  Main.wallLoaded[WallID.Dirt] = false;
-                  Main.tileFrame[TileID.Stone] = 0;
-                  Main.tileSetsLoaded[TileID.Stone] = false;
-                  Main.tileFrame[TileID.Grass] = 0;
-                  Main.tileSetsLoaded[TileID.Grass] = false;
-                  Main.tileFrame[TileID.ClayBlock] = 0;
-                  Main.instance.LoadTiles(TileID.ClayBlock) = false;
-                  Main.tileFrame[TileID.Sand] = 0;
-                  Main.tileSetsLoaded[TileID.Sand] = false;
-                  Main.tileFrame[TileID.Sandstone] = 0;
-                  Main.tileSetsLoaded[TileID.Sandstone] = false;
-                  Main.tileFrame[TileID.HardenedSand] = 0;
-                  Main.tileSetsLoaded[TileID.HardenedSand] = false;
-                  Main.tileFrame[TileID.Mud] = 0;
-                  Main.tileSetsLoaded[TileID.Mud] = false;
-                  Main.tileFrame[TileID.CrimsonGrass] = 0;
-                  Main.tileSetsLoaded[TileID.CrimsonGrass] = false;
-                  Main.tileFrame[TileID.CorruptGrass] = 0;
-                  Main.tileSetsLoaded[TileID.CorruptGrass] = false;
-                  Main.tileFrame[TileID.Crimstone] = 0;
-                  Main.tileSetsLoaded[TileID.Crimstone] = false;
-                  Main.tileFrame[TileID.JungleGrass] = 0;
-                  Main.tileSetsLoaded[TileID.JungleGrass] = false;
-                  Main.tileFrame[TileID.SnowBlock] = 0;
-                  Main.tileSetsLoaded[TileID.SnowBlock] = false;
-                  Main.tileFrame[TileID.IceBlock] = 0;
-                  Main.tileSetsLoaded[TileID.IceBlock] = false;
-                  Main.tileFrame[TileID.WoodBlock] = 0;
-                  Main.tileSetsLoaded[TileID.WoodBlock] = false;
-                  Main.tileFrame[TileID.GrayBrick] = 0;
-                 Main.tileSetsLoaded[TileID.GrayBrick] = false;
-                */
+                UnloadTile(TileID.Dirt);
+                UnloadTile(TileID.IceBlock);
+                UnloadTile(TileID.SnowBlock);
+                UnloadWall(WallID.Dirt);
+                UnloadTile(TileID.Stone);
+                UnloadTile(TileID.Grass);
+                UnloadTile(TileID.ClayBlock);
+                UnloadTile(TileID.Sand);
+                UnloadTile(TileID.HardenedSand);
+                UnloadTile(TileID.Sandstone);
+                UnloadTile(TileID.Mud);
+                UnloadTile(TileID.CrimsonGrass);
+                UnloadTile(TileID.JungleGrass);
+                UnloadTile(TileID.CorruptGrass);
+                UnloadTile(TileID.Crimstone);
+                UnloadTile(TileID.WoodBlock);
+                UnloadTile(TileID.GrayBrick);
+                UnloadTile(TileID.Pearlstone);
+                UnloadTile(TileID.GraniteBlock);
+                UnloadTile(TileID.Granite);
+                UnloadTile(TileID.MarbleBlock);
+                UnloadTile(TileID.Marble);
+                UnloadTile(TileID.MushroomGrass);
+                UnloadTile(TileID.Ebonstone);
+                UnloadTile(TileID.Ash);
+                UnloadTile(TileID.ObsidianBrick);
+                UnloadTile(TileID.Cloud);
+                UnloadTile(TileID.Pearlsand);
+                UnloadTile(TileID.SnowCloud);   
             }
         }
 
