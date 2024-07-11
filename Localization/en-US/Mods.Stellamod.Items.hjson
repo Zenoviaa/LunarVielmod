@@ -1,3 +1,20 @@
+Common: {
+	SimpleBrooch: Simple Brooch!
+	RadiantBrooch: Radiant Brooch!
+	RadiantBackpack: You need an Radiant Brooches Backpack for this!
+	AdvancedBrooch: Advanced Brooch!
+	AdvancedBackpack: You need an Advanced Brooches Backpack for this!
+	NoStack: These do not stack!
+	Insource: Use this to put inside of your Xixian flask and when you drink it, the effects of this insource is used!
+	Stein: Stein Weapon Type
+	Greatsword: Greatsword Weapon Type
+	Safunai: Safunai Weapon Type
+	Orb: Orb Weapon Type
+	Juggler: Juggler Weapon Type
+	CanSwapped: Can be changed to{0}!
+	TypeSwapped: Damage Type Swapped!
+}
+
 SetBonus: {
 	CelestiaMoonHelmet:
 		'''
