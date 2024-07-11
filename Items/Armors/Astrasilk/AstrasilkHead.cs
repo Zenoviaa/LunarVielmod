@@ -150,7 +150,7 @@ namespace Stellamod.Items.Armors.Astrasilk
 
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = "Stars orbit around you\nHit an enemy 5 times to rain down a gigantic star upon them!";
+            player.setBonus = LangText.SetBonus(this);//"Stars orbit around you\nHit an enemy 5 times to rain down a gigantic star upon them!");
             player.GetModPlayer<AstrasilkPlayer>().hasSetBonus = true;
         }
 

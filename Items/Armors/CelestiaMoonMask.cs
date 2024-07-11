@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Harvesting;
+﻿using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Terraria;
@@ -52,8 +53,7 @@ namespace Stellamod.Items.Armors
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "Increases life regen by a great amount!" +
-				"\nMove faster and gain the effects of magic cuffs! "; // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"Increases life regen by a great amount!" + "\nMove faster and gain the effects of magic cuffs!"); // This is the setbonus tooltip
 			player.moveSpeed += 0.3f;
 			player.maxRunSpeed += 0.3f;
 			player.magicCuffs = true;

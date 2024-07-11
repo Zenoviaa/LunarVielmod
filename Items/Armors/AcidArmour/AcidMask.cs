@@ -1,3 +1,4 @@
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
@@ -36,7 +37,7 @@ namespace Stellamod.Items.Armors.AcidArmour
 
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = "Stand still to emit a toxic aura!";
+            player.setBonus = LangText.SetBonus(this);//"Stand still to emit a toxic aura!");
             player.moveSpeed += 0.2f;
             player.GetModPlayer<AcidPlayer>().hasSetBonus = true;
         }

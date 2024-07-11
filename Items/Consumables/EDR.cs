@@ -1,6 +1,7 @@
 ﻿
 
 using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.Utilis;
 using Terraria;
@@ -54,7 +55,7 @@ namespace Stellamod.Items.Consumables
                 {
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                     {
-                        Main.NewText("A disruption has occured!", Color.SpringGreen);
+                        Main.NewText(LangText.Misc("EDR.Occur"), Color.SpringGreen);
                         int npcID = NPC.NewNPC(player.GetSource_FromThis(), (int)player.position.X, (int)player.position.Y, ModContent.NPCType<IrradiatedNest>());
                         Main.npc[npcID].netUpdate2 = true;
                     }
@@ -62,7 +63,7 @@ namespace Stellamod.Items.Consumables
                     {
                         if (Main.netMode == NetmodeID.SinglePlayer)
                         {
-                            Main.NewText("A disruption has occured!", Color.SpringGreen);
+                            Main.NewText(LangText.Misc("EDR.Occur"), Color.SpringGreen);
                             StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<IrradiatedNest>(), (int)player.position.X, (int)player.position.Y);
 
                         }
@@ -70,45 +71,15 @@ namespace Stellamod.Items.Consumables
 
                     }
                 }
-                 int TextToSpawn = Main.rand.Next(1, 8 + 1);
-                if (TextToSpawn == 1)
-                {
-                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), "Initiate death protocol");
-                }
-                if (TextToSpawn == 2)
-                {
-                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), "The end is nigh…");
-                }
-                if (TextToSpawn == 3)
-                {
-                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), "Tactical nuke incoming…");
-                }
-                if (TextToSpawn == 4)
-                {
-                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), "We’re here to contact you about your deaths extended warranty");
-                }
-                if (TextToSpawn == 5)
-                {
-                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), "Brace for impact…");
-                }
-                if (TextToSpawn == 6)
-                {
-                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), "Not Contaminated life form detacted!");
-                }
-                if (TextToSpawn == 7)
-                {
-                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), "Prepare for voltile Termenation!");
-                }
-                if (TextToSpawn == 8)
-                {
-                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), "You’re going to have a bad time…");
-                }
-               // SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Button"));
+                int TextToSpawn = Main.rand.Next(1, 8 + 1);
+
+                CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), LangText.Misc("EDR." + TextToSpawn));
+                // SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Button"));
             }
             else
             {
                // SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Button"));
-                CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), "Usage outside of contamination detacted!");
+                CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), LangText.Misc("EDR.9"));
 
                 return false;
             }

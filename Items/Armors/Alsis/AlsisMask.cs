@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Harvesting;
+﻿using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -54,9 +55,7 @@ namespace Stellamod.Items.Armors.Alsis
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "You are a true mage..." +
-			"\nGain the effects of a mana flower, magic cuffs, and retrieve magic stars from afar " +
-			"\nMana costs are reduced by 70% and increased magic regeneration";  // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"You are a true mage..." + "\nGain the effects of a mana flower, magic cuffs, and retrieve magic stars from afar " + "\nMana costs are reduced by 70% and increased magic regeneration");  // This is the setbonus tooltip
 			player.manaCost *= 0.3f;
 			player.manaRegen += 1;
 			player.magicCuffs = true;

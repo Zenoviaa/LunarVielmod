@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.WorldG;
 using Terraria;
@@ -37,12 +38,12 @@ namespace Stellamod.Items.Accessories
                 Main.StartRain();
                 if (Main.netMode == NetmodeID.Server)
                 {
-                    NetworkText auroeanStarfallEnded = NetworkText.FromLiteral("Zui decided to help you make it rain!");
+                    NetworkText auroeanStarfallEnded = NetworkText.FromLiteral(LangText.Misc("TomeofRaining"));
                     ChatHelper.BroadcastChatMessage(auroeanStarfallEnded, new Color(234, 96, 214));
                 }
                 else
                 {
-                    Main.NewText("Zui decided to help you make it rain!", 234, 96, 214);
+                    Main.NewText(LangText.Misc("TomeofRaining"), 234, 96, 214);
                 }
                 NetMessage.SendData(MessageID.WorldData);
             }

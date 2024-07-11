@@ -17,7 +17,7 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
         {
             base.ModifyTooltips(tooltips);
             var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Alcarishasd", "Juggler Weapon Type")
+            line = new TooltipLine(Mod, "Alcarishasd",  Helpers.LangText.Common("Juggler"))
             {
                 OverrideColor = ColorFunctions.JugglerWeaponType
             };

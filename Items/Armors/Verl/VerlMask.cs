@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Harvesting;
+﻿using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Tiles;
@@ -53,9 +54,7 @@ namespace Stellamod.Items.Armors.Verl
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "Auto gain the abilities of a Magic Quiver and +5% Ranged damage" +
-				"\nEnemies will be attacked by your power of music!"
-				+ "\nEvery few seconds you'll gain a major increase to Ranged and Magic damage!"; // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"Auto gain the abilities of a Magic Quiver and +5% Ranged damage" + "\nEnemies will be attacked by your power of music!" + "\nEvery few seconds you'll gain a major increase to Ranged and Magic damage!"); // This is the setbonus tooltip
 			player.GetModPlayer<MyPlayer>().NotiaB = true;
 			player.GetModPlayer<MyPlayer>().NotiaBCooldown++;
 			player.magicQuiver = true;

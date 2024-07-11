@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.PowdersItem;
 using Terraria;
@@ -115,7 +116,7 @@ namespace Stellamod.Tiles.ShrineBreakers.Underground
 			player.cursorItemIconID = -1;
 			if (chest < 0)
 			{
-				player.cursorItemIconText = Language.GetTextValue("Hey hey over here break me please :(");
+				player.cursorItemIconText = LangText.Misc("ShrineBridgetC");
 			}
 			else
 			{

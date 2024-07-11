@@ -188,7 +188,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			player.cursorItemIconID = -1;
 			if (chest < 0)
 			{
-				player.cursorItemIconText = Language.GetTextValue("Insert a Focal Crystal");
+				player.cursorItemIconText = LangText.Misc("LabCrystal");
 				if(player.HeldItem.type == ModContent.ItemType<FocalCrystalFire>() ||
                     player.HeldItem.type == ModContent.ItemType<FocalCrystalTrap>() ||
                     player.HeldItem.type == ModContent.ItemType<FocalCrystalWater>())

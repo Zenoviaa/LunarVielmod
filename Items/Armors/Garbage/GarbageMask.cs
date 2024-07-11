@@ -71,8 +71,7 @@ namespace Stellamod.Items.Armors.Garbage
 
 
 
-			player.setBonus = "Grants immunity to knockback!\n" +
-				"+2 Summons";
+			player.setBonus = LangText.SetBonus(this);//"Grants immunity to knockback!\n" + "+2 Summons");
 			player.noKnockback = true;
 			player.maxMinions += 2;
 		

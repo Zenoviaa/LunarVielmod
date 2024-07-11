@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Harvesting;
+﻿using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Terraria;
@@ -53,8 +54,7 @@ namespace Stellamod.Items.Armors.Scissorian
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "Increases life regen by a great amount!" +
-				"\nMove faster and have less aggro and less enemies spawn around you!"; // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"Increases life regen by a great amount!" + "\nMove faster and have less aggro and less enemies spawn around you!"); // This is the setbonus tooltip
 			player.moveSpeed += 0.5f;
 			player.maxRunSpeed += 0.5f;
 			player.ZoneWaterCandle = true;

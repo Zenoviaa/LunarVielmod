@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.SunStalker;
 using Terraria;
@@ -85,7 +86,7 @@ namespace Stellamod.Tiles
             int key = ModContent.ItemType<SunClaw>();
             if (!player.HasItem(key))
             {
-                Main.NewText("Come back with a Sun Stone to fight the warrior of the desert.", Color.Gold);
+                Main.NewText(LangText.Misc("SunAlter.1"), Color.Gold);
                 return true;
             }
 
@@ -94,7 +95,7 @@ namespace Stellamod.Tiles
             {
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    Main.NewText("Sun Stalker has awoken!", Color.Gold);
+                    Main.NewText(LangText.Misc("SunAlter.2"), Color.Gold);
                     int npcID = NPC.NewNPC(new Terraria.DataStructures.EntitySource_TileUpdate(i, j), i * 16 + Main.rand.Next(-10, 10), j * 16, ModContent.NPCType<SunStalkerPreSpawn>(), 0, 0, 0, 0, 0, Main.myPlayer);
                     Main.npc[npcID].netUpdate2 = true;
                 }

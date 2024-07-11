@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -76,7 +77,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                         if (!text)
                         {
                             CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(255, 44, 44, 44),
-                            "The dread shrouds you...");
+                            LangText.Misc("BloodCystDead.1"));
                             text = true;
                         }
                     }
@@ -86,7 +87,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                         {
                             FalseSpawn = true;
                             CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(255, 44, 44, 44),
-                            "Darkness...");
+                            LangText.Misc("BloodCystDead.2"));
                             text = true;
                         }
                     }

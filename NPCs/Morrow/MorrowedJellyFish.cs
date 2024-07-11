@@ -221,7 +221,7 @@ namespace Stellamod.NPCs.Morrow
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
 			{
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("Extremely powerful jellyfish that has been aflicted by the gild in the morrow, very dangerour")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Extremely powerful jellyfish that has been aflicted by the gild in the morrow, very dangerour"))
 			});
 		}
 	}

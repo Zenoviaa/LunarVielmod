@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable.Cathedral;
 using Stellamod.NPCs.Bosses.Verlia;
@@ -99,7 +100,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 			{
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
-					Main.NewText("Verlia has been freed from her lantern!", Color.LightSkyBlue);
+					Main.NewText(LangText.Misc("VerliasShrine.1"), Color.LightSkyBlue);
 					int npcID = NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<VerliaSpawn>());
 					Main.npc[npcID].netUpdate2 = true;
 				}
@@ -115,11 +116,11 @@ namespace Stellamod.Tiles.Structures.Cathedral
 			} 
 			else if (player.HasItem(key) && !isNightime && !NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
             {
-				Main.NewText("See me in the moonlight!", Color.LightSkyBlue);
+				Main.NewText(LangText.Misc("VerliasShrine.2"), Color.LightSkyBlue);
 			}
 			else if (!player.HasItem(key))
 			{
-				Main.NewText("Come at night with our kindred in hand, see you soon for our dance will commend :)", Color.LightSkyBlue);
+				Main.NewText(LangText.Misc("VerliasShrine.3"), Color.LightSkyBlue);
 			}
 
 			return true;
@@ -154,7 +155,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 			player.cursorItemIconID = -1;
 			if (chest < 0)
 			{
-				player.cursorItemIconText = Language.GetTextValue("Verlia's Shrine");
+				player.cursorItemIconText = LangText.Misc("VerliasShrine.4");
 			}
 			else
 			{

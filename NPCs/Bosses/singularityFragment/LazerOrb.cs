@@ -1,5 +1,6 @@
 
 using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Utilis;
 using Terraria;
 using Terraria.GameContent.Bestiary;
@@ -25,7 +26,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
-                new FlavorTextBestiaryInfoElement("A poisonous slime mutated from normal green slimes"),
+                new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A poisonous slime mutated from normal green slimes")),
             });
         }
 

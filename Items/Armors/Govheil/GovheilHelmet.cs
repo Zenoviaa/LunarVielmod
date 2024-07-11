@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Materials;
+﻿using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Tiles;
 using Terraria;
@@ -53,10 +54,7 @@ namespace Stellamod.Items.Armors.Govheil
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "Enemies are less likely to target you!" +
-				"\nGovheil blades will come to defend you!"
-				+ "\nEvery few seconds you'll gain a major increase to Magic and Summon damage"
-				+ "\n+2 Summons!";  // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"Enemies are less likely to target you!" + "\nGovheil blades will come to defend you!" + "\nEvery few seconds you'll gain a major increase to Magic and Summon damage" + "\n+2 Summons!");  // This is the setbonus tooltip
 			player.GetModPlayer<MyPlayer>().GovheilC = true;
 			player.GetModPlayer<MyPlayer>().GovheilBCooldown++;
 			player.aggro *= 2;

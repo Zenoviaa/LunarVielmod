@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 
 			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
 			var line = new TooltipLine(Mod, "", "");
-			line = new TooltipLine(Mod, "Halhurish", "Safunai Weapon Type")
+			line = new TooltipLine(Mod, "Halhurish",  Helpers.LangText.Common("Safunai"))
 			{
 				OverrideColor = new Color(308, 71, 99)
 

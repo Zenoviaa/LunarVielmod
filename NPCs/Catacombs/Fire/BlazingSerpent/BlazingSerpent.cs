@@ -66,7 +66,7 @@ namespace Stellamod.NPCs.Catacombs.Fire.BlazingSerpent
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Caverns,
 
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("Burining with passion I guess.")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Burining with passion I guess."))
 			});
 		}
 

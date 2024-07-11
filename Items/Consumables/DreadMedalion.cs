@@ -70,13 +70,13 @@ namespace Stellamod.Items.Consumables
                 {
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                     {
-                        Main.NewText("The air fills with dread...", Color.Red);
+                        Main.NewText(LangText.Misc("DreadMedalion"), Color.Red);
                         int npcID = NPC.NewNPC(player.GetSource_FromThis(), (int)player.position.X, (int)player.position.Y, ModContent.NPCType<DreadMireR>());
                         Main.npc[npcID].netUpdate2 = true;
                     }
                     else
                     {
-                        Main.NewText("The air fills with dread...", Color.Red);
+                        Main.NewText(LangText.Misc("DreadMedalion"), Color.Red);
                         StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<DreadMireR>(), (int)player.position.X, (int)player.position.Y);
                     }
                 }

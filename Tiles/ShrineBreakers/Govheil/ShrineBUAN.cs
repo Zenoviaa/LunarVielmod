@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Ranged;
 using Terraria;
 using Terraria.DataStructures;
@@ -114,7 +115,7 @@ namespace Stellamod.Tiles.ShrineBreakers.Govheil
 			player.cursorItemIconID = -1;
 			if (chest < 0)
 			{
-				player.cursorItemIconText = Language.GetTextValue("Break Me!");
+				player.cursorItemIconText = LangText.Misc("BreakMe");
 			}
 			else
 			{

@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Helpers;
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -54,8 +55,7 @@ namespace Stellamod.Items.Armors.Mardenths
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "Increases life regen" +
-				"\nTake 10% Less damage"; // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"Increases life regen" + "\nTake 10% Less damage"); // This is the setbonus tooltip
 			player.lifeRegen += 1;
             player.endurance += 0.10f;
 

@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Jack;
 using Stellamod.UI.Dialogue;
 using Stellamod.Utilis;
@@ -79,7 +80,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                 dialogueSystem.StartDialogue(exampleDialogue);
 
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 4f);
-                CombatText.NewText(NPC.getRect(), Color.Gold, "I think I have a headache..", true, false);
+                CombatText.NewText(NPC.getRect(), Color.Gold, LangText.Misc("ZuiDeath.1"), true, false);
             }
 
             Player player = Main.player[NPC.target];
@@ -141,7 +142,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                     }
                     if (NPC.ai[0] == 110)
                     {
-                        CombatText.NewText(NPC.getRect(), Color.Gold, "I'll see you later at my shop! Fun time :)", true, false);
+                        CombatText.NewText(NPC.getRect(), Color.Gold, LangText.Misc("ZuiDeath.2"), true, false);
                         var EntitySource = NPC.GetSource_Death();
                         Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 90f);
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer4"), NPC.position);

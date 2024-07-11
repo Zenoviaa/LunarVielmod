@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Harvesting;
+﻿using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -47,9 +48,7 @@ namespace Stellamod.Items.Armors.Huntrian
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "Increases life regen by a big amount!" +
-				"\nReduced Healing Flask cooldown" +
-				"\nDOES NOT STACK with philosophers stone"; // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"Increases life regen by a big amount!" + "\nReduced Healing Flask cooldown" + "\nDOES NOT STACK with philosophers stone"); // This is the setbonus tooltip
 
             if (player.HasBuff(BuffID.PotionSickness))
             {

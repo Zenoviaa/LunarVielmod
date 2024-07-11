@@ -25,7 +25,7 @@ namespace Stellamod.Items.Flasks
         {
 
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
-            var line = new TooltipLine(Mod, "Insource", "Use this to put inside of your Xixian flask and when you drink it, the effects of this insource is used!")
+            var line = new TooltipLine(Mod, "Insource",  Helpers.LangText.Common("Insource"))
             {
                 OverrideColor = new Color(100, 278, 203)
 

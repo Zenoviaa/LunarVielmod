@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Harvesting;
+﻿using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Terraria;
@@ -55,11 +56,7 @@ namespace Stellamod.Items.Armors.Artisan
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "3, 2, 1 .. Smile! Act like you're on stage will ya :p" +
-			"\nEvery little while you'll get a countdown, and when you hear Zero," +
-			"\nyour crit is 100% and damage output is doubled! " +
-			"\nSmall bits of paint left in your tracks." +
-			"\nCrit chance and armor penetration increased by 20!";// This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"3, 2, 1 .. Smile! Act like you're on stage will ya :p" + "\nEvery little while you'll get a countdown, and when you hear Zero," + "\nyour crit is 100% and damage output is doubled! " + "\nSmall bits of paint left in your tracks." + "\nCrit chance and armor penetration increased by 20!");// This is the setbonus tooltip
 
 
 			player.GetCritChance(DamageClass.Generic) += 20f + player.GetModPlayer<MyPlayer>().PPCrit;

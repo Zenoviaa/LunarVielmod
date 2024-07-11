@@ -117,7 +117,7 @@ namespace Stellamod.NPCs.Town
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Dumbfounded by your strength, the commander retired and came to your base for a visit and a free hotel."),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Dumbfounded by your strength, the commander retired and came to your base for a visit and a free hotel.")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
@@ -235,20 +235,20 @@ namespace Stellamod.NPCs.Town
 			int partyGirl = NPC.FindFirstNPC(NPCID.Demolitionist);
 			if (partyGirl >= 0 && Main.rand.NextBool(4))
 			{
-				chat.Add(Language.GetTextValue("Hehe the Demonilitionist guy is pretty cool, he's got bombs..", Main.npc[partyGirl].GivenName));
+				chat.Add(LangText.Chat(this, "Basic1", Main.npc[partyGirl].GivenName));
 			}
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("Im just peeping around, I might stay for a while.."));
-			chat.Add(Language.GetTextValue("My team was quite weak to say, I apologize for the inconvience"));
-			chat.Add(Language.GetTextValue("Some of the things I'm selling are from base, we've all taken quite a liking to you all."));
-			chat.Add(Language.GetTextValue("If you can kill Gothivia for us we can scavange and steal their items, please help us do that"), 5.0);
-			chat.Add(Language.GetTextValue("We may be weak but we still give all of our little praise to Verlia, hence why we stole from her sister.."), 0.1);
+			chat.Add(LangText.Chat(this, "Basic2"));
+			chat.Add(LangText.Chat(this, "Basic3"));
+			chat.Add(LangText.Chat(this, "Basic4"));
+			chat.Add(LangText.Chat(this, "Basic5"), 5.0);
+			chat.Add(LangText.Chat(this, "Basic6"), 0.1);
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 10)
 			{
 				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("Could you murder Gothivia in the most brutal fashion possible? She is way too dauntless and carefree, we hate her and she took our home.."));
+				chat.Add(LangText.Chat(this, "Basic7"));
 			}
 
 			return chat; // chat is implicitly cast to a string.

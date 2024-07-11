@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Helpers;
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -47,7 +48,7 @@ namespace Stellamod.Items.Armors.Stone
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "Immunity to fall damage!"; // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"Immunity to fall damage!"); // This is the setbonus tooltip
 			player.noFallDmg = true;
 
 		}

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets.Biomes;
+using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Vanity.Gia;
@@ -132,11 +133,11 @@ namespace Stellamod.NPCs.Town
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Steaming from the depths"),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Steaming from the depths")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Bordoc the eternal blacksmith")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Bordoc the eternal blacksmith", "2"))
 			});
 		}
 
@@ -165,27 +166,27 @@ namespace Stellamod.NPCs.Town
 			int partyGirl = NPC.FindFirstNPC(NPCID.Steampunker);
 			if (partyGirl >= 0 && Main.rand.NextBool(4))
 			{
-				chat.Add(Language.GetTextValue("Shes got some great cogs", Main.npc[partyGirl].GivenName));
+				chat.Add(LangText.Chat(this, "Basic1", Main.npc[partyGirl].GivenName));
 			}
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("BRMMMM"));
-			chat.Add(Language.GetTextValue("Everyone always uses me but never asked how I'm able to talk.. "));
-			chat.Add(Language.GetTextValue("I don't care I need to gamble"));
-			chat.Add(Language.GetTextValue("My armors are the best in the lands"), 5.0);
-			chat.Add(Language.GetTextValue("Sirestias and Aimacra game by recently and they laughed at me because they thought my shop was useless"), 2.0);
-			chat.Add(Language.GetTextValue("Im always feeling hot!"), 0.1);
-			chat.Add(Language.GetTextValue("Heh, nobody is as good as me"), 0.1);
-			chat.Add(Language.GetTextValue("Burning Burning, heat and heat"), 0.1);
-			chat.Add(Language.GetTextValue("I'm inpenetrable"), 0.1);
-			chat.Add(Language.GetTextValue("Damn we have some hot shit here"), 0.1);
-			chat.Add(Language.GetTextValue("Only I know that Gothivia has so many barriers between her and the rest of the world, nobody will be able to kill her."), 0.1);
-			chat.Add(Language.GetTextValue("Those idiot gintze have made a horrible decision, now they can't use my armors I made for them."), 0.1);
+			chat.Add(LangText.Chat(this, "Basic2"));
+			chat.Add(LangText.Chat(this, "Basic3"));
+			chat.Add(LangText.Chat(this, "Basic4"));
+			chat.Add(LangText.Chat(this, "Basic5"), 5.0);
+			chat.Add(LangText.Chat(this, "Basic6"), 2.0);
+			chat.Add(LangText.Chat(this, "Basic7"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic8"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic9"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic10"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic11"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic12"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic13"), 0.1);
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 20)
 			{
 				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("KRMMMKTEYYYMMMM BRMMMMM"));
+				chat.Add(LangText.Chat(this, "Basic14"));
 			}
 
 			return chat; // chat is implicitly cast to a string.
@@ -220,7 +221,7 @@ namespace Stellamod.NPCs.Town
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
 			button2 = Language.GetTextValue("LegacyInterface.28");
-			button = "Heart of the Morrow";
+			button = LangText.Chat(this, "Button");
 
 		}
 
@@ -261,7 +262,7 @@ namespace Stellamod.NPCs.Town
 				
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 
-					Main.npcChatText = $"I want you to prove to me you're ready to obtain this, I've given you a broken core, if you restore its power, it's all yours. Show me your determination to be Gothivia's doll! You won't be the first to fail.. And maybe she'll come to thank you one day. ";
+					Main.npcChatText = LangText.Chat(this, "Special1");
 
 					var entitySource = NPC.GetSource_GiftOrReward();
 					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RottenHeart>(), 1);

@@ -164,7 +164,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 int bossType = bosses[Main.rand.Next(0, bosses.Length)];
                 if (StellaMultiplayer.IsHost)
                 {
-                    //Main.NewText("Jack has awoken!", Color.Gold);
+                    //Main.NewText(LangText.Misc("")"Jack has awoken!", Color.Gold);
                     int npcID = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<StarteV>());
                     Main.npc[npcID].netUpdate2 = true;
                 }

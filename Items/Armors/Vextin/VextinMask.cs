@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Helpers;
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -51,9 +52,7 @@ namespace Stellamod.Items.Armors.Vextin
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "Gain the accessory effects of desert boots!" +
-				"\nAutomatically run at fast speeds without boots! " +
-				"\n +3 Defense!"; // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"Gain the accessory effects of desert boots!" + "\nAutomatically run at fast speeds without boots! " + "\n +3 Defense!"); // This is the setbonus tooltip
 			
 			player.maxRunSpeed += 0.5f;
 			player.statDefense += 3;

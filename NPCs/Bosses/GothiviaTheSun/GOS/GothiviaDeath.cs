@@ -516,7 +516,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 dialogueSystem.StartDialogue(exampleDialogue);
 
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 4f);
-                CombatText.NewText(NPC.getRect(), Color.Gold, "Stoppp~", true, false);
+                CombatText.NewText(NPC.getRect(), Color.Gold, LangText.Misc("GothiviaDeath.1"), true, false);
             }
 
 
@@ -580,7 +580,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     }
                     if (NPC.ai[0] == 110)
                     {
-                        CombatText.NewText(NPC.getRect(), Color.Gold, "I'm cant-", true, false);
+                        CombatText.NewText(NPC.getRect(), Color.Gold, LangText.Misc("GothiviaDeath.2"), true, false);
                         var EntitySource = NPC.GetSource_Death();
                         Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 90f);
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer4"), NPC.position);

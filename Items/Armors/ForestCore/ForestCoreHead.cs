@@ -1,3 +1,4 @@
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
@@ -42,7 +43,7 @@ namespace Stellamod.Items.Armors.ForestCore
 
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = "Summons a forest bow to fight for you!";
+            player.setBonus = LangText.SetBonus(this);//"Summons a forest bow to fight for you!");
             Main.LocalPlayer.GetModPlayer<MyPlayer>().FCArmor = true;
         }
 

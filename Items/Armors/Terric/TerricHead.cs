@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
@@ -47,8 +48,7 @@ namespace Stellamod.Items.Armors.Terric
         public override void UpdateArmorSet(Player player)
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().Teric = true;
-            player.setBonus = "You build up magical crit chance over time!\n"+
-                "+20 Max Life";
+            player.setBonus = LangText.SetBonus(this);//"You build up magical crit chance over time!\n" + "+20 Max Life");
             player.statLifeMax2 += 20;
         }
     }

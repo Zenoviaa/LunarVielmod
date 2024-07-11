@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
@@ -109,7 +110,7 @@ namespace Stellamod.NPCs.Town
 
 		public override void OnKill()
 		{
-			CombatText.NewText(NPC.getRect(), Color.White, "Im being taken away help!", true, false);
+			CombatText.NewText(NPC.getRect(), Color.White, LangText.Misc("BoundGia"), true, false);
 			base.OnKill();
 		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -118,14 +119,14 @@ namespace Stellamod.NPCs.Town
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
 			{
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("A bound scientist lurking in the Virulent")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A bound scientist lurking in the Virulent"))
 			});
 		}
 
 
 		public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position) => false;
 
-		public override string GetChat() => "Oh goodness thank you for saving me. I dont know how long I was tied up... I got stranded down here by a bunch of scouts I presume are from the morrow. I really caused a mess this time but I am really glad you saved me. D'you have a place to stay?";
+		public override string GetChat() => LangText.Chat(this, "Basic");
 
 
 		public void Rescue()

@@ -177,11 +177,11 @@ namespace Stellamod.NPCs.Bosses.Zui
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Zui, not exactly someone that can be killed but loves to play around I guess? Sirestias is closely accompanied with her"),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Zui, not exactly someone that can be killed but loves to play around I guess? Sirestias is closely accompanied with her")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Zui the Radiance")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Zui the Radiance", "2"))
             });
         }
 

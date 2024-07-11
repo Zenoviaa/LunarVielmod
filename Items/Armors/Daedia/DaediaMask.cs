@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Materials;
+﻿using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -53,13 +54,7 @@ namespace Stellamod.Items.Armors.Daedia
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "Increases life regen by decent amount!" +
-				"\nEnemies become lovestruck when you are hit, or when you hit them!" +
-				"\nThis weakens, burns and confuses, slows and does exponential damage " +
-				"\nSpirit balls come from a portal on your armor and attack enemies " +
-				"\nNo fall Damage " +
-				"\nPick up hearts from afar!" 
-			 ; // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"Increases life regen by decent amount!" + "\nEnemies become lovestruck when you are hit, or when you hit them!" + "\nThis weakens, burns and confuses, slows and does exponential damage " + "\nSpirit balls come from a portal on your armor and attack enemies " + "\nNo fall Damage " + "\nPick up hearts from afar!"); // This is the setbonus tooltip
 			player.lifeRegen += 1;
 			player.GetModPlayer<MyPlayer>().Lovestruck = true;
 			player.GetModPlayer<MyPlayer>().Daedstruck = true;

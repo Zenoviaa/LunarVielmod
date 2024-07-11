@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable.Cathedral;
 using Stellamod.NPCs.Bosses.DaedusRework;
@@ -111,7 +112,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			{
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
-					Main.NewText("Forgotten Puppet Daedus has Awoken!", Color.Gold);
+					Main.NewText(LangText.Misc("RestingGrounds.1"), Color.Gold);
 					int npcID = NPC.NewNPC(new EntitySource_TileBreak(i + 10, j), i * 16, j * 16, ModContent.NPCType<DaedusR>());
 					Main.npc[npcID].netUpdate2 = true;
 				}
@@ -137,12 +138,12 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			{
 				if (player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<DaedusR>()))
 				{
-					Main.NewText("I cannot raise my axe to one of such dedication to our goddess Gothivia, thank you for your efforts..", Color.Gold);
+					Main.NewText(LangText.Misc("RestingGrounds.2"), Color.Gold);
 				}
 
 				else
 				{
-					Main.NewText("I cannot raise my axe to one of such dedication to our goddess Gothivia, thank you for your efforts..", Color.Gold);
+					Main.NewText(LangText.Misc("RestingGrounds.2"), Color.Gold);
 
 
 				}
@@ -192,7 +193,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			player.cursorItemIconID = -1;
 			if (chest < 0)
 			{
-				player.cursorItemIconText = Language.GetTextValue("Disturb Ruined Tablet?");
+				player.cursorItemIconText = LangText.Misc("RestingGrounds.3");
 			}
 			else
 			{

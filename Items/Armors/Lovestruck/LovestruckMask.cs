@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Ores;
+﻿using Stellamod.Helpers;
+using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -52,9 +53,7 @@ namespace Stellamod.Items.Armors.Lovestruck
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "Increases life regen by an enormous amount!" +
-				"\nEnemies become lovestruck when you are hit, or when you hit them!" +
-				"\nThis weakens, burns and confuses, slows and does exponential damage "; // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"Increases life regen by an enormous amount!" + "\nEnemies become lovestruck when you are hit, or when you hit them!" + "\nThis weakens, burns and confuses, slows and does exponential damage"); // This is the setbonus tooltip
 			player.lifeRegen += 4;
 			player.GetModPlayer<MyPlayer>().Lovestruck = true;
 			player.loveStruck = true;

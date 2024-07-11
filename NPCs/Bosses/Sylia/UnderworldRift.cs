@@ -83,7 +83,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("A strange rift to void, disturbing it may yield catastrophic results..."),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A strange rift to void, disturbing it may yield catastrophic results...")),
 			});
 		}
 
@@ -215,7 +215,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 		public override string GetChat()
 		{
 			WeightedRandom<string> chat = new WeightedRandom<string>();
-			chat.Add(Language.GetTextValue("..."));
+			chat.Add("...");
 			return chat; // chat is implicitly cast to a string.
 		}
 
@@ -291,14 +291,14 @@ namespace Stellamod.NPCs.Bosses.Sylia
 		public override List<string> SetNPCNameList()
 		{
 			return new List<string>() {
-				"Underworld Rift",
-				"Underworld Rift"
+				NPC.FullName,
+				NPC.FullName
 			};
 		}
 
 		public override void SetChatButtons(ref string button, ref string button2)
 		{
-			button = "Disturb Rift";
+			button = LangText.Chat(this, "Button");
 		}
 
 		public override void OnChatButtonClicked(bool firstButton, ref string shop)

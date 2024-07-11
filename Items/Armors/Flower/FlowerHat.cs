@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Stellamod.Projectiles.Magic;
 using Terraria.Audio;
 using Stellamod.Projectiles.Arrows;
+using Stellamod.Helpers;
 
 namespace Stellamod.Items.Armors.Flower
 {
@@ -63,11 +64,7 @@ namespace Stellamod.Items.Armors.Flower
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "Increases life regen by decent amount!" +
-				"\nThe armor makes a flowery circle that heals players in it for a large amount!" +
-				"\nTurns all your wooden arrows into flower arrows! Which when hitting a target, " +
-				"\nsplits into little golden shots that hit back! "
-			 ; // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"Increases life regen by decent amount!" + "\nThe armor makes a flowery circle that heals players in it for a large amount!" + "\nTurns all your wooden arrows into flower arrows! Which when hitting a target, " + "\nsplits into little golden shots that hit back!"); // This is the setbonus tooltip
 
 
 			player.lifeRegen += 1;

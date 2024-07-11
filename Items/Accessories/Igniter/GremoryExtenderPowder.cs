@@ -29,7 +29,7 @@ namespace Stellamod.Items.Accessories.Igniter
 			var line = new TooltipLine(Mod, "", "");
 
 
-			line = new TooltipLine(Mod, "ADBPaaau", "These do not stack!")
+			line = new TooltipLine(Mod, "ADBPaaau",  Helpers.LangText.Common("NoStack"))
 			{
 				OverrideColor = new Color(110, 187, 24)
 

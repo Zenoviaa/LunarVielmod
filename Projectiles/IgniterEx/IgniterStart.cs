@@ -3,6 +3,7 @@ using ParticleLibrary;
 using Stellamod.Buffs;
 using Stellamod.Buffs.Dusteffects;
 using Stellamod.Buffs.PocketDustEffects;
+using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
@@ -124,7 +125,7 @@ namespace Stellamod.Projectiles.IgniterEx
                 {
 					if (Main.rand.NextBool(7))
 					{
-						CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+						CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 						npc.SimpleStrikeNPC((int)(Projectile.damage * 1f), 1, crit: false, Projectile.knockBack);
 					}
 
@@ -134,7 +135,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 					if (Main.rand.NextBool(10))
 					{
-						CombatText.NewText(player.getRect(), Color.LightSkyBlue, "MAGIC!", true, false);
+						CombatText.NewText(player.getRect(), Color.LightSkyBlue, LangText.Misc("IgniterStart.Magic"), true, false);
 						npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 						float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 						float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
@@ -170,7 +171,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 					if (Main.rand.NextBool(7))
 					{
-						CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+						CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 						npc.SimpleStrikeNPC(Projectile.damage * 3, 1, crit: false, Projectile.knockBack);
 						npc.SimpleStrikeNPC(Projectile.damage * 3, 1, crit: false, Projectile.knockBack);
 					}
@@ -181,7 +182,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 					if (Main.rand.NextBool(10))
 					{
-						CombatText.NewText(player.getRect(), Color.LightSkyBlue, "MAGIC!", true, false);
+						CombatText.NewText(player.getRect(), Color.LightSkyBlue, LangText.Misc("IgniterStart.Magic"), true, false);
 						npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 						float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 						float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
@@ -220,7 +221,7 @@ namespace Stellamod.Projectiles.IgniterEx
                 {
                     if (Main.rand.NextBool(7))
                     {
-                        CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+                        CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
                         npc.SimpleStrikeNPC(Projectile.damage * 13, 1, crit: false, Projectile.knockBack);
                         npc.SimpleStrikeNPC(Projectile.damage * 13, 1, crit: false, Projectile.knockBack);
                     }
@@ -231,7 +232,7 @@ namespace Stellamod.Projectiles.IgniterEx
                 {
                     if (Main.rand.NextBool(10))
                     {
-                        CombatText.NewText(player.getRect(), Color.LightSkyBlue, "MAGIC!", true, false);
+                        CombatText.NewText(player.getRect(), Color.LightSkyBlue, LangText.Misc("IgniterStart.Magic"), true, false);
                         npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
                         float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
                         float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
@@ -266,7 +267,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 					if (Main.rand.NextBool(7))
 					{
-						CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+						CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 						npc.SimpleStrikeNPC(Projectile.damage * 7, 1, crit: false, Projectile.knockBack);
 						npc.SimpleStrikeNPC(Projectile.damage * 7, 1, crit: false, Projectile.knockBack);
 					}
@@ -277,7 +278,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 					if (Main.rand.NextBool(10))
 					{
-						CombatText.NewText(player.getRect(), Color.LightSkyBlue, "MAGIC!", true, false);
+						CombatText.NewText(player.getRect(), Color.LightSkyBlue, LangText.Misc("IgniterStart.Magic"), true, false);
 						npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 						float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 						float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
@@ -312,7 +313,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 					if (Main.rand.NextBool(15))
 					{
-						CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+						CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 						npc.SimpleStrikeNPC(Projectile.damage * 10, 1, crit: false, Projectile.knockBack);
 						npc.SimpleStrikeNPC(Projectile.damage * 10, 1, crit: false, Projectile.knockBack);
 					}
@@ -323,7 +324,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 					if (Main.rand.NextBool(10))
 					{
-						CombatText.NewText(player.getRect(), Color.LightSkyBlue, "MAGIC!", true, false);
+						CombatText.NewText(player.getRect(), Color.LightSkyBlue, LangText.Misc("IgniterStart.Magic"), true, false);
 						npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 						float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 						float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
@@ -377,7 +378,7 @@ namespace Stellamod.Projectiles.IgniterEx
 						{
 							if (Main.rand.NextBool(3))
 							{
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+								CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 								npc.SimpleStrikeNPC(Projectile.damage * 14, 1, crit: false, Projectile.knockBack);
 								npc.SimpleStrikeNPC(Projectile.damage * 14, 1, crit: false, Projectile.knockBack);
 							}
@@ -456,7 +457,7 @@ namespace Stellamod.Projectiles.IgniterEx
                         {
                             if (Main.rand.NextBool(10))
                             {
-                                CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+                                CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
                                 npc.SimpleStrikeNPC(Projectile.damage * 14, 1, crit: false, Projectile.knockBack);
                                 npc.SimpleStrikeNPC(Projectile.damage * 14, 1, crit: false, Projectile.knockBack);
                             }
@@ -531,7 +532,7 @@ namespace Stellamod.Projectiles.IgniterEx
                         {
                             if (Main.rand.NextBool(3))
                             {
-                                CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+                                CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
                                 npc.SimpleStrikeNPC(Projectile.damage * 24, 1, crit: false, Projectile.knockBack);
                                 npc.SimpleStrikeNPC(Projectile.damage * 24, 1, crit: false, Projectile.knockBack);
                             }
@@ -613,7 +614,7 @@ namespace Stellamod.Projectiles.IgniterEx
 						{
 							if (Main.rand.NextBool(3))
 							{
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+								CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 								npc.SimpleStrikeNPC(Projectile.damage * 14, 1, crit: false, Projectile.knockBack);
 								npc.SimpleStrikeNPC(Projectile.damage * 14, 1, crit: false, Projectile.knockBack);
 							}
@@ -706,7 +707,7 @@ namespace Stellamod.Projectiles.IgniterEx
 						{
 							if (Main.rand.NextBool(3))
 							{
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+								CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 								npc.SimpleStrikeNPC(Projectile.damage * 19, 1, crit: false, Projectile.knockBack);
 								npc.SimpleStrikeNPC(Projectile.damage * 19, 1, crit: false, Projectile.knockBack);
 							}
@@ -789,7 +790,7 @@ namespace Stellamod.Projectiles.IgniterEx
 						{
 							if (Main.rand.NextBool(3))
 							{
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+								CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 								npc.SimpleStrikeNPC(Projectile.damage * 12, 1, crit: false, Projectile.knockBack);
 								npc.SimpleStrikeNPC(Projectile.damage * 11, 1, crit: false, Projectile.knockBack);
 								npc.SimpleStrikeNPC(Projectile.damage * 12, 1, crit: false, Projectile.knockBack);
@@ -872,7 +873,7 @@ namespace Stellamod.Projectiles.IgniterEx
 						{
 							if (Main.rand.NextBool(3))
 							{
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+								CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 								npc.SimpleStrikeNPC(Projectile.damage * 23, 1, crit: false, Projectile.knockBack);
 							}
 
@@ -977,7 +978,7 @@ namespace Stellamod.Projectiles.IgniterEx
 						{
 							if (Main.rand.NextBool(3))
 							{
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+								CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 								npc.SimpleStrikeNPC(Projectile.damage * 12, 1, crit: false, Projectile.knockBack);
 								npc.SimpleStrikeNPC(Projectile.damage * 12, 1, crit: false, Projectile.knockBack);
 							}
@@ -1062,7 +1063,7 @@ namespace Stellamod.Projectiles.IgniterEx
 						{
 							if (Main.rand.NextBool(3))
 							{
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+								CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 								npc.SimpleStrikeNPC(Projectile.damage * 12, 1, crit: false, Projectile.knockBack);
 								npc.SimpleStrikeNPC(Projectile.damage * 12, 1, crit: false, Projectile.knockBack);
 							}
@@ -1146,7 +1147,7 @@ namespace Stellamod.Projectiles.IgniterEx
 						{
 							if (Main.rand.NextBool(3))
 							{
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+								CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 								npc.SimpleStrikeNPC(Projectile.damage * 24, 1, crit: false, Projectile.knockBack);
 								npc.SimpleStrikeNPC(Projectile.damage * 24, 1, crit: false, Projectile.knockBack);
 							}
@@ -1204,7 +1205,7 @@ namespace Stellamod.Projectiles.IgniterEx
 						{
 							if (Main.rand.NextBool(3))
 							{
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+								CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 								npc.SimpleStrikeNPC(Projectile.damage * 1, 1, crit: false, Projectile.knockBack);
 							}
 
@@ -1214,7 +1215,7 @@ namespace Stellamod.Projectiles.IgniterEx
 						{
 							if (Main.rand.NextBool(10))
 							{
-								CombatText.NewText(player.getRect(), Color.LightSkyBlue, "MAGIC!", true, false);
+								CombatText.NewText(player.getRect(), Color.LightSkyBlue, LangText.Misc("IgniterStart.Magic"), true, false);
 								npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 								float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 								float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
@@ -1244,7 +1245,7 @@ namespace Stellamod.Projectiles.IgniterEx
 								{
 									if (Main.rand.NextBool(10))
 									{
-										CombatText.NewText(player.getRect(), Color.LightSkyBlue, "MAGIC!", true, false);
+										CombatText.NewText(player.getRect(), Color.LightSkyBlue, LangText.Misc("IgniterStart.Magic"), true, false);
 										npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 										float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 										float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
@@ -1304,7 +1305,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 					if (Main.rand.NextBool(3))
 					{
-						CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+						CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 						npc.SimpleStrikeNPC(Projectile.damage * 1, 1, crit: false, Projectile.knockBack);
 					}
 
@@ -1332,7 +1333,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 					if (Main.rand.NextBool(3))
 					{
-						CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+						CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 						npc.SimpleStrikeNPC(Projectile.damage * 1, 1, crit: false, Projectile.knockBack);
 					}
 
@@ -1342,7 +1343,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 					if (Main.rand.NextBool(10))
 					{
-						CombatText.NewText(player.getRect(), Color.LightSkyBlue, "MAGIC!", true, false);
+						CombatText.NewText(player.getRect(), Color.LightSkyBlue, LangText.Misc("IgniterStart.Magic"), true, false);
 						npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 						float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 						float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
@@ -1375,7 +1376,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 					if (Main.rand.NextBool(3))
 					{
-						CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+						CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 						npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 					}
 
@@ -1385,7 +1386,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 					if (Main.rand.NextBool(10))
 					{
-						CombatText.NewText(player.getRect(), Color.LightSkyBlue, "MAGIC!", true, false);
+						CombatText.NewText(player.getRect(), Color.LightSkyBlue, LangText.Misc("IgniterStart.Magic"), true, false);
 						npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 						float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 						float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
@@ -1434,7 +1435,7 @@ namespace Stellamod.Projectiles.IgniterEx
 							{
 								if (Main.rand.NextBool(3))
 								{
-									CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+									CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 									npc.SimpleStrikeNPC(Projectile.damage * 1, 1, crit: false, Projectile.knockBack);
 								}
 
@@ -1444,7 +1445,7 @@ namespace Stellamod.Projectiles.IgniterEx
 							{
 								if (Main.rand.NextBool(10))
 								{
-									CombatText.NewText(player.getRect(), Color.LightSkyBlue, "MAGIC!", true, false);
+									CombatText.NewText(player.getRect(), Color.LightSkyBlue, LangText.Misc("IgniterStart.Magic"), true, false);
 									npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 
 									npc.SimpleStrikeNPC(Projectile.damage * 20, 1, crit: false, Projectile.knockBack);
@@ -1478,7 +1479,7 @@ namespace Stellamod.Projectiles.IgniterEx
 							{
 								if (Main.rand.NextBool(1))
 								{
-									CombatText.NewText(player.getRect(), Color.LightSkyBlue, "MAGIC!", true, false);
+									CombatText.NewText(player.getRect(), Color.LightSkyBlue, LangText.Misc("IgniterStart.Magic"), true, false);
 									npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 
 									npc.SimpleStrikeNPC(Projectile.damage * 20, 1, crit: false, Projectile.knockBack);
@@ -1512,7 +1513,7 @@ namespace Stellamod.Projectiles.IgniterEx
 							{
 								if (Main.rand.NextBool(3))
 								{
-									CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+									CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 									npc.SimpleStrikeNPC(Projectile.damage * 17, 1, crit: false, Projectile.knockBack);
 								}
 
@@ -1571,7 +1572,7 @@ namespace Stellamod.Projectiles.IgniterEx
 					{
 						if (Main.rand.NextBool(5))
 						{
-							CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+							CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 							npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 						}
 
@@ -1582,7 +1583,7 @@ namespace Stellamod.Projectiles.IgniterEx
 					{
 						if (Main.rand.NextBool(10))
 						{
-							CombatText.NewText(player.getRect(), Color.LightSkyBlue, "MAGIC!", true, false);
+							CombatText.NewText(player.getRect(), Color.LightSkyBlue, LangText.Misc("IgniterStart.Magic"), true, false);
 							npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 							float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 							float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
@@ -1625,7 +1626,7 @@ namespace Stellamod.Projectiles.IgniterEx
 					{
 						if (Main.rand.NextBool(3))
 						{
-							CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+							CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 							npc.SimpleStrikeNPC(Projectile.damage * 1, 1, crit: false, Projectile.knockBack);
 						}
 
@@ -1686,7 +1687,7 @@ namespace Stellamod.Projectiles.IgniterEx
 							{
 								if (Main.rand.NextBool(3))
 								{
-									CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+									CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("IgniterStart.Strike"), true, false);
 									npc.SimpleStrikeNPC(Projectile.damage * 16, 1, crit: false, Projectile.knockBack);
 									npc.SimpleStrikeNPC(Projectile.damage * 15, 1, crit: false, Projectile.knockBack);
 								}

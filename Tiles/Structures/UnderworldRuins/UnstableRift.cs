@@ -92,12 +92,12 @@ namespace Stellamod.Tiles.Structures.UnderworldRuins
 
             if (!Main.hardMode)
             {
-				Main.NewText("A disturbing entity prevents the rift from opening...", Color.Red);
+				Main.NewText(LangText.Misc("UnstableRift.1"), Color.Red);
 			} else if (!NPC.AnyNPCs(ModContent.NPCType<Sylia>()))
 			{
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
-					Main.NewText("Sylia rips through!", Color.Purple);
+					Main.NewText(LangText.Misc("UnstableRift.2"), Color.Purple);
 					int npcID = NPC.NewNPC(new EntitySource_TileBreak(i + 10, j), i * 16, j * 16, ModContent.NPCType<Sylia>());
 					Main.npc[npcID].netUpdate2 = true;
 				}
@@ -144,7 +144,7 @@ namespace Stellamod.Tiles.Structures.UnderworldRuins
 			player.cursorItemIconID = -1;
 			if (chest < 0)
 			{
-				player.cursorItemIconText = Language.GetTextValue("Disturb the Unstable Rift...?");
+				player.cursorItemIconText = LangText.Misc("UnstableRift.3");
 			}
 			else
 			{

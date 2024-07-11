@@ -31,9 +31,7 @@ namespace Stellamod.Items.Armors.Alcalite
 
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = 
-                "\n+1 max minions" +
-                "\nThe stars of Illuria protect you!";
+            player.setBonus = LangText.SetBonus(this);//"\n+1 max minions" + "\nThe stars of Illuria protect you!");
 
             player.maxMinions += 1;
             player.GetModPlayer<MyPlayer>().HasAlcaliteSet = true;

@@ -1,0 +1,195 @@
+EnterWorld: "[Lunar Veil] Hi hi! Thank you for checking out the mod! If you want more, you can check out my game Diari!"
+TomeofRaining: Zui decided to help you make it rain!
+LittleWand: Aurorean Stars are... wait, what?
+DreadMedalion: The air fills with dread...
+
+EDR: {
+	Occur: A disruption has occured!
+	1: Initiate death protocol
+	2: The end is nigh…
+	3: Tactical nuke incoming…
+	4: We’re here to contact you about your deaths extended warranty
+	5: Brace for impact…
+	6: Not Contaminated life form detacted!
+	7: Prepare for voltile Termenation!
+	8: You’re going to have a bad time…
+	9: Usage outside of contamination detacted!
+}
+
+RadianceStone: {
+	1: Zui has come to have some fun!
+	2: Lets get started!
+	3: Lets have some fun shall we?
+	4: Zui is coming to party!
+	5: You wanna fight today??
+	6: Here I come :)
+	7: I don't wanna fight right now :(
+	8: Prepare to get rekted
+	9: You're gonna have a good time
+	10: Womp womp you used the item :)
+}
+
+STARBLOCKER: The Aurorean Starfall has been blocked! :(
+AuroreanStarbomber: STARBOMBER crashes down!
+CinderChest: Heavy chest opened!
+
+FlowerSummon: {
+	1: The Stone Guardian has awoken!
+	2: Old Guard's Shrine
+}
+
+SunAlter: {
+	1: Come back with a Sun Stone to fight the warrior of the desert.
+	2: Sun Stalker has awoken!
+}
+
+AurelusSummon: {
+	1: Singularity has awoken!
+	2: What are you doing?? Trying to summon another?
+	3: Come at with the key of void and moon, Verlia's Singularity awaits.
+}
+
+MorrowChest: The chest cannot be open in the light of the day due to a lock, apparently these feral creatures use their weapons at night. Try again at night.
+
+JackPost: {
+	1: Jack has awoken!
+	2: Only a wandering essence can allude my precense, only for you Gothivia! :)
+	3: Jack's Shrine
+}
+
+RestingGrounds: {
+	1: Forgotten Puppet Daedus has Awoken!
+	2: I cannot raise my axe to one of such dedication to our goddess Gothivia, thank you for your efforts...
+	3: Disturb Ruined Tablet?
+}
+
+CathedralChest: The chest cannot be open at day due to the Empress of the Moon, Verlia, a special seal is over it. Try again at night.
+
+VerliasShrine: {
+	1: Verlia has been freed from her lantern!
+	2: See me in the moonlight!
+	3: Come at night with our kindred in hand, see you soon for our dance will commend :)
+	4: Verlia's Shrine
+}
+
+UnstableRift: {
+	1: A disturbing entity prevents the rift from opening...
+	2: Sylia rips through!
+	3: Disturb the Unstable Rift...?
+}
+
+EventWorld: {
+	1: The Gintze army has been defeated!
+	2: Aurorean Stars are falling!
+	3: The Aurorean starfall has ended
+}
+
+BreakMe: Break Me!
+ShrineBridgetC: Hey hey over here break me please :(
+Gothiv: Gothivia's sleeping hut
+LabCrystal: Insert a Focal Crystal
+
+Dice: {
+	1: Wohooo
+	2: Omg, its something!
+	3: Are you disappointed? You should be.
+	4: Wow, you have no maidens and no luck...
+	5: Sooo lucky!
+}
+
+Bridget: {
+	1: How can someone be so interesting?
+	2: Hiii its a me Bridget your friendly companion :3
+	3: Please dont replace me :(
+	4: This world is soo pretty! Just like you :p
+	5: Im so much better than Lucy :)
+	6: I used to have a roommate, they stink really badly
+	7: I love these journeys! I hope you won't throw me away...
+	8: Are you gonna get married someday? I'm always an option yknow >~<
+	9: When I was in my human form I was the Queen of the uh, morrow? I forgot.
+	10: Don't forget to brush your teeth! Its good for you :)
+	11: I completely forgot what it feels like to be flat and everyday you hold me is a reminder.
+	12: I can't tell if I like you holding me or sexual assault.
+	13: I have so many stories I can share to you :)
+	14: My sister turned me into a sword but I think you can get me out rightttt?
+	15: I totally don't like you at all, all you did was pull me from a stone yknow :(
+	16: You're soooo stupid :)
+	17: I'm you're daily reminder that you aren't alone :p
+	18: Hey so will you take me all the way to the end, I've taken a liking to you >:)
+	19: It's not hehe, its HEHE
+	20: I loveee painting, I think I could get back to form if I'm merged with something related
+	21: Use me for a spin will ya!
+	22: I'm not your normal yandere girl you know, please dont leave me :<
+	23: It's all fun and games until you get slashed by a dirt sword with boobs
+	24: I am so R rated
+	25: Shawty get your head in the game
+	26: Can we get to painting or volleyball pleasee?
+	27: You're holding me in all the right ways >:)
+	28: I dont care what you are, you obviously cared enough to get me :P
+	29: LALALA you're wrong I'm right LALALALA
+}
+
+FlamecrestPlayer: Resisted!
+
+DiceinNPC: {
+	1: Wohooo
+	2: Omg, its something!
+	3: Are you disappointed? You should be.
+	4: Wow, you have no maidens and no luck...
+	5: Sooo lucky!
+	6: WHATTT, you should not be this lucky...
+	7: Pfffft HAHA, laugh at this user.
+	8: Sometimes, you just have to tie your hair back and get on your knees.
+	9: Womp womp
+	10: NOW THIS IS AMAZEBALLS
+}
+
+BloodCystDead: {
+	1: The dread shrouds you...
+	2: Darkness...
+}
+
+GothiviaDeath: {
+	1: Stoppp~
+	2: I'm cant-
+}
+
+IrradiatedNest: {
+	1: Significant damage detected...
+	2: deploying Communication transmission device
+	3: Transmission successful!
+	4: Back up vessel destroyed...
+	5: Proceed with D. S. D. P!
+}
+
+StarrVeriplant: {
+	1: Weak!
+	2: Armor Broke!
+	3: Player Wrath UP!
+	4: Player Speed UP!
+}
+
+SunStalkerPreSpawn: The Sun...
+
+ZuiDeath: {
+	1: I think I have a headache...
+	2: I'll see you later at my shop! Fun time :)
+}
+
+DesertRune: Desert Harvest Collected!
+IceRune: Ice Harvest Collected!
+JungleRune: Jungle Harvest Collected!
+OceanRune: Ocean Harvest Collected!
+SkyRune: Sky Harvest Collected!
+OverworldRune: Overworld Harvest Collected!
+PearledGold: Veriplant Harvest Collected!
+BoundGia: Im being taken away help!
+Flower: Flower destroyed
+
+IgniterStart: {
+	Strike: STRIKE!!
+	Magic: MAGIC!
+}
+
+IlluriaChest: Locked by an Overgrown plant...
+IshtarChest: Zui's access needed.
