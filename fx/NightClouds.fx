@@ -82,8 +82,8 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
     float noise3 = tex2D(uImage1, coords * 2 + float2(time * -0.0039 + 0.83, 0.0) + uImageOffset);
     float noise = (noise1 + noise2 + noise3) * 0.4;
     
-    float4 color = tex2D(uImage1, coords) * noise;
-    return float4(color.r, color.g, color.b, 0.0);
+    float4 color = tex2D(uImage1, coords) * noise * 0.4;
+    return lerp(float4(0.0, 0.0, 0.0, 0.0), float4(color.r, color.g, color.b, 0.0), uIntensity) * uIntensity;
 }
 
 technique Technique1

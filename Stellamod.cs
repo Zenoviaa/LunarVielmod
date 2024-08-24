@@ -40,6 +40,15 @@ namespace Stellamod
             Asset<Effect> miscShader = Assets.Request<Effect>("fx/Clouds", AssetRequestMode.ImmediateLoad);
             GameShaders.Misc["Stellamod:Clouds"] = new MiscShaderData(miscShader, "ScreenPass");
 
+            Asset<Effect> miscShader2 = Assets.Request<Effect>("fx/CloudsFront", AssetRequestMode.ImmediateLoad);
+            GameShaders.Misc["Stellamod:CloudsFront"] = new MiscShaderData(miscShader2, "ScreenPass");
+           
+            Asset<Effect> miscShader3 = Assets.Request<Effect>("fx/NightClouds", AssetRequestMode.ImmediateLoad);
+            GameShaders.Misc["Stellamod:NightClouds"] = new MiscShaderData(miscShader3, "ScreenPass");
+
+            Asset<Effect> gradient = Assets.Request<Effect>("fx/Gradient", AssetRequestMode.ImmediateLoad);
+            GameShaders.Misc["Stellamod:Gradient"] = new MiscShaderData(gradient, "ScreenPass");
+
             SkyManager.Instance["Stellamod:CloudySky"] = new CloudySky();
             SkyManager.Instance["Stellamod:CloudySky"].Load();
             Filters.Scene["Stellamod:CloudySky"] = new Filter((new ScreenShaderData("FilterMiniTower")).UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
