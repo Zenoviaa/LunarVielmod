@@ -15,27 +15,7 @@ using System.Linq;
 
 namespace Stellamod
 {
-    public class TestPlayer : ModPlayer
-    {
-        public override void PostUpdateMiscEffects()
-        {
-            base.PostUpdateMiscEffects();
-            if (Main.netMode == NetmodeID.Server)
-                return;
-            /*
-            if (!SkyManager.Instance["Stellamod:CloudySky"].IsActive())
-            {
-                Vector2 targetCenter = Player.Center;
-                SkyManager.Instance.Activate("Stellamod:CloudySky", targetCenter);
-            }
-            if (!SkyManager.Instance["Stellamod:DesertSky"].IsActive())
-            {
-                Vector2 targetCenter = Player.Center;
-                SkyManager.Instance.Activate("Stellamod:DesertSky", targetCenter);
-            }*/
-        }
-    }
-
+   
     public class Stellamod : Mod
     {
         public Stellamod()
