@@ -42,8 +42,6 @@ namespace Stellamod.Water
                     spriteBatch.Draw(tex2, pos - new Vector2(tsp.X % tex2.Width, tsp.Y % tex2.Height), null, Color.White * 0.65f);
                 }
             }
-            spriteBatch.End();
-            Main.spriteBatch.Begin(default, BlendState.Additive, SamplerState.PointWrap, default, default);
 
             tex2 = ModContent.Request<Texture2D>("Stellamod/Textures/WaterGradient", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
             for (int i = -tex2.Width; i <= Main.screenWidth + tex2.Width; i += tex2.Width)
@@ -58,8 +56,7 @@ namespace Stellamod.Water
 
                     Vector2 tsp = Main.screenPosition;
 
-                    for (int w = 0; w < 20; w++)
-                        spriteBatch.Draw(tex2, pos - new Vector2(tsp.X % tex2.Width, tsp.Y % tex2.Height), null, Color.White);
+                    spriteBatch.Draw(tex2, pos - new Vector2(tsp.X % tex2.Width, tsp.Y % tex2.Height), null, Color.White);
                 }
             }
         }
@@ -88,9 +85,6 @@ namespace Stellamod.Water
                 }
             }
 
-            spriteBatch.End();
-            Main.spriteBatch.Begin(default, BlendState.Additive, SamplerState.PointWrap, default, default);
-
             tex2 = ModContent.Request<Texture2D>("Stellamod/Textures/WaterGradient", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
             for (int i = -tex2.Width; i <= Main.screenWidth + tex2.Width; i += tex2.Width)
             {
@@ -103,9 +97,7 @@ namespace Stellamod.Water
                         pos -= Main.sceneWaterPos - Main.screenPosition;
 
                     Vector2 tsp = Main.screenPosition;
-
-                    for (int w = 0; w < 20; w++)
-                        spriteBatch.Draw(tex2, pos - new Vector2(tsp.X % tex2.Width, tsp.Y % tex2.Height), null, Color.White);
+                    spriteBatch.Draw(tex2, pos - new Vector2(tsp.X % tex2.Width, tsp.Y % tex2.Height), null, Color.White);
                 }
             }
         }
