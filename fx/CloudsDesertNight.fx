@@ -51,7 +51,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
     float magnitude = length(dist);
     
     float4 finalColor = float4(color.r, color.g, color.b, 0.0);
-    float4 finalCColor = float4(ColorMap(noise).rgb, length(finalColor) / 3) * 0.4;
+    float4 finalCColor = float4(ColorMap(noise).rgb, length(finalColor) / 3) * 0.28;
     
     return lerp(float4(0.0, 0.0, 0.0, 0.0), finalCColor, pow(abs(magnitude), 1.25));
 }
