@@ -47,6 +47,7 @@ float4 PixelShaderFunction(float4 screenSpace : TEXCOORD0) : COLOR0
     if (color.r > color.b)
         return color;
     
+
     float factor = (0.6 + sin(power * 30.0 + time) * 0.4) * power;
     float bright = ((color.r + color.b + color.g) / 3.0);
 
@@ -66,6 +67,7 @@ float4 PixelShaderFunction(float4 screenSpace : TEXCOORD0) : COLOR0
     color2.r += color3.r * power * pow(bright, 2) * 40.0;
 
     return color2 * ((1.0 - power * 0.8));
+
 }
 
 technique Technique1

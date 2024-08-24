@@ -64,8 +64,17 @@ namespace Stellamod
             GameShaders.Misc["Stellamod:CloudsDesertNight"] = new MiscShaderData(miscShader5, "ScreenPass");
 
             var miscShader6 = new Ref<Effect>(Instance.Assets.Request<Effect>("fx/Water", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value);
-            Filters.Scene["Stellamod:Water"] = new Filter(new ScreenShaderData(miscShader6, "PrimitivesPass"), EffectPriority.High);
+            Filters.Scene["Stellamod:Water"] = new Filter(new ScreenShaderData(miscShader6, "PrimitivesPass"), EffectPriority.VeryHigh);
             Filters.Scene["Stellamod:Water"].Load();
+
+            var miscShader7 = new Ref<Effect>(Instance.Assets.Request<Effect>("fx/WaterBasic", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value);
+            Filters.Scene["Stellamod:WaterBasic"] = new Filter(new ScreenShaderData(miscShader7, "PrimitivesPass"), EffectPriority.VeryHigh);
+            Filters.Scene["Stellamod:WaterBasic"].Load();
+
+
+            var miscShader8 = new Ref<Effect>(Instance.Assets.Request<Effect>("fx/Lava", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value);
+            Filters.Scene["Stellamod:Lava"] = new Filter(new ScreenShaderData(miscShader8, "PrimitivesPass"), EffectPriority.VeryHigh);
+            Filters.Scene["Stellamod:Lava"].Load();
 
             Asset<Effect> gradient = Assets.Request<Effect>("fx/Gradient", AssetRequestMode.ImmediateLoad);
             GameShaders.Misc["Stellamod:Gradient"] = new MiscShaderData(gradient, "ScreenPass");
@@ -73,6 +82,7 @@ namespace Stellamod
             SkyManager.Instance["Stellamod:CloudySky"] = new CloudySky();
             SkyManager.Instance["Stellamod:CloudySky"].Load();
             Filters.Scene["Stellamod:CloudySky"] = new Filter((new ScreenShaderData("FilterMiniTower")).UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
+
 
             SkyManager.Instance["Stellamod:DesertSky"] = new DesertSky();
             SkyManager.Instance["Stellamod:DesertSky"].Load();

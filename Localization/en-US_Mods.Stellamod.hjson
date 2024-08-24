@@ -1,1 +1,6 @@
-
+Biomes: {
+	CustomOceanBiome: {
+		DisplayName: Custom Ocean Biome
+		TownNPCDialogueName: the Custom Ocean Biome
+	}
+}

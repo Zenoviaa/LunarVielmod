@@ -43,8 +43,7 @@ float4 PixelShaderFunction(float4 screenSpace : TEXCOORD0) : COLOR0
     float4 color = tex2D(samplerTex, st + offset);
     
     // Bootleg way to stop lava from being transformed
-
-    if (color.r > color.b)
+    if (color.b > color.r)
         return color;
     
     float factor = (0.6 + sin(power * 30.0 + time) * 0.4) * power;
@@ -61,8 +60,8 @@ float4 PixelShaderFunction(float4 screenSpace : TEXCOORD0) : COLOR0
 
     bright = min(bright, 0.25);
 
-    color2.g += color3.r * power * pow(bright, 2) * 60.0;
-    color2.b += color3.r * power * pow(bright, 2) * 60.0;
+    color2.g += color3.g * power * pow(bright, 2) * 60.0;
+    color2.b += color3.b * power * pow(bright, 2) * 60.0;
     color2.r += color3.r * power * pow(bright, 2) * 40.0;
 
     return color2 * ((1.0 - power * 0.8));
