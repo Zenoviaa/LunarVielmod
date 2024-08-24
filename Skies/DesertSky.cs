@@ -44,7 +44,7 @@ namespace Stellamod.Skies
 
         private void Parallax()
         {
-            Vector2 parallaxAmt = new Vector2(1f, 0.25f);
+            Vector2 parallaxAmt = new Vector2(1.5f, 0.25f);
             Vector2 refPosition = Main.Camera.UnscaledPosition;
             Vector2 diff = _lastCameraPos - refPosition;
             _parallax += diff * parallaxAmt;
