@@ -10,6 +10,8 @@ namespace Stellamod.Trails
 {
     public class PrimitiveTrail
     {
+
+        //Made by Dominick
         public struct VertexPosition2DColor : IVertexType
         {
             public Vector2 Position;

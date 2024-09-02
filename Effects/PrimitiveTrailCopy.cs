@@ -11,6 +11,7 @@ namespace Stellamod.Effects
 {
     public class PrimitiveTrailCopy
     {
+        //Made by Dominick
         public struct VertexPosition2DColor : IVertexType
         {
             public Vector2 Position;

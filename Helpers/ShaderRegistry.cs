@@ -14,7 +14,7 @@ namespace Stellamod.Helpers
         public static string VampKnives_Lightning_Trail => "VampKnives:LightningTrail";
         public static string VampKnives_Generic_Laser_Shader => "VampKnives:GenericLaserShader";
         public static string VampKnives_Light_Beam_Vertex_Shader => "VampKnives:LightBeamVertexShader";
-        public static string VampKnives_Artemis_Laser_Shader => "VampKnives:ArtemisLaserShader";
+        
         public static string VampKnives_Fire => "VampKnives:Fire";
         public static string StellamodFireWhiteShader => "VampKnives:FireWhite";
 
@@ -75,8 +75,7 @@ namespace Stellamod.Helpers
             Ref<Effect> LightBeamVertexShader = new(Assets.Request<Effect>("Effects/Primitives/LightBeamVertexShader", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc[ShaderRegistry.VampKnives_Light_Beam_Vertex_Shader] = new MiscShaderData(LightBeamVertexShader, "TrailPass");
 
-            Ref<Effect> ArtemisLaserShader = new(Assets.Request<Effect>("Effects/Primitives/ArtemisLaserShader", AssetRequestMode.ImmediateLoad).Value);
-            GameShaders.Misc[ShaderRegistry.VampKnives_Artemis_Laser_Shader] = new MiscShaderData(ArtemisLaserShader, "TrailPass");
+            
 
             Ref<Effect> shadowflameShader = new(Assets.Request<Effect>("Effects/Primitives/Shadowflame", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc[ShaderRegistry.VampKnives_Fire] = new MiscShaderData(shadowflameShader, "TrailPass");

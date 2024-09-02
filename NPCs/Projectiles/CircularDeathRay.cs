@@ -152,14 +152,11 @@ namespace Stellamod.NPCs.Projectiles
 
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.ArtemisLaserVertexShader);
+            
 
             var oldBlendState = Main.instance.GraphicsDevice.BlendState;
             Main.instance.GraphicsDevice.BlendState = BlendState.Additive;
-            TrailRegistry.ArtemisLaserVertexShader.UseSaturation(1.4f);
-            TrailRegistry.ArtemisLaserVertexShader.UseOpacity(-0.1f);
-            TrailRegistry.ArtemisLaserVertexShader.SetShaderTexture(InfernumTextureRegistry.HarshNoise);
-            TrailRegistry.ArtemisLaserVertexShader.Shader.Parameters["uStretchReverseFactor"].SetValue((LaserLength + 1f) / MaxLaserLength);
+
 
             List<float> originalRotations = new();
             List<Vector2> points = new();
