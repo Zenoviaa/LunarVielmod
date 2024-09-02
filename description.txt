@@ -66,7 +66,7 @@ Worshipping spots! Green Sun is the main event during this update and it's a lon
 polish.
 --------------
 1.6.1 - Many boss buffs and nerfs, new weapons, 70+ More switchable weapons and balancing to accessories!
-
+1.6.2 - Gave credit to some code for where it was due. Bug fixes and it's official name of Legacy added.
 
 
 
