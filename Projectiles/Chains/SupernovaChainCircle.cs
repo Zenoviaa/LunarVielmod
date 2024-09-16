@@ -4,6 +4,7 @@ using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -32,7 +33,7 @@ namespace Stellamod.Projectiles.Chains
             Projectile.timeLeft = 360;
             Projectile.tileCollide = false;
             Projectile.scale = 0.001f;
-
+            Projectile.hide = true;
             //Points on the circle
             CirclePos = new Vector2[128];
         }
@@ -148,6 +149,11 @@ namespace Stellamod.Projectiles.Chains
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
+        }
+
+        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+        {
+            behindNPCs.Add(index);
         }
 
         internal PrimitiveTrail BeamDrawer;
