@@ -83,7 +83,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.LightningTrail);
             TrailDrawer.DrawPrims(NPC.oldPos, NPC.Size * 0.5f - Main.screenPosition, 155);
-            return false;
+            return true;
 
         }
         public override Color? GetAlpha(Color lightColor)
