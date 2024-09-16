@@ -15,7 +15,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         internal PrimitiveTrailCopy BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];
-        public const float LaserLength = 2400f;
+        public const float LaserLength = 3200f;
 
         public override void SetDefaults()
         {
