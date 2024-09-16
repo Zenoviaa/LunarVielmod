@@ -42,7 +42,8 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.noUseGraphic = true;
 			Item.crit = 12;
 		}
-		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+		public override void ModifyShootStats(Player player, ref Vector2 position, 
+			ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
 		{
 			Vector2 Offset = Vector2.Normalize(velocity) * 1f;
 
@@ -50,7 +51,27 @@ namespace Stellamod.Items.Weapons.Melee
 			{
 				position += Offset;
 			}
+
+
+			if(player.altFunctionUse == 2)
+			{
+				type = ModContent.ProjectileType<InkingSThrow>();
+            }
+			else
+            {		
+				combowombo++;
+                if (combowombo == 4)
+                {
+                    type = ModContent.ProjectileType<InkingSProj>();
+                    combowombo = 0;
+                }
+                else
+                {
+                    type = ModContent.ProjectileType<InkingSProj2>();
+                }
+            }
 		}
+
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(2f, -2f);
@@ -64,7 +85,6 @@ namespace Stellamod.Items.Weapons.Melee
 		{
 			if (player.altFunctionUse == 2)
 			{
-				Item.shoot = ModContent.ProjectileType<InkingSThrow>();
 				Item.noUseGraphic = true;
 				Item.useTime = 100; // The Item's use time in ticks (60 ticks == 1 second.)
 				Item.useAnimation = 30; // The length of the Item's use animation in ticks (60 ticks == 1 second.)
@@ -73,57 +93,35 @@ namespace Stellamod.Items.Weapons.Melee
 				Item.knockBack = 11;
 
 				Item.shootSpeed = 0f; // the speed of the projectile (measured in pixels per frame)
-				Item.channel = true;
-				
+				Item.channel = true;			
 			}
 			else
-			{
-				
-			}
+            {
+                Item.useTime = 200;
+                Item.useAnimation = 90;
+                Item.shoot = ModContent.ProjectileType<InkingSProj>();
+                Item.shootSpeed = 20f;
+            }
 
 			return base.CanUseItem(player);
 		}
+
+
+		
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			if (player.altFunctionUse == 2)
 			{
-				
 				return true;
 			}
 
-
-
 			if (player.altFunctionUse != 2)
 			{
-
-
-				combowombo++;
 				int dir = AttackCounter;
 				AttackCounter = -AttackCounter;
 				Projectile.NewProjectile(source, position, velocity, type, (damage + player.GetModPlayer<MyPlayer>().PPPaintDMG2), 
 					knockback, player.whoAmI, 1, dir);
-
-				if (combowombo == 3 || combowombo == 4)
-				{
-					Item.knockBack = 9;
-				}
-				else
-				{
-					Item.knockBack = 4;
-				}
-
-				if (combowombo == 4)
-				{
-					Item.shoot = ModContent.ProjectileType<InkingSProj>();
-					combowombo = 0;
-				}
-				else
-				{
-					Item.shoot = ModContent.ProjectileType<InkingSProj2>();
-				}
-
 			}
-
 			
 			return false;
 		}

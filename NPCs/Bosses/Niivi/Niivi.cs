@@ -226,7 +226,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         public override void SetDefaults()
         {
             //Stats
-            NPC.lifeMax = 232000;
+            NPC.lifeMax = 262000;
             NPC.defense = 140;
             NPC.damage = 260;
             NPC.width = (int)NiiviHeadSize.X;
