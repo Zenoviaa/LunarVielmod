@@ -142,7 +142,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
             // Sets the description of this NPC that is listed in the bestiary
             bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
                 new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("A part of gothivia's largest creations")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A part of gothivia's largest creations"))
             });
         }
 

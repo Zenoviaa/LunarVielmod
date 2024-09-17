@@ -248,7 +248,7 @@ namespace Stellamod.NPCs.Morrow
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
 			{
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("A much richer form of the trible worshippers")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A much richer form of the trible worshippers"))
 			});
 		}
 	}

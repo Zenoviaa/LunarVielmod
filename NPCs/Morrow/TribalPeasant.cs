@@ -255,7 +255,7 @@ namespace Stellamod.NPCs.Morrow
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
 			{
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("Even the weakest, most poor among the warriors in the morrow are still decent foes..")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Even the weakest, most poor among the warriors in the morrow are still decent foes.."))
 			});
 		}
 	}

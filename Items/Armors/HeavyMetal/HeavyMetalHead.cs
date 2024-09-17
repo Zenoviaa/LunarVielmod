@@ -1,3 +1,4 @@
+using Stellamod.Helpers;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.ID;
@@ -42,8 +43,7 @@ namespace Stellamod.Items.Armors.HeavyMetal
             player.maxMinions += 1;
             Main.LocalPlayer.GetModPlayer<MyPlayer>().HMArmor = true;
       
-            player.setBonus = "2 Gintze Guards come to fight for you" +
-                 "\n+1 Summons!";  // This is the setbonus tooltip
+            player.setBonus = LangText.SetBonus(this);//"2 Gintze Guards come to fight for you"  + "\n+1 Summons!");  // This is the setbonus tooltip
         }
 
         public override void AddRecipes()

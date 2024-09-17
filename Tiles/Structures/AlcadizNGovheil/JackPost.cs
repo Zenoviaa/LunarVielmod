@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable.Cathedral;
 using Stellamod.NPCs.Bosses.Caeva;
@@ -113,7 +114,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			{
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
-					Main.NewText("Jack has awoken!", Color.Gold);
+					Main.NewText(LangText.Misc("JackPost.1"), Color.Gold);
 					int npcID = NPC.NewNPC(new EntitySource_TileBreak(i + 10, j), i * 16, j * 16, ModContent.NPCType<Jack>());
 					Main.npc[npcID].netUpdate2 = true;
 				}
@@ -139,12 +140,12 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			{
 				if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<Jack>()))
 				{
-					Main.NewText("Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
+					Main.NewText(LangText.Misc("JackPost.2"), Color.Gold);
 				}
 
 				else
 				{
-					Main.NewText("Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
+					Main.NewText(LangText.Misc("JackPost.2"), Color.Gold);
 
 
 				}
@@ -208,7 +209,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
                 }
                 if (!player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()))
                 {
-                    Main.NewText("Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
+                    Main.NewText"Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
                 }
             }
 
@@ -246,7 +247,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			player.cursorItemIconID = -1;
 			if (chest < 0)
 			{
-				player.cursorItemIconText = Language.GetTextValue("Jack's Shrine");
+				player.cursorItemIconText = LangText.Misc("JackPost.3");
 			}
 			else
 			{

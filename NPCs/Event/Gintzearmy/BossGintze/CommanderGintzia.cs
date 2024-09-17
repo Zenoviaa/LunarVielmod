@@ -102,11 +102,11 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("He's evil yet so weak. This fellow betrayed Gothivia during their war against Fenix and his part of the army joined the other side for power."),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "He's evil yet so weak. This fellow betrayed Gothivia during their war against Fenix and his part of the army joined the other side for power.")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Commander Gintzia, the betrayer")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Commander Gintzia, the betrayer", "2"))
             });
         }
 

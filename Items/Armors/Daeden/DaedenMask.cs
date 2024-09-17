@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Materials;
+﻿using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -49,9 +50,7 @@ namespace Stellamod.Items.Armors.Daeden
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "This armor is really scuffed..." +
-				"\nGives the ability of a molten quiver!" +
-				"\n-Stuck at 400 max HP, but 20% increased damage for Rangers";  // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"This armor is really scuffed..." + "\nGives the ability of a molten quiver!" + "\n-Stuck at 400 max HP, but 20% increased damage for Rangers");  // This is the setbonus tooltip
 			player.GetDamage(DamageClass.Ranged) *= 1.20f;
 			player.statLifeMax2 = 400;
 			player.hasMoltenQuiver = true;

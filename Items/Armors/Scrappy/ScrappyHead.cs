@@ -6,6 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Materials;
+using Stellamod.Helpers;
 
 namespace Stellamod.Items.Armors.Scrappy
 {
@@ -53,7 +54,7 @@ namespace Stellamod.Items.Armors.Scrappy
 
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = "Summons a turret over your head to shoot a laser at nearby enemies!\n8% increased magic and summon damage";
+            player.setBonus = LangText.SetBonus(this);//"Summons a turret over your head to shoot a laser at nearby enemies!\n8% increased magic and summon damage");
             player.GetDamage(DamageClass.Summon) += 0.08f;
             player.GetDamage(DamageClass.Magic) += 0.08f;
             player.GetModPlayer<ScrappyPlayer>().hasSetBonus = true;

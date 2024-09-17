@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Placeable.Cathedral;
 using Terraria;
 using Terraria.Audio;
@@ -83,7 +84,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 		{
 			if (Main.dayTime)
 			{
-				Main.NewText("The chest cannot be open at day due to the Empress of the Moon, Verlia, a special seal is over it. Try again at night.", Color.LightBlue);
+				Main.NewText(LangText.Misc("CathedralChest"), Color.LightBlue);
 				return false;
 			}
 

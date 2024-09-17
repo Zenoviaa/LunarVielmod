@@ -184,7 +184,7 @@ namespace Stellamod.Tiles.Ishtar
 				}
 				else
 				{
-					CombatText.NewText(player.getRect(), Color.LightSkyBlue, "Zui's access needed.", true, false);
+					CombatText.NewText(player.getRect(), Color.LightSkyBlue, LangText.Misc("IshtarChest"), true, false);
 				}
 
 				return true;

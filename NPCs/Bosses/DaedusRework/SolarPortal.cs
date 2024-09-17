@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using System;
 using Terraria;
 using Terraria.GameContent.Bestiary;
@@ -91,7 +92,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Graveyard,
-                new FlavorTextBestiaryInfoElement("A scarecrow reanimated by the passion of wandering flames"),
+                new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A scarecrow reanimated by the passion of wandering flames")),
             });
         }
         public override void HitEffect(NPC.HitInfo hit)

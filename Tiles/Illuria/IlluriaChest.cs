@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Placeable;
 using Terraria;
 using Terraria.Audio;
@@ -182,7 +183,7 @@ namespace Stellamod.Tiles.Illuria
 				}
 				else
 				{
-                    CombatText.NewText(player.getRect(), Color.LightSkyBlue, "Locked by an Overgrown plant...", true, false);
+                    CombatText.NewText(player.getRect(), Color.LightSkyBlue, LangText.Misc("IlluriaChest"), true, false);
                 }
 
 				return true;

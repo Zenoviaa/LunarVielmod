@@ -150,11 +150,11 @@ namespace Stellamod.NPCs.Bosses.Ereshkigal
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("A mystical veil user who took accountability to chain up Sigfried"),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A mystical veil user who took accountability to chain up Sigfried")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Ereshkigal the Lover")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Ereshkigal the Lover", "2"))
             });
         }
 
@@ -183,18 +183,18 @@ namespace Stellamod.NPCs.Bosses.Ereshkigal
             int partyGirl = NPC.FindFirstNPC(NPCID.Steampunker);
 
             // These are things that the NPC has a chance of telling you when you talk to it.
-            chat.Add(Language.GetTextValue("Leave me and my husband alone"));
-            chat.Add(Language.GetTextValue("You should all be jealous that I'm here."));
-            chat.Add(Language.GetTextValue("Welcome welcome! Come here to feast your eyes on us?"));
-            chat.Add(Language.GetTextValue("Oh dear Sigfried how we've met.."), 1.0);
-            chat.Add(Language.GetTextValue("Come and go you will, you'll be broken more than the others."), 1.0);
+            chat.Add(LangText.Chat(this, "Basic1"));
+            chat.Add(LangText.Chat(this, "Basic2"));
+            chat.Add(LangText.Chat(this, "Basic3"));
+            chat.Add(LangText.Chat(this, "Basic4"), 1.0);
+            chat.Add(LangText.Chat(this, "Basic5"), 1.0);
 
 
             NumberOfTimesTalkedTo++;
             if (NumberOfTimesTalkedTo >= 10)
             {
                 //This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-                chat.Add(Language.GetTextValue("..."));
+                chat.Add("...");
             }
 
             return chat; // chat is implicitly cast to a string.
@@ -220,8 +220,8 @@ namespace Stellamod.NPCs.Bosses.Ereshkigal
 
         public override void SetChatButtons(ref string button, ref string button2)
         { // What the chat buttons are when you open up the chat UI
-            button2 = "Give her something.";
-            button = "Sigfried?";
+            button2 = LangText.Chat(this, "Button2");
+            button = LangText.Chat(this, "Button");
 
         }
 
@@ -239,7 +239,7 @@ namespace Stellamod.NPCs.Bosses.Ereshkigal
                 if (Main.LocalPlayer.HasItem(ModContent.ItemType<SigfriedsPhotoAlbum>()))
                 {
 
-                    Main.npcChatText = $"OMG, OMG OMG OMG OMG";
+                    Main.npcChatText = LangText.Chat(this, "Special1");
 
                     int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<SigfriedsPhotoAlbum>());
                     var entitySource = NPC.GetSource_GiftOrReward();
@@ -274,7 +274,7 @@ namespace Stellamod.NPCs.Bosses.Ereshkigal
                 {
 
 
-                    Main.npcChatText = $"What is this? Nothing of importance to me... You are worthless, you're life is as valuable as a cinderspark summer ant, you mean nothing. You should get me something good NOW. You should burn in the Cinderspark..";
+                    Main.npcChatText = LangText.Chat(this, "Special2");
                 }
 
 
@@ -302,37 +302,37 @@ namespace Stellamod.NPCs.Bosses.Ereshkigal
                 switch (Main.rand.Next(7))
                 {
                     case 0:
-                        Main.npcChatText = $"Oh what a darling he is. Too bad I'm tasked with keeping him here forever right? He can't escape me :3 ";
+                        Main.npcChatText = LangText.Chat(this, "Special3");
 
                         break;
 
                     case 1:
-                        Main.npcChatText = $"Sigfried is my husband you know. We met on the sacred lands of the Illuria, I may have been kicked out numerous times to talk to my king but I'd do anything to get with him";
+                        Main.npcChatText = LangText.Chat(this, "Special14");
 
                         break;
 
                     case 2:
-                        Main.npcChatText = $"He's so pure, going for such high level threats such as Lumi and stealing her singularity. That's the type of man I like, one who isn't afraid to get their hands dirty.";
+                        Main.npcChatText = LangText.Chat(this, "Special15");
 
                         break;
 
                     case 3:
-                        Main.npcChatText = $"I wish we could stay together always.";
+                        Main.npcChatText = LangText.Chat(this, "Special6");
 
                         break;
 
                     case 4:
-                        Main.npcChatText = $"Oh his dear Mordred, I bet he doesn't even know hit wife was trapped within a weapon :)";
+                        Main.npcChatText = LangText.Chat(this, "Special7");
 
                         break;
 
                     case 5:
-                        Main.npcChatText = $"Stupid dragon always getting in the way to getting to my wonderous babe, I would trap it as well but then it'd anger my dearest here.";
+                        Main.npcChatText = LangText.Chat(this, "Special8");
 
                         break;
 
                     case 6:
-                        Main.npcChatText = $"How many doors do I need to store Lumi? I don't really know but I don't care. As long as she doesn't come after my husband.";
+                        Main.npcChatText = LangText.Chat(this, "Special9");
 
                         break;
 

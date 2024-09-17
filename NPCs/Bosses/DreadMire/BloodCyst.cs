@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.Particles;
 using System;
@@ -164,7 +165,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Events.BloodMoon,
-                new FlavorTextBestiaryInfoElement("A crystal which holds the power of summoning one of the three deities"),
+                new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A crystal which holds the power of summoning one of the three deities")),
             });
         }
         

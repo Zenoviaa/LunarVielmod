@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.Trails;
 using System;
 using Terraria;

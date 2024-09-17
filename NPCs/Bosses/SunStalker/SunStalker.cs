@@ -47,11 +47,11 @@ namespace Stellamod.NPCs.Bosses.SunStalker
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Desert,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Former flyer and born where all big birds were born, in the cinderspark."),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Former flyer and born where all big birds were born, in the cinderspark.")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("SunStalker, the Last Talon")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "SunStalker, the Last Talon"))
             });
         }
 

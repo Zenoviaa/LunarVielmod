@@ -41,7 +41,7 @@ namespace Stellamod.Items.Consumables
                 }
                 else
                 {
-                    Main.NewText("The Aurorean Starfall has been blocked! :(", 234, 96, 114);
+                    Main.NewText(LangText.Misc("STARBLOCKER"), 234, 96, 114);
                 }
 
                 EventWorld.Aurorean = false;

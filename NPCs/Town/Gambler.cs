@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Buffs;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.PowdersItem;
@@ -110,11 +111,11 @@ namespace Stellamod.NPCs.Town
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Snow,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("She loves those ruin medals huh?, so much so that she is now attracted to you :("),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "She loves those ruin medals huh?, so much so that she is now attracted to you :(")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Zielie the Gambit")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Zielie the Gambit", "2"))
 			});
 		}
 
@@ -143,20 +144,20 @@ namespace Stellamod.NPCs.Town
 			int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
 			if (partyGirl >= 0 && Main.rand.NextBool(4))
 			{
-				chat.Add(Language.GetTextValue("I love the party girl! Shes really sweet! Umm could you maybe hook us up :(", Main.npc[partyGirl].GivenName));
+				chat.Add(LangText.Chat(this, "Basic1", Main.npc[partyGirl].GivenName));
 			}
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("Hii, it is a me, Zielie! I'm frantic at moments but what can you expect when your in a world full of death and loooove?"));
-			chat.Add(Language.GetTextValue("Ive heard that the morrow is very pretty, I talked to veribloom and she said her society is falling apart though so maybe not."));
-			chat.Add(Language.GetTextValue("I have some things on the market for you, I go around collecting items and I get more stuff when you beat bosses and honestly, you seem really cool! :0"));
-			chat.Add(Language.GetTextValue("You know who is responsible for your dice rolling righttt? You know, uh after you beat bosses? Yeah, thats me ya silly lovebug"), 5.0);
-			chat.Add(Language.GetTextValue("Can we get married?"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic2"));
+			chat.Add(LangText.Chat(this, "Basic3"));
+			chat.Add(LangText.Chat(this, "Basic4"));
+			chat.Add(LangText.Chat(this, "Basic5"), 5.0);
+			chat.Add(LangText.Chat(this, "Basic6"), 0.1);
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 10)
 			{
 				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("Soo are we gonna get married or are you gonna buy something?"));
+				chat.Add(LangText.Chat(this, "Basic7"));
 			}
 
 			return chat; // chat is implicitly cast to a string.
@@ -215,7 +216,7 @@ namespace Stellamod.NPCs.Town
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
 			button = Language.GetTextValue("LegacyInterface.28");
-			button2 = "Marry";
+			button2 = LangText.Chat(this, "Button2");
 			
 		}
 
@@ -253,18 +254,18 @@ namespace Stellamod.NPCs.Town
 
 
 						case 0:
-							CombatText.NewText(NPC.getRect(), Color.White, "OMG YOU DOOOO? Aww youre so sweet \nwe can hold off until a bit later :3", true, false);
+							CombatText.NewText(NPC.getRect(), Color.White, LangText.Chat(this, "Special1"), true, false);
 						
 							
 							player.AddBuff(ModContent.BuffType<Love>(), 36000);
 							break;
 						case 1:
-							CombatText.NewText(NPC.getRect(), Color.White, "Aww cmon, don't be so silly, \nlets wait until we fix this world, \nlet me help you out :P", true, false);
+							CombatText.NewText(NPC.getRect(), Color.White, LangText.Chat(this, "Special2"), true, false);
 							
 							player.AddBuff(ModContent.BuffType<Love>(), 36000);
 							break;
 						case 2:
-							CombatText.NewText(NPC.getRect(), Color.White, "Awaaaaaaaaaaaaaaaaaaaaaaaa~ \n(Zielie is too flustered to continue)", true, false);
+							CombatText.NewText(NPC.getRect(), Color.White, LangText.Chat(this, "Special3"), true, false);
 							
 
 							break;

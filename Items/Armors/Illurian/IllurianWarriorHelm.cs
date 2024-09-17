@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Materials;
+﻿using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Tiles;
 using Terraria;
@@ -45,7 +46,7 @@ namespace Stellamod.Items.Armors.Illurian
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "Allows you to walk on water";  // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"Allows you to walk on water");  // This is the setbonus tooltip
 			player.waterWalk = true;
 
 

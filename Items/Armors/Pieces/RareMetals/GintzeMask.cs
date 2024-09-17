@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Armors.HeavyMetal;
+﻿using Stellamod.Helpers;
+using Stellamod.Items.Armors.HeavyMetal;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -53,8 +54,7 @@ namespace Stellamod.Items.Armors.Pieces.RareMetals
 		{
 			player.maxMinions += 1;
 			Main.LocalPlayer.GetModPlayer<MyPlayer>().HMArmor = true;
-			player.setBonus = "2 Gintze Guards come to fight for you" +
-				 "\n+1 Summons!";  // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"2 Gintze Guards come to fight for you" + "\n+1 Summons!");  // This is the setbonus tooltip
 		}
 	}
 }

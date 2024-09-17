@@ -196,7 +196,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			// Sets the description of this NPC that is listed in the bestiary
 			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
 				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("Verlia, The Empress of the Stars and moon, Vixyl's sister and a master magic swordswoman.")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Verlia, The Empress of the Stars and moon, Vixyl's sister and a master magic swordswoman."))
 			});
 		}
 

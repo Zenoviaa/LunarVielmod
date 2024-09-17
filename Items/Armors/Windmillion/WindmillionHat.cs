@@ -9,6 +9,7 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 using Stellamod.Items.Materials;
+using Stellamod.Helpers;
 
 namespace Stellamod.Items.Armors.Windmillion
 {
@@ -52,9 +53,7 @@ namespace Stellamod.Items.Armors.Windmillion
         public override void UpdateArmorSet(Player player)
         {//30% Increased throwing attack speed!
             //Highly increased throwing weapon knowckback
-            player.setBonus = "I am wind in a million" +
-                "\n30% Increased throwing attack speed!"
-                + "\nHighly increased throwing weapon knowckback";
+            player.setBonus = LangText.SetBonus(this);//"I am wind in a million" + "\n30% Increased throwing attack speed!" + "\nHighly increased throwing weapon knowckback");
             player.GetAttackSpeed(DamageClass.Throwing) += 0.3f;
             player.GetKnockback(DamageClass.Throwing) += 0.3f;
         }

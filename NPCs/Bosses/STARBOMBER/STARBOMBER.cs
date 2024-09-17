@@ -140,11 +140,11 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Destruction is what these bring, Fenix may of purchased some things off the black market, destroy these immediately..."),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Destruction is what these bring, Fenix may of purchased some things off the black market, destroy these immediately...")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("STARBOMBER")
+				new FlavorTextBestiaryInfoElement((this.FullName))
             });
         }
         public override void ModifyNPCLoot(NPCLoot npcLoot)
