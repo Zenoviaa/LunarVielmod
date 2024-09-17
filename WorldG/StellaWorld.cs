@@ -2555,7 +2555,8 @@ namespace Stellamod.WorldG
 
 					rectangle.Location = pointVeri;
 					int[] ChestIndexs = StructureLoader.ReadStruct(pointVeri, "Struct/Veriplant/BigVeriplant1");
-					structures.AddProtectedStructure(rectangle);
+					StructureLoader.ProtectStructure(pointVeri, "Struct/Veriplant/BigVeriplant1");
+		
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
@@ -3191,7 +3192,8 @@ namespace Stellamod.WorldG
 				{
 					Point Loc = new Point(abysmx - 150, abysmy + 100);
 					rectangle.Location = Loc;
-					structures.AddProtectedStructure(rectangle);
+					StructureLoader.ProtectStructure(Loc, "Struct/Aurelus/AurelusTemple2");
+
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Aurelus/AurelusTemple2");
 					foreach (int chestIndex in ChestIndexs)
 					{
@@ -3528,7 +3530,8 @@ namespace Stellamod.WorldG
 						rectangle.Location = pointL;
 						Point ponta = new Point(pointL.X + 150, pointL.Y + 300);
 						int[] ChestIndexs = StructureLoader.ReadStruct(ponta, "Struct/Acid/Lab");
-						structures.AddProtectedStructure(rectangle);
+						StructureLoader.ProtectStructure(ponta, "Struct/Acid/Lab");
+		
 						NPCs.Town.AlcadSpawnSystem.LabTile = ponta;
 
 						foreach (int chestIndex in ChestIndexs)
@@ -7540,9 +7543,7 @@ namespace Stellamod.WorldG
 
 								// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 								StructureMap structures = GenVars.structures;
-								Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Ice/VerliasCathedral");
-								rectangle.Location = Loc;
-								structures.AddProtectedStructure(rectangle);
+								StructureLoader.ProtectStructure(Loc, "Struct/Ice/VerliasCathedral");
 								int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Ice/VerliasCathedral");
 								Chest c = Main.chest[ChestIndexs[0]];
 
