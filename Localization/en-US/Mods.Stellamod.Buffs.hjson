@@ -787,3 +787,8 @@ GothivianFlames: {
 	DisplayName: Gothivian Flames
 	Description: Your soul is burning away...
 }
+
+HolyAnxiety: {
+	DisplayName: Holy Anxiety
+	Description: Mods.Stellamod.Buffs.HolyAnxiety.Description
+}

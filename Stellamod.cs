@@ -372,7 +372,7 @@ namespace Stellamod
 
         public override ModSurfaceBackgroundStyle MenuBackgroundStyle => ModContent.GetInstance<StarbloomBackgroundStyle>();
        
-        public override string DisplayName => "Lunar Veil";
+        public override string DisplayName => "Lunar Veil Legacy";
         public override void OnSelected()
         {
             SoundEngine.PlaySound(SoundID.Tink); // Plays a thunder sound when this ModMenu is selected

@@ -4,25 +4,14 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Mage.Stein;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Melee.Spears;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.NPCs.Bosses.Jack;
-using Stellamod.NPCs.Bosses.singularityFragment;
-using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
-using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
-using Stellamod.NPCs.Bosses.SunStalker;
 using Stellamod.NPCs.Bosses.Verlia;
 using System;
 using System.IO;
-using System.Threading;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -185,10 +174,11 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             Spawner++;
             if (!Superpull)
             {
+                /*
                 for (int i = 0; i < Main.maxPlayers; i++)
                 {
                     Player npcs = Main.player[i];
-
+                   
                     if (npcs.active)
                     {
                         float distancee = Vector2.Distance(NPC.Center, npcs.Center);
@@ -199,7 +189,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                             npcs.velocity -= direction * 0.1f;
                         }
                     }
-                }
+                }*/
             }
 
             if (SingularityPhaze == 2)
@@ -586,54 +576,63 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                         }
                         if (SingularityPhaze == 1)
                         {
+                            int laserProjType = ModContent.ProjectileType<SupernovaZapwarn>();
+                            Vector2 spawnVelocity = Vector2.Zero;
                             if (NPC.ai[0] == 70)
                             {
                                 if (StellaMultiplayer.IsHost)
                                 {
-                                    NPC.NewNPC(entitySource, (int)NPC.Center.X - 1050 + 175, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                                    Vector2 spawnPos = new Vector2(NPC.Center.X - 1050 + 175, NPC.Center.Y);
+                                    Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);      
                                 }
                             }
                             if (NPC.ai[0] == 80)
                             {
                                 if (StellaMultiplayer.IsHost)
                                 {
-                                    NPC.NewNPC(entitySource, (int)NPC.Center.X - 700 + 175, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                                    Vector2 spawnPos = new Vector2(NPC.Center.X - 700 + 175, NPC.Center.Y);
+                                    Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
                                 }
                             }
                             if (NPC.ai[0] == 90)
                             {
                                 if (StellaMultiplayer.IsHost)
                                 {
-                                    NPC.NewNPC(entitySource, (int)NPC.Center.X - 350 + 175, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                                    Vector2 spawnPos = new Vector2(NPC.Center.X - 350 + 175, NPC.Center.Y);
+                                    Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
                                 }
                             }
                             if (NPC.ai[0] == 100)
                             {
                                 if (StellaMultiplayer.IsHost)
                                 {
-                                    NPC.NewNPC(entitySource, (int)NPC.Center.X + 175, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                                    Vector2 spawnPos = new Vector2(NPC.Center.X + 175, NPC.Center.Y);
+                                    Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
                                 }
                             }
                             if (NPC.ai[0] == 110)
                             {
                                 if (StellaMultiplayer.IsHost)
                                 {
-                                    NPC.NewNPC(entitySource, (int)NPC.Center.X + 350 + 175, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                                    Vector2 spawnPos = new Vector2(NPC.Center.X + 350 + 175, NPC.Center.Y);
+                                    Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
                                 }
                             }
                             if (NPC.ai[0] == 120)
                             {
                                 if (StellaMultiplayer.IsHost)
                                 {
-                                    NPC.NewNPC(entitySource, (int)NPC.Center.X + 700 + 175, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
-                                }
+                                        Vector2 spawnPos = new Vector2(NPC.Center.X + 700 + 175, NPC.Center.Y);
+                                        Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
+                                    }
                             }
                             if (NPC.ai[0] == 130)
                             {
                                 if (StellaMultiplayer.IsHost)
                                 {
-                                    NPC.NewNPC(entitySource, (int)NPC.Center.X + 1050 + 175, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
-                                }
+                                        Vector2 spawnPos = new Vector2(NPC.Center.X + 1050 + 175, NPC.Center.Y);
+                                        Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
+                                    }
                             }
                             if (NPC.ai[0] >= 250)
                             {
@@ -699,53 +698,62 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                         NPC.ai[0]++;
                         if (SingularityPhaze == 1)
                         {
+                            int laserProjType = ModContent.ProjectileType<SupernovaZapwarn>();
+                            Vector2 spawnVelocity = Vector2.Zero;
                             if (NPC.ai[0] == 70)
                             {
                                 if (StellaMultiplayer.IsHost)
                                 {
-                                    NPC.NewNPC(entitySource, (int)NPC.Center.X - 1050, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                                    Vector2 spawnPos = new Vector2(NPC.Center.X - 1050, NPC.Center.Y);
+                                    Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
                                 }
                             }
                             if (NPC.ai[0] == 80)
                             {
                                 if (StellaMultiplayer.IsHost)
                                 {
-                                    NPC.NewNPC(entitySource, (int)NPC.Center.X - 700, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                                    Vector2 spawnPos = new Vector2(NPC.Center.X - 700, NPC.Center.Y);
+                                    Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
                                 }
                             }
                             if (NPC.ai[0] == 90)
                             {
                                 if (StellaMultiplayer.IsHost)
                                 {
-                                    NPC.NewNPC(entitySource, (int)NPC.Center.X - 350, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                                    Vector2 spawnPos = new Vector2(NPC.Center.X - 350, NPC.Center.Y);
+                                    Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
                                 }
                             }
                             if (NPC.ai[0] == 100)
                             {
                                 if (StellaMultiplayer.IsHost)
                                 {
-                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                                    Vector2 spawnPos = new Vector2(NPC.Center.X, NPC.Center.Y);
+                                    Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
                                 }
                             }
                             if (NPC.ai[0] == 110)
                             {
                                 if (StellaMultiplayer.IsHost)
                                 {
-                                    NPC.NewNPC(entitySource, (int)NPC.Center.X + 350, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                                    Vector2 spawnPos = new Vector2(NPC.Center.X + 350, NPC.Center.Y);
+                                    Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
                                 }
                             }
                             if (NPC.ai[0] == 120)
                             {
                                 if (StellaMultiplayer.IsHost)
                                 {
-                                    NPC.NewNPC(entitySource, (int)NPC.Center.X + 700, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                                    Vector2 spawnPos = new Vector2(NPC.Center.X + 700, NPC.Center.Y);
+                                    Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
                                 }
                             }
                             if (NPC.ai[0] == 130)
                             {
                                 if (StellaMultiplayer.IsHost)
                                 {
-                                    NPC.NewNPC(entitySource, (int)NPC.Center.X + 1050, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                                    Vector2 spawnPos = new Vector2(NPC.Center.X + 1050, NPC.Center.Y);
+                                    Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
                                 }
                             }
                             if (NPC.ai[0] >= 250)

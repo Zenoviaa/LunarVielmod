@@ -18,7 +18,7 @@ namespace Stellamod.Trails
         public static Asset<Texture2D> STARTRAIL2 => ModContent.Request<Texture2D>("Stellamod/Trails/Beamlight");
         public static MiscShaderData GenericLaserVertexShader => GameShaders.Misc["VampKnives:GenericLaserShader"];
         public static MiscShaderData LightBeamVertexShader => GameShaders.Misc["VampKnives:LightBeamVertexShader"];
-        public static MiscShaderData ArtemisLaserShader => GameShaders.Misc["VampKnives:ArtemisLaserShader"];
+        
         public static MiscShaderData FireVertexShader => GameShaders.Misc["VampKnives:Fire"];
         public static MiscShaderData FireWhiteVertexShader => GameShaders.Misc["VampKnives:FireWhite"];
 

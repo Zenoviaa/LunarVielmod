@@ -32,7 +32,8 @@ namespace Stellamod.Items.Weapons.Melee
 			/* Tooltip.SetDefault("Shoots one bone bolt to swirl and kill your enemies after attacking!" +
 			"\nHitting foes with the melee swing builds damage towards the swing of the weapon"); */
 		}
-		public override void SetDefaults()
+
+        public override void SetDefaults()
 		{
 			Item.damage = 36;
 			Item.DamageType = DamageClass.Melee;

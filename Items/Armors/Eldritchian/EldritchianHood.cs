@@ -26,6 +26,13 @@ namespace Stellamod.Items.Armors.Eldritchian
 		public override void ResetEffects()
         {
 			hasEldritchian = false;
+
+        }
+
+        public override void UpdateDead()
+        {
+            base.UpdateDead();
+			_attackSpeedBoostCounter = 0;
         }
 
         public override void PostUpdateEquips()
@@ -35,7 +42,7 @@ namespace Stellamod.Items.Armors.Eldritchian
 				_attackSpeedBoostCounter--;
 				float durationMultiplier = _attackSpeedBoostCounter / Max_Duration;
 				float boost = durationMultiplier * _attackSpeedBoost;
-				Player.GetAttackSpeed(DamageClass.Throwing) += _attackSpeedBoost;
+				Player.GetAttackSpeed(DamageClass.Throwing) += boost;
 
 				if (Main.rand.NextBool(2))
 				{
@@ -83,6 +90,8 @@ namespace Stellamod.Items.Armors.Eldritchian
 		{
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
+
+		
 
 		public override void SetDefaults()
 		{

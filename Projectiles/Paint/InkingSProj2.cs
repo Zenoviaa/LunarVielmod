@@ -57,14 +57,6 @@ namespace Stellamod.Projectiles.Paint
 			float max = 2.25f;
 			float min = 1.0f;
 			RGB *= multiplier;
-			if (RGB.X > max)
-			{
-				multiplier = 0.5f;
-			}
-			if (RGB.X < min)
-			{
-				multiplier = 1.5f;
-			}
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = 10000;
 			AttachToPlayer();
@@ -95,21 +87,11 @@ namespace Stellamod.Projectiles.Paint
 		public void AttachToPlayer()
 		{
 			Player player = Main.player[Projectile.owner];
-			if (!player.active || player.dead || player.CCed || player.noItems)
-				return;
-
 			Vector2 oldMouseWorld = Main.MouseWorld;
-			Timer++;
 
-
-		
+			Timer++;	
 			if (Timer < 45)
 			{
-
-
-
-
-				player.GetModPlayer<ImmunityPlayer>().HasStealiImmunityAcc = true;
 				if (Main.rand.NextBool(2))
 				{
 					float speedXa = Main.rand.NextFloat(-60f, 60f);
@@ -157,21 +139,12 @@ namespace Stellamod.Projectiles.Paint
 					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + speedXa, Projectile.Center.Y + speedYa, 0, 0, ModContent.ProjectileType<PaintBomb6>(), Projectile.damage * 3, 1, Projectile.owner, 0, 0);
 					Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<PaintBlob2>(), (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
 				}
-
 			}
-
-
-
-		
+	
 			if (Timer < 3 && Main.myPlayer == Projectile.owner)
 			{
-
 				player.velocity = Projectile.DirectionTo(oldMouseWorld) * 20f;
-
 			}
-
-
-
 
 			int dir = (int)Projectile.ai[1];
 			float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft));
@@ -195,7 +168,6 @@ namespace Stellamod.Projectiles.Paint
 			player.itemRotation = rotation * player.direction;
 			player.itemTime = 2;
 			player.itemAnimation = 2;
-			//Projectile.netUpdate = true;
 		}
 
 		public override bool PreAI()
@@ -256,13 +228,10 @@ namespace Stellamod.Projectiles.Paint
 				{
 					target.SimpleStrikeNPC(9999, 1, crit: false, 1);
 					SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.Center);
-
-
 				}
-
-
 			}
 		}
+
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{
 			overPlayers.Add(index);
@@ -309,8 +278,5 @@ namespace Stellamod.Projectiles.Paint
 			return false;
 
 		}
-
-
-
 	}
 }

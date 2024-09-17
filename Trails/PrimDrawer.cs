@@ -10,6 +10,8 @@ namespace Stellamod.Trails
 {
     public class PrimDrawer
     {
+        //Made by Dominick
+
         #region Fields/Properties
 
         public BasicEffect BaseEffect;

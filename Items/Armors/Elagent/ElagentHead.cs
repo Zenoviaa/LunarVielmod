@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Buffs;
 using Stellamod.Items.Materials;
 using Stellamod.NPCs.Bosses.Niivi;
 using Terraria;
@@ -16,15 +17,16 @@ namespace Stellamod.Items.Armors.Elagent
             hasSetBonus = false;
         }
 
-        private bool CanUseEffect(NPC target)
-        {
-            return hasSetBonus && !target.boss && target.type != ModContent.NPCType<Niivi>();
-        }
-
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             //Check if we can proc the effect on this NPC
-            if (!CanUseEffect(target))
+            if (!hasSetBonus)
+                return;
+
+            target.AddBuff(ModContent.BuffType<HolyAnxiety>(), 360);
+
+            //This might look weird, but certain NPCs are immune to this buff :P
+            if (!target.HasBuff(ModContent.BuffType<HolyAnxiety>()))
                 return;
 
             if (hit.DamageType != DamageClass.Summon)

@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.height = 32;
 			Item.useTime = 36;
 			Item.useAnimation = 36;
-			Item.useStyle = ItemUseStyleID.Swing;
+			Item.useStyle = ItemUseStyleID.Shoot;
             Item.value = Item.sellPrice(0, 1, 33, 0);
             Item.rare = ItemRarityID.Pink;
 
