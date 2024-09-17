@@ -2731,8 +2731,8 @@ VoidStaff: {
 }
 
 X3144: {
-	DisplayName: X3144
-	Tooltip: ""
+	DisplayName: Probe Remote (X3144)
+	Tooltip: Summons a destroyer probe to fight for you!
 }
 
 AcidicLancher: {
