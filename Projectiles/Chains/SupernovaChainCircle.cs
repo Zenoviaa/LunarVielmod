@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -12,8 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Chains
 {
-    internal class SupernovaChainCircle : ModProjectile,
-        IPixelPrimitiveDrawer
+    internal class SupernovaChainCircle : ModProjectile
     {
         public const float Circle_Radius = 900;
         public const float Outer_Circle_Radius = 2700;
@@ -23,7 +21,7 @@ namespace Stellamod.Projectiles.Chains
         public int FrameCounter;
         public int FrameTick;
         ref float NPCToFollow => ref Projectile.ai[0];
-
+        internal PrimitiveTrail BeamDrawer;
         public override void SetDefaults()
         {
             Projectile.width = 16;
@@ -135,6 +133,15 @@ namespace Stellamod.Projectiles.Chains
 
         public override bool PreDraw(ref Color lightColor)
         {
+            
+            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
+
+            TrailRegistry.LaserShader.UseColor(Color.Red);
+            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
+
+            BeamDrawer.DrawPixelated(CirclePos, -Main.screenPosition, CirclePos.Length);
+            Main.spriteBatch.ExitShaderRegion();
+            
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D chainTexture = ModContent.Request<Texture2D>(Texture).Value;
             spriteBatch.End();
@@ -154,18 +161,6 @@ namespace Stellamod.Projectiles.Chains
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
             behindNPCs.Add(index);
-        }
-
-        internal PrimitiveTrail BeamDrawer;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.Red);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
-
-            BeamDrawer.DrawPixelated(CirclePos, -Main.screenPosition, CirclePos.Length);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

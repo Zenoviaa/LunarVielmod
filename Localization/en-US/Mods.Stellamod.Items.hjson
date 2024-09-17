@@ -107,7 +107,7 @@ IllusionistBook: {
 		'''
 		Increased life regeneration!
 		+3% damage
-		5% increased critical strike chance
+		3% increased critical strike chance
 		'''
 }
 
@@ -6076,8 +6076,12 @@ MushyCard: {
 }
 
 XX4160: {
-	Tooltip: ""
-	DisplayName: X X4160
+	DisplayName: Prime Minigun (X-X4160)
+	Tooltip:
+		'''
+		Right click to swap between laser machine gun mode and gatling gun mode
+		Overheats after using the laser machine gun for too long!
+		'''
 }
 
 ExampleScriptureItem: {
