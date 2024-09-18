@@ -40,7 +40,6 @@ namespace Stellamod.Items.Weapons.Thrown
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.CrystalShard, 13);
-            recipe.AddIngredient(ModContent.ItemType<Plantius>(), 1);
             recipe.AddIngredient(ModContent.ItemType<KaleidoscopicInk>(), 20);
             recipe.AddIngredient(ModContent.ItemType<ArtisanBar>(), 3);
             recipe.AddTile(TileID.MythrilAnvil);

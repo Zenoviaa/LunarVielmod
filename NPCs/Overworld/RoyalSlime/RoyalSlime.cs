@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using Stellamod.WorldG;
 using System;
 using Terraria;
@@ -25,7 +26,7 @@ namespace Stellamod.NPCs.Overworld.RoyalSlime
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
-                new FlavorTextBestiaryInfoElement("The slime kings Royal heir, it will take his place opon death...")
+                new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "The slime kings Royal heir, it will take his place opon death..."))
             });
         }
 

@@ -44,7 +44,7 @@ namespace Stellamod.WorldG
             if (GintzingBoss)
             {
                 GintzeDayReset = true;
-                Main.NewText("The Gintze army has been defeated!", 34, 121, 100);
+                Main.NewText(LangText.Misc("EventWorld.1"), 34, 121, 100);
                 GintzeKills = 0;
                 GintzingBoss = false;
             }
@@ -194,12 +194,12 @@ namespace Stellamod.WorldG
                     Aurorean = true;
                     if(Main.netMode == NetmodeID.Server)
                     {
-                        NetworkText auroeanStarfall = NetworkText.FromLiteral("Aurorean Stars are falling!");
+                        NetworkText auroeanStarfall = NetworkText.FromLiteral(LangText.Misc("EventWorld.2"));
                         ChatHelper.BroadcastChatMessage(auroeanStarfall, new Color(234, 96, 114));
                     }
                     else
                     {
-                        Main.NewText("Aurorean Stars are falling!", 234, 96, 114);
+                        Main.NewText(LangText.Misc("EventWorld.2"), 234, 96, 114);
                     }
                 }
                 NetMessage.SendData(MessageID.WorldData);
@@ -209,12 +209,12 @@ namespace Stellamod.WorldG
                 Aurorean = false;
                 if (Main.netMode == NetmodeID.Server)
                 {
-                    NetworkText auroeanStarfallEnded = NetworkText.FromLiteral("The Aurorean starfall has ended");
+                    NetworkText auroeanStarfallEnded = NetworkText.FromLiteral(LangText.Misc("EventWorld.3"));
                     ChatHelper.BroadcastChatMessage(auroeanStarfallEnded, new Color(234, 96, 114));
                 }
                 else
                 {
-                    Main.NewText("The Aurorean starfall has ended", 234, 96, 114);
+                    Main.NewText(LangText.Misc("EventWorld.3"), 234, 96, 114);
                 }
                 NetMessage.SendData(MessageID.WorldData);
             }

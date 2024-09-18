@@ -273,14 +273,6 @@ namespace Stellamod.NPCs.Global
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Vinger>(), 15, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
-			if (npc.type == NPCID.IceElemental)
-			{
-
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CyroBolt>(), 10, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-
-
-			}
-
 			if (npc.type == NPCID.BlackRecluse)
 			{
 
@@ -362,16 +354,6 @@ namespace Stellamod.NPCs.Global
 			}
 
 			//------------------------------------------------------------------------ OVERWORLD + RAI
-
-			if (npc.type == NPCID.MartianWalker)
-			{
-
-
-
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Dragoniper>(), 50, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-			// In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-			}
-
 			if (npc.type == NPCID.Zombie)
 			{
 

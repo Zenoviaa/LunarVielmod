@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets.Biomes;
+using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Vanity.Gia;
@@ -133,11 +134,11 @@ namespace Stellamod.NPCs.Town
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Freezing to death"),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Freezing to death")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Veldris the assassin")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Veldris the assassin", "2"))
 			});
 		}
 
@@ -166,27 +167,27 @@ namespace Stellamod.NPCs.Town
 			int partyGirl = NPC.FindFirstNPC(NPCID.Steampunker);
 			if (partyGirl >= 0 && Main.rand.NextBool(4))
 			{
-				chat.Add(Language.GetTextValue("Shes got some great cogs", Main.npc[partyGirl].GivenName));
+				chat.Add(LangText.Chat(this, "Basic1", Main.npc[partyGirl].GivenName));
 			}
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("Who's next on this list to kill?"));
-			chat.Add(Language.GetTextValue("How are you doing? "));
-			chat.Add(Language.GetTextValue("I need to gamble a bit more today"));
-			chat.Add(Language.GetTextValue("That Sirestias woman creeps me out."), 5.0);
-			chat.Add(Language.GetTextValue("I gotta get to the Royal Capital some day. Maybe they can empower my weapons."), 2.0);
-			chat.Add(Language.GetTextValue("So coldddd"), 0.1);
-			chat.Add(Language.GetTextValue("Hey you, come buy some stuff from me!"), 0.1);
-			chat.Add(Language.GetTextValue("Im starting to warm up this winter"), 0.1);
-			chat.Add(Language.GetTextValue("Everyone and all this damn god talk, it makes me crazy"), 0.1);
-			chat.Add(Language.GetTextValue("Interestingly, I don't know why those sisters all are disconnected, it seems like they're always hiding something"), 0.1);
-			chat.Add(Language.GetTextValue("I wish I was someone important"), 0.1);
-			chat.Add(Language.GetTextValue("Sometimes I wanna lead an army you know? I just wanna see Veiizal again"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic2"));
+			chat.Add(LangText.Chat(this, "Basic3"));
+			chat.Add(LangText.Chat(this, "Basic4"));
+			chat.Add(LangText.Chat(this, "Basic5"), 5.0);
+			chat.Add(LangText.Chat(this, "Basic6"), 2.0);
+			chat.Add(LangText.Chat(this, "Basic7"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic8"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic9"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic10"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic11"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic12"), 0.1);
+			chat.Add(LangText.Chat(this, "Basic13"), 0.1);
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 20)
 			{
 				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("You gonna buy something lad?"));
+				chat.Add(LangText.Chat(this, "Basic14"));
 			}
 
 			return chat; // chat is implicitly cast to a string.
@@ -221,7 +222,7 @@ namespace Stellamod.NPCs.Town
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
 			button2 = Language.GetTextValue("LegacyInterface.28");
-			button = "Talk";
+			button = LangText.Chat(this, "Button");
 
 		}
 
@@ -262,63 +263,7 @@ namespace Stellamod.NPCs.Town
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2"));
 
 				//-----------------------------------------------------------------------------------------------	
-				switch (Main.rand.Next(10))
-				{
-					case 0:
-						Main.npcChatText = $"You doing good? I mean it's a hellhole out here. Sometimes I even start to wonder what brings you here. I'm just some lonesome seller, just be sure not to get on someone's deadlist or else I'll be seeing ya. ";
-
-						break;
-
-					case 1:
-						Main.npcChatText = $"Everytime I hear someone talk about gods I want to just puke in their faces, like ew. I'm kind of glad that Sirestias woman is getting rid of them. Her and Fenix don't seem all too power driven. Fenix is just revenge driven, and I can respect that.";
-
-						break;
-
-					case 2:
-						Main.npcChatText = $"If my weapons we're ever used, they better be in the right hands. My tools were crafted with some Luminull and some special metals, they better hold together- I had to steal some stuff from that Illuria place";
-
-						break;
-
-					case 3:
-						Main.npcChatText = $"I'm just gonna rant about this Illuria place honestly. WHY IS THERE A DRAGON JUST ROAMING. Like I thought those went extinct with the the virulent- oh I meant acid. I really just needed some scales but oh noo the watcher of society is there. ";
-
-						break;
-
-					case 4:
-						Main.npcChatText = $"Back in my day building this house was my masterpiece, Fenix really gathered up an army just to build this cathedral here and that temple below just to trap some harlet who took her stuff. Down right evil though on Fenix's behalf, maybe overkill. ";
-
-						break;
-
-					case 5:
-						Main.npcChatText = $"Some knights visited me the other day talking of this 'peace and formality' and I couldn't take it so I went to the Lunar tree, which for some reason they live on and I stole some fragments and some luminull? It seems pretty powerful and is probably related to Lumi in some way.";
-
-						break;
-
-					case 6:
-						Main.npcChatText = $"I love myself commissions, just sayingg if you wanna commission me I'm all available, the last person I went to kill was some goofy guy named Rallad, some girl named Sylia asked me if I could do it for her since she didnt want to be seen, took forever to find him though. ";
-
-						break;
-
-					case 7:
-						Main.npcChatText = $"Interestingly enough me and Sylia have fun sometimes, shes pretty nice once you get to know her, sadly she stays away from her sister Merena and the rest of the capital, she's pretty chill. Kind of wanna travel with her though. ";
-
-						break;
-
-					case 8:
-						Main.npcChatText = $"The small joys of life comes from not having your house destroyed by some malevolent gods throwing down their trap cards when youre trying to sleep. It makes me annoyed when I have to peek out my window to make sure the black hole isn't going to hit my house.";
-
-						break;
-
-					case 9:
-						Main.npcChatText = $"You knowww, I was named Veldris by my friend, I always grew up without a name since my parents died by a stupid raging black hole guy, name was Sepsis I believe? He killed off so much 30 years ago yet I remember it like yesterday.";
-
-						break;
-
-					
-				}
-
-
-
+				Main.npcChatText = Main.npcChatText = LangText.Chat(this, "Special" + Main.rand.Next(1,11));
 			}
 
 

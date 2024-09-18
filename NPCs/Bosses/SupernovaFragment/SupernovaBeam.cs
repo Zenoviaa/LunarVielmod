@@ -15,8 +15,8 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         internal PrimitiveTrailCopy BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];
-        public const float LaserLength = 2400f;
-
+        public const float LaserLength = 3200f;
+        float Fade = 0f;
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 130;
@@ -31,6 +31,9 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
         public override void AI()
         {
+            Fade += 0.1f;
+            if (Fade >= 1f)
+                Fade = 1f;
             // Fade in.
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
             Projectile.scale = MathF.Sin(Time / 200f * MathHelper.Pi) * 3f;
@@ -67,7 +70,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
         public float WidthFunction(float completionRatio)
         {
-            return Projectile.width * Projectile.scale * 2f;
+            return Projectile.width * Projectile.scale * 2f * Fade;
         }
 
         public override bool ShouldUpdatePosition() => false;

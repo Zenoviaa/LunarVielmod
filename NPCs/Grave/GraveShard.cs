@@ -90,7 +90,7 @@ namespace Stellamod.NPCs.Grave
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Events.BloodMoon,
-                new FlavorTextBestiaryInfoElement("A crystal which holds the power of summoning one of the three deities"),
+                new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A crystal which holds the power of summoning one of the three deities")),
             });
         }
 

@@ -171,11 +171,11 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("The most committed protector of the Govhiel. She just wishes to see her friend's and village again."),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "The most committed protector of the Govhiel. She just wishes to see her friend's and village again.")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Irradia N Havoc")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Irradia N Havoc", "2"))
             });
         }
 

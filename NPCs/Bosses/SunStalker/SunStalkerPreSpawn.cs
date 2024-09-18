@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Terraria;
 using Terraria.Audio;
@@ -87,7 +88,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                 else
                 {
                     CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(220, 126, 58, 44),
-                            "The Sun...");
+                            LangText.Misc("SunStalkerPreSpawn"));
                     player.velocity.X = NPC.direction * 13f;
                     player.velocity.Y = -9f;
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_PreSpawn_Fail"), NPC.position);

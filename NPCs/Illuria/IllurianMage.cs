@@ -504,7 +504,7 @@ namespace Stellamod.NPCs.Illuria
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
 			{
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("A respected sorcerer from Sigfried's old rein")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A respected sorcerer from Sigfried's old rein"))
 			});
 		}
 	}

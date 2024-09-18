@@ -271,7 +271,7 @@ namespace Stellamod.NPCs.Govheil
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
 			{
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("Guardians who are ready to die for Gothivia?")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Guardians who are ready to die for Gothivia?"))
 			});
 		}
 	}

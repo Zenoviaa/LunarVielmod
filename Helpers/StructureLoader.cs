@@ -36,6 +36,7 @@ namespace Stellamod.Helpers
         {
             StructureMap structures = GenVars.structures;
             Rectangle rectangle = StructureLoader.ReadRectangle(path);
+            location.Y -= rectangle.Height;
             rectangle.Location = location;
             structures.AddProtectedStructure(rectangle);
         }
@@ -43,7 +44,9 @@ namespace Stellamod.Helpers
         public static bool TryPlaceAndProtectStructure(Point location, string path, bool ignoreStructures = false)
         {
             StructureMap structures = GenVars.structures;
+
             Rectangle rectangle = StructureLoader.ReadRectangle(path);
+            location.Y -= rectangle.Height;
             rectangle.Location = location;
 
             int[] tilesToCheckFor = new int[]

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
@@ -119,7 +120,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			player.cursorItemIconID = -1;
 			if (chest < 0)
 			{
-				player.cursorItemIconText = Language.GetTextValue("Gothivia's sleeping hut");
+				player.cursorItemIconText = LangText.Misc("Gothiv");
 			}
 			else
 			{

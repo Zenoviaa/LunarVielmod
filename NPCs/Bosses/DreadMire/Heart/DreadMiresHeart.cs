@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using System;
 using System.IO;
 using Terraria;
@@ -35,7 +36,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Events.BloodMoon,
-                new FlavorTextBestiaryInfoElement("The heart of the beast brought on by devilish intent\r\n(How the hell does that thing fit inside her chest?)"),
+                new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "The heart of the beast brought on by devilish intent\r\n(How the hell does that thing fit inside her chest?)")),
             });
         }
 

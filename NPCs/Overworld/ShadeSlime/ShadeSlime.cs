@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using System;
 using Terraria;
@@ -29,7 +30,7 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime,
-                new FlavorTextBestiaryInfoElement("A slime formed of pure darkness conjured by powerful beasts")
+                new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A slime formed of pure darkness conjured by powerful beasts"))
             });
         }
 

@@ -1,20 +1,68 @@
 RoyalHorsemage.DisplayName: Royal Horsemage
-LonelySorceress.DisplayName: Lonely Sorceress
+
+LonelySorceress: {
+	DisplayName: Lonely Sorceress
+	Bestiary: A strange lady, she seems to overflow with magical energy!
+	Bestiary2: Lonely Feeble Sorceress
+	Button: Spar with your new wife
+	Basic1: I wanna be like party girl {0}
+	Basic2: Mmm it's soo nice to meet you, wanna play with me :3
+	Basic3: "I'm all alone in this castle, if only someone could have fun with me :> "
+	Basic4: Mwhahahahaha I am the most evil sorceress on the planet!!!
+	Basic5: "Obviously I want you to stay! Can you just stay here for a while- no, forever? I mean it isn't too much of an ask. "
+	Basic6: There were these two that came by, one of them looked like me and had fox ears too! I wonder what breed she is.
+	Basic7: This place can be shared by only us two you know, you can be here for me :)
+	Basic8: Nobody really gets me you know, but I can see it in your eyes, we'll be made for each other :p
+	Basic9: I think if you want to, maybe we can spar??? It would be so fun with you!
+	Basic10: I think this place is accidently communistic...
+	Basic11: Where did that Carian tome go?
+	Basic12: Hii babe! Can we pleaseee fight? I haven't been able to do anything for sooo long and I just wanna have fun but nobody lets me do anything around here, so pretty pleasee
+	Basic13: Funny enough I'm actually older than I act, take a guess I bet you didn't answer 26 lol!!
+	Basic14: Shhh hush hun, we should try to spar instead :3
+}
+
 CarianKnight.DisplayName: Carian Knight
 AlcaricVoidSmall.DisplayName: Alcaric Void Small
-ShadowWraith.DisplayName: Shadow Wraith
-ShadeSlime.DisplayName: Shade Slime
-RoyalSlime.DisplayName: Royal Slime
+
+ShadowWraith: {
+	DisplayName: Shadow Wraith
+	Bestiary: Powerful skulls sent by skeletron to roam the darkness for the next pray
+}
+
+ShadeSlime: {
+	DisplayName: Shade Slime
+	Bestiary: A slime formed of pure darkness conjured by powerful beasts
+}
+
+RoyalSlime: {
+	DisplayName: Royal Slime
+	Bestiary: The slime kings Royal heir, it will take his place opon death...
+}
+
 IvythornSlime.DisplayName: Ivythorn Slime
 TribalWorshipper.DisplayName: Tribal Worshipper
-TribalPriest.DisplayName: Tribal Priest
-TribalPeasant.DisplayName: Tribal Peasant
+
+TribalPriest: {
+	DisplayName: Tribal Priest
+	Bestiary: A much richer form of the trible worshippers
+}
+
+TribalPeasant: {
+	DisplayName: Tribal Peasant
+	Bestiary: Even the weakest, most poor among the warriors in the morrow are still decent foes..
+}
+
 TribalGuard.DisplayName: Tribal Guard
 TopazBeetle.DisplayName: Topaz Beetle
 SapphireBeetle.DisplayName: Sapphire Beetle
 RubyBeetle.DisplayName: Ruby Beetle
 MossyZombie.DisplayName: Mossy Zombie
-MorrowedJellyFish.DisplayName: Morrowed Jellyfish
+
+MorrowedJellyFish: {
+	DisplayName: Morrowed Jellyfish
+	Bestiary: Extremely powerful jellyfish that has been aflicted by the gild in the morrow, very dangerour
+}
+
 EmeraldBeetle.DisplayName: Emerald Beetle
 AmethystBeetle.DisplayName: Amethyst Beetle
 GoliathJellyfish.DisplayName: Goliath Jellyfish
@@ -42,21 +90,56 @@ DesertRuneLightBig.DisplayName: Desert Rune Light Big
 DesertRune.DisplayName: Desert Rune
 BlueLightBig.DisplayName: Blue Light Big
 HarvestIce.DisplayName: Harvest Ice
-GovheilProtector.DisplayName: Govheil Protector
-GovheilGuardian.DisplayName: Govheil Guardian
-Gintzling.DisplayName: Gintzling
+
+GovheilProtector: {
+	DisplayName: Govheil Protector
+	Bestiary: The last protectors of the govheil, and they are pretty formidable...
+}
+
+GovheilGuardian: {
+	DisplayName: Govheil Guardian
+	Bestiary: Guardians who are ready to die for Gothivia?
+}
+
+Gintzling: {
+	DisplayName: Gintzling
+	Bestiary: Lowest of the Gintze but can wipe you out fast! They need food too yknow :(
+}
+
 GintzeWindRider.DisplayName: Gintze Wind Rider
 GintzeWarrior.DisplayName: Gintze Warrior
 GintzeSpearman.DisplayName: Gintze Spearman
-GintzeSolider.DisplayName: Gintze Solider
-GintzeCaptain.DisplayName: Gintze Captain
-GintziaHand.DisplayName: Gintzia Hand
+
+GintzeSolider: {
+	DisplayName: Gintze Solider
+	Bestiary: A Captain of Gofria's ranks, be careful
+}
+
+GintzeCaptain: {
+	DisplayName: Gintze Captain
+	Bestiary: A Captain of Gothivia's ranks, be careful
+}
+
+GintziaHand: {
+	DisplayName: Gintzia Hand
+	Bestiary: A scarecrow reanimated by the passion of wandering flames
+}
+
 StarSlime.DisplayName: Star Slime
 DiceinNPC.DisplayName: Dicein
 Shrewmet.DisplayName: Shrewmet
 Shrewder.DisplayName: Shrewder
-SnowWalkerNPC.DisplayName: Snow Walker
-SandWalkerNPC.DisplayName: Sand Walker
+
+SnowWalkerNPC: {
+	DisplayName: Snow Walker
+	Bestiary: The most adorable goodest spicy child. Do not dare be mean to him!
+}
+
+SandWalkerNPC: {
+	DisplayName: Sand Walker
+	Bestiary: The most adorable goodest spicy child. Do not dare be mean to him!
+}
+
 THEGREATDEVOURER.DisplayName: THE GREAT DEVOURER
 FlamingWitch.DisplayName: Flaming Witch
 CinderCrawlerTail.DisplayName: Cinder Crawler Tail
@@ -74,7 +157,12 @@ NeedleGun.DisplayName: Needle Gun
 IronNailGun.DisplayName: Iron Nail Gun
 PandorasSeeker.DisplayName: Pandoras Seeker
 PandorasKnife.DisplayName: Pandoras Knife
-PandorasGuard.DisplayName: Pandoras Guard
+
+PandorasGuard: {
+	DisplayName: Pandoras Guard
+	Bestiary: They guard what is theirs!
+}
+
 BlazingSerpentTail.DisplayName: Blazing Serpent Tail
 BlazingSerpentBody.DisplayName: Blazing Serpent Body
 BlazeBeamWarn.DisplayName: Blaze Beam Warn
@@ -83,13 +171,29 @@ Viola.DisplayName: Viola
 Sword3.DisplayName: Sword3
 Sword2.DisplayName: Sword2
 Sword1.DisplayName: Sword1
-StarteV.DisplayName: Verlia
+
+StarteV: {
+	DisplayName: Verlia
+	Bestiary: Clone of a powerful sexy goddess :)
+}
+
 GhostCharger.DisplayName: Ghost Charger
-CloneV.DisplayName: Clone Verlia
+
+CloneV: {
+	DisplayName: Clone Verlia
+	Bestiary: Clone of a powerful sexy goddess :)
+}
+
 Zapwarn.DisplayName: Zapwarn
 Veiizal.DisplayName: Veiizal
 VoidWall.DisplayName: Void Wall
-UnderworldRift.DisplayName: Underworld Rift
+
+UnderworldRift: {
+	DisplayName: Underworld Rift
+	Bestiary: A strange rift to void, disturbing it may yield catastrophic results...
+	Button: Disturb Rift
+}
+
 VoidWormTail.DisplayName: Void Worm Tail
 VoidWormHead.DisplayName: Void Worm Head
 VoidWormBody.DisplayName: Void Worm Body
@@ -98,7 +202,13 @@ SunStalkerRayLight.DisplayName: Sun Stalker Ray Light
 SunStalkerPreSpawn.DisplayName: Sun Stalker Pre Spawn
 SunStalkerLighting.DisplayName: Sun Stalker Lighting
 SunStalkerDeath.DisplayName: Sun Stalker Death
-SunStalker.DisplayName: Sun Stalker
+
+SunStalker: {
+	DisplayName: Sun Stalker
+	BossChecklistIntegration.SpawnInfo: Use a [i:Stellamod/SunClaw] at an altar in the desert.
+	Bestiary: Former flyer and born where all big birds were born, in the cinderspark.
+}
+
 Sun.DisplayName: Sun
 StoneDeath.DisplayName: Stone Death
 Flowerball.DisplayName: Flowerball
@@ -107,58 +217,155 @@ STARLINGBIG.DisplayName: STARLING BIG
 STARLING.DisplayName: STARLING
 STARBOMBERLASERWARNBIG.DisplayName: STARBOMBER BIG LASER WARNING
 STARBOMBERLASERWARN.DisplayName: STARBOMBER LASER WARN
-STARBOMBER.DisplayName: STARBOMBER
+
+STARBOMBER: {
+	DisplayName: STARBOMBER
+	BossChecklistIntegration.SpawnInfo: Randomly during a hardmode Aurorean Starfall, they may fall from the sky.
+	Bestiary: Destruction is what these bring, Fenix may of purchased some things off the black market, destroy these immediately...
+}
+
 Voidling.DisplayName: Voidling
-SingularityOrb.DisplayName: Singularity Orb
+
+SingularityOrb: {
+	DisplayName: Singularity Orb
+	Bestiary: A poisonous slime mutated from normal green slimes
+}
+
 SingularitySparkBig.DisplayName: Singularity Spark
 SingularitySpark.DisplayName: Singularity Spark
 SingularityLazer2.DisplayName: Singularity Deathray
 SingularityLazer.DisplayName: Singularity Deathray
-LazerOrb.DisplayName: Lazer Orb
+
+LazerOrb: {
+	DisplayName: Lazer Orb
+	Bestiary: A poisonous slime mutated from normal green slimes
+}
+
 Jackoslime.DisplayName: Jackoslime
 JackDeath.DisplayName: Jack Death
-Jack.DisplayName: Jack
+
+Jack: {
+	DisplayName: Jack
+	BossChecklistIntegration.SpawnInfo: Use a [i:Stellamod/WanderingEssence] at a post in the Fabled Castle to the right at night.
+	Bestiary: A scarecrow reanimated by the passion of wandering flames, exploring out of the veil.
+}
+
 IrradiatedNestDeath.DisplayName: Irradiated Nest Death
-IrradiatedNest.DisplayName: Irradiated Nest
+
+IrradiatedNest: {
+	DisplayName: Irradiated Nest
+	BossChecklistIntegration.SpawnInfo: Buy a [i:Stellamod/EDR] from Gia and use it in the virulent acid or find an Unknown Signal."
+	Bestiary: A abomination housing the eggs for what seems to be a mechanical bird, born from the acid and a creation of Gia.
+	Bestiary2: Irradiated Nest
+}
+
 IrradiatedCreeper.DisplayName: Irradiated Creeper
 IRNDeathBomb.DisplayName: I R N Death Bomb
 IrradieagleSurvent.DisplayName: Irradieagle Survent
 Irradieagle.DisplayName: Irradieagle
-Train2.DisplayName: Train2
-Train1.DisplayName: Train1
-Rek.DisplayName: Havoc
-Gothiviabb.DisplayName: Gothiviabb
-Gothiviab.DisplayName: Irradia
+
+Train2: {
+	DisplayName: Train2
+	Bestiary: A part of gothivia's largest creations
+}
+
+Train1: {
+	DisplayName: Train1
+	Bestiary: A part of gothivia's largest creations
+}
+
+Rek: {
+	DisplayName: Havoc
+	Bestiary: A loving little pet of the sun goddess Gothivia
+}
+
+Gothiviabb: {
+	DisplayName: Gothiviabb
+	Bestiary: I guess she knows you destroyed her singularity inside Daedus, oops
+}
+
+Gothiviab: {
+	DisplayName: Irradia
+	Bestiary: This person isn't the real gothivia, where is she?
+}
+
 FenixWarn.DisplayName: Fenix Warn
 FenixSnipe.DisplayName: Fenix Snipe
 FenixSlash.DisplayName: Fenix Slash
-Fenix.DisplayName: Fenix
+
+Fenix: {
+	DisplayName: Fenix
+	BossChecklistIntegration.SpawnInfo: She resides in the royal capital far to the left, she may want to play with you!
+	Bestiary: Searching for a lover, this particular Queen lacks anyone she can socialize with as she tries to gain power of the void to kill Sigfried for revenge, so much power yet so lonely.
+	Bestiary2: Fenix the Vengeful
+}
+
 ExpoiyosOrb.DisplayName: Expoiyos Orb
 AlcSpark.DisplayName: Alc Spark
 DrownOut.DisplayName: Drown Out
 ALCADSWIRL.DisplayName: A L C A D S W I R L
 ALCADHOLE.DisplayName: ALCADHOLE
-DreadMiresHeart.DisplayName: Dread Mires Heart
-DreadSurvent.DisplayName: Dread Survent
+
+DreadMiresHeart: {
+	DisplayName: Dread Mires Heart
+	Bestiary:
+		'''
+		The heart of the beast brought on by devilish intent
+		(How the hell does that thing fit inside her chest?)
+		'''
+}
+
+DreadSurvent: {
+	DisplayName: Dread Survent
+	Bestiary: Powerful skulls tainted by devilish intent (dreadmire must�ve got bored with this one)
+}
+
 DreadMireZapwarnBig.DisplayName: Dread Mire Zapwarn Big
 DreadMireZapwarn.DisplayName: Dread Mire Zapwarn
 DreadMirePentagramSmall.DisplayName: Dread Mire Pentagram Small
 DreadMirePentagramMid.DisplayName: Dread Mire Pentagram Mid
 DreadMirePentagram.DisplayName: Dread Mire Pentagram
-DreadMire.DisplayName: Dread Mire
-DreadFireCircle.DisplayName: Dread Fire Circle
+
+DreadMire: {
+	DisplayName: Dread Mire
+	Bestiary: One of the three powerful cosmic deities that has been tainted by devilish intent
+}
+
+DreadFireCircle: {
+	DisplayName: Dread Fire Circle
+	Bestiary: A poisonous slime mutated from normal green slimes
+}
+
 DreadFireBomb.DisplayName: Dread Fire Bomb
 BloodCystDead.DisplayName: Blood Cyst Dead
-BloodCyst.DisplayName: Blood Cyst
-SolarSingularity.DisplayName: Solar Singularity
-SolarPortal.DisplayName: Solar Portal
+
+BloodCyst: {
+	DisplayName: Blood Cyst
+	Bestiary: A crystal which holds the power of summoning one of the three deities
+}
+
+SolarSingularity: {
+	DisplayName: Solar Singularity
+	Bestiary: A small singularity granted to Daedus in exchange for where he lives and protects for.
+}
+
+SolarPortal: {
+	DisplayName: Solar Portal
+	Bestiary: A scarecrow reanimated by the passion of wandering flames
+}
+
 DRay.DisplayName: D Ray
 LanternOfHope.DisplayName: Lantern Of Hope
 Daedus.DisplayName: Daedus
 CaevaSnipe.DisplayName: Caeva Snipe
 CaevaDeathRowR.DisplayName: Caeva Death Row R
 CaevaDeathRow.DisplayName: Caeva Death Row
-Caeva.DisplayName: Caeva
+
+Caeva: {
+	DisplayName: Caeva
+	Bestiary: A scarecrow reanimated by the passion of wandering flames
+}
+
 ToxicHornet.DisplayName: Toxic Hornet
 ToxicBoulder.DisplayName: Toxic Boulder
 AcidSpirit.DisplayName: Acid Spirit
@@ -167,20 +374,80 @@ AcidProbe.DisplayName: Acid Probe
 AbyssalSlime.DisplayName: Abyssal Slime
 AbyssalSkull.DisplayName: Abyssal Skull
 AbyssalSeeker.DisplayName: Abyssal Seeker
-AbysmLunatic.DisplayName: Abysm Lunatic
+
+AbysmLunatic: {
+	DisplayName: Abysm Lunatic
+	Bestiary: Powerful skulls sent by skeletron to roam the darkness for the next pray
+}
+
 TericGramNPC2.DisplayName: Teric Gram
 TericGramNPC.DisplayName: Teric Gram
-Sparn.DisplayName: Sparn
-WaterJellyfish.DisplayName: Water Jellyfish
-PandorasFlamebox.DisplayName: Pandora's Flamebox
-Cogwork.DisplayName: Cogwork
-BlazingSerpentHead.DisplayName: Blazing Serpent
-StarrVeriplant.DisplayName: Stone Guardian
-Sylia.DisplayName: Sylia
-VerliaB.DisplayName: Verlia Of the Moon
-SingularityFragment.DisplayName: Singularity Fragment
-CommanderGintzia.DisplayName: Commander Gintzia
-DaedusR.DisplayName: Daedus The Forgotten
+
+Sparn: {
+	DisplayName: Sparn
+	BossChecklistIntegration.SpawnInfo: Use a [i:Stellamod/CursedShard] at an altar in the Trapped Catacombs, it may appear...
+}
+
+WaterJellyfish: {
+	DisplayName: Water Jellyfish
+	BossChecklistIntegration.SpawnInfo: Use a [i:Stellamod/CursedShard] at an altar in the Water Catacombs, it may appear...
+}
+
+PandorasFlamebox: {
+	DisplayName: Pandora's Flamebox
+	BossChecklistIntegration.SpawnInfo: Use a [i:Stellamod/CursedShard] at an altar in the Fire Catacombs, it may appear...
+}
+
+Cogwork: {
+	DisplayName: Cogwork
+	BossChecklistIntegration.SpawnInfo: Use a [i:Stellamod/CursedShard] at an altar in the Trapped or Water Catacombs, it may appear...
+}
+
+BlazingSerpentHead: {
+	DisplayName: Blazing Serpent
+	BossChecklistIntegration.SpawnInfo: Use a [i:Stellamod/CursedShard] at an altar in the Fire Catacombs, it may appear...
+	Bestiary: Burining with passion I guess.
+}
+
+StarrVeriplant: {
+	DisplayName: Stone Guardian
+	BossChecklistIntegration.SpawnInfo: Interact with the Old Guard's Shrine. After using the [i:Stellamod/AnotherRock] in your Starter bag.
+	Bestiary: A beloved magical stone guardian, protected the natural life and would petrify anyone who disturbs it.
+}
+
+Sylia: {
+	DisplayName: Sylia
+	BossChecklistIntegration.SpawnInfo: Interact with the strange anomaly that lies in within the Underworld Ruins.
+	Bestiary: Someone who was consumed by their dark magic, even more so than Fenix would bother with.
+	Bestiary2: Sylia, Merena's Sister.
+}
+
+VerliaB: {
+	DisplayName: Verlia Of the Moon
+	BossChecklistIntegration.SpawnInfo: Use a [i:Stellamod/MoonflameLantern] at a shrine in the Cathedral over the ice biome!
+	Bestiary: Verlia, The Empress of the Stars and moon, Vixyl's sister and a master magic swordswoman.
+}
+
+SingularityFragment: {
+	DisplayName: Singularity Fragment
+	BossChecklistIntegration.SpawnInfo: Use a [i:Stellamod/VoidKey] at an altar, in the Aurelus, deep in the ice.
+	Bestiary: A powerful gift that was given to Cozmire, yet was stolen away by Fenix to seal away Verlia.
+	Bestiary2: Singularity Fragment
+}
+
+CommanderGintzia: {
+	DisplayName: Commander Gintzia
+	BossChecklistIntegration.SpawnInfo: Randomly each day, if you have 3 npcs and have killed the Stone Guardian, an army will raid you!
+	Bestiary: He's evil yet so weak. This fellow betrayed Gothivia during their war against Fenix and his part of the army joined the other side for power.
+	Bestiary2: Commander Gintzia, the betrayer
+}
+
+DaedusR: {
+	DisplayName: Daedus The Forgotten
+	BossChecklistIntegration.SpawnInfo: Disturb with the ruined tablet deep within the morrow.
+	Bestiary: One who followed power, exchanging their freedom for a taste of a singularity. Trapped forever guarding whats left of the Govheil.
+	Bestiary2: The aspiring forgotten puppet
+}
 
 Aimacra: {
 	DisplayName: Aimacra
@@ -202,9 +469,53 @@ Aimacra: {
 		LikeNPC_Princess: I like {NPCName}.
 		Princess_LovesNPC: I like {NPCName}.
 	}
+
+	Bestiary: Aimacra??? From Diari?? Crazy
+	Button2: Talk
+	Basic1: Zoologist {0} also has fox ears like me lmao
+	Basic2: This world seems a bit off don't you think?
+	Basic3: I'm not one to brag but this place is so much better than Ekrose
+	Basic4: Did Sirestias ask me to find her again?
+	Basic5: Yeah I've been traveling while you were out.
+	Basic6: Go play Diari on steam? I have no idea what that means
+	Basic7: Do people think I'm not into pans?
+	Basic8: Sooo can we forget about everything that happened in Ekrose?
+	Basic9: I am really sorry for what we went through but now were here you know?
+	Basic10: Sirestias went out again, and this time I'm not finding her.
+	Basic11: Hey could you go do something, I'm about to get dressed, but honestly I say that like you haven't seen me before.
+	Special1: Heyyy at least we're out of Ekrose alive! I'm glad Vixyl is safe back at the main house.
+	Special2: I hate being Sirestias's Assassin.. Speaking of I met a guy named Veldris and he's totally cool!
+	Special3: I'll be back I may go to look for some new stuff underground.
+	Special4: What is a thug shaker? To shake or not to shake? Sometimes I wonder if life truly does give lemons.
+	Special5: "What class would I even be? "
+	Special6: Hey sorry for what may of happened on Ekrose but I hope we can still be friends and make up to each other.
+	Special7: STARBOMBERS ARE ON THIS PLANET TOOOOO!!!
+	Special8: I totally haven't been playing geometry dash.
+	Special9: I've seen some weird things in my life, but never would I have thought Fenix would be more chronically horny than Sirestias, but to be fair Sirestias just gets more power doing that.
+	Special10: I hate being part human.
 }
 
-Bordoc.DisplayName: Bordoc
+Bordoc: {
+	DisplayName: Bordoc
+	Bestiary: Steaming from the depths
+	Bestiary2: Bordoc the eternal blacksmith
+	Button: Heart of the Morrow
+	Basic1: Steampunker {0}'s got some great cogs
+	Basic2: BRMMMM
+	Basic3: "Everyone always uses me but never asked how I'm able to talk.. "
+	Basic4: I don't care I need to gamble
+	Basic5: My armors are the best in the lands
+	Basic6: Sirestias and Aimacra game by recently and they laughed at me because they thought my shop was useless
+	Basic7: Im always feeling hot!
+	Basic8: Heh, nobody is as good as me
+	Basic9: Burning Burning, heat and heat
+	Basic10: I'm inpenetrable
+	Basic11: Damn we have some hot shit here
+	Basic12: Only I know that Gothivia has so many barriers between her and the rest of the world, nobody will be able to kill her.
+	Basic13: Those idiot gintze have made a horrible decision, now they can't use my armors I made for them.
+	Basic14: KRMMMKTEYYYMMMM BRMMMMM
+	Special1: I want you to prove to me you're ready to obtain this, I've given you a broken core, if you restore its power, it's all yours. Show me your determination to be Gothivia's doll! You won't be the first to fail.. And maybe she'll come to thank you one day.
+}
 
 BoundGia: {
 	DisplayName: Bound Gia
@@ -219,10 +530,69 @@ BoundGia: {
 		LikeNPC_Princess: I like {NPCName}.
 		Princess_LovesNPC: I like {NPCName}.
 	}
+
+	Basic: Oh goodness thank you for saving me. I dont know how long I was tied up... I got stranded down here by a bunch of scouts I presume are from the morrow. I really caused a mess this time but I am really glad you saved me. D'you have a place to stay?
+	Bestiary: A bound scientist lurking in the Virulent
+	Button2: Trade Rune
 }
 
-CellConverter.DisplayName: Cell Converter
-Delgrim.DisplayName: Delgrim
+CellConverter: {
+	DisplayName: Cell Converter
+	Bestiary: Burning in a magical laboratory
+	Bestiary2: The Cell converter
+	Button: Put in scrap token
+	Basic1: KRTTCAVSJKSC
+	Basic2: I WANT SCRAP
+	Basic3: MAKE YOUR SCRAP TOKENS FOR TRADE. KRM
+	Basic4: YEEERRRM
+	Special0: Weapon Converted!
+	Special1: KRRRT, Sensors say you have inputed a token, here you go per request.
+	Special2: Womp womp, looks like nothing for you!
+	Special3: Error, try again.
+	Special4: Put in another token.
+}
+
+Delgrim: {
+	DisplayName: Delgrim
+	Bestiary: A magical engineer huh?
+	Bestiary2: Delgrim the eternal engineer.
+	Button: Old Tales
+	Basic1: You're chill aren't ya?
+	Basic2: Everyone comes in for the same stuff, come and go please.
+	Basic3: Another visitor?
+	Basic4: What goes on in the world nowadays?
+	Basic5: I don't mean trouble, but do as you please.
+	Special1: An old time there was a thriving capital, we used to call it the Harboring Morrow. It was a thriving city under the protection of Gothivia, Verlia, and Irradia. I used to be a member. Gothivia loved every one of us, Verlia would be off directing armies and Irradia well she spent time making electronics.
+	Special2: Irradia would make amazing tech, and I would come to every show she would host and watch her mechanic sword fights and spare parts, Verlia would sometimes participate and tear all of them apart. Verlia was just too good of a swordsman.
+	Special3: Gothivia would always come down at 10 A.M in the morning to greet all the city members, it used to be the time of my life. She'd give us goodies and Rek would come by with his binding light to empower the underground and brighten things up.
+	Special4: Verlia and Gothivia are sisters, although they don't look it anymore, they used to be twins yet they couldn't be different from each other. Verlia was always rambunctious and outgoing while Gothivia was a calm and loving soul, the two got along.
+	Special5: Of all the inventions Irradia made, by far my favorite was a rendition of Gothivia's Rek called Havoc. It was a magnificent beast. It held it's own against Verlia in the shows, if only I could go back to those days.
+	Special6: Verlia always would be training the army, the gintze army wasn't exactly the most reliable mainly because of Verlia's idiocity and lack of care for danger. The army would always charge head first without a care for defense. I wonder where the army was when we were defending against the Carian warriors and knights
+	Special7: Some days I look back on the Harboring Morrow and wonder why we fell so hard. I remember BORDOC, an excellent blacksmith but too arrogant to read his ways. Irradia taught me some amazing things I carry with me today and all the people. the people...
+	Special8: You know, I had loved Irradia, until we seperated through war our connection was magically I would say. Damn witches and their artistry. I don't hate magic, but its the reason I lost so much. That commander, I will never forget the smirk on that face. So called Fenix and her army of Carian knights.
+	Special9: One day in the Harboring Morrow, the most joyous of days, some collectors came back infected by some strange disease, as you may know now it's called the Virulent. An acid like corruption that eats at the soul. It tore our village apart like the black plague. It weakened us, right before a Carian army swept us away at our worst, we stood no chance.
+	Special10: Verlia one day left the Morrow to search and make peace with the witches in the upcoming villages, she was by far the most magical out of the three of them, so she would stand a chance to help, when she came back, she was out of her mind.
+	Special11: When Verlia came back from her excursion, she well, gave information that changed the course of our lives. Me being in a relationship with Irradia I was able to be let in on that information. She shared to us a tome from a small witch village. This would a fatal mistake.
+	Special12: Verlia's excursion took place right when the corruption started occuring, she went to look for a way to heal the damaged. Gothivia would do her best to heal everyone but she was only one person in the biggest capital in terraria.
+	Special13: One harrowing day, a fox appears at the doorstep of Verlia and Gothivia's abode. I knew my eyes decieved me when I had seen the fox transform into a tall Nero, they are like human cats but I thought they'd been extinct for millenia!
+	Special14: When a fox arrived on the doorsteps of our beloved, The fox lady brings out what I can only think was a lantern and all I could make out inside that room was a giant blue flash and the screams of Gothivia. This was the last time anyone heard of Verlia.
+	Special15: After what I call the 'blue flash,' everyone hurried to a sign of screaming in the middle of the night. We all come to see Gothivia crying with a note in her hand and the fox lady. She introduced herself as Fenix.
+	Special16: Fenix was a tall statured woman yet extremely menacing, at times a lot of us thought she may have been more powerful than Gothivia, but deep down Gothivia's suppressed feelings for her family would probably overcome that.
+	Special17: The illnesses started to rack up and since Verlia disappeared, our Harboring Morrow was not complete, there was nobody to keep our armies in check, Gothivia wasn't mentally there anymore and Irradia was trying her best to get everyone to calm down. It was a horrible time.
+	Special18: Irradia did explain what happened to Verlia, but I thought it was just downright evil. Fenix trapped Verlia's soul inside a lantern and bounded it to a secret power for experimentation because she stole a book from their village. We'll never get to see her again will we?
+	Special19: I think Irradia's way of coping to the loss of Verlia was teaching me now that Im starting to recollect. She may have used it as a way of reflecting, and I didn't see that she was hurting yet I was always there for her.
+	Special20: I kept on living, hell I even got sick from the Virulent, yet I was Gothivia's last person to get healed from her. Rek eventually got infected too yet since havoc was electronic, he stayed normal. The creatures that lived the best were mostly metallic, its what remains of our old village.
+	Special21: After the last healing in from Gothivia, I'd say about 90% of our village was wiped out from the Virulent, our soliders, our love, and will to live all started to fall apart.
+	Special22: I could recall me laying on a bed as I watched our city crumble, Irradia would stay by my side and we'd comfort each other as the world caved in for us.
+	Special23: After a while of our suffering in the city Gothivia would leave to seek vengence and power to save her sister, leaving Irradia to be at the helm. Take a guess who arrived not so soon afterwards? Fenix, she came to take what was left of us.
+	Special24: Fenix is like a scouraging raven looking for its next feast, and we were on the menu. I was forced to split from my love due to her sacrifices of being a leader. We haven't seen each other since, yet I know she's out there somewhere. No way would she loose to Fenix...
+	Special25: The Great Departure, that's what I call the leaving from what was left in our city. As the Carian army approached, we hid through underground tunnels to escape, some of us, including me, haven't gone back to the surface. I was even invited to come to the Fable.
+	Special26: Those who made it to the surface from the Great Departure reinvented the Harboring Morrow yet from all the messages from BORDOC, it isn't the same. They close their doors to everyone in fear and they look for Gothivia, she never said where she went.
+	Special27: I was in tunnels underground for 10 of my years, now I lay here with all the corpses and electronics that I bear, I've travelled every part of this world except the surface, to ever find Fenix again would send me over my limit.
+	Special28: You know, maybe I should have travelled with the rest of the members of the morrow, many of us split up in our escape, many died, hell, maybe I'm the only standing survivor, but I'm here.
+	Special29: My creations that I make now are from my explorations, I will find Irradia again, I need to apologize, to say something. These are all for her anyway. If only I could have stopped this from getting this way, maybe I could have stayed against her will.
+	Special30: Of all my years to live and ever to live, I will never understand things like Fenix, her torturous additude, why she went to such lengths to kill us, why the infection was so hard to fend off, and why I couldn't stay, these are all for you, Irradia.
+}
 
 Gambit: {
 	DisplayName: Gambit
@@ -244,6 +614,33 @@ Gambit: {
 		LikeNPC_Princess: I like {NPCName}.
 		Princess_LovesNPC: I like {NPCName}.
 	}
+
+	Bestiary: She loves those ruin medals huh?, so much so that she is now attracted to you :(
+	Bestiary2: Zielie the Gambit
+	Button2: Marry
+	Basic1: I love the party girl {0}! Shes really sweet! Umm could you maybe hook us up :(
+	Basic2: Hii, it is a me, Zielie! I'm frantic at moments but what can you expect when your in a world full of death and loooove?
+	Basic3: Ive heard that the morrow is very pretty, I talked to veribloom and she said her society is falling apart though so maybe not.
+	Basic4: I have some things on the market for you, I go around collecting items and I get more stuff when you beat bosses and honestly, you seem really cool! :0
+	Basic5: You know who is responsible for your dice rolling righttt? You know, uh after you beat bosses? Yeah, thats me ya silly lovebug
+	Basic6: Can we get married?
+	Basic7: Soo are we gonna get married or are you gonna buy something?
+	Special1:
+		'''
+		OMG YOU DOOOO? Aww youre so sweet
+		we can hold off until a bit later :3
+		'''
+	Special2:
+		'''
+		Aww cmon, don't be so silly,
+		lets wait until we fix this world,
+		let me help you out :P
+		'''
+	Special3:
+		'''
+		Awaaaaaaaaaaaaaaaaaaaaaaaa~
+		(Zielie is too flustered to continue)
+		'''
 }
 
 Gia: {
@@ -266,6 +663,26 @@ Gia: {
 		LikeNPC_Princess: I like {NPCName}.
 		Princess_LovesNPC: I like {NPCName}.
 	}
+
+	Bestiary: Wow you done messed up this time with the Virulent spill huh.
+	Bestiary2: Gia the Scientist
+	Button2: Trade Rune
+	Basic1: So many cool contraptions Steampunker {0} has, I love them!
+	Basic2: A long time ago, I used to experiment with Biotech. It went wrong, and teleported pieces of itself all over the world. You might have found some by now.
+	Basic3: Maybe if you find some of my lost tech, you could craft my original biotech and retry my experiments!
+	Basic4: The guide seems to know too much for a human being. I feel like he has something else connected to him…
+	Basic5: The merchant keeps telling me about this dangerous eye thing. I could just zap it with my Bio laser.
+	Basic6: Aimacra seems pretty neat, too bad she's taken
+	Basic7: I wouldn't mind hooking up with the Steampunker :)
+	Basic8: So many spare parts and materials, bring them all to me!
+	Basic9: I can't believe I let it get loose, I've complicated too many things.
+	Basic10: Can you go collect some runes for me? I'd love for you to get working.
+	Special1: I give you my thanks for this Desert artifact, it'll help further my reserch to fixing this mess!
+	Special2: I give you my thanks for this Sky artifact, it'll help further my reserch to fixing this mess!
+	Special3: I give you my thanks for this Sky artifact, it'll help further my reserch to fixing this mess!
+	Special4: I give you my thanks for this Overworld artifact, it'll help further my reserch to fixing this mess!
+	Special5: I give you my thanks for this Ocean artifact, I'll research it greatly, heres something in return...
+	Special6: I give you my thanks for this Jungle artifact, it'll help further my reserch to fixing this mess!
 }
 
 Ginztel: {
@@ -288,11 +705,82 @@ Ginztel: {
 		LikeNPC_Princess: I like {NPCName}.
 		Princess_LovesNPC: I like {NPCName}.
 	}
+
+	Bestiary: Dumbfounded by your strength, the commander retired and came to your base for a visit and a free hotel.
+	Basic1: Hehe the Demonilitionist {0} is pretty cool, he's got bombs...
+	Basic2: Im just peeping around, I might stay for a while...
+	Basic3: My team was quite weak to say, I apologize for the inconvience
+	Basic4: Some of the things I'm selling are from base, we've all taken quite a liking to you all.
+	Basic5: If you can kill Gothivia for us we can scavange and steal their items, please help us do that
+	Basic6: We may be weak but we still give all of our little praise to Verlia, hence why we stole from her sister..
+	Basic7: Could you murder Gothivia in the most brutal fashion possible? She is way too dauntless and carefree, we hate her and she took our home...
 }
 
-Merena.DisplayName: Merena
-NaturalWitch.DisplayName: Natural Witch
-Zui.DisplayName: Zui
+Merena: {
+	DisplayName: Merena
+	Bestiary: Magic Magic MAGIC
+	Bestiary2: Merena the bewitched sorcerer
+	Button: Merenas Quest
+	Basic1: Funny enough the clothier {0} used to come through here all the time for some of our amazing fabrics
+	Basic2: I wonder what my sister Sylia is up to nowadays, do you know her?
+	Basic3: I'm gonna be the very best, like no one ever was...
+	Basic4: Fenix is the best queen there will ever be! She gives us all what we want :P
+	Basic5: This place is so calming, I can't stand it but I would give everything to be near Fenix
+	Basic6: Aimacra seems pretty cool, she came here recently looking for some brooches
+	Basic7: Hey uh could you do something for me? I have a little favor, just ask what it is!
+	Basic8: I've always wanted to be the best witch there is! I've always been outshined by exiles though, including my sisters sadly.
+	Basic9: I really need to beat my sister in a battle someday.
+	Basic10: It's strange, the economic system here is almost like communism
+	Basic11: Damn we have some cool shit here
+	Basic12: No doubt about it but Fenix is truly the strongest witch in all of the lands, maybe even more powerful than the witch of light in the hallow, I don't like her.
+	Basic13: Hahh, I remember that goon Verlia, she's kind of dumb but shes at least powerful, I remember she got exiled for stealing tomes, I might need that from her.
+	Special1: What are you standing there for, go kill Verlia! She's an enemy of the royal capital and she has a book I need lmao
+	Special2: Oh damn thanks! Next on the list I need you to steal an orb from a village in an underground morrowed village, the orb contains a magic unlike any other. I have no idea how it was manifested but it's needed for this tome.
+	Special3: Woa, the energy is pouring out of this one with seamless orange stripes! How did you even get your hands on this?? Either way thanks, now I just need 100 dust bags, it helps with the brewery.
+	Special4: Neat neat, that shouldn't have been too bad for you I think. Next I need some magical paper, there are magical creatures all over the world of hardmode who drop these, most of them being rare and unique creatures, go get em'!
+	Special5: OHH Great lmao. Ok we have one more thing we need to do. Legend has it an old thief of this Royal Capital stole an extremely special Carian tome, they stay deep underground hidden far away underneath the abyss. Even if the rumors arent true I'd love for you to find this scroll, it may take years...
+	Special6: "THANK YOU THANK YOU THANK YOU, omg this is the best day of my life! I never knew this actually existed! Were the rumors true??! dsfjhnbhfribdhs- Nevermind who cares anymore, we can both be the best mages ever! I open my shop to you and here, a token of my graditude. "
+	Special7: Hey, I have nothing else for you to do! Thanks for all of your help, have you checked out my shop yet?
+}
+
+NaturalWitch: {
+	DisplayName: Natural Witch
+	Bestiary: A Captain of Gofria's ranks, be careful
+}
+
+Zui: {
+	DisplayName: Zui
+	BossChecklistIntegration: After Plantera, Zui will sell you an item that'll allow you to fight her in the witch town!
+	Bestiary: A traveller of the lands who may hold great power
+	Bestiary2: Zui the Traveller
+	Button: Zui's Quests
+	Basic1: The dryad {0} is pretty fun after all, she's pretty sweet and helps us with the gardening!
+	Basic2: We've had to kick a few witches out of this town you know, its quite a shame...
+	Basic3: I keep going out to find more plants but somehow you're always here when I return.
+	Basic4: I'm trying to find a way to stop the corruption and virulent from spreading but I have no fix currently.
+	Basic5: Hey love, you know you could be collecting stuff for me!
+	Basic6: Sirestias? Oh um yeahh we go pretty far back.
+	Basic7: Aimacra is cool too, this is my first time meeting her lol
+	Basic8: I wouldn't say I'm too powerful, afterall I a just a traveller
+	Basic9: Sometimes I wonder what they did in Vodhome after we all left. I really have to catch up with Sirestias and the others.
+	Basic10: Are you here with Sirestias?
+	Basic11: All these plants are so cool! I did just arrive here before Sirestias, there was some commotion and I think people here are trying to disrupt time and power.
+	Basic12: Sirestias is a balancer, same goes for me but I like to just collect things.
+	Basic13: Hey if you collect some items for me I can give you some stuff!
+	Basic14: Hey can you go collect for me?
+	Special1: Hi hii! Thanks for asking! Could you fetch me some plants, you can use this bag! Just fill it up with some different types of plants and I'll give you some stuff afterwards!
+	Special2: Hehe I'm gonna up the difficulty of these, I'm gonna need some bigger plants, so you'll need to fill up this bag! Thanks!
+	Special3: Nice nice, I'll take these, could you fetch some more for me!
+	Special4: Nice nice, I'll take these, could you fetch some more for me!
+	Special5: Ok ok, 3 quests is kind of good, thanks for caring a lot about this! I've got more items in my shop for you, bring me 3 more and I'll get more for ya!
+	Special6: 6 Quests is actually kind of crazy, I've opened up with a few more items for you if you want! Bring me 4 more ;p
+	Special7: Damn, 10 quests? You're on a role you know! I've got some more items for you in my shop actually, I went travelling and Sirestias gave me a few items! I'll give you some more items if you can do 10 more!
+	Special8: You have finished 20 quests for me! Thank you! I've got more items in my shop because of it too! If you want more from me bring me ten more and maybe we can have some fun!
+	Special9: My graditude is of the utmost thanks, in return you can have anything in my shop! And I'll help you out personally sometime if you need me ;p
+	Special10: Hiya! I think that's all the things I need, you can get some stuff in my shop but thanks babe!
+	Special11: Hey you wanna do a quest? I'll open up my expansive magic shop for you if you do.. I have quite some great goodies in store but I want to become the best witch in all of the Lunar Veil, and I want you to help me make a tome, but first I need you to kill Verlia first for me.
+}
+
 AbandonedMinor.DisplayName: Abandoned Minor
 AbandonedMinorSummon.DisplayName: Abandoned Minor Summon
 FloweredRedLight.DisplayName: Flowered Red Light
@@ -302,16 +790,34 @@ WhiteFlower.DisplayName: White Flower
 DreadFireBombG.DisplayName: Dread Fire Bomb G
 HeatBombLighting.DisplayName: Heat Bomb Lighting
 HeatBombRayLight.DisplayName: Heat Bomb Ray Light
-Rustwork.DisplayName: Rustwork
+
+Rustwork: {
+	DisplayName: Rustwork
+	Bestiary: An old rusted cog with some magical abilities
+}
+
 MechanicalMinorSummon.DisplayName: Mechanical Minor Summon
 MechanicalMinor.DisplayName: Mechanical Minor
 InfusedSlime.DisplayName: Infused Slime
 RustedBomber.DisplayName: Rusted Bomber
 RustedBomberSummon.DisplayName: Rusted Bomber Summon
 Steeru.DisplayName: Steeru
-ZuiTheTraveller.DisplayName: Zui The Radiance
+
+ZuiTheTraveller: {
+	DisplayName: Zui The Radiance
+	Bestiary: Zui, not exactly someone that can be killed but loves to play around I guess? Sirestias is closely accompanied with her
+	Bestiary2: Zui the Radiance
+}
+
 TestLaserNPC.DisplayName: Test Laser N P C
-UnknownSignal.DisplayName: Unknown Signal
+
+UnknownSignal: {
+	DisplayName: Unknown Signal
+	Bestiary: An Unknown Signal
+	Button: Touch Unknown Circuitry
+	Basic: A static voice confirms the identity of the user, you are in the right place.
+}
+
 AlcaricVoidBig.DisplayName: Alcaric Void Big
 ZuiLASERWARN.DisplayName: Zui L A S E R W A R N
 GoldBeamWarn.DisplayName: Gold Beam Warn
@@ -320,55 +826,271 @@ LuminullSpiritCrystal.DisplayName: Luminull Spirit Crystal
 IceRune.DisplayName: Ice Rune
 VerliaSpawn.DisplayName: Verlia Spawn
 Bossdeath1.DisplayName: Bossdeath1
-DeathVerlia.DisplayName: Death Verlia
+
+DeathVerlia: {
+	DisplayName: Death Verlia
+	Bestiary: Clone of a powerful sexy goddess :)
+}
+
 VerliaDP.DisplayName: Verlia D P
-Niivi.DisplayName: Niivi
-IllurianMage.DisplayName: Illurian Mage
+
+Niivi: {
+	DisplayName: Niivi
+	BossChecklistIntegration.SpawnInfo: Deal enough damage to Niivi to anger her, you may find her flying around The Great Illuria! -or sleeping...
+	Bestiary: Niivi, The First Dragon
+}
+
+IllurianMage: {
+	DisplayName: Illurian Mage
+	Bestiary: A respected sorcerer from Sigfried's old rein
+}
+
 IllurianGuard.DisplayName: Illurian Guard
 SyliaDeath.DisplayName: Sylia Death
-Veldris.DisplayName: Veldris
+
+Veldris: {
+	DisplayName: Veldris
+	Bestiary: Freezing to death
+	Bestiary2: Veldris the assassin
+	Button: Talk
+	Basic1: Shes got some great cogs
+	Basic2: Who's next on this list to kill?
+	Basic3: How are you doing?
+	Basic4: I need to gamble a bit more today
+	Basic5: That Sirestias woman creeps me out.
+	Basic6: I gotta get to the Royal Capital some day. Maybe they can empower my weapons.
+	Basic7: So coldddd
+	Basic8: Hey you, come buy some stuff from me!
+	Basic9: I'm starting to warm up this winter
+	Basic10: Everyone and all this damn god talk, it makes me crazy
+	Basic11: Interestingly, I don't know why those sisters all are disconnected, it seems like they're always hiding something
+	Basic12: I wish I was someone important
+	Basic13: Sometimes I wanna lead an army you know? I just wanna see Veiizal again
+	Basic14: You gonna buy something lad?
+	Special1: You doing good? I mean it's a hellhole out here. Sometimes I even start to wonder what brings you here. I'm just some lonesome seller, just be sure not to get on someone's deadlist or else I'll be seeing ya.
+	Special2: Everytime I hear someone talk about gods I want to just puke in their faces, like ew. I'm kind of glad that Sirestias woman is getting rid of them. Her and Fenix don't seem all too power driven. Fenix is just revenge driven, and I can respect that.
+	Special3: If my weapons we're ever used, they better be in the right hands. My tools were crafted with some Luminull and some special metals, they better hold together- I had to steal some stuff from that Illuria place
+	Special4: I'm just gonna rant about this Illuria place honestly. WHY IS THERE A DRAGON JUST ROAMING. Like I thought those went extinct with the the virulent- oh I meant acid. I really just needed some scales but oh noo the watcher of society is there.
+	Special5: Back in my day building this house was my masterpiece, Fenix really gathered up an army just to build this cathedral here and that temple below just to trap some harlet who took her stuff. Down right evil though on Fenix's behalf, maybe overkill."
+	Special6: Some knights visited me the other day talking of this 'peace and formality' and I couldn't take it so I went to the Lunar tree, which for some reason they live on and I stole some fragments and some luminull? It seems pretty powerful and is probably related to Lumi in some way.
+	Special7: I love myself commissions, just sayingg if you wanna commission me I'm all available, the last person I went to kill was some goofy guy named Rallad, some girl named Sylia asked me if I could do it for her since she didnt want to be seen, took forever to find him though.
+	Special8: Interestingly enough me and Sylia have fun sometimes, shes pretty nice once you get to know her, sadly she stays away from her sister Merena and the rest of the capital, she's pretty chill. Kind of wanna travel with her though.
+	Special9: The small joys of life comes from not having your house destroyed by some malevolent gods throwing down their trap cards when youre trying to sleep. It makes me annoyed when I have to peek out my window to make sure the black hole isn't going to hit my house.
+	Special10: You knowww, I was named Veldris by my friend, I always grew up without a name since my parents died by a stupid raging black hole guy, name was Sepsis I believe? He killed off so much 30 years ago yet I remember it like yesterday.
+}
+
 SupernovaZapwarn.DisplayName: Supernova Zapwarn
-SupernovaOrb.DisplayName: Supernova Orb
-SupernovaFragment.DisplayName: Supernova Fragment
-Sirestias.DisplayName: Sirestias
+
+SupernovaOrb: {
+	DisplayName: Supernova Orb
+	Bestiary: A poisonous slime mutated from normal green slimes
+}
+
+SupernovaFragment: {
+	DisplayName: Supernova Fragment
+	BossChecklistIntegration.SpawnInfo: Go down to the Cinderspark and nag Ordin to get a gift for Ereshkigal and she may give you something in return...
+	Bestiary: A powerful gift from Lumi V. to her trusted sisters.
+	Bestiary2: Supernova Fragment
+}
+
+Sirestias: {
+	DisplayName: Sirestias
+	Bestiary: Your eternal bonding with this individual resonates with everyone throughout!
+	Basic1: Here to give me some company I see?
+	Basic2: Hmph how's Aimacra doing? Nevermind I already know that answer.
+	Basic3: Enjoying yourself?
+	Basic4: Sometimes I forget you're bounded with me always.
+	Basic5: Its always sweet to see you do things for me.
+	Special1: YESSS, we're getting closer to our goals!! Aren't you excited <3
+	Special2: God Hunted!
+	Special3: I couldnt find anything more so I'll give you an extra token!
+	Special4: Please go do something for me, we don't have all day you know ;P
+	Button: What do I do next?
+	Button2: Give Completion Idol
+	Downed1: Kill the stone guardian, commander gintzia will soon raid you with his army of failed troops from the govheil. He will be very easy so take him swiftly and beat him into submission hun.
+	Downed2: I'd recommend going into the Fabled Swamp over to the right or collecting resources to get ready to fight either Jack or find a sun alter in a desert and prepare for Sunstalker! Zui may be a good person to talk to in the witch village for quest items too :)
+	Downed3: Nice babe, I want you to go kill Jack in the Fabled swamp on the right then, you need a wandering essence and he shouldn't be too difficult.
+	Downed4: Nice work! I want you to go headhunt a bird in the desert, his name is Sunstalker and they are a bit challenging but less so than the last, collect some mandibles in the desert to make the Sun stone! Find the alter on the surface of a desert!
+	Downed5: You're next target is Daedus, he's a strong one. Hes a very loyal Guardian to one of the biggest threats here being Gothivia, we need him gone to get to the big fish in the sea. For some reason he holds some power of a singularity so beware. He resides low in the temple in the Fabled Swamp, no extra preperation needed.
+	Downed6: Oh my gosh nice, so here's where things are going to get difficult. If a blood moon happens we need to exterminate Dreadmire, she spawns after killing a blood cyst during a blood moon, you can also get some terror fragments too! She'll pose too much of a threat if we let her live. She's I think one of the three sisters, formally known as cozmire. She needs to die and after that I'll give some great rewards.
+	Downed7: We are making big progress now! I don't know if you have been killing other ravenous monsters but I'd recommend doing so as the next one on our list is Verlia but to get to her we have quite a few things to do first. Make yourself a void key and find a temple deep in the ice biome, there should be some loot and hopefully an alter that'll give you a lantern. She was trapped by Fenix but she needs to die so we can bring out Gothivia.
+	Downed8: Ok you got the lantern! Go to the cathedral overtop the ice biome and summon her at the top at night. This will be our biggest foe yet but I know you can kill her, sorry Aimacra is tired of being my assasin so it's your turn.
+	Downed9: Oh damn this is great. I think that completes our list for now, check back in with me in Hardmode! We'll purify this world of all danger and create peace and then we can be together and move on. Thank you again.
+	Downed10: Welp here we go again. So theres a strange issue we have, so Daedus isn't the only barrier to trying to stop us from getting to Gothivia, Aimacra just went and explored around and found some new places and there was this castle underground in a green biome? I noticed Gothivia's marks on it and the Sun hasnt started turning green, could you look at that? There should be some catacombs underground in the desert, ocean and caverns to help power up too.
+	Downed11: There was a person down there claiming to be Gothiva? Thats strange. Gothivia seems to be making an appearance on the world. Apparently things are changing the skies and things are falling from them, Beware of STARBOMBERS, Aimacra warned me that they were manufactured here as well as Ekrose and you have experience with them.
+	Downed12: I didn't think Rosemary's creations would've made it here. Ekrose sure does have an affect on this world. I saw some strange disturbance on the left side of the underworld though, can you check that out? I went to talk to Veldris and he told me Sylia may be up to some demonic magic that could ruin our process, so killing her is a good option.
+	Downed13: It was a void witch... Interesting. Must be related to that Merena person Aimacra talked about. I haven't been to the Royal Capital much, mainly because it's so far out but maybe we should kill the Queen there, she is definitely extremely powerful but I don't really know how to talk to her, I haven't seen her yet. If you can could you go kill her for us?
+	Downed14: Ereshkigal huh? I think I know her, she also isn't supposed to be here. However she got lost I guess we can give her some sense
+	Downed15: Weheeee! You're doing so well! I can like get off to this! I'm kidding :(. Maybe you can try and explore around some more. We need to prepare for moonlord!
+	Downed16: I did not expect you to want to kill her honestly. I went and explored around and she seemed nice. Wait you didn't kill her? Oh dang, well she isn't on our list anyway so it's fine lmao. She isn't causing us any issues.
+	Downed17: Ok ok we got some good stuff done. Time for Gothivia as she's not particularly the worst but she keeps inspiring bad people to do ad things and we need to teach her not to do that.
+	Downed18: Maybe we shouldn't have killed her, I don't know if there was a reason to kill Niivi. You just wanted weapons and gear? I mean if it helps I guess. She was doing more good than harm
+	Downed19: Okie dokie, Gothivia has agree to stay calm so we aren't going to assassinate her anymore, I feel bad for killing her sister now. I hope Vixyl doesn't find out.
+}
+
 JellyGlow.DisplayName: Jelly Glow
 BabyJellyGlow.DisplayName: Baby Jelly Glow
-DreadMonolith.DisplayName: Dread Monolith
+
+DreadMonolith: {
+	DisplayName: Dread Monolith
+	Bestiary: A crystal which holds the power of summoning one of the three deities
+}
+
 HavocHead.DisplayName: Havoc Head
 HavocSegmentBack.DisplayName: Havoc Segment Back
 HavocSegmentFront.DisplayName: Havoc Segment Front
 HavocSegmentMiddle.DisplayName: Havoc Segment Middle
 HavocTail.DisplayName: Havoc Tail
-IrradiaIdle.DisplayName: Irradia Idle
+
+IrradiaIdle: {
+	DisplayName: Irradia Idle
+	Bestiary: A suspicious person at the bottom of the Govheil Castle
+	Bestiary2: ???
+	Button: Show Verlia's Manifested Bravery
+	Basic1: Leave before you too become corrupt
+	Basic2: Get away from here.
+	Basic3: I miss them
+	Basic4: ... Delgrim...
+	Special1: Stop bothering me, you don't deserve to die.
+}
+
 Havoc.DisplayName: Havoc
-Ishtar.DisplayName: Ishtar
+
+Ishtar: {
+	DisplayName: Ishtar
+	Bestiary: Entrance
+	Bestiary2: The entrance to the Ishtar Citadel
+}
+
 PULSARHOLE.DisplayName: P U L S A R H O L E
 BabySwarmer.DisplayName: Baby Swarmer
 BabySwarmerSummon.DisplayName: Baby Swarmer Summon
 HavocSignal.DisplayName: Havoc Signal
 IrradiaElectricBoxNode.DisplayName: Irradia Electric Box Node
 IrradiaSpikeBox.DisplayName: Irradia Spike Box
-Irradia.DisplayName: Irradia
-DreadMireR.DisplayName: Dread Mire R
+
+Irradia: {
+	DisplayName: Irradia
+	BossChecklistIntegration.SpawnInfo: Give Irradia a [i:Stellamod/ManifestedBravery] at a bottom of the Govheil Castle, underneath the Virulent.
+	Bestiary: The most committed protector of the Govhiel. She just wishes to see her friend's and village again.
+	Bestiary2: Irradia N Havoc
+}
+
+DreadMireR: {
+	DisplayName: Dread Mire R
+	BossChecklistIntegration.SpawnInfo: Destroy 3 dread monoliths to create a Dread medallion and summon her during night.
+	Bestiary: Traded her singularity in turn for more dreadful power, ridden of anxiety and all things dreadful
+	Bestiary2: Cozmire- Dreadmire Veil??
+}
+
 DreadMirePentagramV2.DisplayName: Dread Mire Pentagram V2
-StartIrradia.DisplayName: Start Irradia
-GraveShard.DisplayName: Grave Shard
+
+StartIrradia: {
+	DisplayName: Start Irradia
+	Bestiary: Start to something bad
+}
+
+GraveShard: {
+	DisplayName: Grave Shard
+	Bestiary: A crystal which holds the power of summoning one of the three deities
+}
+
 IncresianDisc.DisplayName: Incresian Disc
-Mardenth.DisplayName: Mardenth
-Ordin.DisplayName: Ordin
+
+Mardenth: {
+	DisplayName: Mardenth
+	Bestiary: One of the 3 Children of Daeden, this one being the most useless
+	Bestiary2: Mardenth of the Veil
+	Button2: Talk
+	Basic1: So many cool contraptions Steampunker {0} has, I love them!
+	Basic2: Damn that Sigfried guy.
+	Basic3: Where's Ereshkigal?
+	Basic4: Daedus, Jovhia, Daeden? Where'd you all go?
+	Basic5: I'm quite formiddable you see. I can destroy anything with my hands.
+	Basic6: I need to study up on my electric magic. If my dad wasn't dead he'd be proud of me. Gosh I wish you were here Daeden.
+	Basic7: I never knew my mom...
+	Basic8: Why is Jovhia always in the sky?
+	Basic9: Hey you, get out of here!
+	Basic10: Scadabble you women harrasser.
+	Special1: Heheheh, I like to eat little wormy guys but they won't stop squiggling. Reminds me of when our dad Daeden left us.
+	Special2: Where did Daedus go?  He left us so long ago. I hope he wasn't swayed by that Harlet Gothivia. She seemed power obsessed and hungry. Maybe that's just me though
+	Special3: I might be the only one but, Ereshkigal is kind of hot isn't she? Hell you wouldn't even know would you. You're taste in women is flat.
+	Special4: You don't understand how we are. We're higher than all below us, which is everyone except a god. Only they can be held to such high status. Squirm off you worm.
+	Special5: I wish Sigfried didn't go insane. He's such an asshole, even our dear Ereshkigal left with him to seal him away...
+	Special6: Maybe I may be the only person to question the gene pools of these people. Like where do they all look so pretty from??? Im wearing this mask cuz I look like a goblin.
+	Special7: I want a beach episode with Zui and Ereshkigal now!
+	Special8: I would want to be more powerful but that takes a lot of training. Anyone who dares to take more than what they are given should be punished.
+	Special9: Those guys in the well? They are trapped down there because they made some goofy deals in their lives to get more power and just like the great Veil people we are, we trapped them away for good.
+	Special10: I don't know what the outside world is like.
+}
+
+Ordin: {
+	DisplayName: Ordin
+	Bestiary: Steaming from the depths
+	Bestiary2: Ordin, The New Monarch
+	Button: Reminisce of Sigfried
+	Basic1: Steampunker {0}'s got some great cogs
+	Basic2: Remove yourself from my sight
+	Basic3: You walk like an infant with no tucas
+	Basic4: What a pitiful endearment, praise to the ones above.
+	Basic5: You are not fit to become a god
+	Basic6: Oh Sigfried, return in good health or I shall slay you with my own hands from such a succubus!
+	Basic7: Bring me their Manifestations
+	Special1: Thy is so resilient, unhand me from these this trecherous nagging and take this for thy shall not be astute to your prescence no longer.
+	Special2: To be one of the forth or forward, the lands that I rest in reek of falsification of hypocrisy and power.
+	Special3: Sigfried was once a young fellow, thy brother in one's eye's and a villian in anothers'.
+	Special4: Our sacred castle falls ill to such burning. Our wishes have been grafted under the curse of Sigfried's unveiling.
+	Special5: "Fall away, dear brother "
+	Special6: Mark thy words with caution. Ereshkigal is a loveless harlet who took the life of the brother of many. Yet thy fulfills their prophecy among lovers, hence she is not a false goddess.
+	Special7: All our goals are put to rest following the lands of the veil. Finish all those who have wronged our beloved world.
+	Special8: Manifest their souls and bring them to my company. You shall be rewarded until the rekoning begs for your place to be silenced.
+	Special9: Niivi, the protector of the lands of the veil, yet curse all upon thy brother to be selfish and steal among those of power and wealth. He was greedy and in his expense payed the lovers' prison.
+	Special10: Now I sit ill waiting for the lands of the veil to change.
+}
+
 DustNadoSpawner.DisplayName: Dust Nado Spawn
 Stalker.DisplayName: Stalker
 StalkerSpawner.DisplayName: Stalker Spawning
-RekSnake.DisplayName: Rek, The Burning Serpent
+
+RekSnake: {
+	DisplayName: Rek, The Burning Serpent
+	BossChecklistIntegration.SpawnInfo: Gothivia's sworn protector, you must take him down before you can get to Gothivia.
+	Bestiary: A special snake from the Cinderspark that was atop it's food chain and took a liking to Gothivia. Eventually it became her guardian.
+	Bestiary2: Rek, The Sun Serpent
+}
+
 RekFireCrystal.DisplayName: Rek Fire Crystal
 RekFireEye.DisplayName: Flamed Eye
 Sun2.DisplayName: Sun2
-GothiviaIyx.DisplayName: Gothivia Iyx, The Green Sun
+
+GothiviaIyx: {
+	DisplayName: Gothivia Iyx, The Green Sun
+	BossChecklistIntegration.SpawnInfo: After killing her friend Irradia, Green sun will start and she will await your arrival, kill Rek to challenge her.
+	Bestiary: Empress of the Green sun and nature. Everything empowering and living falls under her reign.
+	Bestiary2: Gothivia, One of the Green Sun
+}
+
 Carmody.DisplayName: Carmody
 CarmodyGreen.DisplayName: Carmody Green
 SupernovaZapwarnFinal.DisplayName: Supernova Zapwarn Final
-GothiviaIdle.DisplayName: Gothivia Idle
-StartGoth.DisplayName: Start Goth
+
+GothiviaIdle: {
+	DisplayName: Gothivia Idle
+	Bestiary: You sense a strange godly prescence coming from Gothivia
+	Bestiary2: ???
+	Button: Challenge
+	Basic1: I shouldn't have left..
+	Basic2: Verlia.. Irradia...
+	Basic3: A monster you are
+	Basic4: ...Interesting...
+	Special1: You're not worth the effort, Rek can avenge them for me. Idiot.
+}
+
+StartGoth: {
+	DisplayName: Start Goth
+	Bestiary: Start to something bad
+}
+
 RekSnakeIdle.DisplayName: Rek Snake Idle
 CentipedeTail.DisplayName: Centipede Tail
 CentipedeHead.DisplayName: Centipede Head
@@ -377,13 +1099,50 @@ IrravheilSlime.DisplayName: Irravheil Slime
 IrravheilLandwormTail.DisplayName: Irravheil Landworm Tail
 IrravheilLandwormHead.DisplayName: Irravheil Landworm
 IrravheilLandwormBody.DisplayName: Irravheil Landworm Body
-IrravheilSprayer.DisplayName: Irravheil Sprayer
-Tulacrowe.DisplayName: Tulacrowe
+
+IrravheilSprayer: {
+	DisplayName: Irravheil Sprayer
+	Bestiary: A lowly civilian who bought old parts from Irradia before being contaminated. They now seek revenge after having their minds altered by the acid.
+}
+
+Tulacrowe: {
+	DisplayName: Tulacrowe
+	Bestiary: The highest form of worshippers of Gothivia corrupted and risen from the grounds of the fallen Govheil Castle
+}
+
 NiiviCrystalStars.DisplayName: Niivi Crystal Stars
 NiiviCrystalLightning.DisplayName: Niivi Crystal Lightning
 NiiviCrystalFrost.DisplayName: Niivi Crystal Frost
 NiiviRoaming.DisplayName: Niivi Roaming
 GothiviaDeath.DisplayName: Gothivia Death
-EreshkigalIdle.DisplayName: Ereshkigal Idle
+
+EreshkigalIdle: {
+	DisplayName: Ereshkigal Idle
+	Bestiary: A mystical veil user who took accountability to chain up Sigfried
+	Bestiary2: Ereshkigal the Lover
+	Button: Sigfried?
+	Button2: Give her something
+	Basic1: Leave me and my husband alone
+	Basic2: You should all be jealous that I'm here.
+	Basic3: Welcome welcome! Come here to feast your eyes on us?
+	Basic4: Oh dear Sigfried how we've met..
+	Basic5: Come and go you will, you'll be broken more than the others.
+	Special1: OMG, OMG OMG OMG OMG
+	Special2: What is this? Nothing of importance to me... You are worthless, you're life is as valuable as a cinderspark summer ant, you mean nothing. You should get me something good NOW. You should burn in the Cinderspark..
+	Special3: "Oh what a darling he is. Too bad I'm tasked with keeping him here forever right? He can't escape me :3 "
+	Special4: Sigfried is my husband you know. We met on the sacred lands of the Illuria, I may have been kicked out numerous times to talk to my king but I'd do anything to get with him
+	Special5: He's so pure, going for such high level threats such as Lumi and stealing her singularity. That's the type of man I like, one who isn't afraid to get their hands dirty.
+	Special6: I wish we could stay together always.
+	Special7: Oh his dear Mordred, I bet he doesn't even know hit wife was trapped within a weapon :)
+	Special8: Stupid dragon always getting in the way to getting to my wonderous babe, I would trap it as well but then it'd anger my dearest here.
+	Special9: How many doors do I need to store Lumi? I don't really know but I don't care. As long as she doesn't come after my husband.
+	Special10: Special11:
+	Special12: Special13:
+}
+
 GraveSeeker.DisplayName: Grave Seeker
-Azurerin.DisplayName: Azurerin
+
+Azurerin: {
+	DisplayName: Azurerin
+	Bestiary: A scarecrow reanimated by the passion of wandering flames
+}

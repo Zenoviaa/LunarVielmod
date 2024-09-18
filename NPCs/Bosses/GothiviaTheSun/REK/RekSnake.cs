@@ -145,11 +145,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("A special snake from the Cinderspark that was atop it's food chain and took a liking to Gothivia. Eventually it became her guardian."),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A special snake from the Cinderspark that was atop it's food chain and took a liking to Gothivia. Eventually it became her guardian.")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Rek, The Sun Serpent")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Rek, The Sun Serpent", "2"))
             });
         }
 
@@ -157,7 +157,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
         {
             NPC.width = 90;
             NPC.height = 90;
-            NPC.lifeMax = 138000;
+            NPC.lifeMax = 108000;
            
             NPC.damage = 900;
             NPC.defense = 175;

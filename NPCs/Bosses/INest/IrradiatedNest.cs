@@ -63,11 +63,11 @@ namespace Stellamod.NPCs.Bosses.INest
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("A abomination housing the eggs for what seems to be a mechanical bird, born from the acid and a creation of Gia."),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A abomination housing the eggs for what seems to be a mechanical bird, born from the acid and a creation of Gia.")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Irradiated Nest")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Irradiated Nest", "2"))
             });
         }
         public override void SetDefaults()
@@ -179,7 +179,6 @@ namespace Stellamod.NPCs.Bosses.INest
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NestBag>()));
 
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IrradiatedGreatBlade>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IrradieagleWrath>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TheIrradiaspear>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StaffoftheIrradiaflare>(), chanceDenominator: 2));
@@ -337,7 +336,7 @@ namespace Stellamod.NPCs.Bosses.INest
                 if (NPC.ai[3] == 420 - 150)
                 {
                     Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Irradiated_Cutscene");
-                    CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(152, 208, 113, 44), "Significant damage detected...");
+                    CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(152, 208, 113, 44), LangText.Misc("IrradiatedNest.1"));
                 }
                 if (NPC.ai[3] == 1)
                 {
@@ -347,7 +346,7 @@ namespace Stellamod.NPCs.Bosses.INest
                 if (NPC.ai[3] == 560 - 150)
                 {
                     Nukeing = true;
-                    CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(152, 208, 113, 44), "deploying Communication transmission device");
+                    CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(152, 208, 113, 44), LangText.Misc("IrradiatedNest.2"));
                 }
                 if (NPC.ai[3] == 730 - 150)
                 {
@@ -378,7 +377,7 @@ namespace Stellamod.NPCs.Bosses.INest
                         NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Irradieagle>());
                     }
           
-                    CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(152, 208, 113, 44), "Transmission successful!");
+                    CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(152, 208, 113, 44), LangText.Misc("IrradiatedNest.3"));
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 512f);
                 }
                 if (NPC.ai[3] == 1250 - 150)
@@ -415,7 +414,7 @@ namespace Stellamod.NPCs.Bosses.INest
                         NPC.netUpdate = true;
                     }
                
-                    CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(152, 208, 113, 44), "Back up vessel destroyed...");
+                    CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(152, 208, 113, 44), LangText.Misc("IrradiatedNest.4"));
                
                 }
                 if (NPC.ai[3] == 1)
@@ -437,7 +436,7 @@ namespace Stellamod.NPCs.Bosses.INest
                     }
 
                     Nukeing = true;
-                    CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(152, 208, 113, 44), "Proceed with D. S. D. P!");
+                    CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(152, 208, 113, 44), LangText.Misc("IrradiatedNest.5"));
                 }
 
                 if (NPC.ai[3] == 200)

@@ -148,11 +148,11 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("A suspicious person at the bottom of the Govheil Castle"),
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A suspicious person at the bottom of the Govheil Castle")),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("???")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "???", "2"))
 			});
 		}
 
@@ -181,18 +181,18 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc
 			int partyGirl = NPC.FindFirstNPC(NPCID.Steampunker);
 
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("..."));
-			chat.Add(Language.GetTextValue("Leave before you too become corrupt"));
-			chat.Add(Language.GetTextValue("Get away from here."));
-			chat.Add(Language.GetTextValue("I miss them"), 1.0);
-			chat.Add(Language.GetTextValue("... Delgrim..."), 1.0);
+			chat.Add("...");
+			chat.Add(LangText.Chat(this, "Basic1"));
+			chat.Add(LangText.Chat(this, "Basic2"));
+			chat.Add(LangText.Chat(this, "Basic3"), 1.0);
+			chat.Add(LangText.Chat(this, "Basic4"), 1.0);
 
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 10)
 			{
 				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("..."));
+				chat.Add("...");
 			}
 
 			return chat; // chat is implicitly cast to a string.
@@ -217,7 +217,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc
 
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
-			button = "Show Verlia's Manifested Bravery";
+			button = LangText.Chat(this, "Button");
 
 		}
 
@@ -257,7 +257,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc
 				{
 
 
-					Main.npcChatText = $"Stop bothering me, you don't deserve to die.";
+					Main.npcChatText = LangText.Chat(this, "Special1");
 				}
 
 

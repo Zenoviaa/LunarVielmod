@@ -26,9 +26,8 @@ namespace Stellamod.Items.Accessories
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemType<AcidStaketers>(), 1);
-            recipe.AddIngredient(ItemType<CloudSkaters>(), 1);
             recipe.AddIngredient(ItemID.SpectreBoots, 1);
-            recipe.AddIngredient(ItemID.SoulofFlight, 60);
+            recipe.AddIngredient(ItemID.SoulofFlight, 20);
             recipe.AddTile(TileID.TinkerersWorkbench);
             recipe.Register();
         }

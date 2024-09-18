@@ -1,3 +1,234 @@
+Common: {
+	SimpleBrooch: Simple Brooch!
+	RadiantBrooch: Radiant Brooch!
+	RadiantBackpack: You need an Radiant Brooches Backpack for this!
+	AdvancedBrooch: Advanced Brooch!
+	AdvancedBackpack: You need an Advanced Brooches Backpack for this!
+	NoStack: These do not stack!
+	Insource: Use this to put inside of your Xixian flask and when you drink it, the effects of this insource is used!
+	Stein: Stein Weapon Type
+	Greatsword: Greatsword Weapon Type
+	Safunai: Safunai Weapon Type
+	Orb: Orb Weapon Type
+	Juggler: Juggler Weapon Type
+	CanSwapped: Can be changed to{0}!
+	TypeSwapped: Damage Type Swapped!
+}
+
+SetBonus: {
+	CelestiaMoonHelmet:
+		'''
+		Increases life regen by a great amount!
+		Move faster and enemies  that hit you take damage back!
+		'''
+	CelestiaMoonMask:
+		'''
+		Increases life regen by a great amount!
+		Move faster and gain the effects of magic cuffs!
+		'''
+	AcidHelm: Stand still to emit a toxic aura!
+	AcidMask: Stand still to emit a toxic aura!
+	AcidRobe: Stand still to emit a toxic aura!
+	AcidVisor: Stand still to emit a toxic aura!
+	AlcaliteMask:
+		'''
+		+1 max minions
+		The stars of Illuria protect you!
+		'''
+	AlsisMask:
+		'''
+		You are a true mage...
+		Gain the effects of a mana flower, magic cuffs, and retrieve magic stars from afar
+		Mana costs are reduced by 70% and increased magic regeneration
+		'''
+	ArtisanMask:
+		'''
+		3, 2, 1 .. Smile! Act like you're on stage will ya :p
+		Every little while you'll get a countdown, and when you hear Zero,
+		your crit is 100% and damage output is doubled!
+		Small bits of paint left in your tracks.
+		Crit chance and armor penetration increased by 20!
+		'''
+	AstrasilkHead:
+		'''
+		Stars orbit around you
+		Hit an enemy 5 times to rain down a gigantic star upon them!
+		'''
+	DaedenMask:
+		'''
+		This armor is really scuffed...
+		Gives the ability of a molten quiver!
+		-Stuck at 400 max HP, but 20% increased damage for Rangers
+		'''
+	DaediaMask:
+		'''
+		Increases life regen by decent amount!
+		Enemies become lovestruck when you are hit, or when you hit them!
+		This weakens, burns and confuses, slows and does exponential damage
+		Spirit balls come from a portal on your armor and attack enemies
+		No fall Damage
+		Pick up hearts from afar!
+		'''
+	DucanblitzCap:
+		'''
+		Enemies are less likely to target you!
+		Blades of Cinder and Rhamenthal will fight alongside you
+		Every few seconds you'll gain a major increase to Melee Damage
+		An upgraded Govheil set essentially.
+		'''
+	ElagentHead:
+		'''
+		+1 Max Minions
+		+45 Max Life
+		Hit enemies have a rare chance to be assaulted by angelic power!
+		'''
+	EldritchianHood:
+		'''
+		Grants immunity to knockback!
+		When you take a hit, gain a temporary attack speed boost based on the amount of damage you took!
+		'''
+	FlowerHat:
+		'''
+		Increases life regen by decent amount!
+		The armor makes a flowery circle that heals players in it for a large amount!
+		Turns all your wooden arrows into flower arrows! Which when hitting a target,
+		splits into little golden shots that hit back!
+		'''
+	ForestCoreHead: Summons a forest bow to fight for you!
+	GarbageMask:
+		'''
+		Grants immunity to knockback!
+		+2 Summons
+		'''
+	GovheilHelmet:
+		'''
+		Enemies are less likely to target you!
+		Govheil blades will come to defend you!
+		Every few seconds you'll gain a major increase to Magic and Summon damage
+		+2 Summons!
+		'''
+	GovheilMask:
+		'''
+		Enemies are less likely to target you!
+		Magical Govheil bows will come to your aid!!
+		Every few seconds you'll gain a major increase to Magic and Summon damage
+		+2 Summons!
+		'''
+	HeavyMetalHead:
+		'''
+		2 Gintze Guards come to fight for you
+		+1 Summons!
+		'''
+	HuntrianHelmet:
+		'''
+		Increases life regen by a big amount!
+		Reduced Healing Flask cooldown
+		DOES NOT STACK with philosophers stone
+		'''
+	IllurianCrestmask: Enemies are less likely to target you!
+	IllurianWarriorHelm: Allows you to walk on water
+	JianxinMask:
+		'''
+		Increases life regen by a great amount!
+		Move faster and go along with the watery winds.
+		Summons in watery dragons to come and swirl around your character.
+		These dragons emit a great becoming amongst the lost dynasty and give 50 Health.
+		This aura also lessens enemy damage by 10% and damages enemies.
+		Enemies are less likely to target you!
+		'''
+	LovestruckMask:
+		'''
+		Increases life regen by an enormous amount!
+		Enemies become lovestruck when you are hit, or when you hit them!
+		This weakens, burns and confuses, slows and does exponential damage
+		'''
+	MardenthMask:
+		'''
+		Increases life regen
+		Take 10% Less damage
+		'''
+	MiracleHead:
+		'''
+		Increases summon damage by 16%
+		+2 Max Sentries
+		Your attacks have a chance to cleave out a part of the enemy's soul
+		Collect these to gain a stacking increase to your whip speed and summon damage!
+		Taking damage resets the stack
+		'''
+	GintzeMask:
+		'''
+		2 Gintze Guards come to fight for you
+		+1 Summons!
+		'''
+	ScissorianMask:
+		'''
+		Increases life regen by a great amount!
+		Move faster and have less aggro and less enemies spawn around you!
+		'''
+	ScrappyHead:
+		'''
+		Summons a turret over your head to shoot a laser at nearby enemies!
+		8% increased magic and summon damage
+		'''
+	ShadeWraithHead:
+		'''
+		Become greatly empowered for a short time when low on health!
+		Just one last breath...
+		'''
+	StoniaHat: Immunity to fall damage!
+	TerricHead:
+		'''
+		You build up magical crit chance over time!
+		+20 Max Life
+		'''
+	AstolfoMask:
+		'''
+		Increases life regen
+		Anyone that touches you gets an ATD (Astolfo Transmitted Disease)
+		'''
+	VerlHat:
+		'''
+		Auto gain the abilities of Magic cuffs and Mana Flower!
+		Enemies will be attacked by your power of music!
+		Every few seconds you'll gain a major increase to Magic and Ranged damage!
+		'''
+	VerlMask:
+		'''
+		Auto gain the abilities of a Magic Quiver and +5% Ranged damage
+		Enemies will be attacked by your power of music!
+		Every few seconds you'll gain a major increase to Ranged and Magic damage!
+		'''
+	VextinMask:
+		'''
+		Gain the accessory effects of desert boots!
+		Automatically run at fast speeds without boots!
+		+3 Defense!
+		'''
+	WindmillionHat:
+		'''
+		I am wind in a million
+		30% Increased throwing attack speed!
+		Highly increased throwing weapon knowckback
+		'''
+	WinterbornHead: Up to three icicles surround you to protect you from attacks!
+	WitchenHat:
+		'''
+		Truly a giver of society! The witches respect you :P
+		Gain the effects of a mana flower, magic cuffs
+		Extreme mana regeneration
+		Mana costs are reduced by 50%
+		Flowery Rhythm!
+		'''
+	XexterianHat:
+		'''
+		Gain the accessory effects of desert boots!
+		Automatically run at fast speeds without boots!
+		+5 Defense!
+		Gain the effects if Forbidden armor!
+		Arrows are heated up with the effects of a molten quiver!
+		'''
+}
+
 Accessories: {
 	HikersBackpack: {
 		DisplayName: Hiker's Backpack
@@ -107,7 +338,7 @@ IllusionistBook: {
 		'''
 		Increased life regeneration!
 		+3% damage
-		5% increased critical strike chance
+		3% increased critical strike chance
 		'''
 }
 
@@ -2731,8 +2962,8 @@ VoidStaff: {
 }
 
 X3144: {
-	DisplayName: X3144
-	Tooltip: ""
+	DisplayName: Probe Remote (X3144)
+	Tooltip: Summons a destroyer probe to fight for you!
 }
 
 AcidicLancher: {
@@ -6076,8 +6307,12 @@ MushyCard: {
 }
 
 XX4160: {
-	Tooltip: ""
-	DisplayName: X X4160
+	DisplayName: Prime Minigun (X-X4160)
+	Tooltip:
+		'''
+		Right click to swap between laser machine gun mode and gatling gun mode
+		Overheats after using the laser machine gun for too long!
+		'''
 }
 
 ExampleScriptureItem: {

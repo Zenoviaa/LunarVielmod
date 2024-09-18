@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.SunStalker;
 using Terraria;
@@ -65,9 +66,7 @@ namespace Stellamod.Tiles
 
         public override void MouseOver(int i, int j)
         {
-            //shows the Cryptic Crystal icon while mousing over this tile
-            Main.player[Main.myPlayer].cursorItemIconEnabled = true;
-            Main.player[Main.myPlayer].cursorItemIconID = ModContent.ItemType<SunClaw>();
+
         }
         public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
         {
@@ -82,19 +81,12 @@ namespace Stellamod.Tiles
         public override bool RightClick(int i, int j)
         {
             Player player = Main.LocalPlayer;
-            int key = ModContent.ItemType<SunClaw>();
-            if (!player.HasItem(key))
-            {
-                Main.NewText("Come back with a Sun Stone to fight the warrior of the desert.", Color.Gold);
-                return true;
-            }
-
             if (!NPC.AnyNPCs(ModContent.NPCType<SunStalkerPreSpawn>()) && 
                 !NPC.AnyNPCs(ModContent.NPCType<SunStalker>()))
             {
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    Main.NewText("Sun Stalker has awoken!", Color.Gold);
+                    Main.NewText(LangText.Misc("SunAlter.2"), Color.Gold);
                     int npcID = NPC.NewNPC(new Terraria.DataStructures.EntitySource_TileUpdate(i, j), i * 16 + Main.rand.Next(-10, 10), j * 16, ModContent.NPCType<SunStalkerPreSpawn>(), 0, 0, 0, 0, 0, Main.myPlayer);
                     Main.npc[npcID].netUpdate2 = true;
                 }

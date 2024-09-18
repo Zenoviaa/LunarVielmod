@@ -172,11 +172,10 @@ namespace Stellamod.NPCs.Town
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Your eternal bonding with this individual resonates with everyone throughout!"),
-
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Your eternal bonding with this individual resonates with everyone throughout!")),
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Sirestias")
+				new FlavorTextBestiaryInfoElement(NPC.FullName)
 			});
 		}
 
@@ -205,18 +204,18 @@ namespace Stellamod.NPCs.Town
 			int partyGirl = NPC.FindFirstNPC(NPCID.Steampunker);
 
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("Here to give me some company I see?"));
-			chat.Add(Language.GetTextValue("Hmph how's Aimacra doing? Nevermind I already know that answer."));
-			chat.Add(Language.GetTextValue("Enjoying yourself?"));
-			chat.Add(Language.GetTextValue("Sometimes I forget you're bounded with me always"), 1.0);
-			chat.Add(Language.GetTextValue("Its always sweet to see you do things for me"), 1.0);
+			chat.Add(LangText.Chat(this, "Basic1"));
+			chat.Add(LangText.Chat(this, "Basic2"));
+			chat.Add(LangText.Chat(this, "Basic3"));
+			chat.Add(LangText.Chat(this, "Basic4"));
+			chat.Add(LangText.Chat(this, "Basic5"));
 
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 40)
 			{
 				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("..."));
+				chat.Add("...");
 			}
 
 			return chat; // chat is implicitly cast to a string.
@@ -250,8 +249,8 @@ namespace Stellamod.NPCs.Town
 
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
-			button2 = "What do I do next?";
-			button = "Give Completion Idol";
+			button2 = LangText.Chat(this, "Button");
+			button = LangText.Chat(this,  "Button2");
 
 		}
 
@@ -270,20 +269,20 @@ namespace Stellamod.NPCs.Town
 
 				if (!DownedBossSystem.downedGintzlBoss)
 				{
-					Main.npcChatText = $"Kill the stone guardian, commander gintzia will soon raid you with his army of failed troops from the govheil. He will be very easy so take him swiftly and beat him into submission hun. ";
+					Main.npcChatText = LangText.Chat(this, "Downed1");
 
 
 				}
 				if (DownedBossSystem.downedGintzlBoss)
 				{
 
-					Main.npcChatText = $" I'd recommend going into the Fabled Swamp over to the right or collecting resources to get ready to fight either Jack or find a sun alter in a desert and prepare for Sunstalker! Zui may be a good person to talk to in the witch village for quest items too :) ";
+					Main.npcChatText = LangText.Chat(this, "Downed2");
 
 
 					if (DownedBossSystem.downedSunsBoss)
 					{
 
-						Main.npcChatText = $"Nice babe, I want you to go kill Jack in the Fabled swamp on the right then, you need a wandering essence and he shouldn't be too difficult. ";
+						Main.npcChatText = LangText.Chat(this, "Downed3");
 
 
 
@@ -293,7 +292,7 @@ namespace Stellamod.NPCs.Town
 					if (DownedBossSystem.downedJackBoss)
 					{
 
-						Main.npcChatText = $"Nice work! I want you to go headhunt a bird in the desert, his name is Sunstalker and they are a bit challenging but less so than the last, collect some mandibles in the desert to make the Sun stone! Find the alter on the surface of a desert!";
+						Main.npcChatText = LangText.Chat(this, "Downed4");
 
 
 
@@ -302,13 +301,13 @@ namespace Stellamod.NPCs.Town
 					if (DownedBossSystem.downedJackBoss && DownedBossSystem.downedSunsBoss)
 					{
 
-						Main.npcChatText = $"You're next target is Daedus, he's a strong one. Hes a very loyal Guardian to one of the biggest threats here being Gothivia, we need him gone to get to the big fish in the sea. For some reason he holds some power of a singularity so beware. He resides low in the temple in the Fabled Swamp, no extra preperation needed.";
+						Main.npcChatText = LangText.Chat(this, "Downed5");
 
 
 						if (DownedBossSystem.downedDaedusBoss)
 						{
 
-							Main.npcChatText = $"Oh my gosh nice, so here's where things are going to get difficult. If a blood moon happens we need to exterminate Dreadmire, she spawns after killing a blood cyst during a blood moon, you can also get some terror fragments too! She'll pose too much of a threat if we let her live. She's I think one of the three sisters, formally known as cozmire. She needs to die and after that I'll give some great rewards.";
+							Main.npcChatText = LangText.Chat(this, "Downed6");
 
 
 
@@ -316,12 +315,12 @@ namespace Stellamod.NPCs.Town
 							if (DownedBossSystem.downedDreadBoss)
 							{
 
-								Main.npcChatText = $"We are making big progress now! I don't know if you have been killing other ravenous monsters but I'd recommend doing so as the next one on our list is Verlia but to get to her we have quite a few things to do first. Make yourself a void key and find a temple deep in the ice biome, there should be some loot and hopefully an alter that'll give you a lantern. She was trapped by Fenix but she needs to die so we can bring out Gothivia.";
+								Main.npcChatText = LangText.Chat(this, "Downed7");
 
 								if (DownedBossSystem.downedSOMBoss)
 								{
 
-									Main.npcChatText = $"Ok you got the lantern! Go to the cathedral overtop the ice biome and summon her at the top at night. This will be our biggest foe yet but I know you can kill her, sorry Aimacra is tired of being my assasin so it's your turn.";
+									Main.npcChatText = LangText.Chat(this, "Downed8");
 
 
 
@@ -329,69 +328,69 @@ namespace Stellamod.NPCs.Town
 									if (DownedBossSystem.downedVeriBoss)
 									{
 
-										Main.npcChatText = $"Oh damn this is great. I think that completes our list for now, check back in with me in Hardmode! We'll purify this world of all danger and create peace and then we can be together and move on. Thank you again.";
+										Main.npcChatText = LangText.Chat(this, "Downed9");
 
 
 										if (Main.hardMode)
 										{
-											Main.npcChatText = $"Welp here we go again. So theres a strange issue we have, so Daedus isn't the only barrier to trying to stop us from getting to Gothivia, Aimacra just went and explored around and found some new places and there was this castle underground in a green biome? I noticed Gothivia's marks on it and the Sun hasnt started turning green, could you look at that? There should be some catacombs underground in the desert, ocean and caverns to help power up too.";
+											Main.npcChatText = LangText.Chat(this, "Downed10");
 
 
 
 											if (DownedBossSystem.downedIrradiaBoss)
 											{
 
-												Main.npcChatText = $"There was a person down there claiming to be Gothiva? Thats strange. Gothivia seems to be making an appearance on the world. Apparently things are changing the skies and things are falling from them, Beware of STARBOMBERS, Aimacra warned me that they were manufactured here as well as Ekrose and you have experience with them.";
+												Main.npcChatText = LangText.Chat(this, "Downed11");
 
 
 
 												if (DownedBossSystem.downedSTARBoss)
 												{
 
-													Main.npcChatText = $"I didn't think Rosemary's creations would've made it here. Ekrose sure does have an affect on this world. I saw some strange disturbance on the left side of the underworld though, can you check that out? I went to talk to Veldris and he told me Sylia may be up to some demonic magic that could ruin our process, so killing her is a good option. ";
+													Main.npcChatText = LangText.Chat(this, "Downed12");
 
 
 
 													if (DownedBossSystem.downedSyliaBoss)
 													{
 
-														Main.npcChatText = $"It was a void witch... Interesting. Must be related to that Merena person Aimacra talked about. I haven't been to the Royal Capital much, mainly because it's so far out but maybe we should kill the Queen there, she is definitely extremely powerful but I don't really know how to talk to her, I haven't seen her yet. If you can could you go kill her for us? ";
+														Main.npcChatText = LangText.Chat(this, "Downed13");
 
 														if (DownedBossSystem.downedZuiBoss)
 														{
 
-															Main.npcChatText = $"Ereshkigal huh? I think I know her, she also isn't supposed to be here. However she got lost I guess we can give her some sense";
+															Main.npcChatText = LangText.Chat(this, "Downed14");
 
                                                             if (DownedBossSystem.downedAzurewrathBoss)
                                                             {
 
-                                                                Main.npcChatText = $"Weheeee! You're doing so well! I can like get off to this! I'm kidding :(. Maybe you can try and explore around some more. We need to prepare for moonlord!";
+                                                                Main.npcChatText = LangText.Chat(this, "Downed15");
 
 
 
                                                                 if (DownedBossSystem.downedFenixBoss)
                                                                 {
 
-                                                                    Main.npcChatText = $"I did not expect you to want to kill her honestly. I went and explored around and she seemed nice. Wait you didn't kill her? Oh dang, well she isn't on our list anyway so it's fine lmao. She isn't causing us any issues.";
+                                                                    Main.npcChatText = LangText.Chat(this, "Downed16");
 
 
                                                                     if (DownedBossSystem.downedRekBoss)
                                                                     {
 
-                                                                        Main.npcChatText = $"Ok ok we got some good stuff done. Time for Gothivia as she's not particularly the worst but she keeps inspiring bad people to do ad things and we need to teach her not to do that.";
+                                                                        Main.npcChatText = LangText.Chat(this, "Downed17");
 
 
                                                                         if (DownedBossSystem.downedNiiviBoss)
                                                                         {
 
-                                                                            Main.npcChatText = $"Maybe we shouldn't have killed her, I don't know if there was a reason to kill Niivi. You just wanted weapons and gear? I mean if it helps I guess. She was doing more good than harm";
+                                                                            Main.npcChatText = LangText.Chat(this, "Downed18");
 
 
 
                                                                             if (DownedBossSystem.downedGothBoss)
                                                                             {
 
-                                                                                Main.npcChatText = $"Okie dokie, Gothivia has agree to stay calm so we aren't going to assassinate her anymore, I feel bad for killing her sister now. I hope Vixyl doesn't find out.";
+                                                                                Main.npcChatText = LangText.Chat(this, "Downed19");
 
 
 
@@ -472,14 +471,14 @@ namespace Stellamod.NPCs.Town
 				if (Main.LocalPlayer.HasItem(ModContent.ItemType<CompletionIdol>()) && DownedBossSystem.downedDreadBoss)
 				{
 
-					Main.npcChatText = $"YESSS, we're getting closer to our goals!! Aren't you excited <3";
+					Main.npcChatText = LangText.Chat(this, "Special1");
 
 					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletionIdol>());
 					var entitySource = NPC.GetSource_GiftOrReward();
 
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 
-					CombatText.NewText(NPC.getRect(), Color.White, "God Hunted!", true, false);
+					CombatText.NewText(NPC.getRect(), Color.White, LangText.Chat(this, "Special2"), true, false);
 					Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1024f, 16f);
 					for (int i = 0; i < 4; i++)
 					{
@@ -518,7 +517,7 @@ namespace Stellamod.NPCs.Town
 							case 2:
 								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
                                 Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
-                                Main.npcChatText = $"I couldnt find anything more so I'll give you an extra token!";
+                                Main.npcChatText = LangText.Chat(this, "Special3");
                                 break;
 
 						}
@@ -598,7 +597,7 @@ namespace Stellamod.NPCs.Town
 					{
 
 
-						Main.npcChatText = $"Please go do something for me, we don't have all day you know ;P";
+						Main.npcChatText = LangText.Chat(this, "Special4");
 					}
 
 

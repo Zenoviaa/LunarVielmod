@@ -80,7 +80,6 @@ namespace Stellamod
             };
             // Information for the player so he knows how to encounter the boss
             // Ideally you'd have this text in the localization file, but screw that
-            LocalizedText spawnConditionText = Language.GetText($"Use a [i:{summonItem}] at a post in the Fabled Castle to the right at night.");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -91,7 +90,6 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem,
-					["spawnInfo"] = spawnConditionText,
 					["customPortrait"] = customPortait
 					// Other optional arguments as needed are inferred from the wiki
 				}
@@ -130,7 +128,6 @@ namespace Stellamod
             };
             // Information for the player so he knows how to encounter the boss
             //string spawnInfo2 = $"High at the fabled castle lies a forgotten guardian of Gothivia's ranks";
-            LocalizedText spawnConditionText = Language.GetText($"Disturb with the ruined tablet deep within the morrow.");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -140,7 +137,6 @@ namespace Stellamod
 				bossType2,
 				new Dictionary<string, object>()
 				{
-					["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -184,7 +180,6 @@ namespace Stellamod
 
 			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
 			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			LocalizedText spawnConditionText = Language.GetText($"Destroy 3 dread monoliths to create a Dread medallion and summon her during night.");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -195,7 +190,6 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"]= summonItem8,
-                    ["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -236,7 +230,6 @@ namespace Stellamod
                 spriteBatch.Draw(texture, centered, color);
             };
             // Information for the player so he knows how to encounter the boss
-            LocalizedText spawnConditionText = Language.GetText($"Randomly each day, if you have 3 npcs and have killed the Stone Guardian, an army will raid you!");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -246,7 +239,6 @@ namespace Stellamod
 				bossType4,
 				new Dictionary<string, object>()
 				{
-					["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -277,7 +269,6 @@ namespace Stellamod
 			};
 
 			// The item used to summon the boss with (if available)
-			int summonItem5 = ModContent.ItemType<Items.Consumables.SunClaw>();
             Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
                 Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/SunStalker/SunStalkerBestiary").Value;
                 Vector2 centered = new Vector2(
@@ -291,7 +282,6 @@ namespace Stellamod
 
             // By default, it draws the first frame of the boss, omit if you don't need custom drawing
             // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-            LocalizedText spawnConditionText = Language.GetText($"Use a [i:{summonItem5}] at an altar in the desert.");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -301,8 +291,6 @@ namespace Stellamod
 				bossType5,
 				new Dictionary<string, object>()
 				{
-					["spawnItems"] = summonItem5,
-					["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -352,7 +340,6 @@ namespace Stellamod
 
             // By default, it draws the first frame of the boss, omit if you don't need custom drawing
             // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-            LocalizedText spawnConditionText = Language.GetText($"Buy a [i:{summonItem5}] from Gia and use it in the virulent acid or find an Unknown Signal.");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -363,7 +350,6 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem5,
-					["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -406,7 +392,6 @@ namespace Stellamod
             int summonItem6 = ModContent.ItemType<Items.Consumables.VoidKey>();
 
 			// Information for the player so he knows how to encounter the boss
-			LocalizedText spawnConditionText = Language.GetText($"Use a [i:{summonItem6}] at an altar, in the Aurelus, deep in the ice.");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -417,7 +402,6 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem6,
-					["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -463,7 +447,6 @@ namespace Stellamod
 			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
 			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
 
-			LocalizedText spawnConditionText = Language.GetText($"Use a [i:{summonItem7}] at a shrine in the Cathedral over the ice biome!");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -474,7 +457,6 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem7,
-					["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -520,7 +502,6 @@ namespace Stellamod
             };
             // By default, it draws the first frame of the boss, omit if you don't need custom drawing
             // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-            LocalizedText spawnConditionText = Language.GetText($"After killing her friend Irradia, Green sun will start and she will await your arrival, kill Rek to challenge her.");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -531,7 +512,6 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem8,
-					["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -580,7 +560,6 @@ namespace Stellamod
 
             // By default, it draws the first frame of the boss, omit if you don't need custom drawing
             // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-            LocalizedText spawnConditionText = Language.GetText($"Give Irradia a [i:{summonItem8}] at a bottom of the Govheil Castle, underneath the Virulent.");
             bossChecklistMod.Call(
                 "LogBoss",
                 Mod,
@@ -591,7 +570,6 @@ namespace Stellamod
                 new Dictionary<string, object>()
                 {
                     ["spawnItems"] = summonItem8,
-                    ["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -624,7 +602,6 @@ namespace Stellamod
 
             // By default, it draws the first frame of the boss, omit if you don't need custom drawing
             // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-            LocalizedText spawnConditionText = Language.GetText($"Interact with the strange anomaly that lies in within the Underworld Ruins.");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -634,7 +611,6 @@ namespace Stellamod
 				bossType,
 				new Dictionary<string, object>()
 				{
-					["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -667,7 +643,6 @@ namespace Stellamod
 
             // By default, it draws the first frame of the boss, omit if you don't need custom drawing
             // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-            LocalizedText spawnConditionText = Language.GetText($"Randomly during a hardmode Aurorean Starfall, they may fall from the sky.");
 			bossChecklistMod.Call(
 				"LogMiniBoss",
 				Mod,
@@ -677,7 +652,6 @@ namespace Stellamod
 				bossType,
 				new Dictionary<string, object>()
 				{
-					["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -711,7 +685,6 @@ namespace Stellamod
 
             // By default, it draws the first frame of the boss, omit if you don't need custom drawing
             // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-            LocalizedText spawnConditionText = Language.GetText($"She resides in the royal capital far to the left, she may want to play with you!");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -721,7 +694,6 @@ namespace Stellamod
 				bossType,
 				new Dictionary<string, object>()
 				{
-					["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -758,7 +730,6 @@ namespace Stellamod
 
             // By default, it draws the first frame of the boss, omit if you don't need custom drawing
             // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-            LocalizedText spawnConditionText = Language.GetText($"After Plantera, Zui will sell you an item that'll allow you to fight her in the witch town!");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -769,7 +740,6 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem8,
-					["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -794,7 +764,6 @@ namespace Stellamod
 
 			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
 			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			LocalizedText spawnConditionText = Language.GetText($"Interact with the Old Guard's Shrine. After using the rock in your Starter bag.");
 			bossChecklistMod.Call(
                 "LogMiniBoss",
 				Mod,
@@ -804,7 +773,6 @@ namespace Stellamod
 				bossType,
 				new Dictionary<string, object>()
 				{
-					["spawnInfo"] = spawnConditionText
 					// Other optional arguments as needed are inferred from the wiki
 				}
 			);
@@ -835,7 +803,6 @@ namespace Stellamod
 
 			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
 			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			LocalizedText spawnConditionText = Language.GetText($"Use a Cursed Shard at an altar in the Fire Catacombs, it may appear...");
 			bossChecklistMod.Call(
 				"LogMiniBoss",
 				Mod,
@@ -846,7 +813,6 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem8,
-					["spawnInfo"] = spawnConditionText,
 					["customPortrait"] = customPortait
 					// Other optional arguments as needed are inferred from the wiki
 				}
@@ -870,7 +836,6 @@ namespace Stellamod
 
 			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
 			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			LocalizedText spawnConditionText = Language.GetText($"Use a Cursed Shard at an altar in the Trapped or Water Catacombs, it may appear...");
 			bossChecklistMod.Call(
 				"LogMiniBoss",
 				Mod,
@@ -881,7 +846,6 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem8,
-					["spawnInfo"] = spawnConditionText
 					// Other optional arguments as needed are inferred from the wiki
 				}
 			);
@@ -905,7 +869,6 @@ namespace Stellamod
 
 			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
 			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			LocalizedText spawnConditionText = Language.GetText($"Use a Cursed Shard at an altar in the Water Catacombs, it may appear...");
 			bossChecklistMod.Call(
 				"LogMiniBoss",
 				Mod,
@@ -916,7 +879,6 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem8,
-					["spawnInfo"] = spawnConditionText
 					// Other optional arguments as needed are inferred from the wiki
 				}
 			);
@@ -937,7 +899,6 @@ namespace Stellamod
 			int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
 			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
 			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			LocalizedText spawnConditionText = Language.GetText($"Use a Cursed Shard at an altar in the Trapped Catacombs, it may appear...");
 			bossChecklistMod.Call(
 				"LogMiniBoss",
 				Mod,
@@ -948,7 +909,6 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem8,
-					["spawnInfo"] = spawnConditionText
 					// Other optional arguments as needed are inferred from the wiki
 				}
 			);
@@ -971,7 +931,6 @@ namespace Stellamod
 
 			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
 			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			LocalizedText spawnConditionText = Language.GetText($"Use a Cursed Shard at an altar in the Fire Catacombs, it may appear...");
 			bossChecklistMod.Call(
 				"LogMiniBoss",
 				Mod,
@@ -982,7 +941,6 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem8,
-					["spawnInfo"] = spawnConditionText
 					// Other optional arguments as needed are inferred from the wiki
 				}
 			);
@@ -1014,7 +972,6 @@ namespace Stellamod
 
             // By default, it draws the first frame of the boss, omit if you don't need custom drawing
             // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-            LocalizedText spawnConditionText = Language.GetText($"Deal enough damage to Niivi to anger her, you may find her flying around The Great Illuria! -or sleeping...");
             bossChecklistMod.Call(
                 "LogBoss",
                 Mod,
@@ -1024,7 +981,6 @@ namespace Stellamod
                 bossType,
                 new Dictionary<string, object>()
                 {
-                    ["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -1056,7 +1012,6 @@ namespace Stellamod
 
             // By default, it draws the first frame of the boss, omit if you don't need custom drawing
             // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-            LocalizedText spawnConditionText = Language.GetText($"Gothivia's sworn protector, you must take him down before you can get to Gothivia.");
             bossChecklistMod.Call(
                 "LogBoss",
                 Mod,
@@ -1066,7 +1021,6 @@ namespace Stellamod
                 bossType,
                 new Dictionary<string, object>()
                 {
-                    ["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -1100,7 +1054,6 @@ namespace Stellamod
 
             // By default, it draws the first frame of the boss, omit if you don't need custom drawing
             // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-            LocalizedText spawnConditionText = Language.GetText($"Go down to the Cinderspark and nag Ordin to get a gift for Ereshkigal and she may give you something in return...");
             bossChecklistMod.Call(
                 "LogBoss",
                 Mod,
@@ -1111,7 +1064,6 @@ namespace Stellamod
                 new Dictionary<string, object>()
                 {
                     ["spawnItems"] = summonItem8,
-                    ["spawnInfo"] = spawnConditionText,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }

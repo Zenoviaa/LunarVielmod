@@ -66,11 +66,6 @@ namespace Stellamod
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GladiatorSpear>(), 8, 1, 1));
             }
 
-            if (npc.type == NPCID.Harpy)
-            {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CloudSkaters>(), 7, 1, 1));
-            }
-
             if (npc.type == NPCID.BloodZombie || npc.type == NPCID.Drippler)
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TerrorFragments>(), 2, 0, 5));

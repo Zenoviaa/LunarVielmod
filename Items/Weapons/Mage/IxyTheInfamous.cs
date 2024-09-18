@@ -142,8 +142,6 @@ namespace Stellamod.Items.Weapons.Mage
         {
             Recipe recipe = CreateRecipe();
             recipe.AddTile(TileID.MythrilAnvil);
-
-            recipe.AddIngredient(ModContent.ItemType<Gallasis>(), 1);
             recipe.AddIngredient(ModContent.ItemType<CinderedLantern>(), 1);
             recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 22);
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 22);

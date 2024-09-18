@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
@@ -9,117 +10,89 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.SupernovaFragment
 {
-    internal class SupernovaZapwarn : ModNPC
+    internal class SupernovaZapwarn : ModProjectile
     {
-        public bool Down;
-        public bool Lightning;
-        public virtual string GlowTexturePath => Texture + "_Glow";
-        private Asset<Texture2D> _glowTexture;
-        public Texture2D GlowTexture => (_glowTexture ??= (RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
-        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            if (GlowTexture is not null)
-            {
-                SpriteEffects spriteEffects = SpriteEffects.None;
-                if (NPC.spriteDirection == 1)
-                {
-                    spriteEffects = SpriteEffects.FlipHorizontally;
-                }
-                Vector2 halfSize = new Vector2(GlowTexture.Width / 2, GlowTexture.Height / Main.npcFrameCount[NPC.type] / 2);
-                spriteBatch.Draw(
-                    GlowTexture,
-                    new Vector2(NPC.position.X - screenPos.X + NPC.width / 2 - GlowTexture.Width * NPC.scale / 2f + halfSize.X * NPC.scale, NPC.position.Y - screenPos.Y + NPC.height - GlowTexture.Height * NPC.scale / Main.npcFrameCount[NPC.type] + 4f + halfSize.Y * NPC.scale + Main.NPCAddHeight(NPC) + NPC.gfxOffY),
-                    NPC.frame,
-                    Color.White,
-                    NPC.rotation,
-                    halfSize,
-                    NPC.scale,
-                    spriteEffects,
-                0);
-            }
-        }
+        private ref float _timer => ref Projectile.ai[0];
+        private float _alphaCounter = 0;
+        private float _counter = 8;
+        private bool _appearing;
 
+        public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
-            NPC.aiStyle = -1;
-            NPC.alpha = 255;
-            NPC.width = 0;
-            NPC.height = 0;
-            NPC.damage = 0;
-            NPC.defense = 8;
-            NPC.lifeMax = 156;
-            NPC.value = 30f;
-            NPC.knockBackResist = 0f;
-            NPC.noGravity = true;
-            NPC.dontTakeDamage = true;
-            NPC.friendly = true;
-            NPC.dontCountMe = true;
+            Projectile.width = Projectile.height = 1;
+            Projectile.damage = 1;
         }
 
-        float alphaCounter = 0;
-        float counter = 8;
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        public override bool ShouldUpdatePosition()
         {
-            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/Extra_47").Value;
-            Main.spriteBatch.Draw(texture2D4, NPC.Center - Main.screenPosition, null, new Color((int)(55f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), 0, new Vector2(30 / 4, 1028 / 2), 0.2f * (counter + 0.3f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, NPC.Center - Main.screenPosition, null, new Color((int)(55f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), 0, new Vector2(30 / 4, 1028 / 2), 0.2f * (counter + 0.3f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, NPC.Center - Main.screenPosition, null, new Color((int)(55f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), 0, new Vector2(30 / 4, 1028 / 2), 0.2f * (counter + 0.3f), SpriteEffects.None, 0f);
-            return true;
-
+            return false;
         }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D tex = Request<Texture2D>("Stellamod/Effects/Masks/Extra_47").Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            for (int i = 0; i < 3; i++)
+            {
+                spriteBatch.Draw(tex,
+                    drawPos, null, new Color(
+                        (int)(55f * _alphaCounter),
+                        (int)(45f * _alphaCounter),
+                        (int)(15f * _alphaCounter), 0), 0, new Vector2(30 / 4, 1028 / 2), 0.2f * (_counter + 0.3f), SpriteEffects.None, 0f);
+            }
+
+            return false;
+        }
+
         public override void AI()
         {
-            if (!Down)
+            if (!_appearing)
             {
-                alphaCounter += 0.04f;
-                if (alphaCounter >= 4)
+                _alphaCounter += 0.04f;
+                if (_alphaCounter >= 4)
                 {
-                    Down = true;
+                    _appearing = true;
                 }
             }
             else
             {
-                NPC.ai[0]++;
-                if (NPC.ai[0] == 1)
+                _timer++;
+                if (_timer == 1)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap"), NPC.position);
-                    Vector2 LightPos;
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap"), Projectile.position);
                     int Sound = Main.rand.Next(1, 4);
                     if (Sound == 1)
                     {
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain1"), NPC.position);
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain1"), Projectile.position);
                     }
                     if (Sound == 2)
                     {
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain2"), NPC.position);
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain2"), Projectile.position);
                     }
                     if (Sound == 3)
                     {
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain3"), NPC.position);
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain3"), Projectile.position);
                     }
-                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 2048f, 32f);
-                    LightPos.X = NPC.position.X;
-                    LightPos.Y = NPC.position.Y - 500;
+
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048f, 32f);
                     if (StellaMultiplayer.IsHost)
                     {
-                        var entitySource = NPC.GetSource_FromThis();
-                        Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y - 900, 0, 10,
-                            ModContent.ProjectileType<SupernovaBeam>(), 500, 0f, owner: Main.myPlayer, 0, NPC.whoAmI);
+                        Vector2 spawnPos = new Vector2(Projectile.Center.X, Projectile.Center.Y - 1500);
+                        Vector2 spawnVelocity = new Vector2(0, 10);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), spawnPos, spawnVelocity,
+                            ModContent.ProjectileType<SupernovaBeam>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                     }
                 }
-                if (NPC.ai[0] >= 10)
+                if (_timer >= 10)
                 {
-                    if (alphaCounter <= 0)
+                    if (_alphaCounter <= 0)
                     {
-                        NPC.active = false;
+                        Projectile.Kill();
                     }
-                    alphaCounter -= 0.29f;
+                    _alphaCounter -= 0.29f;
                 }
-            }
-
-            if (!Lightning)
-            {
-                Lightning = true;
             }
         }
     }

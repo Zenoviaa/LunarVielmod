@@ -223,8 +223,7 @@ namespace Stellamod.NPCs.Underground
             npcLoot.Add(ItemDropRule.OneFromOptions(1,
                 ModContent.ItemType<JellyBow>(),
                 ModContent.ItemType<JellyStaff>(),
-                   ModContent.ItemType<VeiledScriptureMiner9>(),
-                ModContent.ItemType<JellyTome>()));
+                   ModContent.ItemType<VeiledScriptureMiner9>()));
         }
       
 

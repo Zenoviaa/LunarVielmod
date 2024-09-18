@@ -219,14 +219,14 @@ namespace Stellamod.NPCs.Bosses.Niivi
             // Sets the description of this NPC that is listed in the bestiary
             bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
                 new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("Niivi, The First Dragon")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Niivi, The First Dragon"))
             });
         }
 
         public override void SetDefaults()
         {
             //Stats
-            NPC.lifeMax = 232000;
+            NPC.lifeMax = 262000;
             NPC.defense = 140;
             NPC.damage = 260;
             NPC.width = (int)NiiviHeadSize.X;

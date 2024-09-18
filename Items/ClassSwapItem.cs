@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using System.IO;
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -10,6 +11,7 @@ namespace Stellamod.Items
 {
     public abstract class ClassSwapItem :ModItem
     {
+        private static bool _preReforgeSwapped;
         public bool IsSwapped { get; set; }
         public abstract DamageClass AlternateClass { get; }
 
@@ -17,12 +19,12 @@ namespace Stellamod.Items
         {
             if (!IsSwapped)
             {
-                var line = new TooltipLine(Mod, "SirestiasTokenSwap", $"Can be changed to{AlternateClass.DisplayName}!");
+                var line = new TooltipLine(Mod, "SirestiasTokenSwap", Helpers.LangText.Common("CanSwapped", AlternateClass.DisplayName));
                 tooltips.Add(line);
             }
             else
             {
-                var line = new TooltipLine(Mod, "SirestiasTokenSwitched", $"Damage Type Swapped!");
+                var line = new TooltipLine(Mod, "SirestiasTokenSwitched", Helpers.LangText.Common("TypeSwapped"));
                 tooltips.Add(line);
             }
         }
@@ -81,6 +83,7 @@ namespace Stellamod.Items
 
         }
 
+
         public override void SaveData(TagCompound tag)
         {
             base.SaveData(tag);
@@ -111,6 +114,22 @@ namespace Stellamod.Items
         {
             base.NetReceive(reader);
             IsSwapped = reader.ReadBoolean();
+        }
+
+        public override void PreReforge()
+        {
+            base.PreReforge();
+            _preReforgeSwapped = IsSwapped;
+        }
+
+        public override void PostReforge()
+        {
+            base.PostReforge();
+            IsSwapped = _preReforgeSwapped;
+            if (IsSwapped)
+            {
+                SetClassSwappedDefaults();
+            }
         }
     }
 }

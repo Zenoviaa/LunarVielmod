@@ -51,6 +51,9 @@ namespace Stellamod.Projectiles.Whips
 			NPCID.LunarTowerStardust,
 			NPCID.LunarTowerVortex,
 			NPCID.LunarTowerSolar,
+			NPCID.TheDestroyer,
+			NPCID.TheDestroyerBody,
+			NPCID.TheDestroyerTail
 		};
 
 		public override void SetStaticDefaults()

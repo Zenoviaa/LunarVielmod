@@ -96,21 +96,10 @@ namespace Stellamod.Projectiles.Paint
 		public void AttachToPlayer()
 		{
 			Player player = Main.player[Projectile.owner];
-			if (!player.active || player.dead || player.CCed || player.noItems)
-				return;
-
 			Vector2 oldMouseWorld = Main.MouseWorld;
 			Timer++;
-
-
-
 			if (Timer < 45)
 			{
-
-
-
-
-				player.GetModPlayer<ImmunityPlayer>().HasStealiImmunityAcc = true;
 				if (Main.rand.NextBool(2))
 				{
 					float speedXa = Main.rand.NextFloat(-60f, 60f);
@@ -180,21 +169,12 @@ namespace Stellamod.Projectiles.Paint
 						Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<PaintBlob1>(), (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
 					}
 				}
-
 			}
-
-
-
 
 			if (Timer < 3 && Main.myPlayer == Projectile.owner)
 			{
-
 				player.velocity = Projectile.DirectionTo(oldMouseWorld) * 20f;
-
 			}
-
-
-
 
 			int dir = (int)Projectile.ai[1];
 			float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft));
@@ -218,7 +198,6 @@ namespace Stellamod.Projectiles.Paint
 			player.itemRotation = rotation * player.direction;
 			player.itemTime = 2;
 			player.itemAnimation = 2;
-			//Projectile.netUpdate = true;
 		}
 
 		public override bool PreAI()
@@ -227,7 +206,6 @@ namespace Stellamod.Projectiles.Paint
 			{
 				Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 				Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<PaintBlob3>(), speed * 2, 0, default(Color), 4f).noGravity = false;
-
 			}
 
 			if (Main.rand.NextBool(3))
@@ -259,9 +237,7 @@ namespace Stellamod.Projectiles.Paint
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-		//	Player player = Main.player[Projectile.owner];
 			Vector2 oldMouseWorld = Main.MouseWorld;
-
             for (int i = 0; i < Main.rand.Next(1, 3); i++)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
@@ -287,11 +263,7 @@ namespace Stellamod.Projectiles.Paint
 				{
 					target.SimpleStrikeNPC(9999, 1, crit: false, 1);
 					SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.Center);
-
-
 				}
-
-
 			}
 		}
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)

@@ -86,17 +86,18 @@ namespace Stellamod.Projectiles.Steins
 			timer++;
 			if (timer == 5 && Main.myPlayer == Projectile.owner)
             {
-	
-				player.Teleport(teleportPosition, 6);
-				NetMessage.SendData(MessageID.TeleportEntity, -1, -1, null, 0, player.whoAmI, teleportPosition.X, teleportPosition.Y, 1);
-				float speed = 5;
-				Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * speed;
-				Projectile.netUpdate = true;
+				if (Collision.CanHitLine(player.Center, 1, 1, teleportPosition, 1, 1))
+				{
+					player.Teleport(teleportPosition, 6);
+					NetMessage.SendData(MessageID.TeleportEntity, -1, -1, null, 0, player.whoAmI, teleportPosition.X, teleportPosition.Y, 1);
+					float speed = 5;
+					Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * speed;
+					Projectile.netUpdate = true;
 
-				player.immune = true;
-				player.immuneTime = 3;
-				Projectile.Center = player.Center;
-
+					player.immune = true;
+					player.immuneTime = 3;
+					Projectile.Center = player.Center;
+				}
 			}
 
 			Projectile.velocity *= 0.97f;

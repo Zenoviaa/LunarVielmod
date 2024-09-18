@@ -247,7 +247,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
 			{
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("Start to something bad")
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Start to something bad"))
 			});
 		}
 	}

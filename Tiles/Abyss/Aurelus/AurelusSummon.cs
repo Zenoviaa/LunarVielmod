@@ -2,6 +2,7 @@
 
 using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Bosses.SupernovaFragment;
@@ -90,7 +91,7 @@ namespace Stellamod.Tiles.Abyss.Aurelus
 			{
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
-					Main.NewText("Singularity has awoken!", Color.Blue);
+					Main.NewText(LangText.Misc("AurelusSummon.1"), Color.Blue);
 					int npcID = NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<SingularityFragment>());
 					Main.npc[npcID].netUpdate2 = true;
 				}
@@ -107,12 +108,12 @@ namespace Stellamod.Tiles.Abyss.Aurelus
 
 			if (player.HasItem(key) && NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()))
 			{
-				Main.NewText("What are you doing?? Trying to summon another?", Color.LightSkyBlue);
+				Main.NewText(LangText.Misc("AurelusSummon.2"), Color.LightSkyBlue);
 			}
 
 			if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()))
 			{
-				Main.NewText("Come at with the key of void and moon, Verlia's Singularity awaits.", Color.LightSkyBlue);
+				Main.NewText(LangText.Misc("AurelusSummon.3"), Color.LightSkyBlue);
 			}
 
 			return true;

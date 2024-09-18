@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets.Biomes;
+using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
@@ -45,7 +46,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
             {
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 16f);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Harv1"));
-                CombatText.NewText(NPC.getRect(), Color.Orange, "Veriplant Harvest Collected!", true, false);
+                CombatText.NewText(NPC.getRect(), Color.Orange, LangText.Misc("PearledGold"), true, false);
             }
         }
 

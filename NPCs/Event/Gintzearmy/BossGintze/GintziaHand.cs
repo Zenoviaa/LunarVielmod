@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
@@ -58,7 +59,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Graveyard,
-                new FlavorTextBestiaryInfoElement("A scarecrow reanimated by the passion of wandering flames"),
+                new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A scarecrow reanimated by the passion of wandering flames")),
             });
         }
 
