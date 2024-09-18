@@ -643,7 +643,7 @@ namespace Stellamod.WorldG
 							itemsToAdd.Add((specialItem, 1));
 						}
 						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(5))
+						switch (Main.rand.Next(4))
 						{
 							case 0:
 								itemsToAdd.Add((ModContent.ItemType<CinderedCard>(), Main.rand.Next(1, 1)));
@@ -673,15 +673,6 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
 								break;
 							case 3:
-								itemsToAdd.Add((ModContent.ItemType<Vulcanius>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(10, 30)));
-								itemsToAdd.Add((ModContent.ItemType<ArncharChunk>(), Main.rand.Next(3, 10)));
-								itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
-								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
-								itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
-
-								break;
-							case 4:
 								itemsToAdd.Add((ModContent.ItemType<CinderNeedle>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(10, 30)));
                                 itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner5>(), Main.rand.Next(1, 1)));
@@ -1695,7 +1686,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((specialItem, 1));
 							}
 							// Using a switch statement and a random choice to add sets of items.
-							switch (Main.rand.Next(10))
+							switch (Main.rand.Next(9))
 							{
 								case 0:
 									itemsToAdd.Add((ModContent.ItemType<Gutinier>(), Main.rand.Next(1, 1)));
@@ -1765,15 +1756,6 @@ namespace Stellamod.WorldG
 									itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
 									itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 3)));
 									itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
-									break;
-
-								case 9:
-									itemsToAdd.Add((ItemID.PlatinumBar, Main.rand.Next(1, 20)));
-									itemsToAdd.Add((ModContent.ItemType<GintzlMetal>(), Main.rand.Next(2, 10)));
-									itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
-									itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 3)));
-									itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
-									itemsToAdd.Add((ModContent.ItemType<GhostExcalibur>(), Main.rand.Next(1, 1)));
 									break;
 							}
 
@@ -2247,34 +2229,16 @@ namespace Stellamod.WorldG
 							// itemsToAdd will hold type and stack data for each item we want to add to the chest
 							var itemsToAdd = new List<(int type, int stack)>();
 
-							// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-							int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-									Tuple.Create(ModContent.ItemType<SunClaw>(), 0.1)
+                            // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+                            itemsToAdd.Add((ModContent.ItemType<OceanScroll>(), Main.rand.Next(1, 1)));
+                            itemsToAdd.Add((ModContent.ItemType<OceanRuneI>(), Main.rand.Next(1, 1)));
+                            itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+                            itemsToAdd.Add((ItemID.Coral, Main.rand.Next(1, 25)));
+                            itemsToAdd.Add((ItemID.SharkFin, Main.rand.Next(1, 25)));
+                            itemsToAdd.Add((ItemID.MasterBait, Main.rand.Next(1, 25)));
 
-
-							);
-							if (specialItem != ItemID.None)
-							{
-								itemsToAdd.Add((specialItem, 1));
-							}
-							// Using a switch statement and a random choice to add sets of items.
-							switch (Main.rand.Next(1))
-							{
-								case 0:
-
-									itemsToAdd.Add((ModContent.ItemType<OceanScroll>(), Main.rand.Next(1, 1)));
-									itemsToAdd.Add((ModContent.ItemType<OceanRuneI>(), Main.rand.Next(1, 1)));
-									itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
-									itemsToAdd.Add((ItemID.Coral, Main.rand.Next(1, 25)));
-									itemsToAdd.Add((ItemID.SharkFin, Main.rand.Next(1, 25)));
-									itemsToAdd.Add((ItemID.MasterBait, Main.rand.Next(1, 25)));
-
-									break;
-
-							}
-
-							// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-							int chestItemIndex = 0;
+                            // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+                            int chestItemIndex = 0;
 							foreach (var itemToAdd in itemsToAdd)
 							{
 								Item item = new Item();

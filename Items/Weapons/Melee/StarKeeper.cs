@@ -48,11 +48,12 @@ namespace Stellamod.Items.Weapons.Melee
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.Starfury, 1);
             recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<Gallasis>(),1);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
+
         public override void MeleeEffects(Player player, Rectangle hitbox)
         {
             if (Main.rand.NextBool(2))
@@ -60,6 +61,7 @@ namespace Stellamod.Items.Weapons.Melee
                 Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.RedTorch);
             }
         }
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             int Sound = Main.rand.Next(1, 3);

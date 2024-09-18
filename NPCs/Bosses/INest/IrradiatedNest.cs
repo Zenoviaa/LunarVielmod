@@ -179,7 +179,6 @@ namespace Stellamod.NPCs.Bosses.INest
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NestBag>()));
 
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IrradiatedGreatBlade>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IrradieagleWrath>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TheIrradiaspear>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StaffoftheIrradiaflare>(), chanceDenominator: 2));

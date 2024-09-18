@@ -66,9 +66,7 @@ namespace Stellamod.Tiles
 
         public override void MouseOver(int i, int j)
         {
-            //shows the Cryptic Crystal icon while mousing over this tile
-            Main.player[Main.myPlayer].cursorItemIconEnabled = true;
-            Main.player[Main.myPlayer].cursorItemIconID = ModContent.ItemType<SunClaw>();
+
         }
         public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
         {
@@ -83,13 +81,6 @@ namespace Stellamod.Tiles
         public override bool RightClick(int i, int j)
         {
             Player player = Main.LocalPlayer;
-            int key = ModContent.ItemType<SunClaw>();
-            if (!player.HasItem(key))
-            {
-                Main.NewText(LangText.Misc("SunAlter.1"), Color.Gold);
-                return true;
-            }
-
             if (!NPC.AnyNPCs(ModContent.NPCType<SunStalkerPreSpawn>()) && 
                 !NPC.AnyNPCs(ModContent.NPCType<SunStalker>()))
             {

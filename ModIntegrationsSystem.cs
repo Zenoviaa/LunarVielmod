@@ -269,7 +269,6 @@ namespace Stellamod
 			};
 
 			// The item used to summon the boss with (if available)
-			int summonItem5 = ModContent.ItemType<Items.Consumables.SunClaw>();
             Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
                 Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/SunStalker/SunStalkerBestiary").Value;
                 Vector2 centered = new Vector2(
@@ -292,7 +291,6 @@ namespace Stellamod
 				bossType5,
 				new Dictionary<string, object>()
 				{
-					["spawnItems"] = summonItem5,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
