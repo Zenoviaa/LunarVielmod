@@ -31,7 +31,7 @@ namespace Stellamod.Items.Materials
         }
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
+            Recipe recipe = CreateRecipe(2);
             recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 2);
             recipe.AddIngredient(ModContent.ItemType<ArncharChunk>(), 1);
             recipe.AddIngredient(ModContent.ItemType<WanderingFlame>(), 1);
