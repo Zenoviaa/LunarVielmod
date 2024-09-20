@@ -2064,7 +2064,6 @@ AquaticHealingNecklace: {
 		'''
 }
 
-
 ClamsPearl: {
 	DisplayName: Clams Pearl
 	Tooltip: A small light will emit off you :)
@@ -2791,7 +2790,7 @@ AssassinsDischarge: {
 }
 
 BrokenWrath: {
-	DisplayName: Broken Wrath
+	DisplayName: Arncharlite's Wrath Sniper
 	Tooltip: Shoots a bunch of scrap
 }
 
@@ -3584,7 +3583,7 @@ FurihaMKIII: {
 }
 
 M61X: {
-	DisplayName: M61 X
+	DisplayName: Arnchar Manaspeeder (M61X)
 	Tooltip: ""
 }
 
@@ -7024,7 +7023,7 @@ TempleKeyPart: {
 
 M38F30: {
 	Tooltip: ""
-	DisplayName: M38 F30
+	DisplayName: Arncharlite Heavy Clustergun
 }
 
 StarSilk: {
