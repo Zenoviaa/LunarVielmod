@@ -29,12 +29,10 @@ using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Bosses.SupernovaFragment;
 using Stellamod.NPCs.Bosses.Verlia;
-using Stellamod.NPCs.Event.Luminull;
 using Stellamod.NPCs.Minibosses;
 using Stellamod.Particles;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Ambient;
-using Stellamod.Projectiles.Gun;
 using Stellamod.Projectiles.Paint;
 using Stellamod.Projectiles.Summons.Minions;
 using Stellamod.Projectiles.Swords;
@@ -722,7 +720,6 @@ namespace Stellamod
             base.Player.ManageSpecialBiomeVisuals("Stellamod:GreenSunSky", EventWorld.GreenSun && ZoneAcid);
 
             base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosD", EventWorld.ChaosD && Player.ZoneBeach);
-			base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosT", NPC.AnyNPCs(ModContent.NPCType<LuminullSpiritCrystal>()));
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Veil", ZoneVeil);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Caeva", NPC.AnyNPCs(ModContent.NPCType<Caeva>()));
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean && (Player.ZoneOverworldHeight || Player.ZoneSkyHeight));
@@ -910,7 +907,7 @@ namespace Stellamod
                         GHEVector.X = Main.rand.NextFloat(GHETarget.Center.X - 130, GHETarget.Center.X + 130);
                         GHEVector.Y = Main.rand.NextFloat(GHETarget.Center.Y - 130, GHETarget.Center.Y + 130);
                         var EntitySource = GHETarget.GetSource_FromThis();
-                        Projectile.NewProjectile(EntitySource, GHEVector.X, GHEVector.Y, direction.X, direction.Y, ModContent.ProjectileType<GhostExcaliburProj>(), 42, 1, Player.whoAmI, 0, 0);
+                    //    Projectile.NewProjectile(EntitySource, GHEVector.X, GHEVector.Y, direction.X, direction.Y, ModContent.ProjectileType<GhostExcaliburProj>(), 42, 1, Player.whoAmI, 0, 0);
                     }
                 }
             }

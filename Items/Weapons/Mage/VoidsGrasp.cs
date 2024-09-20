@@ -48,7 +48,6 @@ namespace Stellamod.Items.Weapons.Mage
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<LuminullSpiritFragments>(), 10);
             recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
             recipe.AddIngredient(ModContent.ItemType<ShadeHandTome>(), 1);
             recipe.AddTile(TileID.WorkBenches);

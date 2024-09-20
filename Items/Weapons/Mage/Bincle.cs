@@ -61,7 +61,6 @@ namespace Stellamod.Items.Weapons.Mage
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<IshtarCandle>(), 1);
             recipe.AddIngredient(ModContent.ItemType<Relagis>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<LuminullSpiritFragments>(), 10);
             recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 250);
             recipe.Register();
         }

@@ -78,7 +78,6 @@ namespace Stellamod.Items.Weapons.Melee
             base.AddRecipes();
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 150);
-            recipe.AddIngredient(ModContent.ItemType<LuminullSpiritFragments>(), 10);
             recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 15);
             recipe.AddIngredient(ItemID.Starfury, 1);
             recipe.AddIngredient(ModContent.ItemType<StarKeeper>(), 1);

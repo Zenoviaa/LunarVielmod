@@ -46,7 +46,6 @@ namespace Stellamod.Items.Weapons.Mage
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
             recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 55);
-            recipe.AddIngredient(ModContent.ItemType<LuminullSpiritFragments>(), 25);
         }
         public override Vector2? HoldoutOffset()
         {
