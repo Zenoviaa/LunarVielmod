@@ -1239,8 +1239,8 @@ Auroran: {
 }
 
 EnergizedNail: {
-	DisplayName: Energized Nail
-	Tooltip: Electrical nail, thats weird
+	DisplayName: Warriors' Ram Shield 
+	Tooltip: Electrical warrior' shield, thats weird
 }
 
 FrostSwing: {
@@ -1450,7 +1450,7 @@ MorrowSalface: {
 }
 
 SteamedNail: {
-	DisplayName: Steamed Shield Basher
+	DisplayName: Steamed Ram Shield 
 	Tooltip: Ram em' hard (that's what I said)
 }
 
