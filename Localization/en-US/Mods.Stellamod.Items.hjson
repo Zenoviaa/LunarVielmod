@@ -390,7 +390,7 @@ SapContainer: {
 }
 
 WoodenShield: {
-	DisplayName: Wooden Shield
+	DisplayName: Wooden Ram Shield
 	Tooltip:
 		'''
 		Super cool right??? A wooden shield?
@@ -7838,6 +7838,6 @@ GlocketRouncher: {
 }
 
 GintzelShield: {
-	DisplayName: Gintzel Shield
+	DisplayName: Gintzel Ram Shield
 	Tooltip: ""
 }
