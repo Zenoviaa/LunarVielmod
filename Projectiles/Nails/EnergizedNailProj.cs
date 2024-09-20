@@ -113,8 +113,11 @@ namespace Stellamod.Projectiles.Nails
 
 				}
 			}
-			
-			int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.InfluxWaver, 0f, 0f);
+
+
+            player.immune = true;
+            player.immuneTime = 3;
+            int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.InfluxWaver, 0f, 0f);
 			Main.dust[dust].scale = 1.2f;
 			ShakeModSystem.Shake = 5;
 

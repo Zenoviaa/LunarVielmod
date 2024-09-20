@@ -39,7 +39,9 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.shootSpeed = 20f;
 			Item.noUseGraphic = true;
 			Item.crit = 46;
+			Item.defense = 8;
 		}
+
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
 		{
 			Vector2 Offset = Vector2.Normalize(velocity) * 1f;
@@ -49,6 +51,7 @@ namespace Stellamod.Items.Weapons.Melee
 				position += Offset;
 			}
 		}
+
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(2f, -2f);

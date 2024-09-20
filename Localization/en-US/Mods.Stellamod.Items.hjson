@@ -7836,3 +7836,8 @@ GlocketRouncher: {
 	DisplayName: Glocket Rouncher
 	Tooltip: Get the glocker brocker
 }
+
+GintzelShield: {
+	DisplayName: Gintzel Shield
+	Tooltip: ""
+}

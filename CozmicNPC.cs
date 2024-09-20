@@ -25,7 +25,7 @@ namespace Stellamod
 
             
 
-            if (EventWorld.Gintzing)
+            if (EventWorld.Gintzing && player.ZoneOverworldHeight)
             {
                 spawnRate = (int)(spawnRate * 0.01);
                 maxSpawns = (int)(maxSpawns * 4.3f);
