@@ -1239,7 +1239,7 @@ Auroran: {
 }
 
 EnergizedNail: {
-	DisplayName: Warriors' Ram Shield 
+	DisplayName: Warriors' Ram Shield
 	Tooltip: Electrical warrior' shield, thats weird
 }
 
@@ -1450,7 +1450,7 @@ MorrowSalface: {
 }
 
 SteamedNail: {
-	DisplayName: Steamed Ram Shield 
+	DisplayName: Steamed Ram Shield
 	Tooltip: Ram em' hard (that's what I said)
 }
 
@@ -4373,7 +4373,7 @@ GrailHairpinYoyo: {
 }
 
 StarringGraft: {
-	DisplayName: Starring Graft
+	DisplayName: Starring Skies
 	Tooltip: Get those stars off the ground :p
 }
 
