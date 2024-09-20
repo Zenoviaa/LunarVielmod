@@ -47,6 +47,8 @@ namespace Stellamod.Items.Weapons.Melee.Shields
             Item.shootSpeed = 20f;
             Item.noUseGraphic = true;
             Item.crit = 52;
+            Item.accessory = true;
+            Item.defense = 8;
         }
         public override Vector2? HoldoutOffset()
         {
