@@ -2064,10 +2064,6 @@ AquaticHealingNecklace: {
 		'''
 }
 
-ArncharMagazine: {
-	DisplayName: Arnchar Magazine
-	Tooltip: Increases ranged critical strike chance by 10%
-}
 
 ClamsPearl: {
 	DisplayName: Clams Pearl
@@ -2548,12 +2544,12 @@ AcidicPixaxe: {
 }
 
 ArchariliteAxe: {
-	DisplayName: Archarilite Axe
+	DisplayName: Arncharilite Axe
 	Tooltip: ""
 }
 
 ArcharilitePickaxe: {
-	DisplayName: Archarilite Pickaxe
+	DisplayName: Arncharilite Pickaxe
 	Tooltip: ""
 }
 
@@ -2679,7 +2675,7 @@ WintersStom: {
 }
 
 ArchariliteRaysword: {
-	DisplayName: Archarilite Raysword
+	DisplayName: Arncharilite Raysword
 	Tooltip:
 		'''
 		Shoots a wave of energy
@@ -2781,7 +2777,7 @@ X3107: {
 }
 
 ArchariliteEnergyShot: {
-	DisplayName: Archarilite Energy Shot
+	DisplayName: Arncharilite Energy Shot
 	Tooltip:
 		'''
 		Shoots a spread of 3 arrows
