@@ -4,6 +4,7 @@ using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Melee.Shields;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Event.Gintzearmy.BossGintze;
@@ -52,7 +53,7 @@ namespace Stellamod.Items.Consumables
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), minimumDropped: 3, maximumDropped: 25));
 			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<CommanderGintzia>()));
 			itemLoot.Add(ItemDropRule.OneFromOptions(1,
-				ModContent.ItemType<GintzlShield>(),
+				ModContent.ItemType<GintzelShield>(),
 				ModContent.ItemType<GintzlsSteed>(),
 				ModContent.ItemType<ShinobiTome>()));
 		}

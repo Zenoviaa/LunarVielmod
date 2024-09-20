@@ -6,6 +6,7 @@ using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Melee.Shields;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
@@ -684,7 +685,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GintzlSpear>(), 4, minimumDropped: 900, maximumDropped: 3000));
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), minimumDropped: 3, maximumDropped: 25));
 			notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
-				ModContent.ItemType<GintzlShield>(),
+				ModContent.ItemType<GintzelShield>(),
 				ModContent.ItemType<GintzlsSteed>(),
 				ModContent.ItemType<ShinobiTome>()));
 
