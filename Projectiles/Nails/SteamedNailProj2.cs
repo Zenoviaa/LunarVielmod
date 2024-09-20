@@ -112,8 +112,10 @@ namespace Stellamod.Projectiles.Nails
 					target.SimpleStrikeNPC(9999, 1, crit: false, 1);
 				}
 			}
-			
-			int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, ModContent.DustType<Sparkle>(), 0f, 0f);
+
+            player.immune = true;
+            player.immuneTime = 3;
+            int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, ModContent.DustType<Sparkle>(), 0f, 0f);
 			Main.dust[dust].scale = 1.2f;
 			ShakeModSystem.Shake = 5;
 
