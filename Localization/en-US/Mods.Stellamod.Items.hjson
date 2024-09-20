@@ -2424,8 +2424,8 @@ SunStalkerBag: {
 }
 
 VoidLantern: {
-	DisplayName: Void Lantern
-	Tooltip: ""
+	DisplayName: Lantern of A Moon Singularity
+	Tooltip: A lantern used to capture singularities, this one hold's the Moon Singularity inside.
 }
 
 WanderingEssence: {
