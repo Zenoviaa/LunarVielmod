@@ -376,6 +376,25 @@ namespace Stellamod.Helpers
 			Main.spriteBatch.End();
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 		}
+        public static void DrawAdditiveAfterImage(NPC npc, Color startColor, Color endColor)
+        {
+            Main.spriteBatch.End();
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+            Texture2D texture = TextureAssets.Npc[npc.type].Value;
+			Rectangle sourceRectangle = npc.frame;
+            Vector2 drawOrigin = sourceRectangle.Size() / 2f;
+            //drawOrigin.X = projectile.spriteDirection == 1 ? sourceRectangle.Width - offsetX : offsetX;
+            for (int k = 0; k < npc.oldPos.Length; k++)
+            {
+                Vector2 drawPos = npc.oldPos[k] - Main.screenPosition + drawOrigin;// + new Vector2(0f, projectile.gfxOffY);
+                Color color = npc.GetAlpha(Color.Lerp(startColor, endColor, 1f / npc.oldPos.Length * k) * (1f - 1f / npc.oldPos.Length * k));
+                Main.spriteBatch.Draw(texture, drawPos, sourceRectangle, color, npc.oldRot[k], drawOrigin, npc.scale, SpriteEffects.None, 0f);
+            }
+
+            Main.spriteBatch.End();
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+        }
 
         public static void DrawGlowInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Color glowColor)
         {
