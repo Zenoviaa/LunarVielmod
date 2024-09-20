@@ -2895,8 +2895,8 @@ TychineGun: {
 }
 
 VoidBlaster: {
-	DisplayName: Void Blaster
-	Tooltip: A void-powered gun, it shoots, you guessed it, bullets!
+	DisplayName: Lunar Blaster
+	Tooltip: A Lunar-powered gun, it shoots, you guessed it, bullets!
 }
 
 WingedFury: {
@@ -2953,7 +2953,7 @@ SwarmerStaff: {
 }
 
 VoidStaff: {
-	DisplayName: Void Staff
+	DisplayName: Lunar Void Staff
 	Tooltip:
 		'''
 		Summons a mini singularity to fight for you!
@@ -3223,7 +3223,7 @@ MagnusMagnum: {
 }
 
 VoidKey: {
-	DisplayName: Void Key
+	DisplayName: Lunar Key
 	Tooltip: Use in the bottom of the Abysm under the ice, you might find something.
 }
 
