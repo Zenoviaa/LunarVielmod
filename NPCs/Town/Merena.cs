@@ -305,6 +305,11 @@ namespace Stellamod.NPCs.Town
 
 		private void Quest_TomeComplete()
 		{
+			if (MerenaQuestSystem.MakeTomeOfInfiniteSorceryCompleted)
+			{
+				return;
+			}
+
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 			Main.npcChatText = LangText.Chat(this, "Special6");
 			var entitySource = NPC.GetSource_GiftOrReward();

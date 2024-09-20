@@ -37,7 +37,6 @@ namespace Stellamod.Items.Consumables
         public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<LuminullSpiritFragments>(), 15);
             recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 10);
 			recipe.AddIngredient(ItemID.HellstoneBar, 5);

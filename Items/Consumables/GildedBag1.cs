@@ -72,11 +72,6 @@ namespace Stellamod.Items.Consumables
 
             if (NPC.downedBoss2)
             {
-                if (Main.rand.NextBool(4))
-                {
-                    player.QuickSpawnItem(entitySource, ModContent.ItemType<LuminullSpiritFragments>(), Main.rand.Next(1, 10));
-                }
-
                 if (Main.rand.NextBool(10))
 				{
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<BoneNail>());

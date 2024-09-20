@@ -8,7 +8,6 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
-using Stellamod.NPCs.Event.Luminull;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -1027,11 +1026,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
         public override void OnKill()
         {
-            if (StellaMultiplayer.IsHost)
-            {
-                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, 
-                    ModContent.NPCType<LuminullSpiritCrystal>());
-            }
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedDreadBoss, -1);        
         }
     }

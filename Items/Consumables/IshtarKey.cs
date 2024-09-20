@@ -37,7 +37,6 @@ namespace Stellamod.Items.Consumables
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<LuminullSpiritFragments>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<RadianuiBar>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<DustedSilk>(), 10);
 			recipe.AddTile(TileID.DemonAltar);

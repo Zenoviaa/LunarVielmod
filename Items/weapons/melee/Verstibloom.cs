@@ -66,7 +66,6 @@ namespace Stellamod.Items.Weapons.Melee
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.Anvils);
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<LuminullSpiritFragments>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<FrostSwing>(), 1);
 			recipe.AddIngredient(ItemID.JungleSpores, 12);
 			recipe.Register();
