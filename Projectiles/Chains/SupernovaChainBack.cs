@@ -64,7 +64,7 @@ namespace Stellamod.Projectiles.Chains
                     Projectile.alpha += 2;
                     if (Projectile.alpha >= 255)
                         Projectile.alpha = 255;
-                    Projectile.Center = npc.Center;
+                    Projectile.Center = npc.Center + new Vector2(0, -28);
                     Projectile.timeLeft = 3600;
                 }
                 else

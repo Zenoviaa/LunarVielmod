@@ -527,5 +527,27 @@ namespace Stellamod.Helpers
 				}
 			}
 		}
+
+        public static void UpdateFrame(ref float frame, float speed, int minFrame, int maxFrame)
+        {
+            frame += speed;
+            if (frame < minFrame)
+            {
+                frame = minFrame;
+            }
+            if (frame > maxFrame)
+            {
+                frame = minFrame;
+            }
+        }
+
+
+        public static Rectangle FrameGrid(float frame, int columns, int frameWidth, int frameHeight)
+		{
+            Rectangle rect = new Rectangle(0, 0, frameWidth, frameHeight);
+            rect.X = ((int)frame % columns) * rect.Width;
+            rect.Y = (((int)frame - ((int)frame % columns)) / columns) * rect.Height;
+			return rect;
+        }
     }
 }

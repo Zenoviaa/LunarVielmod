@@ -25,6 +25,9 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
     [AutoloadBossHead]
     public class SupernovaFragment : ModNPC
     {
+        private float _incresionDiskFrameBottom = 0;
+        private float _incresionDiskFrameTop = 0;
+
         private bool Dead;
         private bool _invincible;
         public bool PH2TP = false;
@@ -43,7 +46,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         public bool Superpull = false;
         public override void SetStaticDefaults()
         {
-            Main.npcFrameCount[NPC.type] = 30;
+            Main.npcFrameCount[NPC.type] = 60;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
 
             NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
@@ -106,12 +109,12 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         public override void FindFrame(int frameHeight)
         {
             NPC.frameCounter += 0.5f;
-            if (NPC.frameCounter >= 3)
+            if (NPC.frameCounter >= 1)
             {
                 frame++;
                 NPC.frameCounter = 0;
             }
-            if (frame >= 30)
+            if (frame >= 60)
             {
                 frame = 0;
             }
@@ -171,6 +174,10 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
         public override void AI()
         {
+            //Update Frame Counters
+            DrawHelper.UpdateFrame(ref _incresionDiskFrameBottom, 0.8f, 1, 40);
+            DrawHelper.UpdateFrame(ref _incresionDiskFrameTop, 0.8f, 1, 76);
+
             Spawner++;
             if (!Superpull)
             {
@@ -200,7 +207,8 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 {
                     NPC.DelBuff(buffIndex);
                 }
-            } else if (SingularityPhaze == 1)
+            }
+            else if (SingularityPhaze == 1)
             {
                 int buffType = ModContent.BuffType<SupernovaChained>();
                 NPC.AddBuff(buffType, 99999);
@@ -317,13 +325,6 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
 
                                         }
-                                        // Icreasian disk
-                                        if (StellaMultiplayer.IsHost)
-                                        {
-                                            var entitySource2 = NPC.GetSource_FromThis();
-                                            NPC.NewNPC(entitySource2, (int)NPC.Center.X , (int)NPC.Center.Y, ModContent.NPCType<IncresianDisc>());
-                                        }
-
 
                                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode"), NPC.position);
                                         Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
@@ -871,7 +872,6 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         public override void OnKill()
         {
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedSupernovaFragmentBoss, -1);
-
         }
 
         public void Movement(Vector2 Player2, float PosX, float PosY, float Speed)
@@ -883,6 +883,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Lighting.AddLight(NPC.Center, Color.Orange.ToVector3() * 1.25f * Main.essScale);
+            /*
             Texture2D texture = Request<Texture2D>(Texture).Value;
 
 
@@ -915,15 +916,20 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
                 spriteBatch.Draw(texture, drawPos + new Vector2(0f, 16f).RotatedBy(radians) * time, NPC.frame, new Color(244, 142, 72, 77), NPC.rotation, frameSize, NPC.scale, Effects, 0);
             }
+            */
 
+            DrawIncresionDiskBottom(spriteBatch, screenPos, lightColor);
             return true;
         }
+
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
         public Texture2D GlowTexture => (_glowTexture ??= (RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
+
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            /*
             float num108 = 4;
             float num107 = (float)Math.Cos((double)(Main.GlobalTimeWrappedHourly % 1.4f / 1.4f * 6.28318548f)) / 2f + 0.5f;
             float num106 = 0f;
@@ -940,6 +946,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 effects,
                 0
             );
+
             SpriteEffects spriteEffects3 = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Color color29 = new Color(127 - NPC.alpha, 127 - NPC.alpha, 127 - NPC.alpha, 0).MultiplyRGBA(Color.Goldenrod);
             for (int num103 = 0; num103 < 1; num103++)
@@ -949,7 +956,47 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 color28 *= 1f - num107;
                 Vector2 vector29 = NPC.Center + (num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * num103;
                 Main.spriteBatch.Draw(GlowTexture, vector29, NPC.frame, color28, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects3, 0f);
-            }
+            }*/
+            DrawIncresionDiskTop(spriteBatch, screenPos, drawColor);
+        }
+
+        private void DrawIncresionDiskBottom(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            //Draw Incresion Disk
+            Rectangle incresionDiskRect = DrawHelper.FrameGrid(_incresionDiskFrameBottom, columns: 5, frameWidth: 400, frameHeight: 200);
+            Texture2D supernovaTopTexture = ModContent.Request<Texture2D>(Texture + "_Disk").Value;
+
+            //Incresion Disk Draw Color
+            Color incresionDiskDrawColor = Color.White;
+            incresionDiskDrawColor.A = 0;
+
+            Vector2 drawPos = NPC.Center - screenPos;
+            Vector2 drawOrigin = incresionDiskRect.Size() / 2;
+            drawPos += new Vector2(4, -44);
+
+            float drawScale = NPC.scale;
+            float drawRotation = NPC.rotation;
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+        }
+       
+        private void DrawIncresionDiskTop(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            //Draw Incresion Disk
+            Rectangle incresionDiskRect = DrawHelper.FrameGrid(_incresionDiskFrameTop, columns: 4, frameWidth: 480, frameHeight: 200);
+            Texture2D supernovaTopTexture = ModContent.Request<Texture2D>(Texture + "_Top").Value;
+
+            //Incresion Disk Draw Color
+            Color incresionDiskDrawColor = Color.White;
+            incresionDiskDrawColor.A = 0;
+
+            Vector2 drawPos = NPC.Center - screenPos;
+            Vector2 drawOrigin = incresionDiskRect.Size() / 2;
+            drawPos += new Vector2(4, -28);
+
+            float drawScale = NPC.scale  * 1.5f;
+            float drawRotation = NPC.rotation;
+ 
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
         }
 
         private void Disappear()

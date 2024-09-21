@@ -14,8 +14,6 @@ using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
 using Stellamod.NPCs.Bosses.Verlia;
 using System;
 using System.IO;
-using System.Threading;
-using System.Timers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -29,6 +27,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
     [AutoloadBossHead]
     public class SingularityFragment : ModNPC
     {
+        private float _incresionDiskFrameBottom = 0;
         private bool Dead;
         private bool _invincible;
         public bool PH2 = false;
@@ -45,7 +44,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         public static Vector2 SingularityStart;
         public override void SetStaticDefaults()
         {
-            Main.npcFrameCount[NPC.type] = 30;
+            Main.npcFrameCount[NPC.type] = 60;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
 
             NPCID.Sets.BossBestiaryPriority.Add(Type);
@@ -114,12 +113,12 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         public override void FindFrame(int frameHeight)
         {
             NPC.frameCounter += 0.5f;
-            if (NPC.frameCounter >= 3)
+            if (NPC.frameCounter >= 2)
             {
                 frame++;
                 NPC.frameCounter = 0;
             }
-            if (frame >= 30)
+            if (frame >= 60)
             {
                 frame = 0;
             }
@@ -177,6 +176,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
         public override void AI()
         {
+            DrawHelper.UpdateFrame(ref _incresionDiskFrameBottom, 0.8f, 1, 40);
             Spawner++;
             PH2 = NPC.life < NPC.lifeMax * 0.4f;
             if (PH2)
@@ -918,8 +918,27 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                 spriteBatch.Draw(texture, drawPos + new Vector2(0f, 16f).RotatedBy(radians) * time, NPC.frame, new Color(59, 72, 168, 77), NPC.rotation, frameSize, NPC.scale, Effects, 0);
             }
 
+            DrawIncresionDiskBottom(spriteBatch, screenPos, lightColor);
             return true;
         }
+
+        private void DrawIncresionDiskBottom(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            //Draw Incresion Disk
+            Rectangle incresionDiskRect = DrawHelper.FrameGrid(_incresionDiskFrameBottom, columns: 5, frameWidth: 400, frameHeight: 200);
+            Texture2D supernovaTopTexture = ModContent.Request<Texture2D>(Texture + "_Disk").Value;
+
+            //Incresion Disk Draw Color
+            Color incresionDiskDrawColor = Color.White;
+            incresionDiskDrawColor.A = 0;
+
+            Vector2 drawPos = NPC.Center - screenPos;
+            Vector2 drawOrigin = incresionDiskRect.Size() / 2;
+            float drawScale = NPC.scale * 0.5f;
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, 0, drawOrigin, drawScale, SpriteEffects.None, 0);
+        }
+
+
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
