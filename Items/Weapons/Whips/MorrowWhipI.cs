@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Whips
 			//Item.DefaultToWhip(ModContent.ProjectileType<ExampleWhipProjectileAdvanced>(), 20, 2, 4);
 
 			Item.DamageType = DamageClass.SummonMeleeSpeed;
-			Item.damage = 32;
+			Item.damage = 15;
 			Item.knockBack = 5;
 			Item.rare = ItemRarityID.Blue;
 			
