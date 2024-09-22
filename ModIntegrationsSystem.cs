@@ -1013,7 +1013,7 @@ namespace Stellamod
             // By default, it draws the first frame of the boss, omit if you don't need custom drawing
             // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
             bossChecklistMod.Call(
-                "LogBoss",
+                "LogMiniBoss",
                 Mod,
                 internalName,
                 weight,
