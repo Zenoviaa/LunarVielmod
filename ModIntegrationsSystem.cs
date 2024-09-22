@@ -81,7 +81,7 @@ namespace Stellamod
             // Information for the player so he knows how to encounter the boss
             // Ideally you'd have this text in the localization file, but screw that
 			bossChecklistMod.Call(
-				"LogBoss",
+                "LogMiniBoss",
 				Mod,
 				internalName,
 				weight,
@@ -231,7 +231,7 @@ namespace Stellamod
             };
             // Information for the player so he knows how to encounter the boss
 			bossChecklistMod.Call(
-				"LogBoss",
+                "LogMiniBoss",
 				Mod,
 				internalName4,
 				weight4,
@@ -283,7 +283,7 @@ namespace Stellamod
             // By default, it draws the first frame of the boss, omit if you don't need custom drawing
             // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
 			bossChecklistMod.Call(
-				"LogBoss",
+                "LogMiniBoss",
 				Mod,
 				internalName5,
 				weight5,
@@ -341,7 +341,7 @@ namespace Stellamod
             // By default, it draws the first frame of the boss, omit if you don't need custom drawing
             // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
 			bossChecklistMod.Call(
-				"LogBoss",
+                "LogMiniBoss",
 				Mod,
 				internalName5,
 				weight5,
@@ -603,7 +603,7 @@ namespace Stellamod
             // By default, it draws the first frame of the boss, omit if you don't need custom drawing
             // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
 			bossChecklistMod.Call(
-				"LogBoss",
+				"LogMiniBoss",
 				Mod,
 				internalName,
 				weight,
