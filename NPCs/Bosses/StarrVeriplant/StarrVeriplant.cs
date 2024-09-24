@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -21,6 +23,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
     {
         private enum ActionState
 		{
+			Spawn,
 			Idle,
 			Stomp,
 			Stomp_Multi
@@ -45,7 +48,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 	
         public override void SetStaticDefaults()
 		{
-			Main.npcFrameCount[Type] = 64;
+			Main.npcFrameCount[Type] = 1;
 			NPCID.Sets.TrailCacheLength[Type] = 10;
 			NPCID.Sets.TrailingMode[Type] = 1;
 			NPCID.Sets.BossBestiaryPriority.Add(Type);
@@ -98,7 +101,23 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-	//		DrawHelper.DrawAdditiveAfterImage(NPC, Color.White, Color.Transparent);
+			SpriteEffects Effects = SpriteEffects.None;
+       
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+			Color startTrailColor = Color.Violet;
+			Color endTrailColor = Color.DarkViolet;
+            for (int k = 0; k < NPC.oldPos.Length; k++)
+            {
+                Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
+				drawPos.Y -= 54;
+                Color color = NPC.GetAlpha(Color.Lerp(startTrailColor, endTrailColor, 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
+                spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, drawPos, NPC.frame, color, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, Effects, 0f);
+            }
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return base.PreDraw(spriteBatch, screenPos, drawColor);
         }
 
@@ -158,9 +177,13 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				StompSpeed = MathF.Max(StompSpeed, finalStompSpeed);
 			}
 
+			NPC.rotation = MathHelper.Lerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.1f);
 			//AI States
 			switch (State)
 			{
+				case ActionState.Spawn:
+					AI_Spawn();
+					break;
 				case ActionState.Idle:
 					AI_Idle();
                     break;
@@ -172,6 +195,50 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 					break;
 			}
 		}
+
+		private void AI_Spawn()
+		{
+            Timer++;
+            //Give some initial velocity
+            if (Timer == 1)
+            {
+				NPC.TargetClosest();
+				if (NPC.HasValidTarget)
+				{
+					NPC.Center = Target.Center + new Vector2(0, -384);
+				}
+                NPC.velocity.Y = 1;
+            }
+
+            //Calculate Stomp Velocity
+            if (Timer < 8)
+            {
+                NPC.velocity.Y *= 1.5f;
+            }
+
+            if (NPC.collideY)
+            {
+                MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
+                myPlayer.ShakeAtPosition(NPC.Center, 1024f, 30f);
+
+                for (int i = 0; i < 16; i++)
+                {
+                    float radius = 150;
+                    Vector2 offset = Vector2.UnitX * Main.rand.Next(-1, 1);
+                    offset *= Main.rand.NextFloat(1f, radius);
+                    offset += new Vector2(radius / 2, 0);
+
+                    Vector2 velocity = Vector2.UnitX * Main.rand.Next(-1, 1);
+                    velocity *= Main.rand.NextFloat(1f, 2f);
+                    Dust.NewDustPerfect(NPC.Bottom + offset, ModContent.DustType<Dusts.TSmokeDust>(), velocity, 0, Color.Black * 0.5f,
+                        Main.rand.NextFloat(0.3f, 0.7f));
+                }
+                //Stomp happens, so the code would be here
+                NPC.velocity.Y = 0;
+                Timer = 0;
+				SwitchState(ActionState.Idle);
+            }
+        }
 
 		private void AI_Idle()
 		{
@@ -218,6 +285,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
+						SoundEngine.PlaySound(SoundID.Item69, NPC.position);
                     }
 
 					//Hover up
@@ -321,6 +389,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
                     {
                         NPC.TargetClosest();
 						StompPos = NPC.Center + new Vector2(0, -164 - StompCounter * 16);
+                        SoundEngine.PlaySound(SoundID.Item69, NPC.position);
                     }
 
                     //Hover up
