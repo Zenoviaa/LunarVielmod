@@ -43,9 +43,17 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 		private bool InPhase2 => NPC.life < NPC.lifeMax / 2;
         private bool HasDoneStomp;
 		private bool CanMultiStomp;
+		private bool DrawOutline;
+		private float OutlineOpacity;
         private float StompSpeed = 1;
 		private Vector2 StompPos;
-	
+		private float Spawner;
+
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return Spawner > 30;
+        }
+
         public override void SetStaticDefaults()
 		{
 			Main.npcFrameCount[Type] = 1;
@@ -72,9 +80,9 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			NPC.damage = 25;
 			NPC.defense = 5;
 			NPC.lifeMax = 600;
-			NPC.HitSound = SoundID.NPCHit1;
-			NPC.DeathSound = SoundID.NPCDeath1;
-			NPC.knockBackResist = 0f;
+            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
+            NPC.knockBackResist = 0f;
 			NPC.noGravity = true;
 			NPC.value = Item.buyPrice(copper: 40);
 			NPC.SpawnWithHigherTime(30);
@@ -106,8 +114,10 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
-			Color startTrailColor = Color.Violet;
-			Color endTrailColor = Color.DarkViolet;
+			Color startTrailColor = Color.LightGoldenrodYellow;
+			Color endTrailColor = Color.DarkGoldenrod;
+			startTrailColor *= 0.5f;
+			endTrailColor *= 0.5f;
             for (int k = 0; k < NPC.oldPos.Length; k++)
             {
                 Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
@@ -118,6 +128,13 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+           
+			Texture2D outlineTexture = ModContent.Request<Texture2D>(Texture + "_Outline").Value;
+			Vector2 outlineDrawPos = NPC.position - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
+            outlineDrawPos.Y -= 54;
+            Color outlineColor = Color.Lerp(Color.Transparent, Color.Red, OutlineOpacity);
+            spriteBatch.Draw(outlineTexture, outlineDrawPos, NPC.frame, outlineColor, NPC.rotation, NPC.frame.Size()/2, NPC.scale, Effects, 0);
+
             return base.PreDraw(spriteBatch, screenPos, drawColor);
         }
 
@@ -169,6 +186,14 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
         public override void AI()
         {
             base.AI();
+
+			Vector2 startPos = NPC.position;
+			Vector2 endPos = Target.position;
+
+			//Only check vertically
+			endPos.X = startPos.X;
+			NPC.noTileCollide = !Collision.CanHitLine(startPos, 1, 1, endPos, 1, 1);
+			Spawner++;
 			if (InPhase2)
 			{
 				float finalStompSpeed = 0.5f;
@@ -178,6 +203,15 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			}
 
 			NPC.rotation = MathHelper.Lerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.1f);
+			if (DrawOutline)
+			{
+				OutlineOpacity = MathHelper.Lerp(OutlineOpacity, 1f, 0.1f);
+			}
+			else
+			{
+                OutlineOpacity = MathHelper.Lerp(OutlineOpacity, 0f, 0.1f);
+            }
+
 			//AI States
 			switch (State)
 			{
@@ -282,6 +316,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				case 0:
                     //Target a player
                     Timer++;
+					DrawOutline = true;
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
@@ -329,10 +364,13 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 				case 2:			
 					Timer++;
-					//Give some initial velocity
-					if(Timer == 1)
-					{
-						NPC.velocity.Y = 1;
+                    DrawOutline = false;
+
+                    //Give some initial velocity
+                    if (Timer == 1)
+                    {
+                
+                        NPC.velocity.Y = 1;
 					}
 
 					//Calculate Stomp Velocity
@@ -385,6 +423,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				case 0:
                     //Target a player
                     Timer++;
+					DrawOutline = true;
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
@@ -408,6 +447,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
                     break;
 				case 1:
                     Timer++;
+                    DrawOutline = false;
                     //Give some initial velocity
                     if (Timer == 1)
                     {
