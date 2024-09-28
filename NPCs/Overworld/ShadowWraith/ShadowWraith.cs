@@ -110,8 +110,9 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeHandTome>(), 8));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeHandTome>(), 20));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeCharm>(), 50));
+         
             if (NPC.downedBoss1)
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 3));

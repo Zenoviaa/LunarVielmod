@@ -67,7 +67,10 @@ polish.
 --------------
 1.6.1 - Many boss buffs and nerfs, new weapons, 70+ More switchable weapons and balancing to accessories!
 1.6.2 - Gave credit to some code for where it was due. Bug fixes and it's official name of Legacy added.
-
+-----------------
+Remirror Update: 1.7 has been released!
+As some issues arose in 1.6 due to complications of a member stealing a bunch of assets on merge, we split off and decided to resprite/redo many systems to keep the mod in tact.
+Stone golem has also gotten a much needed rework as well as a few new items and rebalancing! If there are issues please let us know :)
 
 
 
