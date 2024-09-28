@@ -540,10 +540,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             Vector3 RGB = new(2.30f, 2.21f, 2.72f);
             Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
             NPC.spriteDirection = NPC.direction;
-
-            if (!NPC.HasValidTarget)
-            {
-                NPC.TargetClosest();
+            NPC.TargetClosest();
+           
                 if (!NPC.HasValidTarget)
                 {               // If the targeted player is dead, flee
                     NPC.velocity.Y += 3f;
@@ -552,7 +550,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     // This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
                     NPC.EncourageDespawn(1);
                 }
-            }
+            
 
             FinishResetTimers();
             //Teleporting Code
