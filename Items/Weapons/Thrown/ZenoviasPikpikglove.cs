@@ -21,7 +21,7 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void SetDefaults()
         {
-            Item.damage = 4;
+            Item.damage = 5;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 40;
             Item.noUseGraphic = true;
@@ -41,8 +41,8 @@ namespace Stellamod.Items.Weapons.Thrown
 		public int AttackCounter = 1;
         float yellowpikpik = 0.7f;
         float redpikpik = 1.5f;
-        float whitepikpik = 1.3f;
-        float purplepikpik = 2.5f;
+        float whitepikpik = 0.3f;
+        float purplepikpik = 2.0f;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			int dir = AttackCounter;

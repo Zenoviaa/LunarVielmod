@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.Melee
             //Do if(IsSwapped) if you want to check for the alternate class
             //Stats to have when in the other class
             Item.mana = 5;
-            Item.damage = 32;
+            Item.damage = 25;
         }
         public override void SetStaticDefaults()
 		{

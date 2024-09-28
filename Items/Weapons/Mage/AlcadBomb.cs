@@ -8,8 +8,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class AlcadBomb : ModItem
+    internal class AlcadBomb : ClassSwapItem
     {
+   
+        public override DamageClass AlternateClass => DamageClass.Summon;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 80;
+            Item.mana = 0;
+        }
         public override void SetStaticDefaults()
         {
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(4, 7));
@@ -20,7 +28,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetDefaults()
         {
-            Item.damage = 100;
+            Item.damage = 150;
             Item.width = 50;
             Item.height = 78;
             Item.useStyle = ItemUseStyleID.Shoot;
