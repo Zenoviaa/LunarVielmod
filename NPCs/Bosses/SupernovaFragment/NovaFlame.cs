@@ -2,6 +2,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -14,10 +16,13 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
     {
         public int Time = 1;
         public float Set = 0.99f;
+        public override string Texture => TextureRegistry.EmptyTexture;
+
+        private PrimitiveTrail TrailDrawer;
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Acid Flame");
-            Main.projFrames[Projectile.type] = 5;
+            ProjectileID.Sets.TrailCacheLength[Type] = 12;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
         }
 
         public override void SetDefaults()
@@ -73,15 +78,85 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048f, 64f);
         }
 
-        public override Color? GetAlpha(Color lightColor) => Color.White;
-        public override void PostDraw(Color lightColor)
+        public override Color? GetAlpha(Color lightColor)
         {
-            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * 1), (int)(45f * 1), (int)(15f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * 1), (int)(45f * 1), (int)(15f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * 1), (int)(45f * 1), (int)(15f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * 1), (int)(45f * 1), (int)(15f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (7 + 0.6f), SpriteEffects.None, 0f);
-            Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.0f * Main.essScale);
+            return new Color(
+                Color.Red.R,
+                Color.Red.G,
+                Color.Red.B, 0);
+        }
+
+        private Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.Orange, Color.RoyalBlue, completionRatio) * (1f - completionRatio);
+        }
+
+        private float WidthFunction(float completionRatio)
+        {
+            return (Projectile.width * Projectile.scale * 1f - completionRatio) * (1f - Easing.OutCubic(completionRatio));
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            var textureAsset = TextureRegistry.CloudTexture;
+
+
+            float drawScale = 0.1f;
+            float drawRotation = Projectile.rotation;
+
+            Vector2 drawSize = textureAsset.Value.Size();
+            Vector2 drawOrigin = drawSize / 2;
+            Color drawColor = (Color)GetAlpha(lightColor);
+            Vector2 drawPosition = Projectile.position - Main.screenPosition + new Vector2(16, 16);
+
+            TrailDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
+            TrailDrawer.SpecialShader = TrailRegistry.FireVertexShader;
+            TrailDrawer.SpecialShader.UseColor(Color.DarkGoldenrod);
+            TrailDrawer.SpecialShader.SetShaderTexture(TrailRegistry.WaterTrail);
+            TrailDrawer.Draw(Projectile.oldPos, -Main.screenPosition + new Vector2(16, 16), 32);
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Draw(textureAsset.Value, drawPosition, null, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
+
+            // Retrieve reference to shader
+            var shader = ShaderRegistry.MiscFireWhitePixelShader;
+
+            //You have to set the opacity/alpha here, alpha in the spritebatch won't do anything
+            //Should be between 0-1
+            float opacity = 0.75f;
+            shader.UseOpacity(opacity);
+
+            //How intense the colors are
+            //Should be between 0-1
+            shader.UseIntensity(0.15f);
+
+            //How fast the extra texture animates
+            float speed = 1.0f;
+            shader.UseSaturation(speed);
+
+            //Color
+            shader.UseColor(new Color(Color.OrangeRed.R, Color.OrangeRed.G, Color.OrangeRed.B, 0));
+
+            //Texture itself
+            shader.UseImage1(TrailRegistry.WaterTrail);
+
+            // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
+            shader.Apply(null);
+
+
+            for (int i = 0; i < 4; i++)
+            {
+                float ds = drawScale * (i / 4f);
+                float dr = Projectile.rotation * (i / 4f);
+                spriteBatch.Draw(textureAsset.Value, drawPosition, null, (Color)GetAlpha(lightColor), dr, drawOrigin, ds, SpriteEffects.None, 0f);
+            }
+            spriteBatch.Draw(textureAsset.Value, drawPosition, null, (Color)GetAlpha(lightColor), drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
+
+            spriteBatch.End();
+            spriteBatch.Begin();
+            return false;
         }
 
         public override void AI()
