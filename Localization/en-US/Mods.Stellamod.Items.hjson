@@ -227,7 +227,6 @@ SetBonus: {
 		Gain the effects if Forbidden armor!
 		Arrows are heated up with the effects of a molten quiver!
 		'''
-		
 }
 
 Accessories: {
@@ -7838,9 +7837,8 @@ GintzelShield: {
 	Tooltip: ""
 }
 
-
 VirulentHelm: {
-	Tooltip: 
+	Tooltip:
 		'''
 		5% increased damage
 		8% increased critical strike chance
@@ -7856,4 +7854,9 @@ VirulentArmor: {
 VirulentLegs: {
 	Tooltip: Slightly increased movement speed and acceleration
 	DisplayName: Virulent Leg
+}
+
+Lihh: {
+	Tooltip: "Shoots two arrows at once! Every third shot fires heat arrows!"
+	DisplayName: Lihh
 }
