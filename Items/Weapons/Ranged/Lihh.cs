@@ -14,29 +14,29 @@ using Terraria.DataStructures;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class RazzleDazzle : ModItem
+    internal class Lihh : ModItem
     {
-       
+
         public override void SetDefaults()
         {
-            Item.damage = 62;
+            Item.damage = 82;
             Item.width = 44;
             Item.height = 80;
             Item.useStyle = ItemUseStyleID.Shoot;
-            Item.knockBack = 4;
-            Item.value = Item.sellPrice(0, 5, 0, 0);
+            Item.knockBack = 7;
+            Item.value = Item.sellPrice(0, 10, 0, 0);
             Item.rare = ItemRarityID.Lime;
 
-            Item.shootSpeed = 15;
+      
             Item.autoReuse = true;
             Item.DamageType = DamageClass.Ranged;
 
             Item.shoot = ProjectileID.PurificationPowder;
-            Item.shootSpeed = 16f;
+            Item.shootSpeed = 19f;
             Item.useAmmo = AmmoID.Arrow;
             Item.UseSound = SoundID.Item5;
-            Item.useAnimation = 24;
-            Item.useTime = 24;
+            Item.useAnimation = 20;
+            Item.useTime = 20;
             Item.consumeAmmoOnLastShotOnly = true;
             Item.noMelee = true;
         }
@@ -51,18 +51,34 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             _combo++;
-            if(_combo == 3)
+            if (_combo == 3)
             {
                 SoundEngine.PlaySound(SoundID.Item78, position);
-                type = ModContent.ProjectileType<RazzleDazzleProj>();
+                type = ModContent.ProjectileType<HeatArrow>();
                 _combo = 0;
             }
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Projectile.NewProjectile(source, position, velocity.RotatedBy(MathHelper.PiOver4 / 7), type, damage, knockback, player.whoAmI);
-            Projectile.NewProjectile(source, position, velocity.RotatedBy(-MathHelper.PiOver4 / 7), type, damage, knockback, player.whoAmI);
+            if (_combo == 3)
+            {
+                float numberProjectiles = 5;
+                float rotation = MathHelper.ToRadians(25);
+                position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 45f;
+                for (int i = 0; i < numberProjectiles; i++)
+                {
+                    Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f; // This defines the projectile roatation and speed. .4f == projectile speed
+                    Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, knockback, player.whoAmI);
+                }
+            }
+
+            if (_combo != 3)
+            {
+                Projectile.NewProjectile(source, position, velocity.RotatedBy(MathHelper.PiOver4 / 7), type, damage, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, velocity.RotatedBy(-MathHelper.PiOver4 / 7), type, damage, knockback, player.whoAmI);
+            }
+            
             return false;
         }
     }

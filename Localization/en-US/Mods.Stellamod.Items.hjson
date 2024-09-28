@@ -4984,7 +4984,7 @@ Dulahaun: {
 
 CursedShard: {
 	DisplayName: Cursed Shard
-	Tooltip: Use at an altar in any of the Catacombs to summon a dangerous foe! 
+	Tooltip: Use at an altar in any of the Catacombs to summon a dangerous foe!
 }
 
 DucanblitzBreastplate: {
@@ -6049,7 +6049,7 @@ Voltenstein: {
 
 BlankBrooch: {
 	DisplayName: Blank Brooch
-	Tooltip: A sprawling template from Delgrim which may help craft some items! 
+	Tooltip: A sprawling template from Delgrim which may help craft some items!
 }
 
 BlankCard: {
@@ -7835,4 +7835,19 @@ GlocketRouncher: {
 GintzelShield: {
 	DisplayName: Gintzel Ram Shield
 	Tooltip: ""
+}
+
+VirulentLegs: {
+	Tooltip: ""
+	DisplayName: Virulent Legs
+}
+
+VirulentHelm: {
+	Tooltip: ""
+	DisplayName: Virulent Helm
+}
+
+VirulentArmor: {
+	Tooltip: ""
+	DisplayName: Virulent Armor
 }
