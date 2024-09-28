@@ -451,7 +451,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 			if(NPC.life <= NPC.lifeMax / 2)
 			{
-				NPC.takenDamageMultiplier = 0.6f;
+				NPC.takenDamageMultiplier = 0.5f;
 			}
 
 			FenixPos = NPC.Center;
