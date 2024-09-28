@@ -5,6 +5,7 @@ using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.AcidArmour
 {
@@ -33,7 +34,7 @@ standing still gives you an acid aura that stays where you were when you leave T
             Player.ClearBuff(ModContent.BuffType<Irradiation>());
 
             //Standing still for the acid aura
-            if(Player.velocity == Vector2.Zero 
+            if (Player.velocity == Vector2.Zero
                 && Player.ownedProjectileCounts[ModContent.ProjectileType<AcidAuraProj>()] == 0)
             {
                 _acidTimer++;
@@ -43,7 +44,7 @@ standing still gives you an acid aura that stays where you were when you leave T
                 _acidTimer = 0;
             }
 
-            if(_acidTimer >= 30)
+            if (_acidTimer >= 30)
             {
                 int damage = 18;
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
@@ -54,7 +55,7 @@ standing still gives you an acid aura that stays where you were when you leave T
     }
 
     [AutoloadEquip(EquipType.Head)]
-    public class AcidHelm : ModItem
+    public class VirulentHelm : ModItem
     {
         public override void SetDefaults()
         {
@@ -62,35 +63,36 @@ standing still gives you an acid aura that stays where you were when you leave T
             Item.height = 30;
             Item.value = 10000;
             Item.rare = ItemRarityID.Blue;
-            Item.defense = 5;
+            Item.defense = 2;
         }
 
         public override void UpdateEquip(Player player)
         {
-            player.GetDamage(DamageClass.Melee) += 0.05f;
-            player.GetCritChance(DamageClass.Generic) += 1;
+            player.GetDamage(DamageClass.Generic) += 0.05F;
+            player.GetCritChance(DamageClass.Generic) += 8;
         }
 
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
-            return body.type == Mod.Find<ModItem>("AcidBody").Type && legs.type == Mod.Find<ModItem>("AcidLegs").Type;
+            return body.type == ModContent.ItemType<VirulentArmor>() && legs.type == ModContent.ItemType<VirulentLegs>();
         }
+
         public override void ArmorSetShadows(Player player)
         {
             player.armorEffectDrawShadow = true;
         }
+
         public override void UpdateArmorSet(Player player)
         {
             player.setBonus = LangText.SetBonus(this);//"Stand still to emit a toxic aura!");
-            player.GetAttackSpeed(DamageClass.Melee) += 0.03f;
-            player.GetModPlayer<AcidPlayer>().hasSetBonus = true;
             player.moveSpeed += 0.2f;
+            player.GetModPlayer<AcidPlayer>().hasSetBonus = true;
         }
 
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 5);
+            recipe.AddIngredient(ItemType<VirulentPlating>(), 5);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
