@@ -143,6 +143,8 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            if (target.immortal)
+                Juggler.ResetJuggle();
             Projectile.timeLeft = 600;
             Vector2 bounceVelocity = -Projectile.velocity / 2;
             Projectile.velocity = bounceVelocity.RotatedByRandom(MathHelper.PiOver4 / 4);

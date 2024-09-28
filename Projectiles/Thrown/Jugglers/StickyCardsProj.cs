@@ -171,6 +171,8 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            if (target.immortal)
+                Juggler.ResetJuggle();
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, new Vector2(1, 1), ModContent.ProjectileType<BungeeGumSlashProj>(),
                 Projectile.damage, Projectile.knockBack, Projectile.owner);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, new Vector2(-1, 1), ModContent.ProjectileType<BungeeGumSlashProj>(),

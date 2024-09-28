@@ -190,6 +190,9 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            if (target.immortal)
+                Juggler.ResetJuggle();
+
             target.AddBuff(BuffID.Venom, 120);
             target.AddBuff(BuffID.Poisoned, 120);
 
