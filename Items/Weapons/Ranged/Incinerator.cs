@@ -19,7 +19,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public override DamageClass AlternateClass => DamageClass.Melee;
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 312;
+            Item.damage = 192;
         }
 
         public override void SetDefaults()
@@ -35,7 +35,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
             // Weapon Properties
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 250;
+            Item.damage = 200;
             Item.knockBack = 4;
             Item.noMelee = true;
 
