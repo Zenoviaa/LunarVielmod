@@ -497,7 +497,7 @@ namespace Stellamod.NPCs.Town
 
 					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
 
-					if (DownedBossSystem.downedDreadBoss)
+					if (DownedBossSystem.downedSupernovaFragmentBoss)
 					{
 
 						switch (Main.rand.Next(3))
@@ -544,18 +544,8 @@ namespace Stellamod.NPCs.Town
                                 break;
 
 						}
-
-
-
-
-
-
-
 					}
-
-
-
-					else if (DownedBossSystem.downedSupernovaFragmentBoss)
+					else if (DownedBossSystem.downedDreadBoss)
 					{
 
 								switch (Main.rand.Next(3))
