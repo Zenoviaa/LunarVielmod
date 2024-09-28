@@ -361,7 +361,7 @@ namespace Stellamod.NPCs.Town
 
 															Main.npcChatText = LangText.Chat(this, "Downed14");
 
-                                                            if (DownedBossSystem.downedAzurewrathBoss)
+                                                            if (DownedBossSystem.downedSupernovaFragmentBoss)
                                                             {
 
                                                                 Main.npcChatText = LangText.Chat(this, "Downed15");

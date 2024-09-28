@@ -3819,7 +3819,7 @@ AlsisMask: {
 
 WickofSorcery: {
 	DisplayName: Wick of Sorcery
-	Tooltip: Truly the best stick of all time.
+	Tooltip: Truly the best stick of all time. Get this from completing Merena's questline
 }
 
 Voyager: {
@@ -6049,7 +6049,7 @@ Voltenstein: {
 
 BlankBrooch: {
 	DisplayName: Blank Brooch
-	Tooltip: A sprawling template from Delgrim which may help craft some items!
+	Tooltip: A sprawling template from Delgrim which may help craft some items! 
 }
 
 BlankCard: {
