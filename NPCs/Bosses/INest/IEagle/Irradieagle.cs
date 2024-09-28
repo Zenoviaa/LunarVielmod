@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.NPCs.Catacombs;
+using Stellamod.NPCs.Event.GreenSun.Dulacrowe;
 using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
@@ -307,7 +308,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
 
 
                                 if (StellaMultiplayer.IsHost)
-                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 2, direction.Y * 2, ModContent.ProjectileType<AcidFlame>(), 40, 1, Main.myPlayer, 0, 0);
+                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 2, direction.Y * 2, ModContent.ProjectileType<TulacroweFireball>(), 40, 1, Main.myPlayer, 0, 0);
                             }
                         }
 
