@@ -4655,7 +4655,7 @@ CatacombTrapStoneBlock: {
 
 CatacombsKey: {
 	DisplayName: Catacombs Key
-	Tooltip: Use these to enter catacombs under the ocean, desert and underground!
+	Tooltip: Use these to enter catacombs in the veil biome with a well under the auroran sky.
 }
 
 CatacombsDoor: {
