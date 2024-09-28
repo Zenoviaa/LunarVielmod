@@ -500,29 +500,28 @@ namespace Stellamod.NPCs.Town
 					if (DownedBossSystem.downedSupernovaFragmentBoss)
 					{
 
-						switch (Main.rand.Next(3))
-						{
-							case 0:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Maelstrom>(), 1);
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
+                        switch (Main.rand.Next(3))
+                        {
+                            case 0:
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SineSire>(), 1);
+
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
+
 
                                 break;
 
-							case 1:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ReflectionSeeker>(), 1);
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
-
+                            case 1:
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RavestBlast>(), 1);
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
                                 break;
 
-							case 2:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
-                                Main.npcChatText = LangText.Chat(this, "Special3");
+                            case 2:
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
                                 break;
 
-						}
-
-					}
+                        }
+                    }
 					else if (DownedBossSystem.downedIrradiaBoss)
 					{
 
@@ -548,27 +547,28 @@ namespace Stellamod.NPCs.Town
 					else if (DownedBossSystem.downedDreadBoss)
 					{
 
-								switch (Main.rand.Next(3))
-								{
-									case 0:
-										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SineSire>(), 1);
-
-								       Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
-	
+                        switch (Main.rand.Next(3))
+                        {
+                            case 0:
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Maelstrom>(), 1);
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
 
                                 break;
 
-									case 1:
-										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RavestBlast>(), 1);
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
+                            case 1:
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ReflectionSeeker>(), 1);
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
+
                                 break;
 
-									case 2:
-										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
+                            case 2:
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
+                                Main.npcChatText = LangText.Chat(this, "Special3");
                                 break;
 
-								}
+                        }
+
 
 					}
 						

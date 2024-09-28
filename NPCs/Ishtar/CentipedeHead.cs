@@ -154,7 +154,7 @@ namespace Stellamod.NPCs.Ishtar
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RibbonStaff>(), 20, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RibbonStaff>(), 5, 1, 1));
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
