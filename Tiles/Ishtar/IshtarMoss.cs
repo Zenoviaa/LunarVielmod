@@ -21,7 +21,7 @@ namespace Stellamod.Tiles.Ishtar
             LocalizedText name = CreateMapEntryName();
             AddMapEntry(new Color(40, 40, 54), name);
         }
-
+        public override bool CanExplode(int i, int j) => false;
         public override void RandomUpdate(int i, int j)
         {
             Tile tile = Framing.GetTileSafely(i, j);
