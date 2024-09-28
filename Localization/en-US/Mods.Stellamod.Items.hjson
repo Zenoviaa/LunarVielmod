@@ -26,7 +26,7 @@ SetBonus: {
 		Increases life regen by a great amount!
 		Move faster and gain the effects of magic cuffs!
 		'''
-	AcidHelm: Stand still to emit a toxic aura!
+	VirulentHelm: Stand still to emit a toxic aura!
 	AcidMask: Stand still to emit a toxic aura!
 	AcidRobe: Stand still to emit a toxic aura!
 	AcidVisor: Stand still to emit a toxic aura!
@@ -227,6 +227,7 @@ SetBonus: {
 		Gain the effects if Forbidden armor!
 		Arrows are heated up with the effects of a molten quiver!
 		'''
+		
 }
 
 Accessories: {
@@ -7837,22 +7838,22 @@ GintzelShield: {
 	Tooltip: ""
 }
 
-VirulentLegs: {
-	Tooltip: ""
-	DisplayName: Virulent Legs
-}
 
 VirulentHelm: {
-	Tooltip: ""
+	Tooltip: 
+		'''
+		5% increased damage
+		8% increased critical strike chance
+		'''
 	DisplayName: Virulent Helm
 }
 
 VirulentArmor: {
-	Tooltip: ""
+	Tooltip: Slightly increased life regeneration
 	DisplayName: Virulent Armor
 }
 
-Lihh: {
-	DisplayName: Lihh
-	Tooltip: ""
+VirulentLegs: {
+	Tooltip: Slightly increased movement speed and acceleration
+	DisplayName: Virulent Leg
 }
