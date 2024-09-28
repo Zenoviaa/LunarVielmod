@@ -7851,3 +7851,8 @@ VirulentArmor: {
 	Tooltip: ""
 	DisplayName: Virulent Armor
 }
+
+Lihh: {
+	DisplayName: Lihh
+	Tooltip: ""
+}
