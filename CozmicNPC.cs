@@ -44,21 +44,21 @@ namespace Stellamod
         {
             if(npc.type == NPCID.PirateShip)
             {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Jerry>(), 2, 1, 1));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Jerry>(), 1, 1, 1));
             }
 
             if (npc.type == NPCID.Zombie || npc.type == NPCID.BigSlimedZombie || npc.type == NPCID.TorchZombie || npc.type == NPCID.ArmedTorchZombie || npc.type == NPCID.ZombieMushroom || npc.type == NPCID.ZombieElfGirl || npc.type == NPCID.ArmedZombieSwamp || npc.type == NPCID.ArmedZombieEskimo || npc.type == NPCID.ZombieElfBeard || npc.type == NPCID.ZombieEskimo || npc.type == NPCID.ZombieDoctor || npc.type == NPCID.ZombieElf || npc.type == NPCID.ZombieMerman || npc.type == NPCID.ZombieRaincoat || npc.type == NPCID.BigZombie || npc.type == NPCID.BigFemaleZombie || npc.type == NPCID.BaldZombie || npc.type == NPCID.ArmedZombieTwiggy || npc.type == NPCID.ArmedZombieSlimed)
             {
                 if (Main.bloodMoon)
                 {
-                    npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TerrorFragments>(), 2, 0, 5));
+                    npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TerrorFragments>(), 2, 1, 5));
                 }
                 npcLoot.Add(ItemDropRule.Common(ItemID.Leather, Main.rand.Next(1, 3)));
             }
             if (npc.type == NPCID.DemonEye || npc.type == NPCID.DemonEye2 || npc.type == NPCID.DemonEyeOwl || npc.type == NPCID.DemonEyeSpaceship)
             {
                 LeadingConditionRule bloodmoonDropRule = new LeadingConditionRule(new BloodmoonDropRule());
-                bloodmoonDropRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TerrorFragments>(), 2, 0, 5));
+                bloodmoonDropRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TerrorFragments>(), 2, 1, 5));
                 npcLoot.Add(bloodmoonDropRule);
             }
             if (npc.type == NPCID.GreekSkeleton)
@@ -68,7 +68,7 @@ namespace Stellamod
 
             if (npc.type == NPCID.BloodZombie || npc.type == NPCID.Drippler)
             {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TerrorFragments>(), 2, 0, 5));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TerrorFragments>(), 2, 1, 5));
             }
 
             if (npc.type == NPCID.SkeletronHand)
