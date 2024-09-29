@@ -307,12 +307,12 @@ namespace Stellamod.NPCs.Bosses.Ereshkigal
                         break;
 
                     case 1:
-                        Main.npcChatText = LangText.Chat(this, "Special14");
+                        Main.npcChatText = LangText.Chat(this, "Special4");
 
                         break;
 
                     case 2:
-                        Main.npcChatText = LangText.Chat(this, "Special15");
+                        Main.npcChatText = LangText.Chat(this, "Special5");
 
                         break;
 
