@@ -7857,6 +7857,6 @@ VirulentLegs: {
 }
 
 Lihh: {
-	Tooltip: "Shoots two arrows at once! Every third shot fires heat arrows!"
+	Tooltip: Shoots two arrows at once! Every third shot fires heat arrows!
 	DisplayName: Lihh
 }
