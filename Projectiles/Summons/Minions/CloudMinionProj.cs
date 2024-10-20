@@ -30,7 +30,6 @@ namespace Stellamod.Projectiles.Summons.Minions
         }
 
         private ref float AttackTimer => ref Projectile.ai[2];
-        private int TornadoIndex = -1;
         private Vector2 TargetPos;
         private Vector3 HuntrianColorXyz;
         private Player Owner => Main.player[Projectile.owner];
@@ -64,14 +63,12 @@ namespace Stellamod.Projectiles.Summons.Minions
         public override void SendExtraAI(BinaryWriter writer)
         {
             writer.WriteVector2(TargetPos);
-            writer.Write(TornadoIndex);
             writer.Write(_orbitCounter);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             TargetPos = reader.ReadVector2();
-            TornadoIndex = reader.ReadInt32();
             _orbitCounter = reader.ReadSingle();
         }
 
@@ -194,13 +191,31 @@ namespace Stellamod.Projectiles.Summons.Minions
             //WHAT WE NEED TO DO IS.
             //Have the guys move in a n ellipse, how do we do tahat?
             Projectile.Center = CalculateCirclePosition(Owner);
-            int tornadoType = ModContent.ProjectileType<ClimateTornadoProj>();
-            if (TornadoIndex == -1
-                || !Main.projectile[TornadoIndex].active
-                || Main.projectile[TornadoIndex].type != tornadoType)
+
+            //Suck in nearby NPCS
+            float suckingStrength = 0.95f;
+            float suckingDistance = 128;
+            for (int i = 0; i < Main.maxNPCs; i++)
             {
-                TornadoIndex = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                 tornadoType, Projectile.damage * 2, Projectile.knockBack, Projectile.owner, ai0: Projectile.whoAmI);
+                NPC npc = Main.npc[i];
+
+                if (npc.active && !npc.friendly && !npc.boss)
+                {
+                    float distance = Vector2.Distance(Projectile.Center, npc.Center);
+                    if (distance <= suckingDistance)
+                    {
+                        Vector2 direction = npc.Center - Projectile.Center;
+                        direction = direction.SafeNormalize(Vector2.Zero);
+                        npc.velocity -= direction * suckingStrength;
+                    }
+                }
+            }
+            Timer++;
+            if (Timer >= 60)
+            {
+                Timer = 0;
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                ModContent.ProjectileType<ClimateTornadoProj>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner, ai0: Projectile.whoAmI);
             }
         }
 
