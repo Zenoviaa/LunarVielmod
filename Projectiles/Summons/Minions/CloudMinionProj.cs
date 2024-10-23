@@ -211,7 +211,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 }
             }
             Timer++;
-            if (Timer >= 60)
+            if (Timer >= 30)
             {
                 Timer = 0;
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,

@@ -11,6 +11,7 @@ namespace Stellamod.Projectiles.Summons.Minions
     {
         private Projectile Parent => Main.projectile[(int)Projectile.ai[0]];
         private ref float Timer => ref Projectile.ai[1];
+        private float Scale = 0f;
         public override void SetDefaults()
         {
             Projectile.friendly = true;
@@ -19,21 +20,25 @@ namespace Stellamod.Projectiles.Summons.Minions
             Projectile.height = 64;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 60;
-            Projectile.scale = 1.3f;
+            Projectile.scale = 1f;
             Projectile.tileCollide = false;
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 25;
+            Projectile.usesIDStaticNPCImmunity = true;
+            Projectile.idStaticNPCHitCooldown = 20;
         }
 
         public override void AI()
         {
             Timer++;
-            Projectile.Center = Parent.Center;
+            if(Parent.active && Parent.type == ModContent.ProjectileType<CloudMinionProj>())
+            {
+                Projectile.Center = Parent.Center;
+            }
+          
             Projectile.rotation += 0.5f;
      
-            float progress = Timer / 120f;
+            float progress = Timer / 60f;
             float easedProgress = Easing.SpikeOutCirc(progress);
-            Projectile.scale = MathHelper.Lerp(0f, 1.3f, easedProgress);
+            Scale = MathHelper.Lerp(0f, 1f, easedProgress);
 
             Lighting.AddLight(Projectile.position, 1.5f, 0.7f, 2.5f);
             Lighting.Brightness(2, 2);
@@ -47,7 +52,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(vortexTexture.Value, Projectile.Center - Main.screenPosition,
                           vortexTexture.Value.Bounds, drawColor, Projectile.rotation,
-                          vortexTexture.Size() * 0.5f, Projectile.scale - 0.3f, SpriteEffects.None, 0);
+                          vortexTexture.Size() * 0.5f, Scale, SpriteEffects.None, 0);
             return false;
         }
     }
