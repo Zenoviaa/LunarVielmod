@@ -51,15 +51,28 @@ namespace Stellamod.WorldG
 
     public class StellaWorld : ModSystem
 	{
-
 		public static bool SoulStorm;
-		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
+		private void DisableGenTask(List<GenPass> tasks, string passName)
 		{
+            tasks.Find(x => x.Name.Equals(passName)).Disable();
+        }
 
-			
-
+        public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
+		{
 			int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Lakes"));
-			if (MorrowGen != -1)
+
+            //Disable Some Passes
+            DisableGenTask(tasks, "Terrain");
+            DisableGenTask(tasks, "Tunnels");
+            DisableGenTask(tasks, "Mount Caves");
+            DisableGenTask(tasks, "Surface Caves");
+            DisableGenTask(tasks, "Mountain Caves");
+          //  DisableGenTask(tasks, "Surface Chests");
+            DisableGenTask(tasks, "Wavy Caves");
+            DisableGenTask(tasks, "Living Trees");
+            //Replace Terrain Pass
+            tasks[tasks.FindIndex(x => x.Name.Equals("Terrain"))] = new VanillaTerrainPass();
+            if (MorrowGen != -1)
 			{
 				tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Abysm", WorldGenAbysm));
 				tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Virulent", WorldGenVirulent));	
@@ -75,8 +88,8 @@ namespace Stellamod.WorldG
 				tasks.Insert(MorrowGen + 12, new PassLegacy("World Gen Cinderspark", WorldGenArncharOre2));
 				tasks.Insert(MorrowGen + 13, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
 				tasks.Insert(MorrowGen + 14, new PassLegacy("World Gen Veiled Spot", WorldGenVeilSpot));
-
-			}
+                tasks.Insert(MorrowGen + 15, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
+            }
 
 			int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
 			if (CathedralGen3 != -1)
@@ -127,17 +140,17 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 34, new PassLegacy("World Gen Graving", WorldGenGraving));
                 tasks.Insert(CathedralGen2 + 35, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
             }
-
-
-			
-
-
-
-
 		}
 
+        private void WorldGenDungeonLocation(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Moving the dungeon, smh";
 
-		private void WorldGenFabledTrees(GenerationProgress progress, GameConfiguration configuration)
+			//GenVars.dungeonLocation is the x value of the dungeon
+			GenVars.dungeonLocation = Main.maxTilesX - 1000;
+        }
+
+        private void WorldGenFabledTrees(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "The Veiled people planting trees!";
 			for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.4f) * 6E-02); k++)

@@ -7860,3 +7860,8 @@ Lihh: {
 	Tooltip: Shoots two arrows at once! Every third shot fires heat arrows!
 	DisplayName: Lihh
 }
+
+ExampleDecorativeWallItem: {
+	DisplayName: Example Decorative Wall Item
+	Tooltip: ""
+}
