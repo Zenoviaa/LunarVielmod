@@ -72,6 +72,9 @@ Remirror Update: 1.7 has been released!
 As some issues arose in 1.6 due to complications of a member stealing a bunch of assets on merge, we split off and decided to resprite/redo many systems to keep the mod in tact.
 Stone golem has also gotten a much needed rework as well as a few new items and rebalancing! New visuals to many projectiles and bosses!
 If there are issues please let us know :)
+--------------------------
+Ereshkigal's Love: 2.0.. The Final Content Update for Lunar veil!
+
 
 
 Please wishlist my game as well!: https://store.steampowered.com/app/2639870/Diari/
