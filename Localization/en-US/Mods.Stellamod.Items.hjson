@@ -7895,3 +7895,13 @@ BloodFlower1Item: {
 	Tooltip: ""
 	DisplayName: Blood Flower1 Item
 }
+
+ModelizingPlacer: {
+	DisplayName: Modelizing Placer
+	Tooltip: ""
+}
+
+ModelizingSaver: {
+	DisplayName: Modelizing Saver
+	Tooltip: ""
+}

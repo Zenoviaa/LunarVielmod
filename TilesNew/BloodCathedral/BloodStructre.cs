@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Tiles;
 using Terraria;
 using Terraria.GameContent.Creative;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.TilesNew.BloodCathedral
@@ -22,7 +21,7 @@ namespace Stellamod.TilesNew.BloodCathedral
         {
             base.SetDefaults();
             Item.createWall = ModContent.WallType<BloodHall>();
-           
+
         }
 
         public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
@@ -35,18 +34,15 @@ namespace Stellamod.TilesNew.BloodCathedral
 
     }
 
-    internal class BloodHall : DecorativeWall
+    internal class BloodHall : BehindDecorativeWall
     {
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
             StructureColor = Color.Gray;
             Origin = DrawOrigin.BottomUp;
-            
+
             //If you need other static defaults it go here
         }
     }
-
-
-  
 }

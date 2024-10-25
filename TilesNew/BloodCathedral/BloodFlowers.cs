@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Tiles;
 using Terraria;
 using Terraria.GameContent.Creative;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.TilesNew.BloodCathedral
@@ -41,7 +40,7 @@ namespace Stellamod.TilesNew.BloodCathedral
             base.SetStaticDefaults();
             StructureColor = Color.Gray;
             Origin = DrawOrigin.BottomUp;
-           
+
             //If you need other static defaults it go here
         }
     }
@@ -79,7 +78,7 @@ namespace Stellamod.TilesNew.BloodCathedral
             base.SetStaticDefaults();
             StructureColor = Color.Gray;
             Origin = DrawOrigin.BottomUp;
-            
+
             //If you need other static defaults it go here
         }
     }
@@ -116,7 +115,7 @@ namespace Stellamod.TilesNew.BloodCathedral
             base.SetStaticDefaults();
             StructureColor = Color.Gray;
             Origin = DrawOrigin.BottomUp;
-           
+
             //If you need other static defaults it go here
         }
     }
@@ -153,7 +152,7 @@ namespace Stellamod.TilesNew.BloodCathedral
             base.SetStaticDefaults();
             StructureColor = Color.Gray;
             Origin = DrawOrigin.BottomUp;
-           
+
             //If you need other static defaults it go here
         }
     }
@@ -190,7 +189,7 @@ namespace Stellamod.TilesNew.BloodCathedral
             base.SetStaticDefaults();
             StructureColor = Color.Gray;
             Origin = DrawOrigin.BottomUp;
-        
+
             //If you need other static defaults it go here
         }
     }
