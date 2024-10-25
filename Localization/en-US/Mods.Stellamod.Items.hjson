@@ -7865,3 +7865,33 @@ ExampleDecorativeWallItem: {
 	DisplayName: Example Decorative Wall Item
 	Tooltip: ""
 }
+
+BloodHallItem: {
+	Tooltip: ""
+	DisplayName: Blood Hall Item
+}
+
+BloodFlower5Item: {
+	Tooltip: ""
+	DisplayName: Blood Flower5 Item
+}
+
+BloodFlower4Item: {
+	Tooltip: ""
+	DisplayName: Blood Flower4 Item
+}
+
+BloodFlower3Item: {
+	Tooltip: ""
+	DisplayName: Blood Flower3 Item
+}
+
+BloodFlower2Item: {
+	Tooltip: ""
+	DisplayName: Blood Flower2 Item
+}
+
+BloodFlower1Item: {
+	Tooltip: ""
+	DisplayName: Blood Flower1 Item
+}
