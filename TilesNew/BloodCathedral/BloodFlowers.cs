@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Tiles;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -8,7 +9,7 @@ using Terraria.ModLoader;
 namespace Stellamod.TilesNew.BloodCathedral
 {
     //Wall Version
-    public class BloodFlower1Item : DecorativeWallItem
+    public class BloodHallItem : DecorativeWallItem
     {
         public override void SetStaticDefaults()
         {
@@ -20,7 +21,7 @@ namespace Stellamod.TilesNew.BloodCathedral
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.createWall = ModContent.WallType<BloodFlower1>();
+            Item.createWall = ModContent.WallType<BloodHall>();
         }
 
         public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
@@ -33,7 +34,7 @@ namespace Stellamod.TilesNew.BloodCathedral
 
     }
 
-    internal class BloodFlower1 : DecorativeWall
+    internal class BloodHall : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -44,4 +45,6 @@ namespace Stellamod.TilesNew.BloodCathedral
         }
     }
 
+
+  
 }
