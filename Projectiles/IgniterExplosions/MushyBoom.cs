@@ -35,11 +35,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             Projectile.scale = 1f;
         }
 
-        public float Timer
-        {
-            get => Projectile.ai[0];
-            set => Projectile.ai[0] = value;
-        }
+
         public override void AI()
         {
 
