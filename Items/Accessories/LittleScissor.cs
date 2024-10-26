@@ -194,15 +194,9 @@ namespace Stellamod.Items.Accessories
 		{
 			Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale); // Makes this item glow when thrown out of inventory.
 		}
-
-        public override bool CanEquipAccessory(Player player, int slot, bool modded)
-        {
-            return !player.GetModPlayer<DashPlayer>().OneDashAccessoryEquipped; 
-        }
     
         public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<DashPlayer>().OneDashAccessoryEquipped = true;
             player.GetModPlayer<LittleScissorDashPlayer>().DashAccessoryEquipped = true;
 		}
 

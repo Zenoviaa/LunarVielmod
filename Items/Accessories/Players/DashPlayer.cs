@@ -18,50 +18,40 @@ namespace Stellamod.Items.Accessories.Players
 		public const int DashDuration = 30; // Duration of the dash afterimage effect in frames
 
 		// The initial velocity.  10 velocity is about 37.5 tiles/second or 50 mph
-		public const float DashVelocity = 16f;
+		public const float DashVelocity = 10f;
 
 		// The direction the player has double tapped.  Defaults to -1 for no dash double tap
 		public int DashDir = -1;
 
 		// The fields related to the dash accessory
-		public bool DashAccessoryEquipped;
-		public bool OneDashAccessoryEquipped;
 		public int DashDelay = 0; // frames remaining till we can dash again
 		public int DashTimer = 0; // frames remaining in the dash
 
 		public override void ResetEffects()
 		{
-			OneDashAccessoryEquipped = false;
-            // Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
-            DashAccessoryEquipped = false;
-
-			// ResetEffects is called not long after player.doubleTapCardinalTimer's values have been set
-			// When a directional key is pressed and released, vanilla starts a 15 tick (1/4 second) timer during which a second press activates a dash
-			// If the timers are set to 15, then this is the first press just processed by the vanilla logic.  Otherwise, it's a double-tap
-			if (Player.controlDown && Player.releaseDown && Player.doubleTapCardinalTimer[DashDown] < 15)
-			{
-				DashDir = DashDown;
-			}
-			else if (Player.controlRight && Player.releaseRight && Player.doubleTapCardinalTimer[DashRight] < 15)
-			{
-				DashDir = DashRight;
-			}
-			else if (Player.controlLeft && Player.releaseLeft && Player.doubleTapCardinalTimer[DashLeft] < 15)
-			{
-				DashDir = DashLeft;
-			}
-			else
-			{
-				DashDir = -1;
-			}
-		}
+            // ResetEffects is called not long after player.doubleTapCardinalTimer's values have been set
+            // When a directional key is pressed and released, vanilla starts a 15 tick (1/4 second) timer during which a second press activates a dash
+            // If the timers are set to 15, then this is the first press just processed by the vanilla logic.  Otherwise, it's a double-tap
+            if (Player.controlRight)
+            {
+                DashDir = DashRight;
+            }
+            else if (Player.controlLeft)
+            {
+                DashDir = DashLeft;
+            }
+            else
+            {
+                DashDir = Player.direction == 1 ? DashRight : DashLeft;
+            }
+        }
 
 		// This is the perfect place to apply dash movement, it's after the vanilla movement code, and before the player's position is modified based on velocity.
 		// If they double tapped this frame, they'll move fast this frame
 		public override void PreUpdateMovement()
 		{
 			// if the player can use our dash, has double tapped in a direction, and our dash isn't currently on cooldown
-			if (CanUseDash() && DashDir != -1 && DashDelay == 0)
+			if (CanUseDash() && LunarVeilKeybinds.DashKeybind.JustPressed && DashDir != -1 && DashDelay == 0)
 			{
 				Vector2 newVelocity = Player.velocity;
 
@@ -123,21 +113,15 @@ namespace Stellamod.Items.Accessories.Players
 				DashTimer--;
 			}
 
-
 			if (DashTimer == 0)
 			{
 				Player.GetModPlayer<ImmunityPlayer2>().HasStealiImmunityAccc = false;
-
-
 			}
 		}
 
 		private bool CanUseDash()
 		{
-			return DashAccessoryEquipped
-				&& !Player.setSolar // player isn't wearing solar armor
-
-				&& !Player.mount.Active; // player isn't mounted, since dashes on a mount look weird
+			return !Player.setSolar && !Player.mount.Active; // player isn't mounted, since dashes on a mount look weird
 		}
 	}
 }

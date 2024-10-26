@@ -56,15 +56,9 @@ namespace Stellamod.Items.Accessories
             recipe2.Register();
         }
 
-		public override bool CanEquipAccessory(Player player, int slot, bool modded)
-		{
-			return !player.GetModPlayer<DashPlayer>().OneDashAccessoryEquipped;
-		}
-
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 
-			player.GetModPlayer<DashPlayer>().OneDashAccessoryEquipped = true;
 			player.GetModPlayer<DashPlayer3>().DashAccessoryEquipped = true;
 			//	player.GetDamage(DamageClass.Generic) *= 0.95f;
 			player.lifeRegen += 1;
