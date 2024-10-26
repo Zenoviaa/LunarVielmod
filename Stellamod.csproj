@@ -514,6 +514,7 @@
     <Folder Include="Projectiles\FX\" />
     <Folder Include="Projectiles\Swords\Slashes\" />
     <Folder Include="Struct\Catacombs\" />
+    <Folder Include="TilesNew\Fable\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ParticleLibrary">
