@@ -26,17 +26,24 @@ namespace Stellamod.Items.Accessories.Players
 		// The fields related to the dash accessory
 		public int DashDelay = 0; // frames remaining till we can dash again
 		public int DashTimer = 0; // frames remaining in the dash
-
+		public bool DoubleTapped = false;
 		public override void ResetEffects()
 		{
+			DoubleTapped = false;
+            if ((Player.controlRight && Player.releaseRight && Player.doubleTapCardinalTimer[DashRight] < 15)
+                            || (Player.controlLeft && Player.releaseLeft && Player.doubleTapCardinalTimer[DashLeft] < 15))
+            {
+                DoubleTapped = true;
+            }
+
             // ResetEffects is called not long after player.doubleTapCardinalTimer's values have been set
             // When a directional key is pressed and released, vanilla starts a 15 tick (1/4 second) timer during which a second press activates a dash
             // If the timers are set to 15, then this is the first press just processed by the vanilla logic.  Otherwise, it's a double-tap
-            if (Player.controlRight || (Player.controlRight && Player.releaseRight && Player.doubleTapCardinalTimer[DashRight] < 15))
+            if (Player.controlRight)
             {
                 DashDir = DashRight;
             }
-            else if (Player.controlLeft || (Player.controlLeft && Player.releaseLeft && Player.doubleTapCardinalTimer[DashLeft] < 15))
+            else if (Player.controlLeft)
             {
                 DashDir = DashLeft;
             }
@@ -51,9 +58,9 @@ namespace Stellamod.Items.Accessories.Players
 		public override void PreUpdateMovement()
 		{
 			// if the player can use our dash, has double tapped in a direction, and our dash isn't currently on cooldown
-			if (CanUseDash() && LunarVeilKeybinds.DashKeybind.JustPressed && DashDir != -1 && DashDelay == 0)
+			if (CanUseDash() && (LunarVeilKeybinds.DashKeybind.JustPressed || DoubleTapped) && DashDir != -1 && DashDelay == 0)
 			{
-				Vector2 newVelocity = Player.velocity;
+                Vector2 newVelocity = Player.velocity;
 
 				switch (DashDir)
 				{
