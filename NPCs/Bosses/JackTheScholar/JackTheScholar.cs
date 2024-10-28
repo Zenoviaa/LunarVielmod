@@ -37,7 +37,8 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
             Jack_Bombs,
             Fire_Stomp,
             Flamethrower,
-            Flame_Pillar
+            Flame_Pillar,
+            Phase_2_Transition
         }
 
         private enum AnimationState
@@ -70,6 +71,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
         private int _frame;
 
         private bool InPhase2 => NPC.life <= NPC.lifeMax / 2;
+        private bool HasDonePhase2Transition;
         private Player Target => Main.player[NPC.target];
         private Vector2 DirectionToTarget => (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
         private Vector2 FlamethrowerVelocity;
@@ -270,6 +272,9 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 case AIState.Flame_Pillar:
                     AI_FlamePillar();
                     break;
+                case AIState.Phase_2_Transition:
+                    AI_Phase2Transition();
+                    break;
             }
 
             //Some uh visual stuff
@@ -359,6 +364,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                             }
                             break;
                         case 3:
+                            nextAttack = AIState.Super_Jump;
                             break;
                     }
                     AttackCount++;
@@ -366,8 +372,94 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                     {
                         AttackCount = 0;
                     }
+
+                    if(!HasDonePhase2Transition && InPhase2)
+                    {
+                        nextAttack = AIState.Phase_2_Transition;
+                        HasDonePhase2Transition = true;
+                    }
                     SwitchState(nextAttack);
                 }
+            }
+        }
+
+        private void AI_Phase2Transition()
+        {
+            Timer++;
+            if (!CheckCurrentAnimation(
+                 AnimationState.Summon_Hold_Out,
+                 AnimationState.Summon_Hand_Up,
+                 AnimationState.Summon_Hand_Down))
+            {
+                Animation = AnimationState.Summon_Hand_Up;
+            }
+
+            //Jump Up
+            if (Timer == 1)
+            {
+                NPC.velocity.Y = -16;
+
+                float jumpHorizontalSpeed = 6;
+                NPC.velocity.X = DirectionToTarget.X * jumpHorizontalSpeed;
+
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/Jack_Laugh");
+                soundStyle.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(soundStyle, NPC.position);
+                SoundEngine.PlaySound(SoundID.Item73, NPC.position);
+            }
+
+            if(Timer > 20 && Timer < 120)
+            {
+                float progress = (Timer / 120f);
+                float dist = MathHelper.Lerp(48f, 0f, progress);
+                float scale = MathHelper.Lerp(3f, 0f, progress);
+                Vector2 pos = NPC.Center + (progress * MathHelper.TwoPi).ToRotationVector2() * dist;
+                Vector2 pos2 = NPC.Center + (progress * MathHelper.TwoPi + MathHelper.Pi).ToRotationVector2() * dist;
+                Dust.NewDustPerfect(pos, DustID.Torch, Vector2.Zero, Scale: scale);
+                Dust.NewDustPerfect(pos2, DustID.Torch, Vector2.Zero, Scale: scale);
+            }
+
+            if(Timer > 60)
+            {
+                Vector2 directionToTarget = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                float speed = 3f;
+                Vector2 velocityToTarget = directionToTarget * speed;
+                NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, velocityToTarget.X, 0.1f);
+                NPC.velocity.Y *= 0.2f;
+            }
+
+            if (Timer >= 60 && Timer < 180)
+            {
+                if (Timer % 12 == 0)
+                {
+                    float progress = (Timer - 60f) / 120f;
+                    Vector2 spawnPoint = NPC.Center + Vector2.UnitY.RotatedBy(MathHelper.TwoPi * progress) * 128;
+                    Vector2 startVelocity = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 8;
+                    int projType = ModContent.ProjectileType<WillOWisp>();
+                    int damage = 12;
+                    int knockback = 1;
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPoint, startVelocity, projType, damage, knockback, Main.myPlayer);
+                    }
+                }
+            }
+
+            if(Timer == 210)
+            {
+                for(int i = 0; i < 32; i++)
+                {
+                    float progress = ((float)i / 32f);
+                    float scale = MathHelper.Lerp(3f, 0f, progress);
+                    Vector2 pos = NPC.Center;
+                    Vector2 vel = (progress * MathHelper.TwoPi).ToRotationVector2() * 4;
+                    Dust.NewDustPerfect(pos, DustID.Torch, vel, Scale: scale);
+                }
+            }
+
+            if(Timer > 240)
+            {
+                SwitchState(AIState.Hop_Around);
             }
         }
 
