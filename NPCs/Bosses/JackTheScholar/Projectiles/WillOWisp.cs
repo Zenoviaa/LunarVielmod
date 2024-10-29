@@ -36,7 +36,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
             Projectile.width = 8;
             Projectile.height = 8;
             Projectile.hostile = true;
-            Projectile.light = 0.78f;
+            Projectile.light = 0.278f;
             Projectile.timeLeft = 180;
         }
 
@@ -50,13 +50,25 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
                 InitialVelocity = Projectile.velocity;
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
             }
-            if(Timer < 30 && _target == null || !_target.active)
+            if (Timer % 12 == 0)
+            {
+                Vector2 vel = Vector2.Zero;
+                Dust d = Dust.NewDustPerfect(Projectile.Center, DustID.Torch, vel, Scale: 1);
+                d.noGravity = true;
+            }
+            if (Timer % 6 == 0)
+            {
+                Vector2 vel = Vector2.Zero;
+                Dust d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(8, 8), DustID.Torch, vel, Scale: 1);
+                d.noGravity = true;
+            }
+            if (Timer < 30 && _target == null || !_target.active)
             {
                 _target = PlayerHelper.FindClosestPlayer(Projectile.Center, maxDetectDistance: 1024);
             }
             if(Timer < 30)
             {
-                _scale = MathHelper.Lerp(0f, 1f, Easing.InCubic(Timer / 30f));
+                _scale = MathHelper.Lerp(0f, Main.rand.NextFloat(0.25f, 1f), Easing.InCubic(Timer / 30f));
                 Projectile.velocity *= 0.5f;
             }
 
@@ -93,23 +105,44 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.LightGoldenrodYellow, Color.Transparent, completionRatio);
+            return Color.Lerp(Color.LightGoldenrodYellow * 0.1361f, Color.Transparent, completionRatio);
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.SimpleTrail);
+            DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.StarTrail);
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawOrigin = texture.Size() / 2f;
             Color drawColor = Color.White.MultiplyRGB(lightColor);
             float drawRotation = Projectile.rotation;
             float drawScale = _scale;
+
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            spriteBatch.Draw(texture, drawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size()/2f, drawScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+            for (int i = 0; i < 4; i++)
+            {
+                float rot = (float)i / 4f;
+                Vector2 vel = rot.ToRotationVector2() * VectorHelper.Osc(0f, 4f, speed: 16);
+                Vector2 flameDrawPos = drawPos + vel + Main.rand.NextVector2Circular(2, 2);
+                flameDrawPos -= Vector2.UnitY * 4;
+                spriteBatch.Draw(texture, flameDrawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                Vector2 flameDrawPos = drawPos + Main.rand.NextVector2Circular(2, 2);
+                spriteBatch.Draw(texture, flameDrawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
+            }
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
-
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 24; i++)
@@ -125,21 +158,22 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
         }
 
+
         public override void PostDraw(Color lightColor)
         {
             base.PostDraw(lightColor);
             Texture2D dimLightTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
-            float drawScale = 0.4f;
+            float drawScale = 1f;
             SpriteBatch spriteBatch = Main.spriteBatch;
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
-                Color glowColor = new Color(85, 45, 15);
+                Color glowColor = new Color(85, 45, 15) * 0.5f;
                 glowColor.A = 0;
-                spriteBatch.Draw(dimLightTexture, Projectile.Center - Main.screenPosition, null, glowColor, 
-                    Projectile.rotation, dimLightTexture.Size() / 2f, drawScale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(dimLightTexture, Projectile.Center - Main.screenPosition, null, glowColor,
+                    Projectile.rotation, dimLightTexture.Size() / 2f, drawScale * VectorHelper.Osc(0.75f, 1f, speed: 32, offset: Projectile.whoAmI), SpriteEffects.None, 0f);
             }
-         
-            Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 1.75f * Main.essScale);
+
+            //  Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 0.3f * Main.essScale);
         }
     }
 }

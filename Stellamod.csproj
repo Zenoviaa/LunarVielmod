@@ -113,6 +113,7 @@
     <None Remove="Items\Accessories\AquaticHealingNecklace.png" />
     <None Remove="Items\Accessories\ArncharMagazine.png" />
     <None Remove="Items\Accessories\ArncharMagazine_Glow.png" />
+    <None Remove="Items\Accessories\BurningScarfFlame.png" />
     <None Remove="Items\Accessories\ClamsPearl.png" />
     <None Remove="Items\Accessories\CloudSkaters.png" />
     <None Remove="Items\Accessories\CoralBand.png" />

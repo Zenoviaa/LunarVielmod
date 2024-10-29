@@ -1,117 +1,105 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Terraria;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.ID;
+using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
+namespace Stellamod.Items.Accessories
 {
-    internal class FlamePillar : ModProjectile
+    internal class BurningScarfFlame : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
+
         private float _scale;
         private Vector2 InitialVelocity;
+        private Vector2 TargetVelocity;
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 16;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+            base.SetStaticDefaults();
+            ProjectileID.Sets.TrailCacheLength[Type] = 16;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
+            Main.projFrames[Type] = 4;
         }
 
         public override void SetDefaults()
         {
-            Projectile.height = 16;
-            Projectile.width = 16;
-            Projectile.hostile = false;
-            Projectile.tileCollide = false;
-            Projectile.timeLeft = 120;
+            base.SetDefaults();
+            Projectile.width = 12;
+            Projectile.height = 12;
+            Projectile.friendly = true;
+            Projectile.light = 0.278f;
+            Projectile.timeLeft = 180;
         }
+
 
         public override void AI()
         {
+            base.AI();
             Timer++;
             if (Timer == 1)
             {
                 InitialVelocity = Projectile.velocity;
-                _scale = 0.01f;
+                SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
             }
-
-            _scale *= 1.01f;
-            _scale = MathHelper.Clamp(_scale, 0f, 1f);
-            if (Timer < 60)
+            if(Timer % 12 == 0)
             {
-                Projectile.velocity *= 0.25f;
-            }
-
-            if (Timer >= 60)
-            {
-                Projectile.hostile = true;
-            }
-
-            if (Timer == 60)
-            {
-
-                //Dust Particles
-                for (int k = 0; k < 4; k++)
-                {
-                    Vector2 newVelocity = InitialVelocity.RotatedByRandom(MathHelper.ToRadians(7));
-                    newVelocity *= 1f - Main.rand.NextFloat(0.3f);
-                    Dust.NewDust(Projectile.Bottom, 0, 0, DustID.Smoke, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
-                }
-                SoundEngine.PlaySound(SoundID.Item73, Projectile.position);
-            }
-
-            if(Timer > 60)
-            {
-                Projectile.velocity = Vector2.Lerp(Projectile.velocity, InitialVelocity, 0.1f);
-            }
-            Projectile.rotation = Projectile.velocity.ToRotation();
-            Visuals();
-        }
-
-        public override void OnHitPlayer(Player target, Player.HurtInfo info)
-        {
-            target.AddBuff(BuffID.OnFire, 180);
-        }
-
-        private void Visuals()
-        {
-            float radius = 1 / 6f;
-            for (int i = 0; i < 1; i++)
-            {
-                float speedX = Main.rand.NextFloat(-radius, radius);
-                float speedY = Main.rand.NextFloat(-radius, radius);
-                float scale = Main.rand.NextFloat(0.66f, 1f);
-                int d = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.InfernoFork,
-                    speedX, speedY, Scale: scale);
-                Main.dust[d].noGravity = true;
-            }
-        }
-
-        public override void OnKill(int timeLeft)
-        {
-            for (int i = 0; i < 16; i++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
-                var d = Dust.NewDustPerfect(Projectile.Center, DustID.InfernoFork, speed, Scale: 3f);
+                Vector2 vel = Vector2.Zero;
+                Dust d = Dust.NewDustPerfect(Projectile.Center, DustID.Torch, vel, Scale: 1);
                 d.noGravity = true;
             }
+            if (Timer % 6 == 0)
+            {
+                Vector2 vel = Vector2.Zero;
+                Dust d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(8, 8), DustID.Torch, vel, Scale: 1);
+                d.noGravity = true;
+            }
+            if (Timer <= 5)
+            {
+                _scale = MathHelper.Lerp(0f, Main.rand.NextFloat(0.15f, 0.66f), Easing.InCubic(Timer / 5f));
+                Projectile.velocity *= 0.5f;
+            }
+
+            if (Timer == 5)
+            {
+                //Ping Sound
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/Jack_FirePing");
+                soundStyle.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(soundStyle, Projectile.position);
+            }
+
+            if (Timer == 10)
+            {
+                TargetVelocity = InitialVelocity;
+            }
+
+            if (Timer > 10)
+            {
+                Projectile.velocity = Vector2.Lerp(Projectile.velocity, TargetVelocity, 0.02f);
+            }
+
+            Projectile.rotation = Projectile.velocity.X * 0.05f;
+            DrawHelper.AnimateTopToBottom(Projectile, 4);
         }
 
         public float WidthFunction(float completionRatio)
         {
-            float baseWidth = Projectile.scale * Projectile.width;
+            float baseWidth = Projectile.scale * Projectile.width * 1.2f;
             return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
         }
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.White * 0.6f, Color.Transparent, completionRatio);
+            return Color.Lerp(Color.LightGoldenrodYellow * 0.1361f, Color.Transparent, completionRatio);
         }
 
-        //Visual Stuffs
         public override bool PreDraw(ref Color lightColor)
         {
             DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.StarTrail);
@@ -120,7 +108,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
             Vector2 drawOrigin = texture.Size() / 2f;
             Color drawColor = Color.White.MultiplyRGB(lightColor);
             float drawRotation = Projectile.rotation;
-            float drawScale = 1f;
+            float drawScale = _scale;
 
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             spriteBatch.Draw(texture, drawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
@@ -145,7 +133,22 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            return base.PreDraw(ref lightColor);
+            return false;
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            for (int i = 0; i < 24; i++)
+            {
+                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FlameBurst, 0f, -2f, 0, default(Color), 1.5f);
+                Dust dust = Main.dust[num];
+                dust.noGravity = true;
+                dust.position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                dust.position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                dust.velocity = Projectile.DirectionTo(dust.position) * 6f;
+            }
+
+            SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
         }
 
         public override void PostDraw(Color lightColor)
@@ -161,6 +164,8 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
                 spriteBatch.Draw(dimLightTexture, Projectile.Center - Main.screenPosition, null, glowColor,
                     Projectile.rotation, dimLightTexture.Size() / 2f, drawScale * VectorHelper.Osc(0.75f, 1f, speed: 32, offset: Projectile.whoAmI), SpriteEffects.None, 0f);
             }
+
+          //  Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 0.3f * Main.essScale);
         }
     }
 }

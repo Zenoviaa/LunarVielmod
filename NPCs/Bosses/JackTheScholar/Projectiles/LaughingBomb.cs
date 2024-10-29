@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Accord.Statistics.Distributions.Univariate;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -46,8 +47,19 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
             }
         
             Projectile.rotation = Projectile.velocity.X * 0.05f;
-
-            if(Timer < 30)
+            if (Timer % 12 == 0)
+            {
+                Vector2 vel = Vector2.Zero;
+                Dust d = Dust.NewDustPerfect(Projectile.Center, DustID.Torch, vel, Scale: 1);
+                d.noGravity = true;
+            }
+            if (Timer % 6 == 0)
+            {
+                Vector2 vel = Vector2.Zero;
+                Dust d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(8, 8), DustID.Torch, vel, Scale: 1);
+                d.noGravity = true;
+            }
+            if (Timer < 30)
             {
                 _scale = MathHelper.Lerp(0f, 1f, Easing.InCubic(Timer / 30f));
                 Projectile.velocity *= 0.94f;
@@ -62,7 +74,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
                 Projectile.velocity *= 1.03f;
             }
 
-            if(_target != null)
+            if(_target != null && Timer < 130)
             {
                 float degreesRotate = 5;
                 float length = Projectile.velocity.Length();
@@ -70,6 +82,11 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
                 Vector2 newVelocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(degreesRotate)).ToRotationVector2() * length;
                 Projectile.velocity = newVelocity;
                 
+            }
+
+            if(Timer > 130)
+            {
+                Projectile.velocity *= 0.93f;
             }
         
             if (Timer >= 60)
@@ -145,18 +162,31 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
         public override void PostDraw(Color lightColor)
         {
             base.PostDraw(lightColor);
+            float drawScaleMult = MathHelper.Lerp(0.4f, 1.4f, (Timer - 60f) / 120f);
             Texture2D dimLightTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
-            float drawScale = MathHelper.Lerp(0.4f, 2f, (Timer - 60f) / 120f);
+            float drawScale = 1f * drawScaleMult;
             SpriteBatch spriteBatch = Main.spriteBatch;
-            for (int i = 0; i < 6; i++)
+            int chance = (int)MathHelper.Lerp(16, 1, (Timer - 60f) / 120f);
+            for (int i = 0; i < 7; i++)
             {
-                Color glowColor = new Color(85, 45, 15);
+                Color glowColor = Main.rand.NextBool(chance) ? Color.LightGoldenrodYellow : new Color(85, 45, 15);
+                glowColor *= 0.5f;
                 glowColor.A = 0;
-                spriteBatch.Draw(dimLightTexture, Projectile.Center - Main.screenPosition, null, glowColor,
-                    Projectile.rotation, dimLightTexture.Size() / 2f, drawScale, SpriteEffects.None, 0f);
+                Vector2 drawPos = Projectile.Center - Main.screenPosition;
+                drawPos += Main.rand.NextVector2Circular(4, 4);
+                spriteBatch.Draw(dimLightTexture, drawPos, null, glowColor,
+                    Projectile.rotation, dimLightTexture.Size() / 2f, drawScale * VectorHelper.Osc(0.75f, 1f, speed: 32, offset: Projectile.whoAmI), SpriteEffects.None, 0f);
             }
-
-            Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 1.75f * Main.essScale);
+            if(chance == 1)
+            {
+                Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+                Vector2 drawOrigin = texture.Size() / 2f;
+                Color drawColor = Color.Black;
+                float drawRotation = Projectile.rotation;
+                float s = _scale * 0.9f;
+                Vector2 drawPos = Projectile.Center - Main.screenPosition;
+                spriteBatch.Draw(texture, drawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, s, SpriteEffects.None, 0);
+            }
         }
     }
 }

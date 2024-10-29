@@ -322,7 +322,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
             //He could cycle a bit faster in phase 2?
             //Hmmm, not sure htough
             //Gonna make sure this code is easy to work with though
-
+            
             //He cycles a bit faster in phase 2
             float timeToWait = InPhase2 ? 30 : 60;
             if(Timer >= timeToWait)

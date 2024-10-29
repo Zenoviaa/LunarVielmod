@@ -8,6 +8,7 @@ using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
 {
@@ -37,6 +38,18 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
         public override void AI()
         {
             Projectile.ai[1]++;
+            if (Projectile.ai[1] % 12 == 0)
+            {
+                Vector2 vel = Vector2.Zero;
+                Dust d = Dust.NewDustPerfect(Projectile.Center, DustID.Torch, vel, Scale: 1);
+                d.noGravity = true;
+            }
+            if (Projectile.ai[1] % 6 == 0)
+            {
+                Vector2 vel = Vector2.Zero;
+                Dust d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(8, 8), DustID.Torch, vel, Scale: 1);
+                d.noGravity = true;
+            }
             if (!Moved && Projectile.ai[1] >= 0)
             {
                 Projectile.spriteDirection = Projectile.direction;
@@ -118,40 +131,57 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Yellow, Color.Transparent, completionRatio) * 0.7f;
+            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * 0.7f;
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.SimpleTrail);
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Vector2 scale = new(Projectile.scale, 1f);
-            Color drawColor = Projectile.GetAlpha(lightColor);
-            Vector2 drawPosition = Projectile.Center - Main.screenPosition;
-            Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.WhispyTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-            for (int i = 0; i < 8; i++)
+            DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.StarTrail);
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawOrigin = texture.Size() / 2f;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            float drawRotation = Projectile.rotation;
+            float drawScale = 1f;
+
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            spriteBatch.Draw(texture, drawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+            for (int i = 0; i < 4; i++)
             {
-                Vector2 drawOffset = (MathHelper.TwoPi * i / 8f).ToRotationVector2() * 4f;
-                Main.EntitySpriteDraw(texture, drawPosition + drawOffset, null, Color.Yellow with { A = 160 } * Projectile.Opacity, Projectile.rotation, texture.Size() * 0.5f, scale, 0, 0);
+                float rot = (float)i / 4f;
+                Vector2 vel = rot.ToRotationVector2() * VectorHelper.Osc(0f, 4f, speed: 16);
+                Vector2 flameDrawPos = drawPos + vel + Main.rand.NextVector2Circular(2, 2);
+                flameDrawPos -= Vector2.UnitY * 4;
+                spriteBatch.Draw(texture, flameDrawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
             }
 
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 4; i++)
             {
-                float scaleFactor = 1f - i / 6f;
-                Vector2 drawOffset = Projectile.velocity * i * -0.34f;
-                Main.EntitySpriteDraw(texture, drawPosition + drawOffset, null, drawColor with { A = 160 } * Projectile.Opacity, Projectile.rotation, texture.Size() * 0.5f, scale * scaleFactor, 0, 0);
+                Vector2 flameDrawPos = drawPos + Main.rand.NextVector2Circular(2, 2);
+                spriteBatch.Draw(texture, flameDrawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
             }
 
-            Main.EntitySpriteDraw(texture, drawPosition, null, drawColor with { A = 130 }, Projectile.rotation, texture.Size() * 0.5f, scale, 0, 0);
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
 
         public override void PostDraw(Color lightColor)
         {
-            Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.75f * Main.essScale);
+            Texture2D dimLightTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            float drawScale = 1f;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            for (int i = 0; i < 3; i++)
+            {
+                Color glowColor = new Color(85, 45, 15) * 0.5f;
+                glowColor.A = 0;
+                spriteBatch.Draw(dimLightTexture, Projectile.Center - Main.screenPosition, null, glowColor,
+                    Projectile.rotation, dimLightTexture.Size() / 2f, drawScale * VectorHelper.Osc(0.75f, 1f, speed: 32, offset: Projectile.whoAmI), SpriteEffects.None, 0f);
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Igniter;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
@@ -48,6 +49,7 @@ namespace Stellamod.Items.Consumables
 
         public override void ModifyItemLoot(ItemLoot itemLoot)
         {
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<BurningScarf>()));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<WanderingFlame>(), minimumDropped: 20, maximumDropped: 50));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<JackoShot>(), chanceDenominator: 2));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<StaffOFlame>(), chanceDenominator: 2));
