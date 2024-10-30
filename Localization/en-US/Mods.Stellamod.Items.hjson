@@ -2152,10 +2152,7 @@ ShadeCharm: {
 
 ShadeScarf: {
 	DisplayName: Shadei
-	Tooltip:
-		'''
-		Greatly increased dash distance and mobility
-		'''
+	Tooltip: Greatly increased dash distance and mobility
 }
 
 ShellSheid: {

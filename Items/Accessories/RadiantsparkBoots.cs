@@ -14,12 +14,6 @@ namespace Stellamod.Items.Accessories
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Steali");
-			/* Tooltip.SetDefault("A small fast dash that provides invincibility as you dash" +
-				"\nIncreased regeneration" +
-				"\nYou may not attack while this is in use" +
-				"\nHollow Knight inspiried!"); */
-
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
@@ -56,6 +50,7 @@ namespace Stellamod.Items.Accessories
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
+			base.UpdateAccessory(player, hideVisual);
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
             dashPlayer.DashVelocity += 12;
             player.lifeRegen += 1;
