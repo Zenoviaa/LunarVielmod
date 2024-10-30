@@ -404,10 +404,8 @@ Steali: {
 	DisplayName: Steali
 	Tooltip:
 		'''
-		A small fast dash that provides invincibility as you dash
-		Increased life regeneration
-		You may not attack while this is in use
-		Hollow Knight inspiried!
+		Greatly increased dash distance
+		Hollow Knight inspired!
 		'''
 }
 
@@ -2156,11 +2154,7 @@ ShadeScarf: {
 	DisplayName: Shadei
 	Tooltip:
 		'''
-		Increased movement speed
-		+2% Damage
-		Gives effects of steali and adds +10 Health and +10% critical strike chance!
-		Increased life regeneration!
-		Reduced cooldown time from Steali on dash!
+		Greatly increased dash distance and mobility
 		'''
 }
 
@@ -7046,12 +7040,10 @@ RadiantsparkBoots: {
 		You'll need these! Given thanks from Zui!
 		Makes the wearer run super fast and leaves a golden trail that can hit on contact!
 		Zui's Mark is left on your back.
-		Gives uses of Shadei with slightly reduced cooldown on dash!
-		Small amount of regeneration 
+		Effects of Shadei!
 		+30 Health!
 		Flower walking and Immunity to lava!
-		+15% Critical Strike Chance and +5% increased Damage!
-		Yeah this should really help you in future battles.
+		Yeah, this should really help you in future battles.
 		'''
 	DisplayName: Radiantspark Boots
 }
