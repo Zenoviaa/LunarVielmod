@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Accessories
 {
 	[AutoloadEquip(EquipType.Waist)] // Load the spritesheet you create as a shield for the player when it is equipped.
-	public class RadiantsparkBoots : ModItem
+	public class RadiantsparkBoots : BaseDashItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -30,10 +30,8 @@ namespace Stellamod.Items.Accessories
 			Item.value = Item.buyPrice(platinum: 3);
 			Item.rare = ModContent.RarityType<Helpers.GoldenSpecialRarity>();
 			Item.accessory = true;
-
-
-		
 		}
+
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
@@ -58,30 +56,20 @@ namespace Stellamod.Items.Accessories
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-
-			player.GetModPlayer<DashPlayer3>().DashAccessoryEquipped = true;
-			//	player.GetDamage(DamageClass.Generic) *= 0.95f;
-			player.lifeRegen += 1;
-			player.GetDamage(DamageClass.Generic) *= 1.05f;
+            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+            dashPlayer.DashVelocity += 12;
+            player.lifeRegen += 1;
 			player.maxRunSpeed *= 1.4f;
-			player.GetCritChance(DamageClass.Generic) *= 1.15f;
 			player.statLifeMax2 += 30;
 			player.moveSpeed += 0.8f;
 			player.fairyBoots = true;
-			player.lavaImmune = true;
-		
-			
+			player.lavaImmune = true;		
 			player.GetModPlayer<MyPlayer>().GIBomb = true;
-
 			if (player.ownedProjectileCounts[ModContent.ProjectileType<GIBomb>()] == 0)
 			{
 				Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
 					ModContent.ProjectileType<GIBomb>(), 70, 4, player.whoAmI);
 			}
 		}
-
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-
 	}
-
 }

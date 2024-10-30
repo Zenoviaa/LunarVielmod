@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Accessories
 {
     [AutoloadEquip(EquipType.Waist)] // Load the spritesheet you create as a shield for the player when it is equipped.
-	public class ShadeScarf : ModItem
+	public class ShadeScarf : BaseDashItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -23,15 +23,14 @@ namespace Stellamod.Items.Accessories
 
 		public override void SetDefaults()
 		{
+			base.SetDefaults();
 			Item.width = 24;
 			Item.height = 28;
 			Item.value = Item.sellPrice(gold: 10);
 			Item.rare = ItemRarityID.Orange;
 			Item.accessory = true;
-
-
-			Item.lifeRegen = 5;
 		}
+
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
@@ -45,21 +44,12 @@ namespace Stellamod.Items.Accessories
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-
-       //     player.GetModPlayer<DashPlayer>().OneDashAccessoryEquipped = true;
-            player.GetModPlayer<DashPlayer2>().DashAccessoryEquipped = true;
-			//	player.GetDamage(DamageClass.Generic) *= 0.95f;
-			player.lifeRegen += 1;
-			player.GetDamage(DamageClass.Generic) *= 1.02f;
+            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+            dashPlayer.DashVelocity += 7;
 			player.moveSpeed *= 1.3f;
 			player.maxRunSpeed *= 1.3f;
-			player.GetCritChance(DamageClass.Generic) *= 1.10f;
 			player.statLifeMax2 += 10;
-
 		}
-
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-
 	}
 
 }

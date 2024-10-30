@@ -492,6 +492,7 @@
     <None Remove="Projectiles\Test\FigureEightTestProj.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Projectiles\Thrown\Jugglers\BasicBaseballProj.png" />
+    <None Remove="Projectiles\Thrown\PumkinBolt.png" />
     <None Remove="Projectiles\VoidRain.png" />
     <None Remove="Projectiles\VRay.png" />
     <None Remove="Projectiles\WataBoom2.png" />

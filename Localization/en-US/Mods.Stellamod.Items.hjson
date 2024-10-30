@@ -7914,3 +7914,12 @@ BurningScarf: {
 		'''
 	DisplayName: Burning Scarf
 }
+
+PumkinPopper: {
+	Tooltip:
+		'''
+		Throws little pumpkins that explode after a short time or hitting a tile!
+		The pumpkins explode into a burst of 3 projectiles
+		'''
+	DisplayName: Pumpkin Popper
+}

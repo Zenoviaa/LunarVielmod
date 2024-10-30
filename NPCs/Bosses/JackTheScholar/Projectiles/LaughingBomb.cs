@@ -3,11 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -41,11 +36,11 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 InitialVelocity = Projectile.velocity;
             }
-        
+
             Projectile.rotation = Projectile.velocity.X * 0.05f;
             if (Timer % 12 == 0)
             {
@@ -69,26 +64,26 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
             {
                 _target = PlayerHelper.FindClosestPlayer(Projectile.Center, maxDetectDistance: 1024);
             }
-            if(Timer > 30 && Timer < 60)
+            if (Timer > 30 && Timer < 60)
             {
                 Projectile.velocity *= 1.03f;
             }
 
-            if(_target != null && Timer < 130)
+            if (_target != null && Timer < 130)
             {
                 float degreesRotate = 5;
                 float length = Projectile.velocity.Length();
                 float targetAngle = Projectile.Center.AngleTo(_target.Center - new Vector2(0, 128));
                 Vector2 newVelocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(degreesRotate)).ToRotationVector2() * length;
                 Projectile.velocity = newVelocity;
-                
+
             }
 
-            if(Timer > 130)
+            if (Timer > 130)
             {
                 Projectile.velocity *= 0.93f;
             }
-        
+
             if (Timer >= 60)
             {
                 //Starting heating up
@@ -110,7 +105,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
             }
 
             float num = 8;
-            for(int i = 0; i < num; i++)
+            for (int i = 0; i < num; i++)
             {
                 float f = i;
                 float progress = f / num;
@@ -149,7 +144,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
             float drawRotation = Projectile.rotation;
             float drawScale = _scale;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            if(Timer > 60f)
+            if (Timer > 60f)
             {
                 float progress = (Timer - 60) / 120f;
                 float range = 4 * progress;
@@ -177,7 +172,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
                 spriteBatch.Draw(dimLightTexture, drawPos, null, glowColor,
                     Projectile.rotation, dimLightTexture.Size() / 2f, drawScale * VectorHelper.Osc(0.75f, 1f, speed: 32, offset: Projectile.whoAmI), SpriteEffects.None, 0f);
             }
-            if(chance == 1)
+            if (chance == 1)
             {
                 Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
                 Vector2 drawOrigin = texture.Size() / 2f;

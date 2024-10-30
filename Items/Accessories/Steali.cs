@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Accessories
 {
     [AutoloadEquip(EquipType.Waist)] // Load the spritesheet you create as a shield for the player when it is equipped.
-	public class Steali : ModItem
+	public class Steali : BaseDashItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -27,9 +27,6 @@ namespace Stellamod.Items.Accessories
 			Item.value = Item.sellPrice(gold: 10);
 			Item.rare = ItemRarityID.Blue;
 			Item.accessory = true;
-
-
-			Item.lifeRegen = 10;
 		}
 
 
@@ -41,14 +38,9 @@ namespace Stellamod.Items.Accessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-
-           
-            //	player.GetDamage(DamageClass.Generic) *= 0.95f;
-
+			DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+			dashPlayer.DashVelocity += 7;
         }
-
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		
 	}
 
 }

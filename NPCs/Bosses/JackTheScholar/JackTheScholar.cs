@@ -8,6 +8,7 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.Jack;
 using Stellamod.NPCs.Bosses.JackTheScholar.Projectiles;
@@ -875,6 +876,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WanderingFlame>(), minimumDropped: 20, maximumDropped: 50));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<PumkinPopper>(), chanceDenominator: 2,minimumDropped: 150, maximumDropped: 300));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<JackoShot>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StaffOFlame>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ScarecrowSaber>(), chanceDenominator: 2));
