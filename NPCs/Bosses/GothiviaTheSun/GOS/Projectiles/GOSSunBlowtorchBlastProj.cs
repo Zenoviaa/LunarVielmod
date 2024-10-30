@@ -15,7 +15,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
     internal class GothSunBlowtorchBlastProj : ModProjectile
     {
         internal PrimitiveTrail BeamDrawer;
-        public override string Texture => TextureRegistry.EmptyTexture;
+        public override string Texture => TextureRegistry.EmptyBigTexture;
         //Ai
         private ref float Timer => ref Projectile.ai[0];
         private float LifeTime => 60f;
@@ -125,7 +125,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             if(Timer < LifeTime / 2f)
             {
                 float progress = Timer / (LifeTime / 2f);
-                Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Extra_47").Value;
+                Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Extra_49").Value;
                 Color lineDrawColor = new Color(
                     Color.White.R,
                     Color.White.G,
