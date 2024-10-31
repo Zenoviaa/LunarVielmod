@@ -65,6 +65,7 @@ namespace Stellamod.Items
         {
             return _brews.Find(x => x.material == material) != null;
         }
+
         public bool CanBrewSomething(Item mold, Item material)
         {
             return CanBrewSomething(mold.type, material.type, material.stack);

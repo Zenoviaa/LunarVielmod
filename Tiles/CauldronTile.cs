@@ -1,30 +1,24 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Placeable.Cathedral;
-using Stellamod.NPCs.Bosses.Jack;
+using Stellamod.Items.Placeable;
+using Stellamod.UI.CauldronSystem;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Stellamod.NPCs.Town.MerenaQuestSystem;
-using Terraria.DataStructures;
+using Terraria;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Terraria;
-using Microsoft.Xna.Framework;
-using Stellamod.UI.CauldronSystem;
-using Stellamod.Items.Placeable;
 
 namespace Stellamod.Tiles
 {
     internal class CauldronTile : ModTile
     {
+        private float _lastTime;
+        private int _frameCounter;
+        private int _frameTick;
         public override LocalizedText DefaultContainerName(int frameX, int frameY)
         {
             int option = frameX / 36;
@@ -55,7 +49,7 @@ namespace Stellamod.Tiles
             MineResist = 8f;
             MinPick = 200;
             TileObjectData.newTile.DrawYOffset = 6;
-                             
+
             Main.tileBlockLight[Type] = true;
             TileObjectData.addTile(Type);
             TileID.Sets.HasOutlines[Type] = false;
@@ -77,8 +71,7 @@ namespace Stellamod.Tiles
         {
             CauldronUISystem cauldronUISystem = ModContent.GetInstance<CauldronUISystem>();
             cauldronUISystem.ToggleUI();
-            cauldronUISystem.CauldronX = i;
-            cauldronUISystem.CauldronY = j;
+            cauldronUISystem.CauldronPos = new Vector2(i * 16, j * 16);
             return true;
         }
 
@@ -125,11 +118,6 @@ namespace Stellamod.Tiles
             r = 0.2f;
             g = 0.165f;
             b = 0.12f;
-        }
-
-        public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
-        { 
-            return true;
         }
 
         public override void NearbyEffects(int i, int j, bool closer)

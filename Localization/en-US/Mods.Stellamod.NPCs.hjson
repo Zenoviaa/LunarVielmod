@@ -1,5 +1,11 @@
 RoyalHorsemage.DisplayName: Royal Horsemage
 
+WitchesCauldron: {
+	DisplayName: Witch's Cauldron
+	Button: Brew
+	Basic1: *Bubble Bubble Goop Blip Blop*
+}
+
 LonelySorceress: {
 	DisplayName: Lonely Sorceress
 	Bestiary: A strange lady, she seems to overflow with magical energy!

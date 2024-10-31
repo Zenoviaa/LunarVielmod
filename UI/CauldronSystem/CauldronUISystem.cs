@@ -20,6 +20,7 @@ namespace Stellamod.UI.CauldronSystem
         public static string RootTexturePath => "Stellamod/UI/CauldronSystem/";
         public int CauldronX;
         public int CauldronY;
+        public Vector2 CauldronPos;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -31,8 +32,8 @@ namespace Stellamod.UI.CauldronSystem
         public override void UpdateUI(GameTime gameTime)
         {
             Vector2 worldPos = new Vector2(CauldronX * 16, CauldronY * 16);
-            float dist = Vector2.Distance(Main.LocalPlayer.position, worldPos);
-            if(dist > 64)
+            float dist = Vector2.Distance(Main.LocalPlayer.position, CauldronPos);
+            if(dist > 96)
             {
                 CloseUI();
             }
