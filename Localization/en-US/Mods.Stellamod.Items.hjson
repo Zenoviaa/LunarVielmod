@@ -2837,7 +2837,7 @@ IvynShot: {
 
 JackoShot: {
 	DisplayName: Jacko Shot
-	Tooltip: It's a bow, there's nothing else special about it
+	Tooltip: Every third shot shoots a fire arrow that explodes into 3 homing embers!
 }
 
 JellyBow: {
