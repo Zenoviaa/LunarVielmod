@@ -360,6 +360,7 @@
     <None Remove="Particles\SpinewBigOrange.png" />
     <None Remove="Particles\TornadoParticle.png" />
     <None Remove="Projectiles\AlcadizBombExplosion - Copy.png" />
+    <None Remove="Projectiles\Ammo\JackoShotBombArrow.png" />
     <None Remove="Projectiles\BloodWaterProj.png" />
     <None Remove="Projectiles\Bow\GalvinieArrow1.png" />
     <None Remove="Projectiles\Bow\HuntrianArrow - Copy.png" />

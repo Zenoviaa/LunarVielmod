@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Ammo;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -7,6 +9,7 @@ namespace Stellamod.Items.Weapons.Ranged
 {
     internal class JackoShot : ModItem
     {
+        private int _comboIndex;
         public override void SetDefaults()
         {
             Item.damage = 11;
@@ -29,11 +32,24 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.consumeAmmoOnLastShotOnly = true;
             Item.noMelee = true;
         }
+
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-2f, 0f);
         }
 
-
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
+            _comboIndex++;
+            if(_comboIndex >= 3)
+            {
+                type = ModContent.ProjectileType<JackoShotBombArrow>();
+                _comboIndex = 0;
+                velocity *= 1.5f;
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/HeatFeather"), player.position);
+            }
+  
+        }
     }
 }
