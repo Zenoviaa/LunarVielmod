@@ -2605,7 +2605,7 @@ StaffOFlame: {
 	DisplayName: Staff O Flame
 	Tooltip:
 		'''
-		Summons a cute lil' flame
+		Summons 2 cute lil' flames that home into enemies after a short time!
 		:3
 		'''
 }

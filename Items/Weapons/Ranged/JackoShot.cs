@@ -18,7 +18,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 4;
             Item.value = Item.sellPrice(0, 1, 1, 29);
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Green;
 
             Item.shootSpeed = 13;
             Item.autoReuse = true;
