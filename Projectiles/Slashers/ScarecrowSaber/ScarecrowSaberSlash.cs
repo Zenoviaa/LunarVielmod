@@ -1,21 +1,12 @@
-﻿using Accord.Statistics.Distributions.Univariate;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
 {
@@ -30,21 +21,21 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
         public override void ResetEffects()
         {
             base.ResetEffects();
-         //   DashRotation = false;
+            //   DashRotation = false;
         }
 
         public override void PreUpdateMovement()
         {
             base.PreUpdateMovement();
             //Very simple dash
-            if(DashVelocity != null)
+            if (DashVelocity != null)
             {
                 Player.velocity = DashVelocity.Value;
                 DashVelocity = null;
                 FixRotationTimer = 0;
             }
 
-            if(DashRotation)
+            if (DashRotation)
             {
                 Player.fullRotation += Player.velocity.Length() * 0.015f * DashDirection;
                 Player.fullRotationOrigin = Player.Size / 2;
@@ -57,13 +48,13 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
                 Player.fullRotation = MathHelper.Lerp(0, Player.fullRotation, progress);
             }
 
-            if(SlowdownTimer > 0)
+            if (SlowdownTimer > 0)
             {
                 Player.velocity *= 0.95f;
                 SlowdownTimer--;
             }
         }
-      
+
     }
 
     internal class ScarecrowSaberSlash : ModProjectile
@@ -104,11 +95,11 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
         public override void AI()
         {
             base.AI();
-            ScarecrowSaberPlayer scarecrowSaberPlayer = Owner.GetModPlayer<ScarecrowSaberPlayer>();      
+            ScarecrowSaberPlayer scarecrowSaberPlayer = Owner.GetModPlayer<ScarecrowSaberPlayer>();
             scarecrowSaberPlayer.DashRotation = true;
 
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 //Thrust the player
                 scarecrowSaberPlayer.DashVelocity = Projectile.velocity;
@@ -167,7 +158,7 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
                 Projectile.Kill();
             }
 
-         
+
             AI_OrientBlade();
 
             for (int i = _oldSwingPos.Length - 1; i > 0; i--)
@@ -180,7 +171,7 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
         }
 
         private void AI_OrientBlade()
-        {            
+        {
             //Position the blade
             Vector2 position = Owner.Center;
             position += _swingRot.ToRotationVector2() * holdOffset;
@@ -198,10 +189,10 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             base.ModifyHitNPC(target, ref modifiers);
-            if(Timer < 20)
+            if (Timer < 20)
             {
                 float num = 24;
-                for(int i = 0; i < num; i++)
+                for (int i = 0; i < num; i++)
                 {
                     float progress = (float)i / num;
                     float rot = progress * MathHelper.TwoPi;
@@ -256,7 +247,7 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
 
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.StarTrail);
 
-            Vector2 trailOffset =  -Main.screenPosition;
+            Vector2 trailOffset = -Main.screenPosition;
             TrailDrawer.DrawPrims(_oldSwingPos, trailOffset, 155);
             Texture2D spinTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Spiin").Value;
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -270,11 +261,11 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
             drawColor *= glowProgress;
             float drawRotation = Projectile.rotation;
             float drawScale = 0.35f;
-            
+
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
-            for(int i = 0;  i < _oldSwingPos.Length; i++)
+            for (int i = 0; i < _oldSwingPos.Length; i++)
             {
                 drawPos = _oldSwingPos[i];
                 float p = (float)i / (float)_oldSwingPos.Length;
@@ -283,10 +274,10 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
                 afterImageColor *= 0.5f;
                 spriteBatch.Draw(spinTexture, drawPos - Main.screenPosition, null, afterImageColor, drawRotation, spinTexture.Size() / 2f, drawScale, SpriteEffects.None, 0);
             }
-        
+
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-         
+
             return base.PreDraw(ref lightColor);
         }
 
