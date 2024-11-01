@@ -2709,7 +2709,11 @@ Myocardia: {
 
 ScarecrowSaber: {
 	DisplayName: Scarecrow Saber
-	Tooltip: Scare your enemies with a spread of 3 magical sabers!
+	Tooltip:
+		'''
+		Lunge forward in a spinning slash!
+		You are invincible at the start of the lunge, and enemies hit during this time take several times more damage!
+		'''
 }
 
 SkyrageShasher: {
