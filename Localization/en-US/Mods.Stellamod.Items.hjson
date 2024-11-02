@@ -7921,3 +7921,13 @@ MagicCauldron: {
 	DisplayName: Magic Cauldron
 	Tooltip: ""
 }
+
+WillOWisp: {
+	DisplayName: Will O' Wisp
+	Tooltip:
+		'''
+		Summons a cute lil' ghostly flame that follows behind you and burns enemies!
+		The flames line up behind each other
+		Consumes half a minion slot
+		'''
+}
