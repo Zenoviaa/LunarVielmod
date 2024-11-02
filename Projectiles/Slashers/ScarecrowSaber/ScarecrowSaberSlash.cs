@@ -16,6 +16,8 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
         public float SlowdownTimer { get; set; }
         public bool DashRotation { get; set; }
         public float DashDirection { get; set; } = 1f;
+
+        public float CooldownTimer { get; set; }
         public float FixRotationTimer { get; set; }
         public float FixRotationDuration { get; set; } = 15;
         public override void ResetEffects()
@@ -52,6 +54,28 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
             {
                 Player.velocity *= 0.95f;
                 SlowdownTimer--;
+            }
+
+            if(CooldownTimer > 0)
+            {
+                CooldownTimer--;
+                if(CooldownTimer == 0)
+                {
+                    float num = 24;
+                    for (int i = 0; i < num; i++)
+                    {
+                        float progress = (float)i / num;
+                        float rot = progress * MathHelper.TwoPi;
+                        Vector2 vel = rot.ToRotationVector2() * 3;
+                        Dust.NewDustPerfect(Player.Center, DustID.InfernoFork, vel, Scale: 1);
+                        Dust.NewDustPerfect(Player.Center, DustID.Torch, vel * 0.75f, Scale: 1);
+                    }
+
+
+                    SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/Jack_Laugh");
+                    soundStyle.PitchVariance = 0.1f;
+                    SoundEngine.PlaySound(soundStyle, Player.position);
+                }
             }
         }
 
@@ -150,11 +174,12 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
             {
                 DeathTimer++;
             }
-            if (Owner.velocity.Length() < 5 || DeathTimer >= 25)
+            if ((Timer > 8 && Owner.velocity.Length() < 5) || DeathTimer >= 25)
             {
                 //Fix the player's orientation
                 scarecrowSaberPlayer.DashRotation = false;
                 scarecrowSaberPlayer.FixRotationTimer = 15;
+                scarecrowSaberPlayer.CooldownTimer = 35;
                 Projectile.Kill();
             }
 

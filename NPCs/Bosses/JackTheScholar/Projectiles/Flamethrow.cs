@@ -1,28 +1,26 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Gun
+namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
 {
     internal class Flamethrow : ModProjectile
     {
-        public override string Texture => TextureRegistry.EmptyTexture;
-
-        private float Timer
-        {
-            get => Projectile.ai[0];
-            set => Projectile.ai[0] = value;
-        }
+        private float _scale;
+        private float _targetScale;
+        private ref float Timer => ref Projectile.ai[0];
 
         private float LifeTime = 300;
         private float MaxScale = 0.24f;
 
         public override void SetDefaults()
         {
+            _targetScale = Main.rand.NextFloat(0.75f, 1f);
             Projectile.width = 50;
             Projectile.height = 50;
             Projectile.friendly = false;
@@ -38,12 +36,16 @@ namespace Stellamod.Projectiles.Gun
         public override void AI()
         {
             Timer++;
-            if(Timer == 1 && Main.rand.NextBool(8))
+            if (Timer == 1 && Main.rand.NextBool(8))
             {
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
                 SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, Projectile.position);
             }
 
+            float lifeTime = LifeTime;
+            float progress = Timer / LifeTime;
+            float easedProgress = Easing.SpikeOutCirc(progress);
+            _scale = MathHelper.Lerp(0f, _targetScale, easedProgress);
             Projectile.velocity *= 0.99f;
             Projectile.rotation += 0.05f;
         }
@@ -71,65 +73,37 @@ namespace Stellamod.Projectiles.Gun
 
         public override bool PreDraw(ref Color lightColor)
         {
-            var textureAsset = TextureRegistry.CloudTexture;
-            Texture2D texture = textureAsset.Value;
-            Vector2 drawPosition = Projectile.Center - Main.screenPosition;
-            Vector2 drawSize = texture.Size();
-            Vector2 drawOrigin = drawSize / 2;
-
-            //Calculate the scale with easing
-            float progress = Timer / LifeTime;
-            float easedProgress = Easing.OutCirc(progress * 1.5f);
-            float scale = easedProgress * MaxScale;
-
-            //This should make it fade in and then out
-            float alpha = Easing.SpikeInOutExpo(progress);
-            alpha += 0.05f;
-            Color drawColor = (Color)GetAlpha(lightColor);
-            drawColor = drawColor * alpha;
-
             SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawOrigin = texture.Size() / 2f;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            float drawRotation = Projectile.rotation;
+            float drawScale = _scale +  VectorHelper.Osc(-0.015f, 0.015f, speed: 16, offset: Projectile.whoAmI);
+
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            spriteBatch.Draw(texture, drawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
+
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
-
-            // Retrieve reference to shader
-            var shader = ShaderRegistry.MiscFireWhitePixelShader;
-            float opacityProgress = Easing.SpikeInOutCirc(progress + 0.25f);
-
-            //You have to set the opacity/alpha here, alpha in the spritebatch won't do anything
-            //Should be between 0-1
-            float opacity = 0.75f;
-            shader.UseOpacity(opacity * opacityProgress);
-
-            //How intense the colors are
-            //Should be between 0-1
-            shader.UseIntensity(0.15f);
-
-            //How fast the extra texture animates
-            float speed = 1.0f;
-            shader.UseSaturation(speed);
-
-            //Color
-            shader.UseColor(new Color(Color.OrangeRed.R, Color.OrangeRed.G, Color.OrangeRed.B, 0));
-
-            //Texture itself
-            shader.UseImage1(textureAsset);
-
-            // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
-            shader.Apply(null);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             for (int i = 0; i < 4; i++)
             {
-                float drawScale = scale * (i / 4f);
-                float drawRotation = Projectile.rotation * (i / 4f);
-                spriteBatch.Draw(texture, drawPosition, null, (Color)GetAlpha(lightColor), drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
+                float rot = (float)i / 4f;
+                Vector2 vel = rot.ToRotationVector2() * VectorHelper.Osc(0f, 4f, speed: 16);
+                Vector2 flameDrawPos = drawPos + vel + Main.rand.NextVector2Circular(2, 2);
+                flameDrawPos -= Vector2.UnitY * 4;
+                drawRotation += 0.05f;
+                spriteBatch.Draw(texture, flameDrawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                Vector2 flameDrawPos = drawPos + Main.rand.NextVector2Circular(2, 2);
+                spriteBatch.Draw(texture, flameDrawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
             }
 
             spriteBatch.End();
-            spriteBatch.Begin();
-            //I think that one texture will work
-            //The vortex looking one
-            //And make it spin
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
     }

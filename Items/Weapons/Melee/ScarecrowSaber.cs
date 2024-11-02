@@ -38,6 +38,11 @@ namespace Stellamod.Items.Weapons.Melee
             Item.DamageType = DamageClass.Melee;
         }
 
+        public override bool CanUseItem(Player player)
+        {
+            return player.GetModPlayer<ScarecrowSaberPlayer>().CooldownTimer <= 0;
+        }
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             _swingDir = position.X + velocity.X > player.position.X ? 1 : -1;

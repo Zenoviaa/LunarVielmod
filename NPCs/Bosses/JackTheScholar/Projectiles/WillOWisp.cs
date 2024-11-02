@@ -62,7 +62,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
                 Dust d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(8, 8), DustID.Torch, vel, Scale: 1);
                 d.noGravity = true;
             }
-            if (Timer < 30 && _target == null || !_target.active)
+            if (Timer < 30 && _target == null || (_target != null && !_target.active))
             {
                 _target = PlayerHelper.FindClosestPlayer(Projectile.Center, maxDetectDistance: 1024);
             }
