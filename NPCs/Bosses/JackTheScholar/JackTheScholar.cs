@@ -40,7 +40,8 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
             Fire_Stomp,
             Flamethrower,
             Flame_Pillar,
-            Phase_2_Transition
+            Phase_2_Transition,
+            Death
         }
 
         private enum AnimationState
@@ -55,6 +56,8 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
         }
 
         private AnimationState Animation;
+        private float _dyingRotation;
+        private float _hitDirection;
         private ref float Timer => ref NPC.ai[0];
         private ref float AttackCycle => ref NPC.ai[1];
         private AIState State
@@ -277,12 +280,15 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 case AIState.Phase_2_Transition:
                     AI_Phase2Transition();
                     break;
+                case AIState.Death:
+                    AI_Death();
+                    break;
             }
 
             //Some uh visual stuff
             //Change rotation
             float targetRotation = NPC.velocity.X * 0.03f;
-            NPC.rotation = targetRotation;
+            NPC.rotation = targetRotation + _dyingRotation;
         }
 
         private void SwitchState(AIState state)
@@ -293,6 +299,116 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 AttackCycle = 0;
                 State = state;
                 NPC.netUpdate = true;
+            }
+        }
+
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            base.HitEffect(hit);
+            _hitDirection = hit.HitDirection;
+            if(NPC.life <= 0 && State != AIState.Death)
+            {
+                NPC.life = 1;
+                SwitchState(AIState.Death);
+            }
+
+
+            if(NPC.life <= 0)
+            {
+                NPC.life = 1;
+            }
+        }
+
+        private void AI_Death()
+        {
+            Timer++;
+            Animation = AnimationState.Idle;
+            switch (AttackCycle)
+            {
+                case 0:
+                    if (Timer == 1)
+                    {
+                        //Launch into the air and go spinning until he hits the ground
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            NPC.velocity.X = 15 * _hitDirection;
+                            NPC.velocity.Y = -8;
+                            NPC.netUpdate = true;
+                        }
+
+                        int explosion = ModContent.ProjectileType<DaedusBombExplosion>();
+                        int damage = 0;
+                        int knockback = 2;
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, Vector2.Zero, explosion, damage, knockback);
+
+                        //Dust Particles
+                        for (int k = 0; k < 7; k++)
+                        {
+                            Vector2 newVelocity = NPC.velocity.RotatedByRandom(MathHelper.ToRadians(7));
+                            newVelocity *= 1f - Main.rand.NextFloat(0.3f);
+                            Dust.NewDust(NPC.Bottom, 0, 0, DustID.Smoke, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
+                            Dust.NewDust(NPC.Bottom, 0, 0, DustID.InfernoFork, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
+                        }
+
+                        SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/Jack_Laugh");
+                        soundStyle.PitchVariance = 0.1f;
+                        SoundEngine.PlaySound(soundStyle, NPC.position);
+                        SoundEngine.PlaySound(SoundID.Item73, NPC.position);
+                    }
+
+                    _dyingRotation += NPC.velocity.Length() * 0.05f;
+                    if (Timer > 10 && (NPC.velocity.Y == 0 || NPC.collideY || Timer >= 300))
+                    {
+                        //Death for real
+                        Timer = 0;
+                        NPC.velocity.X *= 3;
+                        NPC.velocity.Y = -NPC.velocity.Y * 0.8f;
+                        AttackCycle++;
+                    }
+
+                    if (Timer % 12 == 0)
+                    {
+                        Vector2 vel = Vector2.Zero;
+                        Dust d = Dust.NewDustPerfect(NPC.Center, DustID.Torch, vel, Scale: 1);
+                        d.noGravity = true;
+                    }
+                    if (Timer % 6 == 0)
+                    {
+                        Vector2 vel = Vector2.Zero;
+                        Dust d = Dust.NewDustPerfect(NPC.Center + Main.rand.NextVector2Circular(8, 8), DustID.Torch, vel, Scale: 1);
+                        d.noGravity = true;
+                    }
+                    break;
+                case 1:
+                    Timer++;
+                    NPC.noTileCollide = true;
+                    if(Timer > 45)
+                    {
+                        NPC.noTileCollide = false;
+                    }
+
+                    if(Timer > 60 && Timer < 70)
+                    {
+                        _dyingRotation += 0.02f;
+                    }
+                    if(Timer > 70 && Timer < 80)
+                    {
+                        _dyingRotation -= 0.02f;
+                    }
+
+                    if (Timer > 100 && Timer < 110)
+                    {
+                        _dyingRotation -= 0.02f;
+                    }
+                    if (Timer > 110 && Timer < 120)
+                    {
+                        _dyingRotation += 0.02f;
+                    }
+                    if (Timer >= 180)
+                    {
+                        NPC.Kill();
+                    }
+                    break;
             }
         }
 
