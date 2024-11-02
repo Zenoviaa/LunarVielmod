@@ -54,6 +54,7 @@
     <None Remove="Buffs\Minions\PegasusMinionBuff.png" />
     <None Remove="Buffs\Minions\PotOfGreedMinionBuff.png" />
     <None Remove="Buffs\Minions\SerpentMinionBuff.png" />
+    <None Remove="Buffs\Minions\WillOWispMinionBuff.png" />
     <None Remove="Buffs\Minions\XScissorMinionBuff.png" />
     <None Remove="Buffs\MiracleBoost.png" />
     <None Remove="Buffs\MiracleLiquid.png" />

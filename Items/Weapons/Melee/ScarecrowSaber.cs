@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Spears;
+using Stellamod.Projectiles.Slashers.ScarecrowSaber;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
@@ -10,6 +10,7 @@ namespace Stellamod.Items.Weapons.Melee
 {
     public class ScarecrowSaber : ModItem
     {
+        private float _swingDir = 1;
         public override void SetStaticDefaults()
         {
 
@@ -26,27 +27,30 @@ namespace Stellamod.Items.Weapons.Melee
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 4;
             Item.value = Item.sellPrice(0, 0, 16, 0);
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Green;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
             Item.useTurn = true;
-            Item.shoot = ModContent.ProjectileType<ScarecrowSaberProg>();
-            Item.shootSpeed = 30f;
+            Item.noMelee = true;
+            Item.noUseGraphic = true;
+            Item.shoot = ModContent.ProjectileType<ScarecrowSaberSlash>();
+            Item.shootSpeed = 22;
             Item.DamageType = DamageClass.Melee;
         }
+
+        public override bool CanUseItem(Player player)
+        {
+            return player.GetModPlayer<ScarecrowSaberPlayer>().CooldownTimer <= 0;
+        }
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-
-            float numberProjectiles = 3;
-            float rotation = MathHelper.ToRadians(25);
-            position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 45f;
-            for (int i = 0; i < numberProjectiles; i++)
-            {
-                Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f; // This defines the projectile roatation and speed. .4f == projectile speed
-                Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, knockback, player.whoAmI);
-            }
+            _swingDir = position.X + velocity.X > player.position.X ? 1 : -1;
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai1: _swingDir);
+           
             return false;
         }
+
         public override void MeleeEffects(Player player, Rectangle hitbox)
         {
             if (Main.rand.NextBool(2))

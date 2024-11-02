@@ -2605,7 +2605,7 @@ StaffOFlame: {
 	DisplayName: Staff O Flame
 	Tooltip:
 		'''
-		Summons a cute lil' flame
+		Summons 2 cute lil' flames that home into enemies after a short time!
 		:3
 		'''
 }
@@ -2709,7 +2709,11 @@ Myocardia: {
 
 ScarecrowSaber: {
 	DisplayName: Scarecrow Saber
-	Tooltip: Scare your enemies with a spread of 3 magical sabers!
+	Tooltip:
+		'''
+		Lunge forward in a spinning slash!
+		You are invincible at the start of the lunge, and enemies hit during this time take several times more damage!
+		'''
 }
 
 SkyrageShasher: {
@@ -7916,4 +7920,14 @@ PumkinPopper: {
 MagicCauldron: {
 	DisplayName: Magic Cauldron
 	Tooltip: ""
+}
+
+WillOWisp: {
+	DisplayName: Will O' Wisp
+	Tooltip:
+		'''
+		Summons a cute lil' ghostly flame that follows behind you and burns enemies!
+		The flames line up behind each other
+		Consumes half a minion slot
+		'''
 }

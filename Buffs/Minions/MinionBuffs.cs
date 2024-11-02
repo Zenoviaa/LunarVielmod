@@ -30,7 +30,7 @@ namespace Stellamod.Buffs.Minions
             }
         }
     }
-
+    internal class WillOWispMinionBuff : MinionBuff<WillOWispMinionProj> { }
     internal class ArncharMinionBuff : MinionBuff<ArncharMinionProj> { }
 
     internal class BucketScrapperMinionBuff : MinionBuff<BucketScrapperMinionProj> { }

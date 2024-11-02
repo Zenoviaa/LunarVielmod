@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Ammo;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.Audio;
@@ -35,16 +36,16 @@ namespace Stellamod.Items.Weapons.Mage
             Item.noMelee = true;
             Item.knockBack = 4;
             Item.value = Item.sellPrice(0, 1, 1, 29);
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Green;
             Item.shootSpeed = 35;
             Item.autoReuse = true;
 
             Item.DamageType = DamageClass.Magic;
-            Item.shoot = ModContent.ProjectileType<OFlame>();
+            Item.shoot = ModContent.ProjectileType<JackoShotBombArrowFire>();
             Item.shootSpeed = 15f;
-            Item.mana = 15;
-            Item.useAnimation = 29;
-            Item.useTime = 29;
+            Item.mana = 5;
+            Item.useAnimation = 14;
+            Item.useTime = 14;
             Item.consumeAmmoOnLastShotOnly = true;
         }
 
@@ -53,10 +54,21 @@ namespace Stellamod.Items.Weapons.Mage
             return new Vector2(-5f, 0f);
         }
 
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
+            velocity += Main.rand.NextVector2CircularEdge(8, 8);
+            velocity.Y -= 48;
+        }
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, position);
             SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, position);
+
+            Vector2 invertVelocity = velocity;
+            invertVelocity.X = -invertVelocity.X;
+            Projectile.NewProjectile(source, position, invertVelocity, type, damage, knockback, player.whoAmI);
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
     }

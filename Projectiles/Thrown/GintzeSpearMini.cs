@@ -48,7 +48,7 @@ namespace Stellamod.Projectiles.Thrown
             }
 
             SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
             }
@@ -57,10 +57,7 @@ namespace Stellamod.Projectiles.Thrown
 
         public override bool PreAI()
 		{
-			if (Main.rand.NextBool(3))
-			{
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
-			}
+
 
 			return true;
 		}
@@ -83,7 +80,7 @@ namespace Stellamod.Projectiles.Thrown
 
 		public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 2; i++)
             {
                 SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
