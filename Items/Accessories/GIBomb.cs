@@ -59,13 +59,11 @@ namespace Stellamod.Items.Accessories
 		{
 			Projectile.width = 106;
 			Projectile.height = 106;
-			Projectile.friendly = true;
+			Projectile.friendly = false;
 			Projectile.tileCollide = false;
 			Projectile.penetrate = -1;
 			Projectile.ownerHitCheck = true;
 			Projectile.timeLeft = int.MaxValue;
-
-
 		}
 
 		public float Timer
