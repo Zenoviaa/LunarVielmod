@@ -1040,26 +1040,6 @@ namespace Stellamod
 				SwordComboSlash = 0;
             }
 
-            if (HMArmor)
-            {
-                HMArmorTime++;
-                if (HMArmorTime <= 1)
-                {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone3"), player.position);
-					var EntitySource = Player.GetSource_FromThis();
-
-					Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionRightProj>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
-                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionLeftProj>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
-                    player.AddBuff(ModContent.BuffType<HMMinionBuff>(), 99999);
-                }
-
-            }
-            else
-            {
-                player.ClearBuff(ModContent.BuffType<HMMinionBuff>());
-                HMArmorTime = 0;
-            }
-
 
 
 			if (Cameraaa)

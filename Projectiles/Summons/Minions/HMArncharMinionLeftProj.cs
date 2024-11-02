@@ -66,7 +66,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         // This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
         public override bool MinionContactDamage()
         {
-            return true;
+            return false;
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -212,12 +212,6 @@ namespace Stellamod.Projectiles.Summons.Minions
                     }
                 }
             }
-
-            // friendly needs to be set to true so the minion can deal contact damage
-            // friendly needs to be set to false so it doesn't damage things like target dummies while idling
-            // Both things depend on if it has a target or not, so it's just one assignment here
-            // You don't need this assignment if your minion is shooting things instead of dealing contact damage
-            Projectile.friendly = foundTarget;
             #endregion
 
             #region Movement
@@ -236,10 +230,10 @@ namespace Stellamod.Projectiles.Summons.Minions
 
                     if (Projectile.ai[1] >= 30)
                     {
-                        Vector2 direction = targetCenter - Projectile.Center;
+                        Vector2 velocity = (targetCenter - Projectile.Center).SafeNormalize(Vector2.Zero) * 25;
                         var EntitySource = Projectile.GetSource_Death();
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
-                            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 25, direction.Y * 25, ProjectileType<GintzeSpearMini>(), 10, 1, Main.myPlayer, 0, 0);
+                        Projectile.NewProjectile(EntitySource, Projectile.Center, velocity, 
+                            ModContent.ProjectileType<GintzeSpearMini>(), Projectile.damage, 1, Projectile.owner, 0, 0);
                         Projectile.ai[1] = 0;
                     }
 
@@ -378,7 +372,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         // This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
         public override bool MinionContactDamage()
         {
-            return true;
+            return false;
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -526,12 +520,6 @@ namespace Stellamod.Projectiles.Summons.Minions
                     }
                 }
             }
-
-            // friendly needs to be set to true so the minion can deal contact damage
-            // friendly needs to be set to false so it doesn't damage things like target dummies while idling
-            // Both things depend on if it has a target or not, so it's just one assignment here
-            // You don't need this assignment if your minion is shooting things instead of dealing contact damage
-            Projectile.friendly = foundTarget;
             #endregion
 
             #region Movement
@@ -549,13 +537,12 @@ namespace Stellamod.Projectiles.Summons.Minions
 
                     if (Projectile.ai[1] >= 30)
                     {
-                        Vector2 direction = targetCenter - Projectile.Center;
+                        Vector2 velocity = (targetCenter - Projectile.Center).SafeNormalize(Vector2.Zero) * 25;
                         var EntitySource = Projectile.GetSource_Death();
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
-                            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 25, direction.Y * 25, ProjectileType<GintzeSpearMini>(), 10, 1, Main.myPlayer, 0, 0);
+                        Projectile.NewProjectile(EntitySource, Projectile.Center, velocity,
+                            ModContent.ProjectileType<GintzeSpearMini>(), Projectile.damage, 1, Projectile.owner, 0, 0);
                         Projectile.ai[1] = 0;
                     }
-
                 }
                 if (distanceToIdlePosition > 600f)
                 {
