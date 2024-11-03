@@ -42,13 +42,8 @@ namespace Stellamod.UI.CauldronSystem
         /// </summary>
         internal bool Valid(Item item)
         {
-            if (item.ModItem is BaseMold baseMold)
-            {
-                return true;
-            }
-            if (item.IsAir)
-                return true;
-            return false;
+            Cauldron cauldron = ModContent.GetInstance<Cauldron>();
+            return cauldron.IsMold(item.type) || item.IsAir;
         }
 
         internal void HandleMouseItem()

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items;
 using System;
 using Terraria;
 using Terraria.GameContent;
@@ -43,7 +44,8 @@ namespace Stellamod.UI.CauldronSystem
         internal bool Valid(Item item)
         {
             //For now you can put anything here I guess
-            return true;
+            Cauldron cauldron = ModContent.GetInstance<Cauldron>();
+            return cauldron.IsMaterial(item.type) || item.IsAir;
         }
 
         internal void HandleMouseItem()

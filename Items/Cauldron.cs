@@ -67,6 +67,15 @@ namespace Stellamod.Items
             return _brews.Find(x => x.material == material) != null;
         }
 
+        public bool IsMold(int itemType)
+        {
+            return _brews.Find(x => x.mold == itemType) != null;
+        }
+
+        public bool IsMaterialOrMold(int itemType)
+        {
+            return _brews.Find(x => x.material == itemType || x.mold == itemType) != null;
+        }
         public bool CanBrewSomething(Item mold, Item material)
         {
             return CanBrewSomething(mold.type, material.type, material.stack);
