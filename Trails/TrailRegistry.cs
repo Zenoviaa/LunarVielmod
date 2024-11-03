@@ -51,5 +51,14 @@ namespace Stellamod.Trails
         public static Asset<Texture2D> CausticTrail => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/CausticTrail");
 
 
+        public static Asset<Texture2D> LightningTrail2 =>
+           ModContent.Request<Texture2D>($"Stellamod/Effects/Primitives/Trails/LightningTrail2");
+
+        public static Asset<Texture2D> LightningTrail2Outline =>
+           ModContent.Request<Texture2D>($"Stellamod/Effects/Primitives/Trails/LightningTrail2Outline");
+
+        public static Asset<Texture2D> LightningTrail3 =>
+           ModContent.Request<Texture2D>($"Stellamod/Effects/Primitives/Trails/LightningTrail3");
+
     }
 }

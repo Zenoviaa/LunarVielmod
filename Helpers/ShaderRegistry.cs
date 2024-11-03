@@ -92,7 +92,10 @@ namespace Stellamod.Helpers
           
             Ref<Effect> DaedusRobeRef = new(Assets.Request<Effect>("Effects/DaedusRobe", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc["LunarVeil:DaedusRobe"] = new MiscShaderData(DaedusRobeRef, "PixelPass");
-            
+
+            Ref<Effect> lightningBoltRef = new(Assets.Request<Effect>("Effects/LightningBolt", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc["LunarVeil:LightningBolt"] = new MiscShaderData(lightningBoltRef, "PrimitivesPass");
+
             Asset<Effect> blackShader = Assets.Request<Effect>("Effects/Black");
             Filters.Scene[ShaderRegistry.Screen_Black] = new Filter(new ScreenShaderData(blackShader, "BlackPass"), EffectPriority.Medium);
 

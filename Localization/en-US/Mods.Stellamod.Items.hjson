@@ -8036,3 +8036,13 @@ EreshkigalStatueItem: {
 	DisplayName: Ereshkigal Statue Item
 	Tooltip: ""
 }
+
+SuperStaff: {
+	Tooltip: ""
+	DisplayName: Super Staff
+}
+
+ExtraBlockRange: {
+	Tooltip: ""
+	DisplayName: Extra Block Range
+}
