@@ -8038,8 +8038,12 @@ EreshkigalStatueItem: {
 }
 
 SuperStaff: {
-	Tooltip: ""
 	DisplayName: Super Staff
+	Tooltip:
+		'''
+		Conjure ball lightning!
+		You can charge it up to fire a slower, but more powerful ball
+		'''
 }
 
 ExtraBlockRange: {

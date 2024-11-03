@@ -41,6 +41,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.value = Item.buyPrice(silver: 12);
             Item.noUseGraphic = true;
             Item.channel = true;
+            Item.mana = 4;
         }
     }
 }
