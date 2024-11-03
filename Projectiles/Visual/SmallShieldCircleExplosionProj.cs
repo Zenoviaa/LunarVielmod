@@ -43,7 +43,7 @@ namespace Stellamod.Projectiles.Visual
         //Radius
         private float StartRadius => 4;
         private float EndRadius => 44;
-        private float Width => 14;
+        private float Width => 6;
 
         //Colors
         private Color FrontCircleStartDrawColor => Color.White;
@@ -89,7 +89,7 @@ namespace Stellamod.Projectiles.Visual
                     Vector2 pos = Projectile.Center + rand;
                     Dust d = Dust.NewDustPerfect(pos, ModContent.DustType<GlowDust>(), Vector2.Zero,
                         newColor: BackCircleStartDrawColor, 
-                        Scale: Main.rand.NextFloat(0.3f, 0.6f));
+                        Scale: Main.rand.NextFloat(0.1f, 0.3f));
                     d.noGravity = true;
                 }
                 SpawnDustCircle = true;
