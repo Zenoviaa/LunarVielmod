@@ -1,13 +1,100 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
+using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.Particles;
+using Stellamod.Projectiles.Slashers.ScarecrowSaber;
+using Stellamod.Trails;
 using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Players
 {
+
+	public class DashProjectile : ModProjectile
+	{
+        private Vector2[] _oldSwingPos;
+        private ref float Timer => ref Projectile.ai[0];
+        private Player Owner => Main.player[Projectile.owner];
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            _oldSwingPos = new Vector2[32];
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
+            Projectile.DamageType = DamageClass.Melee;
+            Projectile.height = 64;
+            Projectile.width = 64;
+            Projectile.friendly = false;
+            Projectile.scale = 1f;
+            Projectile.timeLeft = 60;
+            Projectile.penetrate = -1;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 15;
+        }
+
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            Projectile.Center = Owner.Center;
+            for (int i = _oldSwingPos.Length - 1; i > 0; i--)
+            {
+                _oldSwingPos[i] = _oldSwingPos[i - 1];
+            }
+            if (_oldSwingPos.Length > 0)
+                _oldSwingPos[0] = Owner.Center;
+        }
+
+        public float WidthFunction(float completionRatio)
+        {
+            float baseWidth = Projectile.scale * Projectile.width * 0.62f;
+            return MathHelper.SmoothStep(baseWidth, baseWidth, completionRatio);
+        }
+
+        public Color ColorFunction(float completionRatio)
+        {
+            Color startColor = Color.White;
+
+			float progress = 1f;
+			if(Timer > 30) 
+			{
+                progress = (Timer - 30f) / 30f;
+                progress = MathHelper.Clamp(progress, 0f, 1f);
+                progress = 1f - progress;
+                startColor *= progress;
+            }
+       
+            return Color.Lerp(startColor, Color.Transparent, completionRatio);
+        }
+
+        public PrimDrawer TrailDrawer { get; private set; } = null;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            //Draw Trail
+            Projectile.oldPos = _oldSwingPos;
+            if (TrailDrawer == null)
+            {
+                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
+            }
+
+            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.Dashtrail);
+            Vector2 trailOffset = -Main.screenPosition;
+            TrailDrawer.DrawPrims(_oldSwingPos, trailOffset, 155);
+            return false;
+        }
+    }
 
 	public class DashPlayer : ModPlayer
 	{
@@ -31,6 +118,16 @@ namespace Stellamod.Items.Accessories.Players
 		public bool DoubleTapped = false;
 		public bool DashAugmentEquipped = false;
 		public BaseDashItem DashItem;
+		public float FillProgress
+		{
+			get
+			{
+				float p = (float)DashDelay / (float)DashCooldown;
+				p = 1f - p;
+				return p;
+			}
+		}
+
 		public override void ResetEffects()
 		{
 			DashItem = null;
@@ -98,11 +195,11 @@ namespace Stellamod.Items.Accessories.Players
 
 				// start our dash
 				DashItem?.BeginDash(Player);
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, 
+                    ModContent.ProjectileType<DashProjectile>(), 0, 0, Player.whoAmI);
 				DashDelay = DashCooldown;
 				DashTimer = DashDuration;
 				Player.velocity = newVelocity;
-				// Here you'd be able to set an effect that happens when the dash first activates
-				// Some examples include:  the larger smoke effect from the Master Ninja Gear and Tabi
 			}
 
 			if (DashDelay > 0)
