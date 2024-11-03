@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.useTurn = true;
             Item.DamageType = DamageClass.Throwing;
             Item.shoot = ModContent.ProjectileType<Plateproj>();
-            Item.shootSpeed = 20f;
+            Item.shootSpeed = 16;
             Item.useAnimation = 20;
             Item.useTime = 20;
             Item.consumable = true;
