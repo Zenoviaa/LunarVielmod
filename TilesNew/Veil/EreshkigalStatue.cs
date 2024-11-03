@@ -38,7 +38,7 @@ namespace Stellamod.TilesNew.Veil
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            StructureColor = Color.Gray;
+            StructureColor = Color.White;
             Origin = DrawOrigin.BottomUp;
 
             //If you need other static defaults it go here

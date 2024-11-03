@@ -8031,3 +8031,8 @@ wall7Item: {
 	DisplayName: wall7 Item
 	Tooltip: ""
 }
+
+EreshkigalStatueItem: {
+	DisplayName: Ereshkigal Statue Item
+	Tooltip: ""
+}
