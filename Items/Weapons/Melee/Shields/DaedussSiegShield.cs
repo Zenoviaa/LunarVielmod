@@ -12,12 +12,20 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Shields
 {
-    internal class DaedussSiegShield : ModItem
+    internal class DaedussSiegShield : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 17;
+            Item.mana = 0;
+        }
         int AttackCounter = 1;
         public override void SetDefaults()
         {
-            Item.damage = 24;
+            Item.damage = 34;
             Item.DamageType = DamageClass.Melee;
             Item.width = 0;
             Item.height = 0;

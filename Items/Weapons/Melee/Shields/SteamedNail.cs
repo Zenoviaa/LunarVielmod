@@ -9,8 +9,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Shields
 {
-    public class SteamedNail : ModItem
+    public class SteamedNail : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 48;
+            Item.mana = 0;
+        }
         public int AttackCounter = 1;
         public int combowombo = 1;
 

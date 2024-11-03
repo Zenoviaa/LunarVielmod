@@ -12,8 +12,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Shields
 {
-    internal class GintzelShield : ModItem
+    internal class GintzelShield : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 8;
+            Item.mana = 0;
+        }
         int AttackCounter = 1;
         public override void SetDefaults()
         {

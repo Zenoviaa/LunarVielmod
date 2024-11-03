@@ -15,9 +15,17 @@ using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class FrostCard : ModItem
-	{
-		public override void SetStaticDefaults()
+    internal class FrostCard : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 1;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("FrostCard Igniter");
 			/* Tooltip.SetDefault("Use with a combination of dusts to make spells :)" +

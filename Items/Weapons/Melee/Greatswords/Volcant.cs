@@ -20,8 +20,16 @@ using Stellamod.Projectiles.Slashers.Volcant;
 
 namespace Stellamod.Items.Weapons.Melee.Greatswords
 {
-    public class Volcant : ModItem
+    public class Volcant : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 20;
+            Item.mana = 0;
+        }
         public int AttackCounter = 1;
         public int combowombo = 0;
 

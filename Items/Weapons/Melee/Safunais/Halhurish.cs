@@ -11,9 +11,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Safunais
 {
-    public class Halhurish : ModItem
-	{
-		public int combo;
+    public class Halhurish : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 0;
+        }
+        public int combo;
         public int combo2;
         public override void SetStaticDefaults()
 		{

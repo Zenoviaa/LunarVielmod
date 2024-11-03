@@ -20,8 +20,16 @@ using System.IO;
 
 namespace Stellamod.Items.Weapons.Melee.Greatswords
 {
-    public class TheFirstAurora : ModItem
+    public class TheFirstAurora : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 10;
+            Item.mana = 0;
+        }
         public int AttackCounter = 1;
         public int combowombo = 0;
 

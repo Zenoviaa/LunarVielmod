@@ -6,8 +6,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Yoyos
 {
-    public class Blackdot : ModItem
+    public class Blackdot : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 11;
+            Item.mana = 0;
+        }
         public override void SetStaticDefaults()
         {
 

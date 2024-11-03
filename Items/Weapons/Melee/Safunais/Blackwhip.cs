@@ -11,9 +11,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Safunais
 {
-    public class Blackwhip : ModItem
-	{
-		public int combo;
+    public class Blackwhip : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 80;
+            Item.mana = 0;
+        }
+        public int combo;
 
 		public override void SetStaticDefaults()
 		{

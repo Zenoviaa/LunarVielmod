@@ -11,8 +11,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Greatswords
 {
-    public class DelgrimsHammer : ModItem
+    public class DelgrimsHammer : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 40;
+            Item.mana = 0;
+        }
         public int AttackCounter = 1;
         public int combowombo = 0;
         public override void ModifyTooltips(List<TooltipLine> tooltips)

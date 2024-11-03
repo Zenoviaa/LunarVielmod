@@ -10,9 +10,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Yoyos
 {
-	public class GrailHairpinYoyo : ModItem
-	{
-		public override void SetStaticDefaults()
+	public class GrailHairpinYoyo : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 38;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 
 

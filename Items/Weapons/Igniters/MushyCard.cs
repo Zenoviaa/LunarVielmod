@@ -15,9 +15,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-	internal class MushyCard : ModItem
-	{
-		public override void SetStaticDefaults()
+	internal class MushyCard : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 6;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Bone Pickler Card Igniter");
 			/* Tooltip.SetDefault("Use with a combination of dusts to make spells :)" +

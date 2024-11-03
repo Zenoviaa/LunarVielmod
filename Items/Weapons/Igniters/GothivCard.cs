@@ -15,9 +15,17 @@ using Stellamod.Helpers;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class GothivCard : ModItem
-	{
-		public override void SetStaticDefaults()
+    internal class GothivCard : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Gothiv Card Igniter");
 			/* Tooltip.SetDefault("Use with a combination of dusts to make spells :)" +

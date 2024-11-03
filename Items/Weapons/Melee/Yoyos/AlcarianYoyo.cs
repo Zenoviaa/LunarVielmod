@@ -10,9 +10,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Yoyos
 {
-	public class AlcarianYoyo : ModItem
-	{
-		public override void SetStaticDefaults()
+	public class AlcarianYoyo : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 20;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 
 

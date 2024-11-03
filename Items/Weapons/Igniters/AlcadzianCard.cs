@@ -15,9 +15,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-	internal class AlcadzianCard : ModItem
-	{
-		public override void SetStaticDefaults()
+	internal class AlcadzianCard : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 7;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Bone Pickler Card Igniter");
 			/* Tooltip.SetDefault("Use with a combination of dusts to make spells :)" +

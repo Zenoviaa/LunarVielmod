@@ -10,9 +10,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Yoyos
 {
-	public class StarringGraft : ModItem
-	{
-		public override void SetStaticDefaults()
+	public class StarringGraft : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 13;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 
 

@@ -11,9 +11,17 @@ using Stellamod.Brooches;
 using Stellamod.Helpers;
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class DaedCard : ModItem
-	{
-		public override void SetStaticDefaults()
+    internal class DaedCard : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 1;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("DaedCard Igniter");
 			/* Tooltip.SetDefault("Use with a combination of dusts to make spells :)" +

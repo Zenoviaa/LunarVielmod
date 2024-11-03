@@ -33,9 +33,17 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 
 	}
 
-	public class IshNYire : ModItem
-	{
-		public int combo;
+	public class IshNYire : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 40;
+            Item.mana = 0;
+        }
+        public int combo;
 		public int AttackCounter = 1;
 		public int combowombo = 0;
 		public int alternate;

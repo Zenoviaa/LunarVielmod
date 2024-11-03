@@ -11,9 +11,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Safunais
 {
-    public class Vinger : ModItem
-	{
-		public int combo;
+    public class Vinger : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 17;
+            Item.mana = 0;
+        }
+        public int combo;
         public int combo2;
         public override void SetStaticDefaults()
 		{

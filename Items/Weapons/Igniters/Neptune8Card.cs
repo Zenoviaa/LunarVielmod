@@ -12,9 +12,17 @@ using Stellamod.Helpers;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class Neptune8Card : ModItem
-	{
-		public override void SetStaticDefaults()
+    internal class Neptune8Card : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 2;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Lovestruck Card Igniter");
 			/* Tooltip.SetDefault("Use with a combination of dusts to make spells :)" +

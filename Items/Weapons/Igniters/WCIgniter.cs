@@ -12,9 +12,17 @@ using Stellamod.Helpers;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class WCIgniter : ModItem
-	{
-		public override void SetStaticDefaults()
+    internal class WCIgniter : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 2;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("WildCard Igniter");
 			/* Tooltip.SetDefault("Explode into magical bits :)" +

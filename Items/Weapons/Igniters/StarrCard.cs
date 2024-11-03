@@ -15,9 +15,17 @@ using Stellamod.Helpers;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class StarrCard : ModItem
-	{
-		public override void SetStaticDefaults()
+    internal class StarrCard : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 3;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("StarrCard Igniter");
 			/* Tooltip.SetDefault("Use with a combination of dusts to make spells :)" +
