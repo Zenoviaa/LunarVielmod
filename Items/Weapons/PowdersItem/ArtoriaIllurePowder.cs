@@ -13,8 +13,16 @@ using Terraria.GameContent.UI.Elements;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
-    internal class ArtoriaIllurePowder : ModItem
+    internal class ArtoriaIllurePowder : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 1;
+            Item.mana = 0;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Sepsis Powder");

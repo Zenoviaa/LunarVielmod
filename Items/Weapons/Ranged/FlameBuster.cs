@@ -10,8 +10,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class FlameBuster : ModItem
+    internal class FlameBuster : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 8;
+            Item.mana = 4;
+        }
         private int _comboCounter;
         public override void SetDefaults()
         {

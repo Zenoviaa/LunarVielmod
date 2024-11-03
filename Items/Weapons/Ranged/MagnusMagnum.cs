@@ -7,9 +7,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class MagnusMagnum : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class MagnusMagnum : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Divine Sharpshooter"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
 		}

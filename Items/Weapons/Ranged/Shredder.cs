@@ -14,8 +14,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class Shredder : ModItem
+    internal class Shredder : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 27;
+            Item.mana = 7;
+        }
         private int _attackStyle;
         public override void SetDefaults()
         {

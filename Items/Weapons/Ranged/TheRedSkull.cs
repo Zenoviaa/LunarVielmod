@@ -8,8 +8,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class TheRedSkull : ModItem
+    internal class TheRedSkull : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 12;
+            Item.mana = 4;
+        }
 
         public override void SetDefaults()
         {

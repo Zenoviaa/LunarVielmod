@@ -8,8 +8,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class HeatGlider : ModItem
+    internal class HeatGlider : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 10;
+            Item.mana = 4;
+        }
         private int _comboIndex;
         public override void SetDefaults()
         {

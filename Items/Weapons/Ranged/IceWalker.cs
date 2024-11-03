@@ -8,8 +8,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class IceWalker : ModItem
+    internal class IceWalker : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 3;
+            Item.mana = 3;
+        }
         public int WinterboundArrow;
         public override void SetDefaults()
         {

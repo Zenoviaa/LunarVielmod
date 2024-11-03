@@ -12,9 +12,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-	public class Jerry : ModItem
-	{
-		public override void SetStaticDefaults()
+	public class Jerry : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 26;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			/* Tooltip.SetDefault("Classy!" +
 				"\nTotally has no reference to Hollow Knight" +

@@ -12,9 +12,17 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class BrokenWrath : ModItem
-	{
-		public override void SetStaticDefaults() 
+    public class BrokenWrath : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 11;
+            Item.mana = 2;
+        }
+        public override void SetStaticDefaults() 
 		{
             // DisplayName.SetDefault("Broken Wrath");
 		}

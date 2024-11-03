@@ -9,8 +9,16 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Ranged.Crossbows
 {
 
-    public class FabiliaCrossbow : ModItem
+    public class FabiliaCrossbow : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 13;
+            Item.mana = 0;
+        }
 
         public override void SetStaticDefaults()
         {

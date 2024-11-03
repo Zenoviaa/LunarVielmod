@@ -9,9 +9,17 @@ using Microsoft.Xna.Framework;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
-    internal class GrassDirtPowder : ModItem
-	{
-		public override void SetStaticDefaults()
+    internal class GrassDirtPowder : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 1;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Dirt Powder");
 			/* Tooltip.SetDefault("Throw magical dust on them!" +

@@ -6,8 +6,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class IvynShot : ModItem
+    internal class IvynShot : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 3;
+            Item.mana = 0;
+        }
         public override void SetDefaults()
         {
             Item.damage = 5;

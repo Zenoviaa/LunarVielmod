@@ -12,9 +12,17 @@ using Microsoft.Xna.Framework;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
-    internal class FrostedPowder : ModItem
-	{
-		public override void SetStaticDefaults()
+    internal class FrostedPowder : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 1;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Frost Powder");
 			/* Tooltip.SetDefault("Throw magical dust on them!" +

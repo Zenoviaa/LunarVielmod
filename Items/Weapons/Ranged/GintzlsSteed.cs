@@ -7,8 +7,16 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class GintzlsSteed : ModItem
+    internal class GintzlsSteed : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 3;
+            Item.mana = 0;
+        }
         public override void SetDefaults()
         {
             Item.damage = 5;

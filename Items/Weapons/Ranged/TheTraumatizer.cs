@@ -9,8 +9,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class TheTraumatizer : ModItem
+    internal class TheTraumatizer : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 14;
+            Item.mana = 10;
+        }
         public override void SetDefaults()
         {
             Item.damage = 28;

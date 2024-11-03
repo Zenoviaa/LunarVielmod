@@ -11,8 +11,16 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Ranged
 {
 
-    public class Photobomb : ModItem
+    public class Photobomb : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 2;
+        }
 
         public override void SetStaticDefaults()
         {

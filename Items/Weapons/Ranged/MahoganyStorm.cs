@@ -12,8 +12,16 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class MahoganyStorm : ModItem
+    public class MahoganyStorm : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 3;
+            Item.mana = 0;
+        }
         public int WinterboundArrow;
         public override void SetDefaults()
         {

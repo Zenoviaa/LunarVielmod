@@ -12,9 +12,17 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class TychineGun : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class TychineGun : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 5;
+            Item.mana = 1;
+        }
+        public override void SetStaticDefaults()
 		{
             // DisplayName.SetDefault("Tychine Gun");
 			// Tooltip.SetDefault("Chance to shoot sharks dealing three times the normal damage");

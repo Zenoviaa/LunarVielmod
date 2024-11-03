@@ -10,9 +10,17 @@ using Stellamod.Tiles;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
-	internal class SpiritPowder : ModItem
-	{
-		public override void SetStaticDefaults()
+	internal class SpiritPowder : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 1;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Kaev Powder");
 			/* Tooltip.SetDefault("Throw magical dust on them and ignite" +

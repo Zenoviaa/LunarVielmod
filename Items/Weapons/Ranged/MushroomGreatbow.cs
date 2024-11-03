@@ -12,8 +12,16 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class MushroomGreatbow : ModItem
+    public class MushroomGreatbow : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 0;
+        }
         public int WinterboundArrow;
         public override void SetDefaults()
         {

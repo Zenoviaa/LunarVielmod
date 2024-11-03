@@ -11,8 +11,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class VeroshotBow : ModItem
+    internal class VeroshotBow : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 12;
+            Item.mana = 6;
+        }
         public override void SetDefaults()
         {
             Item.damage = 25;

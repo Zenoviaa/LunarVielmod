@@ -9,8 +9,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class IcelockLongbow : ModItem
+    internal class IcelockLongbow : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 18;
+            Item.mana = 5;
+        }
         private float _combo;
         public override void SetDefaults()
         {

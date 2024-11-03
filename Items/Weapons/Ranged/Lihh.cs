@@ -16,8 +16,16 @@ using Stellamod.Items.Materials.Tech;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class Lihh : ModItem
+    internal class Lihh : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 41;
+            Item.mana = 0;
+        }
 
         public override void SetDefaults()
         {

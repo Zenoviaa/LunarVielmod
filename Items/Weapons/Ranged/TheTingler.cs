@@ -10,8 +10,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class TheTingler : ModItem
+    internal class TheTingler : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Summon;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 7;
+            Item.mana = 10;
+        }
         public override void SetDefaults()
         {
             Item.damage = 14;

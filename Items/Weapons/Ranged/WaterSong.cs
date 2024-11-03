@@ -8,10 +8,18 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Ranged
 
 {
-	public class WaterSong : ModItem
-	{
+	public class WaterSong : ClassSwapItem
+    {
 
-		public override void SetStaticDefaults()
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 15;
+            Item.mana = 4;
+        }
+
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Overcast's String");
 		}

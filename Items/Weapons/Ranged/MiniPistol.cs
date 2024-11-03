@@ -9,9 +9,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class MiniPistol : ModItem
-	{
-		private int _comboCounter;
+    public class MiniPistol : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 8;
+            Item.mana = 0;
+        }
+        private int _comboCounter;
 		public override void SetDefaults()
 		{
 			Item.damage = 17;

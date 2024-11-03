@@ -72,8 +72,15 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
-    internal class GunHolster : ModItem
+    internal class GunHolster : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {          
+            Item.mana = 2;
+        }
         public override void SetDefaults()
         {
             Item.width = 62;
