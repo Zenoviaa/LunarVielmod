@@ -9,11 +9,19 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class IronHook : ModItem
+    public class IronHook : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 7;
+            Item.mana = 6;
+        }
         public override void SetDefaults()
         {
-            Item.damage = 23;
+            Item.damage = 15;
             Item.DamageType = DamageClass.Melee;
             Item.width = 54;
             Item.height = 48;

@@ -18,12 +18,16 @@ namespace Stellamod.Items.Weapons.Melee
 {
     internal class VulcanBreaker : ClassSwapItem
     {
+
         public override DamageClass AlternateClass => DamageClass.Throwing;
 
         public override void SetClassSwappedDefaults()
         {
-
+            Item.damage = 500;
+            Item.mana = 0;
         }
+
+
 
         private int _dir = 1;
         public override void SetStaticDefaults()

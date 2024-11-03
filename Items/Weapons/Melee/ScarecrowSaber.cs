@@ -8,8 +8,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class ScarecrowSaber : ModItem
+    public class ScarecrowSaber : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 7;
+            Item.mana = 0;
+        }
         private float _swingDir = 1;
         public override void SetStaticDefaults()
         {

@@ -12,9 +12,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-	public class InkingSpire : ModItem
-	{
-		public int AttackCounter = 1;
+	public class InkingSpire : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 16;
+            Item.mana = 0;
+        }
+        public int AttackCounter = 1;
 		public int combowombo = 1;
 
 		public override void SetStaticDefaults()

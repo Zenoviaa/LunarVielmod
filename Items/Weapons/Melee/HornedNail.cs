@@ -7,9 +7,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class HornedNail : ModItem
-	{
-		public int AttackCounter = 1;
+    public class HornedNail : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 8;
+            Item.mana = 0;
+        }
+        public int AttackCounter = 1;
 		public int combowombo = 1;
 
 		public override void SetStaticDefaults()

@@ -16,8 +16,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class GrailAxe : ModItem
+    public class GrailAxe : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Melee;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 25;
+            Item.mana = 6;
+        }
         public int AttackCounter = 1;
         public int combowombo = 0;
 

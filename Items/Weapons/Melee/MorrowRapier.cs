@@ -10,9 +10,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class MorrowRapier : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class MorrowRapier : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 8;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// Tooltip.SetDefault("Poke poke-dont get the wrong idea of the weapon function-poke");
 

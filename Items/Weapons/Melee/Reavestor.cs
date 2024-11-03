@@ -15,8 +15,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class Reavestor : ModItem
+    public class Reavestor : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 14;
+            Item.mana = 6;
+        }
         public int AttackCounter = 1;
         public int combowombo = 0;
 

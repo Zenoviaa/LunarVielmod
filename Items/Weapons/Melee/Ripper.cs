@@ -17,9 +17,19 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Melee
 {
 
-	public class Ripper : ModItem
+	public class Ripper : ClassSwapItem
     {
-		private int _attackStyle;
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 26;
+            Item.mana = 0;
+        }
+
+
+        private int _attackStyle;
 		public override void SetDefaults()
         {
 			Item.damage = 54;

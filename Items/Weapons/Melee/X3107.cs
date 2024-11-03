@@ -13,8 +13,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class X3107 : ModItem
+    public class X3107 : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 26;
+            Item.mana = 0;
+        }
         public override void SetStaticDefaults()
         {
 

@@ -14,8 +14,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class DreadsVile : ModItem
+    public class DreadsVile : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 7;
+            Item.mana = 6;
+        }
         public int AttackCounter = 1;
         public int combowombo = 1;
         public override void ModifyTooltips(List<TooltipLine> tooltips)
