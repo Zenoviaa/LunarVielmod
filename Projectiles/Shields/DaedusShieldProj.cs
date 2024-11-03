@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Projectiles.Visual;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -9,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Shields
 {
-    public class WoodShieldProj : ModProjectile
+    public class DaedusShieldProj : ModProjectile
     {
         public int SwingTime = 60;
         public float holdOffset = 15f;
@@ -18,7 +17,7 @@ namespace Stellamod.Projectiles.Shields
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 1;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5; 
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
         }
 
         public override void SetDefaults()
@@ -100,16 +99,11 @@ namespace Stellamod.Projectiles.Shields
 
             if (target.lifeMax <= 500)
             {
-                if (target.life < target.lifeMax / 5)
+                if (target.life < target.lifeMax / 2)
                 {
                     target.SimpleStrikeNPC(9999, 1, crit: false, 1);
                 }
             }
-
-            float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-            float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center.X, target.Center.Y, speedXa * 0, speedYa * 0, ModContent.ProjectileType<SmallShieldCircleExplosionProj>(), (int)(Projectile.damage * 1f), 0f, Projectile.owner, 0f, 0f);
 
             player.immune = true;
             player.immuneTime = 3;
