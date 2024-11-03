@@ -1,10 +1,9 @@
-﻿
-using Stellamod.Items.Materials;
+﻿using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Placeables
+namespace Stellamod.Items.Placeable
 {
     internal class RunicTablel : ModItem
     {
@@ -32,7 +31,7 @@ namespace Stellamod.Items.Placeables
 
             Item.createTile = Mod.Find<ModTile>("RunicTableT").Type;
         }
-       
+
 
     }
 }
