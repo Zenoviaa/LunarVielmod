@@ -15,7 +15,7 @@ namespace Stellamod.Items.Weapons.Melee
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 16;
+            Item.damage = 5;
         }
 
         public override void SetDefaults()

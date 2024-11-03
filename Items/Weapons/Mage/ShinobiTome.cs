@@ -10,9 +10,17 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    public class ShinobiTome : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class ShinobiTome : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 5;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Jelly Tome"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
 		}

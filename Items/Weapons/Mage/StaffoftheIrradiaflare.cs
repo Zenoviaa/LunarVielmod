@@ -8,8 +8,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class StaffoftheIrradiaflare : ModItem
+    internal class StaffoftheIrradiaflare : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Summon;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 27;
+            Item.mana = 6;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Staff of the Irradiaflare");

@@ -8,8 +8,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class Combuster : ModItem
+    internal class Combuster : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 18;
+            Item.mana = 0;
+        }
         private int _combo;
         public override void SetDefaults()
         {

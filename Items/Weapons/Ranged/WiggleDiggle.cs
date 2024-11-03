@@ -17,6 +17,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public override DamageClass AlternateClass => DamageClass.Magic;
         public override void SetClassSwappedDefaults()
         {
+            Item.damage = 40;
             Item.mana = 8;
         }
 

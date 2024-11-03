@@ -17,7 +17,7 @@ namespace Stellamod.Items.Weapons.Melee.Spears
         {
             //Do if(IsSwapped) if you want to check for the alternate class
             //Stats to have when in the other class
-            Item.damage = 56;
+            Item.damage = 10;
             Item.knockBack = 5;
         }
         public override void SetStaticDefaults()
@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Melee.Spears
 
         public override void SetDefaults()
         {
-            Item.damage = 32;
+            Item.damage = 20;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Swing;

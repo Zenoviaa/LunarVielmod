@@ -18,7 +18,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 47;
+            Item.damage = 16;
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)

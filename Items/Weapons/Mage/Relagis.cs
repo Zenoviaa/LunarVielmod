@@ -17,7 +17,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 85;
+            Item.damage = 40;
             Item.mana = 0;
             Item.useAmmo = AmmoID.Bullet;
         }

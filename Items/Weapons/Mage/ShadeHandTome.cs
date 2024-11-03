@@ -7,8 +7,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class ShadeHandTome : ModItem
+    internal class ShadeHandTome : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Summon;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 5;
+            Item.mana = 6;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shade Hand Tome");

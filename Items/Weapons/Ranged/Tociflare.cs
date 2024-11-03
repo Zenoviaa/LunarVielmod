@@ -17,7 +17,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void SetClassSwappedDefaults()
         {
             Item.mana = 4;
-            Item.damage = 16;
+            Item.damage = 6;
         }
 
         public override void SetDefaults()

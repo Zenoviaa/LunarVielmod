@@ -6,9 +6,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class Splitflame : ModItem
-	{
-		public override void SetStaticDefaults()
+    internal class Splitflame : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 12;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Split-flame candle");
 			// Tooltip.SetDefault("Totally not the candle from split, totally.");
