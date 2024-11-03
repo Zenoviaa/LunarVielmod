@@ -11,8 +11,9 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class SuperStaff : ModItem
+    internal class SuperStaff : ClassSwapItem
     {
+        public override DamageClass AlternateClass => DamageClass.Summon;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Wooden Crossbow"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
@@ -20,6 +21,12 @@ namespace Stellamod.Items.Weapons.Mage
                 + "\n'Triple Threat!'"); */
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
             ItemID.Sets.ItemNoGravity[Item.type] = true;
+        }
+
+        public override void SetClassSwappedDefaults()
+        {
+            base.SetClassSwappedDefaults();
+            Item.damage = 7;
         }
 
         public override void SetDefaults()
