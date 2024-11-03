@@ -1,40 +1,39 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Effects.Primitives;
+using Stellamod.Gores;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Thrown
 {
     internal class Plateproj : ModProjectile
     {
-        private bool Moved;
+        private float _plateRotation;
+        private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Assassin's Knife");
-            ProjectileID.Sets.TrailingMode[Type] = 1;
-            ProjectileID.Sets.TrailCacheLength[Type] = 1;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
+            ProjectileID.Sets.TrailCacheLength[Type] = 12;
         }
+
         public override void SetDefaults()
         {
-            base.Projectile.width = 12;
-            base.Projectile.height = 12;
-            base.Projectile.timeLeft = 700;
-            base.Projectile.friendly = true;
-            base.Projectile.hostile = false;
-            base.Projectile.ignoreWater = true;
-            base.Projectile.tileCollide = true;
+            Projectile.width = 12;
+            Projectile.height = 12;
+            Projectile.timeLeft = 700;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.tileCollide = true;
         }
+
         public override void AI()
         {
-            Projectile.ai[1]++;
+            Timer++;
 
-            Projectile.rotation += 0.1f;
-            if (!Moved && Projectile.ai[1] >= 0)
+            if (Timer == 1)
             {
                 int Sound = Main.rand.Next(1, 3);
                 if (Sound == 1)
@@ -45,9 +44,6 @@ namespace Stellamod.Projectiles.Thrown
                 {
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeProg2"), Projectile.position);
                 }
-
-                Projectile.spriteDirection = Projectile.direction;
-                Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
 
                 for (int j = 0; j < 10; j++)
                 {
@@ -62,46 +58,66 @@ namespace Stellamod.Projectiles.Thrown
                     Main.dust[num8].noLight = true;
                     Main.dust[num8].velocity = Vector2.Normalize(Projectile.Center - Projectile.velocity * 3f - Main.dust[num8].position) * 1.25f;
                 }
-                Moved = true;
-            }
-            if (Projectile.ai[1] >= 20)
-            {
-                Projectile.tileCollide = true;
             }
 
+            if (Timer % 12 == 0)
+            {
+                Vector2 vel = Vector2.Zero;
+                Dust d = Dust.NewDustPerfect(Projectile.Center, DustID.SilverCoin, vel, Scale: 1);
+                d.noGravity = true;
+            }
+            if (Timer % 6 == 0)
+            {
+                Vector2 vel = Vector2.Zero;
+                Dust d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(8, 8), DustID.SilverCoin, vel, Scale: 1);
+                d.noGravity = true;
+            }
+
+            _plateRotation -= Projectile.velocity.Length() * 0.025f;
+            Projectile.velocity.Y += 0.2f;
             Projectile.spriteDirection = Projectile.direction;
-            Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
+            Projectile.rotation = Projectile.velocity.ToRotation() + _plateRotation;
         }
+
+        public PrimDrawer TrailDrawer { get; private set; } = null;
+        public float WidthFunction(float completionRatio)
+        {
+            float baseWidth = Projectile.scale * Projectile.width * 1.3f;
+            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
+        }
+
+        public Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * 0.7f;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            if (TrailDrawer == null)
+            {
+                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
+            }
+
+            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.Dashtrail);
+            Vector2 trailOffset = -Main.screenPosition + Projectile.Size / 2;
+            TrailDrawer.DrawPrims(Projectile.oldPos, trailOffset, 155);
+            return base.PreDraw(ref lightColor);
+        }
+
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 1; i++)
             {
-                Dust.NewDustPerfect(base.Projectile.Center, DustID.SilverCoin, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default(Color), 1f).noGravity = false;
+                Gore.NewGore(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(MathHelper.TwoPi) * 0.2f,
+                    ModContent.GoreType<Plate1>());
+                Gore.NewGore(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(MathHelper.TwoPi) * 0.2f,
+                    ModContent.GoreType<Plate2>());
+                Gore.NewGore(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(MathHelper.TwoPi) * 0.2f,
+                    ModContent.GoreType<Plate3>());
+                Gore.NewGore(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(MathHelper.TwoPi) * 0.2f,
+                    ModContent.GoreType<Plate4>());
             }
-            for (int i = 0; i < 20; i++)
-            {
-                int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin, 0f, -2f, 0, default(Color), .8f);
-                Main.dust[num1].noGravity = true;
-                Main.dust[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                Main.dust[num1].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                if (Main.dust[num1].position != Projectile.Center)
-                {
-                    Main.dust[num1].velocity = Projectile.DirectionTo(Main.dust[num1].position) * 6f;
-                }
 
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin, 0f, -2f, 0, default(Color), .8f);
-                Main.dust[num].noGravity = true;
-                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                if (Main.dust[num].position != Projectile.Center)
-                {
-                    Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
-                }
-            }
-        }
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)
             {
@@ -111,36 +127,13 @@ namespace Stellamod.Projectiles.Thrown
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit2"), Projectile.position);
             }
-
-            if (Main.rand.NextBool(2) && !target.boss)
-            {
-                target.AddBuff(BuffID.Confused, 180);
-                target.AddBuff(BuffID.Burning, 180);
-                target.AddBuff(BuffID.Ichor, 180);
-            }
         }
 
-        public override Color? GetAlpha(Color lightColor)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            return Color.White;
+            if (Main.rand.NextBool(3))
+                target.AddBuff(BuffID.Electrified, 60);
         }
-
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 1.3f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.DarkRed, Color.Transparent, completionRatio) * 0.7f;
-        }
-      
-
-        private Vector2 DrawOffset;
-        private float alphaCounter = 2;
-        private float counter = 3;
-       
     }
 }
 
