@@ -8050,3 +8050,48 @@ ExtraBlockRange: {
 	Tooltip: ""
 	DisplayName: Extra Block Range
 }
+
+BlankStaff: {
+	DisplayName: Blank Staff
+	Tooltip: ""
+}
+
+BlankShield: {
+	Tooltip: ""
+	DisplayName: Blank Shield
+}
+
+BlankJuggler: {
+	Tooltip: ""
+	DisplayName: Blank Juggler
+}
+
+BlankGun: {
+	Tooltip: ""
+	DisplayName: Blank Gun
+}
+
+BlankBow: {
+	Tooltip: ""
+	DisplayName: Blank Bow
+}
+
+BlankBag: {
+	Tooltip: ""
+	DisplayName: Blank Bag
+}
+
+BlankAccessory: {
+	Tooltip: ""
+	DisplayName: Blank Accessory
+}
+
+BlankStein: {
+	DisplayName: Blank Stein
+	Tooltip: ""
+}
+
+BlankSword: {
+	DisplayName: Blank Sword
+	Tooltip: ""
+}

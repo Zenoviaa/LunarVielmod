@@ -1,11 +1,10 @@
 ﻿using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials.Molds
 {
-    internal class BlankOrb : BaseMold
+    internal class BlankShield : BaseMold
     {
         public override void SetStaticDefaults()
         {
