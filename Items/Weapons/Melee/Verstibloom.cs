@@ -19,7 +19,7 @@ namespace Stellamod.Items.Weapons.Melee
 		{
 			//Do if(IsSwapped) if you want to check for the alternate class
 			//Stats to have when in the other class
-			Item.damage = 14;
+			Item.damage = 8;
 			Item.mana = 20;
 			Item.knockBack = 12;
 		}
