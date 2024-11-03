@@ -7936,3 +7936,98 @@ DaedussSiegShield: {
 	DisplayName: Daeduss Sieg Shield
 	Tooltip: ""
 }
+
+FableBarItem: {
+	Tooltip: ""
+	DisplayName: Fable Bar Item
+}
+
+FableBenchItem: {
+	DisplayName: Fable Bench Item
+	Tooltip: ""
+}
+
+FableBigMushroomItem: {
+	DisplayName: Fable Big Mushroom Item
+	Tooltip: ""
+}
+
+FableGGrassMossItem: {
+	DisplayName: Fable G Grass Moss Item
+	Tooltip: ""
+}
+
+FableGrassMossBigItem: {
+	DisplayName: Fable Grass Moss Big Item
+	Tooltip: ""
+}
+
+FableLogItem: {
+	DisplayName: Fable Log Item
+	Tooltip: ""
+}
+
+FablePikeBigItem: {
+	DisplayName: Fable Pike Big Item
+	Tooltip: ""
+}
+
+FablePikeItem: {
+	DisplayName: Fable Pike Item
+	Tooltip: ""
+}
+
+FableSmallMushroomItem: {
+	DisplayName: Fable Small Mushroom Item
+	Tooltip: ""
+}
+
+FableSpikesItem: {
+	DisplayName: Fable Spikes Item
+	Tooltip: ""
+}
+
+FableStonesItem: {
+	DisplayName: Fable Stones Item
+	Tooltip: ""
+}
+
+FableTableItem: {
+	DisplayName: Fable Table Item
+	Tooltip: ""
+}
+
+wall1Item: {
+	DisplayName: wall1 Item
+	Tooltip: ""
+}
+
+wall2Item: {
+	DisplayName: wall2 Item
+	Tooltip: ""
+}
+
+wall3Item: {
+	DisplayName: wall3 Item
+	Tooltip: ""
+}
+
+wall4Item: {
+	DisplayName: wall4 Item
+	Tooltip: ""
+}
+
+wall5Item: {
+	DisplayName: wall5 Item
+	Tooltip: ""
+}
+
+wall6Item: {
+	DisplayName: wall6 Item
+	Tooltip: ""
+}
+
+wall7Item: {
+	DisplayName: wall7 Item
+	Tooltip: ""
+}
