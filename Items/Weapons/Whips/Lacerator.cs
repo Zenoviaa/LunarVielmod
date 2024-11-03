@@ -14,8 +14,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Whips
 {
-    public class Lacerator : ModItem
+    public class Lacerator : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Melee;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.DefaultToWhip(ModContent.ProjectileType<LaceratorProj>(), 45, 3, 24);
+            Item.mana = 0;
+        }
         private int _attackStyle;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(LaceratorDebuff.TagDamage);
         public override void SetStaticDefaults()
@@ -27,7 +35,7 @@ namespace Stellamod.Items.Weapons.Whips
 		{
 			// This method quickly sets the whip's properties.
 			// Mouse over to see its parameters.
-			Item.DefaultToWhip(ModContent.ProjectileType<LaceratorProj>(), 100, 3, 24);
+			Item.DefaultToWhip(ModContent.ProjectileType<LaceratorProj>(), 70, 3, 24);
 			Item.width = 40;
 			Item.height = 34;
 			Item.rare = ItemRarityID.LightPurple;

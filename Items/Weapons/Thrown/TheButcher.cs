@@ -16,7 +16,7 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 50;
+            Item.damage = 29;
 
         }
         public override void SetStaticDefaults()

@@ -8,7 +8,14 @@ namespace Stellamod.Items.Weapons.Thrown
 {
     internal class DogmaBalls : ClassSwapItem
     {
+
         public override DamageClass AlternateClass => DamageClass.Melee;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 62;
+            Item.mana = 0;
+        }
 
         public override void SetDefaults()
         {

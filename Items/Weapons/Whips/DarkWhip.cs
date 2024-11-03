@@ -9,10 +9,18 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Whips
 {
-    public class DarkWhip : ModItem
-	{
+    public class DarkWhip : ClassSwapItem
+    {
 
-		public override void SetStaticDefaults()
+        public override DamageClass AlternateClass => DamageClass.Melee;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 39;
+            Item.mana = 0;
+        }
+
+        public override void SetStaticDefaults()
 		{
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 			// DisplayName.SetDefault("Alcadiz Whip");

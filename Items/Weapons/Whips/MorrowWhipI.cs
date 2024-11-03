@@ -10,10 +10,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Whips
 {
-    public class MorrowWhipI : ModItem
-	{
+    public class MorrowWhipI : ClassSwapItem
+    {
 
-		public override void SetStaticDefaults()
+        public override DamageClass AlternateClass => DamageClass.Melee;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 			// DisplayName.SetDefault("Alcadiz Whip");
@@ -29,7 +36,7 @@ namespace Stellamod.Items.Weapons.Whips
 			//Item.DefaultToWhip(ModContent.ProjectileType<ExampleWhipProjectileAdvanced>(), 20, 2, 4);
 
 			Item.DamageType = DamageClass.SummonMeleeSpeed;
-			Item.damage = 15;
+			Item.damage = 8;
 			Item.knockBack = 5;
 			Item.rare = ItemRarityID.Blue;
 			

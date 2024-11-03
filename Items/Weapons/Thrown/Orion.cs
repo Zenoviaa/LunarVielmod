@@ -12,8 +12,14 @@ namespace Stellamod.Items.Weapons.Thrown
 {
     internal class Orion : ClassSwapItem
     {
+
         public override DamageClass AlternateClass => DamageClass.Ranged;
 
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 200;
+            Item.mana = 0;
+        }
         public override void SetStaticDefaults()
         {
             ItemID.Sets.ItemNoGravity[Item.type] = true;

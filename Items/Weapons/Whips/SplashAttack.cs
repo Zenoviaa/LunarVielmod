@@ -9,9 +9,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Whips
 {
-    internal class SplashAttack : ModItem
+    internal class SplashAttack : ClassSwapItem
     {
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(SplashAttackDebuff.TagDamage);
+        public override DamageClass AlternateClass => DamageClass.Melee;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.DefaultToWhip(ModContent.ProjectileType<SplashAttackProj>(), 5, 3, 24);
+            Item.mana = 0;
+        }
+       
         public override void SetDefaults()
         {
             Item.width = 50;

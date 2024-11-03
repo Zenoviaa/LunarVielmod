@@ -7,7 +7,14 @@ namespace Stellamod.Items.Weapons.Thrown
 {
     public class Ragsaw : ClassSwapItem
     {
+
         public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 23;
+            Item.mana = 0;
+        }
 
         public override void SetDefaults()
         {

@@ -11,8 +11,16 @@ using Terraria;
 
 namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
-    internal class FlinchMachine : ModItem
+    internal class FlinchMachine : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 126;
+            Item.mana = 0;
+        }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);

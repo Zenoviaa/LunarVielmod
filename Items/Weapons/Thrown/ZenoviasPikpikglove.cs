@@ -11,8 +11,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    public class ZenoviasPikpikGlove : ModItem
+    public class ZenoviasPikpikGlove : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 3;
+            Item.mana = 0;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Plantius"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
@@ -21,7 +29,7 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void SetDefaults()
         {
-            Item.damage = 5;
+            Item.damage = 6;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 40;
             Item.noUseGraphic = true;
