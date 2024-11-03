@@ -35,7 +35,7 @@ namespace Stellamod.NPCs.Morrow
             NPC.noTileCollide = false;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath1;
-            NPC.knockBackResist = 0.66f;
+            NPC.knockBackResist = 0.75f;
             NPC.aiStyle = -1;
         }
 
