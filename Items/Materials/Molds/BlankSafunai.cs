@@ -1,12 +1,11 @@
-﻿
-using Terraria;
+﻿using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Materials
+namespace Stellamod.Items.Materials.Molds
 {
-    internal class BlankRune : ModItem
+    internal class BlankSafunai : ModItem
     {
 
         public override void SetStaticDefaults()
@@ -25,6 +24,5 @@ namespace Stellamod.Items.Materials
             Item.rare = ItemRarityID.Green;
         }
 
-       
     }
 }

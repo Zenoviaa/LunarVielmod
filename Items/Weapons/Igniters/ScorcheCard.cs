@@ -11,6 +11,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Brooches;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials.Molds;
 
 namespace Stellamod.Items.Weapons.Igniters
 {

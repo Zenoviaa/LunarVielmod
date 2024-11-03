@@ -1,4 +1,4 @@
-﻿using Stellamod.Items.Materials;
+﻿using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Crossbows.Magical;
 using Terraria;
 using Terraria.GameContent.Creative;

@@ -2,6 +2,7 @@
 using Stellamod.Brooches;
 using Stellamod.Buffs.Charms;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles;
 using Stellamod.Tiles;
 using System.Collections.Generic;

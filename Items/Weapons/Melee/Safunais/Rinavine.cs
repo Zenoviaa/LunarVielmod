@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Safunai.Parendine;
 using Stellamod.Projectiles.Safunai.Rinavine;
@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Safunais
 {
-	public class Rinavine : ClassSwapItem
+    public class Rinavine : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Generic;

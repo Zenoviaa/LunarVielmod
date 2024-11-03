@@ -14,10 +14,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Brooches;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Materials.Molds;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-	internal class BOMBERCard : ClassSwapItem
+    internal class BOMBERCard : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Generic;

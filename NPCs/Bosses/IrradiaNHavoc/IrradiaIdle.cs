@@ -10,6 +10,7 @@ using Stellamod.Items.Armors.Vanity.Gia;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Placeable;
@@ -45,10 +46,10 @@ using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc
 {
-	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
-	//[AutoloadHead]
-	
-	public class IrradiaIdle : ModNPC
+    // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
+    //[AutoloadHead]
+
+    public class IrradiaIdle : ModNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
 		public const string ShopName = "Shop";

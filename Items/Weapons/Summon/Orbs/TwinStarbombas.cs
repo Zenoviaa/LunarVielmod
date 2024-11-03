@@ -2,6 +2,7 @@
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Summons.Orbs;
 using System.Collections.Generic;
 using Terraria;

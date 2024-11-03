@@ -2,6 +2,7 @@
 using Stellamod.Brooches;
 using Stellamod.Buffs.Charms;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Tiles;
 using System.Collections.Generic;
 using Terraria;
@@ -11,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Brooches
 {
-	public class SandyBroochA : ModItem
+    public class SandyBroochA : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

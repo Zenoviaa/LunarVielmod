@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Brooches;
 using Stellamod.Buffs.Charms;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Tiles;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Brooches
 {
-	public class AurockBroochA : ModItem
+    public class AurockBroochA : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

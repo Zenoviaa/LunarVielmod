@@ -1,12 +1,11 @@
-﻿
-using Terraria;
+﻿using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Materials
+namespace Stellamod.Items.Materials.Molds
 {
-    internal class BlankOrb : BaseMold
+    internal class BlankCrossbow : ModItem
     {
 
         public override void SetStaticDefaults()
@@ -24,5 +23,6 @@ namespace Stellamod.Items.Materials
             Item.value = Item.buyPrice(gold: 5); // The value of the item in copper coins. Item.buyPrice & Item.sellPrice are helper methods that returns costs in copper coins based on platinum/gold/silver/copper arguments provided to it.
             Item.rare = ItemRarityID.Green;
         }
+
     }
 }

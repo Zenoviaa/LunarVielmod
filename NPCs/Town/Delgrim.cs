@@ -7,7 +7,7 @@ using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Vanity.Gia;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Placeable;
@@ -41,9 +41,9 @@ using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Town
 {
-	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
-	//[AutoloadHead]
-	[AutoloadBossHead]
+    // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
+    //[AutoloadHead]
+    [AutoloadBossHead]
 	public class Delgrim : ModNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;

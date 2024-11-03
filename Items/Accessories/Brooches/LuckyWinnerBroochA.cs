@@ -5,6 +5,7 @@ using Stellamod.Buffs.Charms;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Tiles;
 using System.Collections.Generic;
 using Terraria;
@@ -14,7 +15,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Brooches
 {
-	public class LuckyWinnerBroochA : ModItem
+    public class LuckyWinnerBroochA : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
