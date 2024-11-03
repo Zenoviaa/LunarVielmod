@@ -10,9 +10,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class VerstiDance : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class VerstiDance : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Summon;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 15;
+            Item.mana = 6;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Verstidance");
 			/* Tooltip.SetDefault("An Arcanal Weapon!" +
