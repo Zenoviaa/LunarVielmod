@@ -10,9 +10,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	public class PotionOfHallowWand : ModItem
-	{
-		public override void SetDefaults()
+	public class PotionOfHallowWand : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 18;
+            Item.mana = 10;
+        }
+        public override void SetDefaults()
 		{
 			Item.width = 50;
 			Item.height = 44;

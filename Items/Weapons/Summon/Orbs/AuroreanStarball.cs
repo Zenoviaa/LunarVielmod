@@ -12,8 +12,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon.Orbs
 {
-    internal class AuroreanStarball : ModItem
+    internal class AuroreanStarball : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 10;
+            Item.mana = 0;
+        }
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(AuroreanStarballDebuff.TagDamage);
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {

@@ -15,9 +15,17 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	public class IvyakenStaff : ModItem
-	{
-		public override void SetStaticDefaults()
+	public class IvyakenStaff : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 3;
+            Item.mana = 10;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Ivyaken Staff");
 			// Tooltip.SetDefault("Summons an Ivyaken to fight for you");

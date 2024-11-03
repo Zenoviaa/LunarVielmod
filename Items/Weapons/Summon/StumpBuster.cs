@@ -11,7 +11,7 @@ namespace Stellamod.Items.Weapons.Summon
 
         public override void SetClassSwappedDefaults()
         {
-			Item.damage = 24;
+			Item.damage = 7;
         }
 
         public override void SetDefaults()

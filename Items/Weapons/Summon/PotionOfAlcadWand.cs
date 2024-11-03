@@ -11,9 +11,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	public class PotionOfAlcadWand : ModItem
-	{
-		public override void SetDefaults()
+	public class PotionOfAlcadWand : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 25;
+            Item.mana = 10;
+        }
+        public override void SetDefaults()
 		{
 			Item.width = 20;
 			Item.height = 20;

@@ -12,9 +12,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class IceboundStaff : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class IceboundStaff : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 2;
+            Item.mana = 10;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Gelatal Slaff");
 			// Tooltip.SetDefault("Summons an Jelly boi to fight for you");

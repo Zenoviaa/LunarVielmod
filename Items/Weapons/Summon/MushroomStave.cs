@@ -10,9 +10,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class MushroomStave : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class MushroomStave : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 10;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Gelatal Slaff");
 			// Tooltip.SetDefault("Summons an Jelly boi to fight for you");

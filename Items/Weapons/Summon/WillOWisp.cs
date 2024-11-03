@@ -13,8 +13,16 @@ using Microsoft.Xna.Framework;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    internal class WillOWisp : ModItem
+    internal class WillOWisp : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 6;
+            Item.mana = 10;
+        }
         public override void SetStaticDefaults()
         {
             ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller

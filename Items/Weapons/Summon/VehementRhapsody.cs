@@ -21,9 +21,17 @@ using Stellamod.Buffs.Minions;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	public class VehementRhapsody : ModItem
-	{
-		public override void SetStaticDefaults()
+	public class VehementRhapsody : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 10;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Irradiated Creeper Staff");
 			// Tooltip.SetDefault("Summons an Irradiated Creeper to fight with you");

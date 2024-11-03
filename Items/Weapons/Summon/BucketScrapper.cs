@@ -18,8 +18,16 @@ using Stellamod.Projectiles.Summons.Minions;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    internal class BucketScrapper : ModItem
+    internal class BucketScrapper : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 10;
+        }
         public override void SetDefaults()
         {
             Item.width = 56;

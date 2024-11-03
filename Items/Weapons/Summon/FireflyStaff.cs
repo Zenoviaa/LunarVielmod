@@ -11,9 +11,17 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class FireflyStaff : ModItem
+    public class FireflyStaff : ClassSwapItem
     {
-		private FireflyMinionProj.AttackState _attackState;
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 15;
+            Item.mana = 10;
+        }
+        private FireflyMinionProj.AttackState _attackState;
 		public override void SetDefaults()
 		{
 			Item.damage = 30;

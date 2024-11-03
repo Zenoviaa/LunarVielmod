@@ -8,8 +8,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    internal class ToxicHornetStaff : ModItem
+    internal class ToxicHornetStaff : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 21;
+            Item.mana = 10;
+        }
         public override void SetDefaults()
         {
             Item.width = 58;

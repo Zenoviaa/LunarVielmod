@@ -24,9 +24,17 @@ namespace Stellamod.Items.Weapons.Summon
 	 * To get a better understanding of how everything works together, and how to code minion AI, read the guide: https://github.com/tModLoader/tModLoader/wiki/Basic-Minion-Guide
 	 * This is NOT an in-depth guide to advanced minion AI
 	 */
-    public class TheBurningRod : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class TheBurningRod : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 11;
+            Item.mana = 10;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Gelatal Slaff");
 			// Tooltip.SetDefault("Summons an Jelly boi to fight for you");

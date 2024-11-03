@@ -9,8 +9,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class Thunderstaff : ModItem
+    public class Thunderstaff : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 12;
+            Item.mana = 10;
+        }
         public override void SetDefaults()
         {
 			Item.damage = 48;

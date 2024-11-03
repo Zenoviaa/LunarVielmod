@@ -34,9 +34,17 @@ namespace Stellamod.Items.Weapons.Summon
         }
     }
 
-	public class XScissor : ModItem
+	public class XScissor : ClassSwapItem
     {
-		private int _attackStyle;
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 25;
+            Item.mana = 10;
+        }
+        private int _attackStyle;
 		private int _dir;
         public override void SetDefaults()
         {

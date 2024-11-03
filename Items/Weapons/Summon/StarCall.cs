@@ -13,12 +13,14 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Summon
 {
     public class StarCall : ClassSwapItem
-	{
-		public override DamageClass AlternateClass => DamageClass.Magic;
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
 
         public override void SetClassSwappedDefaults()
         {
-         
+            Item.damage = 50;
+            Item.mana = 10;
         }
 
         public override void SetDefaults()

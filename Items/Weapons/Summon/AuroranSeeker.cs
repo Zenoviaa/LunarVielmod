@@ -10,9 +10,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class AuroranSeeker : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class AuroranSeeker : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 10;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Alcadiz String n Charm");
 			/* Tooltip.SetDefault("Your summons will target focused enemies" +

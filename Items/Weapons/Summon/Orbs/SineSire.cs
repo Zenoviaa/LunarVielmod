@@ -14,8 +14,16 @@ using Microsoft.Xna.Framework;
 
 namespace Stellamod.Items.Weapons.Summon.Orbs
 {
-    internal class SineSire : ModItem
+    internal class SineSire : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 75;
+            Item.mana = 0;
+        }
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(SineSireDebuff.TagDamage);
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {

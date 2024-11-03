@@ -18,9 +18,17 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class PotOfGreed : ModItem
+    public class PotOfGreed : ClassSwapItem
     {
-		private int _attackStyle;
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 30;
+            Item.mana = 10;
+        }
+        private int _attackStyle;
         public override void SetDefaults()
         {
 			Item.damage = 61;

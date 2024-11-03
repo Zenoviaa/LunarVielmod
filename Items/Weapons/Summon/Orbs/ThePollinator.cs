@@ -14,8 +14,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon.Orbs
 {
-    internal class ThePollinator : ModItem
+    internal class ThePollinator : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 107;
+            Item.mana = 0;
+        }
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(ThePollinatorDebuff.TagDamage);
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
