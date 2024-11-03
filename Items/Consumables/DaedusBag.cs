@@ -58,8 +58,7 @@ namespace Stellamod.Items.Consumables
 				ItemDropRule.Common(ModContent.ItemType<BearBroochA>(), chanceDenominator: numResults),
 				ItemDropRule.Common(ModContent.ItemType<VixedBroochA>(), chanceDenominator: numResults),
 				ItemDropRule.Common(ModContent.ItemType<HeatGlider>(), chanceDenominator: numResults),
-				ItemDropRule.Common(ModContent.ItemType<DaedCard>(), chanceDenominator: numResults),
-				ItemDropRule.Common(ModContent.ItemType<DaedussSunSheid>(), chanceDenominator: numResults)
+				ItemDropRule.Common(ModContent.ItemType<DaedCard>(), chanceDenominator: numResults)
 				));
 
 

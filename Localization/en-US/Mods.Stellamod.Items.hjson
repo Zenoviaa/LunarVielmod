@@ -7931,3 +7931,8 @@ WillOWisp: {
 		Consumes half a minion slot
 		'''
 }
+
+DaedussSiegShield: {
+	DisplayName: Daeduss Sieg Shield
+	Tooltip: ""
+}

@@ -83,9 +83,11 @@
     <None Remove="Dusts\SmokeDust.png" />
     <None Remove="Dusts\TSmokeTornadoDust.png" />
     <None Remove="Dusts\TSmokeTornadoDustTip.png" />
+    <None Remove="effects\DaedusRobe.fx" />
     <None Remove="effects\NormalDistortion.fx" />
     <None Remove="Effects\Primitives\Whiteflame.fx" />
     <None Remove="effects\SilShader.fx" />
+    <None Remove="effects\SimpleTrail.fx" />
     <None Remove="Effects\TestShader.fx" />
     <None Remove="Effects\Tint.fx" />
     <None Remove="effects\Vignette.fx" />
@@ -222,6 +224,10 @@
     <None Remove="Localization\en-US\Mods.Stellamod.Dialogue.hjson" />
     <None Remove="NPCs\Bosses\DaedusRework\DaedusR_Head_Boss.png" />
     <None Remove="NPCs\Bosses\DaedusRework\DRay - Copy.png" />
+    <None Remove="NPCs\Bosses\DaedusTheDevoted\DaedusFace.png" />
+    <None Remove="NPCs\Bosses\DaedusTheDevoted\DaedusTheDevoted.png" />
+    <None Remove="NPCs\Bosses\DaedusTheDevoted\DaedusTheDevoted_Head_Boss.png" />
+    <None Remove="NPCs\Bosses\DaedusTheDevoted\DaedusTop.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagramMid - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagramV2.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadMireZapwarnBig - Copy.png" />

@@ -89,7 +89,10 @@ namespace Stellamod.Helpers
 
             Ref<Effect> SuperSimpleTrailRef = new(Assets.Request<Effect>("Effects/SimpleTrail", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc["VampKnives:SuperSimpleTrail"] = new MiscShaderData(SuperSimpleTrailRef, "TrailPass");
-
+          
+            Ref<Effect> DaedusRobeRef = new(Assets.Request<Effect>("Effects/DaedusRobe", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc["LunarVeil:DaedusRobe"] = new MiscShaderData(DaedusRobeRef, "PixelPass");
+            
             Asset<Effect> blackShader = Assets.Request<Effect>("Effects/Black");
             Filters.Scene[ShaderRegistry.Screen_Black] = new Filter(new ScreenShaderData(blackShader, "BlackPass"), EffectPriority.Medium);
 
