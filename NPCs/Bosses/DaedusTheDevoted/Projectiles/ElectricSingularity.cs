@@ -34,8 +34,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             Projectile.friendly = false;
             Projectile.hostile = true;
             Projectile.penetrate = -1;
-            Projectile.usesIDStaticNPCImmunity = true;
-            Projectile.idStaticNPCHitCooldown = 8;
+            Projectile.tileCollide = false;
             Projectile.timeLeft = 420;
             Projectile.light = 0.48f;
         }
@@ -74,7 +73,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                     drawScale * VectorHelper.Osc(0.85f, 0.95f, speed: 2, offset: i), SpriteEffects.None, 0);
             }
 
-
+            
             Lightning.WidthMultiplier = 0.35f;
             for(int i = 0; i < Lightning.Trails.Length; i++)
             {
@@ -103,7 +102,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 
             if (AttackTimer >= 60)
             {
-                Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
+                Vector2 velocity = Main.rand.NextVector2CircularEdge(4, 4);
                 Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 1024);
                 if(player != null)
                 {

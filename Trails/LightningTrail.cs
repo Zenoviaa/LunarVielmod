@@ -37,6 +37,19 @@ namespace Stellamod.Trails
             return MathHelper.Lerp(0, midWidth, fireball);
         }
 
+        public void SetBoltDefaults()
+        {
+            for (int i = 0; i < Trails.Length; i++)
+            {
+                float progress = (float)i / (float)Trails.Length;
+                var trail = Trails[i];
+                trail.LightningRandomOffsetRange = MathHelper.Lerp(8, 2, progress);
+                trail.LightningRandomExpand = MathHelper.Lerp(16, 4, progress);
+                trail.PrimaryColor = Color.Lerp(Color.White, Color.Yellow, progress);
+                trail.NoiseColor = Color.Lerp(Color.White, Color.Yellow, progress);
+            }
+        }
+
         public Color DefaultColorFunction(float p)
         {
             Color trailColor = Color.Lerp(Color.White, Color.Yellow, p);

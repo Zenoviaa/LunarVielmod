@@ -33,7 +33,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
         {
             base.SetDefaults();
             _width = 1;
-            _lightningZaps = new Vector2[32];
+            _lightningZaps = new Vector2[7];
             Projectile.width = 256;
             Projectile.height = 256;
             Projectile.friendly = false;
@@ -56,8 +56,9 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 
             SpriteBatch spriteBatch = Main.spriteBatch;
 
-            Lightning.WidthMultiplier = 8;
-            Lightning.Draw(spriteBatch, _lightningZaps, Projectile.oldRot);
+            Lightning.WidthMultiplier = 2;
+            Lightning.SetBoltDefaults();
+            Lightning.Draw(spriteBatch, _lightningZaps, null);
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -85,6 +86,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Wave");
                 soundStyle.PitchVariance = 0.15f;
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
+       
             }
 
             if (Timer % 3 == 0)
@@ -93,7 +95,11 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 {
                     float progress = (float)i / (float)_lightningZaps.Length;
                     float rot = progress * MathHelper.TwoPi * 1 + (Timer * 0.05f);
-                    Vector2 offset = rot.ToRotationVector2() * MathF.Sin(Timer * 8 * i) * MathF.Sin(Timer * i) * VectorHelper.Osc(256, 384, speed: 3);
+
+                    float osc = VectorHelper.Osc(256, 384, speed: 3);
+                    float p = Timer / 300f;
+                    osc *= MathHelper.Lerp(1f, 0.5f, p);
+                    Vector2 offset = rot.ToRotationVector2() * MathF.Sin(Timer * 8 * i) * MathF.Sin(Timer * i) * osc; 
                     _lightningZaps[i] = Projectile.Center + offset;
                 }
                 Lightning.RandomPositions(_lightningZaps);
@@ -113,9 +119,9 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 d.noGravity = true;
             }
 
-            if (Timer <= 100f)
+            if (Timer <= 300f)
             {
-                _scale = MathHelper.Lerp(0f, Main.rand.NextFloat(12, 16f), Easing.InCubic(Timer / 100f));
+                _scale = MathHelper.Lerp(0f, Main.rand.NextFloat(6, 8), Timer / 300f);
             }
 
             if(Timer < 300)
