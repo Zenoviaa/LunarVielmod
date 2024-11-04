@@ -51,7 +51,7 @@ namespace Stellamod.Items.Consumables
 
         public override void ModifyItemLoot(ItemLoot itemLoot)
         {
-            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<BurningScarf>()));
+            itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<BurningScarf>()));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<PumkinPopper>(), chanceDenominator: 2, minimumDropped: 150, maximumDropped: 450));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<WanderingFlame>(), minimumDropped: 20, maximumDropped: 50));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<WillOWisp>(), chanceDenominator: 2));
