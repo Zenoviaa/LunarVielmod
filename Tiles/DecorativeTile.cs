@@ -43,10 +43,21 @@ namespace Stellamod.Tiles
 
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
+            BehindDecorativeWall behindDecorativeWall = ModContent.GetModWall(Item.createWall) as BehindDecorativeWall;
+            if (behindDecorativeWall != null)
+            {
+                behindDecorativeWall.DrawItem(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+                return true;
+            }
+           
+         
+
             DecorativeWall decorativeWall = ModContent.GetModWall(Item.createWall) as DecorativeWall;
-            if (decorativeWall == null)
-                return false;
-            decorativeWall.DrawItem(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+            if(decorativeWall != null)
+            {
+                decorativeWall.DrawItem(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+                return true;
+            }
             return false;
         }
     }

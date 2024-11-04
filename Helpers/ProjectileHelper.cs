@@ -10,6 +10,62 @@ namespace Stellamod.Helpers
 {
     internal static class ProjectileHelper
     {
+        public static bool? OldPosColliding(Vector2[] positions, Rectangle projHitbox, Rectangle targetHitbox, float lineWidth = 6)
+        {
+            float collisionPoint = 0;
+            for (int i = 1; i < positions.Length; i++)
+            {
+                Vector2 position = positions[i];
+                Vector2 previousPosition = positions[i - 1];
+                if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, lineWidth, ref collisionPoint))
+                    return true;
+            }
+            return false;
+        }
+        public static float PerformBeamHitscan(Vector2 startPosition, Vector2 velocity, float maxBeamLength, int numSamplePoints = 3)
+        {
+            // By default, the hitscan interpolation starts at the Projectile's center.
+            // If the host Prism is fully charged, the interpolation starts at the Prism's center instead.
+            Vector2 samplingPoint = startPosition;
+
+            // Perform a laser scan to calculate the correct length of the beam.
+            // Alternatively, if you want the beam to ignore tiles, just set it to be the max beam length with the following line.
+            // return MaxBeamLength;
+            float[] laserScanResults = new float[numSamplePoints];
+
+
+            Vector2 direction = velocity.SafeNormalize(Vector2.Zero);
+            Collision.LaserScan(samplingPoint, direction, 0 * 1f, maxBeamLength, laserScanResults);
+            float averageLengthSample = 0f;
+            for (int i = 0; i < laserScanResults.Length; ++i)
+            {
+                averageLengthSample += laserScanResults[i];
+            }
+            averageLengthSample /= numSamplePoints;
+            return averageLengthSample;
+        }
+        public static float PerformBeamHitscan(Projectile projectile, float maxBeamLength, int numSamplePoints = 3)
+        {
+            // By default, the hitscan interpolation starts at the Projectile's center.
+            // If the host Prism is fully charged, the interpolation starts at the Prism's center instead.
+            Vector2 samplingPoint = projectile.Center;
+
+            // Perform a laser scan to calculate the correct length of the beam.
+            // Alternatively, if you want the beam to ignore tiles, just set it to be the max beam length with the following line.
+            // return MaxBeamLength;
+            float[] laserScanResults = new float[numSamplePoints];
+
+
+            Vector2 direction = projectile.velocity.SafeNormalize(Vector2.Zero);
+            Collision.LaserScan(samplingPoint, direction, 0 * projectile.scale, maxBeamLength, laserScanResults);
+            float averageLengthSample = 0f;
+            for (int i = 0; i < laserScanResults.Length; ++i)
+            {
+                averageLengthSample += laserScanResults[i];
+            }
+            averageLengthSample /= numSamplePoints;
+            return averageLengthSample;
+        }
         public static bool IsValidTarget(NPC target, Vector2 currentPosition)
         {
             // This method checks that the NPC is:

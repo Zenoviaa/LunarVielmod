@@ -1288,3 +1288,18 @@ DaedusShieldProj.DisplayName: Daedus Shield Proj
 SmallShieldCircleExplosionProj.DisplayName: Small Shield Circle Explosion Proj
 SuperStaffConjureLightning.DisplayName: Super Staff Conjure Lightning
 SuperStaffHold.DisplayName: Super Staff Hold
+ConjureBallExplosion.DisplayName: Conjure Ball Explosion
+ConjureBallLightning.DisplayName: Conjure Ball Lightning
+LightningStrike.DisplayName: Lightning Strike
+LightningStrikeWarn.DisplayName: Lightning Strike Warn
+ElectricTentacle.DisplayName: Electric Tentacle
+ElectricField.DisplayName: Electric Field
+ElectricFire.DisplayName: Electric Fire
+ElectricSingularity.DisplayName: Electric Singularity
+ElectricSingularityBolt.DisplayName: Electric Singularity Bolt
+FireRise.DisplayName: Fire Rise
+FireRiseWarn.DisplayName: Fire Rise Warn
+MegaConjureBallLightning.DisplayName: Mega Conjure Ball Lightning
+ConjureBallExplosionBig.DisplayName: Conjure Ball Explosion Big
+ElectricNode.DisplayName: Electric Node
+Thunderslap.DisplayName: Thunderslap

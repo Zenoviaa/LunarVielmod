@@ -8,9 +8,9 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Magic
+namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
-    internal class SuperStaffConjureLightning : ModProjectile
+    internal class ConjureBallLightning : ModProjectile
     {
         private float _scale;
         private float _width;
@@ -33,15 +33,15 @@ namespace Stellamod.Projectiles.Magic
             _width = 1;
             _lightningZaps = new Vector2[12];
             LightningTrailPath = new LightningTrail[4];
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 LightningTrailPath[i] = new LightningTrail();
             }
 
-            Projectile.tileCollide = false;
             Projectile.width = 49;
             Projectile.height = 49;
-            Projectile.friendly = true;
+            Projectile.friendly = false;
+            Projectile.hostile = true;
             Projectile.penetrate = -1;
             Projectile.usesIDStaticNPCImmunity = true;
             Projectile.idStaticNPCHitCooldown = 8;
@@ -87,12 +87,9 @@ namespace Stellamod.Projectiles.Magic
             Main.graphics.GraphicsDevice.BlendState = prevBelndState;
 
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
-        //    spriteBatch.Draw(texture, drawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
-
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
-      
             for (int i = 0; i < 16; i++)
             {
                 Vector2 flameDrawPos = drawPos + Main.rand.NextVector2Circular(2, 2);
@@ -111,6 +108,13 @@ namespace Stellamod.Projectiles.Magic
         {
             base.AI();
             Timer++;
+            if (Timer == 1)
+            {
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Wave");
+                soundStyle.PitchVariance = 0.15f;
+                SoundEngine.PlaySound(soundStyle, Projectile.position);
+            }
+
             if (Timer % 3 == 0)
             {
                 for (int i = 0; i < _lightningZaps.Length; i++)
@@ -134,12 +138,14 @@ namespace Stellamod.Projectiles.Magic
                 Dust d = Dust.NewDustPerfect(Projectile.Center, DustID.GoldCoin, vel, Scale: 1);
                 d.noGravity = true;
             }
+
             if (Timer % 6 == 0)
             {
                 Vector2 vel = Vector2.Zero;
                 Dust d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(8, 8), DustID.GoldCoin, vel, Scale: 1);
                 d.noGravity = true;
             }
+
             if (Timer <= 15)
             {
                 _scale = MathHelper.Lerp(0f, Main.rand.NextFloat(0.8f, 1f) + (Charge * 1.4f), Easing.InCubic(Timer / 15f));
@@ -148,19 +154,9 @@ namespace Stellamod.Projectiles.Magic
             DrawHelper.AnimateTopToBottom(Projectile, 4);
         }
 
-        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
-            base.ModifyHitNPC(target, ref modifiers);
-
-        }
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            base.OnHitNPC(target, hit, damageDone);
-            if (Main.rand.NextBool(3))
-            {
-                target.AddBuff(BuffID.Electrified, 180);
-            }
+            base.OnHitPlayer(target, info);
 
             SoundStyle zapSound = SoundID.DD2_LightningBugZap;
             zapSound.PitchVariance = 0.5f;
@@ -178,6 +174,10 @@ namespace Stellamod.Projectiles.Magic
                 Dust d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(8, 8), DustID.GoldCoin, vel, Scale: 1);
                 d.noGravity = true;
             }
+
+            //EXPLODE
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                ModContent.ProjectileType<ConjureBallExplosion>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
         }
     }
 }

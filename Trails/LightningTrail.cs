@@ -1,11 +1,88 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.Graphics.Shaders;
 
 namespace Stellamod.Trails
 {
+    internal class CommonLightning
+    {
+        public CommonLightning()
+        {
+            Trails = new LightningTrail[4];
+            for(int t = 0; t < Trails.Length; t++)
+            {
+                Trails[t] = new LightningTrail();
+            }
+
+            ColorFunction = DefaultColorFunction;
+            WidthTrailFunction = DefaultWidthFunction;
+            WidthMultiplier = 1f;
+        }
+
+        public float WidthMultiplier { get; set; }
+        public float Width { get; set; }
+        public PrimDrawer.ColorTrailFunction ColorFunction { get; set; }
+        public PrimDrawer.WidthTrailFunction WidthTrailFunction { get; set; }
+        public LightningTrail[] Trails { get; init; }
+        public float DefaultWidthFunction(float completionRatio)
+        {
+            float progress = completionRatio / 0.3f;
+            float rounded = Easing.SpikeOutCirc(progress);
+            float spikeProgress = Easing.SpikeOutExpo(completionRatio);
+            float fireball = MathHelper.Lerp(rounded, spikeProgress, Easing.OutExpo(1.0f - completionRatio));
+            float midWidth = 6 * Width * WidthMultiplier;
+            return MathHelper.Lerp(0, midWidth, fireball);
+        }
+
+        public Color DefaultColorFunction(float p)
+        {
+            Color trailColor = Color.Lerp(Color.White, Color.Yellow, p);
+            return trailColor;
+        }
+
+        public void RandomPositions(Vector2[] oldPos)
+        {
+            for (int t = 0; t < Trails.Length; t++)
+            {
+                Trails[t].RandomPositions(oldPos);
+            }
+        }
+
+        public void Draw(SpriteBatch spriteBatch, 
+            Vector2[] oldPos, 
+            float[] oldRot, Vector2? offset = null)
+        {
+            var prevBelndState = Main.graphics.GraphicsDevice.BlendState;
+            Main.graphics.GraphicsDevice.BlendState = BlendState.Additive;
+
+            Width = 1;
+            for (int t = 0; t < Trails.Length; t++)
+            {
+                Trails[t].Draw(spriteBatch, oldPos, oldRot, ColorFunction, WidthTrailFunction, offset);
+                Width -= 0.1f;
+            }
+            Main.graphics.GraphicsDevice.BlendState = prevBelndState;
+        }
+        public void DrawAlpha(SpriteBatch spriteBatch,
+            Vector2[] oldPos,
+            float[] oldRot, Vector2? offset = null)
+        {
+            Width = 1;
+
+            var prevBelndState = Main.graphics.GraphicsDevice.BlendState;
+            Main.graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+            for (int t = 0; t < Trails.Length; t++)
+            {
+                Trails[t].Draw(spriteBatch, oldPos, oldRot, ColorFunction, WidthTrailFunction, offset);
+                Width -= 0.1f;
+            }
+            Main.graphics.GraphicsDevice.BlendState = prevBelndState;
+        }
+    }
+
     internal class LightningTrail
     {
         private Vector2[] _offsets;
