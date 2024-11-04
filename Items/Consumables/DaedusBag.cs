@@ -6,6 +6,8 @@ using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Daeden;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Melee.Shields;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.DaedusRework;
@@ -56,8 +58,9 @@ namespace Stellamod.Items.Consumables
 
 			itemLoot.Add(ItemDropRule.AlwaysAtleastOneSuccess(
 				ItemDropRule.Common(ModContent.ItemType<BearBroochA>(), chanceDenominator: numResults),
-				ItemDropRule.Common(ModContent.ItemType<VixedBroochA>(), chanceDenominator: numResults),
-				ItemDropRule.Common(ModContent.ItemType<HeatGlider>(), chanceDenominator: numResults),
+				ItemDropRule.Common(ModContent.ItemType<SuperStaff>(), chanceDenominator: numResults),
+                ItemDropRule.Common(ModContent.ItemType<DaedussSiegShield>(), chanceDenominator: numResults),
+                ItemDropRule.Common(ModContent.ItemType<HeatGlider>(), chanceDenominator: numResults),
 				ItemDropRule.Common(ModContent.ItemType<DaedCard>(), chanceDenominator: numResults)
 				));
 
@@ -65,7 +68,8 @@ namespace Stellamod.Items.Consumables
 			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<DaedusR>()));
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
-		}
+            itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<VixedBroochA>()));
+        }
 
 		// Below is code for the visuals
 
