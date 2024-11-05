@@ -602,7 +602,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
 
             if (InPhase2 && Phase2Transition)
             {
-                Phase2WingsProgress = MathHelper.Lerp(Phase2WingsProgress, 1f, 0.01f);
+                Phase2WingsProgress = MathHelper.Lerp(Phase2WingsProgress, 1f, 0.1f);
             }
 
             switch (State)
@@ -829,8 +829,13 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             {
                 case 0:
                     Timer++;
+                    if(Timer == 1)
+                    {
+                        NPC.velocity.Y -= 15;
+                    }
+
                     NPC.velocity.X *= 0.98f;
-                    if(NPC.velocity.Y < 11)
+                    if(NPC.velocity.Y < 12)
                     {
                         NPC.velocity.Y += 0.33f;
                     }
@@ -838,7 +843,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
 
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Scared;
-                    if(Timer >= 90)
+                    if(Timer >= 180)
                     {
                         Timer = 0;
                         AttackCounter++;
@@ -860,7 +865,8 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         SoundEngine.PlaySound(laughSound, NPC.position);
                         if (StellaMultiplayer.IsHost)
                         {
-                            TeleportTarget = Target.Center + Main.rand.NextVector2Circular(256, 256);
+                            float range = MathHelper.Lerp(1024, 64, Timer / 300f);
+                            TeleportTarget = Target.Center + Main.rand.NextVector2CircularEdge(range, range);
                             NPC.velocity = Main.rand.NextVector2Circular(8, 8);
                             NPC.netUpdate = true;
                         }
@@ -878,7 +884,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                     {
                         if (StellaMultiplayer.IsHost)
                         {
-                            BigTeleportTarget = Target.Center + new Vector2(0, -128);
+                            BigTeleportTarget = Target.Center + new Vector2(0, -256);
                             NPC.velocity = Vector2.Zero;
                             NPC.netUpdate = true;
                         }
