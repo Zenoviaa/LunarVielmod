@@ -67,9 +67,8 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                     float maxProgress = MathHelper.Lerp(0f, 1f, Easing.OutExpo(Timer / 15f));
                     float progress = MathHelper.Lerp(0f, maxProgress, i / 8f);
 
-                    Vector2 start = Vector2.Lerp(Projectile.Center, Projectile.Center + direction * BeamLength, Timer / 30f);
-                    Vector2 end = Vector2.Lerp(Projectile.Center + direction * BeamLength, Projectile.Center + direction * BeamLength * 2, Timer / 30f);
-                    beamPoints.Add(Vector2.Lerp(start, end, progress));
+                    Vector2 start = Vector2.Lerp(Projectile.Center, Projectile.Center + direction * BeamLength, progress);
+                    beamPoints.Add(start);
                 }
                 BeamPoints = beamPoints.ToArray();
                 Lightning.RandomPositions(BeamPoints);
