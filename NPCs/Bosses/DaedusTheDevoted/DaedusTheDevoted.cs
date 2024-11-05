@@ -132,7 +132,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                     frame = 3;
                     break;
                 case AnimationState.Scared:
-                    if (frame < 4 || frame > 6)
+                    if (frame < 4 || frame >= 6)
                     {
                         frame = 4;
                     }
@@ -699,7 +699,8 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             Vector2 offset = new Vector2(0, -252);
             Vector2 targetPos = Target.Center + offset;
             Vector2 velocityToTarget = targetPos - NPC.Center;
-            Vector2 targetVelocity = velocityToTarget * 0.03f;
+            float m = InPhase2 ? 0.06f : 0.03f;
+            Vector2 targetVelocity = velocityToTarget * m;
             NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
 
             //Lighting strike attack - He strikes the players specifically making the player dodge
@@ -739,6 +740,8 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                             {
                                 nextAttack = AIState.Conjure_Ball_Lightning;
                             }
+
+                      
                             break;
                         case 1:
                             if (Main.rand.NextBool(2))
@@ -761,15 +764,38 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                             }
                             break;
                         case 3:
+                            if (InPhase2)
+                            {
+                                nextAttack = AIState.Electric_Field;
+                            }
+                            else
+                            {
+                                nextAttack = AIState.Conjure_Ball_Lightning_Mega;
+                            }
+                          
+                            break;
+                        case 4:
                             nextAttack = AIState.Conjure_Ball_Lightning_Mega;
                             break;
                     }
-         
                     AttackCycle++;
-                    if (AttackCycle >= 4)
+                    if (InPhase2)
                     {
-                        AttackCycle = 0;
+                        if (AttackCycle >= 5)
+                        {
+                            AttackCycle = 0;
+                        }
+
                     }
+                    else
+                    {
+                        if (AttackCycle >= 4)
+                        {
+                            AttackCycle = 0;
+                        }
+
+                    }
+
 
                     if (!Phase2Transition && InPhase2)
                     {
@@ -788,8 +814,12 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             {
                 case 0:
                     Timer++;
-                    NPC.velocity *= 0.98f;
-                    NPC.velocity = NPC.velocity.RotatedBy(0.05f);
+                    NPC.velocity.X *= 0.98f;
+                    if(NPC.velocity.Y < 11)
+                    {
+                        NPC.velocity.Y += 0.33f;
+                    }
+               
 
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Scared;
@@ -1452,33 +1482,29 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         SoundEngine.PlaySound(soundStyle, NPC.position);
                     }
 
-                    if (Timer > 120)
+                    if (Timer % 60 == 0)
                     {
                         LightningBallTimer = 0;
                         FaceSegment.BlackTimer = 1f;
-                        Timer = 0;
-                        AttackCounter++;
                         if (StellaMultiplayer.IsHost)
                         {
                             int damage = ElectricFieldDamage;
                             int knockback = 1;
-                            Vector2 startPos = Target.Center;
-                            startPos.Y -= 128;
-
-                            for (int i = 0; i < 10; i++)
-                            {
-                                Vector2 firePos = startPos;
-                                firePos.X += MathHelper.Lerp(-700, 700, (float)i / 10f);
-                                float length = ProjectileHelper.PerformBeamHitscan(firePos, Vector2.UnitY, maxBeamLength: 2400);
-                                firePos.Y += length;
-
-                                Vector2 fireVelocity = -Vector2.UnitY * 7;
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), firePos, Vector2.Zero,
-                                    ModContent.ProjectileType<ElectricField>(), damage, knockback, Main.myPlayer);
-                            }
+          
+         
+                            Vector2 fireVelocity = (Target.Center - lightningSpawnPos).SafeNormalize(Vector2.Zero);
+                            fireVelocity = fireVelocity.RotatedByRandom(MathHelper.PiOver4);
+                            fireVelocity *= Main.rand.NextFloat(15, 18);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), lightningSpawnPos, fireVelocity,
+                                ModContent.ProjectileType<ElectricNode>(), damage, knockback, Main.myPlayer);
                         }
                     }
 
+                    if(Timer >= 300)
+                    {
+                        Timer = 0;
+                        AttackCounter++;
+                    }
                     break;
 
                 case 2:

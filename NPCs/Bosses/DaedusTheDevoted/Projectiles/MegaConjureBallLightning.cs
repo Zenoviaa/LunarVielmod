@@ -126,9 +126,13 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 
             if(Timer < 300)
             {
-                NPC parentNpc = Main.npc[(int)Parent];
-                Projectile.Center = parentNpc.Center - new Vector2(0, 256);
-                Projectile.velocity = Vector2.Zero;
+                if(Parent != -1)
+                {
+                    NPC parentNpc = Main.npc[(int)Parent];
+                    Projectile.Center = parentNpc.Center - new Vector2(0, 256);
+                    Projectile.velocity = Vector2.Zero;
+                }
+
             }
 
             if(Timer > 300)

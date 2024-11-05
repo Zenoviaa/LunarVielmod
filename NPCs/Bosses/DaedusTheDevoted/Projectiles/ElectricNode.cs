@@ -90,7 +90,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 {
                     float progress = (float)i / (float)_lightningZaps.Length;
                     float rot = progress * MathHelper.TwoPi * 1 + (Timer * 0.05f);
-                    Vector2 offset = rot.ToRotationVector2() * MathF.Sin(Timer * 8 * i) * MathF.Sin(Timer * i) * VectorHelper.Osc(0, 32, speed: 3);
+                    Vector2 offset = rot.ToRotationVector2() * MathF.Sin(Timer * 8 * i) * MathF.Sin(Timer * i) * VectorHelper.Osc(0, 8, speed: 3);
                     _lightningZaps[i] = Projectile.Center + offset;
                 }
 
@@ -114,6 +114,21 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             if (Timer <= 15)
             {
                 _scale = MathHelper.Lerp(0f, Main.rand.NextFloat(0.2f, 0.3f), Easing.InCubic(Timer / 15f));
+            }
+
+            Projectile.velocity *= 0.96f;
+
+            Player player = PlayerHelper.FindClosestPlayer(Projectile.position, float.MaxValue);
+            if (player != null)
+            {
+                Vector2 dirToNpc = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, degreesToRotate: 1f);
+            }
+
+
+            if (Projectile.velocity.Length() < 1)
+            {
+                Projectile.Kill();
             }
 
             DrawHelper.AnimateTopToBottom(Projectile, 4);
