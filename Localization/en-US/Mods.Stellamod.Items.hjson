@@ -8095,3 +8095,18 @@ BlankSword: {
 	DisplayName: Blank Sword
 	Tooltip: ""
 }
+
+FableBookshelf1Item: {
+	DisplayName: Fable Bookshelf1 Item
+	Tooltip: ""
+}
+
+FableBookshelf2Item: {
+	DisplayName: Fable Bookshelf2 Item
+	Tooltip: ""
+}
+
+FableBookshelf3Item: {
+	DisplayName: Fable Bookshelf3 Item
+	Tooltip: ""
+}
