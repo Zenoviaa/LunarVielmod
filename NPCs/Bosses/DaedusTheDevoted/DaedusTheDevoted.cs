@@ -214,7 +214,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             }
         }
         public Rectangle AnimationFrame { get; set; }
-
+        public bool Fast { get; set; }
 
         private bool CheckCurrentAnimation(params AnimationState[] animations)
         {
@@ -232,6 +232,11 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             base.AI();
             Texture2D texture = ModContent.Request<Texture2D>(BaseTexturePath + "DaedusArms").Value;
             frameCounter += 0.5f;
+            if (Fast)
+            {
+                frameCounter += 0.5f;
+            }
+
             if (frameCounter >= 1f)
             {
                 frameCounter = 0;
@@ -722,7 +727,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
 
             //FAST
             if (InPhase2)
-                timeToWait = 60;
+                timeToWait = 90;
             if (Timer >= timeToWait)
             {
                 //How we choosing attack uhh, oh i know
@@ -777,7 +782,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         case 4:
                             if (Main.rand.NextBool(2))
                             {
-                                nextAttack = AIState.Jack_Fire;
+                                nextAttack = AIState.Thunderslap;
                             }
                             else
                             {
@@ -1641,7 +1646,144 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
 
         private void AI_Thunderslap()
         {
+            Vector2 lightningSpawnPos = NPC.Center;
+            lightningSpawnPos.Y -= 48;
+            switch (AttackCounter)
+            {
+                case 0:
+                    Timer++;
+                    if (Timer == 1)
+                    {
+                        SoundStyle laughSound = new SoundStyle("Stellamod/Assets/Sounds/Jack_Laugh");
+                        laughSound.PitchVariance = 0.1f;
+                        laughSound.Pitch = 0.75f;
+                        SoundEngine.PlaySound(laughSound, NPC.position);
 
+                        TargetMovePos = Target.Center - new Vector2(0, 128);
+                    }
+
+                    //Slow down movement and summon ball lightnings
+                    //I think two?
+                    //Raise arms and prepare
+                    Vector2 movePos = TargetMovePos + Vector2.UnitY.RotatedBy(0.025f * Timer * (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero).X) * 256;
+                    Vector2 velocityToTarget = movePos - NPC.Center;
+                    Vector2 targetVelocity = velocityToTarget * 0.03f;
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
+
+                    FaceSegment.Glow = true;
+                    ArmSegment.Animation = DaedusArmSegment.AnimationState.Raise;
+                    FaceSegment.Animation = DaedusFaceSegment.AnimationState.Laughing;
+                    if (Timer % 4 == 0)
+                    {
+                        Vector2 dustSpawnPoint = NPC.Center + Main.rand.NextVector2CircularEdge(64, 64);
+                        Vector2 dustVelocity = (lightningSpawnPos - dustSpawnPoint).SafeNormalize(Vector2.Zero);
+                        dustVelocity *= 4;
+                        float progress = Timer / 80f;
+
+                        Dust d = Dust.NewDustPerfect(dustSpawnPoint, DustID.GoldCoin, Velocity: dustVelocity, Scale: progress * 1f);
+                        d.noGravity = true;
+                    }
+
+                    if (Timer >= 80)
+                    {
+                        Timer = 0;
+                        AttackCounter++;
+                    }
+                    break;
+
+                case 1:
+                    Timer++;
+
+      
+                    if (Timer % 4 == 0)
+                    {
+                        Vector2 dustSpawnPoint = lightningSpawnPos;
+                        Vector2 dustVelocity = Main.rand.NextVector2Circular(4, 4);
+
+                        Dust d = Dust.NewDustPerfect(dustSpawnPoint, DustID.GemTopaz, Velocity: dustVelocity, Scale: 0.5f);
+                        d.noGravity = true;
+                    }
+
+                    if(Timer < 230)
+                    {
+                        Vector2 offset = new Vector2(0, -252);
+                        Vector2 targetPos = Target.Center + offset;
+                        Vector2 v = targetPos - NPC.Center;
+                        Vector2 tv = v * 0.25f;
+                        NPC.velocity = Vector2.Lerp(NPC.velocity, tv, 0.2f);
+                    }
+      
+                    if (Timer % 12 == 0)
+                    {
+                        SoundStyle soundStyle = SoundID.DD2_LightningAuraZap;
+                        soundStyle.PitchVariance = 0.3f;
+                        SoundEngine.PlaySound(soundStyle, NPC.position);
+                    }
+
+                    if(Timer % 60 == 0 && Timer < 240)
+                    {
+                        int damage = ThunderslapDamage;
+                        int knockback = 1;
+                        Vector2 firePos = Target.Center - new Vector2(0, 512);
+
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), firePos, Vector2.UnitY,
+                            ModContent.ProjectileType<ThunderSlapWarn>(), damage, knockback, Main.myPlayer);
+                    }
+
+                    if(Timer >= 230)
+                    {
+                        NPC.velocity.Y -= 0.5f;
+                        ArmSegment.Fast = true;
+                        ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
+                        FaceSegment.Animation = DaedusFaceSegment.AnimationState.Laughing;
+                    }
+                    else if(Timer >= 210)
+                    {
+                        FaceSegment.Animation = DaedusFaceSegment.AnimationState.Laughing;
+                    }
+                    else
+                    {
+                        ArmSegment.Animation = DaedusArmSegment.AnimationState.Raise;
+                        FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
+                    }
+
+                    if (Timer > 240)
+                    {
+                        LightningBallTimer = 0;
+                        FaceSegment.BlackTimer = 1f;
+                        Timer = 0;
+                        AttackCounter++;
+     
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            int damage = ThunderslapDamage;
+                            int knockback = 1;
+                            Vector2 firePos = Target.Center - new Vector2(0, 512);
+
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), firePos, Vector2.UnitY,
+                                ModContent.ProjectileType<ThunderSlap>(), damage, knockback, Main.myPlayer);
+                        }
+                    }
+
+                    break;
+
+                case 2:
+                    Timer++;
+                    if(Timer == 1)
+                    {
+                        NPC.velocity.Y -= 15;
+                    }
+                    NPC.velocity *= 0.9f;
+                    ArmSegment.Fast = false;
+                    FaceSegment.Glow = false;
+                    ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
+                    FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
+                    if (Timer >= 30)
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                    break;
+            }
         }
 
         private void AI_JackFire()

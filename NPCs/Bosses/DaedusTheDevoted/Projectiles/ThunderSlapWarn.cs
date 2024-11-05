@@ -1,17 +1,20 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
-using Terraria;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.ID;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
-    internal class ThunderSlap : ModProjectile
+    internal class ThunderSlapWarn : ModProjectile
     {
         public float BeamLength;
         public Vector2[] BeamPoints;
@@ -22,11 +25,11 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 12;
-            Projectile.height = 12;
+            Projectile.width = 6;
+            Projectile.height = 6;
             Projectile.penetrate = -1;
             Projectile.friendly = false;
-            Projectile.hostile = true;
+            Projectile.hostile = false;
             Projectile.timeLeft = 30;
         }
 
@@ -45,28 +48,16 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             if (Timer == 1)
             {
                 //Sound Effect Goooo
-                SoundStyle lightningSoundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap");
+                SoundStyle lightningSoundStyle = SoundID.DD2_LightningAuraZap;
                 lightningSoundStyle.PitchVariance = 0.1f;
                 SoundEngine.PlaySound(lightningSoundStyle, Projectile.position);
-
-                Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
-                for (int i = 0; i < 16; i++)
-                {
-                    Vector2 dustSpawnPoint = Projectile.Center + direction * BeamLength;
-                    Vector2 dustVelocity = Main.rand.NextVector2Circular(8, 8);
-                    Dust d = Dust.NewDustPerfect(dustSpawnPoint, DustID.GoldCoin, dustVelocity, Scale: 0.5f);
-                    d.noGravity = true;
-                }
-
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.position, 1024, 256);
             }
-
 
             //Setup lightning stuff
             //Should make it scale in/out
             float lightningProgress = Timer / 30f;
             float easedLightningProgress = Easing.SpikeOutCirc(lightningProgress);
-            Lightning.WidthMultiplier = MathHelper.Lerp(0f, 24, easedLightningProgress);
+            Lightning.WidthMultiplier = MathHelper.Lerp(0f, 0.5f, easedLightningProgress);
             if (Timer % 3 == 0)
             {
                 List<Vector2> beamPoints = new List<Vector2>();
@@ -75,16 +66,14 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 {
                     float maxProgress = MathHelper.Lerp(0f, 1f, Easing.OutExpo(Timer / 15f));
                     float progress = MathHelper.Lerp(0f, maxProgress, i / 8f);
-                    beamPoints.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + direction * BeamLength, progress));
+
+                    Vector2 start = Vector2.Lerp(Projectile.Center, Projectile.Center + direction * BeamLength, Timer / 30f);
+                    Vector2 end = Vector2.Lerp(Projectile.Center + direction * BeamLength, Projectile.Center + direction * BeamLength * 2, Timer / 30f);
+                    beamPoints.Add(Vector2.Lerp(start, end, progress));
                 }
                 BeamPoints = beamPoints.ToArray();
                 Lightning.RandomPositions(BeamPoints);
             }
-        }
-
-        public override bool? CanDamage()
-        {
-            return true;
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -106,6 +95,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
+
             Lightning.SetBoltDefaults();
             Lightning.Draw(spriteBatch, BeamPoints, Projectile.oldRot);
             return false;
