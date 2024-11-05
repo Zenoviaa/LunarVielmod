@@ -33,7 +33,7 @@ namespace Stellamod.UI.CauldronSystem
         {
             Vector2 worldPos = new Vector2(CauldronX * 16, CauldronY * 16);
             float dist = Vector2.Distance(Main.LocalPlayer.position, CauldronPos);
-            if(dist > 96)
+            if(dist > 160)
             {
                 CloseUI();
             }

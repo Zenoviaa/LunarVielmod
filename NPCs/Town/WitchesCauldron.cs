@@ -2,10 +2,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items;
 using Stellamod.UI.CauldronSystem;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities;
@@ -14,6 +16,15 @@ namespace Stellamod.NPCs.Town
 {
     internal class WitchesCauldron : ModNPC
     {
+        private int _frame;
+        private float _frameCounter;
+        private enum AnimationState
+        {
+            Idle,
+            Brew
+        }
+
+        private AnimationState Animation;
         private ref float Timer => ref NPC.ai[0];
         public override void SetStaticDefaults()
         {
@@ -42,14 +53,6 @@ namespace Stellamod.NPCs.Town
             NPC.friendly = true; // NPC Will not attack player
         }
 
-        public override void FindFrame(int frameHeight)
-        {
-            NPC.frameCounter += 0.5f;
-            NPC.frameCounter %= Main.npcFrameCount[NPC.type];
-            int frame = (int)NPC.frameCounter;
-            NPC.frame.Y = frame * frameHeight;
-        }
-
         public override List<string> SetNPCNameList()
         {
             return new List<string>() {
@@ -61,6 +64,7 @@ namespace Stellamod.NPCs.Town
         {
             return true;
         }
+        
         public override string GetChat()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
@@ -68,6 +72,7 @@ namespace Stellamod.NPCs.Town
             chat.Add(LangText.Chat(this, "Basic1"));
             return chat; // chat is implicitly cast to a string.
         }
+
         public override bool CheckActive()
         {
             //Don't despawn
@@ -97,8 +102,16 @@ namespace Stellamod.NPCs.Town
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            int totalFrameCount = 30;
+            if(Animation == AnimationState.Brew)
+            {
+                texture = ModContent.Request<Texture2D>(Texture + "_Brew").Value;
+                totalFrameCount = 25;
+            }
+
+
             Vector2 drawPos = NPC.Center - screenPos;
-            Rectangle frame = NPC.frame;
+            Rectangle frame = texture.GetFrame(_frame, totalFrameCount);
             Vector2 drawOrigin = frame.Size() / 2f;
             float drawRotation = NPC.rotation;
 
@@ -120,17 +133,30 @@ namespace Stellamod.NPCs.Town
                 endColor *= 0.5f;
                 Vector2 trailDrawPos = NPC.oldPos[k] - Main.screenPosition + s + new Vector2(0f, NPC.gfxOffY);
                 Color color = NPC.GetAlpha(Color.Lerp(startColor, endColor, 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
-                spriteBatch.Draw(texture, trailDrawPos, NPC.frame, color, NPC.oldRot[k], NPC.frame.Size() / 2, NPC.scale, effects, 0f);
+                spriteBatch.Draw(texture, trailDrawPos, frame, color, NPC.oldRot[k], frame.Size() / 2, NPC.scale, effects, 0f);
             }
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            return base.PreDraw(spriteBatch, screenPos, drawColor);
+            
+            //Draw Frame
+            spriteBatch.Draw(texture, drawPos, frame, drawColor, NPC.rotation, frame.Size() / 2, NPC.scale, effects, 0f);
+            
+            //We predrawing up in here
+            return false;
         }
 
+   
         public override void AI()
         {
             base.AI();
+
+            //This feels kinda dumb but maybe it'll work
+            Cauldron.OnBrew -= BrewSomethingAnimation;
+            Cauldron.OnBrew += BrewSomethingAnimation;
+
+
+            AI_Animate();
             Timer++;
             float yOffset = MathF.Sin(Timer * 0.2f);
             NPC.position += new Vector2(0, yOffset);
@@ -141,6 +167,42 @@ namespace Stellamod.NPCs.Town
                 Dust.NewDustPerfect(NPC.Center + new Vector2(Main.rand.NextFloat(0, 16), Main.rand.NextFloat(-32, -16)),
                     ModContent.DustType<Sparkle>(), new Vector2(Main.rand.NextFloat(-0.02f, 0.4f), -Main.rand.NextFloat(0.1f, 2f)), 0, new Color(0.05f, 0.08f, 0.2f, 0f), Main.rand.NextFloat(0.25f, 2f));
             }
+        }
+
+        private void AI_Animate()
+        {
+            _frameCounter += 0.5f;
+            if (_frameCounter >= 1f)
+            {
+                _frameCounter = 0;
+                _frame++;
+            }
+
+            switch (Animation)
+            {
+                case AnimationState.Idle:
+                    if (_frame >= 30)
+                    {
+                        _frame = 0;
+                    }
+                    break;
+                case AnimationState.Brew:
+                    if (_frame >= 25)
+                    {
+                        _frame = 0;
+                        Animation = AnimationState.Idle;
+                    }
+                    break;
+            }
+        }
+
+        public void BrewSomethingAnimation(CauldronBrew brew)
+        {
+            _frame = 0;
+            Animation = AnimationState.Brew;
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/CauldronCraft");
+            soundStyle.PitchVariance = 0.15f;
+            SoundEngine.PlaySound(soundStyle, NPC.position);
         }
     }
 }
