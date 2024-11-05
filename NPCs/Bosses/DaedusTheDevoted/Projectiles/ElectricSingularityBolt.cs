@@ -34,7 +34,8 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             Projectile.tileCollide = true;
             Projectile.penetrate = -1;
             Projectile.hostile = true;
-            Projectile.timeLeft = 600;
+            Projectile.timeLeft = 180;
+            Projectile.tileCollide = false;
         }
 
         public override void AI()
