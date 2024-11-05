@@ -1637,12 +1637,8 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         AttackCounter++;
                         if (StellaMultiplayer.IsHost)
                         {
-                            int damage = SingularityDamage;
-                            int knockback = 1;
                             Vector2 firePos = lightningSpawnPos;
-                            Vector2 fireVelocity = Vector2.UnitX * 7;
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), firePos, fireVelocity,
-                                ModContent.ProjectileType<ElectricSingularity>(), damage, knockback, Main.myPlayer);
+                            NPC.NewNPC(NPC.GetSource_FromThis(), (int)firePos.X, (int)firePos.Y, ModContent.NPCType<ElectricSingularity>());
                         }
                     }
 
