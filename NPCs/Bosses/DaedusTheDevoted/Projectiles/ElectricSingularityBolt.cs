@@ -31,7 +31,6 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             base.SetDefaults();
             Projectile.width = 16;
             Projectile.height = 16;
-            Projectile.tileCollide = true;
             Projectile.penetrate = -1;
             Projectile.hostile = true;
             Projectile.timeLeft = 180;

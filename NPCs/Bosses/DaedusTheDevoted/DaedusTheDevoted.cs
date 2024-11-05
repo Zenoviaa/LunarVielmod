@@ -727,7 +727,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
 
             //FAST
             if (InPhase2)
-                timeToWait = 90;
+                timeToWait = 30;
             if (Timer >= timeToWait)
             {
                 //How we choosing attack uhh, oh i know
@@ -1857,7 +1857,6 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                     Vector2 v = targetPos - NPC.Center;
                     Vector2 tv = v * 0.07f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, tv, 0.2f);
-                    LightningBallTimer += 1 / 12f;
                     if (Timer % 12 == 0)
                     {
                         SoundStyle soundStyle = SoundID.DD2_LightningAuraZap;
