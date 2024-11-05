@@ -1986,7 +1986,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                     Vector2 offset = new Vector2(0, -64f);
                     Vector2 targetPos = Target.Center + offset;
                     Vector2 v = targetPos - NPC.Center;
-                    Vector2 tv = v * 0.07f;
+                    Vector2 tv = v * 0.007f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, tv, 0.2f);
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
                     if(Timer >= 120)
