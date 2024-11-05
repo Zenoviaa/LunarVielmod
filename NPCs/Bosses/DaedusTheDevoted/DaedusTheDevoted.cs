@@ -775,13 +775,24 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                           
                             break;
                         case 4:
+                            if (Main.rand.NextBool(2))
+                            {
+                                nextAttack = AIState.Jack_Fire;
+                            }
+                            else
+                            {
+                                nextAttack = AIState.Conjure_Ball_Lightning;
+                            }
+
+                            break;
+                        case 5:
                             nextAttack = AIState.Conjure_Ball_Lightning_Mega;
                             break;
                     }
                     AttackCycle++;
                     if (InPhase2)
                     {
-                        if (AttackCycle >= 5)
+                        if (AttackCycle >= 6)
                         {
                             AttackCycle = 0;
                         }
