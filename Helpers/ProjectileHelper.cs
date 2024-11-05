@@ -17,6 +17,10 @@ namespace Stellamod.Helpers
             {
                 Vector2 position = positions[i];
                 Vector2 previousPosition = positions[i - 1];
+                float dist = Vector2.Distance(previousPosition, position);
+                if (dist > 1000)
+                    continue;
+
                 if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, lineWidth, ref collisionPoint))
                     return true;
             }

@@ -25,7 +25,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             Projectile.hostile = true;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 180;
+            Projectile.timeLeft = 360;
         }
 
         public override void AI()
@@ -52,7 +52,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             float explosionProgress = Timer / 60f;
             float easedExplosionProgress = Easing.OutExpo(explosionProgress);
             float widthOffset = MathHelper.Lerp(32, 48, easedExplosionProgress) * VectorHelper.Osc(0.85f, 1f, offset: Projectile.whoAmI);
-            Lightning.WidthMultiplier = Easing.SpikeOutCirc(Timer / 180f);
+            Lightning.WidthMultiplier = Easing.SpikeOutCirc(Timer / 360f);
             if (Timer % 3 == 0)
             {
 
@@ -83,7 +83,8 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            Lightning.Draw(spriteBatch, _lightningZaps, Projectile.oldRot);
+            Lightning.SetBoltDefaults();
+            Lightning.Draw(spriteBatch, _lightningZaps, null);
             return false;
         }
     }

@@ -47,6 +47,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 }
 
                 SoundEngine.PlaySound(explosionSound, Projectile.position);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.position, 2048, 500);
             }
 
             for (int i = 0; i < Lightning.Trails.Length; i++)

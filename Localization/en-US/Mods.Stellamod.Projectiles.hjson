@@ -1303,3 +1303,5 @@ MegaConjureBallLightning.DisplayName: Mega Conjure Ball Lightning
 ConjureBallExplosionBig.DisplayName: Conjure Ball Explosion Big
 ElectricNode.DisplayName: Electric Node
 Thunderslap.DisplayName: Thunderslap
+ThunderSlap.DisplayName: Thunder Slap
+ThunderSlapWarn.DisplayName: Thunder Slap Warn
