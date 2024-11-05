@@ -812,12 +812,11 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
 
                     }
 
-
                     if (!Phase2Transition && InPhase2)
                     {
                         nextAttack = AIState.Phase_2_Transition;
-
                     }
+
 
                     SwitchState(nextAttack);
                 }

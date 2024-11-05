@@ -100,29 +100,25 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 d.noGravity = true;
             }
 
+            Player playerToTarget = PlayerHelper.FindClosestPlayer(Projectile.position, 1024);
             if (AttackTimer >= 60)
             {
-                Vector2 velocity = Main.rand.NextVector2CircularEdge(4, 4);
-                Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 1024);
-                if(player != null)
+      
+                if(playerToTarget != null)
                 {
-                    Vector2 velToPlayer = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+                    Vector2 velToPlayer = (playerToTarget.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
                     velToPlayer *= 16;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velToPlayer,
-                        ModContent.ProjectileType<ElectricSingularityBolt>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-                }
-
-                if (Main.rand.NextBool(4))
-                {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                       ModContent.ProjectileType<ElectricSingularityBolt>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    if(Projectile.owner == Main.myPlayer)
+                    {
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velToPlayer,
+                            ModContent.ProjectileType<ElectricSingularityBolt>(), Projectile.damage, Projectile.knockBack, Owner: Projectile.owner);
+                    }
                 }
 
                 AttackTimer = 0;
             }
 
             //Some interesting movement code for the singularity
-            Player playerToTarget = PlayerHelper.FindClosestPlayer(Projectile.position, 1024);
             if(playerToTarget != null)
             {
                 float diffX = playerToTarget.Center.X - Projectile.Center.X;
