@@ -23,7 +23,7 @@ namespace Stellamod.Items
             base.ResetEffects();
 
             //So I'm thinking we just have these variables
-            NothingFailChance = 5;
+            NothingFailChance = 15;
             InkFailChance = 25;
         }
     }

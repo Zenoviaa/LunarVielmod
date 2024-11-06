@@ -211,7 +211,7 @@ namespace Stellamod.NPCs.Town
             if(brew.result == -1)
             {
                 //Womp Womp Basically
-                int combatText = CombatText.NewText(NPC.getRect(), Color.Gray, "Better luck next time!", true);
+                int combatText = CombatText.NewText(NPC.getRect(), Color.Gray, "There's nothing inside!", true);
                 CombatText numText = Main.combatText[combatText];
                 numText.lifeTime = 120;
 
