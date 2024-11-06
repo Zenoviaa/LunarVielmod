@@ -172,7 +172,7 @@ namespace Stellamod.Items
             {
                 result = NothingBrew;
             } 
-            else if (inkFailed)
+            else if (inkFailed && Main.hardMode)
             {
                 result = InkBrew;
             }
