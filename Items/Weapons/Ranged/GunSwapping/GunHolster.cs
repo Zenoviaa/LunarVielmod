@@ -2,19 +2,56 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.UI.GunHolsterSystem;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 {
     internal class GunPlayer : ModPlayer
     {
-        public int LeftHand = -1;
-        public int RightHand = -1;
-        public ModItem RightHandItem => ModContent.GetModItem(RightHand);
-        public ModItem LeftHandItem => ModContent.GetModItem(LeftHand);
+        private Item _leftHand;
+        private Item _rightHand;
+        public Item LeftHand
+        {
+            get
+            {
+                if (_leftHand == null)
+                {
+                    _leftHand = new Item();
+                    _leftHand.SetDefaults(0);
+                }
+
+                return _leftHand;
+            }
+            set
+            {
+                _leftHand = value;
+            }
+        }
+
+        public Item RightHand
+        {
+            get
+            {
+                if (_rightHand == null)
+                {
+                    _rightHand = new Item();
+                    _rightHand.SetDefaults(0);
+                }
+
+                return _rightHand;
+            }
+            set
+            {
+                _rightHand = value;
+            }
+        }
+        public ModItem RightHandItem => RightHand.ModItem;
+        public ModItem LeftHandItem => LeftHand.ModItem;
 
         private void HolsterGun(Player player, int projectileType, int baseDamage, float knockBack)
         {
@@ -28,7 +65,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 
         public override void PostUpdate()
         {
-            if(Main.myPlayer == Player.whoAmI)
+            if (Main.myPlayer == Player.whoAmI)
             {
                 int buffType = ModContent.BuffType<MarksMan>();
                 int itemType = ModContent.ItemType<GunHolster>();
@@ -41,7 +78,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 }
                 else
                 {
-                    if (RightHand != -1)
+                    if (!RightHand.IsAir)
                     {
                         if (RightHandItem is MiniGun miniGun)
                         {
@@ -54,7 +91,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                         }
                     }
 
-                    if (LeftHand != -1)
+                    if (!LeftHand.IsAir)
                     {
                         if (LeftHandItem is MiniGun miniGun)
                         {
@@ -70,6 +107,22 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 }
             }
         }
+
+        public override void SaveData(TagCompound tag)
+        {
+            base.SaveData(tag);
+            tag["lefthand"] = LeftHand;
+            tag["righthand"] = RightHand;
+        }
+
+        public override void LoadData(TagCompound tag)
+        {
+            base.LoadData(tag);
+            if (tag.ContainsKey("lefthand"))
+                LeftHand = tag.Get<Item>("lefthand");
+            if (tag.ContainsKey("righthand"))
+                RightHand = tag.Get<Item>("righthand");
+        }
     }
 
     internal class GunHolster : ClassSwapItem
@@ -78,7 +131,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override DamageClass AlternateClass => DamageClass.Magic;
 
         public override void SetClassSwappedDefaults()
-        {          
+        {
             Item.mana = 2;
         }
         public override void SetDefaults()
@@ -97,15 +150,32 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.useAmmo = AmmoID.Bullet;
             Item.UseSound = null;
             Item.noUseGraphic = true;
+            Item.consumable = false;
+        }
+
+        public override void RightClick(Player player)
+        {
+            base.RightClick(player);
+
+            //Yay
+            GunHolsterUISystem gunHolsterUISystem = ModContent.GetInstance<GunHolsterUISystem>();
+            gunHolsterUISystem.ToggleUI();
+        }
+
+        public override bool CanRightClick()
+        {
+            return true;
+        }
+
+        public override bool ConsumeItem(Player player)
+        {
+            return false;
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
             GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
-
-  
-
             var line = new TooltipLine(Mod, "WeaponType", "Gun Holster Weapon Type")
             {
                 OverrideColor = ColorFunctions.GunHolsterWeaponType
@@ -116,7 +186,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             var rightHand = new TooltipLine(Mod, "right", "");
 
             const string Base_Path = "Stellamod/Items/Weapons/Ranged/GunSwapping/";
-            if (gunPlayer.LeftHand != -1)
+            if (!gunPlayer.LeftHand.IsAir)
             {
                 string textureName = gunPlayer.LeftHandItem.Name.ToString().Replace("_", "");
                 Texture2D texture = ModContent.Request<Texture2D>($"{Base_Path}{textureName}").Value;
@@ -124,7 +194,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 texture.GetData(pixels);
                 Color lastColor = Color.White;
                 Color tooltipColor = Color.White;
-                for(int i = pixels.Length / 2; i < pixels.Length; i++)
+                for (int i = pixels.Length / 2; i < pixels.Length; i++)
                 {
                     if (lastColor == Color.Black && pixels[i] != Color.Black)
                     {
@@ -140,7 +210,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 tooltips.Add(leftHand);
             }
 
-            if (gunPlayer.RightHand != -1)
+            if (!gunPlayer.RightHand.IsAir)
             {
                 string textureName = gunPlayer.RightHandItem.Name.ToString().Replace("_", "");
                 Texture2D texture = ModContent.Request<Texture2D>($"{Base_Path}{textureName}").Value;
@@ -170,7 +240,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
             const string Base_Path = "Stellamod/Items/Weapons/Ranged/GunSwapping/";
 
-            if(gunPlayer.LeftHand != -1)
+            if (!gunPlayer.LeftHand.IsAir)
             {
                 string textureName = gunPlayer.LeftHandItem.Name.ToString().Replace("_", "");
                 Texture2D leftHandTexture = ModContent.Request<Texture2D>($"{Base_Path}{textureName}_Held").Value;
@@ -181,7 +251,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 spriteBatch.Draw(leftHandTexture, drawPosition, null, drawColor, 0f, leftHandDrawOrigin, scale, SpriteEffects.None, 0);
             }
 
-            if(gunPlayer.RightHand != -1)
+            if (!gunPlayer.RightHand.IsAir)
             {
 
                 string textureName = gunPlayer.RightHandItem.Name.ToString().Replace("_", "");
@@ -194,7 +264,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 spriteBatch.Draw(rightHandTexture, drawPosition, null, drawColor, 0f, rightHandDrawOrigin, scale, SpriteEffects.None, 0);
             }
 
-            if (gunPlayer.LeftHand != -1 || gunPlayer.RightHand != -1)
+            if (!gunPlayer.LeftHand.IsAir || !gunPlayer.RightHand.IsAir)
                 return false;
             return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
         }
@@ -205,6 +275,4 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             return new Vector2(-2, 0);
         }
     }
-
-
 }

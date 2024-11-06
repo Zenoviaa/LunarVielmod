@@ -6892,6 +6892,7 @@ GunHolster: {
 		'''
 		Allows you to use two smaller guns at the same time
 		Right click to use your other gun
+		Right click the item in your inventory to open the holster UI
 		'''
 }
 

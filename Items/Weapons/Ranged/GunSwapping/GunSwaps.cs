@@ -25,12 +25,8 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         {
             Item.width = 24;
             Item.height = 24;
-            Item.useTime = 36;
-            Item.useAnimation = 36;
-            Item.useStyle = ItemUseStyleID.HoldUp;
             Item.DamageType = DamageClass.Ranged;
             Item.rare = ItemRarityID.Blue;
-            Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/GallinLock2");
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -42,16 +38,21 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             };
             tooltips.Add(line);
 
+
+            Color tooltipColor = Color.Gray;
             if (IsSpecial)
             {
      
-                line = new TooltipLine(Mod, "LeftHanded", "Use to equip to your gun holster's left hand!");
+                line = new TooltipLine(Mod, "LeftHanded", "Equip to your gun holster's left hand!");
+                line.OverrideColor = tooltipColor;
                 tooltips.Add(line);
-                line = new TooltipLine(Mod, "RightHanded", "OR right click to equip to your gun holster's right hand!");
+                line = new TooltipLine(Mod, "RightHanded", "OR equip to your gun holster's right hand!");
+                line.OverrideColor = tooltipColor;
                 tooltips.Add(line);
                 if (TwoHands)
                 {
                     line = new TooltipLine(Mod, "BothHanded", "Can be in both hands at the same time!");
+                    line.OverrideColor = tooltipColor;
                     tooltips.Add(line);
                 }
             }
@@ -60,12 +61,14 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
     
                 if (LeftHand)
                 {
-                    line = new TooltipLine(Mod, "LeftHanded", "Use to equip to your gun holster's left hand!");
+                    line = new TooltipLine(Mod, "LeftHanded", "Equip to your gun holster's left hand!");
+                    line.OverrideColor = tooltipColor;
                     tooltips.Add(line);
                 }
                 if (RightHand )
                 {
-                    line = new TooltipLine(Mod, "RightHanded", "Use to equip to your gun holster's right hand!");
+                    line = new TooltipLine(Mod, "RightHanded", "Equip to your gun holster's right hand!");
+                    line.OverrideColor = tooltipColor;
                     tooltips.Add(line);
                 }
             }
@@ -85,56 +88,6 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 tooltips.Add(line);
             }
            
-        }
-
-        public override bool AltFunctionUse(Player player)
-        {
-            return IsSpecial;
-        }
-
-        public override bool? UseItem(Player player)
-        {
-            GunPlayer gunPlayer = player.GetModPlayer<GunPlayer>();
-            if (IsSpecial)
-            {
-                if(player.altFunctionUse == 2)
-                {
-                    if (gunPlayer.LeftHand == Type && !TwoHands)
-                        gunPlayer.LeftHand = -1;
-                    gunPlayer.RightHand = Type;
-                }
-                else
-                {
-                    if (gunPlayer.RightHand == Type && !TwoHands)
-                        gunPlayer.RightHand = -1;
-                    gunPlayer.LeftHand = Type;
-                }
-            }
-            else
-            {
-                if (LeftHand)
-                {
-                    gunPlayer.LeftHand = Type;
-                }
-
-                if (RightHand)
-                {
-                    gunPlayer.RightHand = Type;
-                }
-            }
-
-            //Remember to code this slightly differently for the special sirestias one that can go on both hands
-            //Actually you could just make it right clickable lol, left click for primary hand, right click for secondary hand
-            //Don't allow more than one of course
-
-            //Left-Handed Pulsing
-            //Left-Handed Eagle
-            //L
-            //Right-Handed Burn Blast
-            //Right-Handed Poison Pistol
-            //Right-Handed Cannon
-            //Right-Handed Rocket Launcher
-            return base.UseItem(player);
         }
 
         public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)

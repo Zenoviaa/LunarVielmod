@@ -82,6 +82,13 @@ namespace Stellamod.Items
             spriteBatch.Draw(iconTexture, drawPosition, null, drawColor, 0f, drawOrigin, 0.5f, SpriteEffects.None, 0);
         }
 
+        public void SwapDamageType()
+        {
+            IsSwapped = true;
+            Item.DamageType = AlternateClass;
+            SetClassSwappedDefaults();
+        }
+
         public virtual void SetClassSwappedDefaults()
         {
 
