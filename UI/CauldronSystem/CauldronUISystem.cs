@@ -45,6 +45,7 @@ namespace Stellamod.UI.CauldronSystem
                 _cauldronInterface.Update(gameTime);
             }
         }
+
         internal void ToggleUI()
         {
             if (_cauldronInterface.CurrentState != null)
