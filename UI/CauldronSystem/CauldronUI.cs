@@ -14,8 +14,8 @@ namespace Stellamod.UI.CauldronSystem
         internal const int width = 480;
         internal const int height = 155;
 
-        internal int RelativeLeft => 470 + 108;
-        internal int RelativeTop => 0 + 12;
+        internal int RelativeLeft => 32;
+        internal int RelativeTop => 0 + 256;
 
         public override void OnInitialize()
         {

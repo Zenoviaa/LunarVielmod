@@ -25,16 +25,15 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             ProjectileID.Sets.TrailCacheLength[Type] = 32;
             ProjectileID.Sets.TrailingMode[Type] = 2;
         }
-
         public override void SetDefaults()
         {
             base.SetDefaults();
             Projectile.width = 16;
             Projectile.height = 16;
+            Projectile.tileCollide = false;
             Projectile.penetrate = -1;
             Projectile.hostile = true;
-            Projectile.timeLeft = 180;
-            Projectile.tileCollide = false;
+            Projectile.timeLeft = 60;
         }
 
         public override void AI()
@@ -47,7 +46,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 soundStyle.PitchVariance = 0.15f;
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
 
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 16; i++)
                 {
                     Dust.NewDustPerfect(Projectile.Center, DustID.GoldCoin, Main.rand.NextVector2Circular(8, 8));
                 }
@@ -58,8 +57,13 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 Lightning.RandomPositions(Projectile.oldPos);
             }
 
-            Lightning.WidthMultiplier = 2;
-            Lightning.SetBoltDefaults();
+            Player player = PlayerHelper.FindClosestPlayer(Projectile.position, float.MaxValue);
+            if (player != null)
+            {
+                Vector2 dirToNpc = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+                Projectile.velocity += dirToNpc * 0.05f;
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, degreesToRotate: 1f);
+            }
 
             for (int i = 1; i < Projectile.oldPos.Length; i++)
             {
@@ -73,6 +77,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             }
         }
 
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             return ProjectileHelper.OldPosColliding(Projectile.oldPos, projHitbox, targetHitbox, lineWidth: 2);
@@ -82,22 +87,16 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             Lightning.WidthMultiplier = 1f;
-            for (int i = 0; i < Lightning.Trails.Length; i++)
-            {
-                var trail = Lightning.Trails[i];
-                trail.PrimaryColor = Color.Yellow;
-                trail.NoiseColor = Color.DarkGoldenrod;
-            }
+            Lightning.SetBoltDefaults();
             Lightning.Draw(spriteBatch, Projectile.oldPos, Projectile.oldRot);
 
-
-            Lightning.WidthMultiplier = 0.5f;
             for (int i = 0; i < Lightning.Trails.Length; i++)
             {
                 var trail = Lightning.Trails[i];
                 trail.PrimaryColor = Color.Black;
                 trail.NoiseColor = Color.Black;
             }
+            Lightning.WidthMultiplier = 0.5f;
             Lightning.DrawAlpha(spriteBatch, Projectile.oldPos, Projectile.oldRot);
             return false;
         }
@@ -111,8 +110,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 {
                     Vector2 prevPoint = Projectile.oldPos[i - 1];
                     Vector2 currentPoint = Projectile.oldPos[i];
-                    Vector2 vel = prevPoint - currentPoint;
-                    vel *= 0.3f;
+                    Vector2 vel = currentPoint - prevPoint;
                     Dust.NewDustPerfect(prevPoint, DustID.GoldCoin, vel, Scale: 1);
                 }
 
