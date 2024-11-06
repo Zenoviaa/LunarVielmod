@@ -1,15 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Items.Weapons.Ranged.GunSwapping;
+using Stellamod.Items.Flasks;
 using System;
 using Terraria;
 using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace Stellamod.UI.GunHolsterSystem
+namespace Stellamod.UI.XixianFlaskSystem
 {
-    internal class GunHolsterLeftSlot : UIElement
+    internal class XixianFlaskSlot : UIElement
     {
         private Item _prevItem;
         private readonly int _context;
@@ -22,13 +22,13 @@ namespace Stellamod.UI.GunHolsterSystem
 
         private int timer = 0;
 
-        internal GunHolsterLeftSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
+        internal XixianFlaskSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
         {
             _context = context;
             _scale = scale;
 
             var asset = ModContent.Request<Texture2D>(
-                $"{GunHolsterUISystem.RootTexturePath}LeftSlot", ReLogic.Content.AssetRequestMode.ImmediateLoad);
+                $"{XixianFlaskUISystem.RootTexturePath}FlaskSlot", ReLogic.Content.AssetRequestMode.ImmediateLoad);
 
             Width.Set(asset.Width() * scale, 0f);
             Height.Set(asset.Height() * scale, 0f);
@@ -39,10 +39,9 @@ namespace Stellamod.UI.GunHolsterSystem
         /// </summary>
         internal bool Valid(Item item)
         {
-            if (item.ModItem is MiniGun miniGun)
+            if (item.ModItem is BaseInsource miniGun)
             {
-                if (miniGun.LeftHand || miniGun.TwoHands)
-                    return true;
+                return true;
             }
             if (item.IsAir)
                 return true;
@@ -62,14 +61,14 @@ namespace Stellamod.UI.GunHolsterSystem
 
         private void GetHand()
         {
-            GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
-            Item = gunPlayer.LeftHand.Clone();
+            FlaskPlayer flaskPlayer = Main.LocalPlayer.GetModPlayer<FlaskPlayer>();
+            Item = flaskPlayer.Insource.Clone();
         }
 
         private void UpdateHand()
         {
-            GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
-            gunPlayer.LeftHand = Item.Clone();
+            FlaskPlayer flaskPlayer = Main.LocalPlayer.GetModPlayer<FlaskPlayer>();
+            flaskPlayer.Insource = Item.Clone();
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -92,12 +91,12 @@ namespace Stellamod.UI.GunHolsterSystem
             Color color2 = Main.inventoryBack;
             Vector2 pos = rectangle.TopLeft();
 
-            Texture2D backingTexture = ModContent.Request<Texture2D>($"{GunHolsterUISystem.RootTexturePath}LeftSlot").Value;
+            Texture2D backingTexture = ModContent.Request<Texture2D>($"{XixianFlaskUISystem.RootTexturePath}FlaskSlot").Value;
             int offset = (int)(backingTexture.Size().Y / 2);
             Vector2 centerPos = pos + rectangle.Size() / 2f;
             spriteBatch.Draw(backingTexture, rectangle.TopLeft(), null, color2, 0f, default(Vector2), _scale, SpriteEffects.None, 0f);
 
-            ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale * 2f, 32, Color.White);
+            ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale, 32, Color.White);
 
             //ItemSlot.Draw(spriteBatch, ref Item, _context, centerPos);
             if (contains && Item.IsAir)

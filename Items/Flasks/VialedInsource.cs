@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Flasks
 {
-    public class VialedInsource : ModItem
+    public class VialedInsource : BaseInsource
     {
         public override void SetStaticDefaults()
         {
@@ -35,44 +35,14 @@ namespace Stellamod.Items.Flasks
 
         public override void SetDefaults()
         {
-
-            Item.useTime = 17;
-            Item.useAnimation = 17;
-            Item.maxStack = 1;
-            Item.useStyle = ItemUseStyleID.DrinkLong;
-            Item.value = Item.buyPrice(0, 3, 3, 40);
-            Item.rare = ItemRarityID.Green;
-            Item.consumable = false;
-            Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/GallinLock2");
-
+            base.SetDefaults();
+            InsourcePotionSickness = 1200;
+            InsourceCannotUseDuration = 1200;
         }
 
-
-        public override bool? UseItem(Player player)
+        public override void TriggerEffect(Player player)
         {
-            FlaskPlayer FlaskPlayer = player.GetModPlayer<FlaskPlayer>();
-            if (FlaskPlayer.hasVialedInsource)
-            {
-                FlaskPlayer.hasVialedInsource = false;
-
-                return true;
-            }
-            if (!FlaskPlayer.hasVialedInsource)
-            {
-                FlaskPlayer.hasVialedInsource = true;
-                FlaskPlayer.hasVitalityInsource = false;
-                FlaskPlayer.hasFloweredInsource = false;
-                FlaskPlayer.hasHealthyInsource = false;
-                FlaskPlayer.hasEpsidonInsource = false;
-
-                Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, player.velocity * -1f,
-                ModContent.ProjectileType<VialedInsourceProj>(), 0, 1f, player.whoAmI);
-
-
-                return true;
-            }
-
-            return true;
+            player.AddBuff(ModContent.BuffType<VialedUp>(), 600);
         }
 
         public override void AddRecipes()
@@ -86,6 +56,5 @@ namespace Stellamod.Items.Flasks
             recipe.AddTile(ModContent.TileType<AlcaologyTable>());
             recipe.Register();
         }
-
     }
 }

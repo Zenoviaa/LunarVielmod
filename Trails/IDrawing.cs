@@ -44,6 +44,9 @@ namespace Stellamod.Trails
         {
             return TextureAssets.Projectile[projectile.type].Value.Frame(1, Main.projFrames[projectile.type], 0, projectile.frame);
         }
-
+        public static Rectangle Frame(this Projectile projectile, Texture2D overrideTexture)
+        {
+            return overrideTexture.Frame(1, Main.projFrames[projectile.type], 0, projectile.frame);
+        }
     }
 }

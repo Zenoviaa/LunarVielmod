@@ -139,6 +139,7 @@ namespace Stellamod.Items
             IsSwapped = _preReforgeSwapped;
             if (IsSwapped)
             {
+                Item.DamageType = AlternateClass;
                 SetClassSwappedDefaults();
             }
         }
