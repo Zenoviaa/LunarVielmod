@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
+using Stellamod.Items.Ores;
 using Stellamod.UI.CauldronSystem;
 using System;
 using System.Collections.Generic;
@@ -200,9 +202,32 @@ namespace Stellamod.NPCs.Town
         {
             _frame = 0;
             Animation = AnimationState.Brew;
-            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/CauldronCraft");
-            soundStyle.PitchVariance = 0.15f;
-            SoundEngine.PlaySound(soundStyle, NPC.position);
+            if(brew.result != -1)
+            {
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/CauldronCraft");
+                soundStyle.PitchVariance = 0.15f;
+                SoundEngine.PlaySound(soundStyle, NPC.position);
+            }
+            if(brew.result == -1)
+            {
+                //Womp Womp Basically
+                int combatText = CombatText.NewText(NPC.getRect(), Color.Gray, "Better luck next time!", true);
+                CombatText numText = Main.combatText[combatText];
+                numText.lifeTime = 120;
+
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/CauldronCraft");
+                soundStyle.PitchVariance = 0.15f;
+                soundStyle.Pitch = -1f;
+                SoundEngine.PlaySound(soundStyle, NPC.position);
+            }
+            if(brew.result == ModContent.ItemType<KaleidoscopicInk>())
+            {
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/CauldronCraft");
+                soundStyle.PitchVariance = 0.15f;
+                soundStyle.Pitch = 1f;
+                SoundEngine.PlaySound(soundStyle, NPC.position);
+            }
+
         }
     }
 }

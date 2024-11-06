@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -86,9 +87,8 @@ namespace Stellamod.UI.CauldronSystem
         public bool CanCraft()
         {
             Cauldron cauldron = ModContent.GetInstance<Cauldron>();
-            Item mold = cauldronUIState.cauldronUI.moldSlot.Item;
             Item material = cauldronUIState.cauldronUI.materialSlot.Item;
-            return cauldron.CanBrewSomething(mold, material);
+            return material.stack >= 10;
         }
 
         public void Craft()
@@ -97,13 +97,15 @@ namespace Stellamod.UI.CauldronSystem
 
             Item mold = cauldronUIState.cauldronUI.moldSlot.Item;
             Item material = cauldronUIState.cauldronUI.materialSlot.Item;
-            int result = cauldron.Craft(mold, material);
-            if (result == -1)
+            var result = cauldron.Craft(mold, material);
+            if (result.result == -1)
                 return;
 
             //Add the result to the inventory
             Player player = Main.LocalPlayer;
-            player.QuickSpawnItem(player.GetSource_FromThis(), result);
+            int item = player.QuickSpawnItem(player.GetSource_FromThis(), result.result, result.yield);
+            
+
             if (mold.IsAir)
             {
                 cauldronUIState.cauldronUI.moldSlot.Item = new Item();

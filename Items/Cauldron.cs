@@ -1,5 +1,6 @@
 ﻿using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Summon.Orbs;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,20 @@ using Terraria.Utilities;
 
 namespace Stellamod.Items
 {
+    internal class CauldronPlayer : ModPlayer
+    {
+        public float NothingFailChance;
+        public float InkFailChance;
+
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+
+            //So I'm thinking we just have these variables
+            NothingFailChance = 5;
+            InkFailChance = 25;
+        }
+    }
     internal class CauldronBrew
     {
         public int result;
@@ -19,11 +34,32 @@ namespace Stellamod.Items
         public int material;
         public int materialAmount;
         public float weight = 1.0f;
+        public int yield = 1;
     }
 
     internal class Cauldron : ModSystem
     {
         private List<CauldronBrew> _brews;
+        public CauldronBrew InkBrew
+        {
+            get
+            {
+                CauldronBrew brew = new CauldronBrew();
+                brew.result = ModContent.ItemType<KaleidoscopicInk>();
+                return brew;
+            }
+        }
+
+        public CauldronBrew NothingBrew
+        {
+            get
+            {
+                CauldronBrew brew = new CauldronBrew();
+                brew.result = -1;
+                return brew;
+            }
+        }
+
         public static event Action<CauldronBrew> OnBrew;
         public override void PostAddRecipes()
         {
@@ -38,10 +74,11 @@ namespace Stellamod.Items
                 mold: ModContent.ItemType<BlankOrb>(),
                 material: ModContent.ItemType<AuroreanStarI>(),
                 materialCount: 10,
-                weight: 1.0f);
+                weight: 1.0f,
+                yield: 1);
         }
 
-        private void AddBrew(int result, int mold, int material, int materialCount, float weight = 1.0f)
+        private void AddBrew(int result, int mold, int material, int materialCount, float weight = 1.0f, int yield = 1)
         {
             CauldronBrew brew = new CauldronBrew
             {
@@ -49,7 +86,8 @@ namespace Stellamod.Items
                 mold = mold,
                 material = material,
                 materialAmount = materialCount,
-                weight = weight
+                weight = weight,
+                yield = yield
             };
 
             _brews.Add(brew);
@@ -59,6 +97,12 @@ namespace Stellamod.Items
         {
             List<CauldronBrew> possibleBrews = _brews.Where
                 (x => x.mold == mold && x.material == material && materialCount >= x.materialAmount).ToList();
+            return possibleBrews;
+        }
+        private List<CauldronBrew> GetPossibleBrews(int material, int materialCount)
+        {
+            List<CauldronBrew> possibleBrews = _brews.Where
+                (x => x.material == material && materialCount >= x.materialAmount).ToList();
             return possibleBrews;
         }
 
@@ -86,12 +130,26 @@ namespace Stellamod.Items
             return GetPossibleBrews(mold, material, materialCount).Any();
         }
 
-        public int Craft(Item mold, Item material)
+        public CauldronBrew Craft(Item mold, Item material)
         {
             //Get all possible crafts
-            List<CauldronBrew> possibleBrews = GetPossibleBrews(mold.type, material.type, material.stack);
+            List<CauldronBrew> possibleBrews;
+            if (mold.IsAir)
+            {
+                //No mold, get something random
+                possibleBrews = GetPossibleBrews(material.type, material.stack);
+            }
+            else
+            {
+                possibleBrews = GetPossibleBrews(mold.type, material.type, material.stack);
+            }
+
             if (possibleBrews.Count == 0)
-                return -1;
+            {
+                OnBrew?.Invoke(NothingBrew);
+                return NothingBrew;
+            }
+
             WeightedRandom<CauldronBrew> random = new WeightedRandom<CauldronBrew>();
             for (int i = 0; i < possibleBrews.Count; i++)
             {
@@ -102,8 +160,25 @@ namespace Stellamod.Items
             CauldronBrew result = random;
             mold.stack -= 1;
             material.stack -= result.materialAmount;
+
+
+
+
+            CauldronPlayer cauldronPlayer = Main.LocalPlayer.GetModPlayer<CauldronPlayer>();
+            bool getNothingFailed = Main.rand.NextFloat(0, 100) <= cauldronPlayer.NothingFailChance;
+            bool inkFailed = Main.rand.NextFloat(0, 100) <= cauldronPlayer.InkFailChance;
+
+            if (getNothingFailed)
+            {
+                result = NothingBrew;
+            } 
+            else if (inkFailed)
+            {
+                result = InkBrew;
+            }
+
             OnBrew?.Invoke(result);
-            return result.result;
+            return result;
         }
 
         public int Craft(int mold, int material, int materialCount)

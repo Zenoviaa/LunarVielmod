@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -50,7 +51,11 @@ namespace Stellamod.UI.CauldronSystem
             {
                 textureToDraw = ModContent.Request<Texture2D>($"{CauldronUISystem.RootTexturePath}CauldronPot").Value;
             }
-
+            bool contains = ContainsPoint(Main.MouseScreen);
+            if (contains && !PlayerInput.IgnoreMouseInterface)
+            {
+                Main.LocalPlayer.mouseInterface = true;
+            }
             Color drawColor = Color.White;
             CauldronUISystem uiSystem = ModContent.GetInstance<CauldronUISystem>();
 
