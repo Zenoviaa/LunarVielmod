@@ -29,7 +29,6 @@ namespace Stellamod.UI.CollectionSystem
             BorderColor = Color.Transparent;
 
             book = new Book();
-            book.IgnoresMouseInteraction = true;
             Append(book);
 
             questTab = new QuestTab();
