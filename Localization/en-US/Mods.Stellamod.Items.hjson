@@ -4389,7 +4389,7 @@ GremoryExtenderPowder: {
 
 MushyExtenderPowder: {
 	DisplayName: Mushy Extender Powder
-	Tooltip: Sets powder range to an increase of 180%
+	Tooltip: Sets powder range to an increase of 110%
 }
 
 TomedDustingFlames: {

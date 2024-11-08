@@ -50,15 +50,5 @@ namespace Stellamod.Items.Accessories.Brooches
 			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
 			broochPlayer.KeepBroochAlive<AmethystBrooch, AmethystBroo>(ref broochPlayer.hasAmethystBrooch);
 		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 30);
-			recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
-			recipe.AddIngredient(ItemID.Amethyst, 15);
-			recipe.AddTile(ModContent.TileType<BroochesTable>());
-			recipe.Register();
-		}
 	}
 }

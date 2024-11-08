@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 10;
+            Item.damage = 5;
             Item.mana = 0;
         }
         public int AttackCounter = 1;
@@ -58,7 +58,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
         }
         public override void SetDefaults()
         {
-            Item.damage = 20;
+            Item.damage = 10;
             Item.DamageType = DamageClass.Melee;
             Item.width = 0;
             Item.height = 0;

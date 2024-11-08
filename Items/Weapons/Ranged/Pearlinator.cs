@@ -65,21 +65,10 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 			return new Vector2(0f, -2f);
 		}
+
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
 		{
-
 			type = Main.rand.Next(new int[] { type, ModContent.ProjectileType<Flameball2>() });
 		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 9);
-			recipe.AddIngredient(ItemID.LifeCrystal, 1);
-
-			recipe.Register();
-		}
-
 	}
 }

@@ -55,7 +55,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
 			// Weapon Properties
 			Item.DamageType = DamageClass.Ranged;
-			Item.damage = 32;
+			Item.damage = 18;
 			Item.knockBack = 5f;
 			Item.noMelee = true;
 			Item.crit = 25;
@@ -69,17 +69,6 @@ namespace Stellamod.Items.Weapons.Ranged
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(2f, -2f);
-		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();		
-			recipe.AddIngredient(ModContent.ItemType<ViolinStick>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 15);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
 		}
 	}
 }

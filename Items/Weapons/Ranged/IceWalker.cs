@@ -41,15 +41,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.consumeAmmoOnLastShotOnly = true;
             Item.noMelee = true;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.BorealWood, 8);
-            recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 12);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
-        
+
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-2f, 0f);

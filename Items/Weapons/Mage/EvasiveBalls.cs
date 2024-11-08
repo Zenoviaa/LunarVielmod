@@ -43,17 +43,6 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.crit = 12;
 			Item.noUseGraphic = true;
 		}
-		
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 2);
-			recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 2);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 20);
-		}
 	}
 }
 

@@ -57,13 +57,5 @@ namespace Stellamod.Items.Weapons.Melee
 			// 60 frames = 1 second
 			target.AddBuff(BuffID.OnFire, 20);
 		}
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 12);
-			recipe.Register();
-		}
 	}
 }

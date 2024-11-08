@@ -70,17 +70,6 @@ namespace Stellamod.Items.Weapons.Igniters
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<FrileOre>(), 21);
-			recipe.AddIngredient(ItemID.FallenStar, 3);
-			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<BlankCard>(), 1);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
-		}
-
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
 		{
 			Player player = Main.player[Main.myPlayer];

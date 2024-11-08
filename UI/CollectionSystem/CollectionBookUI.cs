@@ -16,7 +16,7 @@ namespace Stellamod.UI.CollectionSystem
         public CollectionTab collectionTab;
 
         internal int RelativeLeft => Main.screenWidth / 2 - width / 2;
-        internal int RelativeTop => Main.screenHeight / 2 - height / 2 - 64;
+        internal int RelativeTop => Main.screenHeight / 2 - height / 2 + 128;
 
         public override void OnInitialize()
         {

@@ -55,14 +55,6 @@ namespace Stellamod.Items.Weapons.Summon
             Item.shoot = ModContent.ProjectileType<IvyakenMinionProj>();
         }
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 9);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
-		}
-
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
             // This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies

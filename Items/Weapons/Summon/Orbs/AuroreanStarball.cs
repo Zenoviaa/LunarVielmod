@@ -79,16 +79,5 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
 
             return false;
         }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe(1)
-                 .AddIngredient(ModContent.ItemType<BlankOrb>(), 1)
-                 .AddIngredient(ModContent.ItemType<AuroreanStarI>(), 100)
-                 .AddIngredient(ModContent.ItemType<StarSilk>(), 15)
-                 .AddTile(TileID.Anvils)
-                 .Register();
-
-        }
     }
 }

@@ -54,13 +54,5 @@ namespace Stellamod.Items.Weapons.Melee.Shields
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
             return false;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Wood, 10);
-            recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 5);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
-        }
     }
 }

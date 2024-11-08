@@ -19,14 +19,10 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.damage = 20;
         
         }
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Cactius"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-        }
 
         public override void SetDefaults()
         {
-            Item.damage = 23;
+            Item.damage = 10;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 40;
             Item.noUseGraphic = true;
@@ -43,8 +39,6 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shoot = ModContent.ProjectileType<HornetLob>();
             Item.shootSpeed = 14f;
             Item.rare = ItemRarityID.Blue;
-        }
-
-      
+        }   
     }
 }

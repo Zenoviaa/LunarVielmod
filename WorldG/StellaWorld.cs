@@ -34,6 +34,7 @@ using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
 using Stellamod.Tiles.Illuria;
+using Stellamod.WorldG.StructureManager;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -1035,9 +1036,9 @@ namespace Stellamod.WorldG
 				{
 					Point Loc = new Point(smx, smy + 18);
                     Point Loc22 = new Point(smx, smy + 58);
-                    string path = "Struct/Overworld/XixVillage";
-                    int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
-					StructureLoader.ProtectStructure(Loc, path);
+                    string path = "Struct/Overworld/WitchTown";
+                    int[] ChestIndexs = Structurizer.ReadStruct(Loc, path);
+                    Structurizer.ProtectStructure(Loc, path);
                     NPCs.Town.AlcadSpawnSystem.LittleWitchTownTile = Loc;
 					foreach (int chestIndex in ChestIndexs)
 					{

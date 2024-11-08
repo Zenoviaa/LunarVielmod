@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -9,7 +8,6 @@ namespace Stellamod.Items.Weapons.Melee
 {
     public class WoodenSaber : ClassSwapItem
     {
-
         public override DamageClass AlternateClass => DamageClass.Ranged;
 
         public override void SetClassSwappedDefaults()
@@ -17,6 +15,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.damage = 4;
             Item.mana = 0;
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Ivyen Saber");
@@ -38,17 +37,9 @@ namespace Stellamod.Items.Weapons.Melee
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
             Item.useTurn = true;
-
             Item.DamageType = DamageClass.Melee;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 4);
-            recipe.AddIngredient(ItemID.Wood, 15);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
-        }
+
         public override void MeleeEffects(Player player, Rectangle hitbox)
         {
             if (Main.rand.NextBool(3))
@@ -57,6 +48,7 @@ namespace Stellamod.Items.Weapons.Melee
                 Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.Plantera_Green);
             }
         }
+
         public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (Main.rand.NextBool(5))
