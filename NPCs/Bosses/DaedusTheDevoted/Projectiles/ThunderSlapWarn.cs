@@ -11,6 +11,8 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria;
 using Terraria.ModLoader;
+using Stellamod.Gores;
+using Stellamod.Projectiles.Visual;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
@@ -44,8 +46,6 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             base.AI();
             Timer++;
 
-            float targetBeamLength = 2400;
-            BeamLength = targetBeamLength;
             if (Timer == 1)
             {
                 //Sound Effect Goooo
@@ -53,6 +53,16 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 lightningSoundStyle.PitchVariance = 0.1f;
                 SoundEngine.PlaySound(lightningSoundStyle, Projectile.position);
             }
+
+            if (Timer == 1)
+            {
+                Player targetPlayer = PlayerHelper.FindClosestPlayer(Projectile.position, 1680);
+                float offset = ProjectileHelper.PerformBeamHitscan(targetPlayer.Bottom - Vector2.UnitY, -Vector2.UnitY, 2400);
+                Projectile.position = targetPlayer.Bottom + new Vector2(0, -offset * 0.7f);
+            }
+
+            float targetBeamLength = ProjectileHelper.PerformBeamHitscan(Projectile.position, Vector2.UnitY, 2400);
+            BeamLength = targetBeamLength;
 
             //Setup lightning stuff
             //Should make it scale in/out

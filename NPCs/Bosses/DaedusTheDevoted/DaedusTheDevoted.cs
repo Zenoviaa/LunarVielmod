@@ -42,12 +42,15 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
 
     internal class DaedusTopSegment : BaseDaedusSegment
     {
-        public DaedusTopSegment(NPC npc) : base(npc) { }
+        public DaedusTopSegment(NPC npc) : base(npc)
+        {
+
+        }
+
         public Rectangle AnimationFrame { get; set; }
         public override void AI()
         {
             base.AI();
-            Texture2D texture = ModContent.Request<Texture2D>(BaseTexturePath + "DaedusTop").Value;
             frameCounter += 0.5f;
             if (frameCounter >= 1f)
             {
@@ -57,18 +60,16 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                 {
                     frame = 0;
                 }
-            }
-
-            AnimationFrame = texture.GetFrame(frame, totalFrameCount: 60);
+            }    
         }
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(BaseTexturePath + "DaedusTop").Value;
+            Rectangle animationFrame = texture.GetFrame(frame, totalFrameCount: 60);
             Vector2 drawPos = NPC.Center - screenPos;
-
-            Vector2 drawOrigin = AnimationFrame.Size() / 2f;
-            spriteBatch.Draw(texture, drawPos, AnimationFrame, drawColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0f);
+            Vector2 drawOrigin = animationFrame.Size() / 2f;
+            spriteBatch.Draw(texture, drawPos, animationFrame, drawColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0f);
         }
     }
 
@@ -80,10 +81,12 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             Smile,
             Scared
         }
-
-        public DaedusFaceSegment(NPC npc) : base(npc) { Animation = AnimationState.Smile; }
+        public DaedusFaceSegment(NPC npc) : base(npc) 
+        { 
+            Animation = AnimationState.Smile;
+  
+        }
         public AnimationState Animation { get; set; }
-        public Rectangle AnimationFrame { get; set; }
         public bool Glow { get; set; }
         public float GlowTimer { get; set; }
 
@@ -110,7 +113,6 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
         public override void AI()
         {
             base.AI();
-            Texture2D texture = ModContent.Request<Texture2D>(BaseTexturePath + "DaedusFace").Value;
             frameCounter += 0.35f;
             if (frameCounter >= 1f)
             {
@@ -139,7 +141,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                     break;
             }
 
-            AnimationFrame = texture.GetFrame(frame, totalFrameCount: 6);
+
             if (Glow)
             {
                 GlowTimer = MathHelper.Lerp(GlowTimer, 1f, 0.01f);
@@ -154,11 +156,10 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
         public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(BaseTexturePath + "DaedusFace").Value;
+            Rectangle animationFrame = texture.GetFrame(frame, totalFrameCount: 6);
             Vector2 drawPos = NPC.Center - screenPos;
-
-
-            Vector2 drawOrigin = AnimationFrame.Size() / 2f;
-            spriteBatch.Draw(texture, drawPos, AnimationFrame, drawColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0f);
+            Vector2 drawOrigin = animationFrame.Size() / 2f;
+            spriteBatch.Draw(texture, drawPos, animationFrame, drawColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0f);
 
             //Ok so we need some glowing huhh
             spriteBatch.End();
@@ -169,12 +170,12 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                 float rot = f * MathHelper.TwoPi;
                 Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(2f, 4f, speed: 3);
                 Vector2 glowDrawPos = drawPos + offset;
-                spriteBatch.Draw(texture, glowDrawPos, AnimationFrame, drawColor * GlowTimer, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0f);
+                spriteBatch.Draw(texture, glowDrawPos, animationFrame, drawColor * GlowTimer, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0f);
             }
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            spriteBatch.Draw(texture, drawPos, AnimationFrame, Color.Black * BlackTimer, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, drawPos, animationFrame, Color.Black * BlackTimer, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0f);
 
         }
     }
@@ -190,7 +191,12 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             Hold_Down
         }
 
-        public DaedusArmSegment(NPC npc) : base(npc) { Animation = AnimationState.Hold_Down; }
+
+        public DaedusArmSegment(NPC npc) : base(npc)  
+        { 
+            Animation = AnimationState.Hold_Down;
+        }
+
         public AnimationState Animation
         {
             get
@@ -213,7 +219,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                 _animationState = value;
             }
         }
-        public Rectangle AnimationFrame { get; set; }
+
         public bool Fast { get; set; }
 
         private bool CheckCurrentAnimation(params AnimationState[] animations)
@@ -230,7 +236,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
         public override void AI()
         {
             base.AI();
-            Texture2D texture = ModContent.Request<Texture2D>(BaseTexturePath + "DaedusArms").Value;
+      
             frameCounter += 0.5f;
             if (Fast)
             {
@@ -271,27 +277,28 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                     break;
             }
 
-            AnimationFrame = texture.GetFrame(frame, totalFrameCount: 17);
         }
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(BaseTexturePath + "DaedusArms").Value;
+            Rectangle animationFrame = texture.GetFrame(frame, totalFrameCount: 17);
             Vector2 drawPos = NPC.Center - screenPos;
-
-            Vector2 drawOrigin = AnimationFrame.Size() / 2f;
-            spriteBatch.Draw(texture, drawPos, AnimationFrame, drawColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0f);
+            Vector2 drawOrigin = animationFrame.Size() / 2f;
+            spriteBatch.Draw(texture, drawPos, animationFrame, drawColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0f);
         }
     }
 
     internal class DaedusBackSegment : BaseDaedusSegment
     {
-        public DaedusBackSegment(NPC npc) : base(npc) { }
-        public Rectangle AnimationFrame { get; set; }
+        public DaedusBackSegment(NPC npc) : base(npc)
+        {
+       
+        }
+
         public override void AI()
         {
             base.AI();
-            Texture2D texture = ModContent.Request<Texture2D>(BaseTexturePath + "DaedusBack").Value;
             frameCounter += 0.5f;
             if (frameCounter >= 1f)
             {
@@ -301,16 +308,14 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                     frame = 0;
                 }
             }
-
-            AnimationFrame = texture.GetFrame(frame, totalFrameCount: 60);
         }
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(BaseTexturePath + "DaedusBack").Value;
+            Rectangle animationFrame = texture.GetFrame(frame, totalFrameCount: 60);
             Vector2 drawPos = NPC.Center - screenPos;
-
-            Vector2 drawOrigin = AnimationFrame.Size() / 2f;
+            Vector2 drawOrigin = animationFrame.Size() / 2f;
             //Ok so we need some glowing huhh
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -321,18 +326,22 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                 float rot = f * MathHelper.TwoPi;
                 Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(4f, 8f, speed: 3);
                 Vector2 glowDrawPos = drawPos + offset;
-                spriteBatch.Draw(texture, glowDrawPos, AnimationFrame, drawColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0f);
+                spriteBatch.Draw(texture, glowDrawPos, animationFrame, drawColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0f);
             }
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            spriteBatch.Draw(texture, drawPos, AnimationFrame, drawColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, drawPos, animationFrame, drawColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0f);
         }
     }
 
     internal class DaedusRobeSegment : BaseDaedusSegment
     {
-        public DaedusRobeSegment(NPC npc) : base(npc) { }
+        public DaedusRobeSegment(NPC npc) : base(npc)
+        {
+        
+        }
+
         public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(BaseTexturePath + "DaedusRobe").Value;
@@ -413,14 +422,70 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
 
 
         //For Draw Code
-        public DaedusTopSegment TopSegment { get; set; }
-        public DaedusFaceSegment FaceSegment { get; set; }
-        public DaedusBackSegment BackSegment { get; set; }
-        public DaedusArmSegment ArmSegment { get; set; }
-        public DaedusRobeSegment RobeSegment { get; set; }
+        private DaedusTopSegment _topSegment;
+        private DaedusFaceSegment _faceSegment;
+        private DaedusBackSegment _backSegment;
+        private DaedusArmSegment _armSegment;
+        private DaedusRobeSegment _robeSegment;
+        public DaedusTopSegment TopSegment
+        {
+            get
+            {
+                _topSegment ??= new DaedusTopSegment(NPC);
+                return _topSegment;
+            }
+        }
+
+        public DaedusFaceSegment FaceSegment
+        {
+            get
+            {
+                _faceSegment ??= new DaedusFaceSegment(NPC);
+                return _faceSegment;
+            }
+        }
+
+        public DaedusBackSegment BackSegment
+        {
+            get
+            {
+                _backSegment ??= new DaedusBackSegment(NPC);
+                return _backSegment;
+            }
+        }
+
+        public DaedusArmSegment ArmSegment
+        {
+            get
+            {
+                _armSegment ??= new DaedusArmSegment(NPC);
+                return _armSegment;
+            }
+        }
+
+        public DaedusRobeSegment RobeSegment
+        {
+            get
+            {
+                _robeSegment ??= new DaedusRobeSegment(NPC);
+                return _robeSegment;
+            }
+        }
         public CommonLightning Lightning { get; set; } = new CommonLightning();
         public CommonLightning BlackLightning { get; set; } = new CommonLightning();
         public float LightningBallTimer { get; set; }
+
+        public Vector2 ArenaCenter { get; set; }
+
+        public bool Enraged
+        {
+            get
+            {
+                //Don't go outside the arena smh
+                float distanceToTarget = Vector2.Distance(ArenaCenter, Target.Center);
+                return distanceToTarget > 1440;
+            }
+        }
 
         //Damage Numbers
         private int LightningStrikeDamage => 21;
@@ -440,6 +505,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             writer.WriteVector2(TeleportTarget);
             writer.WriteVector2(BigTeleportTarget);
             writer.Write(Phase2Transition);
+            writer.WriteVector2(ArenaCenter);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
@@ -447,6 +513,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             TeleportTarget = reader.ReadVector2();
             BigTeleportTarget = reader.ReadVector2();
             Phase2Transition = reader.ReadBoolean();
+            ArenaCenter = reader.ReadVector2();
         }
 
         public override void SetStaticDefaults()
@@ -505,6 +572,8 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
         public override void AI()
         {
             base.AI();
+
+
             //Teleport Go!!!
             if(TeleportTarget != Vector2.Zero)
             {
@@ -588,19 +657,10 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             }
 
             //Animations
-            TopSegment ??= new DaedusTopSegment(NPC);
             TopSegment.AI();
-
-            FaceSegment ??= new DaedusFaceSegment(NPC);
             FaceSegment.AI();
-
-            BackSegment ??= new DaedusBackSegment(NPC);
             BackSegment.AI();
-
-            ArmSegment ??= new DaedusArmSegment(NPC);
             ArmSegment.AI();
-
-            RobeSegment ??= new DaedusRobeSegment(NPC);
             RobeSegment.AI();
 
             if(State == AIState.Death)
@@ -741,6 +801,9 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             //FAST
             if (InPhase2)
                 timeToWait = 30;
+            if (Enraged)
+                timeToWait = 0;
+
             if (Timer >= timeToWait)
             {
                 //How we choosing attack uhh, oh i know
