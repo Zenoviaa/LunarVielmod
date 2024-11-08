@@ -48,22 +48,7 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
             Item.value = Item.buyPrice(silver: 3);
             Item.noUseGraphic = true;
             Item.channel = true;
-       
-
+      
         }
-
-
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 10);
-            recipe.AddIngredient(ItemID.FrostDaggerfish, 10);
-            recipe.AddIngredient(ModContent.ItemType<BlankCrossbow>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<WoodenCrossbow>(), 1);
-            recipe.Register();
-        }
-
-
     }
 }

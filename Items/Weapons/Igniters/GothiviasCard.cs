@@ -19,7 +19,7 @@ namespace Stellamod.Items.Weapons.Igniters
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 6;
+            Item.damage = 3;
             Item.mana = 0;
         }
         public override void SetStaticDefaults()
@@ -30,7 +30,7 @@ namespace Stellamod.Items.Weapons.Igniters
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 12;
+			Item.damage = 6;
 			Item.mana = 3;
 			Item.width = 40;
 			Item.height = 40;

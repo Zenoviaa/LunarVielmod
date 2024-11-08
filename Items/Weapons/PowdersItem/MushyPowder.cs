@@ -29,6 +29,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
             /* Tooltip.SetDefault("Throw magical dust on them!" +
 				"\nA sparkly star dust that does double damage as the igniter!"); */
         }
+
         public override void SetDefaults()
         {
             Item.damage = 2;
@@ -49,18 +50,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
             Item.crit = 2;
             Item.UseSound = SoundID.Grass;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Mushroom, 12);
-            recipe.AddIngredient(ItemID.GlowingMushroom, 12);
-            recipe.AddIngredient(ModContent.ItemType<Morrowshroom>(), 12);
-            recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 50);
-            recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 
-            recipe.Register();
-        }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
 

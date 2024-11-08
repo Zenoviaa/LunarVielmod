@@ -94,7 +94,7 @@ namespace Stellamod.Projectiles.Crossbows.Sniper
             {
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 2, speedY, ModContent.ProjectileType<MorrowedCrossbowBolt>(), Projectile.damage * 5, 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 2, speedY, ModContent.ProjectileType<MorrowedCrossbowBolt>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
 			}
 
 

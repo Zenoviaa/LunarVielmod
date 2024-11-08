@@ -78,7 +78,7 @@ namespace Stellamod.UI.CollectionSystem
         public override string TextureAsset => "CollectionTab";
         protected override void Trigger(CollectionBookUISystem uiSystem)
         {
-            uiSystem.OpenCollectionUI();
+            uiSystem.OpenCollectionTabUI();
         }
     }
 
@@ -89,7 +89,7 @@ namespace Stellamod.UI.CollectionSystem
         public override string TextureAsset => "LoreTab";
         protected override void Trigger(CollectionBookUISystem uiSystem)
         {
-            uiSystem.OpenLoreUI();
+            uiSystem.OpenLoreTabUI();
         }
     }
 
@@ -100,7 +100,7 @@ namespace Stellamod.UI.CollectionSystem
         public override string TextureAsset => "QuestTab";
         protected override void Trigger(CollectionBookUISystem uiSystem)
         {
-            uiSystem.OpenQuestUI();
+            uiSystem.OpenQuestsTabUI();
         }
     }
 }

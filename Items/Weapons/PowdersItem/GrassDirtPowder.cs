@@ -46,17 +46,6 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/Lenabee");
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.DirtBlock, 15);
-			recipe.AddIngredient(ItemID.Leather, 3);
-			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 3);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
-		}
-
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 
@@ -65,6 +54,5 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Projectile.NewProjectile(source, position, velocity *= player.GetModPlayer<MyPlayer>().IgniterVelocity, type, damage, knockback, player.whoAmI);
 			return false;
 		}
-
 	}
 }

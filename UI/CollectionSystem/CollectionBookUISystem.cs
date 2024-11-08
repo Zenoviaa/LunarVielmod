@@ -14,22 +14,37 @@ namespace Stellamod.UI.CollectionSystem
         private UserInterface _userInterface;
         private UserInterface _hudUserInterface;
         private UserInterface _tabsUserInterface;
+        private UserInterface _rightInfoUserInterface;
         public static string RootTexturePath => "Stellamod/UI/CollectionSystem/";
 
         public CollectionBookUIState collectionBookUI;
         public CollectionBookIconUIState collectionBookIconUI;
+        public CollectionItemTabUIState collectionItemTabUI; 
+        public CollectionItemTabRecipeUIState collectionRecipeInfoUI;
         public override void OnModLoad()
         {
             base.OnModLoad();
             _userInterface = new UserInterface();
             _hudUserInterface = new UserInterface();
             _tabsUserInterface = new UserInterface();
+            _rightInfoUserInterface = new UserInterface();
 
             collectionBookUI = new CollectionBookUIState();
             collectionBookUI.Activate();
 
             collectionBookIconUI = new CollectionBookIconUIState();
             collectionBookIconUI.Activate();
+
+            collectionItemTabUI = new CollectionItemTabUIState();
+            collectionItemTabUI.Activate();
+
+            collectionRecipeInfoUI = new CollectionItemTabRecipeUIState();
+            collectionRecipeInfoUI.Activate();
+
+            _userInterface.SetState(null);
+            _hudUserInterface.SetState(null);
+            _tabsUserInterface.SetState(null);
+            _rightInfoUserInterface.SetState(null);
         }
 
         public override void UpdateUI(GameTime gameTime)
@@ -60,6 +75,15 @@ namespace Stellamod.UI.CollectionSystem
             if (_hudUserInterface?.CurrentState != null)
             {
                 _hudUserInterface.Update(gameTime);
+            }
+
+            if (_tabsUserInterface?.CurrentState != null)
+            {
+                _tabsUserInterface.Update(gameTime);
+            }
+            if (_rightInfoUserInterface?.CurrentState != null)
+            {
+                _rightInfoUserInterface.Update(gameTime);
             }
         }
 
@@ -92,6 +116,7 @@ namespace Stellamod.UI.CollectionSystem
         {
             _userInterface.SetState(null);
             _tabsUserInterface.SetState(null);
+            _rightInfoUserInterface.SetState(null);
         }
 
         internal void OpenHudUI()
@@ -104,21 +129,37 @@ namespace Stellamod.UI.CollectionSystem
             _hudUserInterface.SetState(null);
         }
 
-        internal void OpenCollectionUI()
+        internal void OpenCollectionTabUI()
+        {
+            _tabsUserInterface.SetState(collectionItemTabUI);
+        }
+
+        internal void OpenRecipesInfoUI(Item item)
+        {
+            collectionRecipeInfoUI.ui.Material = item;
+            collectionRecipeInfoUI.Recalculate();
+            _rightInfoUserInterface.SetState(collectionRecipeInfoUI);
+        }
+
+        internal void OpenQuestsTabUI()
         {
 
         }
 
-        internal void OpenQuestUI()
+        internal void OpenLoreTabUI()
         {
 
         }
 
-        internal void OpenLoreUI()
+        internal void CloseTabUI()
         {
-
+            _tabsUserInterface.SetState(null);
         }
 
+        internal void CloseRightUI()
+        {
+            _rightInfoUserInterface.SetState(null);
+        }
 
         public override void PreSaveAndQuit()
         {
@@ -152,6 +193,14 @@ namespace Stellamod.UI.CollectionSystem
                         if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)
                         {
                             _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                        }
+                        if (_lastUpdateUiGameTime != null && _tabsUserInterface?.CurrentState != null)
+                        {
+                            _tabsUserInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                        }
+                        if (_lastUpdateUiGameTime != null && _rightInfoUserInterface?.CurrentState != null)
+                        {
+                            _rightInfoUserInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
                         }
                         return true;
                     },

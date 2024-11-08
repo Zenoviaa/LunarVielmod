@@ -40,24 +40,13 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shootSpeed = 20f;
             Item.useAnimation = 18;
             Item.useTime = 19;
-            Item.consumable = true;
-            Item.maxStack = Item.CommonMaxStack;
+            Item.maxStack = 1;
             Item.UseSound = SoundID.Item1;
         }
 
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-3f, -2f);
-        }
-
-        public override void AddRecipes()
-        {
-            base.AddRecipes();
-            Recipe recipe = CreateRecipe(50);
-            recipe.AddIngredient(ItemID.Wood, 2);
-            recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 1);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
         }
     }
 }

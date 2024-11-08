@@ -48,14 +48,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.autoReuse = true;
 			Item.crit = 22;
 		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.FallenStar, 3);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
-			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 120);
-		}
+
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			Projectile.NewProjectile(source, Main.MouseWorld, Vector2.Zero, type, damage, knockback, player.whoAmI, 0f, 0f);

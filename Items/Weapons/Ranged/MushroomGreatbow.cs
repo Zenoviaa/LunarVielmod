@@ -14,9 +14,7 @@ namespace Stellamod.Items.Weapons.Ranged
 {
     public class MushroomGreatbow : ClassSwapItem
     {
-
         public override DamageClass AlternateClass => DamageClass.Ranged;
-
         public override void SetClassSwappedDefaults()
         {
             Item.damage = 4;
@@ -31,7 +29,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 4;
             Item.value = Item.sellPrice(0, 1, 1, 29);
-            Item.rare = ItemRarityID.LightRed;
+            Item.rare = ItemRarityID.Blue;
 
             Item.shootSpeed = 15;
             Item.autoReuse = true;
@@ -45,20 +43,14 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.consumeAmmoOnLastShotOnly = true;
             Item.noMelee = true;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<Mushroom>(), 12);
-            recipe.Register();
-        }
+
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-2f, 0f);
         }
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-
-
             int numProjectiles = Main.rand.Next(1, 4);
             for (int p = 0; p < numProjectiles; p++)
             {
@@ -68,10 +60,7 @@ namespace Stellamod.Items.Weapons.Ranged
                 Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
             }
 
-
             return false;
         }
-
-
     }
 }

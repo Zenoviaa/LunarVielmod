@@ -46,22 +46,10 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.crit = 43;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/Lenabee");
 		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.StoneBlock, 50);
-			recipe.AddIngredient(ItemID.DirtBlock, 15);
-			recipe.AddIngredient(ItemID.Bomb, 3);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
-			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 3);
-			recipe.AddIngredient(ItemID.Leather, 5);
-		}
+
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-
 			int dir = player.direction;
-
 			Projectile.NewProjectile(source, position, velocity *= player.GetModPlayer<MyPlayer>().IgniterVelocity, type, damage, knockback, player.whoAmI);
 			return false;
 		}

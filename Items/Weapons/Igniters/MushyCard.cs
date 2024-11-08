@@ -18,14 +18,14 @@ namespace Stellamod.Items.Weapons.Igniters
 {
     internal class MushyCard : ClassSwapItem
     {
-
         public override DamageClass AlternateClass => DamageClass.Generic;
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 6;
+            Item.damage = 3;
             Item.mana = 0;
         }
+
         public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Bone Pickler Card Igniter");
@@ -35,7 +35,7 @@ namespace Stellamod.Items.Weapons.Igniters
 
 		public override void SetDefaults()
 		{
-			Item.damage = 13;
+			Item.damage = 6;
 			Item.mana = 3;
 			Item.width = 40;
 			Item.height = 40;
@@ -70,17 +70,6 @@ namespace Stellamod.Items.Weapons.Igniters
 
 			}
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
-		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 150);
-			recipe.AddIngredient(ItemID.Mushroom, 5);
-			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<BlankCard>(), 1);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
 		}
 
 

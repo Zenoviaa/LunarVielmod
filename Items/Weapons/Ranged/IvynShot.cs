@@ -43,14 +43,5 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             return new Vector2(-2f, 0f);
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-
-            recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 9);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
-        }
-
     }
 }

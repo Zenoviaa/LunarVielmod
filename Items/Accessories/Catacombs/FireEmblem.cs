@@ -28,21 +28,25 @@ namespace Stellamod.Items.Accessories.Catacombs
         {
             if (hasFireEmblem && fireEmblemCooldown <= 0)
             {
-                switch (Main.rand.Next(0, 4))
+                if (Main.rand.NextBool(3))
                 {
-                    case 0:
-                        target.AddBuff(BuffID.OnFire3, 120);
-                        break;
-                    case 1:
-                        target.AddBuff(BuffID.ShadowFlame, 120);
-                        break;
-                    case 2:
-                        target.AddBuff(BuffID.CursedInferno, 120);
-                        break;
-                    case 3:
-                        target.AddBuff(BuffID.Daybreak, 60);
-                        break;
+                    switch (Main.rand.Next(0, 4))
+                    {
+                        case 0:
+                            target.AddBuff(BuffID.OnFire3, 120);
+                            break;
+                        case 1:
+                            target.AddBuff(BuffID.ShadowFlame, 120);
+                            break;
+                        case 2:
+                            target.AddBuff(BuffID.CursedInferno, 120);
+                            break;
+                        case 3:
+                            target.AddBuff(BuffID.Daybreak, 60);
+                            break;
+                    }
                 }
+               
 
                 if (hit.Crit && Main.rand.NextBool(2))
                 {

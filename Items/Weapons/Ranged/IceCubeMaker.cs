@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.rare = ItemRarityID.Green;
 
             //Damage
-            Item.damage = 24;
+            Item.damage = 12;
             Item.DamageType = DamageClass.Ranged;
 
             Item.shoot = ModContent.ProjectileType<IceCubeMakerProj>();
@@ -70,18 +70,6 @@ namespace Stellamod.Items.Weapons.Ranged
                 Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
             }
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.Anvils);
-            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 3);
-            recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<UnknownCircuitry>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 5);
-            recipe.Register();
         }
     }
 }

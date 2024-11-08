@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.Melee
             //Do if(IsSwapped) if you want to check for the alternate class
             //Stats to have when in the other class
             Item.mana = 5;
-            Item.damage = 6;
+            Item.damage = 4;
         }
         public override void SetStaticDefaults()
 		{
@@ -34,7 +34,7 @@ namespace Stellamod.Items.Weapons.Melee
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 11;
+			Item.damage = 9;
 			Item.DamageType = DamageClass.Melee;
 			Item.width = 32;
 			Item.height = 32;
@@ -49,18 +49,6 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.shootSpeed = 10f;
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
-		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-
-			recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 12);
-
-			recipe.Register();
 		}
 	}
 }
