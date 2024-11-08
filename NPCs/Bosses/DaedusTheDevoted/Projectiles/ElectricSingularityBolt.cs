@@ -62,7 +62,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             {
                 Vector2 dirToNpc = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
                 Projectile.velocity += dirToNpc * 0.05f;
-                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, degreesToRotate: 1f);
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, degreesToRotate: 0.5f);
             }
 
             for (int i = 1; i < Projectile.oldPos.Length; i++)

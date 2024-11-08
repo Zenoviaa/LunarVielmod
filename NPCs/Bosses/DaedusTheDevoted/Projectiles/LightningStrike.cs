@@ -31,6 +31,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             Projectile.friendly = false;
             Projectile.hostile = true;
             Projectile.timeLeft = 30;
+            Projectile.tileCollide = false;
         }
 
         public override bool ShouldUpdatePosition()
@@ -43,7 +44,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             base.AI();
             Timer++;
 
-            float targetBeamLength = ProjectileHelper.PerformBeamHitscan(Projectile, maxBeamLength: 2400f);
+            float targetBeamLength = 2400f;
             BeamLength = targetBeamLength;
             if (Timer == 1)
             {

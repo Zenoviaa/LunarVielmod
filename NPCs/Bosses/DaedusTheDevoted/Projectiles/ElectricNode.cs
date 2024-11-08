@@ -1,16 +1,12 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
@@ -36,12 +32,13 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             Projectile.width = 49;
             Projectile.height = 49;
             Projectile.friendly = false;
-            Projectile.hostile = true;
+            Projectile.hostile = false;
             Projectile.penetrate = -1;
             Projectile.usesIDStaticNPCImmunity = true;
             Projectile.idStaticNPCHitCooldown = 8;
             Projectile.timeLeft = 420;
             Projectile.light = 0.48f;
+            Projectile.tileCollide = false;
         }
 
         public override bool PreDraw(ref Color lightColor)

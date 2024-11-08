@@ -40,7 +40,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             base.AI();
             Timer++;
 
-            float targetBeamLength = ProjectileHelper.PerformBeamHitscan(Projectile, maxBeamLength: 2400f);
+            float targetBeamLength = 2400f;
             BeamLength = targetBeamLength;
             if (Timer == 1)
             {

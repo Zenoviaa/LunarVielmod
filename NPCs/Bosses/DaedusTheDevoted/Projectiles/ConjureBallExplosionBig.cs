@@ -62,7 +62,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 
             float explosionProgress = Timer / 60f;
             float easedExplosionProgress = Easing.OutCirc(explosionProgress);
-            float widthOffset = MathHelper.Lerp(0, 512 * Main.rand.NextFloat(0.75f, 1), easedExplosionProgress);
+            float widthOffset = MathHelper.Lerp(0, 384 * Main.rand.NextFloat(0.75f, 1), easedExplosionProgress);
             Lightning.WidthMultiplier = Easing.SpikeOutCirc(explosionProgress) * Main.rand.NextFloat(0, 16);
             if (Timer % 3 == 0)
             {

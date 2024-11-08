@@ -1524,11 +1524,10 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         {
                             int damage = ElectricFieldDamage;
                             int knockback = 1;
-          
-         
-                            Vector2 fireVelocity = (Target.Center - lightningSpawnPos).SafeNormalize(Vector2.Zero);
-                            fireVelocity = fireVelocity.RotatedByRandom(MathHelper.PiOver4);
-                            fireVelocity *= Main.rand.NextFloat(15, 18);
+
+
+                            float rot = Main.rand.NextFloat(0f, 3.14f);
+                            Vector2 fireVelocity = rot.ToRotationVector2() * Main.rand.NextFloat(10, 18);
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), lightningSpawnPos, fireVelocity,
                                 ModContent.ProjectileType<ElectricNode>(), damage, knockback, Main.myPlayer);
                         }
@@ -1739,6 +1738,12 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         int damage = ThunderslapDamage;
                         int knockback = 1;
                         Vector2 firePos = Target.Center - new Vector2(0, 512);
+
+                        SoundStyle laughSound = new SoundStyle("Stellamod/Assets/Sounds/Ticking");
+                        laughSound.PitchVariance = 0.03f;
+                        laughSound.Pitch = Timer / 180f;
+                        SoundEngine.PlaySound(laughSound, NPC.position);
+
 
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), firePos, Vector2.UnitY,
                             ModContent.ProjectileType<ThunderSlapWarn>(), damage, knockback, Main.myPlayer);

@@ -14,6 +14,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
     {
         private float _scale;
         private float _width;
+        private bool _canDie;
         private Vector2[] _lightningZaps;
         private ref float Timer => ref Projectile.ai[0];
         private ref float Charge => ref Projectile.ai[1];
@@ -47,6 +48,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             Projectile.idStaticNPCHitCooldown = 8;
             Projectile.timeLeft = 420;
             Projectile.light = 0.48f;
+            Projectile.tileCollide = false;
         }
 
         private float WidthFunction(float completionRatio)
@@ -107,6 +109,11 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
         public override void AI()
         {
             base.AI();
+            if (Collision.CanHitLine(Projectile.Top, 1, 1, Projectile.Top + Vector2.UnitY * 50, 1, 1))
+            {
+                _canDie = true;
+            }
+            Projectile.tileCollide = _canDie;
             Timer++;
             if (Timer == 1)
             {
@@ -149,6 +156,11 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             if (Timer <= 15)
             {
                 _scale = MathHelper.Lerp(0f, Main.rand.NextFloat(0.8f, 1f) + (Charge * 1.4f), Easing.InCubic(Timer / 15f));
+            }
+
+            if(Timer >= 90)
+            {
+                Projectile.tileCollide = true;
             }
 
             DrawHelper.AnimateTopToBottom(Projectile, 4);

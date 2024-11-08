@@ -121,7 +121,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 if(playerToTarget != null)
                 {
                     Vector2 velToPlayer = (playerToTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
-                    velToPlayer *= 16;
+                    velToPlayer *= 9;
                     if(StellaMultiplayer.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velToPlayer,

@@ -80,6 +80,8 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
         public override void AI()
         {
             base.AI();
+
+
             Timer++;
             if (Timer == 1)
             {
@@ -121,7 +123,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 
             if (Timer <= 300f)
             {
-                _scale = MathHelper.Lerp(0f, Main.rand.NextFloat(6, 8), Timer / 300f);
+                _scale = MathHelper.Lerp(0f, Main.rand.NextFloat(4.5f, 6), Timer / 300f);
             }
 
             if(Timer < 300)
@@ -137,8 +139,13 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 
             if(Timer > 300)
             {
-                Projectile.tileCollide = true;
+
                 Projectile.velocity = Vector2.UnitY * 3;
+            }
+
+            if(Timer > 450)
+            {
+                Projectile.tileCollide = true;
             }
 
             DrawHelper.AnimateTopToBottom(Projectile, 4);

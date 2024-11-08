@@ -36,6 +36,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             Projectile.hostile = true;
             Projectile.light = 0.278f;
             Projectile.timeLeft = 180;
+            Projectile.tileCollide = false;
         }
 
         public override void AI()
@@ -109,6 +110,11 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             if (Timer > 90)
             {
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, TargetVelocity, 0.02f);
+            }
+
+            if(Timer > 130)
+            {
+                Projectile.tileCollide = true;
             }
 
             Projectile.rotation = Projectile.velocity.X * 0.05f;

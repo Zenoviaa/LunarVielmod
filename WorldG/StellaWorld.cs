@@ -504,40 +504,41 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(smx + 10, smy + 340 );
+					Point Loc = new Point(smx + 10, smy + 45);
 					NPCs.Town.AlcadSpawnSystem.FableTile = Loc;
-
-					//This code just places
-					int width = 253;
+                    Structurizer.ReadStruct(Loc, "Struct/Huntria/FableBiomeFinal", tileBlend);
+                    Structurizer.ProtectStructure(Loc, "Struct/Huntria/FableBiomeFinal");
+                    //This code just places
+                    int width = 253;
 					int height = 50;
-                    ShapeData shapeData = new ShapeData();
-					Point dirtLoc = Loc;
-					dirtLoc.Y -= 338;
-                    WorldUtils.Gen(dirtLoc, new Shapes.Rectangle(width, height), new Actions.Blank().Output(shapeData));
-                    WorldUtils.Gen(dirtLoc, new ModShapes.All(shapeData), new Actions.SetTile(TileID.Dirt, true));
-                    WorldUtils.Gen(dirtLoc, new ModShapes.All(shapeData), new Actions.Smooth());
+                    //ShapeData shapeData = new ShapeData();
+					//Point dirtLoc = Loc;
+					//dirtLoc.Y -= 338;
+                    //WorldUtils.Gen(dirtLoc, new Shapes.Rectangle(width, height), new Actions.Blank().Output(shapeData));
+                    //WorldUtils.Gen(dirtLoc, new ModShapes.All(shapeData), new Actions.SetTile(TileID.Dirt, true));
+                    //WorldUtils.Gen(dirtLoc, new ModShapes.All(shapeData), new Actions.Smooth());
 
-                    StructureLoader.ReadStruct(Loc, "Struct/Morrow/FableBiomeNew", tileBlend);
+                  
 
-					Point Loc2 = new Point(smx + 10, smy + 380);
-					WorldGen.digTunnel(Loc2.X - 10, Loc2.Y + 10, 1, 0, 1, 10, false);
+					//Point Loc2 = new Point(smx + 10, smy + 380);
+					//WorldGen.digTunnel(Loc2.X - 10, Loc2.Y + 10, 1, 0, 1, 10, false);
 					
-					Point Loc22 = new Point(smx +10, smy - 33);
+					//Point Loc22 = new Point(smx +10, smy - 33);
 		//			WorldUtils.Gen(Loc22, new Shapes.Rectangle(240, -40), new Actions.ClearTile(true));
-					StructureLoader.ReadStruct(Loc22, "Struct/Morrow/Morrowtop");
+				//	StructureLoader.ReadStruct(Loc22, "Struct/Morrow/Morrowtop");
 					pointVeri = new Point(smx + 10, smy + 500);
-					Point Loc4 = new Point(smx + 233, smy + 45);
+					//Point Loc4 = new Point(smx + 233, smy + 45);
 				//	WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
 				//	WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
 
-					Point Loc5 = new Point(smx + 10, smy + 45);
+					//Point Loc5 = new Point(smx + 10, smy + 45);
 				//	WorldUtils.Gen(Loc5, new Shapes.Rectangle(220, 50), new Actions.SetTile(TileID.Dirt));
 
 
 
-					Point Loc3 = new Point(smx + 455, smy + 30);
+					//Point Loc3 = new Point(smx + 455, smy + 30);
 				//	WorldUtils.Gen(Loc3, new Shapes.Mound(40, 50), new Actions.SetTile(TileID.Dirt));
-					Point Loc6 = new Point(smx + 455, smy + 40);
+					//Point Loc6 = new Point(smx + 455, smy + 40);
 				//	WorldUtils.Gen(Loc6, new Shapes.Circle(40), new Actions.SetTile(TileID.Dirt));
 					//	Point resultPoint;
 					//	bool searchSuccessful = WorldUtils.Find(Loc, Searches.Chain(new Searches.Right(200), new GenCondition[]
@@ -549,7 +550,7 @@ namespace Stellamod.WorldG
 					//		{
 					//			WorldGen.TileRunner(resultPoint.X, resultPoint.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(150, 150), TileID.Dirt);
 					//		}
-					GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
+					//GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
 					//WorldGen.TileRunner(Loc2.X - 10, Loc2.Y - 60, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(120, 120), TileID.Grass);
 					//WorldGen.TileRunner(Loc3.X - 20, Loc2.Y, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
 					//WorldGen.TileRunner(Loc3.X - 20, Loc3.Y + 20, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
@@ -1034,10 +1035,15 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(smx, smy + 18);
+					Point Loc = new Point(smx, smy + 15);
                     Point Loc22 = new Point(smx, smy + 58);
                     string path = "Struct/Overworld/WitchTown";
-                    int[] ChestIndexs = Structurizer.ReadStruct(Loc, path);
+					var tileBlend = new int[]
+					{
+						TileID.RubyGemspark
+					};
+
+                    int[] ChestIndexs = Structurizer.ReadStruct(Loc, path, tileBlend);
                     Structurizer.ProtectStructure(Loc, path);
                     NPCs.Town.AlcadSpawnSystem.LittleWitchTownTile = Loc;
 					foreach (int chestIndex in ChestIndexs)
