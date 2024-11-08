@@ -1637,7 +1637,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         if (StellaMultiplayer.IsHost)
                         {
                             Vector2 firePos = lightningSpawnPos;
-                            NPC.NewNPC(NPC.GetSource_FromThis(), (int)firePos.X, (int)firePos.Y, ModContent.NPCType<ElectricSingularity>());
+                            NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)firePos.X, (int)firePos.Y, ModContent.NPCType<ElectricSingularity>());
                         }
                     }
 
