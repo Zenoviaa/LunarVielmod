@@ -41,7 +41,7 @@ namespace Stellamod.Assets.Biomes
             }
         }
 
-
+        public override SceneEffectPriority Priority => SceneEffectPriority.BossLow;
 
         // Populate the Bestiary Filter
         public override string BestiaryIcon => base.BestiaryIcon;
