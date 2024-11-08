@@ -1395,10 +1395,16 @@ namespace Stellamod
 
 			}
 
-			if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && !Main.dayTime && (ZoneFable || ZoneMorrow))
+			if ((ZoneFable || ZoneMorrow))
 			{
-				Main.GraveyardVisualIntensity = 0.4f;
-				Main.windPhysicsStrength = 50;
+                Main.GraveyardVisualIntensity = 0.4f;
+                Main.windPhysicsStrength = 50;
+
+            }
+
+                if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && !Main.dayTime && (ZoneFable || ZoneMorrow))
+			{
+				
 
 
 				GoldenRingCooldown++;
