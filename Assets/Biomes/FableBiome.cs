@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.UI.Systems;
+using Stellamod.WorldG;
 using Terraria;
 using Terraria.Graphics.Capture;
 using Terraria.ModLoader;
@@ -19,14 +20,31 @@ namespace Stellamod.Assets.Biomes
 
 		// Select Music
 		
-		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/OggFabledWilds");
-		
+	
+
+        public override int Music
+        {
+            get
+            {
+                //Put your if statement here
+               
+
+                //Normal music
+                if (Main.dayTime)
+                {
+                    return MusicLoader.GetMusicSlot(Mod, "Assets/Music/OggFabledWilds");
+                }
+                else
+                {
+                    return MusicLoader.GetMusicSlot(Mod, "Assets/Music/morrowunderground");
+                }
+            }
+        }
 
 
 
-
-		// Populate the Bestiary Filter
-		public override string BestiaryIcon => base.BestiaryIcon;
+        // Populate the Bestiary Filter
+        public override string BestiaryIcon => base.BestiaryIcon;
 		public override string BackgroundPath => base.BackgroundPath;
 		public override Color? BackgroundColor => base.BackgroundColor;
 

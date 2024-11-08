@@ -16,22 +16,7 @@ namespace Stellamod.Assets.Biomes
             get
             {
                 //Put your if statement here
-                if (EventWorld.GreenSun)
-                {
-
-                    if (Main.dayTime)
-                    {
-                        return MusicLoader.GetMusicSlot(Mod, "Assets/Music/GreenSun");
-                    }
-
-                    else
-                    {
-                        //Change this if needbe
-                        return MusicLoader.GetMusicSlot(Mod, "Assets/Music/GreenSun");
-                    }
-
-
-                }
+               
 
                 //Normal music
                 if (Main.dayTime)
