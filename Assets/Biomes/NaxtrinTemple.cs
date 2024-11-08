@@ -18,7 +18,7 @@ namespace Stellamod.Assets.Biomes
 		public override string BackgroundPath => MapBackground;
 		public override Color? BackgroundColor => base.BackgroundColor;
 		// Calculate when the biome is active.
-		public override bool IsBiomeActive(Player player) => BiomeTileCounts.InNaxtrin;
+		
 
 		public override void OnEnter(Player player) => player.GetModPlayer<MyPlayer>().ZoneNaxtrin = true;
 		public override void OnLeave(Player player) => player.GetModPlayer<MyPlayer>().ZoneNaxtrin = false;
