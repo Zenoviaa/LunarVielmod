@@ -1,22 +1,28 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.JackTheScholar;
+using System;
 using System.Collections.Generic;
-using Terraria;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
+using Terraria;
+using Stellamod.NPCs.Bosses.DaedusTheDevoted;
+using Microsoft.Xna.Framework;
+using Stellamod.NPCs.Bosses.DaedusRework;
+using Terraria.Audio;
 
 namespace Stellamod.NPCs.Town
 {
-    internal class JackReading : PointSpawnNPC
+    internal class DaedusLibrarian : PointSpawnNPC
     {
         private int _frame;
         public int NumberOfTimesTalkedTo = 0;
-        public override string Texture => "Stellamod/NPCs/Bosses/JackTheScholar/JackTheScholar";
+        public override string Texture => "Stellamod/NPCs/Bosses/DaedusTheDevoted/DaedusTheDevoted";
         public override void SetStaticDefaults()
         {
             // DisplayName automatically assigned from localization files, but the commented line below is the normal approach.
@@ -45,17 +51,68 @@ namespace Stellamod.NPCs.Town
             // Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
         }
 
+
+        //For Draw Code
+        private DaedusTopSegment _topSegment;
+        private DaedusFaceSegment _faceSegment;
+        private DaedusBackSegment _backSegment;
+        private DaedusArmSegment _armSegment;
+        private DaedusRobeSegment _robeSegment;
+        public DaedusTopSegment TopSegment
+        {
+            get
+            {
+                _topSegment ??= new DaedusTopSegment(NPC);
+                return _topSegment;
+            }
+        }
+
+        public DaedusFaceSegment FaceSegment
+        {
+            get
+            {
+                _faceSegment ??= new DaedusFaceSegment(NPC);
+                return _faceSegment;
+            }
+        }
+
+        public DaedusBackSegment BackSegment
+        {
+            get
+            {
+                _backSegment ??= new DaedusBackSegment(NPC);
+                return _backSegment;
+            }
+        }
+
+        public DaedusArmSegment ArmSegment
+        {
+            get
+            {
+                _armSegment ??= new DaedusArmSegment(NPC);
+                return _armSegment;
+            }
+        }
+
+        public DaedusRobeSegment RobeSegment
+        {
+            get
+            {
+                _robeSegment ??= new DaedusRobeSegment(NPC);
+                return _robeSegment;
+            }
+        }
         public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
         {
             spawner.structureToSpawnIn = "Struct/Huntria/FableBiomeFinal";
-            spawner.spawnTileOffset = new Point(190, -66);
+            spawner.spawnTileOffset = new Point(169, -23);
         }
 
         public override void SetDefaults()
         {
             NPC.friendly = true; // NPC Will not attack player
-            NPC.width = 54;
-            NPC.height = 65;
+            NPC.width = 128;
+            NPC.height = 128;
             NPC.aiStyle = 0;
             NPC.damage = 90;
             NPC.defense = 42;
@@ -66,25 +123,8 @@ namespace Stellamod.NPCs.Town
             NPC.knockBackResist = 0.5f;
             NPC.dontTakeDamageFromHostiles = true;
             NPC.BossBar = Main.BigBossProgressBar.NeverValid;
-        }
-
-        public override void FindFrame(int frameHeight)
-        {
-            base.FindFrame(frameHeight);
-
-            //Animation Speed
-            NPC.frameCounter += 0.15f;
-            if (NPC.frameCounter >= 1f)
-            {
-                _frame++;
-                NPC.frameCounter = 0f;
-            }
-            if (_frame >= 4f)
-            {
-                _frame = 0;
-            }
-
-            NPC.frame.Y = frameHeight * _frame;
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
         }
 
         public override bool CanChat()
@@ -115,6 +155,16 @@ namespace Stellamod.NPCs.Town
             });
         }
 
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            BackSegment.Draw(spriteBatch, screenPos, drawColor);
+            ArmSegment.Draw(spriteBatch, screenPos, drawColor);
+            TopSegment.Draw(spriteBatch, screenPos, drawColor);
+            RobeSegment.Draw(spriteBatch, screenPos, drawColor);
+            FaceSegment.Draw(spriteBatch, screenPos, drawColor);
+            return false;
+        }
+
         public override string GetChat()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
@@ -136,7 +186,7 @@ namespace Stellamod.NPCs.Town
         public override List<string> SetNPCNameList()
         {
             return new List<string>() {
-                "Jack the Scholar",
+                "Daedus the Librarian",
             };
         }
 
@@ -144,7 +194,7 @@ namespace Stellamod.NPCs.Town
         public override void SetChatButtons(ref string button, ref string button2)
         {
             // What the chat buttons are when you open up the chat UI
-           // button2 = Language.GetTextValue("LegacyInterface.28");
+            // button2 = Language.GetTextValue("LegacyInterface.28");
             button = LangText.Chat(this, "Button");
         }
 
@@ -156,7 +206,7 @@ namespace Stellamod.NPCs.Town
                 {
                     Main.NewText(LangText.Chat(this, "Challenge"), Color.Gold);
                     NPC npc = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.position.X, (int)NPC.position.Y,
-                        ModContent.NPCType<JackTheScholar>());
+                        ModContent.NPCType<DaedusTheDevoted>());
                     npc.netUpdate = true;
                 }
                 else
@@ -165,12 +215,24 @@ namespace Stellamod.NPCs.Town
                         return;
 
                     StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
-                        ModContent.NPCType<JackTheScholar>(), (int)NPC.position.X, (int)NPC.position.Y);
+                        ModContent.NPCType<DaedusTheDevoted>(), (int)NPC.position.X, (int)NPC.position.Y);
                 }
 
                 //Spawn Boss
                 NPC.Kill();
             }
+        }
+
+        public override void AI()
+        {
+            base.AI();
+
+            //Animations
+            TopSegment.AI();
+            FaceSegment.AI();
+            BackSegment.AI();
+            ArmSegment.AI();
+            RobeSegment.AI();
         }
     }
 }

@@ -6,6 +6,16 @@ WitchesCauldron: {
 	Basic1: *Bubble Bubble Goop Blip Blop*
 }
 
+DaedusLibrarian: {
+	DisplayName: Daedus the Librarian
+	Bestiary: Hi I'm Daedus!
+	Bestiary2: Daedus the Librarian
+	Button: Challenge
+	Basic1: Hi I'm Daedus!
+	Basic2: Hi I'm Daedus!
+	Challenge: Daedus zaps in!
+}
+
 JackReading: {
 	DisplayName: Jack
 	Bestiary: Hi I'm Jack!

@@ -572,7 +572,10 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
         public override void AI()
         {
             base.AI();
-
+            if(ArenaCenter == default(Vector2))
+            {
+                ArenaCenter = NPC.Center;
+            }
 
             //Teleport Go!!!
             if(TeleportTarget != Vector2.Zero)
