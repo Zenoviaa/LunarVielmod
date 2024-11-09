@@ -6,6 +6,16 @@ WitchesCauldron: {
 	Basic1: *Bubble Bubble Goop Blip Blop*
 }
 
+JackReading: {
+	DisplayName: Jack
+	Bestiary: Hi I'm Jack!
+	Bestiary2: Jack the Scholar
+	Button: Challenge
+	Basic1: Hi I'm Jack!
+	Basic2: Hi I'm Jack!
+	Challenge: Jack readies himself!
+}
+
 LonelySorceress: {
 	DisplayName: Lonely Sorceress
 	Bestiary: A strange lady, she seems to overflow with magical energy!

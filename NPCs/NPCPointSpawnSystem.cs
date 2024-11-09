@@ -111,6 +111,9 @@ namespace Stellamod.NPCs
 
             if (StellaMultiplayer.IsHost)
             {
+                if (NPC.AnyDanger(ignorePillarsAndMoonlordCountdown: true))
+                    return;
+
                 for (int i = 0; i < _npcPointSpawners.Count; i++)
                 {
                     NPCPointSpawner pointSpawner = _npcPointSpawners[i];

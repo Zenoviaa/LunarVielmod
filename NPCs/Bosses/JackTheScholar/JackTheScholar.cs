@@ -382,7 +382,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 case 1:
                     Timer++;
                     NPC.noTileCollide = true;
-                    if(Timer > 45)
+                    if(Timer > 26)
                     {
                         NPC.noTileCollide = false;
                     }
