@@ -13,7 +13,16 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
     internal class ElectricSingularity : ModNPC
     {
         private float _scale;
-        private Vector2[] _lightningZaps;
+        private Vector2[] _zaps;
+        private Vector2[] _lightningZaps
+        {
+            get
+            {
+                _zaps ??= new Vector2[4];
+                return _zaps;
+            }
+        }
+
         private ref float Timer => ref NPC.ai[0];
         private ref float AttackTimer => ref NPC.ai[1];
         public CommonLightning Lightning { get; set; } = new CommonLightning();
@@ -26,7 +35,6 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
         public override void SetDefaults()
         {
             base.SetDefaults();
-            _lightningZaps = new Vector2[4];
             NPC.width = 49;
             NPC.height = 49;
             NPC.lifeMax = 1000;
@@ -102,6 +110,9 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
         public override void AI()
         {
             base.AI();
+            NPC.TargetClosest();
+            Player target = Main.player[NPC.target];
+
             AttackTimer++;
             if (AttackTimer % 4 == 0)
             {
@@ -114,13 +125,13 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 d.noGravity = true;
             }
 
-            Player playerToTarget = PlayerHelper.FindClosestPlayer(NPC.position, 1024);
+ 
             if (AttackTimer >= 60)
             {
       
-                if(playerToTarget != null)
+                if(target.active)
                 {
-                    Vector2 velToPlayer = (playerToTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                    Vector2 velToPlayer = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
                     velToPlayer *= 9;
                     if(StellaMultiplayer.IsHost)
                     {
@@ -133,9 +144,9 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             }
 
             //Some interesting movement code for the singularity
-            if(playerToTarget != null)
+            if(target != null)
             {
-                float diffX = playerToTarget.Center.X - NPC.Center.X;
+                float diffX = target.Center.X - NPC.Center.X;
                 NPC.velocity.X = diffX * 0.03f;
             }
        

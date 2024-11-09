@@ -1,23 +1,28 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
-using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
     internal class ElectricSingularityBolt : ModProjectile
     {
+        private CommonLightning _lightning;
         private ref float Timer => ref Projectile.ai[0];
-        public CommonLightning Lightning { get; set; } = new CommonLightning();
+        public CommonLightning Lightning
+        {
+            get
+            {
+                //Lazy Loading for a small optimization
+                _lightning ??= new CommonLightning();
+                return _lightning;
+            }
+        }
+
         public override string Texture => TextureRegistry.EmptyBigTexture;
         public override void SetStaticDefaults()
         {
@@ -85,6 +90,10 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
+            /*
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Lightning.Draw(spriteBatch, Projectile.oldPos, Projectile.oldRot);
+            */
             SpriteBatch spriteBatch = Main.spriteBatch;
             Lightning.WidthMultiplier = 1f;
             Lightning.SetBoltDefaults();

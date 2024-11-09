@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Gores;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
@@ -43,8 +45,13 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
         {
             base.AI();
             Timer++;
-
-            float targetBeamLength = 2400f;
+            if(Timer == 1)
+            {
+                Player targetPlayer = PlayerHelper.FindClosestPlayer(Projectile.position, 1680);
+                float offset = ProjectileHelper.PerformBeamHitscan(targetPlayer.Bottom - Vector2.UnitY, -Vector2.UnitY, 2400);
+                Projectile.position = targetPlayer.Bottom + new Vector2(0, -offset * 0.7f);
+            }
+            float targetBeamLength = ProjectileHelper.PerformBeamHitscan(Projectile.position, Vector2.UnitY, 2400);
             BeamLength = targetBeamLength;
             if (Timer == 1)
             {
@@ -62,7 +69,42 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                     d.noGravity = true;
                 }
 
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.position, 1024, 16);
+
+                Vector2 lightningHitPos = Projectile.position + new Vector2(0, BeamLength);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(lightningHitPos, 1024, 32);
+
+                for (int i = 0; i < 4; i++)
+                {
+                    Vector2 velocity = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
+                    velocity = velocity.RotatedByRandom(MathHelper.ToRadians(24));
+
+                    Gore.NewGore(Projectile.GetSource_FromThis(), lightningHitPos, velocity,
+                        ModContent.GoreType<FableRock1>());
+
+                    velocity = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
+                    velocity = velocity.RotatedByRandom(MathHelper.ToRadians(24));
+
+                    Gore.NewGore(Projectile.GetSource_FromThis(), lightningHitPos, velocity,
+                        ModContent.GoreType<FableRock2>());
+
+                    velocity = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
+                    velocity = velocity.RotatedByRandom(MathHelper.ToRadians(24));
+
+                    Gore.NewGore(Projectile.GetSource_FromThis(), lightningHitPos, velocity,
+                        ModContent.GoreType<FableRock3>());
+
+                    velocity = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
+                    velocity = velocity.RotatedByRandom(MathHelper.ToRadians(24));
+
+                    Gore.NewGore(Projectile.GetSource_FromThis(), lightningHitPos, velocity,
+                        ModContent.GoreType<FableRock4>());
+                }
+
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), lightningHitPos + new Vector2(0, 24), Vector2.Zero,
+                        ModContent.ProjectileType<GroundCracking>(), 0, 0, Projectile.owner);
+                }     
             }
 
             for(int i = 0; i < Lightning.Trails.Length; i++)
