@@ -504,7 +504,7 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(smx + 10, smy + 45);
+					Point Loc = new Point(smx + 10, smy + 53);
 					NPCs.Town.AlcadSpawnSystem.FableTile = Loc;
                     Structurizer.ReadStruct(Loc, "Struct/Huntria/FableBiomeFinal", tileBlend);
                     Structurizer.ProtectStructure(Loc, "Struct/Huntria/FableBiomeFinal");
