@@ -164,6 +164,14 @@ namespace Stellamod.Items
                weight: 1.0f,
                yield: 1);
 
+            AddBrew(
+               result: ModContent.ItemType<MushroomStave>(),
+               mold: ModContent.ItemType<BlankStaff>(),
+               material: ModContent.ItemType<Mushroom>(),
+               materialCount: 10,
+               weight: 1.0f,
+               yield: 1);
+
             //Spring Mushroom x Accessory
             AddBrew(
                 result: ModContent.ItemType<LeatherGlove>(),

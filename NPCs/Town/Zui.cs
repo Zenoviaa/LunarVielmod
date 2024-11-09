@@ -35,7 +35,7 @@ namespace Stellamod.NPCs.Town
 {
     // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
     // [AutoloadHead]
-	public class Zui : ModNPC
+	public class Zui : PointSpawnNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
 		public const string ShopName = "Shop";
@@ -77,7 +77,13 @@ namespace Stellamod.NPCs.Town
 
 		// AI counter
 		public int counter;
-		public override void SetDefaults()
+        public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
+        {
+            spawner.structureToSpawnIn = "Struct/Overworld/WitchTown";
+            spawner.spawnTileOffset = new Point(190, -20);
+        }
+
+        public override void SetDefaults()
 		{
 			NPC.friendly = true; // NPC Will not attack player
 			NPC.width = 54;
@@ -110,7 +116,7 @@ namespace Stellamod.NPCs.Town
         //This prevents the NPC from despawning
         public override bool CheckActive()
         {
-            return false;
+            return true;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -195,8 +201,6 @@ namespace Stellamod.NPCs.Town
 		{
 			return new List<string>() {
 				"Zui The Traveller",
-				"Zui The Traveller"
-				
 			};
 		}
 
@@ -493,14 +497,6 @@ namespace Stellamod.NPCs.Town
 			}
 		}
 
-
-		public void ResetTimers()
-		{
-			timer = 0;
-			frameCounter = 0;
-			frameTick = 0;
-		}
-
 		public override void ModifyActiveShop(string shopName, Item[] items)
 		{
 			foreach (Item item in items)
@@ -573,6 +569,5 @@ namespace Stellamod.NPCs.Town
 			npcShop.Register(); // Name of this shop tab		
 		}
 
-		
-	}
+    }
 }

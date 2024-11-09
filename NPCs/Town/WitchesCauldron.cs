@@ -16,7 +16,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Town
 {
-    internal class WitchesCauldron : ModNPC
+    internal class WitchesCauldron : PointSpawnNPC
     {
         private int _frame;
         private float _frameCounter;
@@ -36,6 +36,12 @@ namespace Stellamod.NPCs.Town
             NPCID.Sets.MPAllowedEnemies[Type] = true;
             NPCID.Sets.NoTownNPCHappiness[Type] = true;
             Main.npcFrameCount[Type] = 30;
+        }
+
+        public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
+        {
+            spawner.structureToSpawnIn = "Struct/Overworld/WitchTown";
+            spawner.spawnTileOffset = new Point(150, -19);
         }
 
         public override void SetDefaults()
@@ -73,12 +79,6 @@ namespace Stellamod.NPCs.Town
             // These are things that the NPC has a chance of telling you when you talk to it.
             chat.Add(LangText.Chat(this, "Basic1"));
             return chat; // chat is implicitly cast to a string.
-        }
-
-        public override bool CheckActive()
-        {
-            //Don't despawn
-            return false;
         }
 
         public override void SetChatButtons(ref string button, ref string button2)
@@ -229,5 +229,7 @@ namespace Stellamod.NPCs.Town
             }
 
         }
+
+
     }
 }

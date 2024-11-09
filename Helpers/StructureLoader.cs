@@ -17,7 +17,7 @@ namespace Stellamod.Helpers
     {
         static Point? BottomLeft = null;
         static Mod Mod = ModContent.GetInstance<Stellamod>();
-
+        public static event Action<Point, string> OnStructPlace;
         public static Rectangle ReadRectangle(string Path)
         {
             using (var stream = Mod.GetFileStream(Path + ".str"))
@@ -226,6 +226,8 @@ namespace Stellamod.Helpers
                         }                 
                         
                     }
+
+                    OnStructPlace?.Invoke(BottomLeft, Path);
                     return ChestIndexs.ToArray();
                 }
             }

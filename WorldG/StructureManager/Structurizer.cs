@@ -17,7 +17,7 @@ namespace Stellamod.WorldG.StructureManager
     {
         static Point? BottomLeft = null;
         static Mod Mod = ModContent.GetInstance<Stellamod>();
-
+        public static event Action<Point, string> OnStructPlace;
         public static Rectangle ReadRectangle(string Path)
         {
             using (var stream = Mod.GetFileStream(Path + ".str"))
@@ -256,6 +256,8 @@ namespace Stellamod.WorldG.StructureManager
                     }
 
                 }
+
+    
                 return ChestIndexs.ToArray();
             }
         }
@@ -269,6 +271,7 @@ namespace Stellamod.WorldG.StructureManager
         {
             using (Stream stream = Mod.GetFileStream(Path + ".str"))
             {
+                OnStructPlace?.Invoke(BottomLeft, Path);
                 return ReadStruct(stream, BottomLeft, tileBlend);
             }
         }
