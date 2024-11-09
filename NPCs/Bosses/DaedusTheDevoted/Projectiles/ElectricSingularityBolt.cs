@@ -90,23 +90,9 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            /*
             SpriteBatch spriteBatch = Main.spriteBatch;
-            Lightning.Draw(spriteBatch, Projectile.oldPos, Projectile.oldRot);
-            */
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            Lightning.WidthMultiplier = 1f;
             Lightning.SetBoltDefaults();
             Lightning.Draw(spriteBatch, Projectile.oldPos, Projectile.oldRot);
-
-            for (int i = 0; i < Lightning.Trails.Length; i++)
-            {
-                var trail = Lightning.Trails[i];
-                trail.PrimaryColor = Color.Black;
-                trail.NoiseColor = Color.Black;
-            }
-            Lightning.WidthMultiplier = 0.5f;
-            Lightning.DrawAlpha(spriteBatch, Projectile.oldPos, Projectile.oldRot);
             return false;
         }
 
