@@ -45,6 +45,11 @@ namespace Stellamod.UI.CollectionSystem
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
 
+            if(Main.LocalPlayer.chest != -1)
+            {
+                Top.Pixels += 154;
+            }
+
         }
     }
 }
