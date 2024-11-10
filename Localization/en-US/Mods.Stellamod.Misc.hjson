@@ -5,6 +5,8 @@ DreadMedalion: The air fills with dread...
 CauldronMaterial: This material should be used in the cauldron!
 CauldronMold: This item is a mold, it defines your weapon style
 CauldronElement: This item is an element, it enhances your weapon style
+NoMoldNeeded: This item does not require a mold to craft, just get lucky in the cauldron!
+MoldNeeded: This item can be made with a {0} mold!
 
 EDR: {
 	Occur: A disruption has occured!

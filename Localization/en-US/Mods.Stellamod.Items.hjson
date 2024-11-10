@@ -8111,3 +8111,8 @@ FableBookshelf3Item: {
 	DisplayName: Fable Bookshelf3 Item
 	Tooltip: ""
 }
+
+MoldTooltipItem: {
+	Tooltip: ""
+	DisplayName: Mold Tooltip Item
+}

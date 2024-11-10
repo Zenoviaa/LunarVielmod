@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -18,7 +19,7 @@ namespace Stellamod.UI.CollectionSystem
         private float _closeTimer;
         private float _frameCounter;
         private bool _open;
-        private Vector2 _drawOffset;
+
         private enum State
         {
             Open,
@@ -34,16 +35,19 @@ namespace Stellamod.UI.CollectionSystem
             _scale = scale;
             _state = State.Closed;
             _closeTimer = 1f;
+            Offset = Vector2.UnitY * -768;
             var asset = ModContent.Request<Texture2D>(
                 $"{CollectionBookUISystem.RootTexturePath}Book", ReLogic.Content.AssetRequestMode.ImmediateLoad);
             var rect = asset.Value.GetFrame(0, 10);
-            Width.Set(rect.Size().X * scale, 0f);
-            Height.Set(rect.Size().Y * scale, 0f);
+            Width.Set(rect.Size().X * scale * 1.75f, 0f);
+            Height.Set(rect.Size().Y * scale * 1.75f, 0f);
         }
 
+        public Vector2 Offset;
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            CollectionBookUISystem collectionBookUISystem = ModContent.GetInstance<CollectionBookUISystem>();
             if (_open)
             {
 
@@ -62,10 +66,15 @@ namespace Stellamod.UI.CollectionSystem
                 }
             }
 
-  
+            bool contains = ContainsPoint(Main.MouseScreen);
+            if (contains && !PlayerInput.IgnoreMouseInterface)
+            {
+                Main.LocalPlayer.mouseInterface = true;
+            }
+
             float progress = _closeTimer / 1f;
             float easedProgress = Easing.InOutCubic(progress);
-            _drawOffset = Vector2.Lerp(Vector2.Zero, Vector2.UnitY * -768, easedProgress);
+            Offset = Vector2.Lerp(Vector2.Zero, Vector2.UnitY * -900, easedProgress);
             switch (_state)
             {
                 case State.Open:
@@ -80,6 +89,9 @@ namespace Stellamod.UI.CollectionSystem
                     {
                         _frame = 9;
                         _state = State.Opened;
+
+                        //Open to collection page
+                        collectionBookUISystem.OpenCollectionTabUI();
                     }
                     _open = true;
                     break;
@@ -108,7 +120,7 @@ namespace Stellamod.UI.CollectionSystem
                 
                     if(_closeTimer >= 1f)
                     {
-                        CollectionBookUISystem collectionBookUISystem = ModContent.GetInstance<CollectionBookUISystem>();
+             
                         collectionBookUISystem.ReallyCloseBookUI();
                     }
                     _open = false;
@@ -132,7 +144,7 @@ namespace Stellamod.UI.CollectionSystem
             Vector2 drawOrigin = texture.GetFrame(_frame, totalFrameCount: 10).Size() / 2f;
             Vector2 centerPos = pos + drawOrigin;
        
-            centerPos += _drawOffset;
+            centerPos += Offset;
             spriteBatch.Draw(texture, centerPos, texture.GetFrame(_frame, totalFrameCount: 10), Color.White, 0f, drawOrigin, _scale * 1.75f, SpriteEffects.None, 0f);
             Main.inventoryScale = oldScale;
         }

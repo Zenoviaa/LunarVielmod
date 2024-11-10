@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -109,6 +110,8 @@ namespace Stellamod.UI.CollectionSystem
         internal void CloseBookUI()
         {
             collectionBookUI.bookUI.book.Close();
+            CloseRightUI();
+            CloseTabUI();
         }
 
 
@@ -131,12 +134,17 @@ namespace Stellamod.UI.CollectionSystem
 
         internal void OpenCollectionTabUI()
         {
+            collectionItemTabUI.ui.Glow = 1f;
             _tabsUserInterface.SetState(collectionItemTabUI);
         }
 
         internal void OpenRecipesInfoUI(Item item)
         {
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/BookPageTurn");
+            soundStyle.PitchVariance = 0.1f;
+            SoundEngine.PlaySound(soundStyle);
             collectionRecipeInfoUI.ui.Material = item;
+            collectionRecipeInfoUI.ui.Glow = 1f;
             collectionRecipeInfoUI.Recalculate();
             _rightInfoUserInterface.SetState(collectionRecipeInfoUI);
         }
