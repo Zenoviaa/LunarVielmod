@@ -8,26 +8,18 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.DaedusRework;
-using Stellamod.NPCs.Bosses.Jack;
 using Stellamod.NPCs.Bosses.JackTheScholar.Projectiles;
-using Stellamod.Projectiles.Gun;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.JackTheScholar
 {
+    [AutoloadBossHead]
     internal class JackTheScholar : ModNPC
     {
         private enum AIState
@@ -113,7 +105,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
             //Setup the music and boss bar
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Jack");
             NPC.aiStyle = 0;
-            NPC.BossBar = ModContent.GetInstance<JackBossBar>();
+            NPC.BossBar = ModContent.GetInstance<JackTheScholarBossBar>();
         }
 
         public override void FindFrame(int frameHeight)
@@ -127,30 +119,30 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 _frame++;
                 NPC.frameCounter = 0f;
             }
-            
+
             switch (Animation)
             {
                 default:
                 case AnimationState.Idle:
-                    if(_frame >= 4f)
+                    if (_frame >= 4f)
                     {
                         _frame = 0;
                     }
                     break;
                 case AnimationState.Cast_Hand_Up:
-                    if(_frame >= 8f)
+                    if (_frame >= 8f)
                     {
                         Animation = AnimationState.Cast_Hold_Out;
                     }
                     break;
                 case AnimationState.Cast_Hold_Out:
-                    if(_frame >= 12)
+                    if (_frame >= 12)
                     {
                         _frame = 8;
                     }
                     break;
                 case AnimationState.Cast_Put_Down:
-                    if(_frame >= 16)
+                    if (_frame >= 16)
                     {
                         _frame = 0;
                         Animation = AnimationState.Idle;
@@ -200,7 +192,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
             //Ok so we need some glowing huhh
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            
+
             //Glow Code :) 
             for (float f = 0f; f < 1.0f; f += 0.2f)
             {
@@ -227,11 +219,11 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                     Vector2 trailDrawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
                     trailDrawPos.Y -= 8;
                     trailDrawPos += Main.rand.NextVector2Circular(2, 2);
-                                        Color color = NPC.GetAlpha(Color.Lerp(startColor, endColor, 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
+                    Color color = NPC.GetAlpha(Color.Lerp(startColor, endColor, 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
                     spriteBatch.Draw(texture, trailDrawPos, NPC.frame, color, NPC.oldRot[k], NPC.frame.Size() / 2, NPC.scale, effects, 0f);
                 }
             }
-            
+
             //Trail Code
             for (int k = 0; k < NPC.oldPos.Length; k++)
             {
@@ -239,7 +231,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 Color endColor = new Color(232, 111, 24);
                 Vector2 trailDrawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
                 trailDrawPos.Y -= 8;
-                  Color color = NPC.GetAlpha(Color.Lerp(startColor, endColor, 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
+                Color color = NPC.GetAlpha(Color.Lerp(startColor, endColor, 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
                 spriteBatch.Draw(texture, trailDrawPos, NPC.frame, color, NPC.oldRot[k], NPC.frame.Size() / 2, NPC.scale, effects, 0f);
             }
 
@@ -306,14 +298,14 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
         {
             base.HitEffect(hit);
             _hitDirection = hit.HitDirection;
-            if(NPC.life <= 0 && State != AIState.Death)
+            if (NPC.life <= 0 && State != AIState.Death)
             {
                 NPC.life = 1;
                 SwitchState(AIState.Death);
             }
 
 
-            if(NPC.life <= 0)
+            if (NPC.life <= 0)
             {
                 NPC.life = 1;
             }
@@ -382,16 +374,16 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 case 1:
                     Timer++;
                     NPC.noTileCollide = true;
-                    if(Timer > 26)
+                    if (Timer > 26)
                     {
                         NPC.noTileCollide = false;
                     }
 
-                    if(Timer > 60 && Timer < 70)
+                    if (Timer > 60 && Timer < 70)
                     {
                         _dyingRotation += 0.02f;
                     }
-                    if(Timer > 70 && Timer < 80)
+                    if (Timer > 70 && Timer < 80)
                     {
                         _dyingRotation -= 0.02f;
                     }
@@ -440,10 +432,10 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
             //He could cycle a bit faster in phase 2?
             //Hmmm, not sure htough
             //Gonna make sure this code is easy to work with though
-            
+
             //He cycles a bit faster in phase 2
             float timeToWait = InPhase2 ? 30 : 60;
-            if(Timer >= timeToWait)
+            if (Timer >= timeToWait)
             {
                 //How we choosing attack uhh, oh i know
                 if (StellaMultiplayer.IsHost)
@@ -491,7 +483,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                         AttackCount = 0;
                     }
 
-                    if(!HasDonePhase2Transition && InPhase2)
+                    if (!HasDonePhase2Transition && InPhase2)
                     {
                         nextAttack = AIState.Phase_2_Transition;
                         HasDonePhase2Transition = true;
@@ -526,7 +518,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 SoundEngine.PlaySound(SoundID.Item73, NPC.position);
             }
 
-            if(Timer > 20 && Timer < 120)
+            if (Timer > 20 && Timer < 120)
             {
                 float progress = (Timer / 120f);
                 float dist = MathHelper.Lerp(48f, 0f, progress);
@@ -537,7 +529,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 Dust.NewDustPerfect(pos2, DustID.Torch, Vector2.Zero, Scale: scale);
             }
 
-            if(Timer > 60)
+            if (Timer > 60)
             {
                 Vector2 directionToTarget = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
                 float speed = 3f;
@@ -563,9 +555,9 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 }
             }
 
-            if(Timer == 210)
+            if (Timer == 210)
             {
-                for(int i = 0; i < 32; i++)
+                for (int i = 0; i < 32; i++)
                 {
                     float progress = ((float)i / 32f);
                     float scale = MathHelper.Lerp(3f, 0f, progress);
@@ -575,7 +567,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 }
             }
 
-            if(Timer > 240)
+            if (Timer > 240)
             {
                 SwitchState(AIState.Hop_Around);
             }
@@ -592,7 +584,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 case 0:
                     Timer++;
                     //Y velocity + x velocity duhh
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         NPC.TargetClosest();
                         float jumpSpeed = 5;
@@ -604,20 +596,20 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                         }
                         NPC.velocity.Y = -jumpSpeed;
 
-                    
-                    
+
+
                         NPC.velocity.X = DirectionToTarget.X * jumpHorizontalSpeed;
                         SoundStyle jumpStyle = new SoundStyle("Stellamod/Assets/Sounds/Jack_Jump");
                         jumpStyle.PitchVariance = 0.1f;
                         SoundEngine.PlaySound(jumpStyle, NPC.position);
                     }
 
-                    if(Timer > 10 && NPC.collideY)
+                    if (Timer > 10 && NPC.collideY)
                     {
                         NPC.velocity.X = 0;
                     }
 
-                    if(Timer >= 45 && NPC.collideY || (Timer >= 90))
+                    if (Timer >= 45 && NPC.collideY || (Timer >= 90))
                     {
                         SoundStyle wee = new SoundStyle("Stellamod/Assets/Sounds/Jack_Land");
                         wee.PitchVariance = 0.1f;
@@ -642,7 +634,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
 
         private bool CheckCurrentAnimation(params AnimationState[] animations)
         {
-            for(int i = 0; i < animations.Length; i++)
+            for (int i = 0; i < animations.Length; i++)
             {
                 AnimationState animation = animations[i];
                 if (Animation == animation)
@@ -657,8 +649,8 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
             //I'm thinking they'll like 'ping' and quickly home to the player but then stop homing, so you just have to react to them
             //This is one of the attacks that is much easier to dodge with your dash ^
             if (!CheckCurrentAnimation(
-                AnimationState.Cast_Hand_Up, 
-                AnimationState.Cast_Hold_Out, 
+                AnimationState.Cast_Hand_Up,
+                AnimationState.Cast_Hold_Out,
                 AnimationState.Cast_Put_Down))
             {
                 Animation = AnimationState.Cast_Hand_Up;
@@ -666,7 +658,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
 
             NPC.velocity.X *= 0.98f;
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/Jack_Laugh");
                 soundStyle.PitchVariance = 0.1f;
@@ -682,9 +674,9 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 Dust.NewDustPerfect(pos, DustID.Torch, Vector2.Zero, Scale: scale);
                 Dust.NewDustPerfect(pos2, DustID.Torch, Vector2.Zero, Scale: scale);
             }
-            if (Timer >= 20 && Timer < 150) 
-            { 
-                if(Timer % 15 == 0)
+            if (Timer >= 20 && Timer < 150)
+            {
+                if (Timer % 15 == 0)
                 {
                     Vector2 spawnPoint = NPC.Center + Main.rand.NextVector2Circular(64, 64);
                     Vector2 startVelocity = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 8;
@@ -698,12 +690,12 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 }
             }
 
-            if(Timer == 150)
+            if (Timer == 150)
             {
                 Animation = AnimationState.Cast_Put_Down;
             }
 
-            if(Timer >= 180)
+            if (Timer >= 180)
             {
                 SwitchState(AIState.Hop_Around);
             }
@@ -732,7 +724,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 SoundEngine.PlaySound(soundStyle, NPC.position);
             }
 
-            if(Timer < 60 && Timer % 2 == 0)
+            if (Timer < 60 && Timer % 2 == 0)
             {
                 float progress = (Timer / 60f);
                 float dist = MathHelper.Lerp(48f, 0f, progress);
@@ -742,7 +734,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 Dust.NewDustPerfect(pos, DustID.Torch, Vector2.Zero, Scale: scale);
                 Dust.NewDustPerfect(pos2, DustID.Torch, Vector2.Zero, Scale: scale);
             }
-            if(Timer % 60 == 0)
+            if (Timer % 60 == 0)
             {
                 Vector2 spawnPoint = NPC.Center + Main.rand.NextVector2Circular(24, 24);
                 Vector2 startVelocity = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 8;
@@ -754,8 +746,8 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 if (StellaMultiplayer.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPoint, startVelocity, projType, damage, knockback, Main.myPlayer);
-                    
-                
+
+
                 }
             }
 
@@ -784,18 +776,18 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
 
             NPC.velocity.X *= 0.98f;
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle soundStyle = SoundID.DD2_BetsysWrathShot;
                 soundStyle.PitchVariance = 0.1f;
                 SoundEngine.PlaySound(soundStyle, NPC.position);
             }
 
-            if(Timer >= 30 && Timer < 240)
+            if (Timer >= 30 && Timer < 240)
             {
                 float progress = (Timer - 30f) / 210f;
                 float offset = MathHelper.Lerp(16, 1024, progress);
-                if(Timer % 5 == 0)
+                if (Timer % 5 == 0)
                 {
                     Vector2 spawnPoint1 = NPC.Bottom + new Vector2(offset, 0);
                     Vector2 spawnPoint2 = NPC.Bottom - new Vector2(offset, 0);
@@ -809,11 +801,11 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPoint2, startVelocity, projType, damage, knockback, Main.myPlayer);
                     }
 
-                    if(Timer % 10 == 0)
+                    if (Timer % 10 == 0)
                     {
                         SoundEngine.PlaySound(SoundID.Item73, NPC.position);
                     }
-                  
+
                 }
             }
 
@@ -865,12 +857,12 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 SoundEngine.PlaySound(SoundID.Item73, NPC.position);
             }
 
-            if(Timer > 60 && NPC.collideY)
+            if (Timer > 60 && NPC.collideY)
             {
                 NPC.velocity.X *= 0.8f;
             }
 
-            if(Timer == 120)
+            if (Timer == 120)
             {
                 if (StellaMultiplayer.IsHost)
                 {
@@ -993,7 +985,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WanderingFlame>(), minimumDropped: 20, maximumDropped: 50));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<PumkinPopper>(), chanceDenominator: 2,minimumDropped: 150, maximumDropped: 300));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<PumkinPopper>(), chanceDenominator: 2, minimumDropped: 150, maximumDropped: 300));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Summon.WillOWisp>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<JackoShot>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StaffOFlame>(), chanceDenominator: 2));

@@ -1,12 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Stellamod.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Stellamod.Tiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -21,55 +15,105 @@ namespace Stellamod.TilesNew
 
     internal class BehindWallLayerDrawSystem : ModSystem
     {
-        private Dictionary<Point, IDrawBehindWall> _drawIndex;
         public static Vector2 TileAdj => (Lighting.Mode == Terraria.Graphics.Light.LightMode.Retro || Lighting.Mode == Terraria.Graphics.Light.LightMode.Trippy) ? Vector2.Zero : Vector2.One * 12;
+
+        private int TileDrawWidth => Main.screenWidth * 2 / 16;
+        private int TileDrawHeight => Main.screenHeight * 2 / 16;
         public override void Load()
         {
             base.Load();
-            _drawIndex = new Dictionary<Point, IDrawBehindWall>();
-            On_Main.DoDraw_WallsAndBlacks += DrawBehindWalls;
+            On_Main.DoDraw_WallsAndBlacks += DrawWalls;
         }
         public override void Unload()
         {
             base.Unload();
-            On_Main.DoDraw_WallsAndBlacks -= DrawBehindWalls;
+            On_Main.DoDraw_WallsAndBlacks -= DrawWalls;
         }
 
-        private bool IsOnScreen(Point point)
-        {
-            Point a = point;
-            Point drawPos = a;
-            drawPos.X *= 16;
-            drawPos.Y *= 16;
-
-            Rectangle screenRect = new Rectangle(0, 0, Main.screenWidth * 2, Main.screenHeight * 2);
-            screenRect.Location = new Point((int)Main.screenPosition.X, (int)Main.screenPosition.Y);
-            return screenRect.Contains(drawPos);
-        }
-
-        public void AddDraw(int i, int j, IDrawBehindWall drawBehindWall)
-        {
-            Point point = new Point(i, j);
-            if (_drawIndex.ContainsKey(point))
-                return;
-            _drawIndex.Add(point, drawBehindWall);
-        }
-
-        private void DrawBehindWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
+        private void DrawWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
         {
             //Draw Behind the walls
+            DrawBehindWalls();
+            orig(self);
+            DrawDecorativeWalls();
+        }
 
+        private void DrawBehindWalls()
+        {
             Main.tileBatch.Begin();
-            //Filter out things that aren't on screen anymore
-            _drawIndex = _drawIndex.Where(x => IsOnScreen(x.Key)).ToDictionary();
-            foreach(var kvp in _drawIndex)
+            int width = TileDrawWidth;
+            int height = TileDrawHeight;
+            Point bottomLeft = Main.LocalPlayer.Center.ToTileCoordinates() - new Point(width / 2, height / 2);
+            int left = bottomLeft.X;
+            int right = left + width;
+            int bottom = bottomLeft.Y;
+            int top = bottom + height;
+            for (int x = left; x < right; x++)
             {
-                var func = kvp.Value;
-                var point = kvp.Key;
-                func.DrawBehindWall(point.X, point.Y, Main.spriteBatch);
+                if (x < 0)
+                    continue;
+                if (x >= Main.maxTilesX)
+                    continue;
+                for (int y = bottom; y < top; y++)
+                {
+                    if (y >= Main.maxTilesY)
+                        continue;
+                    if (y < 0)
+                        continue;
+
+                    Tile tile = Main.tile[x, y];
+                    if (tile.WallType == WallID.None)
+                        continue;
+                    ModWall modWall = ModContent.GetModWall(tile.WallType);
+                    if (modWall == null)
+                        continue;
+                    if (modWall is BehindDecorativeWall decorativeWall)
+                    {
+                        decorativeWall.DrawDecor(x, y, Main.spriteBatch);
+                    }
+                }
             }
             Main.tileBatch.End();
-            orig(self);
+        }
+
+        private void DrawDecorativeWalls()
+        {
+
+            //Draw In Front Walls
+            Main.tileBatch.Begin();
+            int width = TileDrawWidth;
+            int height = TileDrawHeight;
+            Point bottomLeft = Main.LocalPlayer.Center.ToTileCoordinates() - new Point(width / 2, height / 2);
+            int left = bottomLeft.X;
+            int right = left + width;
+            int bottom = bottomLeft.Y;
+            int top = bottom + height;
+            for (int x = left; x < right; x++)
+            {
+                if (x < 0)
+                    continue;
+                if (x >= Main.maxTilesX)
+                    continue;
+                for (int y = bottom; y < top; y++)
+                {
+                    if (y >= Main.maxTilesY)
+                        continue;
+                    if (y < 0)
+                        continue;
+
+                    Tile tile = Main.tile[x, y];
+                    if (tile.WallType == WallID.None)
+                        continue;
+                    ModWall modWall = ModContent.GetModWall(tile.WallType);
+                    if (modWall == null)
+                        continue;
+                    if (modWall is DecorativeWall decorativeWall)
+                    {
+                        decorativeWall.DrawDecor(x, y, Main.spriteBatch);
+                    }
+                }
+            }
+            Main.tileBatch.End();
         }
     }
 }

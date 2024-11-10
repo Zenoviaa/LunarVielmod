@@ -137,11 +137,74 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 30, new PassLegacy("World Gen CozmireTower", WorldGenTL));
                 tasks.Insert(CathedralGen2 + 31, new PassLegacy("World Gen Bridget", WorldGenBridget));
 				tasks.Insert(CathedralGen2 + 32, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
-                tasks.Insert(CathedralGen2 + 33, new PassLegacy("World Gen Dread Monoliths", WorldGenDreadMonoliths));
-                tasks.Insert(CathedralGen2 + 34, new PassLegacy("World Gen Graving", WorldGenGraving));
-                tasks.Insert(CathedralGen2 + 35, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
+                tasks.Insert(CathedralGen2 + 33, new PassLegacy("World Gen Graving", WorldGenGraving));
+                tasks.Insert(CathedralGen2 + 34, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
+                tasks.Insert(CathedralGen2 + 35, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
             }
 		}
+
+
+        private void WorldGenBloodCathedral(GenerationProgress progress, GameConfiguration configuration)
+        {
+            StructureMap structures = GenVars.structures;
+            Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Boss/SanguimiBoss");
+            progress.Message = "Building a Bloody Cathedral";
+
+            int[] tileBlend = new int[]
+			{
+                TileID.RubyGemspark
+			};
+
+            for (int k = 0; k < 1; k++)
+            {
+                bool placed = false;
+                int attempts = 0;
+                while (!placed && attempts++ < 1000000)
+                {
+					// Select a place in the first 6th of the world, avoiding the oceans
+					int range = Main.maxTilesX / 8;
+					int offset = WorldGen.genRand.Next(-range, range);
+					int smx = Main.maxTilesX / 2 + offset;
+
+                    //Start at 200 tiles above the surface instead of 0, to exclude floating islands
+                    int smy = ((int)(Main.worldSurface - 200));
+
+                    // We go down until we hit a solid tile or go under the world's surface
+                    while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
+                    {
+                        smy++;
+                    }
+
+                    // If we went under the world's surface, try again
+                    if (smy > Main.worldSurface)
+                    {
+                        continue;
+                    }
+
+                    Tile tile = Main.tile[smx, smy];
+                    if (!(tile.TileType == TileID.Sand
+                      || tile.TileType == TileID.Dirt
+                      || tile.TileType == ModContent.TileType<VeriplantGrass>()
+                      || tile.TileType == TileID.Grass
+                      || tile.TileType == TileID.Stone
+                      || tile.TileType == TileID.Sandstone))
+                    {
+                        continue;
+                    }
+
+                    Tile tileAbove = Main.tile[smx, smy - 1];
+                    if (tileAbove.LiquidAmount > 0)
+						continue;
+
+                    Point Loc = new Point(smx, smy + 10);
+                    string path = "Struct/Boss/SanguimiBoss";
+                    if (!Structurizer.TryPlaceAndProtectStructure(Loc, path))
+                        continue;
+                    int[] chests = Structurizer.ReadStruct(Loc, path, tileBlend);
+                    placed = true;
+                }
+            }
+        }
 
         private void WorldGenDungeonLocation(GenerationProgress progress, GameConfiguration configuration)
         {
@@ -482,27 +545,27 @@ namespace Stellamod.WorldG
 					continue;
 				}
 				Tile tile = Main.tile[smx, smy];
-				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if (!(tile.TileType == TileID.Sand
-					|| tile.TileType == TileID.Dirt
-					|| tile.TileType == TileID.Grass
-					|| tile.TileType == TileID.Stone
-					|| tile.TileType == TileID.Sandstone))
-				{
-					continue;
-				}
-
-
-				// place the Rogue
-				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-				//Main.npc[num].homeTileX = -1;
-				//	Main.npc[num].homeTileY = -1;
-				//	Main.npc[num].direction = 1;
-				//	Main.npc[num].homeless = true;
+                // If the type of the tile we are placing the tower on doesn't match what we want, try again
+                // If the type of the tile we are placing the tower on doesn't match what we want, try again
+                if (!(tile.TileType == TileID.Dirt
+                    || tile.TileType == TileID.Stone
+                    || tile.TileType == TileID.Grass))
+                {
+                    continue;
+                }
 
 
 
-				for (int da = 0; da < 1; da++)
+                // place the Rogue
+                //	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
+                //Main.npc[num].homeTileX = -1;
+                //	Main.npc[num].homeTileY = -1;
+                //	Main.npc[num].direction = 1;
+                //	Main.npc[num].homeless = true;
+
+
+
+                for (int da = 0; da < 1; da++)
 				{
 					Point Loc = new Point(smx + 10, smy + 53);
 					NPCs.Town.AlcadSpawnSystem.FableTile = Loc;

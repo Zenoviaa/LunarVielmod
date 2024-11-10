@@ -61,8 +61,7 @@ namespace Stellamod.Tiles
             return false;
         }
     }
-    internal abstract class BehindDecorativeWall : ModWall,
-        IDrawBehindWall
+    internal abstract class BehindDecorativeWall : ModWall
     {
         public enum DrawOrigin
         {
@@ -94,12 +93,10 @@ namespace Stellamod.Tiles
 
         public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
         {
-            BehindWallLayerDrawSystem system = ModContent.GetInstance<BehindWallLayerDrawSystem>();
-            system.AddDraw(i, j, this);
             return false;
         }
 
-        public void DrawBehindWall(int i, int j, SpriteBatch spriteBatch)
+        public void DrawDecor(int i, int j, SpriteBatch spriteBatch)
         {
             Color color2 = Lighting.GetColor(i, j);
             Texture2D texture = ModContent.Request<Texture2D>(StructureTexture).Value;
@@ -134,6 +131,7 @@ namespace Stellamod.Tiles
         public override string Texture => "Stellamod/Tiles/InvisibleWall";
         public string StructureTexture { get; set; }
         public DrawOrigin Origin { get; set; } = DrawOrigin.BottomUp;
+
         public override void SetStaticDefaults()
         {
             StructureColor = Color.White;
@@ -155,12 +153,18 @@ namespace Stellamod.Tiles
         public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
         {
             base.PostDraw(i, j, spriteBatch);
+           
+        }
+
+        public void DrawDecor(int i, int j, SpriteBatch spriteBatch)
+        {
             Color color2 = Lighting.GetColor(i, j);
             Texture2D texture = ModContent.Request<Texture2D>(StructureTexture).Value;
             int textureWidth = texture.Width;
             int textureHeight = texture.Height;
 
-            Vector2 drawPos = (new Vector2(i, j) + TileAdj) * 16;
+
+            Vector2 drawPos = (new Vector2(i, j)) * 16;
             Vector2 drawOrigin = new Vector2(textureWidth / 2, textureHeight);
             switch (Origin)
             {
