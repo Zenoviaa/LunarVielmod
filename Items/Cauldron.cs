@@ -687,6 +687,8 @@ namespace Stellamod.Items
                materialCount: 10,
                weight: 1.0f,
                yield: 1);
+
+            _brews.Sort((x, y) => ModContent.GetModItem(x.mold).Name.CompareTo(ModContent.GetModItem(y.mold).Name));
         }
 
         private void AddBrew(int result, int mold, int material, int materialCount, float weight = 1.0f, int yield = 1)
@@ -716,6 +718,19 @@ namespace Stellamod.Items
                 (x => x.material == material && materialCount >= x.materialAmount).ToList();
             return possibleBrews;
         }
+
+        public Item FindMold(Item item)
+        {
+            foreach(var brew in _brews)
+            {
+                if (brew.result == item.type)
+                    return ModContent.GetModItem(brew.mold).Item;
+            }
+            Item r = new Item();
+            r.SetDefaults(0);
+            return r;
+        }
+
 
         public Item[] GetMaterials()
         {

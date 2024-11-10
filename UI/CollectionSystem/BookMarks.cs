@@ -45,6 +45,7 @@ namespace Stellamod.UI.CollectionSystem
             {
                 Main.LocalPlayer.mouseInterface = true;
             }
+          
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -64,7 +65,8 @@ namespace Stellamod.UI.CollectionSystem
 
             Color drawColor = Color.White;
             Rectangle rect = new Rectangle(point.X, point.Y, textureToDraw.Width, textureToDraw.Height);
-
+            CollectionBookUISystem uiSystem = ModContent.GetInstance<CollectionBookUISystem>();
+            rect.Location += uiSystem.collectionBookUI.bookUI.book.Offset.ToPoint();
             float rotation = 0;
             spriteBatch.Draw(textureToDraw, rect, null, drawColor, rotation, Vector2.Zero, SpriteEffects.None, 0);
         }
