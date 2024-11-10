@@ -136,7 +136,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                     if(StellaMultiplayer.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velToPlayer,
-                            ModContent.ProjectileType<ElectricSingularityBolt>(), 21, 1, Owner: Main.myPlayer);
+                            ModContent.ProjectileType<ConjureBallLightningMini>(), 21, 1, Owner: Main.myPlayer);
                     }
                 }
 
