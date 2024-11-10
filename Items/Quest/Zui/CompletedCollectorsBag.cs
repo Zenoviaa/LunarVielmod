@@ -90,6 +90,7 @@ namespace Stellamod.Items.Quest.Zui
             recipe16.AddIngredient(ItemID.SoulofMight, 5);
             recipe16.Register();
 
+            /*
             Recipe recipe17 = CreateRecipe();
             recipe17.AddTile(ModContent.TileType<AlcaologyTable>());
             recipe17.AddIngredient(ModContent.ItemType<FlowerBatch>(), 1);
@@ -99,7 +100,7 @@ namespace Stellamod.Items.Quest.Zui
             recipe17.AddIngredient(ItemID.SoulofNight, 5);
             recipe17.AddIngredient(ItemID.SharkFin, 5);
             recipe17.Register();
-
+            */
             Recipe recipe18 = CreateRecipe();
             recipe18.AddTile(ModContent.TileType<AlcaologyTable>());
             recipe18.AddIngredient(ModContent.ItemType<FlowerBatch>(), 3);

@@ -3,8 +3,6 @@ using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
-
-using Stellamod.Projectiles.Slashers.Hearstspire;
 using Stellamod.Projectiles.Slashers.Reavestor;
 using System.Collections.Generic;
 using Terraria;
@@ -66,7 +64,7 @@ namespace Stellamod.Items.Weapons.Melee
 
             Item.UseSound = SoundID.Item71;
             Item.autoReuse = true;
-            Item.shoot = ModContent.ProjectileType<HearstspireProj>();
+            Item.shoot = ModContent.ProjectileType<ReavestorSwordProj>();
             Item.shootSpeed = 20f;
             Item.noUseGraphic = true;
             Item.value = Item.sellPrice(0, 2, 50, 0);
@@ -87,9 +85,9 @@ namespace Stellamod.Items.Weapons.Melee
             }
         }
 
-         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-        
+
             int dir = AttackCounter;
             if (player.direction == 1)
             {
@@ -102,7 +100,7 @@ namespace Stellamod.Items.Weapons.Melee
             }
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
-            Projectile.NewProjectile(source, position, velocity, 
+            Projectile.NewProjectile(source, position, velocity,
                 ModContent.ProjectileType<ReavBig>(), damage * 2, knockback, player.whoAmI, 1, dir);
             return false;
         }

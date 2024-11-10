@@ -157,12 +157,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Monolith
             }
         }
 
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
-        {
-            base.ModifyNPCLoot(npcLoot);
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DreadFragment>()));
-        }
-
         public override void OnKill()
         {
             base.OnKill();

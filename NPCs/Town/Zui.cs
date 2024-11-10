@@ -538,7 +538,6 @@ namespace Stellamod.NPCs.Town
 
 			.Add<PerfectionStaff>(ZuiQuestSystem.ShopCondition3)
 			.Add<AquaCrystal>(ZuiQuestSystem.ShopCondition3)
-			.Add<Morrowshroom>(ZuiQuestSystem.ShopCondition3)
 			.Add<OnionOfHeight>(ZuiQuestSystem.ShopCondition3)
 			.Add(new Item(ItemID.NaturesGift) { shopCustomPrice = Item.buyPrice(gold: 1) }, (ZuiQuestSystem.ShopCondition3))
 

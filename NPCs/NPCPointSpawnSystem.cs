@@ -58,16 +58,7 @@ namespace Stellamod.NPCs
         {
             base.OnModLoad();
             npcs = Stellamod.Instance.GetContent<PointSpawnNPC>().ToArray();
-            for (int i = 0; i < npcs.Length; i++)
-            {
-                PointSpawnNPC npc = npcs[i];
-                NPCPointSpawner pointSpawner = new NPCPointSpawner();
-                pointSpawner.npcType = npc.Type;
-                npc.SetPointSpawnerDefaults(ref pointSpawner);
-
-                _npcPointSpawners.Add(pointSpawner);
-            }
-
+            LoadNPCPointSpawners();
             Structurizer.OnStructPlace += AddStructure;
             StructureLoader.OnStructPlace += AddStructure;
         }
@@ -77,6 +68,12 @@ namespace Stellamod.NPCs
             base.OnModUnload();
             Structurizer.OnStructPlace -= AddStructure;
             StructureLoader.OnStructPlace -= AddStructure;
+        }
+
+        public override void ClearWorld()
+        {
+            base.ClearWorld();
+            Structures.Clear();
         }
 
         public override void NetSend(BinaryWriter writer)
@@ -94,10 +91,8 @@ namespace Stellamod.NPCs
             AddStructureTile(path, bottomLeft);
         }
 
-        public override void PostUpdateEverything()
+        private void LoadNPCPointSpawners()
         {
-            base.PostUpdateEverything();
-        
             _npcPointSpawners.Clear();
             for (int i = 0; i < npcs.Length; i++)
             {
@@ -108,7 +103,12 @@ namespace Stellamod.NPCs
 
                 _npcPointSpawners.Add(pointSpawner);
             }
+        }
 
+        public override void PostUpdateEverything()
+        {
+            base.PostUpdateEverything();
+            LoadNPCPointSpawners();
             if (StellaMultiplayer.IsHost)
             {
                 if (NPC.AnyDanger(ignorePillarsAndMoonlordCountdown: true))

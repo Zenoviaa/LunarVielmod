@@ -16,7 +16,6 @@ namespace Stellamod.Items.Weapons.Igniters
 {
     internal class BonePicklerCard : ClassSwapItem
     {
-
         public override DamageClass AlternateClass => DamageClass.Generic;
 
         public override void SetClassSwappedDefaults()
@@ -55,7 +54,6 @@ namespace Stellamod.Items.Weapons.Igniters
 		
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-
 			for (int i = 0; i < Main.npc.Length; i++)
 			{
 				NPC npc = Main.npc[i];
@@ -63,24 +61,9 @@ namespace Stellamod.Items.Weapons.Igniters
 				{
 					Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity, type, damage, knockback, player.whoAmI);
 					
-				}
-				
-				
+				}	
 			}
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
-		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 100);
-			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 20);
-			recipe.AddIngredient(ItemID.Bone, 50);
-			recipe.AddIngredient(ItemID.Silk, 10);
-			recipe.AddIngredient(ItemID.Leather, 9);
-			recipe.AddIngredient(ModContent.ItemType<BlankCard>(), 1);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
 		}
 
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)

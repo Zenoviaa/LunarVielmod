@@ -25,7 +25,7 @@ namespace Stellamod.NPCs.Overworld.IvythornSlime
             NPC.height = 24;
             NPC.damage = 8;
             NPC.defense = 4;
-            NPC.lifeMax = 46;
+            NPC.lifeMax = 32;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath1;
             NPC.value = 30f;

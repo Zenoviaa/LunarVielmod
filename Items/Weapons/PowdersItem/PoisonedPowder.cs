@@ -12,7 +12,6 @@ namespace Stellamod.Items.Weapons.PowdersItem
 {
 	internal class PoisonedPowder : ClassSwapItem
     {
-
         public override DamageClass AlternateClass => DamageClass.Generic;
 
         public override void SetClassSwappedDefaults()
@@ -47,20 +46,6 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.crit = 2;
 			Item.UseSound = SoundID.Grass;
 		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 50);
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 200);
-			recipe.AddIngredient(ItemID.ChlorophyteBar, 5);
-			recipe.AddIngredient(ItemID.Stinger, 5);
-			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
-
-			recipe.Register();
-		}
-
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{

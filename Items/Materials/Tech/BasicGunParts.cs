@@ -22,6 +22,5 @@ namespace Stellamod.Items.Materials.Tech
             Item.useAnimation = 10;
             Item.useStyle = ItemUseStyleID.Swing;
         }
-
     }
 }

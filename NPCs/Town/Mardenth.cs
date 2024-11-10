@@ -345,8 +345,7 @@ namespace Stellamod.NPCs.Town
             .Add<MardenthMask>(CustomConditions.PostDaedus)
             .Add<MardenthRobe>(CustomConditions.PostDaedus)
             .Add<MardenthPants>(CustomConditions.PostDaedus)
-            .Add(new Item(ModContent.ItemType<OvermorrowWood>()) { shopCustomPrice = Item.buyPrice(silver: 10) })
-                .Add(new Item(ModContent.ItemType<Plate>()) { shopCustomPrice = Item.buyPrice(silver: 1) })
+            .Add(new Item(ModContent.ItemType<Plate>()) { shopCustomPrice = Item.buyPrice(silver: 1) })
             .Add(new Item(ItemID.GravediggerShovel) { shopCustomPrice = Item.buyPrice(gold: 5) })
 				;
 

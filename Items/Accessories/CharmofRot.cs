@@ -26,19 +26,6 @@ namespace Stellamod.Items.Accessories
 			Item.value = Item.sellPrice(silver: 12);
 			Item.rare = ItemRarityID.Green;
 			Item.accessory = true;
-
-
-		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Chain, 5);
-			recipe.AddIngredient(ModContent.ItemType<DustedSilk>(), 5);
-			recipe.AddIngredient(ItemID.CloudinaBottle, 1);
-			recipe.AddIngredient(ModContent.ItemType<GintzlMetal>(), 5);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
@@ -46,9 +33,5 @@ namespace Stellamod.Items.Accessories
 			player.GetDamage(DamageClass.Summon) += 0.08f; // Increase ALL player damage by 100%
 
 		}
-
-
-
-
 	}
 }

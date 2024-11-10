@@ -46,15 +46,6 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.autoReuse = true;
 			Item.crit = 22;
 		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.PalmWood, 25);
-			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 8);
-			recipe.AddIngredient(ModContent.ItemType<VerianOre>(), 8);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
-		}
 	}
 }
 

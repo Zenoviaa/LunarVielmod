@@ -53,19 +53,6 @@ namespace Stellamod.Items.Accessories.Brooches
 			Item.rare = ItemRarityID.Orange;
 			Item.accessory = true;
 		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 50);
-			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<DustedSilk>(), 20);
-			recipe.AddIngredient(ModContent.ItemType<Gambit>(), 5);
-			recipe.AddTile(ModContent.TileType<BroochesTable>());
-			recipe.Register();
-		}
-
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();

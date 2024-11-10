@@ -1,4 +1,5 @@
-﻿using Stellamod.Assets.Biomes;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Assets.Biomes;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Utilis;
@@ -20,12 +21,13 @@ namespace Stellamod.NPCs.Morrow
 
 		public enum ActionState
 		{
-
 			Speed,
 			Wait
 		}
+
 		// Current state
 		public int frameTick;
+
 		// Current state's timer
 		public float timer;
 
@@ -39,7 +41,7 @@ namespace Stellamod.NPCs.Morrow
 			NPC.height = 50;
 			NPC.damage = 42;
 			NPC.defense = 8;
-			NPC.lifeMax = 170;
+			NPC.lifeMax = 90;
 			NPC.HitSound = SoundID.NPCHit48;
 			NPC.DeathSound = SoundID.DD2_SkeletonDeath;
 			NPC.value = 563f;
@@ -62,12 +64,16 @@ namespace Stellamod.NPCs.Morrow
 		int invsTimer;
 		public override void HitEffect(NPC.HitInfo hit)
 		{
-			for (int k = 0; k < 11; k++)
+			for (int k = 0; k < 2; k++)
 			{
-				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, 1, -1f, 1, default, .61f);
+				float rot = Main.rand.NextFloat() * MathHelper.ToRadians(35);
+
+                Vector2 vel = rot.ToRotationVector2() * Main.rand.NextFloat(1, 4);
+                vel *= hit.HitDirection;
+
+                float scale = Main.rand.NextFloat(0.5f, 1f);
+				Dust.NewDustPerfect(NPC.Center, DustID.GoldCoin, Velocity: vel, Scale: scale);
 			}
-
-
 		}
 
 		public override void FindFrame(int frameHeight)
@@ -78,18 +84,16 @@ namespace Stellamod.NPCs.Morrow
 			NPC.frame.Y = frame * frameHeight;
 		}
 
-		public override void AI()
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+			return !Main.dayTime;
+        }
+
+        public override void AI()
 		{
-			if (Main.dayTime)
-			{
-				NPC.damage = 0;
-				
-			}
 			timer++;
 			invsTimer++;
 			NPC.spriteDirection = NPC.direction;
-
-
 			if (invsTimer < 255)
 			{
 				NPC.alpha++;
@@ -113,13 +117,11 @@ namespace Stellamod.NPCs.Morrow
 				for (int k = 0; k < 11; k++)
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GreenMoss, NPC.direction, -1f, 1, default, .61f);
 
-
 				invisibilityTimer = 0;
 			}
 
 			switch (State)
 			{
-
 				case ActionState.Wait:
 					counter++;
 					Wait();
@@ -131,7 +133,6 @@ namespace Stellamod.NPCs.Morrow
 					NPC.velocity *= 0.98f;
 					break;
 
-
 				default:
 					counter++;
 					break;
@@ -141,23 +142,15 @@ namespace Stellamod.NPCs.Morrow
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Morrowshroom>(), 2, 1, 3));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), 2, 1, 2));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OvermorrowWood>(), 1, 1, 5));
-		}
-
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), chanceDenominator: 1, minimumDropped: 2, maximumDropped: 4));
+        }
 
 		public void Wait()
 		{
 			timer++;
-
 			if (timer > 50)
 			{
-
 				NPC.oldVelocity *= 0.99f;
-
-
-
 			}
 			else if (timer == 60)
 			{
@@ -169,19 +162,8 @@ namespace Stellamod.NPCs.Morrow
 		public void Speed()
 		{
 			timer++;
-
-
 			if (timer > 50)
 			{
-
-				for (int k = 0; k < 5; k++)
-				{
-					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, NPC.direction, -1f, 1, default, .61f);
-				}
-
-
-
-
 
 			}
 
@@ -190,7 +172,6 @@ namespace Stellamod.NPCs.Morrow
 				State = ActionState.Wait;
 				timer = 0;
 			}
-
 		}
 	}
 }

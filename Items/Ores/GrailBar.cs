@@ -26,13 +26,5 @@ namespace Stellamod.Items.Ores
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.rare = ItemRarityID.Blue;
 		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe(30);
-			recipe.AddIngredient(ModContent.ItemType<OldWeddingRing>(), 5);
-			recipe.AddTile(TileID.Furnaces);
-			recipe.Register();
-		}
 	}
 }

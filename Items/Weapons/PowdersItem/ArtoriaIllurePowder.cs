@@ -15,7 +15,6 @@ namespace Stellamod.Items.Weapons.PowdersItem
 {
     internal class ArtoriaIllurePowder : ClassSwapItem
     {
-
         public override DamageClass AlternateClass => DamageClass.Generic;
 
         public override void SetClassSwappedDefaults()
@@ -49,17 +48,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
             Item.crit = 2;
             Item.UseSound = SoundID.Grass;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.ChlorophyteBar, 12);
-            recipe.AddIngredient(ModContent.ItemType<IllurineScale>(), 5);
-            recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 100);
-            recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 
-            recipe.Register();
-        }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
 

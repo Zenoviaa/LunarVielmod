@@ -54,16 +54,5 @@ namespace Stellamod.Items.Weapons.Whips
 			Item.noUseGraphic = true;
 			Item.value = 1200;
 		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<FlowerBatch>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 300);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 9);
-			recipe.Register();
-		}
 	}
 }

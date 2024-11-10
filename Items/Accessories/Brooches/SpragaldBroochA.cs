@@ -50,17 +50,6 @@ namespace Stellamod.Items.Accessories.Brooches
 			Item.accessory = true;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<DustedSilk>(), 5);
-			recipe.AddIngredient(ItemID.JungleSpores, 10);
-			recipe.AddTile(ModContent.TileType<BroochesTable>());
-			recipe.Register();
-		}
-
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();

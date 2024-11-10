@@ -46,14 +46,12 @@ namespace Stellamod.NPCs.Morrow
  
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-		
 			npcLoot.Add(ItemDropRule.Common(ItemID.Emerald, 2, 1, 4));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 5, 1, 5));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), 2, 1, 5));
             npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 1, 7));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 2, 1, 1));
-
 		}
+
 		public override void FindFrame(int frameHeight)
 		{
 			NPC.frameCounter += 0.22f;

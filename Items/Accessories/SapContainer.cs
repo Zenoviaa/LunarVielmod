@@ -27,17 +27,6 @@ namespace Stellamod.Items.Accessories
 			Item.accessory = true;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<Morrowshroom>(), 20);
-			recipe.AddIngredient(ItemID.Bottle, 10);
-			recipe.AddIngredient(ItemID.BottledHoney, 10);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-		}
-
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.GetDamage(DamageClass.Magic) += 0.07f; // Increase ALL player damage by 100%

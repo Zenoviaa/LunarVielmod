@@ -19,7 +19,7 @@ namespace Stellamod.NPCs.Ice.WinterBornSlime
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            float chance = SpawnCondition.OverworldNightMonster.Chance * 1.3f;
+            float chance = SpawnCondition.Overworld.Chance + SpawnCondition.Underground.Chance + SpawnCondition.Cavern.Chance;
             if (!spawnInfo.Player.ZoneSnow)
                 return 0f;
             return chance;
@@ -45,9 +45,8 @@ namespace Stellamod.NPCs.Ice.WinterBornSlime
         public override void HitEffect(NPC.HitInfo hit)
         {
             int d = 180;
-            for (int k = 0; k < 9; k++)
+            for (int k = 0; k < 8; k++)
             {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, d, 2.5f * hit.HitDirection, -2.5f, 0, Color.Green, 0.7f);
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, d, 2.5f * hit.HitDirection, -2.5f, 0, Color.Green, 0.7f);
             }
         }
@@ -63,6 +62,7 @@ namespace Stellamod.NPCs.Ice.WinterBornSlime
         {
             Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
             Lighting.AddLight(NPC.Center, Color.LightSkyBlue.ToVector3() * 0.25f * Main.essScale);
+
             // This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
             Vector2 direction = Main.rand.NextVector2CircularEdge(NPC.width * 0.6f, NPC.height * 0.6f);
             float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
@@ -106,7 +106,7 @@ namespace Stellamod.NPCs.Ice.WinterBornSlime
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             base.ModifyNPCLoot(npcLoot);
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<WinterbornShard>(), minimumDropped: 1, maximumDropped: 3));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<WinterbornShard>(), minimumDropped: 2, maximumDropped: 4));
             npcLoot.Add(ItemDropRule.Common(ItemID.Gel, minimumDropped: 0, maximumDropped: 2));
         }
     }

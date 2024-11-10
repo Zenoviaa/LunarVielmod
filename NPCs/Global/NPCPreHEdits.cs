@@ -273,35 +273,12 @@ namespace Stellamod.NPCs.Global
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Vinger>(), 15, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
-			if (npc.type == NPCID.BlackRecluse)
-			{
-
-
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DustedSilk>(), 1, 1, 4)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-			}
-
-			if (npc.type == NPCID.BlackRecluseWall)
-			{
-
-
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DustedSilk>(), 1, 1, 4)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-			}
-			if (npc.type == NPCID.WallCreeper)
-			{
-
-
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DustedSilk>(), 1, 1, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-			}
             if (npc.type == NPCID.GoblinShark)
             {
 
 
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BloodPowder>(), 2, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
             }
-            if (npc.type == NPCID.WallCreeperWall)
-			{
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DustedSilk>(), 1, 1, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-			}
 
             if (npc.type == NPCID.BlueArmoredBones || 
 				npc.type == NPCID.BlueArmoredBonesMace ||
@@ -329,8 +306,7 @@ namespace Stellamod.NPCs.Global
 			{
 
 
-				npcLoot.Add(ItemDropRule.Common(ItemID.SandBlock, 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ItemID.SandBlock, 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap. // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 
 				npcLoot.Add(ItemDropRule.Common(ItemID.SandBoots, 25, 1, 1)); 
 				npcLoot.Add(ItemDropRule.Common(ItemID.Sandgun, 40, 1, 1)); 
@@ -339,8 +315,7 @@ namespace Stellamod.NPCs.Global
 			{
 
 
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Heatspot>(), 20, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Heatspot>(), 20, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.// In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 
 			}
 
@@ -356,9 +331,7 @@ namespace Stellamod.NPCs.Global
 			//------------------------------------------------------------------------ OVERWORLD + RAI
 			if (npc.type == NPCID.Zombie)
 			{
-
-
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				// In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GrassDirtPowder>(), 30, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}

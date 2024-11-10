@@ -75,7 +75,6 @@ namespace Stellamod.Items.Weapons.Igniters
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 9);
 			recipe.AddIngredient(ItemID.FallenStar, 3);
 			recipe.AddIngredient(ModContent.ItemType<BlankCard>(), 1);

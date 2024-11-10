@@ -47,21 +47,6 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.UseSound = SoundID.Grass;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 200);
-			recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
-			recipe.AddIngredient(ItemID.Ectoplasm, 20);
-			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
-
-			recipe.Register();
-		}
-
-
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			Projectile.NewProjectile(source, position, velocity *= player.GetModPlayer<MyPlayer>().IgniterVelocity, type, damage, knockback, player.whoAmI);

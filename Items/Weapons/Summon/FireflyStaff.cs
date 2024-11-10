@@ -107,18 +107,5 @@ namespace Stellamod.Items.Weapons.Summon
 			// Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
 			return false;
 		}
-
-        public override void AddRecipes()
-        {
-            base.AddRecipes();
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.MythrilAnvil);
-            recipe.AddIngredient(ItemType<StickOfWisdom>(), 1);
-            recipe.AddIngredient(ItemType<PearlescentScrap>(), 12);
-			recipe.AddIngredient(ItemType<LostScrap>(), 10);
-			recipe.AddIngredient(ItemID.SoulofLight, 10);
-			recipe.AddIngredient(ItemID.LifeCrystal, 1);
-			recipe.Register();
-		}
     }
 }

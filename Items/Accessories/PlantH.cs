@@ -28,17 +28,6 @@ namespace Stellamod.Items.Accessories
 			Item.accessory = true;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 200);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<Morrowshroom>(), 20);
-			recipe.AddIngredient(ItemID.NaturesGift, 1);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-		}
-
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 

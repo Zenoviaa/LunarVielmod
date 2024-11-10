@@ -119,16 +119,5 @@ namespace Stellamod.Items.Weapons.Melee
 
             return false;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.AddIngredient(ModContent.ItemType<OldWeddingRing>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<StarFlowerStaff>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<GrailBar>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 50);
-            recipe.Register();
-        }
-
     }
 }
