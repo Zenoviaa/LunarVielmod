@@ -360,14 +360,14 @@ namespace Stellamod.NPCs.Town
                         (int)BORDOCSpawnWorld.X, (int)BORDOCSpawnWorld.Y,
                         ModContent.NPCType<Bordoc>());
                 }
-
+                /*
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Sirestias>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)SireSpawnWorld.X, (int)SireSpawnWorld.Y,
                         ModContent.NPCType<Sirestias>());
                 }
-
+                */
                 else if (!NPC.AnyNPCs(ModContent.NPCType<IrradiaIdle>()) && !NPC.AnyNPCs(ModContent.NPCType<Irradia>()) && !NPC.AnyNPCs(ModContent.NPCType<StartIrradia>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
