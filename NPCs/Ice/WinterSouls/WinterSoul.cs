@@ -58,7 +58,7 @@ namespace Stellamod.NPCs.Ice.WinterSouls
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            float chance = SpawnCondition.OverworldNightMonster.Chance;
+            float chance = SpawnCondition.OverworldNightMonster.Chance + SpawnCondition.Underground.Chance + SpawnCondition.Cavern.Chance;
             if (!spawnInfo.Player.ZoneSnow)
                 return 0f;
             return chance;
@@ -119,26 +119,7 @@ namespace Stellamod.NPCs.Ice.WinterSouls
                 Style = Main.rand.Next(0, 3);
                 NPC.netUpdate = true;
             }
-
-            if (Main.dayTime)
-            {
-                if (NPC.alpha < 255)
-                {
-                    NPC.alpha += 2;
-                }
-                if (NPC.alpha >= 255)
-                {
-                    NPC.active = false;
-                }
-                if (alphaCounter >= 0)
-                {
-                    alphaCounter -= 0.6f;
-                }
-            }
-            else
-            {
-                alphaCounter = 4;
-            }
+            alphaCounter = 4;
 
             float num = 1f - NPC.alpha / 255f;
             alphaCounter = 4;

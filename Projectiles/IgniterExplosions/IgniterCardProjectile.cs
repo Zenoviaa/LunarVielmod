@@ -221,6 +221,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             Vector2 trailOffset = -Main.screenPosition + Projectile.Size / 2;
             TrailDrawer.DrawPrims(Projectile.oldPos, trailOffset, 155);
 
+            
             if (DrawCard)
             {
                 SpriteBatch spriteBatch = Main.spriteBatch;
@@ -241,7 +242,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
-
+            
 
             //Throw the Card
             if (DrawCard)
@@ -261,6 +262,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
         public override void PostDraw(Color lightColor)
         {
             base.PostDraw(lightColor);
+            /*
             float heatingUp = 0;
             NPC npc = SummonHelper.NearestChaseableNPC(Projectile.position);
             if(npc != null)
@@ -298,6 +300,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            */
         }
 
         public override void OnKill(int timeLeft)

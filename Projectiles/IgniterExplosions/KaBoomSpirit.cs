@@ -8,10 +8,9 @@ namespace Stellamod.Projectiles.IgniterExplosions
     {
         public override int FrameCount => 16;
 
-
-        public override void SetDefaults()
+        public override void SetExplosionDefaults()
         {
-            base.SetDefaults();
+            base.SetExplosionDefaults();
             FrameSpeed = 0.5f;
         }
 

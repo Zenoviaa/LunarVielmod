@@ -38,7 +38,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
 
-
+            SetExplosionDefaults();
             float f = FrameCount;
             if (FrameSpeed == 0)
             {
@@ -49,6 +49,10 @@ namespace Stellamod.Projectiles.IgniterExplosions
             Projectile.timeLeft = (int)length;
         }
 
+        public virtual void SetExplosionDefaults()
+        {
+
+        }
         public virtual void Start() { }
         public override void AI()
         {
