@@ -13,6 +13,10 @@ Common: {
 	Juggler: Juggler Weapon Type
 	CanSwapped: Can be changed to{0}!
 	TypeSwapped: Damage Type Swapped!
+	PowderDamage: Increases igniter card damage by {0}%!
+	PowderEquip: Equip this powder to a card!
+	IgniterCard: When it hits an enemy, it explodes with the effects of all the powders equipped to it!
+	IgniterCardHelp: Right click in your inventory to put powders on your card!
 }
 
 SetBonus: {
@@ -1098,92 +1102,52 @@ wallg: {
 
 BonePicklerCard: {
 	DisplayName: Bone Pickler Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: ""
 }
 
 DaedCard: {
 	DisplayName: Daed Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: ""
 }
 
 EYIgniter: {
 	DisplayName: Eye Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: ""
 }
 
 FrostCard: {
 	DisplayName: Frost Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: ""
 }
 
 GothivCard: {
 	DisplayName: Gothiv Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: ""
 }
 
 LovestruckCard: {
 	DisplayName: Lovestruck Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 ScorcheCard: {
 	DisplayName: Scorche Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 StarrCard: {
 	DisplayName: Starr Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 StarterCard: {
 	DisplayName: Starter Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 WCIgniter: {
 	DisplayName: Wild Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 Bongos: {
@@ -1311,7 +1275,7 @@ PocketSand: {
 	DisplayName: Pocket Sand
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		Dust that can be used with and for combos in igniters
 		Can penetrate armored enemies like nothing!
 		'''
@@ -1321,9 +1285,9 @@ ArcanalPowder: {
 	DisplayName: Sepsis Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		A sparkly star dust that does double damage as the igniter!
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -1333,7 +1297,7 @@ BloodPowder: {
 		'''
 		Throw magical dust on them and ignite
 		A blood dust that does high damage with igniters.
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -1341,8 +1305,8 @@ CoalDust: {
 	DisplayName: Coal Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
-		After hitting an enemy with this, use an igniter card weapon!
+
+
 		Forged from the gems you collect!
 		'''
 }
@@ -1351,9 +1315,9 @@ FlamePowder: {
 	DisplayName: Flame Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		A flamey dust that explodes with your igniter!
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -1361,9 +1325,9 @@ FrostedPowder: {
 	DisplayName: Frost Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		Dusty ice dust that does continuous damage with the igniter!
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -1371,9 +1335,9 @@ GrassDirtPowder: {
 	DisplayName: Dirt Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		A dirty dust... that does damage???!
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -1381,9 +1345,9 @@ LenaSongPowder: {
 	DisplayName: Lena Song Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		A musical dust! that explodes with your igniter!
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -1391,9 +1355,9 @@ ShadowFlamePowder: {
 	DisplayName: ShadowFlame Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		A shadow dust that explodes with your igniter!
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -1401,9 +1365,9 @@ TrickPowder: {
 	DisplayName: Trick Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		A sparkly tricky dust that does a lot damage!
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -1411,9 +1375,9 @@ Verstidust: {
 	DisplayName: Versti Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		A musical dust that has calming flowers
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -1621,7 +1585,7 @@ AlcadizPowder: {
 	DisplayName: Fable Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		A spark-like explosion dust that does a lot damage!
 		From the Fabled fallen remains..
 		'''
@@ -3137,9 +3101,9 @@ GintzeCard: {
 	DisplayName: Gintze Card
 	Tooltip:
 		'''
-		Use a powder or dust and then use this!
+
 		Sometimes it takes a card to be a warrior.
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+
 		'''
 }
 
@@ -3221,9 +3185,9 @@ Neptune8Card: {
 	DisplayName: Neptune8 Card
 	Tooltip:
 		'''
-		An igniter for dusts and powders!
+
 		Reaching from the depths of the galaxy!
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+
 		'''
 }
 
@@ -3256,9 +3220,9 @@ AbyssalPowder: {
 	DisplayName: Abysmal Aurelus Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		A void crystal-like dust!
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -3266,9 +3230,9 @@ AivanPowder: {
 	DisplayName: Aivan Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		Stolen from gothivia's castle
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -3276,9 +3240,9 @@ GovheilPowder: {
 	DisplayName: Govheil Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		Pure sensation. :)
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -3489,7 +3453,7 @@ GothiviasCard: {
 	Tooltip:
 		'''
 		"Causes minor burns," thats at least the note she left.
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+
 		'''
 }
 
@@ -3516,9 +3480,9 @@ CrystalPowder: {
 	DisplayName: Crystal Powder
 	Tooltip:
 		'''
-		Throw magical dust on them and ignite
+
 		It's what we've been working for Jesse
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -4439,65 +4403,37 @@ FrostMonger: {
 
 AlcadzianCard: {
 	DisplayName: Alcadzian Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 BOMBERCard: {
 	DisplayName: BOMBER Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 BurningCard: {
 	DisplayName: Burning Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 FenixxCard: {
 	DisplayName: Fenixx Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 GrailedCard: {
 	DisplayName: Grailed Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 LarvaedCard: {
 	DisplayName: Larveid Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 StyngerCard: {
 	DisplayName: Stynger Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 URift: {
@@ -4619,7 +4555,7 @@ DungeonedRockCard: {
 	Tooltip:
 		'''
 		Get rocked, or Dwayne Johnsoned, whatever is funnier.
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+
 		'''
 }
 
@@ -4756,21 +4692,16 @@ RalladI: {
 
 AgreviPowder: {
 	DisplayName: Agrevi Powder
-	Tooltip:
-		'''
-		Throw magical dust on them and ignite
-		An exploding dust that works after a little while
-		After hitting an enemy with this, use an igniter card weapon!
-		'''
+	Tooltip: "\n"
 }
 
 IllusionistPowder: {
 	DisplayName: Illusionist Powder
 	Tooltip:
 		'''
-		Throw magical dust on them and ignite
+
 		A dust that tells you to keep yourself safe.
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -4778,9 +4709,9 @@ PoisonedPowder: {
 	DisplayName: Poisoned Powder
 	Tooltip:
 		'''
-		Throw magical dust on them and ignite
+
 		A constant dust that has posionous tendrils
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -4788,9 +4719,9 @@ SpiritPowder: {
 	DisplayName: Spirit Powder
 	Tooltip:
 		'''
-		Throw magical dust on them and ignite
+
 		Fenix would love you for this.
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -5361,9 +5292,9 @@ FloweredCard: {
 	DisplayName: Flowered Card
 	Tooltip:
 		'''
-		An igniter for dusts and powders!
+
 		Reaching from the depths of the galaxy!
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+
 		'''
 }
 
@@ -5371,9 +5302,9 @@ MetallianCard: {
 	DisplayName: Metallian Card
 	Tooltip:
 		'''
-		An igniter for dusts and powders!
+
 		Reaching from the depths of the galaxy!
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+
 		'''
 }
 
@@ -5381,9 +5312,9 @@ ZuiCard: {
 	DisplayName: Zui Card
 	Tooltip:
 		'''
-		An igniter for dusts and powders!
+
 		Reaching from the depths of the galaxy!
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+
 		'''
 }
 
@@ -6288,11 +6219,7 @@ Hookarama: {
 }
 
 MushyCard: {
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 	DisplayName: Mushy Card
 }
 
@@ -6828,11 +6755,7 @@ ImperfectionStaff: {
 }
 
 IshtarCard: {
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 	DisplayName: Ishtar Card
 }
 
@@ -6865,11 +6788,7 @@ RazzleDazzle: {
 
 IllureCard: {
 	DisplayName: Illure Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 Pulsing: {
@@ -7239,9 +7158,9 @@ ArtoriaIllurePowder: {
 	DisplayName: Artoria Illure Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		An explosion of the Illure.
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -7249,9 +7168,9 @@ EreshkinPowder: {
 	DisplayName: Ereshkin Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		A sparkly drawing dust that does many times damage as the igniter!
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -7259,9 +7178,9 @@ MushyPowder: {
 	DisplayName: Mushy Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		A mushy powder that explode
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 

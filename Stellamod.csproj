@@ -228,7 +228,7 @@
     <None Remove="NPCs\Bosses\DaedusTheDevoted\DaedusTheDevoted.png" />
     <None Remove="NPCs\Bosses\DaedusTheDevoted\DaedusTheDevoted_Head_Boss.png" />
     <None Remove="NPCs\Bosses\DaedusTheDevoted\DaedusTop.png" />
-    <None Remove="NPCs\Bosses\DaedusTheDevoted\Projectiles\ConjureBallLightning - Copy.png" />
+    <None Remove="NPCs\Bosses\DaedusTheDevoted\Projectiles\ConjureBallLightningMini.png" />
     <None Remove="NPCs\Bosses\DaedusTheDevoted\Projectiles\LaughingBlast.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagramMid - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagramV2.png" />

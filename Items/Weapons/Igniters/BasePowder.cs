@@ -1,0 +1,53 @@
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ModLoader;
+
+namespace Stellamod.Items.Weapons.Igniters
+{
+    internal abstract class BasePowder : ModItem
+    {
+        public int ExplosionType;
+        public float ExplosionScreenshakeAmt;
+        public SoundStyle? ExplosionSound = null;
+        public float DamageModifier;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.width = 16;
+            Item.height = 16;
+        }
+
+        public virtual Projectile NewProjectile(Projectile igniterCardProjectile, Vector2 explosionPosition)
+        {
+            Vector2 offset = Main.rand.NextVector2Circular(64, 64);
+            Projectile p = Projectile.NewProjectileDirect(igniterCardProjectile.GetSource_FromThis(), explosionPosition + offset, Vector2.Zero,
+               ExplosionType, igniterCardProjectile.damage, igniterCardProjectile.knockBack, igniterCardProjectile.owner);
+
+            if (ExplosionSound.HasValue)
+            {
+                SoundEngine.PlaySound(ExplosionSound, explosionPosition);
+            }
+
+            if(ExplosionScreenshakeAmt > 0)
+            {
+                MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
+                myPlayer.ShakeAtPosition(explosionPosition, 1024, ExplosionScreenshakeAmt);
+            }
+
+            return p;
+        }
+
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            base.ModifyTooltips(tooltips);
+            TooltipLine line = new TooltipLine(Mod, "PowderDamageModifier", LangText.Common("PowderDamage", DamageModifier * 100));
+            tooltips.Add(line);
+
+            line = new TooltipLine(Mod, "PowderEquip", LangText.Common("PowderEquip"));
+            tooltips.Add(line);
+        }
+    }
+}
