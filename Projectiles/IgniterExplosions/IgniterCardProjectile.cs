@@ -24,6 +24,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
         private List<BasePowder> _powders;
         private int _powderIndex;
         private Vector2 _explosionPos;
+        private float _dustTimer;
         private ref float Timer => ref Projectile.ai[0];
         private CardState State
         {
@@ -142,7 +143,11 @@ namespace Stellamod.Projectiles.IgniterExplosions
 
         private void AI_Thrown()
         {
-
+            _dustTimer++;
+            if(_dustTimer % 16 == 0)
+            {
+                Dust.NewDustPerfect(Projectile.Center, DustID.WhiteTorch);
+            }
         }
 
         private void AI_Exploding()
@@ -203,6 +208,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
         }
 
         public PrimDrawer TrailDrawer { get; private set; } = null;
+        private bool DrawCard => State != CardState.Exploding && CardItem.ModItem != null;
         public override bool PreDraw(ref Color lightColor)
         {
             //Draw Trail
@@ -215,7 +221,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             Vector2 trailOffset = -Main.screenPosition + Projectile.Size / 2;
             TrailDrawer.DrawPrims(Projectile.oldPos, trailOffset, 155);
 
-            if (State != CardState.Exploding && CardItem.ModItem != null)
+            if (DrawCard)
             {
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 spriteBatch.End();
@@ -238,7 +244,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
 
 
             //Throw the Card
-            if (State != CardState.Exploding && CardItem.ModItem != null)
+            if (DrawCard)
             {
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 string texturePath = CardItem.ModItem.Texture;
@@ -250,6 +256,48 @@ namespace Stellamod.Projectiles.IgniterExplosions
             }
 
             return false;
+        }
+
+        public override void PostDraw(Color lightColor)
+        {
+            base.PostDraw(lightColor);
+            float heatingUp = 0;
+            NPC npc = SummonHelper.NearestChaseableNPC(Projectile.position);
+            if(npc != null)
+            {
+                float distanceToNPC = Vector2.Distance(Projectile.position, npc.position);
+
+                //16 is one tile sooo
+                //uhhh
+                //64?
+                float progress = distanceToNPC / 64;
+                progress = MathHelper.Clamp(progress, 0f, 1f);
+                heatingUp = MathHelper.Lerp(0f, 1f, progress);
+            }
+
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            
+            if (DrawCard)
+            {
+                string texturePath = CardItem.ModItem.Texture;
+                Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
+                for(float f = 0; f < 1f; f += 0.1f)
+                {
+                    Vector2 drawPos = Projectile.Center - Main.screenPosition;
+                    float rot = f * MathHelper.TwoPi;
+                    drawPos += rot.ToRotationVector2() * MathHelper.Lerp(0f, 16, heatingUp);
+                    Color drawColor = Color.White.MultiplyRGB(lightColor);
+                    drawColor *= MathHelper.Lerp(1f, 0.3f, heatingUp);
+                    float drawScale = MathHelper.Lerp(1f, 1f, heatingUp);
+                    spriteBatch.Draw(texture, drawPos, null, drawColor, Projectile.rotation, texture.Size() / 2f, drawScale, SpriteEffects.None, 0);
+                }
+            }
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
 
         public override void OnKill(int timeLeft)
