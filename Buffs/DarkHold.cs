@@ -30,9 +30,9 @@ namespace Stellamod.Buffs
         {
             player.bleed = true;
             player.maxFallSpeed = +20f;
-			player.blind = true;
-			player.blackout = true;
-			player.yoraiz0rDarkness = true;
+			//player.blind = true;
+			//player.blackout = true;
+			//player.yoraiz0rDarkness = true;
             if (!Main.dayTime)
             {
                 player.lifeRegen -= 12;

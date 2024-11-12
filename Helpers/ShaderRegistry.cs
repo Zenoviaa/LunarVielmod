@@ -26,6 +26,8 @@ namespace Stellamod.Helpers
         public static string Screen_NormalDistortion => "Stellamod:NormalDistortion";
         public static string Screen_Vignette => "Stellamod:Vignette";
 
+        public static string Screen_Palette => "Stellamod:Palette";
+
         //SHADERING
         private static string GlowingDustShader => "Stellamod:GlowingDust";
         public static MiscShaderData MiscGlowingDust => GameShaders.Misc[GlowingDustShader];
@@ -107,6 +109,11 @@ namespace Stellamod.Helpers
 
             Asset<Effect> vignetteShader = Assets.Request<Effect>("Effects/Vignette");
             Filters.Scene[ShaderRegistry.Screen_Vignette] = new Filter(new ScreenShaderData(vignetteShader, "ScreenPass"), EffectPriority.Medium);
+
+
+            Asset<Effect> paletteShader = Assets.Request<Effect>("Effects/Palette");
+            Filters.Scene[ShaderRegistry.Screen_Palette] = new Filter(new ScreenShaderData(paletteShader, "ScreenPass"), EffectPriority.Medium);
+
 
             //White Flame Pixel Shader
             RegisterMiscShader(FireWhitePixelShaderName, "Effects/WhiteflamePixelShader", "TrailPass");
