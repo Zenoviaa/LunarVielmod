@@ -2080,7 +2080,12 @@ RuneOfCorsage: {
 
 RuneOfDetonation: {
 	DisplayName: Rune Of Detonation
-	Tooltip: Has a chance to explode enemies doing double damage
+	Tooltip: Great for skilled players!
+	Effect:
+		'''
+		After 5 consecutive hits on an enemy, they'll violently explode!
+		Make sure to not miss :P
+		'''
 }
 
 RuneOfReality: {
