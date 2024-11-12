@@ -5,7 +5,6 @@ using Stellamod.Projectiles.IgniterExplosions;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
-using Terraria.WorldBuilding;
 
 namespace Stellamod.Items.Accessories.Runes
 {
@@ -28,12 +27,12 @@ namespace Stellamod.Items.Accessories.Runes
         {
             base.AI();
             Timer++;
-            if(Timer % 10 == 0)
+            if (Timer % 10 == 0)
             {
                 Vector2 explosionPosition = Projectile.Center;
                 explosionPosition += Main.rand.NextVector2Circular(32, 32);
 
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), explosionPosition, Vector2.Zero,
                         ModContent.ProjectileType<FableExSps>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
@@ -104,7 +103,7 @@ namespace Stellamod.Items.Accessories.Runes
     {
         public override void SetDefaults()
         {
-            base.SetDefaults(); 
+            base.SetDefaults();
             Item.value = Item.sellPrice(gold: 2);
         }
 

@@ -39,6 +39,7 @@ namespace Stellamod.Items.Accessories.Runes
             Item.width = 20;
             Item.height = 20;
             Item.value = Item.sellPrice(gold: 1);
+
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)

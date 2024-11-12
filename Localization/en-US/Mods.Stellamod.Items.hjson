@@ -3060,10 +3060,11 @@ GintzlSpear: {
 
 RuneOfWind: {
 	DisplayName: Rune Of Wind
-	Tooltip:
+	Tooltip: Great for defense!
+	Effect:
 		'''
-		Sometimes when hit you generate a wind shield!
-		This shield gives 15 defense.
+		You gain a wind shield that slowly blows away enemies
+		After taking a hit, the wind storm becomes more violent! 
 		'''
 }
 
