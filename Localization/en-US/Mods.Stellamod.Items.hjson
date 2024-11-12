@@ -2100,7 +2100,12 @@ RuneOfShade: {
 
 RuneOfStealth: {
 	DisplayName: Rune Of Stealth
-	Tooltip: "You will slowly increase damage until you are hit You will glow a bright red when you are at your most powerful form "
+	Tooltip: Great for damage!
+	Effect:
+		'''
+		You slowly gain damage over time, up to a max of 1.15x damage
+		However, taking a hit resets your bonus!
+		'''
 }
 
 ShadeCharm: {
