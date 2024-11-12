@@ -64,6 +64,7 @@ namespace Stellamod.Items.Weapons.Igniters
         public override void SetDefaults()
         {
             Item.damage = 2;
+            Item.knockBack = 2;
             Item.mana = 3;
             Item.width = 40;
             Item.height = 40;
@@ -72,7 +73,6 @@ namespace Stellamod.Items.Weapons.Igniters
             Item.useStyle = ItemUseStyleID.Swing;
             Item.noUseGraphic = true;
             Item.noMelee = true;
-            Item.knockBack = 0f;
             Item.DamageType = DamageClass.Magic;
             Item.value = 200;
             Item.rare = ItemRarityID.Blue;
@@ -122,9 +122,11 @@ namespace Stellamod.Items.Weapons.Igniters
         {
             base.ModifyTooltips(tooltips);
             TooltipLine line = new TooltipLine(Mod, "IgniterCard", LangText.Common("IgniterCard"));
+            line.OverrideColor = new Color(80, 187, 124);
             tooltips.Add(line);
 
             line = new TooltipLine(Mod, "IgniterCardHelp", LangText.Common("IgniterCardHelp"));
+            line.OverrideColor = Color.Lerp(new Color(80, 187, 124), Color.Black, 0.5f);
             tooltips.Add(line);
 
             for (int i = 0; i < Powders.Count; i++)
@@ -133,7 +135,7 @@ namespace Stellamod.Items.Weapons.Igniters
                 if (item.ModItem is BasePowder powder)
                 {
                     line = new TooltipLine(Mod, $"Powder_{powder.Texture}_{i}", powder.DisplayName.Value);
-                    line.OverrideColor = Color.Gray;
+                    line.OverrideColor = new Color(80, 187, 124);
                     tooltips.Add(line);
                 }
             }

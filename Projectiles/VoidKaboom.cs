@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using System.Collections.Generic;
@@ -16,6 +17,15 @@ namespace Stellamod.Projectiles
             if (Main.myPlayer == Projectile.owner)
             {
                 var circle = EffectsHelper.SimpleExplosionCircle(Projectile, Color.Blue, endRadius: 48);
+            }
+        }
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitNPC(target, ref modifiers);
+            if (Main.rand.NextBool(3))
+            {
+                target.AddBuff(ModContent.BuffType<AbyssalFlame>(), 120);
             }
         }
     }

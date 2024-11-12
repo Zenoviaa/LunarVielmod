@@ -18,8 +18,8 @@ namespace Stellamod.Items.Weapons.Igniters
             SpriteBatch spriteBatch = Main.spriteBatch;
             if (line.Mod == "Stellamod" && line.Name.Contains("Powder_"))
             {
-                line.BaseScale *= 0.75f;
-                line.X += 15;
+                line.BaseScale *= 0.8f;
+                line.X += 30;
                 line.Y += 6;
             }
 
@@ -44,7 +44,7 @@ namespace Stellamod.Items.Weapons.Igniters
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 Vector2 textPosition = new(line.X, line.Y);
                 Vector2 drawPos = textPosition + new Vector2(0, texture.Size().Y / 3.5f) - new Vector2(15, 6);
-                spriteBatch.Draw(texture, drawPos, null, Color.White, 0f, texture.Size() * 0.5f, 0.75f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(texture, drawPos, null, Color.White, 0f, texture.Size() * 0.5f, 0.8f, SpriteEffects.None, 0f);
 
             }
         }

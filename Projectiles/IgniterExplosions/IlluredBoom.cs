@@ -17,5 +17,13 @@ namespace Stellamod.Projectiles.IgniterExplosions
                 var circle = EffectsHelper.SimpleExplosionCircle(Projectile, Color.LightSkyBlue, endRadius: 80);
             }
         }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPC(target, hit, damageDone);
+            Vector2 upwardVelocity = -Vector2.UnitY * Projectile.knockBack * 8.5f;
+            upwardVelocity *= target.knockBackResist;
+            target.velocity += upwardVelocity;
+        }
     }
 }

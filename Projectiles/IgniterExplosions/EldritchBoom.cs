@@ -9,6 +9,13 @@ namespace Stellamod.Projectiles.IgniterExplosions
         public override int FrameCount => 8;
 
 
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 190;
+            Projectile.height = 190;
+        }
+
         public override void SetExplosionDefaults()
         {
             base.SetExplosionDefaults();
@@ -22,6 +29,12 @@ namespace Stellamod.Projectiles.IgniterExplosions
             {
                 var circle = EffectsHelper.SimpleExplosionCircle(Projectile, Color.LightBlue, endRadius: 78);
             }
+        }
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitNPC(target, ref modifiers);
+            modifiers.Knockback += 8;
         }
     }
 }

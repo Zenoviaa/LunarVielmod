@@ -1295,9 +1295,8 @@ BloodPowder: {
 	DisplayName: Kaev Powder
 	Tooltip:
 		'''
-		Throw magical dust on them and ignite
+		Has a chance to lifesteal!
 		A blood dust that does high damage with igniters.
-
 		'''
 }
 
@@ -1315,9 +1314,8 @@ FlamePowder: {
 	DisplayName: Flame Powder
 	Tooltip:
 		'''
-
+		Has a chance to burn enemies!
 		A flamey dust that explodes with your igniter!
-
 		'''
 }
 
@@ -1325,39 +1323,27 @@ FrostedPowder: {
 	DisplayName: Frost Powder
 	Tooltip:
 		'''
-
+		Has a chance to frostburn enemies!
 		Dusty ice dust that does continuous damage with the igniter!
-
 		'''
 }
 
 GrassDirtPowder: {
 	DisplayName: Dirt Powder
-	Tooltip:
-		'''
-
-		A dirty dust... that does damage???!
-
-		'''
+	Tooltip: A dirty dust... that does damage???!
 }
 
 LenaSongPowder: {
 	DisplayName: Lena Song Powder
-	Tooltip:
-		'''
-
-		A musical dust! that explodes with your igniter!
-
-		'''
+	Tooltip: A musical dust! that explodes with your igniter!
 }
 
 ShadowFlamePowder: {
 	DisplayName: ShadowFlame Powder
 	Tooltip:
 		'''
-
+		Has a chance to burn enemies with shadow flame!
 		A shadow dust that explodes with your igniter!
-
 		'''
 }
 
@@ -1365,9 +1351,8 @@ TrickPowder: {
 	DisplayName: Trick Powder
 	Tooltip:
 		'''
-
+		Has a low chance to confuse enemies!
 		A sparkly tricky dust that does a lot damage!
-
 		'''
 }
 
@@ -1375,9 +1360,8 @@ Verstidust: {
 	DisplayName: Versti Powder
 	Tooltip:
 		'''
-
+		Has a chance to reduce the target's defense!
 		A musical dust that has calming flowers
-
 		'''
 }
 
@@ -1585,7 +1569,7 @@ AlcadizPowder: {
 	DisplayName: Fable Powder
 	Tooltip:
 		'''
-
+		Has a chance to burn enemies!
 		A spark-like explosion dust that does a lot damage!
 		From the Fabled fallen remains..
 		'''
@@ -3220,9 +3204,8 @@ AbyssalPowder: {
 	DisplayName: Abysmal Aurelus Powder
 	Tooltip:
 		'''
-
+		Has a chance to smite enemies with Abyssal Flames!
 		A void crystal-like dust!
-
 		'''
 }
 
@@ -3230,9 +3213,8 @@ AivanPowder: {
 	DisplayName: Aivan Powder
 	Tooltip:
 		'''
-
+		Explodes with increased knockback!
 		Stolen from gothivia's castle
-
 		'''
 }
 
@@ -3240,9 +3222,8 @@ GovheilPowder: {
 	DisplayName: Govheil Powder
 	Tooltip:
 		'''
-
+		Explodes 3 times with a larger explosion!
 		Pure sensation. :)
-
 		'''
 }
 
@@ -3480,9 +3461,8 @@ CrystalPowder: {
 	DisplayName: Crystal Powder
 	Tooltip:
 		'''
-
+		Has 10 armor penetration!
 		It's what we've been working for Jesse
-
 		'''
 }
 
@@ -4692,16 +4672,15 @@ RalladI: {
 
 AgreviPowder: {
 	DisplayName: Agrevi Powder
-	Tooltip: "\n"
+	Tooltip: Has a chance to burn enemies!
 }
 
 IllusionistPowder: {
 	DisplayName: Illusionist Powder
 	Tooltip:
 		'''
-
+		A massive explosion with high knockback!
 		A dust that tells you to keep yourself safe.
-
 		'''
 }
 
@@ -4709,9 +4688,8 @@ PoisonedPowder: {
 	DisplayName: Poisoned Powder
 	Tooltip:
 		'''
-
+		Has a chance to poison enemies!
 		A constant dust that has posionous tendrils
-
 		'''
 }
 
@@ -4719,9 +4697,8 @@ SpiritPowder: {
 	DisplayName: Spirit Powder
 	Tooltip:
 		'''
-
+		This explosion strikes directly at the soul, piercing through a lot of defense!
 		Fenix would love you for this.
-
 		'''
 }
 
@@ -7158,9 +7135,8 @@ ArtoriaIllurePowder: {
 	DisplayName: Artoria Illure Powder
 	Tooltip:
 		'''
-
+		Knocks enemies upward!
 		An explosion of the Illure.
-
 		'''
 }
 
@@ -7168,9 +7144,8 @@ EreshkinPowder: {
 	DisplayName: Ereshkin Powder
 	Tooltip:
 		'''
-
+		Has a chance to confuse enemies!
 		A sparkly drawing dust that does many times damage as the igniter!
-
 		'''
 }
 
@@ -7178,9 +7153,8 @@ MushyPowder: {
 	DisplayName: Mushy Powder
 	Tooltip:
 		'''
-
 		A mushy powder that explode
-
+		Has a chance to poison enemies!
 		'''
 }
 

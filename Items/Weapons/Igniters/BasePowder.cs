@@ -3,6 +3,7 @@ using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
@@ -18,6 +19,7 @@ namespace Stellamod.Items.Weapons.Igniters
             base.SetDefaults();
             Item.width = 16;
             Item.height = 16;
+            Item.rare = ItemRarityID.Green;
         }
 
         public virtual Projectile NewProjectile(Projectile igniterCardProjectile, Vector2 explosionPosition)
@@ -31,7 +33,7 @@ namespace Stellamod.Items.Weapons.Igniters
                 SoundEngine.PlaySound(ExplosionSound, explosionPosition);
             }
 
-            if(ExplosionScreenshakeAmt > 0)
+            if (ExplosionScreenshakeAmt > 0)
             {
                 MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
                 myPlayer.ShakeAtPosition(explosionPosition, 1024, ExplosionScreenshakeAmt);
@@ -44,9 +46,11 @@ namespace Stellamod.Items.Weapons.Igniters
         {
             base.ModifyTooltips(tooltips);
             TooltipLine line = new TooltipLine(Mod, "PowderDamageModifier", LangText.Common("PowderDamage", DamageModifier * 100));
+            line.OverrideColor = new Color(80, 187, 124);
             tooltips.Add(line);
 
             line = new TooltipLine(Mod, "PowderEquip", LangText.Common("PowderEquip"));
+            line.OverrideColor = Color.Lerp(new Color(80, 187, 124), Color.Black, 0.5f);
             tooltips.Add(line);
         }
     }

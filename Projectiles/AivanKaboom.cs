@@ -16,5 +16,11 @@ namespace Stellamod.Projectiles
                 var circle = EffectsHelper.SimpleExplosionCircle(Projectile, Color.White, endRadius: 64);
             }
         }
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitNPC(target, ref modifiers);
+            modifiers.Knockback += 4;
+        }
     }
 }

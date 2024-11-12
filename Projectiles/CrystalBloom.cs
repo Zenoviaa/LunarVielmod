@@ -10,6 +10,12 @@ namespace Stellamod.Projectiles
 	{
 		public override int FrameCount => 60;
 
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.ArmorPenetration += 10;
+        }
+
         public override void Start()
         {
             base.Start();

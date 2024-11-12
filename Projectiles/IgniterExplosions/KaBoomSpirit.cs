@@ -8,6 +8,11 @@ namespace Stellamod.Projectiles.IgniterExplosions
     {
         public override int FrameCount => 16;
 
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.ArmorPenetration += 20;
+        }
         public override void SetExplosionDefaults()
         {
             base.SetExplosionDefaults();
