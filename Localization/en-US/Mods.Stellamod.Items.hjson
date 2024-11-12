@@ -2070,7 +2070,12 @@ OceansTrinket: {
 
 RuneOfCorsage: {
 	DisplayName: Rune Of Corsage
-	Tooltip: Has a chance to gift super healing, if you were hit while under the effects of super healing everything on screen will be poisoned.
+	Tooltip: Great for regeneration!
+	Effect:
+		'''
+		While standing still, you have boosted life regeneration
+		Nearby enemies are poisoned
+		'''
 }
 
 RuneOfDetonation: {

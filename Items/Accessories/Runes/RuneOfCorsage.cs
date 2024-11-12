@@ -1,32 +1,66 @@
-﻿using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Molds;
-using Stellamod.Tiles;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.Bases;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Runes
 {
-    internal class RuneOfCorsage : ModItem
+    internal class RuneOfCorsagePlayer : ModPlayer
     {
-        public override void SetStaticDefaults()
+        public bool hasRuneOfCorsage;
+        public override void ResetEffects()
         {
-            // DisplayName.SetDefault("Rune of Corsage");
-            // Tooltip.SetDefault("Has a chance to gift super healing, if you were hit while under the effects of super healing everything on screen will be poisoned.");
+            base.ResetEffects();
+            hasRuneOfCorsage = false;
         }
 
+        public override void PostUpdateEquips()
+        {
+            base.PostUpdateEquips();
+            if (hasRuneOfCorsage)
+            {
+                NPC[] npcsInRange = NPCHelper.FindNPCsInRange(Player.Center, maxDetectDistance: 128, -1);
+                foreach(NPC npc in npcsInRange)
+                {
+                    npc.AddBuff(BuffID.Poisoned, 60);
+                }
+            }
+        }
+    }
+
+    internal class RuneOfCorsage : BaseRune
+    {
+        private float _dustTimer;
         public override void SetDefaults()
         {
+            base.SetDefaults();
             Item.width = 20;
             Item.height = 20;
-            Item.value = Item.sellPrice(silver: 75);
-            Item.rare = ItemRarityID.Blue;
-            Item.accessory = true;
+            Item.value = Item.sellPrice(gold: 1);
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
-        { 
-            player.GetModPlayer<MyPlayer>().CorsageRune = true;
+        {
+            if (player.velocity == Vector2.Zero)
+            {
+                player.lifeRegen += 3;
+                _dustTimer++;
+                if (!hideVisual)
+                {
+                    if(_dustTimer % 8 == 0)
+                    {
+                        Vector2 pos = player.Center + Main.rand.NextVector2CircularEdge(64, 64);
+                        Vector2 velocity = player.Center - pos;
+                        velocity *= 0.2f;
+                        Dust.NewDustPerfect(pos, DustID.JungleGrass, velocity, Scale: 0.5f);
+                    }
+                }
+            }
+
+            RuneOfCorsagePlayer runeOfCorsagePlayer = player.GetModPlayer<RuneOfCorsagePlayer>();
+            runeOfCorsagePlayer.hasRuneOfCorsage = true;
         }
     }
 }
