@@ -2090,7 +2090,12 @@ RuneOfDetonation: {
 
 RuneOfReality: {
 	DisplayName: Rune Of Reality
-	Tooltip: When you hit an enemy, you will release homing magic bolts that summon mana stars when they hit
+	Tooltip: Great for magical protection!
+	Effect:
+		'''
+		While under 25% mana, slowdown all projectiles near you!
+		+20 Max Mana
+		'''
 }
 
 RuneOfShade: {
