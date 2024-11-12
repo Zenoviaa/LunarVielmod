@@ -2085,7 +2085,12 @@ RuneOfReality: {
 
 RuneOfShade: {
 	DisplayName: Rune Of Shade
-	Tooltip: +20 Max mana
+	Tooltip: Great for mobility!
+	Effect:
+		'''
+		Enemies are much less likely to target you
+		5% increased movement speed and jump speed
+		'''
 }
 
 RuneOfStealth: {

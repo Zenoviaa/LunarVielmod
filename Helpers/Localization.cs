@@ -12,7 +12,15 @@ namespace Stellamod.Helpers
         {
             return Language.GetTextValue($"Mods.Stellamod.NPCs.{npc.Name}." + Path, arg0);
         }
-        
+        public static string Item(ModItem item, string Path)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.Items.{item.Name}." + Path);
+        }
+        public static string Item(ModItem item, string Path, object arg0)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.Items.{item.Name}." + Path, arg0);
+        }
+
         public static LocalizedText CreateBestiary(ModNPC npc, string Text, string key = null)
         {
             return Language.GetOrRegister($"Mods.Stellamod.NPCs.{npc.Name}.Bestiary" + key, () => Text);

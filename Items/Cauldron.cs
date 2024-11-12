@@ -119,6 +119,8 @@ namespace Stellamod.Items
             //Define all the combos here
             //Using Aurorean Starball for testing this system
 
+
+       
             //Spring Mushroom x Bow
             AddBrew(
                 result: ModContent.ItemType<MushroomGreatbow>(),
@@ -730,6 +732,28 @@ namespace Stellamod.Items
             r.SetDefaults(0);
             return r;
         }
+
+        public bool IsResult(Item item)
+        {
+            foreach (var brew in _brews)
+            {
+                if (brew.result == item.type)
+                    return true;
+            }
+            return false;
+        }
+
+        public CauldronBrew FindBrew(Item item)
+        {
+            foreach (var brew in _brews)
+            {
+                if (brew.result == item.type)
+                    return brew;
+            }
+
+            return NothingBrew;
+        }
+
 
 
         public Item[] GetMaterials()
