@@ -112,7 +112,7 @@ namespace Stellamod.Effects
             }
             else
             {
-                if (paletteShaderSystem.DisablePalette(_abyssPalette))
+                if (paletteShaderSystem.DisablePalette(_dungeonPalette))
                 {
                     screenShaderSystem.UnVignetteScreen();
                 }

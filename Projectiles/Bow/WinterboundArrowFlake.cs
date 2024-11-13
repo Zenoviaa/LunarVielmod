@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -9,63 +8,79 @@ namespace Stellamod.Projectiles.Bow
 {
     internal class WinterboundArrowFlake : ModProjectile
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Fungal Flace Cloud");
-        }
-
+        private float _drawScale;
+        private ref float Timer => ref Projectile.ai[0];
         public override void SetDefaults()
         {
-
+            base.SetDefaults();
+            Projectile.width = 16;
+            Projectile.height = 16;
             Projectile.friendly = true;
-            Projectile.hostile = false;
-            Projectile.timeLeft = 210;
             Projectile.tileCollide = false;
-            Projectile.height = 35;
-            Projectile.width = 35;
-            Projectile.penetrate = 10;
-            Projectile.alpha = 60;
-            AIType = ProjectileID.Bullet;
-            Projectile.extraUpdates = 1;
+            Projectile.penetrate = 3;
+            Projectile.usesIDStaticNPCImmunity = true;
+            Projectile.idStaticNPCHitCooldown = 20;
+            Projectile.timeLeft = 120;
         }
 
-        public override bool PreAI()
-        {
-            Projectile.alpha++;
-
-            float num = 1f - Projectile.alpha / 255f;
-            Projectile.velocity *= .98f;
-            num *= Projectile.scale;
-            Lighting.AddLight(Projectile.Center, Color.LightSkyBlue.ToVector3() * 1.25f * Main.essScale);
-            return true;
-        }
-        float alphaCounter;
         public override void AI()
         {
-            alphaCounter += 0.04f;
+            base.AI();
+            Timer++;
+            if(Timer == 1)
+            {
+                Projectile.rotation = Main.rand.NextFloat(0f, 1f);
+            }
+
+            if(Timer < 60)
+            {
+                _drawScale = MathHelper.Lerp(_drawScale, 1f, 0.1f);
+            } else if (Timer > 90)
+            {
+                _drawScale = MathHelper.Lerp(_drawScale, 0f, 0.1f);
+            }
+            Projectile.velocity *= 0.92f;
+            Projectile.rotation += Projectile.velocity.Length() * 0.05f;
             Projectile.rotation += 0.01f;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
-
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Vector2 scale = new(Projectile.scale, 1f);
-            Color drawColor = Projectile.GetAlpha(lightColor);
-            Vector2 drawPosition = Projectile.Center - Main.screenPosition;
-
-            for (int i = 0; i < 8; i++)
+            Texture2D snowflakeTexture = ModContent.Request<Texture2D>("Stellamod/Particles/SnowFlakeParticleSmall").Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Vector2 drawOrigin = snowflakeTexture.Size() / 2;
+            float drawRotation = Projectile.rotation;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Color drawColor = Color.White;
+            drawColor.A = 0;
+            float drawScale = 1f;
+            for (float f = 0f; f < 1f; f += 0.2f)
             {
-                Vector2 drawOffset = (MathHelper.TwoPi * i / 8f).ToRotationVector2() * 4f;
-                Main.EntitySpriteDraw(texture, drawPosition + drawOffset, null, Color.DeepSkyBlue with { A = 160 } * Projectile.Opacity, Projectile.rotation, texture.Size() * 0.5f, scale, 0, 0);
-            }
-            for (int i = 0; i < 7; i++)
-            {
-                float scaleFactor = 1f - i / 6f;
-                Vector2 drawOffset = Projectile.velocity * i * -0.34f;
-                Main.EntitySpriteDraw(texture, drawPosition + drawOffset, null, drawColor with { A = 160 } * Projectile.Opacity, Projectile.rotation, texture.Size() * 0.5f, scale * scaleFactor, 0, 0);
+                float rot = f * MathHelper.TwoPi;
+                Vector2 glowOffset = rot.ToRotationVector2() * 12 * VectorHelper.Osc(0.75f, 1f, speed: 3);
+                Vector2 glowDrawPos = drawPos + glowOffset;
+
+                drawColor = Color.LightSkyBlue;
+                drawColor.A = 0;
+                spriteBatch.Draw(snowflakeTexture, glowDrawPos, null, drawColor * 0.3f, drawRotation, drawOrigin, _drawScale, SpriteEffects.None, 0);
             }
 
-            return true;
+            spriteBatch.Draw(snowflakeTexture, drawPos, null, drawColor, drawRotation, drawOrigin, _drawScale, SpriteEffects.None, 0);
+            return false;
+        }
+        public override void PostDraw(Color lightColor)
+        {
+            base.PostDraw(lightColor);
+            Texture2D dimLightTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            float drawScale = 1f;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            for (int i = 0; i < 2; i++)
+            {
+                Color glowColor = Color.LightBlue * 0.5f;
+                glowColor.A = 0;
+                spriteBatch.Draw(dimLightTexture, Projectile.Center - Main.screenPosition, null, glowColor,
+                    Projectile.rotation, dimLightTexture.Size() / 2f, _drawScale * VectorHelper.Osc(0.75f, 1f, speed: 32, offset: Projectile.whoAmI), SpriteEffects.None, 0f);
+            }
         }
     }
 }

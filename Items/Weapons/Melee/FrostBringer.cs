@@ -33,7 +33,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.autoReuse = true;
             Item.useTurn = true;
             Item.shoot = ModContent.ProjectileType<FrostWave>();
-            Item.shootSpeed = 20f;
+            Item.shootSpeed = 8;
             Item.DamageType = DamageClass.Melee;
         }
 

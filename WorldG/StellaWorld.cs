@@ -74,8 +74,7 @@ namespace Stellamod.WorldG
 
             tasks[tasks.FindIndex(x => x.Name.Equals("Terrain"))] = new VanillaTerrainPass();
 
-
-
+		
 
             if (RoyalGen != -1)
             {
