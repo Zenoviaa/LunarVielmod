@@ -14,7 +14,7 @@ namespace Stellamod.Assets.Biomes
 
 		// Select all the scenery
 		public override ModWaterStyle WaterStyle => ModContent.Find<ModWaterStyle>("Stellamod/StarbloomWaterStyle"); // Sets a water style for when inside this biome
-		public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.Find<ModSurfaceBackgroundStyle>("Stellamod/StarbloomBackgroundStyle");
+		public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.Find<ModSurfaceBackgroundStyle>("Stellamod/AlcadziaBackgroundStyle");
 		public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Normal;
 
 		// Select Music

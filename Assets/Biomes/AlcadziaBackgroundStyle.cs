@@ -2,7 +2,7 @@
 
 namespace Stellamod.Backgrounds
 {
-    public class StarbloomBackgroundStyle : ModSurfaceBackgroundStyle
+    public class AlcadziaBackgroundStyle : ModSurfaceBackgroundStyle
 	{
 		// Use this to keep far Backgrounds like the mountains.
 		public override void ModifyFarFades(float[] fades, float transitionSpeed)
@@ -43,7 +43,7 @@ namespace Stellamod.Backgrounds
 			parallax = 0.3;
 			//b = 1400;
 
-			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/StarbloomBiomeBackground");
+			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/RoyalCapitalBiomeBackground");
 
 			
 		}
