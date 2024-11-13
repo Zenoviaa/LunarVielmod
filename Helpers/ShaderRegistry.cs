@@ -130,6 +130,11 @@ namespace Stellamod.Helpers
             RegisterScreenShader("LunarVeil:DarknessVignette", "Effects/DarknessVignette");
             RegisterScreenShader("LunarVeil:DarknessCurve", "Effects/DarknessCurve", EffectPriority.High);
 
+            Ref<Effect> skyRef = new(Assets.Request<Effect>("Effects/RoyalCapitalSky", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc["LunarVeil:RoyalCapitalSky"] = new MiscShaderData(skyRef, "ScreenPass");
+
+            Ref<Effect> starsRef = new(Assets.Request<Effect>("Effects/RoyalCapitalStars", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc["LunarVeil:RoyalCapitalStars"] = new MiscShaderData(starsRef, "ScreenPass");
 
             //White Flame Pixel Shader
             RegisterMiscShader(FireWhitePixelShaderName, "Effects/WhiteflamePixelShader", "TrailPass");
@@ -144,6 +149,10 @@ namespace Stellamod.Helpers
             RegisterMiscShader(DistortionShaderName, "Effects/NormalDistortion", "ScreenPass");
 
             //Skies
+
+            SkyManager.Instance["LunarVeil:RoyalCapitalSky"] = new RoyalCapitalSky();
+            SkyManager.Instance["LunarVeil:RoyalCapitalSky"].Load();
+
             SkyManager.Instance["Stellamod:NaxtrinSky"] = new NaxtrinSky();
             SkyManager.Instance["Stellamod:NaxtrinSky"].Load();
 

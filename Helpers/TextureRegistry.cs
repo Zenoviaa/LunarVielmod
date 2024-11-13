@@ -18,8 +18,11 @@ namespace Stellamod.Helpers
         public static string VoxTexture4 => "Stellamod/Assets/Effects/VoxTexture5";
 
         public static string BoreParticleWhite => "Stellamod/Particles/BoreParticleWhite";
-
+        public static Asset<Texture2D> StarNoise => ModContent.Request<Texture2D>("Stellamod/Textures/StarNoise");
+        public static Asset<Texture2D> StarNoise2 => ModContent.Request<Texture2D>("Stellamod/Textures/StarNoise2");
         public static Asset<Texture2D> CloudNoise => ModContent.Request<Texture2D>("Stellamod/Textures/CloudNoise");
+        public static Asset<Texture2D> CloudNoise2 => ModContent.Request<Texture2D>("Stellamod/Textures/CloudNoise2");
+        public static Asset<Texture2D> CloudNoise3 => ModContent.Request<Texture2D>("Stellamod/Textures/CloudNoise3");
         public static Asset<Texture2D> CloudTexture => ModContent.Request<Texture2D>("Stellamod/Assets/Effects/CloudTexture");
         public static Asset<Texture2D> IrraTexture => ModContent.Request<Texture2D>("Stellamod/Assets/Effects/IrraTexture2");
     }

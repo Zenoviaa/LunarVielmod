@@ -92,6 +92,8 @@
     <None Remove="Effects\PaletteHell.fx" />
     <None Remove="Effects\PaletteRoyalCapital.fx" />
     <None Remove="Effects\Primitives\Whiteflame.fx" />
+    <None Remove="Effects\RoyalCapitalSky - Copy.fx" />
+    <None Remove="effects\RoyalCapitalSky.fx" />
     <None Remove="effects\SilShader.fx" />
     <None Remove="effects\SimpleTrail.fx" />
     <None Remove="Effects\TestShader.fx" />

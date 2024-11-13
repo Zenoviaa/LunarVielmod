@@ -1769,6 +1769,8 @@ namespace Stellamod
                 GoldenRingCooldown++;
 
                 GoldenSparkleCooldown++;
+
+                /*
                 for (int j = 0; j < 5; j++)
                 {
                     RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
@@ -1807,7 +1809,7 @@ namespace Stellamod
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
                     ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<MoonTrailParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
                 }
-
+                */
             }
 
 

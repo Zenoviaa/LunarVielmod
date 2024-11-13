@@ -39,7 +39,7 @@ using Terraria.Utilities;
 namespace Stellamod.NPCs.RoyalCapital
 {
 	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
-	public class LonelySorceress : ModNPC
+	public class LonelySorceress : PointSpawnNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
 		public const string ShopName = "Shop";
@@ -104,9 +104,15 @@ namespace Stellamod.NPCs.RoyalCapital
 			NPC.npcSlots = 0;
 			NPC.dontTakeDamageFromHostiles = true;
 			NPC.dontTakeDamage = true;
-            NPC.BossBar = Main.BigBossProgressBar.NeverValid;
+			NPC.BossBar = Main.BigBossProgressBar.NeverValid;
         }
-		public override void FindFrame(int frameHeight)
+        public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
+        {
+            spawner.structureToSpawnIn = "Struct/Alcad/RoyalCapital3";
+            spawner.spawnTileOffset = new Point(211, -272);
+        }
+
+        public override void FindFrame(int frameHeight)
 		{
 			NPC.frameCounter += 1f;
 			NPC.frameCounter %= Main.npcFrameCount[NPC.type];
@@ -117,15 +123,15 @@ namespace Stellamod.NPCs.RoyalCapital
 		public override bool CanChat()
 		{
 			return true;
-        }
-        //This prevents the NPC from despawning
-        public override bool CheckActive()
-        {
-            return false;
-        }
+		}
+		//This prevents the NPC from despawning
+		public override bool CheckActive()
+		{
+			return false;
+		}
 
 
-        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
@@ -222,7 +228,7 @@ namespace Stellamod.NPCs.RoyalCapital
 
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
-			
+
 			button = LangText.Chat(this, "Button");
 
 		}
@@ -235,17 +241,17 @@ namespace Stellamod.NPCs.RoyalCapital
 				NPC.alpha = 255;
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
-                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)target.Center.X, (int)target.Center.Y - 5, 
+					NPC.NewNPC(NPC.GetSource_FromThis(), (int)target.Center.X, (int)target.Center.Y - 5,
 						ModContent.NPCType<Fenix>());
-                }
+				}
 				else
-                {
-                    if (Main.netMode == NetmodeID.SinglePlayer)
-                        return;
+				{
+					if (Main.netMode == NetmodeID.SinglePlayer)
+						return;
 
-                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
+					StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
 						ModContent.NPCType<Fenix>(), (int)target.Center.X, (int)target.Center.Y - 5);
-                }
+				}
 				NPC.Kill();
 			}
 		}
@@ -259,55 +265,5 @@ namespace Stellamod.NPCs.RoyalCapital
 		}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-		//	else if (Main.moonPhase < 4) {
-		// shop.item[nextSlot++].SetDefaults(ItemType<ExampleGun>());
-		//		shop.item[nextSlot].SetDefaults(ItemType<ExampleBullet>());
-		//	}
-		//	else if (Main.moonPhase < 6) {
-		// shop.item[nextSlot++].SetDefaults(ItemType<ExampleStaff>());
-		// 	}
-		//
-		// 	// todo: Here is an example of how your npc can sell items from other mods.
-		// 	// var modSummonersAssociation = ModLoader.TryGetMod("SummonersAssociation");
-		// 	// if (ModLoader.TryGetMod("SummonersAssociation", out Mod modSummonersAssociation)) {
-		// 	// 	shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
-		// 	// 	nextSlot++;
-		// 	// }
-		//
-		// 	// if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null) {
-		// 	// 	foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList) {
-		// 	// 		if (Item.IsUnloaded) continue;
-		// 	// 		shop.item[nextSlot].SetDefaults(Item.Type);
-		// 	// 		shop.item[nextSlot].shopCustomPrice = 0;
-		// 	// 		shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
-		// 	// 		nextSlot++;
-		// 	// 		//TODO: Have tModLoader handle index issues.
-		// 	// 	}
-		// 	// }
-		// }
-
-
-
-
-
-
-
 	}
-
-
-
-
-
 }

@@ -25,13 +25,13 @@ namespace Stellamod.Assets.Biomes
 		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/AlcadizHurricane");
 		public override void SpecialVisuals(Player player, bool isActive)
 		{
-
-			   if (!SkyManager.Instance["Stellamod:AlcadSky"].IsActive() && isActive)
-					SkyManager.Instance.Activate("Stellamod:AlcadSky", player.Center);
-				if (SkyManager.Instance["Stellamod:AlcadSky"].IsActive() && !isActive)
-					SkyManager.Instance.Deactivate("Stellamod:AlcadSky");
+			string name = "LunarVeil:RoyalCapitalSky";
+            if (!SkyManager.Instance[name].IsActive() && isActive)
+                SkyManager.Instance.Activate(name, player.Center);
+            if (SkyManager.Instance[name].IsActive() && !isActive)
+                SkyManager.Instance.Deactivate(name);
+        }
 		
-		}
 
 		// Populate the Bestiary Filter
 
