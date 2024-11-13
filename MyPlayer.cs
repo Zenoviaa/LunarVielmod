@@ -1107,17 +1107,6 @@ namespace Stellamod
                 Main.gore[a].velocity.Y = Main.rand.NextFloat(1f, 3f);
             }
 
-
-            if (ZoneAbyss)
-            {
-                player.AddBuff(ModContent.BuffType<DarkHold>(), 10);
-            }
-
-            if (ZoneAurelus)
-            {
-                player.AddBuff(ModContent.BuffType<DarkHold>(), 10);
-            }
-
             if (ZoneIshtar && !DownedBossSystem.downedZuiBoss)
             {
                 player.AddBuff(ModContent.BuffType<SigfriedsInsanity>(), 10);

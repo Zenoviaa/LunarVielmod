@@ -1,7 +1,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Effects;
+using Stellamod.Common.Lights;
 using Stellamod.Items.Accessories.Runes;
 
 using Terraria;

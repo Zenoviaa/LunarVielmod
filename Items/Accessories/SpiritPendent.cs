@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Stellamod.Effects;
+using Stellamod.Common.Lights;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

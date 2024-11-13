@@ -52,6 +52,12 @@ namespace Stellamod.Helpers
             var miscShaderData = new MiscShaderData(miscShader, pass);
             GameShaders.Misc[name] = miscShaderData;
         }
+        private static void RegisterScreenShader(string name, string path)
+        {
+            Asset<Effect> paletteShader = Assets.Request<Effect>(path);
+            Filters.Scene[name] = new Filter(new ScreenShaderData(paletteShader, "ScreenPass"), EffectPriority.Medium);
+
+        }
         public static void LoadShaders()
         {
             if (!Main.dedServ)
@@ -113,6 +119,16 @@ namespace Stellamod.Helpers
 
             Asset<Effect> paletteShader = Assets.Request<Effect>("Effects/Palette");
             Filters.Scene[ShaderRegistry.Screen_Palette] = new Filter(new ScreenShaderData(paletteShader, "ScreenPass"), EffectPriority.Medium);
+
+            //Palette Shaders
+            RegisterScreenShader("LunarVeil:PaletteAbyss", "Effects/Palette");
+            RegisterScreenShader("LunarVeil:PaletteHell", "Effects/PaletteHell");
+            RegisterScreenShader("LunarVeil:PaletteRoyalCapital", "Effects/PaletteRoyalCapital");
+            RegisterScreenShader("LunarVeil:PaletteDungeon", "Effects/PaletteDungeon");
+            RegisterScreenShader("LunarVeil:PaletteDesert", "Effects/PaletteDesert");
+            RegisterScreenShader("LunarVeil:PaletteBloodCathedral", "Effects/PaletteBloodCathedral");
+            RegisterScreenShader("LunarVeil:DarknessVignette", "Effects/DarknessVignette");
+
 
 
             //White Flame Pixel Shader
