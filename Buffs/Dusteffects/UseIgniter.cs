@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Brooches;
+
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -15,13 +15,6 @@ namespace Stellamod.Buffs.Dusteffects
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;
-		}
-		public override void Update(Player player, ref int buffIndex)
-		{
-			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
-			broochPlayer.hasIgniteron = true;
-
-
 		}
 	}
 }

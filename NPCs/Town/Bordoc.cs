@@ -356,13 +356,6 @@ namespace Stellamod.NPCs.Town
 						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					})
 
-
-					.Add(new Item(ModContent.ItemType<MorrowChestKey>())
-					{
-						shopCustomPrice = 1,
-						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
-					})
-
 					.Add(new Item(ModContent.ItemType<Steali>())
 					{
 						shopCustomPrice = 3,

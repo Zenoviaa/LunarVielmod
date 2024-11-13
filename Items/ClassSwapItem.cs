@@ -72,10 +72,21 @@ namespace Stellamod.Items
             {
                 iconTexture = ModContent.Request<Texture2D>("Stellamod/Items/Weapons/Transformer/Throwing").Value;
                 drawOrigin = new Vector2(20, 20);
+            } else if (AlternateClass == DamageClass.Generic)
+            {
+                iconTexture = ModContent.Request<Texture2D>("Stellamod/Items/Weapons/Transformer/Generic").Value;
+                drawOrigin = new Vector2(18, 18);
             }
 
             Vector2 drawPosition = position + drawOrigin;
             spriteBatch.Draw(iconTexture, drawPosition, null, drawColor, 0f, drawOrigin, 0.5f, SpriteEffects.None, 0);
+        }
+
+        public void SwapDamageType()
+        {
+            IsSwapped = true;
+            Item.DamageType = AlternateClass;
+            SetClassSwappedDefaults();
         }
 
         public virtual void SetClassSwappedDefaults()
@@ -128,6 +139,7 @@ namespace Stellamod.Items
             IsSwapped = _preReforgeSwapped;
             if (IsSwapped)
             {
+                Item.DamageType = AlternateClass;
                 SetClassSwappedDefaults();
             }
         }

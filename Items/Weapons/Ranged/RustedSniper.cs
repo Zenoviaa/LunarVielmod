@@ -9,8 +9,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class RustedSniper : ModItem
+    internal class RustedSniper : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 66;
+            Item.mana = 10;
+        }
         public override void SetDefaults()
         {
             Item.width = 134;

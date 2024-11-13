@@ -139,7 +139,6 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OldWeddingRing>(), 8, 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GrailBar>(), 1, 3, 5));
         }
 

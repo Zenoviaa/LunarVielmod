@@ -7,8 +7,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class Pericarditis : ModItem
+    internal class Pericarditis : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 15;
+            Item.mana = 0;
+        }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Sun Blast Staff");
@@ -31,7 +40,7 @@ namespace Stellamod.Items.Weapons.Mage
 
             Item.DamageType = DamageClass.Magic;
             Item.shoot = ModContent.ProjectileType<PericarditisProj>();
-            Item.shootSpeed = 42f;
+            Item.shootSpeed = 12;
             Item.mana = 15;
             Item.useAnimation = 44;
             Item.useTime = 44;
@@ -42,8 +51,5 @@ namespace Stellamod.Items.Weapons.Mage
         {
             return new Vector2(-5f, 0f);
         }
-
-
-
     }
 }

@@ -13,7 +13,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 20;
+            Item.damage = 13;
             Item.mana = 0;
         }
         public override void SetStaticDefaults()

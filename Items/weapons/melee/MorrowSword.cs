@@ -8,9 +8,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class MorrowSword : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class MorrowSword : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			// Tooltip.SetDefault("This sword feels warm, what is this Materials?"); // The (English) text shown below your weapon's name.
 
@@ -48,14 +56,6 @@ namespace Stellamod.Items.Weapons.Melee
 			// Inflict the OnFire debuff for 1 second onto any NPC/Monster that this hits.
 			// 60 frames = 1 second
 			target.AddBuff(BuffID.OnFire, 20);
-		}
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 12);
-			recipe.Register();
 		}
 	}
 }

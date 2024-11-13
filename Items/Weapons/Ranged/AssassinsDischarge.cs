@@ -7,8 +7,16 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class AssassinsDischarge : ModItem
+    internal class AssassinsDischarge : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 0;
+        }
         public override void SetDefaults()
         {
             Item.damage = 11;

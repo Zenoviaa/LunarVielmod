@@ -1,5 +1,31 @@
 RoyalHorsemage.DisplayName: Royal Horsemage
 
+WitchesCauldron: {
+	DisplayName: Witch's Cauldron
+	Button: Brew
+	Basic1: *Bubble Bubble Goop Blip Blop*
+}
+
+DaedusLibrarian: {
+	DisplayName: Daedus the Librarian
+	Bestiary: Hi I'm Daedus!
+	Bestiary2: Daedus the Librarian
+	Button: Challenge
+	Basic1: Hi I'm Daedus!
+	Basic2: Hi I'm Daedus!
+	Challenge: Daedus zaps in!
+}
+
+JackReading: {
+	DisplayName: Jack
+	Bestiary: Hi I'm Jack!
+	Bestiary2: Jack the Scholar
+	Button: Challenge
+	Basic1: Hi I'm Jack!
+	Basic2: Hi I'm Jack!
+	Challenge: Jack readies himself!
+}
+
 LonelySorceress: {
 	DisplayName: Lonely Sorceress
 	Bestiary: A strange lady, she seems to overflow with magical energy!
@@ -70,6 +96,7 @@ GoliathCryogenicJellyfish.DisplayName: Goliath Cryogenic Jellyfish
 WinterSoul3.DisplayName: Winter Soul
 WinterSoul2.DisplayName: Winter Soul
 WinterSoul1.DisplayName: Winter Soul
+WinterSoul.DisplayName: Winter Soul
 WinterBornSlime.DisplayName: Winter Born Slime
 WinterbornBat.DisplayName: Winterborn Bat
 HarvestVirulent.DisplayName: Harvest Virulent
@@ -1147,3 +1174,7 @@ Azurerin: {
 	DisplayName: Azurerin
 	Bestiary: A scarecrow reanimated by the passion of wandering flames
 }
+
+JackTheScholar.DisplayName: Jack The Scholar
+DaedusTheDevoted.DisplayName: Daedus The Devoted
+ElectricSingularity.DisplayName: Electric Singularity

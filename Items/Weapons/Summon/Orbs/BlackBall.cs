@@ -3,6 +3,7 @@ using Stellamod.Buffs.Whipfx;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Summons.Orbs;
 using System.Collections.Generic;
 using Terraria;
@@ -13,8 +14,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon.Orbs
 {
-    internal class BlackBall : ModItem
+    internal class BlackBall : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 20;
+            Item.mana = 0;
+        }
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(BlackballDebuff.TagDamage);
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {

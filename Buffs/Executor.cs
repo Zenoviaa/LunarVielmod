@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Brooches;
+
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

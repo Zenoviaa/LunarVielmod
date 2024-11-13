@@ -8,10 +8,18 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Ranged
 
 {
-    public class CloudBow : ModItem
-	{
+    public class CloudBow : ClassSwapItem
+    {
 
-		public override void SetStaticDefaults()
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 9;
+            Item.mana = 8;
+        }
+
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Overcast's String");
 		}

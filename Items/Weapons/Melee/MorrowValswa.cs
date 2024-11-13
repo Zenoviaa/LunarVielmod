@@ -20,7 +20,7 @@ namespace Stellamod.Items.Weapons.Melee
 
 		public override void SetClassSwappedDefaults()
 		{
-			Item.damage = 20;
+			Item.damage = 4;
 			Item.mana = 6;
 		}
 		public override void SetDefaults()
@@ -82,16 +82,6 @@ namespace Stellamod.Items.Weapons.Melee
 
 			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, dir);
 			return false; // return false to prevent original projectile from being shot
-		}
-
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 25);
 		}
 	}
 }

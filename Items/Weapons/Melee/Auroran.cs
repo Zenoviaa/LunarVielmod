@@ -21,7 +21,7 @@ namespace Stellamod.Items.Weapons.Melee
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 15;
+            Item.damage = 5;
      
         }
         public int AttackCounter = 1;
@@ -94,16 +94,6 @@ namespace Stellamod.Items.Weapons.Melee
             Projectile.NewProjectile(source, position, velocity * 0.8f, ModContent.ProjectileType<AuroranBullet2>(), damage * 2, knockback, player.whoAmI, 1, dir);
             Projectile.NewProjectile(source, position, velocity * 1.2f, ModContent.ProjectileType<AuroranBullet3>(), damage * 2, knockback, player.whoAmI, 1, dir);
             return false;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.Anvils);
-            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 3);
-            recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 22);
-            recipe.AddIngredient(ItemID.FallenStar, 9);
-            recipe.Register();
         }
     }
 }

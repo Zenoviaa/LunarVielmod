@@ -2,6 +2,7 @@
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Summons.Orbs;
 using System.Collections.Generic;
 using Terraria;
@@ -12,8 +13,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon.Orbs
 {
-    internal class AuroreanStarball : ModItem
+    internal class AuroreanStarball : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 10;
+            Item.mana = 0;
+        }
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(AuroreanStarballDebuff.TagDamage);
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
@@ -69,17 +78,6 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
             }
 
             return false;
-        }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe(1)
-                 .AddIngredient(ModContent.ItemType<BlankOrb>(), 1)
-                 .AddIngredient(ModContent.ItemType<AuroreanStarI>(), 100)
-                 .AddIngredient(ModContent.ItemType<StarSilk>(), 15)
-                 .AddTile(TileID.Anvils)
-                 .Register();
-
         }
     }
 }

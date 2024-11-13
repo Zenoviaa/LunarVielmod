@@ -26,6 +26,8 @@ namespace Stellamod.Helpers
         public static string Screen_NormalDistortion => "Stellamod:NormalDistortion";
         public static string Screen_Vignette => "Stellamod:Vignette";
 
+        public static string Screen_Palette => "Stellamod:Palette";
+
         //SHADERING
         private static string GlowingDustShader => "Stellamod:GlowingDust";
         public static MiscShaderData MiscGlowingDust => GameShaders.Misc[GlowingDustShader];
@@ -63,9 +65,10 @@ namespace Stellamod.Helpers
 
             Ref<Effect> BasicTrailRef = new(Assets.Request<Effect>("Effects/Primitives/BasicTrailShader", AssetRequestMode.ImmediateLoad).Value);
             Ref<Effect> LightningTrailRef = new(Assets.Request<Effect>("Effects/Primitives/LightningTrailShader", AssetRequestMode.ImmediateLoad).Value);
+
             GameShaders.Misc[ShaderRegistry.VampKnives_Basic_Trail] = new MiscShaderData(BasicTrailRef, "TrailPass");
             GameShaders.Misc[ShaderRegistry.VampKnives_Lightning_Trail] = new MiscShaderData(LightningTrailRef, "TrailPass");
-
+    
             Asset<Effect> shader2 = ModContent.Request<Effect>("Stellamod/Trails/SilhouetteShader", AssetRequestMode.ImmediateLoad);
             GameShaders.Misc[ShaderRegistry.Silhouette_Shader] = new MiscShaderData(new Ref<Effect>(shader2.Value), "SilhouettePass");
 
@@ -86,6 +89,15 @@ namespace Stellamod.Helpers
             Asset<Effect> glowingDustShader = Assets.Request<Effect>("Effects/GlowingDust");
             GameShaders.Misc[ShaderRegistry.GlowingDustShader] = new MiscShaderData(glowingDustShader, "GlowingDustPass");
 
+            Ref<Effect> SuperSimpleTrailRef = new(Assets.Request<Effect>("Effects/SimpleTrail", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc["VampKnives:SuperSimpleTrail"] = new MiscShaderData(SuperSimpleTrailRef, "TrailPass");
+          
+            Ref<Effect> DaedusRobeRef = new(Assets.Request<Effect>("Effects/DaedusRobe", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc["LunarVeil:DaedusRobe"] = new MiscShaderData(DaedusRobeRef, "PixelPass");
+
+            Ref<Effect> lightningBoltRef = new(Assets.Request<Effect>("Effects/LightningBolt", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc["LunarVeil:LightningBolt"] = new MiscShaderData(lightningBoltRef, "PrimitivesPass");
+
             Asset<Effect> blackShader = Assets.Request<Effect>("Effects/Black");
             Filters.Scene[ShaderRegistry.Screen_Black] = new Filter(new ScreenShaderData(blackShader, "BlackPass"), EffectPriority.Medium);
 
@@ -97,6 +109,11 @@ namespace Stellamod.Helpers
 
             Asset<Effect> vignetteShader = Assets.Request<Effect>("Effects/Vignette");
             Filters.Scene[ShaderRegistry.Screen_Vignette] = new Filter(new ScreenShaderData(vignetteShader, "ScreenPass"), EffectPriority.Medium);
+
+
+            Asset<Effect> paletteShader = Assets.Request<Effect>("Effects/Palette");
+            Filters.Scene[ShaderRegistry.Screen_Palette] = new Filter(new ScreenShaderData(paletteShader, "ScreenPass"), EffectPriority.Medium);
+
 
             //White Flame Pixel Shader
             RegisterMiscShader(FireWhitePixelShaderName, "Effects/WhiteflamePixelShader", "TrailPass");

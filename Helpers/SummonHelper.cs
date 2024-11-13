@@ -356,6 +356,21 @@ namespace Stellamod.Helpers
 			}
 		}
 
+		public static NPC NearestChaseableNPC(Vector2 position)
+		{
+			NPC found = null;
+			float dist = float.MaxValue;
+			foreach(var npc in Main.ActiveNPCs)
+			{
+				float distanceToNPC = Vector2.Distance(position, npc.position);
+				if(distanceToNPC < dist)
+				{
+					dist = distanceToNPC;
+					found = npc;
+				}
+			}
+			return found;
+		}
         public static void SearchForTargetsThroughTiles(Player owner, Projectile minion, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter, float startingSearchDistanceFromTarget = 700f)
         {
             // Starting search distance

@@ -8,8 +8,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class WintersStom : ModItem
+    internal class WintersStom : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Summon;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 7;
+            Item.mana = 6;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Winter's Stom");

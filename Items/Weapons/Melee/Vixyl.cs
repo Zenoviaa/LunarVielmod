@@ -106,8 +106,16 @@ namespace Stellamod.Items.Weapons.Melee
         }
     }
 
-    internal class Vixyl : ModItem
+    internal class Vixyl : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 17;
+            Item.mana = 6;
+        }
         public override void SetDefaults()
         {
             Item.width = 60;

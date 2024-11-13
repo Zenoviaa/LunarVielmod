@@ -12,9 +12,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-	public class PieceOfArt : ModItem
-	{
-		public int AttackCounter = 1;
+	public class PieceOfArt : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 6;
+            Item.mana = 0;
+        }
+        public int AttackCounter = 1;
 		public int combowombo = 1;
 
 		public override void SetStaticDefaults()

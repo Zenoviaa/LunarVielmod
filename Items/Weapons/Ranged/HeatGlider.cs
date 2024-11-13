@@ -1,13 +1,24 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Ammo;
 using Stellamod.Projectiles.Bow;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class HeatGlider : ModItem
+    internal class HeatGlider : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 10;
+            Item.mana = 4;
+        }
+        private int _comboIndex;
         public override void SetDefaults()
         {
             Item.damage = 19;
@@ -38,9 +49,13 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            if (type == ProjectileID.WoodenArrowFriendly)
+            base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
+            _comboIndex++;
+            if (_comboIndex >= 3)
             {
                 type = ModContent.ProjectileType<HuntrianArrow>();
+                _comboIndex = 0;
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/HeatFeather"), player.position);
             }
         }
     }

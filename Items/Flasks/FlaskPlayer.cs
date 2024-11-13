@@ -1,28 +1,57 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs.Charms;
-using Stellamod.NPCs.Town;
-using Stellamod.Projectiles;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace Stellamod.Items.Flasks
 {
     internal class FlaskPlayer : ModPlayer
     {
-        public bool hasHealthyInsource;
-        public bool hasVitalityInsource;
+        private Item _insource;
         public bool hasTime;
-        public bool hasVialedInsource;
-        public bool hasFloweredInsource;
-        public bool hasEpsidonInsource;
+        public Item Insource
+        {
+            get
+            {
+                if (_insource == null)
+                {
+                    _insource = new Item();
+                    _insource.SetDefaults(0);
+                }
+                return _insource;
+            }
+            set
+            {
+                _insource = value;
+            }
+        }
 
+        public override void PostUpdate()
+        {
+            base.PostUpdate();
+            if (!Insource.IsAir)
+            {
+                int ownedCount = Player.ownedProjectileCounts[ModContent.ProjectileType<InsourceDefaultProjectile>()];
+                if (ownedCount == 0)
+                {
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, 
+                        ModContent.ProjectileType<InsourceDefaultProjectile>(), 0, 0,
+                        Owner: Player.whoAmI, ai1: Insource.type);
+                }
+            }
+        }
+        public override void SaveData(TagCompound tag)
+        {
+            base.SaveData(tag);
+            tag["insource"] = Insource;
+        }
 
-
+        public override void LoadData(TagCompound tag)
+        {
+            base.LoadData(tag);
+            if (tag.ContainsKey("insource"))
+                Insource = tag.Get<Item>("insource");
+        }
     }
 }

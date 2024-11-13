@@ -12,7 +12,7 @@ namespace Stellamod.Items.Weapons.Mage
 {
     internal class Poya : ClassSwapItem
     {
-        public int dir;
+      
         public override DamageClass AlternateClass => DamageClass.Summon;
 
         public override void SetClassSwappedDefaults()
@@ -20,6 +20,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.damage = 50;
             Item.mana = 6;
         }
+        public int dir;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Gladiator Spear");

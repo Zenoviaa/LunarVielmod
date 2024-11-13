@@ -11,8 +11,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class M38F30 : ModItem
+    internal class M38F30 : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 11;
+            Item.mana = 10;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("M.3.8-F30");

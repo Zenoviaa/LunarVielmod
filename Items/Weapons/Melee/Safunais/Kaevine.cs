@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Safunai.Halhurish;
 using Stellamod.Projectiles.Safunai.Kaevine;
 using System.Collections.Generic;
@@ -11,9 +12,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Safunais
 {
-    public class Kaevine : ModItem
-	{
-		public int combo;
+    public class Kaevine : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 37;
+            Item.mana = 0;
+        }
+        public int combo;
 
 		public override void SetStaticDefaults()
 		{

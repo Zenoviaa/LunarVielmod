@@ -16,8 +16,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class GrailAxe : ModItem
+    public class GrailAxe : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Melee;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 25;
+            Item.mana = 6;
+        }
         public int AttackCounter = 1;
         public int combowombo = 0;
 
@@ -111,16 +119,5 @@ namespace Stellamod.Items.Weapons.Melee
 
             return false;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.AddIngredient(ModContent.ItemType<OldWeddingRing>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<StarFlowerStaff>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<GrailBar>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 50);
-            recipe.Register();
-        }
-
     }
 }

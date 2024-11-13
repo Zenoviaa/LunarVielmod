@@ -19,7 +19,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public override DamageClass AlternateClass => DamageClass.Melee;
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 192;
+            Item.damage = 100;
         }
 
         public override void SetDefaults()

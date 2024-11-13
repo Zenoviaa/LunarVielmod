@@ -22,13 +22,14 @@ namespace Stellamod.Items.Weapons.Mage
         public override void SetClassSwappedDefaults()
         {
             Item.mana = 0;
+            Item.damage = 100;
         }
 
         public override void SetDefaults()
         {
             Item.width = 60;
             Item.height = 80;
-            Item.damage = 150;
+            Item.damage = 200;
             Item.DamageType = DamageClass.Magic;
             Item.mana = 15;
             Item.rare = ModContent.RarityType<NiiviSpecialRarity>();

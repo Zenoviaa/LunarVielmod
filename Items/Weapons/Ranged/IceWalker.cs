@@ -8,8 +8,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class IceWalker : ModItem
+    internal class IceWalker : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 3;
+            Item.mana = 3;
+        }
         public int WinterboundArrow;
         public override void SetDefaults()
         {
@@ -33,15 +41,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.consumeAmmoOnLastShotOnly = true;
             Item.noMelee = true;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.BorealWood, 8);
-            recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 12);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
-        
+
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-2f, 0f);

@@ -14,9 +14,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage.Stein
 {
-	public class Gothinstein : ModItem
-	{
-		public int AttackCounter = 1;
+	public class Gothinstein : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Melee;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 110;
+            Item.mana = 0;
+        }
+        public int AttackCounter = 1;
 		public int combowombo = 1;
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{

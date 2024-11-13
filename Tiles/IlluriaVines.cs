@@ -18,7 +18,6 @@ namespace Stellamod.Tiles
             Main.tileNoFail[Type] = true;
             Main.tileNoAttach[Type] = true;
             Main.tileLighted[Type] = true;
-            RegisterItemDrop(ModContent.ItemType<Items.Harvesting.MorrowVine>());
 
             TileID.Sets.VineThreads[Type] = true;
             TileID.Sets.IsVine[Type] = true;

@@ -8,7 +8,14 @@ namespace Stellamod.Items.Weapons.Thrown
 {
     public class RazorBragett : ClassSwapItem
     {
+
         public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 20;
+            Item.mana = 0;
+        }
 
         public override void SetDefaults()
         {

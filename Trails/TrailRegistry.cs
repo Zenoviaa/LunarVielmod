@@ -12,6 +12,8 @@ namespace Stellamod.Trails
         public static Asset<Texture2D> BeamTrail2 => ModContent.Request<Texture2D>("Stellamod/Trails/BeamTrail");
         public static Asset<Texture2D> BulbTrail => ModContent.Request<Texture2D>("Stellamod/Trails/BulbTrail");
 
+        public static Asset<Texture2D> Dashtrail => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/DashTrail");
+
         public static Asset<Texture2D> SlicingTrail => ModContent.Request<Texture2D>("Stellamod/Trails/Slice");
 
         public static Asset<Texture2D> STARTRAIL => ModContent.Request<Texture2D>("Stellamod/Trails/BeamTrail");
@@ -48,6 +50,15 @@ namespace Stellamod.Trails
         public static Asset<Texture2D> CrystalNoise => ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Noise/Crystals");
         public static Asset<Texture2D> CausticTrail => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/CausticTrail");
 
+
+        public static Asset<Texture2D> LightningTrail2 =>
+           ModContent.Request<Texture2D>($"Stellamod/Effects/Primitives/Trails/LightningTrail2");
+
+        public static Asset<Texture2D> LightningTrail2Outline =>
+           ModContent.Request<Texture2D>($"Stellamod/Effects/Primitives/Trails/LightningTrail2Outline");
+
+        public static Asset<Texture2D> LightningTrail3 =>
+           ModContent.Request<Texture2D>($"Stellamod/Effects/Primitives/Trails/LightningTrail3");
 
     }
 }

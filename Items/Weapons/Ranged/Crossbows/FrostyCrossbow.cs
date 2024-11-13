@@ -1,4 +1,4 @@
-﻿using Stellamod.Items.Materials;
+﻿using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Crossbows.Magical;
 using Terraria;
@@ -9,8 +9,16 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Ranged.Crossbows
 {
 
-    public class FrostyCrossbow : ModItem
+    public class FrostyCrossbow : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 5;
+            Item.mana = 0;
+        }
 
         public override void SetStaticDefaults()
         {
@@ -40,22 +48,7 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
             Item.value = Item.buyPrice(silver: 3);
             Item.noUseGraphic = true;
             Item.channel = true;
-       
-
+      
         }
-
-
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 10);
-            recipe.AddIngredient(ItemID.FrostDaggerfish, 10);
-            recipe.AddIngredient(ModContent.ItemType<BlankCrossbow>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<WoodenCrossbow>(), 1);
-            recipe.Register();
-        }
-
-
     }
 }

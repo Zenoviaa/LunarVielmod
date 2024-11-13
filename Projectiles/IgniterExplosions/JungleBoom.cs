@@ -1,64 +1,36 @@
 ﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+using Stellamod.Projectiles.Visual;
 using Terraria;
-using Terraria.ModLoader;
+using Stellamod.Helpers;
+using Terraria.ID;
 
 namespace Stellamod.Projectiles.IgniterExplosions
 {
-	public class JungleBoom : ModProjectile
-	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("FrostShotIN");
-			Main.projFrames[Projectile.type] = 10;
-		}
+    public class JungleBoom : BaseIgniterExplosion
+    {
+        public override int FrameCount => 10;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            FrameSpeed = 0.5f;
+        }
 
-		public override void SetDefaults()
-		{
-			Projectile.friendly = true;
-			Projectile.width = 196;
-			Projectile.height = 196;
-			Projectile.penetrate = -1;
-			Projectile.timeLeft = 30;
-			Projectile.scale = 1f;
+        public override void Start()
+        {
+            base.Start();
+            if (Main.myPlayer == Projectile.owner)
+            {
+                var circle = EffectsHelper.SimpleExplosionCircle(Projectile, Color.Green);
+            }
+        }
 
-		}
-		public float Timer
-		{
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
-		}
-		public override void AI()
-		{
-
-			Vector3 RGB = new(0.89f, 2.53f, 2.55f);
-			// The multiplication here wasn't doing anything
-			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-
-		}
-
-		public override bool PreAI()
-		{
-			Projectile.tileCollide = false;
-			if (++Projectile.frameCounter >= 3)
-			{
-				Projectile.frameCounter = 0;
-				if (++Projectile.frame >= 10)
-				{
-					Projectile.frame = 0;
-				}
-			}
-			return true;
-
-
-		}
-
-		public override Color? GetAlpha(Color lightColor)
-		{
-			return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 50f);
-		}
-
-
-	}
-
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitNPC(target, ref modifiers);
+            if (Main.rand.NextBool(3))
+            {
+                target.AddBuff(BuffID.Poisoned, 120);
+            }
+        }
+    }
 }

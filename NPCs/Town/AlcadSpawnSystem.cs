@@ -295,13 +295,13 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)LonelySorceressSpawnWorld.X, (int)LonelySorceressSpawnWorld.Y,
                         ModContent.NPCType<LonelySorceress>());
-                }
+                }/*
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Zui>()) && !NPC.AnyNPCs(ModContent.NPCType<ZuiTheTraveller>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                             (int)LittleWitchSpawnWorld.X, (int)LittleWitchSpawnWorld.Y,
                             ModContent.NPCType<Zui>());
-                }
+                }*/
                 else if (!NPC.AnyNPCs(ModContent.NPCType<UnderworldRift>()) && !NPC.AnyNPCs(ModContent.NPCType<Sylia>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
@@ -360,14 +360,14 @@ namespace Stellamod.NPCs.Town
                         (int)BORDOCSpawnWorld.X, (int)BORDOCSpawnWorld.Y,
                         ModContent.NPCType<Bordoc>());
                 }
-
+                /*
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Sirestias>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)SireSpawnWorld.X, (int)SireSpawnWorld.Y,
                         ModContent.NPCType<Sirestias>());
                 }
-
+                */
                 else if (!NPC.AnyNPCs(ModContent.NPCType<IrradiaIdle>()) && !NPC.AnyNPCs(ModContent.NPCType<Irradia>()) && !NPC.AnyNPCs(ModContent.NPCType<StartIrradia>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),

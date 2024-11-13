@@ -13,6 +13,10 @@ Common: {
 	Juggler: Juggler Weapon Type
 	CanSwapped: Can be changed to{0}!
 	TypeSwapped: Damage Type Swapped!
+	PowderDamage: Increases igniter card damage by {0}%!
+	PowderEquip: Equip this powder to a card!
+	IgniterCard: When it hits an enemy, it explodes with the effects of all the powders equipped to it!
+	IgniterCardHelp: Right click in your inventory to put powders on your card!
 }
 
 SetBonus: {
@@ -404,10 +408,8 @@ Steali: {
 	DisplayName: Steali
 	Tooltip:
 		'''
-		A small fast dash that provides invincibility as you dash
-		Increased life regeneration
-		You may not attack while this is in use
-		Hollow Knight inspiried!
+		Greatly increased dash distance
+		Hollow Knight inspired!
 		'''
 }
 
@@ -1100,92 +1102,52 @@ wallg: {
 
 BonePicklerCard: {
 	DisplayName: Bone Pickler Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: ""
 }
 
 DaedCard: {
 	DisplayName: Daed Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: ""
 }
 
 EYIgniter: {
 	DisplayName: Eye Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: ""
 }
 
 FrostCard: {
 	DisplayName: Frost Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: ""
 }
 
 GothivCard: {
 	DisplayName: Gothiv Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: ""
 }
 
 LovestruckCard: {
 	DisplayName: Lovestruck Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 ScorcheCard: {
 	DisplayName: Scorche Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 StarrCard: {
 	DisplayName: Starr Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 StarterCard: {
 	DisplayName: Starter Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 WCIgniter: {
 	DisplayName: Wild Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 Bongos: {
@@ -1313,7 +1275,7 @@ PocketSand: {
 	DisplayName: Pocket Sand
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		Dust that can be used with and for combos in igniters
 		Can penetrate armored enemies like nothing!
 		'''
@@ -1323,9 +1285,9 @@ ArcanalPowder: {
 	DisplayName: Sepsis Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+
 		A sparkly star dust that does double damage as the igniter!
-		After hitting an enemy with this, use an igniter card weapon!
+
 		'''
 }
 
@@ -1333,9 +1295,8 @@ BloodPowder: {
 	DisplayName: Kaev Powder
 	Tooltip:
 		'''
-		Throw magical dust on them and ignite
+		Has a chance to lifesteal!
 		A blood dust that does high damage with igniters.
-		After hitting an enemy with this, use an igniter card weapon!
 		'''
 }
 
@@ -1343,8 +1304,8 @@ CoalDust: {
 	DisplayName: Coal Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
-		After hitting an enemy with this, use an igniter card weapon!
+
+
 		Forged from the gems you collect!
 		'''
 }
@@ -1353,9 +1314,8 @@ FlamePowder: {
 	DisplayName: Flame Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+		Has a chance to burn enemies!
 		A flamey dust that explodes with your igniter!
-		After hitting an enemy with this, use an igniter card weapon!
 		'''
 }
 
@@ -1363,39 +1323,27 @@ FrostedPowder: {
 	DisplayName: Frost Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+		Has a chance to frostburn enemies!
 		Dusty ice dust that does continuous damage with the igniter!
-		After hitting an enemy with this, use an igniter card weapon!
 		'''
 }
 
 GrassDirtPowder: {
 	DisplayName: Dirt Powder
-	Tooltip:
-		'''
-		Throw magical dust on them!
-		A dirty dust... that does damage???!
-		After hitting an enemy with this, use an igniter card weapon!
-		'''
+	Tooltip: A dirty dust... that does damage???!
 }
 
 LenaSongPowder: {
 	DisplayName: Lena Song Powder
-	Tooltip:
-		'''
-		Throw magical dust on them!
-		A musical dust! that explodes with your igniter!
-		After hitting an enemy with this, use an igniter card weapon!
-		'''
+	Tooltip: A musical dust! that explodes with your igniter!
 }
 
 ShadowFlamePowder: {
 	DisplayName: ShadowFlame Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+		Has a chance to burn enemies with shadow flame!
 		A shadow dust that explodes with your igniter!
-		After hitting an enemy with this, use an igniter card weapon!
 		'''
 }
 
@@ -1403,9 +1351,8 @@ TrickPowder: {
 	DisplayName: Trick Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+		Has a low chance to confuse enemies!
 		A sparkly tricky dust that does a lot damage!
-		After hitting an enemy with this, use an igniter card weapon!
 		'''
 }
 
@@ -1413,9 +1360,8 @@ Verstidust: {
 	DisplayName: Versti Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+		Has a chance to reduce the target's defense!
 		A musical dust that has calming flowers
-		After hitting an enemy with this, use an igniter card weapon!
 		'''
 }
 
@@ -1623,7 +1569,7 @@ AlcadizPowder: {
 	DisplayName: Fable Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+		Has a chance to burn enemies!
 		A spark-like explosion dust that does a lot damage!
 		From the Fabled fallen remains..
 		'''
@@ -2098,7 +2044,7 @@ LeatherGlove: {
 	DisplayName: Leather Glove
 	Tooltip:
 		'''
-		10% increased throwing damage
+		Increases throwing damage by 3
 		Increased throwing velocity
 		'''
 }
@@ -2124,27 +2070,52 @@ OceansTrinket: {
 
 RuneOfCorsage: {
 	DisplayName: Rune Of Corsage
-	Tooltip: Has a chance to gift super healing, if you were hit while under the effects of super healing everything on screen will be poisoned.
+	Tooltip: Great for regeneration!
+	Effect:
+		'''
+		While standing still, you have boosted life regeneration
+		Nearby enemies are poisoned
+		'''
 }
 
 RuneOfDetonation: {
 	DisplayName: Rune Of Detonation
-	Tooltip: Has a chance to explode enemies doing double damage
+	Tooltip: Great for skilled players!
+	Effect:
+		'''
+		After 5 consecutive hits on an enemy, they'll violently explode!
+		Make sure to not miss :P
+		'''
 }
 
 RuneOfReality: {
 	DisplayName: Rune Of Reality
-	Tooltip: When you hit an enemy, you will release homing magic bolts that summon mana stars when they hit
+	Tooltip: Great for magical protection!
+	Effect:
+		'''
+		While under 25% mana, slowdown all projectiles near you!
+		+20 Max Mana
+		'''
 }
 
 RuneOfShade: {
 	DisplayName: Rune Of Shade
-	Tooltip: +20 Max mana
+	Tooltip: Great for mobility!
+	Effect:
+		'''
+		Enemies are much less likely to target you
+		5% increased movement speed and jump speed
+		'''
 }
 
 RuneOfStealth: {
 	DisplayName: Rune Of Stealth
-	Tooltip: "You will slowly increase damage until you are hit You will glow a bright red when you are at your most powerful form "
+	Tooltip: Great for damage!
+	Effect:
+		'''
+		You slowly gain damage over time, up to a max of 1.15x damage
+		However, taking a hit resets your bonus!
+		'''
 }
 
 ShadeCharm: {
@@ -2154,14 +2125,7 @@ ShadeCharm: {
 
 ShadeScarf: {
 	DisplayName: Shadei
-	Tooltip:
-		'''
-		Increased movement speed
-		+2% Damage
-		Gives effects of steali and adds +10 Health and +10% critical strike chance!
-		Increased life regeneration!
-		Reduced cooldown time from Steali on dash!
-		'''
+	Tooltip: Greatly increased dash distance and mobility
 }
 
 ShellSheid: {
@@ -2180,8 +2144,12 @@ SoulStrideres: {
 }
 
 SpiritPendent: {
-	DisplayName: Spirit Pendent
-	Tooltip: Provides a small light
+	DisplayName: Spirit Pendant
+	Tooltip:
+		'''
+		Provides a small amount of light
+		Pushes away some of the darkness in the Abyss
+		'''
 }
 
 StarflareBand: {
@@ -2196,7 +2164,11 @@ StarflareBand: {
 
 SunGlyph: {
 	DisplayName: Sun Glyph
-	Tooltip: Greatly increases all damage in the daylight.
+	Tooltip:
+		'''
+		Increases damage by 30% during the day
+		Pushes away some of the darkness in the Abyss
+		'''
 }
 
 WoodShield: {
@@ -2614,7 +2586,7 @@ StaffOFlame: {
 	DisplayName: Staff O Flame
 	Tooltip:
 		'''
-		Summons a cute lil' flame
+		Summons 2 cute lil' flames that home into enemies after a short time!
 		:3
 		'''
 }
@@ -2718,7 +2690,11 @@ Myocardia: {
 
 ScarecrowSaber: {
 	DisplayName: Scarecrow Saber
-	Tooltip: Scare your enemies with a spread of 3 magical sabers!
+	Tooltip:
+		'''
+		Lunge forward in a spinning slash!
+		You are invincible at the start of the lunge, and enemies hit during this time take several times more damage!
+		'''
 }
 
 SkyrageShasher: {
@@ -2846,7 +2822,7 @@ IvynShot: {
 
 JackoShot: {
 	DisplayName: Jacko Shot
-	Tooltip: It's a bow, there's nothing else special about it
+	Tooltip: Every third shot shoots a fire arrow that explodes into 3 homing embers!
 }
 
 JellyBow: {
@@ -3097,10 +3073,11 @@ GintzlSpear: {
 
 RuneOfWind: {
 	DisplayName: Rune Of Wind
-	Tooltip:
+	Tooltip: Great for defense!
+	Effect:
 		'''
-		Sometimes when hit you generate a wind shield!
-		This shield gives 15 defense.
+		You gain a wind shield that slowly blows away enemies
+		After taking a hit, the wind storm becomes more violent! 
 		'''
 }
 
@@ -3142,9 +3119,9 @@ GintzeCard: {
 	DisplayName: Gintze Card
 	Tooltip:
 		'''
-		Use a powder or dust and then use this!
+
 		Sometimes it takes a card to be a warrior.
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+
 		'''
 }
 
@@ -3226,9 +3203,9 @@ Neptune8Card: {
 	DisplayName: Neptune8 Card
 	Tooltip:
 		'''
-		An igniter for dusts and powders!
+
 		Reaching from the depths of the galaxy!
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+
 		'''
 }
 
@@ -3261,9 +3238,8 @@ AbyssalPowder: {
 	DisplayName: Abysmal Aurelus Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+		Has a chance to smite enemies with Abyssal Flames!
 		A void crystal-like dust!
-		After hitting an enemy with this, use an igniter card weapon!
 		'''
 }
 
@@ -3271,9 +3247,8 @@ AivanPowder: {
 	DisplayName: Aivan Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+		Explodes with increased knockback!
 		Stolen from gothivia's castle
-		After hitting an enemy with this, use an igniter card weapon!
 		'''
 }
 
@@ -3281,9 +3256,8 @@ GovheilPowder: {
 	DisplayName: Govheil Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+		Explodes 3 times with a larger explosion!
 		Pure sensation. :)
-		After hitting an enemy with this, use an igniter card weapon!
 		'''
 }
 
@@ -3308,11 +3282,12 @@ BearBroochA: {
 }
 
 DreadBroochA: {
-	DisplayName: Dreaded Dreadmire Brooch
+	DisplayName: The Dreaded Brooch
 	Tooltip:
 		'''
-		40 Health
-		You know maybe she wasn't all that bad.
+		Cuts your max health in half
+		Increases damage by 25%
+		It's definitely worth it :P
 		'''
 }
 
@@ -3494,7 +3469,7 @@ GothiviasCard: {
 	Tooltip:
 		'''
 		"Causes minor burns," thats at least the note she left.
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+
 		'''
 }
 
@@ -3521,9 +3496,8 @@ CrystalPowder: {
 	DisplayName: Crystal Powder
 	Tooltip:
 		'''
-		Throw magical dust on them and ignite
+		Has 10 armor penetration!
 		It's what we've been working for Jesse
-		After hitting an enemy with this, use an igniter card weapon!
 		'''
 }
 
@@ -4394,7 +4368,7 @@ GremoryExtenderPowder: {
 
 MushyExtenderPowder: {
 	DisplayName: Mushy Extender Powder
-	Tooltip: Sets powder range to an increase of 180%
+	Tooltip: Sets powder range to an increase of 110%
 }
 
 TomedDustingFlames: {
@@ -4444,65 +4418,37 @@ FrostMonger: {
 
 AlcadzianCard: {
 	DisplayName: Alcadzian Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 BOMBERCard: {
 	DisplayName: BOMBER Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 BurningCard: {
 	DisplayName: Burning Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 FenixxCard: {
 	DisplayName: Fenixx Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 GrailedCard: {
 	DisplayName: Grailed Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 LarvaedCard: {
 	DisplayName: Larveid Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 StyngerCard: {
 	DisplayName: Stynger Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 URift: {
@@ -4624,7 +4570,7 @@ DungeonedRockCard: {
 	Tooltip:
 		'''
 		Get rocked, or Dwayne Johnsoned, whatever is funnier.
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+
 		'''
 }
 
@@ -4761,21 +4707,15 @@ RalladI: {
 
 AgreviPowder: {
 	DisplayName: Agrevi Powder
-	Tooltip:
-		'''
-		Throw magical dust on them and ignite
-		An exploding dust that works after a little while
-		After hitting an enemy with this, use an igniter card weapon!
-		'''
+	Tooltip: Has a chance to burn enemies!
 }
 
 IllusionistPowder: {
 	DisplayName: Illusionist Powder
 	Tooltip:
 		'''
-		Throw magical dust on them and ignite
+		A massive explosion with high knockback!
 		A dust that tells you to keep yourself safe.
-		After hitting an enemy with this, use an igniter card weapon!
 		'''
 }
 
@@ -4783,9 +4723,8 @@ PoisonedPowder: {
 	DisplayName: Poisoned Powder
 	Tooltip:
 		'''
-		Throw magical dust on them and ignite
+		Has a chance to poison enemies!
 		A constant dust that has posionous tendrils
-		After hitting an enemy with this, use an igniter card weapon!
 		'''
 }
 
@@ -4793,9 +4732,8 @@ SpiritPowder: {
 	DisplayName: Spirit Powder
 	Tooltip:
 		'''
-		Throw magical dust on them and ignite
+		This explosion strikes directly at the soul, piercing through a lot of defense!
 		Fenix would love you for this.
-		After hitting an enemy with this, use an igniter card weapon!
 		'''
 }
 
@@ -5366,9 +5304,9 @@ FloweredCard: {
 	DisplayName: Flowered Card
 	Tooltip:
 		'''
-		An igniter for dusts and powders!
+
 		Reaching from the depths of the galaxy!
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+
 		'''
 }
 
@@ -5376,9 +5314,9 @@ MetallianCard: {
 	DisplayName: Metallian Card
 	Tooltip:
 		'''
-		An igniter for dusts and powders!
+
 		Reaching from the depths of the galaxy!
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+
 		'''
 }
 
@@ -5386,9 +5324,9 @@ ZuiCard: {
 	DisplayName: Zui Card
 	Tooltip:
 		'''
-		An igniter for dusts and powders!
+
 		Reaching from the depths of the galaxy!
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+
 		'''
 }
 
@@ -6293,11 +6231,7 @@ Hookarama: {
 }
 
 MushyCard: {
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 	DisplayName: Mushy Card
 }
 
@@ -6833,11 +6767,7 @@ ImperfectionStaff: {
 }
 
 IshtarCard: {
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 	DisplayName: Ishtar Card
 }
 
@@ -6870,11 +6800,7 @@ RazzleDazzle: {
 
 IllureCard: {
 	DisplayName: Illure Card
-	Tooltip:
-		'''
-		Use with a combination of dusts to make spells :)
-		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
-		'''
+	Tooltip: "\n"
 }
 
 Pulsing: {
@@ -6897,6 +6823,7 @@ GunHolster: {
 		'''
 		Allows you to use two smaller guns at the same time
 		Right click to use your other gun
+		Right click the item in your inventory to open the holster UI
 		'''
 }
 
@@ -7046,12 +6973,10 @@ RadiantsparkBoots: {
 		You'll need these! Given thanks from Zui!
 		Makes the wearer run super fast and leaves a golden trail that can hit on contact!
 		Zui's Mark is left on your back.
-		Gives uses of Shadei with slightly reduced cooldown on dash!
-		Small amount of regeneration 
+		Effects of Shadei!
 		+30 Health!
 		Flower walking and Immunity to lava!
-		+15% Critical Strike Chance and +5% increased Damage!
-		Yeah this should really help you in future battles.
+		Yeah, this should really help you in future battles.
 		'''
 	DisplayName: Radiantspark Boots
 }
@@ -7245,9 +7170,8 @@ ArtoriaIllurePowder: {
 	DisplayName: Artoria Illure Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+		Knocks enemies upward!
 		An explosion of the Illure.
-		After hitting an enemy with this, use an igniter card weapon!
 		'''
 }
 
@@ -7255,9 +7179,8 @@ EreshkinPowder: {
 	DisplayName: Ereshkin Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
+		Has a chance to confuse enemies!
 		A sparkly drawing dust that does many times damage as the igniter!
-		After hitting an enemy with this, use an igniter card weapon!
 		'''
 }
 
@@ -7265,9 +7188,8 @@ MushyPowder: {
 	DisplayName: Mushy Powder
 	Tooltip:
 		'''
-		Throw magical dust on them!
 		A mushy powder that explode
-		After hitting an enemy with this, use an igniter card weapon!
+		Has a chance to poison enemies!
 		'''
 }
 
@@ -7859,4 +7781,266 @@ VirulentLegs: {
 Lihh: {
 	Tooltip: Shoots two arrows at once! Every third shot fires heat arrows!
 	DisplayName: Lihh
+}
+
+ExampleDecorativeWallItem: {
+	DisplayName: Example Decorative Wall Item
+	Tooltip: ""
+}
+
+BloodHallItem: {
+	Tooltip: ""
+	DisplayName: Blood Hall Item
+}
+
+BloodFlower5Item: {
+	Tooltip: ""
+	DisplayName: Blood Flower5 Item
+}
+
+BloodFlower4Item: {
+	Tooltip: ""
+	DisplayName: Blood Flower4 Item
+}
+
+BloodFlower3Item: {
+	Tooltip: ""
+	DisplayName: Blood Flower3 Item
+}
+
+BloodFlower2Item: {
+	Tooltip: ""
+	DisplayName: Blood Flower2 Item
+}
+
+BloodFlower1Item: {
+	Tooltip: ""
+	DisplayName: Blood Flower1 Item
+}
+
+ModelizingPlacer: {
+	DisplayName: Modelizing Placer
+	Tooltip: ""
+}
+
+ModelizingSaver: {
+	DisplayName: Modelizing Saver
+	Tooltip: ""
+}
+
+BurningScarf: {
+	Tooltip:
+		'''
+		Your dash leaves behind tiny flames that burn enemies
+		Slightly increased dash distance
+		'''
+	DisplayName: Burning Scarf
+}
+
+PumkinPopper: {
+	Tooltip:
+		'''
+		Throws little pumpkins that explode after a short time or hitting a tile!
+		The pumpkins explode into a burst of 3 projectiles
+		'''
+	DisplayName: Pumpkin Popper
+}
+
+MagicCauldron: {
+	DisplayName: Magic Cauldron
+	Tooltip: ""
+}
+
+WillOWisp: {
+	DisplayName: Will O' Wisp
+	Tooltip:
+		'''
+		Summons a cute lil' ghostly flame that follows behind you and burns enemies!
+		The flames line up behind each other
+		Consumes half a minion slot
+		'''
+}
+
+DaedussSiegShield: {
+	DisplayName: Daeduss Sieg Shield
+	Tooltip: ""
+}
+
+FableBarItem: {
+	Tooltip: ""
+	DisplayName: Fable Bar Item
+}
+
+FableBenchItem: {
+	DisplayName: Fable Bench Item
+	Tooltip: ""
+}
+
+FableBigMushroomItem: {
+	DisplayName: Fable Big Mushroom Item
+	Tooltip: ""
+}
+
+FableGGrassMossItem: {
+	DisplayName: Fable G Grass Moss Item
+	Tooltip: ""
+}
+
+FableGrassMossBigItem: {
+	DisplayName: Fable Grass Moss Big Item
+	Tooltip: ""
+}
+
+FableLogItem: {
+	DisplayName: Fable Log Item
+	Tooltip: ""
+}
+
+FablePikeBigItem: {
+	DisplayName: Fable Pike Big Item
+	Tooltip: ""
+}
+
+FablePikeItem: {
+	DisplayName: Fable Pike Item
+	Tooltip: ""
+}
+
+FableSmallMushroomItem: {
+	DisplayName: Fable Small Mushroom Item
+	Tooltip: ""
+}
+
+FableSpikesItem: {
+	DisplayName: Fable Spikes Item
+	Tooltip: ""
+}
+
+FableStonesItem: {
+	DisplayName: Fable Stones Item
+	Tooltip: ""
+}
+
+FableTableItem: {
+	DisplayName: Fable Table Item
+	Tooltip: ""
+}
+
+wall1Item: {
+	DisplayName: wall1 Item
+	Tooltip: ""
+}
+
+wall2Item: {
+	DisplayName: wall2 Item
+	Tooltip: ""
+}
+
+wall3Item: {
+	DisplayName: wall3 Item
+	Tooltip: ""
+}
+
+wall4Item: {
+	DisplayName: wall4 Item
+	Tooltip: ""
+}
+
+wall5Item: {
+	DisplayName: wall5 Item
+	Tooltip: ""
+}
+
+wall6Item: {
+	DisplayName: wall6 Item
+	Tooltip: ""
+}
+
+wall7Item: {
+	DisplayName: wall7 Item
+	Tooltip: ""
+}
+
+EreshkigalStatueItem: {
+	DisplayName: Ereshkigal Statue Item
+	Tooltip: ""
+}
+
+SuperStaff: {
+	DisplayName: Super Staff
+	Tooltip:
+		'''
+		Conjure ball lightning!
+		You can charge it up to fire a slower, but more powerful ball
+		'''
+}
+
+ExtraBlockRange: {
+	Tooltip: ""
+	DisplayName: Extra Block Range
+}
+
+BlankStaff: {
+	DisplayName: Blank Staff
+	Tooltip: ""
+}
+
+BlankShield: {
+	Tooltip: ""
+	DisplayName: Blank Shield
+}
+
+BlankJuggler: {
+	Tooltip: ""
+	DisplayName: Blank Juggler
+}
+
+BlankGun: {
+	Tooltip: ""
+	DisplayName: Blank Gun
+}
+
+BlankBow: {
+	Tooltip: ""
+	DisplayName: Blank Bow
+}
+
+BlankBag: {
+	Tooltip: ""
+	DisplayName: Blank Bag
+}
+
+BlankAccessory: {
+	Tooltip: ""
+	DisplayName: Blank Accessory
+}
+
+BlankStein: {
+	DisplayName: Blank Stein
+	Tooltip: ""
+}
+
+BlankSword: {
+	DisplayName: Blank Sword
+	Tooltip: ""
+}
+
+FableBookshelf1Item: {
+	DisplayName: Fable Bookshelf1 Item
+	Tooltip: ""
+}
+
+FableBookshelf2Item: {
+	DisplayName: Fable Bookshelf2 Item
+	Tooltip: ""
+}
+
+FableBookshelf3Item: {
+	DisplayName: Fable Bookshelf3 Item
+	Tooltip: ""
+}
+
+MoldTooltipItem: {
+	Tooltip: ""
+	DisplayName: Mold Tooltip Item
 }

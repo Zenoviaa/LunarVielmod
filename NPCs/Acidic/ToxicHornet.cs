@@ -191,7 +191,7 @@ namespace Stellamod.NPCs.Acidic
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SrTetanus>(), 20, 1, 1));
             }
             npcLoot.Add(ItemDropRule.Common(ItemType<VirulentPlating>(), minimumDropped: 1, maximumDropped: 4));
-            npcLoot.Add(ItemDropRule.Common(ItemType<ToxicHornetStaff>(), chanceDenominator: 20));
+          //  npcLoot.Add(ItemDropRule.Common(ItemType<ToxicHornetStaff>(), chanceDenominator: 20));
         }
 
 

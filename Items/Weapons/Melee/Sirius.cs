@@ -11,7 +11,14 @@ namespace Stellamod.Items.Weapons.Melee
 {
     internal class Sirius : ClassSwapItem
     {
+
         public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 150;
+            Item.mana = 0;
+        }
 
         public override void SetStaticDefaults()
         {

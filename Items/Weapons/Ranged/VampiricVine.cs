@@ -14,11 +14,19 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-	public class VampiricVine : ModItem
-	{
-		public override void SetDefaults()
+	public class VampiricVine : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 10;
+        }
+        public override void SetDefaults()
 		{
-			Item.damage = 17;
+			Item.damage = 7;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 84;
 			Item.height = 36;

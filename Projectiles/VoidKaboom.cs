@@ -1,67 +1,32 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Buffs;
+using Stellamod.Helpers;
+using Stellamod.Projectiles.IgniterExplosions;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    public class VoidKaboom : ModProjectile
+    public class VoidKaboom : BaseIgniterExplosion
 	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("FrostShotIN");
-			Main.projFrames[Projectile.type] = 30;
-		}
-		
-		public override void SetDefaults()
-		{
-			Projectile.friendly = true;
-			Projectile.width = 129;
-			Projectile.height = 129;
-			Projectile.penetrate = -1;
-			Projectile.timeLeft = 60;
-			Projectile.scale = 2f;
-			
-		}
-		public float Timer
-		{
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
-		}
-        public override void AI()
+        public override int FrameCount => 30;
+        public override void Start()
         {
-			
-			Vector3 RGB = new(0.89f, 2.53f, 2.55f);
-			// The multiplication here wasn't doing anything
-			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+            base.Start();
+            if (Main.myPlayer == Projectile.owner)
+            {
+                var circle = EffectsHelper.SimpleExplosionCircle(Projectile, Color.Blue, endRadius: 48);
+            }
+        }
 
-		}
-		
-		public override bool PreAI()
-		{
-			Projectile.tileCollide = false;
-			if (++Projectile.frameCounter >= 2)
-			{
-				Projectile.frameCounter = 0;
-				if (++Projectile.frame >= 30)
-				{
-					Projectile.frame = 0;
-				}
-			}
-			return true;
-
-			
-		}
-		public override Color? GetAlpha(Color lightColor)
-		{
-			return new Color(200, 200, 200, 0) * (1f - Projectile.alpha / 50f);
-		}
-
-		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-		{
-			overPlayers.Add(index);
-
-		}
-	}
-
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitNPC(target, ref modifiers);
+            if (Main.rand.NextBool(3))
+            {
+                target.AddBuff(ModContent.BuffType<AbyssalFlame>(), 120);
+            }
+        }
+    }
 }

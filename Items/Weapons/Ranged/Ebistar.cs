@@ -11,7 +11,7 @@ namespace Stellamod.Items.Weapons.Ranged
 		public override DamageClass AlternateClass => DamageClass.Magic;
         public override void SetClassSwappedDefaults()
         {
-			Item.damage = 62;
+			Item.damage = 8;
 			Item.mana = 4;
         }
 
@@ -33,20 +33,6 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.shoot = ModContent.ProjectileType<EbistarProj>();
 			Item.shootSpeed = 0f; // the speed of the projectile (measured in pixels per frame)
 			Item.channel = true;
-
-		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-
-            recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 9);
-			recipe.AddIngredient(ItemID.FallenStar, 3);
-			recipe.AddIngredient(ItemID.IceBlock, 10);
-
-			recipe.Register();
 		}
 	}
-
 }

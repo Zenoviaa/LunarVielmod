@@ -220,14 +220,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
 				if (npc.active)
 				{
-					float distance = Vector2.Distance(NPC.Center, npc.Center);
-					if (distance <= 4000)
-					{
-						Vector2 direction = npc.Center - NPC.Center;
-						direction.Normalize();
-						npc.velocity += direction * 0.2f;
-					}
-				}
+                    float distance = Vector2.Distance(NPC.Center, npc.Center);
+                    if (distance <= 4000)
+                    {
+                        Vector2 direction = npc.Center - NPC.Center;
+                        direction.Normalize();
+                        npc.velocity -= direction * 0.2f;
+                    }
+                }
 			}
 
 			if (bee2 == 0)

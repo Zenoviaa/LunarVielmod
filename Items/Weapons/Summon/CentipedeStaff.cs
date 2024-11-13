@@ -14,8 +14,16 @@ using Microsoft.Xna.Framework;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    internal class CentipedeStaff : ModItem
+    internal class CentipedeStaff : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 18;
+            Item.mana = 18;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Irradiated Creeper Staff");

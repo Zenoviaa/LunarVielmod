@@ -2,6 +2,7 @@
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Summons.Orbs;
 using System.Collections.Generic;
 using Terraria;
@@ -12,8 +13,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon.Orbs
 {
-    internal class TheActualMoon : ModItem
+    internal class TheActualMoon : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 33;
+            Item.mana = 0;
+        }
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(AuroreanStarballDebuff.TagDamage);
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {

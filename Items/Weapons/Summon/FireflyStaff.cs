@@ -11,9 +11,17 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class FireflyStaff : ModItem
+    public class FireflyStaff : ClassSwapItem
     {
-		private FireflyMinionProj.AttackState _attackState;
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 15;
+            Item.mana = 10;
+        }
+        private FireflyMinionProj.AttackState _attackState;
 		public override void SetDefaults()
 		{
 			Item.damage = 30;
@@ -98,19 +106,6 @@ namespace Stellamod.Items.Weapons.Summon
 			fireflyMinion.AttackStyle = _attackState;
 			// Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
 			return false;
-		}
-
-        public override void AddRecipes()
-        {
-            base.AddRecipes();
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.MythrilAnvil);
-            recipe.AddIngredient(ItemType<StickOfWisdom>(), 1);
-            recipe.AddIngredient(ItemType<PearlescentScrap>(), 12);
-			recipe.AddIngredient(ItemType<LostScrap>(), 10);
-			recipe.AddIngredient(ItemID.SoulofLight, 10);
-			recipe.AddIngredient(ItemID.LifeCrystal, 1);
-			recipe.Register();
 		}
     }
 }

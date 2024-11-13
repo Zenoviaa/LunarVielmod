@@ -40,7 +40,6 @@ namespace Stellamod.Tiles.Structures
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
 			TileObjectData.addTile(Type);
-            RegisterItemDrop(ModContent.ItemType<Stick>());
             LocalizedText name = CreateMapEntryName();
 
 			// name.SetDefault("LogS");

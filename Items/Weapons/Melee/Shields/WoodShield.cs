@@ -8,8 +8,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Shields
 {
-    internal class WoodShield : ModItem
+    internal class WoodShield : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 0;
+        }
         int AttackCounter = 1;
         public override void SetDefaults()
         {
@@ -45,14 +53,6 @@ namespace Stellamod.Items.Weapons.Melee.Shields
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
             return false;
-        }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Wood, 10);
-            recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 5);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
         }
     }
 }

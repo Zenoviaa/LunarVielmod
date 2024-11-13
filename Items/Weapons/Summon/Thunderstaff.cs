@@ -9,8 +9,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class Thunderstaff : ModItem
+    public class Thunderstaff : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 12;
+            Item.mana = 10;
+        }
         public override void SetDefaults()
         {
 			Item.damage = 48;
@@ -44,18 +52,6 @@ namespace Stellamod.Items.Weapons.Summon
 
 			// Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
 			return false;
-		}
-
-        public override void AddRecipes()
-        {
-            base.AddRecipes();
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.AddIngredient(ModContent.ItemType<StickOfWisdom>(), 1);
-			recipe.AddIngredient(ItemID.SoulofFlight, 12);
-			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 8);
-			recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 6);
-			recipe.Register();
 		}
     }
 }

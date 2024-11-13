@@ -15,7 +15,7 @@ namespace Stellamod.Items.Weapons.Melee
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 16;
+            Item.damage = 5;
         }
 
         public override void SetDefaults()
@@ -38,17 +38,6 @@ namespace Stellamod.Items.Weapons.Melee
             Item.channel = true;
             Item.noUseGraphic = true;
             Item.autoReuse = false;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.Anvils);
-            recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 9);
-            recipe.Register();
         }
     }
 }

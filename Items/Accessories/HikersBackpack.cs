@@ -25,19 +25,6 @@ namespace Stellamod.Items.Accessories
 			Item.value = Item.sellPrice(silver: 12);
 			Item.rare = ItemRarityID.Blue;
 			Item.accessory = true;
-
-
-		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<Morrowshroom>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 5);
-			recipe.AddIngredient(ItemID.Wood, 50);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
@@ -46,12 +33,6 @@ namespace Stellamod.Items.Accessories
 			player.GetDamage(DamageClass.Generic) += 0.03f; // Increase ALL player damage by 100%
 			player.GetModPlayer<MyPlayer>().HikersBCooldown--;
 			player.lifeRegen += 1;
-
-
 		}
-
-
-
-
 	}
 }

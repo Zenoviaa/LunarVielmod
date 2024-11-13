@@ -13,7 +13,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 9;
+            Item.damage = 4;
             Item.mana = 0;
         }
         public override void SetStaticDefaults()
@@ -42,17 +42,6 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.autoReuse = true;
 			Item.crit = 12;
 			Item.noUseGraphic = true;
-		}
-		
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 2);
-			recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 2);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 20);
 		}
 	}
 }

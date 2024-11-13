@@ -27,16 +27,6 @@ namespace Stellamod.Items.Accessories
 			Item.accessory = true;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Wood, 50);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 1);
-			recipe.AddIngredient(ItemID.Cobweb, 30);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
-		}
-
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.GetDamage(DamageClass.Generic) += 0.03f;

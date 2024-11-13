@@ -20,6 +20,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Town
 {
+
     // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
     [AutoloadHead]
 	public class Gambit : ModNPC

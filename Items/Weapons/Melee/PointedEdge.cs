@@ -11,9 +11,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-	public class PointedEdge : ModItem
-	{
-		public int AttackCounter = 1;
+	public class PointedEdge : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 19;
+            Item.mana = 0;
+        }
+        public int AttackCounter = 1;
 		public int combowombo = 1;
 
 		public override void SetStaticDefaults()
@@ -23,7 +31,7 @@ namespace Stellamod.Items.Weapons.Melee
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 45;
+			Item.damage = 38;
 			Item.DamageType = DamageClass.Melee;
 			Item.width = 0;
 			Item.height = 0;

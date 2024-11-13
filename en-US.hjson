@@ -34,5 +34,7 @@ Mods: {
 
 			LunarVeilServerConfig.DisplayName: Lunar Veil Server Config
 		}
+
+		Keybinds.Dash.DisplayName: Dash
 	}
 }

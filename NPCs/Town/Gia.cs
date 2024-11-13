@@ -965,7 +965,6 @@ namespace Stellamod.NPCs.Town
 			.Add(new Item(ModContent.ItemType<GiaWig>()) { shopCustomPrice = Item.buyPrice(gold: 10) })
 			.Add(new Item(ModContent.ItemType<GiaSuit>()) { shopCustomPrice = Item.buyPrice(gold: 10) })
 			.Add(new Item(ModContent.ItemType<GiaPants>()) { shopCustomPrice = Item.buyPrice(gold: 10) })
-			.Add(new Item(ModContent.ItemType<DustedSilk>()) { shopCustomPrice = Item.buyPrice(silver: 10) })
 			.Add(new Item(ItemID.WormFood) { shopCustomPrice = Item.buyPrice(gold: 5) })
 			.Add(new Item(ItemID.BloodySpine) { shopCustomPrice = Item.buyPrice(gold: 5) })
 			.Add(new Item(ItemID.BloodMoonStarter) { shopCustomPrice = Item.buyPrice(gold: 10)})

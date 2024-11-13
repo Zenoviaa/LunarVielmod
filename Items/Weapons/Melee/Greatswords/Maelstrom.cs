@@ -21,8 +21,16 @@ using Stellamod.Projectiles.Slashers.Maelstrom;
 
 namespace Stellamod.Items.Weapons.Melee.Greatswords
 {
-    public class Maelstrom : ModItem
+    public class Maelstrom : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 16;
+            Item.mana = 0;
+        }
         public int AttackCounter = 1;
         public int combowombo = 0;
 

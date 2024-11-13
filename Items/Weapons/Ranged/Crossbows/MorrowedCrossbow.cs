@@ -1,5 +1,6 @@
 ﻿using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Crossbows.Sniper;
 using Terraria;
@@ -10,8 +11,16 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Ranged.Crossbows
 {
 
-    public class MorrowedCrossbow : ModItem
+    public class MorrowedCrossbow : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 0;
+        }
 
         public override void SetStaticDefaults()
         {
@@ -44,21 +53,6 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
 
 
         }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.Anvils);
-
-            recipe.AddIngredient(ModContent.ItemType<BlankCrossbow>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 400);
-            recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 3);
-            recipe.AddRecipeGroup(nameof(ItemID.DemoniteBar), 12);
-            recipe.Register();
-        }
-
-
 
 
     }

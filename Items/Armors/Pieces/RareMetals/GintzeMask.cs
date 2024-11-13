@@ -53,8 +53,8 @@ namespace Stellamod.Items.Armors.Pieces.RareMetals
 		public override void UpdateArmorSet(Player player)
 		{
 			player.maxMinions += 1;
-			Main.LocalPlayer.GetModPlayer<MyPlayer>().HMArmor = true;
-			player.setBonus = LangText.SetBonus(this);//"2 Gintze Guards come to fight for you" + "\n+1 Summons!");  // This is the setbonus tooltip
+            player.GetModPlayer<HeavyMetalPlayer>().hasSetBonus = true;
+            player.setBonus = LangText.SetBonus(this);//"2 Gintze Guards come to fight for you" + "\n+1 Summons!");  // This is the setbonus tooltip
 		}
 	}
 }

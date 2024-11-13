@@ -20,10 +20,18 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-	public class Angelenthal : ModItem
-	{
+	public class Angelenthal : ClassSwapItem
+    {
 
-		public int AttackCounter = 1;
+        public override DamageClass AlternateClass => DamageClass.Melee;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 45;
+            Item.mana = 0;
+        }
+
+        public int AttackCounter = 1;
 		public int combowombo = 0;
 
 		public override void SetStaticDefaults()

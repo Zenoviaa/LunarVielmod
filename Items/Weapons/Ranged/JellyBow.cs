@@ -8,9 +8,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class JellyBow : ModItem
-	{
-		private int _comboCounter;
+    public class JellyBow : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 6;
+            Item.mana = 0;
+        }
+        private int _comboCounter;
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Jelly Bow"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.

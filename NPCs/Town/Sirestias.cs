@@ -49,7 +49,7 @@ namespace Stellamod.NPCs.Town
 	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
 	//[AutoloadHead]
 	[AutoloadBossHead]
-	public class Sirestias : ModNPC
+	public class Sirestias : PointSpawnNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
 		public const string ShopName = "Shop";
@@ -132,9 +132,13 @@ namespace Stellamod.NPCs.Town
 			NPC.frame.Y = frame * frameHeight;
 		}
 
+        public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
+        {
+            spawner.structureToSpawnIn = "Struct/Overworld/WitchTown";
+            spawner.spawnTileOffset = new Point(150, -35);
+        }
 
-
-		public override ITownNPCProfile TownNPCProfile()
+        public override ITownNPCProfile TownNPCProfile()
 		{
 			return new DelgrimPersonProfile();
 		}

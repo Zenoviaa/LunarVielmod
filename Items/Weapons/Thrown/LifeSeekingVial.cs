@@ -9,8 +9,16 @@ using Terraria.ID;
 using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Thrown
 {
-    public class LifeSeekingVial : ModItem
+    public class LifeSeekingVial : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 10;
+            Item.mana = 0;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Cactius"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.

@@ -9,8 +9,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Whips
 {
-    internal class ColdheartAnklebiter : ModItem
+    internal class ColdheartAnklebiter : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Melee;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.DefaultToWhip(ModContent.ProjectileType<ColdheartAnklebiterProj>(), 46, 3, 24);
+         
+        }
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(ColdheartAnklebiterDebuff.TagDamage);
         public override void SetDefaults()
         {

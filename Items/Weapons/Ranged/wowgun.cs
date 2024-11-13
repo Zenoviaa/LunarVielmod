@@ -43,7 +43,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			
 			// Weapon Properties
 			Item.DamageType = DamageClass.Ranged;
-			Item.damage = 25;
+			Item.damage = 12;
 			Item.knockBack = 3f;
 			Item.noMelee = true;
 
@@ -52,22 +52,12 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.shootSpeed = 2f;
 			Item.value = 5000;
 		}
+
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		// This method lets you adjust position of the gun in the player's hands. Play with these values until it looks good with your graphics.
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(2f, -2f);
-		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 4);
-			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
-			
 		}
 	}
 }

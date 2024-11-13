@@ -10,16 +10,10 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Accessories
 {
 	[AutoloadEquip(EquipType.Waist)] // Load the spritesheet you create as a shield for the player when it is equipped.
-	public class RadiantsparkBoots : ModItem
+	public class RadiantsparkBoots : BaseDashItem
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Steali");
-			/* Tooltip.SetDefault("A small fast dash that provides invincibility as you dash" +
-				"\nIncreased regeneration" +
-				"\nYou may not attack while this is in use" +
-				"\nHollow Knight inspiried!"); */
-
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
@@ -30,10 +24,8 @@ namespace Stellamod.Items.Accessories
 			Item.value = Item.buyPrice(platinum: 3);
 			Item.rare = ModContent.RarityType<Helpers.GoldenSpecialRarity>();
 			Item.accessory = true;
-
-
-		
 		}
+
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
@@ -56,38 +48,23 @@ namespace Stellamod.Items.Accessories
             recipe2.Register();
         }
 
-		public override bool CanEquipAccessory(Player player, int slot, bool modded)
-		{
-			return !player.GetModPlayer<DashPlayer>().OneDashAccessoryEquipped;
-		}
-
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-
-			player.GetModPlayer<DashPlayer>().OneDashAccessoryEquipped = true;
-			player.GetModPlayer<DashPlayer3>().DashAccessoryEquipped = true;
-			//	player.GetDamage(DamageClass.Generic) *= 0.95f;
-			player.lifeRegen += 1;
-			player.GetDamage(DamageClass.Generic) *= 1.05f;
+			base.UpdateAccessory(player, hideVisual);
+            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+            dashPlayer.DashVelocity += 12;
+            player.lifeRegen += 1;
 			player.maxRunSpeed *= 1.4f;
-			player.GetCritChance(DamageClass.Generic) *= 1.15f;
 			player.statLifeMax2 += 30;
 			player.moveSpeed += 0.8f;
 			player.fairyBoots = true;
-			player.lavaImmune = true;
-		
-			
+			player.lavaImmune = true;		
 			player.GetModPlayer<MyPlayer>().GIBomb = true;
-
 			if (player.ownedProjectileCounts[ModContent.ProjectileType<GIBomb>()] == 0)
 			{
 				Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
 					ModContent.ProjectileType<GIBomb>(), 70, 4, player.whoAmI);
 			}
 		}
-
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-
 	}
-
 }

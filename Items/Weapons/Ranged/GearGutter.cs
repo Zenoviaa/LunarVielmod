@@ -12,8 +12,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class GearGutter : ModItem
+    internal class GearGutter : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 125;
+            Item.mana = 0;
+        }
         public override void SetDefaults()
         {
             Item.damage = 250;

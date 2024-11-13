@@ -19,9 +19,17 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Ranged
 {
 
-    public class EckasectSire : ModItem
+    public class EckasectSire : ClassSwapItem
     {
-		public int AttackCounter = 1;
+
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 11;
+            Item.mana = 0;
+        }
+        public int AttackCounter = 1;
 		public int combowombo = 0;
 		public override void SetStaticDefaults()
         {

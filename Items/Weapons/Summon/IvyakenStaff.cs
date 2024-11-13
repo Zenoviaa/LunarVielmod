@@ -15,9 +15,17 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	public class IvyakenStaff : ModItem
-	{
-		public override void SetStaticDefaults()
+	public class IvyakenStaff : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 3;
+            Item.mana = 10;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Ivyaken Staff");
 			// Tooltip.SetDefault("Summons an Ivyaken to fight for you");
@@ -46,14 +54,6 @@ namespace Stellamod.Items.Weapons.Summon
             // No buffTime because otherwise the item tooltip would say something like "1 minute duration"
             Item.shoot = ModContent.ProjectileType<IvyakenMinionProj>();
         }
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 9);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
-		}
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{

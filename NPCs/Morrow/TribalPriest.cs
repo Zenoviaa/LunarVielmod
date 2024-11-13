@@ -54,9 +54,9 @@ namespace Stellamod.NPCs.Morrow
 			NPC.width = 114; // The width of the npc's hitbox (in pixels)
 			NPC.height = 92; // The height of the npc's hitbox (in pixels)
 			NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
-			NPC.damage = 1; // The amount of damage that this npc deals
+			NPC.damage = 30; // The amount of damage that this npc deals
 			NPC.defense = 2; // The amount of defense that this npc has
-			NPC.lifeMax = 200; // The amount of health that this npc has
+			NPC.lifeMax = 120; // The amount of health that this npc has
 			NPC.HitSound = SoundID.NPCHit1; // The sound the NPC will make when being hit.
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
             NPC.value = 500f; // How many copper coins the NPC will drop when killed.
@@ -80,25 +80,27 @@ namespace Stellamod.NPCs.Morrow
             return 0f;
         }
 
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+			return State == ActionState.Attack;
+        }
+
         public override void AI()
 		{
 			switch (State)
 			{
 				case ActionState.Asleep:
-					NPC.damage = 0;
 					counter++;
 					NPC.aiStyle = 22;
 					NPC.velocity.Y *= 1.01f;
 					FallAsleep();
 					break;
 				case ActionState.Notice:
-					NPC.damage = 0;
 					NPC.velocity *= 0;
 					counter++;
 					Notice();
 					break;
 				case ActionState.Attack:
-					NPC.damage = 90;
 					counter++;
 					Attack();
 					break;
@@ -150,6 +152,7 @@ namespace Stellamod.NPCs.Morrow
 			// TargetClosest sets npc.target to the player.whoAmI of the closest player.
 			// The faceTarget parameter means that npc.direction will automatically be 1 or -1 if the targeted player is to the right or left.
 			// This is also automatically flipped if npc.confused.
+			NPC.velocity *= 0.98f;
 			NPC.TargetClosest(true);			
 
 			// Now we check the make sure the target is still valid and within our specified notice range (500)
@@ -202,11 +205,7 @@ namespace Stellamod.NPCs.Morrow
 						break;
 				}
 				NPC.netUpdate = true;
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Slapin"));
-				ShakeModSystem.Shake = 4;
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
-
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Slapin"), NPC.position);
 			}
 			 
 			if (timer == 21)
@@ -222,26 +221,27 @@ namespace Stellamod.NPCs.Morrow
 			frameCounter = 0;
 			frameTick = 0;
 		}
+		
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			npcLoot.Add(ItemDropRule.Common(ItemID.Bomb, 5, 3, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Fireblossom, 3, 3, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 3, 5));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Morrowshroom>(), 2, 1, 3));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 3, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OvermorrowWood>(), 1, 1, 5));
-		}
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), chanceDenominator: 1, minimumDropped: 2, maximumDropped: 4));
+        }
+
 		public override void HitEffect(NPC.HitInfo hit)
 		{
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Morrowpes"), NPC.position);
+            for (int k = 0; k < 3; k++)
+            {
+                float rot = Main.rand.NextFloat() * MathHelper.ToRadians(35);
 
-			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Morrowpes"));
+                Vector2 vel = rot.ToRotationVector2() * Main.rand.NextFloat(1, 4);
+                vel *= hit.HitDirection;
 
-			for (int i = 0; i < 5; i++)
-			{
-				Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-				ParticleManager.NewParticle(NPC.Center, speed * 4, ParticleManager.NewInstance<FlameParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-			}
-		}
+                float scale = Main.rand.NextFloat(0.5f, 1f);
+                Dust.NewDustPerfect(NPC.Center, DustID.Torch, Velocity: vel, Scale: scale);
+            }
+        }
+
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once

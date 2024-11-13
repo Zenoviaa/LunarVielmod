@@ -13,9 +13,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class Hornet : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class Hornet : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 0;
+        }
+        public override void SetStaticDefaults()
 		{
 			/* Tooltip.SetDefault("Classy!" +
 				"\nTotally has no reference to Hollow Knight" +

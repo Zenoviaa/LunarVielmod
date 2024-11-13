@@ -10,9 +10,18 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class MushroomStave : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class MushroomStave : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 10;
+        }
+
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Gelatal Slaff");
 			// Tooltip.SetDefault("Summons an Jelly boi to fight for you");
@@ -40,13 +49,6 @@ namespace Stellamod.Items.Weapons.Summon
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
 			Item.shoot = ModContent.ProjectileType<MushroomStaveMinionProj>();
 		}
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 12);
-            recipe.Register();
-        }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{

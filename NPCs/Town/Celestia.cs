@@ -1,10 +1,11 @@
 ﻿
 
-using Stellamod.Brooches;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using ReLogic.Content;
+using Stellamod.Items.Accessories;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.Particles;
 using System;
@@ -93,18 +94,11 @@ namespace Stellamod.NPCs.Town
                 Projectile.spriteDirection = player.direction;
             }
 
-            if (!owner.GetModPlayer<BroochPlayer>().hasCelestia)
+            if (!owner.GetModPlayer<CelestiaWeddingPlayer>().hasCelestia)
             {
                 Projectile.Kill();
                 return;
             }
-
-            if (!owner.GetModPlayer<BroochPlayer>().hasCelestia)
-			{
-				Projectile.Kill();
-				return;
-			}
-
 		}
 
 

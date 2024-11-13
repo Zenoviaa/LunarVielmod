@@ -12,10 +12,11 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 {
-    internal class GothSunBlowtorchBlastProj : ModProjectile
+    internal class GothSunBlowtorchBlastProj : ModProjectile,
+        IPixelPrimitiveDrawer
     {
         internal PrimitiveTrail BeamDrawer;
-        public override string Texture => TextureRegistry.EmptyTexture;
+        public override string Texture => TextureRegistry.EmptyBigTexture;
         //Ai
         private ref float Timer => ref Projectile.ai[0];
         private float LifeTime => 60f;
@@ -94,12 +95,24 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             {
                 mult = Projectile.timeLeft / (float)LifeTime / 3f;
             }
-            return Projectile.width * Projectile.scale * 1.3f * mult * MathF.Sin((1f - completionRatio) * 0.5f);
+
+            float w = Projectile.width * Projectile.scale * 1.3f * mult * MathF.Sin((1f - completionRatio) * 0.5f);
+            if (Timer < LifeTime / 2)
+            {
+                w *= 0.13f;
+            }
+            return w;
         }
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Turquoise, Color.RoyalBlue, completionRatio);
+            Color c = Color.Lerp(Color.Turquoise, Color.RoyalBlue, completionRatio);
+            if (Timer < LifeTime / 2)
+            {
+                c = Color.White;
+                c *= 0.93f;
+            }
+            return c;
         }
 
 
@@ -122,33 +135,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            if(Timer < LifeTime / 2f)
-            {
-                float progress = Timer / (LifeTime / 2f);
-                Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Extra_47").Value;
-                Color lineDrawColor = new Color(
-                    Color.White.R,
-                    Color.White.G,
-                    Color.White.B, 0) * (1f - Projectile.alpha / 50f);
-                lineDrawColor *= progress;
 
-                Vector2 lineDrawOrigin = lineTexture.Size();
-                float lineDrawScale = 1f;
-                float lineDrawRotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-                Main.spriteBatch.Draw(lineTexture, Projectile.Center - Main.screenPosition, null,
-                    lineDrawColor,
-                    lineDrawRotation,
-                    lineDrawOrigin,
-                    lineDrawScale, SpriteEffects.None, 0);
-
-            }
-
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-            BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
-            BeamDrawer.SpecialShader.UseColor(Color.Lerp(Color.White, Color.MediumTurquoise, 0.3f));
-            BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.BeamTrail);
-            BeamDrawer.DrawPixelated(LinePos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
             return false;
         }
 
@@ -156,6 +143,41 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         {
             base.DrawBehind(index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
             behindNPCs.Add(index);
+        }
+
+        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
+        {
+            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
+            if (Timer < LifeTime / 2f)
+            {
+                float progress = Timer / (LifeTime / 2f);
+                Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Extra_49").Value;
+                Color lineDrawColor = new Color(
+                    Color.White.R,
+                    Color.White.G,
+                    Color.White.B, 0) * (1f - Projectile.alpha / 50f);
+                lineDrawColor *= progress;
+
+                BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
+                BeamDrawer.SpecialShader.UseColor(lineDrawColor);
+                BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.BeamTrail);
+
+                List<Vector2> points = new();
+                for (int i = 0; i <= 8; i++)
+                {
+                    points.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero)
+                        * BlowtorchDistance, i / 8f));
+                }
+                var linePos = points.ToArray();
+                BeamDrawer.DrawPixelated(linePos, -Main.screenPosition, 32);
+            }
+
+
+            BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
+            BeamDrawer.SpecialShader.UseColor(Color.Lerp(Color.White, Color.MediumTurquoise, 0.3f));
+            BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.BeamTrail);
+            BeamDrawer.DrawPixelated(LinePos, -Main.screenPosition, 32);
+            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

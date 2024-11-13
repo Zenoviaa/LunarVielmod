@@ -10,9 +10,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class AuroranSeeker : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class AuroranSeeker : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 10;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Alcadiz String n Charm");
 			/* Tooltip.SetDefault("Your summons will target focused enemies" +
@@ -65,17 +73,6 @@ namespace Stellamod.Items.Weapons.Summon
 		{
 			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position
 			position = Main.MouseWorld;
-		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-			recipe.AddIngredient(ItemID.Chain, 10);
-			recipe.AddIngredient(ItemID.Leather, 10);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 15);
-			recipe.AddIngredient(ItemID.FallenStar, 10);
-			recipe.Register();
 		}
 	}
 }

@@ -12,7 +12,14 @@ namespace Stellamod.Items.Weapons.Thrown
 {
     public class ComicalTrident : ClassSwapItem
     {
+
         public override DamageClass AlternateClass => DamageClass.Melee;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 50;
+            Item.mana = 0;
+        }
 
         public override void SetDefaults()
         {

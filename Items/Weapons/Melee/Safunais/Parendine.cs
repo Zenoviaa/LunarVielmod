@@ -11,9 +11,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Safunais
 {
-    public class Parendine : ModItem
-	{
-		public int combo;
+    public class Parendine : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 8;
+            Item.mana = 0;
+        }
+        public int combo;
         public int combo2;
         public override void SetStaticDefaults()
 		{
@@ -60,7 +68,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			Item.channel = true;
 			Item.autoReuse = true;
 			Item.DamageType = DamageClass.Melee;
-			Item.damage = 26;
+			Item.damage = 16;
 			Item.rare = ItemRarityID.Blue;
 		}
 

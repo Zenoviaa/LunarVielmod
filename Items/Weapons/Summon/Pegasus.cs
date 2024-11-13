@@ -21,10 +21,10 @@ namespace Stellamod.Items.Weapons.Summon
             ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
         }
 
-        public override DamageClass AlternateClass => DamageClass.Summon;
+        public override DamageClass AlternateClass => DamageClass.Generic;
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 136;
+            Item.damage = 50;
         }
 
         public override void SetDefaults()

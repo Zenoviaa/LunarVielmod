@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
+using Stellamod.Effects;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -9,26 +9,26 @@ namespace Stellamod.Items.Accessories
 {
     public class SpiritPendent : ModItem
     {
+        private float _timer;
         public override void SetDefaults()
         {
             Item.value = Item.sellPrice(gold: 2);
             Item.Size = new Vector2(20);
             Item.accessory = true;
-            Item.rare = ItemRarityID.Blue;
-        }
-        public override void UpdateAccessory(Player player, bool hideVisual)
-        {
-            player.GetModPlayer<MyPlayer>().SpiritPendent = true;
-            Lighting.AddLight(player.position, 2.0f, 2.0f, 4.75f);
+            Item.rare = ItemRarityID.Green;
         }
 
-        public override void AddRecipes()
+        public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 1);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
+            _timer++;
+            SpecialEffectsPlayer specialEffectsPlayer = player.GetModPlayer<SpecialEffectsPlayer>();
+            specialEffectsPlayer.hasSpiritPendant = true;
+            if (_timer % 32 == 0 && !hideVisual)
+            {
+                Dust.NewDust(player.position, player.width, player.height, DustID.FireworkFountain_Blue, Scale: 0.5f);
+            }
+
+            Lighting.AddLight(player.position, Color.LightSkyBlue.ToVector3() * 2f);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.Mage
             //Do if(IsSwapped) if you want to check for the alternate class
             //Stats to have when in the other class
             Item.mana = 0;
-            Item.damage = 42;
+            Item.damage = 20;
         }
 
         public override void SetStaticDefaults()

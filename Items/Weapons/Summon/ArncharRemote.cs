@@ -13,9 +13,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class ArncharRemote : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class ArncharRemote : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 7;
+            Item.mana = 10;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Arnchar Remote");
 			// Tooltip.SetDefault("Summons an Arnchar Drone to fight for you");

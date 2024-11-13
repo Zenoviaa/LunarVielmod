@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Safunai.Blackwhip;
 using System.Collections.Generic;
 using System.IO;
@@ -11,9 +12,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Safunais
 {
-    public class Blackwhip : ModItem
-	{
-		public int combo;
+    public class Blackwhip : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 80;
+            Item.mana = 0;
+        }
+        public int combo;
 
 		public override void SetStaticDefaults()
 		{

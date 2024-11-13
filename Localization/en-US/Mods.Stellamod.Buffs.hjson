@@ -792,3 +792,8 @@ HolyAnxiety: {
 	DisplayName: Holy Anxiety
 	Description: Mods.Stellamod.Buffs.HolyAnxiety.Description
 }
+
+WillOWispMinionBuff: {
+	DisplayName: Will of the Wisps!
+	Description: You are being followed by little flames...
+}

@@ -34,6 +34,7 @@ using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
 using Stellamod.Tiles.Illuria;
+using Stellamod.WorldG.StructureManager;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -51,15 +52,28 @@ namespace Stellamod.WorldG
 
     public class StellaWorld : ModSystem
 	{
-
 		public static bool SoulStorm;
-		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
+		private void DisableGenTask(List<GenPass> tasks, string passName)
 		{
+            tasks.Find(x => x.Name.Equals(passName)).Disable();
+        }
 
-			
-
+        public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
+		{
 			int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Lakes"));
-			if (MorrowGen != -1)
+
+            //Disable Some Passes
+            DisableGenTask(tasks, "Terrain");
+            DisableGenTask(tasks, "Tunnels");
+            DisableGenTask(tasks, "Mount Caves");
+            DisableGenTask(tasks, "Surface Caves");
+            DisableGenTask(tasks, "Mountain Caves");
+          //  DisableGenTask(tasks, "Surface Chests");
+            DisableGenTask(tasks, "Wavy Caves");
+            DisableGenTask(tasks, "Living Trees");
+            //Replace Terrain Pass
+            tasks[tasks.FindIndex(x => x.Name.Equals("Terrain"))] = new VanillaTerrainPass();
+            if (MorrowGen != -1)
 			{
 				tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Abysm", WorldGenAbysm));
 				tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Virulent", WorldGenVirulent));	
@@ -75,8 +89,8 @@ namespace Stellamod.WorldG
 				tasks.Insert(MorrowGen + 12, new PassLegacy("World Gen Cinderspark", WorldGenArncharOre2));
 				tasks.Insert(MorrowGen + 13, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
 				tasks.Insert(MorrowGen + 14, new PassLegacy("World Gen Veiled Spot", WorldGenVeilSpot));
-
-			}
+                tasks.Insert(MorrowGen + 15, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
+            }
 
 			int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
 			if (CathedralGen3 != -1)
@@ -123,21 +137,84 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 30, new PassLegacy("World Gen CozmireTower", WorldGenTL));
                 tasks.Insert(CathedralGen2 + 31, new PassLegacy("World Gen Bridget", WorldGenBridget));
 				tasks.Insert(CathedralGen2 + 32, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
-                tasks.Insert(CathedralGen2 + 33, new PassLegacy("World Gen Dread Monoliths", WorldGenDreadMonoliths));
-                tasks.Insert(CathedralGen2 + 34, new PassLegacy("World Gen Graving", WorldGenGraving));
-                tasks.Insert(CathedralGen2 + 35, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
+                tasks.Insert(CathedralGen2 + 33, new PassLegacy("World Gen Graving", WorldGenGraving));
+                tasks.Insert(CathedralGen2 + 34, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
+                tasks.Insert(CathedralGen2 + 35, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
             }
-
-
-			
-
-
-
-
 		}
 
 
-		private void WorldGenFabledTrees(GenerationProgress progress, GameConfiguration configuration)
+        private void WorldGenBloodCathedral(GenerationProgress progress, GameConfiguration configuration)
+        {
+            StructureMap structures = GenVars.structures;
+            Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Boss/SanguimiBoss");
+            progress.Message = "Building a Bloody Cathedral";
+
+            int[] tileBlend = new int[]
+			{
+                TileID.RubyGemspark
+			};
+
+            for (int k = 0; k < 1; k++)
+            {
+                bool placed = false;
+                int attempts = 0;
+                while (!placed && attempts++ < 1000000)
+                {
+					// Select a place in the first 6th of the world, avoiding the oceans
+					int range = Main.maxTilesX / 8;
+					int offset = WorldGen.genRand.Next(-range, range);
+					int smx = Main.maxTilesX / 2 + offset;
+
+                    //Start at 200 tiles above the surface instead of 0, to exclude floating islands
+                    int smy = ((int)(Main.worldSurface - 200));
+
+                    // We go down until we hit a solid tile or go under the world's surface
+                    while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
+                    {
+                        smy++;
+                    }
+
+                    // If we went under the world's surface, try again
+                    if (smy > Main.worldSurface)
+                    {
+                        continue;
+                    }
+
+                    Tile tile = Main.tile[smx, smy];
+                    if (!(tile.TileType == TileID.Sand
+                      || tile.TileType == TileID.Dirt
+                      || tile.TileType == ModContent.TileType<VeriplantGrass>()
+                      || tile.TileType == TileID.Grass
+                      || tile.TileType == TileID.Stone
+                      || tile.TileType == TileID.Sandstone))
+                    {
+                        continue;
+                    }
+
+                    Tile tileAbove = Main.tile[smx, smy - 1];
+                    if (tileAbove.LiquidAmount > 0)
+						continue;
+
+                    Point Loc = new Point(smx, smy + 10);
+                    string path = "Struct/Boss/SanguimiBoss";
+                    if (!Structurizer.TryPlaceAndProtectStructure(Loc, path))
+                        continue;
+                    int[] chests = Structurizer.ReadStruct(Loc, path, tileBlend);
+                    placed = true;
+                }
+            }
+        }
+
+        private void WorldGenDungeonLocation(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Moving the dungeon, smh";
+
+			//GenVars.dungeonLocation is the x value of the dungeon
+			GenVars.dungeonLocation = Main.maxTilesX - 1000;
+        }
+
+        private void WorldGenFabledTrees(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "The Veiled people planting trees!";
 			for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.4f) * 6E-02); k++)
@@ -468,62 +545,63 @@ namespace Stellamod.WorldG
 					continue;
 				}
 				Tile tile = Main.tile[smx, smy];
-				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if (!(tile.TileType == TileID.Sand
-					|| tile.TileType == TileID.Dirt
-					|| tile.TileType == TileID.Grass
-					|| tile.TileType == TileID.Stone
-					|| tile.TileType == TileID.Sandstone))
+                // If the type of the tile we are placing the tower on doesn't match what we want, try again
+                // If the type of the tile we are placing the tower on doesn't match what we want, try again
+                if (!(tile.TileType == TileID.Dirt
+                    || tile.TileType == TileID.Stone
+                    || tile.TileType == TileID.Grass))
+                {
+                    continue;
+                }
+
+
+
+                // place the Rogue
+                //	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
+                //Main.npc[num].homeTileX = -1;
+                //	Main.npc[num].homeTileY = -1;
+                //	Main.npc[num].direction = 1;
+                //	Main.npc[num].homeless = true;
+
+
+
+                for (int da = 0; da < 1; da++)
 				{
-					continue;
-				}
-
-
-				// place the Rogue
-				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-				//Main.npc[num].homeTileX = -1;
-				//	Main.npc[num].homeTileY = -1;
-				//	Main.npc[num].direction = 1;
-				//	Main.npc[num].homeless = true;
-
-
-
-				for (int da = 0; da < 1; da++)
-				{
-					Point Loc = new Point(smx + 10, smy + 340 );
+					Point Loc = new Point(smx + 10, smy + 53);
 					NPCs.Town.AlcadSpawnSystem.FableTile = Loc;
-
-					//This code just places
-					int width = 253;
+                    Structurizer.ReadStruct(Loc, "Struct/Huntria/FableBiomeFinal", tileBlend);
+                    Structurizer.ProtectStructure(Loc, "Struct/Huntria/FableBiomeFinal");
+                    //This code just places
+                    int width = 253;
 					int height = 50;
-                    ShapeData shapeData = new ShapeData();
-					Point dirtLoc = Loc;
-					dirtLoc.Y -= 338;
-                    WorldUtils.Gen(dirtLoc, new Shapes.Rectangle(width, height), new Actions.Blank().Output(shapeData));
-                    WorldUtils.Gen(dirtLoc, new ModShapes.All(shapeData), new Actions.SetTile(TileID.Dirt, true));
-                    WorldUtils.Gen(dirtLoc, new ModShapes.All(shapeData), new Actions.Smooth());
+                    //ShapeData shapeData = new ShapeData();
+					//Point dirtLoc = Loc;
+					//dirtLoc.Y -= 338;
+                    //WorldUtils.Gen(dirtLoc, new Shapes.Rectangle(width, height), new Actions.Blank().Output(shapeData));
+                    //WorldUtils.Gen(dirtLoc, new ModShapes.All(shapeData), new Actions.SetTile(TileID.Dirt, true));
+                    //WorldUtils.Gen(dirtLoc, new ModShapes.All(shapeData), new Actions.Smooth());
 
-                    StructureLoader.ReadStruct(Loc, "Struct/Morrow/FableBiomeNew", tileBlend);
+                  
 
-					Point Loc2 = new Point(smx + 10, smy + 380);
-					WorldGen.digTunnel(Loc2.X - 10, Loc2.Y + 10, 1, 0, 1, 10, false);
+					//Point Loc2 = new Point(smx + 10, smy + 380);
+					//WorldGen.digTunnel(Loc2.X - 10, Loc2.Y + 10, 1, 0, 1, 10, false);
 					
-					Point Loc22 = new Point(smx +10, smy - 33);
+					//Point Loc22 = new Point(smx +10, smy - 33);
 		//			WorldUtils.Gen(Loc22, new Shapes.Rectangle(240, -40), new Actions.ClearTile(true));
-					StructureLoader.ReadStruct(Loc22, "Struct/Morrow/Morrowtop");
+				//	StructureLoader.ReadStruct(Loc22, "Struct/Morrow/Morrowtop");
 					pointVeri = new Point(smx + 10, smy + 500);
-					Point Loc4 = new Point(smx + 233, smy + 45);
+					//Point Loc4 = new Point(smx + 233, smy + 45);
 				//	WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
 				//	WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
 
-					Point Loc5 = new Point(smx + 10, smy + 45);
+					//Point Loc5 = new Point(smx + 10, smy + 45);
 				//	WorldUtils.Gen(Loc5, new Shapes.Rectangle(220, 50), new Actions.SetTile(TileID.Dirt));
 
 
 
-					Point Loc3 = new Point(smx + 455, smy + 30);
+					//Point Loc3 = new Point(smx + 455, smy + 30);
 				//	WorldUtils.Gen(Loc3, new Shapes.Mound(40, 50), new Actions.SetTile(TileID.Dirt));
-					Point Loc6 = new Point(smx + 455, smy + 40);
+					//Point Loc6 = new Point(smx + 455, smy + 40);
 				//	WorldUtils.Gen(Loc6, new Shapes.Circle(40), new Actions.SetTile(TileID.Dirt));
 					//	Point resultPoint;
 					//	bool searchSuccessful = WorldUtils.Find(Loc, Searches.Chain(new Searches.Right(200), new GenCondition[]
@@ -535,7 +613,7 @@ namespace Stellamod.WorldG
 					//		{
 					//			WorldGen.TileRunner(resultPoint.X, resultPoint.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(150, 150), TileID.Dirt);
 					//		}
-					GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
+					//GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
 					//WorldGen.TileRunner(Loc2.X - 10, Loc2.Y - 60, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(120, 120), TileID.Grass);
 					//WorldGen.TileRunner(Loc3.X - 20, Loc2.Y, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
 					//WorldGen.TileRunner(Loc3.X - 20, Loc3.Y + 20, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
@@ -1020,11 +1098,16 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(smx, smy + 18);
+					Point Loc = new Point(smx, smy + 15);
                     Point Loc22 = new Point(smx, smy + 58);
-                    string path = "Struct/Overworld/XixVillage";
-                    int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
-					StructureLoader.ProtectStructure(Loc, path);
+                    string path = "Struct/Overworld/WitchTown";
+					var tileBlend = new int[]
+					{
+						TileID.RubyGemspark
+					};
+
+                    int[] ChestIndexs = Structurizer.ReadStruct(Loc, path, tileBlend);
+                    Structurizer.ProtectStructure(Loc, path);
                     NPCs.Town.AlcadSpawnSystem.LittleWitchTownTile = Loc;
 					foreach (int chestIndex in ChestIndexs)
 					{
@@ -1101,14 +1184,6 @@ namespace Stellamod.WorldG
 					}
 				}
 				
-				for (int da = 0; da < 1; da++)
-				{
-					Point Loc2 = new Point(smx, smy + 19);
-					WorldUtils.Gen(Loc2, new Shapes.Rectangle(125, 20), new Actions.SetTile(TileID.Dirt));
-					
-
-					
-				}
 				placed = true;
 
 				
@@ -1675,17 +1750,6 @@ namespace Stellamod.WorldG
 							var itemsToAdd = new List<(int type, int stack)>();
 
 							// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-							int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-								Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5)
-
-
-							// Choose no item with a high weight of 7.
-							);
-							if (specialItem != ItemID.None)
-							{
-								itemsToAdd.Add((specialItem, 1));
-							}
 							// Using a switch statement and a random choice to add sets of items.
 							switch (Main.rand.Next(9))
 							{
@@ -1852,17 +1916,6 @@ namespace Stellamod.WorldG
 							var itemsToAdd = new List<(int type, int stack)>();
 
 							// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-							int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-								Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5)
-
-
-							// Choose no item with a high weight of 7.
-							);
-							if (specialItem != ItemID.None)
-							{
-								itemsToAdd.Add((specialItem, 1));
-							}
 							// Using a switch statement and a random choice to add sets of items.
 							switch (Main.rand.Next(11))
 							{
@@ -2534,8 +2587,7 @@ namespace Stellamod.WorldG
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 							Tuple.Create((int)ItemID.Acorn, 0.1),
 							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.1),
-							Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
-								Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 0.8)// Choose no item with a high weight of 7.
+							Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 0.8)// Choose no item with a high weight of 7.
 						);
 
 						if (specialItem != ItemID.None)
@@ -2551,7 +2603,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 								
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
 								itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
 								itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
@@ -2561,7 +2613,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								
 								itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
 								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
@@ -2895,7 +2947,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
 								itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(100, 1500)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
@@ -2926,7 +2978,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
 								itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(100, 1500)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
@@ -3169,18 +3221,6 @@ namespace Stellamod.WorldG
 						var itemsToAdd = new List<(int type, int stack)>();
 
 						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-							Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
-							Tuple.Create(ModContent.ItemType<ConvulgingMater>(), 0.1),
-							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
-
-						// Choose no item with a high weight of 7.
-						);
-						if (specialItem != ItemID.None)
-						{
-							itemsToAdd.Add((specialItem, 1));
-						}
 						// Using a switch statement and a random choice to add sets of items.
 						switch (Main.rand.Next(7))
 						{
@@ -3200,7 +3240,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
@@ -3228,7 +3268,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
@@ -3385,7 +3425,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 30)));
 								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
@@ -3413,7 +3453,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.JungleSpores, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 								break;
@@ -3450,7 +3490,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 30)));
 								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
@@ -3537,7 +3577,7 @@ namespace Stellamod.WorldG
 									itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 									itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 									itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-									itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+									
 									itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 30)));
 									itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 									itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
@@ -3565,7 +3605,7 @@ namespace Stellamod.WorldG
 									itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 									itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 									itemsToAdd.Add((ItemID.JungleSpores, Main.rand.Next(3, 7)));
-									itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+									
 									itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 									itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 									break;
@@ -3602,7 +3642,7 @@ namespace Stellamod.WorldG
 									itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 									itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 									itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-									itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+									
 									itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 30)));
 									itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 									itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
@@ -4303,7 +4343,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
 								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
@@ -4474,7 +4514,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
 								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
@@ -4697,6 +4737,8 @@ namespace Stellamod.WorldG
 			}
 
 
+			//NO MOSSY STONES
+			/*
 			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
 			{
 
@@ -4713,7 +4755,7 @@ namespace Stellamod.WorldG
 				}
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				WorldGen.TileRunner(xz, yz, WorldGen.genRand.Next(3, 50), WorldGen.genRand.Next(2, 100), ModContent.TileType<MossyStone>());
-			}
+			}*/
 
 			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
 			{
@@ -4872,7 +4914,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ModContent.ItemType<UnknownCircuitry>(), Main.rand.Next(2, 3)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 										itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ItemID.CopperOre, Main.rand.Next(1, 100)));
 										itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
 										break;
@@ -4935,7 +4977,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ModContent.ItemType<StumpBuster>(), Main.rand.Next(1, 1)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 6)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
 										itemsToAdd.Add((ItemID.MiningPotion, Main.rand.Next(1, 7)));
 										break;
@@ -4944,7 +4986,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner1>(), Main.rand.Next(1, 1)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 6)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
 										itemsToAdd.Add((ItemID.MiningPotion, Main.rand.Next(1, 7)));
 										break;
@@ -5021,7 +5063,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 										itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ItemID.CopperOre, Main.rand.Next(1, 100)));
 										itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
 										break;
@@ -5085,7 +5127,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ItemID.MiningShirt, Main.rand.Next(1, 1)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 6)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
 										itemsToAdd.Add((ItemID.MiningPotion, Main.rand.Next(1, 7)));
 										itemsToAdd.Add((ModContent.ItemType<UnknownCircuitry>(), Main.rand.Next(2, 3)));
@@ -5164,7 +5206,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 										itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ItemID.CopperOre, Main.rand.Next(1, 100)));
 										itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
 										break;
@@ -5226,7 +5268,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ModContent.ItemType<UnknownCircuitry>(), Main.rand.Next(1, 10)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 6)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
 										itemsToAdd.Add((ItemID.MiningPotion, Main.rand.Next(1, 7)));
 										break;
@@ -5311,7 +5353,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ModContent.ItemType<UnknownCircuitry>(), Main.rand.Next(1, 3)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 										itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ItemID.CopperOre, Main.rand.Next(1, 100)));
 										itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
 										break;
@@ -5376,7 +5418,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ModContent.ItemType<StumpBuster>(), Main.rand.Next(1, 1)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 6)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
 										itemsToAdd.Add((ItemID.MiningPotion, Main.rand.Next(1, 7)));
 										break;
@@ -5459,7 +5501,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 										itemsToAdd.Add((ModContent.ItemType<UnknownCircuitry>(), Main.rand.Next(2, 3)));
 										itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ItemID.CopperOre, Main.rand.Next(1, 100)));
 										itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
 										break;
@@ -5521,7 +5563,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 6)));
 										itemsToAdd.Add((ModContent.ItemType<UnknownCircuitry>(), Main.rand.Next(1, 3)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
 										itemsToAdd.Add((ItemID.MiningPotion, Main.rand.Next(1, 7)));
 										break;
@@ -5605,7 +5647,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 										itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ItemID.CopperOre, Main.rand.Next(1, 100)));
 										itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
 										break;
@@ -5664,7 +5706,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ItemID.MiningShirt, Main.rand.Next(1, 1)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 6)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
 										itemsToAdd.Add((ItemID.MiningPotion, Main.rand.Next(1, 7)));
 										break;
@@ -5787,7 +5829,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 										itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 										itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
 										break;
@@ -5810,7 +5852,7 @@ namespace Stellamod.WorldG
 									case 4:
 										itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 										itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 										break;
@@ -5845,7 +5887,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ItemID.ObsidianSkull, Main.rand.Next(1, 1)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 										itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
 										break;
@@ -5926,7 +5968,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 										itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 										itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
 										break;
@@ -5949,7 +5991,7 @@ namespace Stellamod.WorldG
 									case 4:
 										itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 										itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 										break;
@@ -5984,7 +6026,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ItemID.ObsidianSkull, Main.rand.Next(1, 1)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										
 										itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 										itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
 										break;
@@ -6060,7 +6102,7 @@ namespace Stellamod.WorldG
 											itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 											itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 											itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-											itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+											
 											itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 											itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
 											break;
@@ -6083,7 +6125,7 @@ namespace Stellamod.WorldG
 										case 4:
 											itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
 											itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-											itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+											
 											itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 											itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 											break;
@@ -6118,7 +6160,7 @@ namespace Stellamod.WorldG
 											itemsToAdd.Add((ItemID.ObsidianSkull, Main.rand.Next(1, 1)));
 											itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 											itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-											itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+											
 											itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 											itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
 											break;
@@ -6203,7 +6245,6 @@ namespace Stellamod.WorldG
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 								Tuple.Create((int)ItemID.Acorn, 0.1),
 								Tuple.Create((int)ItemID.ManaCrystal, 0.1),
-							Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
 								Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 0.7)
 
 						);
@@ -6220,7 +6261,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 								
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
 
 								itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
@@ -6232,7 +6273,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								
 								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
@@ -6308,7 +6349,6 @@ namespace Stellamod.WorldG
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 							Tuple.Create((int)ItemID.Acorn, 0.1),
 								Tuple.Create((int)ItemID.ManaCrystal, 0.1),
-							Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
 								Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 0.7)
 
 						);
@@ -6326,7 +6366,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 								
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
 
 								itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
@@ -6338,7 +6378,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								
 								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
@@ -6440,7 +6480,6 @@ namespace Stellamod.WorldG
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 							Tuple.Create((int)ItemID.Acorn, 0.1),
 							Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
-							Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
 								Tuple.Create(ModContent.ItemType<MorrowValswa>(), 0.6),
 								Tuple.Create(ModContent.ItemType<MorrowSword>(), 0.9),
 								Tuple.Create(ModContent.ItemType<MorrowRapier>(), 0.7),
@@ -6461,7 +6500,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 								
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
 
 								itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
@@ -6472,7 +6511,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								
 								itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
 								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
@@ -6535,7 +6574,6 @@ namespace Stellamod.WorldG
 					int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 						Tuple.Create((int)ItemID.Acorn, 0.1),
 						Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
-						Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
 							Tuple.Create(ModContent.ItemType<MorrowValswa>(), 0.6),
 							Tuple.Create(ModContent.ItemType<MorrowSword>(), 0.9),
 							Tuple.Create(ModContent.ItemType<MorrowRapier>(), 0.7),
@@ -6555,7 +6593,7 @@ namespace Stellamod.WorldG
 							itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 							itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 							
-							itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+							
 							itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
 
 							itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
@@ -6566,7 +6604,7 @@ namespace Stellamod.WorldG
 							itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 							itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 							itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-							itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+							
 							
 							itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
 							itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
@@ -6661,7 +6699,6 @@ namespace Stellamod.WorldG
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 							Tuple.Create((int)ItemID.Acorn, 0.1),
 							Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
-							Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
 								Tuple.Create(ModContent.ItemType<MorrowValswa>(), 0.6),
 								Tuple.Create(ModContent.ItemType<MorrowSword>(), 0.9),
 								Tuple.Create(ModContent.ItemType<MorrowRapier>(), 0.7),
@@ -6678,7 +6715,7 @@ namespace Stellamod.WorldG
 							case 0:
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 								
 								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
@@ -6690,7 +6727,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								
 								itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
 								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
@@ -6772,7 +6809,6 @@ namespace Stellamod.WorldG
 							int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 								Tuple.Create((int)ItemID.Acorn, 0.1),
 								Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
-								Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
 									Tuple.Create(ModContent.ItemType<MorrowValswa>(), 0.6),
 									Tuple.Create(ModContent.ItemType<MorrowSword>(), 0.9),
 									Tuple.Create(ModContent.ItemType<MorrowRapier>(), 0.7),
@@ -6789,7 +6825,7 @@ namespace Stellamod.WorldG
 								case 0:
 									itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 									itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-									itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+									
 									itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 									
 									itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
@@ -6801,7 +6837,7 @@ namespace Stellamod.WorldG
 									itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 									itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 									itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-									itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+									
 									
 									itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
 									itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
@@ -6881,7 +6917,6 @@ namespace Stellamod.WorldG
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 							Tuple.Create((int)ItemID.Acorn, 0.1),
 							Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
-							Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
 								Tuple.Create(ModContent.ItemType<MorrowValswa>(), 0.6),
 								Tuple.Create(ModContent.ItemType<MorrowSword>(), 0.9),
 								Tuple.Create(ModContent.ItemType<MorrowRapier>(), 0.7),
@@ -6898,7 +6933,7 @@ namespace Stellamod.WorldG
 							case 0:
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 								
 								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
@@ -6910,7 +6945,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								
 								itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
 								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
@@ -6988,7 +7023,6 @@ namespace Stellamod.WorldG
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 							Tuple.Create((int)ItemID.Acorn, 0.1),
 							Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
-							Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
 								Tuple.Create(ModContent.ItemType<MorrowValswa>(), 0.6),
 								Tuple.Create(ModContent.ItemType<MorrowSword>(), 0.9),
 								Tuple.Create(ModContent.ItemType<MorrowRapier>(), 0.7),
@@ -7005,7 +7039,7 @@ namespace Stellamod.WorldG
 							case 0:
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 								
 								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
@@ -7017,7 +7051,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								
 								itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
 								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
@@ -7095,7 +7129,6 @@ namespace Stellamod.WorldG
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 							Tuple.Create((int)ItemID.Acorn, 0.1),
 							Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
-							Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
 								Tuple.Create(ModContent.ItemType<MorrowValswa>(), 0.6),
 								Tuple.Create(ModContent.ItemType<MorrowSword>(), 0.9),
 								Tuple.Create(ModContent.ItemType<MorrowRapier>(), 0.7),
@@ -7112,7 +7145,7 @@ namespace Stellamod.WorldG
 							case 0:
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 								
 								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
@@ -7124,7 +7157,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								
 								itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
 								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
@@ -7202,7 +7235,6 @@ namespace Stellamod.WorldG
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 							Tuple.Create((int)ItemID.Acorn, 0.1),
 							Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
-							Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
 								Tuple.Create(ModContent.ItemType<MorrowValswa>(), 0.6),
 								Tuple.Create(ModContent.ItemType<MorrowSword>(), 0.9),
 								Tuple.Create(ModContent.ItemType<MorrowRapier>(), 0.7),
@@ -7219,7 +7251,7 @@ namespace Stellamod.WorldG
 							case 0:
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 								
 								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
@@ -7231,7 +7263,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								
 								
 								itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
 								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
@@ -7548,7 +7580,7 @@ namespace Stellamod.WorldG
 											itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 											itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 											itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-											itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+											
 											itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
 											itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 											itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
@@ -8672,7 +8704,6 @@ namespace Stellamod.WorldG
 					int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 						Tuple.Create((int)ItemID.Acorn, 0.1),
 						Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
-						Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
 							Tuple.Create(ModContent.ItemType<MorrowValswa>(), 0.6),
 							Tuple.Create(ModContent.ItemType<MorrowSword>(), 0.9),
 							Tuple.Create(ModContent.ItemType<MorrowRapier>(), 0.7),
@@ -8691,7 +8722,7 @@ namespace Stellamod.WorldG
 							itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 							itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 							itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
-							itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+							
 							itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
 
 							itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
@@ -8702,7 +8733,7 @@ namespace Stellamod.WorldG
 							itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 							itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 							itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-							itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+							
 							itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
 							itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
 							itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
@@ -8775,7 +8806,6 @@ namespace Stellamod.WorldG
 					int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 						Tuple.Create((int)ItemID.Acorn, 0.1),
 						Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
-						Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
 							Tuple.Create(ModContent.ItemType<MorrowValswa>(), 0.6),
 							Tuple.Create(ModContent.ItemType<MorrowSword>(), 0.9),
 							Tuple.Create(ModContent.ItemType<MorrowRapier>(), 0.7),
@@ -8792,7 +8822,7 @@ namespace Stellamod.WorldG
 						case 0:
 							itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 							itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-							itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+							
 							itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 							itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
 							itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
@@ -8803,7 +8833,7 @@ namespace Stellamod.WorldG
 							itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 							itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 							itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-							itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+							
 							itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
 							itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
 							itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));

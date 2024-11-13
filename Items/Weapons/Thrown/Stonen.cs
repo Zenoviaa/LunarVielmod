@@ -9,8 +9,15 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Thrown
 {
     internal class Stonen : ClassSwapItem
-	{
-		public override DamageClass AlternateClass => DamageClass.Melee;
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Melee;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 49;
+            Item.mana = 0;
+        }
 
         public override void SetDefaults()
 		{

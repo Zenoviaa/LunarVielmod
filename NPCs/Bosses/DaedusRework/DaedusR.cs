@@ -491,8 +491,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 ItemDropRule.Common(ModContent.ItemType<BearBroochA>(), chanceDenominator: numResults),
                 ItemDropRule.Common(ModContent.ItemType<VixedBroochA>(), chanceDenominator: numResults),
                 ItemDropRule.Common(ModContent.ItemType<HeatGlider>(), chanceDenominator: numResults),
-                 ItemDropRule.Common(ModContent.ItemType<DaedCard>(), chanceDenominator: numResults),
-                ItemDropRule.Common(ModContent.ItemType<DaedussSunSheid>(), chanceDenominator: numResults)));
+                 ItemDropRule.Common(ModContent.ItemType<DaedCard>(), chanceDenominator: numResults)));
 
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));

@@ -17,9 +17,17 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	public class DripplerStaff : ModItem
-	{
-		public override void SetStaticDefaults()
+	public class DripplerStaff : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 7;
+            Item.mana = 10;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Drippler Staff");
 			// Tooltip.SetDefault("Summons an Drippler to fight with you");

@@ -272,12 +272,13 @@ namespace Stellamod
             }
             
             
+            
             On_UIWorldListItem.DrawSelf += (orig, self, spriteBatch) =>
             {
                 orig(self, spriteBatch);
                 DrawWorldSelectItemOverlay(self, spriteBatch);
             };
-
+            
 
             Instance = this;
         }

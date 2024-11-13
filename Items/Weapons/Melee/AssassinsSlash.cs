@@ -10,8 +10,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class AssassinsSlash : ModItem
+    public class AssassinsSlash : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 7;
+            Item.mana = 6;
+        }
         public int Hits;
         public override void SetStaticDefaults()
         {

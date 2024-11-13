@@ -20,7 +20,6 @@ namespace Stellamod.Tiles.Ambient
 			TileObjectData.addTile(Type);
             LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(200, 200, 200), name);
-			RegisterItemDrop(ModContent.ItemType<Stick>());
 		}
 	}
 }

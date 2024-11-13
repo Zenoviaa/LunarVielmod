@@ -54,15 +54,6 @@ namespace Stellamod.Items.Weapons.Melee
                 WinterboundArrow = 0;
                 type = ModContent.ProjectileType<FrostWaveBig>();
             }
-
-
-        }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 8);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
         }
     }
 }

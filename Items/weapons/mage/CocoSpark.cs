@@ -18,7 +18,7 @@ namespace Stellamod.Items.Weapons.Mage
 			//Do if(IsSwapped) if you want to check for the alternate class
 			//Stats to have when in the other class
 			Item.mana = 0;
-			Item.damage = 48;
+			Item.damage = 8;
 		}
 		public override void SetStaticDefaults()
 		{
@@ -45,15 +45,6 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.shootSpeed = 4f;
 			Item.autoReuse = true;
 			Item.crit = 22;
-		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.PalmWood, 25);
-			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 8);
-			recipe.AddIngredient(ModContent.ItemType<VerianOre>(), 8);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
 		}
 	}
 }

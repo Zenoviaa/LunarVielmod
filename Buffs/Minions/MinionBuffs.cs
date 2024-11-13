@@ -30,7 +30,7 @@ namespace Stellamod.Buffs.Minions
             }
         }
     }
-
+    internal class WillOWispMinionBuff : MinionBuff<WillOWispMinionProj> { }
     internal class ArncharMinionBuff : MinionBuff<ArncharMinionProj> { }
 
     internal class BucketScrapperMinionBuff : MinionBuff<BucketScrapperMinionProj> { }
@@ -120,7 +120,7 @@ namespace Stellamod.Buffs.Minions
 
     internal class TheBurningRodMinionBuff : MinionBuff<TheBurningRodMinionProj> { }
 
-    internal class ToxicHornetMinionBuff : MinionBuff<ToxicHornetMinionProj> { }
+  //  internal class ToxicHornetMinionBuff : MinionBuff<ToxicHornetMinionProj> { }
 
     internal class VampireTorchMinionBuff : MinionBuff<VampireTorchMinionProj>
     {

@@ -6,8 +6,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class IvynShot : ModItem
+    internal class IvynShot : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 3;
+            Item.mana = 0;
+        }
         public override void SetDefaults()
         {
             Item.damage = 5;
@@ -35,14 +43,5 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             return new Vector2(-2f, 0f);
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-
-            recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 9);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
-        }
-
     }
 }

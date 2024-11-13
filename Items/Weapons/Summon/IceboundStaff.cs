@@ -12,9 +12,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class IceboundStaff : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class IceboundStaff : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 2;
+            Item.mana = 10;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Gelatal Slaff");
 			// Tooltip.SetDefault("Summons an Jelly boi to fight for you");
@@ -55,15 +63,6 @@ namespace Stellamod.Items.Weapons.Summon
 
             // Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
             return false;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.BorealWood, 8);
-            recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 11);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
         }
     }
 }

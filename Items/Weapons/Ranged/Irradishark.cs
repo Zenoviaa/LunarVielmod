@@ -11,11 +11,19 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class Irradishark : ModItem
-	{
+    public class Irradishark : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 9;
+            Item.mana = 0;
+        }
         public override void SetDefaults()
         {
-            Item.damage = 20;
+            Item.damage = 18;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 40;
             Item.height = 40;

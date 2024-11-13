@@ -32,11 +32,9 @@ namespace Stellamod.Items.Ores
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 2);
 			recipe.AddIngredient(ModContent.ItemType<VerianOre>(), 3);
 			recipe.AddTile(TileID.Hellforge);
 			recipe.Register();
 		}
-
 	}
 }

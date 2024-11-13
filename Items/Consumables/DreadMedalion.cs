@@ -88,10 +88,7 @@ namespace Stellamod.Items.Consumables
         public override void AddRecipes()
         {
             base.AddRecipes();
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<DreadFragment>(), 3);
-            recipe.Register();
+
         }
     }
-
 }

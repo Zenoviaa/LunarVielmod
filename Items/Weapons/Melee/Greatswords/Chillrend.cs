@@ -17,8 +17,16 @@ using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Melee.Greatswords
 {
-    internal class Chillrend : ModItem
+    internal class Chillrend : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Generic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 75;
+            Item.mana = 0;
+        }
         private int _combo;
         public int AttackCounter = 1;
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -35,7 +43,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
 
         public override void SetDefaults()
         {
-            Item.damage = 152;
+            Item.damage = 144;
             Item.DamageType = DamageClass.Melee;
             Item.width = 90;
             Item.height = 108;

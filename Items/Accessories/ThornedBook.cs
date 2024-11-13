@@ -26,18 +26,6 @@ namespace Stellamod.Items.Accessories
 			Item.value = Item.sellPrice(silver: 12);
 			Item.rare = ItemRarityID.Blue;
 			Item.accessory = true;
-
-
-		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 300);
-			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 20);
-			recipe.AddIngredient(ItemID.CordageGuide, 1);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 5);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
@@ -45,12 +33,6 @@ namespace Stellamod.Items.Accessories
 			player.GetModPlayer<MyPlayer>().ThornedBook = true;
 			player.GetDamage(DamageClass.Melee) += 0.03f; 
 			player.statDefense -= 5;
-
-
 		}
-
-
-
-
 	}
 }

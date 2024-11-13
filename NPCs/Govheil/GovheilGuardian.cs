@@ -245,16 +245,12 @@ namespace Stellamod.NPCs.Govheil
 			frameCounter = 0;
 			frameTick = 0;
 		}
+
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			npcLoot.Add(ItemDropRule.Common(ItemID.Bomb, 5, 3, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Fireblossom, 3, 3, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 3, 5));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 2, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
-		
-			
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));	
 		}
+
 		public override void HitEffect(NPC.HitInfo hit)
 		{
 

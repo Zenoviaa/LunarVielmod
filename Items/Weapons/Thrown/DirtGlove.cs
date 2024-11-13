@@ -11,7 +11,7 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 17;
+            Item.damage = 1;
         }
 
         public override void SetDefaults()
@@ -32,13 +32,6 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shoot = ModContent.ProjectileType<DirtBall>();
             Item.shootSpeed = 15f;
             Item.rare = ItemRarityID.Blue;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.DirtBlock, 10);
-            recipe.Register();
         }
     }
 }
