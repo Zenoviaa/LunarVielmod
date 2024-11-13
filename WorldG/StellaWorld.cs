@@ -80,6 +80,7 @@ namespace Stellamod.WorldG
             {
 
                 tasks.Insert(RoyalGen + 1, new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
+                tasks.Insert(RoyalGen + 2, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
             }
             //Replace Terrain Pass
             
@@ -133,8 +134,7 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
 				tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
                 tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Graving", WorldGenGraving));
-                tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
-                tasks.Insert(CathedralGen2 + 23, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
+          
             }
 		}
 
@@ -1220,7 +1220,7 @@ namespace Stellamod.WorldG
                 while (!placed && attempts++ < 1000000)
                 {
                     // Select a place in the first 6th of the world, avoiding the oceans
-                    int range = Main.maxTilesX / 8;
+                    int range = Main.maxTilesX / 6;
                     int offset = WorldGen.genRand.Next(-range, range);
                     int smx = Main.maxTilesX / 2 + offset;
 
