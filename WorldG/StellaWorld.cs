@@ -2095,123 +2095,82 @@ namespace Stellamod.WorldG
 
 		}
 
-		private void WorldGenStalker(GenerationProgress progress, GameConfiguration configuration)
-		{
-			StructureMap structures = GenVars.structures;
-			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Ocean/SunAlter2");
-			progress.Message = "Bird building alters";
-            
-			int[] tileBlend = new int[]
+        private void WorldGenColeseum(GenerationProgress progress, GameConfiguration configuration)
         {
-                TileID.RubyGemspark
-        };
+            StructureMap structures = GenVars.structures;
+            Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Acid/GiaHouse");
+            progress.Message = "Commanders having fun in their village";
+
 
             for (int k = 0; k < 1; k++)
-			{
-				bool placed = false;
-				int attempts = 0;
-				while (!placed && attempts++ < 1000000)
-				{
-					// Select a place in the first 6th of the world, avoiding the oceans
-					int smx = WorldGen.genRand.Next(350, (Main.maxTilesX) - 350); // from 50 since there's a unaccessible area at the world's borders
-																						  // 50% of choosing the last 6th of the world
-																										  // Choose which side of the world to be on randomly
-					///if (WorldGen.genRand.NextBool())
-					///{
-					///	towerX = Main.maxTilesX - towerX;
-					///}
+            {
+                bool placed = false;
+                int attempts = 0;
+                while (!placed && attempts++ < 1000000)
+                {
+                    // Select a place in the first 6th of the world, avoiding the oceans
+                    int smx = (GenVars.desertHiveLeft + GenVars.desertHiveRight) / 2; // from 50 since there's a unaccessible area at the world's borders
+                    // 50% of choosing the last 6th of the world
+    // Choose which side of the world to be on randomly
+                    ///if (WorldGen.genRand.NextBool())
+                    ///{
+                    ///	towerX = Main.maxTilesX - towerX;
+                    ///}
 
-					//Start at 200 tiles above the surface instead of 0, to exclude floating islands
-					int smy = ((int)(Main.worldSurface - 200));
+                    //Start at 200 tiles above the surface instead of 0, to exclude floating islands
+                    int smy = ((int)(Main.worldSurface - 200));
 
-					// We go down until we hit a solid tile or go under the world's surface
-					while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
-					{
-						smy++;
-					}
+                    // We go down until we hit a solid tile or go under the world's surface
+                    while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
+                    {
+                        smy++;
+                    }
 
-					// If we went under the world's surface, try again
-					if (smy > Main.worldSurface - 5)
-					{
-						continue;
-					}
-					Tile tile = Main.tile[smx, smy];
-					// If the type of the tile we are placing the tower on doesn't match what we want, try again
-					if (!(tile.TileType == TileID.Sand
-							|| tile.TileType == TileID.HardenedSand
-						|| tile.TileType == TileID.Sandstone))
-
-					{
-						continue;
-					}
-
-                    Point Loc = new Point(smx, smy + 10);
-                    string path = "Struct/Ocean/SunAlter2";
-					if (!StructureLoader.TryPlaceAndProtectStructure(Loc, path))
-						continue; 
-
-					for (int da = 0; da < 1; da++)
-					{          
-                        int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path, tileBlend);
-                        foreach (int chestIndex in ChestIndexs)
-						{
-							var chest = Main.chest[chestIndex];
-							// etc
-
-							// itemsToAdd will hold type and stack data for each item we want to add to the chest
-							var itemsToAdd = new List<(int type, int stack)>();
-
-							// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-							int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-									Tuple.Create(ModContent.ItemType<CinderBraker>(), 0.1)
+                    // If we went under the world's surface, try again
+                    if (smy > Main.worldSurface - 5)
+                    {
+                        continue;
+                    }
+                    Tile tile = Main.tile[smx, smy];
+                    // If the type of the tile we are placing the tower on doesn't match what we want, try again
+                   
+					/*if (!(tile.TileType == ModContent.TileType<AcidialDirt>()))
+                    {
+                        continue;
+                    }
+					*/
 
 
-							);
-							if (specialItem != ItemID.None)
-							{
-								itemsToAdd.Add((specialItem, 1));
-							}
-							// Using a switch statement and a random choice to add sets of items.
-							switch (Main.rand.Next(1))
-							{
-								case 0:
 
-									itemsToAdd.Add((ModContent.ItemType<OceanScroll>(), Main.rand.Next(1, 1)));
-									itemsToAdd.Add((ModContent.ItemType<OceanRuneI>(), Main.rand.Next(1, 1)));
-									itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
-									itemsToAdd.Add((ItemID.AntlionMandible, Main.rand.Next(5, 10)));
-									itemsToAdd.Add((ItemID.Coral, Main.rand.Next(1, 25)));
-									itemsToAdd.Add((ItemID.SharkFin, Main.rand.Next(1, 25)));
-									itemsToAdd.Add((ItemID.MasterBait, Main.rand.Next(1, 25)));
+                    // place the Rogue
+                    //	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
+                    //Main.npc[num].homeTileX = -1;
+                    //	Main.npc[num].homeTileY = -1;
+                    //	Main.npc[num].direction = 1;
+                    //	Main.npc[num].homeless = true;
 
-									break;
-								
-							}
 
-							// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-							int chestItemIndex = 0;
-							foreach (var itemToAdd in itemsToAdd)
-							{
-								Item item = new Item();
-								item.SetDefaults(itemToAdd.type);
-								item.stack = itemToAdd.stack;
-								chest.item[chestItemIndex] = item;
-								chestItemIndex++;
-								if (chestItemIndex >= 40)
-									break; // Make sure not to exceed the capacity of the chest
-							}
-						}
-						
-						
-					}
 
-					placed = true;
-				}
-			}
+                    for (int da = 0; da < 1; da++)
+                    {
+                        Point Loc = new Point(smx, smy + 5);
+                        rectangle.Location = Loc;
+                        StructureLoader.ReadStruct(Loc, "Struct/Acid/GiaHouse");
+                        NPCs.Town.AlcadSpawnSystem.GiaTile = Loc;
 
-		}
 
-		private void WorldGenGiaHouse(GenerationProgress progress, GameConfiguration configuration)
+
+
+                    }
+
+                    placed = true;
+                }
+            }
+
+        }
+
+
+        private void WorldGenGiaHouse(GenerationProgress progress, GameConfiguration configuration)
 		{
 			StructureMap structures = GenVars.structures;
 			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Acid/GiaHouse");
@@ -2225,16 +2184,17 @@ namespace Stellamod.WorldG
 				while (!placed && attempts++ < 1000000)
 				{
 					// Select a place in the first 6th of the world, avoiding the oceans
-					int smx = (GenVars.desertHiveLeft + GenVars.desertHiveRight) / 2; // from 50 since there's a unaccessible area at the world's borders
-																				  // 50% of choosing the last 6th of the world
-																				  // Choose which side of the world to be on randomly
-					///if (WorldGen.genRand.NextBool())
-					///{
-					///	towerX = Main.maxTilesX - towerX;
-					///}
+					//int smx = (GenVars.desertHiveLeft + GenVars.desertHiveRight) / 2; // from 50 since there's a unaccessible area at the world's borders
+                                                                                      // 50% of choosing the last 6th of the world
 
-					//Start at 200 tiles above the surface instead of 0, to exclude floating islands
-					int smy = ((int)(Main.worldSurface - 200));
+                    int smx = WorldGen.genRand.Next(250, (Main.maxTilesX) - 250);     // Choose which side of the world to be on randomly
+                    ///if (WorldGen.genRand.NextBool())
+                    ///{
+                    ///	towerX = Main.maxTilesX - towerX;
+                    ///}
+
+                    //Start at 200 tiles above the surface instead of 0, to exclude floating islands
+                    int smy = ((int)(Main.worldSurface - 200));
 
 					// We go down until we hit a solid tile or go under the world's surface
 					while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
@@ -2249,10 +2209,10 @@ namespace Stellamod.WorldG
 					}
 					Tile tile = Main.tile[smx, smy];
 					// If the type of the tile we are placing the tower on doesn't match what we want, try again
-					/*if (!(tile.TileType == ModContent.TileType<AcidialDirt>()))
+					if (!(tile.TileType == ModContent.TileType<AcidialDirt>()))
 					{
 						continue;
-					}*/
+					}
 
 
 
