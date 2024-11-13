@@ -16,7 +16,8 @@ Common: {
 	PowderDamage: Increases igniter card damage by {0}%!
 	PowderEquip: Equip this powder to a card!
 	IgniterCard: When it hits an enemy, it explodes with the effects of all the powders equipped to it!
-	IgniterCardHelp: Right click in your inventory to put powders on your card!
+	IgniterCardHelp: Right click in your inventory to put powders on your card!,
+	GenericDamage: " generic damage"
 }
 
 SetBonus: {

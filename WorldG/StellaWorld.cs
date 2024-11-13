@@ -3073,7 +3073,8 @@ namespace Stellamod.WorldG
             int attempts = 0;
             while (!placed && attempts++ < 1000000)
             {
-                int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
+                int abysmx = (GenVars.snowOriginLeft + GenVars.snowOriginRight) / 2;//WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
+                abysmx -= rectangle.Width;
 
                 // Select a place in the first 6th of the world, avoiding the oceans
                 int abysmy = ((Main.maxTilesY / 2));
