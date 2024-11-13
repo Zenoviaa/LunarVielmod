@@ -43,7 +43,7 @@ namespace Stellamod.Backgrounds
 			parallax = 0.3;
 			//b = 1400;
 
-			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/StarbloomBiomeBackground");
+			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/RoyalCapitalBiomeBackground");
 
 			
 		}
