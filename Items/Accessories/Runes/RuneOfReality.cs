@@ -12,6 +12,7 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria.Graphics.Shaders;
 using System;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Stellamod.Items.Accessories.Runes
 {
@@ -107,10 +108,12 @@ namespace Stellamod.Items.Accessories.Runes
             {
                 TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
             }
+    
             TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
             GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.SimpleTrail);
             Vector2 trailOffset = -Main.screenPosition;
             TrailDrawer.DrawPrims(_fieldPos, trailOffset, 155);
+
             return false;
         }
     }
