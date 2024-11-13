@@ -60,6 +60,7 @@ namespace Stellamod.WorldG
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
 		{
 			int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Lakes"));
+            int RoyalGen = tasks.FindIndex(genpass => genpass.Name.Equals("Underworld"));
 
             //Disable Some Passes
             DisableGenTask(tasks, "Terrain");
@@ -70,8 +71,31 @@ namespace Stellamod.WorldG
           //  DisableGenTask(tasks, "Surface Chests");
             DisableGenTask(tasks, "Wavy Caves");
             DisableGenTask(tasks, "Living Trees");
-            //Replace Terrain Pass
+
             tasks[tasks.FindIndex(x => x.Name.Equals("Terrain"))] = new VanillaTerrainPass();
+
+
+
+
+            if (RoyalGen != -1)
+            {
+                tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Abysm", WorldGenAbysm));
+                tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Abysm Caves", NewCaveFormationAbysm));
+                tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Virulent", WorldGenVirulent));
+                tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
+                tasks.Insert(MorrowGen + 5, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
+                tasks.Insert(MorrowGen + 6, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
+                tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
+                tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Alcad", WorldGenAlcadSpot));
+                tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Illuria", WorldGenIlluria));
+                tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
+                tasks.Insert(MorrowGen + 11, new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
+                tasks.Insert(MorrowGen + 12, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
+                tasks.Insert(MorrowGen + 13, new PassLegacy("World Gen Veiled Spot", WorldGenVeilSpot));
+                tasks.Insert(MorrowGen + 14, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
+            }
+            //Replace Terrain Pass
+            
             if (MorrowGen != -1)
 			{
 				tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Abysm", WorldGenAbysm));
@@ -80,8 +104,6 @@ namespace Stellamod.WorldG
 				tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
 				tasks.Insert(MorrowGen + 5, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
 				tasks.Insert(MorrowGen + 6, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
-				tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
-				tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Alcad", WorldGenAlcadSpot));
 				tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Illuria", WorldGenIlluria));
 				tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
 				tasks.Insert(MorrowGen + 11, new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
@@ -2333,9 +2355,11 @@ namespace Stellamod.WorldG
                 {
                     Point Loc7 = new Point(abysmx, abysmy);
                     WorldGen.TileRunner(Loc7.X + 200, Loc7.Y, 500, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
-                    WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 200, 600, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 200, 600, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
                     WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 400, 600, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
                     WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 600, 700, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 800, 700, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 1000, 700, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
 
                     Point Loc = new Point(abysmx + 50, abysmy + 255);
                     pointL = new Point(abysmx + 50, abysmy + 255);//
@@ -2973,7 +2997,7 @@ namespace Stellamod.WorldG
 				///}
 
 				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
-				int abysmy = ((Main.maxTilesY / 2));
+				int abysmy = ((Main.maxTilesY / 2) - 200);
 
 				// We go down until we hit a solid tile or go under the world's surface
 				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.UnderworldLayer)
@@ -3011,7 +3035,7 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 					
-					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(250, 250), ModContent.TileType<AbyssalDirt>(), true);
+					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(450, 450), ModContent.TileType<AbyssalDirt>(), true);
 
 
 
@@ -3034,19 +3058,19 @@ namespace Stellamod.WorldG
 
 
             int attempts = 0;
-            while (attempts++ < 100000)
+            while (attempts++ < 1000000)
             {
                 // Select a place 
-                int smx = WorldGen.genRand.Next(((Main.maxTilesX) / 2) - 500, (Main.maxTilesX / 2) + 500); // from 50 since there's a unaccessible area at the world's borders
-                                                                                                           // 50% of choosing the last 6th of the world
-                                                                                                           // Choose which side of the world to be on randomly
+                int smx = WorldGen.genRand.Next(1, Main.maxTilesX); // from 50 since there's a unaccessible area at the world's borders
+                                                                    // 50% of choosing the last 6th of the world
+                                                                    // Choose which side of the world to be on randomly
                 ///if (WorldGen.genRand.NextBool())
                 ///{
                 ///	towerX = Main.maxTilesX - towerX;
                 ///}
 
                 //Start at 200 tiles above the surface instead of 0, to exclude floating islands
-                int smy = ((Main.maxTilesY / 2) - 100);
+                int smy = ((Main.maxTilesY / 2) - 200);
 
                 // We go down until we hit a solid tile or go under the world's surface
                 Tile tile = Main.tile[smx, smy];
@@ -3680,7 +3704,7 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 					
-					WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 100, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), false, 0f, 0f, false, false);
+					WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 100, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), false, 0f, 0f, true, false);
                     WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 250, 300, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
                     WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 400, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
                     WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 600, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
