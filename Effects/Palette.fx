@@ -28,19 +28,28 @@ float colorDistance(float3 a, float3 b)
     return d;
 }
 
+float colorDistance2(float3 a, float3 b)
+{
+    float ar = abs(b.r - a.r);
+    float ag = abs(b.g - a.g);
+    float ab = abs(b.b - a.b);
+    float d = ar + ag + ab;
+    return d;
+}
+
 float3 calculateColor(float3 color)
 {
 	// Palette 1
     float3 colors[] = Palette;
         
     float3 selectedColor = colors[0];
-    float dist = colorDistance(color, colors[0]);
+    float dist = colorDistance2(color, colors[0]);
     float currentDist;
     
     // For loop with the same loops than the color palette.
     for (int i = 1; i < PaletteLength; i++)
     {
-        currentDist = colorDistance(color, colors[i]);
+        currentDist = colorDistance2(color, colors[i]);
         if (currentDist < dist)
         {
             dist = currentDist;
