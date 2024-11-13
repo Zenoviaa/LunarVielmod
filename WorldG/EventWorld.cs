@@ -233,8 +233,8 @@ namespace Stellamod.WorldG
         public override void PostUpdateWorld()
         {
             TrySpawnGintzeArmy();
-            TrySpawnAuroreanStarfall();
-            SpawnAuroreanStars();
+          //  TrySpawnAuroreanStarfall();
+           // SpawnAuroreanStars();
 
             if (!GreenSun)
             {

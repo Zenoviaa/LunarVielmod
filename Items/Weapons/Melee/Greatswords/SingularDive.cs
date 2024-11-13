@@ -35,20 +35,6 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
 
         public int AttackCounter = 1;
 		public int combowombo = 0;
-
-		public override void SetStaticDefaults()
-		{
-
-
-		
-			ItemID.Sets.AnimatesAsSoul[Item.type] = true; // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
-			ItemID.Sets.ItemNoGravity[Item.type] = true; // Makes the item have no gravity
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-			// DisplayName.SetDefault("Frost Swing");
-			/* Tooltip.SetDefault("Shoots one bone bolt to swirl and kill your enemies after attacking!" +
-			"\nHitting foes with the melee swing builds damage towards the swing of the weapon"); */
-		}
-
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 
