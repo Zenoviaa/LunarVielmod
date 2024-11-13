@@ -1,4 +1,4 @@
-﻿using Stellamod.Brooches;
+﻿
 using Stellamod.Buffs.Charms;
 using System;
 using System.Collections.Generic;

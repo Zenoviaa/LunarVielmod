@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Brooches;
+
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Quest.Merena;

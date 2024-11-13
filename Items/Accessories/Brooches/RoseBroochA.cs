@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Brooches;
+
 using Stellamod.Buffs.Charms;
 using Stellamod.Common.Bases;
 using Stellamod.Items.Materials;

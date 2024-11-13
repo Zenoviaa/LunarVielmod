@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
-using Stellamod.Brooches;
+using Stellamod.Common.Bases;
+using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -23,8 +24,8 @@ namespace Stellamod.Projectiles
         public override void AI()
         {
             Player owner = Main.player[Projectile.owner];
-            BroochPlayer broochPlayer = owner.GetModPlayer<BroochPlayer>();
-            if (!broochPlayer.hasRoseBrooch)
+            BroochSpawnerPlayer broochPlayer = owner.GetModPlayer<BroochSpawnerPlayer>();
+            if (!broochPlayer.BroochActive(ModContent.ItemType<RoseBroochA>()))
             {
                 Projectile.Kill();
                 return;
@@ -32,13 +33,13 @@ namespace Stellamod.Projectiles
 
             Projectile.timeLeft = 2;
             Rectangle myRect = Projectile.getRect();
-            for(int i = 0; i < Main.maxProjectiles; i++)
+            for (int i = 0; i < Main.maxProjectiles; i++)
             {
                 Projectile p = Main.projectile[i];
                 if (p.hostile)
                 {
                     Rectangle otherRect = p.getRect();
-                    if(Projectile.Colliding(myRect, otherRect) && p.active)
+                    if (Projectile.Colliding(myRect, otherRect) && p.active)
                     {
                         for (int t = 0; t < 32; t++)
                         {
@@ -61,7 +62,7 @@ namespace Stellamod.Projectiles
             _counter++;
             Player owner = Main.player[Projectile.owner];
             float circleDistance = 64f * VectorHelper.Osc(0.75f, 1f, 5f);
-            Vector2 circlePosition = owner.Center + new Vector2(circleDistance, 0).RotatedBy(MathHelper.ToRadians(_counter*0.5f));
+            Vector2 circlePosition = owner.Center + new Vector2(circleDistance, 0).RotatedBy(MathHelper.ToRadians(_counter * 0.5f));
             Vector2 circleDirection = (circlePosition - owner.Center).SafeNormalize(Vector2.Zero);
             Projectile.Center = circlePosition;
             Projectile.rotation = circleDirection.ToRotation();

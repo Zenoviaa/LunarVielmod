@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Brooches;
+
 using Stellamod.Common.Bases;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
@@ -71,10 +71,6 @@ namespace Stellamod.Items.Accessories.Brooches
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
-			broochPlayer.hasAdvancedBrooches = true;
-			broochPlayer.hasRadiantBrooches = true;
-
             BroochSpawnerPlayer broochSpawnerPlayer = player.GetModPlayer<BroochSpawnerPlayer>();
             broochSpawnerPlayer.hasAdvancedBrooches = true;
             broochSpawnerPlayer.hasRadiantBrooches = true;

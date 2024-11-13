@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Brooches;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 
@@ -30,7 +29,7 @@ namespace Stellamod.Common.Bases
         {
             Projectile.width = 28;
             Projectile.height = 28;
-            Projectile.tileCollide = false; 
+            Projectile.tileCollide = false;
             Projectile.friendly = true;
             Projectile.scale = 0.6f;
             Projectile.timeLeft = 10;
@@ -126,10 +125,10 @@ namespace Stellamod.Common.Bases
                         }
                         break;
                 }
-           
+
                 index++;
             }
-          
+
             for (int i = 0; i < broochesToSpawn.Count; i++)
             {
                 int broochItemType = broochesToSpawn[i];
@@ -141,7 +140,7 @@ namespace Stellamod.Common.Bases
                         {
                             SpawnBroochProjectile(broochItemType);
                         }
-                        if(brooch.Item.buffType != 0)
+                        if (brooch.Item.buffType != 0)
                             Player.AddBuff(brooch.Item.buffType, 2);
                         break;
                     case BroochType.Advanced:
@@ -154,7 +153,7 @@ namespace Stellamod.Common.Bases
                             if (brooch.Item.buffType != 0)
                                 Player.AddBuff(brooch.Item.buffType, 2);
                         }
-                     
+
                         break;
                     case BroochType.Radiant:
                         if (hasRadiantBrooches)
@@ -188,7 +187,7 @@ namespace Stellamod.Common.Bases
 
         public void SpawnBroochProjectile(int itemType)
         {
-            Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, 
+            Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
                 ModContent.ProjectileType<BroochFollowerProjectile>(), 0, 0, Player.whoAmI, itemType);
         }
 
@@ -281,7 +280,7 @@ namespace Stellamod.Common.Bases
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             Player player = Main.player[Main.myPlayer];
-            BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
+            BroochSpawnerPlayer broochPlayer = player.GetModPlayer<BroochSpawnerPlayer>();
 
             //Check that this item is equipped
             switch (BroochType)

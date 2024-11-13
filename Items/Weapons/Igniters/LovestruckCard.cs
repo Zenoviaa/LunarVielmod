@@ -9,7 +9,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Brooches;
+
 using Stellamod.Helpers;
 using Stellamod.Items.Materials.Molds;
 

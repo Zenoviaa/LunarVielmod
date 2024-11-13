@@ -1,4 +1,4 @@
-﻿using Stellamod.Brooches;
+﻿
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Accessories.Catacombs;
