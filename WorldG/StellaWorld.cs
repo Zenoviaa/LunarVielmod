@@ -117,7 +117,7 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
 				tasks.Insert(CathedralGen2 + 3, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
 				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen More skies", WorldGenBig));
-				tasks.Insert(CathedralGen2 +5, new PassLegacy("World Gen More skies", WorldGenMed));
+				tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen More skies", WorldGenMed));
 				tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
 				tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
 				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Stone Castle", WorldGenStoneCastle));
@@ -2300,7 +2300,7 @@ namespace Stellamod.WorldG
             int attempts = 0;
             int leftmostJungleTileX = int.MaxValue;
             int rightmostJungleTileX = int.MinValue;
-            for (int x = 500; x < Main.maxTilesX - 500; x++)
+            for (int x = 300; x < Main.maxTilesX - 300; x++)
             {
                 int jungleY = (int)(Main.worldSurface - 50);
                 while (!WorldGen.SolidTile(x, jungleY) && jungleY <= Main.worldSurface)
@@ -2323,8 +2323,8 @@ namespace Stellamod.WorldG
             while (!placed && attempts++ < 100000)
             {
                 // Select a place in the first 6th of the world, avoiding the oceans
-                int minX = leftmostJungleTileX + 400;
-                int maxX = rightmostJungleTileX - 400;
+                int minX = leftmostJungleTileX + 350;
+                int maxX = rightmostJungleTileX - 350;
                 if (maxX < minX)
                     maxX = minX + 1;
                 int abysmx = WorldGen.genRand.Next(minX, maxX); // from 50 since there's a unaccessible area at the world's borders
@@ -3026,12 +3026,12 @@ namespace Stellamod.WorldG
 					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(450, 450), ModContent.TileType<AbyssalDirt>(), true);
 
 
+                    WorldGen.TileRunner(Loc.X, Loc.Y + 400, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(450, 450), ModContent.TileType<AbyssalDirt>(), true);
 
 
 
-				
 
-				}
+                }
 
 				
 
@@ -3071,12 +3071,12 @@ namespace Stellamod.WorldG
                 {
                     //seperation
                     smx += 1;
-                    smy += 30;
+                    smy += 15;
                     tile = Main.tile[smx, smy];
                 }
 
                 // If we went under the world's surface, try again
-                if (smy > Main.UnderworldLayer - 20)
+                if (smy > Main.UnderworldLayer - 1000)
                 {
                     continue;
                 }
