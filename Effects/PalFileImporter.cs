@@ -34,8 +34,44 @@ namespace Stellamod.Effects
                     }
                     lineNum++;
                 }
-                return palette.ToArray();
+
+                Color[] colors = palette.ToArray();
+                string content = MakePaletteShader(colors);
+                File.WriteAllText(Path.GetFileName(path) + "colors.txt", content);
+
+                return colors;
             }
+        }
+
+        public static string MakePaletteShader(Color[] colors)
+        {
+            string output = string.Empty;
+            void WriteLine(string content)
+            {
+                output += content;
+                output += "\n";
+            }
+
+            WriteLine($"const float3 colors[{colors.Length}] = ");
+            WriteLine("{");
+            for(int c = 0; c < colors.Length; c++)
+            {
+                Vector3 v = colors[c].ToVector3();
+                float r = v.X;
+                float g = v.Y;
+                float b = v.Z;
+                if(c + 1 < colors.Length)
+                {
+                    WriteLine($"float3({r}, {g}, {b}),");
+                }
+                else
+                {
+                    WriteLine($"float3({r}, {g}, {b})");
+                }
+              
+            }
+            WriteLine("};");
+            return output;
         }
     }
 }

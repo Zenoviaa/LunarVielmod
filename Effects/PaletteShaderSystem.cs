@@ -25,9 +25,9 @@ namespace Stellamod.Effects
                 }
 
                 _currentPalette = palette;
-                var shaderData = FilterManager[ShaderRegistry.Screen_Palette].GetShader();
-                shaderData.Shader.Parameters["Palette"].SetValue(p);
-                shaderData.Shader.Parameters["PaletteLength"].SetValue(p.Length);
+                //var shaderData = FilterManager[ShaderRegistry.Screen_Palette].GetShader();
+                //shaderData.Shader.Parameters["Palette"].SetValue(p);
+                //shaderData.Shader.Parameters["PaletteLength"].SetValue(p.Length);
             }
             if (!FilterManager[ShaderRegistry.Screen_Palette].IsActive())
             {
