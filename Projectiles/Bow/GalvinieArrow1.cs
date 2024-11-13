@@ -44,12 +44,12 @@ namespace Stellamod.Projectiles.Bow
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 5; i++)
             {
                 Dust.NewDustPerfect(Projectile.Center, DustID.YellowTorch, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default, 1f).noGravity = false;
             }
 
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 15; i++)
             {
                 int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.YellowStarDust, 0f, -2f, 0, default(Color), 1.5f);
                 Main.dust[num].noGravity = true;
@@ -68,7 +68,7 @@ namespace Stellamod.Projectiles.Bow
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
-            float baseWidth = Projectile.scale * Projectile.width * 1.3f;
+            float baseWidth = Projectile.scale * Projectile.width * 0.6f;
             return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
         }
 
@@ -81,7 +81,8 @@ namespace Stellamod.Projectiles.Bow
         {
             if (Main.rand.NextBool(5))
             {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.YellowTorch, 150f, 150f, 0, Color.White, 1f);
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 
+                    DustID.YellowTorch, 25, 25, 0, Color.White, 1f);
                 Main.dust[dustnumber].velocity *= 0.3f;
                 Main.dust[dustnumber].noGravity = true;
             }
@@ -93,17 +94,10 @@ namespace Stellamod.Projectiles.Bow
 
             return false;
         }
+
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.75f * Main.essScale);
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.YellowTorch, 150f, 150f, 0, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-            }
-
         }
-
-
     }
 }
