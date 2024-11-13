@@ -117,3 +117,8 @@ VeilBiome: {
 	TownNPCDialogueName: the Veil Biome
 	DisplayName: Veil Biome
 }
+
+BloodCathedral: {
+	DisplayName: Blood Cathedral
+	TownNPCDialogueName: the Blood Cathedral
+}

@@ -13,6 +13,9 @@ namespace Stellamod.Effects
 
         public void UsePalette(Color[] palette)
         {
+            if (_currentPalette != null)
+                return;
+
             if(_currentPalette != palette)
             {
                 Vector3[] p = new Vector3[palette.Length];
@@ -36,9 +39,11 @@ namespace Stellamod.Effects
         {
             if(_currentPalette == palette)
             {
+                _currentPalette = null;
                 if (FilterManager[ShaderRegistry.Screen_Palette].IsActive())
                 {
                     FilterManager.Deactivate(ShaderRegistry.Screen_Palette);
+                
                     return true;
                 }
             

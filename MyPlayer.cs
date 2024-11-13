@@ -246,7 +246,7 @@ namespace Stellamod
         public bool ZoneIshtar;
         public bool ZoneVeil;
         public bool ZoneGreenSun;
-
+        public bool ZoneBloodCathedral;
 
 
         public float AssassinsSlashes;
@@ -723,7 +723,7 @@ namespace Stellamod
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean && (Player.ZoneOverworldHeight || Player.ZoneSkyHeight));
             //base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Illuria", ZoneIlluria);
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
+        //    base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Lab", ZoneLab);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Ishtar", ZoneIshtar);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Veriplant", ZoneVeri);
