@@ -2288,7 +2288,7 @@ namespace Stellamod.WorldG
 
 
         #region Virulent N Govheil
-
+		
 
         public void WorldGenVirulent(GenerationProgress progress, GameConfiguration configuration)
         {
@@ -3026,7 +3026,7 @@ namespace Stellamod.WorldG
 					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(450, 450), ModContent.TileType<AbyssalDirt>(), true);
 
 
-                    WorldGen.TileRunner(Loc.X, Loc.Y + 400, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(450, 450), ModContent.TileType<AbyssalDirt>(), true);
+                    WorldGen.TileRunner(Loc.X, Loc.Y + 300, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(450, 450), ModContent.TileType<AbyssalDirt>(), true);
 
 
 
@@ -3076,7 +3076,7 @@ namespace Stellamod.WorldG
                 }
 
                 // If we went under the world's surface, try again
-                if (smy > Main.UnderworldLayer - 1000)
+                if (smy > Main.UnderworldLayer - 500)
                 {
                     continue;
                 }
@@ -3858,7 +3858,7 @@ namespace Stellamod.WorldG
 		}
 
         #endregion
-
+		
         #region Illuria
         public void WorldGenIlluria(GenerationProgress progress, GameConfiguration configuration)
 		{
@@ -4317,22 +4317,7 @@ namespace Stellamod.WorldG
 				WorldGen.TileRunner(xz, yz, WorldGen.genRand.Next(3, 50), WorldGen.genRand.Next(2, 100), ModContent.TileType<MossyStone>());
 			}*/
 
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
-			{
-
-
-				int xz = WorldGen.genRand.Next(0, Main.maxTilesX);
-				int yz = WorldGen.genRand.Next((int)GenVars.worldSurface, Main.maxTilesY - 300);
-				Tile tile = Main.tile[xz, yz];
-				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if ((tile.TileType == TileID.Stone
-					|| tile.TileType == TileID.Grass))
-				{
-					continue;
-				}
-				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-				WorldGen.TileRunner(xz, yz, WorldGen.genRand.Next(3, 50), WorldGen.genRand.Next(2, 100), ModContent.TileType<VeriplantGrass>());
-			}
+			
 
 		}
 
