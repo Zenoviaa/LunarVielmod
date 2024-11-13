@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Brooches;
 using Stellamod.Buffs.Charms;
+using Stellamod.Common.Bases;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
@@ -16,52 +17,27 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Brooches
 {
-    public class MagicalBroochA : ModItem
+    public class MagicalBroochA : BaseBrooch
 	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Brooch of The Spragald");
-			/* Tooltip.SetDefault("Simple Brooch!" +
-				"\nEffect = +10 Defense" +
-				"\n Use the power of the Spragald Spiders!"); */
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
-
-		public override void ModifyTooltips(List<TooltipLine> tooltips)
-		{
-			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
-			var line = new TooltipLine(Mod, "", "");
-			line = new TooltipLine(Mod, "Brooch of the TaGoaaa",  Helpers.LangText.Common("AdvancedBrooch"))
-			{
-				OverrideColor = new Color(254, 128, 10)
-			};
-
-			tooltips.Add(line);
-			line = new TooltipLine(Mod, "Brooch of the TaGoaaa",  Helpers.LangText.Common("AdvancedBackpack"))
-			{
-				OverrideColor = new Color(198, 124, 225)
-
-			};
-			tooltips.Add(line);
-		}
-
 		public override void SetDefaults()
 		{
+			base.SetDefaults();
 			Item.width = 24;
 			Item.height = 28;
 			Item.value = Item.sellPrice(gold: 25);
 			Item.rare = ItemRarityID.LightPurple;
+			Item.buffType = ModContent.BuffType<MagicalBroo>();
 			Item.accessory = true;
+			BroochType = BroochType.Advanced;
 		}
 
-		public override void UpdateAccessory(Player player, bool hideVisual)
-		{
-			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
-			broochPlayer.hasMagicalBrooch = true;
-		}
+        public override void UpdateBrooch(Player player)
+        {
+            base.UpdateBrooch(player);       
+            player.GetDamage(DamageClass.Magic) *= 1.2f;
+        }
 
-		public override void AddRecipes()
+        public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
@@ -74,7 +50,6 @@ namespace Stellamod.Items.Accessories.Brooches
 			recipe.AddTile(ModContent.TileType<BroochesTable>());
 			recipe.Register();
 		}
-
 
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
 		{

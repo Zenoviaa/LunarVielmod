@@ -10,7 +10,8 @@ namespace Stellamod.Effects
     {
         private bool _init;
         private Color[] _abyssPalette;
-
+        public bool hasSpiritPendant;
+        public bool hasSunGlyph;
         private Color[] MonotonePalette(Color startingColor, Color endingColor, float steps)
         {
             var palette = new Color[(int)steps];
@@ -34,6 +35,13 @@ namespace Stellamod.Effects
             _abyssPalette = PalFileImporter.ReadPalette("Effects/Abyss");
         }
 
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+            hasSpiritPendant = false;
+            hasSunGlyph = false;
+        }
+
         public override void PostUpdateMiscEffects()
         {
             base.PostUpdateMiscEffects();
@@ -47,7 +55,17 @@ namespace Stellamod.Effects
             if (Player.InModBiome<AurelusBiome>() || Player.InModBiome<AbyssBiome>())
             {
                 paletteShaderSystem.UsePalette(_abyssPalette);
-                screenShaderSystem.VignetteScreen(2f);
+                float darkness = 2f;
+                if (hasSpiritPendant)
+                {
+                    darkness -= 0.5f;
+                }
+                if (hasSunGlyph)
+                {
+                    darkness -= 0.5f;
+                }
+
+                screenShaderSystem.VignetteScreen(darkness);
             }
             else
             {

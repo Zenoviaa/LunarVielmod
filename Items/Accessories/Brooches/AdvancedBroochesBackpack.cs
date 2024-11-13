@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Brooches;
+using Stellamod.Common.Bases;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Tiles;
@@ -70,8 +71,11 @@ namespace Stellamod.Items.Accessories.Brooches
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
-			broochPlayer.hasAdvancedBrooches = true;
-			player.GetModPlayer<MyPlayer>().HikersBSpawn = true;
+			broochPlayer.hasAdvancedBrooches = true; 
+
+			BroochSpawnerPlayer broochSpawnerPlayer = player.GetModPlayer<BroochSpawnerPlayer>();
+            broochSpawnerPlayer.hasAdvancedBrooches = true;
+            player.GetModPlayer<MyPlayer>().HikersBSpawn = true;
 			player.GetDamage(DamageClass.Generic) *= 1.04f; // Increase ALL player damage by 100%
 		}
 	}

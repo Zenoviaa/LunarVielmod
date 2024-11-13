@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Brooches;
 using Stellamod.Buffs.Charms;
+using Stellamod.Common.Bases;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -9,31 +10,13 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Brooches
 {
-    public class DiariBroochA : ModItem
+    public class DiariBroochA : BaseBrooch
 	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Brooch of the Tale of Diari");
-			/* Tooltip.SetDefault("Simple Brooch!" +
-				"\n+ 4 Defense!" +
-				"\nAuto swing capabilities!" +
-				"\nFlame walking? Always Fed!" +
-				"\n+40 Health and Mana"); */
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
+			base.ModifyTooltips(tooltips);
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
-
-			line = new TooltipLine(Mod, "Brooch of the Tale of Diari", Helpers.LangText.Common("SimpleBrooch"))
-			{
-				OverrideColor = new Color(198, 124, 225)
-
-			};
-			tooltips.Add(line);
-
 			line = new TooltipLine(Mod, "Brooch of the Tale of Diari", "Love you and have fun -Sirestias")
             {
                 OverrideColor = new Color(220, 87, 24)
@@ -59,22 +42,23 @@ namespace Stellamod.Items.Accessories.Brooches
         }
         public override void SetDefaults()
 		{
+            base.SetDefaults();
 			Item.width = 24;
 			Item.height = 28;
 			Item.value = Item.sellPrice(silver: 50);
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.Green;
 			Item.accessory = true;
+            Item.buffType = ModContent.BuffType<Diarii>();
 		}
 
-		public override void UpdateAccessory(Player player, bool hideVisual)
-		{
-			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
-			broochPlayer.KeepBroochAlive<DiariBrooch, Diarii>(ref broochPlayer.hasDiariBrooch);
-			if (!hideVisual)
-			{
+        public override void UpdateBrooch(Player player)
+        {
+            base.UpdateBrooch(player);
+            if (!HideVisual)
+            {
                 Dust.NewDustPerfect(new Vector2(player.position.X + Main.rand.Next(player.width), player.position.Y + player.height - Main.rand.Next(7)),
-					DustID.SolarFlare, Vector2.Zero);
+                    DustID.SolarFlare, Vector2.Zero);
             }
-		}
+        }
 	}
 }

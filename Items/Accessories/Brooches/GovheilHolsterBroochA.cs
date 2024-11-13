@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Brooches;
 using Stellamod.Buffs.Charms;
+using Stellamod.Common.Bases;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
@@ -14,54 +15,19 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Brooches
 {
-    public class GovheilHolsterBroochA : ModItem
+    public class GovheilHolsterBroochA : BaseBrooch
 	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Brooch of the Tale of Diari");
-			/* Tooltip.SetDefault("Simple Brooch!" +
-				"\n+ 4 Defense!" +
-				"\nAuto swing capabilities!" +
-				"\nFlame walking? Always Fed!" +
-				"\n+40 Health and Mana"); */
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
-            var line = new TooltipLine(Mod, "", "");
-
-			line = new TooltipLine(Mod, "Brooch of the TaGo",  Helpers.LangText.Common("AdvancedBrooch"))
-			{
-				OverrideColor = new Color(254, 128, 10)
-
-			};
-			tooltips.Add(line);
-
-			line = new TooltipLine(Mod, "Brooch of the TaGo",  Helpers.LangText.Common("AdvancedBackpack"))
-			{
-				OverrideColor = new Color(198, 124, 225)
-
-			};
-			tooltips.Add(line);
-
-		}
         public override void SetDefaults()
 		{
+			base.SetDefaults();
 			Item.width = 24;
 			Item.height = 28;
 			Item.value = Item.sellPrice(gold: 5);
 			Item.rare = ItemRarityID.Orange;
+			Item.buffType = ModContent.BuffType<GovheilB>();
 			Item.accessory = true;
+			BroochType = BroochType.Advanced;
 		}
-
-		public override void UpdateAccessory(Player player, bool hideVisual)
-		{
-			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
-			broochPlayer.hasGovheilHolsterBrooch = true;
-		}
-
 
 		public override void AddRecipes()
 		{

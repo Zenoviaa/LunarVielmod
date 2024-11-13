@@ -2804,14 +2804,6 @@ namespace Stellamod
 
 			}
 
-			if (BroochFrile && FrileBDCooldown <= 0)
-			{
-
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<FrileBroochP>(), 4, 1f, Player.whoAmI);
-				FrileBDCooldown = 1;
-
-			}
-
 			if (Lovestruck)
 			{
 

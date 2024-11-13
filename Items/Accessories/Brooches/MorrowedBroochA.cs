@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Brooches;
 using Stellamod.Buffs.Charms;
+using Stellamod.Common.Bases;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Tiles;
@@ -12,48 +13,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Brooches
 {
-    public class MorrowedBroochA : ModItem
-	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Brooch of The Huntria Morrow");
-			/* Tooltip.SetDefault("Simple Brooch!" +
-				"\nHeavy increased damage to your arrows" +
-				"\n +2 Defense and increased ranged damage" +
-				"\n Use the power of the deep dark morrow.."); */
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
-
-		public override void ModifyTooltips(List<TooltipLine> tooltips)
-		{
-			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
-			var line = new TooltipLine(Mod, "", "");
-
-			line = new TooltipLine(Mod, "Brooch of morrow", Helpers.LangText.Common("SimpleBrooch"))
-			{
-				OverrideColor = new Color(198, 124, 225)
-
-			};
-			tooltips.Add(line);
-
-
-
-		}
-
+    public class MorrowedBroochA : BaseBrooch
+	{ 
 		public override void SetDefaults()
 		{
+			base.SetDefaults();
 			Item.width = 24;
 			Item.height = 28;
 			Item.value = Item.buyPrice(0, 0, 90);
-			Item.rare = ItemRarityID.Blue; 
+			Item.rare = ItemRarityID.Green;
+			Item.buffType = ModContent.BuffType<Morrow>();
 			Item.accessory = true;
-		}
-
-		public override void UpdateAccessory(Player player, bool hideVisual)
-		{
-			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
-			broochPlayer.KeepBroochAlive<MorrowedBrooch, Morrow>(ref broochPlayer.hasMorrowedBrooch);
 		}
 	}
 }

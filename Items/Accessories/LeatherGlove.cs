@@ -19,7 +19,7 @@ namespace Stellamod.Items.Accessories
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetDamage(DamageClass.Throwing) += 0.10f;
+            player.GetDamage(DamageClass.Throwing).Flat += 3;
             player.ThrownVelocity += 2;
         }
 	}

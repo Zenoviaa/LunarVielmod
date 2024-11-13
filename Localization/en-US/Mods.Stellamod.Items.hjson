@@ -2044,7 +2044,7 @@ LeatherGlove: {
 	DisplayName: Leather Glove
 	Tooltip:
 		'''
-		10% increased throwing damage
+		Increases throwing damage by 3
 		Increased throwing velocity
 		'''
 }
@@ -2144,8 +2144,12 @@ SoulStrideres: {
 }
 
 SpiritPendent: {
-	DisplayName: Spirit Pendent
-	Tooltip: Provides a small light
+	DisplayName: Spirit Pendant
+	Tooltip:
+		'''
+		Provides a small amount of light
+		Pushes away some of the darkness in the Abyss
+		'''
 }
 
 StarflareBand: {
@@ -2160,7 +2164,11 @@ StarflareBand: {
 
 SunGlyph: {
 	DisplayName: Sun Glyph
-	Tooltip: Greatly increases all damage in the daylight.
+	Tooltip:
+		'''
+		Increases damage by 30% during the day
+		Pushes away some of the darkness in the Abyss
+		'''
 }
 
 WoodShield: {
