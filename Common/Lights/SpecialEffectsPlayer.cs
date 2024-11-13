@@ -35,6 +35,7 @@ namespace Stellamod.Common.Lights
         public bool hasSpiritPendant;
         public bool hasSunGlyph;
         public float darkness;
+        public float darknessCurve;
         private Color[] MonotonePalette(Color startingColor, Color endingColor, float steps)
         {
             var palette = new Color[(int)steps];
@@ -72,6 +73,7 @@ namespace Stellamod.Common.Lights
             hasSpiritPendant = false;
             hasSunGlyph = false;
             darkness = 0;
+            darknessCurve = 0f;
             _targetVignetteOpacity = 1f;
         }
 
@@ -109,7 +111,7 @@ namespace Stellamod.Common.Lights
                 || MyPlayer.ZoneCinder || MyPlayer.ZoneDrakonic);
             if (hellPaletteActive)
             {
-                darkness += 2;
+                darkness += 1;
             }
             TogglePaletteShader("LunarVeil:PaletteHell", hellPaletteActive);
 
@@ -127,6 +129,10 @@ namespace Stellamod.Common.Lights
 
             CalculateDarkness();
             TogglePaletteShader("LunarVeil:DarknessVignette", darkness != 0);
+
+            var shaderData = FilterManager["LunarVeil:DarknessCurve"].GetShader();
+            shaderData.UseProgress(darknessCurve);
+            TogglePaletteShader("LunarVeil:DarknessCurve", darknessCurve != 0);
         }
         
         private void CalculateDarkness()

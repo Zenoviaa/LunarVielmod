@@ -2225,7 +2225,7 @@ namespace Stellamod.WorldG
 				while (!placed && attempts++ < 1000000)
 				{
 					// Select a place in the first 6th of the world, avoiding the oceans
-					int smx = WorldGen.genRand.Next(250, (Main.maxTilesX) - 250); // from 50 since there's a unaccessible area at the world's borders
+					int smx = (GenVars.desertHiveLeft + GenVars.desertHiveRight) / 2; // from 50 since there's a unaccessible area at the world's borders
 																				  // 50% of choosing the last 6th of the world
 																				  // Choose which side of the world to be on randomly
 					///if (WorldGen.genRand.NextBool())
@@ -2249,10 +2249,10 @@ namespace Stellamod.WorldG
 					}
 					Tile tile = Main.tile[smx, smy];
 					// If the type of the tile we are placing the tower on doesn't match what we want, try again
-					if (!(tile.TileType == ModContent.TileType<AcidialDirt>()))
+					/*if (!(tile.TileType == ModContent.TileType<AcidialDirt>()))
 					{
 						continue;
-					}
+					}*/
 
 
 

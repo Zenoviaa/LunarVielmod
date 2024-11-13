@@ -29,7 +29,6 @@
     <None Remove="Buffs\AcidFlame.png" />
     <None Remove="Buffs\Alcadded.png" />
     <None Remove="Buffs\AssassinsSlashBuff.png" />
-    <None Remove="Buffs\DarkHold.png" />
     <None Remove="Buffs\Dusteffects\AgreviDust.png" />
     <None Remove="Buffs\Dusteffects\AivanDust.png" />
     <None Remove="Buffs\Dusteffects\CrystalDust.png" />
@@ -84,7 +83,14 @@
     <None Remove="Dusts\TSmokeTornadoDust.png" />
     <None Remove="Dusts\TSmokeTornadoDustTip.png" />
     <None Remove="effects\DaedusRobe.fx" />
+    <None Remove="Effects\DarknessCurve.fx" />
+    <None Remove="Effects\DarknessVignette.fx" />
     <None Remove="effects\NormalDistortion.fx" />
+    <None Remove="Effects\PaletteBloodCathedral.fx" />
+    <None Remove="Effects\PaletteDesert.fx" />
+    <None Remove="Effects\PaletteDungeon.fx" />
+    <None Remove="Effects\PaletteHell.fx" />
+    <None Remove="Effects\PaletteRoyalCapital.fx" />
     <None Remove="Effects\Primitives\Whiteflame.fx" />
     <None Remove="effects\SilShader.fx" />
     <None Remove="effects\SimpleTrail.fx" />
