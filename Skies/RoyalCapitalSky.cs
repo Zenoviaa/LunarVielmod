@@ -73,7 +73,9 @@ namespace Stellamod.Skies
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, eff.Shader, Main.BackgroundViewMatrix.TransformationMatrix);
 
-                spriteBatch.Draw(starsTexture.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White * 0.3f);
+                spriteBatch.Draw(starsTexture.Value, 
+                    new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), 
+                    new Rectangle((int)-_parallax.X, (int)-_parallax.Y, Main.screenWidth, Main.screenHeight), Color.White * 0.3f);
 
                 spriteBatch.End();
             }
