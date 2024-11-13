@@ -79,20 +79,8 @@ namespace Stellamod.WorldG
 
             if (RoyalGen != -1)
             {
-                tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Abysm", WorldGenAbysm));
-                tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Abysm Caves", NewCaveFormationAbysm));
-                tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Virulent", WorldGenVirulent));
-                tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
-                tasks.Insert(MorrowGen + 5, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-                tasks.Insert(MorrowGen + 6, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
-                tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
-                tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Alcad", WorldGenAlcadSpot));
-                tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Illuria", WorldGenIlluria));
-                tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
-                tasks.Insert(MorrowGen + 11, new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
-                tasks.Insert(MorrowGen + 12, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-                tasks.Insert(MorrowGen + 13, new PassLegacy("World Gen Veiled Spot", WorldGenVeilSpot));
-                tasks.Insert(MorrowGen + 14, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
+
+                tasks.Insert(RoyalGen + 1, new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
             }
             //Replace Terrain Pass
             
@@ -104,12 +92,12 @@ namespace Stellamod.WorldG
 				tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
 				tasks.Insert(MorrowGen + 5, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
 				tasks.Insert(MorrowGen + 6, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
-				tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Illuria", WorldGenIlluria));
-				tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
-				tasks.Insert(MorrowGen + 11, new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
-				tasks.Insert(MorrowGen + 12, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-				tasks.Insert(MorrowGen + 13, new PassLegacy("World Gen Veiled Spot", WorldGenVeilSpot));
-                tasks.Insert(MorrowGen + 14, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
+				tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Illuria", WorldGenIlluria));
+				tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
+				tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
+				tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
+				tasks.Insert(MorrowGen + 11, new PassLegacy("World Gen Veiled Spot", WorldGenVeilSpot));
+                tasks.Insert(MorrowGen + 12, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
             }
 
 			int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
@@ -3681,77 +3669,7 @@ namespace Stellamod.WorldG
 
 
         #region Royal Capital
-        public void WorldGenAlcadSpot(GenerationProgress progress, GameConfiguration configuration)
-		{
-			progress.Message = "Fighting the Virulent with magic";
-
-
-
-
-
-			bool placed = false;
-			int attempts = 0;
-			
-
-
-
-			while (!placed && attempts++ < 100000)
-			{
-				// Select a place in the first 6th of the world, avoiding the oceans
-				
-
-
-				for (int da = 0; da < 1; da++)
-				{
-					
-					WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 100, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), false, 0f, 0f, true, false);
-                    WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 250, 300, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
-                    WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 400, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
-                    WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 600, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
-
-
-                    placed = true;
-				}
-			}
-
-			for (int fa = 0; fa < 20; fa++)
-			{
-				int abysmxd = WorldGen.genRand.Next(500, Main.maxTilesX - 500);
-				int abysmyd = (int)(Main.worldSurface - 50);
-
-				// We go down until we hit a solid tile or go under the world's surface
-				while (!WorldGen.SolidTile(abysmxd, abysmyd) && abysmyd <= Main.worldSurface)
-				{
-					abysmyd++;
-				}
-
-				// If we went under the world's surface, try again
-				if (abysmyd > Main.worldSurface)
-				{
-					continue;
-				}
-				Tile tile = Main.tile[abysmxd, abysmyd];
-				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if (!(tile.TileType == ModContent.TileType<Tiles.StarbloomDirt>()))
-				{
-					continue;
-				}
-				for (int da = 0; da < 1; da++)
-				{
-					Point Loc = new Point(abysmxd, abysmyd);
-
-
-					WorldGen.digTunnel(Loc.X, Loc.Y, 0, 1, 130, 3, false);
-				}
-
-
-
-
-			}
-
-
-		}
-		
+      
 
 		public void WorldGenRoyalCapital(GenerationProgress progress, GameConfiguration configuration)
 		{
@@ -3810,8 +3728,19 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(smx + 20, smyy + 3);
-					pointAlcadthingy = new Point(smx - 10, smyy + 3);
+                    pointAlcadthingy = new Point(smx - 10, smyy + 3);
+
+					    WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 100, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), false, 0f, 0f, true, false);
+                        WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 250, 300, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
+                        WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 400, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
+                        WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 600, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
+
+
+                       
+                    
+
+                    Point Loc = new Point(smx + 20, smyy + 3);
+					
 					rectangle.Location = Loc;
                     NPCs.Town.AlcadSpawnSystem.AlcadTile = Loc;
                     Structurizer.ProtectStructure(Loc, "Struct/Alcad/RoyalCapital3");
