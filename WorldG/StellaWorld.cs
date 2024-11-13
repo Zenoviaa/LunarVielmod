@@ -2492,7 +2492,7 @@ namespace Stellamod.WorldG
                 for (int da = 0; da < 1; da++)
                 {
                     Point Loc7 = new Point(abysmx, abysmy);
-                    WorldGen.TileRunner(Loc7.X + 200, Loc7.Y, 500, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X + 200, Loc7.Y, 500, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
                     WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 600, 400, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
                     WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 700, 300, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
 
