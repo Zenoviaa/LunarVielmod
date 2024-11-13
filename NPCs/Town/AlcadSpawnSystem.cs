@@ -283,6 +283,7 @@ namespace Stellamod.NPCs.Town
                 if (!player.active)
                     continue;
 
+                /*
                 if (!NPC.AnyNPCs(ModContent.NPCType<Merena>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),

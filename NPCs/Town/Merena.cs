@@ -22,7 +22,7 @@ namespace Stellamod.NPCs.Town
 {
     // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
     //[AutoloadHead]
-	public class Merena : ModNPC
+	public class Merena : PointSpawnNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
 		public const string ShopName = "Shop";
@@ -80,7 +80,13 @@ namespace Stellamod.NPCs.Town
 			NPC.dontTakeDamageFromHostiles = true;
 		}
 
-		public override void FindFrame(int frameHeight)
+        public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
+        {
+            spawner.structureToSpawnIn = "Struct/Alcad/RoyalCapital3";
+            spawner.spawnTileOffset = new Point(506, -13);
+        }
+
+        public override void FindFrame(int frameHeight)
 		{
 			NPC.frameCounter += 0.16f;
 			NPC.frameCounter %= Main.npcFrameCount[NPC.type];
