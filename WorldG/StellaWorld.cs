@@ -60,7 +60,7 @@ namespace Stellamod.WorldG
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
 		{
 			int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Lakes"));
-            int RoyalGen = tasks.FindIndex(genpass => genpass.Name.Equals("Underworld"));
+            int RoyalGen = tasks.FindIndex(genpass => genpass.Name.Equals("Corruption"));
 
             //Disable Some Passes
             DisableGenTask(tasks, "Terrain");
@@ -3674,7 +3674,7 @@ namespace Stellamod.WorldG
 		public void WorldGenRoyalCapital(GenerationProgress progress, GameConfiguration configuration)
 		{
 			StructureMap structures = GenVars.structures;
-			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Alcad/RoyalCapital3");
+			Rectangle rectangle = Structurizer.ReadRectangle("Struct/Alcad/RoyalCapital3");
 			progress.Message = "Fighting the Virulent with magic";
 
 
@@ -3729,8 +3729,9 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
                     pointAlcadthingy = new Point(smx - 10, smyy + 3);
-
-					    WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 100, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), false, 0f, 0f, true, false);
+	
+						WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 10, 300, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, false);
+						WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 100, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
                         WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 250, 300, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
                         WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 400, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
                         WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 600, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
@@ -3744,7 +3745,14 @@ namespace Stellamod.WorldG
 					rectangle.Location = Loc;
                     NPCs.Town.AlcadSpawnSystem.AlcadTile = Loc;
                     Structurizer.ProtectStructure(Loc, "Struct/Alcad/RoyalCapital3");
-                    int[] ChestIndexs = Structurizer.ReadStruct(Loc, "Struct/Alcad/RoyalCapital3");
+                    var tileBlend = new int[]
+                    {
+                        TileID.RubyGemspark
+                    };
+
+          
+
+                    int[] ChestIndexs = Structurizer.ReadStruct(Loc, "Struct/Alcad/RoyalCapital3", tileBlend);
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
