@@ -19,7 +19,12 @@ namespace Stellamod.Items
         {
             if (!IsSwapped)
             {
-                var line = new TooltipLine(Mod, "SirestiasTokenSwap", Helpers.LangText.Common("CanSwapped", AlternateClass.DisplayName));
+                string displayName = AlternateClass.DisplayName.Value;
+                if(AlternateClass == DamageClass.Generic)
+                {
+                    displayName = LangText.Common("GenericDamage");
+                }
+                var line = new TooltipLine(Mod, "SirestiasTokenSwap", Helpers.LangText.Common("CanSwapped", displayName));
                 tooltips.Add(line);
             }
             else
