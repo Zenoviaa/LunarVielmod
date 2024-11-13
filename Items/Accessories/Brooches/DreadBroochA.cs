@@ -1,4 +1,5 @@
-﻿using Stellamod.Buffs.Charms;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Buffs.Charms;
 using Stellamod.Common.Bases;
 using Terraria;
 using Terraria.ID;
@@ -17,6 +18,12 @@ namespace Stellamod.Items.Accessories.Brooches
             Item.rare = ItemRarityID.Green;
             Item.buffType = ModContent.BuffType<DreadB>();
             Item.accessory = true;
+        }
+        public override void UpdateBrooch(Player player)
+        {
+            base.UpdateBrooch(player);
+            player.statLifeMax2 /= 2;
+            player.GetDamage(DamageClass.Generic) += 0.25f;
         }
     }
 }

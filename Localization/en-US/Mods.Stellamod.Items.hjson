@@ -3282,11 +3282,12 @@ BearBroochA: {
 }
 
 DreadBroochA: {
-	DisplayName: Dreaded Dreadmire Brooch
+	DisplayName: The Dreaded Brooch
 	Tooltip:
 		'''
-		40 Health
-		You know maybe she wasn't all that bad.
+		Cuts your max health in half
+		Increases damage by 25%
+		It's definitely worth it :P
 		'''
 }
 
