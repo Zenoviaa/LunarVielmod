@@ -22,6 +22,8 @@ float2 uZoom;
 float3 Palette[64];
 int PaletteLength;
 
+        
+
 float colorDistance(float3 a, float3 b)
 {
     float d = sqrt(pow((b.r - a.r), 2) + pow((b.g - a.g), 2) + pow((b.b - a.b), 2));
@@ -40,14 +42,25 @@ float colorDistance2(float3 a, float3 b)
 float3 calculateColor(float3 color)
 {
 	// Palette 1
-    float3 colors[] = Palette;
-        
+    const float3 colors[8] =
+    {
+        float3(0.137, 0.118, 0.012),
+        float3(0.278, 0.251, 0.039),
+        float3(0.427, 0.404, 0.118),
+        float3(0.576, 0.561, 0.224),
+        float3(0.71, 0.702, 0.353),
+        float3(0.804, 0.808, 0.533),
+        float3(0.89, 0.898, 0.718),
+        float3(0.984, 0.988, 0.949)
+    };
+    
     float3 selectedColor = colors[0];
     float dist = colorDistance2(color, colors[0]);
     float currentDist;
+
     
     // For loop with the same loops than the color palette.
-    for (int i = 1; i < PaletteLength; i++)
+    for (int i = 1; i < 8; i++)
     {
         currentDist = colorDistance2(color, colors[i]);
         if (currentDist < dist)
