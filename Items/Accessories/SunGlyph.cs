@@ -81,9 +81,7 @@ namespace Stellamod.Items.Accessories
             Item.width = 26;
             Item.height = 34;
             Item.value = Item.sellPrice(gold: 1);
-            Item.rare = ItemRarityID.Master;
             Item.accessory = true;
-            Item.master = true;
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
