@@ -27,6 +27,7 @@ namespace Stellamod.Projectiles.Visual
         {
             base.AI();
             Timer++;
+            Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -37,7 +38,7 @@ namespace Stellamod.Projectiles.Visual
 
             float colorProgress = Timer / Lifetime;
             drawColor = Color.Lerp(drawColor, Color.Transparent, colorProgress);
-            float drawRotation = 0f;
+            float drawRotation = Projectile.rotation;
             float drawScale = 1f;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -54,7 +55,7 @@ namespace Stellamod.Projectiles.Visual
 
             float colorProgress = Timer / Lifetime;
             drawColor = Color.Lerp(Color.Black, Color.Transparent, colorProgress);
-            float drawRotation = 0f;
+            float drawRotation = Projectile.rotation;
             float drawScale = 1f;
             SpriteBatch spriteBatch = Main.spriteBatch;
     

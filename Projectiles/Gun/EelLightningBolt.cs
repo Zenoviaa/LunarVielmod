@@ -1,126 +1,116 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
+using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
+using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class EelLightningBolt : ModProjectile, IPixelPrimitiveDrawer
+    internal class EelLightningBolt : ModProjectile
     {
-        public override void SetStaticDefaults()
-        {
-            // Sets the amount of frames this minion has on its spritesheet
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 18;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
-        }
-
+        public float BeamLength;
+        public float BeamWidthMultiplier;
+        public Vector2[] BeamPoints;
+        public override string Texture => TextureRegistry.EmptyTexture;
+        private ref float Timer => ref Projectile.ai[0];
+        public CommonLightning Lightning { get; set; } = new CommonLightning();
         public override void SetDefaults()
         {
-            Projectile.friendly = true;
-            Projectile.width = 16;
-            Projectile.height = 16;
-            Projectile.timeLeft = 180;
+            base.SetDefaults();
+            Projectile.width = 6;
+            Projectile.height = 6;
             Projectile.penetrate = -1;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.timeLeft = 8;
+            Projectile.tileCollide = false;
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 25;
+            Projectile.localNPCHitCooldown = -1;
         }
 
-        private ref float AI_Timer => ref Projectile.ai[0];
-        private ref float AI_Pattern => ref Projectile.ai[1];
-        private ref float Distance => ref Projectile.ai[2];
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
+
         public override void AI()
         {
-            AI_Timer++;
-            //This runs every other frame
-            if(AI_Timer % 2 == 0)
+            base.AI();
+            Timer++;
+            if(Timer == 1)
             {
+                BeamWidthMultiplier = Main.rand.NextFloat(0.15f, 1f);
+            }
+            float targetBeamLength = ProjectileHelper.PerformBeamHitscan(Projectile.position, Projectile.velocity.SafeNormalize(Vector2.Zero), 600);
+            BeamLength = targetBeamLength;
+            if (Timer == 1)
+            {
+                //Sound Effect Goooo
 
-                if(Main.myPlayer == Projectile.owner)
+                Vector2 lightningHitPos = Projectile.position + Projectile.velocity.SafeNormalize(Vector2.Zero) * BeamLength;
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(lightningHitPos, 1024, 3);
+            }
+
+            for (int i = 0; i < Lightning.Trails.Length; i++)
+            {
+                float progress = (float)i / (float)Lightning.Trails.Length;
+                var trail = Lightning.Trails[i];
+                trail.LightningRandomOffsetRange = MathHelper.Lerp(16, 4, progress) * MathHelper.Lerp(2f, 0, Timer / 8f);
+                trail.LightningRandomExpand = MathHelper.Lerp(16, 8, progress);
+                trail.PrimaryColor = Color.Lerp(Color.White, Color.LightSkyBlue, progress);
+                trail.NoiseColor = Color.Lerp(Color.White, Color.LightSkyBlue, progress);
+            }
+
+            //Setup lightning stuff
+            //Should make it scale in/out
+            float lightningProgress = Timer / 8f;
+            float easedLightningProgress = Easing.SpikeOutCirc(lightningProgress);
+            Lightning.WidthMultiplier = MathHelper.Lerp(0f, 4, easedLightningProgress) * BeamWidthMultiplier;
+            if (Timer % 3 == 0)
+            {
+                List<Vector2> beamPoints = new List<Vector2>();
+                Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
+                for (int i = 0; i <= 12f; i++)
                 {
-                    Distance = Main.rand.NextFloat(16, 180);
-                    Projectile.netUpdate = true;
+                    float maxProgress = MathHelper.Lerp(0f, 1f, Easing.OutExpo(Timer / 3f));
+                    float progress = MathHelper.Lerp(0f, maxProgress, i / 12f);
+                    Vector2 end = Projectile.Center + direction * BeamLength;
+                    end = end.RotatedByRandom(MathHelper.ToRadians(0.02f));
+                    Vector2 lerpedPoint = Vector2.Lerp(Projectile.Center, end, progress);
+
+
+                    beamPoints.Add(lerpedPoint);
                 }
-            }
-
-            if (Distance != 0)
-            {
-                float degrees = 14;
-                if (AI_Pattern == 0)
-                {              //Randomly teleport to make the jagged effect
-                    Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
-                    direction = direction.RotatedBy(MathHelper.ToRadians(degrees));
-                    Distance = Main.rand.NextFloat(16, 180);
-                    Projectile.Center = Projectile.Center + direction * Distance;
-                    AI_Pattern++;
-                }
-                else if (AI_Pattern == 1)
-                {
-                    Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
-                    direction = direction.RotatedBy(MathHelper.ToRadians(-degrees));
-                    Projectile.Center = Projectile.Center + direction * Distance;
-                    AI_Pattern--;
-                }
-                Distance = 0;
-            }
-
-            //Dunno if this is needed but whatever
-            Projectile.rotation = Projectile.velocity.ToRotation();
-        }
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            //Electrifying!!!! nEMIES!!!
-            target.AddBuff(BuffID.Electrified, 120);
-            SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.position);
-
-            for (int i = 0; i < 8; i++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(1, 1);
-                var d = Dust.NewDustPerfect(Projectile.Center, DustID.Electric, speed, Scale: 1.5f);
-                d.noGravity = true;
+                BeamPoints = beamPoints.ToArray();
+                Lightning.RandomPositions(BeamPoints);
             }
         }
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * 8;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
 
-        public Color ColorFunction(float completionRatio)
+        public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            Color startColor = Color.Blue;
-            Color endColor = Color.Transparent;
-            return Color.Lerp(startColor, endColor, completionRatio);
+            return false;
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            //This damages everything in the trail
-            Vector2[] positions = Projectile.oldPos;
-            float collisionPoint = 0;
-            for (int i = 1; i < positions.Length; i++)
-            {
-                Vector2 position = positions[i];
-                Vector2 previousPosition = positions[i - 1];
-                if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, 6, ref collisionPoint))
-                    return true;
-            }
-            return false;
+            float _ = 0f;
+            float width = Projectile.width * 0.8f;
+            Vector2 start = Projectile.Center;
+
+            Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
+            Vector2 end = start + direction * (BeamLength);
+            return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, width, ref _);
         }
 
-        internal PrimitiveTrail BeamDrawer;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
+        public override bool PreDraw(ref Color lightColor)
         {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.LightCyan);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
-
-            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Lightning.Draw(spriteBatch, BeamPoints, Projectile.oldRot);
+            return false;
         }
     }
 }

@@ -25,8 +25,8 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.rare = ItemRarityID.LightRed;
             Item.damage = 24;
             Item.DamageType = DamageClass.Ranged;
-            Item.useAnimation = 9;
-            Item.useTime = 9;
+            Item.useAnimation = 4;
+            Item.useTime = 4;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.shoot = ModContent.ProjectileType<EelLightningBolt>();
             Item.shootSpeed = 1;
@@ -49,15 +49,6 @@ namespace Stellamod.Items.Weapons.Ranged
                 Vector2 newVelocity = (velocity*20).RotatedByRandom(MathHelper.ToRadians(15));
                 newVelocity *= 1f - Main.rand.NextFloat(0.3f);
                 Dust.NewDust(position, 0, 0, DustID.Electric, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
-            }
-
-            int numProjectiles = Main.rand.Next(1, 2);
-            for (int p = 0; p < numProjectiles; p++)
-            {
-                // Rotate the velocity randomly by 30 degrees at max.
-                Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(6));
-                newVelocity *= 1f - Main.rand.NextFloat(0.3f);
-                Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
             }
 
             return true;
