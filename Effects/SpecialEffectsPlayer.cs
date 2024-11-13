@@ -66,7 +66,13 @@ namespace Stellamod.Effects
             }
             PaletteShaderSystem paletteShaderSystem = ModContent.GetInstance<PaletteShaderSystem>();
             ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-            if (Player.InModBiome<AurelusBiome>() || Player.InModBiome<AbyssBiome>() || Player.InModBiome<EngineerShop>() || Player.InModBiome<IshtarBiome>())
+
+            LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
+
+            if (Player.InModBiome<AurelusBiome>() ||
+                Player.InModBiome<AbyssBiome>() || 
+                Player.InModBiome<EngineerShop>() || 
+                Player.InModBiome<IshtarBiome>())
             {
                 paletteShaderSystem.UsePalette(_abyssPalette);
                 float darkness = 2f;
@@ -89,7 +95,7 @@ namespace Stellamod.Effects
                 }
             }
 
-            if (Player.ZoneDungeon)
+            if (Player.ZoneDungeon && clientConfig.VanillaBiomesPaletteShadersToggle)
             {
                 paletteShaderSystem.UsePalette(_dungeonPalette);
                 float darkness = 2f;
@@ -112,7 +118,7 @@ namespace Stellamod.Effects
                 }
             }
 
-            if (Player.ZoneUnderworldHeight || Player.InModBiome<CindersparkBiome>())
+            if ((Player.ZoneUnderworldHeight && clientConfig.VanillaBiomesPaletteShadersToggle) || Player.InModBiome<CindersparkBiome>())
             {
                 paletteShaderSystem.UsePalette(_underworldPalette);
                 screenShaderSystem.VignetteScreen(1f);
@@ -140,7 +146,8 @@ namespace Stellamod.Effects
                 }
             }
 
-            if (Player.InModBiome<GovheilCastle>() || Player.InModBiome<AcidBiome>())
+            if (Player.InModBiome<GovheilCastle>() || 
+                Player.InModBiome<AcidBiome>())
             {
                 paletteShaderSystem.UsePalette(_witchTownPalette);
             }
@@ -167,7 +174,7 @@ namespace Stellamod.Effects
                 }
             }
 
-            if (Player.ZoneDesert)
+            if (Player.ZoneDesert && clientConfig.VanillaBiomesPaletteShadersToggle)
             {
                 paletteShaderSystem.UsePalette(_desertPalette);
                 screenShaderSystem.VignetteScreen(1f);

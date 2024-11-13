@@ -9,6 +9,8 @@ Mods: {
 					BiomeParticles: Biome Particles Header
 					ModdedBiomeParticles: Modded Biome Particles Header
 					Screenshake: Screenshake Header
+					Effects: Effects Header
+					Visual: Visual Header
 				}
 
 				VanillaParticlesToggle: {
@@ -29,6 +31,11 @@ Mods: {
 				ShakeToggle: {
 					Tooltip: ""
 					Label: Shake Toggle
+				}
+
+				VanillaBiomesPaletteShadersToggle: {
+					Tooltip: ""
+					Label: Vanilla Biomes Palette Shaders Toggle
 				}
 			}
 
