@@ -35,6 +35,8 @@ namespace Stellamod.Skies
             else
             {
                 Opacity = MathHelper.Lerp(Opacity, 0f, 0.1f);
+                if (Opacity < 0.01f)
+                    Opacity = 0f;
             }
         }
 
@@ -72,6 +74,9 @@ namespace Stellamod.Skies
 
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, eff.Shader, Main.BackgroundViewMatrix.TransformationMatrix);
+                spriteBatch.Draw(starsTexture.Value,
+                   new Rectangle(0, 0, Main.screenWidth, Main.screenHeight),
+                    null, Color.White * 0.3f);
 
                 spriteBatch.Draw(starsTexture.Value, 
                     new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), 
