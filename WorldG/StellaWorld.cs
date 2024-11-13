@@ -3740,7 +3740,7 @@ namespace Stellamod.WorldG
                        
                     
 
-                    Point Loc = new Point(smx + 20, smyy + 3);
+                    Point Loc = new Point(smx + 20, smyy + 10);
 					
 					rectangle.Location = Loc;
                     NPCs.Town.AlcadSpawnSystem.AlcadTile = Loc;
