@@ -152,6 +152,10 @@ namespace Stellamod.Helpers
 
             //Distortion Shader
             RegisterMiscShader(DistortionShaderName, "Effects/NormalDistortion", "ScreenPass");
+
+            RegisterMiscShader("LunarVeil:SimpleDistortion", "Effects/SimpleDistortion", "PixelPass");
+            RegisterMiscShader("LunarVeil:SimpleMasking", "Effects/SimpleMasking", "PixelPass");
+
             Ref<Effect> lavaRef = new(Assets.Request<Effect>("Effects/Lava", AssetRequestMode.ImmediateLoad).Value);
             Filters.Scene["LunarVeil:Lava"] = new Filter(new ScreenShaderData(lavaRef, "PrimitivesPass"), EffectPriority.VeryHigh);
             Filters.Scene["LunarVeil:Lava"].Load();

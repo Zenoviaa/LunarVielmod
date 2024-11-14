@@ -51,7 +51,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.noUseGraphic = true;
 
 			// Gun Properties
-			Item.shoot = ModContent.ProjectileType<GothDarkBlastProj>();
+			Item.shoot = ModContent.ProjectileType<AlcadBall>();
 			Item.shootSpeed = 5;
 		}
 
