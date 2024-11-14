@@ -1,6 +1,10 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common.LoadingSystems;
 using Stellamod.Skies;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
@@ -10,11 +14,12 @@ namespace Stellamod.Helpers
 {
     internal static class ShaderRegistry
     {
+        private static List<IOrderedLoadable> _loadCache;
         public static string VampKnives_Basic_Trail => "VampKnives:BasicTrail";
         public static string VampKnives_Lightning_Trail => "VampKnives:LightningTrail";
         public static string VampKnives_Generic_Laser_Shader => "VampKnives:GenericLaserShader";
         public static string VampKnives_Light_Beam_Vertex_Shader => "VampKnives:LightBeamVertexShader";
-        
+
         public static string VampKnives_Fire => "VampKnives:Fire";
         public static string StellamodFireWhiteShader => "VampKnives:FireWhite";
 
@@ -74,7 +79,7 @@ namespace Stellamod.Helpers
 
             GameShaders.Misc[ShaderRegistry.VampKnives_Basic_Trail] = new MiscShaderData(BasicTrailRef, "TrailPass");
             GameShaders.Misc[ShaderRegistry.VampKnives_Lightning_Trail] = new MiscShaderData(LightningTrailRef, "TrailPass");
-    
+
             Asset<Effect> shader2 = ModContent.Request<Effect>("Stellamod/Trails/SilhouetteShader", AssetRequestMode.ImmediateLoad);
             GameShaders.Misc[ShaderRegistry.Silhouette_Shader] = new MiscShaderData(new Ref<Effect>(shader2.Value), "SilhouettePass");
 
@@ -84,7 +89,7 @@ namespace Stellamod.Helpers
             Ref<Effect> LightBeamVertexShader = new(Assets.Request<Effect>("Effects/Primitives/LightBeamVertexShader", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc[ShaderRegistry.VampKnives_Light_Beam_Vertex_Shader] = new MiscShaderData(LightBeamVertexShader, "TrailPass");
 
-            
+
 
             Ref<Effect> shadowflameShader = new(Assets.Request<Effect>("Effects/Primitives/Shadowflame", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc[ShaderRegistry.VampKnives_Fire] = new MiscShaderData(shadowflameShader, "TrailPass");
@@ -97,7 +102,7 @@ namespace Stellamod.Helpers
 
             Ref<Effect> SuperSimpleTrailRef = new(Assets.Request<Effect>("Effects/SimpleTrail", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc["VampKnives:SuperSimpleTrail"] = new MiscShaderData(SuperSimpleTrailRef, "TrailPass");
-          
+
             Ref<Effect> DaedusRobeRef = new(Assets.Request<Effect>("Effects/DaedusRobe", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc["LunarVeil:DaedusRobe"] = new MiscShaderData(DaedusRobeRef, "PixelPass");
 
@@ -147,6 +152,9 @@ namespace Stellamod.Helpers
 
             //Distortion Shader
             RegisterMiscShader(DistortionShaderName, "Effects/NormalDistortion", "ScreenPass");
+            Ref<Effect> lavaRef = new(Assets.Request<Effect>("Effects/Lava", AssetRequestMode.ImmediateLoad).Value);
+            Filters.Scene["LunarVeil:Lava"] = new Filter(new ScreenShaderData(lavaRef, "PrimitivesPass"), EffectPriority.VeryHigh);
+            Filters.Scene["LunarVeil:Lava"].Load();
 
             //Skies
 
@@ -167,6 +175,44 @@ namespace Stellamod.Helpers
 
             SkyManager.Instance["Stellamod:VillageSky"] = new VillageSky();
             SkyManager.Instance["Stellamod:VillageSky"].Load();
+            LoadOrderedLoadables();
+        }
+
+        public static void LoadOrderedLoadables()
+        {
+            _loadCache = new List<IOrderedLoadable>();
+            foreach (Type type in Stellamod.Instance.Code.GetTypes())
+            {
+                if (!type.IsAbstract && type.GetInterfaces().Contains(typeof(IOrderedLoadable)))
+                {
+                    object instance = Activator.CreateInstance(type);
+                    _loadCache.Add(instance as IOrderedLoadable);
+                }
+
+                _loadCache.Sort((n, t) => n.Priority.CompareTo(t.Priority));
+            }
+
+            for (int k = 0; k < _loadCache.Count; k++)
+            {
+                _loadCache[k].Load();
+            }
+        }
+
+        public static void UnloadOrderedLoadables()
+        {
+            if (_loadCache != null)
+            {
+                foreach (IOrderedLoadable loadable in _loadCache)
+                {
+                    loadable.Unload();
+                }
+
+                _loadCache = null;
+            }
+            else
+            {
+                //   Logger.Warn("load cache was null, IOrderedLoadable's may not have been unloaded...");
+            }
         }
     }
 }
