@@ -8045,3 +8045,8 @@ MoldTooltipItem: {
 	Tooltip: ""
 	DisplayName: Mold Tooltip Item
 }
+
+VeilGenTester: {
+	DisplayName: Veil Gen Tester
+	Tooltip: ""
+}
