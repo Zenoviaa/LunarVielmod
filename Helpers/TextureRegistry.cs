@@ -23,6 +23,8 @@ namespace Stellamod.Helpers
         public static Asset<Texture2D> CloudNoise => ModContent.Request<Texture2D>("Stellamod/Textures/CloudNoise");
         public static Asset<Texture2D> CloudNoise2 => ModContent.Request<Texture2D>("Stellamod/Textures/CloudNoise2");
         public static Asset<Texture2D> CloudNoise3 => ModContent.Request<Texture2D>("Stellamod/Textures/CloudNoise3");
+        public static Asset<Texture2D> BlurryPerlinNoise2 => ModContent.Request<Texture2D>("Stellamod/Textures/BlurryPerlinNoise2");
+        public static Asset<Texture2D> LavaDepths => ModContent.Request<Texture2D>("Stellamod/Textures/LavaDepths");
         public static Asset<Texture2D> CloudTexture => ModContent.Request<Texture2D>("Stellamod/Assets/Effects/CloudTexture");
         public static Asset<Texture2D> IrraTexture => ModContent.Request<Texture2D>("Stellamod/Assets/Effects/IrraTexture2");
     }

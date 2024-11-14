@@ -19,7 +19,7 @@ namespace Stellamod.Projectiles.Bow
             Projectile.tileCollide = false;
             Projectile.penetrate = 3;
             Projectile.usesIDStaticNPCImmunity = true;
-            Projectile.idStaticNPCHitCooldown = 20;
+            Projectile.idStaticNPCHitCooldown = 11;
             Projectile.timeLeft = 120;
         }
 

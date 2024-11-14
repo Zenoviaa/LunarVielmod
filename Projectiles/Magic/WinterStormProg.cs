@@ -13,6 +13,7 @@ namespace Stellamod.Projectiles.Magic
 {
     internal class WinterStormProg : ModProjectile
     {
+        private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Winter Storm");
@@ -20,9 +21,29 @@ namespace Stellamod.Projectiles.Magic
             ProjectileID.Sets.TrailCacheLength[Type] = 20;
         }
 
-        public override void PostDraw(Color lightColor)
+
+        public override void SetDefaults()
         {
-            Lighting.AddLight(Projectile.Center, Color.LightPink.ToVector3() * 1.75f * Main.essScale);
+            Projectile.width = 8;
+            Projectile.height = 8;
+            Projectile.timeLeft = 180;
+            Projectile.alpha = 0;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
+        }
+
+        public override void AI()
+        {
+            Timer++;
+            if (Timer >= 10)
+            {
+                Projectile.tileCollide = true;
+            }
+
+            Projectile.rotation += Projectile.velocity.Length() * 0.0f;
+            Projectile.velocity.Y += 0.2f;
             if (Main.rand.NextBool(7))
             {
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Snow, 0f, 0f, 150, Color.White, 1f);
@@ -31,51 +52,33 @@ namespace Stellamod.Projectiles.Magic
             }
         }
 
-        public override void SetDefaults()
-        {
-            Projectile.CloneDefaults(ProjectileID.Shuriken);
-            AIType = ProjectileID.Shuriken;
-            Projectile.penetrate = 1;
-            base.Projectile.width = 18;
-            base.Projectile.height = 18;
-            base.Projectile.timeLeft = 700;
-            base.Projectile.alpha = 0;
-            base.Projectile.friendly = true;
-            base.Projectile.hostile = false;
-            base.Projectile.ignoreWater = true;
-            base.Projectile.tileCollide = false;
-        }
-
-        public override void AI()
-        {
-            Projectile.ai[1]++;
-            if (Projectile.ai[1] >= 10)
-            {
-                Projectile.tileCollide = true;
-            }
-
-            Projectile.velocity.Y -= 0.01f;
-        }
-
         public override void OnKill(int timeLeft)
         {
-            var EntitySource = Projectile.GetSource_Death();
-            for (int i = 0; i < 3; i++)
+            var source = Projectile.GetSource_Death();
+            if(Main.myPlayer == Projectile.owner)
             {
-                Projectile.timeLeft = 2;
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-4, 5), ModContent.ProjectileType<WinterStormFragProg>(), 5, 1, Projectile.owner);
-            }
-            for (int i = 0; i < 4; i++)
-            {
-
-                Projectile.timeLeft = 2;
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), ModContent.ProjectileType<WinterboundArrowFlake>(), 5, 1, Projectile.owner);
+                for (int i = 0; i < 3; i++)
+                {
+                    Vector2 vel = new Vector2();
+                    vel.X = Main.rand.Next(-4, 5);
+                    vel.Y = Main.rand.Next(-4, 5);
+                    Projectile.NewProjectile(source, Projectile.Center, vel,
+                        ModContent.ProjectileType<WinterStormFragProg>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
+                for (int i = 0; i < 4; i++)
+                {
+                    Vector2 vel = new Vector2();
+                    vel.X = Main.rand.Next(-2, 2);
+                    vel.Y = Main.rand.Next(-2, 2);
+                    Projectile.NewProjectile(source, Projectile.Center, vel,
+                        ModContent.ProjectileType<WinterboundArrowFlake>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
             }
 
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterStorm"), Projectile.position);
             for (int i = 0; i < 20; i++)
             {
-                Dust.NewDustPerfect(base.Projectile.Center, DustID.Snow, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default(Color), 1f).noGravity = false;
+                Dust.NewDustPerfect(Projectile.Center, DustID.Snow, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default(Color), 1f).noGravity = false;
             }
         }
 
@@ -103,9 +106,7 @@ namespace Stellamod.Projectiles.Magic
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.CrystalTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
             return false;
         }
-         
     }
 }

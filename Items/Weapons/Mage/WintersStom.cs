@@ -27,8 +27,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetDefaults()
         {
-
-            Item.damage = 14;
+            Item.damage = 8;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -41,11 +40,10 @@ namespace Stellamod.Items.Weapons.Mage
             Item.UseSound = SoundID.DD2_BookStaffCast;
             Item.DamageType = DamageClass.Magic;
             Item.shoot = ModContent.ProjectileType<WinterStormProg>();
-            Item.shootSpeed = 10f;
+            Item.shootSpeed = 11;
             Item.mana = 5;
             Item.useAnimation = 34;
             Item.useTime = 34;
-
             Item.consumeAmmoOnLastShotOnly = true;
         }
 

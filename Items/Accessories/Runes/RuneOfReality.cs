@@ -1,18 +1,10 @@
-﻿using Stellamod.Items.Materials;
-using Stellamod.Tiles;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Stellamod.Projectiles.Gun;
-using Stellamod.Items.Materials.Molds;
+﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.Bases;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using Terraria;
 using Terraria.Graphics.Shaders;
-using System;
-using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Runes
 {
@@ -59,10 +51,10 @@ namespace Stellamod.Items.Accessories.Runes
                 Timer--;
             }
 
-            if(Timer > 60)
+            if (Timer > 60)
             {
                 Timer = 60;
-            } 
+            }
             else if (Timer < 0)
             {
                 Timer = 0;
@@ -76,7 +68,7 @@ namespace Stellamod.Items.Accessories.Runes
                 float progress = f / length;
                 float offset = progress * MathHelper.TwoPi;
                 Vector2 rotatedOffset = Vector2.UnitY.RotatedBy(offset + (Timer / 20f)).RotatedByRandom(MathHelper.PiOver4 / 24f);
-                Vector2 rotatedVector = (rotatedOffset * 150 * VectorHelper.Osc(0.95f, 1f, 9, offset: f *0.5f));
+                Vector2 rotatedVector = (rotatedOffset * 150 * VectorHelper.Osc(0.95f, 1f, 9, offset: f * 0.5f));
                 if (i % 2 == 0)
                 {
                     _fieldPos[i] = rotatedVector * VectorHelper.Osc(0.8f, 1f, speed: 8, offset: f * 4f) + Projectile.position;
@@ -108,7 +100,7 @@ namespace Stellamod.Items.Accessories.Runes
             {
                 TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
             }
-    
+
             TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
             GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.SimpleTrail);
             Vector2 trailOffset = -Main.screenPosition;

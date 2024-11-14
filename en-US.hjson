@@ -37,6 +37,11 @@ Mods: {
 					Tooltip: ""
 					Label: Vanilla Biomes Palette Shaders Toggle
 				}
+
+				LiquidsToggle: {
+					Tooltip: ""
+					Label: Liquids Toggle
+				}
 			}
 
 			LunarVeilServerConfig.DisplayName: Lunar Veil Server Config
