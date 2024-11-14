@@ -28,23 +28,11 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetDefaults()
         {
-            Item.damage = 150;
-            Item.width = 50;
-            Item.height = 78;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.knockBack = 5;
-            Item.value = Item.sellPrice(0, 5, 0, 0);
-            Item.rare = ItemRarityID.LightRed;
-            Item.shootSpeed = 15;
-            Item.autoReuse = true;
-            Item.noMelee = true;
-            Item.DamageType = DamageClass.Magic;
-            Item.shoot = ModContent.ProjectileType<AlcadBombProj>();
-            Item.mana = 5;
-            Item.useAnimation = 3;
-            Item.useTime = 3;
-        //    Item.UseSound = SoundID.
-            Item.channel = true;
+            Item.CloneDefaults(ItemID.LastPrism);
+            Item.mana = 4;
+            Item.damage = 140;
+            Item.shootSpeed = 30f;
+            Item.shoot = ModContent.ProjectileType<AlcadBombHeldProj>();
         }
 
         public override Vector2? HoldoutOffset()
@@ -52,14 +40,9 @@ namespace Stellamod.Items.Weapons.Mage
             return new Vector2(-3f, -2f);
         }
 
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override bool CanUseItem(Player player)
         {
-            if (player.ownedProjectileCounts[type] > 0)
-            {
-                return false;
-            }
-
-            return base.Shoot(player, source, position, velocity, type, damage, knockback);
+            return player.ownedProjectileCounts[Item.shoot] == 0;
         }
     }
 }

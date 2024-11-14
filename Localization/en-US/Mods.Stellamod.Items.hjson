@@ -5198,7 +5198,7 @@ AlcadBomb: {
 	DisplayName: Alcad Bomb
 	Tooltip:
 		'''
-		Casts a controllable blackhole
+		Channels a blackhole at your cursor position!
 		Suck em' up!
 		'''
 }
