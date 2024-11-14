@@ -96,6 +96,8 @@
     <None Remove="Effects\RoyalCapitalSky - Copy.fx" />
     <None Remove="effects\RoyalCapitalSky.fx" />
     <None Remove="effects\SilShader.fx" />
+    <None Remove="Effects\SimpleDistortion.fx" />
+    <None Remove="Effects\SimpleMasking.fx" />
     <None Remove="effects\SimpleTrail.fx" />
     <None Remove="Effects\TestShader.fx" />
     <None Remove="Effects\Tint.fx" />
@@ -507,6 +509,8 @@
     <None Remove="Projectiles\Swords\Ripper\RipperSwordProj.png" />
     <None Remove="Projectiles\Swords\VoidBlasterSpawnEffect.png" />
     <None Remove="Projectiles\TestRay.png" />
+    <None Remove="Projectiles\Test\AlcadBall.png" />
+    <None Remove="Projectiles\Test\AlcadBall_Outline.png" />
     <None Remove="Projectiles\Test\ChainTestProj2.png" />
     <None Remove="Projectiles\Test\ExampleDistortionProjectile.png" />
     <None Remove="Projectiles\Test\ExampleSilhouetteProjectile.png" />
