@@ -2706,7 +2706,7 @@ namespace Stellamod
 
         private void AddForegroundOrBackground()
         {
-            if (ZoneIlluria || ZoneIshtar)
+            if (ZoneIlluria || ZoneIshtar || ZoneAbyss)
             {
                 int leafFGChance = Starstrike.SpawnChance(Player);
                 if (leafFGChance != -1 && Main.rand.NextBool(leafFGChance))

@@ -30,7 +30,7 @@ namespace Stellamod.Backgrounds
 
 		public override int ChooseFarTexture()
 		{
-			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/Starbloomflat");
+			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/Alcadziaflat");
 			
 		}
 
@@ -39,7 +39,7 @@ namespace Stellamod.Backgrounds
 		{
 
 
-			scale = 0.66f;
+			scale = 0.9f;
 			parallax = 0.3;
 			//b = 1400;
 
