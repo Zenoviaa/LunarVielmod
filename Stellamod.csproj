@@ -558,6 +558,7 @@
     <Folder Include="Items\Accessories\Shields\" />
     <Folder Include="Projectiles\Hostile\" />
     <Folder Include="Projectiles\FX\" />
+    <Folder Include="Projectiles\Slashers\NewFolder\" />
     <Folder Include="Projectiles\Swords\Slashes\" />
     <Folder Include="Struct\Catacombs\" />
   </ItemGroup>
