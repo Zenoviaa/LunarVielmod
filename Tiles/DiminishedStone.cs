@@ -15,8 +15,8 @@ namespace Stellamod.Tiles
 			Main.tileBlockLight[Type] = true;
 
 			DustType = DustID.SilverCoin;
-			MineResist = 0f;
-			MinPick = 0;
+			MineResist = 0.4f;
+			MinPick = 1;
 
 			RegisterItemDrop(ItemID.StoneBlock);
 			AddMapEntry(new Color(83, 83, 83));
