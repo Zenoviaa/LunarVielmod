@@ -73,8 +73,9 @@ namespace Stellamod.WorldG
             int caveWidth = 4;
             int caveSteps = 64;
             Vector2 cavePosition = new Vector2(tileX, tileY);
+            Vector2 caveStrength = new Vector2(5, 10);
             Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection());
-            VeilGen.GenerateWormCave(tileX, tileY, caveWidth, caveSteps, cavePosition, baseCaveDirection);
+            VeilGen.GenerateWormCave(cavePosition, baseCaveDirection, caveStrength, caveWidth, caveSteps);
         }
         private void GenerateVeinyCave()
         {
@@ -225,15 +226,11 @@ namespace Stellamod.WorldG
             }
         }
 
-        public static void GenerateWormCave(int x, int y, 
-            int caveWidth, 
-            int caveSteps, 
-            Vector2 cavePosition, 
-            Vector2 baseCaveDirection)
+        public static void GenerateWormCave(Vector2 cavePosition, 
+            Vector2 baseCaveDirection, Vector2 caveStrength, int caveWidth, int caveSteps)
         {
             var genRand = WorldGen.genRand;
             int caveSeed = genRand.Next();
-            Vector2 caveStrength = new Vector2(5f, 10f);
 
             //Why make my own noise functions when I can just use this?!?!?1 Hhahahaha
             FastNoiseLite fastNoiseLite = new FastNoiseLite();
