@@ -77,7 +77,7 @@ namespace Stellamod.WorldG
             DisableGenTask(tasks, "Corruption");
             tasks[tasks.FindIndex(x => x.Name.Equals("Terrain"))] = new VanillaTerrainPass();
 
-			int caveGen = tasks.FindIndex(x => x.Name.Equals("Rock Layer Caves"));
+			int caveGen = tasks.FindIndex(x => x.Name.Equals("Jungle"));
 			if(caveGen != -1)
 			{
                 tasks.Insert(caveGen + 1, new PassLegacy("Caves 1", WorldGenCaves));
@@ -1347,7 +1347,7 @@ namespace Stellamod.WorldG
                     int[] ChestIndexs = Structurizer.ReadStruct(Loc, path, tileBlend);
                     Structurizer.ProtectStructure(Loc, path);
 
-                    Point Loc2 = new Point(smx, smy + 20);
+                    Point Loc2 = new Point(smx, smy + 16);
                     WorldUtils.Gen(Loc2, new Shapes.Rectangle(rectangle.Width, 20), new Actions.SetTile(TileID.Dirt));
                     NPCs.Town.AlcadSpawnSystem.LittleWitchTownTile = Loc;
 					foreach (int chestIndex in ChestIndexs)
@@ -1450,7 +1450,7 @@ namespace Stellamod.WorldG
                 while (!placed && attempts++ < 1000000)
                 {
                     // Select a place in the first 6th of the world, avoiding the oceans
-                    int offset = WorldGen.genRand.Next(-400, -300);
+                    int offset = WorldGen.genRand.Next(-500, -400);
 					int smx = GenVars.dungeonX + offset;
 
                     //Start at 200 tiles above the surface instead of 0, to exclude floating islands
@@ -1469,16 +1469,6 @@ namespace Stellamod.WorldG
                     }
 
                     Tile tile = Main.tile[smx, smy];
-                    if (!(tile.TileType == TileID.Sand
-                      || tile.TileType == TileID.Dirt
-                      || tile.TileType == ModContent.TileType<VeriplantGrass>()
-                      || tile.TileType == TileID.Grass
-                      || tile.TileType == TileID.Stone
-                      || tile.TileType == TileID.Sandstone))
-                    {
-                        continue;
-                    }
-
                     Tile tileAbove = Main.tile[smx, smy - 1];
                     if (tileAbove.LiquidAmount > 0)
                         continue;
