@@ -88,7 +88,7 @@ namespace Stellamod.WorldG
             {
 
                 tasks.Insert(RoyalGen + 1, new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
-                tasks.Insert(RoyalGen + 2, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
+
             }
             //Replace Terrain Pass
             
@@ -142,7 +142,8 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
 				tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
                 tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Graving", WorldGenGraving));
-                tasks.Insert(CathedralGen2 + 22, new PassLegacy("Grassing Caves", WorldGenGrassPass));
+                tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
+                tasks.Insert(CathedralGen2 + 23, new PassLegacy("Grassing Caves", WorldGenGrassPass));
 
             }
 		}
@@ -793,76 +794,32 @@ namespace Stellamod.WorldG
 
         private void WorldGenCinderspark(GenerationProgress progress, GameConfiguration configuration)
         {
-            progress.Message = "Shifting Shadows deep in the Ice";
-
-
-
-            bool placed = false;
-            int attempts = 0;
-            while (!placed && attempts++ < 300000)
-            {
-                // Select a place in the first 6th of the world, avoiding the oceans
-                int abysmx = WorldGen.genRand.Next(250, Main.maxTilesX - 250); // from 50 since there's a unaccessible area at the world's borders
-                                                                               // 50% of choosing the last 6th of the world
-                                                                               // Choose which side of the world to be on randomly
-                ///if (WorldGen.genRand.NextBool())
-                ///{
-                ///	towerX = Main.maxTilesX - towerX;
-                ///}
-
-                //Start at 200 tiles above the surface instead of 0, to exclude floating islands
-                int abysmy = (Main.UnderworldLayer - (Main.maxTilesY / 20));
-
+            progress.Message = "Searing the deepest caverns";
+            var genRand = WorldGen.genRand;
+            for (int x = 0; x < Main.maxTilesX; x++)
+			{
+                int yMax = (Main.UnderworldLayer - (Main.maxTilesY / 20));
+				int yMin = yMax - 50;
+				int y = genRand.Next(yMin, yMax);
                 // We go down until we hit a solid tile or go under the world's surface
-                while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.UnderworldLayer)
+                while (!WorldGen.SolidTile(x, y) && y <= Main.UnderworldLayer)
                 {
-                    abysmy++;
+                    y++;
                 }
 
                 // If we went under the world's surface, try again
-                if (abysmy > Main.UnderworldLayer - 50)
-                {
-                    continue;
-                }
-                Tile tile = Main.tile[abysmx, abysmy];
-                // If the type of the tile we are placing the tower on doesn't match what we want, try again
-                if (!(tile.TileType == TileID.Stone
-                    || tile.TileType == TileID.Ash
-                    || tile.TileType == TileID.Dirt
-                    || tile.TileType == TileID.Mud
-                    || tile.TileType == TileID.IceBlock))
+                if (y > Main.UnderworldLayer - 50)
                 {
                     continue;
                 }
 
-
-                // place the Rogue
-                //	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-                //Main.npc[num].homeTileX = -1;
-                //	Main.npc[num].homeTileY = -1;
-                //	Main.npc[num].direction = 1;
-                //	Main.npc[num].homeless = true;
-
-
-                Point Loc = new Point(abysmx, abysmy);
-
-                for (int da = 0; da < 1; da++)
-                {
-
-                    WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(150, 150), WorldGen.genRand.Next(500, 500), ModContent.TileType<CindersparkDirt>());
-
-
-
-
-
-
-
+                Point tileRunPoint = new Point(x, y);
+				if(x % 24 == 0)
+				{
+                    WorldGen.TileRunner(tileRunPoint.X, tileRunPoint.Y,
+                        genRand.Next(150, 150),
+                        genRand.Next(500, 500), ModContent.TileType<CindersparkDirt>());
                 }
-
-
-
-
-
             }
         }
 
@@ -1443,45 +1400,37 @@ namespace Stellamod.WorldG
                 TileID.RubyGemspark
             };
 
-            for (int k = 0; k < 1; k++)
-            {
-                bool placed = false;
-                int attempts = 0;
-                while (!placed && attempts++ < 1000000)
+            int maxAttemptCount = 10000;
+			for(int a = 0; a < maxAttemptCount; a++)
+			{
+                // Select a place in the first 6th of the world, avoiding the oceans
+                int offset = WorldGen.genRand.Next(-500, -400);
+                int smx = GenVars.dungeonX + offset;
+
+                //Start at 200 tiles above the surface instead of 0, to exclude floating islands
+                int smy = ((int)(Main.worldSurface - 200));
+
+                // We go down until we hit a solid tile or go under the world's surface
+                while (!WorldGen.SolidTile(smx, smy))
                 {
-                    // Select a place in the first 6th of the world, avoiding the oceans
-                    int offset = WorldGen.genRand.Next(-500, -400);
-					int smx = GenVars.dungeonX + offset;
-
-                    //Start at 200 tiles above the surface instead of 0, to exclude floating islands
-                    int smy = ((int)(Main.worldSurface - 200));
-
-                    // We go down until we hit a solid tile or go under the world's surface
-                    while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
-                    {
-                        smy++;
-                    }
-
-                    // If we went under the world's surface, try again
-                    if (smy > Main.worldSurface)
-                    {
-                        continue;
-                    }
-
-                    Tile tile = Main.tile[smx, smy];
-                    Tile tileAbove = Main.tile[smx, smy - 1];
-                    if (tileAbove.LiquidAmount > 0)
-                        continue;
-
-                    Point Loc = new Point(smx, smy + 10);
-                    string path = "Struct/Boss/SanguimiBoss";
-                    if (!Structurizer.TryPlaceAndProtectStructure(Loc, path))
-                        continue;
-                    int[] chests = Structurizer.ReadStruct(Loc, path, tileBlend);
-                    placed = true;
+                    smy++;
                 }
+
+                Tile tile = Main.tile[smx, smy];
+                if (tile.TileType != TileID.Dirt &&
+                    tile.TileType != TileID.Grass)
+                    continue;
+
+                Tile tileAbove = Main.tile[smx, smy - 1];
+                Point Loc = new Point(smx, smy + 10);
+                string path = "Struct/Boss/SanguimiBoss";
+                if (!Structurizer.TryPlaceAndProtectStructure(Loc, path))
+                    continue;
+                int[] chests = Structurizer.ReadStruct(Loc, path, tileBlend);
+				break;
             }
         }
+
         private void WorldGenGraving(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "You aren't escaping the Kill Pillars";
@@ -2501,8 +2450,8 @@ namespace Stellamod.WorldG
             while (!placed && attempts++ < 100000)
             {
                 // Select a place in the first 6th of the world, avoiding the oceans
-                int minX = leftmostJungleTileX + 350;
-                int maxX = rightmostJungleTileX - 350;
+                int minX = leftmostJungleTileX + 10;
+                int maxX = rightmostJungleTileX - 10;
                 if (maxX < minX)
                     maxX = minX + 1;
                 int abysmx = WorldGen.genRand.Next(minX, maxX); // from 50 since there's a unaccessible area at the world's borders
