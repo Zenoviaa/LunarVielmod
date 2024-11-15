@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Effects;
 using Stellamod.Helpers;
+using System;
 using Terraria;
 using Terraria.Graphics.Effects;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -36,24 +38,18 @@ namespace Stellamod.Common.Lights
         public bool hasSunGlyph;
         public float darkness;
         public float darknessCurve;
-        private Color[] MonotonePalette(Color startingColor, Color endingColor, float steps)
-        {
-            var palette = new Color[(int)steps];
-            for (int i = 0; i < steps; i++)
-            {
-                palette[i] = Color.Lerp(startingColor, endingColor, i / steps);
-            }
-            return palette;
-        }
-        private Color[] RandomPalette(float steps)
-        {
-            var palette = new Color[(int)steps];
-            for (int i = 0; i < steps; i++)
-            {
-                palette[i] = new Color(Main.rand.NextFloat(), Main.rand.NextFloat(), Main.rand.NextFloat());
-            }
-            return palette;
-        }
+        public float whiteCurve;
+        public float blackCurve;
+
+
+        //Progress Variables
+        public float abyssPaletteProgress;
+        public float hellPaletteProgress;
+        public float dungeonPaletteProgress;
+        public float royalPaletteProgress;
+        public float desertPaletteProgress;
+        public float bloodCathedralPaletteProgress;
+
         private void LoadPalettes()
         {
             string rootDirectory = "Common/Lights/Palettes";
@@ -73,7 +69,17 @@ namespace Stellamod.Common.Lights
             hasSpiritPendant = false;
             hasSunGlyph = false;
             darkness = 0;
-            darknessCurve = 0f;
+            darknessCurve = 0.79f;
+
+
+            //Curve based
+            float progress = (float)(Main.LocalPlayer.position.ToTileCoordinates().Y - Main.worldSurface) / 1000;
+            progress = MathHelper.Clamp(progress, 0, 1);
+            darknessCurve = MathHelper.Lerp(0f, darknessCurve, progress);
+
+            whiteCurve = 0f;
+            blackCurve = 1f;
+
             _targetVignetteOpacity = 1f;
         }
 
@@ -100,12 +106,26 @@ namespace Stellamod.Common.Lights
         private void SpecialBiomeEffects()
         {
             LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
+            ScreenShaderData screenShaderData;
             bool abyssPaletteActive = MyPlayer.ZoneAbyss || MyPlayer.ZoneAurelus || MyPlayer.ZoneMechanics || MyPlayer.ZoneIshtar;
             if (abyssPaletteActive)
             {
                 darkness += 2;
             }
-            TogglePaletteShader("LunarVeil:PaletteAbyss", abyssPaletteActive);
+
+            float speed = 0.05f;
+            if (abyssPaletteActive)
+            {
+                abyssPaletteProgress += speed;
+            }
+            else
+            {
+                abyssPaletteProgress -= speed;
+            }
+            abyssPaletteProgress = MathHelper.Clamp(abyssPaletteProgress, 0f, 1f);
+            screenShaderData = FilterManager["LunarVeil:PaletteAbyss"].GetShader();
+            screenShaderData.UseProgress(abyssPaletteProgress);
+            TogglePaletteShader("LunarVeil:PaletteAbyss", abyssPaletteProgress != 0);
 
             bool hellPaletteActive = ((clientConfig.VanillaBiomesPaletteShadersToggle && Player.ZoneUnderworldHeight)
                 || MyPlayer.ZoneCinder || MyPlayer.ZoneDrakonic);
@@ -113,25 +133,82 @@ namespace Stellamod.Common.Lights
             {
                 darkness += 1;
             }
-            TogglePaletteShader("LunarVeil:PaletteHell", hellPaletteActive);
+            if (hellPaletteActive)
+            {
+                hellPaletteProgress += speed;
+            }
+            else
+            {
+                hellPaletteProgress -= speed;
+            }
+            hellPaletteProgress = MathHelper.Clamp(hellPaletteProgress, 0f, 1f);
+            screenShaderData = FilterManager["LunarVeil:PaletteHell"].GetShader();
+            screenShaderData.UseProgress(hellPaletteProgress);
+            TogglePaletteShader("LunarVeil:PaletteHell", hellPaletteProgress != 0);
 
             bool royalCapitalPaletteActive = MyPlayer.ZoneAlcadzia;
-            TogglePaletteShader("LunarVeil:PaletteRoyalCapital", royalCapitalPaletteActive);
+            if (royalCapitalPaletteActive)
+            {
+                royalPaletteProgress += speed;
+            }
+            else
+            {
+                royalPaletteProgress -= speed;
+            }
+            royalPaletteProgress = MathHelper.Clamp(royalPaletteProgress, 0f, 1f);
+            screenShaderData = FilterManager["LunarVeil:PaletteRoyalCapital"].GetShader();
+            screenShaderData.UseProgress(royalPaletteProgress);
+            TogglePaletteShader("LunarVeil:PaletteRoyalCapital", royalPaletteProgress != 0);
 
             bool dungeonPaletteActive = clientConfig.VanillaBiomesPaletteShadersToggle && Player.ZoneDungeon;
-            TogglePaletteShader("LunarVeil:PaletteDungeon", dungeonPaletteActive);
+            if (dungeonPaletteActive)
+            {
+                dungeonPaletteProgress += speed;
+            }
+            else
+            {
+                dungeonPaletteProgress -= speed;
+            }
+            dungeonPaletteProgress = MathHelper.Clamp(dungeonPaletteProgress, 0f, 1f);
+            screenShaderData = FilterManager["LunarVeil:PaletteDungeon"].GetShader();
+            screenShaderData.UseProgress(dungeonPaletteProgress);
+            TogglePaletteShader("LunarVeil:PaletteDungeon", dungeonPaletteProgress != 0);
 
             bool desertPaletteActive = clientConfig.VanillaBiomesPaletteShadersToggle && Player.ZoneDesert;
-            TogglePaletteShader("LunarVeil:PaletteDesert", desertPaletteActive);
+            if (desertPaletteActive)
+            {
+                desertPaletteProgress += speed;
+            }
+            else
+            {
+                desertPaletteProgress -= speed;
+            }
+            desertPaletteProgress = MathHelper.Clamp(desertPaletteProgress, 0f, 1f);
+            screenShaderData = FilterManager["LunarVeil:PaletteDesert"].GetShader();
+            screenShaderData.UseProgress(desertPaletteProgress);
+            TogglePaletteShader("LunarVeil:PaletteDesert", desertPaletteProgress != 0);
 
             bool bloodPaletteActive = MyPlayer.ZoneBloodCathedral && !Main.dayTime;
-            TogglePaletteShader("LunarVeil:PaletteBloodCathedral", bloodPaletteActive);
+            if (bloodPaletteActive)
+            {
+                bloodCathedralPaletteProgress += speed;
+            }
+            else
+            {
+                bloodCathedralPaletteProgress -= speed;
+            }
+            bloodCathedralPaletteProgress = MathHelper.Clamp(bloodCathedralPaletteProgress, 0f, 1f);
+            screenShaderData = FilterManager["LunarVeil:PaletteBloodCathedral"].GetShader();
+            screenShaderData.UseProgress(bloodCathedralPaletteProgress);
+            TogglePaletteShader("LunarVeil:PaletteBloodCathedral", bloodCathedralPaletteProgress != 0);
 
             CalculateDarkness();
             TogglePaletteShader("LunarVeil:DarknessVignette", darkness != 0);
 
-            var shaderData = FilterManager["LunarVeil:DarknessCurve"].GetShader();
-            shaderData.UseProgress(darknessCurve);
+            screenShaderData = FilterManager["LunarVeil:DarknessCurve"].GetShader();
+            screenShaderData.UseProgress(darknessCurve);
+            screenShaderData.Shader.Parameters["blackCurve"].SetValue(blackCurve);
+            screenShaderData.Shader.Parameters["whiteCurve"].SetValue(whiteCurve);
             TogglePaletteShader("LunarVeil:DarknessCurve", darknessCurve != 0);
         }
         

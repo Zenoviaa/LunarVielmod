@@ -19,6 +19,8 @@ float2 uImageOffset;
 float uSaturation;
 float4 uSourceRect;
 float2 uZoom;
+float whiteCurve;
+float blackCurve;
 
 float colorDistance2(float3 a, float3 b)
 {
@@ -41,20 +43,29 @@ float3 calculateColor(float3 color)
     float3 selectedColor = colors[0];
     float dist = colorDistance2(color, colors[0]);
     float currentDist;
-
+    int selIndex = 0;
     // For loop with the same loops than the color palette.
     for (int i = 1; i < 2; i++)
     {
         currentDist = colorDistance2(color, colors[i]);
         if (currentDist < dist)
         {
+            selIndex = i;
             dist = currentDist;
             selectedColor = colors[i];
         }
     }
     
-    float3 finalColor = lerp(color, selectedColor, uProgress);
-    return finalColor;
+    if (selIndex == 0)
+    {
+        float3 finalColor = lerp(color, selectedColor, uProgress * blackCurve);
+        return finalColor;
+    }
+    else
+    {
+        float3 finalColor = lerp(color, selectedColor, uProgress * whiteCurve);
+        return finalColor;
+    }
 }
 
 

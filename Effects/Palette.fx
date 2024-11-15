@@ -90,7 +90,8 @@ float3 calculateColor(float3 color)
         }
     }
     
-    return selectedColor;
+    float3 finalColor = lerp(color, selectedColor, uProgress);
+    return finalColor;
 }
 
 

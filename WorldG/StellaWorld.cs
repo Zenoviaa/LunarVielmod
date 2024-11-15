@@ -71,10 +71,17 @@ namespace Stellamod.WorldG
           //  DisableGenTask(tasks, "Surface Chests");
             DisableGenTask(tasks, "Wavy Caves");
             DisableGenTask(tasks, "Living Trees");
-
+            DisableGenTask(tasks, "Dirt Layer Caves");
+            DisableGenTask(tasks, "Rock Layer Caves");
+            DisableGenTask(tasks, "Small Holes");
             tasks[tasks.FindIndex(x => x.Name.Equals("Terrain"))] = new VanillaTerrainPass();
 
-		
+
+			int caveGen = tasks.FindIndex(x => x.Name.Equals("Rock Layer Caves"));
+			if(caveGen != -1)
+			{
+                tasks.Insert(caveGen + 1, new PassLegacy("Caves 1", WorldGenCaves));
+			}
 
             if (RoyalGen != -1)
             {
@@ -139,7 +146,174 @@ namespace Stellamod.WorldG
 		}
 
 
-       
+        #region Cave Formation
+
+		private void WorldGenCaves(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "Making some caves";
+			var genRand = WorldGen.genRand;
+			for(int x = 0; x < Main.maxTilesX; x++)
+			{
+				int caveMakerSteps = 32;
+				for(int j = 0; j < caveMakerSteps; j++)
+				{
+                    int y = genRand.Next((int)GenVars.rockLayerHigh, (int)GenVars.lavaLine);
+                    Tile tile = Main.tile[x, y];
+                    if (tile.TileType == TileID.Sand || 
+						tile.TileType == TileID.Mud || 
+						tile.TileType == TileID.SnowBlock || 
+						tile.TileType == TileID.IceBlock)
+                        continue;
+                    if (!genRand.NextBool(512))
+                        continue;
+
+                    int caveWidth = genRand.Next(5, 8);
+                    int caveSteps = genRand.Next(150, 200);
+
+                    //Cave position in tiles
+                    Vector2 cavePosition = new Vector2(x, y);
+
+                    //Starting cave direction
+                    Vector2 baseCaveDirection = Vector2.UnitY;//.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
+
+                    //How much the tile runner is gonna carve out
+                    Vector2 caveStrength = new Vector2(12, 14);
+
+					//Chance to open up
+					int clearingDenominator = 128;
+                    VeilGen.GenerateHighCaves(cavePosition, baseCaveDirection, caveStrength, caveWidth, caveSteps,
+                        clearingDenominator);
+                }
+            }
+
+			for(int x = 0; x < Main.maxTilesX; x++)
+			{
+                int caveMakerSteps = 32;
+                for (int j = 0; j < caveMakerSteps; j++)
+                {
+                    int y = genRand.Next((int)GenVars.worldSurfaceLow, (int)GenVars.rockLayerHigh);
+                    Tile tile = Main.tile[x, y];
+                    if (tile.TileType == TileID.Sand ||
+                        tile.TileType == TileID.Mud ||
+                        tile.TileType == TileID.SnowBlock ||
+                        tile.TileType == TileID.IceBlock)
+                        continue;
+                    if (!genRand.NextBool(1512))
+                        continue;
+                    int caveWidth = genRand.Next(4, 7);
+                    int caveSteps = genRand.Next(50, 80);
+
+                    //Cave position in tiles
+                    Vector2 cavePosition = new Vector2(x, y);
+
+                    //Starting cave direction
+                    Vector2 baseCaveDirection = Vector2.UnitY;//.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
+
+                    //How much the tile runner is gonna carve out
+                    Vector2 caveStrength = new Vector2(12, 14);
+
+                    //Chance to open up
+                    int splitDenominator = 4;
+                    VeilGen.GenerateTreeCaves(cavePosition, baseCaveDirection, caveStrength, caveWidth, caveSteps,
+                        splitDenominator);
+                }
+            }
+
+            for (int x = 0; x < Main.maxTilesX; x++)
+            {
+                int caveMakerSteps = 32;
+                for (int j = 0; j < caveMakerSteps; j++)
+                {
+                    int y = genRand.Next((int)Main.maxTilesY - 600, (int)Main.maxTilesY - 350);
+                    Tile tile = Main.tile[x, y];
+                    if (tile.TileType == TileID.Sand ||
+                        tile.TileType == TileID.Mud ||
+                        tile.TileType == TileID.SnowBlock ||
+                        tile.TileType == TileID.IceBlock)
+                        continue;
+                    if (!genRand.NextBool(1512))
+                        continue;
+
+                    int clearingCaveWidth = 15;
+                    int clearingCaveSteps = 500;
+
+                    //Cave position in tiles
+                    Vector2 clearingPosition = new Vector2((int)x, (int)y);
+
+                    //Starting cave direction
+                    Vector2 clearingCaveDirection = Main.rand.NextVector2Circular(1, 1);//.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
+
+                    //How much the tile runner is gonna carve out
+                    Vector2 clearingCaveStrength = new Vector2(20, 25);
+
+                    VeilGen.GenerateOpenCaveClearing(clearingPosition,
+                        clearingCaveDirection,
+                        clearingCaveStrength,
+                        clearingCaveWidth,
+                        clearingCaveSteps);
+
+					int numBranches = genRand.Next(3, 6);
+					for(int k = 0; k < numBranches; k++)
+					{
+                        int caveWidth = genRand.Next(2, 8);
+                        int caveSteps = genRand.Next(25, 50);
+
+                        //Cave position in tiles
+                        Vector2 cavePosition = new Vector2(x, y);
+
+                        //Starting cave direction
+                        Vector2 baseCaveDirection = -Vector2.UnitY.RotateRandom(MathHelper.ToRadians(80));//.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
+
+                        //How much the tile runner is gonna carve out
+                        Vector2 caveStrength = new Vector2(5, 7);
+
+                        //Chance to open up
+                        VeilGen.GenerateStraightCaves(cavePosition, baseCaveDirection, caveStrength, caveWidth, caveSteps);
+                    }
+
+                }
+            }
+            for (int x = 0; x < Main.maxTilesX; x++)
+            {
+                int caveMakerSteps = 32;
+                for (int j = 0; j < caveMakerSteps; j++)
+                {
+                    int y = genRand.Next((int)GenVars.worldSurfaceLow, (int)Main.maxTilesY);
+                    Tile tile = Main.tile[x, y];
+                    if (tile.TileType == TileID.Sand ||
+                        tile.TileType == TileID.Mud ||
+                        tile.TileType == TileID.SnowBlock ||
+                        tile.TileType == TileID.IceBlock)
+                        continue;
+                    if (!genRand.NextBool(64))
+                        continue;
+
+                    //Cave position in tiles
+                    Vector2 clearingPosition = new Vector2((int)x, (int)y);
+					int caveWidth = genRand.Next(4, 16);
+                    Point point = new Point((int)clearingPosition.X, (int)clearingPosition.Y);
+                    bool isInLavaLayer = clearingPosition.Y > GenVars.lavaLine;
+                    int liquidType = isInLavaLayer ? LiquidID.Lava : LiquidID.Water;
+					if(liquidType == LiquidID.Lava)
+					{
+						if (!genRand.NextBool(4))
+							continue;
+					}
+
+                    if (point.X - caveWidth > 0 && point.X + caveWidth < Main.maxTilesX && point.Y + caveWidth < Main.maxTilesY && point.Y - caveWidth > 0)
+                    {
+                        WorldUtils.Gen(point,
+                         new Shapes.Circle(caveWidth, caveWidth),
+                         new Actions.SetLiquid(type: liquidType));
+                    }
+                }
+            }
+        }
+
+
+
+        #endregion
+
 
         private void WorldGenDungeonLocation(GenerationProgress progress, GameConfiguration configuration)
         {
