@@ -112,13 +112,15 @@ namespace Stellamod.Common.Lights
             {
                 darkness += 2;
             }
+
+            float speed = 0.05f;
             if (abyssPaletteActive)
             {
-                abyssPaletteProgress += 0.01f;
+                abyssPaletteProgress += speed;
             }
             else
             {
-                abyssPaletteProgress -= 0.01f;
+                abyssPaletteProgress -= speed;
             }
             abyssPaletteProgress = MathHelper.Clamp(abyssPaletteProgress, 0f, 1f);
             screenShaderData = FilterManager["LunarVeil:PaletteAbyss"].GetShader();
@@ -133,11 +135,11 @@ namespace Stellamod.Common.Lights
             }
             if (hellPaletteActive)
             {
-                hellPaletteProgress += 0.01f;
+                hellPaletteProgress += speed;
             }
             else
             {
-                hellPaletteProgress -= 0.01f;
+                hellPaletteProgress -= speed;
             }
             hellPaletteProgress = MathHelper.Clamp(hellPaletteProgress, 0f, 1f);
             screenShaderData = FilterManager["LunarVeil:PaletteHell"].GetShader();
@@ -147,11 +149,11 @@ namespace Stellamod.Common.Lights
             bool royalCapitalPaletteActive = MyPlayer.ZoneAlcadzia;
             if (royalCapitalPaletteActive)
             {
-                royalPaletteProgress += 0.01f;
+                royalPaletteProgress += speed;
             }
             else
             {
-                royalPaletteProgress -= 0.01f;
+                royalPaletteProgress -= speed;
             }
             royalPaletteProgress = MathHelper.Clamp(royalPaletteProgress, 0f, 1f);
             screenShaderData = FilterManager["LunarVeil:PaletteRoyalCapital"].GetShader();
@@ -161,11 +163,11 @@ namespace Stellamod.Common.Lights
             bool dungeonPaletteActive = clientConfig.VanillaBiomesPaletteShadersToggle && Player.ZoneDungeon;
             if (dungeonPaletteActive)
             {
-                dungeonPaletteProgress += 0.01f;
+                dungeonPaletteProgress += speed;
             }
             else
             {
-                dungeonPaletteProgress -= 0.01f;
+                dungeonPaletteProgress -= speed;
             }
             dungeonPaletteProgress = MathHelper.Clamp(dungeonPaletteProgress, 0f, 1f);
             screenShaderData = FilterManager["LunarVeil:PaletteDungeon"].GetShader();
@@ -175,11 +177,11 @@ namespace Stellamod.Common.Lights
             bool desertPaletteActive = clientConfig.VanillaBiomesPaletteShadersToggle && Player.ZoneDesert;
             if (desertPaletteActive)
             {
-                desertPaletteProgress += 0.01f;
+                desertPaletteProgress += speed;
             }
             else
             {
-                desertPaletteProgress -= 0.01f;
+                desertPaletteProgress -= speed;
             }
             desertPaletteProgress = MathHelper.Clamp(desertPaletteProgress, 0f, 1f);
             screenShaderData = FilterManager["LunarVeil:PaletteDesert"].GetShader();
@@ -189,11 +191,11 @@ namespace Stellamod.Common.Lights
             bool bloodPaletteActive = MyPlayer.ZoneBloodCathedral && !Main.dayTime;
             if (bloodPaletteActive)
             {
-                bloodCathedralPaletteProgress += 0.01f;
+                bloodCathedralPaletteProgress += speed;
             }
             else
             {
-                bloodCathedralPaletteProgress -= 0.01f;
+                bloodCathedralPaletteProgress -= speed;
             }
             bloodCathedralPaletteProgress = MathHelper.Clamp(bloodCathedralPaletteProgress, 0f, 1f);
             screenShaderData = FilterManager["LunarVeil:PaletteBloodCathedral"].GetShader();
