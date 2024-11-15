@@ -1,4 +1,4 @@
-﻿using Stellamod.NPCs.Bosses.INest;
+﻿ 
 using System;
 using System.Collections.Generic;
 using System.Linq;

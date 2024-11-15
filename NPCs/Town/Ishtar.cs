@@ -22,7 +22,7 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Whips;
-using Stellamod.NPCs.Bosses.INest;
+ 
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;

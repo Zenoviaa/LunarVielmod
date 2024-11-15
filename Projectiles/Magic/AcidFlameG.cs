@@ -1,5 +1,5 @@
 using Microsoft.Xna.Framework;
-using Stellamod.NPCs.Bosses.INest;
+ 
 using Stellamod.Projectiles.IgniterExplosions;
 using Terraria;
 using Terraria.Audio;

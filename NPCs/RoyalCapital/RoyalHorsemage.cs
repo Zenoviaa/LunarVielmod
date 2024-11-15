@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Items.Accessories;
-using Stellamod.NPCs.Bosses.INest;
+ 
 using Stellamod.Utilis;
 using System;
 using Terraria.Audio;

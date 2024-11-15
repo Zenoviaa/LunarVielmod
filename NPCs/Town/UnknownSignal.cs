@@ -22,7 +22,6 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Whips;
-using Stellamod.NPCs.Bosses.INest;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -189,16 +188,14 @@ namespace Stellamod.NPCs.Town
 				NPC.alpha = 255;
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
-					NPC.NewNPC(NPC.GetSource_FromThis(), (int)target.Center.X, (int)target.Center.Y - 5,
-						ModContent.NPCType<IrradiatedNest>());
+				
 				}
 				else
 				{
 					if (Main.netMode == NetmodeID.SinglePlayer)
 						return;
 
-					StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
-						ModContent.NPCType<IrradiatedNest>(), (int)target.Center.X, (int)target.Center.Y - 5);
+				
 				}
 				NPC.Kill();
 			}

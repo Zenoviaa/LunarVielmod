@@ -2,7 +2,7 @@
 
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.INest;
+ 
 using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
@@ -47,30 +47,7 @@ namespace Stellamod.Items.Consumables
             if (player.ZoneAcid() || player.GetModPlayer<MyPlayer>().ZoneLab)
             {
                              
-                if (NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()))
-                {
-                        return false;
-                }
-                if (!NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()))
-                {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                    {
-                        Main.NewText(LangText.Misc("EDR.Occur"), Color.SpringGreen);
-                        int npcID = NPC.NewNPC(player.GetSource_FromThis(), (int)player.position.X, (int)player.position.Y, ModContent.NPCType<IrradiatedNest>());
-                        Main.npc[npcID].netUpdate2 = true;
-                    }
-                    else
-                    {
-                        if (Main.netMode == NetmodeID.SinglePlayer)
-                        {
-                            Main.NewText(LangText.Misc("EDR.Occur"), Color.SpringGreen);
-                            StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<IrradiatedNest>(), (int)player.position.X, (int)player.position.Y);
-
-                        }
-
-
-                    }
-                }
+               
                 int TextToSpawn = Main.rand.Next(1, 8 + 1);
 
                 CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), LangText.Misc("EDR." + TextToSpawn));

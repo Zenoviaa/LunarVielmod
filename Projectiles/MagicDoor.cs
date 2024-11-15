@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.INest;
+
 using Stellamod.NPCs.Bosses.SupernovaFragment;
 using Stellamod.NPCs.Bosses.Zui;
 using System;

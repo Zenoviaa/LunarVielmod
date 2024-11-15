@@ -7,7 +7,7 @@ using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
-using Stellamod.NPCs.Bosses.INest;
+using Stellamod.NPCs.Event.GreenSun.IrravheilFlames;
 using Stellamod.Utilis;
 using System;
 using System.IO;
@@ -218,7 +218,7 @@ namespace Stellamod.NPCs.Acidic
 
                     if (StellaMultiplayer.IsHost)
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, 
-                            ModContent.ProjectileType<ToxicMissile>(), 12, 1, Main.myPlayer, 0, 0);
+                            ModContent.ProjectileType<IrradiatedDeathSpray>(), 12, 1, Main.myPlayer, 0, 0);
                 }
             }
             if (Timer == 450)

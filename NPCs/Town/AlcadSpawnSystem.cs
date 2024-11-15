@@ -8,7 +8,7 @@ using System.IO;
 using Stellamod.NPCs.Bosses.Sylia;
 using Terraria.ID;
 using Stellamod.NPCs.Bosses.Zui;
-using Stellamod.NPCs.Bosses.INest;
+ 
 using Stellamod.NPCs.Bosses.Niivi;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc;
 using Stellamod.Helpers;
