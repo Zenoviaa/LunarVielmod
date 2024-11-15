@@ -153,6 +153,7 @@ namespace Stellamod.Common.Lights
             {
                 royalPaletteProgress -= 0.01f;
             }
+            royalPaletteProgress = MathHelper.Clamp(royalPaletteProgress, 0f, 1f);
             screenShaderData = FilterManager["LunarVeil:PaletteRoyalCapital"].GetShader();
             screenShaderData.UseProgress(royalPaletteProgress);
             TogglePaletteShader("LunarVeil:PaletteRoyalCapital", royalPaletteProgress != 0);
