@@ -178,7 +178,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			// The following code assigns a music track to the boss in a simple way.
 			if (!Main.dedServ)
 			{
-				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Sylia");
+				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/WitchOfTheDark");
 			}
 		}
 

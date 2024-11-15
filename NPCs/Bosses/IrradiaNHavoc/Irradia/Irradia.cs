@@ -154,7 +154,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 			// The following code assigns a music track to the boss in a simple way.
 			if (!Main.dedServ)
 			{
-				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/IrradiaNHavoc");
+				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/CatacombsBoss");
 			}
 		}
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
