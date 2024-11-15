@@ -9,11 +9,6 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Stellamod.NPCs.Bosses.STARBOMBER;
 using Stellamod.NPCs.Bosses.Fenix;
-using Stellamod.NPCs.Catacombs.Fire;
-using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
-using Stellamod.NPCs.Catacombs.Trap.Cogwork;
-using Stellamod.NPCs.Catacombs.Trap.Sparn;
-using Stellamod.NPCs.Catacombs.Water.WaterJellyfish;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Stellamod.NPCs.Bosses.Zui;
@@ -722,174 +717,7 @@ namespace Stellamod
 			);
 		}
 
-		private void DoBlazingSerpentIntegration()
-		{
-			string internalName = nameof(BlazingSerpentHead);
-
-			// The NPC type of the boss
-			int bossType = ModContent.NPCType<BlazingSerpentHead>();
-
-			// Value inferred from boss progression, see the wiki for details
-			float weight = 7.2f;
-
-			// Used for tracking checklist progress
-			Func<bool> downed = () => DownedBossSystem.downedBlazingSerpent;
-
-			int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
-
-			Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
-				Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Catacombs/Fire/BlazingSerpent/BlazingSerpentPreview").Value;
-				Vector2 centered = new Vector2(
-					rect.X + (rect.Width / 2) - (texture.Width / 2), 
-					rect.Y + (rect.Height / 2) - (texture.Height / 2));
-				spriteBatch.Draw(texture, centered, color);
-			};
-
-			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
-			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			bossChecklistMod.Call(
-				"LogMiniBoss",
-				Mod,
-				internalName,
-				weight,
-				downed,
-				bossType,
-				new Dictionary<string, object>()
-				{
-					["spawnItems"] = summonItem8,
-					["customPortrait"] = customPortait
-					// Other optional arguments as needed are inferred from the wiki
-				}
-			);
-		}
-
-		private void DoCogworkIntegration()
-		{
-			string internalName = nameof(Cogwork);
-
-			// The NPC type of the boss
-			int bossType = ModContent.NPCType<Cogwork>();
-
-			// Value inferred from boss progression, see the wiki for details
-			float weight = 7.21f;
-
-			// Used for tracking checklist progress
-			Func<bool> downed = () => DownedBossSystem.downedCogwork;
-
-			int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
-
-			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
-			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			bossChecklistMod.Call(
-				"LogMiniBoss",
-				Mod,
-				internalName,
-				weight,
-				downed,
-				bossType,
-				new Dictionary<string, object>()
-				{
-					["spawnItems"] = summonItem8,
-					// Other optional arguments as needed are inferred from the wiki
-				}
-			);
-		}
-
-		private void DoWaterJellyfishIntegration()
-		{
-			string internalName = nameof(WaterJellyfish);
-
-			// The NPC type of the boss
-			int bossType = ModContent.NPCType<WaterJellyfish>();
-
-			// Value inferred from boss progression, see the wiki for details
-			float weight = 7.22f;
-
-			// Used for tracking checklist progress
-			Func<bool> downed = () => DownedBossSystem.downedWaterJellyfish;
-
-
-			int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
-
-			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
-			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			bossChecklistMod.Call(
-				"LogMiniBoss",
-				Mod,
-				internalName,
-				weight,
-				downed,
-				bossType,
-				new Dictionary<string, object>()
-				{
-					["spawnItems"] = summonItem8,
-					// Other optional arguments as needed are inferred from the wiki
-				}
-			);
-		}
-		private void DoSparnIntegration()
-		{
-			string internalName = nameof(Sparn);
-
-			// The NPC type of the boss
-			int bossType = ModContent.NPCType<Sparn>();
-
-			// Value inferred from boss progression, see the wiki for details
-			float weight = 7.23f;
-
-			// Used for tracking checklist progress
-			Func<bool> downed = () => DownedBossSystem.downedSparn;
-
-			int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
-			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
-			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			bossChecklistMod.Call(
-				"LogMiniBoss",
-				Mod,
-				internalName,
-				weight,
-				downed,
-				bossType,
-				new Dictionary<string, object>()
-				{
-					["spawnItems"] = summonItem8,
-					// Other optional arguments as needed are inferred from the wiki
-				}
-			);
-		}
-
-		private void DoPandorasFireBoxIntegration()
-		{
-			string internalName = nameof(PandorasFlamebox);
-
-			// The NPC type of the boss
-			int bossType = ModContent.NPCType<PandorasFlamebox>();
-
-			// Value inferred from boss progression, see the wiki for details
-			float weight = 7.24f;
-
-			// Used for tracking checklist progress
-			Func<bool> downed = () => DownedBossSystem.downedPandorasBox;
-
-			int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
-
-			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
-			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			bossChecklistMod.Call(
-				"LogMiniBoss",
-				Mod,
-				internalName,
-				weight,
-				downed,
-				bossType,
-				new Dictionary<string, object>()
-				{
-					["spawnItems"] = summonItem8,
-					// Other optional arguments as needed are inferred from the wiki
-				}
-			);
-		}
-
+		
 
 		private void DoNiiviIntegration()
 		{
@@ -1044,11 +872,6 @@ namespace Stellamod
 			DoStoneGolemIntegration();
 			DoSTARIntegration();
 			DoFenixIntegration();
-			DoBlazingSerpentIntegration();
-			DoCogworkIntegration();
-			DoPandorasFireBoxIntegration();
-			DoWaterJellyfishIntegration();
-			DoSparnIntegration();
 			DoZuiIntegration();
 			DoNiiviIntegration();
 			DoRekIntegration();

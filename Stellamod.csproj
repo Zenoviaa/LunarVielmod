@@ -339,8 +339,6 @@
     <None Remove="NPCs\Catacombs\Fire\BlazingSerpent\BlazingSerpentHead_Head_Boss.png" />
     <None Remove="NPCs\Catacombs\Fire\BlazingSerpent\HeatBeam.png" />
     <None Remove="NPCs\Catacombs\Trap\Cogwork\IronNailLodged.png" />
-    <None Remove="NPCs\Catacombs\Water\WaterCogwork\WaterBolt.png" />
-    <None Remove="NPCs\Catacombs\Water\WaterJellyfish\WaterJellyfish_Head_Boss.png" />
     <None Remove="NPCs\Cinderspark\CinderCrawlerBody.png" />
     <None Remove="NPCs\Cinderspark\CinderCrawlerHead.png" />
     <None Remove="NPCs\Cinderspark\CinderCrawlerTail.png" />
