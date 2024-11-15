@@ -74,14 +74,15 @@ namespace Stellamod.WorldG
             DisableGenTask(tasks, "Dirt Layer Caves");
             DisableGenTask(tasks, "Rock Layer Caves");
             DisableGenTask(tasks, "Small Holes");
+            DisableGenTask(tasks, "Corruption");
             tasks[tasks.FindIndex(x => x.Name.Equals("Terrain"))] = new VanillaTerrainPass();
-
 
 			int caveGen = tasks.FindIndex(x => x.Name.Equals("Rock Layer Caves"));
 			if(caveGen != -1)
 			{
                 tasks.Insert(caveGen + 1, new PassLegacy("Caves 1", WorldGenCaves));
-			}
+            
+            }
 
             if (RoyalGen != -1)
             {
@@ -141,12 +142,63 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
 				tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
                 tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Graving", WorldGenGraving));
-          
+                tasks.Insert(CathedralGen2 + 22, new PassLegacy("Grassing Caves", WorldGenGrassPass));
+
             }
 		}
 
 
         #region Cave Formation
+		private void WorldGenCrimsonHole(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "Making an evil hole";
+			var genRand = WorldGen.genRand;
+			bool placed = false;
+			while (!placed)
+			{
+				placed = true;
+			}
+		}
+
+		private void WorldGenGrassPass(GenerationProgress progress, GameConfiguration configuration)
+		{
+			var genRand = WorldGen.genRand;
+			for (int x = 0; x < Main.maxTilesX; x++)
+			{
+				for(int y = (int)Main.worldSurface - 10; y < (int)Main.worldSurface + 600; y++)
+				{
+					Tile tile = Main.tile[x, y];
+					if (!tile.HasTile)
+						continue;
+
+					bool hasRight = (x + 1 < Main.maxTilesX) && !WorldGen.SolidOrSlopedTile(x + 1, y);
+                    bool hasLeft = (x - 1 > 0) && !WorldGen.SolidOrSlopedTile(x - 1, y);
+                    bool hasTop = (y + 1 < Main.maxTilesY) && !WorldGen.SolidOrSlopedTile(x, y + 1);
+                    bool hasBottom = (y - 1 > 0) && !WorldGen.SolidOrSlopedTile(x, y - 1);
+					bool hasAny = hasRight || hasLeft || hasTop || hasBottom;
+
+                    if (hasAny && (tile.TileType == TileID.Dirt || tile.TileType == TileID.Stone || tile.TileType == TileID.Grass))
+					{
+                        WorldGen.PlaceTile(x, y, TileID.Grass, forced: true);
+						Point point = new Point(x, y);
+						int steps = genRand.Next(1, 4);
+						Vector2 baseDirection = -Vector2.UnitY;
+						int caveWidth = 3;
+
+						for(int s = 0; s < steps; s++)
+						{
+                            if (point.X - caveWidth > 0 && point.X + caveWidth < Main.maxTilesX && point.Y + caveWidth < Main.maxTilesY && point.Y - caveWidth > 0)
+							{
+                                WorldUtils.Gen(point, new Shapes.Circle(caveWidth, caveWidth),
+									new Actions.PlaceWall(WallID.FlowerUnsafe));
+                            }
+                              
+							point += (baseDirection * caveWidth).RotatedByRandom(MathHelper.ToRadians(30)).ToPoint();
+                        }
+                    }
+                }
+			}
+		}
 
 		private void WorldGenCaves(GenerationProgress progress, GameConfiguration configuration)
 		{
@@ -1291,8 +1343,12 @@ namespace Stellamod.WorldG
 						TileID.RubyGemspark
 					};
 
+					var rectangle = Structurizer.ReadRectangle(path);
                     int[] ChestIndexs = Structurizer.ReadStruct(Loc, path, tileBlend);
                     Structurizer.ProtectStructure(Loc, path);
+
+                    Point Loc2 = new Point(smx, smy + 20);
+                    WorldUtils.Gen(Loc2, new Shapes.Rectangle(rectangle.Width, 20), new Actions.SetTile(TileID.Dirt));
                     NPCs.Town.AlcadSpawnSystem.LittleWitchTownTile = Loc;
 					foreach (int chestIndex in ChestIndexs)
 					{
@@ -1394,9 +1450,8 @@ namespace Stellamod.WorldG
                 while (!placed && attempts++ < 1000000)
                 {
                     // Select a place in the first 6th of the world, avoiding the oceans
-                    int range = Main.maxTilesX / 6;
-                    int offset = WorldGen.genRand.Next(-range, range);
-                    int smx = Main.maxTilesX / 2 + offset;
+                    int offset = WorldGen.genRand.Next(-400, -300);
+					int smx = GenVars.dungeonX + offset;
 
                     //Start at 200 tiles above the surface instead of 0, to exclude floating islands
                     int smy = ((int)(Main.worldSurface - 200));
