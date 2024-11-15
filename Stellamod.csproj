@@ -268,7 +268,6 @@
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekSnake_White.png" />
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekTail_Glow.png" />
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekTail_White.png" />
-    <None Remove="NPCs\Bosses\INest\VoidBeam.png" />
     <None Remove="NPCs\Bosses\IrradiaNHavoc\Irradia\StartIrradia.png" />
     <None Remove="NPCs\Bosses\IrradiaNHavoc\Projectiles\IrradiaAxeFlameArrow.png" />
     <None Remove="NPCs\Bosses\IrradiaNHavoc\Projectiles\IrradiaCombustionBoom.png" />

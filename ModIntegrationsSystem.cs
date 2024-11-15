@@ -299,63 +299,7 @@ namespace Stellamod
 
 
 
-		private void DoNESTIntegration()
-		{
-			string internalName5 = "NestoftheAcidic";
-
-			// The NPC type of the boss
-			int bossType5 = ModContent.NPCType<NPCs.Bosses.INest.IrradiatedNest>();
-
-			// Value inferred from boss progression, see the wiki for details
-			float weight5 = 10.2f;
-
-			// Used for tracking checklist progress
-			Func<bool> downed5 = () => DownedBossSystem.downedNESTBoss;
-
-			// If the boss should show up on the checklist in the first place and when (here, always)
-			Func<bool> available5 = () => true;
-
-			// "collectibles" like relic, trophy, mask, pet
-			List<int> collection5 = new List<int>()
-			{
-				ModContent.ItemType<Items.Placeable.SunsBossRel>(),
-
-			};
-
-			// The item used to summon the boss with (if available)
-			int summonItem5 = ModContent.ItemType<Items.Consumables.EDR>();
-
-
-            Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
-                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/INest/IrradiatedNestBestiary").Value;
-                Vector2 centered = new Vector2(
-                    rect.X + (rect.Width / 2) - (texture.Width / 2),
-                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
-                spriteBatch.Draw(texture, centered, color);
-            };
-
-            // Information for the player so he knows how to encounter the boss
-
-            // The boss does not have a custom despawn message, so we omit it
-
-            // By default, it draws the first frame of the boss, omit if you don't need custom drawing
-            // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			bossChecklistMod.Call(
-                "LogMiniBoss",
-				Mod,
-				internalName5,
-				weight5,
-				downed5,
-				bossType5,
-				new Dictionary<string, object>()
-				{
-					["spawnItems"] = summonItem5,
-                    ["customPortrait"] = customPortait
-                    // Other optional arguments as needed are inferred from the wiki
-                }
-			);
-		}
-
+		
 
 		private void DoSingularityFragmentIntegration()
         {
@@ -1106,7 +1050,6 @@ namespace Stellamod
 			DoWaterJellyfishIntegration();
 			DoSparnIntegration();
 			DoZuiIntegration();
-			DoNESTIntegration();
 			DoNiiviIntegration();
 			DoRekIntegration();
             DoGothiviaIntegration();
