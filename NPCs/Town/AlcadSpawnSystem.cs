@@ -265,7 +265,6 @@ namespace Stellamod.NPCs.Town
             return 
                 NPC.AnyNPCs(ModContent.NPCType<ZuiTheTraveller>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<Sylia>()) ||
-                NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<Fenix>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<RekSnake>()) ||
@@ -320,13 +319,6 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)CellConverterSpawnWorld.X, (int)CellConverterSpawnWorld.Y,
                         ModContent.NPCType<CellConverter>());
-                }
-                else if (!NPC.AnyNPCs(ModContent.NPCType<UnknownSignal>()) && Main.hardMode &&
-                    !NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()))
-                {
-                    NPC.NewNPC(player.GetSource_FromThis(),
-                        (int)LabSpawnWorld.X, (int)LabSpawnWorld.Y,
-                        ModContent.NPCType<UnknownSignal>());
                 }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Gia>()))
                 {
