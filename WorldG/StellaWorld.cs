@@ -75,7 +75,15 @@ namespace Stellamod.WorldG
             DisableGenTask(tasks, "Rock Layer Caves");
             DisableGenTask(tasks, "Small Holes");
             DisableGenTask(tasks, "Corruption");
+            DisableGenTask(tasks, "Floating Islands");
+            DisableGenTask(tasks, "Shimmer");
             tasks[tasks.FindIndex(x => x.Name.Equals("Terrain"))] = new VanillaTerrainPass();
+
+			int shimmerGen = tasks.FindIndex(x => x.Name.Equals("Shimmer"));
+			if(shimmerGen != -1)
+			{
+                tasks.Insert(shimmerGen + 1, new PassLegacy("Fake Shimmer", WorldGenShimmerSpot));
+            }
 
 			int caveGen = tasks.FindIndex(x => x.Name.Equals("Jungle"));
 			if(caveGen != -1)
@@ -112,6 +120,7 @@ namespace Stellamod.WorldG
 			if (CathedralGen3 != -1)
 			{
 				tasks.Insert(CathedralGen3 + 1, new PassLegacy("World Gen Ambience", WorldGenAmbience));
+								tasks.Insert(CathedralGen3 + 1, new PassLegacy("World Gen Ambience", WorldGenAmbience));
 			}
 				
 			int CathedralGen2 = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
@@ -150,6 +159,12 @@ namespace Stellamod.WorldG
 
 
         #region Cave Formation
+		private void WorldGenShimmerSpot(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "Faking the Shimmer";
+			GenVars.shimmerPosition = new ReLogic.Utilities.Vector2D(Main.maxTilesX * 0.5f, Main.maxTilesY * 0.5f);
+		}
+
 		private void WorldGenCrimsonHole(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "Making an evil hole";
@@ -323,9 +338,9 @@ namespace Stellamod.WorldG
                         //Chance to open up
                         VeilGen.GenerateStraightCaves(cavePosition, baseCaveDirection, caveStrength, caveWidth, caveSteps);
                     }
-
                 }
             }
+
             for (int x = 0; x < Main.maxTilesX; x++)
             {
                 int caveMakerSteps = 32;
@@ -360,6 +375,45 @@ namespace Stellamod.WorldG
                          new Actions.SetLiquid(type: liquidType));
                     }
                 }
+            }
+
+
+			int counter = 0;
+			int num = genRand.Next(120, 150);
+			for(int n = 0; n < num; n++)
+			{
+				int x = genRand.Next(0, Main.maxTilesX);
+				int yMax = Main.maxTilesY;
+                int yMin = yMax - 500;
+                int y = genRand.Next(yMin, yMax);
+                // We go down until we hit a solid tile or go under the world's surface
+                while (!WorldGen.SolidTile(x, y))
+                {
+                    y++;
+                }
+
+                // If we went under the world's surface, try again
+                if (y >= Main.maxTilesY)
+                {
+					n--;
+                    continue;
+                }
+
+                int caveWidth = genRand.Next(3, 6);
+                int caveSteps = genRand.Next(300, 700);
+
+                //Cave position in tiles
+                Vector2 cavePosition = new Vector2(x, y);
+
+                //Starting cave direction
+                Vector2 baseCaveDirection = genRand.NextBool(2) ? Vector2.UnitX : -Vector2.UnitX;//.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
+
+                //How much the tile runner is gonna carve out
+                Vector2 caveStrength = new Vector2(genRand.Next(10, 12), genRand.Next(13, 15));
+				caveStrength *= 0.66f;
+
+                //Chance to open up
+                VeilGen.GenerateLongCurveCave(cavePosition, baseCaveDirection, caveStrength, caveWidth, caveSteps);
             }
         }
 
@@ -808,7 +862,7 @@ namespace Stellamod.WorldG
                 }
 
                 // If we went under the world's surface, try again
-                if (y > Main.UnderworldLayer - 50)
+                if (y > Main.UnderworldLayer)
                 {
                     continue;
                 }
@@ -983,7 +1037,7 @@ namespace Stellamod.WorldG
 					//WorldGen.TileRunner(Loc3.X - 20, Loc3.Y + 20, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
 
 
-
+					/*
 					string path2 = "Struct/Underground/Ishtar";//
 					int[] ChestIndexs2 = StructureLoader.ReadStruct(Loc2, path2, tileBlend2);
 					NPCs.Town.AlcadSpawnSystem.IshPinTile = Loc2;
@@ -1066,13 +1120,14 @@ namespace Stellamod.WorldG
 					}
 
 
-
+					*/
 
 
 
 
 					placed = true;
 				}
+
 
 
 			}
@@ -2424,37 +2479,11 @@ namespace Stellamod.WorldG
 
 
             bool placed = false;
-            int attempts = 0;
-            int leftmostJungleTileX = int.MaxValue;
-            int rightmostJungleTileX = int.MinValue;
-            for (int x = 300; x < Main.maxTilesX - 300; x++)
-            {
-                int jungleY = (int)(Main.worldSurface - 50);
-                while (!WorldGen.SolidTile(x, jungleY) && jungleY <= Main.worldSurface)
-                {
-                    jungleY++;
-                }
-
-                Tile tile = Main.tile[x, jungleY];
-                if (tile.TileType == TileID.Mud)
-                {
-                    if (leftmostJungleTileX > x)
-                        leftmostJungleTileX = x;
-                    if (rightmostJungleTileX < x)
-                        rightmostJungleTileX = x;
-                }
-            }
-
-
-
+			int attempts = 0;
             while (!placed && attempts++ < 100000)
             {
                 // Select a place in the first 6th of the world, avoiding the oceans
-                int minX = leftmostJungleTileX + 10;
-                int maxX = rightmostJungleTileX - 10;
-                if (maxX < minX)
-                    maxX = minX + 1;
-                int abysmx = WorldGen.genRand.Next(minX, maxX); // from 50 since there's a unaccessible area at the world's borders
+				int abysmx = GenVars.JungleX; // from 50 since there's a unaccessible area at the world's borders
 
                 //Start at 200 tiles above the surface instead of 0, to exclude floating islands
                 int abysmy = (int)(Main.worldSurface - 50);
@@ -2469,16 +2498,15 @@ namespace Stellamod.WorldG
                 for (int da = 0; da < 1; da++)
                 {
                     Point Loc7 = new Point(abysmx, abysmy);
-                    WorldGen.TileRunner(Loc7.X + 200, Loc7.Y, 500, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
-                    WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 200, 600, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
-                    WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 400, 600, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
-                    WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 600, 700, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
-                    WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 800, 700, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
-                    WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 1000, 700, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y, 500, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y + 200, 600, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y + 400, 600, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y + 600, 700, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y + 800, 700, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y + 1000, 700, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
 
                     Point Loc = new Point(abysmx + 50, abysmy + 255);
                     pointL = new Point(abysmx + 50, abysmy + 255);//
-
                     WorldGen.DirtyRockRunner(0, Main.maxTilesX - 50);
                     placed = true;
                 }

@@ -5,6 +5,7 @@ using Terraria.ID;
 using Terraria.Map;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
+using static tModPorter.ProgressUpdate;
 
 namespace Stellamod.WorldG
 {
@@ -22,8 +23,29 @@ namespace Stellamod.WorldG
 
         public override bool? UseItem(Player player)
         {
-            GenerateTreeCaves();
+            GenerateLongCurveCave();
             return base.UseItem(player);
+        }
+        private void GenerateLongCurveCave()
+        {
+            Vector2 mouseWorld = Main.MouseWorld;
+            int x = (int)Main.MouseWorld.X / 16;
+            int y = (int)Main.MouseWorld.Y / 16;
+            int caveWidth = 5;
+            int caveSteps = 1000;
+
+            //Cave position in tiles
+            Vector2 cavePosition = new Vector2(x, y);
+
+            //Starting cave direction
+            Vector2 baseCaveDirection = Vector2.UnitX;//.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
+
+            //How much the tile runner is gonna carve out
+            Vector2 caveStrength = new Vector2(12, 14);
+
+            //Chance to open up
+            int splitDenominator = 4;
+            VeilGen.GenerateLongCurveCave(cavePosition, baseCaveDirection, caveStrength, caveWidth, caveSteps);
         }
         private void GenerateTreeCaves()
         {
@@ -177,6 +199,128 @@ namespace Stellamod.WorldG
 
     internal static class VeilGen
     {
+        public static void GenerateFigure8Cave(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, int caveWidth, int caveSteps)
+        {
+            var genRand = WorldGen.genRand;
+            int caveSeed = genRand.Next();
+
+            //Why make my own noise functions when I can just use this?!?!?1 Hhahahaha
+            float i = cavePosition.X;
+            Vector2 caveVelocity = baseCaveDirection;
+            Vector2 pullDirection;
+            pullDirection.X = -baseCaveDirection.X;
+            pullDirection.Y = 1;
+
+            Vector2 targetPosition = caveVelocity + pullDirection;
+            Vector2 startPullDirection = pullDirection;
+            float sharpness = 3f;
+            float counter = 0;
+            float target = 100;
+            for (int j = 0; j < caveSteps; j++)
+            {
+                //Homing
+                float degreesToRotate = sharpness;
+                float length = caveVelocity.Length();
+                float targetAngle = (targetPosition - cavePosition).ToRotation();
+                Vector2 newVelocity = caveVelocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(degreesToRotate)).ToRotationVector2() * length;
+                caveVelocity = newVelocity;
+                if (counter < 20f)
+                {
+                    pullDirection = Vector2.Lerp(startPullDirection, Vector2.Zero, counter / 20f);
+                    targetPosition = cavePosition + pullDirection;
+                    counter++;
+                }
+
+                if (counter > target)
+                {
+                    target = genRand.Next(100, 150);
+                    targetPosition.X = -targetPosition.X;
+                    startPullDirection = pullDirection;
+                    counter = 0;
+                }
+
+                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                {
+                    /*
+                    //digging 
+                    ShapeData shapeData = new ShapeData();
+                    Point point = new Point((int)cavePosition.X, (int)cavePosition.Y);
+                    WorldUtils.Gen(point, new Shapes.Circle(3, 3), new Actions.ClearTile());
+                    */
+
+                    WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
+                        genRand.NextFloat(caveStrength.X, caveStrength.Y),
+                        genRand.Next(4, 5), -1);
+                }
+
+                // Update the cave position.
+                cavePosition += caveVelocity * caveWidth * 0.5f;
+                //  caveStrength *= 0.99f;
+            }
+        }
+
+        public static void GenerateLongCurveCave(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, int caveWidth, int caveSteps)
+        {
+            var genRand = WorldGen.genRand;
+            int caveSeed = genRand.Next();
+
+            //Why make my own noise functions when I can just use this?!?!?1 Hhahahaha
+            float i = cavePosition.X;
+            Vector2 caveVelocity = baseCaveDirection;
+            Vector2 breakStrength = caveStrength;
+            Vector2 pullDirection;
+            pullDirection.X = -baseCaveDirection.X;
+            pullDirection.Y = 1;
+
+            Vector2 startVelocity = caveVelocity;
+            Vector2 pullVelocity = caveVelocity;
+
+            float sharpness = 10;
+            float counter = 0;
+            float target = genRand.Next(50, 200);
+            float direction = 1;
+            for (int j = 0; j < caveSteps; j++)
+            {
+
+                counter++;
+                breakStrength *= 0.9995f;
+                float degreesToRotate = sharpness;
+                float length = caveVelocity.Length();
+                float targetAngle = (pullVelocity - startVelocity).ToRotation();
+                Vector2 newVelocity = caveVelocity.ToRotation().AngleTowards(targetAngle,
+                    MathHelper.ToRadians(degreesToRotate)).ToRotationVector2() * length;
+                caveVelocity = newVelocity;
+
+
+                if (counter > target)
+                {
+                    target = genRand.Next(50, 200);
+                    float mult = direction % 2 == 0 ? 1 : 0;
+                    pullVelocity = startVelocity.RotatedBy(MathHelper.ToRadians(-180 * mult));
+                    direction++;
+                    counter = 0;
+                }
+
+                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                {
+                    /*
+                    //digging 
+                    ShapeData shapeData = new ShapeData();
+                    Point point = new Point((int)cavePosition.X, (int)cavePosition.Y);
+                    WorldUtils.Gen(point, new Shapes.Circle(3, 3), new Actions.ClearTile());
+                    */
+
+                    WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
+                        genRand.NextFloat(breakStrength.X, breakStrength.Y),
+                        genRand.Next(4, 5), -1);
+                }
+
+                // Update the cave position.
+                cavePosition += caveVelocity * caveWidth * 0.5f;
+                //  caveStrength *= 0.99f;
+            }
+        }
+
         public static void GenerateFishCave(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, int caveWidth, int caveSteps)
         {
             var genRand = WorldGen.genRand;
