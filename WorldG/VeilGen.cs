@@ -1,4 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Ores;
+using Stellamod.Tiles.Veil;
+using Stellamod.Tiles;
+using Stellamod.WorldG.StructureManager;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -24,8 +28,69 @@ namespace Stellamod.WorldG
 
         public override bool? UseItem(Player player)
         {
-            GenerateLongCurveCave();
+            GenerateAshotiTemple();
             return base.UseItem(player);
+        }
+        private void GenerateAshotiTemple()
+        {
+            int radius = 80;
+            int desertCenterX = (GenVars.desertHiveLeft + GenVars.desertHiveRight) / 2;
+            int desertCenterY = GenVars.desertHiveLow - 200;
+            Point arenaPoint = new Point(desertCenterX, desertCenterY);
+
+            //Building the arena
+            WorldUtils.Gen(arenaPoint, new Shapes.Circle(radius, radius), new Actions.SetTile(TileID.LihzahrdBrick));
+            WorldUtils.Gen(arenaPoint, new Shapes.Circle(radius - 2, radius - 2), new Actions.SetTile((ushort)ModContent.TileType<ChiseledStone>()));
+            WorldUtils.Gen(arenaPoint, new Shapes.Circle(radius - 4, radius - 4), new Actions.SetTile((ushort)ModContent.TileType<NoxianBlock>()));
+            WorldUtils.Gen(arenaPoint, new Shapes.Circle(radius - 6, radius - 6), new Actions.ClearTile());
+            WorldUtils.Gen(arenaPoint, new Shapes.Circle(radius / 2, radius / 2), new Actions.SetLiquid(type: LiquidID.Lava));
+
+
+            //Decorate arena with walls
+            for (int w = 0; w < 80; w++)
+            {
+                float progressOnCircle = (float)w / 80f;
+                float rot = progressOnCircle * MathHelper.TwoPi;
+                Vector2 vel = rot.ToRotationVector2() * radius;
+                Point pointToWall = arenaPoint + vel.ToPoint();
+                WorldUtils.Gen(pointToWall, new Shapes.Circle(4, 4), new Actions.PlaceWall(type: WallID.LihzahrdBrickUnsafe));
+            }
+
+            //Make Middle of the Temple
+            int middleLength = 7;
+            for (int m = 0; m < middleLength; m++)
+            {
+                Point offset = new Point(0, m * -43);
+                Point tileToPlaceOn = arenaPoint + offset;
+
+                if (m == middleLength - 1)
+                {
+                    string structure = "Struct/AshotiTemple/TempleEntrance";
+                    Rectangle rect = Structurizer.ReadRectangle(structure);
+                    tileToPlaceOn.X -= rect.Width/2;
+                    tileToPlaceOn.Y -= 28;
+                    int[] chestIndices = Structurizer.ReadStruct(tileToPlaceOn, structure);
+                    Structurizer.ProtectStructure(tileToPlaceOn, structure);
+                }
+                else
+                {
+                    string structure = "Struct/AshotiTemple/TempleMiddle";
+                    Rectangle rect = Structurizer.ReadRectangle(structure);
+                    tileToPlaceOn.X -= rect.Width/2;
+                    int[] chestIndices = Structurizer.ReadStruct(tileToPlaceOn, structure);
+                    Structurizer.ProtectStructure(tileToPlaceOn, structure);
+                }
+            }
+        }
+        private void GenerateMineshaftTunnel()
+        {
+            Vector2 mouseWorld = Main.MouseWorld;
+            int x = (int)Main.MouseWorld.X / 16;
+            int y = (int)Main.MouseWorld.Y / 16;
+            Point tilePoint = new Point(x, y);
+            Point tileDirection = new Point(0, -1);
+            int tunnel = Main.rand.Next(7, 25);
+            VeilGen.GenerateMineshaftTunnel(tilePoint, tileDirection, tunnel);
         }
         private void GenerateLongCurveCave()
         {
@@ -828,6 +893,298 @@ namespace Stellamod.WorldG
                 cavePosition += caveDirection * caveWidth * 0.5f;
             }
         }
+
+        public static float TilePercent(Point tilePoint, Rectangle size, params ushort[] tileIDs)
+        {
+            int count = 0;
+            int width = size.Width;
+            int height = size.Height;
+            for (int x = tilePoint.X; x < tilePoint.X + width; x++)
+            {
+                if (x < 0)
+                    continue;
+                if (x >= Main.maxTilesX)
+                    continue;
+                    
+                for (int y = tilePoint.Y; y > tilePoint.Y - height; y--)
+                {
+
+                    if (y < 0)
+                        continue;
+                    if (y >= Main.maxTilesY)
+                        continue;
+
+                    Tile tile = Main.tile[x, y];
+                    for (int t = 0; t < tileIDs.Length; t++)
+                    {
+                        int tileID = tileIDs[t];
+                        if(!WorldGen.SolidTile(x, y))
+                        {
+                            count++;
+                        }
+
+                        if(tile.HasTile && tile.TileType == tileID)
+                        {
+                            count++;
+                        }
+                    }
+                }
+            }
+
+            int tileM = width * height;
+            float tilePercent = (float)count / (float)tileM;
+            return tilePercent;
+        }
+
+        public static void GenerateMineshaftTunnel(Point tilePoint, Point tileDirection, int tunnelLength)
+        {
+            var genRand = WorldGen.genRand;
+            string GetStructurePath()
+            {
+                int num = genRand.Next(1, 15);
+                string baseStructurePath = $"Struct/Catacombs/CaRoom{num}";
+                return baseStructurePath;
+            }
+
+            int[] tileBlend = new int[]
+            {
+
+            };
+
+            for(int t = 0; t < tunnelLength; t++)
+            {
+                string structure = GetStructurePath();
+                Rectangle rectangle = Structurizer.ReadRectangle(structure);
+                rectangle.Location = tilePoint;
+                if(TilePercent(tilePoint, rectangle, TileID.Dirt, TileID.Stone) < 0.5f)
+                {
+                    break;
+                }
+
+                int[] chestIndices = Structurizer.ReadStruct(tilePoint, structure, null);
+                if(chestIndices.Length != 0)
+                {
+                    foreach (int chestIndex in chestIndices)
+                    {
+                        if (chestIndex == -1)
+                            continue;
+                        Chest chest = Main.chest[chestIndex];
+                        var itemsToAdd = new List<(int type, int stack)>();
+                        if (genRand.NextBool(2))
+                        {
+                            switch (genRand.Next(6))
+                            {
+                                case 0:
+                                    itemsToAdd.Add((ItemID.MagicMirror, 1));
+                                    break;
+                                case 1:
+                                    itemsToAdd.Add((ItemID.HermesBoots, 1));
+                                    break;
+                                case 2:
+                                    itemsToAdd.Add((ItemID.FlareGun, 1));
+                                    itemsToAdd.Add((ItemID.Flare, genRand.Next(20, 30)));
+                                    break;
+                                case 3:
+                                    itemsToAdd.Add((ItemID.Mace, 1));
+                                    break;
+                                case 4:
+                                    if (genRand.NextBool(7))
+                                    {
+                                        itemsToAdd.Add((ItemID.LavaCharm, 1));
+                                    }
+                                    break;
+                                case 5:
+                                    itemsToAdd.Add((ItemID.Aglet, 1));
+                                    break;
+                            }
+                        }
+
+                        itemsToAdd.Add((ModContent.ItemType<GrailBar>(), genRand.Next(3, 5)));
+                        if (genRand.NextBool(3))
+                        {
+                            switch (genRand.Next(0, 2))
+                            {
+                                case 0:
+                                    itemsToAdd.Add((ItemID.Bomb, genRand.Next(3, 7)));
+                                    break;
+                                case 1:
+                                    itemsToAdd.Add((ItemID.Dynamite, genRand.Next(1, 3)));
+                                    break;
+                            }
+                        }
+
+                        if (genRand.NextBool(3))
+                        {
+                            switch (genRand.Next(0, 2))
+                            {
+                                case 0:
+                                    itemsToAdd.Add((ItemID.Torch, genRand.Next(3, 7)));
+                                    break;
+                                case 1:
+                                    itemsToAdd.Add((ItemID.SpelunkerGlowstick, genRand.Next(5, 10)));
+                                    break;
+                            }
+                        }
+
+                        if (genRand.NextBool(3))
+                        {
+                            switch (genRand.Next(0, 2))
+                            {
+                                case 0:
+                                    itemsToAdd.Add((ItemID.LesserHealingPotion, genRand.Next(2, 4)));
+                                    break;
+                                case 1:
+                                    itemsToAdd.Add((ItemID.LesserManaPotion, genRand.Next(1, 3)));
+                                    break;
+                            }
+                        }
+
+                        if (genRand.NextBool(3))
+                        {
+                            switch (genRand.Next(0, 5))
+                            {
+                                case 0:
+                                    itemsToAdd.Add((ItemID.SpelunkerPotion, genRand.Next(2, 4)));
+                                    break;
+                                case 1:
+                                    itemsToAdd.Add((ItemID.PotionOfReturn, genRand.Next(1, 3)));
+                                    break;
+                                case 2:
+                                    itemsToAdd.Add((ItemID.HunterPotion, genRand.Next(1, 3)));
+                                    break;
+                                case 3:
+                                    itemsToAdd.Add((ItemID.MiningPotion, genRand.Next(1, 3)));
+                                    break;
+                                case 4:
+                                    itemsToAdd.Add((ItemID.TrapsightPotion, genRand.Next(1, 3)));
+                                    break;
+                            }
+                        }
+                        for (int n = 0; n < 4; n++)
+                        {
+                            if (genRand.NextBool(4))
+                            {
+                                switch (genRand.Next(0, 7))
+                                {
+                                    case 0:
+                                        itemsToAdd.Add((ItemID.Amethyst, genRand.Next(3, 10)));
+                                        break;
+                                    case 1:
+                                        itemsToAdd.Add((ItemID.Emerald, genRand.Next(3, 10)));
+                                        break;
+                                    case 2:
+                                        itemsToAdd.Add((ItemID.Sapphire, genRand.Next(3, 10)));
+                                        break;
+                                    case 3:
+                                        itemsToAdd.Add((ItemID.Topaz, genRand.Next(3, 10)));
+                                        break;
+                                    case 4:
+                                        itemsToAdd.Add((ItemID.Ruby, genRand.Next(3, 10)));
+                                        break;
+                                    case 5:
+                                        itemsToAdd.Add((ItemID.Diamond, genRand.Next(3, 10)));
+                                        break;
+                                    case 6:
+                                        itemsToAdd.Add((ItemID.Amber, genRand.Next(3, 10)));
+                                        break;
+                                }
+                            }
+                        }
+
+                        for (int n = 0; n < 4; n++)
+                        {
+                            if (genRand.NextBool(4))
+                            {
+                                switch (genRand.Next(0, 8))
+                                {
+                                    case 0:
+                                        itemsToAdd.Add((ItemID.CopperOre, genRand.Next(3, 10)));
+                                        break;
+                                    case 1:
+                                        itemsToAdd.Add((ItemID.TinOre, genRand.Next(3, 10)));
+                                        break;
+                                    case 2:
+                                        itemsToAdd.Add((ItemID.IronOre, genRand.Next(3, 10)));
+                                        break;
+                                    case 3:
+                                        itemsToAdd.Add((ItemID.LeadOre, genRand.Next(3, 10)));
+                                        break;
+                                    case 4:
+                                        itemsToAdd.Add((ItemID.SilverOre, genRand.Next(3, 10)));
+                                        break;
+                                    case 5:
+                                        itemsToAdd.Add((ItemID.TungstenOre, genRand.Next(3, 10)));
+                                        break;
+                                    case 6:
+                                        itemsToAdd.Add((ItemID.GoldOre, genRand.Next(3, 10)));
+                                        break;
+                                    case 7:
+                                        itemsToAdd.Add((ItemID.PlatinumOre, genRand.Next(3, 10)));
+                                        break;
+                                }
+                            }
+                        }
+
+                        if (genRand.NextBool(1))
+                        {
+                            switch (genRand.Next(3))
+                            {
+                                case 0:
+                                    itemsToAdd.Add((ItemID.CopperCoin, genRand.Next(45, 100)));
+                                    break;
+                                case 1:
+                                    itemsToAdd.Add((ItemID.SilverCoin, genRand.Next(45, 100)));
+                                    break;
+                                case 2:
+                                    itemsToAdd.Add((ItemID.GoldCoin, genRand.Next(1, 3)));
+                                    break;
+                            }
+                        }
+
+                        if (genRand.NextBool(100))
+                        {
+                            itemsToAdd.Add((ItemID.MiningHelmet, 1));
+                            itemsToAdd.Add((ItemID.MiningPants, 1));
+                            itemsToAdd.Add((ItemID.MiningShirt, 1));
+                        }
+
+                        int chestItemIndex = 0;
+                        foreach (var itemToAdd in itemsToAdd)
+                        {
+                            Item item = new Item();
+                            item.SetDefaults(itemToAdd.type);
+                            item.stack = itemToAdd.stack;
+                            chest.item[chestItemIndex] = item;
+                            chestItemIndex++;
+                            if (chestItemIndex >= 40)
+                                break; // Make sure not to exceed the capacity of the chest
+                        }
+                    }
+
+                }
+
+
+                Structurizer.ProtectStructure(tilePoint, structure);
+
+                if(tileDirection.X != 0)
+                {
+                    tilePoint.X += tileDirection.X * rectangle.Width;
+                } 
+                else if (tileDirection.Y != 0)
+                {
+                    tilePoint.Y += tileDirection.Y * (rectangle.Height + 1);
+                }
+
+                if (genRand.NextBool(4) && tileDirection != new Point(0, -1))
+                {
+                    GenerateMineshaftTunnel(tilePoint, new Point(0, -1), tunnelLength / 2);
+                } else if (genRand.NextBool(2) && tileDirection != new Point(1, 0))
+                {
+                    GenerateMineshaftTunnel(tilePoint, new Point(1, 0), tunnelLength / 2);
+                }
+            }
+        }
+
         public static void GenerateWiggleCave(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, int caveWidth, int caveSteps)
         {
             var genRand = WorldGen.genRand;
