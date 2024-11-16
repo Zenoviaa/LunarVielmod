@@ -8050,3 +8050,8 @@ VeilGenTester: {
 	DisplayName: Veil Gen Tester
 	Tooltip: ""
 }
+
+FuneralBedItem: {
+	DisplayName: Funeral Bed Item
+	Tooltip: ""
+}
