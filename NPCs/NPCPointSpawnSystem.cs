@@ -40,6 +40,7 @@ namespace Stellamod.NPCs
         public int npcType;
         public string structureToSpawnIn;
         public Point spawnTileOffset;
+        public bool always;
     }
 
     public abstract class PointSpawnNPC : ModNPC
@@ -127,7 +128,7 @@ namespace Stellamod.NPCs
                     if (activePlayer == null)
                         return;
                     float d = Vector2.Distance(activePlayer.position, spawnWorld);
-                    if (d <= 960)
+                    if (d <= 960 || pointSpawner.always)
                     {
                         NPC.NewNPC(activePlayer.GetSource_FromThis(), (int)spawnWorld.X, (int)spawnWorld.Y, pointSpawner.npcType);
                     }

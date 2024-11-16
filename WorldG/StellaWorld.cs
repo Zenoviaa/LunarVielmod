@@ -83,7 +83,9 @@ namespace Stellamod.WorldG
             DisableGenTask(tasks, "Lihzahrd Altars");
             DisableGenTask(tasks, "Sand Patches");
             DisableGenTask(tasks, "Dunes");
-			
+            DisableGenTask(tasks, "Marble");
+            DisableGenTask(tasks, "Granite");
+
             tasks[tasks.FindIndex(x => x.Name.Equals("Terrain"))] = new VanillaTerrainPass();
 
 			int shimmerGen = tasks.FindIndex(x => x.Name.Equals("Shimmer"));
@@ -95,8 +97,11 @@ namespace Stellamod.WorldG
 			int caveGen = tasks.FindIndex(x => x.Name.Equals("Jungle"));
 			if(caveGen != -1)
 			{
+          
+              //  tasks.Insert(caveGen + 2, new PassLegacy("Granite Caves", WorldGenMarbleCaves));
+        
                 tasks.Insert(caveGen + 1, new PassLegacy("Caves 1", WorldGenCaves));
-            
+                tasks.Insert(caveGen + 2, new PassLegacy("Marble Caves", WorldGenGraniteCaves));
             }
 
             if (RoyalGen != -1)
@@ -169,6 +174,71 @@ namespace Stellamod.WorldG
 
 
         #region Cave Formation
+
+		private void WorldGenDelgrim(GenerationProgress progress, GameConfiguration configuration)
+		{
+
+		}
+
+		private void WorldGenGraniteCaves(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "Forming granite & marble caves";
+			var genRand = WorldGen.genRand;
+
+			int y = Main.maxTilesY / 2; ;
+            int centerX = Main.maxTilesX / 2;
+            Point granitePoint = Point.Zero;
+            granitePoint.X = centerX - 96;
+            granitePoint.Y = y;
+			int direction = -1;
+
+
+			//Place DELGRIM
+			string structure = "Struct/Underground/DelgrimShop";
+			Point pointToPlaceDelgrimShop = granitePoint - new Point(0, genRand.Next(400, 500));
+			while(!Structurizer.TryPlaceAndProtectStructure(pointToPlaceDelgrimShop, structure))
+			{
+				pointToPlaceDelgrimShop += genRand.NextVector2Circular(4, 4).ToPoint();
+          
+            }
+            Structurizer.ReadStruct(pointToPlaceDelgrimShop, structure);
+            for (int n = 0; n < 20; n++)
+            {
+				if (granitePoint.Y >= Main.maxTilesY - 500)
+					break;
+
+				for(int a = 0; a < 1000; a++)
+				{
+                 
+                    Vector2 radiusSize = new Vector2(24, 64);
+                    int caveWidth = 5;
+					while (!WorldGen.SolidTile(granitePoint) && granitePoint.Y < Main.maxTilesY - 500)
+					{
+						granitePoint.Y++;
+					}
+		
+                    if (genRand.NextBool(2))
+					{
+                        VeilGen.PlaceGranite(granitePoint, radiusSize, caveWidth);
+					}
+					else
+					{
+                        VeilGen.PlaceMarble(granitePoint, radiusSize, caveWidth);
+                    }
+                    granitePoint.X += direction == 1 ? -96 : 96;
+					direction *= -1;
+                    granitePoint.Y += 80;
+                    break;
+                }
+               
+            }
+		}
+
+		private void WorldGenMarbleCaves(GenerationProgress progress, GameConfiguration configuration)
+		{
+            progress.Message = "Forming marble caves";
+        }
+
 		private void WorldGenEvil(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "Making the evil";
@@ -516,15 +586,18 @@ namespace Stellamod.WorldG
                                 break;
                         }
 
-                        switch (genRand.Next(2))
+						if (genRand.NextBool(3))
 						{
-							case 0:
-                                itemsToAdd.Add((ModContent.ItemType<Lihh>(), 1));
-								break;
-							case 1:
-                                itemsToAdd.Add((ModContent.ItemType<Relagis>(), 1));
-                                break;
-						}
+                            switch (genRand.Next(2))
+                            {
+                                case 0:
+                                    itemsToAdd.Add((ModContent.ItemType<Lihh>(), 1));
+                                    break;
+                                case 1:
+                                    itemsToAdd.Add((ModContent.ItemType<Relagis>(), 1));
+                                    break;
+                            }
+                        }
 
                         itemsToAdd.Add((ItemID.LihzahrdPowerCell, 1));
                         itemsToAdd.Add((ItemID.LihzahrdFurnace, 1));
@@ -551,6 +624,19 @@ namespace Stellamod.WorldG
                                 itemsToAdd.Add((ItemID.LunarTabletFragment, genRand.Next(3, 8)));
                                 break;
 						}
+
+
+                        int chestItemIndex = 0;
+                        foreach (var itemToAdd in itemsToAdd)
+                        {
+                            Item item = new Item();
+                            item.SetDefaults(itemToAdd.type);
+                            item.stack = itemToAdd.stack;
+                            chest.item[chestItemIndex] = item;
+                            chestItemIndex++;
+                            if (chestItemIndex >= 40)
+                                break; // Make sure not to exceed the capacity of the chest
+                        }
                     }
                     Structurizer.ProtectStructure(tileToPlaceOn, structure);
                 }

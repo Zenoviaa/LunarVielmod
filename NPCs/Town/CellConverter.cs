@@ -17,7 +17,7 @@ namespace Stellamod.NPCs.Town
 {
     // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
 
-    public class CellConverter : ModNPC
+    public class CellConverter : PointSpawnNPC
     {
         public int NumberOfTimesTalkedTo = 0;
         public override void SetStaticDefaults()
@@ -314,6 +314,13 @@ namespace Stellamod.NPCs.Town
                 }
                 */
             }
+        }
+
+        public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
+        {
+            string structure = "Struct/Underground/DelgrimShop";
+            spawner.structureToSpawnIn = structure;
+            spawner.spawnTileOffset = new Point(50, -10);
         }
     }
 }
