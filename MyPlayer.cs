@@ -35,6 +35,7 @@ using Stellamod.Projectiles.Summons.Minions;
 using Stellamod.Projectiles.Swords;
 using Stellamod.UI.Dialogue;
 using Stellamod.WorldG;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -247,6 +248,7 @@ namespace Stellamod
         public bool ZoneVeil;
         public bool ZoneGreenSun;
         public bool ZoneBloodCathedral;
+        public bool ZoneAshotiTemple;
 
 
         public float AssassinsSlashes;
@@ -756,6 +758,8 @@ namespace Stellamod
         }
         public override void PostUpdate()
         {
+ 
+
             if (Main.netMode != NetmodeID.Server)
             {
 
@@ -3023,7 +3027,7 @@ namespace Stellamod
                 Player.GetDamage(DamageClass.Melee) *= 1.5f;
 
             }
-
+            Player.ZoneLihzhardTemple = BiomeTileCounts.InAshotiTemple;
             if (GovheilB && GovheilBCooldown > 300)
             {
                 Player.GetDamage(DamageClass.Magic) *= 1.1f;

@@ -10,6 +10,8 @@ using System;
 using Terraria.ModLoader;
 using Stellamod.Tiles.Ishtar;
 using Stellamod.Items.Placeable;
+using Terraria.ID;
+using Terraria;
 
 namespace Stellamod
 {
@@ -83,6 +85,10 @@ namespace Stellamod
 
         public int BloodCathedralCount;
         public static bool InBloodCathedral => ModContent.GetInstance<BiomeTileCounts>().BloodCathedralCount > 250;
+
+        public int AshotiTempleCount;
+        public static bool InAshotiTemple => ModContent.GetInstance<BiomeTileCounts>().AshotiTempleCount > 100;
+
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
             AcidCount = tileCounts[ModContent.TileType<AcidialDirt>()];
@@ -107,6 +113,8 @@ namespace Stellamod
             VeilCount = tileCounts[ModContent.TileType<CatagrassBlock>()];
             IshtarCount = tileCounts[ModContent.TileType<IshtarMoss>()];
             BloodCathedralCount = tileCounts[ModContent.TileType<RobedSandstoneBlock>()];
+            AshotiTempleCount = tileCounts[TileID.LihzahrdBrick];
+
         }
     }
 }

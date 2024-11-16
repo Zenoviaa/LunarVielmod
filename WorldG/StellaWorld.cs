@@ -81,6 +81,8 @@ namespace Stellamod.WorldG
 			DisableGenTask(tasks, "Jungle Temple");
             DisableGenTask(tasks, "Temple");
             DisableGenTask(tasks, "Lihzahrd Altars");
+            DisableGenTask(tasks, "Sand Patches");
+            DisableGenTask(tasks, "Dunes");
             tasks[tasks.FindIndex(x => x.Name.Equals("Terrain"))] = new VanillaTerrainPass();
 
 			int shimmerGen = tasks.FindIndex(x => x.Name.Equals("Shimmer"));
@@ -158,18 +160,266 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Graving", WorldGenGraving));
                 tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
                 tasks.Insert(CathedralGen2 + 23, new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
-                tasks.Insert(CathedralGen2 + 24, new PassLegacy("Grassing Caves", WorldGenGrassPass));
+                tasks.Insert(CathedralGen2 + 24, new PassLegacy("World Gen Evil", WorldGenEvil));
+                tasks.Insert(CathedralGen2 + 25, new PassLegacy("Grassing Caves", WorldGenGrassPass));
 
             }
 		}
 
 
         #region Cave Formation
+		private void WorldGenEvil(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "Making the evil";
+            var genRand = WorldGen.genRand;
+			Point evilPoint = Point.Zero;
+
+            int xMin = 1500;
+            int xMax = (Main.maxTilesX / 2) - 1000;
+            if (xMax < xMin)
+            {
+                xMax = xMin + 2;
+            }
+
+            for (int a = 0; a < 100000; a++)
+			{
+
+				int x = genRand.Next(xMin, xMax);
+				int y = (int)Main.worldSurface - 50;
+				while(!WorldGen.SolidTile(x, y))
+				{
+					y++;
+				}
+
+				Tile tile = Main.tile[x, y];
+				if (tile.TileType != TileID.Grass && tile.TileType != TileID.Dirt)
+					continue;
+
+				evilPoint = new Point(x, y);
+				evilPoint.Y += 200;
+            }
+
+            int radius = 96;
+            ushort blockType = WorldGen.crimson ? TileID.Crimstone : TileID.Ebonstone;
+            ushort wallType = WorldGen.crimson ? WallID.CrimsonUnsafe1 : WallID.CorruptionUnsafe1;
+
+            WorldUtils.Gen(evilPoint, new Shapes.Circle(radius, radius), new Actions.SetTile(blockType));
+            WorldUtils.Gen(evilPoint, new Shapes.Circle(radius - 20, radius - 20), new Actions.ClearTile());
+            WorldUtils.Gen(evilPoint, new Shapes.Circle(radius - 40, radius - 40), new Actions.SetTile(blockType));
+
+            ushort[] corruptWallTypes = new ushort[]
+            {
+                        WallID.CorruptionUnsafe1,
+                        WallID.CorruptionUnsafe2,
+                        WallID.EbonstoneUnsafe
+            };
+
+            ushort[] crimsonWallTypes = new ushort[]
+            {
+                        WallID.CrimsonUnsafe1,
+                        WallID.CrimsonUnsafe2,
+                        WallID.CrimstoneUnsafe
+            };
+
+            int decorativeBlock = WorldGen.crimson ? TileID.FleshBlock : TileID.LesionBlock;
+            int lampType = WorldGen.crimson ? 14 : 33;
+            int lanternType = WorldGen.crimson ? 23 : 39;
+            for (int w = 0; w < 800; w++)
+            {
+                Point shadowOrbPoint = evilPoint + genRand.NextVector2Circular(80, 80).ToPoint();
+
+                ushort wallType2 = WorldGen.crimson ?
+                    crimsonWallTypes[genRand.Next(0, crimsonWallTypes.Length)] :
+                    corruptWallTypes[genRand.Next(0, corruptWallTypes.Length)];
+                WorldUtils.Gen(shadowOrbPoint, new Shapes.Circle(4, 4), Actions.Chain(new GenAction[]
+                {
+                            new Actions.PlaceWall(wallType2),
+                            new Actions.Smooth(true)
+                }));
+            }
+
+            for (int w = 0; w < 150; w++)
+            {
+                int radius2 = genRand.Next(50, 100);
+                Point shadowOrbPoint = evilPoint + genRand.NextVector2CircularEdge(radius2, radius2).ToPoint();
+                ushort wallType2 = WorldGen.crimson ? WallID.Flesh : WallID.LesionBlock;
+                WorldUtils.Gen(shadowOrbPoint, new Shapes.Circle(1, 1), Actions.Chain(new GenAction[]
+                {
+                            new Actions.PlaceWall(wallType2),
+                            new Actions.Smooth(true)
+                }));
+            }
+
+
+            float pokey = 12;
+            for (int n = 0; n < pokey; n++)
+            {
+                float p = (float)n / pokey;
+                float rot = p * MathHelper.TwoPi;
+                Vector2 velocity = rot.ToRotationVector2() * 66;
+                Point cavePoint = evilPoint + velocity.ToPoint();
+                Vector2 strength = new Vector2(3, 4);
+
+                Vector2 moveVelocity = -velocity.SafeNormalize(Vector2.Zero);
+                VeilGen.GenerateSimpleCave(cavePoint.ToVector2(), moveVelocity,
+                    strength, moveVelocity, 2, caveSteps: 30);
+            }
+
+            for (int n = 0; n < 800; n++)
+            {
+                float p = (float)n / 800f;
+                float rot = p * MathHelper.TwoPi;
+                Vector2 velocity = rot.ToRotationVector2() * genRand.NextFloat(50, 80);
+                Point cavePoint = evilPoint + velocity.ToPoint();
+                Vector2 strength = new Vector2(3, 4);
+
+                WorldGen.TileRunner((int)cavePoint.X, (int)cavePoint.Y,
+                    genRand.NextFloat(strength.X, strength.Y),
+                    genRand.Next(4, 5), -1);
+            }
+
+            for (int n = 0; n < 800; n++)
+            {
+                float p = (float)n / 800f;
+                float rot = p * MathHelper.TwoPi;
+                Vector2 velocity = rot.ToRotationVector2() * genRand.NextFloat(50, 80);
+                Point cavePoint = evilPoint + velocity.ToPoint();
+                Vector2 strength = new Vector2(3, 4);
+
+
+                WorldGen.TileRunner((int)cavePoint.X, (int)cavePoint.Y,
+                    genRand.NextFloat(strength.X, strength.Y),
+                    genRand.Next(4, 5), decorativeBlock);
+            }
+
+            for (int n = 0; n < 800; n++)
+            {
+                float p = (float)n / 800f;
+                float rot = p * MathHelper.TwoPi;
+                Vector2 velocity = rot.ToRotationVector2() * genRand.NextFloat(60, 100);
+                Point cavePoint = evilPoint + velocity.ToPoint();
+                Vector2 strength = new Vector2(3, 4);
+
+                WorldGen.TileRunner((int)cavePoint.X, (int)cavePoint.Y,
+                    genRand.NextFloat(strength.X, strength.Y),
+                    genRand.Next(4, 5), decorativeBlock);
+            }
+
+            for (int n = 0; n < 10; n++)
+            {
+                float p = (float)n / 10f;
+                float rot = p * MathHelper.TwoPi;
+                rot += MathHelper.ToRadians(30);
+                Vector2 velocity = rot.ToRotationVector2() * 10;
+                Point shadowOrbPoint = evilPoint + velocity.ToPoint();
+                WorldGen.AddShadowOrb(shadowOrbPoint.X, shadowOrbPoint.Y);
+            }
+
+            for (int n = 0; n < 10; n++)
+            {
+                float p = (float)n / 10f;
+                float rot = p * MathHelper.TwoPi;
+                rot += MathHelper.ToRadians(60);
+                Vector2 velocity = rot.ToRotationVector2() * 30;
+                Point shadowOrbPoint = evilPoint + velocity.ToPoint();
+                WorldGen.AddShadowOrb(shadowOrbPoint.X, shadowOrbPoint.Y);
+            }
+
+            for (int n = 0; n < 10; n++)
+            {
+                float p = (float)n / 10f;
+                float rot = p * MathHelper.TwoPi;
+                Vector2 velocity = rot.ToRotationVector2() * 50;
+                Point shadowOrbPoint = evilPoint + velocity.ToPoint();
+                WorldGen.AddShadowOrb(shadowOrbPoint.X, shadowOrbPoint.Y);
+            }
+
+            for (int n = 0; n < 1600; n++)
+            {
+                float range = genRand.NextFloat(30, 100);
+                Point fPoint = evilPoint + genRand.NextVector2CircularEdge(range, range).ToPoint();
+
+                WorldGen.Place1xX(fPoint.X, fPoint.Y, TileID.Lamps, style: lampType);
+            }
+            for (int n = 0; n < 800; n++)
+            {
+                float range = genRand.NextFloat(30, 100);
+                Point fPoint = evilPoint + genRand.NextVector2CircularEdge(range, range).ToPoint();
+                WorldGen.Place1x2Top(fPoint.X, fPoint.Y, TileID.HangingLanterns, style: lanternType);
+            }
+
+            //Make Extra
+            Vector2 caveStrength = new Vector2(10, 12);
+            Vector2 pullDirection = -Vector2.UnitY;
+            int caveWidth = 5;
+            int steps = 150;
+
+            VeilGen.GenerateSimpleCaveWall((evilPoint + new Point(-16, -32)).ToVector2(), -Vector2.UnitX, caveStrength * 2f, pullDirection, caveWidth, caveSteps: steps, tileToPlace: wallType);
+            VeilGen.GenerateSimpleCave((evilPoint + new Point(-16, -32)).ToVector2(), -Vector2.UnitX, caveStrength * 2f, pullDirection, caveWidth, caveSteps: steps, tileToPlace: blockType);
+            VeilGen.GenerateSimpleCave((evilPoint + new Point(-16, -32)).ToVector2(), -Vector2.UnitX, caveStrength, pullDirection, caveWidth, caveSteps: steps, tileToPlace: -1);
+
+            int fallSteps = 40;
+            VeilGen.GenerateSimpleCave((evilPoint + new Point(0, 48)).ToVector2(), Vector2.UnitY, caveStrength * 2f, Vector2.UnitY, caveWidth,
+                caveSteps: fallSteps,
+                tileToPlace: blockType);
+            VeilGen.GenerateSimpleCave((evilPoint + new Point(0, 48)).ToVector2(), Vector2.UnitY, caveStrength, Vector2.UnitY, caveWidth,
+                caveSteps: fallSteps,
+                tileToPlace: -1);
+            VeilGen.GenerateSimpleCave((evilPoint + new Point(-128, 100)).ToVector2(), Vector2.UnitX, caveStrength * 2f, Vector2.UnitX, caveWidth,
+                caveSteps: fallSteps * 2,
+                tileToPlace: blockType,
+                addTile: true);
+            VeilGen.GenerateSimpleCave((evilPoint + new Point(-128, 100)).ToVector2(), Vector2.UnitX, caveStrength, Vector2.UnitX, caveWidth,
+                caveSteps: fallSteps * 2,
+                tileToPlace: -1);
+
+            for (int n = 0; n < 6400; n++)
+            {
+                int x = genRand.Next(evilPoint.X - 128, evilPoint.X + 128);
+                int y = genRand.Next(evilPoint.Y + 90, evilPoint.Y + 150);
+                int style = WorldGen.crimson ? 1 : 0;
+                WorldGen.Place3x2(x, y, 26, style);
+            }
+
+            for (int x = evilPoint.X - 128; x < evilPoint.X + 128; x++)
+            {
+                int y = evilPoint.Y + 100;
+                Point wallPoint = new Point(x, y);
+                ushort wallType2 = WorldGen.crimson ? WallID.CrimstoneUnsafe : WallID.EbonstoneUnsafe;
+                WorldUtils.Gen(wallPoint, new Shapes.Circle(8, 8), Actions.Chain(new GenAction[]
+                {
+                    new Actions.PlaceWall(wallType2),
+                    new Actions.Smooth(true)
+                }));
+            }
+
+
+            //Crimsonfy/Ebonfy surroundings
+            for (int x = evilPoint.X - radius; x < evilPoint.X + radius; x++)
+            {
+                for (int y = evilPoint.Y - radius; y < evilPoint.Y + radius; y++)
+                {
+                    if (!WorldGen.SolidTile(x, y))
+                        continue;
+                    Tile tile = Main.tile[x, y];
+                    if (tile.TileType == TileID.Grass)
+                    {
+                        ushort grassType = WorldGen.crimson ? TileID.CrimsonGrass : TileID.CorruptGrass;
+                        WorldGen.PlaceTile(x, y, grassType);
+                    }
+                    if (tile.TileType == TileID.Stone)
+                    {
+                        WorldGen.PlaceTile(x, y, blockType);
+                    }
+                }
+            }
+        }
+
 		private void WorldGenAshotiTemple(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "Burying Ashoti";
 
-
+			var genRand = WorldGen.genRand;
             int radius = 80;
             int desertCenterX = (GenVars.desertHiveLeft + GenVars.desertHiveRight) / 2;
             int desertCenterY = GenVars.desertHiveLow - 200;
@@ -181,6 +431,17 @@ namespace Stellamod.WorldG
             WorldUtils.Gen(arenaPoint, new Shapes.Circle(radius - 4, radius - 4), new Actions.SetTile((ushort)ModContent.TileType<NoxianBlock>()));
             WorldUtils.Gen(arenaPoint, new Shapes.Circle(radius - 6, radius - 6), new Actions.ClearTile());
             WorldUtils.Gen(arenaPoint, new Shapes.Circle(radius / 2, radius / 2), new Actions.SetLiquid(type: LiquidID.Lava));
+            string structure;
+
+
+			//Place the center piece where the thing be
+			structure = "Struct/AshotiTemple/TempleBottom";
+            Rectangle templeBottomRect = Structurizer.ReadRectangle(structure);
+			Point templeBottomToPlace = arenaPoint;
+            templeBottomToPlace.X -= templeBottomRect.Width / 2;
+			templeBottomToPlace.Y += templeBottomRect.Height;
+            Structurizer.ReadStruct(templeBottomToPlace, structure);
+            Structurizer.ProtectStructure(templeBottomToPlace, structure);
 
 
             //Decorate arena with walls
@@ -195,6 +456,7 @@ namespace Stellamod.WorldG
 
             //Make Middle of the Temple
             int middleLength = 7;
+	
             for (int m = 0; m < middleLength; m++)
             {
                 Point offset = new Point(0, m * -43);
@@ -202,7 +464,7 @@ namespace Stellamod.WorldG
 
                 if (m == middleLength - 1)
                 {
-                    string structure = "Struct/AshotiTemple/TempleEntrance";
+                    structure = "Struct/AshotiTemple/TempleEntrance";
                     Rectangle rect = Structurizer.ReadRectangle(structure);
                     tileToPlaceOn.X -= rect.Width / 2;
                     tileToPlaceOn.Y -= 28;
@@ -211,10 +473,83 @@ namespace Stellamod.WorldG
                 }
                 else
                 {
-                    string structure = "Struct/AshotiTemple/TempleMiddle";
+                    structure = "Struct/AshotiTemple/TempleMiddle";
                     Rectangle rect = Structurizer.ReadRectangle(structure);
                     tileToPlaceOn.X -= rect.Width / 2;
                     int[] chestIndices = Structurizer.ReadStruct(tileToPlaceOn, structure);
+					foreach(int chestIndex in chestIndices)
+					{
+						if (chestIndex == -1)
+							continue;
+                        Chest chest = Main.chest[chestIndex];
+                        var itemsToAdd = new List<(int type, int stack)>();
+
+						//Golem Drops
+						switch (genRand.Next(8))
+						{
+							case 0:
+								itemsToAdd.Add((ItemID.Stynger, 1));
+								itemsToAdd.Add((ItemID.StyngerBolt, genRand.Next(60, 100)));
+								break;
+							case 1:
+								itemsToAdd.Add((ItemID.PossessedHatchet, 1));
+								break;
+							case 2:
+                                itemsToAdd.Add((ItemID.SunStone, 1));
+                                break;
+							case 3:
+                                itemsToAdd.Add((ItemID.EyeoftheGolem, 1));
+                                break;
+                            case 4:
+                                itemsToAdd.Add((ItemID.EyeoftheGolem, 1));
+                                break;
+							case 5:
+                                itemsToAdd.Add((ItemID.HeatRay, 1));
+                                break;
+							case 6:
+                                itemsToAdd.Add((ItemID.StaffofEarth, 1));
+                                break;
+							case 7:
+                                itemsToAdd.Add((ItemID.GolemFist, 1));
+                                break;
+                        }
+
+                        switch (genRand.Next(2))
+						{
+							case 0:
+                                itemsToAdd.Add((ModContent.ItemType<Lihh>(), 1));
+								break;
+							case 1:
+                                itemsToAdd.Add((ModContent.ItemType<Relagis>(), 1));
+                                break;
+						}
+
+                        itemsToAdd.Add((ItemID.LihzahrdPowerCell, 1));
+                        itemsToAdd.Add((ItemID.LihzahrdFurnace, 1));
+
+                        if (genRand.NextBool(3))
+						{
+							switch (genRand.Next(2))
+							{
+								case 0:
+									itemsToAdd.Add((ItemID.GreaterHealingPotion, genRand.Next(2, 6)));
+									break;
+								case 1:
+                                    itemsToAdd.Add((ItemID.GreaterManaPotion, genRand.Next(2, 6)));
+                                    break;
+							}
+						}
+
+                        switch (genRand.Next(2))
+						{
+							case 0:
+                                itemsToAdd.Add((ItemID.SolarTablet, 1));
+                                break;
+							case 1:
+                                itemsToAdd.Add((ItemID.LunarTabletFragment, genRand.Next(3, 8)));
+                                break;
+						}
+                    }
                     Structurizer.ProtectStructure(tileToPlaceOn, structure);
                 }
             }

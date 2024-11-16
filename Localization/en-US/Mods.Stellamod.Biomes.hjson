@@ -122,3 +122,8 @@ BloodCathedral: {
 	DisplayName: Blood Cathedral
 	TownNPCDialogueName: the Blood Cathedral
 }
+
+AshotiTemple: {
+	TownNPCDialogueName: the Ashoti Temple
+	DisplayName: Ashoti Temple
+}

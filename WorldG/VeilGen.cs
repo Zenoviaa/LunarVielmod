@@ -28,8 +28,234 @@ namespace Stellamod.WorldG
 
         public override bool? UseItem(Player player)
         {
-            GenerateAshotiTemple();
+            GenerateEvil();
             return base.UseItem(player);
+        }
+        private void GenerateEvil()
+        {
+            var genRand = WorldGen.genRand;
+            Vector2 mouseWorld = Main.MouseWorld;
+            int mx = (int)Main.MouseWorld.X / 16;
+            int my = (int)Main.MouseWorld.Y / 16;
+            Point tilePoint = new Point(mx, my);
+            Point evilPoint = tilePoint;
+
+            int radius = 96;
+            WorldGen.crimson = false;
+            ushort blockType = WorldGen.crimson ? TileID.Crimstone : TileID.Ebonstone;
+            ushort wallType = WorldGen.crimson ? WallID.CrimsonUnsafe1 : WallID.CorruptionUnsafe1;
+
+            WorldUtils.Gen(evilPoint, new Shapes.Circle(radius, radius), new Actions.SetTile(blockType));
+            WorldUtils.Gen(evilPoint, new Shapes.Circle(radius - 20, radius - 20), new Actions.ClearTile());
+            WorldUtils.Gen(evilPoint, new Shapes.Circle(radius - 40, radius - 40), new Actions.SetTile(blockType));
+
+            ushort[] corruptWallTypes = new ushort[]
+            {
+                        WallID.CorruptionUnsafe1,
+                        WallID.CorruptionUnsafe2,
+                        WallID.EbonstoneUnsafe
+            };
+
+            ushort[] crimsonWallTypes = new ushort[]
+            {
+                        WallID.CrimsonUnsafe1,
+                        WallID.CrimsonUnsafe2,
+                        WallID.CrimstoneUnsafe
+            };
+
+            int decorativeBlock = WorldGen.crimson ? TileID.FleshBlock : TileID.LesionBlock;
+            int lampType = WorldGen.crimson ? 14 : 33;
+            int lanternType = WorldGen.crimson ? 23 : 39;
+            for (int w = 0; w < 800; w++)
+            {
+                Point shadowOrbPoint = evilPoint + genRand.NextVector2Circular(80, 80).ToPoint();
+  
+                ushort wallType2 = WorldGen.crimson ? 
+                    crimsonWallTypes[genRand.Next(0, crimsonWallTypes.Length)] : 
+                    corruptWallTypes[genRand.Next(0, corruptWallTypes.Length)];
+                WorldUtils.Gen(shadowOrbPoint, new Shapes.Circle(4, 4), Actions.Chain(new GenAction[]
+                {
+                            new Actions.PlaceWall(wallType2),
+                            new Actions.Smooth(true)
+                }));
+            }
+
+            for (int w = 0; w < 150; w++)
+            {
+                int radius2 = genRand.Next(50, 100);
+                Point shadowOrbPoint = evilPoint + genRand.NextVector2CircularEdge(radius2, radius2).ToPoint();
+                ushort wallType2 = WorldGen.crimson ? WallID.Flesh : WallID.LesionBlock;
+                WorldUtils.Gen(shadowOrbPoint, new Shapes.Circle(1, 1), Actions.Chain(new GenAction[]
+                {
+                            new Actions.PlaceWall(wallType2),
+                            new Actions.Smooth(true)
+                }));
+            }
+
+
+            float pokey = 12;
+            for (int n = 0; n < pokey; n++)
+            {
+                float progress = (float)n / pokey;
+                float rot = progress * MathHelper.TwoPi;
+                Vector2 velocity = rot.ToRotationVector2() * 66;
+                Point cavePoint = evilPoint + velocity.ToPoint();
+                Vector2 strength = new Vector2(3, 4);
+
+                Vector2 moveVelocity = -velocity.SafeNormalize(Vector2.Zero);
+                VeilGen.GenerateSimpleCave(cavePoint.ToVector2(), moveVelocity,
+                    strength, moveVelocity, 2, caveSteps: 30);
+            }
+
+            for (int n = 0; n < 800; n++)
+            {
+                float progress = (float)n / 800f;
+                float rot = progress * MathHelper.TwoPi;
+                Vector2 velocity = rot.ToRotationVector2() * genRand.NextFloat(50, 80);
+                Point cavePoint = evilPoint + velocity.ToPoint();
+                Vector2 strength = new Vector2(3, 4);
+
+                WorldGen.TileRunner((int)cavePoint.X, (int)cavePoint.Y,
+                    genRand.NextFloat(strength.X, strength.Y),
+                    genRand.Next(4, 5), -1);
+            }
+
+            for (int n = 0; n < 800; n++)
+            {
+                float progress = (float)n / 800f;
+                float rot = progress * MathHelper.TwoPi;
+                Vector2 velocity = rot.ToRotationVector2() * genRand.NextFloat(50, 80);
+                Point cavePoint = evilPoint + velocity.ToPoint();
+                Vector2 strength = new Vector2(3, 4);
+
+
+                WorldGen.TileRunner((int)cavePoint.X, (int)cavePoint.Y,
+                    genRand.NextFloat(strength.X, strength.Y),
+                    genRand.Next(4, 5), decorativeBlock);
+            }
+
+            for (int n = 0; n < 800; n++)
+            {
+                float progress = (float)n / 800f;
+                float rot = progress * MathHelper.TwoPi;
+                Vector2 velocity = rot.ToRotationVector2() * genRand.NextFloat(60, 100);
+                Point cavePoint = evilPoint + velocity.ToPoint();
+                Vector2 strength = new Vector2(3, 4);
+
+                WorldGen.TileRunner((int)cavePoint.X, (int)cavePoint.Y,
+                    genRand.NextFloat(strength.X, strength.Y),
+                    genRand.Next(4, 5), decorativeBlock);
+            }
+
+            for (int n = 0; n < 10; n++)
+            {
+                float progress = (float)n / 10f;
+                float rot = progress * MathHelper.TwoPi;
+                rot += MathHelper.ToRadians(30);
+                Vector2 velocity = rot.ToRotationVector2() * 10;
+                Point shadowOrbPoint = evilPoint + velocity.ToPoint();
+                WorldGen.AddShadowOrb(shadowOrbPoint.X, shadowOrbPoint.Y);
+            }
+
+            for (int n = 0; n < 10; n++)
+            {
+                float progress = (float)n / 10f;
+                float rot = progress * MathHelper.TwoPi;
+                rot += MathHelper.ToRadians(60);
+                Vector2 velocity = rot.ToRotationVector2() * 30;
+                Point shadowOrbPoint = evilPoint + velocity.ToPoint();
+                WorldGen.AddShadowOrb(shadowOrbPoint.X, shadowOrbPoint.Y);
+            }
+
+            for (int n = 0; n < 10; n++)
+            {
+                float progress = (float)n / 10f;
+                float rot = progress * MathHelper.TwoPi;
+                Vector2 velocity = rot.ToRotationVector2() * 50;
+                Point shadowOrbPoint = evilPoint + velocity.ToPoint();
+                WorldGen.AddShadowOrb(shadowOrbPoint.X, shadowOrbPoint.Y);
+            }
+
+            for (int n = 0; n < 1600; n++)
+            {
+                float range = genRand.NextFloat(30, 100);
+                Point fPoint = evilPoint + genRand.NextVector2CircularEdge(range, range).ToPoint();
+                
+                WorldGen.Place1xX(fPoint.X, fPoint.Y, TileID.Lamps, style: lampType);
+            }
+            for (int n = 0; n < 800; n++)
+            {
+                float range = genRand.NextFloat(30, 100);
+                Point fPoint = evilPoint + genRand.NextVector2CircularEdge(range, range).ToPoint();
+                WorldGen.Place1x2Top(fPoint.X, fPoint.Y, TileID.HangingLanterns, style: lanternType);
+            }
+
+            //Make Extra
+            Vector2 caveStrength = new Vector2(10, 12);
+            Vector2 pullDirection = -Vector2.UnitY;
+            int caveWidth = 5;
+            int steps = 150;
+
+            VeilGen.GenerateSimpleCaveWall((evilPoint + new Point(-16, -32)).ToVector2(), -Vector2.UnitX, caveStrength * 2f, pullDirection, caveWidth, caveSteps: steps, tileToPlace: wallType);
+            VeilGen.GenerateSimpleCave((evilPoint + new Point(-16, -32)).ToVector2(), -Vector2.UnitX, caveStrength * 2f, pullDirection, caveWidth, caveSteps: steps, tileToPlace: blockType);
+            VeilGen.GenerateSimpleCave((evilPoint + new Point(-16, -32)).ToVector2(), -Vector2.UnitX, caveStrength, pullDirection, caveWidth, caveSteps: steps, tileToPlace: -1);
+
+            int fallSteps = 40;
+            VeilGen.GenerateSimpleCave((evilPoint + new Point(0, 48)).ToVector2(), Vector2.UnitY, caveStrength * 2f, Vector2.UnitY, caveWidth, 
+                caveSteps: fallSteps, 
+                tileToPlace: blockType);
+            VeilGen.GenerateSimpleCave((evilPoint + new Point(0, 48)).ToVector2(), Vector2.UnitY, caveStrength, Vector2.UnitY, caveWidth, 
+                caveSteps: fallSteps, 
+                tileToPlace: -1);
+            VeilGen.GenerateSimpleCave((evilPoint + new Point(-128, 100)).ToVector2(), Vector2.UnitX, caveStrength * 2f, Vector2.UnitX, caveWidth,
+                caveSteps: fallSteps * 2,
+                tileToPlace: blockType,
+                addTile: true);
+            VeilGen.GenerateSimpleCave((evilPoint + new Point(-128, 100)).ToVector2(), Vector2.UnitX, caveStrength, Vector2.UnitX, caveWidth,
+                caveSteps: fallSteps * 2,
+                tileToPlace: -1);
+
+            for(int n = 0; n < 6400; n++)
+            {
+                int x = genRand.Next(evilPoint.X - 128, evilPoint.X + 128);
+                int y = genRand.Next(evilPoint.Y + 90, evilPoint.Y + 150);
+                int style = WorldGen.crimson ? 1 : 0;
+                WorldGen.Place3x2(x, y, 26, style);
+            }
+
+            for (int x = evilPoint.X - 128; x < evilPoint.X + 128; x++)
+            {
+                int y = evilPoint.Y + 100;
+                Point wallPoint = new Point(x, y);
+                ushort wallType2 = WorldGen.crimson ? WallID.CrimstoneUnsafe : WallID.EbonstoneUnsafe;
+                WorldUtils.Gen(wallPoint, new Shapes.Circle(8, 8), Actions.Chain(new GenAction[]
+                {
+                    new Actions.PlaceWall(wallType2),
+                    new Actions.Smooth(true)
+                }));
+            }
+
+
+            //Crimsonfy/Ebonfy surroundings
+            int corruptRadius = 500;
+            for (int x = evilPoint.X - corruptRadius; x < evilPoint.X + corruptRadius; x++)
+            {
+                for (int y = evilPoint.Y - corruptRadius; y < evilPoint.Y + corruptRadius; y++)
+                {
+                    if (!WorldGen.SolidTile(x, y))
+                        continue;
+                    Tile tile = Main.tile[x, y];
+                    if (tile.TileType == TileID.Grass)
+                    {
+                        ushort grassType = WorldGen.crimson ? TileID.CrimsonGrass : TileID.CorruptGrass;
+                        WorldGen.PlaceTile(x, y, grassType, forced: true);
+                    }
+                    if (tile.TileType == TileID.Stone)
+                    {
+                        WorldGen.PlaceTile(x, y, blockType, forced: true);
+                    }
+                }
+            }
         }
         private void GenerateAshotiTemple()
         {
@@ -316,6 +542,192 @@ namespace Stellamod.WorldG
 
                     WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
                         genRand.NextFloat(caveStrength.X, caveStrength.Y),
+                        genRand.Next(4, 5), -1);
+                }
+
+                // Update the cave position.
+                cavePosition += caveVelocity * caveWidth * 0.5f;
+                //  caveStrength *= 0.99f;
+            }
+        }
+
+        public static void GenerateSimpleCaveWall(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, Vector2 pullDirection, int caveWidth, int caveSteps, ushort tileToPlace)
+        {
+            var genRand = WorldGen.genRand;
+            int caveSeed = genRand.Next();
+
+            //Why make my own noise functions when I can just use this?!?!?1 Hhahahaha
+            float i = cavePosition.X;
+            Vector2 caveVelocity = baseCaveDirection;
+            Vector2 breakStrength = caveStrength;
+
+            Vector2 startVelocity = caveVelocity;
+            Vector2 pullVelocity = pullDirection;
+
+            float sharpness = 1;
+            float counter = 0;
+            bool shouldBreak = false;
+            for (int j = 0; j < caveSteps; j++)
+            {
+
+                counter++;
+                breakStrength *= 0.9995f;
+                float degreesToRotate = sharpness;
+                float length = caveVelocity.Length();
+                float targetAngle = (pullVelocity - startVelocity).ToRotation();
+                Vector2 newVelocity = caveVelocity.ToRotation().AngleTowards(targetAngle,
+                    MathHelper.ToRadians(degreesToRotate)).ToRotationVector2() * length;
+                caveVelocity = newVelocity;
+
+
+                if (shouldBreak)
+                {
+                    break;
+                }
+
+                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                {
+                    Point wallPoint = cavePosition.ToPoint();
+                    WorldUtils.Gen(wallPoint, new Shapes.Circle(8, 8), Actions.Chain(new GenAction[]
+                    {
+                        new Actions.PlaceWall(tileToPlace),
+                        new Actions.Smooth(true)
+                    }));
+                }
+         
+                float tilePercent = VeilGen.TilePercentNoAir(cavePosition.ToPoint(), new Rectangle((int)cavePosition.X, (int)cavePosition.Y, 20, 20), TileID.Dirt, TileID.Stone);
+                if (tilePercent < 0.5f && j > caveSteps / 2)
+                {
+                    shouldBreak = true;
+                }
+                // Update the cave position.
+                cavePosition += caveVelocity * caveWidth * 0.5f;
+                //  caveStrength *= 0.99f;
+            }
+        }
+
+        public static void GenerateSimpleCave(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, Vector2 pullDirection, int caveWidth, int caveSteps, int tileToPlace = -1, bool addTile = false)
+        {
+            var genRand = WorldGen.genRand;
+            int caveSeed = genRand.Next();
+
+            //Why make my own noise functions when I can just use this?!?!?1 Hhahahaha
+            float i = cavePosition.X;
+            Vector2 caveVelocity = baseCaveDirection;
+            Vector2 breakStrength = caveStrength;
+
+            Vector2 startVelocity = caveVelocity;
+            Vector2 pullVelocity = pullDirection;
+
+            float sharpness = 1;
+            float counter = 0;
+            for (int j = 0; j < caveSteps; j++)
+            {
+
+                counter++;
+                breakStrength *= 0.9995f;
+                float degreesToRotate = sharpness;
+                float length = caveVelocity.Length();
+                float targetAngle = (pullVelocity - startVelocity).ToRotation();
+                Vector2 newVelocity = caveVelocity.ToRotation().AngleTowards(targetAngle,
+                    MathHelper.ToRadians(degreesToRotate)).ToRotationVector2() * length;
+                caveVelocity = newVelocity;
+
+                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                {
+                    WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
+                        genRand.NextFloat(breakStrength.X, breakStrength.Y),
+                        genRand.Next(4, 5), tileToPlace, addTile);
+                }
+
+                // Update the cave position.
+                cavePosition += caveVelocity * caveWidth * 0.5f;
+                //  caveStrength *= 0.99f;
+            }
+        }
+
+        public static void GenerateSimpleCave(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, Vector2 pullDirection, int caveWidth, int caveSteps, int tileToPlace = -1)
+        {
+            var genRand = WorldGen.genRand;
+            int caveSeed = genRand.Next();
+
+            //Why make my own noise functions when I can just use this?!?!?1 Hhahahaha
+            float i = cavePosition.X;
+            Vector2 caveVelocity = baseCaveDirection;
+            Vector2 breakStrength = caveStrength;
+
+            Vector2 startVelocity = caveVelocity;
+            Vector2 pullVelocity = pullDirection;
+
+            float sharpness = 1;
+            float counter = 0;
+            bool shouldBreak=false;
+            for (int j = 0; j < caveSteps; j++)
+            {
+
+                counter++;
+                breakStrength *= 0.9995f;
+                float degreesToRotate = sharpness;
+                float length = caveVelocity.Length();
+                float targetAngle = (pullVelocity - startVelocity).ToRotation();
+                Vector2 newVelocity = caveVelocity.ToRotation().AngleTowards(targetAngle,
+                    MathHelper.ToRadians(degreesToRotate)).ToRotationVector2() * length;
+                caveVelocity = newVelocity;
+
+                float tilePercent = VeilGen.TilePercentNoAir(cavePosition.ToPoint(), new Rectangle((int)cavePosition.X, (int)cavePosition.Y, 20, 20), TileID.Dirt, TileID.Stone);
+
+                if (shouldBreak)
+                    break;
+
+                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                {
+                    WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
+                        genRand.NextFloat(breakStrength.X, breakStrength.Y),
+                        genRand.Next(4, 5), tileToPlace);
+                }
+
+                // Update the cave position.
+                cavePosition += caveVelocity * caveWidth * 0.5f;
+
+         
+                if (tilePercent < 0.5f && j > caveSteps / 2)
+                {
+                    shouldBreak = true;
+                }
+            }
+        }
+
+        public static void GenerateSimpleCave(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, Vector2 pullDirection, int caveWidth, int caveSteps)
+        {
+            var genRand = WorldGen.genRand;
+            int caveSeed = genRand.Next();
+
+            //Why make my own noise functions when I can just use this?!?!?1 Hhahahaha
+            float i = cavePosition.X;
+            Vector2 caveVelocity = baseCaveDirection;
+            Vector2 breakStrength = caveStrength;
+
+            Vector2 startVelocity = caveVelocity;
+            Vector2 pullVelocity = pullDirection;
+
+            float sharpness = 1;
+            float counter = 0;
+            for (int j = 0; j < caveSteps; j++)
+            {
+
+                counter++;
+                breakStrength *= 0.9995f;
+                float degreesToRotate = sharpness;
+                float length = caveVelocity.Length();
+                float targetAngle = (pullVelocity - startVelocity).ToRotation();
+                Vector2 newVelocity = caveVelocity.ToRotation().AngleTowards(targetAngle,
+                    MathHelper.ToRadians(degreesToRotate)).ToRotationVector2() * length;
+                caveVelocity = newVelocity;
+
+                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                {
+                    WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
+                        genRand.NextFloat(breakStrength.X, breakStrength.Y),
                         genRand.Next(4, 5), -1);
                 }
 
@@ -893,6 +1305,42 @@ namespace Stellamod.WorldG
                 cavePosition += caveDirection * caveWidth * 0.5f;
             }
         }
+        public static float TilePercentNoAir(Point tilePoint, Rectangle size, params ushort[] tileIDs)
+        {
+            int count = 0;
+            int width = size.Width;
+            int height = size.Height;
+            for (int x = tilePoint.X; x < tilePoint.X + width; x++)
+            {
+                if (x < 0)
+                    continue;
+                if (x >= Main.maxTilesX)
+                    continue;
+
+                for (int y = tilePoint.Y; y > tilePoint.Y - height; y--)
+                {
+
+                    if (y < 0)
+                        continue;
+                    if (y >= Main.maxTilesY)
+                        continue;
+
+                    Tile tile = Main.tile[x, y];
+                    for (int t = 0; t < tileIDs.Length; t++)
+                    {
+                        int tileID = tileIDs[t];
+                        if (tile.HasTile)
+                        {
+                            count++;
+                        }
+                    }
+                }
+            }
+
+            int tileM = width * height;
+            float tilePercent = (float)count / (float)tileM;
+            return tilePercent;
+        }
 
         public static float TilePercent(Point tilePoint, Rectangle size, params ushort[] tileIDs)
         {
@@ -956,11 +1404,11 @@ namespace Stellamod.WorldG
                 string structure = GetStructurePath();
                 Rectangle rectangle = Structurizer.ReadRectangle(structure);
                 rectangle.Location = tilePoint;
-                if(TilePercent(tilePoint, rectangle, TileID.Dirt, TileID.Stone) < 0.5f)
+                if(TilePercent(tilePoint, rectangle, TileID.Dirt, TileID.Stone) < 0.7f)
                 {
                     break;
                 }
-
+                
                 int[] chestIndices = Structurizer.ReadStruct(tilePoint, structure, null);
                 if(chestIndices.Length != 0)
                 {

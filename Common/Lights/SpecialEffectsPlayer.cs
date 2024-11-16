@@ -175,7 +175,9 @@ namespace Stellamod.Common.Lights
             screenShaderData.UseProgress(dungeonPaletteProgress);
             TogglePaletteShader("LunarVeil:PaletteDungeon", dungeonPaletteProgress != 0);
 
-            bool desertPaletteActive = clientConfig.VanillaBiomesPaletteShadersToggle && Player.ZoneDesert;
+            bool desertPaletteActive = clientConfig.VanillaBiomesPaletteShadersToggle
+                && (Player.ZoneDesert || Player.GetModPlayer<MyPlayer>().ZoneAshotiTemple)
+                && !(Player.ZoneCrimson || Player.ZoneCorrupt);
             if (desertPaletteActive)
             {
                 desertPaletteProgress += speed;
@@ -206,11 +208,20 @@ namespace Stellamod.Common.Lights
             CalculateDarkness();
             TogglePaletteShader("LunarVeil:DarknessVignette", darkness != 0);
 
+
+
+            bool evilAreaActive = Player.ZoneCrimson || Player.ZoneCorrupt;
+            if (evilAreaActive && darknessCurve < 0.5f)
+            {
+                darknessCurve = 0.5f;
+            }
+
             screenShaderData = FilterManager["LunarVeil:DarknessCurve"].GetShader();
             screenShaderData.UseProgress(darknessCurve);
             screenShaderData.Shader.Parameters["blackCurve"].SetValue(blackCurve);
             screenShaderData.Shader.Parameters["whiteCurve"].SetValue(whiteCurve);
             TogglePaletteShader("LunarVeil:DarknessCurve", darknessCurve != 0);
+
 
             if (hellPaletteActive || desertPaletteActive)
             {
