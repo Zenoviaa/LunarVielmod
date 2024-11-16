@@ -34,6 +34,7 @@ using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
 using Stellamod.Tiles.Illuria;
+using Stellamod.Tiles.Veil;
 using Stellamod.WorldG.StructureManager;
 using System;
 using System.Collections.Generic;
@@ -134,7 +135,7 @@ namespace Stellamod.WorldG
                 //tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
                 //	tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent", WorldGenVirulent));
 
-                tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Abandoned Mineshafts", WorldGenAbandonedMineshafts));
+                tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Abandoned Mineshafts", WorldGenMineshafts));
                 tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
 				tasks.Insert(CathedralGen2 + 3, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
 				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen More skies", WorldGenBig));
@@ -156,14 +157,71 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
                 tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Graving", WorldGenGraving));
                 tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
-                tasks.Insert(CathedralGen2 + 23, new PassLegacy("Grassing Caves", WorldGenGrassPass));
+                tasks.Insert(CathedralGen2 + 23, new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
+                tasks.Insert(CathedralGen2 + 24, new PassLegacy("Grassing Caves", WorldGenGrassPass));
 
             }
 		}
 
 
         #region Cave Formation
-		private void WorldGenShimmerSpot(GenerationProgress progress, GameConfiguration configuration)
+		private void WorldGenAshotiTemple(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "Burying Ashoti";
+
+
+            int radius = 80;
+            int desertCenterX = (GenVars.desertHiveLeft + GenVars.desertHiveRight) / 2;
+            int desertCenterY = GenVars.desertHiveLow - 200;
+            Point arenaPoint = new Point(desertCenterX, desertCenterY);
+
+            //Building the arena
+            WorldUtils.Gen(arenaPoint, new Shapes.Circle(radius, radius), new Actions.SetTile(TileID.LihzahrdBrick));
+            WorldUtils.Gen(arenaPoint, new Shapes.Circle(radius - 2, radius - 2), new Actions.SetTile((ushort)ModContent.TileType<ChiseledStone>()));
+            WorldUtils.Gen(arenaPoint, new Shapes.Circle(radius - 4, radius - 4), new Actions.SetTile((ushort)ModContent.TileType<NoxianBlock>()));
+            WorldUtils.Gen(arenaPoint, new Shapes.Circle(radius - 6, radius - 6), new Actions.ClearTile());
+            WorldUtils.Gen(arenaPoint, new Shapes.Circle(radius / 2, radius / 2), new Actions.SetLiquid(type: LiquidID.Lava));
+
+
+            //Decorate arena with walls
+            for (int w = 0; w < 80; w++)
+            {
+                float progressOnCircle = (float)w / 80f;
+                float rot = progressOnCircle * MathHelper.TwoPi;
+                Vector2 vel = rot.ToRotationVector2() * radius;
+                Point pointToWall = arenaPoint + vel.ToPoint();
+                WorldUtils.Gen(pointToWall, new Shapes.Circle(4, 4), new Actions.PlaceWall(type: WallID.LihzahrdBrickUnsafe));
+            }
+
+            //Make Middle of the Temple
+            int middleLength = 7;
+            for (int m = 0; m < middleLength; m++)
+            {
+                Point offset = new Point(0, m * -43);
+                Point tileToPlaceOn = arenaPoint + offset;
+
+                if (m == middleLength - 1)
+                {
+                    string structure = "Struct/AshotiTemple/TempleEntrance";
+                    Rectangle rect = Structurizer.ReadRectangle(structure);
+                    tileToPlaceOn.X -= rect.Width / 2;
+                    tileToPlaceOn.Y -= 28;
+                    int[] chestIndices = Structurizer.ReadStruct(tileToPlaceOn, structure);
+                    Structurizer.ProtectStructure(tileToPlaceOn, structure);
+                }
+                else
+                {
+                    string structure = "Struct/AshotiTemple/TempleMiddle";
+                    Rectangle rect = Structurizer.ReadRectangle(structure);
+                    tileToPlaceOn.X -= rect.Width / 2;
+                    int[] chestIndices = Structurizer.ReadStruct(tileToPlaceOn, structure);
+                    Structurizer.ProtectStructure(tileToPlaceOn, structure);
+                }
+            }
+        }
+
+
+        private void WorldGenShimmerSpot(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "Faking the Shimmer";
 			GenVars.shimmerPosition = new ReLogic.Utilities.Vector2D(Main.maxTilesX * 0.5f, Main.maxTilesY * 0.5f);
@@ -260,6 +318,30 @@ namespace Stellamod.WorldG
                     virulentCaveWidth,
                     virulentCaveSteps);
             }
+        }
+
+		private void WorldGenMineshafts(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "Shafting";
+            var genRand = WorldGen.genRand;
+
+			int numMineshafts = 18;
+			for(int n = 0; n < numMineshafts; n++)
+			{
+				for(int a = 0; a < 10000; a++)
+				{
+					int x = genRand.Next(250, Main.maxTilesX - 250);
+					int y = genRand.Next((int)GenVars.rockLayerHigh, (int)GenVars.lavaLine);
+                    Tile tile = Main.tile[x, y];
+                    if (tile.TileType != TileID.Stone)
+                        continue;
+					Point tilePoint = new Point(x, y);
+					Point tileDirection = new Point(1, 0);
+					int tunnel = genRand.Next(7, 25);
+					VeilGen.GenerateMineshaftTunnel(tilePoint, tileDirection, tunnel);
+					break;
+                }
+			}
         }
 
         private void WorldGenCaves(GenerationProgress progress, GameConfiguration configuration)
@@ -1108,6 +1190,9 @@ namespace Stellamod.WorldG
                     StructureLoader.ProtectStructure(Loc, path);
                     foreach (int chestIndex in ChestIndexs)
 					{
+						if (chestIndex >= Main.chest.Length)
+							continue;
+
 						var chest = Main.chest[chestIndex];
 						// etc
 
