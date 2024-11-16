@@ -1799,10 +1799,7 @@ namespace Stellamod.WorldG
                                     itemsToAdd.Add((ItemID.Mace, 1));
                                     break;
                                 case 4:
-                                    if (genRand.NextBool(7))
-                                    {
-                                        itemsToAdd.Add((ItemID.LavaCharm, 1));
-                                    }
+                                    itemsToAdd.Add((ItemID.LavaCharm, 1));
                                     break;
                                 case 5:
                                     itemsToAdd.Add((ItemID.Aglet, 1));
