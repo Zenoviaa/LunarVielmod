@@ -8055,3 +8055,8 @@ FuneralBedItem: {
 	DisplayName: Funeral Bed Item
 	Tooltip: ""
 }
+
+DelgrimShopItem: {
+	Tooltip: ""
+	DisplayName: Delgrim Shop Item
+}

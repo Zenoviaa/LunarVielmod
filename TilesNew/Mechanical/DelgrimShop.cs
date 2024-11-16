@@ -38,7 +38,7 @@ namespace Stellamod.TilesNew.Mechanical
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            StructureColor = Color.White;
+            StructureColor = Color.Gray;
             Origin = DrawOrigin.BottomUp;
 
             //If you need other static defaults it go here
