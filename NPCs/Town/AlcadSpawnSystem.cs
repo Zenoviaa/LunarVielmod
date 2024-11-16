@@ -245,6 +245,7 @@ namespace Stellamod.NPCs.Town
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
+            return;
             if (StellaMultiplayer.IsHost)
             {
                 if (TargetBossAlive())

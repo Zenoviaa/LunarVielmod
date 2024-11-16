@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Map;
@@ -366,6 +367,120 @@ namespace Stellamod.WorldG
 
                 // Update the cave position.
                 cavePosition += caveDirection * caveWidth * 0.5f;
+            }
+        }
+
+        public static void GenerateVirulentCave(Vector2 cavePosition,
+            Vector2 seedPosition,
+            Vector2 baseCaveDirection,
+            Vector2 caveStrength,
+            int caveWidth,
+            int caveSteps)
+        {
+            var genRand = WorldGen.genRand;
+            int caveSeed = genRand.Next();
+            Vector2 caveVelocity = baseCaveDirection;
+            float sharpness = 1f;
+            for (int j = 0; j < caveSteps; j++)
+            {
+                float degreesToRotate = sharpness;
+                float length = caveVelocity.Length();
+                float targetAngle = (seedPosition - cavePosition).ToRotation();
+                Vector2 newVelocity = caveVelocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(degreesToRotate)).ToRotationVector2() * length;
+                caveVelocity = newVelocity;
+                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                {
+                    WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
+                        genRand.NextFloat(caveStrength.X, caveStrength.Y),
+                        genRand.Next(4, 5), -1);
+                }
+
+                // Update the cave position.
+                cavePosition += caveVelocity * caveWidth * 0.5f;
+            }
+        }
+
+
+        public static void GenerateJungleTreeCaves(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength,
+            int caveWidth,
+            int caveSteps,
+            int splitSteps,
+            int splitDenominator)
+        {
+            var genRand = WorldGen.genRand;
+            int caveSeed = genRand.Next();
+
+            //Why make my own noise functions when I can just use this?!?!?1 Hhahahaha
+            float i = cavePosition.X;
+            Vector2 caveVelocity = baseCaveDirection;
+            Vector2 pullDirection = genRand.NextVector2Circular(1, 1);
+            Vector2 targetPosition = caveVelocity + pullDirection;
+            float sharpness = 1;
+            int counter = 1;
+
+            for (int j = 0; j < caveSteps; j++)
+            {
+                //Homing
+                float degreesToRotate = sharpness;
+                float length = caveVelocity.Length();
+                float targetAngle = (targetPosition - caveVelocity).ToRotation();
+                Vector2 newVelocity = caveVelocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(degreesToRotate)).ToRotationVector2() * length;
+                caveVelocity = newVelocity;
+
+
+                if (genRand.NextBool(3))
+                {
+                    targetPosition = targetPosition.RotatedByRandom(MathHelper.ToRadians(15));
+                }
+
+                if (genRand.NextBool(splitDenominator) && j > 4)
+                {
+                    int clearingCaveWidth = caveWidth / 2;
+                    int clearingCaveSteps = splitSteps;
+
+                    //Cave position in tiles
+                    Vector2 clearingPosition = new Vector2((int)cavePosition.X, (int)cavePosition.Y);
+
+                    //Starting cave direction
+                    float dir = counter % 2 == 0 ? 1 : -1;
+                    counter++;
+                    Vector2 clearingCaveDirection = baseCaveDirection.RotatedBy(dir * MathHelper.PiOver2);
+
+                    //How much the tile runner is gonna carve out
+                    Vector2 clearingCaveStrength = caveStrength * 0.5f;
+
+                    VeilGen.GenerateJungleTreeCaves(clearingPosition,
+                        clearingCaveDirection,
+                        clearingCaveStrength,
+                        clearingCaveWidth,
+                        clearingCaveSteps,
+                        genRand.Next(splitSteps / 2, splitSteps),
+                        splitDenominator * 640);
+                }
+
+                /*
+                Point cavePoint = cavePosition.ToPoint();
+                Dictionary<ushort, int> dictionary = new Dictionary<ushort, int>();
+                WorldUtils.Gen(cavePoint, new Shapes.Rectangle(20, 10), new Actions.TileScanner(TileID.Mud, TileID.Stone).Output(dictionary));
+                int mudCount = dictionary[TileID.Mud];
+                int stoneCount = dictionary[TileID.Stone];
+                if(stoneCount > mudCount)
+                {
+                    return;
+                }
+                */
+                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                {
+                    WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
+                        genRand.NextFloat(caveStrength.X, caveStrength.Y),
+                        genRand.Next(4, 5), -1);
+                }
+
+
+
+                // Update the cave position.
+                cavePosition += caveVelocity * caveWidth * 0.5f;
+                //  caveStrength *= 0.99f;
             }
         }
 
