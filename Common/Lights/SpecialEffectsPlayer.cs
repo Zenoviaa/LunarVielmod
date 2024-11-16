@@ -49,6 +49,7 @@ namespace Stellamod.Common.Lights
         public float royalPaletteProgress;
         public float desertPaletteProgress;
         public float bloodCathedralPaletteProgress;
+        public float darknessCurveProgress = 1f;
 
         private void LoadPalettes()
         {
@@ -75,7 +76,7 @@ namespace Stellamod.Common.Lights
             //Curve based
             float progress = (float)(Main.LocalPlayer.position.ToTileCoordinates().Y - Main.worldSurface) / 1000;
             progress = MathHelper.Clamp(progress, 0, 1);
-            darknessCurve = MathHelper.Lerp(0f, darknessCurve, progress);
+            darknessCurve = MathHelper.Lerp(0f, darknessCurve, progress * darknessCurveProgress);
 
             whiteCurve = 0f;
             blackCurve = 1f;
@@ -210,6 +211,16 @@ namespace Stellamod.Common.Lights
             screenShaderData.Shader.Parameters["blackCurve"].SetValue(blackCurve);
             screenShaderData.Shader.Parameters["whiteCurve"].SetValue(whiteCurve);
             TogglePaletteShader("LunarVeil:DarknessCurve", darknessCurve != 0);
+
+            if (hellPaletteActive)
+            {
+                darknessCurveProgress -= speed;
+            }
+            else
+            {
+                darknessCurveProgress += speed;
+            }
+            darknessCurveProgress = MathHelper.Clamp(darknessCurveProgress, 0f, 1f);
         }
         
         private void CalculateDarkness()
