@@ -1849,7 +1849,7 @@ namespace Stellamod.WorldG
 
                         if (genRand.NextBool(3))
                         {
-                            switch (genRand.Next(0, 5))
+                            switch (genRand.Next(0, 6))
                             {
                                 case 0:
                                     itemsToAdd.Add((ItemID.SpelunkerPotion, genRand.Next(2, 4)));
@@ -1865,6 +1865,9 @@ namespace Stellamod.WorldG
                                     break;
                                 case 4:
                                     itemsToAdd.Add((ItemID.TrapsightPotion, genRand.Next(1, 3)));
+                                    break;
+                                case 5:
+                                    itemsToAdd.Add((ItemID.ObsidianSkinPotion, genRand.Next(1, 3)));
                                     break;
                             }
                         }
