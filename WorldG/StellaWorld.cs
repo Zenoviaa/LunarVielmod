@@ -83,6 +83,7 @@ namespace Stellamod.WorldG
             DisableGenTask(tasks, "Lihzahrd Altars");
             DisableGenTask(tasks, "Sand Patches");
             DisableGenTask(tasks, "Dunes");
+			
             tasks[tasks.FindIndex(x => x.Name.Equals("Terrain"))] = new VanillaTerrainPass();
 
 			int shimmerGen = tasks.FindIndex(x => x.Name.Equals("Shimmer"));
@@ -424,6 +425,7 @@ namespace Stellamod.WorldG
             int desertCenterX = (GenVars.desertHiveLeft + GenVars.desertHiveRight) / 2;
             int desertCenterY = GenVars.desertHiveLow - 200;
             Point arenaPoint = new Point(desertCenterX, desertCenterY);
+            Main.tileSolid[TileID.LihzahrdBrick] = true;
 
             //Building the arena
             WorldUtils.Gen(arenaPoint, new Shapes.Circle(radius, radius), new Actions.SetTile(TileID.LihzahrdBrick));
