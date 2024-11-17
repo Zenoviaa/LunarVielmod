@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.TilesNew;
 using Terraria;
 using Terraria.ID;
@@ -72,6 +73,9 @@ namespace Stellamod.Tiles
         public override string Texture => "Stellamod/Tiles/InvisibleWall";
         public string StructureTexture { get; set; }
         public DrawOrigin Origin { get; set; } = DrawOrigin.BottomUp;
+        public int FrameCount { get; set; } = 1;
+        public float FrameSpeed { get; set; } = 1f;
+        public bool DesyncAnimations { get; set; } = false;
         public override void SetStaticDefaults()
         {
             StructureColor = Color.White;
@@ -86,8 +90,11 @@ namespace Stellamod.Tiles
             Texture2D texture = ModContent.Request<Texture2D>(StructureTexture).Value;
             int textureWidth = texture.Width;
             int textureHeight = texture.Height;
-            Vector2 drawOrigin = new Vector2(textureWidth / 2, textureHeight / 2);
-            spriteBatch.Draw(texture, position, null, drawColor, 0, drawOrigin, scale * 0.5f, SpriteEffects.None, 0);
+            Rectangle drawFrame = texture.GetFrame(0, FrameCount);
+            Vector2 drawOrigin = drawFrame.Size() / 2f;
+
+
+            spriteBatch.Draw(texture, position, drawFrame, drawColor, 0, drawOrigin, scale * 0.5f, SpriteEffects.None, 0);
         }
         public override bool CanExplode(int i, int j) => false;
 
@@ -103,18 +110,39 @@ namespace Stellamod.Tiles
             int textureWidth = texture.Width;
             int textureHeight = texture.Height;
 
+
+
+            Rectangle drawFrame = texture.GetFrame(0, FrameCount);
+            if (FrameCount > 1)
+            {
+                //Let's use main global time wrappy
+                float timer = Main.GlobalTimeWrappedHourly;
+                timer *= FrameSpeed;
+                int time = (int)timer;
+                if (DesyncAnimations)
+                {
+                    time += i * 10;
+                    time += j * 10;
+                }
+
+                int frame = (int)(time % FrameCount);
+                drawFrame = texture.GetFrame(frame, FrameCount);
+            }
+
             Vector2 drawPos = (new Vector2(i, j)) * 16;
-            Vector2 drawOrigin = new Vector2(textureWidth / 2, textureHeight);
+            Vector2 drawOrigin = new Vector2(drawFrame.Width / 2, drawFrame.Height);
             switch (Origin)
             {
                 case DrawOrigin.BottomUp:
-                    drawOrigin = new Vector2(textureWidth / 2, textureHeight);
+                    drawOrigin = new Vector2(drawFrame.Width / 2, drawFrame.Height);
                     break;
                 case DrawOrigin.TopDown:
-                    drawOrigin = new Vector2(textureWidth / 2, 0);
+                    drawOrigin = new Vector2(drawFrame.Width / 2, 0);
                     break;
             }
-            spriteBatch.Draw(texture, drawPos - Main.screenPosition, null, color2.MultiplyRGB(StructureColor), 0, drawOrigin, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, 
+                drawPos - Main.screenPosition,
+                drawFrame, color2.MultiplyRGB(StructureColor), 0, drawOrigin, 1, SpriteEffects.None, 0);
         }
     }
 
@@ -131,7 +159,9 @@ namespace Stellamod.Tiles
         public override string Texture => "Stellamod/Tiles/InvisibleWall";
         public string StructureTexture { get; set; }
         public DrawOrigin Origin { get; set; } = DrawOrigin.BottomUp;
-
+        public int FrameCount { get; set; } = 1;
+        public float FrameSpeed { get; set; } = 1f;
+        public bool DesyncAnimations { get; set; } = false;
         public override void SetStaticDefaults()
         {
             StructureColor = Color.White;
@@ -146,8 +176,9 @@ namespace Stellamod.Tiles
             Texture2D texture = ModContent.Request<Texture2D>(StructureTexture).Value;
             int textureWidth = texture.Width;
             int textureHeight = texture.Height;
-            Vector2 drawOrigin = new Vector2(textureWidth / 2, textureHeight / 2);
-            spriteBatch.Draw(texture, position, null, drawColor, 0, drawOrigin, scale * 0.5f, SpriteEffects.None, 0);
+            Rectangle drawFrame = texture.GetFrame(0, FrameCount);
+            Vector2 drawOrigin = drawFrame.Size() / 2f;
+            spriteBatch.Draw(texture, position, drawFrame, drawColor, 0, drawOrigin, scale * 0.5f, SpriteEffects.None, 0);
         }
         public override bool CanExplode(int i, int j) => false;
         public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
@@ -163,19 +194,37 @@ namespace Stellamod.Tiles
             int textureWidth = texture.Width;
             int textureHeight = texture.Height;
 
+            Rectangle drawFrame = texture.GetFrame(0, FrameCount);
+            if (FrameCount > 1)
+            {
+                //Let's use main global time wrappy
+                float timer = Main.GlobalTimeWrappedHourly;
+                timer *= FrameSpeed;
+                int time = (int)timer;
+                if (DesyncAnimations)
+                {
+                    time += i * 10;
+                    time += j * 10;
+                }
 
+                int frame = (int)(time % FrameCount);
+                drawFrame = texture.GetFrame(frame, FrameCount);
+            }
             Vector2 drawPos = (new Vector2(i, j)) * 16;
-            Vector2 drawOrigin = new Vector2(textureWidth / 2, textureHeight);
+            Vector2 drawOrigin = new Vector2(drawFrame.Width / 2, drawFrame.Height);
             switch (Origin)
             {
                 case DrawOrigin.BottomUp:
-                    drawOrigin = new Vector2(textureWidth / 2, textureHeight);
+                    drawOrigin = new Vector2(drawFrame.Width / 2, drawFrame.Height);
                     break;
                 case DrawOrigin.TopDown:
-                    drawOrigin = new Vector2(textureWidth / 2, 0);
+                    drawOrigin = new Vector2(drawFrame.Width / 2, 0);
                     break;
             }
-            spriteBatch.Draw(texture, drawPos - Main.screenPosition, null, color2.MultiplyRGB(StructureColor), 0, drawOrigin, 1, SpriteEffects.None, 0);
+    
+            spriteBatch.Draw(texture, 
+                drawPos - Main.screenPosition, 
+                drawFrame, color2.MultiplyRGB(StructureColor), 0, drawOrigin, 1, SpriteEffects.None, 0);
         }
     }
 }

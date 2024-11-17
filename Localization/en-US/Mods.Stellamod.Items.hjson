@@ -8060,3 +8060,8 @@ DelgrimShopItem: {
 	Tooltip: ""
 	DisplayName: Delgrim Shop Item
 }
+
+AnimatedBackgroundWallTestItem: {
+	Tooltip: ""
+	DisplayName: Animated Background Wall Test Item
+}
