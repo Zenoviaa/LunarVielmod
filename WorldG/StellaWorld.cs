@@ -198,7 +198,7 @@ namespace Stellamod.WorldG
 			{
                 for (int y = colosseumPoint.Y; y < colosseumPoint.Y + 64; y++)
                 {
-					Tile tile = Main.tile[x - 20, y];
+					Tile tile = Main.tile[x - 20, y - 30];
 					tile.HasTile = false;
                 }
             }
