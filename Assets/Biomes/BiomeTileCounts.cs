@@ -82,6 +82,10 @@ namespace Stellamod
         public int IshtarCount;
         public static bool InIshtar => ModContent.GetInstance<BiomeTileCounts>().IshtarCount > 5;
 
+         public int ColosseumCount;
+        public static bool InColosseum => ModContent.GetInstance<BiomeTileCounts>().ColosseumCount > 5;
+
+
 
         public int BloodCathedralCount;
         public static bool InBloodCathedral => ModContent.GetInstance<BiomeTileCounts>().BloodCathedralCount > 250;
@@ -118,6 +122,7 @@ namespace Stellamod
             BloodCathedralCount = tileCounts[ModContent.TileType<RobedSandstoneBlock>()];
             AshotiTempleCount = tileCounts[TileID.LihzahrdBrick];
             MineshaftTileCount = tileCounts[ModContent.TileType<RobedCatastoneBlock>()];
+            ColosseumCount = tileCounts[ModContent.TileType<ChiseledSandstoneT>()];
         }
     }
 }

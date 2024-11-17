@@ -250,6 +250,7 @@ namespace Stellamod
         public bool ZoneBloodCathedral;
         public bool ZoneAshotiTemple;
         public bool ZoneMineshaft;
+        public bool ZoneColloseum;
 
 
         public float AssassinsSlashes;
