@@ -8065,3 +8065,8 @@ AnimatedBackgroundWallTestItem: {
 	Tooltip: ""
 	DisplayName: Animated Background Wall Test Item
 }
+
+WindmillTopItem: {
+	DisplayName: Windmill Top Item
+	Tooltip: ""
+}

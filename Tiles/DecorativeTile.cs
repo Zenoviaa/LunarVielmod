@@ -67,15 +67,19 @@ namespace Stellamod.Tiles
         public enum DrawOrigin
         {
             BottomUp,
-            TopDown
+            TopDown,
+            Center
         }
         public Color StructureColor { get; set; }
         public override string Texture => "Stellamod/Tiles/InvisibleWall";
         public string StructureTexture { get; set; }
         public DrawOrigin Origin { get; set; } = DrawOrigin.BottomUp;
         public int FrameCount { get; set; } = 1;
+        public int HorizontalFrameCount { get; set; } = 1;
+        public int VerticalFrameCount { get; set; } = 1;
         public float FrameSpeed { get; set; } = 1f;
         public bool DesyncAnimations { get; set; } = false;
+        public float DrawScale { get; set; } = 1f;
         public override void SetStaticDefaults()
         {
             StructureColor = Color.White;
@@ -127,6 +131,10 @@ namespace Stellamod.Tiles
 
                 int frame = (int)(time % FrameCount);
                 drawFrame = texture.GetFrame(frame, FrameCount);
+                if (HorizontalFrameCount > 1)
+                {
+                    drawFrame = texture.GetFrame(frame, HorizontalFrameCount, VerticalFrameCount);
+                }
             }
 
             Vector2 drawPos = (new Vector2(i, j)) * 16;
@@ -139,10 +147,13 @@ namespace Stellamod.Tiles
                 case DrawOrigin.TopDown:
                     drawOrigin = new Vector2(drawFrame.Width / 2, 0);
                     break;
+                case DrawOrigin.Center:
+                    drawOrigin = new Vector2(drawFrame.Width / 2, drawFrame.Height / 2);
+                    break;
             }
             spriteBatch.Draw(texture, 
                 drawPos - Main.screenPosition,
-                drawFrame, color2.MultiplyRGB(StructureColor), 0, drawOrigin, 1, SpriteEffects.None, 0);
+                drawFrame, color2.MultiplyRGB(StructureColor), 0, drawOrigin, DrawScale, SpriteEffects.None, 0);
         }
     }
 
@@ -153,15 +164,19 @@ namespace Stellamod.Tiles
         public enum DrawOrigin
         {
             BottomUp,
-            TopDown
+            TopDown,
+            Center
         }
         public Color StructureColor { get; set; }
         public override string Texture => "Stellamod/Tiles/InvisibleWall";
         public string StructureTexture { get; set; }
         public DrawOrigin Origin { get; set; } = DrawOrigin.BottomUp;
         public int FrameCount { get; set; } = 1;
+        public int HorizontalFrameCount { get; set; } = 1;
+        public int VerticalFrameCount { get; set; } = 1;
         public float FrameSpeed { get; set; } = 1f;
         public bool DesyncAnimations { get; set; } = false;
+        public float DrawScale { get; set; } = 1f;
         public override void SetStaticDefaults()
         {
             StructureColor = Color.White;
@@ -209,7 +224,12 @@ namespace Stellamod.Tiles
 
                 int frame = (int)(time % FrameCount);
                 drawFrame = texture.GetFrame(frame, FrameCount);
+                if(HorizontalFrameCount > 1)
+                {
+                    drawFrame = texture.GetFrame(frame, HorizontalFrameCount, VerticalFrameCount);
+                }
             }
+
             Vector2 drawPos = (new Vector2(i, j)) * 16;
             Vector2 drawOrigin = new Vector2(drawFrame.Width / 2, drawFrame.Height);
             switch (Origin)
@@ -220,11 +240,14 @@ namespace Stellamod.Tiles
                 case DrawOrigin.TopDown:
                     drawOrigin = new Vector2(drawFrame.Width / 2, 0);
                     break;
+                case DrawOrigin.Center:
+                    drawOrigin = new Vector2(drawFrame.Width / 2, drawFrame.Height / 2);
+                    break;
             }
     
             spriteBatch.Draw(texture, 
                 drawPos - Main.screenPosition, 
-                drawFrame, color2.MultiplyRGB(StructureColor), 0, drawOrigin, 1, SpriteEffects.None, 0);
+                drawFrame, color2.MultiplyRGB(StructureColor), 0, drawOrigin, DrawScale, SpriteEffects.None, 0);
         }
     }
 }

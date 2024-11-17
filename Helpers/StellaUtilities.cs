@@ -50,5 +50,16 @@ namespace Stellamod.Helpers
             int startY = frameNumber * heightPerFrame;
             return new Rectangle(0, startY, texture.Width, heightPerFrame);
         }
+
+        public static Rectangle GetFrame(this Texture2D texture, int frameNumber, int horizontalFrameCount, int verticalFrameCount)
+        {
+            int widthPerFrame = texture.Width / horizontalFrameCount;
+            int heightPerFrame = texture.Height / verticalFrameCount;
+
+            Rectangle rectangle = new Rectangle(0, 0, widthPerFrame, heightPerFrame);
+            rectangle.X = ((int)frameNumber % horizontalFrameCount) * rectangle.Width;
+            rectangle.Y = (((int)frameNumber - ((int)frameNumber % horizontalFrameCount)) / horizontalFrameCount) * rectangle.Height;
+            return rectangle;
+        }
     }
 }
