@@ -116,7 +116,7 @@ namespace Stellamod.WorldG
             {
 
                 tasks.Insert(RoyalGen + 1, new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
-
+                tasks.Insert(RoyalGen + 2, new PassLegacy("World Gen Colosseum", WorldGenColosseum));
             }
             //Replace Terrain Pass
             
@@ -173,12 +173,39 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
                 tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Dock", WorldGenDock));
                 tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Evil", WorldGenEvil));
+          
                 tasks.Insert(CathedralGen2 + 23, new PassLegacy("Grassing Caves", WorldGenGrassPass));
             }
 		}
 
 
 		#region Cave Formation
+		private void WorldGenColosseum(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Gintzing all over the desert";
+            int desertCenterX = (GenVars.desertHiveLeft + GenVars.desertHiveRight) / 2;
+			int colosseumX = desertCenterX - 71;
+			colosseumX += 35;
+
+            int colosseumY = (int)Main.worldSurface - 50;
+			while(!WorldGen.SolidTile(colosseumX, colosseumY))
+			{
+				colosseumY++;
+			}
+			colosseumY += 40;
+			Point colosseumPoint = new Point(colosseumX, colosseumY);
+			for(int x = colosseumX + 69; x < colosseumX + 75; x++)
+			{
+                for (int y = colosseumPoint.Y; y < colosseumPoint.Y + 64; y++)
+                {
+					Tile tile = Main.tile[x - 20, y - 30];
+					tile.HasTile = false;
+                }
+            }
+
+			VeilGen.GenerateColosseum(colosseumPoint);
+        }
+
 		private void WorldGenDock(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "Fishing for femboys";

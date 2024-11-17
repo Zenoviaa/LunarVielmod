@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using ReLogic.Utilities;
 using Stellamod.Items.Ores;
+using Stellamod.NPCs;
+using Stellamod.Projectiles.Swords.Altride;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Veil;
@@ -8,6 +10,7 @@ using Stellamod.WorldG.StructureManager;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
+using System.IO.Pipes;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -29,9 +32,37 @@ namespace Stellamod.WorldG
 
         public override bool? UseItem(Player player)
         {
-            GenerateCavernToAbyss();
+            GenerateColosseum();
             return base.UseItem(player);
         }
+
+        private void GenerateColosseum()
+        {
+            var genRand = WorldGen.genRand;
+            Vector2 mouseWorld = Main.MouseWorld;
+            int tileX = (int)Main.MouseWorld.X / 16;
+            int tileY = (int)Main.MouseWorld.Y / 16;
+            Vector2 colosseumPosition = new Vector2(tileX, tileY);
+            Point colosseumPoint = colosseumPosition.ToPoint();
+            Vector2 caveStrength = new Vector2(12, 15);
+            int fallSteps = 150;
+            int caveWidth = 5;
+            VeilGen.GenerateDuneHole((colosseumPoint + new Point(51, 0)).ToVector2(), Vector2.UnitY, caveStrength * 2f, Vector2.Zero, caveWidth,
+              caveSteps: fallSteps,
+              tileToPlace: TileID.Sandstone,
+              addTile: true);
+            VeilGen.GenerateDuneHoleEdges((colosseumPoint + new Point(51, 0)).ToVector2(), Vector2.UnitY, caveStrength * 2f, Vector2.Zero, caveWidth,
+                caveSteps: fallSteps ,
+                tileToPlace: TileID.Sandstone,
+                addTile: true);
+            VeilGen.GenerateDuneHoleEdges((colosseumPoint + new Point(51, 0)).ToVector2(), Vector2.UnitY, caveStrength, Vector2.Zero, caveWidth,
+                caveSteps: fallSteps,
+                tileToPlace: -1,
+                addTile: false);
+            VeilGen.GenerateColosseum(colosseumPosition.ToPoint());
+          
+        }
+
         private void GenerateCavernToAbyss()
         {
 
@@ -738,6 +769,7 @@ namespace Stellamod.WorldG
 
     internal static class VeilGen
     {
+     
         public static void GenerateIceSpike(Vector2 cavePosition, double width, Vector2D endOffset, ushort tileId = TileID.IceBlock)
         {
              WorldUtils.Gen(cavePosition.ToPoint(), new Shapes.Tail(width, endOffset), Actions.Chain(new GenAction[]
@@ -1162,7 +1194,124 @@ namespace Stellamod.WorldG
                 //  caveStrength *= 0.99f;
             }
         }
+   
+        public static void GenerateDuneHole(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, Vector2 pullDirection, int caveWidth, int caveSteps, int tileToPlace = -1, bool addTile = false)
+        {
+            var genRand = WorldGen.genRand;
+            int caveSeed = genRand.Next();
 
+            //Why make my own noise functions when I can just use this?!?!?1 Hhahahaha
+            float i = cavePosition.X;
+            Vector2 caveVelocity = baseCaveDirection;
+            Vector2 breakStrength = caveStrength;
+
+            Vector2 startVelocity = caveVelocity;
+            Vector2 pullVelocity = pullDirection;
+
+            float sharpness = 1;
+            float counter = 0;
+            ushort t = (ushort)tileToPlace;
+            for (int j = 0; j < caveSteps; j++)
+            {
+                counter++;
+                breakStrength *= 0.9995f;
+
+
+                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                {
+                    WorldUtils.Gen(new Point((int)cavePosition.X, (int)cavePosition.Y),
+                                        new Shapes.Circle(8, 8), new Actions.ClearTile());
+                }
+
+                // Update the cave position.
+                cavePosition += caveVelocity * caveWidth * 0.5f;
+                //  caveStrength *= 0.99f;
+            }
+        }
+        public static void GenerateDuneHoleEdges(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, Vector2 pullDirection, int caveWidth, int caveSteps, int tileToPlace = -1, bool addTile = false)
+        {
+            var genRand = WorldGen.genRand;
+            int caveSeed = genRand.Next();
+
+            //Why make my own noise functions when I can just use this?!?!?1 Hhahahaha
+            float i = cavePosition.X;
+            Vector2 caveVelocity = baseCaveDirection;
+            Vector2 breakStrength = caveStrength;
+
+            Vector2 startVelocity = caveVelocity;
+            Vector2 pullVelocity = pullDirection;
+
+            float sharpness = 1;
+            float counter = 0;
+            ushort t = (ushort)tileToPlace;
+            for (int j = 0; j < caveSteps; j++)
+            {
+
+                counter++;
+                breakStrength *= 0.9995f;
+
+
+                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                {
+                    if(j > 6)
+                    {
+
+
+                        WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
+                                              genRand.NextFloat(breakStrength.X, breakStrength.Y),
+                                              genRand.Next(4, 5), tileToPlace, addTile);
+                    }
+             
+
+                }
+
+                // Update the cave position.
+                cavePosition += caveVelocity * caveWidth * 0.5f;
+                //  caveStrength *= 0.99f;
+            }
+        }
+        public static void GenerateDuneCave(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, Vector2 pullDirection, int caveWidth, int caveSteps, int tileToPlace = -1, bool addTile = false)
+        {
+            var genRand = WorldGen.genRand;
+            int caveSeed = genRand.Next();
+
+            //Why make my own noise functions when I can just use this?!?!?1 Hhahahaha
+            float i = cavePosition.X;
+            Vector2 caveVelocity = baseCaveDirection;
+            Vector2 breakStrength = caveStrength;
+
+            Vector2 startVelocity = caveVelocity;
+            Vector2 pullVelocity = pullDirection;
+
+            float sharpness = 1;
+            float counter = 0;
+            ushort t = (ushort)tileToPlace;
+            for (int j = 0; j < caveSteps; j++)
+            {
+                if (t == TileID.Sandstone && j < 16)
+                    continue;
+                counter++;
+                breakStrength *= 0.9995f;
+     
+
+                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                {
+     
+                    if(tileToPlace == -1)
+                    {
+                        WorldUtils.Gen(new Point((int)cavePosition.X, (int)cavePosition.Y),
+                            new Shapes.Circle(8, 8), new Actions.ClearTile());
+                    }
+                    WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
+                        genRand.NextFloat(breakStrength.X, breakStrength.Y),
+                        genRand.Next(4, 5), tileToPlace, addTile);
+                }
+
+                // Update the cave position.
+                cavePosition += caveVelocity * caveWidth * 0.5f;
+                //  caveStrength *= 0.99f;
+            }
+        }
         public static void GenerateSimpleCave(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, Vector2 pullDirection, int caveWidth, int caveSteps, int tileToPlace = -1, bool addTile = false)
         {
             var genRand = WorldGen.genRand;
@@ -1200,6 +1349,50 @@ namespace Stellamod.WorldG
                 // Update the cave position.
                 cavePosition += caveVelocity * caveWidth * 0.5f;
                 //  caveStrength *= 0.99f;
+            }
+        }
+        public static void GenerateDuneCave(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, Vector2 pullDirection, int caveWidth, int caveSteps, int tileToPlace = -1)
+        {
+            var genRand = WorldGen.genRand;
+            int caveSeed = genRand.Next();
+
+            //Why make my own noise functions when I can just use this?!?!?1 Hhahahaha
+            float i = cavePosition.X;
+            Vector2 caveVelocity = baseCaveDirection;
+            Vector2 breakStrength = caveStrength;
+
+            Vector2 startVelocity = caveVelocity;
+            Vector2 pullVelocity = pullDirection;
+
+            float sharpness = 1;
+            float counter = 0;
+            bool shouldBreak = false;
+            for (int j = 0; j < caveSteps; j++)
+            {
+
+                counter++;
+                breakStrength *= 0.9995f;
+
+                float tilePercent = VeilGen.TilePercentNoAir(cavePosition.ToPoint(), new Rectangle((int)cavePosition.X, (int)cavePosition.Y, 20, 20), TileID.Dirt, TileID.Stone);
+
+                if (shouldBreak)
+                    break;
+
+                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                {
+                    WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
+                        genRand.NextFloat(breakStrength.X, breakStrength.Y),
+                        genRand.Next(4, 5), tileToPlace);
+                }
+
+                // Update the cave position.
+                cavePosition += caveVelocity * caveWidth * 0.5f;
+
+
+                if (tilePercent < 0.5f && j > caveSteps / 2)
+                {
+                    shouldBreak = true;
+                }
             }
         }
 
@@ -1944,6 +2137,338 @@ namespace Stellamod.WorldG
             int tileM = width * height;
             float tilePercent = (float)count / (float)tileM;
             return tilePercent;
+        }
+        public static void GenerateColosseum(Point tilePoint)
+        {
+            var genRand = WorldGen.genRand;
+            string GetMiniStructurePath()
+            {
+                int num = genRand.Next(1, 3);
+                string baseStructurePath = $"Struct/Colosseum/SquareHouse{num}";
+                return baseStructurePath;
+            }
+
+            string GetStructurePath()
+            {
+                int num = genRand.Next(1, 5);
+                string baseStructurePath = $"Struct/Colosseum/House{num}";
+                return baseStructurePath;
+            }
+
+            int[] tileBlend = new int[]
+            {
+                TileID.RubyGemspark
+            };
+
+            void Arena(Point tilePoint)
+            {
+                var structure = "Struct/Colosseum/TheColosseum";
+                Rectangle rectangle = Structurizer.ReadRectangle(structure);
+                rectangle.Location = tilePoint;
+                Structurizer.ReadStruct(tilePoint, structure, tileBlend);
+                Structurizer.ProtectStructure(tilePoint, structure);
+                for (int beamX = rectangle.Location.X;
+                 beamX < rectangle.Location.X + rectangle.Width; beamX += 8)
+                {
+                    //Place beams
+                    int beamY = rectangle.Location.Y;
+                    Tile tile = Main.tile[beamX, beamY];
+                    if (!tile.HasTile)
+                        continue;
+
+                    int solidCount = 0;
+                    while (solidCount < 5)
+                    {
+                        tile = Main.tile[beamX, beamY];
+                        if (!tile.HasTile)
+                        {
+                            WorldGen.PlaceTile(beamX, beamY, TileID.SandstoneColumn);
+                        }
+                        else
+                        {
+                            solidCount++;
+                        }
+                        beamY++;
+                    }
+                }
+            }
+
+            void PlaceBigStructure(Point tilePoint)
+            {
+                string structure = GetStructurePath();
+                Rectangle rectangle = Structurizer.ReadRectangle(structure);
+                rectangle.Location = tilePoint;
+                var chestIndices = Structurizer.ReadStruct(tilePoint, structure, tileBlend);
+                if (chestIndices.Length != 0)
+                {
+                    foreach (int chestIndex in chestIndices)
+                    {
+                        if (chestIndex == -1)
+                            continue;
+                        Chest chest = Main.chest[chestIndex];
+                        var itemsToAdd = new List<(int type, int stack)>();
+
+                        int chestItemIndex = 0;
+                        foreach (var itemToAdd in itemsToAdd)
+                        {
+                            Item item = new Item();
+                            item.SetDefaults(itemToAdd.type);
+                            item.stack = itemToAdd.stack;
+                            chest.item[chestItemIndex] = item;
+                            chestItemIndex++;
+                            if (chestItemIndex >= 40)
+                                break; // Make sure not to exceed the capacity of the chest
+                        }
+                    }
+                }
+
+                for (int beamX = rectangle.Location.X;
+                    beamX < rectangle.Location.X + rectangle.Width; beamX+=8)
+                {
+                    //Place beams
+                    int beamY = rectangle.Location.Y;
+                    Tile tile = Main.tile[beamX, beamY];
+                    if (!tile.HasTile)
+                        continue;
+                    int solidCount = 0;
+                    while (solidCount < 5)
+                    {
+                        tile = Main.tile[beamX, beamY];
+                        if (!tile.HasTile)
+                        {
+                            WorldGen.PlaceTile(beamX, beamY, TileID.SandstoneColumn);
+                        }
+                        else
+                        {
+                            solidCount++;
+                        }
+                        beamY++;
+                    }
+                }
+                Structurizer.ProtectStructure(tilePoint, structure);
+            }
+            void PlaceSmallStructure(Point tilePoint)
+            {
+                string structure = GetMiniStructurePath();
+                Rectangle rectangle = Structurizer.ReadRectangle(structure);
+                rectangle.Location = tilePoint;
+                var chestIndices = Structurizer.ReadStruct(tilePoint, structure, tileBlend);
+                if (chestIndices.Length != 0)
+                {
+                    foreach (int chestIndex in chestIndices)
+                    {
+                        if (chestIndex == -1)
+                            continue;
+                        Chest chest = Main.chest[chestIndex];
+                        var itemsToAdd = new List<(int type, int stack)>();
+
+                        int chestItemIndex = 0;
+                        foreach (var itemToAdd in itemsToAdd)
+                        {
+                            Item item = new Item();
+                            item.SetDefaults(itemToAdd.type);
+                            item.stack = itemToAdd.stack;
+                            chest.item[chestItemIndex] = item;
+                            chestItemIndex++;
+                            if (chestItemIndex >= 40)
+                                break; // Make sure not to exceed the capacity of the chest
+                        }
+                    }
+                }
+                Structurizer.ProtectStructure(tilePoint, structure);
+
+                for (int beamX = rectangle.Location.X;
+                    beamX < rectangle.Location.X + rectangle.Width; beamX += 8)
+                {
+                    //Place beams
+                    int beamY = rectangle.Location.Y;
+                    Tile tile = Main.tile[beamX, beamY];
+                    if (!tile.HasTile)
+                        continue;
+                    int solidCount = 0;
+                    while (solidCount < 5)
+                    {
+                        tile = Main.tile[beamX, beamY];
+                        if (!tile.HasTile)
+                        {
+                            WorldGen.PlaceTile(beamX, beamY, TileID.SandstoneColumn);
+                        }
+                        else
+                        {
+                            solidCount++;
+                        }
+                        beamY++;
+                    }
+                }
+            }
+            //Layer 1
+            int rightSideOffset = 61;
+            int upOffset = 18;
+            PlaceBigStructure(tilePoint);
+            PlaceBigStructure(tilePoint + new Point(24, 0));
+            PlaceBigStructure(tilePoint + new Point(24 + 32, 0));
+            PlaceBigStructure(tilePoint + new Point(24 + 32 + 24, 0));
+
+            tilePoint.Y -= upOffset;
+            PlaceBigStructure(tilePoint);
+            PlaceBigStructure(tilePoint + new Point(24, 0));
+            PlaceBigStructure(tilePoint + new Point(24 + 32, 0));
+            PlaceBigStructure(tilePoint + new Point(24 + 32 + 24, 0));
+
+
+            tilePoint.Y -= upOffset;
+            PlaceBigStructure(tilePoint + new Point(4, 0));
+            PlaceBigStructure(tilePoint + new Point(24 + 4, 0));
+            PlaceBigStructure(tilePoint + new Point(24 + 32 - 4, 0));
+            PlaceBigStructure(tilePoint + new Point(24 + 32 + 24 - 4, 0));
+
+            tilePoint.Y -= upOffset;
+            PlaceSmallStructure(tilePoint + new Point(34, 0));
+            PlaceSmallStructure(tilePoint + new Point(52, 0));
+
+            tilePoint.Y -= upOffset;
+            PlaceSmallStructure(tilePoint + new Point(16, 1));
+            PlaceSmallStructure(tilePoint + new Point(34, 1));
+            PlaceSmallStructure(tilePoint + new Point(52, 1));
+            PlaceSmallStructure(tilePoint + new Point(70, 1));
+
+            tilePoint.Y -= upOffset;
+            Arena(tilePoint + new Point(-21, -1));
+            /*
+            //Layer 6
+          
+            */
+        }
+        public static void GenerateColosseumTower(Point tilePoint, Point tileDirection, int tunnelLength, bool isRight)
+        {
+            var genRand = WorldGen.genRand;
+            string GetMiniStructurePath()
+            {
+                int num = genRand.Next(1, 3);
+                string baseStructurePath = $"Struct/Colosseum/SquareHouse{num}";
+                return baseStructurePath;
+            }
+
+            string GetStructurePath()
+            {
+                int num = genRand.Next(1, 5);
+                string baseStructurePath = $"Struct/Colosseum/House{num}";
+                return baseStructurePath;
+            }
+
+            int[] tileBlend = new int[]
+            {
+                TileID.RubyGemspark
+            };
+
+            for (int t = 0; t < tunnelLength; t++)
+            {
+                string structure = GetStructurePath();
+                bool placeSmall = t > tunnelLength - 3;
+                if (placeSmall)
+                {
+                    structure = GetMiniStructurePath();
+                }
+       
+
+                Rectangle rectangle = Structurizer.ReadRectangle(structure);
+                Point placeToOn = tilePoint;
+                if (placeSmall && isRight)
+                {
+                    placeToOn.X += 6;
+                }
+                rectangle.Location = placeToOn;
+            
+                    
+                int[] chestIndices = Structurizer.ReadStruct(placeToOn, structure, tileBlend);
+                if (chestIndices.Length != 0)
+                {
+                    foreach (int chestIndex in chestIndices)
+                    {
+                        if (chestIndex == -1)
+                            continue;
+                        Chest chest = Main.chest[chestIndex];
+                        var itemsToAdd = new List<(int type, int stack)>();
+
+                        int chestItemIndex = 0;
+                        foreach (var itemToAdd in itemsToAdd)
+                        {
+                            Item item = new Item();
+                            item.SetDefaults(itemToAdd.type);
+                            item.stack = itemToAdd.stack;
+                            chest.item[chestItemIndex] = item;
+                            chestItemIndex++;
+                            if (chestItemIndex >= 40)
+                                break; // Make sure not to exceed the capacity of the chest
+                        }
+                    }
+                }
+                Structurizer.ProtectStructure(placeToOn, structure);
+                tilePoint.Y += tileDirection.Y * (rectangle.Height - 1);
+
+            }
+        }
+
+        public static void GenerateColosseumTower(Point tilePoint, Point tileDirection, int tunnelLength)
+        {
+            var genRand = WorldGen.genRand;
+            string GetMiniStructurePath()
+            {
+                int num = genRand.Next(1, 3);
+                string baseStructurePath = $"Struct/Colosseum/SquareHouse{num}";
+                return baseStructurePath;
+            }
+
+            string GetStructurePath()
+            {
+                int num = genRand.Next(1, 5);
+                string baseStructurePath = $"Struct/Colosseum/House{num}";
+                return baseStructurePath;
+            }
+
+
+            int[] tileBlend = new int[]
+            {
+                TileID.RubyGemspark
+            };
+
+            for (int t = 0; t < tunnelLength; t++)
+            {
+                string structure = GetStructurePath();
+                if(t > tunnelLength - 3)
+                {
+                    structure = GetMiniStructurePath();
+                }
+                
+                Rectangle rectangle = Structurizer.ReadRectangle(structure);
+                rectangle.Location = tilePoint;
+                int[] chestIndices = Structurizer.ReadStruct(tilePoint, structure, null);
+                if (chestIndices.Length != 0)
+                {
+                    foreach (int chestIndex in chestIndices)
+                    {
+                        if (chestIndex == -1)
+                            continue;
+                        Chest chest = Main.chest[chestIndex];
+                        var itemsToAdd = new List<(int type, int stack)>();
+               
+                        int chestItemIndex = 0;
+                        foreach (var itemToAdd in itemsToAdd)
+                        {
+                            Item item = new Item();
+                            item.SetDefaults(itemToAdd.type);
+                            item.stack = itemToAdd.stack;
+                            chest.item[chestItemIndex] = item;
+                            chestItemIndex++;
+                            if (chestItemIndex >= 40)
+                                break; // Make sure not to exceed the capacity of the chest
+                        }
+                    }
+                }
+                Structurizer.ProtectStructure(tilePoint, structure);
+                tilePoint.Y += tileDirection.Y * (rectangle.Height - 1);
+              
+            }
         }
 
         public static void GenerateMineshaftTunnel(Point tilePoint, Point tileDirection, int tunnelLength)

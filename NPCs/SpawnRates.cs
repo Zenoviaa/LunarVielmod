@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets.Biomes;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
@@ -22,7 +23,7 @@ namespace Stellamod.NPCs
 
         public static float GetMechanicalEnemySpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (spawnInfo.Player.InModBiome<MineshaftBiome>())
+            if (!spawnInfo.Player.InModBiome<MineshaftBiome>())
                 return 0;
             return (SpawnCondition.Cavern.Chance * SpawnRates.Mechanical_Enemy_Spawn_Chance);
         }
@@ -32,6 +33,7 @@ namespace Stellamod.NPCs
             if (!spawnInfo.Player.InModBiome<IshtarBiome>())
                 return 0;
             return SpawnCondition.Cavern.Chance * 2f;
+           
         }
     }
 }
