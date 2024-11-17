@@ -8070,3 +8070,38 @@ WindmillTopItem: {
 	DisplayName: Windmill Top Item
 	Tooltip: ""
 }
+
+GintzeSpectatorItem7: {
+	Tooltip: ""
+	DisplayName: Gintze Spectator Item7
+}
+
+GintzeSpectatorItem6: {
+	Tooltip: ""
+	DisplayName: Gintze Spectator Item6
+}
+
+GintzeSpectatorItem5: {
+	Tooltip: ""
+	DisplayName: Gintze Spectator Item5
+}
+
+GintzeSpectatorItem4: {
+	Tooltip: ""
+	DisplayName: Gintze Spectator Item4
+}
+
+GintzeSpectatorItem3: {
+	Tooltip: ""
+	DisplayName: Gintze Spectator Item3
+}
+
+GintzeSpectatorItem2: {
+	Tooltip: ""
+	DisplayName: Gintze Spectator Item2
+}
+
+GintzeSpectatorItem1: {
+	Tooltip: ""
+	DisplayName: Gintze Spectator Item1
+}

@@ -258,7 +258,12 @@ namespace Stellamod.Tiles
     
             spriteBatch.Draw(texture, 
                 drawPos - Main.screenPosition, 
-                drawFrame, color2.MultiplyRGB(StructureColor), 0, drawOrigin, DrawScale, SpriteEffects.None, 0);
+                drawFrame, color2.MultiplyRGB(StructureColor), 0, drawOrigin, DrawScale, GetSpriteEffects(i, j), 0);
+        }
+
+        public virtual SpriteEffects GetSpriteEffects(int i, int j)
+        {
+            return SpriteEffects.None;
         }
     }
 }
