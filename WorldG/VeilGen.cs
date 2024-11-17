@@ -1,17 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Ores;
-using Stellamod.Tiles.Veil;
 using Stellamod.Tiles;
+using Stellamod.Tiles.Veil;
 using Stellamod.WorldG.StructureManager;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
-using Terraria.Map;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
-using static tModPorter.ProgressUpdate;
-using Stellamod.Projectiles.Swords.Altride;
 
 namespace Stellamod.WorldG
 {
@@ -132,9 +129,9 @@ namespace Stellamod.WorldG
             Point granitePoint = new Point(tileX, tileY);
 
             int radius = genRand.Next(24, 64);
-            WorldUtils.Gen(granitePoint, new Shapes.Circle(radius, radius), 
+            WorldUtils.Gen(granitePoint, new Shapes.Circle(radius, radius),
                 new Actions.SetTile(TileID.Granite));
-            for(int n = 0; n < 150; n++)
+            for (int n = 0; n < 150; n++)
             {
                 int r = genRand.Next(radius - 30, radius + 16);
                 Point tileRunnePoint = granitePoint + genRand.NextVector2CircularEdge(r, r).ToPoint();
@@ -250,9 +247,9 @@ namespace Stellamod.WorldG
             for (int w = 0; w < 800; w++)
             {
                 Point shadowOrbPoint = evilPoint + genRand.NextVector2Circular(80, 80).ToPoint();
-  
-                ushort wallType2 = WorldGen.crimson ? 
-                    crimsonWallTypes[genRand.Next(0, crimsonWallTypes.Length)] : 
+
+                ushort wallType2 = WorldGen.crimson ?
+                    crimsonWallTypes[genRand.Next(0, crimsonWallTypes.Length)] :
                     corruptWallTypes[genRand.Next(0, corruptWallTypes.Length)];
                 WorldUtils.Gen(shadowOrbPoint, new Shapes.Circle(4, 4), Actions.Chain(new GenAction[]
                 {
@@ -361,7 +358,7 @@ namespace Stellamod.WorldG
             {
                 float range = genRand.NextFloat(30, 100);
                 Point fPoint = evilPoint + genRand.NextVector2CircularEdge(range, range).ToPoint();
-                
+
                 WorldGen.Place1xX(fPoint.X, fPoint.Y, TileID.Lamps, style: lampType);
             }
             for (int n = 0; n < 800; n++)
@@ -382,11 +379,11 @@ namespace Stellamod.WorldG
             VeilGen.GenerateSimpleCave((evilPoint + new Point(-16, -32)).ToVector2(), -Vector2.UnitX, caveStrength, pullDirection, caveWidth, caveSteps: steps, tileToPlace: -1);
 
             int fallSteps = 40;
-            VeilGen.GenerateSimpleCave((evilPoint + new Point(0, 48)).ToVector2(), Vector2.UnitY, caveStrength * 2f, Vector2.UnitY, caveWidth, 
-                caveSteps: fallSteps, 
+            VeilGen.GenerateSimpleCave((evilPoint + new Point(0, 48)).ToVector2(), Vector2.UnitY, caveStrength * 2f, Vector2.UnitY, caveWidth,
+                caveSteps: fallSteps,
                 tileToPlace: blockType);
-            VeilGen.GenerateSimpleCave((evilPoint + new Point(0, 48)).ToVector2(), Vector2.UnitY, caveStrength, Vector2.UnitY, caveWidth, 
-                caveSteps: fallSteps, 
+            VeilGen.GenerateSimpleCave((evilPoint + new Point(0, 48)).ToVector2(), Vector2.UnitY, caveStrength, Vector2.UnitY, caveWidth,
+                caveSteps: fallSteps,
                 tileToPlace: -1);
             VeilGen.GenerateSimpleCave((evilPoint + new Point(-128, 100)).ToVector2(), Vector2.UnitX, caveStrength * 2f, Vector2.UnitX, caveWidth,
                 caveSteps: fallSteps * 2,
@@ -396,7 +393,7 @@ namespace Stellamod.WorldG
                 caveSteps: fallSteps * 2,
                 tileToPlace: -1);
 
-            for(int n = 0; n < 6400; n++)
+            for (int n = 0; n < 6400; n++)
             {
                 int x = genRand.Next(evilPoint.X - 128, evilPoint.X + 128);
                 int y = genRand.Next(evilPoint.Y + 90, evilPoint.Y + 150);
@@ -474,7 +471,7 @@ namespace Stellamod.WorldG
                 {
                     string structure = "Struct/AshotiTemple/TempleEntrance";
                     Rectangle rect = Structurizer.ReadRectangle(structure);
-                    tileToPlaceOn.X -= rect.Width/2;
+                    tileToPlaceOn.X -= rect.Width / 2;
                     tileToPlaceOn.Y -= 28;
                     int[] chestIndices = Structurizer.ReadStruct(tileToPlaceOn, structure);
                     Structurizer.ProtectStructure(tileToPlaceOn, structure);
@@ -483,7 +480,7 @@ namespace Stellamod.WorldG
                 {
                     string structure = "Struct/AshotiTemple/TempleMiddle";
                     Rectangle rect = Structurizer.ReadRectangle(structure);
-                    tileToPlaceOn.X -= rect.Width/2;
+                    tileToPlaceOn.X -= rect.Width / 2;
                     int[] chestIndices = Structurizer.ReadStruct(tileToPlaceOn, structure);
                     Structurizer.ProtectStructure(tileToPlaceOn, structure);
                 }
@@ -525,8 +522,8 @@ namespace Stellamod.WorldG
             Vector2 mouseWorld = Main.MouseWorld;
             int x = (int)Main.MouseWorld.X / 16;
             int y = (int)Main.MouseWorld.Y / 16;
-            int caveWidth =5;
-            int caveSteps =50;
+            int caveWidth = 5;
+            int caveSteps = 50;
 
             //Cave position in tiles
             Vector2 cavePosition = new Vector2(x, y);
@@ -666,7 +663,7 @@ namespace Stellamod.WorldG
             Vector2 cavePosition = new Vector2(tileX, tileY);
             Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
             Vector2 caveStrength = new Vector2(4, 5);
-            VeilGen.GenerateVeinyCaves( cavePosition, baseCaveDirection, caveStrength, caveWidth, caveSteps);
+            VeilGen.GenerateVeinyCaves(cavePosition, baseCaveDirection, caveStrength, caveWidth, caveSteps);
         }
     }
 
@@ -761,7 +758,7 @@ namespace Stellamod.WorldG
         {
             var genRand = WorldGen.genRand;
 
-        
+
             int radius = genRand.Next((int)radiusSize.X, (int)radiusSize.Y);
             float sizeMultiplier = (float)radius / (float)radiusSize.Y;
             WorldUtils.Gen(granitePoint, new Shapes.Circle(radius, radius),
@@ -834,10 +831,10 @@ namespace Stellamod.WorldG
                     }));
                     if (genRand.NextBool(3))
                     {
-                        WorldUtils.Gen(cavePosition.ToPoint(), new Shapes.Circle(4, 4), 
+                        WorldUtils.Gen(cavePosition.ToPoint(), new Shapes.Circle(4, 4),
                             new Actions.SetLiquid(type: LiquidID.Water));
                     }
-                  
+
                     WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
                         genRand.NextFloat(caveStrength.X, caveStrength.Y),
                         genRand.Next(4, 5), -1);
@@ -952,7 +949,7 @@ namespace Stellamod.WorldG
                         new Actions.Smooth(true)
                     }));
                 }
-         
+
                 float tilePercent = VeilGen.TilePercentNoAir(cavePosition.ToPoint(), new Rectangle((int)cavePosition.X, (int)cavePosition.Y, 20, 20), TileID.Dirt, TileID.Stone);
                 if (tilePercent < 0.5f && j > caveSteps / 2)
                 {
@@ -1019,7 +1016,7 @@ namespace Stellamod.WorldG
 
             float sharpness = 1;
             float counter = 0;
-            bool shouldBreak=false;
+            bool shouldBreak = false;
             for (int j = 0; j < caveSteps; j++)
             {
 
@@ -1047,7 +1044,7 @@ namespace Stellamod.WorldG
                 // Update the cave position.
                 cavePosition += caveVelocity * caveWidth * 0.5f;
 
-         
+
                 if (tilePercent < 0.5f && j > caveSteps / 2)
                 {
                     shouldBreak = true;
@@ -1374,7 +1371,7 @@ namespace Stellamod.WorldG
                         clearingCaveDirection,
                         clearingCaveStrength,
                         clearingCaveWidth,
-                        clearingCaveSteps, 
+                        clearingCaveSteps,
                         splitDenominator * 640);
                 }
 
@@ -1386,7 +1383,7 @@ namespace Stellamod.WorldG
                     Point point = new Point((int)cavePosition.X, (int)cavePosition.Y);
                     WorldUtils.Gen(point, new Shapes.Circle(3, 3), new Actions.ClearTile());
                     */
-          
+
                     WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
                         genRand.NextFloat(caveStrength.X, caveStrength.Y),
                         genRand.Next(4, 5), -1);
@@ -1394,7 +1391,7 @@ namespace Stellamod.WorldG
 
                 // Update the cave position.
                 cavePosition += caveVelocity * caveWidth * 0.5f;
-              //  caveStrength *= 0.99f;
+                //  caveStrength *= 0.99f;
             }
         }
 
@@ -1444,7 +1441,7 @@ namespace Stellamod.WorldG
             }
         }
 
-        public static void GenerateHighCaves(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, 
+        public static void GenerateHighCaves(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength,
             int caveWidth,
             int caveSteps,
             int clearingDenominator)
@@ -1458,7 +1455,7 @@ namespace Stellamod.WorldG
             Vector2 pullDirection = genRand.NextVector2Circular(1, 1);
             Vector2 targetPosition = caveVelocity + pullDirection;
             float sharpness = 9;
-      
+
             for (int j = 0; j < caveSteps; j++)
             {
                 //Homing
@@ -1475,7 +1472,7 @@ namespace Stellamod.WorldG
                     targetPosition = -targetPosition;
                 }
 
-                if(genRand.NextBool(clearingDenominator) && j > caveSteps / 2)
+                if (genRand.NextBool(clearingDenominator) && j > caveSteps / 2)
                 {
                     int clearingCaveWidth = 15;
                     int clearingCaveSteps = 500;
@@ -1536,9 +1533,9 @@ namespace Stellamod.WorldG
                 if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
                 {
                     //digging 
-                   // ShapeData shapeData = new ShapeData();
-                   // Point point = new Point((int)cavePosition.X, (int)cavePosition.Y);
-                   // WorldUtils.Gen(point, new Shapes.Circle(3, 3), new Actions.ClearTile());
+                    // ShapeData shapeData = new ShapeData();
+                    // Point point = new Point((int)cavePosition.X, (int)cavePosition.Y);
+                    // WorldUtils.Gen(point, new Shapes.Circle(3, 3), new Actions.ClearTile());
 
                     WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
                         genRand.NextFloat(caveStrength.X, caveStrength.Y),
@@ -1549,7 +1546,7 @@ namespace Stellamod.WorldG
                 cavePosition = baseCavePosition + caveVelocity * caveWidth;
             }
         }
-       
+
         public static void GenerateLongNoodleCave(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, int caveWidth, int caveSteps)
         {
             var genRand = WorldGen.genRand;
@@ -1626,8 +1623,8 @@ namespace Stellamod.WorldG
                 if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
                 {
                     //digging 
-                    WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y, MathF.Sin(j * 0.05f) * 10 + 
-                        genRand.NextFloat(2, 5), 
+                    WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y, MathF.Sin(j * 0.05f) * 10 +
+                        genRand.NextFloat(2, 5),
                         genRand.Next(5, 10), -1);
                 }
 
@@ -1635,7 +1632,7 @@ namespace Stellamod.WorldG
                 cavePosition += caveDirection * caveWidth * 0.5f;
             }
         }
-        public static void GenerateLinearCave(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, int caveWidth, int caveSteps )
+        public static void GenerateLinearCave(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, int caveWidth, int caveSteps)
         {
             var genRand = WorldGen.genRand;
             int caveSeed = genRand.Next();
@@ -1716,7 +1713,7 @@ namespace Stellamod.WorldG
                     continue;
                 if (x >= Main.maxTilesX)
                     continue;
-                    
+
                 for (int y = tilePoint.Y; y > tilePoint.Y - height; y--)
                 {
 
@@ -1729,12 +1726,12 @@ namespace Stellamod.WorldG
                     for (int t = 0; t < tileIDs.Length; t++)
                     {
                         int tileID = tileIDs[t];
-                        if(!WorldGen.SolidTile(x, y))
+                        if (!WorldGen.SolidTile(x, y))
                         {
                             count++;
                         }
 
-                        if(tile.HasTile && tile.TileType == tileID)
+                        if (tile.HasTile && tile.TileType == tileID)
                         {
                             count++;
                         }
@@ -1762,18 +1759,18 @@ namespace Stellamod.WorldG
 
             };
 
-            for(int t = 0; t < tunnelLength; t++)
+            for (int t = 0; t < tunnelLength; t++)
             {
                 string structure = GetStructurePath();
                 Rectangle rectangle = Structurizer.ReadRectangle(structure);
                 rectangle.Location = tilePoint;
-                if(TilePercent(tilePoint, rectangle, TileID.Dirt, TileID.Stone) < 0.7f)
+                if (TilePercent(tilePoint, rectangle, TileID.Dirt, TileID.Stone) < 0.7f)
                 {
                     break;
                 }
-                
+
                 int[] chestIndices = Structurizer.ReadStruct(tilePoint, structure, null);
-                if(chestIndices.Length != 0)
+                if (chestIndices.Length != 0)
                 {
                     foreach (int chestIndex in chestIndices)
                     {
@@ -1977,10 +1974,10 @@ namespace Stellamod.WorldG
 
                 Structurizer.ProtectStructure(tilePoint, structure);
 
-                if(tileDirection.X != 0)
+                if (tileDirection.X != 0)
                 {
                     tilePoint.X += tileDirection.X * rectangle.Width;
-                } 
+                }
                 else if (tileDirection.Y != 0)
                 {
                     tilePoint.Y += tileDirection.Y * (rectangle.Height + 1);
@@ -1989,7 +1986,8 @@ namespace Stellamod.WorldG
                 if (genRand.NextBool(4) && tileDirection != new Point(0, -1))
                 {
                     GenerateMineshaftTunnel(tilePoint, new Point(0, -1), tunnelLength / 2);
-                } else if (genRand.NextBool(2) && tileDirection != new Point(1, 0))
+                }
+                else if (genRand.NextBool(2) && tileDirection != new Point(1, 0))
                 {
                     GenerateMineshaftTunnel(tilePoint, new Point(1, 0), tunnelLength / 2);
                 }
@@ -2043,7 +2041,7 @@ namespace Stellamod.WorldG
 
             for (int j = 0; j < caveSteps; j++)
             {
-                float divisor = 2f ;
+                float divisor = 2f;
                 float sample = fastNoiseLite.GetNoise((float)cavePosition.X / divisor, (float)cavePosition.Y / divisor);
                 sample = MathF.Sin(sample * 4);
                 float caveOffsetAngleAtStep = sample * MathHelper.TwoPi * 1.9f;
@@ -2066,7 +2064,7 @@ namespace Stellamod.WorldG
             }
         }
 
-        public static void GenerateWormCave(Vector2 cavePosition, 
+        public static void GenerateWormCave(Vector2 cavePosition,
             Vector2 baseCaveDirection, Vector2 caveStrength, int caveWidth, int caveSteps)
         {
             var genRand = WorldGen.genRand;
@@ -2084,7 +2082,7 @@ namespace Stellamod.WorldG
             {
                 float divisor = 1f;
                 float sample = fastNoiseLite.GetNoise((float)cavePosition.X / divisor, (float)cavePosition.Y / divisor);
-               
+
                 float angleOffset = sample * MathHelper.Pi;
                 Vector2 caveDirection = baseCaveDirection.RotatedBy(angleOffset);
 

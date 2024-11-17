@@ -526,6 +526,7 @@
     <None Remove="Projectiles\ZuiRay.png" />
     <None Remove="Textures\Backglow.png" />
     <None Remove="Textures\LavaDepths.png" />
+    <None Remove="TilesNew\AnimatedBackgroundWallTest_S.png" />
     <None Remove="TilesNew\Fable\FableBar_S.png" />
     <None Remove="TilesNew\Fable\FableBench_S.png" />
     <None Remove="TilesNew\Fable\FableBigMushroom_S.png" />
