@@ -202,7 +202,9 @@ namespace Stellamod.WorldG
 
 			//Place the structure
 			Point dockLoc = new Point(dockX, dockY + 1);
-			string structure = "Struct/Overworld/TheDock";
+			dockLoc.Y -= 7;
+
+            string structure = "Struct/Overworld/TheDock";
 			int[] tileBlend = new int[]
 			{
 				TileID.RubyGemspark
