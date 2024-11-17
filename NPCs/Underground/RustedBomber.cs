@@ -90,6 +90,10 @@ namespace Stellamod.NPCs.Underground
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Electric);
             }
         }
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            return SpawnRates.GetMechanicalEnemySpawnChance(spawnInfo);
+        }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {

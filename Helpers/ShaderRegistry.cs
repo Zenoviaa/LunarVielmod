@@ -131,7 +131,9 @@ namespace Stellamod.Helpers
             RegisterScreenShader("LunarVeil:PaletteRoyalCapital", "Effects/PaletteRoyalCapital");
             RegisterScreenShader("LunarVeil:PaletteDungeon", "Effects/PaletteDungeon");
             RegisterScreenShader("LunarVeil:PaletteDesert", "Effects/PaletteDesert");
+            RegisterScreenShader("LunarVeil:PaletteDesertTop", "Effects/PaletteDesertTop");
             RegisterScreenShader("LunarVeil:PaletteBloodCathedral", "Effects/PaletteBloodCathedral");
+            RegisterScreenShader("LunarVeil:PaletteVirulent", "Effects/PaletteVirulent");
             RegisterScreenShader("LunarVeil:DarknessVignette", "Effects/DarknessVignette");
             RegisterScreenShader("LunarVeil:DarknessCurve", "Effects/DarknessCurve", EffectPriority.High);
 

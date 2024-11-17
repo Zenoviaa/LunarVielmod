@@ -90,9 +90,11 @@
     <None Remove="effects\NormalDistortion.fx" />
     <None Remove="Effects\PaletteBloodCathedral.fx" />
     <None Remove="Effects\PaletteDesert.fx" />
+    <None Remove="Effects\PaletteDesertTop.fx" />
     <None Remove="Effects\PaletteDungeon.fx" />
     <None Remove="Effects\PaletteHell.fx" />
     <None Remove="Effects\PaletteRoyalCapital.fx" />
+    <None Remove="Effects\PaletteVirulent.fx" />
     <None Remove="Effects\Primitives\Whiteflame.fx" />
     <None Remove="Effects\RoyalCapitalSky - Copy.fx" />
     <None Remove="effects\RoyalCapitalSky.fx" />
@@ -344,13 +346,6 @@
     <None Remove="NPCs\Cinderspark\CinderCrawlerHead.png" />
     <None Remove="NPCs\Cinderspark\CinderCrawlerTail.png" />
     <None Remove="NPCs\Event\GreenSun\Dulacrowe\TulacBombProj.png" />
-    <None Remove="NPCs\Harvesting\Morrow\BlueLightBig.png" />
-    <None Remove="NPCs\Harvesting\Morrow\DesertRuneLightBig.png" />
-    <None Remove="NPCs\Harvesting\Morrow\GoldLightBig.png" />
-    <None Remove="NPCs\Harvesting\Morrow\HarvestGovheil.png" />
-    <None Remove="NPCs\Harvesting\Morrow\OceanRuneLightBig.png" />
-    <None Remove="NPCs\Harvesting\Morrow\RedLightBig.png" />
-    <None Remove="NPCs\Harvesting\Virulent\HarvestIce.png" />
     <None Remove="NPCs\Illuria\HoloBuster.png" />
     <None Remove="NPCs\Illuria\HoloBuster_Glow.png" />
     <None Remove="NPCs\TestLaserNPC.png" />
@@ -359,7 +354,6 @@
     <None Remove="NPCs\Underground\AbandonedMinorSummon.png" />
     <None Remove="NPCs\Underground\FloweredRedLight.png" />
     <None Remove="NPCs\Underground\FloweredWhiteLight.png" />
-    <None Remove="NPCs\Underground\RustedBomberSummon.png" />
     <None Remove="Particles\ArcanalParticle2.png" />
     <None Remove="Particles\AVoidParticle.png" />
     <None Remove="Particles\BurnParticle4.png" />

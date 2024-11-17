@@ -127,3 +127,8 @@ AshotiTemple: {
 	TownNPCDialogueName: the Ashoti Temple
 	DisplayName: Ashoti Temple
 }
+
+MineshaftBiome: {
+	DisplayName: Mineshaft Biome
+	TownNPCDialogueName: the Mineshaft Biome
+}

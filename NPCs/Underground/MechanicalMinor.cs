@@ -143,7 +143,10 @@ namespace Stellamod.NPCs.Underground
             Lighting.AddLight(screenPos, Color.White.ToVector3() * 1.0f * Main.essScale);
             return base.PreDraw(spriteBatch, screenPos, drawColor);
         }
-
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            return SpawnRates.GetMechanicalEnemySpawnChance(spawnInfo);
+        }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {    

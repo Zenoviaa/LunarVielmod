@@ -22,9 +22,7 @@ namespace Stellamod.NPCs
 
         public static float GetMechanicalEnemySpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (spawnInfo.Player.InModBiome<DrakonicManor>() || 
-                spawnInfo.Player.InModBiome<CindersparkBiome>() ||
-                spawnInfo.Player.InModBiome<IshtarBiome>())
+            if (spawnInfo.Player.InModBiome<MineshaftBiome>())
                 return 0;
             return (SpawnCondition.Cavern.Chance * SpawnRates.Mechanical_Enemy_Spawn_Chance);
         }
