@@ -95,8 +95,12 @@ namespace Stellamod.Tiles
             int textureWidth = texture.Width;
             int textureHeight = texture.Height;
             Rectangle drawFrame = texture.GetFrame(0, FrameCount);
-            Vector2 drawOrigin = drawFrame.Size() / 2f;
 
+            if (HorizontalFrameCount > 1)
+            {
+                drawFrame = texture.GetFrame(0, HorizontalFrameCount, VerticalFrameCount);
+            }
+            Vector2 drawOrigin = drawFrame.Size() / 2f;
 
             spriteBatch.Draw(texture, position, drawFrame, drawColor, 0, drawOrigin, scale * 0.5f, SpriteEffects.None, 0);
         }
@@ -192,7 +196,14 @@ namespace Stellamod.Tiles
             int textureWidth = texture.Width;
             int textureHeight = texture.Height;
             Rectangle drawFrame = texture.GetFrame(0, FrameCount);
+
+            if (HorizontalFrameCount > 1)
+            {
+                drawFrame = texture.GetFrame(0, HorizontalFrameCount, VerticalFrameCount);
+            }
+
             Vector2 drawOrigin = drawFrame.Size() / 2f;
+
             spriteBatch.Draw(texture, position, drawFrame, drawColor, 0, drawOrigin, scale * 0.5f, SpriteEffects.None, 0);
         }
         public override bool CanExplode(int i, int j) => false;
