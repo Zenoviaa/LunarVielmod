@@ -2,10 +2,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil;
 using Stellamod.Dusts;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
-using Stellamod.NPCs.Overworld.ShadowWraith;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -21,11 +18,11 @@ namespace Stellamod.Projectiles.Gun
         public bool HasEnemy;
         public NPC ShotAt;
         public bool OptionallySomeCondition { get; private set; }
-		public float Endrotation;
-		public Vector2 StartVel;
+        public float Endrotation;
+        public Vector2 StartVel;
         public Vector2 FakeVel;
         public override void SetStaticDefaults()
-		{
+        {
             // DisplayName.SetDefault("Granite MagmumProj");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
@@ -52,21 +49,21 @@ namespace Stellamod.Projectiles.Gun
         }
 
         public override void SetDefaults()
-		{
+        {
 
-			AIType = ProjectileID.Bullet;
-			Projectile.penetrate = 30;
-			Projectile.width = 13;
-			Projectile.height = 25;
-		}
-		public override void AI()
-		{
-			Projectile.ai[0]++;
+            AIType = ProjectileID.Bullet;
+            Projectile.penetrate = 30;
+            Projectile.width = 13;
+            Projectile.height = 25;
+        }
+        public override void AI()
+        {
+            Projectile.ai[0]++;
 
 
-			if (Projectile.ai[0] == 4)
-			{
-				Projectile.velocity = StartVel;
+            if (Projectile.ai[0] == 4)
+            {
+                Projectile.velocity = StartVel;
             }
             if (Projectile.ai[0] >= 4 && Projectile.ai[0] <= 50)
             {
@@ -121,7 +118,7 @@ namespace Stellamod.Projectiles.Gun
                     Projectile.timeLeft = 1;
                 }
             }
-           
+
             if (Projectile.ai[0] >= 50 && Projectile.ai[0] <= 150)
             {
                 Vector2 Bdirection = Vector2.Normalize(Projectile.Center - ShotAt.Center) * 8.5f;
@@ -160,29 +157,29 @@ namespace Stellamod.Projectiles.Gun
                 Endrotation = FakeVel.ToRotation() + MathHelper.PiOver2;
             }
         }
-		public override void OnSpawn(IEntitySource source)
+        public override void OnSpawn(IEntitySource source)
         {
             Projectile.rotation = 20;
             StartVel = Projectile.velocity;
             Projectile.alpha = Math.Max(0, Projectile.alpha - 25);
 
 
-		}
+        }
 
-		public override bool OnTileCollide(Vector2 oldVelocity)
-		{
-			Projectile.timeLeft = 1;
-			return false;
-		}
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            Projectile.timeLeft = 1;
+            return false;
+        }
 
 
-		public override void OnKill(int timeLeft)
-		{
-			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+        public override void OnKill(int timeLeft)
+        {
+            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
             for (int i = 0; i < 14; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 150, Color.Red, 1f).noGravity = true;
             }
         }
-	}
+    }
 }

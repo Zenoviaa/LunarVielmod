@@ -249,6 +249,7 @@ namespace Stellamod
         public bool ZoneGreenSun;
         public bool ZoneBloodCathedral;
         public bool ZoneAshotiTemple;
+        public bool ZoneMineshaft;
 
 
         public float AssassinsSlashes;
@@ -1082,16 +1083,6 @@ namespace Stellamod
                 {
                     player.AddBuff(ModContent.BuffType<Irradiation>(), 30);
                 }
-
-                //Update Rain
-                Main.raining = true;
-
-                //That way, if it is already raining, it won't be overriden
-                //And if it is not raining, it'll just be permanent until you leave the biome
-                if (Main.rainTime <= 2)
-                    Main.rainTime = 2;
-                Main.maxRaining = 0.8f;
-                Main.maxRain = 140;
 
 
                 //Create Gores

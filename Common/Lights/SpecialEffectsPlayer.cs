@@ -27,6 +27,7 @@ namespace Stellamod.Common.Lights
         private Color[] _rustyPalette;
         private Color[] _bloodyPalette;
         private Color[] _dungeonPalette;
+        private Color[] _desertTopPalette;
 
         private MyPlayer MyPlayer => Player.GetModPlayer<MyPlayer>();
 
@@ -50,7 +51,8 @@ namespace Stellamod.Common.Lights
         public float desertPaletteProgress;
         public float bloodCathedralPaletteProgress;
         public float darknessCurveProgress = 1f;
-
+        public float desertTopPaletteProgress;
+        public float rustyPaletteProgress;
         private void LoadPalettes()
         {
             string rootDirectory = "Common/Lights/Palettes";
@@ -58,6 +60,7 @@ namespace Stellamod.Common.Lights
             _alcadPalette = PalFileImporter.ReadPalette($"{rootDirectory}/RoyalCapital");
             _underworldPalette = PalFileImporter.ReadPalette($"{rootDirectory}/Hell");
             _desertPalette = PalFileImporter.ReadPalette($"{rootDirectory}/maggot24");
+            _desertTopPalette = PalFileImporter.ReadPalette($"{rootDirectory}/DesertTop");
             _witchTownPalette = PalFileImporter.ReadPalette($"{rootDirectory}/Witchtown");
             _rustyPalette = PalFileImporter.ReadPalette($"{rootDirectory}/Rusty");
             _bloodyPalette = PalFileImporter.ReadPalette($"{rootDirectory}/bloodmoon21");
@@ -128,6 +131,20 @@ namespace Stellamod.Common.Lights
             screenShaderData.UseProgress(abyssPaletteProgress);
             TogglePaletteShader("LunarVeil:PaletteAbyss", abyssPaletteProgress != 0);
 
+            bool rustyPaletteActive = (MyPlayer.ZoneGovheil || MyPlayer.ZoneAcid);
+            if (rustyPaletteActive)
+            {
+                rustyPaletteProgress += speed;
+            }
+            else
+            {
+                rustyPaletteProgress -= speed;
+            }
+            rustyPaletteProgress = MathHelper.Clamp(rustyPaletteProgress, 0f, 1f);
+            screenShaderData = FilterManager["LunarVeil:PaletteVirulent"].GetShader();
+            screenShaderData.UseProgress(rustyPaletteProgress);
+            TogglePaletteShader("LunarVeil:PaletteVirulent", rustyPaletteProgress != 0);
+
             bool hellPaletteActive = ((clientConfig.VanillaBiomesPaletteShadersToggle && Player.ZoneUnderworldHeight)
                 || MyPlayer.ZoneCinder || MyPlayer.ZoneDrakonic);
             if (hellPaletteActive)
@@ -177,7 +194,8 @@ namespace Stellamod.Common.Lights
 
             bool desertPaletteActive = clientConfig.VanillaBiomesPaletteShadersToggle
                 && (Player.ZoneDesert || Player.GetModPlayer<MyPlayer>().ZoneAshotiTemple)
-                && !(Player.ZoneCrimson || Player.ZoneCorrupt);
+                && !(Player.ZoneCrimson || Player.ZoneCorrupt)
+                && Player.ZoneUndergroundDesert;
             if (desertPaletteActive)
             {
                 desertPaletteProgress += speed;
@@ -190,6 +208,24 @@ namespace Stellamod.Common.Lights
             screenShaderData = FilterManager["LunarVeil:PaletteDesert"].GetShader();
             screenShaderData.UseProgress(desertPaletteProgress);
             TogglePaletteShader("LunarVeil:PaletteDesert", desertPaletteProgress != 0);
+
+            bool desertTopPaletteActive = clientConfig.VanillaBiomesPaletteShadersToggle
+                 && (Player.ZoneDesert || Player.GetModPlayer<MyPlayer>().ZoneAshotiTemple)
+                 && !(Player.ZoneCrimson || Player.ZoneCorrupt)
+                 && !Player.ZoneUndergroundDesert;
+            if (desertTopPaletteActive)
+            {
+                desertTopPaletteProgress += speed;
+            }
+            else
+            {
+                desertTopPaletteProgress -= speed;
+            }
+            desertTopPaletteProgress = MathHelper.Clamp(desertTopPaletteProgress, 0f, 1f);
+            screenShaderData = FilterManager["LunarVeil:PaletteDesertTop"].GetShader();
+            screenShaderData.UseProgress(desertTopPaletteProgress);
+            TogglePaletteShader("LunarVeil:PaletteDesertTop", desertTopPaletteProgress != 0);
+
 
             bool bloodPaletteActive = MyPlayer.ZoneBloodCathedral && !Main.dayTime;
             if (bloodPaletteActive)
