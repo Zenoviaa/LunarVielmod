@@ -2192,6 +2192,14 @@ namespace Stellamod.WorldG
                     }
                 }
             }
+            void PlaceAir(Point tilePoint)
+            {
+                string structure = "Struct/Colosseum/Elevator";
+                Rectangle rectangle = Structurizer.ReadRectangle(structure);
+                rectangle.Location = tilePoint;
+                var chestIndices = Structurizer.ReadStruct(tilePoint, structure, tileBlend);
+                Structurizer.ProtectStructure(tilePoint, structure);
+            }
 
             void PlaceBigStructure(Point tilePoint)
             {
@@ -2301,6 +2309,8 @@ namespace Stellamod.WorldG
                     }
                 }
             }
+            PlaceAir(tilePoint + new Point(48, 100));
+            PlaceAir(tilePoint + new Point(50, 100));
             //Layer 1
             int rightSideOffset = 61;
             int upOffset = 18;
@@ -2334,6 +2344,7 @@ namespace Stellamod.WorldG
 
             tilePoint.Y -= upOffset;
             Arena(tilePoint + new Point(-21, -1));
+
             /*
             //Layer 6
           

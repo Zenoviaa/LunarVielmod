@@ -116,7 +116,7 @@ namespace Stellamod.WorldG
             {
 
                 tasks.Insert(RoyalGen + 1, new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
-                tasks.Insert(RoyalGen + 2, new PassLegacy("World Gen Colosseum", WorldGenColosseum));
+  
             }
             //Replace Terrain Pass
             
@@ -173,8 +173,8 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
                 tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Dock", WorldGenDock));
                 tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Evil", WorldGenEvil));
-          
-                tasks.Insert(CathedralGen2 + 23, new PassLegacy("Grassing Caves", WorldGenGrassPass));
+                tasks.Insert(CathedralGen2 + 23, new PassLegacy("World Gen Colosseum", WorldGenColosseum));
+                tasks.Insert(CathedralGen2 + 24, new PassLegacy("Grassing Caves", WorldGenGrassPass));
             }
 		}
 
@@ -194,14 +194,7 @@ namespace Stellamod.WorldG
 			}
 			colosseumY += 40;
 			Point colosseumPoint = new Point(colosseumX, colosseumY);
-			for(int x = colosseumX + 69; x < colosseumX + 75; x++)
-			{
-                for (int y = colosseumPoint.Y; y < colosseumPoint.Y + 64; y++)
-                {
-					Tile tile = Main.tile[x - 20, y - 30];
-					tile.HasTile = false;
-                }
-            }
+
 
 			VeilGen.GenerateColosseum(colosseumPoint);
         }
