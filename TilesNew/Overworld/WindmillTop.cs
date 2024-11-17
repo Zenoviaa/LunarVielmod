@@ -22,6 +22,7 @@ namespace Stellamod.TilesNew.Overworld
             FrameCount = 60;
             HorizontalFrameCount = 5;
             VerticalFrameCount = 12;
+            Origin = DrawOrigin.Center;
 
             //How fast the animation is
             FrameSpeed = 30;

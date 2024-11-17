@@ -67,7 +67,8 @@ namespace Stellamod.Tiles
         public enum DrawOrigin
         {
             BottomUp,
-            TopDown
+            TopDown,
+            Center
         }
         public Color StructureColor { get; set; }
         public override string Texture => "Stellamod/Tiles/InvisibleWall";
@@ -146,6 +147,9 @@ namespace Stellamod.Tiles
                 case DrawOrigin.TopDown:
                     drawOrigin = new Vector2(drawFrame.Width / 2, 0);
                     break;
+                case DrawOrigin.Center:
+                    drawOrigin = new Vector2(drawFrame.Width / 2, drawFrame.Height / 2);
+                    break;
             }
             spriteBatch.Draw(texture, 
                 drawPos - Main.screenPosition,
@@ -160,7 +164,8 @@ namespace Stellamod.Tiles
         public enum DrawOrigin
         {
             BottomUp,
-            TopDown
+            TopDown,
+            Center
         }
         public Color StructureColor { get; set; }
         public override string Texture => "Stellamod/Tiles/InvisibleWall";
@@ -234,6 +239,9 @@ namespace Stellamod.Tiles
                     break;
                 case DrawOrigin.TopDown:
                     drawOrigin = new Vector2(drawFrame.Width / 2, 0);
+                    break;
+                case DrawOrigin.Center:
+                    drawOrigin = new Vector2(drawFrame.Width / 2, drawFrame.Height / 2);
                     break;
             }
     
