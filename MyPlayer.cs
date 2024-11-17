@@ -689,6 +689,8 @@ namespace Stellamod
             LuckyW = false;
             FlamedTomeDusts = false;
             MagicTomeDusts = false;
+            if (ZoneColloseum)
+                Player.ZoneDesert = true;
         }
 
 

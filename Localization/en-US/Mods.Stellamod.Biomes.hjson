@@ -132,3 +132,8 @@ MineshaftBiome: {
 	DisplayName: Mineshaft Biome
 	TownNPCDialogueName: the Mineshaft Biome
 }
+
+Colosseum: {
+	TownNPCDialogueName: the Colosseum
+	DisplayName: Colosseum
+}

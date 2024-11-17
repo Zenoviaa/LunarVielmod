@@ -210,7 +210,7 @@ namespace Stellamod.Common.Lights
             TogglePaletteShader("LunarVeil:PaletteDesert", desertPaletteProgress != 0);
 
             bool desertTopPaletteActive = clientConfig.VanillaBiomesPaletteShadersToggle
-                 && (Player.ZoneDesert || Player.GetModPlayer<MyPlayer>().ZoneAshotiTemple)
+                 && (Player.ZoneDesert || Player.GetModPlayer<MyPlayer>().ZoneAshotiTemple || Player.GetModPlayer<MyPlayer>().ZoneColloseum)
                  && !(Player.ZoneCrimson || Player.ZoneCorrupt)
                  && !Player.ZoneUndergroundDesert;
             if (desertTopPaletteActive)
