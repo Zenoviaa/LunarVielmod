@@ -102,6 +102,7 @@ namespace Stellamod.WorldG
         
                 tasks.Insert(caveGen + 1, new PassLegacy("Caves 1", WorldGenCaves));
                 tasks.Insert(caveGen + 2, new PassLegacy("Marble Caves", WorldGenGraniteCaves));
+             
             }
 
             if (RoyalGen != -1)
@@ -125,8 +126,8 @@ namespace Stellamod.WorldG
 				tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
 				tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
 				tasks.Insert(MorrowGen + 11, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-				tasks.Insert(MorrowGen + 12, new PassLegacy("World Gen Veiled Spot", WorldGenVeilSpot));
-                tasks.Insert(MorrowGen + 13, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
+                tasks.Insert(MorrowGen + 12, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
+                tasks.Insert(MorrowGen + 13, new PassLegacy("Icey Caverns", WorldGenIceCaverns));
             }
 
 			int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
@@ -151,29 +152,142 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
 				tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
 				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Stone Castle", WorldGenStoneCastle));
-				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Veil Underground", WorldGenVU));
-				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Veldris", WorldGenVeldris));
-				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
-				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
-				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Rallad", WorldGenRallad));
-				tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
-				tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
-				tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Manor", WorldGenManor));
-				tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Mechanic spot", WorldGenMechShop));
-				tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Gia's House", WorldGenGiaHouse));
-                tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
-				tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
-                tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
-                tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
-                tasks.Insert(CathedralGen2 + 23, new PassLegacy("World Gen Evil", WorldGenEvil));
-                tasks.Insert(CathedralGen2 + 24, new PassLegacy("Grassing Caves", WorldGenGrassPass));
+				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Veldris", WorldGenVeldris));
+				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
+				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
+				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Rallad", WorldGenRallad));
+				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
+				tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
+				tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Manor", WorldGenManor));
+				tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Mechanic spot", WorldGenMechShop));
+				tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Gia's House", WorldGenGiaHouse));
+                tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
+				tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
+                tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
+                tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
+                tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Evil", WorldGenEvil));
+                tasks.Insert(CathedralGen2 + 23, new PassLegacy("Grassing Caves", WorldGenGrassPass));
             }
 		}
 
 
         #region Cave Formation
 
-		private void WorldGenDelgrim(GenerationProgress progress, GameConfiguration configuration)
+		private void WorldGenIceCaverns(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "Carving out ice-y caverns";
+            var genRand = WorldGen.genRand;
+
+            int totalX = 0;
+            int numX = 0;
+			int minSnowX = 0;
+			int maxSnowX = 1;
+            for (int x = 0; x < Main.maxTilesX; x++)
+            {
+                int y = (int)Main.worldSurface - 50;
+                while (y < Main.maxTilesY)
+                {
+                    y++;
+                    if (WorldGen.SolidTile(x, y) &&
+						(Main.tile[x, y].TileType == TileID.SnowBlock || 
+						Main.tile[x, y].TileType == TileID.IceBlock))
+                    {
+						if(numX == 0)
+						{
+							minSnowX = x;
+						}
+						else
+						{
+							maxSnowX = x;
+						}
+
+                        numX++;
+                        totalX += x;
+                        break;
+                    }
+                }
+            }
+
+
+            //Place Main Ice Tunnel
+            int snowTunnelX = totalX / numX;
+            int snowTunnelY = GenVars.snowTop - 50;
+            Vector2 cavePosition = new Vector2(snowTunnelX, snowTunnelY);
+            Vector2 caveVelocity = Vector2.UnitX;
+            Vector2 caveStrength = new Vector2(20, 30);
+            Vector2 pullDirection = Vector2.UnitY;
+            int caveWidth = 7;
+            int caveSteps = 100;
+            VeilGen.GenerateFallingIceCavern(cavePosition, caveVelocity, pullDirection, caveStrength, caveWidth, caveSteps);
+
+            //Place Ice Cavern Layers
+            int numIceCaverns = genRand.Next(10, 15);
+			int iceCavernY = GenVars.snowTop + 50;
+			for(int c = 0; c < numIceCaverns; c++)
+			{
+				for(int n = 0; n < genRand.Next(1, 3); n++)
+                {
+					for(int a = 0; a < 1000; a++)
+					{
+                        //Attempts
+                        int iceCavernX = genRand.Next(minSnowX, maxSnowX);
+		
+                        //Place the cavern
+                        cavePosition = new Vector2(iceCavernX, iceCavernY);
+						Point iceCavernTile = cavePosition.ToPoint();
+						if (!WorldGen.SolidTile(iceCavernTile))
+							continue;
+						if (Main.tile[iceCavernTile.X, iceCavernTile.Y].TileType != TileID.IceBlock &&
+							Main.tile[iceCavernTile.X, iceCavernTile.Y].TileType != TileID.SnowBlock)
+							continue;
+
+                            
+						caveVelocity = Vector2.UnitX;
+                        if (cavePosition.X > snowTunnelX)
+                            caveVelocity = -Vector2.UnitX;
+                        caveStrength = new Vector2(20, 30);
+                        caveWidth = genRand.Next(5, 8);
+                        caveSteps = genRand.Next(70, 100);
+                        VeilGen.GenerateIceCavern(cavePosition, caveVelocity, caveStrength, caveWidth, caveSteps);
+
+                        //Place holes to more
+                        int numTunnels = genRand.Next(15, 20);
+                        for (int t = 0; t < numTunnels; t++)
+                        {
+                            cavePosition = new Vector2(iceCavernX, iceCavernY);
+                            cavePosition += new Vector2(0, genRand.Next(0, 300));
+                            caveVelocity = Vector2.UnitX;
+                            if (genRand.NextBool(2))
+                            {
+                                caveVelocity = -Vector2.UnitX;
+                            }
+                            caveStrength = new Vector2(5, 10);
+                            caveWidth = genRand.Next(5, 8);
+                            caveSteps = genRand.Next(15, 30);
+
+                            pullDirection = Vector2.UnitY;
+                            VeilGen.GenerateFallingIceCavern(cavePosition, caveVelocity, pullDirection, caveStrength, caveWidth, caveSteps);
+                        }
+						break;
+                    }
+
+
+                }
+
+                iceCavernY += 50;
+			}
+
+            int abyssTunnelX = genRand.Next(GenVars.snowOriginLeft, GenVars.snowOriginRight);
+            cavePosition = new Vector2(abyssTunnelX, iceCavernY - 50);
+            caveVelocity = Vector2.UnitY;
+            caveStrength = new Vector2(15, 20);
+            pullDirection = -Vector2.UnitX * 0.2f;
+            caveWidth = 7;
+            caveSteps = 100;
+            VeilGen.GenerateFallingIceCavern(cavePosition, caveVelocity, pullDirection, caveStrength, caveWidth, caveSteps);
+        }
+
+        private void WorldGenDelgrim(GenerationProgress progress, GameConfiguration configuration)
 		{
 
 		}
@@ -3659,23 +3773,15 @@ namespace Stellamod.WorldG
 		{
 			progress.Message = "Shifting Shadows deep in the Ice";
 
-
-
 			bool placed = false;
 			int attempts = 0;
 			while (!placed && attempts++ < 10000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
-				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
-																			   // 50% of choosing the last 6th of the world
-																			   // Choose which side of the world to be on randomly
-				///if (WorldGen.genRand.NextBool())
-				///{
-				///	towerX = Main.maxTilesX - towerX;
-				///}
+				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); 
 
 				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
-				int abysmy = ((Main.maxTilesY / 2) - 200);
+				int abysmy = ((Main.maxTilesY / 2) - 99);
 
 				// We go down until we hit a solid tile or go under the world's surface
 				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.UnderworldLayer)
@@ -3688,6 +3794,7 @@ namespace Stellamod.WorldG
 				{
 					continue;
 				}
+
 				Tile tile = Main.tile[abysmx, abysmy];
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
 				if (!(tile.TileType == TileID.CorruptIce
@@ -3699,36 +3806,16 @@ namespace Stellamod.WorldG
 					continue;
 				}
 
-
-				// place the Rogue
-				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-				//Main.npc[num].homeTileX = -1;
-				//	Main.npc[num].homeTileY = -1;
-				//	Main.npc[num].direction = 1;
-				//	Main.npc[num].homeless = true;
-
-
 				Point Loc = new Point(abysmx, abysmy);
-
-				for (int da = 0; da < 1; da++)
-				{
-					
-					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(450, 450), ModContent.TileType<AbyssalDirt>(), true);
-
-
-                    WorldGen.TileRunner(Loc.X, Loc.Y + 300, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(450, 450), ModContent.TileType<AbyssalDirt>(), true);
-
-
-
-
-                }
-
-				
-
-
-
-			}
+                int strength = 200;
+                int steps = WorldGen.genRand.Next(500, 600);
+                WorldGen.TileRunner(Loc.X, Loc.Y, strength,
+                    steps, ModContent.TileType<AbyssalDirt>(), true);
+                WorldGen.TileRunner(Loc.X, Loc.Y + 300, strength,
+                    steps, ModContent.TileType<AbyssalDirt>(), true);
+            }
 		}
+
         private void NewCaveFormationAbysm(GenerationProgress progress, GameConfiguration configuration)
         {
 

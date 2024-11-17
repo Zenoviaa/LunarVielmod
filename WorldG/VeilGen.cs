@@ -1,10 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
+using ReLogic.Utilities;
 using Stellamod.Items.Ores;
 using Stellamod.Tiles;
+using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Veil;
 using Stellamod.WorldG.StructureManager;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -26,9 +29,75 @@ namespace Stellamod.WorldG
 
         public override bool? UseItem(Player player)
         {
-            GenerateGranite();
+            GenerateCavernToAbyss();
             return base.UseItem(player);
         }
+        private void GenerateCavernToAbyss()
+        {
+
+            var genRand = WorldGen.genRand;
+            Vector2 mouseWorld = Main.MouseWorld;
+            int tileX = (int)Main.MouseWorld.X / 16;
+            int tileY = (int)Main.MouseWorld.Y / 16;
+            Vector2 cavePosition = new Vector2(tileX, tileY);
+            Vector2 caveVelocity = Vector2.UnitY;
+            Vector2 caveStrength = new Vector2(15, 20);
+            Vector2 pullDirection = -Vector2.UnitX * 0.2f;
+            int caveWidth = 7;
+            int caveSteps = 100;
+            VeilGen.GenerateFallingIceCavern(cavePosition, caveVelocity, pullDirection, caveStrength, caveWidth, caveSteps);
+        }
+        private void GenerateSmallFallingIceCavern()
+        {
+
+            var genRand = WorldGen.genRand;
+            Vector2 mouseWorld = Main.MouseWorld;
+            int tileX = (int)Main.MouseWorld.X / 16;
+            int tileY = (int)Main.MouseWorld.Y / 16;
+            Vector2 cavePosition = new Vector2(tileX, tileY);
+            Vector2 caveVelocity = Vector2.UnitX;
+            if (genRand.NextBool(2))
+            {
+                caveVelocity = -Vector2.UnitX;
+            }
+            Vector2 caveStrength = new Vector2(5, 10);
+            Vector2 pullDirection = Vector2.UnitY;
+            int caveWidth = 7;
+            int caveSteps = 25;
+            VeilGen.GenerateFallingIceCavern(cavePosition, caveVelocity, pullDirection, caveStrength, caveWidth, caveSteps);
+        }
+
+        private void GenerateFallingIceCavern()
+        {
+
+            var genRand = WorldGen.genRand;
+            Vector2 mouseWorld = Main.MouseWorld;
+            int tileX = (int)Main.MouseWorld.X / 16;
+            int tileY = (int)Main.MouseWorld.Y / 16;
+            Vector2 cavePosition = new Vector2(tileX, tileY);
+            Vector2 caveVelocity = Vector2.UnitX;
+            Vector2 caveStrength = new Vector2(20, 30);
+            Vector2 pullDirection = Vector2.UnitY;
+            int caveWidth = 7;
+            int caveSteps = 100;
+            VeilGen.GenerateFallingIceCavern(cavePosition, caveVelocity, pullDirection, caveStrength, caveWidth, caveSteps);
+        }
+        
+       
+        private void GenerateIceCavern()
+        {
+            var genRand = WorldGen.genRand;
+            Vector2 mouseWorld = Main.MouseWorld;
+            int tileX = (int)Main.MouseWorld.X / 16;
+            int tileY = (int)Main.MouseWorld.Y / 16;
+            Vector2 cavePosition = new Vector2(tileX, tileY);
+            Vector2 caveVelocity = Vector2.UnitX;
+            Vector2 caveStrength = new Vector2(20, 30);
+            int caveWidth = 7;
+            int caveSteps = 100;
+            VeilGen.GenerateIceCavern(cavePosition, caveVelocity, caveStrength, caveWidth, caveSteps);
+        }
+
         private void GenerateMarble()
         {
             var genRand = WorldGen.genRand;
@@ -669,6 +738,139 @@ namespace Stellamod.WorldG
 
     internal static class VeilGen
     {
+        public static void GenerateIceSpike(Vector2 cavePosition, double width, Vector2D endOffset, ushort tileId = TileID.IceBlock)
+        {
+             WorldUtils.Gen(cavePosition.ToPoint(), new Shapes.Tail(width, endOffset), Actions.Chain(new GenAction[]
+             {
+                    new Actions.SetTile(tileId),
+             }));
+        }
+
+        public static void GenerateFallingIceCavern(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 pullDirection, Vector2 caveStrength, int caveWidth, int caveSteps)
+        {
+            var genRand = WorldGen.genRand;
+            Vector2 caveVelocity = baseCaveDirection;
+            ushort[] wallTypes = new ushort[]
+            {
+                WallID.SnowWallUnsafe,
+                WallID.IceUnsafe
+            };
+
+            Vector2 pullVelocity = pullDirection;
+            Vector2 startVelocity = baseCaveDirection;
+            float sharpness = 1f;
+            int ignoreTile = ModContent.TileType<AbyssalDirt>();
+            for (int s = 0; s < caveSteps; s++)
+            {
+                float radiansOffset = MathF.Sin(s * 0.5f) * MathHelper.ToRadians(45);
+                float degreesToRotate = sharpness;
+                float length = caveVelocity.Length();
+                float targetAngle = (pullVelocity - startVelocity).ToRotation();
+                Vector2 newVelocity = caveVelocity.ToRotation().AngleTowards(targetAngle,
+                    MathHelper.ToRadians(degreesToRotate)).ToRotationVector2() * length;
+                caveVelocity = newVelocity;
+
+                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                {
+                    WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
+                        genRand.NextFloat(caveStrength.X, caveStrength.Y),
+                        genRand.Next(7, 25), -1, ignoreTileType: ignoreTile);
+                }
+
+                //Place Walls
+                for (int w = 0; w < 5; w++)
+                {
+                    ushort wallType = wallTypes[genRand.Next(0, wallTypes.Length)];
+                    if (genRand.NextBool(2))
+                    {
+                        wallType = WallID.IceUnsafe;
+                    }
+
+                    Vector2 wallVelocity = genRand.NextVector2Circular(32, 32);
+                    Vector2 wallPosition = cavePosition + wallVelocity;
+                    WorldUtils.Gen(wallPosition.ToPoint(), new Shapes.Circle(4, 4), Actions.Chain(new GenAction[]
+                    {
+                        new Actions.PlaceWall(wallType),
+                        new Actions.Smooth(true)
+                    }));
+                }
+
+
+                // Update the cave position.
+                cavePosition += caveVelocity * caveWidth * 0.5f;
+            }
+        }
+
+        public static void GenerateIceCavern(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, int caveWidth, int caveSteps)
+        {
+            var genRand = WorldGen.genRand;
+            Vector2 caveVelocity = baseCaveDirection;
+            ushort[] wallTypes = new ushort[]
+            {
+                WallID.SnowWallUnsafe,
+                WallID.IceUnsafe
+            };
+
+            int ignoreTile = ModContent.TileType<AbyssalDirt>();
+            for(int s = 0; s < caveSteps; s++)
+            {
+                float radiansOffset = MathF.Sin(s * 0.5f) * MathHelper.ToRadians(45);
+                Vector2 shiftedVelocity = baseCaveDirection.RotatedBy(radiansOffset);
+                caveVelocity = shiftedVelocity;
+
+                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                {
+                    WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
+                        genRand.NextFloat(caveStrength.X, caveStrength.Y),
+                        genRand.Next(7, 25), -1, ignoreTileType: ignoreTile);
+                }
+
+                //Make Stalagtites
+                if (genRand.NextBool(2))
+                {
+                    Vector2D endOffset = new Vector2D(
+                        genRand.Next(-10, 10), 
+                        genRand.Next(-20, -3));
+                    Vector2 spikePosition = cavePosition;
+                    spikePosition += new Vector2(0, -10);
+                    GenerateIceSpike(spikePosition, width: 25, endOffset);
+                }
+
+                //Make Stalagmites
+                if (genRand.NextBool(4))
+                {
+                    Vector2D endOffset = new Vector2D(
+                        genRand.Next(-10, 10),
+                        genRand.Next(3, 7));
+                    Vector2 spikePosition = cavePosition;
+                    spikePosition += new Vector2(0, 15);
+                    GenerateIceSpike(spikePosition, width: 15, endOffset);
+                }
+
+                //Place Walls
+                for(int w = 0; w < 5; w++)
+                {
+                    ushort wallType = wallTypes[genRand.Next(0, wallTypes.Length)];
+                    if (genRand.NextBool(2))
+                    {
+                        wallType = WallID.IceUnsafe;
+                    }
+
+                    Vector2 wallVelocity = genRand.NextVector2Circular(32, 32);
+                    Vector2 wallPosition = cavePosition + wallVelocity;
+                    WorldUtils.Gen(wallPosition.ToPoint(), new Shapes.Circle(4, 4), Actions.Chain(new GenAction[]
+                    {
+                        new Actions.PlaceWall(wallType),
+                        new Actions.Smooth(true)
+                    }));
+                }
+
+
+                // Update the cave position.
+                cavePosition += caveVelocity * caveWidth * 0.5f;
+            }
+        }
+
         public static void PlaceMarble(Point granitePoint, Vector2 radiusSize, int caveWidth = 5)
         {
             var genRand = WorldGen.genRand;
