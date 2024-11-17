@@ -185,7 +185,9 @@ namespace Stellamod.WorldG
             progress.Message = "Gintzing all over the desert";
             int desertCenterX = (GenVars.desertHiveLeft + GenVars.desertHiveRight) / 2;
 			int colosseumX = desertCenterX - 71;
-			int colosseumY = (int)Main.worldSurface - 50;
+			colosseumX += 35;
+
+            int colosseumY = (int)Main.worldSurface - 50;
 			while(!WorldGen.SolidTile(colosseumX, colosseumY))
 			{
 				colosseumY++;
