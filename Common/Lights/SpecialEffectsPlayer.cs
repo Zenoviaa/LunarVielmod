@@ -63,7 +63,7 @@ namespace Stellamod.Common.Lights
             _desertTopPalette = PalFileImporter.ReadPalette($"{rootDirectory}/DesertTop");
             _witchTownPalette = PalFileImporter.ReadPalette($"{rootDirectory}/Witchtown");
             _rustyPalette = PalFileImporter.ReadPalette($"{rootDirectory}/Rusty");
-            _bloodyPalette = PalFileImporter.ReadPalette($"{rootDirectory}/bloodmoon21");
+            _bloodyPalette = PalFileImporter.ReadPalette($"{rootDirectory}/BloodHound");
             _dungeonPalette = PalFileImporter.ReadPalette($"{rootDirectory}/Dungeon");
         }
 
@@ -237,9 +237,9 @@ namespace Stellamod.Common.Lights
                 bloodCathedralPaletteProgress -= speed;
             }
             bloodCathedralPaletteProgress = MathHelper.Clamp(bloodCathedralPaletteProgress, 0f, 1f);
-            screenShaderData = FilterManager["LunarVeil:PaletteBloodCathedral"].GetShader();
+            screenShaderData = FilterManager["LunarVeil:PaletteBloodHound"].GetShader();
             screenShaderData.UseProgress(bloodCathedralPaletteProgress);
-            TogglePaletteShader("LunarVeil:PaletteBloodCathedral", bloodCathedralPaletteProgress != 0);
+            TogglePaletteShader("LunarVeil:PaletteBloodHound", bloodCathedralPaletteProgress != 0);
 
             CalculateDarkness();
             TogglePaletteShader("LunarVeil:DarknessVignette", darkness != 0);
