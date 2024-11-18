@@ -8110,3 +8110,23 @@ TheSeededTreeItem: {
 	Tooltip: ""
 	DisplayName: The Seeded Tree Item
 }
+
+GiantCrystal1Item: {
+	DisplayName: Giant Crystal1 Item
+	Tooltip: ""
+}
+
+GiantCrystal2Item: {
+	DisplayName: Giant Crystal2 Item
+	Tooltip: ""
+}
+
+MedCrystal1Item: {
+	DisplayName: Med Crystal1 Item
+	Tooltip: ""
+}
+
+MedCrystal2Item: {
+	DisplayName: Med Crystal2 Item
+	Tooltip: ""
+}
