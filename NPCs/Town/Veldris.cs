@@ -39,7 +39,7 @@ namespace Stellamod.NPCs.Town
 {
 	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
 
-	public class Veldris : ModNPC
+	public class Veldris : PointSpawnNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
 		public const string ShopName = "Shop";
@@ -104,10 +104,15 @@ namespace Stellamod.NPCs.Town
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
 			NPC.dontTakeDamageFromHostiles = true;
-
-
 		}
-		public override void FindFrame(int frameHeight)
+
+        public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
+        {
+			spawner.structureToSpawnIn = "Struct/Overworld/VeizalManor";
+            spawner.spawnTileOffset = new Point(63, -35);
+        }
+
+        public override void FindFrame(int frameHeight)
 		{
 			NPC.frameCounter += 0.50f;
 			NPC.frameCounter %= Main.npcFrameCount[NPC.type];

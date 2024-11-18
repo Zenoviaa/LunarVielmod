@@ -1396,6 +1396,99 @@ namespace Stellamod.WorldG
             }
         }
 
+        public static void GenerateStraightCaveWall(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, Vector2 pullDirection, int caveWidth, int caveSteps, ushort tileToPlace)
+        {
+            var genRand = WorldGen.genRand;
+            int caveSeed = genRand.Next();
+
+            //Why make my own noise functions when I can just use this?!?!?1 Hhahahaha
+            float i = cavePosition.X;
+            Vector2 caveVelocity = baseCaveDirection;
+            Vector2 breakStrength = caveStrength;
+
+            Vector2 startVelocity = caveVelocity;
+            Vector2 pullVelocity = pullDirection;
+
+            float sharpness = 1;
+            float counter = 0;
+            bool shouldBreak = false;
+            for (int j = 0; j < caveSteps; j++)
+            {
+
+                counter++;
+                breakStrength *= 0.9995f;
+
+
+                if (shouldBreak)
+                {
+                    break;
+                }
+
+                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                {
+                    Point wallPoint = cavePosition.ToPoint();
+                    WorldUtils.Gen(wallPoint, new Shapes.Circle(8, 8), Actions.Chain(new GenAction[]
+                    {
+                        new Actions.PlaceWall(tileToPlace),
+                        new Actions.Smooth(true)
+                    }));
+                }
+
+                float tilePercent = VeilGen.TilePercentNoAir(cavePosition.ToPoint(), new Rectangle((int)cavePosition.X, (int)cavePosition.Y, 20, 20), TileID.Dirt, TileID.Stone);
+                if (tilePercent < 0.5f && j > caveSteps / 2)
+                {
+                    shouldBreak = true;
+                }
+                // Update the cave position.
+                cavePosition += caveVelocity * caveWidth * 0.5f;
+                //  caveStrength *= 0.99f;
+            }
+        }
+
+        public static void GenerateStraightCave(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, Vector2 pullDirection, int caveWidth, int caveSteps, int tileToPlace = -1)
+        {
+            var genRand = WorldGen.genRand;
+            int caveSeed = genRand.Next();
+
+            //Why make my own noise functions when I can just use this?!?!?1 Hhahahaha
+            float i = cavePosition.X;
+            Vector2 caveVelocity = baseCaveDirection;
+            Vector2 breakStrength = caveStrength;
+
+            Vector2 startVelocity = caveVelocity;
+            Vector2 pullVelocity = pullDirection;
+
+            float sharpness = 1;
+            float counter = 0;
+            bool shouldBreak = false;
+            for (int j = 0; j < caveSteps; j++)
+            {
+
+                counter++;
+                breakStrength *= 0.9995f;
+                float tilePercent = VeilGen.TilePercentNoAir(cavePosition.ToPoint(), new Rectangle((int)cavePosition.X, (int)cavePosition.Y, 20, 20), TileID.Dirt, TileID.Stone);
+
+                if (shouldBreak)
+                    break;
+
+                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                {
+                    WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
+                        genRand.NextFloat(breakStrength.X, breakStrength.Y),
+                        genRand.Next(4, 5), tileToPlace);
+                }
+
+                // Update the cave position.
+                cavePosition += caveVelocity * caveWidth * 0.5f;
+
+
+                if (tilePercent < 0.5f && j > caveSteps / 2)
+                {
+                    shouldBreak = true;
+                }
+            }
+        }
+
         public static void GenerateSimpleCave(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, Vector2 pullDirection, int caveWidth, int caveSteps, int tileToPlace = -1)
         {
             var genRand = WorldGen.genRand;

@@ -157,22 +157,21 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
 				tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
 				tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen Stone Castle", WorldGenStoneCastle));
-				tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen Veldris", WorldGenVeldris));
-				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
-				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
-				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Rallad", WorldGenRallad));
-				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
-				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
-				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Manor", WorldGenManor));
-				tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Gia's House", WorldGenGiaHouse));
-                tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
-				tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
-                tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
-                tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
-                tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Dock", WorldGenDock));
-                tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Evil", WorldGenEvil));
-                tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Colosseum", WorldGenColosseum));
-                tasks.Insert(CathedralGen2 + 22, new PassLegacy("Grassing Caves", WorldGenGrassPass));
+				tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen Veldris", WorldGenVeizalManor));
+				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
+				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Rallad", WorldGenRallad));
+				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
+				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
+				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Manor", WorldGenManor));
+				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Gia's House", WorldGenGiaHouse));
+                tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
+				tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
+                tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
+                tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
+                tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Dock", WorldGenDock));
+                tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Evil", WorldGenEvil));
+                tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Colosseum", WorldGenColosseum));
+                tasks.Insert(CathedralGen2 + 21, new PassLegacy("Grassing Caves", WorldGenGrassPass));
             }
 		}
 
@@ -639,9 +638,9 @@ namespace Stellamod.WorldG
             int caveWidth = 5;
             int steps = 150;
 
-            VeilGen.GenerateSimpleCaveWall((evilPoint + new Point(-16, -32)).ToVector2(), -Vector2.UnitX, caveStrength * 2f, pullDirection, caveWidth, caveSteps: steps, tileToPlace: wallType);
-            VeilGen.GenerateSimpleCave((evilPoint + new Point(-16, -32)).ToVector2(), -Vector2.UnitX, caveStrength * 2f, pullDirection, caveWidth, caveSteps: steps, tileToPlace: blockType);
-            VeilGen.GenerateSimpleCave((evilPoint + new Point(-16, -32)).ToVector2(), -Vector2.UnitX, caveStrength, pullDirection, caveWidth, caveSteps: steps, tileToPlace: -1);
+            VeilGen.GenerateStraightCaveWall((evilPoint + new Point(-16, -32)).ToVector2(), pullDirection, caveStrength * 2f, pullDirection, caveWidth, caveSteps: steps, tileToPlace: wallType);
+            VeilGen.GenerateStraightCave((evilPoint + new Point(-16, -32)).ToVector2(), pullDirection, caveStrength * 2f, pullDirection, caveWidth, caveSteps: steps, tileToPlace: blockType);
+            VeilGen.GenerateStraightCave((evilPoint + new Point(-16, -32)).ToVector2(), pullDirection, caveStrength, pullDirection, caveWidth, caveSteps: steps, tileToPlace: -1);
 
             int fallSteps = 40;
             VeilGen.GenerateSimpleCave((evilPoint + new Point(0, 48)).ToVector2(), Vector2.UnitY, caveStrength * 2f, Vector2.UnitY, caveWidth,
@@ -2329,6 +2328,153 @@ namespace Stellamod.WorldG
 			}
 
 		}
+
+		private void WorldGenVeizalManor(GenerationProgress progress, GameConfiguration configuration)
+		{
+			StructureMap structures = GenVars.structures;
+			string structure = "Struct/Overworld/VeizalManor";
+			Rectangle rectangle = Structurizer.ReadRectangle(structure);
+			progress.Message = "WE'RE RICH!";
+
+			int[] tileBlend = new int[]
+			{
+				TileID.RubyGemspark
+			};
+			var genRand = WorldGen.genRand;
+
+			int totalX = 0;
+			int numX = 0;
+			int minSnowX = 0;
+			int maxSnowX = 1;
+			for (int x = 0; x < Main.maxTilesX; x++)
+			{
+				int y = (int)Main.worldSurface - 50;
+				while (y < Main.worldSurface)
+				{
+					y++;
+					if (WorldGen.SolidTile(x, y) &&
+						(Main.tile[x, y].TileType == TileID.SnowBlock ||
+						Main.tile[x, y].TileType == TileID.IceBlock))
+					{
+						if (numX == 0)
+						{
+							minSnowX = x;
+						}
+						else
+						{
+							maxSnowX = x;
+						}
+
+						numX++;
+						totalX += x;
+						break;
+					}
+				}
+			}
+
+
+			//Place Main Ice Tunnel
+			int manorX = totalX / numX;
+			int maxAttemptCount = 10000;
+
+			for (int a = 0; a < maxAttemptCount; a++)
+			{
+				// Select a place in the first 6th of the world, avoiding the oceans
+				int x = manorX + genRand.Next(150, 350);
+				int y = ((int)(Main.worldSurface - 200));
+
+				// We go down until we hit a solid tile or go under the world's surface
+				while (!WorldGen.SolidTile(x, y) && y <= Main.worldSurface)
+				{
+					y++;
+				}
+
+                Tile tileToPlaceOn = Main.tile[x, y];
+                if (tileToPlaceOn.TileType != TileID.SnowBlock && tileToPlaceOn.TileType != TileID.IceBlock)
+                    continue;
+                int cathedralY = y;
+
+				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
+				Point Loc = new Point(x, cathedralY);
+				if (!Structurizer.TryPlaceAndProtectStructure(Loc, structure))
+					continue;
+				Structurizer.ReadStruct(Loc, structure, tileBlend);
+				Rectangle structureRectangle = Structurizer.ReadRectangle(structure);
+				structureRectangle.Location = Loc;
+				for (int beamX = structureRectangle.Location.X;
+					beamX < structureRectangle.Location.X + structureRectangle.Width; beamX += 4)
+				{
+					//Place beams
+					int beamY = structureRectangle.Location.Y;
+					Tile tile = Main.tile[beamX, beamY];
+					int solidCount = 0;
+					while (solidCount < 5)
+					{
+						if (!WorldGen.SolidTile(beamX, beamY))
+						{
+							WorldGen.PlaceTile(beamX, beamY, TileID.BorealBeam);
+						}
+						else
+						{
+							solidCount++;
+						}
+						beamY++;
+					}
+				}
+				break;
+			}
+
+			//Place verlia cathedral
+			structure = "Struct/Overworld/VerliaBridge";
+			for (int a = 0; a < maxAttemptCount; a++)
+			{
+                int x = manorX + genRand.Next(-350, -150);
+                int y = ((int)(Main.worldSurface - 200));
+
+                // We go down until we hit a solid tile or go under the world's surface
+                while (!WorldGen.SolidTile(x, y) && y <= Main.worldSurface)
+                {
+                    y++;
+                }
+
+				Tile tileToPlaceOn = Main.tile[x, y];
+				if (tileToPlaceOn.TileType != TileID.SnowBlock && tileToPlaceOn.TileType != TileID.IceBlock)
+					continue;
+
+                int cathedralY = y;
+
+                //Start at 200 tiles above the surface instead of 0, to exclude floating islands
+                Point Loc = new Point(x, cathedralY);
+                if (!Structurizer.TryPlaceAndProtectStructure(Loc, structure))
+                    continue;
+                Structurizer.ReadStruct(Loc, structure, tileBlend);
+                Rectangle structureRectangle = Structurizer.ReadRectangle(structure);
+                structureRectangle.Location = Loc;
+                for (int beamX = structureRectangle.Location.X;
+                    beamX < structureRectangle.Location.X + structureRectangle.Width; beamX += 4)
+                {
+                    //Place beams
+                    int beamY = structureRectangle.Location.Y;
+                    Tile tile = Main.tile[beamX, beamY];
+                    int solidCount = 0;
+                    while (solidCount < 5)
+                    {
+                        if (!WorldGen.SolidTile(beamX, beamY))
+                        {
+                            WorldGen.PlaceTile(beamX, beamY, TileID.Titanstone);
+                        }
+                        else
+                        {
+                            solidCount++;
+                        }
+                        beamY++;
+                    }
+                }
+
+                break;
+            }
+		}
+
 
         private void WorldGenBloodCathedral(GenerationProgress progress, GameConfiguration configuration)
         {
@@ -6529,159 +6675,61 @@ namespace Stellamod.WorldG
 
         #region Ice Biome
         private void WorldGenCathedral(GenerationProgress progress, GameConfiguration configuration)
-					{
+		{
 
-						// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
-						progress.Message = "Verlia Ark";
+			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
+			progress.Message = "Verlia Ark";
 
-						bool placed = false;
-						int attempts = 0;
-						while (!placed && attempts++ < 100000)
-						{
-							// Select a place in the first 6th of the world, avoiding the oceans
-							int towerX = WorldGen.genRand.Next(0, Main.maxTilesX - 200); // from 50 since there's a unaccessible area at the world's borders
-																						 // 50% of choosing the last 6th of the world
-																						 // Choose which side of the world to be on randomly
-							///if (WorldGen.genRand.NextBool())
-							///{
-							///	towerX = Main.maxTilesX - towerX;
-							///}
+			bool placed = false;
+			int attempts = 0;
+			while (!placed && attempts++ < 100000)
+			{
+				// Select a place in the first 6th of the world, avoiding the oceans
+				int towerX = WorldGen.genRand.Next(0, Main.maxTilesX - 200); // from 50 since there's a unaccessible area at the world's borders
+																				// 50% of choosing the last 6th of the world
+																				// Choose which side of the world to be on randomly
+				///if (WorldGen.genRand.NextBool())
+				///{
+				///	towerX = Main.maxTilesX - towerX;
+				///}
 
-							//Start at 200 tiles above the surface instead of 0, to exclude floating islands
-							int towerY = (int)Main.worldSurface - 200;
+				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
+				int towerY = (int)Main.worldSurface - 200;
 
-							// We go down until we hit a solid tile or go under the world's surface
-							while (!WorldGen.SolidTile(towerX, towerY) && towerY <= Main.worldSurface)
-							{
-								towerY++;
-							}
+				// We go down until we hit a solid tile or go under the world's surface
+				while (!WorldGen.SolidTile(towerX, towerY) && towerY <= Main.worldSurface)
+				{
+					towerY++;
+				}
 
-							// If we went under the world's surface, try again
-							if (towerY > Main.worldSurface)
-							{
-								continue;
-							}
-							Tile tile = Main.tile[towerX, towerY];
-							// If the type of the tile we are placing the tower on doesn't match what we want, try again
-							if (!(tile.TileType == TileID.IceBlock
-								|| tile.TileType == TileID.SnowBlock))
-							{
-								continue;
-							}
-
-
-							for (int da = 0; da < 1; da++)
-							{
-								Point Loc = new Point(towerX, towerY - 50);
-
-								// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-								StructureMap structures = GenVars.structures;
-								StructureLoader.ProtectStructure(Loc, "Struct/Ice/VerliasCathedral");
-								int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Ice/VerliasCathedral");
-								Chest c = Main.chest[ChestIndexs[0]];
-
-								foreach (int chestIndex in ChestIndexs)
-								{
-									var chest = Main.chest[chestIndex];
-									// etc
-
-									// itemsToAdd will hold type and stack data for each item we want to add to the chest
-									var itemsToAdd = new List<(int type, int stack)>();
-
-									// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-									int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-										Tuple.Create(ModContent.ItemType<EmptyMoonflameLantern>(), 0.5)
-
-									// Choose no item with a high weight of 7.
-									);
-									if (specialItem != ItemID.None)
-									{
-										itemsToAdd.Add((specialItem, 1));
-									}
-									// Using a switch statement and a random choice to add sets of items.
-									switch (Main.rand.Next(6))
-									{
-										case 0:
-											itemsToAdd.Add((ModContent.ItemType<LittleWand>(), Main.rand.Next(1, 1)));
-											itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-											itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(5, 20)));
-											 ;
-											itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
-											itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
-											itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
-											break;
-										case 1:
-											itemsToAdd.Add((ModContent.ItemType<AlcaricQuiver>(), Main.rand.Next(1, 1)));
-											itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-											itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-											itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-											
-											itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
-											itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
-											itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
-											break;
-										case 2:
-											itemsToAdd.Add((ModContent.ItemType<BlackRose>(), Main.rand.Next(1, 1)));
-											itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
-											itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
-											itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
-											itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
-											itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
-											break;
-										case 3:
-											itemsToAdd.Add((ModContent.ItemType<FloweredInsource>(), Main.rand.Next(1, 1)));
-											itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
-											itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-											itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-											itemsToAdd.Add((ModContent.ItemType<AlcadizScrap>(), Main.rand.Next(5, 20)));
-											itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
-											itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
-
-											break;
-										case 4:
-											itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
-											itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-											itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-											itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
-											itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
-											itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
-											itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
-											break;
-
-										case 5:
-											itemsToAdd.Add((ItemID.FuneralHat, Main.rand.Next(1, 1)));
-											itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
-											itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
-											itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
-											itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
-											itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
-											break;
+				// If we went under the world's surface, try again
+				if (towerY > Main.worldSurface)
+				{
+					continue;
+				}
+				Tile tile = Main.tile[towerX, towerY];
+				// If the type of the tile we are placing the tower on doesn't match what we want, try again
+				if (!(tile.TileType == TileID.IceBlock
+					|| tile.TileType == TileID.SnowBlock))
+				{
+					continue;
+				}
 
 
-									}
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc = new Point(towerX, towerY - 50);
 
-									// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-									int chestItemIndex = 0;
-									foreach (var itemToAdd in itemsToAdd)
-									{
-										Item item = new Item();
-										item.SetDefaults(itemToAdd.type);
-										item.stack = itemToAdd.stack;
-										chest.item[chestItemIndex] = item;
-										chestItemIndex++;
-										if (chestItemIndex >= 40)
-											break; // Make sure not to exceed the capacity of the chest
-									}
-								}
+					// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
+					StructureMap structures = GenVars.structures;
+					StructureLoader.ProtectStructure(Loc, "Struct/Ice/VerliasCathedral");
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Ice/VerliasCathedral");
+					placed = true;
 
+				}
+			}
 
-								placed = true;
-
-							}
-						}
-
-					}
+		}
 
 
 
