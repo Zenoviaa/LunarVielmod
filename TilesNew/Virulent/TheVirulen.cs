@@ -5,7 +5,7 @@ using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
-namespace Stellamod.TilesNew.Mechanical
+namespace Stellamod.TilesNew.Virulent
 {
     //Wall Version
     public class TheSeededTreeItem : DecorativeWallItem
