@@ -154,27 +154,25 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Abandoned Mineshafts", WorldGenMineshafts));
                 tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
 				tasks.Insert(CathedralGen2 + 3, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
-				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen More skies", WorldGenBig));
-				tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen More skies", WorldGenMed));
-				tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
-				tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
-				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Stone Castle", WorldGenStoneCastle));
-				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Veldris", WorldGenVeldris));
-				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
-				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
-				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Rallad", WorldGenRallad));
-				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
-				tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
-				tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Manor", WorldGenManor));
-				tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Gia's House", WorldGenGiaHouse));
-                tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
-				tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
-                tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
-                tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
-                tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Dock", WorldGenDock));
-                tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Evil", WorldGenEvil));
-                tasks.Insert(CathedralGen2 + 23, new PassLegacy("World Gen Colosseum", WorldGenColosseum));
-                tasks.Insert(CathedralGen2 + 24, new PassLegacy("Grassing Caves", WorldGenGrassPass));
+				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
+				tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
+				tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen Stone Castle", WorldGenStoneCastle));
+				tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen Veldris", WorldGenVeldris));
+				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
+				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
+				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Rallad", WorldGenRallad));
+				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
+				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
+				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Manor", WorldGenManor));
+				tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Gia's House", WorldGenGiaHouse));
+                tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
+				tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
+                tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
+                tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
+                tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Dock", WorldGenDock));
+                tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Evil", WorldGenEvil));
+                tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Colosseum", WorldGenColosseum));
+                tasks.Insert(CathedralGen2 + 22, new PassLegacy("Grassing Caves", WorldGenGrassPass));
             }
 		}
 
@@ -2335,7 +2333,8 @@ namespace Stellamod.WorldG
         private void WorldGenBloodCathedral(GenerationProgress progress, GameConfiguration configuration)
         {
             StructureMap structures = GenVars.structures;
-            Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Boss/SanguimiBoss");
+			string structure = "Struct/Overworld/BloodCathedral";
+            Rectangle rectangle = Structurizer.ReadRectangle(structure);
             progress.Message = "Building a Bloody Cathedral";
 
             int[] tileBlend = new int[]
@@ -2343,33 +2342,53 @@ namespace Stellamod.WorldG
                 TileID.RubyGemspark
             };
 
+            int totalX = 0;
+            int numX = 0;
+
+            int minJungleX = 0;
+			int maxJungleX = 0;
+            for (int x = 0; x < Main.maxTilesX; x++)
+            {
+                int y = (int)Main.worldSurface - 50;
+                while (y <= Main.worldSurface)
+                {
+                    y++;
+                    if (WorldGen.SolidTile(x, y) && Main.tile[x, y].TileType == TileID.Mud)
+                    {
+						if(numX == 0)
+						{
+							minJungleX = x;
+						}
+						maxJungleX = x;
+                        numX++;
+                        totalX += x;
+                        break;
+                    }
+                }
+            }
+            int jungleX = totalX / numX;
             int maxAttemptCount = 10000;
+			var genRand = WorldGen.genRand;
 			for(int a = 0; a < maxAttemptCount; a++)
 			{
-                // Select a place in the first 6th of the world, avoiding the oceans
-                int offset = WorldGen.genRand.Next(-500, -400);
-                int smx = GenVars.dungeonX + offset;
-
-                //Start at 200 tiles above the surface instead of 0, to exclude floating islands
-                int smy = ((int)(Main.worldSurface - 200));
+				// Select a place in the first 6th of the world, avoiding the oceans
+				int cathedralX = jungleX;
+                cathedralX += 220 + genRand.Next(0, 50);
+                int y = ((int)(Main.worldSurface - 200));
 
                 // We go down until we hit a solid tile or go under the world's surface
-                while (!WorldGen.SolidTile(smx, smy))
+                while (!WorldGen.SolidTile(cathedralX, y) && y <= Main.worldSurface)
                 {
-                    smy++;
+                    y++;
                 }
 
-                Tile tile = Main.tile[smx, smy];
-                if (tile.TileType != TileID.Dirt &&
-                    tile.TileType != TileID.Grass)
-                    continue;
+                int cathedralY = y - 150;
 
-                Tile tileAbove = Main.tile[smx, smy - 1];
-                Point Loc = new Point(smx, smy + 10);
-                string path = "Struct/Boss/SanguimiBoss";
-                if (!Structurizer.TryPlaceAndProtectStructure(Loc, path))
+                //Start at 200 tiles above the surface instead of 0, to exclude floating islands
+                Point Loc = new Point(cathedralX, cathedralY);
+                if (!Structurizer.TryPlaceAndProtectStructure(Loc, structure))
                     continue;
-                int[] chests = Structurizer.ReadStruct(Loc, path, tileBlend);
+                Structurizer.ReadStruct(Loc, structure, tileBlend);
 				break;
             }
         }

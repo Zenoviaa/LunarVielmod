@@ -65,7 +65,6 @@ namespace Stellamod.WorldG
 
         private void GenerateCavernToAbyss()
         {
-
             var genRand = WorldGen.genRand;
             Vector2 mouseWorld = Main.MouseWorld;
             int tileX = (int)Main.MouseWorld.X / 16;
@@ -78,6 +77,7 @@ namespace Stellamod.WorldG
             int caveSteps = 100;
             VeilGen.GenerateFallingIceCavern(cavePosition, caveVelocity, pullDirection, caveStrength, caveWidth, caveSteps);
         }
+
         private void GenerateSmallFallingIceCavern()
         {
 
@@ -2350,138 +2350,6 @@ namespace Stellamod.WorldG
           
             */
         }
-        public static void GenerateColosseumTower(Point tilePoint, Point tileDirection, int tunnelLength, bool isRight)
-        {
-            var genRand = WorldGen.genRand;
-            string GetMiniStructurePath()
-            {
-                int num = genRand.Next(1, 3);
-                string baseStructurePath = $"Struct/Colosseum/SquareHouse{num}";
-                return baseStructurePath;
-            }
-
-            string GetStructurePath()
-            {
-                int num = genRand.Next(1, 5);
-                string baseStructurePath = $"Struct/Colosseum/House{num}";
-                return baseStructurePath;
-            }
-
-            int[] tileBlend = new int[]
-            {
-                TileID.RubyGemspark
-            };
-
-            for (int t = 0; t < tunnelLength; t++)
-            {
-                string structure = GetStructurePath();
-                bool placeSmall = t > tunnelLength - 3;
-                if (placeSmall)
-                {
-                    structure = GetMiniStructurePath();
-                }
-       
-
-                Rectangle rectangle = Structurizer.ReadRectangle(structure);
-                Point placeToOn = tilePoint;
-                if (placeSmall && isRight)
-                {
-                    placeToOn.X += 6;
-                }
-                rectangle.Location = placeToOn;
-            
-                    
-                int[] chestIndices = Structurizer.ReadStruct(placeToOn, structure, tileBlend);
-                if (chestIndices.Length != 0)
-                {
-                    foreach (int chestIndex in chestIndices)
-                    {
-                        if (chestIndex == -1)
-                            continue;
-                        Chest chest = Main.chest[chestIndex];
-                        var itemsToAdd = new List<(int type, int stack)>();
-
-                        int chestItemIndex = 0;
-                        foreach (var itemToAdd in itemsToAdd)
-                        {
-                            Item item = new Item();
-                            item.SetDefaults(itemToAdd.type);
-                            item.stack = itemToAdd.stack;
-                            chest.item[chestItemIndex] = item;
-                            chestItemIndex++;
-                            if (chestItemIndex >= 40)
-                                break; // Make sure not to exceed the capacity of the chest
-                        }
-                    }
-                }
-                Structurizer.ProtectStructure(placeToOn, structure);
-                tilePoint.Y += tileDirection.Y * (rectangle.Height - 1);
-
-            }
-        }
-
-        public static void GenerateColosseumTower(Point tilePoint, Point tileDirection, int tunnelLength)
-        {
-            var genRand = WorldGen.genRand;
-            string GetMiniStructurePath()
-            {
-                int num = genRand.Next(1, 3);
-                string baseStructurePath = $"Struct/Colosseum/SquareHouse{num}";
-                return baseStructurePath;
-            }
-
-            string GetStructurePath()
-            {
-                int num = genRand.Next(1, 5);
-                string baseStructurePath = $"Struct/Colosseum/House{num}";
-                return baseStructurePath;
-            }
-
-
-            int[] tileBlend = new int[]
-            {
-                TileID.RubyGemspark
-            };
-
-            for (int t = 0; t < tunnelLength; t++)
-            {
-                string structure = GetStructurePath();
-                if(t > tunnelLength - 3)
-                {
-                    structure = GetMiniStructurePath();
-                }
-                
-                Rectangle rectangle = Structurizer.ReadRectangle(structure);
-                rectangle.Location = tilePoint;
-                int[] chestIndices = Structurizer.ReadStruct(tilePoint, structure, null);
-                if (chestIndices.Length != 0)
-                {
-                    foreach (int chestIndex in chestIndices)
-                    {
-                        if (chestIndex == -1)
-                            continue;
-                        Chest chest = Main.chest[chestIndex];
-                        var itemsToAdd = new List<(int type, int stack)>();
-               
-                        int chestItemIndex = 0;
-                        foreach (var itemToAdd in itemsToAdd)
-                        {
-                            Item item = new Item();
-                            item.SetDefaults(itemToAdd.type);
-                            item.stack = itemToAdd.stack;
-                            chest.item[chestItemIndex] = item;
-                            chestItemIndex++;
-                            if (chestItemIndex >= 40)
-                                break; // Make sure not to exceed the capacity of the chest
-                        }
-                    }
-                }
-                Structurizer.ProtectStructure(tilePoint, structure);
-                tilePoint.Y += tileDirection.Y * (rectangle.Height - 1);
-              
-            }
-        }
-
         public static void GenerateMineshaftTunnel(Point tilePoint, Point tileDirection, int tunnelLength)
         {
             var genRand = WorldGen.genRand;
@@ -2840,80 +2708,5 @@ namespace Stellamod.WorldG
                 cavePosition += caveDirection * caveWidth * 0.5f;
             }
         }
-
-        /*
-        public static float SampleNoise(Texture2D texture, float x, float y, float divisor)
-        {
-            texture.get
-        }
-    
-
-        private void NoodleCaves()
-        {
-            var genRand = WorldGen.genRand;
-            for (int i = 0; i < 6; i++)
-            {
-                int caveWidth = 12; // Width
-                int caveSteps = 250; // How many carves
-                int caveSeed = WorldGen.genRand.Next();
-                Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
-                Vector2 cavePosition = new Vector2(Main.maxTilesX / 2, (int)Main.worldSurface);
-
-                for (int j = 0; j < caveSteps; j++)
-                {
-                    float caveOffsetAngleAtStep = WorldMath.PerlinNoise2D(i / 50f, j / 50f, 1, caveSeed) * MathHelper.TwoPi * 1.9f;
-                    Vector2 caveDirection = baseCaveDirection.RotatedBy(caveOffsetAngleAtStep);
-
-                    // Carve out at the current position.
-                    if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
-                    {
-                        //digging 
-                        WorldGen.TileRunner(
-                            (int)cavePosition.X,
-                            (int)cavePosition.Y,
-                            strength: genRand.NextFloat(10f, 20f),
-                            genRand.Next(5, 10),
-                            type: -1);
-                    }
-
-                    // Update the cave position.
-                    cavePosition += caveDirection * caveWidth * 0.5f;
-                }
-            }
-        }
-
-      
-
-        private void VeinyCaves()
-        {
-
-            var genRand = WorldGen.genRand;
-            for (int i = 0; i < 6; i++)
-            {
-                int caveWidth = 12; // Width
-                int caveSteps = 250; // How many carves
-
-                int caveSeed = WorldGen.genRand.Next();
-                Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
-                Vector2 cavePosition = new Vector2(Main.maxTilesX / 2, (int)Main.worldSurface);
-
-                for (int j = 0; j < caveSteps; j++)
-                {
-                    float caveOffsetAngleAtStep = WorldMath.PerlinNoise2D(1 / 50f, j / 50f, 4, caveSeed) * MathHelper.Pi * 1.9f;
-                    Vector2 caveDirection = baseCaveDirection.RotatedBy(caveOffsetAngleAtStep);
-
-                    // Carve out at the current position.
-                    if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
-                    {
-                        //digging 
-                        WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y, MathF.Sin(j * 0.05f) * 10 + genRand.NextFloat(2, 5), genRand.Next(5, 10), -1);
-                    }
-
-                    // Update the cave position.
-                    cavePosition += caveDirection * caveWidth * 0.5f;
-                }
-            }
-        }
-        */
     }
 }
