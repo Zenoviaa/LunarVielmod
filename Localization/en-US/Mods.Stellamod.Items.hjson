@@ -8105,3 +8105,8 @@ GintzeSpectatorItem1: {
 	Tooltip: ""
 	DisplayName: Gintze Spectator Item1
 }
+
+TheSeededTreeItem: {
+	Tooltip: ""
+	DisplayName: The Seeded Tree Item
+}
