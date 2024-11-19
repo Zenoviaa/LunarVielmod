@@ -12,7 +12,19 @@ namespace Stellamod.Helpers
 {
     public static class DrawHelper
     {
-		public static void DrawDimLight(Vector2 pos, Color color, float rotation, float scale)
+		public static void Restart(this SpriteBatch spriteBatch, SpriteSortMode sortMode = SpriteSortMode.Deferred, BlendState blendState = null, Effect effect = null)
+		{
+            spriteBatch.End();
+            spriteBatch.Begin(sortMode, blendState, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, effect, Main.GameViewMatrix.TransformationMatrix);
+        }
+
+		public static void RestartDefaults(this SpriteBatch spriteBatch)
+		{
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+        }
+
+        public static void DrawDimLight(Vector2 pos, Color color, float rotation, float scale)
 		{
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;

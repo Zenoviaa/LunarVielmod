@@ -125,6 +125,9 @@ namespace Stellamod.Helpers
             Asset<Effect> paletteShader = Assets.Request<Effect>("Effects/Palette");
             Filters.Scene[ShaderRegistry.Screen_Palette] = new Filter(new ScreenShaderData(paletteShader, "ScreenPass"), EffectPriority.Medium);
 
+            Ref<Effect> gustArmorRef = new(Assets.Request<Effect>("Effects/GustArmor", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc["LunarVeil:GustArmor"] = new MiscShaderData(gustArmorRef, "PixelPass");
+
             //Palette Shaders
             RegisterScreenShader("LunarVeil:PaletteAbyss", "Effects/Palette");
             RegisterScreenShader("LunarVeil:PaletteHell", "Effects/PaletteHell");
