@@ -1,20 +1,16 @@
-﻿using Stellamod.NPCs.Bosses.DaedusRework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.DrawEffects;
+using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.DaedusRework;
+using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
+using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
-using Terraria;
 using Terraria.ModLoader;
-using Stellamod.Helpers;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
-using Stellamod.Common.DrawEffects;
-using Accord;
-using Stellamod.UI.Systems;
 
 namespace Stellamod.NPCs.Bosses.Gustbeak
 {
@@ -67,7 +63,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
         {
             get
             {
-                if(_segments == null)
+                if (_segments == null)
                 {
                     List<BaseGustbeakSegment> segments = new List<BaseGustbeakSegment>();
                     segments.Add(Head);
@@ -231,7 +227,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private bool InPhase2 => NPC.life < NPC.lifeMax / 2;
         private float FlipValue;
-        private float DirToPlayer => Target.Center.X<NPC.Center.X? -1 : 1;
+        private float DirToPlayer => Target.Center.X < NPC.Center.X ? -1 : 1;
         public override void SetStaticDefaults()
         {
             NPCID.Sets.TrailCacheLength[NPC.type] = 16;
@@ -319,10 +315,10 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                 segment.drawArmored = false;
             }
 
-            
 
 
-            for(float f = 0.0f; f < 1.0f; f+= 1f)
+
+            for (float f = 0.0f; f < 1.0f; f += 1f)
             {
                 float rot = f * MathHelper.TwoPi;
                 rot += Main.GlobalTimeWrappedHourly * 0.5f;
@@ -331,7 +327,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             }
 
             spriteBatch.RestartDefaults();
-            
+
 
             //Draw back to front i think
             //Back sprites
@@ -347,7 +343,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             return false;
         }
 
-           
+
         public override void AI()
         {
             base.AI();
@@ -369,7 +365,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
 
             Vector2[] curvePositions = CalculateCurve();
-            for(int c = 1; c < curvePositions.Length; c++)
+            for (int c = 1; c < curvePositions.Length; c++)
             {
                 Vector2 curvePoint = curvePositions[c];
                 Vector2 prevCurvePoint = curvePositions[c - 1];
@@ -385,7 +381,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             }
 
             Head.rotation = (Target.Center - Head.position).ToRotation();
-      
+
             if (!NPC.HasValidTarget)
             {
                 NPC.TargetClosest();
@@ -472,7 +468,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
             float rotationToPlayer = (Target.Center - NPC.Center).ToRotation();
             Wind.AI(NPC.Center + rotationToPlayer.ToRotationVector2() * 12);
-            if(Timer % 4 == 0)
+            if (Timer % 4 == 0)
             {
 
                 Dust d = Dust.NewDustPerfect(NPC.Center + Main.rand.NextVector2Circular(24, 24), DustID.GemDiamond, Vector2.Zero, Scale: 1f);
@@ -507,14 +503,14 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             Timer++;
             Vector2 targetVelocity = new Vector2(0, MathF.Sin(Timer * 0.1f)) * 0.2f;
             NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
-            if(Timer % 7 == 0)
+            if (Timer % 7 == 0)
             {
                 SoundStyle wingFlap = new SoundStyle($"Stellamod/Assets/Sounds/NiiviWingFlap");
                 wingFlap.PitchVariance = 0.15f;
                 SoundEngine.PlaySound(wingFlap, NPC.position);
             }
 
-            if(Timer >= 15 && StellaMultiplayer.IsHost)
+            if (Timer >= 15 && StellaMultiplayer.IsHost)
             {
                 switch (AttackCycle)
                 {
@@ -532,7 +528,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                         break;
                 }
                 AttackCycle++;
-                if(AttackCycle >= 4)
+                if (AttackCycle >= 4)
                 {
                     AttackCycle = 0;
                 }
@@ -589,7 +585,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
         private void AI_WindBlast()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 WindCharge = 0;
             }
@@ -603,7 +599,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             NPC.velocity = Vector2.Lerp(NPC.velocity, velToPlayer * 8, 0.01f);
             NPC.velocity.Y += MathF.Sin(Timer * 0.1f) * 0.02f;
 
-            if(Timer % 4 == 0)
+            if (Timer % 4 == 0)
             {
                 Vector2 offset = Main.rand.NextVector2Circular(4, 4);
                 float rotation = offset.ToRotation();
@@ -638,12 +634,12 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                     Vector2 fireVelocity = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
                     fireVelocity *= 8;
 
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, fireVelocity, 
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, fireVelocity,
                         ModContent.ProjectileType<WindBlast>(), damage, knockback, Main.myPlayer);
                 }
             }
 
-            if(Timer > 238)
+            if (Timer > 238)
             {
                 SwitchState(AIState.WindBlast_End);
             }
@@ -743,7 +739,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                 }
             }
 
-            if(Timer > 180)
+            if (Timer > 180)
             {
                 SwitchState(AIState.Average_Magic_Ball_End);
             }
@@ -761,7 +757,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             //Home to this point
             NPC.velocity = Vector2.Lerp(NPC.velocity, velToPlayer * 4, 0.01f);
             NPC.velocity.Y += MathF.Sin(Timer * 0.1f) * 0.02f;
-            if(Timer > 30)
+            if (Timer > 30)
             {
                 SwitchState(AIState.Idle);
             }
@@ -828,7 +824,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             if (Timer % 20 == 0)
             {
                 WindCharge = 0;
-                SoundStyle windCast = new SoundStyle($"Stellamod/Assets/Sounds/WindCast", variantSuffixesStart: 1,  numVariants: 2);
+                SoundStyle windCast = new SoundStyle($"Stellamod/Assets/Sounds/WindCast", variantSuffixesStart: 1, numVariants: 2);
                 windCast.PitchVariance = 0.15f;
                 SoundEngine.PlaySound(windCast, NPC.position);
 
@@ -893,7 +889,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
         private void AI_WingTornado()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle soundStyle = SoundID.DD2_WyvernDiveDown;
                 soundStyle.PitchVariance = 0.1f;
@@ -933,15 +929,15 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                 }
             }
 
-            if(Timer > 70)
+            if (Timer > 70)
             {
                 ShakeModSystem.Shake = 1.5f;
             }
-            if(Timer > 370)
+            if (Timer > 370)
             {
                 ShakeModSystem.Shake = 0f;
             }
-            if(Timer > 370)
+            if (Timer > 370)
             {
                 SwitchState(AIState.Wing_Tornado_End);
             }
