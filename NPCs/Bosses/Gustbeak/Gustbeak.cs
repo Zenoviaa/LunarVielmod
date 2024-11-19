@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
 using Stellamod.Common.DrawEffects;
 using Accord;
+using Stellamod.UI.Systems;
 
 namespace Stellamod.NPCs.Bosses.Gustbeak
 {
@@ -932,6 +933,14 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                 }
             }
 
+            if(Timer > 70)
+            {
+                ShakeModSystem.Shake = 1.5f;
+            }
+            if(Timer > 370)
+            {
+                ShakeModSystem.Shake = 0f;
+            }
             if(Timer > 370)
             {
                 SwitchState(AIState.Wing_Tornado_End);

@@ -43,7 +43,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
                 SoundEngine.PlaySound(windStorm);
             }
 
-            ShakeModSystem.Shake = 1.5f;
+
             if(Timer % 30 == 0)
             {
                 if(Main.myPlayer == Projectile.owner)
