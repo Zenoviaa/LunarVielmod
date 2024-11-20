@@ -3507,6 +3507,11 @@ SunSall: {
 	Tooltip: ""
 }
 
+GustbeakBossRel: {
+	DisplayName: Gustbeak Relic
+	Tooltip: Born to fly, forced to fight
+}
+
 DaedusBossRel: {
 	DisplayName: Daedus Relic
 	Tooltip: A puppet manifested from the rotten core of Gothivia's singularity, what a shame.

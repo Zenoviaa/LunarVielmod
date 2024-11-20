@@ -4,6 +4,7 @@ using Stellamod.Common.DrawEffects;
 using Stellamod.Common.Lights;
 using Stellamod.Gores;
 using Stellamod.Helpers;
+using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
 using Stellamod.NPCs.Bosses.SunStalker;
@@ -14,6 +15,7 @@ using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -1435,6 +1437,11 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             return new Vector2((1 - t) * P0.X + t * P1.X, (1 - t) * P0.Y + t * P1.Y);
         }
 
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<GustbeakBossRel>()));
+        }
         public override void OnKill()
         {
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedSunsBoss, -1);
