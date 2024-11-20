@@ -82,6 +82,7 @@
     <None Remove="Dusts\SmokeDust.png" />
     <None Remove="Dusts\TSmokeTornadoDust.png" />
     <None Remove="Dusts\TSmokeTornadoDustTip.png" />
+    <None Remove="Effects\Blur.fx" />
     <None Remove="effects\DaedusRobe.fx" />
     <None Remove="Effects\DarknessCurve - Copy.fx" />
     <None Remove="Effects\DarknessCurve.fx" />
@@ -272,6 +273,8 @@
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekSnake_White.png" />
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekTail_Glow.png" />
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekTail_White.png" />
+    <None Remove="NPCs\Bosses\Gustbeak\Gustbeak_HeadGore.png" />
+    <None Remove="NPCs\Bosses\Gustbeak\Projectiles\WingAirblast.png" />
     <None Remove="NPCs\Bosses\IrradiaNHavoc\Irradia\StartIrradia.png" />
     <None Remove="NPCs\Bosses\IrradiaNHavoc\Projectiles\IrradiaAxeFlameArrow.png" />
     <None Remove="NPCs\Bosses\IrradiaNHavoc\Projectiles\IrradiaCombustionBoom.png" />

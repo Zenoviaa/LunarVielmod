@@ -86,9 +86,13 @@ namespace Stellamod.WorldG
             DisableGenTask(tasks, "Marble");
             DisableGenTask(tasks, "Granite");
 
-            tasks[tasks.FindIndex(x => x.Name.Equals("Terrain"))] = new VanillaTerrainPass();
+			int terrainIndex = tasks.FindIndex(x => x.Name.Equals("Terrain"));
+			if(terrainIndex != -1)
+			{
+				tasks.Insert(terrainIndex + 1, new VanillaTerrainPass());
+            }
 
-			int shimmerGen = tasks.FindIndex(x => x.Name.Equals("Shimmer"));
+            int shimmerGen = tasks.FindIndex(x => x.Name.Equals("Shimmer"));
 			if(shimmerGen != -1)
 			{
                 tasks.Insert(shimmerGen + 1, new PassLegacy("Fake Shimmer", WorldGenShimmerSpot));

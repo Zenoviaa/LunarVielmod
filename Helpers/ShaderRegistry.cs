@@ -140,6 +140,7 @@ namespace Stellamod.Helpers
             RegisterScreenShader("LunarVeil:PaletteVirulent", "Effects/PaletteVirulent");
             RegisterScreenShader("LunarVeil:DarknessVignette", "Effects/DarknessVignette");
             RegisterScreenShader("LunarVeil:DarknessCurve", "Effects/DarknessCurve", EffectPriority.High);
+            RegisterScreenShader("LunarVeil:Blur", "Effects/Blur", EffectPriority.High);
 
             Ref<Effect> skyRef = new(Assets.Request<Effect>("Effects/RoyalCapitalSky", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc["LunarVeil:RoyalCapitalSky"] = new MiscShaderData(skyRef, "ScreenPass");

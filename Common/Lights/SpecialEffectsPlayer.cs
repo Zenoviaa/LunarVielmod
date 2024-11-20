@@ -18,6 +18,7 @@ namespace Stellamod.Common.Lights
 
         private float _targetVignetteStrength;
         private float _targetVignetteOpacity;
+        private float _blurLerp;
 
         private Color[] _abyssPalette;
         private Color[] _alcadPalette;
@@ -41,6 +42,7 @@ namespace Stellamod.Common.Lights
         public float darknessCurve;
         public float whiteCurve;
         public float blackCurve;
+        public float blurStrength;
 
 
         //Progress Variables
@@ -74,6 +76,7 @@ namespace Stellamod.Common.Lights
             hasSunGlyph = false;
             darkness = 0;
             darknessCurve = 0.79f;
+           // blurStrength = 0;
 
 
             //Curve based
@@ -268,6 +271,25 @@ namespace Stellamod.Common.Lights
                 darknessCurveProgress += speed;
             }
             darknessCurveProgress = MathHelper.Clamp(darknessCurveProgress, 0f, 1f);
+
+            blurStrength -= 0.05f;
+            if(blurStrength <= 0f)
+            {
+                blurStrength = 0f;
+            }
+            bool blurActive = blurStrength != 0;
+            if (blurActive)
+            {
+                _blurLerp = MathHelper.Lerp(_blurLerp, 1f, 0.1f);
+            }
+            else
+            {
+                _blurLerp = MathHelper.Lerp(_blurLerp, 0f, 0.1f);
+            }
+
+            screenShaderData = FilterManager["LunarVeil:Blur"].GetShader();
+            screenShaderData.UseProgress(blurStrength * _blurLerp);
+            TogglePaletteShader("LunarVeil:Blur", blurActive);
         }
         
         private void CalculateDarkness()
@@ -290,6 +312,12 @@ namespace Stellamod.Common.Lights
         public override void PostUpdateMiscEffects()
         {
             base.PostUpdateMiscEffects();
+
+        }
+
+        public override void PostUpdate()
+        {
+            base.PostUpdate();
             //Darkness
             if (!_init)
             {

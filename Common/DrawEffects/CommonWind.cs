@@ -103,7 +103,7 @@ namespace Stellamod.Common.DrawEffects
         private float DefaultWidthFunction(float progress)
         {
             float easedProgress = Easing.SpikeOutCirc(progress);
-            return MathHelper.Lerp(32, 128, easedProgress) * WidthMultiplier;
+            return MathHelper.Lerp(48, 212, easedProgress) * WidthMultiplier;
         }
 
         private float DefaultEasingFunction(float progress)

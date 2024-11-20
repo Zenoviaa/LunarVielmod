@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.ID;
@@ -13,6 +14,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
             base.SetStaticDefaults();
             ProjectileID.Sets.TrailCacheLength[Type] = 16;
             ProjectileID.Sets.TrailingMode[Type] = 2;
+            Main.projFrames[Type] = 4;
         }
 
         public override void SetDefaults()
@@ -30,23 +32,20 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
         public override void AI()
         {
             base.AI();
+ 
             Wind.ColorFunc = WindColorFunction;
             float chargeProgress = Timer / 60f;
             int divisor = (int)MathHelper.Lerp(6, 6, chargeProgress);
             if (Timer % divisor == 0)
             {
                 //Spawn new slashes on our little wind orb
-                float range = MathHelper.Lerp(4, 4, chargeProgress);
-                Vector2 offset = Main.rand.NextVector2Circular(range, range);
+                float range = 80;
+                Vector2 offset = Main.rand.NextVector2CircularEdge(range, range);
                 float rotation = offset.ToRotation();
-                rotation += Main.rand.NextFloat(-1f, 1f);
-                offset -= Projectile.Size / 2f;
                 Wind.NewSlash(offset, rotation);
 
-                offset = Main.rand.NextVector2Circular(range, range);
+                offset = Main.rand.NextVector2CircularEdge(range, range);
                 rotation = offset.ToRotation();
-                rotation += Main.rand.NextFloat(-1f, 1f);
-                offset -= Projectile.Size / 2f;
                 Wind.NewSlash(offset, rotation);
             }
 
@@ -80,17 +79,41 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
                     Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, degreesToRotate: 1f);
                 }
             }
+
+            if(Timer > 420)
+            {
+                ShadowScale = MathHelper.Lerp(1f, 0f, (Timer - 420) / 20f);
+            }
         }
 
         private Color WindColorFunction(float progress)
         {
             float easedProgress = Easing.SpikeOutCirc(progress);
             Color color = Color.Lerp(Color.Transparent, Color.White, easedProgress);
-            if (Timer > 220)
+            if (Timer > 420)
             {
-                color = Color.Lerp(color, Color.Transparent, (Timer - 220) / 20f);
+                color = Color.Lerp(color, Color.Transparent, (Timer - 420) / 20f);
             }
             return color;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            base.PreDraw(ref lightColor);
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Restart(blendState: BlendState.Additive);
+
+            for (float f = 0f; f < 1f; f += 0.25f)
+            {
+                Vector2 drawPos = Projectile.Center - Main.screenPosition;
+                float rotation = f * MathHelper.TwoPi;
+                Vector2 offset = rotation.ToRotationVector2() * 2;
+                drawPos += offset;
+                DrawWindBall(drawPos, ref lightColor);
+            }
+
+            spriteBatch.RestartDefaults();
+            return false;
         }
 
         public override void OnKill(int timeLeft)

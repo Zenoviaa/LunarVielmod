@@ -19,6 +19,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             public float globalRotation;
             public float length;
             public Vector2? drawOriginOverride;
+            public float invisibility;
 
             public float frameCounter;
             public int frame;
@@ -36,6 +37,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                         child.position = position;
                         child.spriteEffects = spriteEffects;
                         child.rotation = rotation;
+                        child.invisibility = invisibility;
                         child.AI();
                     }
                 }
@@ -72,7 +74,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
             {
                 base.Draw(spriteBatch, screenPos, drawColor);
-                Color colorToDrawIn = Color.White.MultiplyRGB(drawColor);
+                Color colorToDrawIn = Color.White.MultiplyRGB(drawColor) * invisibility;
                 Texture2D texture = GetTexture(Texture);
                 Vector2 drawPos = position - screenPos;
                 Vector2 drawOrigin = texture.Size() / 2;
@@ -213,7 +215,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
             {
                 base.Draw(spriteBatch, screenPos, drawColor);
-                Color colorToDrawIn = Color.White.MultiplyRGB(drawColor);
+                Color colorToDrawIn = Color.White.MultiplyRGB(drawColor) * invisibility;
                 Texture2D texture = GetTexture(Texture);
                 Vector2 drawPos = position - screenPos;
                 Rectangle animationFrame = texture.GetFrame(frame, totalFrameCount: 9);
@@ -271,6 +273,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             {
                 base.AI();
                 drawOriginOverride = new Vector2(20, -8);
+                rotation += MathF.Sin(Main.GlobalTimeWrappedHourly * 2) * 0.25f;
             }
         }
 
@@ -281,6 +284,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             {
                 base.AI();
                 drawOriginOverride = new Vector2(-10, 0);
+                rotation += MathF.Sin(Main.GlobalTimeWrappedHourly * 2) * 0.25f;
             }
         }
 
@@ -291,6 +295,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             {
                 base.AI();
                 drawOriginOverride = new Vector2(8, -8);
+                rotation += MathF.Sin(Main.GlobalTimeWrappedHourly * 2) * 0.25f;
             }
         }
 
@@ -301,6 +306,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             {
                 base.AI();
                 drawOriginOverride = new Vector2(-8, 0);
+                rotation += MathF.Sin(Main.GlobalTimeWrappedHourly * 2) * 0.25f;
             }
         }
 
@@ -310,6 +316,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             public override void AI()
             {
                 base.AI();
+                rotation += MathF.Sin(Main.GlobalTimeWrappedHourly * 2) * 0.25f;
             }
         }
 
@@ -368,6 +375,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                 }
             }
 
+            public bool drawHelmet = true;
 
             private bool CheckCurrentAnimation(params AnimationState[] animations)
             {
@@ -424,7 +432,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
             {
                 base.Draw(spriteBatch, screenPos, drawColor);
-                Color colorToDrawIn = Color.White.MultiplyRGB(drawColor);
+                Color colorToDrawIn = Color.White.MultiplyRGB(drawColor) * invisibility;
                 Texture2D texture = GetTexture("Head");
                 Vector2 drawPos = position - screenPos;
                 Rectangle animationFrame = texture.GetFrame(frame, totalFrameCount: 4);
@@ -432,6 +440,17 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                 float drawScale = 1f;
                 float drawRotation = rotation + globalRotation;
                 spriteBatch.Draw(texture, drawPos, animationFrame, colorToDrawIn, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
+
+                if (drawHelmet)
+                {
+                    texture = GetTexture("Head_Helmet");
+                    drawPos = position - screenPos;
+                    animationFrame = texture.GetFrame(frame, totalFrameCount: 4);
+                    drawOrigin = animationFrame.Size() / 2;
+                    drawScale = 1f;
+                    drawRotation = rotation + globalRotation;
+                    spriteBatch.Draw(texture, drawPos, animationFrame, colorToDrawIn, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
+                }
             }
         }
     }

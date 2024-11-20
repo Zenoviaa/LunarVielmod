@@ -8,6 +8,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
 {
     internal class WindBoom : BaseWindProjectile
     {
+        public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -51,8 +52,8 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
                 slash.duration *= 1.5f;
             }
 
+            ShadowScale = 0f;
             Wind.ExpandMultiplier = MathHelper.Lerp(0f, 2f, easedProgress);
-
             Wind.WidthMultiplier = MathHelper.Lerp(1f, 0f, progress);
         }
     }

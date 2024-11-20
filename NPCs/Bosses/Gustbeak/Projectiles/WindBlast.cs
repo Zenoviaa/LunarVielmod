@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -33,17 +35,15 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
             if (Timer % divisor == 0)
             {
                 //Spawn new slashes on our little wind orb
-                float range = MathHelper.Lerp(4, 4, chargeProgress);
-                Vector2 offset = Main.rand.NextVector2Circular(range, range);
+                float range = MathHelper.Lerp(16, 16, chargeProgress);
+                Vector2 offset = Main.rand.NextVector2CircularEdge(range, range);
                 float rotation = offset.ToRotation();
-                rotation += Main.rand.NextFloat(-1f, 1f);
-                offset -= Projectile.Size / 2f;
+               // rotation += Main.rand.NextFloat(-1f, 1f);
                 Wind.NewSlash(offset, rotation);
 
-                offset = Main.rand.NextVector2Circular(range, range);
+                offset = Main.rand.NextVector2CircularEdge(range, range);
                 rotation = offset.ToRotation();
-                rotation += Main.rand.NextFloat(-1f, 1f);
-                offset -= Projectile.Size / 2f;
+                //rotation += Main.rand.NextFloat(-1f, 1f);
                 Wind.NewSlash(offset, rotation);
             }
 
@@ -51,6 +51,26 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
             Wind.ExpandMultiplier = 0.5f;
         }
 
+        public override bool PreDraw(ref Color lightColor)
+        {
+            base.PreDraw(ref lightColor);
+            
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Restart(blendState: BlendState.Additive);
+
+            for(float f = 0f; f < 1f; f += 0.25f)
+            {
+                Vector2 drawPos = Projectile.Center - Main.screenPosition;
+                float rotation = f * MathHelper.TwoPi;
+                Vector2 offset = rotation.ToRotationVector2() * 6;
+                drawPos += offset;
+                DrawWindBall(drawPos, ref lightColor);
+            }
+            DrawWindBall(Projectile.Center - Main.screenPosition, ref lightColor);
+            spriteBatch.RestartDefaults();
+     
+            return false;
+        }
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);

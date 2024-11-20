@@ -12,6 +12,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
 {
     internal class WindStorm : BaseWindProjectile
     {
+        public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -37,6 +38,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
             Wind.WidthFunc = WindWidthFunction;
             Wind.ColorFunc = WindColorFunction;
             Wind.TrailTexture = TrailRegistry.Dashtrail;
+            ShadowScale = 0f;
             if(Timer == 1)
             {
                 SoundStyle windStorm = new SoundStyle("Stellamod/Assets/Sounds/WindStorm");
