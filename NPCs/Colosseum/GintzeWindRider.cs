@@ -91,6 +91,11 @@ namespace Stellamod.NPCs.Colosseum
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bread>(), 10, 1, 3));
 
         }
+        public override bool? CanFallThroughPlatforms()
+        {
+            return true;
+        }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
             for (int k = 0; k < 4; k++)
