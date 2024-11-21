@@ -2,9 +2,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Items.Accessories.Foods;
-using Stellamod.Items.Harvesting;
 using Stellamod.Items.Ores;
-using Stellamod.WorldG;
+using Stellamod.NPCs.Colosseum.Common;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -12,30 +11,22 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Event.Gintzearmy
+namespace Stellamod.NPCs.Colosseum
 {
-    public class GintzeSpearman : ModNPC
+    public class GintzeSpearman : BaseColosseumNPC
     {
-        public bool Once = false;
-        public float Timer = 0;
-        public bool Dashing = false;
-        public double timer = 0;
-        public bool Swinging = false;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Storm Knight");
             Main.npcFrameCount[NPC.type] = 11;
         }
-        public override float SpawnChance(NPCSpawnInfo spawnInfo)
-        {
-            return (spawnInfo.Player.ZoneOverworldHeight && EventWorld.Gintzing) ? (3000.0f) : 0f;
-        }
+
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), 6, 1, 2));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 6, 1, 5));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), 1, 1, 3));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bread>(), 10, 1, 3));
         }
+
         public override void SetDefaults()
         {
             NPC.noGravity = false;
@@ -54,6 +45,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
         }
+
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
@@ -76,7 +68,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
                 effects,
                 0
             );
-            SpriteEffects spriteEffects3 = (NPC.spriteDirection == 1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            SpriteEffects spriteEffects3 = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Vector2 vector33 = new Vector2(NPC.Center.X, NPC.Center.Y) - Main.screenPosition + Drawoffset - NPC.velocity;
             Color color29 = new Color(127 - NPC.alpha, 127 - NPC.alpha, 127 - NPC.alpha, 0).MultiplyRGBA(Color.White);
             for (int num103 = 0; num103 < 4; num103++)
@@ -85,18 +77,18 @@ namespace Stellamod.NPCs.Event.Gintzearmy
                 color28 = NPC.GetAlpha(color28);
                 color28 *= 1f - num107;
                 Vector2 vector29 = NPC.Center + (num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * num103;
-                Main.spriteBatch.Draw(GlowTexture, vector29, NPC.frame, color28, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects3, 0f);
+                spriteBatch.Draw(GlowTexture, vector29, NPC.frame, color28, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects3, 0f);
             }
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
-            for (int k = 0; k < 20; k++)
+            for (int k = 0; k < 4; k++)
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SilverCoin, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
             }
             if (NPC.life <= 0)
             {
-                EventWorld.GintzeKills += 1;
                 for (int i = 0; i < 20; i++)
                 {
                     int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Copper, 0f, -2f, 180, default, .6f);
@@ -112,7 +104,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
                 }
             }
         }
-        int frame = 0;
+        private int _frame = 0;
         public override void FindFrame(int frameHeight)
         {
             bool expertMode = Main.expertMode;
@@ -120,16 +112,16 @@ namespace Stellamod.NPCs.Event.Gintzearmy
             NPC.frameCounter += 0.5f;
             if (NPC.frameCounter >= 5)
             {
-                frame++;
+                _frame++;
                 NPC.frameCounter = 0;
             }
-            if (frame >= 11)
+            if (_frame >= 11)
             {
-                frame = 0;
+                _frame = 0;
             }
-            NPC.frame.Y = frameHeight * frame;
-
+            NPC.frame.Y = frameHeight * _frame;
         }
+
         float alphaCounter;
         public override void AI()
         {

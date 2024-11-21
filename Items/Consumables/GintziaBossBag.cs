@@ -7,7 +7,7 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee.Shields;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Thrown;
-using Stellamod.NPCs.Event.Gintzearmy.BossGintze;
+using Stellamod.NPCs.Bosses.EliteCommander;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Creative;
@@ -51,7 +51,7 @@ namespace Stellamod.Items.Consumables
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlBroochA>()));
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlSpear>(), 4, minimumDropped: 900, maximumDropped: 3000));
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), minimumDropped: 3, maximumDropped: 25));
-			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<CommanderGintzia>()));
+			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<EliteCommander>()));
 			itemLoot.Add(ItemDropRule.OneFromOptions(1,
 				ModContent.ItemType<GintzelShield>(),
 				ModContent.ItemType<GintzlsSteed>(),

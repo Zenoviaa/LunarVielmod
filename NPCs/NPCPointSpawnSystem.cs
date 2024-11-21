@@ -161,6 +161,18 @@ namespace Stellamod.NPCs
             Structures.Add(structure);
         }
 
+        public Point GetStructureTile(string name)
+        {
+            for(int i = 0; i < Structures.Count; i++)
+            {
+                Structure structure = Structures[i];
+                if (structure.name == name)
+                    return structure.tile;
+            }
+
+            return Point.Zero;
+        }
+
         public override void SaveWorldData(TagCompound tag)
         {
             base.SaveWorldData(tag);

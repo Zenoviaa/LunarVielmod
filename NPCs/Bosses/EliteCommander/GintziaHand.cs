@@ -14,7 +14,7 @@ using static Terraria.ModLoader.ModContent;
 
 
 //By Al0n37
-namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
+namespace Stellamod.NPCs.Bosses.EliteCommander
 {
 
     public class GintziaHand : ModNPC
@@ -96,7 +96,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
             Vector2 direction = Main.rand.NextVector2CircularEdge(NPC.width * 0.6f, NPC.height * 0.6f);
             float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
             Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Texture2D texture = Request<Texture2D>(Texture).Value;
 
 
 
@@ -155,7 +155,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
         Vector2 TPVector;
         public override void AI()
         {
-            if (!NPC.AnyNPCs(ModContent.NPCType<CommanderGintzia>()))          
+            if (!NPC.AnyNPCs(NPCType<EliteCommander>()))
             {
                 NPC.active = false;
             }
@@ -208,7 +208,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
                     NPC.ai[2] = 1;
                 }
             }
-          
+
             if (NPC.ai[2] == 1)
             {
                 switch (NPC.ai[1])
@@ -255,7 +255,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 
                         }
-                        if(NPC.ai[0] == 50)
+                        if (NPC.ai[0] == 50)
                         {
                             AtackCharge = true;
                         }
@@ -290,7 +290,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
                         }
                         if (NPC.ai[0] == 140)
                         {
-                            NPC.ai[1 ] = 1;
+                            NPC.ai[1] = 1;
                         }
 
                         break;
@@ -368,7 +368,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
                             float offsetY = Main.rand.Next(-50, 50) * 0.01f;
                             int damage = Main.expertMode ? 6 : 10;
                             if (Main.netMode != NetmodeID.MultiplayerClient)
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<Gintzianado>(), damage, 1, Main.myPlayer, 0, 0);
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ProjectileType<Gintzianado>(), damage, 1, Main.myPlayer, 0, 0);
                         }
                         if (NPC.ai[0] >= 90)
                         {

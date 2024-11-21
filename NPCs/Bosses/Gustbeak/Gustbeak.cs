@@ -5,16 +5,14 @@ using Stellamod.Common.Lights;
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Items.Placeable;
-using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
-using Stellamod.NPCs.Bosses.SunStalker;
+using Stellamod.NPCs.Colosseum.Common;
 using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -22,7 +20,7 @@ using Terraria.ModLoader;
 namespace Stellamod.NPCs.Bosses.Gustbeak
 {
     [AutoloadBossHead]
-    internal partial class Gustbeak : ModNPC
+    internal partial class Gustbeak : BaseColosseumNPC
     {
 
         private enum AIState
@@ -570,7 +568,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                                 break;
                             case 3:
                                 SwitchState(AIState.Wind_Dash_Start);
-                            
+
                                 break;
                             case 4:
                                 SwitchState(AIState.Wing_Tornado_Start);
@@ -610,10 +608,10 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                             AttackCycle = 0;
                         }
                     }
-                  
+
                 }
-       
-            
+
+
             }
         }
 
@@ -1043,11 +1041,11 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
         private void AI_Phase2Transition()
         {
             Timer++;
-          
+
             //He also slows down
             NPC.velocity *= 0.99f;
 
-            if(Timer > 115)
+            if (Timer > 115)
             {
                 Head.Animation = GustbeakHead.AnimationState.Open_Mouth;
             }
@@ -1063,14 +1061,14 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                 DrawHelmet = false;
             }
 
-            if(Timer > 120 && Timer < 240)
+            if (Timer > 120 && Timer < 240)
             {
                 SpecialEffectsPlayer specialEffectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
                 specialEffectsPlayer.blurStrength = 1f;
                 NPC.velocity = NPC.velocity.RotatedBy(0.01f);
             }
 
-            if(Timer > 360)
+            if (Timer > 360)
             {
                 SwitchState(AIState.Idle);
             }
@@ -1080,14 +1078,14 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
         {
             //Align directly right or left of player
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle soundStyle = SoundID.DD2_WyvernDiveDown;
                 soundStyle.PitchVariance = 0.1f;
                 SoundEngine.PlaySound(soundStyle, NPC.position);
             }
 
-            if(Timer < 120)
+            if (Timer < 120)
             {
                 DashStartCenter = Target.Center + new Vector2(-512 * DirToPlayer, 0);
                 DashVelocity = new Vector2(DirToPlayer * 16, 0);
@@ -1111,7 +1109,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             }
             NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.01f);
             NPC.velocity.Y += MathF.Sin(Timer * 0.1f) * 0.02f;
-            if(Timer > 180f)
+            if (Timer > 180f)
             {
                 SwitchState(AIState.Wind_Dash);
             }
@@ -1122,12 +1120,12 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             Timer++;
             WingFront.Animation = BaseGustbeakWingSegment.AnimationState.Hold_Up;
             WingBack.Animation = BaseGustbeakWingSegment.AnimationState.Hold_Up;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle soundStyle = SoundID.DD2_WyvernScream;
                 soundStyle.PitchVariance = 0.1f;
-                SoundEngine.PlaySound(soundStyle, NPC.position); 
-               
+                SoundEngine.PlaySound(soundStyle, NPC.position);
+
                 for (int i = 0; i < 12; i++)
                 {
                     float progress = (float)i / 12f;
@@ -1141,14 +1139,14 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                     int damage = WindDashDamage;
                     int knockback = 4;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
-                        ModContent.ProjectileType<WindAura>(), damage, knockback, Main.myPlayer, 
+                        ModContent.ProjectileType<WindAura>(), damage, knockback, Main.myPlayer,
                         ai1: NPC.whoAmI);
                 }
             }
 
             Invisibility = MathHelper.Lerp(0f, 1f, MathHelper.Clamp(Timer / 10f, 0f, 1f));
             NPC.velocity = Vector2.Lerp(NPC.velocity, DashVelocity, 0.1f);
-            if(Timer % 24 == 0)
+            if (Timer % 24 == 0)
             {
                 SoundStyle soundStyle = SoundID.DD2_WyvernDiveDown;
                 soundStyle.PitchVariance = 0.15f;
@@ -1176,17 +1174,17 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                         ModContent.ProjectileType<WingAirblast>(), damage, knockback, Main.myPlayer);
                 }
             }
-      
-            if(Timer == 40)
+
+            if (Timer == 40)
             {
                 DashVelocity *= 0.5f;
             }
-            if(Timer > 80)
+            if (Timer > 80)
             {
                 DashVelocity *= 0.9f;
             }
 
-            if(Timer > 140)
+            if (Timer > 140)
             {
                 SwitchState(AIState.Wind_Dash_End);
             }
@@ -1229,7 +1227,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             float maxSpeed = 24f;
             Vector2 targetVelocity = velToPlayer;
             float distance = Vector2.Distance(NPC.Center, DashStartCenter);
-            if(distance < maxSpeed)
+            if (distance < maxSpeed)
             {
                 targetVelocity *= distance;
             }
@@ -1276,12 +1274,12 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             Invisibility = MathHelper.Lerp(0f, 1f, MathHelper.Clamp(Timer / 10f, 0f, 1f));
             NPC.velocity = Vector2.Lerp(NPC.velocity, DashVelocity, 0.1f);
 
-            if(Timer == 5)
+            if (Timer == 5)
             {
                 DashVelocity *= 0.5f;
             }
 
-            if(Timer % 30 == 0)
+            if (Timer % 30 == 0)
             {
                 DashVelocity *= 0.5f;
                 SoundStyle soundStyle = SoundID.DD2_WyvernDiveDown;
@@ -1306,7 +1304,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                 DashVelocity *= 0.99f;
             }
 
-            if(Timer > 120)
+            if (Timer > 120)
             {
                 SwitchState(AIState.Wind_Crash_End);
             }
@@ -1331,7 +1329,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             NPC.velocity *= 0.99f;
             WingFront.Animation = BaseGustbeakWingSegment.AnimationState.Hold_Out;
             WingBack.Animation = BaseGustbeakWingSegment.AnimationState.Hold_Out;
-            if(Timer == 120)
+            if (Timer == 120)
             {
                 Head.Animation = GustbeakHead.AnimationState.Open_Mouth;
                 SoundStyle soundStyle = SoundID.DD2_WyvernScream;

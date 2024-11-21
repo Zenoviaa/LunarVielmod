@@ -232,7 +232,7 @@ namespace Stellamod.WorldG
 
         public override void PostUpdateWorld()
         {
-            TrySpawnGintzeArmy();
+          //  TrySpawnGintzeArmy();
           //  TrySpawnAuroreanStarfall();
            // SpawnAuroreanStars();
 

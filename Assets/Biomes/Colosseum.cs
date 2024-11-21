@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.NPCs.Colosseum.Common;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Biomes;
@@ -10,7 +11,18 @@ namespace Stellamod.Assets.Biomes
     internal class Colosseum : ModBiome
     {
 
-        public override int Music => -1;
+        public override int Music
+        {
+            get
+            {
+                ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
+                if (colosseumSystem.IsActive())
+                {
+                    return MusicLoader.GetMusicSlot(Mod, "Assets/Music/The_Gintzing_Winds");
+                }
+                return -1;
+            }
+        }
         public override SceneEffectPriority Priority => SceneEffectPriority.BossLow;
         public override string BestiaryIcon => base.BestiaryIcon;
         public override string BackgroundPath => MapBackground;

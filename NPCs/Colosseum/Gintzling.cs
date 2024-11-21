@@ -1,98 +1,91 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Items.Accessories.Foods;
-using Stellamod.Items.Harvesting;
+using Stellamod.Helpers;
 using Stellamod.Items.Ores;
+using Stellamod.NPCs.Colosseum.Common;
 using Stellamod.WorldG;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
-namespace Stellamod.NPCs.Event.Gintzearmy
+namespace Stellamod.NPCs.Colosseum
 {
-
-    public class GintzeWindRider : ModNPC
+    public class Gintzling : BaseColosseumNPC
     {
-
-
-        public bool Dir;
-        public float Timer;
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Storm Spirit");
-            Main.npcFrameCount[NPC.type] = 6;
+            Main.npcFrameCount[NPC.type] = 8;
             NPCID.Sets.TrailCacheLength[NPC.type] = 3;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
         }
 
         public override void SetDefaults()
         {
-            NPC.aiStyle = 0;
-            NPC.noGravity = true;
-            NPC.noTileCollide = false;
-            NPC.lifeMax = 50;
-            NPC.defense = 4;
-            NPC.value = 65f;
-            NPC.knockBackResist = 0.55f;
-            NPC.width = 30;
-            NPC.height = 44;
-            NPC.damage = 14;
-            NPC.scale = 1.0f;
-            NPC.lavaImmune = false;
-            NPC.alpha = 0;
-            NPC.dontTakeDamage = false;
+            NPC.width = 58; // The width of the npc's hitbox (in pixels)
+            NPC.height = 58; // The height of the npc's hitbox (in pixels)
+            NPC.aiStyle = 41; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
+            NPC.damage = 20; // The amount of damage that this npc deals
+            NPC.defense = 5; // The amount of defense that this npc has
+            NPC.lifeMax = 40; // The amount of health that this npc has
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
+            NPC.value = 50f; // How many copper coins the NPC will drop when killed.
+            NPC.knockBackResist = 0.4f;
         }
 
-        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        public override void AI()
         {
-            return (spawnInfo.Player.ZoneOverworldHeight && EventWorld.Gintzing) ? (278f) : 0f;
+            NPC.velocity.X *= 0.99f;
         }
-        int frame = 0;
-        public override void FindFrame(int frameHeight)
-        {
 
-
-            bool expertMode = Main.expertMode;
-            Player player = Main.player[NPC.target];
-
-            NPC.frameCounter += 0.5f;
-            if (NPC.frameCounter >= 5)
-            {
-                frame++;
-                NPC.frameCounter = 0;
-            }
-            if (frame >= 4)
-            {
-                frame = 0;
-            }
-            NPC.frame.Y = frameHeight * frame;
-
-        }
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), 6, 1, 2));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 6, 1, 5));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bread>(), 10, 1, 3));
-
+            npcLoot.Add(ItemDropRule.Common(ItemID.IronBar, 3, 1, 2));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), 1, 1, 3));
         }
+
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
+            {
+				// Sets the description of this NPC that is listed in the bestiary.
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Lowest of the Gintze but can wipe you out fast! They need food too yknow :("))
+            });
+        }
+
+        private int _frame = 0;
+        public override void FindFrame(int frameHeight)
+        {
+            NPC.frameCounter += 0.5f;
+            if (NPC.frameCounter >= 4)
+            {
+                _frame++;
+                NPC.frameCounter = 0;
+            }
+            if (_frame >= 8)
+            {
+                _frame = 0;
+            }
+            NPC.frame.Y = frameHeight * _frame;
+        }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
-            for (int k = 0; k < 20; k++)
+            for (int k = 0; k < 5; k++)
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SilverCoin, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
             }
             if (NPC.life <= 0)
             {
                 EventWorld.GintzeKills += 1;
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Copper, 0f, -2f, 180, default, .6f);
                     Main.dust[num].noGravity = true;
@@ -106,74 +99,16 @@ namespace Stellamod.NPCs.Event.Gintzearmy
                     }
                 }
             }
+
+            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Morrowpes"), NPC.position);
         }
-        Vector2 targetPos2;
-        Vector2 targetPos;
-        public override void AI()
-        {
-            Player player = Main.player[NPC.target];
-            NPC.rotation = NPC.velocity.X * 0.03f;
-            targetPos = player.Center;
-            NPC.ai[0]++;
-            if (NPC.ai[0] >= 200)
-            {
-                NPC.ai[0] = 0;
-            }
-            targetPos2 = Vector2.Lerp(targetPos2, targetPos, 0.02f);
-            if (NPC.ai[0] == 151)
-            {
-                if (NPC.position.X >= player.position.X)
-                {
-                    Dir = true;
-   
-                }
-                else
-                {
-                    Dir = false;
-         
-                }
-
-                NPC.velocity.Y *= 0.94f;
-            }
-            if (NPC.ai[0] >= 150)
-            {
-                if (Dir)
-                {
-
-                    NPC.velocity.X -= 0.9f;
-                }
-                else
-                {
- 
-                    NPC.velocity.X += 0.9f;
-                }
-
-                NPC.velocity.Y *= 0.94f;
-            }
-            else
-            {
-                if (NPC.position.X >= player.position.X)
-                {
-                    Movement(targetPos, 300, 0, 0.006f);
-                }
-                else
-                {
-                    Movement(targetPos, -300, 0, 0.006f);
-                }
-            }
 
 
-        }
-        public void Movement(Vector2 Player2, float PosX, float PosY, float Speed)
-        {
-            Player player = Main.player[NPC.target];
-            Vector2 target = Player2 + new Vector2(PosX, PosY);
-            base.NPC.velocity = Vector2.Lerp(base.NPC.velocity, VectorHelper.MovemontVelocity(base.NPC.Center, Vector2.Lerp(base.NPC.Center, target, 0.5f), base.NPC.Center.Distance(target) * Speed), 0.1f);
-        }
+
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
-        public Texture2D GlowTexture => (_glowTexture ??= (RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
+        public Texture2D GlowTexture => (_glowTexture ??= (ModContent.RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             float num108 = 4;
@@ -192,7 +127,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
                 effects,
                 0
             );
-            SpriteEffects spriteEffects3 = (NPC.spriteDirection == 1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            SpriteEffects spriteEffects3 = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Vector2 vector33 = new Vector2(NPC.Center.X, NPC.Center.Y) - Main.screenPosition + Drawoffset - NPC.velocity;
             Color color29 = new Color(127 - NPC.alpha, 127 - NPC.alpha, 127 - NPC.alpha, 0).MultiplyRGBA(Color.White);
             for (int num103 = 0; num103 < 4; num103++)

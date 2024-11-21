@@ -3,15 +3,15 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
+namespace Stellamod.NPCs.Bosses.EliteCommander
 {
     public class Gintzianado : ModProjectile
-	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Red Skull");
-			Main.projFrames[Projectile.type] = 3;
-		}
+    {
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Red Skull");
+            Main.projFrames[Projectile.type] = 3;
+        }
         public override void SetDefaults()
         {
             Projectile.width = 34;
@@ -61,8 +61,8 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
                 for (int j = 0; j < 10; j++)
                 {
                     Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;
-                    vector2 += -Utils.RotatedBy(Vector2.UnitY, (j * 3.141591734f / 6f), default) * new Vector2(8f, 16f);
-                    vector2 = Utils.RotatedBy(vector2, (Projectile.rotation - 1.57079637f), default);
+                    vector2 += -Vector2.UnitY.RotatedBy(j * 3.141591734f / 6f, default) * new Vector2(8f, 16f);
+                    vector2 = vector2.RotatedBy(Projectile.rotation - 1.57079637f, default);
                     int num8 = Dust.NewDust(Projectile.Center, 0, 0, DustID.SilverCoin, 0f, 0f, 160, new Color(), 1f);
                     Main.dust[num8].scale = 1.3f;
                     Main.dust[num8].noGravity = true;

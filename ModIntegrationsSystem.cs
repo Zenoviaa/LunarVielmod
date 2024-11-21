@@ -16,6 +16,7 @@ using Stellamod.NPCs.Bosses.Niivi;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.REK;
 using Stellamod.NPCs.Bosses.SupernovaFragment;
 using Stellamod.Items.Consumables;
+using Stellamod.NPCs.Bosses.EliteCommander;
 
 namespace Stellamod
 {
@@ -193,10 +194,10 @@ namespace Stellamod
 
 		private void DoCommanderGintziaIntegration()
         {
-			string internalName4 = "CommanderGintzia";
+			string internalName4 = "EliteCommander";
 
 			// The NPC type of the boss
-			int bossType4 = ModContent.NPCType<NPCs.Event.Gintzearmy.BossGintze.CommanderGintzia>();
+			int bossType4 = ModContent.NPCType<EliteCommander>();
 
 			// Value inferred from boss progression, see the wiki for details
 			float weight4 = 0.2f;
@@ -218,7 +219,7 @@ namespace Stellamod
 			int summonItem4 = ModContent.ItemType<Items.Consumables.WanderingEssence>();
            
 			Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
-                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Event/Gintzearmy/BossGintze/GintziaPreview").Value;
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/EliteCommander/EliteCommanderPreview").Value;
                 Vector2 centered = new Vector2(
                     rect.X + (rect.Width / 2) - (texture.Width / 2),
                     rect.Y + (rect.Height / 2) - (texture.Height / 2));
