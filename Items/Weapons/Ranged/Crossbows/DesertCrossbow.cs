@@ -46,22 +46,7 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
             Item.noMelee = true; // The projectile will do the damage and not the item
             Item.value = Item.buyPrice(silver: 3);
             Item.noUseGraphic = true;
-            Item.channel = true;
-       
-
+            Item.channel = true;    
         }
-
-
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.AntlionMandible, 5);
-            recipe.AddIngredient(ItemID.SandBlock, 100);
-            recipe.AddIngredient(ModContent.ItemType<BlankCrossbow>(), 1);
-            recipe.Register();
-        }
-
-
     }
 }

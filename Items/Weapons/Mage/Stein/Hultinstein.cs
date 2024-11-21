@@ -102,21 +102,5 @@ namespace Stellamod.Items.Weapons.Mage.Stein
 			}
 			return false;
 		}
-
-		/*
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-
-			recipe.AddIngredient(ModContent.ItemType<Stick>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<HornedNail>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
-
-			recipe.Register();
-		}
-
-		*/
 	}
 }

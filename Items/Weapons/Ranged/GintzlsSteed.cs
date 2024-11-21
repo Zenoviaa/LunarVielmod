@@ -38,15 +38,6 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.reuseDelay = 28;
             Item.noMelee = true;
         }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<GintzlMetal>(), 11);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
-
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-2f, 0f);

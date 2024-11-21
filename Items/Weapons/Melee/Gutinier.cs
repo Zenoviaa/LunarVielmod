@@ -106,14 +106,5 @@ namespace Stellamod.Items.Weapons.Melee
 
             return false;
         }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.Anvils);
-            recipe.AddIngredient(ItemID.IronBar, 9);
-            recipe.AddIngredient(ItemID.Spear, 1);
-            recipe.Register();
-        }
     }
 }

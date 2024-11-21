@@ -51,17 +51,5 @@ namespace Stellamod.Items.Weapons.Whips
 			Item.noUseGraphic = true;
 			Item.value = 1200;
 		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-
-
-			recipe.AddIngredient(ItemID.AntlionMandible, 3);
-			recipe.AddIngredient(ItemID.Wood, 10);
-
-			recipe.Register();
-		}
-
 	}
 }

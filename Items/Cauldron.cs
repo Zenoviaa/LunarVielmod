@@ -10,10 +10,13 @@ using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Melee.Greatswords;
 using Stellamod.Items.Weapons.Melee.Safunais;
 using Stellamod.Items.Weapons.Melee.Shields;
+using Stellamod.Items.Weapons.Melee.Spears;
+using Stellamod.Items.Weapons.Melee.Yoyos;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.Crossbows;
@@ -22,8 +25,10 @@ using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Summon.Orbs;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Thrown.Jugglers;
+using Stellamod.Items.Weapons.Whips;
 using Stellamod.Projectiles.Powders;
 using Stellamod.Projectiles.StringnNeedles.Alcadiz;
+using Stellamod.Projectiles.Summons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -690,7 +695,268 @@ namespace Stellamod.Items
                weight: 1.0f,
                yield: 1);
 
+
+            //Gintz Metal x Sword
+            AddBrew(
+                 result: ModContent.ItemType<Gutinier>(),
+                 mold: ModContent.ItemType<BlankSword>(),
+                 material: ModContent.ItemType<GintzlMetal>(),
+                 materialCount: 10,
+                 weight: 1.0f,
+                 yield: 1);
+
+            AddBrew(
+                 result: ModContent.ItemType<VerstiDance>(),
+                 mold: ModContent.ItemType<BlankSword>(),
+                 material: ModContent.ItemType<GintzlMetal>(),
+                 materialCount: 10,
+                 weight: 1.0f,
+                 yield: 1);
+
+            AddBrew(
+                 result: ModContent.ItemType<StalkersTallon>(),
+                 mold: ModContent.ItemType<BlankSword>(),
+                 material: ModContent.ItemType<GintzlMetal>(),
+                 materialCount: 10,
+                 weight: 1.0f,
+                 yield: 1);
+
+            AddBrew(
+                 result: ModContent.ItemType<GladiatorSpear>(),
+                 mold: ModContent.ItemType<BlankSword>(),
+                 material: ModContent.ItemType<GintzlMetal>(),
+                 materialCount: 10,
+                 weight: 1.0f,
+                 yield: 1);
+
+            AddBrew(
+                 result: ModContent.ItemType<IronHook>(),
+                 mold: ModContent.ItemType<BlankSword>(),
+                 material: ModContent.ItemType<GintzlMetal>(),
+                 materialCount: 10,
+                 weight: 1.0f,
+                 yield: 1);
+
+            //Gintz Metal x Bow
+            AddBrew(
+                 result: ModContent.ItemType<GintzlsSteed>(),
+                 mold: ModContent.ItemType<BlankBow>(),
+                 material: ModContent.ItemType<GintzlMetal>(),
+                 materialCount: 10,
+                 weight: 1.0f,
+                 yield: 1);
+
+            AddBrew(
+                 result: ModContent.ItemType<DesertCrossbow>(),
+                 mold: ModContent.ItemType<BlankBow>(),
+                 material: ModContent.ItemType<GintzlMetal>(),
+                 materialCount: 10,
+                 weight: 1.0f,
+                 yield: 1);
+
+
+            AddBrew(
+                  result: ModContent.ItemType<WingedFury>(),
+                  mold: ModContent.ItemType<BlankBow>(),
+                  material: ModContent.ItemType<GintzlMetal>(),
+                  materialCount: 10,
+                  weight: 1.0f,
+                  yield: 1);
+
+            //Gintzl Metal x Juggler
+            AddBrew(
+                 result: ModContent.ItemType<Blackdot>(),
+                 mold: ModContent.ItemType<BlankOrb>(),
+                 material: ModContent.ItemType<GintzlMetal>(),
+                 materialCount: 10,
+                 weight: 1.0f,
+                 yield: 1);
+
+            AddBrew(
+                 result: ModContent.ItemType<GintzlSpear>(),
+                 mold: ModContent.ItemType<BlankOrb>(),
+                 material: ModContent.ItemType<GintzlMetal>(),
+                 materialCount: 10,
+                 weight: 1.0f,
+                 yield: 1);
+
+            AddBrew(
+                result: ModContent.ItemType<CleanestCleaver>(),
+                mold: ModContent.ItemType<BlankOrb>(),
+                material: ModContent.ItemType<GintzlMetal>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
+
+
+            AddBrew(
+                result: ModContent.ItemType<GreyBricks>(),
+                mold: ModContent.ItemType<BlankOrb>(),
+                material: ModContent.ItemType<GintzlMetal>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
+            
+            AddBrew(
+                result: ModContent.ItemType<SpikedLobber>(),
+                mold: ModContent.ItemType<BlankOrb>(),
+                material: ModContent.ItemType<GintzlMetal>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
+
+            //Gintzl Metal x Gun
+            AddBrew(
+                 result: ModContent.ItemType<Dunderbustion>(),
+                 mold: ModContent.ItemType<BlankGun>(),
+                 material: ModContent.ItemType<GintzlMetal>(),
+                 materialCount: 10,
+                 weight: 1.0f,
+                 yield: 1);
+
+            AddBrew(
+                 result: ModContent.ItemType<Eagle>(),
+                 mold: ModContent.ItemType<BlankGun>(),
+                 material: ModContent.ItemType<GintzlMetal>(),
+                 materialCount: 10,
+                 weight: 1.0f,
+                 yield: 1);
+
+            //Gintzl Metal x Staff
+            AddBrew(
+                  result: ModContent.ItemType<Valtotude>(),
+                  mold: ModContent.ItemType<BlankStaff>(),
+                  material: ModContent.ItemType<GintzlMetal>(),
+                  materialCount: 10,
+                  weight: 1.0f,
+                  yield: 1);
+
+            AddBrew(
+                 result: ModContent.ItemType<SwarmerStaff>(),
+                 mold: ModContent.ItemType<BlankStaff>(),
+                 material: ModContent.ItemType<GintzlMetal>(),
+                 materialCount: 10,
+                 weight: 1.0f,
+                 yield: 1);
+
+            
+
+            AddBrew(
+                result: ModContent.ItemType<SunBlastStaff>(),
+                mold: ModContent.ItemType<BlankStaff>(),
+                material: ModContent.ItemType<GintzlMetal>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
+
+            //Gintzl Metal x Accessory
+            AddBrew(
+                result: ModContent.ItemType<Barry>(),
+                mold: ModContent.ItemType<BlankAccessory>(),
+                material: ModContent.ItemType<GintzlMetal>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
+
+
+            //Gintzl Metal x Card
+            AddBrew(
+                result: ModContent.ItemType<GintzeCard>(),
+                mold: ModContent.ItemType<BlankCard>(),
+                material: ModContent.ItemType<GintzlMetal>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
+
+            AddBrew(
+                result: ModContent.ItemType<MetallianCard>(),
+                mold: ModContent.ItemType<BlankCard>(),
+                material: ModContent.ItemType<GintzlMetal>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
+
+            //Gintzl Metal x Powder
+            AddBrew(
+                result: ModContent.ItemType<AivanPowder>(),
+                mold: ModContent.ItemType<BlankBag>(),
+                material: ModContent.ItemType<GintzlMetal>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
+
+            //Gintzl Metal x Rune
+            AddBrew(
+                result: ModContent.ItemType<RuneOfWind>(),
+                mold: ModContent.ItemType<BlankRune>(),
+                material: ModContent.ItemType<GintzlMetal>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
+
+            //Gintzl Metal x Saunfai
+            AddBrew(
+                result: ModContent.ItemType<Alcarish>(),
+                mold: ModContent.ItemType<BlankSafunai>(),
+                material: ModContent.ItemType<GintzlMetal>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
+
+            AddBrew(
+                result: ModContent.ItemType<DesertWhip>(),
+                mold: ModContent.ItemType<BlankSafunai>(),
+                material: ModContent.ItemType<GintzlMetal>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
+
+            //Gintzl Metal x Shield
+            AddBrew(
+                result: ModContent.ItemType<PointedEdge>(),
+                mold: ModContent.ItemType<BlankShield>(),
+                material: ModContent.ItemType<GintzlMetal>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
+
+            //Gintzl Metal x Brooch
+            AddBrew(
+                result: ModContent.ItemType<SandyBroochA>(),
+                mold: ModContent.ItemType<BlankBrooch>(),
+                material: ModContent.ItemType<GintzlMetal>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
+
+            AddBrew(
+                result: ModContent.ItemType<GintzlBroochA>(),
+                mold: ModContent.ItemType<BlankBrooch>(),
+                material: ModContent.ItemType<GintzlMetal>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
+
+            //Gintzl Metal x Orb
+            AddBrew(
+                result: ModContent.ItemType<RazorBragett>(),
+                mold: ModContent.ItemType<BlankOrb>(),
+                material: ModContent.ItemType<GintzlMetal>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
+
+            //Gintzl Metal x Stein
+            AddBrew(
+                result: ModContent.ItemType<Hultinstein>(),
+                mold: ModContent.ItemType<BlankStein>(),
+                material: ModContent.ItemType<GintzlMetal>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
             _brews.Sort((x, y) => ModContent.GetModItem(x.mold).Name.CompareTo(ModContent.GetModItem(y.mold).Name));
+
+
         }
 
         private void AddBrew(int result, int mold, int material, int materialCount, float weight = 1.0f, int yield = 1)

@@ -89,15 +89,5 @@ namespace Stellamod.Items.Weapons.Melee
 			}
 			return false;
 		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-
-			recipe.AddIngredient(ModContent.ItemType<DriveConstruct>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 5);
-
-			recipe.Register();
-		}
 	}
 }

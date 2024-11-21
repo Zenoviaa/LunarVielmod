@@ -50,14 +50,5 @@ namespace Stellamod.Items.Weapons.Summon
 			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position
 			position = Main.MouseWorld;
 		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 2);
-			recipe.AddIngredient(ItemID.AntlionMandible, 10);
-			recipe.Register();
-		}
 	}
 }

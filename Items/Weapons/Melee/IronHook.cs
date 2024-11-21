@@ -47,15 +47,5 @@ namespace Stellamod.Items.Weapons.Melee
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
             return false; // return false to prevent original projectile from being shot
         }
-
-        public override void AddRecipes()
-        {
-            base.AddRecipes();
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Wood, 15);
-            recipe.AddIngredient(ItemID.IronBar, 2);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
     }
 }

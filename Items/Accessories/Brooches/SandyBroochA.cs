@@ -25,16 +25,5 @@ namespace Stellamod.Items.Accessories.Brooches
 			Item.accessory = true;
 			Item.buffType = ModContent.BuffType<SandyB>();
 		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
-			recipe.AddIngredient(ItemID.AntlionMandible, 5);
-			recipe.AddIngredient(ItemID.Cactus, 10);
-			recipe.AddIngredient(ModContent.ItemType<WanderingFlame>(), 5);
-			recipe.AddTile(ModContent.TileType<BroochesTable>());
-			recipe.Register();
-		}
 	}
 }

@@ -35,16 +35,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shoot = ModContent.ProjectileType<GintzeSpear>();
             Item.shootSpeed = 15f;
             Item.rare = ItemRarityID.Orange;
-            Item.consumable = true;
-            Item.maxStack = Item.CommonMaxStack;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe(15);
-            recipe.AddIngredient(ItemType<GintzlMetal>(), 1);
-            recipe.AddTile(TileID.HeavyWorkBench);
-            recipe.Register();
+            Item.maxStack = 1;
         }
     }
 }

@@ -47,21 +47,5 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
 		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<AlcadizMetal>(), 8);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 5);
-			recipe.AddIngredient(ItemID.Stinger, 3);
-			recipe.AddIngredient(ItemID.Chain, 10);
-			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
-			recipe.Register();
-
-
-
-
-		}
 	}
 }

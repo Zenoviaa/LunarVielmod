@@ -13,13 +13,13 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 20;
+            Item.damage = 10;
             Item.mana = 0;
         }
 
         public override void SetDefaults()
         {
-            Item.damage = 40;
+            Item.damage = 20;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 40;
             Item.noUseGraphic = true;
@@ -35,17 +35,6 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<BrackettProj>();
             Item.shootSpeed = 8f;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.BorealWood, 30);
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 5);
-            recipe.AddIngredient(ModContent.ItemType<Ragsaw>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 7);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
         }
     }
 }

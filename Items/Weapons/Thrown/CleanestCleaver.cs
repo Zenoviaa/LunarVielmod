@@ -22,7 +22,6 @@ namespace Stellamod.Items.Weapons.Thrown
 			// DisplayName.SetDefault("Plantius"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
 		}
 
-
         public override void SetDefaults()
         {
             Item.damage = 12;
@@ -41,15 +40,6 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shoot = ModContent.ProjectileType<CleanestCleaverProg>();
             Item.shootSpeed = 15f;
             Item.rare = ItemRarityID.Blue;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.IronBar, 9);
-            recipe.AddIngredient(ItemID.Wood, 10);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
         }
     }
 }

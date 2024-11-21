@@ -32,16 +32,8 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shoot = ModContent.ProjectileType<GreyBricksP>();
             Item.shootSpeed = 15f;
             Item.rare = ItemRarityID.Blue;
-            Item.consumable = true;
-            Item.maxStack = Item.CommonMaxStack;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe(50);
-            recipe.AddIngredient(ItemID.GrayBrick , 2);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
+            Item.maxStack = 1;
+           
         }
     }
 }
