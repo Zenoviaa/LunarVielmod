@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Lights;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
@@ -8,11 +8,8 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee.Shields;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Thrown;
-using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
+using Stellamod.NPCs.Bosses.EliteCommander.Projectiles;
 using Stellamod.NPCs.Colosseum.Common;
-using Stellamod.UI.Systems;
-using Stellamod.WorldG;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -25,51 +22,41 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
     [AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
     public class EliteCommander : BaseColosseumNPC
     {
-        public enum ActionState
+        private int _frame;
+        private enum AIState
         {
-            Unsummon,
-            StartGintze,
-            Slammer,
-            Rulse,
-            Jumpstartup,
-            Jumpin,
-            HandsNRun,
-            Stop,
-            Fallin,
+            Idle,
+            Walk,
+            Jump,
+            Land,
+            Summon,
+            Despawn
         }
-        // Current state
-        private bool _resetTimers;
-        private ActionState _state = ActionState.Jumpstartup;
-        public ActionState State
+
+        private ref float Timer => ref NPC.ai[0];
+        private AIState State
+        {
+            get => (AIState)NPC.ai[1];
+            set => NPC.ai[1] = (float)value;
+        }
+        private ref float AbovePlayerTimer => ref NPC.ai[2];
+        private ref float JumpCount => ref NPC.ai[3];
+
+        private Player Target => Main.player[NPC.target];
+        private float DirectionToTarget
         {
             get
             {
-                return _state;
-            }
-            set
-            {
-                _state = value;
-                if (StellaMultiplayer.IsHost)
+                if (Target.Center.X < NPC.Center.X)
                 {
-                    NPC.netUpdate = true;
+                    return -1;
                 }
+                return 1;
             }
         }
-        // Current frame
-        public int frameCounter;
-        // Current frame's progress
-        public int frameTick;
-        // Current state's timer
-        public float timer;
 
-        // AI counter
-        public int counter;
-
-        public int rippleCount = 20;
-        public int rippleSize = 5;
-        public int rippleSpeed = 15;
-        public float distortStrength = 300f;
-
+        private int ShockwaveDamage => 24;
+        private int HandDamage => 12;
 
         public override void SetStaticDefaults()
         {
@@ -112,7 +99,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
         public override void SetDefaults()
         {
             NPC.Size = new Vector2(42, 67);
-            NPC.damage = 1;
+            NPC.damage = 24;
             NPC.defense = 10;
             NPC.lifeMax = 900;
             NPC.HitSound = SoundID.NPCHit1;
@@ -124,7 +111,6 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
             NPC.SpawnWithHigherTime(30);
             NPC.boss = true;
             NPC.npcSlots = 10f;
-            NPC.scale = 2f;
             NPC.aiStyle = -1;
 
             // Custom boss bar
@@ -137,21 +123,272 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
             }
         }
 
+        public override void FindFrame(int frameHeight)
+        {
+            base.FindFrame(frameHeight);
+            NPC.frameCounter += 0.25f;
+            if (NPC.frameCounter >= 1f)
+            {
+                _frame++;
+                NPC.frameCounter = 0;
+            }
+
+            switch (State)
+            {
+                case AIState.Idle:
+                    _frame = 0;
+                    break;
+                case AIState.Walk:
+                    if (_frame < 29)
+                    {
+                        _frame = 29;
+                    }
+                    if (_frame >= 42)
+                    {
+                        _frame = 29;
+                    }
+                    break;
+                case AIState.Jump:
+                    if (_frame < 0 || _frame >= 10)
+                    {
+                        _frame = 0;
+                    }
+
+                    if (_frame >= 8)
+                    {
+                        _frame = 4;
+                    }
+                    break;
+                case AIState.Land:
+                    if (_frame < 8)
+                    {
+                        _frame = 8;
+                    }
+
+                    if (_frame >= 12)
+                    {
+                        _frame = 11;
+                    }
+                    break;
+                case AIState.Summon:
+                    if (_frame < 12 || _frame >= 31)
+                    {
+                        _frame = 12;
+                    }
+
+                    if (_frame >= 30)
+                    {
+                        _frame = 29;
+                    }
+                    break;
+            }
+            NPC.frame.Y = frameHeight * _frame;
+        }
+        public override void AI()
+        {
+            base.AI();
+            if (!NPC.HasValidTarget)
+            {
+                NPC.TargetClosest();
+            }
+            NPC.spriteDirection = NPC.direction;
+            switch (State)
+            {
+                case AIState.Idle:
+                    AI_Idle();
+                    break;
+                case AIState.Walk:
+                    AI_Walk();
+                    break;
+                case AIState.Jump:
+                    AI_Jump();
+                    break;
+                case AIState.Land:
+                    AI_Land();
+                    break;
+                case AIState.Summon:
+                    AI_Summon();
+                    break;
+                case AIState.Despawn:
+                    AI_Despawn();
+                    break;
+            }
+        }
+
+        private void AI_Idle()
+        {
+            Timer++;
+            NPC.TargetClosest();
+            if (!NPC.HasValidTarget)
+            {
+                SwitchState(AIState.Despawn);
+            }
+
+            if (Timer >= 60)
+            {
+                if (JumpCount < 3)
+                {
+                    SwitchState(AIState.Walk);
+                }
+                else
+                {
+                    JumpCount = 0;
+                    SwitchState(AIState.Summon);
+                }
+            }
+        }
+
+        private void AI_Walk()
+        {
+            Timer++;
+            float moveSpeed = 0.5f;
+            Vector2 targetVelocity = new Vector2(DirectionToTarget * moveSpeed, 0);
+            NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetVelocity.X, 0.3f);
+            if (Target.Top.Y < NPC.Top.Y)
+            {
+                AbovePlayerTimer++;
+            }
+            if (Timer > 220 || AbovePlayerTimer > 60)
+            {
+                SwitchState(AIState.Jump);
+            }
+        }
+
+        private void AI_Jump()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                JumpCount++;
+            }
+
+            if (Timer == 10)
+            {
+                NPC.velocity = new Vector2(NPC.direction * 2, -14f);
+            }
+
+            if (Timer > 20 && NPC.collideY)
+            {
+                SwitchState(AIState.Land);
+            }
+        }
+
+        private void AI_Land()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    //This is the part where you spawn the cool ahh shockwaves
+                    //But we have to make cool ahh shockwaves :(
+                    int shockwaveDamage = ShockwaveDamage;
+                    int knockback = 1;
+                    Vector2 velocity = Vector2.UnitX;
+                    velocity *= 4;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
+                        ModContent.ProjectileType<WindShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
+                    velocity = -velocity;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
+                   ModContent.ProjectileType<WindShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
+                }
+
+                SpecialEffectsPlayer specialEffectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
+                specialEffectsPlayer.rippleCount = 20;
+                specialEffectsPlayer.rippleSize = 5;
+                specialEffectsPlayer.rippleSpeed = 15;
+                specialEffectsPlayer.rippleDistortStrength = 300f;
+                specialEffectsPlayer.rippleTimer = 180f;
+
+                SoundStyle landingSound = new SoundStyle($"Stellamod/Assets/Sounds/Verifall");
+                landingSound.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(landingSound, NPC.position);
+
+                for (int i = 0; i < 16; i++)
+                {
+                    Vector2 dustVelocity = -Vector2.UnitY;
+                    dustVelocity *= Main.rand.NextFloat(3f, 7f);
+                    dustVelocity = dustVelocity.RotatedByRandom(MathHelper.ToRadians(30));
+                    Dust.NewDustPerfect(NPC.Bottom, DustID.GemDiamond, dustVelocity);
+                }
+
+                for (int i = 0; i < 8; i++)
+                {
+                    Vector2 dustVelocity = -Vector2.UnitX;
+                    dustVelocity *= Main.rand.NextFloat(3f, 7f);
+                    dustVelocity.Y -= Main.rand.NextFloat(1f, 2f);
+                    if (i % 2 == 0)
+                    {
+                        dustVelocity.X = -dustVelocity.X;
+                    }
+                    Dust.NewDustPerfect(NPC.Bottom, DustID.GemDiamond, dustVelocity);
+                }
+            }
+
+            NPC.velocity.X = 0;
+            if (Timer >= 60)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+
+        private void AI_Summon()
+        {
+            Timer++;
+            NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, 0f, 0.1f);
+            if (Timer == 60)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    int damage = HandDamage;
+                    int knockback = 1;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<EliteCommanderHand>(), damage, knockback, Main.myPlayer,
+                        ai1: NPC.whoAmI);
+
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<EliteCommanderHand>(), damage, knockback, Main.myPlayer,
+                        ai0: 60,
+                        ai1: NPC.whoAmI);
+                }
+            }
+
+            if (Timer >= 120)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+
+        private void AI_Despawn()
+        {
+            Timer++;
+            NPC.noTileCollide = true;
+            NPC.EncourageDespawn(60);
+        }
+
+        private void SwitchState(AIState state)
+        {
+            if (StellaMultiplayer.IsHost)
+            {
+                Timer = 0;
+                AbovePlayerTimer = 0;
+                State = state;
+                NPC.netUpdate = true;
+            }
+        }
+
+        public override bool? CanFallThroughPlatforms()
+        {
+            if (NPC.HasValidTarget && Target.Top.Y > NPC.Bottom.Y)
+            {
+                // If Flutter Slime is currently falling, we want it to keep falling through platforms as long as it's above the player
+                return true;
+            }
+
+            return false;
+        }
+
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
         {
             NPC.lifeMax = (int)(NPC.lifeMax * balance);
-        }
-
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-            writer.Write((float)_state);
-            writer.Write(_resetTimers);
-        }
-
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            _state = (ActionState)reader.ReadSingle();
-            _resetTimers = reader.ReadBoolean();
         }
 
         public override void HitEffect(NPC.HitInfo hit)
@@ -177,469 +414,6 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
                 }
             }
         }
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            Player player = Main.player[NPC.target];
-
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-            Vector2 position = NPC.Center - Main.screenPosition + new Vector2(0, NPC.gfxOffY);
-
-            SpriteEffects effects = SpriteEffects.None;
-
-            if (player.Center.X > NPC.Center.X)
-            {
-                effects = SpriteEffects.FlipHorizontally;
-            }
-
-
-
-            Rectangle rect;
-            originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) - new Vector2(0, 68);
-
-            ///Animation Stuff for Verlia
-            /// 1 - 2 Summon Start
-            /// 3 - 7 Summon Idle / Idle
-            /// 8 - 11 Summon down
-            /// 12 - 19 Hold UP
-            /// 20 - 30 Sword UP
-            /// 31 - 35 Sword Slash Simple
-            /// 36 - 45 Hold Sword
-            /// 46 - 67 Barrage 
-            /// 68 - 75 Explode
-            /// 76 - 80 Appear
-            /// 133 width
-            /// 92 height
-
-
-            ///Animation Stuff for Veribloom
-            /// 1 = Idle
-            /// 2 = Blank
-            /// 2 - 8 Appear Pulse
-            /// 9 - 19 Pulse Buff Att
-            /// 20 - 26 Disappear Pulse
-            /// 27 - 33 Appear Winding
-            /// 34 - 38 Wind Up
-            /// 39 - 45 Dash
-            /// 46 - 52 Slam Appear
-            /// 53 - 58 Slam
-            /// 59 - 64 Spin
-            /// 80 width
-            /// 89 height
-            /// 
-
-            /// 1 = Idle
-            /// 1 - 4 Jump Startup
-            /// 5 - 8 Jump
-            /// 9 - 12 land
-            /// 13 - 29 Doublestart
-            /// 30 - 42 Tiptoe
-
-
-
-            switch (State)
-            {
-                case ActionState.Slammer:
-                    rect = new(0, 9 * 67, 42, 3 * 67);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-                    break;
-
-                case ActionState.Jumpin:
-                    rect = new(0, 5 * 67, 42, 3 * 67);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 20, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-                    break;
-
-
-                case ActionState.Fallin:
-                    rect = new(0, 8 * 67, 42, 1 * 67);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 80, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-                    break;
-
-                case ActionState.Jumpstartup:
-                    rect = new Rectangle(0, 1 * 67, 42, 3 * 67);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-                    break;
-
-                case ActionState.Stop:
-                    rect = new Rectangle(0, 0 * 67, 42, 1 * 67);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 50, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-                    break;
-
-                case ActionState.Rulse:
-                    rect = new Rectangle(0, 13 * 67, 42, 16 * 67);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 16, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-                    break;
-
-                case ActionState.StartGintze:
-                    rect = new Rectangle(0, 0 * 67, 42, 1 * 67);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 50, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-                    break;
-
-                case ActionState.HandsNRun:
-                    rect = new Rectangle(0, 30 * 67, 42, 12 * 67);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 12, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-                    break;
-
-
-                case ActionState.Unsummon:
-                    rect = new Rectangle(0, 8 * 92, 133, 4 * 92);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 4, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-                    break;
-
-
-
-
-
-
-
-            }
-
-
-            return false;
-        }
-
-        //Custom function so that I don't have to copy and paste the same thing in FindFrame
-
-
-        int bee = 220;
-        private Vector2 originalHitbox;
-        public override void AI()
-        {
-
-            bee--;
-            //Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
-
-
-
-
-            if (bee == 0)
-            {
-                bee = 220;
-            }
-
-            Vector3 RGB = new(2.30f, 0.21f, 0.72f);
-            Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
-            NPC.spriteDirection = NPC.direction;
-            Player player = Main.player[NPC.target];
-
-            NPC.TargetClosest();
-
-            if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
-            {
-                NPC.TargetClosest();
-            }
-
-            FinishResetTimers();
-            switch (State)
-            {
-                case ActionState.StartGintze:
-                    NPC.damage = 0;
-                    counter++;
-                    NPC.noGravity = false;
-                    StartGintze();
-                    NPC.aiStyle = -1;
-                    break;
-
-                case ActionState.Rulse:
-                    NPC.damage = 0;
-                    counter++;
-                    NPC.noGravity = false;
-                    HandSummon();
-                    NPC.aiStyle = -1;
-                    break;
-
-
-
-                case ActionState.Jumpin:
-                    NPC.damage = 0;
-                    counter++;
-                    NPC.aiStyle = -1;
-                    JumpinGintze();
-
-                    break;
-
-
-                case ActionState.Jumpstartup:
-                    NPC.damage = 0;
-                    counter++;
-                    NPC.aiStyle = -1;
-                    StartJumpGintze();
-                    break;
-
-                case ActionState.Stop:
-                    NPC.damage = 0;
-                    counter++;
-                    IdleGintze();
-                    break;
-
-                case ActionState.HandsNRun:
-                    NPC.damage = 50;
-
-
-                    counter++;
-                    HandTime();
-                    break;
-
-                case ActionState.Slammer:
-                    NPC.damage = 0;
-                    counter++;
-
-                    if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                    {
-                        Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
-
-                    }
-
-                    if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                    {
-                        float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
-                        Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
-                    }
-                    counter++;
-                    SlammerGintze();
-                    break;
-
-
-                case ActionState.Fallin:
-                    NPC.damage = 100;
-                    NPC.velocity.Y *= 1.2f;
-                    counter++;
-                    NPC.aiStyle = -1;
-                    NPC.noTileCollide = false;
-
-
-
-                    if (NPC.velocity.Y == 0)
-                    {
-                        NPC.velocity.X = 0;
-                        State = ActionState.Slammer;
-                        frameCounter = 0;
-                        frameTick = 0;
-                    }
-                    break;
-
-
-
-
-
-
-
-
-                    ////////////////////////////////////////////////////////////////////////////////////
-                    ///
-
-            }
-        }
-
-        public override bool? CanFallThroughPlatforms()
-        {
-            if (State == ActionState.Fallin && NPC.HasValidTarget && Main.player[NPC.target].Top.Y > NPC.Bottom.Y)
-            {
-                // If Flutter Slime is currently falling, we want it to keep falling through platforms as long as it's above the player
-                return true;
-            }
-
-            return false;
-            // You could also return null here to apply vanilla behavior (which is the same as false for custom AI)
-        }
-
-
-        private void StartJumpGintze()
-        {
-            NPC.spriteDirection = NPC.direction;
-            timer++;
-
-            if (timer == 2)
-            {
-                //	GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y + 1000, 0, -10, ModContent.ProjectileType<VRay>(), 600, 0f, -1, 0, NPC.whoAmI);
-                //	SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AbsoluteDistillence"));
-                NPC.velocity.X *= 0;
-                NPC.velocity.Y *= 0;
-            }
-
-            if (timer == 19)
-            {
-                ResetTimers();
-                State = ActionState.Jumpin;
-            }
-        }
-
-        private void JumpinGintze()
-        {
-
-            Player player = Main.player[NPC.target];
-            NPC.spriteDirection = NPC.direction;
-            timer++;
-
-            if (timer == 2)
-            {
-                //	GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y + 1000, 0, -10, ModContent.ProjectileType<VRay>(), 600, 0f, -1, 0, NPC.whoAmI);
-                //	SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AbsoluteDistillence"));
-
-
-                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-                NPC.velocity = new Vector2(NPC.direction * 2, -14f);
-
-                // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
-
-
-                // GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, -10, ModContent.ProjectileType<VRay>(), 50, 0f, -1, 0, NPC.whoAmI);
-
-            }
-
-            if (timer == 60)
-            {
-                ResetTimers();
-                State = ActionState.Fallin;
-            }
-        }
-
-
-        private void SlammerGintze()
-        {
-            timer++;
-            if (timer == 1)
-            {
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verifall"));
-                ShakeModSystem.Shake = 8;
-            }
-
-            if (timer < 9)
-            {
-                float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
-                float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-                float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedX + 2 * 6, speedY,
-                    ModContent.ProjectileType<SpikeBullet>(), 15, 0f, Owner: Main.myPlayer);
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedXB - 2 * 6, speedY,
-                    ModContent.ProjectileType<SpikeBullet>(), 15, 0f, Owner: Main.myPlayer);
-            }
-
-            if (timer == 20)
-            {
-                if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                {
-                    Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-                }
-
-                ResetTimers();
-                State = ActionState.Stop;
-            }
-        }
-
-
-        private void StartGintze()
-        {
-            timer++;
-            if (timer == 10)
-            {
-                NPC.velocity.X *= 0;
-                NPC.velocity.Y *= 0;
-            }
-
-            if (timer == 20)
-            {
-                ResetTimers();
-                State = ActionState.Jumpstartup;
-            }
-        }
-
-
-        private void IdleGintze()
-        {
-            NPC.spriteDirection = NPC.direction;
-            timer++;
-
-            if (timer == 30)
-            {
-                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-                ResetTimers();
-                if (StellaMultiplayer.IsHost)
-                {
-                    switch (Main.rand.Next(2))
-                    {
-                        case 0:
-                            State = ActionState.StartGintze;
-                            break;
-
-                        case 1:
-                            State = ActionState.Rulse;
-                            break;
-
-                    }
-
-                }
-            }
-        }
-
-        private void HandTime()
-        {
-            NPC.spriteDirection = NPC.direction;
-            timer++;
-
-            if (timer == 10)
-            {
-
-                NPC.aiStyle = 3;
-                AIType = NPCID.GoblinPeon;
-
-            }
-
-
-
-            if (timer == 400)
-            {
-                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-                ResetTimers();
-                if (StellaMultiplayer.IsHost)
-                {
-                    switch (Main.rand.Next(2))
-                    {
-                        case 0:
-                            State = ActionState.Jumpstartup;
-                            break;
-
-                        case 1:
-                            State = ActionState.Stop;
-                            break;
-
-                    }
-
-                }
-            }
-
-        }
-        private void HandSummon()
-        {
-            NPC.spriteDirection = NPC.direction;
-            timer++;
-            if (timer == 2)
-            {
-                var entitySource = NPC.GetSource_FromThis();
-                if (StellaMultiplayer.IsHost)
-                {
-                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<GintziaHand>());
-                }
-
-                //Summon hands here
-            }
-            if (timer == 3)
-            {
-                //	GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y + 1000, 0, -10, ModContent.ProjectileType<VRay>(), 600, 0f, -1, 0, NPC.whoAmI);
-                //	SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AbsoluteDistillence"));
-                NPC.velocity.X *= 0;
-                NPC.velocity.Y *= 0;
-            }
-
-            if (timer == 50)
-            {
-                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-                ResetTimers();
-                State = ActionState.HandsNRun;
-            }
-        }
-
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
@@ -688,25 +462,6 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
             npcLoot.Add(notExpertRule);
         }
 
-        private void FinishResetTimers()
-        {
-            if (_resetTimers)
-            {
-                timer = 0;
-                frameCounter = 0;
-                frameTick = 0;
-                _resetTimers = false;
-            }
-        }
-
-        public void ResetTimers()
-        {
-            if (StellaMultiplayer.IsHost)
-            {
-                _resetTimers = true;
-                NPC.netUpdate = true;
-            }
-        }
 
         public override void OnKill()
         {

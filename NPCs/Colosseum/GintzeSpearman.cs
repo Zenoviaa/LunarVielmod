@@ -1,9 +1,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Foods;
 using Stellamod.Items.Ores;
 using Stellamod.NPCs.Colosseum.Common;
+using Stellamod.NPCs.Colosseum.Projectiles;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -15,6 +17,38 @@ namespace Stellamod.NPCs.Colosseum
 {
     public class GintzeSpearman : BaseColosseumNPC
     {
+        private enum AIState
+        {
+            Pace,
+            Spear_Throw
+        }
+
+
+        private int _frame = 0;
+        private ref float Timer => ref NPC.ai[0];
+        
+        private AIState State
+        {
+            get => (AIState)NPC.ai[1];
+            set => NPC.ai[1] = (float)value;
+        }
+
+        private Player Target => Main.player[NPC.target];
+        private float SightLineProgress;
+        private Vector2 FireVelocity;
+        private float FleeDistance => 128;
+
+        private float DirectionToTarget
+        {
+            get
+            {
+                if (Target.Center.X < NPC.Center.X)
+                {
+                    return -1;
+                }
+                return 1;
+            }
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Storm Knight");
@@ -29,21 +63,105 @@ namespace Stellamod.NPCs.Colosseum
 
         public override void SetDefaults()
         {
-            NPC.noGravity = false;
-            NPC.noTileCollide = false;
             NPC.lifeMax = 100;
+            NPC.damage = 24;
             NPC.defense = 4;
             NPC.value = 65f;
-            NPC.knockBackResist = 0.55f;
             NPC.width = 30;
             NPC.height = 50;
-            NPC.damage = 24;
-            NPC.scale = 1.0f;
-            NPC.lavaImmune = false;
-            NPC.alpha = 0;
-            NPC.dontTakeDamage = false;
+            NPC.knockBackResist = 0.55f;
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
+            NPC.noGravity = false;
+            NPC.noTileCollide = false;
+        }
+
+        public override void AI()
+        {
+            NPC.TargetClosest();
+            NPC.spriteDirection = NPC.direction;
+            switch (State)
+            {
+                case AIState.Pace:
+                    AI_Pace();
+                    break;
+                case AIState.Spear_Throw:
+                    AI_SpearThrow();
+                    break;
+            }
+        }
+
+        private void SwitchState(AIState state)
+        {
+            if (StellaMultiplayer.IsHost)
+            {
+                Timer = 0;
+                State = state;
+                NPC.netUpdate = true;
+            }
+        }
+
+        private void AI_Pace()
+        {
+            Timer++;
+            float moveSpeed = 1;
+            Vector2 targetVelocity = new Vector2(-DirectionToTarget * moveSpeed, 0);
+            NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetVelocity.X, 0.3f);
+            float distanceToTarget = Vector2.Distance(NPC.Center, Target.Center);
+            float targetSineLineProgress = 0f;
+            SightLineProgress = MathHelper.Lerp(SightLineProgress, targetSineLineProgress, 0.1f);
+            if (distanceToTarget > FleeDistance)
+            {
+                SwitchState(AIState.Spear_Throw);
+            }
+        }
+
+        private void AI_SpearThrow()
+        {
+            Timer++;
+            NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, 0, 0.1f);
+            float targetSineLineProgress = Timer / 120f;
+            SightLineProgress = MathHelper.Lerp(SightLineProgress, targetSineLineProgress, 0.1f);
+            FireVelocity = Vector2.Lerp(FireVelocity, (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero), 0.1f);
+            if(Timer >= 120)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    int damage = 12;
+                    int knockback = 2;
+                    Vector2 spawnPoint = NPC.Center;
+                    spawnPoint.Y -= 48;
+                    Vector2 velocity = FireVelocity * 7f;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPoint, velocity,
+                        ModContent.ProjectileType<CaptainSpear>(), damage, knockback, Main.myPlayer);
+                }
+                Timer = 0;
+            }
+
+            float distanceToTarget = Vector2.Distance(NPC.Center, Target.Center);
+            if (distanceToTarget < FleeDistance)
+            {
+                SwitchState(AIState.Pace);
+            }
+        }
+
+        private void DrawSightLine(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture + "_SightLine").Value;
+            Vector2 drawPos = NPC.Center - screenPos;
+            Vector2 drawOrigin = new Vector2(0, texture.Height / 2);
+            float drawRotation = FireVelocity.ToRotation();
+            float drawScale = 1f;
+            Color lineDrawColor = Color.Lerp(Color.Transparent, Color.White, SightLineProgress);
+            spriteBatch.Restart(blendState: BlendState.Additive);
+            spriteBatch.Draw(texture, drawPos, null, lineDrawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
+            spriteBatch.RestartDefaults();
+        }
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            DrawSightLine(spriteBatch, screenPos, drawColor);
+            return base.PreDraw(spriteBatch, screenPos, drawColor);
         }
 
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
@@ -104,34 +222,33 @@ namespace Stellamod.NPCs.Colosseum
                 }
             }
         }
-        private int _frame = 0;
+
         public override void FindFrame(int frameHeight)
         {
-            bool expertMode = Main.expertMode;
-            Player player = Main.player[NPC.target];
-            NPC.frameCounter += 0.5f;
-            if (NPC.frameCounter >= 5)
+            NPC.frameCounter += 0.1f;
+            if (NPC.frameCounter >= 1)
             {
                 _frame++;
                 NPC.frameCounter = 0;
             }
-            if (_frame >= 11)
-            {
-                _frame = 0;
-            }
-            NPC.frame.Y = frameHeight * _frame;
-        }
 
-        float alphaCounter;
-        public override void AI()
-        {
-            float num = 1f - NPC.alpha / 255f;
-            NPC.rotation = NPC.velocity.X * 0.02f;
-            alphaCounter += 0.04f;
-            NPC.spriteDirection = NPC.direction;
-            Player player = Main.player[NPC.target];
-            NPC.aiStyle = 3;
-            NPC.TargetClosest(true);
+            switch (State)
+            {
+                case AIState.Pace:
+                    if(_frame >= 4)
+                    {
+                        _frame = 0;
+                    }
+                    break;
+                case AIState.Spear_Throw:
+                    if (_frame >= 11)
+                    {
+                        _frame = 0;
+                    }
+                    break;
+            }
+     
+            NPC.frame.Y = frameHeight * _frame;
         }
     }
 }

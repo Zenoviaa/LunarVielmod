@@ -2,6 +2,7 @@
 using Stellamod.Effects;
 using Stellamod.Helpers;
 using System;
+using System.Diagnostics.Metrics;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
@@ -44,6 +45,13 @@ namespace Stellamod.Common.Lights
         public float blackCurve;
         public float blurStrength;
 
+        public Vector2 rippleCenter;
+        public float rippleCount;
+        public float rippleRadius;
+        public float rippleSize;
+        public float rippleSpeed;
+        public float rippleDistortStrength;
+        public float rippleTimer;
 
         //Progress Variables
         public float abyssPaletteProgress;
@@ -290,6 +298,20 @@ namespace Stellamod.Common.Lights
             screenShaderData = FilterManager["LunarVeil:Blur"].GetShader();
             screenShaderData.UseProgress(blurStrength * _blurLerp);
             TogglePaletteShader("LunarVeil:Blur", blurActive);
+
+            rippleTimer--;
+            if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive() && rippleTimer > 0)
+            {
+                Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", rippleCenter).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(rippleCenter);
+
+            }
+
+            if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive() && rippleTimer == 0)
+            {
+                float progress = (180f - rippleTimer) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
+                progress = 1f - progress;
+                Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(rippleDistortStrength * (1 - progress / 3f));
+            }
         }
         
         private void CalculateDarkness()

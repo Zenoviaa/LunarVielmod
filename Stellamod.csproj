@@ -252,6 +252,7 @@
     <None Remove="NPCs\Bosses\DreadMire\DreadSpawnEffect - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadSpawnEffectSmol.png" />
     <None Remove="NPCs\Bosses\DreadMire\FinalBeam - Copy.png" />
+    <None Remove="NPCs\Bosses\EliteCommander\Projectiles\EliteCommanderHand.png" />
     <None Remove="NPCs\Bosses\Fenix\BLACKHOLE.png" />
     <None Remove="NPCs\Bosses\Fenix\Projectiles\AlcShot.png" />
     <None Remove="NPCs\Bosses\Fenix\Projectiles\CrileShot.png" />

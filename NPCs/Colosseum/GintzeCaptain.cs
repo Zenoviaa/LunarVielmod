@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Foods;
 using Stellamod.Items.Armors.Pieces.RareMetals;
 using Stellamod.Items.Ores;
 using Stellamod.NPCs.Colosseum.Common;
-using System;
+using Stellamod.NPCs.Colosseum.Projectiles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -18,33 +17,33 @@ namespace Stellamod.NPCs.Colosseum
 {
     public class GintzeCaptain : BaseColosseumNPC
     {
-        // States
-        Vector2 dashDirection = Vector2.Zero;
-        float dashDistance = 0f;
-        public enum ActionState
+        private int _frame;
+        private enum AIState
         {
-
-            Jump,
-            Fall,
-            Wait,
+            Idle,
             Pace,
-            Call
+            Summon
         }
-        // Current state
+        private ref float Timer => ref NPC.ai[0];
+        private AIState State
+        {
+            get => (AIState)NPC.ai[1];
+            set => NPC.ai[1] = (float)value;
+        }
+        private Player Target => Main.player[NPC.target];
+        private float DirectionToTarget
+        {
+            get
+            {
+                if (Target.Center.X < NPC.Center.X)
+                {
+                    return -1;
+                }
+                return 1;
+            }
+        }
 
-        public ActionState State = ActionState.Pace;
-        // Current frame
-        public int frameCounter;
-        // Current frame's progress
-        public int frameTick;
-        // Current state's timer
-        public float timer;
-        public float timer3;
-        public float timer4;
-
-        // AI counter
-        public int counter;
-
+        private float Radius => 256;
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 18;
@@ -68,148 +67,140 @@ namespace Stellamod.NPCs.Colosseum
 
         public override void AI()
         {
-
-
-            timer3++;
-            timer4++;
-            if (timer3 == 1)
-            {
-                /*
-                if (StellaMultiplayer.IsHost)
-                {
-                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 30, (int)NPC.Center.Y - 10, ModContent.NPCType<GintzeSolider>());
-                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 30, (int)NPC.Center.Y - 10, ModContent.NPCType<GintzeSolider>());
-                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 30, (int)NPC.Center.Y - 10, ModContent.NPCType<GintzeSpearman>());
-                }*/
-            }
+            NPC.TargetClosest();
+            NPC.spriteDirection = NPC.direction;
             switch (State)
             {
-
-                case ActionState.Jump:
-                    NPC.damage = 250;
-                    counter++;
-                    Jump();
+                case AIState.Idle:
+                    AI_Idle();
                     break;
+                case AIState.Pace:
+                    AI_Pace();
+                    break;
+                case AIState.Summon:
+                    AI_Summon();
+                    break;
+            }
+        }
 
-                case ActionState.Pace:
-                    NPC.damage = 20;
-                    counter++;
-                    NPC.velocity.Y += 4f;
+        public override void FindFrame(int frameHeight)
+        {
+            base.FindFrame(frameHeight);
+            NPC.frameCounter += 0.33f;
+            if (NPC.frameCounter >= 1f)
+            {
+                _frame++;
+                NPC.frameCounter = 0f;
+            }
 
-                    NPC.TargetClosest(true);
-
-                    // Now we check the make sure the target is still valid and within our specified notice range (500)
-                    if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 150f)
+            switch (State)
+            {
+                case AIState.Idle:
+                case AIState.Summon:
+                    if (_frame < 11)
                     {
-                        // Since we have a target in range, we change to the Notice state. (and zero out the Timer for good measure)
-                        State = ActionState.Call;
-                        ResetTimers();
+                        _frame = 11;
                     }
-
-                    Pace();
-
-
-                    break;
-
-                case ActionState.Call:
-                    NPC.damage = 0;
-                    counter++;
-                    NPC.aiStyle = 3;
-                    AIType = NPCID.SnowFlinx;
-                    NPC.velocity.X *= 0;
-                    Call();
-                    break;
-
-
-                case ActionState.Wait:
-                    NPC.damage = 0;
-                    counter++;
-                    Wait();
-                    break;
-
-                case ActionState.Fall:
-                    NPC.damage = 0;
-                    counter++;
-                    if (NPC.velocity.Y == 0)
+                    if (_frame >= 18)
                     {
-                        NPC.velocity.X = 0;
-                        State = ActionState.Wait;
-                        frameCounter = 0;
-                        frameTick = 0;
+                        _frame = 11;
                     }
                     break;
-                default:
-                    counter++;
+                case AIState.Pace:
+                    if (_frame < 0)
+                    {
+                        _frame = 0;
+                    }
+
+                    if (_frame >= 11)
+                    {
+                        _frame = 0;
+                    }
                     break;
+            }
+            NPC.frame.Y = frameHeight * _frame;
+        }
+
+        private void AI_Idle()
+        {
+            Timer++;
+            NPC.velocity.X *= 0.92f;
+            if (Timer > 120 && NPC.HasValidTarget)
+            {
+                SwitchState(AIState.Pace);
+            }
+        }
+
+        private void AI_Pace()
+        {
+            Timer++;
+            float moveSpeed = 0.5f;
+            Vector2 targetVelocity = new Vector2(DirectionToTarget * moveSpeed, 0);
+            NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetVelocity.X, 0.3f);
+
+            float distanceToTarget = Vector2.Distance(NPC.Center, Target.Center);
+            if (distanceToTarget < Radius)
+            {
+                SwitchState(AIState.Summon);
+            }
+        }
+
+        private void AI_Summon()
+        {
+            Timer++;
+            NPC.velocity.X *= 0.92f;
+            if (Timer > 30 && Timer % 30 == 0 && Timer < 150)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    int damage = 12;
+                    int knockback = 2;
+                    Vector2 spawnPoint = NPC.Center;
+                    spawnPoint.Y -= 48;
+                    spawnPoint.X += Main.rand.NextFloat(-24, 24);
+                    Vector2 velocity = (Target.Center - spawnPoint).SafeNormalize(Vector2.Zero);
+                    velocity *= 7;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPoint, velocity,
+                        ModContent.ProjectileType<CaptainSpear>(), damage, knockback, Main.myPlayer);
+                }
+            }
+
+            if (Timer > 240)
+            {
+                SwitchState(AIState.Idle);
             }
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            // Since the NPC sprite naturally faces left, we want to flip it when its X velocity is positive
-            SpriteEffects effects = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-
-            // The rectangle we specify allows us to only cycle through specific parts of the texture by defining an area inside it
-
-            // Using a rectangle to crop a texture can be imagined like this:
-            // Every rectangle has an X, a Y, a Width, and a Height
-            // Our X and Y values are the position on our texture where we start to sample from, using the top left corner as our origin
-            // Our Width and Height values specify how big of an area we want to sample starting from X and Y
-            Rectangle rect;
-            switch (State)
+            Texture2D bannerTexture = ModContent.Request<Texture2D>(Texture + "_MiniBanner").Value;
+            Vector2 drawOrigin = bannerTexture.Size() / 2f;
+            spriteBatch.Restart(blendState: BlendState.Additive);
+            for (int i = 0; i < 10; i++)
             {
-                case ActionState.Jump:
-                    rect = new Rectangle(0, 6 * 70, 66, 2 * 70);
-                    spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 15, 2, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-                    break;
-                case ActionState.Wait:
-                    rect = new Rectangle(0, 5 * 56, 40, 1 * 56);
-                    spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 20, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-                    break;
-                case ActionState.Fall:
-                    rect = new Rectangle(0, 0, 66, 70);
-                    spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 30, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-                    break;
+                float f = i;
+                float progress = f / 10f;
+                float rot = progress * MathHelper.TwoPi;
+                rot += Main.GlobalTimeWrappedHourly * 0.1f;
+                float rotation = 0;
+                Vector2 offset = rot.ToRotationVector2() * Radius;
+                Vector2 drawPos = NPC.Center - screenPos;
+                float drawScale = 1f;
 
-                case ActionState.Pace:
-                    rect = new Rectangle(0, 1 * 70, 66, 10 * 70);
-                    spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 10, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-                    break;
-
-                case ActionState.Call:
-                    rect = new Rectangle(0, 12 * 70, 66, 6 * 70);
-                    spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-                    break;
+                drawPos += offset;
+                spriteBatch.Draw(bannerTexture, drawPos, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
             }
-            return false;
+            spriteBatch.RestartDefaults();
+            return base.PreDraw(spriteBatch, screenPos, drawColor);
         }
 
-        public void Jump()
+        private void SwitchState(AIState state)
         {
-            timer++;
-
-            if (timer == 9)
+            if (StellaMultiplayer.IsHost)
             {
-                NPC.velocity = new Vector2(0, -10f);
-            }
-            else if (timer > 27)
-            {
-                // after .66 seconds, we go to the hover state. //TODO, gravity?
-                State = ActionState.Fall;
-                ResetTimers();
-            }
-        }
-
-        public void Wait()
-        {
-            timer++;
-            if (timer > 60)
-            {
-                // after .66 seconds, we go to the hover state. //TODO, gravity?
-                State = ActionState.Pace;
-                ResetTimers();
+                Timer = 0;
+                State = state;
+                NPC.netUpdate = true;
             }
         }
 
@@ -236,90 +227,6 @@ namespace Stellamod.NPCs.Colosseum
                     }
                 }
             }
-        }
-
-        public void Pace()
-        {
-            NPC.velocity.Y += 4f;
-            timer++;
-
-            if (Main.player[NPC.target].Distance(NPC.Center) < 150f)
-            {
-
-                if (timer > 30)
-                {
-                    State = ActionState.Call;
-                    ResetTimers();
-                }
-            }
-
-            if (timer < 300)
-            {
-                Player player = Main.player[NPC.target];
-                float speed = 1f;
-
-                int distance = Main.rand.Next(2, 2);
-                NPC.ai[3] = Main.rand.Next(1);
-                double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
-                Vector2 angle = new Vector2((float)anglex);
-                dashDirection = angle * distance - NPC.Center;
-                dashDistance = dashDirection.Length();
-                dashDirection.Normalize();
-                dashDirection *= speed;
-                NPC.velocity = dashDirection;
-                NPC.direction = 2;
-                NPC.velocity.Y += 4f;
-            }
-
-            if (timer > 300)
-            {
-                Player player = Main.player[NPC.target];
-                float speed = -1f;
-
-                int distance = Main.rand.Next(2, 2);
-                NPC.ai[3] = Main.rand.Next(1);
-                double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
-
-                Vector2 angle = new Vector2((float)anglex);
-                dashDirection = angle * distance - NPC.Center;
-                dashDistance = dashDirection.Length();
-                dashDirection.Normalize();
-                dashDirection *= speed;
-                NPC.velocity = dashDirection;
-                NPC.direction = 1;
-                NPC.velocity.Y += 4f;
-            }
-
-            if (timer == 600)
-            {
-                ResetTimers();
-            }
-        }
-        public void Call()
-        {
-            timer++;
-
-            Player player = Main.player[NPC.target];
-
-
-            player.AddBuff(ModContent.BuffType<GintzeSeen>(), 720, false);
-            if (Main.player[NPC.target].Distance(NPC.Center) > 150f)
-            {
-                timer++;
-                if (timer >= 30)
-                {
-                    State = ActionState.Pace;
-                    ResetTimers();
-                }
-            }
-        }
-
-        public void ResetTimers()
-        {
-            timer = 0;
-            timer4 = 0;
-            frameCounter = 0;
-            frameTick = 0;
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
