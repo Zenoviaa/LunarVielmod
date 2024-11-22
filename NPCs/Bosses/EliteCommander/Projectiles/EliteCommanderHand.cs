@@ -28,7 +28,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
         private float PunchTimer;
         private float AlphaTimer;
         private float Duration => 1800;
-        private float Radius => 160;
+        private float Radius => 256;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
