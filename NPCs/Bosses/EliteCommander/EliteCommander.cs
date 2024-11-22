@@ -55,7 +55,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
             }
         }
 
-        private int ShockwaveDamage => 54;
+        private int ShockwaveDamage => 40;
         private int HandDamage => 12;
 
         public override void SetStaticDefaults()
