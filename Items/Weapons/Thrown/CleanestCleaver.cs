@@ -14,7 +14,7 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 6;
+            Item.damage = 5;
         }
 
         public override void SetStaticDefaults() 
@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void SetDefaults()
         {
-            Item.damage = 12;
+            Item.damage = 9;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 40;
             Item.noUseGraphic = true;
@@ -34,7 +34,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
             Item.value = 10000;
-            Item.crit = 30;
+            Item.crit = 10;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<CleanestCleaverProg>();

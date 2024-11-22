@@ -138,7 +138,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             base.SetDefaults();
 
             //Setting this to width and height of the texture cause idk
-            Item.damage = 24;
+            Item.damage = 9;
             Item.width = 56;
             Item.height = 30;
 

@@ -7,8 +7,10 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    public class SwarmerStaff : ModItem
+    public class SwarmerStaff : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Ranged;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Gelatal Slaff");
@@ -17,10 +19,16 @@ namespace Stellamod.Items.Weapons.Mage
             ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
         }
 
+        public override void SetClassSwappedDefaults()
+        {
+            base.SetClassSwappedDefaults();
+            Item.damage = 7;
+        }
+
         public override void SetDefaults()
         {
             Item.staff[Item.type] = true;
-            Item.damage = 12;
+            Item.damage = 15;
             Item.knockBack = 3f;
             Item.mana = 10;
             Item.width = 32;
