@@ -14,7 +14,7 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 50;
+            Item.damage = 20;
             Item.mana = 0;
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -30,7 +30,7 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
 
         public override void SetDefaults()
         {
-            Item.damage = 25;
+            Item.damage = 40;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 24;
             Item.height = 24;
