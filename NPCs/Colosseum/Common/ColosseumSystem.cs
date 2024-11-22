@@ -368,6 +368,19 @@ namespace Stellamod.NPCs.Colosseum.Common
             NetMessage.SendData(MessageID.WorldData);
         }
 
+        public void Reset()
+        {
+            this.enemyCount = 0;
+            this.colosseumIndex = 0;
+            maxWave = 7;
+            waveIndex = 0;
+            _active = false;
+            completedBronzeColosseum = false;
+            completedSilverColosseum = false;
+            completedGoldColosseum = false;
+            completedTrueColosseum = false;
+        }
+
         public void CompleteColosseum()
         {
             _active = false;

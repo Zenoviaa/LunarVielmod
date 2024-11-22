@@ -8135,3 +8135,8 @@ MedCrystal2Item: {
 	DisplayName: Med Crystal2 Item
 	Tooltip: ""
 }
+
+ColosseumResetter: {
+	DisplayName: Colosseum Resetter
+	Tooltip: ""
+}

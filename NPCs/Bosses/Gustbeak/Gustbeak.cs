@@ -1009,10 +1009,11 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                 }
             }
 
-            if (Timer > 70)
+            if (Timer > 70 && Timer % 10 == 0)
             {
-                ShakeModSystem.Shake = 1.5f;
+                FXUtil.ShakeCamera(NPC.position, 1024, 4);
             }
+
             if (Timer > 370)
             {
                 ShakeModSystem.Shake = 0f;

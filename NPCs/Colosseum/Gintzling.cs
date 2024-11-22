@@ -18,6 +18,7 @@ namespace Stellamod.NPCs.Colosseum
 {
     public class Gintzling : BaseColosseumNPC
     {
+        private Player Target => Main.player[NPC.target];
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 8;
@@ -44,6 +45,11 @@ namespace Stellamod.NPCs.Colosseum
             NPC.velocity.X *= 0.99f;
         }
 
+
+        public override bool? CanFallThroughPlatforms()
+        {
+            return Target.Bottom.Y - 16 > NPC.Bottom.Y;
+        }
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ItemID.IronBar, 3, 1, 2));
