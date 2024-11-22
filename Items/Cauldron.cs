@@ -249,6 +249,14 @@ namespace Stellamod.Items
                 weight: 1.0f,
                 yield: 1);
 
+            AddBrew(
+               result: ModContent.ItemType<EYIgniter>(),
+               mold: ModContent.ItemType<BlankCard>(),
+               material: ModContent.ItemType<Ivythorn>(),
+               materialCount: 10,
+               weight: 1.0f,
+               yield: 1);
+
             //Ivythorn x Bow
             AddBrew(
                 result: ModContent.ItemType<IvynShot>(),

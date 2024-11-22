@@ -12,7 +12,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
         {
             base.SetDefaults();
             //Percent increase, 1 is +100% damage
-            DamageModifier = 20;
+            DamageModifier = 9;
             ExplosionType = ModContent.ProjectileType<EldritchBoom>();
 
             SoundStyle explosionSoundStyle = new SoundStyle($"Stellamod/Assets/Sounds/StormDragon_LightingZap");

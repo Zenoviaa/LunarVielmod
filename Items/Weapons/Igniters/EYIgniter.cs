@@ -16,5 +16,11 @@ namespace Stellamod.Items.Weapons.Igniters
             base.SetDefaults();
             Item.damage = 2;
         }
+
+        public override int GetPowderSlotCount()
+        {
+
+            return 3;
+        }
     }
 }

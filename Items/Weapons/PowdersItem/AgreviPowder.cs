@@ -12,7 +12,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
             base.SetDefaults();
 
             //Percent increase, 1 is +100% damage
-            DamageModifier = 30;
+            DamageModifier = 5;
             ExplosionType = ModContent.ProjectileType<AgreviBoom>();
 
             SoundStyle explosionSoundStyle = new SoundStyle($"Stellamod/Assets/Sounds/Kaboom");

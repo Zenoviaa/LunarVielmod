@@ -11,7 +11,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
         {
             base.SetDefaults();
 
-            DamageModifier = 12;
+            DamageModifier = 5;
             ExplosionType = ModContent.ProjectileType<VoidKaboom>();
 
             SoundStyle explosionSoundStyle = new SoundStyle($"Stellamod/Assets/Sounds/ExplosionBurstBomb");
