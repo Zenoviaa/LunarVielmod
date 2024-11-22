@@ -18,7 +18,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void SetClassSwappedDefaults()
         {
             Item.mana = 12;
-            Item.damage = 12;
+            Item.damage = 3;
         }
 
         public override void SetDefaults()
@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.rare = ItemRarityID.Green;
 
             //Damage
-            Item.damage = 12;
+            Item.damage = 6;
             Item.DamageType = DamageClass.Ranged;
 
             Item.shoot = ModContent.ProjectileType<IceCubeMakerProj>();

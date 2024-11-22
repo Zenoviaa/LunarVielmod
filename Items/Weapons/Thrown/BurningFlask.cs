@@ -33,7 +33,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.knockBack = 6;
             Item.value = 10000;
             Item.rare = ItemRarityID.LightPurple;
-            Item.crit = 30;
+            Item.crit = 3;
             Item.UseSound = SoundID.DD2_GhastlyGlaivePierce;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<HornetLob>();

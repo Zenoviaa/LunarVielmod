@@ -19,7 +19,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 4;
+            Item.damage = 6;
             Item.mana = 0;
         }
         public int combo;
@@ -69,7 +69,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			Item.channel = true;
 			Item.autoReuse = true;
 			Item.DamageType = DamageClass.Melee;
-			Item.damage = 9;
+			Item.damage = 12;
 			Item.rare = ItemRarityID.Blue;
 		}
 
