@@ -68,7 +68,7 @@ namespace Stellamod.NPCs.RoyalCapital
 
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
-
+			NPCID.Sets.NoTownNPCHappiness[Type] = true;
 			// Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
 
 
