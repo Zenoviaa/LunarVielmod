@@ -297,9 +297,9 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
                 {
                     float distance = Main.rand.NextFloat(2, 5);
                     float jumpHeight = -14f;
-                    if (InSecondPhase)
+                    if (InSecondPhase && JumpCount > 0)
                     {
-                        jumpHeight = Main.rand.NextFloat(-5f, -10f);
+                        jumpHeight = Main.rand.NextFloat(-5f, -14f);
                     }
                     NPC.velocity = new Vector2(NPC.direction * distance, jumpHeight);
                     NPC.netUpdate = true;
