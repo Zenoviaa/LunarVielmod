@@ -1443,6 +1443,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
         }
         public override void OnKill()
         {
+            base.OnKill();
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedSunsBoss, -1);
         }
     }
