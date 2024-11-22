@@ -43,7 +43,7 @@ namespace Stellamod.NPCs.Colosseum
             }
         }
 
-        private float Radius => 256;
+        private float Radius => 356;
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 18;
