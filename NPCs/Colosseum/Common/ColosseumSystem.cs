@@ -316,6 +316,8 @@ namespace Stellamod.NPCs.Colosseum.Common
                     Spawn(new Point(0, 10), ModContent.NPCType<GintzeCaptain>());
                     Spawn(new Point(33, 10), ModContent.NPCType<GintzeCaptain>());
                     Spawn(new Point(33, 0), ModContent.NPCType<GintzeTumbleWeed>());
+                    Spawn(new Point(33, -10), ModContent.NPCType<GintzeTumbleWeed>());
+                    Spawn(new Point(-33, -10), ModContent.NPCType<GintzeTumbleWeed>());
                     break;
                 case 5:
                     Spawn(new Point(33, 0), ModContent.NPCType<GintzeTumbleWeed>());

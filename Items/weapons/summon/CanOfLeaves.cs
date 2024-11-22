@@ -15,12 +15,12 @@ namespace Stellamod.Items.Weapons.Summon
 
         public override void SetClassSwappedDefaults()
         {
-			Item.damage = 18;
+			Item.damage = 3;
         }
 
         public override void SetDefaults()
 		{
-			Item.damage = 9;
+			Item.damage = 7;
 			Item.mana = 1;
 			Item.width = 20;
 			Item.height = 20;
