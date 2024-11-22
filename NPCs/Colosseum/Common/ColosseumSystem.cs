@@ -361,7 +361,7 @@ namespace Stellamod.NPCs.Colosseum.Common
             this.colosseumIndex = colosseumIndex;
             this.enemyCount = 0;
             waveIndex = 0;
-            maxWave = 6;
+            maxWave = 7;
             colosseumTile = tile;
             _active = true;
             Progress();
