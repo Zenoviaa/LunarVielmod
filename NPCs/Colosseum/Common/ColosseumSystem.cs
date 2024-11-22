@@ -206,6 +206,13 @@ namespace Stellamod.NPCs.Colosseum.Common
                     Spawn(new Point(15, 10), ModContent.NPCType<Gintzling>());
                     break;
                 case 5:
+                    Spawn(new Point(0, 10), ModContent.NPCType<GintzeCaptain>());
+                    Spawn(new Point(-33, 0), ModContent.NPCType<GintzeSolider>());
+                    Spawn(new Point(33, 0), ModContent.NPCType<GintzeSolider>());
+                    Spawn(new Point(-15, 10), ModContent.NPCType<Gintzling>());                   
+                    Spawn(new Point(15, 10), ModContent.NPCType<Gintzling>());
+                    break;
+                case 6:
                     Spawn(new Point(27, 0), ModContent.NPCType<EliteCommander>());
                     break;
             }
@@ -244,11 +251,20 @@ namespace Stellamod.NPCs.Colosseum.Common
                     Spawn(new Point(33, 10), ModContent.NPCType<Gintzling>());
                     Spawn(new Point(-15, 10), ModContent.NPCType<Gintzling>());
                     Spawn(new Point(15, 10), ModContent.NPCType<Gintzling>());
-                    Spawn(new Point(33, 10), ModContent.NPCType<Gintzling>());
+                    Spawn(new Point(-33, 10), ModContent.NPCType<Gintzling>());
                     Spawn(new Point(-33, -10), ModContent.NPCType<GintzeWindRider>());
                     Spawn(new Point(33, -10), ModContent.NPCType<GintzeWindRider>());
                     break;
+
                 case 5:
+                    Spawn(new Point(33, 10), ModContent.NPCType<GintzeCaptain>());
+                    Spawn(new Point(-15, 10), ModContent.NPCType<Gintzling>());
+                    Spawn(new Point(15, 10), ModContent.NPCType<Gintzling>());
+                    Spawn(new Point(-33, 10), ModContent.NPCType<GintzeCaptain>());
+                    Spawn(new Point(-27, -13), ModContent.NPCType<GintzeWindRider>());
+                    Spawn(new Point(27, -13), ModContent.NPCType<GintzeWindRider>());
+                    break;
+                case 6:
                     Spawn(new Point(33, -10), ModContent.NPCType<Gustbeak>());
                     break;
             }
@@ -259,16 +275,53 @@ namespace Stellamod.NPCs.Colosseum.Common
             switch (index)
             {
                 case 0:
+                    Spawn(new Point(0, 10), ModContent.NPCType<GintzeCaptain>());
+                    Spawn(new Point(-15, 10), ModContent.NPCType<Gintzling>());
+                    Spawn(new Point(15, 10), ModContent.NPCType<Gintzling>());
+                    Spawn(new Point(-33, 10), ModContent.NPCType<GintzeCaptain>());
+                    Spawn(new Point(-27, -13), ModContent.NPCType<GintzeWindRider>());
+                    Spawn(new Point(27, -13), ModContent.NPCType<GintzeWindRider>());
+                    Spawn(new Point(35, 0), ModContent.NPCType<GintzeWindRider>());
+                    Spawn(new Point(35, 0), ModContent.NPCType<GintzeWindRider>());
                     break;
                 case 1:
+                    Spawn(new Point(-33, 0), ModContent.NPCType<GintzeTumbleWeed>());
+                    Spawn(new Point(-33, 10), ModContent.NPCType<GintzeTumbleWeed>());
+                    Spawn(new Point(0, 10), ModContent.NPCType<GintzeTumbleWeed>());
+                    Spawn(new Point(33, 0), ModContent.NPCType<GintzeTumbleWeed>());
+                    Spawn(new Point(33, 10), ModContent.NPCType<GintzeTumbleWeed>());
                     break;
                 case 2:
+                    Spawn(new Point(-33, 0), ModContent.NPCType<GintzeTumbleWeed>());
+                    Spawn(new Point(-33, 10), ModContent.NPCType<GintzeTumbleWeed>());
+                    Spawn(new Point(0, 10), ModContent.NPCType<GintzeCaptain>());
+                    Spawn(new Point(33, 0), ModContent.NPCType<GintzeTumbleWeed>());
+                    Spawn(new Point(33, 10), ModContent.NPCType<GintzeTumbleWeed>());
+                    Spawn(new Point(-27, -13), ModContent.NPCType<GintzeWindRider>());
+                    Spawn(new Point(27, -13), ModContent.NPCType<GintzeWindRider>());
+
                     break;
                 case 3:
+                    Spawn(new Point(-33, 0), ModContent.NPCType<GintzeSpearman>());
+                    Spawn(new Point(-33, 10), ModContent.NPCType<GintzeSpearman>());
+                    Spawn(new Point(0, 10), ModContent.NPCType<GintzeCaptain>());
+                    Spawn(new Point(33, 0), ModContent.NPCType<GintzeSpearman>());
+                    Spawn(new Point(33, 10), ModContent.NPCType<GintzeSpearman>());
+                    Spawn(new Point(-33, 10), ModContent.NPCType<GintzeTumbleWeed>());
+                    Spawn(new Point(33, 10), ModContent.NPCType<GintzeTumbleWeed>());
                     break;
                 case 4:
+                    Spawn(new Point(-33, 0), ModContent.NPCType<GintzeTumbleWeed>());
+                    Spawn(new Point(-33, 10), ModContent.NPCType<GintzeCaptain>());
+                    Spawn(new Point(0, 10), ModContent.NPCType<GintzeCaptain>());
+                    Spawn(new Point(33, 10), ModContent.NPCType<GintzeCaptain>());
+                    Spawn(new Point(33, 0), ModContent.NPCType<GintzeTumbleWeed>());
                     break;
                 case 5:
+                    Spawn(new Point(35, 10), ModContent.NPCType<EliteCommander>());
+                    Spawn(new Point(-35, 10), ModContent.NPCType<EliteCommander>());
+                    break;
+                case 6:
                     break;
             }
         }
