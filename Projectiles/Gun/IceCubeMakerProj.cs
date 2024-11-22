@@ -3,6 +3,7 @@ using ParticleLibrary;
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Trails;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -13,6 +14,7 @@ namespace Stellamod.Projectiles.Gun
     internal class IceCubeMakerProj : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
+        private ref float DamageModifier => ref Projectile.ai[1];
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 7;
@@ -35,6 +37,10 @@ namespace Stellamod.Projectiles.Gun
         public override void AI()
         {
             Timer++;
+            if(Timer ==1)
+            {
+                DamageModifier = 1;
+            }
             Projectile.velocity *= 0.98f;
             Projectile.rotation += Projectile.velocity.Length() * 0.05f;
             AI_Collide();
@@ -73,7 +79,7 @@ namespace Stellamod.Projectiles.Gun
 
                     Vector2 bounceVelocity = -Projectile.velocity * 1.5f;
                     Projectile.velocity = bounceVelocity.RotatedByRandom(MathHelper.PiOver4 / 4);
-                    Projectile.damage += 5;
+                    Projectile.ai[1] += 0.2f;
                 }
             }
         }
@@ -113,12 +119,20 @@ namespace Stellamod.Projectiles.Gun
             return base.PreDraw(ref lightColor);
         }
 
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitNPC(target, ref modifiers);
+            DamageModifier = MathHelper.Clamp(DamageModifier, 1f, 3f);
+            modifiers.FinalDamage *= DamageModifier;
+        }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Vector2 bounceVelocity = -Projectile.velocity * 1.5f;
             Projectile.velocity = bounceVelocity.RotatedByRandom(MathHelper.PiOver4 / 16);
             Projectile.velocity += -Vector2.UnitY * 8;
-            Projectile.damage += 5;
+            DamageModifier += 0.1f;
+            Projectile.netUpdate = true;
             if (Main.rand.NextBool(8))
             {
                 target.AddBuff(BuffID.Frostburn, 120);
