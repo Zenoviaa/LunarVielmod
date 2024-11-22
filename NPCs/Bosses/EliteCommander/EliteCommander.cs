@@ -10,6 +10,7 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.EliteCommander.Projectiles;
 using Stellamod.NPCs.Colosseum.Common;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -57,6 +58,21 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
 
         private int ShockwaveDamage => 40;
         private int HandDamage => 12;
+
+        private bool InSecondPhase => NPC.life < NPC.lifeMax / 2;
+        private float JumpTarget;
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(JumpTarget);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            JumpTarget = reader.ReadSingle();
+        }
 
         public override void SetStaticDefaults()
         {
@@ -241,15 +257,27 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
         private void AI_Walk()
         {
             Timer++;
-            float moveSpeed = 0.5f;
+            NPC.TargetClosest();
+            NPC.spriteDirection = NPC.direction;
+
+            float moveSpeed = 1f;
             Vector2 targetVelocity = new Vector2(DirectionToTarget * moveSpeed, 0);
             NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetVelocity.X, 0.3f);
             if (Target.Top.Y < NPC.Top.Y)
             {
                 AbovePlayerTimer++;
             }
-            if (Timer > 220 || AbovePlayerTimer > 60)
+            if (Timer > JumpTarget || AbovePlayerTimer > 60)
             {
+                if (StellaMultiplayer.IsHost)
+                {
+                    JumpTarget = Main.rand.NextFloat(180, 240);
+                    if (InSecondPhase)
+                    {
+                        JumpTarget *= 0.5f;
+                    }
+                    NPC.netUpdate = true;
+                }
                 SwitchState(AIState.Jump);
             }
         }
@@ -259,12 +287,25 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
             Timer++;
             if (Timer == 1)
             {
+                NPC.TargetClosest();
+                NPC.spriteDirection = NPC.direction;
                 JumpCount++;
             }
 
             if (Timer == 10)
             {
-                NPC.velocity = new Vector2(NPC.direction * 2, -14f);
+                if (StellaMultiplayer.IsHost)
+                {
+                    float distance = Main.rand.NextFloat(2, 5);
+                    float jumpHeight = -14f;
+                    if (InSecondPhase)
+                    {
+                        jumpHeight = Main.rand.NextFloat(-5f, -10f);
+                    }
+                    NPC.velocity = new Vector2(NPC.direction * distance, jumpHeight);
+                    NPC.netUpdate = true;
+                }
+                
             }
 
             if (Timer > 20 && NPC.collideY)
@@ -326,9 +367,32 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
             }
 
             NPC.velocity.X = 0;
-            if (Timer >= 60)
+            float target = 60;
+            if (InSecondPhase)
             {
-                SwitchState(AIState.Idle);
+                target *= 0.5f;
+            }
+
+            if (Timer >= target)
+            {
+                if (InSecondPhase)
+                {
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        if (Main.rand.NextBool(2))
+                        {
+                            SwitchState(AIState.Jump);
+                        } else
+                        {
+                            SwitchState(AIState.Idle);
+                        }
+                    }
+                }
+                else
+                {
+                    SwitchState(AIState.Idle);
+                }
+              
             }
         }
 
@@ -422,44 +486,6 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
             //Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
             //npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.GintzeBossRel>()));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GintziaBossBag>()));
-
-            // ItemDropRule.MasterModeDropOnAllPlayers for the pet
-            //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
-
-            // All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
-            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GintzlBroochA>()));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GintzlSpear>(), 4, minimumDropped: 900, maximumDropped: 3000));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), minimumDropped: 3, maximumDropped: 25));
-            notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
-                ModContent.ItemType<GintzelShield>(),
-                ModContent.ItemType<GintzlsSteed>(),
-                ModContent.ItemType<ShinobiTome>()));
-
-            // Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
-            // Boss masks are spawned with 1/7 chance
-            //notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MinionBossMask>(), 7));
-
-            // This part is not required for a boss and is just showcasing some advanced stuff you can do with drop rules to control how items spawn
-            // We make 12-15 ExampleItems spawn randomly in all directions, like the lunar pillar fragments. Hereby we need the DropOneByOne rule,
-            // which requires these parameters to be defined
-            //int itemType = ModContent.ItemType<Gambit>();
-            //var parameters = new DropOneByOne.Parameters()
-            //{
-            //	ChanceNumerator = 1,
-            //	ChanceDenominator = 1,
-            //	MinimumStackPerChunkBase = 1,
-            //	MaximumStackPerChunkBase = 1,
-            //	MinimumItemDropsCount = 1,
-            //	MaximumItemDropsCount = 3,
-            //};
-
-            //notExpertRule.OnSuccess(new DropOneByOne(itemType, parameters));
-
-            // Finally add the leading rule
-            npcLoot.Add(notExpertRule);
         }
 
 
