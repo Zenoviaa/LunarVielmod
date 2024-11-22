@@ -127,7 +127,7 @@ namespace Stellamod.NPCs.Colosseum
             {
                 if (StellaMultiplayer.IsHost)
                 {
-                    int damage = 12;
+                    int damage = 17;
                     int knockback = 2;
                     Vector2 spawnPoint = NPC.Center;
                     spawnPoint.Y -= 48;
