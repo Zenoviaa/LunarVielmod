@@ -56,7 +56,7 @@ namespace Stellamod.NPCs.Colosseum
             NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
             NPC.damage = 1; // The amount of damage that this npc deals
             NPC.defense = 2; // The amount of defense that this npc has
-            NPC.lifeMax = 200; // The amount of health that this npc has
+            NPC.lifeMax = 250; // The amount of health that this npc has
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
             NPC.value = 10f; // How many copper coins the NPC will drop when killed.

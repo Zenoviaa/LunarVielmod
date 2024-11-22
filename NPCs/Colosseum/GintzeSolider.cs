@@ -56,9 +56,9 @@ namespace Stellamod.NPCs.Colosseum
             NPC.width = 50; // The width of the npc's hitbox (in pixels)
             NPC.height = 52; // The height of the npc's hitbox (in pixels)
             NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
-            NPC.damage = 30; // The amount of damage that this npc deals
+            NPC.damage = 37; // The amount of damage that this npc deals
             NPC.defense = 0; // The amount of defense that this npc has
-            NPC.lifeMax = 100; // The amount of health that this npc has
+            NPC.lifeMax = 180; // The amount of health that this npc has
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
             NPC.value = 5f; // How many copper coins the NPC will drop when killed.

@@ -63,9 +63,9 @@ namespace Stellamod.NPCs.Colosseum
 
         public override void SetDefaults()
         {
-            NPC.lifeMax = 100;
+            NPC.lifeMax = 150;
             NPC.damage = 24;
-            NPC.defense = 4;
+            NPC.defense = 9;
             NPC.value = 65f;
             NPC.width = 30;
             NPC.height = 50;

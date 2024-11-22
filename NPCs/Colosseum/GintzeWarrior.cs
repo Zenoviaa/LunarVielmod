@@ -31,8 +31,8 @@ namespace Stellamod.NPCs.Colosseum
         {
             NPC.noGravity = false;
             NPC.noTileCollide = false;
-            NPC.lifeMax = 100;
-            NPC.defense = 4;
+            NPC.lifeMax = 200;
+            NPC.defense = 7;
             NPC.value = 65f;
             NPC.knockBackResist = 0.55f;
             NPC.width = 30;
