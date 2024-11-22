@@ -37,7 +37,7 @@ namespace Stellamod.NPCs.Colosseum
             NPC.knockBackResist = 0.55f;
             NPC.width = 30;
             NPC.height = 50;
-            NPC.damage = 24;
+            NPC.damage = 34;
             NPC.scale = 1.0f;
             NPC.lavaImmune = false;
             NPC.alpha = 0;
