@@ -301,6 +301,10 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
                     {
                         jumpHeight = Main.rand.NextFloat(-5f, -14f);
                     }
+                    else
+                    {
+                        jumpHeight = Main.rand.NextFloat(-12, -16f);
+                    }
                     NPC.velocity = new Vector2(NPC.direction * distance, jumpHeight);
                     NPC.netUpdate = true;
                 }
