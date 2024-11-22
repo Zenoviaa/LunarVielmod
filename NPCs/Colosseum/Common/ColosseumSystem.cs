@@ -3,6 +3,7 @@ using Stellamod.NPCs.Bosses.EliteCommander;
 using Stellamod.NPCs.Bosses.Gustbeak;
 using Stellamod.UI.TitleSystem;
 using Stellamod.WorldG.StructureManager;
+using System;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
@@ -159,8 +160,7 @@ namespace Stellamod.NPCs.Colosseum.Common
         {
             if (!StellaMultiplayer.IsHost)
                 return;
-            TitleCardUISystem uiSystem = ModContent.GetInstance<TitleCardUISystem>();
-            uiSystem.OpenUI($"Wave {index}", duration: 3);
+ 
             switch (colosseumIndex)
             {
                 case 0:
@@ -352,8 +352,12 @@ namespace Stellamod.NPCs.Colosseum.Common
             enemyCount--;
             if (enemyCount < 0)
             {
-                waveIndex++;
+          
+                TitleCardUISystem uiSystem = ModContent.GetInstance<TitleCardUISystem>();
+                uiSystem.OpenUI($"Wave {waveIndex + 1}", duration: 3);
                 Spawn();
+                waveIndex++;
+     
             }
             NetMessage.SendData(MessageID.WorldData);
         }
@@ -370,8 +374,9 @@ namespace Stellamod.NPCs.Colosseum.Common
             waveIndex = 0;
             maxWave = 7;
             colosseumTile = tile;
-            _active = true;
             Progress();
+            _active = true;
+ 
             NetMessage.SendData(MessageID.WorldData);
         }
 
@@ -394,6 +399,8 @@ namespace Stellamod.NPCs.Colosseum.Common
             switch (colosseumIndex)
             {
                 case 0:
+                    NPC.NewNPC(new EntitySource_WorldEvent(), (int)GongSpawnWorld.X, (int)GongSpawnWorld.Y,
+                        ModContent.NPCType<CoinSpawnerNPC>(), ai1: 500);
                     completedBronzeColosseum = true;
                     break;
                 case 1:
@@ -406,6 +413,8 @@ namespace Stellamod.NPCs.Colosseum.Common
                     completedTrueColosseum = true;
                     break;
             }
+
+ 
             NetMessage.SendData(MessageID.WorldData);
         }
     }
