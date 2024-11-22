@@ -18,12 +18,12 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 5;
+            Item.damage = 3;
             Item.mana = 10;
         }
         public override void SetDefaults()
         {
-            Item.damage = 11;
+            Item.damage = 7;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -36,8 +36,8 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.shootSpeed = 40f;
             Item.useAmmo = AmmoID.Arrow;
             Item.UseSound = SoundID.Item5;
-            Item.useAnimation = 40;
-            Item.useTime = 40;
+            Item.useAnimation = 49;
+            Item.useTime = 49;
             Item.channel = true;
             Item.scale = 1f;
             Item.consumeAmmoOnLastShotOnly = true;
