@@ -237,6 +237,7 @@
     <None Remove="Items\Special\VeiledScriptureLumi.png" />
     <None Remove="Items\Special\VeiledScriptureMiner1.png" />
     <None Remove="Items\Special\VeiledScriptureSigfried.png" />
+    <None Remove="Items\Test\ColosseumResetter.png" />
     <None Remove="Localization\en-US\Mods.Stellamod.Dialogue.hjson" />
     <None Remove="NPCs\Bosses\DaedusRework\DaedusR_Head_Boss.png" />
     <None Remove="NPCs\Bosses\DaedusRework\DRay - Copy.png" />
