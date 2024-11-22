@@ -9,6 +9,7 @@ namespace Stellamod.Items.Accessories.Catacombs
     internal class BarryPlayer : ModPlayer
     {
         public bool hasBarry;
+        public float regenTimer;
         public override void ResetEffects()
         {
             hasBarry = false;
@@ -16,17 +17,20 @@ namespace Stellamod.Items.Accessories.Catacombs
 
         public override void PostUpdateEquips()
         {
+            regenTimer--;
+            if (regenTimer > 0)
+                return;
+
             if (hasBarry && Player.ownedProjectileCounts[ModContent.ProjectileType<BarrySpike>()] == 0)
             {
                 float count = 9;
                 for(float i = 0; i < count; i++)
                 {
+                    float progress = i / count;
+                    float rot = progress * 360;
                     Projectile barryProj = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
-                        ModContent.ProjectileType<BarrySpike>(), 90, 20, Player.whoAmI);
+                        ModContent.ProjectileType<BarrySpike>(), 40, 20, Player.whoAmI, ai0: rot);
                     BarrySpike barrySpikeProj = barryProj.ModProjectile as BarrySpike;
-
-                    float degreesBetween = 360 /  count;
-                    barrySpikeProj.DegreesOffset = degreesBetween * i;
                 }
             }
         }

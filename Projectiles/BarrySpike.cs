@@ -2,6 +2,7 @@
 using ParticleLibrary;
 using Stellamod.Items.Accessories.Catacombs;
 using Stellamod.Particles;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -11,14 +12,12 @@ namespace Stellamod.Projectiles
 {
     public class BarrySpike : ModProjectile
 	{
-		private float _degrees;
-		public float DegreesOffset;
-		public const float Rotation_Speed = 1;
-		public const float Distance_From_Owner = 64;
-		public override void SetDefaults()
+		private Player Owner => Main.player[Projectile.owner];
+
+        public override void SetDefaults()
 		{
-			Projectile.width = 20;
-			Projectile.height = 30;
+			Projectile.width = 24;
+			Projectile.height = 24;
 			Projectile.timeLeft = 18;
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;
@@ -27,7 +26,7 @@ namespace Stellamod.Projectiles
 			Projectile.tileCollide = false;
 		}
 
-		public float Timer
+        public float Timer
 		{
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
@@ -35,25 +34,22 @@ namespace Stellamod.Projectiles
 
         public override void AI()
         {
-			Player player = Main.player[Projectile.owner];
-            if (!player.GetModPlayer<BarryPlayer>().hasBarry)
+            if (!Owner.GetModPlayer<BarryPlayer>().hasBarry || Owner.GetModPlayer<BarryPlayer>().regenTimer > 0)
             {
+
 				Projectile.Kill();
 				return;
             }
 
 
-			_degrees += Rotation_Speed;
-			float degrees = _degrees + DegreesOffset;
-			float circleDistance = Distance_From_Owner;
-			Vector2 circlePosition = player.Center + new Vector2(circleDistance, 0).RotatedBy(MathHelper.ToRadians(degrees));
+			Timer++;
+			float degrees = Timer;
+			float circleDistance = 64;
+			Vector2 circlePosition = Owner.Center + new Vector2(circleDistance, 0).RotatedBy(MathHelper.ToRadians(degrees));
 
 			Projectile.timeLeft = 2;
 			Projectile.Center = circlePosition;
-			Projectile.rotation = player.Center.DirectionTo(circlePosition).ToRotation();
-
-			Vector3 RGB = new(1.95f, 0.9f, 2.55f);
-			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+			Projectile.rotation = Owner.Center.DirectionTo(circlePosition).ToRotation();
 		}
 
 		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
@@ -75,10 +71,11 @@ namespace Stellamod.Projectiles
 				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Stone, vel.X, vel.Y);
 			}
 
-			ParticleManager.NewParticle(target.Center, Vector2.Zero, ParticleManager.NewInstance<SparkleTrailParticle>(),
+			Owner.GetModPlayer<BarryPlayer>().regenTimer = 300;
+            ParticleManager.NewParticle(target.Center, Vector2.Zero, ParticleManager.NewInstance<SparkleTrailParticle>(),
 								  Color.White, Main.rand.NextFloat(0.5f, 0.75f));
 			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit2"));
-			switch (Main.rand.Next(0, 3))
+			switch (Main.rand.Next(0, 2))
 			{
 				case 0:
 					target.AddBuff(BuffID.Poisoned, 120);
@@ -86,10 +83,21 @@ namespace Stellamod.Projectiles
 				case 1:
 					target.AddBuff(BuffID.Venom, 120);
 					break;
-				case 2:
-					target.AddBuff(BuffID.StardustMinionBleed, 120);
-					break;
 			}
 		}
+
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+			for(int i = 0; i < 8; i++)
+			{
+				float f = i;
+				float num = 8;
+				float progress = f / num;
+				float rot = progress * MathHelper.TwoPi;
+				Vector2 vel = rot.ToRotationVector2() * 3;
+				Dust.NewDustPerfect(Projectile.Center, DustID.Silver, vel);
+			}
+        }
     }
 }
