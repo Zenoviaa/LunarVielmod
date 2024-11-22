@@ -404,9 +404,13 @@ namespace Stellamod.NPCs.Colosseum.Common
                     completedBronzeColosseum = true;
                     break;
                 case 1:
+                    NPC.NewNPC(new EntitySource_WorldEvent(), (int)GongSpawnWorld.X, (int)GongSpawnWorld.Y,
+                        ModContent.NPCType<CoinSpawnerNPC>(), ai1: 750);
                     completedSilverColosseum = true;
                     break;
                 case 2:
+                    NPC.NewNPC(new EntitySource_WorldEvent(), (int)GongSpawnWorld.X, (int)GongSpawnWorld.Y,
+                        ModContent.NPCType<CoinSpawnerNPC>(), ai1: 1000);
                     completedGoldColosseum = true;
                     break;
                 case 3:
