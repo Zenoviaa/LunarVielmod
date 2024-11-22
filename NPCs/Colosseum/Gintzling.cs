@@ -18,7 +18,7 @@ namespace Stellamod.NPCs.Colosseum
 {
     public class Gintzling : BaseColosseumNPC
     {
-        private Player Target => Main.npc[NPC.target];
+        private Player Target => Main.player[NPC.target];
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 8;
