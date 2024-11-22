@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.NPCs.Bosses.EliteCommander;
 using Stellamod.NPCs.Bosses.Gustbeak;
+using Stellamod.UI.TitleSystem;
 using Stellamod.WorldG.StructureManager;
 using System.IO;
 using Terraria;
@@ -158,6 +159,8 @@ namespace Stellamod.NPCs.Colosseum.Common
         {
             if (!StellaMultiplayer.IsHost)
                 return;
+            TitleCardUISystem uiSystem = ModContent.GetInstance<TitleCardUISystem>();
+            uiSystem.OpenUI($"Wave {index}", duration: 3);
             switch (colosseumIndex)
             {
                 case 0:

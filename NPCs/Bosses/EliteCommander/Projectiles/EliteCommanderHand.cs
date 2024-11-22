@@ -27,7 +27,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
         private ref float KillTimer => ref Projectile.ai[2];
         private float PunchTimer;
         private float AlphaTimer;
-        private float Duration => 3600;
+        private float Duration => 1800;
         private float Radius => 160;
         public override void SetStaticDefaults()
         {

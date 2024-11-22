@@ -482,7 +482,7 @@ namespace Stellamod.Items
 
             //Fable Scrap x Blank Card
             AddBrew(
-               result: ModContent.ItemType<GothiviasCard>(),
+               result: ModContent.ItemType<GothivCard>(),
                mold: ModContent.ItemType<BlankCard>(),
                material: ModContent.ItemType<AlcadizScrap>(),
                materialCount: 10,
@@ -866,6 +866,13 @@ namespace Stellamod.Items
                 weight: 1.0f,
                 yield: 1);
 
+            AddBrew(
+               result: ModContent.ItemType<SunGlyph>(),
+               mold: ModContent.ItemType<BlankAccessory>(),
+               material: ModContent.ItemType<GintzlMetal>(),
+               materialCount: 10,
+               weight: 1.0f,
+               yield: 1);
 
             //Gintzl Metal x Card
             AddBrew(
