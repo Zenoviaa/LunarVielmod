@@ -27,8 +27,8 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.width = 40;
             Item.noUseGraphic = true;
             Item.height = 40;
-            Item.useTime = 23;
-            Item.useAnimation = 23;
+            Item.useTime = 46;
+            Item.useAnimation = 46;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
             Item.value = 10000;
