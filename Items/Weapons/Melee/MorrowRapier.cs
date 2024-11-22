@@ -17,7 +17,7 @@ namespace Stellamod.Items.Weapons.Melee
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 8;
+            Item.damage = 7;
             Item.mana = 0;
         }
         public override void SetStaticDefaults()
@@ -40,7 +40,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.autoReuse = true; // Allows the player to hold click to automatically use the item again. Most spears don't autoReuse, but it's possible when used in conjunction with CanUseItem()
 
 			// Weapon Properties
-			Item.damage = 17;
+			Item.damage = 14;
 			Item.knockBack = 10.5f;
 			Item.noUseGraphic = true; // When true, the item's sprite will not be visible while the item is in use. This is true because the spear projectile is what's shown so we do not want to show the spear sprite as well.
 			Item.DamageType = DamageClass.Melee;
