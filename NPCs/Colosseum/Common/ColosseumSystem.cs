@@ -118,10 +118,17 @@ namespace Stellamod.NPCs.Colosseum.Common
                     _active = false;
                     NetMessage.SendData(MessageID.WorldData);
                 }
-                    
+
                 return;
             }
-      
+            foreach (var player in Main.ActivePlayers)
+            {
+                float distance = Vector2.Distance(GongSpawnWorld, player.Center);
+                if (distance < 1280)
+                {
+                    player.AddBuff(BuffID.NoBuilding, 2);
+                }
+            }
             if (!StellaMultiplayer.IsHost)
                 return;
 
@@ -130,7 +137,7 @@ namespace Stellamod.NPCs.Colosseum.Common
             {
                 return;
             }
-
+            
             if (!completedBronzeColosseum)
             {
                 if (!NPC.AnyNPCs(ModContent.NPCType<BronzeGong>()))

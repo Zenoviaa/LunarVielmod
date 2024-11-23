@@ -462,9 +462,23 @@ SingularityFragment: {
 	Bestiary2: Singularity Fragment
 }
 
+EliteCommander: {
+	BossChecklistIntegration.SpawnInfo: Fight him in the colosseum!
+	Bestiary: Placeholder text
+	Bestiary2: Elite Commander
+	DisplayName: Elite Commander
+}
+
+Gustbeak: {
+	DisplayName: Gustbeak
+	BossChecklistIntegration.SpawnInfo: Fight him in the silver ring of the colosseum!
+	Bestiary: Placeholder text
+	Bestiary2: Gustbeak
+}
+
 CommanderGintzia: {
 	DisplayName: Commander Gintzia
-	BossChecklistIntegration.SpawnInfo: Randomly each day, if you have 3 npcs and have killed the Stone Guardian, an army will raid you!
+	BossChecklistIntegration.SpawnInfo: Fight him in the gold ring of the colosseum!
 	Bestiary: He's evil yet so weak. This fellow betrayed Gothivia during their war against Fenix and his part of the army joined the other side for power.
 	Bestiary2: Commander Gintzia, the betrayer
 }
@@ -1177,12 +1191,10 @@ Azurerin: {
 JackTheScholar.DisplayName: Jack The Scholar
 DaedusTheDevoted.DisplayName: Daedus The Devoted
 ElectricSingularity.DisplayName: Electric Singularity
-Gustbeak.DisplayName: Gustbeak
 BronzeGong.DisplayName: Bronze Gong
 GoldGong.DisplayName: Gold Gong
 SilverGong.DisplayName: Silver Gong
 SpawnerNPC.DisplayName: Spawner N P C
-EliteCommander.DisplayName: Elite Commander
 GintzeTumbleWeed.DisplayName: Gintze Tumble Weed
 CoinSpawnerNPC.DisplayName: Coin Spawner N P C
 EvilCarpet.DisplayName: Evil Carpet

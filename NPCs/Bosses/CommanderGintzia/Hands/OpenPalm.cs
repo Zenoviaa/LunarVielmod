@@ -90,7 +90,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
             {
                 ChargeProgress = 0;
                 NPC.rotation -= DirectionToShootFrom * MathHelper.ToRadians(75);
-                NPC.velocity += (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                NPC.velocity += (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 3;
                 if (StellaMultiplayer.IsHost)
                 {
                     Vector2 fireVelocity = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
@@ -148,7 +148,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
             glowColor *= ChargeProgress;
             glowColor.A = 0;
             Vector2 drawPos = NPC.Center - Main.screenPosition;
-            spriteBatch.Draw(texture, drawPos, null, glowColor, NPC.rotation, texture.Size() / 2, 0.2f, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPos, null, glowColor, NPC.rotation, texture.Size() / 2, 0.5f, SpriteEffects.None, 0);
             return base.PreDraw(spriteBatch, screenPos, drawColor);
         }
     }

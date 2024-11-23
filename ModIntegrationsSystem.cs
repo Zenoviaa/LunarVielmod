@@ -202,7 +202,7 @@ namespace Stellamod
 			int bossType4 = ModContent.NPCType<EliteCommander>();
 
 			// Value inferred from boss progression, see the wiki for details
-			float weight4 = 0.4f;
+			float weight4 = 1.5f;
 
 			// Used for tracking checklist progress
 			Func<bool> downed4 = () => DownedBossSystem.downedGintzlBoss;
@@ -251,7 +251,7 @@ namespace Stellamod
 			int bossType5 = ModContent.NPCType<Gustbeak>();
 
 			// Value inferred from boss progression, see the wiki for details
-			float weight5 = 0.41f;
+			float weight5 = 2.4f;
 
 			// Used for tracking checklist progress
 			Func<bool> downed5 = () => DownedBossSystem.downedSunsBoss;
@@ -297,13 +297,13 @@ namespace Stellamod
 
         private void DoGintziaIntegration()
         {
-            string internalName5 = "CommanderGintzia";
+			string internalName5 = nameof(CommanderGintzia);
 
             // The NPC type of the boss
             int bossType5 = ModContent.NPCType<CommanderGintzia>();
 
             // Value inferred from boss progression, see the wiki for details
-            float weight5 = 0.42f;
+            float weight5 = 2.75f;
 
             // Used for tracking checklist progress
             Func<bool> downed5 = () => DownedBossSystem.downedCommanderGintziaBoss;
@@ -319,13 +319,6 @@ namespace Stellamod
             };
 
             // The item used to summon the boss with (if available)
-            Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
-                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/CommanderGintzia/CommanderGintzia").Value;
-                Vector2 centered = new Vector2(
-                    rect.X + (rect.Width / 2) - (texture.Width / 2),
-                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
-                spriteBatch.Draw(texture, centered, color);
-            };
             // Information for the player so he knows how to encounter the boss
 
             // The boss does not have a custom despawn message, so we omit it
@@ -341,7 +334,7 @@ namespace Stellamod
                 bossType5,
                 new Dictionary<string, object>()
                 {
-                    ["customPortrait"] = customPortait
+       
                 }
             );
         }
@@ -914,7 +907,7 @@ namespace Stellamod
 			//Integrate the Bosses Here
 			DoJackIntegration();
 			DoDaedusIntegration();
-			DoDreadmireIntegration();
+			//DoDreadmireIntegration();
 			DoEliteCommanderIntegration();
 			DoGustbeakIntegration();
 			DoSingularityFragmentIntegration();

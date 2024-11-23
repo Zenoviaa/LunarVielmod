@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Slashers.ScarecrowSaber;
 using System;
@@ -19,7 +20,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
         private int GrabbedPlayer=-1;
         private bool HasDoneGrab;
         private Vector2 ThrowVelocity;
-
+        private float ChargeProgress;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -42,6 +43,11 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
             writer.Write(HasDoneGrab);
         }
 
+        protected override void AI_Orbit()
+        {
+            base.AI_Orbit();
+            ChargeProgress = MathHelper.Lerp(ChargeProgress, 0f, 0.1f);
+        }
         protected override void AI_Attack()
         {
             base.AI_Attack();
@@ -58,6 +64,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
                 SoundEngine.PlaySound(soundStyle, NPC.position);
             }
 
+            ChargeProgress = MathHelper.Lerp(ChargeProgress, 1f, 0.1f);
             if(GrabbedPlayer == -1)
             {
                 Vector2 directionToTarget = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
@@ -145,6 +152,17 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
                 NPC.netUpdate = true;
             }
 
+        }
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D texture = TextureRegistry.FourPointedStar.Value;
+            Color glowColor = Color.White;
+            glowColor *= ChargeProgress;
+            glowColor.A = 0;
+            Vector2 drawPos = NPC.Center - Main.screenPosition;
+            float drawScale = MathHelper.Lerp(0f, 0.5f, ChargeProgress);
+            spriteBatch.Draw(texture, drawPos, null, glowColor, NPC.rotation, texture.Size() / 2, drawScale, SpriteEffects.None, 0);
+            return base.PreDraw(spriteBatch, screenPos, drawColor);
         }
     }
 }

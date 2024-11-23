@@ -96,6 +96,8 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
         {
             base.SetStaticDefaults();
             Main.npcFrameCount[Type] = 30;
+                        NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
         }
 
         public override void SetDefaults()
@@ -808,11 +810,13 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
 
             if (Timer == 240)
             {
-                if (!DownedBossSystem.downedNiiviBoss)
-                {
-                    NPC.SetEventFlagCleared(ref DownedBossSystem.downedCommanderGintziaBoss, -1);
-                }
-
+                NPC.SetEventFlagCleared(ref DownedBossSystem.downedCommanderGintziaBoss, -1);
+                ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
+                colosseumSystem.Progress();
+          
+            }
+            if(Timer == 241)
+            {
                 NPC.active = false;
             }
         }
@@ -891,6 +895,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
         {
             base.ModifyNPCLoot(npcLoot);
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<CommanderGintziaBossRel>()));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VoidKey>()));
         }
 
         public override void OnKill()

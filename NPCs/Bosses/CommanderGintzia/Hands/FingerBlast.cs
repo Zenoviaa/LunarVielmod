@@ -24,6 +24,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
             Projectile.width = 6;
             Projectile.height = 6;
             Projectile.hostile = true;
+            Projectile.tileCollide = false;
             Projectile.timeLeft = 180;
             Projectile.light = 0.2f;
             Projectile.penetrate = -1;
@@ -49,6 +50,10 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 
             Projectile.velocity *= 1.015f;
             Wind.ExpandMultiplier = 0.25f;
+            if(Timer > 60)
+            {
+                Projectile.tileCollide = true;
+            }
         }
 
         public override bool PreDraw(ref Color lightColor)

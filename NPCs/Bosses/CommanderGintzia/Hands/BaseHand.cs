@@ -173,7 +173,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 
             if(State == AIState.Orbit)
             {
-                drawColor = drawColor.MultiplyRGB(Color.LightGray);
+                drawColor = drawColor.MultiplyRGB(Color.Gray);
             }
 
 

@@ -95,7 +95,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
         public Color ColorFunction(float completionRatio)
         {
             Color startColor = Color.White;
-
+            float a = Easing.SpikeOutCirc(completionRatio);
             if (Timer < 30)
             {
                 startColor *= Timer / 30f;
@@ -108,7 +108,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
                 startColor *= p;
             }
 
-            return Color.Lerp(startColor, Color.Transparent, Easing.InCirc(completionRatio));
+            return Color.Lerp(startColor, Color.Transparent, Easing.InCirc(completionRatio)) * a;
         }
 
         public PrimDrawer TrailDrawer { get; private set; } = null;
