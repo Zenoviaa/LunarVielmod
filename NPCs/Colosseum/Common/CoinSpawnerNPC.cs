@@ -27,7 +27,7 @@ namespace Stellamod.NPCs.Colosseum.Common
         {
             base.AI();
             Timer++;
-            if (Timer >= 3)
+            if (Timer >= 2)
             {
                 Timer = 0;
                 if (StellaMultiplayer.IsHost)

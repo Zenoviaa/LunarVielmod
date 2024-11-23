@@ -17,6 +17,10 @@ using Stellamod.NPCs.Bosses.GothiviaTheSun.REK;
 using Stellamod.NPCs.Bosses.SupernovaFragment;
 using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.EliteCommander;
+using Stellamod.NPCs.Bosses.Gustbeak;
+using Stellamod.NPCs.Bosses.CommanderGintzia;
+using Stellamod.NPCs.Bosses.DaedusTheDevoted;
+using Stellamod.NPCs.Bosses.JackTheScholar;
 
 namespace Stellamod
 {
@@ -45,10 +49,10 @@ namespace Stellamod
 		{          
 			// The "LogBoss" method requires many parameters, defined separately below:
 			// The name used for the title of the page
-			string internalName = "Jack";
+			string internalName = "Jack the Scholar";
 
 			// The NPC type of the boss
-			int bossType = ModContent.NPCType<NPCs.Bosses.Jack.Jack>();
+			int bossType = ModContent.NPCType<JackTheScholar>();
 
 			// Value inferred from boss progression, see the wiki for details
 			float weight = 1.2f;
@@ -66,7 +70,6 @@ namespace Stellamod
 			};
 
 			// The item used to summon the boss with (if available)
-			int summonItem = ModContent.ItemType<Items.Consumables.WanderingEssence>();
             Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
                 Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Jack/JackBestiary").Value;
                 Vector2 centered = new Vector2(
@@ -85,7 +88,6 @@ namespace Stellamod
 				bossType,
 				new Dictionary<string, object>()
 				{
-					["spawnItems"] = summonItem,
 					["customPortrait"] = customPortait
 					// Other optional arguments as needed are inferred from the wiki
 				}
@@ -94,10 +96,10 @@ namespace Stellamod
 
 		private void DoDaedusIntegration()
         {
-			string internalName2 = "DaedustheForgotten";
+			string internalName2 = "DaedustheDevoted";
 
 			// The NPC type of the boss
-			int bossType2 = ModContent.NPCType<DaedusR>();
+			int bossType2 = ModContent.NPCType<DaedusTheDevoted>();
 
 			// Value inferred from boss progression, see the wiki for details
 			float weight2 = 2.5f;
@@ -192,7 +194,7 @@ namespace Stellamod
 			);
 		}
 
-		private void DoCommanderGintziaIntegration()
+		private void DoEliteCommanderIntegration()
         {
 			string internalName4 = "EliteCommander";
 
@@ -200,7 +202,7 @@ namespace Stellamod
 			int bossType4 = ModContent.NPCType<EliteCommander>();
 
 			// Value inferred from boss progression, see the wiki for details
-			float weight4 = 0.2f;
+			float weight4 = 0.4f;
 
 			// Used for tracking checklist progress
 			Func<bool> downed4 = () => DownedBossSystem.downedGintzlBoss;
@@ -241,15 +243,15 @@ namespace Stellamod
 			);
 		}
 
-		private void DoSunStalkerIntegration()
+		private void DoGustbeakIntegration()
         {
-			string internalName5 = "Sunstalker";
+			string internalName5 = "Gustbeak";
 
 			// The NPC type of the boss
-			int bossType5 = ModContent.NPCType<NPCs.Bosses.SunStalker.SunStalker>();
+			int bossType5 = ModContent.NPCType<Gustbeak>();
 
 			// Value inferred from boss progression, see the wiki for details
-			float weight5 = 0.4f;
+			float weight5 = 0.41f;
 
 			// Used for tracking checklist progress
 			Func<bool> downed5 = () => DownedBossSystem.downedSunsBoss;
@@ -260,13 +262,13 @@ namespace Stellamod
 			// "collectibles" like relic, trophy, mask, pet
 			List<int> collection5 = new List<int>()
 			{
-				ModContent.ItemType<Items.Placeable.SunsBossRel>(),
+				ModContent.ItemType<Items.Placeable.GustbeakBossRel>(),
 
 			};
 
 			// The item used to summon the boss with (if available)
             Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
-                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/SunStalker/SunStalkerBestiary").Value;
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Gustbeak/Gustbeak").Value;
                 Vector2 centered = new Vector2(
                     rect.X + (rect.Width / 2) - (texture.Width / 2),
                     rect.Y + (rect.Height / 2) - (texture.Height / 2));
@@ -288,16 +290,64 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
                     ["customPortrait"] = customPortait
-                    // Other optional arguments as needed are inferred from the wiki
                 }
 			);
 		}
 
 
+        private void DoGintziaIntegration()
+        {
+            string internalName5 = "CommanderGintzia";
 
-		
+            // The NPC type of the boss
+            int bossType5 = ModContent.NPCType<CommanderGintzia>();
 
-		private void DoSingularityFragmentIntegration()
+            // Value inferred from boss progression, see the wiki for details
+            float weight5 = 0.42f;
+
+            // Used for tracking checklist progress
+            Func<bool> downed5 = () => DownedBossSystem.downedCommanderGintziaBoss;
+
+            // If the boss should show up on the checklist in the first place and when (here, always)
+            Func<bool> available5 = () => true;
+
+            // "collectibles" like relic, trophy, mask, pet
+            List<int> collection5 = new List<int>()
+            {
+                ModContent.ItemType<Items.Placeable.CommanderGintziaBossRel>(),
+
+            };
+
+            // The item used to summon the boss with (if available)
+            Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/CommanderGintzia/CommanderGintzia").Value;
+                Vector2 centered = new Vector2(
+                    rect.X + (rect.Width / 2) - (texture.Width / 2),
+                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                spriteBatch.Draw(texture, centered, color);
+            };
+            // Information for the player so he knows how to encounter the boss
+
+            // The boss does not have a custom despawn message, so we omit it
+
+            // By default, it draws the first frame of the boss, omit if you don't need custom drawing
+            // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+            bossChecklistMod.Call(
+                "LogBoss",
+                Mod,
+                internalName5,
+                weight5,
+                downed5,
+                bossType5,
+                new Dictionary<string, object>()
+                {
+                    ["customPortrait"] = customPortait
+                }
+            );
+        }
+
+
+        private void DoSingularityFragmentIntegration()
         {
 			string internalName6 = "LumarSingularity";
 
@@ -347,6 +397,7 @@ namespace Stellamod
                 }
 			);
 		}
+
 
 		private void DoVerliaIntegration()
         {
@@ -864,8 +915,8 @@ namespace Stellamod
 			DoJackIntegration();
 			DoDaedusIntegration();
 			DoDreadmireIntegration();
-			DoCommanderGintziaIntegration();
-			DoSunStalkerIntegration();
+			DoEliteCommanderIntegration();
+			DoGustbeakIntegration();
 			DoSingularityFragmentIntegration();
 			DoVerliaIntegration();
 			DoIrradiaIntegration();
@@ -878,6 +929,7 @@ namespace Stellamod
 			DoRekIntegration();
             DoGothiviaIntegration();
 			DoSupernovaFragmentIntegration();
+			DoGintziaIntegration();
         }
 	}
 }

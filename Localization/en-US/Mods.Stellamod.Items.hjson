@@ -8140,3 +8140,8 @@ ColosseumResetter: {
 	DisplayName: Colosseum Resetter
 	Tooltip: ""
 }
+
+CommanderGintziaBossRel: {
+	DisplayName: Commander Gintzia Boss Rel
+	Tooltip: ""
+}

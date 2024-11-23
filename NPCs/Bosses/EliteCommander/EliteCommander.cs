@@ -118,8 +118,8 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
             NPC.damage = 24;
             NPC.defense = 10;
             NPC.lifeMax = 900;
-            NPC.HitSound = SoundID.NPCHit1;
-            NPC.DeathSound = SoundID.NPCDeath1;
+            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
             NPC.knockBackResist = 0f;
             NPC.noGravity = false;
             NPC.noTileCollide = false;
@@ -134,7 +134,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
             // The following code assigns a music track to the boss in a simple way.
             if (!Main.dedServ)
             {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Gintzicane");
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/The_Gintzing_Winds");
             }
         }
 

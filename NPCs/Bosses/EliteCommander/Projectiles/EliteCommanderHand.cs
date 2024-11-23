@@ -141,7 +141,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
             {
                 float rot = f * MathHelper.TwoPi;
                 Vector2 glowDrawOffset = rot.ToRotationVector2() * VectorHelper.Osc(2f, 5f, speed: 2f);
-                spriteBatch.Draw(texture, drawPos + glowDrawOffset, frame, drawColor * 0.5f, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(texture, drawPos + glowDrawOffset, frame, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
             }
             spriteBatch.RestartDefaults();
             spriteBatch.Draw(texture, drawPos, frame, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
