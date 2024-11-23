@@ -121,6 +121,11 @@ namespace Stellamod.NPCs.Colosseum
 
         public override void AI()
         {
+            if (!IsColosseumActive())
+            {
+                DespawnExplosion();
+            }
+
             Player player = Main.player[NPC.target];
             NPC.rotation = NPC.velocity.X * 0.03f;
             _targetPos = player.Center;

@@ -26,6 +26,27 @@ JackReading: {
 	Challenge: Jack readies himself!
 }
 
+CommanderGintziaTaunting: {
+	DisplayName: Commander Gintzia
+	Taunt1: Pathetic.
+	Taunt2: You really think you can beat us?
+	Taunt3: You are not ready for what's coming next.
+	Taunt4: I would wish you luck, but that's the only thing keeping you alive thus far.
+	Taunt5: You're in way over your head.
+	Taunt6: Ha! You actually think you're doing something here.
+	Taunt7: What, are you going to say you understand it now?
+	Taunt8: What do you actually hope to accomplish?
+	Taunt9: You look weak.
+	Taunt10: I could probably beat you with no arms.
+	Taunt11: Nah, I'd win.
+	Death1: What a waste of my time.
+	Death2: Come back when you have something to prove.
+	Death3: Typical.
+	Death4: This is why us armless are superior.
+	Death5: Ha!
+	Death6: I bet you thought you were special.
+}
+
 LonelySorceress: {
 	DisplayName: Lonely Sorceress
 	Bestiary: A strange lady, she seems to overflow with magical energy!

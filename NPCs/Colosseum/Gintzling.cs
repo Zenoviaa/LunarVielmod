@@ -42,6 +42,11 @@ namespace Stellamod.NPCs.Colosseum
 
         public override void AI()
         {
+            if (!IsColosseumActive())
+            {
+                DespawnExplosion();
+            }
+
             NPC.velocity.X *= 0.99f;
             NPC.velocity.Y *= 1.02f;
         }

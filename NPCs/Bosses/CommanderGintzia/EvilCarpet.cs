@@ -88,7 +88,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                     break;
             }
 
-            bool shouldKill = !Parent.active || Parent.type != ModContent.NPCType<CommanderGintzia>();
+            bool shouldKill = !Parent.active || (Parent.type != ModContent.NPCType<CommanderGintzia>() && Parent.type != ModContent.NPCType<CommanderGintziaTaunting>());
             if (shouldKill && State != AIState.Despawn)
             {
                 SwitchState(AIState.Despawn);

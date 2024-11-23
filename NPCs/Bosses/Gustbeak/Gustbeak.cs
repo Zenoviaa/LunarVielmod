@@ -7,6 +7,7 @@ using Stellamod.Helpers;
 using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
 using Stellamod.NPCs.Colosseum.Common;
+using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private enum AIState
         {
+            Spawn,
             Idle,
 
             WindBlast_Start,
@@ -226,6 +228,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
         private Vector2 DashStartCenter;
         private Vector2 DashVelocity;
         private float Invisibility = 1f;
+        private float CageDraw;
         private bool DrawHelmet = true;
 
         private int WindBlastDamage => 12;
@@ -335,6 +338,17 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             WingFront.Draw(spriteBatch, screenPos, drawColor);
 
         }
+
+        private void DrawCage(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture + "_Cage").Value;
+            Vector2 drawOrigin = texture.Size() / 2f;
+            Vector2 drawPos = NPC.Center - screenPos;
+            float drawRotation = NPC.rotation;
+            float drawScale = 1f;
+            spriteBatch.Draw(texture, drawPos, null, drawColor * CageDraw, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+        }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             spriteBatch.Restart(blendState: BlendState.Additive);
@@ -370,6 +384,8 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
             spriteBatch.RestartDefaults();
             Wind.Draw(spriteBatch, drawColor);
+            DrawCage(spriteBatch, screenPos, drawColor);
+
             return false;
         }
 
@@ -377,24 +393,33 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
         public override void AI()
         {
             base.AI();
-
-            Head.position = NPC.Center;
-            TailPosition = Head.position + (new Vector2(-48 * FlipValue, 80)).RotatedBy(NPC.rotation);
-            TailPosition.X -= NPC.velocity.X * 8;
-
             float rotToTarget = (TargetCenter - NPC.Center).ToRotation();
-            TailPosition -= rotToTarget.ToRotationVector2() * 24;
-            float flipSpeed = 0.05f;
-            if (Target.Center.X < NPC.Center.X)
+            Head.position = NPC.Center;
+            if(State == AIState.Spawn)
             {
-                //FLip
-                FlipValue -= flipSpeed;
+                Head.position = NPC.Center + new Vector2(42, -16);
+                TailPosition = Head.position + (new Vector2(-48 * FlipValue, 80)).RotatedBy(NPC.rotation);
             }
             else
             {
-                FlipValue += flipSpeed;
+                TailPosition = Head.position + (new Vector2(-48 * FlipValue, 80)).RotatedBy(NPC.rotation);
+                TailPosition.X -= NPC.velocity.X * 8;
+                TailPosition -= rotToTarget.ToRotationVector2() * 24;
+
+
+                float flipSpeed = 0.05f;
+                if (Target.Center.X < NPC.Center.X)
+                {
+                    //FLip
+                    FlipValue -= flipSpeed;
+                }
+                else
+                {
+                    FlipValue += flipSpeed;
+                }
+                FlipValue = MathHelper.Clamp(FlipValue, -1f, 1f);
             }
-            FlipValue = MathHelper.Clamp(FlipValue, -1f, 1f);
+
             Head.drawHelmet = DrawHelmet;
 
             Vector2[] curvePositions = CalculateCurve();
@@ -423,6 +448,9 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
             switch (State)
             {
+                case AIState.Spawn:
+                    AI_Spawn();
+                    break;
                 case AIState.Idle:
                     AI_Idle();
                     break;
@@ -510,9 +538,74 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             }
         }
 
+        private void AI_Spawn()
+        {
+            Timer++;
+            NPC.noGravity = false;
+            NPC.noTileCollide = false;
+            WingFront.Animation = BaseGustbeakWingSegment.AnimationState.Rest_Down;
+            WingBack.Animation = BaseGustbeakWingSegment.AnimationState.Rest_Down;
+            if (NPC.collideY && NPC.velocity.Length() > 1)
+            {
+                NPC.velocity.Y = -NPC.velocity.Y;
+                NPC.velocity.Y *= 0.98f;
+                for (int i = 0; i < 12; i++)
+                {
+                    Vector2 vel = Vector2.UnitX;
+                    vel *= Main.rand.NextFloat(-5f, 5f);
+                    vel = vel.RotatedByRandom(MathHelper.ToRadians(15));
+                    Dust.NewDustPerfect(NPC.Bottom, DustID.SilverCoin, vel);
+                }
+
+                SoundStyle clankSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit");
+                clankSound.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(clankSound, NPC.position);
+            }
+
+            if(Timer < 210)
+            {
+                CageDraw = 1f;
+            }
+            else
+            {
+                CageDraw = MathHelper.Lerp(1f, 0f, (Timer - 210) / 30f);
+            }
+
+            if(Timer == 120)
+            {
+                SoundStyle soundStyle = SoundID.DD2_WyvernScream;
+                soundStyle.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(soundStyle, NPC.position);
+            }
+
+            if(Timer == 240)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, 
+                        ModContent.ProjectileType<IshBoom>(), 0, 0, Main.myPlayer);
+                }
+
+                SoundStyle explosionSoundStyle = new SoundStyle("Stellamod/Assets/Sounds/ExplosionGaseous");
+                explosionSoundStyle.PitchVariance = 0.15f;
+                SoundEngine.PlaySound(explosionSoundStyle, NPC.position);
+
+                SoundStyle soundStyle = SoundID.DD2_WyvernScream;
+                soundStyle.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(soundStyle, NPC.position);
+                FXUtil.ShakeCamera(NPC.position, 2048, 16);
+            }
+
+            if(Timer > 240)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
 
         private void AI_Idle()
         {
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
             NPC.TargetClosest();
             if (!NPC.HasValidTarget)
             {
@@ -535,6 +628,8 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             //8. Opens mouth and charges up a compressed and large airball for an extended period of time before firing it at the player, this is extremely deadly
 
             Timer++;
+            WingFront.Animation = BaseGustbeakWingSegment.AnimationState.Flap;
+            WingBack.Animation = BaseGustbeakWingSegment.AnimationState.Flap;
             Vector2 targetVelocity = new Vector2(0, MathF.Sin(Timer * 0.1f)) * 0.2f;
             NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
             if (Timer % 7 == 0)

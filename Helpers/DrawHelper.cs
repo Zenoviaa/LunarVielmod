@@ -12,10 +12,11 @@ namespace Stellamod.Helpers
 {
     public static class DrawHelper
     {
-		public static void Restart(this SpriteBatch spriteBatch, SpriteSortMode sortMode = SpriteSortMode.Deferred, BlendState blendState = null, Effect effect = null)
+		public static void Restart(this SpriteBatch spriteBatch, SpriteSortMode sortMode = SpriteSortMode.Deferred, BlendState blendState = null, Effect effect = null, SamplerState samplerState = null)
 		{
+			SamplerState newSamplerState = samplerState == null ? Main.DefaultSamplerState : samplerState;
             spriteBatch.End();
-            spriteBatch.Begin(sortMode, blendState, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, effect, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Begin(sortMode, blendState, newSamplerState, DepthStencilState.None, RasterizerState.CullNone, effect, Main.GameViewMatrix.TransformationMatrix);
         }
 
 		public static void RestartDefaults(this SpriteBatch spriteBatch)

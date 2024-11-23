@@ -73,6 +73,11 @@ namespace Stellamod.NPCs.Colosseum
         public override void AI()
         {
             base.AI();
+            if (!IsColosseumActive())
+            {
+                DespawnExplosion();
+            }
+
             NPC.TargetClosest();
             NPC.spriteDirection = NPC.direction;
             switch (State)

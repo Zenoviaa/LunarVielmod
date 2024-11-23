@@ -122,6 +122,11 @@ namespace Stellamod.NPCs.Colosseum
         float alphaCounter;
         public override void AI()
         {
+            if (!IsColosseumActive())
+            {
+                DespawnExplosion();
+            }
+
             float num = 1f - NPC.alpha / 255f;
             NPC.rotation = NPC.velocity.X * 0.02f;
             alphaCounter += 0.04f;

@@ -727,6 +727,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
         private void AI_Death()
         {
             Timer++;
+            NPC.dontTakeDamage = true;
             if(Timer == 1)
             {
                 //Play some sort of sound
@@ -842,7 +843,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SilverCoin, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
             }
-            if (NPC.life <= 0 && State != AIState.Death)
+            if (NPC.life <= 0 && State != AIState.Death && State != AIState.Give_Key)
             {
                 NPC.life = 1;
                 SwitchState(AIState.Death);

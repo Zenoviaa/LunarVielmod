@@ -69,6 +69,11 @@ namespace Stellamod.NPCs.Colosseum
         {
             NPC.TargetClosest();
             NPC.spriteDirection = NPC.direction;
+            if(!IsColosseumActive())
+            {
+                DespawnExplosion();
+            }
+
             switch (State)
             {
                 case AIState.Idle:
@@ -95,6 +100,7 @@ namespace Stellamod.NPCs.Colosseum
 
             switch (State)
             {
+                default:
                 case AIState.Idle:
                 case AIState.Summon:
                     if (_frame < 11)

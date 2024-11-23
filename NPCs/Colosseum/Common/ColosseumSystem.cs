@@ -107,20 +107,20 @@ namespace Stellamod.NPCs.Colosseum.Common
             }
             return true;
         }
-        public override void PostUpdateEverything()
-        {
-            base.PostUpdateEverything();
-            if (_active)
-            {
-                spawnTimer = 0;
-                if (AllPlayersDead())
-                {
-                    _active = false;
-                    NetMessage.SendData(MessageID.WorldData);
-                }
 
-                return;
+        private bool AllPlayersTooFarAway()
+        {
+            foreach (var player in Main.ActivePlayers)
+            {
+                float distance = Vector2.Distance(GongSpawnWorld, player.Center);
+                if (distance < 1280)
+                    return false;
             }
+            return true;
+        }
+
+        private void ApplyNoBuildingDebuff()
+        {
             foreach (var player in Main.ActivePlayers)
             {
                 float distance = Vector2.Distance(GongSpawnWorld, player.Center);
@@ -129,6 +129,31 @@ namespace Stellamod.NPCs.Colosseum.Common
                     player.AddBuff(BuffID.NoBuilding, 2);
                 }
             }
+        }
+
+        private void ActiveUpdate()
+        {
+            //This function runs while the colosseum is active
+            spawnTimer = 0;
+            if (AllPlayersDead() || AllPlayersTooFarAway())
+            {
+                _active = false;
+                NetMessage.SendData(MessageID.WorldData);
+            }
+        }
+
+        public override void PostUpdateEverything()
+        {
+            base.PostUpdateEverything();
+            ApplyNoBuildingDebuff();
+            if (_active)
+            {
+                ActiveUpdate();
+
+
+                return;
+            }
+     
             if (!StellaMultiplayer.IsHost)
                 return;
 
@@ -284,7 +309,7 @@ namespace Stellamod.NPCs.Colosseum.Common
                     Spawn(new Point(27, -13), ModContent.NPCType<GintzeWindRider>());
                     break;
                 case 6:
-                    Spawn(new Point(33, -10), ModContent.NPCType<Gustbeak>());
+                    Spawn(new Point(-33, -64), ModContent.NPCType<Gustbeak>());
                     break;
             }
         }
@@ -393,7 +418,15 @@ namespace Stellamod.NPCs.Colosseum.Common
             colosseumTile = tile;
             Progress();
             _active = true;
- 
+
+
+            //Spawn Chains so you can't leave
+            Projectile.NewProjectile(new EntitySource_WorldEvent(), GongSpawnWorld + new Vector2(0, -216), Vector2.Zero, 
+                ModContent.ProjectileType<GoldChain>(), 25, 4, Main.myPlayer);
+            Projectile.NewProjectile(new EntitySource_WorldEvent(), GongSpawnWorld + new Vector2(0, 326), Vector2.Zero,
+                ModContent.ProjectileType<GoldChain>(), 25, 4, Main.myPlayer);
+            NPC.NewNPC(new EntitySource_WorldEvent(), (int)GongSpawnWorld.X, (int)GongSpawnWorld.Y - 180,
+                ModContent.NPCType<CommanderGintziaTaunting>());
             NetMessage.SendData(MessageID.WorldData);
         }
 
