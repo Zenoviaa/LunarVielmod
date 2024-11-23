@@ -12,6 +12,11 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
     {
         private Vector2[] _oldSwingPos;
         private ref float Timer => ref Projectile.ai[0];
+        private bool Blow
+        {
+            get => Projectile.ai[1] == 1;
+        }
+
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
@@ -20,11 +25,11 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
-            Projectile.height = 64;
-            Projectile.width = 64;
+            Projectile.height = 128;
+            Projectile.width = 128;
             Projectile.hostile = true;
             Projectile.scale = 1f;
-            Projectile.timeLeft = 120;
+            Projectile.timeLeft = 240;
             Projectile.penetrate = -1;
         }
 
@@ -32,7 +37,14 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
         {
             return false;
         }
-        
+
+        public override bool CanHitPlayer(Player target)
+        {
+            if (Blow)
+                return false;
+            return base.CanHitPlayer(target);
+        }
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             float _ = 0f;
@@ -60,6 +72,18 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
                 Vector2 pos = Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity, progress);
                 _oldSwingPos[i] = pos;
             }
+
+            foreach (var player in Main.ActivePlayers)
+            {
+                if(Colliding(Projectile.getRect(), player.getRect()).Value)
+                {
+                    Vector2 suckVelocity = player.Center - Projectile.Center;
+                    Vector2 vel = suckVelocity;
+                    vel.Y = 0;
+                    vel.X = Projectile.velocity.X;
+                    player.velocity += vel * 0.005f;
+                }
+            }
         }
 
         public float WidthFunction(float completionRatio)
@@ -77,9 +101,9 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
                 startColor *= Timer / 30f;
             }
 
-            if (Timer > 90)
+            if (Timer > 210)
             {
-                float p = (Timer - 90) / 30f;
+                float p = (Timer - 210) / 30f;
                 p = 1f - p;
                 startColor *= p;
             }

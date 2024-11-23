@@ -11,6 +11,10 @@ namespace Stellamod.NPCs.Colosseum.Common
         private ref float Timer => ref NPC.ai[0];
         private ref float CoinsToSpawn => ref NPC.ai[1];
         private ref float CoinTimer => ref NPC.ai[2];
+        private int ItemType
+        {
+            get => (int)NPC.ai[3];
+        }
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
@@ -41,7 +45,7 @@ namespace Stellamod.NPCs.Colosseum.Common
                     spawnPos.X += tileCoordinates.X;
                     spawnPos.Y -= Main.rand.Next(0, 40);
 
-                    int itemIndex = Item.NewItem(NPC.GetSource_FromThis(), spawnPos, ItemID.SilverCoin, 1);
+                    int itemIndex = Item.NewItem(NPC.GetSource_FromThis(), spawnPos, ItemType, 1);
                     Item item = Main.item[itemIndex];
                     item.velocity = -Vector2.UnitY * 15;
                     item.velocity.X = Main.rand.NextFloat(-3f, 3f);

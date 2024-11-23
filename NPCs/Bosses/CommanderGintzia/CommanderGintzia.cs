@@ -1,13 +1,19 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Gores;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories;
+using Stellamod.Items.Consumables;
+using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.CommanderGintzia.Hands;
+using Stellamod.NPCs.Bosses.EliteCommander.Projectiles;
 using Stellamod.NPCs.Colosseum.Common;
 using System;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -32,8 +38,12 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             Summon_Hands,
             Summon_Hands_V2,
             Slam,
+            Land,
+            Recover,
             Phase_2_Transition,
             Death,
+            Give_Key,
+            Despawn
         }
 
         private Vector2 FollowCenter;
@@ -47,6 +57,11 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
 
         private ref float AttackCycle => ref NPC.ai[2];
         private Player Target => Main.player[NPC.target];
+        private bool InPhase2 => NPC.life < NPC.lifeMax / 2;
+        private bool Phase2Transition;
+
+        private float TransitionColorProgress;
+        private int ShockwaveDamage => 40;
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
@@ -59,6 +74,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             writer.Write(_scissorHandIndex);
             writer.Write(_evilCarpetIndex);
             writer.WriteVector2(FollowCenter);
+            writer.Write(Phase2Transition);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -73,6 +89,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             _scissorHandIndex = reader.ReadInt32();
             _evilCarpetIndex = reader.ReadInt32();
             FollowCenter = reader.ReadVector2();
+            Phase2Transition = reader.ReadBoolean();
         }
 
         public override void SetStaticDefaults()
@@ -88,7 +105,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             NPC.height = 128;
             NPC.damage = 14;
             NPC.defense = 10;
-            NPC.lifeMax = 2400;
+            NPC.lifeMax = 2500;
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
             NPC.knockBackResist = 0f;
@@ -114,16 +131,53 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 _frame++;
             }
 
-            if(_frame >= 30)
+            int frameWidth = 106;
+            switch (State)
             {
-                _frame = 0;
+                default:
+                    frameHeight = 134;
+                    if (_frame >= 30)
+                    {
+                        _frame = 0;
+                    }
+                    break;
+                case AIState.Slam:
+                    frameWidth = 200;
+                    frameHeight = 156;
+                    if (_frame >= 2)
+                    {
+                        _frame = 0;
+                    }
+                    break;
+                case AIState.Land:
+                    frameWidth = 200;
+                    frameHeight = 156;
+                    if (_frame >= 12)
+                    {
+                        _frame = 11;
+                    }
+                    break;
             }
 
+            NPC.frame.Width = frameWidth;
+            NPC.frame.Height = frameHeight;
             NPC.frame.Y = frameHeight * _frame;
         }
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
+            return false;
+        }
+
+
+        public override bool? CanFallThroughPlatforms()
+        {
+            if (NPC.HasValidTarget && Target.Top.Y > NPC.Bottom.Y)
+            {
+                // If Flutter Slime is currently falling, we want it to keep falling through platforms as long as it's above the player
+                return true;
+            }
+
             return false;
         }
 
@@ -135,6 +189,10 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 FollowCenter = Target.Center;
             }
             NPC.TargetClosest();
+            if(!NPC.HasValidTarget && State != AIState.Despawn)
+            {
+                SwitchState(AIState.Despawn);
+            }
             NPC.spriteDirection = NPC.direction;
             switch (State)
             {
@@ -159,6 +217,18 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 case AIState.Death:
                     AI_Death();
                     break;
+                case AIState.Land:
+                    AI_Land();
+                    break;
+                case AIState.Recover:
+                    AI_Recover();
+                    break;
+                case AIState.Give_Key:
+                    AI_GiveKey();
+                    break;
+                case AIState.Despawn:
+                    AI_Despawn();
+                    break;
             }
         }
 
@@ -176,6 +246,32 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
         {
             NPC npc = Main.npc[npcIndex];
             npc.ai[1] = 2;
+            npc.netUpdate = true;
+        }
+        private void TransitionHand(int npcIndex)
+        {
+            NPC npc = Main.npc[npcIndex];
+            npc.ai[1] = 4;
+            npc.netUpdate = true;
+        }
+        private void KillHand(int npcIndex)
+        {
+            NPC npc = Main.npc[npcIndex];
+            npc.ai[1] = 6;
+            npc.netUpdate = true;
+        }
+
+        private void PutAwayCarpet(int npcIndex)
+        {
+            NPC npc = Main.npc[npcIndex];
+            npc.ai[1] = 1;
+            npc.netUpdate = true;
+        }
+
+        private void ReSummonCarpet(int npcIndex)
+        {
+            NPC npc = Main.npc[npcIndex];
+            npc.ai[1] = 0;
             npc.netUpdate = true;
         }
 
@@ -208,7 +304,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             {
                 if (StellaMultiplayer.IsHost)
                 {
-                    _scissorHandIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<EvilCarpet>(),
+                    _evilCarpetIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<EvilCarpet>(),
                         ai2: NPC.whoAmI);
                 }
             }
@@ -327,8 +423,33 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             Timer++;
             FollowTarget();
             if (Timer >= 60)
-            {   
-                SwitchState(AIState.Summon_Hands);
+            {
+                if(InPhase2 && !Phase2Transition)
+                {
+                    SwitchState(AIState.Phase_2_Transition);
+                    Phase2Transition = true;
+                }
+                else
+                {
+                    if (InPhase2)
+                    {
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            if (Main.rand.NextBool(7))
+                            {
+                                SwitchState(AIState.Slam);
+                            }
+                            else
+                            {
+                                SwitchState(AIState.Summon_Hands_V2);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        SwitchState(AIState.Summon_Hands);    
+                    }
+                }
             }
         }
 
@@ -337,49 +458,53 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             Timer++;
             if(Timer == 1)
             {
-                switch (AttackCycle)
+                if (StellaMultiplayer.IsHost)
                 {
-                    case 0:
-                        if (Main.rand.NextBool(2))
-                        {
-                            SummonHand(_fistIndex);
-                        }
-                        else
-                        {
-                            SummonHand(_openHandIndex);
-                        }
-                 
-                        break;
-                    case 1:
-                        if (Main.rand.NextBool(2))
-                        {
-                            SummonHand(_comeHereIndex);
-                        }
-                        else
-                        {
-                            SummonHand(_fingerGunIndex);
-                        }
+                    switch (AttackCycle)
+                    {
+                        case 0:
+                            if (Main.rand.NextBool(2))
+                            {
+                                SummonHand(_fistIndex);
+                            }
+                            else
+                            {
+                                SummonHand(_openHandIndex);
+                            }
 
-                        break;
-                    case 2:
-                        if (Main.rand.NextBool(2))
-                        {
-                            SummonHand(_okHandIndex);
-                        }
-                        else
-                        {
-                            SummonHand(_scissorHandIndex);
-                        }
-                        break;
-                    case 3:
-                        SummonHand(_handShakeIndex);
-                        break;
+                            break;
+                        case 1:
+                            if (Main.rand.NextBool(2))
+                            {
+                                SummonHand(_comeHereIndex);
+                            }
+                            else
+                            {
+                                SummonHand(_fingerGunIndex);
+                            }
+
+                            break;
+                        case 2:
+                            if (Main.rand.NextBool(2))
+                            {
+                                SummonHand(_okHandIndex);
+                            }
+                            else
+                            {
+                                SummonHand(_scissorHandIndex);
+                            }
+                            break;
+                        case 3:
+                            SummonHand(_handShakeIndex);
+                            break;
+                    }
+                    AttackCycle++;
+                    if (AttackCycle >= 4)
+                    {
+                        AttackCycle = 0;
+                    }
                 }
-                AttackCycle++;
-                if(AttackCycle >= 4)
-                {
-                    AttackCycle = 0;
-                }
+
             }
 
             FollowTarget();
@@ -391,22 +516,315 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
 
         private void AI_SummonHandsV2()
         {
+            Timer++;
+            if (Timer == 1)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    switch (AttackCycle)
+                    {
+                        case 0:
+                            SummonHand(_fistIndex);
+                            if (Main.rand.NextBool(2))
+                            {
+                                SummonHand(_fingerGunIndex);
+                            }
+                            else
+                            {
+                                SummonHand(_openHandIndex);
+                            }
 
+                            break;
+                        case 1:
+                            SummonHand(_fingerGunIndex);
+                            if (Main.rand.NextBool(2))
+                            {
+                                SummonHand(_comeHereIndex);
+                            }
+                            else
+                            {
+                                SummonHand(_okHandIndex);
+                            }
+
+                            break;
+                        case 2:
+                            SummonHand(_scissorHandIndex);
+                            if (Main.rand.NextBool(2))
+                            {
+                                SummonHand(_handShakeIndex);
+                            }
+                            else
+                            {
+                                SummonHand(_fistIndex);
+                            }
+                            break;
+                        case 3:
+                            SummonHand(_handShakeIndex);
+                            SummonHand(_fingerGunIndex);
+                            break;
+                    }
+                    AttackCycle++;
+                    if (AttackCycle >= 4)
+                    {
+                        AttackCycle = 0;
+                    }
+                }
+
+            }
+
+            FollowTarget();
+            if (Timer >= 360)
+            {
+                SwitchState(AIState.Idle);
+            }
         }
 
         private void AI_Slam()
         {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.velocity.Y = 0;
+                NPC.velocity.X = 0;
+                NPC.velocity.Y -= 14;
+                NPC.noGravity = false;
+                NPC.noTileCollide = false;
+                PutAwayCarpet(_evilCarpetIndex);
+            }
 
+            if(NPC.velocity.Y > 0)
+            {
+                Vector2 startPos = NPC.position;
+                Vector2 endPos = Target.position;
+
+                //Only check vertically
+                endPos.X = startPos.X;
+                NPC.noTileCollide = !Collision.CanHitLine(startPos, 1, 1, endPos, 1, 1);
+            }
+            NPC.rotation *= 0.94f;
+            if ((Timer > 30 && NPC.collideY) || Timer > 180)
+            {
+                SwitchState(AIState.Land);
+            }
+        }
+
+        private void AI_Land()
+        {
+            Timer++;
+            NPC.velocity.X *= 0.94f;
+            NPC.rotation *= 0.94f;
+            if(Timer == 1)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    //This is the part where you spawn the cool ahh shockwaves
+                    //But we have to make cool ahh shockwaves :(
+                    int shockwaveDamage = ShockwaveDamage;
+                    int knockback = 1;
+                    Vector2 velocity = Vector2.UnitX;
+                    velocity *= 4;
+                    Vector2 offset = new Vector2(0, -40);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom + offset, velocity,
+                        ModContent.ProjectileType<SuperWindShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
+                    velocity = -velocity;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom + offset, velocity,
+                   ModContent.ProjectileType<SuperWindShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
+                }
+
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/Verifall");
+                soundStyle.PitchVariance = 0.12f;
+                SoundEngine.PlaySound(soundStyle, NPC.position);
+
+                for (int i = 0; i < 16; i++)
+                {
+                    Vector2 dustVelocity = -Vector2.UnitY;
+                    dustVelocity *= Main.rand.NextFloat(3f, 7f);
+                    dustVelocity = dustVelocity.RotatedByRandom(MathHelper.ToRadians(30));
+                    Dust.NewDustPerfect(NPC.Bottom, DustID.GemDiamond, dustVelocity);
+                }
+
+                for (int i = 0; i < 8; i++)
+                {
+                    Vector2 dustVelocity = -Vector2.UnitX;
+                    dustVelocity *= Main.rand.NextFloat(3f, 7f);
+                    dustVelocity.Y -= Main.rand.NextFloat(1f, 2f);
+                    if (i % 2 == 0)
+                    {
+                        dustVelocity.X = -dustVelocity.X;
+                    }
+                    Dust.NewDustPerfect(NPC.Bottom, DustID.GemDiamond, dustVelocity);
+                }
+
+                FXUtil.ShakeCamera(NPC.position, 1024, 16);
+            }
+
+
+            if(Timer >= 60)
+            {
+                SwitchState(AIState.Recover);
+            }
+        }
+
+        private void AI_Recover()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                ReSummonCarpet(_evilCarpetIndex);
+            }
+
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
+            if(Timer >= 60)
+            {
+                SwitchState(AIState.Idle);
+            }
         }
 
         private void AI_Phase2Transition()
         {
+            Timer++;
+            if(Timer == 1)
+            {
+                TransitionHand(_fistIndex);
+                TransitionHand(_okHandIndex);
+                TransitionHand(_comeHereIndex);
+                TransitionHand(_fingerGunIndex);
+                TransitionHand(_handShakeIndex);
+                TransitionHand(_openHandIndex);
+                TransitionHand(_scissorHandIndex);
+            }
 
+            if(Timer % 10 == 0)
+            {
+                Vector2 dustSpawnPos = NPC.Center + Main.rand.NextVector2CircularEdge(64, 64);
+                Vector2 dustVelocity = (NPC.Center - dustSpawnPos).SafeNormalize(Vector2.Zero);
+                dustVelocity *= 5;
+                Dust.NewDustPerfect(dustSpawnPos, DustID.GemDiamond, dustVelocity);
+            }
+
+            NPC.velocity.X *= 0.94f;
+            NPC.velocity.Y *= 0.94f;
+            NPC.velocity.Y += MathF.Sin(Timer * 0.2f) * 0.1f;
+            NPC.rotation *= 0.94f;
+
+            float progress = Timer / 180f;
+            float easedProgress = Easing.SpikeOutCirc(progress);
+            TransitionColorProgress = easedProgress;
+            if(Timer % 16 == 0)
+            {
+                FXUtil.ShakeCamera(NPC.position, 1024, 4);
+            }
+
+            if(Timer > 180)
+            {
+                SwitchState(AIState.Idle);
+            }
         }
 
         private void AI_Death()
         {
+            Timer++;
+            if(Timer == 1)
+            {
+                //Play some sort of sound
+                KillHand(_fistIndex);
+                KillHand(_okHandIndex);
+                KillHand(_comeHereIndex);
+                KillHand(_fingerGunIndex);
+                KillHand(_handShakeIndex);
+                KillHand(_openHandIndex);
+                KillHand(_scissorHandIndex);
+            }
 
+            if(Timer % 8 == 0)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GemDiamond);
+            }
+
+            NPC.velocity.X *= 0.94f;
+            NPC.velocity.Y *= 0.94f;
+            NPC.velocity.Y += MathF.Sin(Timer * 0.2f) * 0.1f;
+
+            float progress = Timer / 120f;
+            TransitionColorProgress = progress;
+            if (Timer >= 120)
+            {
+                SwitchState(AIState.Give_Key);
+            }
+        }
+
+        private void AI_GiveKey()
+        {
+            Timer++;
+            ColosseumSystem colosseum = ModContent.GetInstance<ColosseumSystem>();
+            Point colosseumTile = colosseum.colosseumTile;
+            Vector2 colosseumWorld = colosseum.GongSpawnWorld;
+
+            Vector2 velocity = (colosseumWorld - NPC.Center).SafeNormalize(Vector2.Zero);
+            float distance = Vector2.Distance(NPC.Center, colosseumWorld);
+            float maxSpeed = 6;
+            if(distance < maxSpeed)
+            {
+                velocity *= distance;
+            }
+            else
+            {
+                velocity *= maxSpeed;
+            }
+
+  
+            NPC.rotation = NPC.velocity.X * 0.025f;
+
+            if(Timer < 150)
+            {
+                NPC.velocity = Vector2.Lerp(NPC.velocity, velocity, 0.3f);
+                NPC.velocity.Y += MathF.Sin(Timer * 0.2f) * 0.1f;
+            }
+
+            if(Timer == 150)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    int itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(),
+                        ModContent.ItemType<VoidKey>(), Main.rand.Next(1, 1));
+                    NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
+                }
+                if (StellaMultiplayer.IsHost)
+                {
+                    int itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(),
+                        ModContent.ItemType<CommanderGintziaBossRel>(), Main.rand.Next(1, 1));
+                    NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
+                }
+            }
+
+            if(Timer > 150)
+            {
+                if(NPC.velocity.Y > -14)
+                {
+                    NPC.velocity.Y -= 0.1f;
+                }
+            }
+
+            if (Timer == 240)
+            {
+                if (!DownedBossSystem.downedNiiviBoss)
+                {
+                    NPC.SetEventFlagCleared(ref DownedBossSystem.downedCommanderGintziaBoss, -1);
+                }
+
+                NPC.active = false;
+            }
+        }
+
+        private void AI_Despawn()
+        {
+            Timer++;
+            if (NPC.velocity.Y > -14)
+            {
+                NPC.velocity.Y -= 0.1f;
+            }
+            NPC.EncourageDespawn(60);
         }
 
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
@@ -416,31 +834,28 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
 
         public override void HitEffect(NPC.HitInfo hit)
         {
-            for (int k = 0; k < 4; k++)
+            for (int k = 0; k < 2; k++)
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SilverCoin, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
             }
+            if (NPC.life <= 0 && State != AIState.Death)
+            {
+                NPC.life = 1;
+                SwitchState(AIState.Death);
+            }
+
             if (NPC.life <= 0)
             {
-                for (int i = 0; i < 20; i++)
-                {
-                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Copper, 0f, -2f, 180, default, .6f);
-                    Main.dust[num].noGravity = true;
-                    Dust expr_62_cp_0 = Main.dust[num];
-                    expr_62_cp_0.position.X = expr_62_cp_0.position.X + (Main.rand.Next(-50, 51) / 20 - 1.5f);
-                    Dust expr_92_cp_0 = Main.dust[num];
-                    expr_92_cp_0.position.Y = expr_92_cp_0.position.Y + (Main.rand.Next(-50, 51) / 20 - 1.5f);
-                    if (Main.dust[num].position != NPC.Center)
-                    {
-                        Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
-                    }
-                }
+                NPC.life = 1;
             }
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            string texturePath = Texture;
+            if (State == AIState.Slam || State == AIState.Land)
+                texturePath += "_Slam";
+            Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
             Vector2 drawPos = NPC.Center - screenPos;
             Vector2 drawOrigin = NPC.frame.Size() / 2f;
             float drawRotation = NPC.rotation;
@@ -455,10 +870,27 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 Color glowColor = drawColor * 0.6f;
                 spriteBatch.Draw(texture, glowDrawPos, NPC.frame, glowColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
             }
-            spriteBatch.RestartDefaults();
 
+
+            spriteBatch.RestartDefaults();
             spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+
+            if(TransitionColorProgress > 0)
+            {
+                spriteBatch.Restart(blendState: BlendState.Additive);
+                for(int i = 0; i < 2; i++)
+                {
+                    spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor * TransitionColorProgress, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+                }
+                spriteBatch.RestartDefaults();
+            }
             return false;
+        }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<CommanderGintziaBossRel>()));
         }
 
         public override void OnKill()

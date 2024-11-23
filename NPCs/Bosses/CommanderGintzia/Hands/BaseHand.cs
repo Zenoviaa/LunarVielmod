@@ -15,7 +15,10 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
             Orbit,
             Attack,
             DoAttack,
-            Despawn
+            Despawn,
+            DoTransition,
+            Transition,
+            DoDeath,
         }
 
         private float OrbitProgress;
@@ -73,11 +76,19 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
         public override void AI()
         {
             base.AI();
-            if (NPC.ai[1] == 2)
+            RotationTimer++;
+            if (State == AIState.DoAttack)
             {
                 SwitchState(AIState.Attack);
             }
-
+            if (State == AIState.DoTransition)
+            {
+                SwitchState(AIState.Transition);
+            }
+            if (State == AIState.DoDeath)
+            {
+                SwitchState(AIState.Despawn);
+            }
             bool shouldKill = !Parent.active || Parent.type != ModContent.NPCType<CommanderGintzia>();
             if (shouldKill && State != AIState.Despawn)
             {
@@ -95,9 +106,24 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
                 case AIState.Despawn:
                     AI_Despawn();
                     break;
+                case AIState.Transition:
+                    AI_Transition();
+                    break;
             }
         }
 
+        private void AI_Transition()
+        {
+            Timer++;
+            float progress = Timer / 180f;
+            float easedProgress = Easing.SpikeOutCirc(progress);
+            RotationTimer += (easedProgress * 3f);
+            AI_Orbit();
+            if (Timer >= 180)
+            {
+                SwitchState(AIState.Orbit);
+            }
+        }
         private void AI_Despawn()
         {
             Timer++;
@@ -111,7 +137,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 
         protected virtual void AI_Orbit()
         {
-            RotationTimer++;
+
             float swingRange = MathHelper.TwoPi;
             float swingXRadius = 128;
             float swingYRadius = 48;
@@ -150,6 +176,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
                 drawColor = drawColor.MultiplyRGB(Color.LightGray);
             }
 
+
             spriteBatch.Restart(blendState: BlendState.Additive);
             for (float f = 0f; f < 1f; f += 0.25f)
             {
@@ -158,6 +185,10 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
                 Vector2 glowDrawPos = drawPos + offset;
                 Color glowColor = drawColor * 0.8f;
                 spriteBatch.Draw(texture, glowDrawPos, null, glowColor * dp, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
+                if (State == AIState.Transition)
+                {
+                    spriteBatch.Draw(texture, glowDrawPos, null, glowColor * dp, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
+                }
             }
             spriteBatch.RestartDefaults();
             spriteBatch.Draw(texture, drawPos, null, drawColor * dp, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);

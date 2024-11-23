@@ -54,7 +54,7 @@ namespace Stellamod.NPCs
 
         public List<Structure> Structures = new List<Structure>();
         public PointSpawnNPC[] npcs;
-
+        public float spawnTimer;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -113,6 +113,14 @@ namespace Stellamod.NPCs
             if (StellaMultiplayer.IsHost)
             {
                 if (NPC.AnyDanger(ignorePillarsAndMoonlordCountdown: true))
+                {
+                    spawnTimer = 0;
+                    return;
+                }
+            
+
+                spawnTimer++;
+                if (spawnTimer < 30)
                     return;
 
                 for (int i = 0; i < _npcPointSpawners.Count; i++)

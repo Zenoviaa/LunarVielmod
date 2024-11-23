@@ -71,7 +71,7 @@ namespace Stellamod.NPCs.Colosseum.Common
                 Color endColor = Color.Transparent;
                 Color color = Color.Lerp(startColor, endColor, progress);
 
-                Vector2 drawPos = oldPos + NPC.Size / 2;
+                Vector2 drawPos = (oldPos + NPC.Size / 2) - Main.screenPosition;
                 spriteBatch.Draw(texture, drawPos, null, drawColor * Alpha, NPC.rotation, drawOrigin, NPC.scale, SpriteEffects.None, 0f);
             }
 
@@ -128,6 +128,7 @@ namespace Stellamod.NPCs.Colosseum.Common
         {
             Alpha = MathHelper.Lerp(Alpha, 1f, 0.1f);
             Timer++;
+            NPC.dontTakeDamage = Timer < 120;
             Vector2 targetVelocity = new Vector2(0f, MathF.Sin(Timer * 0.002f) * 0.1f);
             NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.1f);
             if (Timer % 16 == 0)

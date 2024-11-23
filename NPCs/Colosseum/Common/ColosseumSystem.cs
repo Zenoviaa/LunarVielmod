@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Ores;
+using Stellamod.NPCs.Bosses.CommanderGintzia;
 using Stellamod.NPCs.Bosses.EliteCommander;
 using Stellamod.NPCs.Bosses.Gustbeak;
 using Stellamod.UI.TitleSystem;
@@ -28,8 +30,9 @@ namespace Stellamod.NPCs.Colosseum.Common
         public bool completedGoldColosseum;
         public bool completedTrueColosseum;
         public Point colosseumTile;
+        public float spawnTimer;
 
-        private Vector2 GongSpawnWorld
+        public Vector2 GongSpawnWorld
         {
             get
             {
@@ -109,6 +112,7 @@ namespace Stellamod.NPCs.Colosseum.Common
             base.PostUpdateEverything();
             if (_active)
             {
+                spawnTimer = 0;
                 if (AllPlayersDead())
                 {
                     _active = false;
@@ -121,6 +125,11 @@ namespace Stellamod.NPCs.Colosseum.Common
             if (!StellaMultiplayer.IsHost)
                 return;
 
+            spawnTimer++;
+            if(spawnTimer < 120)
+            {
+                return;
+            }
 
             if (!completedBronzeColosseum)
             {
@@ -329,6 +338,7 @@ namespace Stellamod.NPCs.Colosseum.Common
                     Spawn(new Point(-35, 10), ModContent.NPCType<EliteCommander>());
                     break;
                 case 6:
+                    Spawn(new Point(0, -30), ModContent.NPCType<CommanderGintzia>());
                     break;
             }
         }
@@ -400,17 +410,23 @@ namespace Stellamod.NPCs.Colosseum.Common
             {
                 case 0:
                     NPC.NewNPC(new EntitySource_WorldEvent(), (int)GongSpawnWorld.X, (int)GongSpawnWorld.Y,
-                        ModContent.NPCType<CoinSpawnerNPC>(), ai1: 500);
+                        ModContent.NPCType<CoinSpawnerNPC>(), ai1: 500, ai3: ItemID.SilverCoin);
+                    NPC.NewNPC(new EntitySource_WorldEvent(), (int)GongSpawnWorld.X, (int)GongSpawnWorld.Y,
+                        ModContent.NPCType<CoinSpawnerNPC>(), ai1: 30, ai3: ModContent.ItemType<GintzlMetal>());
                     completedBronzeColosseum = true;
                     break;
                 case 1:
                     NPC.NewNPC(new EntitySource_WorldEvent(), (int)GongSpawnWorld.X, (int)GongSpawnWorld.Y,
-                        ModContent.NPCType<CoinSpawnerNPC>(), ai1: 750);
+                        ModContent.NPCType<CoinSpawnerNPC>(), ai1: 750, ai3: ItemID.SilverCoin);
+                    NPC.NewNPC(new EntitySource_WorldEvent(), (int)GongSpawnWorld.X, (int)GongSpawnWorld.Y,
+                        ModContent.NPCType<CoinSpawnerNPC>(), ai1: 50, ai3: ModContent.ItemType<GintzlMetal>());
                     completedSilverColosseum = true;
                     break;
                 case 2:
                     NPC.NewNPC(new EntitySource_WorldEvent(), (int)GongSpawnWorld.X, (int)GongSpawnWorld.Y,
-                        ModContent.NPCType<CoinSpawnerNPC>(), ai1: 1000);
+                        ModContent.NPCType<CoinSpawnerNPC>(), ai1: 1000, ai3: ItemID.SilverCoin);
+                    NPC.NewNPC(new EntitySource_WorldEvent(), (int)GongSpawnWorld.X, (int)GongSpawnWorld.Y,
+                        ModContent.NPCType<CoinSpawnerNPC>(), ai1: 100, ai3: ModContent.ItemType<GintzlMetal>());
                     completedGoldColosseum = true;
                     break;
                 case 3:

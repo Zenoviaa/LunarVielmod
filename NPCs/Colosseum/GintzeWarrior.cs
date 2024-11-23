@@ -23,7 +23,6 @@ namespace Stellamod.NPCs.Colosseum
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), 1, 1, 3));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bread>(), 10, 1, 3));
         }
 
