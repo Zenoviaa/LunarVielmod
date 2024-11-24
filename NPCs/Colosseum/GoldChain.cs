@@ -39,7 +39,7 @@ namespace Stellamod.NPCs.Colosseum
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             float _ = 0f;
-            float width = Projectile.width * 0.8f;
+            float width = Projectile.height * 0.8f;
             Vector2 start = Projectile.Center;
 
             Vector2 direction = Vector2.UnitX;
@@ -57,7 +57,7 @@ namespace Stellamod.NPCs.Colosseum
             }
             float leftLength = ProjectileHelper.PerformBeamHitscan(OriginalCenter, -Vector2.UnitX, 2400);
             Projectile.Left = OriginalCenter + new Vector2(-leftLength, 0) + new Vector2(8, 0) ;
-            Length = ProjectileHelper.PerformBeamHitscan(Projectile.Center, Vector2.UnitX, 2400);
+            Length = ProjectileHelper.PerformBeamHitscan(Projectile.Left, Vector2.UnitX, 2400);
  
             ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
             if (!colosseumSystem.IsActive())
