@@ -7,6 +7,7 @@ using Stellamod.Helpers;
 using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
 using Stellamod.NPCs.Colosseum.Common;
+using Stellamod.Projectiles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
 using System;
@@ -583,7 +584,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                 if (StellaMultiplayer.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, 
-                        ModContent.ProjectileType<IshBoom>(), 0, 0, Main.myPlayer);
+                        ModContent.ProjectileType<AivanKaboom>(), 0, 0, Main.myPlayer);
                 }
 
                 SoundStyle explosionSoundStyle = new SoundStyle("Stellamod/Assets/Sounds/ExplosionGaseous");

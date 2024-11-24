@@ -97,7 +97,7 @@ namespace Stellamod.UI.TitleSystem
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, default, default, default, default, Main.UIScaleMatrix);
 
-            spriteBatch.Draw(texture, drawPos, null, Color.White, 0, Vector2.Zero, drawScale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, drawPos, null, Color.White * easedProgress, 0, Vector2.Zero, drawScale, SpriteEffects.None, 0f);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, default, default, default, default, Main.UIScaleMatrix);
 

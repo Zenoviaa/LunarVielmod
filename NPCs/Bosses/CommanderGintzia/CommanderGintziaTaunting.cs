@@ -86,10 +86,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
         public override void AI()
         {
             base.AI();
-            if (Timer % 120 == 0)
-            {
-                FollowCenter = Target.Center;
-            }
+            FollowCenter = ModContent.GetInstance<ColosseumSystem>().GongSpawnWorld + new Vector2(MathF.Sin(Timer * 0.01f) * 800, -168);
             NPC.TargetClosest();
             NPC.spriteDirection = NPC.direction;
             switch (State)

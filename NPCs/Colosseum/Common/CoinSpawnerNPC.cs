@@ -21,10 +21,16 @@ namespace Stellamod.NPCs.Colosseum.Common
             base.SetDefaults();
             NPC.width = 1;
             NPC.height = 1;
-            NPC.lifeMax = 1;
-            NPC.defense = 1;
+            NPC.lifeMax = 100;
+            NPC.damage = 100;
+            NPC.defense = 100;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
+        }
+
+        public override bool CheckActive()
+        {
+            return false;
         }
 
         public override void AI()

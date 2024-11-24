@@ -387,6 +387,11 @@ namespace Stellamod.NPCs.Colosseum.Common
             {
                 CompleteColosseum();
             }
+            else
+            {
+                TitleCardUISystem uiSystem = ModContent.GetInstance<TitleCardUISystem>();
+                uiSystem.OpenUI($"Wave {waveIndex + 1}", duration: 3);
+            }
         }
 
         public void Progress()
@@ -395,8 +400,7 @@ namespace Stellamod.NPCs.Colosseum.Common
             if (enemyCount < 0)
             {
           
-                TitleCardUISystem uiSystem = ModContent.GetInstance<TitleCardUISystem>();
-                uiSystem.OpenUI($"Wave {waveIndex + 1}", duration: 3);
+         
                 Spawn();
                 waveIndex++;
      
@@ -421,9 +425,9 @@ namespace Stellamod.NPCs.Colosseum.Common
 
 
             //Spawn Chains so you can't leave
-            Projectile.NewProjectile(new EntitySource_WorldEvent(), GongSpawnWorld + new Vector2(0, -216), Vector2.Zero, 
+            Projectile.NewProjectile(new EntitySource_WorldEvent(), GongSpawnWorld + new Vector2(0, -266), Vector2.Zero, 
                 ModContent.ProjectileType<GoldChain>(), 25, 4, Main.myPlayer);
-            Projectile.NewProjectile(new EntitySource_WorldEvent(), GongSpawnWorld + new Vector2(0, 326), Vector2.Zero,
+            Projectile.NewProjectile(new EntitySource_WorldEvent(), GongSpawnWorld + new Vector2(0, 412), Vector2.Zero,
                 ModContent.ProjectileType<GoldChain>(), 25, 4, Main.myPlayer);
             NPC.NewNPC(new EntitySource_WorldEvent(), (int)GongSpawnWorld.X, (int)GongSpawnWorld.Y - 180,
                 ModContent.NPCType<CommanderGintziaTaunting>());
