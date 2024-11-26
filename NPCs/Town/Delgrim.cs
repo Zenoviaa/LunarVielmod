@@ -26,6 +26,9 @@ using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Thrown.Jugglers;
 using Stellamod.Items.Weapons.Whips;
+using Stellamod.UI.CellConverterSystem;
+using Stellamod.UI.DialogueTowning;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -44,7 +47,8 @@ namespace Stellamod.NPCs.Town
     // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
     //[AutoloadHead]
     [AutoloadBossHead]
-	public class Delgrim : PointSpawnNPC
+	public class Delgrim : PointSpawnNPC,
+        ITownDialogue
 	{
 		public int NumberOfTimesTalkedTo = 0;
 		public const string ShopName = "Shop";
@@ -71,30 +75,9 @@ namespace Stellamod.NPCs.Town
 							  // If you want to see an example of manually modifying these when the NPC is drawn, see PreDraw
 			};
 
-
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
-
-			// Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
-
-
-
-
-
-			; // < Mind the semicolon!
 		}
 
-		// Current state
-
-
-		// Current frame
-		public int frameCounter;
-		// Current frame's progress
-		public int frameTick;
-		// Current state's timer
-		public float timer;
-
-		// AI counter
-		public int counter;
 		public override void SetDefaults()
 		{
 			// Sets NPC to be a Town NPC
@@ -234,80 +217,29 @@ namespace Stellamod.NPCs.Town
 		public override List<string> SetNPCNameList()
 		{
 			return new List<string>() {
-				"Magical Engineer Delgrim",
 				"Magical Engineer Delgrim"
-
 			};
 		}
 
 
-
-
 		public override void SetChatButtons(ref string button, ref string button2)
-		{ // What the chat buttons are when you open up the chat UI
-			button2 = Language.GetTextValue("LegacyInterface.28");
-			button = LangText.Chat(this, "Button");
-
-		}
-
-		public override void OnChatButtonClicked(bool firstButton, ref string shop)
 		{
-			if (!firstButton)
-			{
-				// We want 3 different functionalities for chat buttons, so we use HasItem to change button 1 between a shop and upgrade action.
+            // What the chat buttons are when you open up the chat UI
+            button2 = Language.GetTextValue("LegacyInterface.28");
+            button = LangText.Chat(this, "Button");
 
-				//if (Main.LocalPlayer.HasItem(ItemID.HiveBackpack))
-				//{
-				//	SoundEngine.PlaySound(SoundID.Item37); // Reforge/Anvil sound
+        }
 
-				//	Main.npcChatText = $"I upgraded your {Lang.GetItemNameValue(ItemID.HiveBackpack)} to a {Lang.GetItemNameValue(ModContent.ItemType<WaspNest>())}";
-
-				//	int hiveBackpackItemIndex = Main.LocalPlayer.FindItem(ItemID.HiveBackpack);
-				//	var entitySource = NPC.GetSource_GiftOrReward();
-
-				//	Main.LocalPlayer.inventory[hiveBackpackItemIndex].TurnToAir();
-				//	Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<WaspNest>());
-
-				//	return;
-				//}
-
-				shop = ShopName;
-			}
-
-			if (firstButton)
-			{
-
-				Player player = Main.LocalPlayer;
-				WeightedRandom<string> chat = new WeightedRandom<string>();
-
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2"));
-
-				//-----------------------------------------------------------------------------------------------	
-				Main.npcChatText = Main.npcChatText = LangText.Chat(this, "Special" + Main.rand.Next(1,31));
-			}
-
-
-		}
-
-
-		public void ResetTimers()
+        public override void OnChatButtonClicked(bool firstButton, ref string shop)
 		{
-			timer = 0;
-			frameCounter = 0;
-			frameTick = 0;
-		}
+            if (!firstButton)
+            {
+                shop = ShopName;
+            }
+        }
 
 
-
-
-
-
-
-
-
-
-
-		public override void ModifyActiveShop(string shopName, Item[] items)
+        public override void ModifyActiveShop(string shopName, Item[] items)
 		{
 			foreach (Item item in items)
 			{
@@ -325,7 +257,6 @@ namespace Stellamod.NPCs.Town
 				}
 			}
 		}
-
 
 
 
@@ -370,54 +301,73 @@ namespace Stellamod.NPCs.Town
         }
 
 
+        public void SetTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
+        {
+			//Set buttons
+            buttons.Add(new Tuple<string, Action>("Shop", OpenShop));
+			buttons.Add(new Tuple<string, Action>("CellConverter", OpenCellConverter));
 
+            //Delgrim Portrait
+            text = "TestDialogue";
+			portrait = "DelgrimPortrait";
+			timeBetweenTexts = 0.015f;
+			talkingSound = SoundID.Item1;
+        }
 
+		private void OpenCellConverter()
+		{
+			Main.CloseNPCChatOrSign();
+			Main.playerInventory = true;
+			CellConverterUISystem uiSystem = ModContent.GetInstance<CellConverterUISystem>();
+            uiSystem.CellConverterPos = NPC.Center;
+            uiSystem.OpenUI();
+   
+        }
 
+		private void OpenShop()
+		{
+            Main.LocalPlayer.SetTalkNPC(NPC.whoAmI);
+            NPC npc = Main.LocalPlayer.TalkNPC;
+            string shopName = null;
 
+            if (npc.ModNPC != null)
+            {
+                npc.ModNPC.OnChatButtonClicked(false, ref shopName);
+                SoundEngine.PlaySound(SoundID.MenuTick);
 
+                if (shopName != null)
+                {
+                    // Copied from Main.OpenShop
+                    Main.playerInventory = true;
+                    Main.stackSplit = 9999;
+                    Main.npcChatText = "";
+                    Main.SetNPCShopIndex(1);
+                    Main.instance.shop[Main.npcShop].SetupShop(NPCShopDatabase.GetShopName(npc.type, shopName), npc);
+                }
+            }
+        }
 
+		private void OpenShop2()
+		{
+            Main.LocalPlayer.SetTalkNPC(NPC.whoAmI);
+            NPC npc = Main.LocalPlayer.TalkNPC;
+            string shopName = null;
 
+            if (npc.ModNPC != null)
+            {
+                npc.ModNPC.OnChatButtonClicked(false, ref shopName);
+                SoundEngine.PlaySound(SoundID.MenuTick);
 
-
-
-
-        //	else if (Main.moonPhase < 4) {
-        // shop.item[nextSlot++].SetDefaults(ItemType<ExampleGun>());
-        //		shop.item[nextSlot].SetDefaults(ItemType<ExampleBullet>());
-        //	}
-        //	else if (Main.moonPhase < 6) {
-        // shop.item[nextSlot++].SetDefaults(ItemType<ExampleStaff>());
-        // 	}
-        //
-        // 	// todo: Here is an example of how your npc can sell items from other mods.
-        // 	// var modSummonersAssociation = ModLoader.TryGetMod("SummonersAssociation");
-        // 	// if (ModLoader.TryGetMod("SummonersAssociation", out Mod modSummonersAssociation)) {
-        // 	// 	shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
-        // 	// 	nextSlot++;
-        // 	// }
-        //
-        // 	// if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null) {
-        // 	// 	foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList) {
-        // 	// 		if (Item.IsUnloaded) continue;
-        // 	// 		shop.item[nextSlot].SetDefaults(Item.Type);
-        // 	// 		shop.item[nextSlot].shopCustomPrice = 0;
-        // 	// 		shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
-        // 	// 		nextSlot++;
-        // 	// 		//TODO: Have tModLoader handle index issues.
-        // 	// 	}
-        // 	// }
-        // }
-
-
-
-
-
-
-
+                if (shopName != null)
+                {
+                    // Copied from Main.OpenShop
+                    Main.playerInventory = true;
+                    Main.stackSplit = 9999;
+                    Main.npcChatText = "";
+                    Main.SetNPCShopIndex(1);
+                    Main.instance.shop[Main.npcShop].SetupShop(NPCShopDatabase.GetShopName(npc.type, shopName), npc);
+                }
+            }
+        }
     }
-
-
-
-
-
 }

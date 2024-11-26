@@ -315,12 +315,6 @@ namespace Stellamod.NPCs.Town
                         (int)DelgrimSpawnWorld.X, (int)DelgrimSpawnWorld.Y,
                         ModContent.NPCType<Delgrim>());
                 }
-                else if (!NPC.AnyNPCs(ModContent.NPCType<CellConverter>()))
-                {
-                    NPC.NewNPC(player.GetSource_FromThis(),
-                        (int)CellConverterSpawnWorld.X, (int)CellConverterSpawnWorld.Y,
-                        ModContent.NPCType<CellConverter>());
-                }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Gia>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),

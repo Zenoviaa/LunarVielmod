@@ -45,7 +45,7 @@ namespace Stellamod.UI.CollectionSystem
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
 
-            if(Main.LocalPlayer.chest != -1)
+            if(Main.LocalPlayer.chest != -1 || Main.LocalPlayer.talkNPC != -1)
             {
                 Top.Pixels += 154;
             }

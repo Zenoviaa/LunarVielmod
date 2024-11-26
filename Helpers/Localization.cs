@@ -4,6 +4,11 @@ namespace Stellamod.Helpers
 {
     public static class LangText
     {
+        public static string TownDialogue(string Path)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.TownDialogue." + Path);
+        }
+
         public static string Chat(ModNPC npc, string Path)
         {
             return Language.GetTextValue($"Mods.Stellamod.NPCs.{npc.Name}." + Path);

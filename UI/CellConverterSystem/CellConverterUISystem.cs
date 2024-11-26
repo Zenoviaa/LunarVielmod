@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items;
+using Stellamod.NPCs.Town;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -36,7 +37,7 @@ namespace Stellamod.UI.CellConverterSystem
                 CloseUI();
             }
 
-            if (!Main.playerInventory && _userInterface.CurrentState != null)
+            if ((!Main.playerInventory && _userInterface.CurrentState != null) || (Main.npcShop == 1))
             {
                 CloseUI();
             }

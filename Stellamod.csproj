@@ -239,6 +239,7 @@
     <None Remove="Items\Special\VeiledScriptureSigfried.png" />
     <None Remove="Items\Test\ColosseumResetter.png" />
     <None Remove="Localization\en-US\Mods.Stellamod.Dialogue.hjson" />
+    <None Remove="Localization\en-US\Mods.Stellamod.TownDialogue.hjson" />
     <None Remove="NPCs\Bosses\CommanderGintzia\CommanderGintziaTaunting.png" />
     <None Remove="NPCs\Bosses\CommanderGintzia\Hands\FingerBlast.png" />
     <None Remove="NPCs\Bosses\CommanderGintzia\Hands\ScissorBlast.png" />
