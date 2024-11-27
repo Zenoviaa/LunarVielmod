@@ -797,3 +797,8 @@ WillOWispMinionBuff: {
 	DisplayName: Will of the Wisps!
 	Description: You are being followed by little flames...
 }
+
+RadiatingLantern: {
+	DisplayName: Radiating Lantern
+	Description: Mods.Stellamod.Buffs.RadiatingLantern.Description
+}

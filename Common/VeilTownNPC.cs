@@ -107,13 +107,24 @@ namespace Stellamod.Common
             base.PostDraw(spriteBatch, screenPos, drawColor);
             if (HasQuestAvailable())
             {
+
                 Texture2D questMark = ModContent.Request<Texture2D>(QuestMarkTexture).Value;
                 Vector2 hoverOffset = Vector2.Lerp(Vector2.Zero, -Vector2.UnitY * 8, VectorHelper.Osc(0f, 1f));
                 Vector2 drawPos = NPC.Center + hoverOffset;
                 drawPos.Y -= NPC.height;
+                drawPos.Y -= 16;
                 float drawRotation = 0f;
+                float drawScale = 1.25f;
                 Vector2 drawOrigin = questMark.Size() / 2;
 
+                Texture2D texture = TextureRegistry.BasicGlow.Value;
+                Vector2 shadowDrawOrigin = texture.Size() / 2f;
+                Color blackColor = Color.Black.MultiplyRGB(drawColor);
+                float shadowDrawScale = 0.66f * drawScale;
+                spriteBatch.Draw(texture, drawPos - Main.screenPosition, null, blackColor, 0, shadowDrawOrigin, shadowDrawScale, SpriteEffects.None, layerDepth: 0);
+
+
+                spriteBatch.Draw(questMark, drawPos - Main.screenPosition, null, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
 
                 spriteBatch.Restart(blendState: BlendState.Additive);
 
@@ -122,10 +133,10 @@ namespace Stellamod.Common
                     float rot = f * MathHelper.TwoPi;
                     rot += Main.GlobalTimeWrappedHourly;
                     Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(0.5f, 1f) * 3;
-                    spriteBatch.Draw(questMark, drawPos - Main.screenPosition + offset, null, drawColor * 0.5f, drawRotation, drawOrigin, 1f, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(questMark, drawPos - Main.screenPosition + offset, null, drawColor * 0.8f, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
                 }
                 spriteBatch.RestartDefaults();
-                spriteBatch.Draw(questMark, drawPos - Main.screenPosition, null, drawColor, drawRotation, drawOrigin, 1f, SpriteEffects.None, 0f);
+        
                 Lighting.AddLight(drawPos, Color.White.ToVector3() * 0.78f);
             }
         }

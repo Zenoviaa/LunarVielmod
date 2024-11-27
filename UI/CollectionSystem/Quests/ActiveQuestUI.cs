@@ -16,6 +16,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
         private UIGrid _slotGrid;
         private UIText _descriptionText;
         private UIText _objectiveText;
+        private UIText _rewardText;
 
         internal const int width = 480;
         internal const int height = 155;
@@ -63,6 +64,15 @@ namespace Stellamod.UI.CollectionSystem.Quests
             _objectiveText.Top.Pixels = 300;
             _objectiveText.ShadowColor = Color.Black;
             Append(_objectiveText);
+
+
+            _rewardText = new UIText("Rewards", large: false);
+            _rewardText.Height.Pixels = Height.Pixels;
+            _rewardText.Width.Pixels = Width.Pixels;
+            _rewardText.IsWrapped = true;
+            _rewardText.Top.Pixels = 352;
+            _rewardText.ShadowColor = Color.Black;
+            Append(_rewardText);
         }
 
         public override void Recalculate()
@@ -94,8 +104,10 @@ namespace Stellamod.UI.CollectionSystem.Quests
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
-            if(_descriptionText != null && Quest != null)
+            _rewardText.Top.Pixels = 358;
+            _rewardText.SetText("Rewards                                        ");
+            _slotGrid.Top.Pixels = 382;
+            if (_descriptionText != null && Quest != null)
             {
 
                 _descriptionText.SetText(Quest.Description);
@@ -118,14 +130,12 @@ namespace Stellamod.UI.CollectionSystem.Quests
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
-            //Draw Background
-            //Draw Big Picture
-            //Text
-
+          
             float oldScale = Main.inventoryScale;
             Main.inventoryScale = _scale;
+             
+            //This prevents player actions while hovering over the UI
             Rectangle rectangle = GetDimensions().ToRectangle();
-
             bool contains = ContainsPoint(Main.MouseScreen);
             if (contains && !PlayerInput.IgnoreMouseInterface)
             {
@@ -139,14 +149,42 @@ namespace Stellamod.UI.CollectionSystem.Quests
             Vector2 centerPos = pos + rectangle.Size() / 2f;
             Texture2D backgroundTexture = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}QuestImageBackground").Value;
             Texture2D bigPictureTexture = ModContent.Request<Texture2D>(Quest.BigTexture).Value;
-
+            Texture2D overlayTexture = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}QuestTop").Value;
+            
+            //Draw the background thingy
             Vector2 backgroundDrawOffset = new Vector2(Width.Pixels / 2, 96);
             backgroundDrawOffset -= backgroundTexture.Size() / 2;
+            spriteBatch.Draw(backgroundTexture, rectangle.TopLeft() + backgroundDrawOffset, null, color2, 0f, default, _scale, SpriteEffects.None, 0f);
 
+            //Draw the big picture for the portrait in the quest book
+            float scale = 0.86f;
             Vector2 portraitDrawOffset = new Vector2(Width.Pixels / 2, 96);
             portraitDrawOffset -= bigPictureTexture.Size() / 2;
-            spriteBatch.Draw(backgroundTexture, rectangle.TopLeft() + backgroundDrawOffset, null, color2, 0f, default, _scale, SpriteEffects.None, 0f);
-            spriteBatch.Draw(bigPictureTexture, rectangle.TopLeft() + portraitDrawOffset, null, color2, 0f, default, _scale, SpriteEffects.None, 0f);
+            portraitDrawOffset *= scale / 2;
+            portraitDrawOffset.Y += 12;
+            spriteBatch.Draw(bigPictureTexture, rectangle.TopLeft() + portraitDrawOffset, null, Color.White, 0f, default, _scale * scale, SpriteEffects.None, 0f);
+
+
+            //Draw the background texture for the rewards in the quest book
+            Texture2D rewardTexture = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}QuestRewardBackground").Value;
+            Vector2 rewardTextureDrawOffset = new Vector2(Width.Pixels / 2, 352);
+            rewardTextureDrawOffset.X -= rewardTexture.Size().X/1.15f;
+            rewardTextureDrawOffset.Y += rewardTexture.Size().Y/4;
+            rewardTextureDrawOffset.Y += 30;
+            spriteBatch.Draw(rewardTexture, rectangle.TopLeft() + rewardTextureDrawOffset, null, color2, 0f, default, _scale, SpriteEffects.None, 0f);
+
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, default, default, default, default, Main.UIScaleMatrix);
+
+            Vector2 overlayDrawOffset = new Vector2(Width.Pixels / 2, 96);
+            overlayDrawOffset -= overlayTexture.Size() / 2;
+            overlayDrawOffset *= scale / 2;
+            overlayDrawOffset.Y += 12;
+            spriteBatch.Draw(overlayTexture, rectangle.TopLeft() + overlayDrawOffset, null, Color.White, 0f, default, _scale * scale, SpriteEffects.None, 0f);
+
+            spriteBatch.End();
+            spriteBatch.Begin(default, default, default, default, default, default, Main.UIScaleMatrix);
             Main.inventoryScale = oldScale;
         }
     }

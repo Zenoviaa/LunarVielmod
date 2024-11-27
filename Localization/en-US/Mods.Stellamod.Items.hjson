@@ -18,6 +18,8 @@ Common: {
 	IgniterCard: When it hits an enemy, it explodes with the effects of all the powders equipped to it!
 	IgniterCardHelp: Right click in your inventory to put powders on your card!,
 	GenericDamage: " generic damage"
+	Lantern: Lantern Light Pet
+	LanternHelp: Put it in your light pet slot or right click it to use it for more range!
 }
 
 SetBonus: {
@@ -8148,5 +8150,10 @@ CommanderGintziaBossRel: {
 
 QuestResetter: {
 	DisplayName: Quest Resetter
+	Tooltip: ""
+}
+
+RadiantLantern: {
+	DisplayName: Radiant Lantern
 	Tooltip: ""
 }

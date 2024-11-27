@@ -1,5 +1,7 @@
-﻿using Stellamod.Items.Harvesting;
+﻿using Stellamod.Buffs;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Tools;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -12,6 +14,7 @@ namespace Stellamod.Common.QuestSystem.Quests
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
+            AddReward(ModContent.ItemType<RadiantLantern>(), 1);
             AddReward(ModContent.ItemType<Ivythorn>(), 10);
         }
 

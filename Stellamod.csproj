@@ -419,6 +419,8 @@
     <None Remove="Projectiles\IgniterExplosions\RibbonBoom.png" />
     <None Remove="Projectiles\IgniterExplosions\SiriusBoom.png" />
     <None Remove="Projectiles\InfusedSlimeBolt.png" />
+    <None Remove="Projectiles\Lanterns\RadiantLanternProjectile.png" />
+    <None Remove="Projectiles\Lanterns\RadiantLanternProjectile_Beam.png" />
     <None Remove="Projectiles\Magic\AlcadBombProj.png" />
     <None Remove="Projectiles\Magic\AlcadBombProj_Outline.png" />
     <None Remove="Projectiles\Magic\CandleShotProj1.png" />
