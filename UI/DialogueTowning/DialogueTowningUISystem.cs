@@ -1,5 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Stellamod.Common;
+using Stellamod.Common.QuestSystem;
 using Stellamod.Helpers;
 using Stellamod.UI.CauldronSystem;
 using System;
@@ -11,6 +14,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Stellamod.UI.DialogueTowning
 {
@@ -60,7 +64,7 @@ namespace Stellamod.UI.DialogueTowning
             if(Main.netMode != 1 && npcIndex >= 0 && npcIndex < 200)
             {
                 NPC npc = Main.npc[npcIndex];
-                if (npc.ModNPC is ITownDialogue townDialogue && _userInterface?.CurrentState == null)
+                if (npc.ModNPC is VeilTownNPC veilTownNPC && veilTownNPC.HasTownDialogue && _userInterface?.CurrentState == null)
                 {
                     string text = string.Empty;
                     string portrait = "FenixPortrait";
@@ -68,9 +72,12 @@ namespace Stellamod.UI.DialogueTowning
                     SoundStyle? talkingSound = null;
                     dialogueTowningUIState.dialogueTownButtonsUI.ClearButtons();
                     List<Tuple<string, Action>> buttons = new List<Tuple<string, Action>>();
-                    townDialogue.SetTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
-              
-                    foreach(var pair in buttons)
+                    veilTownNPC.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+                    if (veilTownNPC.HasQuestAvailable())
+                    {
+                        buttons.Add(new Tuple<string, Action>("Quest", veilTownNPC.GiveQuest));
+                    }
+                    foreach (var pair in buttons)
                     {
                         dialogueTowningUIState.dialogueTownButtonsUI.AddButton(pair.Item1, pair.Item2);
                     }
@@ -88,6 +95,32 @@ namespace Stellamod.UI.DialogueTowning
             }
             _killUi = false;
             orig(self, npcIndex, fromNet);
+        }
+        public void ChatWith(Quest quest)
+        {
+            string text = string.Empty;
+            string portrait = "FenixPortrait";
+            float timeBetweenTexts = 0.05f;
+            SoundStyle? talkingSound = null;
+            quest.QuestIntroDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
+            dialogueTowningUIState.dialogueTownUI.ResetText();
+            dialogueTowningUIState.dialogueTownUI.LocalizedText = LangText.TownDialogue(text);
+            dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
+            dialogueTowningUIState.dialogueTownUI.Portrait = ModContent.Request<Texture2D>(RootTexturePath + $"{portrait}");
+        }
+
+
+        public void ChatWith(VeilTownNPC veilTownNPC)
+        {
+            string text = string.Empty;
+            string portrait = "FenixPortrait";
+            float timeBetweenTexts = 0.05f;
+            SoundStyle? talkingSound = null;
+            veilTownNPC.IdleChat(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
+            dialogueTowningUIState.dialogueTownUI.ResetText();
+            dialogueTowningUIState.dialogueTownUI.LocalizedText = LangText.TownDialogue(text);
+            dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
+            dialogueTowningUIState.dialogueTownUI.Portrait = ModContent.Request<Texture2D>(RootTexturePath + $"{portrait}");
         }
 
         public override void UpdateUI(GameTime gameTime)

@@ -46,6 +46,7 @@ namespace Stellamod.UI.DialogueTowning
             _text.Left.Pixels = 180;
             _text.Top.Pixels = 16;
             _text.IsWrapped = true;
+            _text.MinWidth = _text.Width;
             Append(_text);
 
         }
@@ -58,12 +59,20 @@ namespace Stellamod.UI.DialogueTowning
             Top.Pixels = RelativeTop;
             _text.Left.Pixels = 180 + Offset.X;
             _text.Top.Pixels = 16 + Offset.Y;
+
+
             if (!IsFinishedTyping())
             {
                 _timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (_timer >= TimeBetweenTexts)
                 {
                     string realText = LocalizedText.Substring(0, _textIndex);
+                    //Set text to white space
+                    for(int i =0;i < 128; i++)
+                    {
+                        realText += " ";
+                    }
+
                     _text.SetText(realText);
                     _textIndex++;
                     _timer = 0;
@@ -108,11 +117,12 @@ namespace Stellamod.UI.DialogueTowning
 
         private bool IsFinishedTyping()
         {
-            return _textIndex >= LocalizedText.Length;
+            return _textIndex > LocalizedText.Length;
         }
 
         public void ResetText()
         {
+        
             _text.SetText(string.Empty);
             _textIndex = 0;
         }

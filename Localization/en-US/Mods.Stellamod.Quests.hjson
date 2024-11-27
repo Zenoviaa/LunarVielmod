@@ -1,0 +1,5 @@
+CauldronCrafting: {
+	DisplayName: Cooking I
+	Description: To kick off your enrollment at the academy, Zui has asked you to brew up something with the Mushrooms she gave you. See what you can make!
+	Objective: Open the cauldron, put the mushrooms in, and craft.
+}

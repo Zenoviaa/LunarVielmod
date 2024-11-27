@@ -1,9 +1,15 @@
+using Stellamod.Common.QuestSystem;
 using Terraria.Localization;
 using Terraria.ModLoader;
 namespace Stellamod.Helpers
 {
     public static class LangText
     {
+        public static string Quest(Quest quest, string Path)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.Quests.{quest.Name}." + Path);
+        }
+
         public static string TownDialogue(string Path)
         {
             return Language.GetTextValue($"Mods.Stellamod.TownDialogue." + Path);

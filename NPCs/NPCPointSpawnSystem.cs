@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common;
 using Stellamod.Helpers;
 using Stellamod.WorldG.StructureManager;
 using System;
@@ -43,22 +44,17 @@ namespace Stellamod.NPCs
         public bool always;
     }
 
-    public abstract class PointSpawnNPC : ModNPC
-    {
-        public abstract void SetPointSpawnerDefaults(ref NPCPointSpawner spawner);
-    }
-
     public class NPCPointSpawnSystem : ModSystem
     {
         private List<NPCPointSpawner> _npcPointSpawners = new List<NPCPointSpawner>();
 
         public List<Structure> Structures = new List<Structure>();
-        public PointSpawnNPC[] npcs;
+        public VeilTownNPC[] npcs;
         public float spawnTimer;
         public override void OnModLoad()
         {
             base.OnModLoad();
-            npcs = Stellamod.Instance.GetContent<PointSpawnNPC>().ToArray();
+            npcs = Stellamod.Instance.GetContent<VeilTownNPC>().ToArray();
             LoadNPCPointSpawners();
             Structurizer.OnStructPlace += AddStructure;
             StructureLoader.OnStructPlace += AddStructure;
@@ -97,7 +93,9 @@ namespace Stellamod.NPCs
             _npcPointSpawners.Clear();
             for (int i = 0; i < npcs.Length; i++)
             {
-                PointSpawnNPC npc = npcs[i];
+                VeilTownNPC npc = npcs[i];
+                if (!npc.SpawnAtPoint)
+                    continue;
                 NPCPointSpawner pointSpawner = new NPCPointSpawner();
                 pointSpawner.npcType = npc.Type;
                 npc.SetPointSpawnerDefaults(ref pointSpawner);

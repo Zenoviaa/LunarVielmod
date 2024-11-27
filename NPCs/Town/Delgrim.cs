@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets.Biomes;
+using Stellamod.Common;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
@@ -47,8 +48,7 @@ namespace Stellamod.NPCs.Town
     // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
     //[AutoloadHead]
     [AutoloadBossHead]
-	public class Delgrim : PointSpawnNPC,
-        ITownDialogue
+	public class Delgrim : VeilTownNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
 		public const string ShopName = "Shop";
@@ -93,6 +93,8 @@ namespace Stellamod.NPCs.Town
 			NPC.knockBackResist = 0.5f;
 			NPC.dontTakeDamage = true;
             NPC.BossBar = Main.BigBossProgressBar.NeverValid;
+			SpawnAtPoint = true;
+			HasTownDialogue = true;
         }
 
 
@@ -199,20 +201,6 @@ namespace Stellamod.NPCs.Town
 
 			return chat; // chat is implicitly cast to a string.
 		}
-		public override void HitEffect(NPC.HitInfo hit)
-		{
-			int num = NPC.life > 0 ? 1 : 5;
-
-			for (int k = 0; k < num; k++)
-			{
-				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.IceTorch);
-			}
-		}
-
-
-
-
-
 
 		public override List<string> SetNPCNameList()
 		{
@@ -220,14 +208,11 @@ namespace Stellamod.NPCs.Town
 				"Magical Engineer Delgrim"
 			};
 		}
-
-
 		public override void SetChatButtons(ref string button, ref string button2)
 		{
             // What the chat buttons are when you open up the chat UI
             button2 = Language.GetTextValue("LegacyInterface.28");
             button = LangText.Chat(this, "Button");
-
         }
 
         public override void OnChatButtonClicked(bool firstButton, ref string shop)
@@ -237,28 +222,6 @@ namespace Stellamod.NPCs.Town
                 shop = ShopName;
             }
         }
-
-
-        public override void ModifyActiveShop(string shopName, Item[] items)
-		{
-			foreach (Item item in items)
-			{
-				// Skip 'air' items and null items.
-				if (item == null || item.type == ItemID.None)
-				{
-					continue;
-				}
-
-				// If NPC is shimmered then reduce all prices by 50%.
-				if (NPC.IsShimmerVariant)
-				{
-					int value = item.shopCustomPrice ?? item.value;
-					item.shopCustomPrice = value / 2;
-				}
-			}
-		}
-
-
 
 		public override void AddShops()
 		{
@@ -301,8 +264,9 @@ namespace Stellamod.NPCs.Town
         }
 
 
-        public void SetTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
+        public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
         {
+			base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);	
 			//Set buttons
             buttons.Add(new Tuple<string, Action>("Shop", OpenShop));
 			buttons.Add(new Tuple<string, Action>("CellConverter", OpenCellConverter));
@@ -325,29 +289,6 @@ namespace Stellamod.NPCs.Town
         }
 
 		private void OpenShop()
-		{
-            Main.LocalPlayer.SetTalkNPC(NPC.whoAmI);
-            NPC npc = Main.LocalPlayer.TalkNPC;
-            string shopName = null;
-
-            if (npc.ModNPC != null)
-            {
-                npc.ModNPC.OnChatButtonClicked(false, ref shopName);
-                SoundEngine.PlaySound(SoundID.MenuTick);
-
-                if (shopName != null)
-                {
-                    // Copied from Main.OpenShop
-                    Main.playerInventory = true;
-                    Main.stackSplit = 9999;
-                    Main.npcChatText = "";
-                    Main.SetNPCShopIndex(1);
-                    Main.instance.shop[Main.npcShop].SetupShop(NPCShopDatabase.GetShopName(npc.type, shopName), npc);
-                }
-            }
-        }
-
-		private void OpenShop2()
 		{
             Main.LocalPlayer.SetTalkNPC(NPC.whoAmI);
             NPC npc = Main.LocalPlayer.TalkNPC;

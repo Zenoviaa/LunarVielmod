@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets.Biomes;
+using Stellamod.Common;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Harvesting;
@@ -22,7 +23,7 @@ namespace Stellamod.NPCs.Town
 {
     // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
     //[AutoloadHead]
-	public class Merena : PointSpawnNPC
+	public class Merena : VeilTownNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
 		public const string ShopName = "Shop";
@@ -78,9 +79,10 @@ namespace Stellamod.NPCs.Town
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
 			NPC.dontTakeDamageFromHostiles = true;
+			SpawnAtPoint = true;
 		}
 
-        public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
+		public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
         {
             spawner.structureToSpawnIn = "Struct/Alcad/RoyalCapital3";
             spawner.spawnTileOffset = new Point(506, -13);

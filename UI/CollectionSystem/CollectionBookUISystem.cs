@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.QuestSystem;
+using Stellamod.UI.CollectionSystem.Quests;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -22,6 +24,10 @@ namespace Stellamod.UI.CollectionSystem
         public CollectionBookIconUIState collectionBookIconUI;
         public CollectionItemTabUIState collectionItemTabUI; 
         public CollectionItemTabRecipeUIState collectionRecipeInfoUI;
+
+
+        public QuestTabUIState questTabUIState;
+        public ActiveQuestUIState activeQuestUIState;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -41,6 +47,12 @@ namespace Stellamod.UI.CollectionSystem
 
             collectionRecipeInfoUI = new CollectionItemTabRecipeUIState();
             collectionRecipeInfoUI.Activate();
+
+            questTabUIState = new QuestTabUIState();
+            questTabUIState.Activate();
+
+            activeQuestUIState = new ActiveQuestUIState();
+            activeQuestUIState.Activate();
 
             _userInterface.SetState(null);
             _hudUserInterface.SetState(null);
@@ -136,6 +148,7 @@ namespace Stellamod.UI.CollectionSystem
         {
             collectionItemTabUI.ui.Glow = 1f;
             _tabsUserInterface.SetState(collectionItemTabUI);
+            _rightInfoUserInterface.SetState(null);
         }
 
         internal void OpenRecipesInfoUI(Item item)
@@ -151,7 +164,24 @@ namespace Stellamod.UI.CollectionSystem
 
         internal void OpenQuestsTabUI()
         {
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/BookPageTurn");
+            soundStyle.PitchVariance = 0.1f;
+            SoundEngine.PlaySound(soundStyle);
+            questTabUIState.ui.Glow = 1f;
+            _tabsUserInterface.SetState(questTabUIState);
+            _rightInfoUserInterface.SetState(null);
+        }
 
+        internal void OpenQuestInfoUI(Quest quest)
+        {
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/BookPageTurn");
+            soundStyle.PitchVariance = 0.1f;
+            SoundEngine.PlaySound(soundStyle);
+    
+            activeQuestUIState.ui.Quest = quest;
+            activeQuestUIState.ui.Glow = 1f;
+            activeQuestUIState.Recalculate();
+            _rightInfoUserInterface.SetState(activeQuestUIState);
         }
 
         internal void OpenLoreTabUI()

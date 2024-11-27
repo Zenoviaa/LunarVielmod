@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets.Biomes;
+using Stellamod.Common;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
@@ -39,7 +40,7 @@ using Terraria.Utilities;
 namespace Stellamod.NPCs.RoyalCapital
 {
 	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
-	public class LonelySorceress : PointSpawnNPC
+	public class LonelySorceress : VeilTownNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
 		public const string ShopName = "Shop";
@@ -105,6 +106,7 @@ namespace Stellamod.NPCs.RoyalCapital
 			NPC.dontTakeDamageFromHostiles = true;
 			NPC.dontTakeDamage = true;
 			NPC.BossBar = Main.BigBossProgressBar.NeverValid;
+			SpawnAtPoint = true;
         }
         public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
         {

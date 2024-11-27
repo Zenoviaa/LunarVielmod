@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
+using Stellamod.Common;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
@@ -16,7 +17,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Town
 {
-    internal class WitchesCauldron : PointSpawnNPC
+    internal class WitchesCauldron : VeilTownNPC
     {
         private int _frame;
         private float _frameCounter;
@@ -59,6 +60,7 @@ namespace Stellamod.NPCs.Town
             NPC.BossBar = Main.BigBossProgressBar.NeverValid;
             NPC.noGravity = true;
             NPC.friendly = true; // NPC Will not attack player
+            SpawnAtPoint = true;
         }
 
         public override List<string> SetNPCNameList()

@@ -1,7 +1,22 @@
+Talk: Talk
+Quest: Quest
 Shop: Shop
 CellConverter: Weapon Swapper
 TestDialogue:
 	'''
 	Aimacra joined us on our excursion as well so be sure to get a hold of her whenever you can. 
 	This world is corrupt with power and I'm sending you to purge it, I'm a bit too tired to do anything right now. I was playing my piano for too long.
+	'''
+ZuiOpenDialogue1: Well, you seem to be having quite a bit of fun around here! What's up?
+ZuiIdleChat1:
+	'''
+	I'm glad you decided to enroll at our little magic school!
+	I'm sure you will find that there are lots for you to learn here
+	Have fun!!!
+	'''
+CauldronCraftingDialogue:
+	'''
+	You want to enroll at my magic school? Great!
+	Let's get you started then, you see that cauldron over there?
+	I want you to take these mushrooms and cook something with it. I think you'll be surprised at what comes out!
 	'''

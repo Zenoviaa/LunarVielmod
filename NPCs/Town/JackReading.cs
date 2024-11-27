@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.JackTheScholar;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Town
 {
-    internal class JackReading : PointSpawnNPC
+    internal class JackReading : VeilTownNPC
     {
         private int _frame;
         public int NumberOfTimesTalkedTo = 0;
@@ -66,6 +67,7 @@ namespace Stellamod.NPCs.Town
             NPC.knockBackResist = 0.5f;
             NPC.dontTakeDamageFromHostiles = true;
             NPC.BossBar = Main.BigBossProgressBar.NeverValid;
+            SpawnAtPoint = true;
         }
 
         public override void FindFrame(int frameHeight)

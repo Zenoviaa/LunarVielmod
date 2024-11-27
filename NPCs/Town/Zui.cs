@@ -30,12 +30,15 @@ using Stellamod.Items.Armors.Vanity.Nyxia;
 using Terraria.DataStructures;
 using Stellamod.Items.Ammo;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
+using Stellamod.UI.DialogueTowning;
+using System;
+using Stellamod.Common.QuestSystem;
+using Stellamod.Common.QuestSystem.Quests;
+using Stellamod.Common;
 
 namespace Stellamod.NPCs.Town
 {
-    // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
-    // [AutoloadHead]
-	public class Zui : PointSpawnNPC
+	public class Zui : VeilTownNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
 		public const string ShopName = "Shop";
@@ -98,6 +101,8 @@ namespace Stellamod.NPCs.Town
 			NPC.knockBackResist = 0.5f;
 			NPC.dontTakeDamageFromHostiles = true;
             NPC.BossBar = Main.BigBossProgressBar.NeverValid;
+			SpawnAtPoint = true;
+			HasTownDialogue = true;
         }
 
 		public override void FindFrame(int frameHeight)
@@ -204,13 +209,21 @@ namespace Stellamod.NPCs.Town
 			};
 		}
 
+        public override void SetChatButtons(ref string button, ref string button2)
+        {
+            // What the chat buttons are when you open up the chat UI
+            button2 = Language.GetTextValue("LegacyInterface.28");
+            button = LangText.Chat(this, "Button");
+        }
 
-		public override void SetChatButtons(ref string button, ref string button2)
-		{ // What the chat buttons are when you open up the chat UI
-			button2 = Language.GetTextValue("LegacyInterface.28");
-			button = LangText.Chat(this, "Button");
-
-		}
+		
+        public override void OnChatButtonClicked(bool firstButton, ref string shop)
+        {
+            if (!firstButton)
+            {
+                shop = ShopName;
+            }
+        }
 
         private void Quest_NotCheckmarked()
         {
@@ -462,60 +475,39 @@ namespace Stellamod.NPCs.Town
 			}	
 		}
 
-		
+        public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
+        {
+            base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+            //Set buttons
+            buttons.Add(new Tuple<string, Action>("Talk", Talk));
+            buttons.Add(new Tuple<string, Action>("Shop", OpenShop));
+ 
 
-		
 
+            portrait = "ZuiPortrait";
+            timeBetweenTexts = 0.015f;
+            talkingSound = SoundID.Item1;
 
-		public override void OnChatButtonClicked(bool firstButton, ref string shop)
-		{
-			if (!firstButton)
-			{
-				shop = ShopName;
-			}
+            //This pulls from the new Dialogue localization
+            text = "ZuiOpenDialogue1";
+        }
 
-			if (firstButton)
-			{
-				//We need to complete current quests before trying to start them otherwise it will break
-				bool hasCompletedQuest = CompleteQuests();
-                if (!hasCompletedQuest)
-                {
-					StartQuests();
-				}
-			
-				//Leaving this here incase ya need the text at some point, but it probably won't ever be needed.
-				/*
-				if (!Main.LocalPlayer.HasItem(ModContent.ItemType<TomeOfInfiniteSorcery>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<MakeMagicPaperC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<Give100DustBagsC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<KillVerliaC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<ExploreMorrowedVillageC>()))
-				{
-					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-					Main.npcChatText = LangText.Chat(this, "Special11");
+        public override void IdleChat(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
+        {
+            base.IdleChat(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
+            portrait = "ZuiPortrait";
+            timeBetweenTexts = 0.015f;
+            talkingSound = SoundID.Item1;
 
-					var entitySource = NPC.GetSource_GiftOrReward();
-					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<KillVerlia>(), 1);
-				}
-				*/
-			}
-		}
+			//This pulls from the new Dialogue localization
+            text = "ZuiIdleChat1";
+        }
 
-		public override void ModifyActiveShop(string shopName, Item[] items)
-		{
-			foreach (Item item in items)
-			{
-				// Skip 'air' items and null items.
-				if (item == null || item.type == ItemID.None)
-				{
-					continue;
-				}
-
-				// If NPC is shimmered then reduce all prices by 50%.
-				if (NPC.IsShimmerVariant)
-				{
-					int value = item.shopCustomPrice ?? item.value;
-					item.shopCustomPrice = value / 2;
-				}
-			}
-		}
-
+        public override void SetQuestLine(List<int> quests)
+        {
+            base.SetQuestLine(quests);
+			quests.Add(QuestLoader.QuestType<CauldronCrafting>());
+        }
 
 		public override void AddShops()
 		{
@@ -567,6 +559,7 @@ namespace Stellamod.NPCs.Town
 			;
 			npcShop.Register(); // Name of this shop tab		
 		}
+
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
@@ -32,7 +33,7 @@ namespace Stellamod.NPCs.Town
 {
 	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
 	[AutoloadHead]
-	public class Aimacra : PointSpawnNPC
+	public class Aimacra : VeilTownNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
 		public const string ShopName = "Shop";
@@ -107,7 +108,7 @@ namespace Stellamod.NPCs.Town
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
 			AnimationType = NPCID.Guide;
-
+			SpawnAtPoint = true;
 
 
 		}

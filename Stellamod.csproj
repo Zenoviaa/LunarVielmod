@@ -74,6 +74,8 @@
     <None Remove="Buffs\Whipfx\DarkWhipDebuff.png" />
     <None Remove="Buffs\Whipfx\LaceratorDebuff.png" />
     <None Remove="Buffs\Whipfx\SineSireDebuff.png" />
+    <None Remove="Common\QuestSystem\QuestResetter.png" />
+    <None Remove="Common\QuestSystem\Quests\CauldronCrafting.png" />
     <None Remove="Dusts\BubbleDust.png" />
     <None Remove="Dusts\GunFlash.png" />
     <None Remove="Dusts\LumiDust.png" />
@@ -239,6 +241,7 @@
     <None Remove="Items\Special\VeiledScriptureSigfried.png" />
     <None Remove="Items\Test\ColosseumResetter.png" />
     <None Remove="Localization\en-US\Mods.Stellamod.Dialogue.hjson" />
+    <None Remove="Localization\en-US\Mods.Stellamod.Quests.hjson" />
     <None Remove="Localization\en-US\Mods.Stellamod.TownDialogue.hjson" />
     <None Remove="NPCs\Bosses\CommanderGintzia\CommanderGintziaTaunting.png" />
     <None Remove="NPCs\Bosses\CommanderGintzia\Hands\FingerBlast.png" />

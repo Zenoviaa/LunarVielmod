@@ -1,4 +1,6 @@
 ﻿
+using Stellamod.Common.QuestSystem;
+using Stellamod.Common.QuestSystem.Quests;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Accessories.Catacombs;
@@ -1135,6 +1137,12 @@ namespace Stellamod.Items
             {
                 cauldronPlayer.Make(ModContent.GetModItem(result.result).Item);
             }
+
+            //Crafting Quest
+            QuestPlayer questPlayer = Main.LocalPlayer.GetModPlayer<QuestPlayer>();
+            var starterQuest = QuestLoader.GetInstance<CauldronCrafting>();
+            questPlayer.CompleteQuest(starterQuest);
+
             OnBrew?.Invoke(result);
             return result;
         }

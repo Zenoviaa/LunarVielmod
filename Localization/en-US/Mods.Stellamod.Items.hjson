@@ -8145,3 +8145,8 @@ CommanderGintziaBossRel: {
 	DisplayName: Commander Gintzia Relic
 	Tooltip: ""
 }
+
+QuestResetter: {
+	DisplayName: Quest Resetter
+	Tooltip: ""
+}

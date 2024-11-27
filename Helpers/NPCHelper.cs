@@ -1,11 +1,35 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
 {
     public static class NPCHelper
     {
+        public static void OpenShop(NPC npc)
+        {
+            Main.LocalPlayer.SetTalkNPC(npc.whoAmI);
+            string shopName = null;
+
+            if (npc.ModNPC != null)
+            {
+                npc.ModNPC.OnChatButtonClicked(false, ref shopName);
+                SoundEngine.PlaySound(SoundID.MenuTick);
+
+                if (shopName != null)
+                {
+                    // Copied from Main.OpenShop
+                    Main.playerInventory = true;
+                    Main.stackSplit = 9999;
+                    Main.npcChatText = "";
+                    Main.SetNPCShopIndex(1);
+                    Main.instance.shop[Main.npcShop].SetupShop(NPCShopDatabase.GetShopName(npc.type, shopName), npc);
+                }
+            }
+        }
         /// <summary>
         /// Returns whether a boss is alive
         /// </summary>

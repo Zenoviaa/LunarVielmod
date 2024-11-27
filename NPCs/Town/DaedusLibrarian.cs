@@ -15,10 +15,11 @@ using Stellamod.NPCs.Bosses.DaedusTheDevoted;
 using Microsoft.Xna.Framework;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Terraria.Audio;
+using Stellamod.Common;
 
 namespace Stellamod.NPCs.Town
 {
-    internal class DaedusLibrarian : PointSpawnNPC
+    internal class DaedusLibrarian : VeilTownNPC
     {
         private int _frame;
         public int NumberOfTimesTalkedTo = 0;
@@ -125,6 +126,7 @@ namespace Stellamod.NPCs.Town
             NPC.BossBar = Main.BigBossProgressBar.NeverValid;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
+            SpawnAtPoint = true;
         }
 
         public override bool CanChat()

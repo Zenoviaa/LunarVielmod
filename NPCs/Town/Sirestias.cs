@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets.Biomes;
+using Stellamod.Common;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
@@ -49,7 +50,7 @@ namespace Stellamod.NPCs.Town
 	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
 	//[AutoloadHead]
 	[AutoloadBossHead]
-	public class Sirestias : PointSpawnNPC
+	public class Sirestias : VeilTownNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
 		public const string ShopName = "Shop";
@@ -115,6 +116,7 @@ namespace Stellamod.NPCs.Town
 			NPC.knockBackResist = 0.5f;
 			NPC.dontTakeDamage = true;
 			NPC.BossBar = Main.BigBossProgressBar.NeverValid;
+			SpawnAtPoint = true;
 		}
 
 
