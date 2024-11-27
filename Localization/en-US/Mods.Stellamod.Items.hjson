@@ -20,6 +20,8 @@ Common: {
 	GenericDamage: " generic damage"
 	Lantern: Lantern Light Pet
 	LanternHelp: Put it in your light pet slot or right click it to use it for more range!
+	Disc: Music Disc
+	DiscHelp: Works like a music box, but you can also throw it with right click!
 }
 
 SetBonus: {
@@ -8155,5 +8157,10 @@ QuestResetter: {
 
 RadiantLantern: {
 	DisplayName: Radiant Lantern
+	Tooltip: ""
+}
+
+AurelusTempleDisc: {
+	DisplayName: Aurelus Temple Disc
 	Tooltip: ""
 }

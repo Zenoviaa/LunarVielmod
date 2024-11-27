@@ -1,9 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
-using Stellamod.Items.Ores;
-using Stellamod.Projectiles;
-using Stellamod.Projectiles.Paint;
-using Stellamod.Projectiles.Thrown;
+﻿using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,7 +12,7 @@ namespace Stellamod.Items.Weapons.Thrown
         public override void SetClassSwappedDefaults()
         {
             Item.damage = 3;
-        
+
         }
 
         public override void SetDefaults()
@@ -39,6 +34,6 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shoot = ModContent.ProjectileType<HornetLob>();
             Item.shootSpeed = 14f;
             Item.rare = ItemRarityID.Blue;
-        }   
+        }
     }
 }
