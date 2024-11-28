@@ -9,6 +9,7 @@ using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria;
+using Stellamod.Common.QuestSystem;
 
 namespace Stellamod.UI.CollectionSystem.Quests
 {
@@ -33,7 +34,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
         }
 
         public float Glow { get; set; }
-
+        public Quest Quest { get; set; } 
         private void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
 

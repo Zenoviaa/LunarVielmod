@@ -43,7 +43,8 @@ namespace Stellamod.Common.QuestSystem
             QuestPlayer questPlayer = player.GetModPlayer<QuestPlayer>();
             questPlayer.ActiveQuests.Clear();
             questPlayer.CompletedQuests.Clear();
-           
+            questPlayer.RewardQuests.Clear();
+            questPlayer.RecalculateUI = true;
             return true;
         }
     }

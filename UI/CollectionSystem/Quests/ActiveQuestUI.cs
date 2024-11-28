@@ -17,6 +17,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
         private UIText _descriptionText;
         private UIText _objectiveText;
         private UIText _rewardText;
+        private QuestRewardButton _rewardButton;
 
         internal const int width = 480;
         internal const int height = 155;
@@ -73,6 +74,11 @@ namespace Stellamod.UI.CollectionSystem.Quests
             _rewardText.Top.Pixels = 352;
             _rewardText.ShadowColor = Color.Black;
             Append(_rewardText);
+
+            _rewardButton = new QuestRewardButton();
+            _rewardButton.Top.Pixels = 352;
+            _rewardButton.Left.Pixels = 164;
+            Append(_rewardButton);
         }
 
         public override void Recalculate()
@@ -104,12 +110,14 @@ namespace Stellamod.UI.CollectionSystem.Quests
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            _rewardButton.Quest = Quest;
             _rewardText.Top.Pixels = 358;
             _rewardText.SetText("Rewards                                        ");
             _slotGrid.Top.Pixels = 382;
+
+
             if (_descriptionText != null && Quest != null)
             {
-
                 _descriptionText.SetText(Quest.Description);
             }
 

@@ -32,6 +32,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
 
         public float Glow { get; set; }
         public bool CompletedQuest { get; set; }
+        public bool RewardQuest { get; set; }
         public override void OnInitialize()
         {
             base.OnInitialize();
@@ -69,9 +70,13 @@ namespace Stellamod.UI.CollectionSystem.Quests
                 {
                     _text.TextColor = Color.LightPink;
                 }
-                if (CompletedQuest)
+                if (RewardQuest)
                 {
-                    _text.TextColor = Color.Gray;
+                    _text.TextColor = Color.Green;
+                } 
+                else if (CompletedQuest)
+                {
+                    _text.TextColor = Color.Goldenrod;
                 }
             }
 

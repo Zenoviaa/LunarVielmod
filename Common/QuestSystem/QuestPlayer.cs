@@ -9,6 +9,7 @@ namespace Stellamod.Common.QuestSystem
     {
         private List<Quest> _activeQuests;
         private List<Quest> _completedQuests;
+        private List<Quest> _rewardQuests;
         public List<Quest> ActiveQuests
         {
             get
@@ -36,6 +37,20 @@ namespace Stellamod.Common.QuestSystem
             }
         }
 
+        public List<Quest> RewardQuests
+        {
+            get
+            {
+                _rewardQuests ??= new List<Quest>();
+                return _rewardQuests;
+            }
+            private set
+            {
+                _rewardQuests = value;
+            }
+        }
+
+        public bool RecalculateUI { get; set; }
         public bool HasQuest(Quest quest)
         {
             return ActiveQuests.Contains(quest);
@@ -56,6 +71,7 @@ namespace Stellamod.Common.QuestSystem
             quest.StartQuest(Player);
             PopupUISystem popupUISystem = ModContent.GetInstance<PopupUISystem>();
             popupUISystem.OpenUI("NewQuest");
+            RecalculateUI = true;
             return true;
         }
 
@@ -63,13 +79,27 @@ namespace Stellamod.Common.QuestSystem
         {
             if (!ActiveQuests.Contains(quest))
                 return;
-            if (CompletedQuests.Contains(quest))
+            if (RewardQuests.Contains(quest))
                 return;
             ActiveQuests.Remove(quest);
-            CompletedQuests.Add(quest);
-            quest.Reward(Player);
+            RewardQuests.Add(quest);
+ 
             PopupUISystem popupUISystem = ModContent.GetInstance<PopupUISystem>();
             popupUISystem.OpenUI("CompleteQuest");
+            RecalculateUI = true;
+        }
+
+        public void CollectQuestReward(Quest quest)
+        {
+            if (!RewardQuests.Contains(quest))
+                return;
+            if (CompletedQuests.Contains(quest))
+                return;
+     
+            CompletedQuests.Add(quest);
+            RewardQuests.Remove(quest);
+            quest.Reward(Player);
+            RecalculateUI = true;
         }
 
         public override void SaveData(TagCompound tag)
@@ -77,6 +107,7 @@ namespace Stellamod.Common.QuestSystem
             base.SaveData(tag);
             tag["activeQuests"] = ActiveQuests;
             tag["completedQuests"] = CompletedQuests;
+            tag["rewardQuests"] = RewardQuests;
         }
 
         public override void LoadData(TagCompound tag)
@@ -84,6 +115,7 @@ namespace Stellamod.Common.QuestSystem
             base.LoadData(tag);
             ActiveQuests = tag.Get<List<Quest>>("activeQuests");
             CompletedQuests = tag.Get<List<Quest>>("completedQuests");
+            RewardQuests = tag.Get<List<Quest>>("rewardQuests");
         }
     }
 }
