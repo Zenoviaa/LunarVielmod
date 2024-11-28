@@ -2,6 +2,8 @@ Talk: Talk
 Quest: Quest
 Shop: Shop
 Brew: Brew
+NewQuest: Your quest book has updated!
+CompleteQuest: You've completed a quest!
 CellConverter: Weapon Swapper
 TestDialogue:
 	'''

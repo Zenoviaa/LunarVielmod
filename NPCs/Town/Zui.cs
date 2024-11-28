@@ -484,7 +484,7 @@ namespace Stellamod.NPCs.Town
  
 
 
-            portrait = "QuestionMarkPortrait";
+            portrait = "ZuiPortrait";
             timeBetweenTexts = 0.015f;
             talkingSound = SoundID.Item1;
 

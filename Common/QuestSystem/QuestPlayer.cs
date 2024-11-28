@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Stellamod.UI.PopupSystem;
+using System.Collections.Generic;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -65,6 +66,8 @@ namespace Stellamod.Common.QuestSystem
 
             ActiveQuests.Add(quest);
             quest.StartQuest(Player);
+            PopupUISystem popupUISystem = ModContent.GetInstance<PopupUISystem>();
+            popupUISystem.OpenUI("NewQuest");
             return true;
         }
 
@@ -77,6 +80,8 @@ namespace Stellamod.Common.QuestSystem
             ActiveQuests.Remove(quest);
             CompletedQuests.Add(quest);
             quest.Reward(Player);
+            PopupUISystem popupUISystem = ModContent.GetInstance<PopupUISystem>();
+            popupUISystem.OpenUI("CompleteQuest");
         }
 
         public override void SaveData(TagCompound tag)
