@@ -76,6 +76,7 @@ namespace Stellamod.Common.Bases
         {
             if (player.altFunctionUse == 2)
             {
+                Item.consumable = false;
                 Item.autoReuse = true;
                 Item.createTile = -1;
                 Item.shoot = ModContent.ProjectileType<BasicDiscProjectile>();
@@ -85,6 +86,7 @@ namespace Stellamod.Common.Bases
             {
   
                 Item.createTile = TileToPlace;
+                Item.consumable = true;
                 Item.shoot = ProjectileID.None;
                 Item.shootSpeed = 0;
             }

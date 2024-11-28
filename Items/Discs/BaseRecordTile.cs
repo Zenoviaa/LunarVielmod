@@ -15,6 +15,8 @@ namespace Stellamod.Items.Discs
     {
         public override string Texture => (GetType().Namespace + "." + "TileRecordPlayer").Replace('.', '/');
         public string DiscTexture => (GetType().Namespace + "." + Name).Replace('.', '/').Replace("Tile", "");
+
+        public string DiscItem => Name.Replace("Tile", "");
         public override void SetStaticDefaults()
         {
             Main.tileFrameImportant[Type] = true;
@@ -30,6 +32,9 @@ namespace Stellamod.Items.Discs
             TileObjectData.addTile(Type);
 
             AddMapEntry(new Color(191, 142, 111), Language.GetText("ItemName.MusicBox"));
+
+            ModItem item = ModContent.Find<ModItem>("Stellamod/"+DiscItem);
+            RegisterItemDrop(item.Type);
         }
 
         public override void PostDraw(int i, int j, SpriteBatch spriteBatch)

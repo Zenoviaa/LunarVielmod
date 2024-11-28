@@ -16,13 +16,13 @@ namespace Stellamod.Helpers
 		{
 			SamplerState newSamplerState = samplerState == null ? Main.DefaultSamplerState : samplerState;
             spriteBatch.End();
-            spriteBatch.Begin(sortMode, blendState, newSamplerState, DepthStencilState.None, RasterizerState.CullNone, effect, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Begin(sortMode, blendState, newSamplerState, DepthStencilState.None, RasterizerState.CullNone, effect, Main.GameViewMatrix.TransformationMatrix);
         }
 
 		public static void RestartDefaults(this SpriteBatch spriteBatch)
 		{
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
 
         public static void DrawDimLight(Vector2 pos, Color color, float rotation, float scale)

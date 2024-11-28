@@ -484,7 +484,7 @@ namespace Stellamod.NPCs.Town
  
 
 
-            portrait = "ZuiPortrait";
+            portrait = "QuestionMarkPortrait";
             timeBetweenTexts = 0.015f;
             talkingSound = SoundID.Item1;
 
@@ -527,13 +527,10 @@ namespace Stellamod.NPCs.Town
 			.Add<AzaleanHat>()
 			.Add<AzaleanChestplate>()
 			.Add<AzaleanLeggings>()
-
 			.Add<PerfectionStaff>(ZuiQuestSystem.ShopCondition3)
 			.Add<AquaCrystal>(ZuiQuestSystem.ShopCondition3)
 			.Add<OnionOfHeight>(ZuiQuestSystem.ShopCondition3)
 			.Add(new Item(ItemID.NaturesGift) { shopCustomPrice = Item.buyPrice(gold: 1) }, (ZuiQuestSystem.ShopCondition3))
-
-
 			.Add<DriveConstruct>(ZuiQuestSystem.ShopCondition6)
 			.Add(new Item(ItemID.LuckyHorseshoe) { shopCustomPrice = Item.buyPrice(gold: 15) }, (ZuiQuestSystem.ShopCondition6))
 			.Add(new Item(ItemID.CloudinaBalloon) { shopCustomPrice = Item.buyPrice(gold: 25) }, (ZuiQuestSystem.ShopCondition6))

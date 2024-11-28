@@ -44,6 +44,19 @@ namespace Stellamod.NPCs.Town
             spawner.structureToSpawnIn = "Struct/Overworld/WitchTown";
             spawner.spawnTileOffset = new Point(150, -19);
         }
+        public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
+        {
+            base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+            //Set buttons
+            buttons.Add(new Tuple<string, Action>("Brew", OpenCauldron));
+
+            portrait = "QuestionMarkPortrait";
+            timeBetweenTexts = 0.015f;
+            talkingSound = SoundID.Item1;
+
+            //This pulls from the new Dialogue localization
+            text = "CauldronOpenDialogue";
+        }
 
         public override void SetDefaults()
         {
@@ -61,6 +74,16 @@ namespace Stellamod.NPCs.Town
             NPC.noGravity = true;
             NPC.friendly = true; // NPC Will not attack player
             SpawnAtPoint = true;
+            HasTownDialogue = true;
+        }
+
+        private void OpenCauldron()
+        {
+            CauldronUISystem cauldronUISystem = ModContent.GetInstance<CauldronUISystem>();
+            cauldronUISystem.OpenUI();
+            cauldronUISystem.CauldronPos = NPC.Center;
+            Main.CloseNPCChatOrSign();
+            Main.playerInventory = true;
         }
 
         public override List<string> SetNPCNameList()
@@ -87,20 +110,11 @@ namespace Stellamod.NPCs.Town
         { // What the chat buttons are when you open up the chat UI
 
             button = LangText.Chat(this, "Button");
-            CauldronUISystem cauldronUISystem = ModContent.GetInstance<CauldronUISystem>();
-            cauldronUISystem.CloseUI();
         }
 
         public override void OnChatButtonClicked(bool firstButton, ref string shop)
         {
-            CauldronUISystem cauldronUISystem = ModContent.GetInstance<CauldronUISystem>();
-            if (firstButton)
-            {
-                cauldronUISystem.OpenUI();
-                cauldronUISystem.CauldronPos = NPC.Center;
-                Main.CloseNPCChatOrSign();
-                Main.playerInventory = true;
-            }
+
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

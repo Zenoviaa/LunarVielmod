@@ -1,6 +1,7 @@
 Talk: Talk
 Quest: Quest
 Shop: Shop
+Brew: Brew
 CellConverter: Weapon Swapper
 TestDialogue:
 	'''
@@ -20,3 +21,4 @@ CauldronCraftingDialogue:
 	Let's get you started then, you see that cauldron over there?
 	I want you to take these mushrooms and cook something with it. I think you'll be surprised at what comes out!
 	'''
+CauldronOpenDialogue: Do you want to brew?

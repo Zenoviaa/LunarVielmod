@@ -8164,3 +8164,108 @@ AurelusTempleDisc: {
 	DisplayName: Aurelus Temple Disc
 	Tooltip: ""
 }
+
+BloodCathedralDisc: {
+	DisplayName: Blood Cathedral Disc
+	Tooltip: ""
+}
+
+AshotiDisc: {
+	Tooltip: ""
+	DisplayName: Ashoti Disc
+}
+
+AlcaricFoxDisc: {
+	Tooltip: ""
+	DisplayName: Alcaric Fox Disc
+}
+
+AlcadizHurricaneDisc: {
+	Tooltip: ""
+	DisplayName: Alcadiz Hurricane Disc
+}
+
+ADemiseDisc: {
+	Tooltip: ""
+	DisplayName: A Demise Disc
+}
+
+AcidicTerrorsDisc: {
+	Tooltip: ""
+	DisplayName: Acidic Terrors Disc
+}
+
+AcidicNightmaresDisc: {
+	Tooltip: ""
+	DisplayName: Acidic Nightmares Disc
+}
+
+Boss6Disc: {
+	DisplayName: Boss6 Disc
+	Tooltip: ""
+}
+
+CatacombsDisc: {
+	DisplayName: Catacombs Disc
+	Tooltip: ""
+}
+
+CindersparkDisc: {
+	DisplayName: Cinderspark Disc
+	Tooltip: ""
+}
+
+CountingStarsDisc: {
+	DisplayName: Counting Stars Disc
+	Tooltip: ""
+}
+
+DaedusDisc: {
+	DisplayName: Daedus Disc
+	Tooltip: ""
+}
+
+DreadHeartDisc: {
+	DisplayName: Dread Heart Disc
+	Tooltip: ""
+}
+
+EndingDisc: {
+	DisplayName: Ending Disc
+	Tooltip: ""
+}
+
+EreshkigalDisc: {
+	DisplayName: Ereshkigal Disc
+	Tooltip: ""
+}
+
+GintzicaneDisc: {
+	DisplayName: Gintzicane Disc
+	Tooltip: ""
+}
+
+GothiviaDisc: {
+	DisplayName: Gothivia Disc
+	Tooltip: ""
+}
+
+GovheilCastleDisc: {
+	DisplayName: Govheil Castle Disc
+	Tooltip: ""
+}
+
+HidingInTheShadowsDisc: {
+	DisplayName: Hiding In The Shadows Disc
+	Tooltip: ""
+}
+
+IrradiaDisc: {
+	DisplayName: Irradia Disc
+	Tooltip: ""
+}
+
+IshtarDisc: {
+	DisplayName: Ishtar Disc
+	Tooltip: ""
+}
