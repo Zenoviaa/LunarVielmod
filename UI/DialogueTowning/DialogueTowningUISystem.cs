@@ -41,6 +41,7 @@ namespace Stellamod.UI.DialogueTowning
 
         public float Duration { get; set; }
 
+        public int WhosTalking { get; set; }
         public static string RootTexturePath => "Stellamod/UI/DialogueTowning/";
 
         public override void OnModLoad()
@@ -89,6 +90,7 @@ namespace Stellamod.UI.DialogueTowning
                     dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
                     dialogueTowningUIState.dialogueTownUI.Portrait = ModContent.Request<Texture2D>(RootTexturePath + $"{portrait}");
                     _talkWorld = Main.LocalPlayer.position;
+                    WhosTalking = veilTownNPC.NPC.type;
                     orig(self, npcIndex, fromNet);
                     return;
                 }

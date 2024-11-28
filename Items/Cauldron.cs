@@ -28,14 +28,9 @@ using Stellamod.Items.Weapons.Summon.Orbs;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Thrown.Jugglers;
 using Stellamod.Items.Weapons.Whips;
-using Stellamod.Projectiles.Powders;
-using Stellamod.Projectiles.StringnNeedles.Alcadiz;
-using Stellamod.Projectiles.Summons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -61,7 +56,7 @@ namespace Stellamod.Items
         public void Make(Item item)
         {
             //Add the template instance
-            if(!Crafts.Contains(item))
+            if (!Crafts.Contains(item))
                 Crafts.Add(item);
         }
 
@@ -117,6 +112,7 @@ namespace Stellamod.Items
         }
 
         public static event Action<CauldronBrew> OnBrew;
+        public CauldronBrew JustCrafted { get; set; }
         public override void PostAddRecipes()
         {
             base.PostAddRecipes();
@@ -127,7 +123,7 @@ namespace Stellamod.Items
             //Using Aurorean Starball for testing this system
 
 
-       
+
             //Spring Mushroom x Bow
             AddBrew(
                 result: ModContent.ItemType<MushroomGreatbow>(),
@@ -806,7 +802,7 @@ namespace Stellamod.Items
                 materialCount: 10,
                 weight: 1.0f,
                 yield: 1);
-            
+
             AddBrew(
                 result: ModContent.ItemType<SpikedLobber>(),
                 mold: ModContent.ItemType<BlankOrb>(),
@@ -849,7 +845,7 @@ namespace Stellamod.Items
                  weight: 1.0f,
                  yield: 1);
 
-            
+
 
             AddBrew(
                 result: ModContent.ItemType<SunBlastStaff>(),
@@ -1006,7 +1002,7 @@ namespace Stellamod.Items
 
         public Item FindMold(Item item)
         {
-            foreach(var brew in _brews)
+            foreach (var brew in _brews)
             {
                 if (brew.result == item.type)
                     return ModContent.GetModItem(brew.mold).Item;
@@ -1041,8 +1037,8 @@ namespace Stellamod.Items
 
         public Item[] GetMaterials()
         {
-            List<Item> materials = new List<Item>(); 
-            foreach(var brew in _brews)
+            List<Item> materials = new List<Item>();
+            foreach (var brew in _brews)
             {
                 Item item = ModContent.GetModItem(brew.material).Item;
                 if (!materials.Contains(item))
@@ -1127,7 +1123,7 @@ namespace Stellamod.Items
             if (getNothingFailed)
             {
                 result = NothingBrew;
-            } 
+            }
             else if (inkFailed && Main.hardMode)
             {
                 result = InkBrew;
@@ -1143,8 +1139,14 @@ namespace Stellamod.Items
             var starterQuest = QuestLoader.GetInstance<CauldronCrafting>();
             questPlayer.CompleteQuest(starterQuest);
 
-            OnBrew?.Invoke(result);
+            JustCrafted = result;
             return result;
+        }
+
+        public override void PostUpdateEverything()
+        {
+            base.PostUpdateEverything();
+            JustCrafted = null;
         }
     }
 }

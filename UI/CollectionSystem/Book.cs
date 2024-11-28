@@ -91,7 +91,7 @@ namespace Stellamod.UI.CollectionSystem
                         _state = State.Opened;
 
                         //Open to collection page
-                        collectionBookUISystem.OpenCollectionTabUI();
+                        collectionBookUISystem.OpenQuestsTabUI();
                     }
                     _open = true;
                     break;
@@ -132,6 +132,12 @@ namespace Stellamod.UI.CollectionSystem
             float oldScale = Main.inventoryScale;
             Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();
+
+            bool contains = ContainsPoint(Main.MouseScreen);
+            if (contains && !PlayerInput.IgnoreMouseInterface)
+            {
+                Main.LocalPlayer.mouseInterface = true;
+            }
 
             //Draw Backing
             Color color2 = Main.inventoryBack;

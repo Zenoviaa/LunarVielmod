@@ -501,6 +501,8 @@ namespace Stellamod.NPCs.Town
 
 			//This pulls from the new Dialogue localization
             text = "ZuiIdleChat1";
+
+
         }
 
         public override void SetQuestLine(List<int> quests)

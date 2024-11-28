@@ -1,4 +1,5 @@
-﻿using Stellamod.UI.PopupSystem;
+﻿using Stellamod.Common.QuestSystem.Quests;
+using Stellamod.UI.PopupSystem;
 using System.Collections.Generic;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -51,18 +52,37 @@ namespace Stellamod.Common.QuestSystem
         }
 
         public bool RecalculateUI { get; set; }
-        public bool HasQuest(Quest quest)
+
+        public bool FreshQuests()
+        {
+            int totalQuestCount = ActiveQuests.Count + CompletedQuests.Count + RewardQuests.Count;
+            return totalQuestCount <= 0;
+        }
+
+
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+
+
+        }
+
+        public bool HasActiveQuest(Quest quest)
         {
             return ActiveQuests.Contains(quest);
         }
-        public bool CompletedQuest(Quest quest)
+        public bool HasCompletedQuest(Quest quest)
         {
             return CompletedQuests.Contains(quest);
+        }
+        public bool HasRewardQuest(Quest quest)
+        {
+            return RewardQuests.Contains(quest);
         }
 
         public bool GiveQuest(Quest quest)
         {
-            if (HasQuest(quest) || CompletedQuest(quest))
+            if (HasActiveQuest(quest) || HasCompletedQuest(quest) || HasRewardQuest(quest))
                 return false;
             if (!quest.CanGiveQuest(Player))
                 return false;
@@ -81,6 +101,9 @@ namespace Stellamod.Common.QuestSystem
                 return;
             if (RewardQuests.Contains(quest))
                 return;
+            if (CompletedQuests.Contains(quest))
+                return;
+
             ActiveQuests.Remove(quest);
             RewardQuests.Add(quest);
  
@@ -102,6 +125,21 @@ namespace Stellamod.Common.QuestSystem
             RecalculateUI = true;
         }
 
+        public override void PostUpdate()
+        {
+            base.PostUpdate();
+            //Very first quest that you start off with
+            if (FreshQuests())
+            {
+                GiveQuest(QuestLoader.GetInstance<TalkToZui>());
+            }
+
+            List<Quest> questsToComplete = ActiveQuests.FindAll(x => x.CheckCompletion(Player));
+            foreach(var quest in questsToComplete)
+            {
+                CompleteQuest(quest);
+            }
+        }
         public override void SaveData(TagCompound tag)
         {
             base.SaveData(tag);

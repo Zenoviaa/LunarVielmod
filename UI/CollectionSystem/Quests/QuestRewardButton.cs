@@ -68,7 +68,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
             }
 
             QuestPlayer questPlayer = Main.LocalPlayer.GetModPlayer<QuestPlayer>();
-            if (questPlayer.CompletedQuests.Contains(Quest))
+            if (questPlayer.CompletedQuests.Contains(Quest) || questPlayer.ActiveQuests.Contains(Quest))
             {
                 if(_text != null)
                     _text.SetText("");
@@ -83,7 +83,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             QuestPlayer questPlayer = Main.LocalPlayer.GetModPlayer<QuestPlayer>();
-            if (questPlayer.CompletedQuests.Contains(Quest))
+            if (questPlayer.CompletedQuests.Contains(Quest) || questPlayer.ActiveQuests.Contains(Quest))
                 return;
 
             CalculatedStyle dimensions = GetDimensions();

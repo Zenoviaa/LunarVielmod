@@ -75,15 +75,15 @@ namespace Stellamod.Common.QuestSystem
 
         public void AddReward(int itemId, int stack)
         {
-            ModItem item = ModContent.GetModItem(itemId);
-            Item rewardItem = item.Item.Clone();
+            Item item = new Item(itemId);
+            Item rewardItem = item.Clone();
             rewardItem.stack = stack;
             Rewards.Add(rewardItem);
         }
         public bool IsQuestAvailable(Player player)
         {
             QuestPlayer questPlayer = player.GetModPlayer<QuestPlayer>();
-            if(questPlayer.HasQuest(this) || questPlayer.CompletedQuest(this))
+            if(questPlayer.HasActiveQuest(this) || questPlayer.HasCompletedQuest(this) || questPlayer.HasRewardQuest(this))
             {
                 return false;
             }
@@ -111,6 +111,8 @@ namespace Stellamod.Common.QuestSystem
             SoundEngine.PlaySound(sound);
            
         }
+
+        public virtual bool CheckCompletion(Player player) { return true; }
 
         public virtual void Reward(Player player)
         {

@@ -47,7 +47,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
             _slotGrid = new UIGrid();
             _slotGrid.Width.Set(0, 1f);
             _slotGrid.Height.Set(0, 1f);
-            _slotGrid.ListPadding = 2f;
+            _slotGrid.ListPadding = 5f;
             _slotGrid.Top.Pixels = 352;
             Append(_slotGrid);
 

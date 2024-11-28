@@ -170,9 +170,11 @@ namespace Stellamod.NPCs.Town
             base.AI();
 
             //This feels kinda dumb but maybe it'll work
-            Cauldron.OnBrew -= BrewSomethingAnimation;
-            Cauldron.OnBrew += BrewSomethingAnimation;
-
+            Cauldron cauldron = ModContent.GetInstance<Cauldron>();
+            if(cauldron.JustCrafted != null)
+            {
+                BrewSomethingAnimation(cauldron.JustCrafted);
+            }
 
             AI_Animate();
             Timer++;

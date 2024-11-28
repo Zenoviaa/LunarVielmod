@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets.Biomes;
 using Stellamod.Common;
+using Stellamod.Common.QuestSystem.Quests;
+using Stellamod.Common.QuestSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
@@ -31,6 +33,7 @@ using Stellamod.Items.Weapons.Summon.Orbs;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Thrown.Jugglers;
 using Stellamod.Items.Weapons.Whips;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -89,18 +92,6 @@ namespace Stellamod.NPCs.Town
 			; // < Mind the semicolon!
 		}
 
-		// Current state
-
-
-		// Current frame
-		public int frameCounter;
-		// Current frame's progress
-		public int frameTick;
-		// Current state's timer
-		public float timer;
-
-		// AI counter
-		public int counter;
 		public override void SetDefaults()
 		{
 			// Sets NPC to be a Town NPC
@@ -117,6 +108,7 @@ namespace Stellamod.NPCs.Town
 			NPC.dontTakeDamage = true;
 			NPC.BossBar = Main.BigBossProgressBar.NeverValid;
 			SpawnAtPoint = true;
+			HasTownDialogue = true;
 		}
 
 
@@ -226,32 +218,13 @@ namespace Stellamod.NPCs.Town
 
 			return chat; // chat is implicitly cast to a string.
 		}
-		public override void HitEffect(NPC.HitInfo hit)
-		{
-			int num = NPC.life > 0 ? 1 : 5;
-
-			for (int k = 0; k < num; k++)
-			{
-				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin);
-			}
-		}
-
-
-
-
-
 
 		public override List<string> SetNPCNameList()
 		{
 			return new List<string>() {
 				"Sirestias",
-				"Sirestias"
-
 			};
 		}
-
-
-
 
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
@@ -367,58 +340,58 @@ namespace Stellamod.NPCs.Town
 
 															Main.npcChatText = LangText.Chat(this, "Downed14");
 
-                                                            if (DownedBossSystem.downedSupernovaFragmentBoss)
-                                                            {
+															if (DownedBossSystem.downedSupernovaFragmentBoss)
+															{
 
-                                                                Main.npcChatText = LangText.Chat(this, "Downed15");
-
-
-
-                                                                if (DownedBossSystem.downedFenixBoss)
-                                                                {
-
-                                                                    Main.npcChatText = LangText.Chat(this, "Downed16");
-
-
-                                                                    if (DownedBossSystem.downedRekBoss)
-                                                                    {
-
-                                                                        Main.npcChatText = LangText.Chat(this, "Downed17");
-
-
-                                                                        if (DownedBossSystem.downedNiiviBoss)
-                                                                        {
-
-                                                                            Main.npcChatText = LangText.Chat(this, "Downed18");
+																Main.npcChatText = LangText.Chat(this, "Downed15");
 
 
 
-                                                                            if (DownedBossSystem.downedGothBoss)
-                                                                            {
+																if (DownedBossSystem.downedFenixBoss)
+																{
 
-                                                                                Main.npcChatText = LangText.Chat(this, "Downed19");
-
-
+																	Main.npcChatText = LangText.Chat(this, "Downed16");
 
 
+																	if (DownedBossSystem.downedRekBoss)
+																	{
 
-                                                                            }
-
-                                                                        }
-
-
-                                                                    }
+																		Main.npcChatText = LangText.Chat(this, "Downed17");
 
 
-                                                                   
+																		if (DownedBossSystem.downedNiiviBoss)
+																		{
 
-                                                                }
+																			Main.npcChatText = LangText.Chat(this, "Downed18");
 
 
 
-                                                            }
+																			if (DownedBossSystem.downedGothBoss)
+																			{
 
-                                                           
+																				Main.npcChatText = LangText.Chat(this, "Downed19");
+
+
+
+
+
+																			}
+
+																		}
+
+
+																	}
+
+
+
+
+																}
+
+
+
+															}
+
+
 														}
 													}
 
@@ -506,80 +479,77 @@ namespace Stellamod.NPCs.Town
 					if (DownedBossSystem.downedSupernovaFragmentBoss)
 					{
 
-                        switch (Main.rand.Next(3))
-                        {
-                            case 0:
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SineSire>(), 1);
+						switch (Main.rand.Next(3))
+						{
+							case 0:
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SineSire>(), 1);
 
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
 
 
-                                break;
+								break;
 
-                            case 1:
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RavestBlast>(), 1);
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
-                                break;
+							case 1:
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RavestBlast>(), 1);
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
+								break;
 
-                            case 2:
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
-                                break;
+							case 2:
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
+								break;
 
-                        }
-                    }
+						}
+					}
 					else if (DownedBossSystem.downedIrradiaBoss)
 					{
 
 						switch (Main.rand.Next(3))
 						{
 							case 0:
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<StickyCards>(), 1);
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<StickyCards>(), 1);
 								break;
 
 							case 1:
 								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mordred>(), 1);
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
-                                break;
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
+								break;
 
 							case 2:
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasMask>(), 1);
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
-                                break;
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasMask>(), 1);
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
+								break;
 
 						}
 					}
 					else if (DownedBossSystem.downedDreadBoss)
 					{
 
-                        switch (Main.rand.Next(3))
-                        {
-                            case 0:
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Maelstrom>(), 1);
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
+						switch (Main.rand.Next(3))
+						{
+							case 0:
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Maelstrom>(), 1);
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
 
-                                break;
+								break;
 
-                            case 1:
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ReflectionSeeker>(), 1);
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
+							case 1:
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ReflectionSeeker>(), 1);
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
 
-                                break;
+								break;
 
-                            case 2:
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
-                                Main.npcChatText = LangText.Chat(this, "Special3");
-                                break;
+							case 2:
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
+								Main.npcChatText = LangText.Chat(this, "Special3");
+								break;
 
-                        }
+						}
 
 
 					}
-						
-
-					
 
 
 
@@ -588,125 +558,52 @@ namespace Stellamod.NPCs.Town
 
 
 
-					
-                    else
+
+
+
+
+					else
 					{
 
 
 						Main.npcChatText = LangText.Chat(this, "Special4");
 					}
-
-
-
-
-
-				}
-				
-
-				// Reforge/Anvil sound
-
-
-
-
-
-
-
-			}
-
-
-		}
-
-
-		public void ResetTimers()
-		{
-			timer = 0;
-			frameCounter = 0;
-			frameTick = 0;
-		}
-
-
-
-
-
-
-
-
-
-
-
-		public override void ModifyActiveShop(string shopName, Item[] items)
-		{
-			foreach (Item item in items)
-			{
-				// Skip 'air' items and null items.
-				if (item == null || item.type == ItemID.None)
-				{
-					continue;
-				}
-
-				// If NPC is shimmered then reduce all prices by 50%.
-				if (NPC.IsShimmerVariant)
-				{
-					int value = item.shopCustomPrice ?? item.value;
-					item.shopCustomPrice = value / 2;
 				}
 			}
 		}
 
+        public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
+        {
+            base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+            buttons.Add(new Tuple<string, Action>("Talk", Talk));
 
+            portrait = "SirestiasPortrait";
+            timeBetweenTexts = 0.015f;
+            talkingSound = SoundID.Item1;
 
+            //This pulls from the new Dialogue localization
+            text = "ZuiOpenDialogue1";
+        }
 
-		
+        public override void IdleChat(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
+        {
+            base.IdleChat(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
+            portrait = "SirestiasPortrait";
+            timeBetweenTexts = 0.015f;
+            talkingSound = SoundID.Item1;
 
+            //This pulls from the new Dialogue localization
+            text = "ZuiIdleChat1";
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-		//	else if (Main.moonPhase < 4) {
-		// shop.item[nextSlot++].SetDefaults(ItemType<ExampleGun>());
-		//		shop.item[nextSlot].SetDefaults(ItemType<ExampleBullet>());
-		//	}
-		//	else if (Main.moonPhase < 6) {
-		// shop.item[nextSlot++].SetDefaults(ItemType<ExampleStaff>());
-		// 	}
-		//
-		// 	// todo: Here is an example of how your npc can sell items from other mods.
-		// 	// var modSummonersAssociation = ModLoader.TryGetMod("SummonersAssociation");
-		// 	// if (ModLoader.TryGetMod("SummonersAssociation", out Mod modSummonersAssociation)) {
-		// 	// 	shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
-		// 	// 	nextSlot++;
-		// 	// }
-		//
-		// 	// if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null) {
-		// 	// 	foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList) {
-		// 	// 		if (Item.IsUnloaded) continue;
-		// 	// 		shop.item[nextSlot].SetDefaults(Item.Type);
-		// 	// 		shop.item[nextSlot].shopCustomPrice = 0;
-		// 	// 		shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
-		// 	// 		nextSlot++;
-		// 	// 		//TODO: Have tModLoader handle index issues.
-		// 	// 	}
-		// 	// }
-		// }
-
-
-
-
-
-
-
-	}
-
-
-
-
-
+        public override void SetQuestLine(List<int> quests)
+        {
+            base.SetQuestLine(quests);
+            quests.Add(QuestLoader.QuestType<MysteriousPlacesI>());
+            quests.Add(QuestLoader.QuestType<MysteriousPlacesII>());
+            quests.Add(QuestLoader.QuestType<MysteriousPlacesIII>());
+            quests.Add(QuestLoader.QuestType<MysteriousPlacesIV>());
+            quests.Add(QuestLoader.QuestType<MysteriousPlacesV>());
+        }
+    }
 }
