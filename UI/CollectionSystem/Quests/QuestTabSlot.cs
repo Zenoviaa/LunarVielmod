@@ -65,6 +65,10 @@ namespace Stellamod.UI.CollectionSystem.Quests
             {
                 _text.Top.Pixels = 4;
                 _text.SetText(Quest.DisplayName);
+                if (Quest.IsSideQuest)
+                {
+                    _text.TextColor = Color.LightPink;
+                }
                 if (CompletedQuest)
                 {
                     _text.TextColor = Color.Gray;

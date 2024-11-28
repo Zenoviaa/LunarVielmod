@@ -9,24 +9,12 @@ namespace Stellamod.Common.QuestSystem
     {
         private List<Quest> _activeQuests;
         private List<Quest> _completedQuests;
-
-        //Ok so how are we designing this quest system hmm
-        //Well
-        //We uhh
-        //So what actually represents a quest
-        //-Quest Name - Automatic from localization
-        //-Quest Description - Automatic from localization
-        //-Quest Rewards
-
-        //Functions
-        //Start()
-        //Complete()
-
         public List<Quest> ActiveQuests
         {
             get
             {
                 _activeQuests ??= new List<Quest>();
+                _activeQuests.Sort((x, y) => x.IsSideQuest.CompareTo(y.IsSideQuest));
                 return _activeQuests;
             }
             private set
