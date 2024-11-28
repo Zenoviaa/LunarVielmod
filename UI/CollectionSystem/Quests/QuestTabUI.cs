@@ -73,7 +73,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
             if (Main.gameMenu)
                 return;
             QuestPlayer questPlayer = Main.LocalPlayer.GetModPlayer<QuestPlayer>();
-            if (_slotGrid != null && _slotGrid.Count != questPlayer.ActiveQuests.Count)
+            if (_slotGrid != null && _slotGrid.Count != (questPlayer.ActiveQuests.Count + questPlayer.CompletedQuests.Count + 1))
             {
                 _slotGrid.Clear();
                 foreach (var quest in questPlayer.ActiveQuests)
@@ -84,6 +84,20 @@ namespace Stellamod.UI.CollectionSystem.Quests
                     _slotGrid.Add(slot);
                 }
 
+                UIText separatorText = new UIText("Completed Quests");
+                separatorText.Height.Pixels = 24;
+                separatorText.Width.Pixels = 48 * 6f;
+                separatorText.Top.Pixels = 4;
+                separatorText.IsWrapped = false;
+                _slotGrid.Add(separatorText);
+                foreach (var quest in questPlayer.CompletedQuests)
+                {
+                    QuestTabSlot slot = new QuestTabSlot();
+                    slot.Quest = quest;
+                    slot.CompletedQuest = true;
+                    slot.Activate();
+                    _slotGrid.Add(slot);
+                }
                 _slotGrid.Recalculate();
             }
       

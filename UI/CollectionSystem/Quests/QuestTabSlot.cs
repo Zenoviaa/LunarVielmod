@@ -31,6 +31,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
         }
 
         public float Glow { get; set; }
+        public bool CompletedQuest { get; set; }
         public override void OnInitialize()
         {
             base.OnInitialize();
@@ -41,10 +42,12 @@ namespace Stellamod.UI.CollectionSystem.Quests
             _text.Width.Pixels = Width.Pixels;
             _text.Top.Pixels = 4;
             _text.IsWrapped = false;
+
             Append(_text);
         }
         private void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
+
             CollectionBookUISystem uiSystem = ModContent.GetInstance<CollectionBookUISystem>();
             uiSystem.OpenQuestInfoUI(Quest);
         }
@@ -57,11 +60,15 @@ namespace Stellamod.UI.CollectionSystem.Quests
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
             if (_text != null && Quest != null)
             {
                 _text.Top.Pixels = 4;
-             
                 _text.SetText(Quest.DisplayName);
+                if (CompletedQuest)
+                {
+                    _text.TextColor = Color.Gray;
+                }
             }
 
             bool contains = ContainsPoint(Main.MouseScreen);
