@@ -79,7 +79,10 @@ namespace Stellamod.Common.QuestSystem
         {
             return RewardQuests.Contains(quest);
         }
-
+        public bool HasFinishedQuest(Quest quest)
+        {
+            return CompletedQuests.Contains(quest) || RewardQuests.Contains(quest);
+        }
         public bool GiveQuest(Quest quest)
         {
             if (HasActiveQuest(quest) || HasCompletedQuest(quest) || HasRewardQuest(quest))

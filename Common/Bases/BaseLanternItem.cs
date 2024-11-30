@@ -41,11 +41,11 @@ namespace Stellamod.Common.Bases
         {
             base.ModifyTooltips(tooltips);
             TooltipLine line = new TooltipLine(Mod, "Lantern", LangText.Common("Lantern"));
-            line.OverrideColor = new Color(80, 187, 124);
+            line.OverrideColor = Color.LightGoldenrodYellow;
             tooltips.Add(line);
 
             line = new TooltipLine(Mod, "LanternHelp", LangText.Common("LanternHelp"));
-            line.OverrideColor = Color.Lerp(new Color(80, 187, 124), Color.Black, 0.5f);
+            line.OverrideColor = Color.Lerp(Color.LightGoldenrodYellow, Color.Black, 0.15f);
             tooltips.Add(line);
         }
 

@@ -2,6 +2,7 @@ Talk: Talk
 Quest: Quest
 Shop: Shop
 Brew: Brew
+Challenge: Challenge
 NewQuest: Your quest book has updated!
 CompleteQuest: You've completed a quest!
 CellConverter: Weapon Swapper
@@ -29,3 +30,5 @@ MysteriousPlacesII: This is placeholder text, wow!
 MysteriousPlacesIII: This is placeholder text, wow!
 MysteriousPlacesIV: This is placeholder text, wow!
 MysteriousPlacesV: This is placeholder text, wow!
+DaedusOpenChat1: This is placeholder text
+DaedusIdleChat1: This is placeholder text

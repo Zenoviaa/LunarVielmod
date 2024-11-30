@@ -16,6 +16,19 @@ using Microsoft.Xna.Framework;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Terraria.Audio;
 using Stellamod.Common;
+using Stellamod.Items.Accessories;
+using Stellamod.Items.Armors.Vanity.Azalean;
+using Stellamod.Items.Armors.Vanity.Nyxia;
+using Stellamod.Items.Armors.Vanity.Solarian;
+using Stellamod.Items.Armors.Witchen;
+using Stellamod.Items.Consumables;
+using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Quest.Zui;
+using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Summon;
+using Stellamod.Items.Weapons.Thrown;
 
 namespace Stellamod.NPCs.Town
 {
@@ -23,6 +36,7 @@ namespace Stellamod.NPCs.Town
     {
         private int _frame;
         public int NumberOfTimesTalkedTo = 0;
+        public const string ShopName = "Shop";
         public override string Texture => "Stellamod/NPCs/Bosses/DaedusTheDevoted/DaedusTheDevoted";
         public override void SetStaticDefaults()
         {
@@ -127,6 +141,7 @@ namespace Stellamod.NPCs.Town
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             SpawnAtPoint = true;
+            HasTownDialogue = true;
         }
 
         public override bool CanChat()
@@ -202,26 +217,9 @@ namespace Stellamod.NPCs.Town
 
         public override void OnChatButtonClicked(bool firstButton, ref string shop)
         {
-            if (firstButton)
+            if (!firstButton)
             {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    Main.NewText(LangText.Chat(this, "Challenge"), Color.Gold);
-                    NPC npc = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.position.X, (int)NPC.position.Y,
-                        ModContent.NPCType<DaedusTheDevoted>());
-                    npc.netUpdate = true;
-                }
-                else
-                {
-                    if (Main.netMode == NetmodeID.SinglePlayer)
-                        return;
-
-                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
-                        ModContent.NPCType<DaedusTheDevoted>(), (int)NPC.position.X, (int)NPC.position.Y);
-                }
-
-                //Spawn Boss
-                NPC.Kill();
+                shop = ShopName;
             }
         }
 
@@ -235,6 +233,77 @@ namespace Stellamod.NPCs.Town
             BackSegment.AI();
             ArmSegment.AI();
             RobeSegment.AI();
+        }
+
+        public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
+        {
+            base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+            //Set buttons
+            buttons.Add(new Tuple<string, Action>("Talk", Talk));
+            if (DownedBossSystem.downedDaedusBoss)
+            {
+                buttons.Add(new Tuple<string, Action>("Shop", OpenShop));
+            }
+
+            buttons.Add(new Tuple<string, Action>("Challenge", Challenge));
+
+
+            portrait = "DaedusPortrait";
+            timeBetweenTexts = 0.015f;
+            talkingSound = SoundID.Item1;
+
+            //This pulls from the new Dialogue localization
+            text = "DaedusOpenChat1";
+        }
+
+        public override void IdleChat(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
+        {
+            base.IdleChat(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
+            portrait = "DaedusPortrait";
+            timeBetweenTexts = 0.015f;
+            talkingSound = SoundID.Item1;
+
+            //This pulls from the new Dialogue localization
+            text = "DaedusIdleChat1";
+        }
+
+        private void Challenge()
+        {
+            CloseTownDialogue();
+            if (Main.netMode != NetmodeID.MultiplayerClient)
+            {
+                Main.NewText(LangText.Chat(this, "Challenge"), Color.Gold);
+                NPC npc = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.position.X, (int)NPC.position.Y,
+                    ModContent.NPCType<DaedusTheDevoted>());
+                npc.netUpdate = true;
+            }
+            else
+            {
+                if (Main.netMode == NetmodeID.SinglePlayer)
+                    return;
+
+                StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
+                    ModContent.NPCType<DaedusTheDevoted>(), (int)NPC.position.X, (int)NPC.position.Y);
+            }
+
+            //Spawn Boss
+            NPC.Kill();
+        }
+
+        public override void AddShops()
+        {
+            var npcShop = new NPCShop(Type, ShopName)
+            .Add(new Item(ItemID.Book) { shopCustomPrice = Item.buyPrice(silver: 10) })
+            .Add<WintersStom>()
+            .Add<SandStorm>()
+            .Add<Aneuriliac>()
+            .Add<CocoSpark>(Condition.DownedEowOrBoc)
+            .Add<ShinobiTome>(Condition.DownedEowOrBoc)
+            .Add<ShadeHandTome>(Condition.DownedEowOrBoc)
+            .Add<VoidsGrasp>(Condition.DownedSkeletron)
+            .Add<Astalaiya>(Condition.DownedSkeletron)
+            .Add<TheDeafen>(Condition.DownedSkeletron);
+            npcShop.Register();
         }
     }
 }

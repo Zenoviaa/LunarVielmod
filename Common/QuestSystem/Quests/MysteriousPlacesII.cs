@@ -15,7 +15,8 @@ namespace Stellamod.Common.QuestSystem.Quests
 
         public override bool CanGiveQuest(Player player)
         {
-            return true;
+            QuestPlayer questPlayer = player.GetModPlayer<QuestPlayer>();
+            return questPlayer.HasFinishedQuest(QuestLoader.GetInstance<MysteriousPlacesI>());
         }
 
         public override void StartQuest(Player player)

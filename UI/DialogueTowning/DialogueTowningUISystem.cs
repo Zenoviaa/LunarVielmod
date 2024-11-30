@@ -65,35 +65,38 @@ namespace Stellamod.UI.DialogueTowning
             if(Main.netMode != 1 && npcIndex >= 0 && npcIndex < 200)
             {
                 NPC npc = Main.npc[npcIndex];
-                if (npc.ModNPC is VeilTownNPC veilTownNPC && veilTownNPC.HasTownDialogue && _userInterface?.CurrentState == null)
+                if (npc.ModNPC is VeilTownNPC veilTownNPC && veilTownNPC.HasTownDialogue)
                 {
-                    string text = string.Empty;
-                    string portrait = "FenixPortrait";
-                    float timeBetweenTexts = 0.05f;
-                    SoundStyle? talkingSound = null;
-                    dialogueTowningUIState.dialogueTownButtonsUI.ClearButtons();
-                    List<Tuple<string, Action>> buttons = new List<Tuple<string, Action>>();
-                    veilTownNPC.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
-                    if (veilTownNPC.HasQuestAvailable())
+                    if(WhosTalking != npc.ModNPC.Type)
                     {
-                        buttons.Add(new Tuple<string, Action>("Quest", veilTownNPC.GiveQuest));
-                    }
-                    foreach (var pair in buttons)
-                    {
-                        dialogueTowningUIState.dialogueTownButtonsUI.AddButton(pair.Item1, pair.Item2);
-                    }
+                        string text = string.Empty;
+                        string portrait = "FenixPortrait";
+                        float timeBetweenTexts = 0.05f;
+                        SoundStyle? talkingSound = null;
+                        dialogueTowningUIState.dialogueTownButtonsUI.ClearButtons();
+                        List<Tuple<string, Action>> buttons = new List<Tuple<string, Action>>();
+                        veilTownNPC.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+                        if (veilTownNPC.HasQuestAvailable())
+                        {
+                            buttons.Add(new Tuple<string, Action>("Quest", veilTownNPC.GiveQuest));
+                        }
+                        foreach (var pair in buttons)
+                        {
+                            dialogueTowningUIState.dialogueTownButtonsUI.AddButton(pair.Item1, pair.Item2);
+                        }
 
-                    _killUi = true;
-                    OpenUI();
-                    dialogueTowningUIState.dialogueTownUI.ResetText();
-                    dialogueTowningUIState.dialogueTownUI.LocalizedText = LangText.TownDialogue(text);
-                    dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
-                    dialogueTowningUIState.dialogueTownUI.Portrait = ModContent.Request<Texture2D>(RootTexturePath + $"{portrait}");
-                    _talkWorld = Main.LocalPlayer.position;
-                    WhosTalking = veilTownNPC.NPC.type;
-                    orig(self, npcIndex, fromNet);
+                        _killUi = true;
+                        OpenUI();
+                        dialogueTowningUIState.dialogueTownUI.ResetText();
+                        dialogueTowningUIState.dialogueTownUI.LocalizedText = LangText.TownDialogue(text);
+                        dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
+                        dialogueTowningUIState.dialogueTownUI.Portrait = ModContent.Request<Texture2D>(RootTexturePath + $"{portrait}");
+                        _talkWorld = Main.LocalPlayer.position;
+                        WhosTalking = veilTownNPC.NPC.type;
+                        orig(self, npcIndex, fromNet);
+                    } 
                     return;
-                }
+                } 
             }
             _killUi = false;
             orig(self, npcIndex, fromNet);
@@ -178,6 +181,7 @@ namespace Stellamod.UI.DialogueTowning
                 _dialogueTimer = 0f;
                 if (_userInterface.CurrentState != null)
                 {
+                    WhosTalking = -1;
                     _userInterface.SetState(null);
                 }
             }
