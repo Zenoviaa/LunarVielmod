@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Ores
 {
-    public class FrileOre : ModItem
+    public class GlisteningOre : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -25,8 +25,7 @@ namespace Stellamod.Items.Ores
 			Item.useTime = 10;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.consumable = true;
-
-            Item.createTile = ModContent.TileType<Tiles.FrileOreTile>();
+            Item.createTile = ModContent.TileType<Tiles.GlisteningOreTile>();
         }
 	}
 }
