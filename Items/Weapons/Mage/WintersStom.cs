@@ -15,7 +15,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 7;
+            Item.damage = 4;
             Item.mana = 6;
         }
         public override void SetStaticDefaults()
@@ -41,7 +41,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.DamageType = DamageClass.Magic;
             Item.shoot = ModContent.ProjectileType<WinterStormProg>();
             Item.shootSpeed = 11;
-            Item.mana = 5;
+            Item.mana = 15;
             Item.useAnimation = 34;
             Item.useTime = 34;
             Item.consumeAmmoOnLastShotOnly = true;

@@ -25,7 +25,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 6;
+            Item.damage = 12;
             Item.mana = 6;
         }
         public override void SetStaticDefaults()
@@ -35,7 +35,7 @@ namespace Stellamod.Items.Weapons.Mage
 
 		public override void SetDefaults()
 		{
-			Item.damage = 12;
+			Item.damage = 24;
 			Item.DamageType = DamageClass.Magic;
 			Item.width = 40;
 			Item.height = 40;
@@ -48,7 +48,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.autoReuse = true;
 			Item.shoot = ProjectileType<Nado>();
 			Item.shootSpeed = 10f;
-			Item.mana = 15;
+			Item.mana = 8;
 
 
 		}

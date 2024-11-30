@@ -16,7 +16,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 5;
+            Item.damage = 14;
             Item.mana = 0;
         }
         public override void SetStaticDefaults()
@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.Mage
         public int Star;
         public override void SetDefaults()
         {
-            Item.damage = 9;
+            Item.damage = 35;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -41,7 +41,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.DamageType = DamageClass.Magic;
             Item.shoot = ModContent.ProjectileType<AstalaiyaStar1>();
             Item.shootSpeed = 10f;
-            Item.mana = 5;
+            Item.mana = 6;
             Item.useAnimation = 10;
             Item.useTime = 10;
             Item.consumeAmmoOnLastShotOnly = true;

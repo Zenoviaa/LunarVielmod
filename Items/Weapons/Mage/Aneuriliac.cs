@@ -39,7 +39,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.DamageType = DamageClass.Magic;
             Item.shoot = ModContent.ProjectileType<DreadVomit>();
             Item.shootSpeed = 10f;
-            Item.mana = 10;
+            Item.mana = 3;
             Item.useAnimation = 6;
             Item.useTime = 6;
             Item.consumeAmmoOnLastShotOnly = true;
