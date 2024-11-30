@@ -8269,3 +8269,18 @@ IshtarDisc: {
 	DisplayName: Ishtar Disc
 	Tooltip: ""
 }
+
+GlisteningPearl: {
+	DisplayName: Glistening Pearl
+	Tooltip: ""
+}
+
+GlisteningOre: {
+	DisplayName: Glistening Ore
+	Tooltip: ""
+}
+
+GlisteningBar: {
+	DisplayName: Glistening Bar
+	Tooltip: ""
+}

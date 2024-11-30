@@ -1,0 +1,139 @@
+None:{
+	DisplayName:""
+}
+
+Sharpening: {
+	DisplayName: Sharpening
+	Upside: +5 armor penetration
+	Downside: -10 defense
+}
+
+Sturdy: {
+	DisplayName: Sturdy
+	Upside: +5 defense
+	Downside: -7% defense
+}
+
+Alcaric: {
+	DisplayName: Alcaric
+	Upside: +50 max mana
+	Downside: -25 life
+}
+
+Dexterous: {
+	DisplayName: Dexterous
+	Upside: +10% movement speed acceleration
+	Downside: -10% max movement speed
+}
+
+Whispy: {
+	DisplayName: Whispy
+	Upside: +20% max movement speed
+	Downside: -30% run acceleration
+}
+
+Daedious: {
+	DisplayName: Daedious
+	Upside: +2 life regeneration
+	Downside: -20% damage
+}
+
+Hunted: {
+	DisplayName: Hunted
+	Upside: +10% damage
+	Downside:
+		'''
+		-10 defense
+		-20% movement speed
+		-5% critical strike chance
+		'''
+}
+
+Radiant:{
+	DisplayName: Radiant
+	Upside: +10 max life
+	Downside: -5% movement speed
+}
+Rocky: {
+	DisplayName: Rocky
+	Upside:
+		'''
+		+10% increased mana regeneration
+		-5% incoming damage
+		'''
+	Downside: -5% damage
+}
+
+Shaded: {
+	DisplayName: Shaded
+	Upside: +20% increased dash distance
+	Downside:
+		'''
+		-5% damage
+		-5% critical strike chance
+		'''
+}
+
+Muted: {
+	DisplayName: Muted
+	Upside:
+		'''
+		+20% critical strike chance
+		+3 defense
+		'''
+	Downside: -20% damage
+}
+
+MageRan: {
+	DisplayName: Mage Ran
+	Upside: +5% magic damage
+	Downside: -10 defense
+}
+
+SwordSpiked: {
+	DisplayName: Sword Spiked
+	Upside:
+		'''
+		+10% melee speed
+		+4% melee damage
+		'''
+	Downside:
+		'''
+		-20% movement speed
+		-20% critical strike chance
+		'''
+}
+
+Necromanced: {
+	DisplayName: Necromanced
+	Upside: +1 max minion
+	Downside:
+		'''
+		-10% summon damage
+		-30% sentry damage
+		-1 sentry
+		'''
+}
+
+RangedHolsting: {
+	DisplayName: Ranged Holsting
+	Upside: +10% ranged damage
+	Downside: -30% attack speed
+}
+
+Vampiric: {
+	DisplayName: Vampiric
+	Upside: +1 lifesteal
+	Downside: +10% incoming damage
+}
+
+RogueThrown: {
+	DisplayName: RogueThrown
+	Upside: +12% ranged damage
+	Downside:
+		'''
+		+18% incoming damage
+		-40 max life
+		-2 life regeneration
+		'''
+}

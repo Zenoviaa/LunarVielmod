@@ -287,28 +287,5 @@ namespace Stellamod.NPCs.Town
             uiSystem.OpenUI();
    
         }
-
-		private void OpenShop()
-		{
-            Main.LocalPlayer.SetTalkNPC(NPC.whoAmI);
-            NPC npc = Main.LocalPlayer.TalkNPC;
-            string shopName = null;
-
-            if (npc.ModNPC != null)
-            {
-                npc.ModNPC.OnChatButtonClicked(false, ref shopName);
-                SoundEngine.PlaySound(SoundID.MenuTick);
-
-                if (shopName != null)
-                {
-                    // Copied from Main.OpenShop
-                    Main.playerInventory = true;
-                    Main.stackSplit = 9999;
-                    Main.npcChatText = "";
-                    Main.SetNPCShopIndex(1);
-                    Main.instance.shop[Main.npcShop].SetupShop(NPCShopDatabase.GetShopName(npc.type, shopName), npc);
-                }
-            }
-        }
     }
 }
