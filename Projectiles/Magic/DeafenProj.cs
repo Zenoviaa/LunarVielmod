@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
+using Stellamod.Trails;
+using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,113 +12,175 @@ namespace Stellamod.Projectiles.Magic
 {
     internal class DeafenProj : ModProjectile
     {
-        bool Moved;
+        private Vector2[] _soundWavePos;
+        private Vector2[] _soundWavePos2;
+        private Vector2[] _soundWavePos3;
+
+        public override string Texture => TextureRegistry.EmptyTexture;
+        private ref float Timer => ref Projectile.ai[0];
+        private float TrailAlpha;
+
+        public bool Slowdown;
+        public PrimDrawer Trail { get; set; }
 
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Shadow Hand");
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 15;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 24;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
+
         public override void SetDefaults()
         {
-            base.Projectile.penetrate = 5;
-            base.Projectile.width = 25;
-            base.Projectile.height = 25;
-            base.Projectile.timeLeft = 700;
-            base.Projectile.alpha = 255;
-            base.Projectile.friendly = true;
-            base.Projectile.hostile = false;
-            base.Projectile.ignoreWater = true;
-            base.Projectile.tileCollide = false;
+            _soundWavePos = new Vector2[32];
+            _soundWavePos2 = new Vector2[32];
+            _soundWavePos3 = new Vector2[32];
+            TrailAlpha = 1f;
+            Projectile.penetrate = 5;
+            Projectile.width = 36;
+            Projectile.height = 36;
+            Projectile.timeLeft = 180;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.ignoreWater = true;
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (Main.rand.NextBool(3) && !target.boss)
                 target.AddBuff(BuffID.Confused, 180);
         }
+
         public override void AI()
         {
-            Projectile.velocity *= 1.02f;
-            Projectile.ai[1]++;
-            if (!Moved && Projectile.ai[1] >= 0)
+            Timer++;
+            if (Timer == 1)
             {
                 int Sound = Main.rand.Next(1, 3);
                 if (Sound == 1)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/TheDeafen"), Projectile.position);
+                    SoundEngine.PlaySound(SoundID.Zombie83, Projectile.position);
+                    SoundEngine.PlaySound(SoundID.Item104, Projectile.position);
                 }
                 else
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/TheDeafen2"), Projectile.position);
+                    SoundEngine.PlaySound(SoundID.Zombie82, Projectile.position);
+                    SoundEngine.PlaySound(SoundID.Item103, Projectile.position);
                 }
-
-                Projectile.spriteDirection = Projectile.direction;
-                Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
-                Projectile.alpha = 255;
-                Moved = true;
-            }
-            if ( Projectile.ai[1] >= 20)
-            {
-                Projectile.tileCollide = true;
-            }
-            if (Projectile.alpha >= 0)
-            {
-                Projectile.alpha -= 2;
             }
 
-            Projectile.spriteDirection = Projectile.direction;
-            Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
+            if(Timer % 4 == 0)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.DemonTorch);
+            }
+
+
+
+            float swingXRadius = 32 * Easing.OutCirc(Timer /60f);
+            float swingYRadius = 64 * Easing.OutCirc(Timer / 60f);
+            float swingRange = MathHelper.ToRadians(360);
+            for(int i = 0; i < _soundWavePos.Length; i++)
+            {
+                float progress = (float)i / (float)_soundWavePos.Length;
+                float xRadius = swingXRadius * 
+                    VectorHelper.Osc(0.85f, 1f, speed: 6);
+                float yRadius = swingYRadius * 
+                    VectorHelper.Osc(0.85f, 1f, speed: 6);
+
+
+
+                float xOffset = (xRadius)
+                    * MathF.Sin(progress * swingRange + swingRange);
+                float yOffset = (yRadius)
+                    * MathF.Cos(progress * swingRange + swingRange);
+                Vector2 offset = new Vector2(xOffset, yOffset).RotatedBy(Projectile.rotation);
+             
+                Vector2 pos = Projectile.Center + offset;
+                _soundWavePos[i] = pos;
+
+                offset = new Vector2(xOffset, yOffset).RotatedBy(Projectile.rotation);
+                offset *= 0.66f;
+                pos = Projectile.Center + offset;
+
+                _soundWavePos2[i] = pos - (Projectile.velocity.SafeNormalize(Vector2.Zero) * VectorHelper.Osc(32, 44, speed: 6));
+
+                offset = new Vector2(xOffset, yOffset).RotatedBy(Projectile.rotation);
+                offset *= 0.33f;
+                pos = Projectile.Center + offset;
+                _soundWavePos3[i] = pos - (Projectile.velocity.SafeNormalize(Vector2.Zero) * VectorHelper.Osc(48, 64, speed: 6, offset: 6));
+            }
+
+
+            if (Slowdown && Timer > 30)
+            {
+                Projectile.tileCollide = false;
+                Projectile.velocity *= 0.94f;
+                TrailAlpha = MathHelper.Lerp(0f, 1f, Projectile.velocity.Length());
+                if (Projectile.velocity.Length() <= 0.5f)
+                {
+                    Projectile.Kill();
+                }
+            }
+            else
+            {           
+                Projectile.velocity *= 1.01f;
+                Projectile.rotation = Projectile.velocity.ToRotation();
+
+            }
+
+
+            Lighting.AddLight(Projectile.Center, Color.MediumPurple.ToVector3() * 1.75f * Main.essScale);
         }
-        public override void OnKill(int timeLeft)
+
+        public float WidthFunction(float completionRatio)
         {
+            float multiplier = MathF.Sin((Main.GlobalTimeWrappedHourly + completionRatio) * 24);
+            return 186 * MathHelper.Lerp(1f, 0.5f, multiplier);
         }
-        public override Color? GetAlpha(Color lightColor)
+
+        public Color ColorFunction(float completionRatio)
         {
-            return Color.White;
+            return Color.MediumPurple * TrailAlpha;
         }
+
+        protected virtual void DrawWindTrail(ref Color lightColor)
+        {
+            Trail ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
+            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.SimpleTrail);
+            Trail.DrawPrims(_soundWavePos, -Main.screenPosition + Projectile.Size / 2, totalTrailPoints: 155);
+            Trail.DrawPrims(_soundWavePos2, -Main.screenPosition + Projectile.Size / 2, totalTrailPoints: 155);
+            Trail.DrawPrims(_soundWavePos3, -Main.screenPosition + Projectile.Size / 2, totalTrailPoints: 155);
+        }
+
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Vector2 scale = new(Projectile.scale, 1f);
-            Color drawColor = Projectile.GetAlpha(lightColor);
-            Vector2 drawPosition = Projectile.Center - Main.screenPosition;
-
-            for (int i = 0; i < 8; i++)
-            {
-                Vector2 drawOffset = (MathHelper.TwoPi * i / 8f).ToRotationVector2() * 4f;
-                Main.EntitySpriteDraw(texture, drawPosition + drawOffset, null, Color.MediumPurple with { A = 160 } * Projectile.Opacity, Projectile.rotation, texture.Size() * 0.5f, scale, 0, 0);
-            }
-            for (int i = 0; i < 7; i++)
-            {
-                float scaleFactor = 1f - i / 6f;
-                Vector2 drawOffset = Projectile.velocity * i * -0.34f;
-                Main.EntitySpriteDraw(texture, drawPosition + drawOffset, null, drawColor with { A = 160 } * Projectile.Opacity, Projectile.rotation, texture.Size() * 0.5f, scale * scaleFactor, 0, 0);
-            }
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            Main.instance.LoadProjectile(Projectile.type);
-
-            // Redraw the projectile with the color not influenced by light
-            Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-            for (int k = 0; k < Projectile.oldPos.Length; k++)
-            {
-                Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(Color.MediumPurple) * (float)(((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length) / 2);
-                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
-            }
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-            return true;
+            DrawWindTrail(ref lightColor);
+            return false;
         }
-        public override void PostDraw(Color lightColor)
-        {
-            Lighting.AddLight(Projectile.Center, Color.MediumPurple.ToVector3() * 1.75f * Main.essScale);
 
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+            for (int i = 0; i < 16; i++)
+            {
+                float progress = (float)i / 16f;
+                float rot = progress * MathHelper.ToRadians(360);
+                Vector2 vel = rot.ToRotationVector2() * 2;
+                Dust.NewDustPerfect(Projectile.Center, DustID.DemonTorch, vel);
+            }
+        }
+
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            if (!Slowdown )
+            {
+                Slowdown = true;
+                Projectile.tileCollide = false;
+                Projectile.velocity = oldVelocity;
+            }
+
+            return false;
         }
     }
-
 }
 
 

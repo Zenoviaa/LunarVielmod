@@ -38,8 +38,9 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.knockBack = 2f;
 			Item.DamageType = DamageClass.Magic;
 			Item.value = 200;
-			Item.rare = ItemRarityID.Blue;
-			Item.UseSound = SoundID.DD2_BookStaffCast;
+            Item.value = Item.buyPrice(gold: 10);
+            Item.rare = ItemRarityID.Green;
+            Item.UseSound = SoundID.DD2_BookStaffCast;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<CocoShot>();
 			Item.shootSpeed = 4f;

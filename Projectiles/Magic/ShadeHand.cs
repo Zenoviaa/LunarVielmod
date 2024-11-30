@@ -20,15 +20,16 @@ namespace Stellamod.Projectiles.Magic
         }
         public override void SetDefaults()
         {
-            base.Projectile.width = 12;
-            base.Projectile.height = 12;
-            base.Projectile.timeLeft = 700;
-            base.Projectile.alpha = 255;
-            base.Projectile.friendly = true;
-            base.Projectile.hostile = false;
-            base.Projectile.ignoreWater = true;
-            base.Projectile.tileCollide = false;
+            Projectile.width = 12;
+            Projectile.height = 12;
+            Projectile.timeLeft = 700;
+            Projectile.alpha = 255;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
         }
+
         public override void AI()
         {
             Projectile.ai[1]++;
@@ -50,8 +51,9 @@ namespace Stellamod.Projectiles.Magic
 
                 if(Main.myPlayer == Projectile.owner)
                 {
-                    Projectile.position.X = Main.rand.NextFloat(Projectile.position.X - 50, Projectile.position.X + 50);
-                    Projectile.position.Y = Main.rand.NextFloat(Projectile.position.Y - 50, Projectile.position.Y + 50);
+                    float offsetNum = 17;
+                    Projectile.position.X = Main.rand.NextFloat(Projectile.position.X - offsetNum, Projectile.position.X + offsetNum);
+                    Projectile.position.Y = Main.rand.NextFloat(Projectile.position.Y - offsetNum, Projectile.position.Y + offsetNum);
                     Projectile.netUpdate = true;
                 }
 

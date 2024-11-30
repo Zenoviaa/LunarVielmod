@@ -431,6 +431,7 @@
     <None Remove="Projectiles\Magic\LampShot.png" />
     <None Remove="Projectiles\Magic\LightSpandProg.png" />
     <None Remove="Projectiles\Magic\MoonFlameSlashProj.png" />
+    <None Remove="Projectiles\Magic\Nado.png" />
     <None Remove="Projectiles\Magic\PoyaProj.png" />
     <None Remove="Projectiles\Magic\Poyashot.png" />
     <None Remove="Projectiles\Magic\Poyashot2.png" />

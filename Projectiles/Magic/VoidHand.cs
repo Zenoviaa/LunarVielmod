@@ -1,9 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
+using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,36 +13,36 @@ namespace Stellamod.Projectiles.Magic
 {
     internal class VoidHand : ModProjectile
     {
-        bool Moved;
-
+        private ref float Timer => ref Projectile.ai[0];
+        public PrimDrawer Trail { get; set; }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shadow Hand");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 15;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
+
         public override void SetDefaults()
         {
-            base.Projectile.penetrate = 4;
-            base.Projectile.width = 20;
-            base.Projectile.height = 20;
-            base.Projectile.timeLeft = 700;
-            base.Projectile.alpha = 255;
-            base.Projectile.friendly = true;
-            base.Projectile.hostile = false;
-            base.Projectile.ignoreWater = true;
-            base.Projectile.tileCollide = false;
+            Projectile.penetrate = 1;
+            Projectile.width = 24;
+            Projectile.height = 24;
+            Projectile.timeLeft = 700;
+            Projectile.alpha = 255;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
         }
+
         public override void AI()
         {
-            Projectile.ai[1]++;
-            if (!Moved && Projectile.ai[1] >= 0)
+            Timer++;
+            if (Timer == 1)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/VoidHand"), Projectile.position);
+                Projectile.rotation = Projectile.velocity.ToRotation();
 
-                Projectile.spriteDirection = Projectile.direction;
-                Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
-  
                 for (int j = 0; j < 10; j++)
                 {
                     Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;
@@ -55,9 +56,14 @@ namespace Stellamod.Projectiles.Magic
                     Main.dust[num8].noLight = true;
                     Main.dust[num8].velocity = Vector2.Normalize(Projectile.Center - Projectile.velocity * 3f - Main.dust[num8].position) * 1.25f;
                 }
-                Moved = true;
             }
-            if (Projectile.ai[1] >= 20)
+
+            if (Timer % 8 == 0)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Shadowflame);
+            }
+
+            if (Timer >= 20)
             {
                 Projectile.tileCollide = true;
             }
@@ -66,60 +72,90 @@ namespace Stellamod.Projectiles.Magic
                 Projectile.alpha -= 12;
             }
 
-            Projectile.spriteDirection = Projectile.direction;
-            Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
+            Projectile.rotation = Projectile.velocity.ToRotation();
+            Lighting.AddLight(Projectile.Center, Color.MediumPurple.ToVector3() * 1.75f * Main.essScale);
         }
+
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 60; i++)
+            for (int i = 0; i < 24; i++)
             {
-                int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Shadowflame, 0f, -2f, 0, default(Color), .8f);
-                Main.dust[num1].noGravity = true;
-                Main.dust[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                Main.dust[num1].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                if (Main.dust[num1].position != Projectile.Center)
-                    Main.dust[num1].velocity = Projectile.DirectionTo(Main.dust[num1].position) * 6f;
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Shadowflame, 0f, -2f, 0, default(Color), .8f);
-                Main.dust[num].noGravity = true;
-                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                if (Main.dust[num].position != Projectile.Center)
-                    Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
+                float progress = (float)i / 24f;
+                float rot = progress * MathHelper.ToRadians(360);
+                Vector2 velocity = rot.ToRotationVector2() * 4;
+                Dust.NewDustPerfect(Projectile.Center, DustID.Shadowflame, velocity);
             }
             SoundEngine.PlaySound(SoundID.DD2_SkeletonHurt, Projectile.position);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+                ModContent.ProjectileType<Skullboom>(), Projectile.damage / 4, Projectile.knockBack, Projectile.owner);
         }
 
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return Color.White;
-        }
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
-            float baseWidth = Projectile.scale * Projectile.width * 1.3f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
+            float baseWidth = Projectile.scale * Projectile.width * 0.62f;
+            return MathHelper.SmoothStep(36, baseWidth, completionRatio);
         }
+
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.MediumPurple, Color.Purple, completionRatio) * 0.7f;
+            return Color.Lerp(new Color(190, 31, 200), Color.Transparent, completionRatio);
         }
+        private void DrawGlow(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Rectangle frame = Projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            float drawRotation = Projectile.rotation;
+            float drawScale = 1f;
+            spriteBatch.Restart(blendState: BlendState.Additive);
+            for(float f = 0f; f < 1f; f += 0.12f)
+            {
+                float rot = f * MathHelper.ToRadians(360);
+                rot += Main.GlobalTimeWrappedHourly * 8;
+                Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(6f, 9f);
+                offset -= Projectile.velocity * f * 1;
+                Vector2 glowDrawPos = drawPos + offset;
+                spriteBatch.Draw(texture, glowDrawPos, frame, drawColor * 0.52f, drawRotation, drawOrigin, drawScale, SpriteEffects.None, layerDepth: 0);
+            }
+          
+            spriteBatch.RestartDefaults();
+        }
+
+        protected virtual void DrawTrail(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.RestartDefaults();
+            Trail ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
+            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
+            Trail.DrawPrims(Projectile.oldPos, -Main.screenPosition + Projectile.Size / 2, totalTrailPoints: 155);
+        }
+
+        protected virtual void DrawSprite(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Rectangle frame = Projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            float drawRotation = Projectile.rotation;
+            float drawScale = 1f;
+            spriteBatch.Draw(texture, drawPos, frame, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, layerDepth: 0);
+        }
+
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.WhispyTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
+            DrawGlow(ref lightColor);
+            DrawTrail(ref lightColor);
+            DrawSprite(ref lightColor);
+  
             return false;
         }
-        public override void PostDraw(Color lightColor)
-        {
-            Lighting.AddLight(Projectile.Center, Color.MediumPurple.ToVector3() * 1.75f * Main.essScale);
-
-        }
+ 
     }
-
 }
 
 
