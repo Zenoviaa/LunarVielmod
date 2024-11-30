@@ -20,7 +20,7 @@ namespace Stellamod.Common.ArmorShop
                 return;
 
             var line = new TooltipLine(Mod, "ArmorType", LangText.ArmorShopClass(set.heads[0].ModItem));
-            line.OverrideColor = Color.LightGray;
+            line.OverrideColor = Color.Yellow;
             tooltips.Add(line);
         }
     }
