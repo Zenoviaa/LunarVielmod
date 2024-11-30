@@ -240,6 +240,7 @@
     <None Remove="Items\Special\VeiledScriptureMiner1.png" />
     <None Remove="Items\Special\VeiledScriptureSigfried.png" />
     <None Remove="Items\Test\ColosseumResetter.png" />
+    <None Remove="Localization\en-US\Mods.Stellamod.ArmorReforge.hjson" />
     <None Remove="Localization\en-US\Mods.Stellamod.Dialogue.hjson" />
     <None Remove="Localization\en-US\Mods.Stellamod.Quests.hjson" />
     <None Remove="Localization\en-US\Mods.Stellamod.TownDialogue.hjson" />
@@ -564,6 +565,8 @@
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineLights.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineSolMothC.png" />
     <None Remove="Tiles\ShrineBreakers\Underground\ShrineBridgetC.png" />
+    <None Remove="UI\ArmorReforgeSystem\ReforgeButton.png" />
+    <None Remove="UI\ArmorReforgeSystem\ReforgeButtonSelected.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Accord.Fuzzy" Version="3.8.0" />
