@@ -1,13 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.ArmorShop;
 using Stellamod.Common.QuestSystem;
+using Stellamod.UI.CollectionSystem.Quests;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader;
 using Terraria.ModLoader.UI.Elements;
 
-namespace Stellamod.UI.CollectionSystem.Quests
+namespace Stellamod.UI.ArmorShopSystem
 {
-    internal class QuestTabUI : UIPanel
+    internal class ArmorShopUI : UIPanel
     {
         private UIList _uiList;
         private UIPanel _panel;
@@ -17,7 +24,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
         internal const int width = 480;
         internal const int height = 155;
 
-        internal int RelativeLeft => Main.screenWidth / 2 - width / 2 - 64;
+        internal int RelativeLeft => Main.screenWidth / 2 - width / 2 + 76;
         internal int RelativeTop => Main.screenHeight / 2 - height / 2 - 196;
         public float Glow { get; set; }
         public override void OnInitialize()
@@ -49,7 +56,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
             _scrollbar.Height.Set(340, 0);
             _scrollbar.Left.Set(0, 0.9f);
             _scrollbar.Top.Set(0, 0.05f);
-
+          
             float maxViewSize = 48 * 8f;
             _scrollbar.SetView(0, maxViewSize);
             Append(_scrollbar);
@@ -72,48 +79,45 @@ namespace Stellamod.UI.CollectionSystem.Quests
             Top.Pixels = RelativeTop;
             if (Main.gameMenu)
                 return;
-            QuestPlayer questPlayer = Main.LocalPlayer.GetModPlayer<QuestPlayer>();
-            if (_slotGrid != null && (questPlayer.RecalculateUI || _slotGrid.Count == 0))
+            ArmorShopGroups groups = ModContent.GetInstance<ArmorShopGroups>();
+            if (_slotGrid == null)
+                return;
+            if (_slotGrid.Count == 0)
             {
-                questPlayer.RecalculateUI = false;
                 _slotGrid.Clear();
-                foreach (var quest in questPlayer.ActiveQuests)
+                foreach(var set in groups.Armors)
                 {
-                    QuestTabSlot slot = new QuestTabSlot();
-                    slot.Quest = quest;
-                    slot.Activate();
-                    _slotGrid.Add(slot);
+                    ArmorShopCost cost = new ArmorShopCost();
+                    cost.Item = set.material;
+                    cost.armorSet = set;
+                    cost.Activate();
+                    _slotGrid.Add(cost);
+        
+                    ArmorShopSlot lSlot = new ArmorShopSlot();
+                    lSlot.Item = set.legs[0];
+                    lSlot.Activate();
+                    _slotGrid.Add(lSlot);
+
+                    ArmorShopSlot bSlot = new ArmorShopSlot();
+                    bSlot.Item = set.bodies[0];
+                    bSlot.Activate();
+                    _slotGrid.Add(bSlot);
+
+                    ArmorShopSlot hSlot = new ArmorShopSlot();
+                    hSlot.Item = set.heads[0];
+                    hSlot.Activate();
+                    _slotGrid.Add(hSlot);
+
+                    BuyArmorButton buyArmorButton = new BuyArmorButton();
+                    buyArmorButton.armorSet = set;
+                    buyArmorButton.Activate();
+                    _slotGrid.Add(buyArmorButton);
                 }
 
-                UIText separatorText = new UIText("Completed Quests");
-                separatorText.Height.Pixels = 24;
-                separatorText.Width.Pixels = 48 * 6f;
-                separatorText.Top.Pixels = 4;
-                separatorText.IsWrapped = false;
-                _slotGrid.Add(separatorText);
-
-                foreach (var quest in questPlayer.RewardQuests)
-                {
-                    QuestTabSlot slot = new QuestTabSlot();
-                    slot.Quest = quest;
-                    slot.RewardQuest = true;
-                    slot.Activate();
-                    _slotGrid.Add(slot);
-                }
-
-                foreach (var quest in questPlayer.CompletedQuests)
-                {
-                    QuestTabSlot slot = new QuestTabSlot();
-                    slot.Quest = quest;
-                    slot.CompletedQuest = true;
-                    slot.Activate();
-                    _slotGrid.Add(slot);
-                }
-   
                 _slotGrid.Recalculate();
             }
-      
-   
+
+
             //We just need to get the number of unique materials since that's how we're sorting things
             base.Recalculate();
         }
@@ -121,6 +125,8 @@ namespace Stellamod.UI.CollectionSystem.Quests
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            Width.Pixels = 48 * 7;
+        
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;

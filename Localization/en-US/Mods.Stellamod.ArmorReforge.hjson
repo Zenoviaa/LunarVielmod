@@ -1,6 +1,4 @@
-None:{
-	DisplayName:""
-}
+None.DisplayName: ""
 
 Sharpening: {
 	DisplayName: Sharpening
@@ -49,11 +47,12 @@ Hunted: {
 		'''
 }
 
-Radiant:{
+Radiant: {
 	DisplayName: Radiant
 	Upside: +10 max life
 	Downside: -5% movement speed
 }
+
 Rocky: {
 	DisplayName: Rocky
 	Upside:

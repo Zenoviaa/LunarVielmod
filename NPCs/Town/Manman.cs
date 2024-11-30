@@ -24,6 +24,7 @@ using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Whips;
 using Stellamod.UI.ArmorReforgeSystem;
+using Stellamod.UI.ArmorShopSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,15 +43,13 @@ namespace Stellamod.NPCs.Town
 {
 	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
 
-	public class Veldris : VeilTownNPC
+	public class Manman : VeilTownNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
 		public const string ShopName = "Shop";
 		public const string ShopName2 = "New Shop";
 		public override void SetStaticDefaults()
 		{
-			// DisplayName automatically assigned from localization files, but the commented line below is the normal approach.
-			// DisplayName.SetDefault("Example Person");
 			Main.npcFrameCount[Type] = 30; // The amount of frames the NPC has
 
 			NPCID.Sets.ActsLikeTownNPC[Type] = true;
@@ -101,8 +100,8 @@ namespace Stellamod.NPCs.Town
 
         public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
         {
-			spawner.structureToSpawnIn = "Struct/Overworld/VeizalManor";
-            spawner.spawnTileOffset = new Point(63, -35);
+			spawner.structureToSpawnIn = "Struct/Overworld/WitchTown";
+            spawner.spawnTileOffset = new Point(28, -20);
         }
 
         public override void FindFrame(int frameHeight)
@@ -193,7 +192,7 @@ namespace Stellamod.NPCs.Town
 		public override List<string> SetNPCNameList()
 		{
 			return new List<string>() {
-				"Veldris the Calm Assassin",
+				"Manman the Armor Smith",
 			};
 		}
 
@@ -217,10 +216,9 @@ namespace Stellamod.NPCs.Town
             base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
             //Set buttons
             buttons.Add(new Tuple<string, Action>("Talk", Talk));
-            buttons.Add(new Tuple<string, Action>("Shop", OpenShop));
-            buttons.Add(new Tuple<string, Action>("ArmorReforge", OpenReforgeMenu));
+            buttons.Add(new Tuple<string, Action>("ArmorShop", OpenArmorShop));
 
-            portrait = "VeldrisPortrait";
+            portrait = "ManManPortrait";
             timeBetweenTexts = 0.015f;
             talkingSound = SoundID.Item1;
 
@@ -231,7 +229,7 @@ namespace Stellamod.NPCs.Town
         public override void IdleChat(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
         {
             base.IdleChat(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
-            portrait = "VeldrisPortrait";
+            portrait = "ManManPortrait";
             timeBetweenTexts = 0.015f;
             talkingSound = SoundID.Item1;
 
@@ -239,28 +237,12 @@ namespace Stellamod.NPCs.Town
             text = "ZuiIdleChat1";
         }
 
-        private void OpenReforgeMenu()
+        private void OpenArmorShop()
         {
             Main.CloseNPCChatOrSign();
             Main.playerInventory = true;
-            ReforgeUISystem uiSystem = ModContent.GetInstance<ReforgeUISystem>();
+            ArmorShopUISystem uiSystem = ModContent.GetInstance<ArmorShopUISystem>();
             uiSystem.OpenUI();
         }
-
-        public override void AddShops()
-		{
-			var npcShop = new NPCShop(Type, ShopName)
-			.Add(new Item(ItemID.Mace) { shopCustomPrice = Item.buyPrice(gold: 5) })
-			.Add<AssassinsDischarge>()
-			.Add<AssassinsKnife>()
-			.Add<AssassinsShuriken>()
-			.Add<AssassinsSlash>()
-			.Add(new Item(ItemID.ThrowingKnife) { shopCustomPrice = Item.buyPrice(copper: 5) })
-			.Add(new Item(ItemID.Shuriken) { shopCustomPrice = Item.buyPrice(copper: 5) })
-			.Add(new Item(ItemID.BorealWood) { shopCustomPrice = Item.buyPrice(copper: 7) })
-			.Add(new Item(ItemID.ApplePie) { shopCustomPrice = Item.buyPrice(silver: 50) })
-			.Add<AssassinsRecharge>(Condition.DownedGolem);
-			npcShop.Register(); // Name of this shop t
-		}
 	}
 }
