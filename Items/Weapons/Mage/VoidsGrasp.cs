@@ -28,13 +28,14 @@ namespace Stellamod.Items.Weapons.Mage
             Item.noMelee = true;
             Item.knockBack = 9;
             Item.value = Item.sellPrice(0, 1, 1, 29);
-            Item.rare = ItemRarityID.Green;
+            Item.value = Item.buyPrice(gold: 10);
+            Item.rare = ItemRarityID.Orange;
             Item.shootSpeed = 25;
             Item.autoReuse = true;
 
             Item.DamageType = DamageClass.Magic;
             Item.shoot = ModContent.ProjectileType<VoidHandSpawn>();
-            Item.shootSpeed = 10f;
+            Item.shootSpeed = 18f;
             Item.mana = 15;
             Item.useAnimation = 32;
             Item.useTime = 32;
@@ -45,15 +46,5 @@ namespace Stellamod.Items.Weapons.Mage
         {
             return new Vector2(-3f, -2f);
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<ShadeHandTome>(), 1);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
-        }
-
-
     }
 }

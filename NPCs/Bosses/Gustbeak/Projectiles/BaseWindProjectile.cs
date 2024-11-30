@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
 {
-    internal abstract class BaseWindProjectile : ModProjectile
+    public abstract class BaseWindProjectile : ModProjectile
     {
         private CommonWind _wind;
 

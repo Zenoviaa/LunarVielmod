@@ -11,19 +11,19 @@ namespace Stellamod.Projectiles.Magic
 {
     public class ShinobiKnife : ModProjectile
     {
-        public bool OptionallySomeCondition { get; private set; }
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Cactius2");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 8;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
+
         public override void SetDefaults()
         {
             Projectile.CloneDefaults(ProjectileID.Bullet);
             AIType = ProjectileID.Bullet;
             Projectile.penetrate = 1;
         }
+
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             Projectile.penetrate--;
@@ -40,16 +40,12 @@ namespace Stellamod.Projectiles.Magic
 
             }
             SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
-            for (int i = 0; i < 7; i++)
-            {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
-            }
             return false;
         }
 
         public override bool PreAI()
         {
-            if (Main.rand.NextBool(13))
+            if (Main.rand.NextBool(16))
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
             }
@@ -73,12 +69,14 @@ namespace Stellamod.Projectiles.Magic
         }
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 15; i++)
+            float radius = Main.rand.NextFloat(0.25f, 1f);
+            for(float f = 0; f < 1f; f+= 0.1f)
             {
-                SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
+                float rot = f * MathHelper.TwoPi;
+                Vector2 vel = rot.ToRotationVector2() * radius;
+                Vector2 pos = Projectile.Center;
+                Dust.NewDustPerfect(pos, DustID.SilverCoin, vel);
             }
         }
-
     }
 }

@@ -14,7 +14,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 7;
+            Item.damage = 13;
             Item.mana = 0;
         }
         public override void SetStaticDefaults()
@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.Mage
 
 		public override void SetDefaults()
 		{
-			Item.damage = 15;
+			Item.damage = 27;
 			Item.DamageType = DamageClass.Magic;
 			Item.width = 40;
 			Item.height = 40;
@@ -32,10 +32,10 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.useAnimation = 35;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 6;
-			Item.value = 10000;
-			Item.rare = ItemRarityID.Green;
+            Item.value = Item.buyPrice(gold: 10);
+            Item.rare = ItemRarityID.Orange;
 
-			Item.autoReuse = true;
+            Item.autoReuse = true;
 			Item.shoot = ProjectileType<DeafenProj>();
 			Item.shootSpeed = 6f;
 			Item.mana = 24;

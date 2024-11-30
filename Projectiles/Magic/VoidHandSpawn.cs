@@ -1,6 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
+using Stellamod.Trails;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -9,8 +14,20 @@ namespace Stellamod.Projectiles.Magic
 {
     internal class VoidHandSpawn : ModProjectile
     {
-        bool Moved;
-        Vector2 OldVelotcity;
+        private Vector2 OldVelocity;
+        private ref float Timer => ref Projectile.ai[0];
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.WriteVector2(OldVelocity);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            OldVelocity = reader.ReadVector2();
+        }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shadow Hand");
@@ -20,26 +37,36 @@ namespace Stellamod.Projectiles.Magic
         }
         public override void SetDefaults()
         {
-            base.Projectile.penetrate = 4;
-            base.Projectile.width = 20;
-            base.Projectile.height = 20;
-            base.Projectile.timeLeft = 700;
-            base.Projectile.alpha = 255;
-            base.Projectile.friendly = true;
-            base.Projectile.hostile = false;
-            base.Projectile.ignoreWater = true;
-            base.Projectile.tileCollide = false;
+            Projectile.penetrate = 4;
+            Projectile.width = 20;
+            Projectile.height = 20;
+            Projectile.timeLeft = 700;
+            Projectile.alpha = 255;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
         }
-        public override bool PreAI()
-        {
 
-            Projectile.ai[0]++;
-            if (Projectile.ai[0] >= 20)
+
+        public override void AI()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/VoidHand"), Projectile.position);
+                OldVelocity = Projectile.velocity;
+            }
+            if(Timer == 20)
+            {
+                SoundEngine.PlaySound(SoundID.DD2_SkeletonSummoned, Projectile.position);
+            }
+
+            if (Timer >= 20)
             {
                 if (Projectile.alpha < 0)
                     Projectile.alpha = 0;
 
-                Projectile.spriteDirection = Projectile.direction;
                 Projectile.frameCounter++;
                 if (Projectile.frameCounter >= 3)
                 {
@@ -49,17 +76,18 @@ namespace Stellamod.Projectiles.Magic
                     {
                         Projectile.frame = 3;
                     }
-
-
                 }
             }
-            if (Projectile.ai[0] == 40)
+
+            if(Timer == 40)
             {
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
                 var EntitySource = Projectile.GetSource_FromThis();
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, OldVelotcity.X, OldVelotcity.Y, 
-                    ModContent.ProjectileType<VoidHand>(), 40, 1, Projectile.owner, 0, 0);
-                Projectile.timeLeft = 2;
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, OldVelocity.X, OldVelocity.Y,
+                          ModContent.ProjectileType<VoidHand>(), Projectile.damage, Projectile.knockBack, Projectile.owner);           
+                }
+  
                 int Sound = Main.rand.Next(1, 3);
                 if (Sound == 1)
                 {
@@ -69,60 +97,69 @@ namespace Stellamod.Projectiles.Magic
                 {
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/VoidHand2"), Projectile.position);
                 }
+                Projectile.timeLeft = 2;
             }
-            if (Projectile.ai[0] == 20)
-            {
 
-                SoundEngine.PlaySound(SoundID.DD2_SkeletonSummoned, Projectile.position);
-            }
-            return true;
-        }
-        public override void AI()
-        {
-
-
-
-            Projectile.ai[1]++;
-            if (!Moved && Projectile.ai[1] >= 0)
-            {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/VoidHand"), Projectile.position);
-                OldVelotcity = Projectile.velocity;
-
-                Moved = true;
-            }
-            Projectile.spriteDirection = Projectile.direction;
-            Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
+            Projectile.rotation = Projectile.velocity.ToRotation();
             Projectile.velocity *= .86f;
             if (Projectile.alpha >= 0)
             {
                 Projectile.alpha -= 12;
             }
-
+            Lighting.AddLight(Projectile.Center, Color.MediumPurple.ToVector3() * 1.75f * Main.essScale);
         }
+
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 60; i++)
+            for (int i = 0; i < 24; i++)
             {
-                int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Shadowflame, 0f, -2f, 0, default(Color), .8f);
-                Main.dust[num1].noGravity = true;
-                Main.dust[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                Main.dust[num1].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                if (Main.dust[num1].position != Projectile.Center)
-                    Main.dust[num1].velocity = Projectile.DirectionTo(Main.dust[num1].position) * 6f;
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Shadowflame, 0f, -2f, 0, default(Color), .8f);
-                Main.dust[num].noGravity = true;
-                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                if (Main.dust[num].position != Projectile.Center)
-                    Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
+                float progress = (float)i / 24f;
+                float rot = progress * MathHelper.ToRadians(360);
+                Vector2 velocity = rot.ToRotationVector2() * 2;
+                Dust.NewDustPerfect(Projectile.Center, DustID.Shadowflame, velocity);
             }
- 
         }
 
-        public override void PostDraw(Color lightColor)
+        private void DrawGlow(ref Color lightColor)
         {
-            Lighting.AddLight(Projectile.Center, Color.MediumPurple.ToVector3() * 1.75f * Main.essScale);
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Rectangle frame = Projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            float drawRotation = Projectile.rotation;
+            float drawScale = 1f;
+            spriteBatch.Restart(blendState: BlendState.Additive);
+            for (float f = 0f; f < 1f; f += 0.12f)
+            {
+                float rot = f * MathHelper.ToRadians(360);
+                rot += Main.GlobalTimeWrappedHourly * 8;
+                Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(6f, 9f);
+                offset -= Projectile.velocity * f * 1;
+                Vector2 glowDrawPos = drawPos + offset;
+                spriteBatch.Draw(texture, glowDrawPos, frame, drawColor * 0.52f, drawRotation, drawOrigin, drawScale, SpriteEffects.None, layerDepth: 0);
+            }
 
+            spriteBatch.RestartDefaults();
+        }
+        protected virtual void DrawSprite(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Rectangle frame = Projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            float drawRotation = Projectile.rotation;
+            float drawScale = 1f;
+            spriteBatch.Draw(texture, drawPos, frame, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, layerDepth: 0);
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            DrawGlow(ref lightColor);
+            DrawSprite(ref lightColor);
+            return false;
         }
     }
 }

@@ -32,6 +32,11 @@ namespace Stellamod.Common
         {
 
         }
+        public void CloseTownDialogue()
+        {
+            DialogueTowningUISystem uiSystem = ModContent.GetInstance<DialogueTowningUISystem>();
+            uiSystem.CloseUI();
+        }
         public virtual void IdleChat(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
         {
            
