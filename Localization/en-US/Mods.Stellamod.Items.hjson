@@ -8294,3 +8294,13 @@ CrystalStar: {
 		Your boost won't be consumed and you'll get a random item if there's nothing new left to make
 		'''
 }
+
+Gordon: {
+	DisplayName: Gordon
+	Tooltip: ""
+}
+
+Rhino: {
+	DisplayName: Rhino
+	Tooltip: ""
+}
