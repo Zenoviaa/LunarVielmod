@@ -5919,7 +5919,7 @@ AdamantiteBullet: {
 }
 
 EldritchArrow: {
-	DisplayName: Eldritch Arrow
+	DisplayName: Celestian Arrow
 	Tooltip: Spawns planetoids that shoot a bolt at nearby enemies when hit again
 }
 
