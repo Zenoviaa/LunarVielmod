@@ -23,8 +23,8 @@ namespace Stellamod.Projectiles.IgniterExplosions
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.friendly = true;
-            Projectile.width = 1024;
-            Projectile.height = 1024;
+            Projectile.width = 96;
+            Projectile.height = 96;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 30;
             Projectile.scale = 1f;
