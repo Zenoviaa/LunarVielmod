@@ -11,6 +11,7 @@ namespace Stellamod.Common.QuestSystem.Quests
             base.SetStaticDefaults();
             AddReward(ItemID.Wood, 10);
             IsSideQuest = true;
+            IsAutoQuest = true;
         }
 
         public override bool CanGiveQuest(Player player)

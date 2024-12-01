@@ -8284,3 +8284,13 @@ GlisteningBar: {
 	DisplayName: Glistening Bar
 	Tooltip: ""
 }
+
+CrystalStar: {
+	DisplayName: Crystal Star
+	Tooltip:
+		'''
+		Grants drastically increased luck in the cauldron!
+		Guarantees you get something you've never made before on your next brew!
+		Your boost won't be consumed and you'll get a random item if there's nothing new left to make
+		'''
+}

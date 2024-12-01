@@ -1,4 +1,5 @@
 ﻿
+using Stellamod.Buffs;
 using Stellamod.Common.QuestSystem;
 using Stellamod.Common.QuestSystem.Quests;
 using Stellamod.Items.Accessories;
@@ -43,7 +44,7 @@ namespace Stellamod.Items
         public float NothingFailChance;
         public float InkFailChance;
         public List<Item> Crafts = new List<Item>();
-
+        public int CrystalStarCount;
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -51,6 +52,15 @@ namespace Stellamod.Items
             //So I'm thinking we just have these variables
             NothingFailChance = 15;
             InkFailChance = 25;
+        }
+        
+        public override void PostUpdate()
+        {
+            base.PostUpdate();
+            if(CrystalStarCount > 0)
+            {
+                Player.AddBuff(ModContent.BuffType<CrystalLuck>(), 2);
+            }
         }
 
         public void Make(Item item)
@@ -65,16 +75,23 @@ namespace Stellamod.Items
             return Crafts.Find(x => x.type == item.type) != null;
         }
 
+        public bool HasMadeItem(int itemType)
+        {
+            return Crafts.Find(x => x.type == itemType) != null;
+        }
+
         public override void SaveData(TagCompound tag)
         {
             base.SaveData(tag);
             tag.Add("crafts", Crafts);
+            tag.Add("crystalStars", CrystalStarCount);
         }
 
         public override void LoadData(TagCompound tag)
         {
             base.LoadData(tag);
             Crafts = tag.Get<List<Item>>("crafts");
+            CrystalStarCount = tag.Get<int>("crystalStars");
         }
     }
 
@@ -1102,11 +1119,27 @@ namespace Stellamod.Items
                 return NothingBrew;
             }
 
+            CauldronPlayer cauldronPlayer = Main.LocalPlayer.GetModPlayer<CauldronPlayer>();
             WeightedRandom<CauldronBrew> random = new WeightedRandom<CauldronBrew>();
             for (int i = 0; i < possibleBrews.Count; i++)
             {
+                int itemResult = possibleBrews[i].result;
+                if (cauldronPlayer.HasMadeItem(itemResult) && cauldronPlayer.CrystalStarCount > 0)
+                    continue;
                 random.Add(possibleBrews[i], possibleBrews[i].weight);
             }
+
+            bool consumeStar = true;
+            if(possibleBrews.Count == 0)
+            {
+                consumeStar = false;
+                for (int i = 0; i < possibleBrews.Count; i++)
+                {
+                    int itemResult = possibleBrews[i].result;
+                    random.Add(possibleBrews[i], possibleBrews[i].weight);
+                }
+            }
+
 
             //Get the result
             CauldronBrew result = random;
@@ -1116,22 +1149,31 @@ namespace Stellamod.Items
 
 
 
-            CauldronPlayer cauldronPlayer = Main.LocalPlayer.GetModPlayer<CauldronPlayer>();
-            bool getNothingFailed = Main.rand.NextFloat(0, 100) <= cauldronPlayer.NothingFailChance;
-            bool inkFailed = Main.rand.NextFloat(0, 100) <= cauldronPlayer.InkFailChance;
 
-            if (getNothingFailed)
-            {
-                result = NothingBrew;
-            }
-            else if (inkFailed && Main.hardMode)
-            {
-                result = InkBrew;
-            }
-
-            if (!getNothingFailed)
+            int starCount = cauldronPlayer.CrystalStarCount;
+            if(cauldronPlayer.CrystalStarCount > 0 && consumeStar)
             {
                 cauldronPlayer.Make(ModContent.GetModItem(result.result).Item);
+                cauldronPlayer.CrystalStarCount--;
+            }
+            else
+            {
+                bool getNothingFailed = Main.rand.NextFloat(0, 100) <= cauldronPlayer.NothingFailChance;
+                bool inkFailed = Main.rand.NextFloat(0, 100) <= cauldronPlayer.InkFailChance;
+
+                if (getNothingFailed)
+                {
+                    result = NothingBrew;
+                }
+                else if (inkFailed && Main.hardMode)
+                {
+                    result = InkBrew;
+                }
+
+                if (!getNothingFailed)
+                {
+                    cauldronPlayer.Make(ModContent.GetModItem(result.result).Item);
+                }
             }
 
             //Crafting Quest

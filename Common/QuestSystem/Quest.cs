@@ -53,6 +53,7 @@ namespace Stellamod.Common.QuestSystem
         public virtual string BigTexture => IconTexture + "_Big";
         public int Type { get; internal set; }
         public bool IsSideQuest { get; set; }
+        public bool IsAutoQuest { get; set; }
         public List<Item> Rewards
         {
             get
