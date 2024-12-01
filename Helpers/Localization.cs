@@ -1,5 +1,6 @@
 using Stellamod.Common.ArmorReforge;
 using Stellamod.Common.QuestSystem;
+using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 namespace Stellamod.Helpers
@@ -48,7 +49,10 @@ namespace Stellamod.Helpers
             //return (string)Language.GetOrRegister($"Mods.Stellamod.NPCs.{npc.Name}.Bestiary" + key, () => OrginText);
             return Language.GetTextValue($"Mods.Stellamod.NPCs.{npc.Name}.Bestiary" + key, OrginText);
         }
-        
+        public static string ArmorShopClass(ModItem item, string key = null, object arg0 = null)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.ArmorShop.{item.Name}", arg0);
+        }
         public static string ArmorReforge(ArmorReforgeType type, string Path, object arg0 = null)
         {
             return Language.GetTextValue($"Mods.Stellamod.ArmorReforge.{type.ToString()}." + Path, arg0);

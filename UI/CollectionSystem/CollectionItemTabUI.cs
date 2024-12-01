@@ -196,7 +196,7 @@ namespace Stellamod.UI.CollectionSystem
         private UIList _uiList;
         private UIPanel _panel;
         private UIGrid _slotGrid;
-        private UIScrollbar _scrollbar;
+        private FancyScrollbar _scrollbar;
 
         internal const int width = 480;
         internal const int height = 155;
@@ -237,7 +237,7 @@ namespace Stellamod.UI.CollectionSystem
             _slotGrid.ListPadding = 2f;
             _panel.Append(_slotGrid);
 
-            _scrollbar = new UIScrollbar();
+            _scrollbar = new FancyScrollbar();
             _scrollbar.Width.Set(20, 0);
             _scrollbar.Height.Set(340, 0);
             _scrollbar.Left.Set(0, 0.93f);
@@ -297,7 +297,7 @@ namespace Stellamod.UI.CollectionSystem
         private UIList _uiList;
         private UIPanel _panel;
         private UIGrid _slotGrid;
-        private UIScrollbar _scrollbar;
+        private FancyScrollbar _scrollbar;
 
         internal const int width = 480;
         internal const int height = 155;
@@ -329,7 +329,7 @@ namespace Stellamod.UI.CollectionSystem
  
             _panel.Append(_slotGrid);
 
-            _scrollbar = new UIScrollbar();
+            _scrollbar = new FancyScrollbar();
             _scrollbar.Width.Set(20, 0);
             _scrollbar.Height.Set(340, 0);
             _scrollbar.Left.Set(0, 0.9f);
