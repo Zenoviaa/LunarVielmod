@@ -312,8 +312,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             base.SetDefaults();
             Item.damage = 50;
             Item.value = Item.buyPrice(gold: 15);
+            LeftHand = true;
             RightHand = true;
-
+            TwoHands = true;
             //This number is in ticks
             AttackSpeed = 60;
 
@@ -674,8 +675,8 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         {
             base.SetDefaults();
             Item.damage = 4;
-            LeftHand = true;
-
+            RightHand = true;
+            
 
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew4");
             soundStyle.PitchVariance = 0.5f;
