@@ -61,6 +61,7 @@
     <None Remove="Buffs\OrbMaster.png" />
     <None Remove="Buffs\Rekin.png" />
     <None Remove="Buffs\RibbonWrapped.png" />
+    <None Remove="Buffs\RoyalPalaceScorpionMountBuff.png" />
     <None Remove="Buffs\SFBuff.png" />
     <None Remove="Buffs\ShadeWrath.png" />
     <None Remove="Buffs\ShadeWrathCooldown.png" />
@@ -240,6 +241,8 @@
     <None Remove="Items\Special\VeiledScriptureMiner1.png" />
     <None Remove="Items\Special\VeiledScriptureSigfried.png" />
     <None Remove="Items\Test\ColosseumResetter.png" />
+    <None Remove="Items\Weapons\Scorpions\RoyalPalace\RoyalPalaceScorpionMount_Back.png" />
+    <None Remove="Items\Weapons\Scorpions\RoyalPalace\RoyalPalaceScorpionMount_Front.png" />
     <None Remove="Localization\en-US\Mods.Stellamod.ArmorReforge.hjson" />
     <None Remove="Localization\en-US\Mods.Stellamod.Dialogue.hjson" />
     <None Remove="Localization\en-US\Mods.Stellamod.Quests.hjson" />

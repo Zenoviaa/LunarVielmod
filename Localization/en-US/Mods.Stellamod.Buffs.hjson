@@ -807,3 +807,8 @@ CrystalLuck: {
 	DisplayName: Crystal Luck
 	Description: You're feeling quite lucky...
 }
+
+RoyalPalaceScorpionMountBuff: {
+	DisplayName: Royal Palace Scorpion Mount Buff
+	Description: Mods.Stellamod.Buffs.RoyalPalaceScorpionMountBuff.Description
+}

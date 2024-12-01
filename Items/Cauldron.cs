@@ -1130,7 +1130,7 @@ namespace Stellamod.Items
             }
 
             bool consumeStar = true;
-            if(possibleBrews.Count == 0)
+            if(random.elements.Count == 0)
             {
                 consumeStar = false;
                 for (int i = 0; i < possibleBrews.Count; i++)
@@ -1154,7 +1154,7 @@ namespace Stellamod.Items
             if(cauldronPlayer.CrystalStarCount > 0 && consumeStar)
             {
                 cauldronPlayer.Make(ModContent.GetModItem(result.result).Item);
-                cauldronPlayer.CrystalStarCount--;
+                cauldronPlayer.CrystalStarCount-=1;
             }
             else
             {
