@@ -128,7 +128,7 @@ Vampiric: {
 
 RogueThrown: {
 	DisplayName: RogueThrown
-	Upside: +12% ranged damage
+	Upside: +12% throwing damage
 	Downside:
 		'''
 		+18% incoming damage
