@@ -11,7 +11,7 @@ namespace Stellamod.Items.Weapons.Scorpions.RoyalPalace
         {
             base.SetDefaults();
             Item.DamageType = DamageClass.Summon;
-            Item.damage = 24;
+            Item.damage = 12;
             Item.knockBack = 4;
             Item.width = 20;
             Item.height = 30;
@@ -21,6 +21,16 @@ namespace Stellamod.Items.Weapons.Scorpions.RoyalPalace
             Item.noMelee = true; // this item doesn't do any melee damage
             Item.mountType = ModContent.MountType<RoyalPalaceScorpionMount>();
             gunType = ModContent.ProjectileType<RoyalPalaceScorpionGun>();
+        }
+
+        public override int GetLeftHandedCount()
+        {
+            return 2;
+        }
+
+        public override int GetRightHandedCount()
+        {
+            return 2;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.ScorpionMountSystem;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using System;
 using Terraria;
@@ -32,7 +33,7 @@ namespace Stellamod.UI.GunHolsterSystem
             Width.Set(asset.Width() * scale, 0f);
             Height.Set(asset.Height() * scale, 0f);
         }
-
+        public int scorpionIndex = -1;
         /// <summary>
         /// Returns true if this item can be placed into the slot (either empty or a pet item)
         /// </summary>
@@ -60,14 +61,31 @@ namespace Stellamod.UI.GunHolsterSystem
 
         private void GetHand()
         {
-            GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
-            Item = gunPlayer.RightHand.Clone();
+            if(scorpionIndex == -1)
+            {
+                GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
+                Item = gunPlayer.RightHand.Clone();
+            }
+            else
+            {
+                ScorpionHolsterUISystem uiSystem = ModContent.GetInstance<ScorpionHolsterUISystem>();
+                Item = uiSystem.scorpionItem.rightHandedGuns[scorpionIndex].Clone();
+            }
+     
         }
 
         private void UpdateHand()
         {
-            GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
-            gunPlayer.RightHand = Item.Clone();
+            if (scorpionIndex == -1)
+            {
+                GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
+                gunPlayer.RightHand = Item.Clone();
+            }
+            else
+            {
+                ScorpionHolsterUISystem uiSystem = ModContent.GetInstance<ScorpionHolsterUISystem>();
+                uiSystem.scorpionItem.rightHandedGuns[scorpionIndex] = Item.Clone();
+            }
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)

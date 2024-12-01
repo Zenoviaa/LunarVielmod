@@ -2,7 +2,7 @@
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Buffs
+namespace Stellamod.Buffs.Scorpion
 {
     internal class RoyalPalaceScorpionMountBuff : ModBuff
     {

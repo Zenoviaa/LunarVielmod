@@ -22,6 +22,17 @@ Common: {
 	LanternHelp: Put it in your light pet slot or right click it to use it for more range!
 	Disc: Music Disc
 	DiscHelp: Works like a music box, but you can also throw it with right click!
+	ScorpionSummonHelp:
+		'''
+		-1 Summon when equipped
+		-1 Summon for each gun equipped
+		'''
+	ScorpionSummonHolsterHelp:
+		'''
+		You can ride this as a mount to kill your enemies, and equip it with gun holster guns under summon damage
+		If your big gun hits a summon, it will increase their damage by 25% 
+		'''
+	ScorpionRightClickHelp: "Right click in inventory to open your gun slots "
 }
 
 SetBonus: {

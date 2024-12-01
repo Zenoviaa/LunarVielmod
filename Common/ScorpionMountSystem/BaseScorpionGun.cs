@@ -86,7 +86,7 @@ namespace Stellamod.Common.ScorpionMountSystem
                 Projectile.velocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero);
                 Projectile.netUpdate = true;
             }
-            bool mouseInput = Main.mouseLeft;
+            bool mouseInput = Owner.controlUseItem && Owner.HeldItem.ModItem is BaseScorpionItem;
             if (Projectile.owner == Main.myPlayer
                 && mouseInput
                 && Owner.PickAmmo(Owner.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int useAmmoItemId))

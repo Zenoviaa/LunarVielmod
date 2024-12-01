@@ -34,6 +34,7 @@ namespace Stellamod.UI.GunHolsterSystem
             Height.Set(asset.Height() * scale, 0f);
         }
 
+        public int scorpionIndex = -1;
         /// <summary>
         /// Returns true if this item can be placed into the slot (either empty or a pet item)
         /// </summary>
@@ -62,16 +63,32 @@ namespace Stellamod.UI.GunHolsterSystem
 
         private void GetHand()
         {
-            GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
-            Item = gunPlayer.LeftHand.Clone();
+            if (scorpionIndex == -1)
+            {
+                GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
+                Item = gunPlayer.LeftHand.Clone();
+            }
+            else
+            {
+                ScorpionHolsterUISystem uiSystem = ModContent.GetInstance<ScorpionHolsterUISystem>();
+                Item = uiSystem.scorpionItem.leftHandedGuns[scorpionIndex].Clone();
+            }
+
         }
 
         private void UpdateHand()
         {
-            GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
-            gunPlayer.LeftHand = Item.Clone();
+            if (scorpionIndex == -1)
+            {
+                GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
+                gunPlayer.LeftHand = Item.Clone();
+            }
+            else
+            {
+                ScorpionHolsterUISystem uiSystem = ModContent.GetInstance<ScorpionHolsterUISystem>();
+                uiSystem.scorpionItem.leftHandedGuns[scorpionIndex] = Item.Clone();
+            }
         }
-
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             if (Item == null)

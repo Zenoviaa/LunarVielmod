@@ -62,7 +62,6 @@
     <None Remove="Buffs\Rekin.png" />
     <None Remove="Buffs\RibbonWrapped.png" />
     <None Remove="Buffs\RoyalPalaceScorpionMountBuff.png" />
-    <None Remove="Buffs\Scorpion\RoyalPalaceScorpionTagDebuff.png" />
     <None Remove="Buffs\SFBuff.png" />
     <None Remove="Buffs\ShadeWrath.png" />
     <None Remove="Buffs\ShadeWrathCooldown.png" />
@@ -421,6 +420,7 @@
     <None Remove="Projectiles\HallowRain.png" />
     <None Remove="Projectiles\IgniterExplosions\CombustionBoomMini.png" />
     <None Remove="Projectiles\IgniterExplosions\FireBoom.png" />
+    <None Remove="Projectiles\IgniterExplosions\PiranhaBoomMini.png" />
     <None Remove="Projectiles\IgniterExplosions\RibbonBoom.png" />
     <None Remove="Projectiles\IgniterExplosions\SiriusBoom.png" />
     <None Remove="Projectiles\InfusedSlimeBolt.png" />

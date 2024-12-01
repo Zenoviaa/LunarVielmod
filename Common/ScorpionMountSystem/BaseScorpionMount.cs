@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Buffs;
+using Stellamod.Buffs.Scorpion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -140,6 +140,7 @@ namespace Stellamod.Common.ScorpionMountSystem
             underseatVelocity *= 0.52f;
             tailVelocity -= player.velocity * 5f;
             tailVelocity *= 0.52f;
+
             ScorpionPlayer scorpionPlayer = player.GetModPlayer<ScorpionPlayer>();
             Vector2 targetMountPosition = player.position + new Vector2(-54 * player.direction, 8) + tailVelocity;
             scorpionPlayer.gunMountPosition = Vector2.Lerp(scorpionPlayer.gunMountPosition, targetMountPosition, 0.5f);

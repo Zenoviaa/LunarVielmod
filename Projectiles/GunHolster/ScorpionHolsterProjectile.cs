@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class GunHolsterProjectile : ModProjectile
+    internal class ScorpionHolsterProjectile : ModProjectile
     {
         private enum ActionState
         {
@@ -25,15 +25,8 @@ namespace Stellamod.Projectiles.GunHolster
         {
             get
             {
-                GunPlayer gunPlayer = Owner.GetModPlayer<GunPlayer>();
-                if (IsRightHand)
-                {
-                    return gunPlayer.HeldRightHandGun;
-                }
-                else
-                {
-                    return gunPlayer.HeldLeftHandGun;
-                }
+                ScorpionPlayer scorpionPlayer = Owner.GetModPlayer<ScorpionPlayer>();
+                return scorpionPlayer.miniGuns[ScorpionHolsterIndex];
             }
         }
         public Texture2D HeldTexture
@@ -47,6 +40,7 @@ namespace Stellamod.Projectiles.GunHolster
         private float HideTime => MiniGun.AttackSpeed / Owner.GetTotalAttackSpeed(Projectile.DamageType) / 2;
         private Player Owner => Main.player[Projectile.owner];
 
+        private float ShootTimer;
         private float Timer
         {
             get => Projectile.ai[0];
@@ -59,9 +53,19 @@ namespace Stellamod.Projectiles.GunHolster
             set => Projectile.ai[1] = (float)value;
         }
 
+        private int ScorpionMountType = -1;
+        private int ScorpionHolsterIndex
+        {
+            get => (int)Projectile.ai[2];
+        }
+
         private bool IsRightHand
         {
-            get => Projectile.ai[2] == 1;
+            get
+            {
+                ScorpionPlayer scorpionPlayer = Owner.GetModPlayer<ScorpionPlayer>();
+                return scorpionPlayer.onRight[ScorpionHolsterIndex];
+            }
         }
 
         private float IdleRotation
@@ -102,11 +106,11 @@ namespace Stellamod.Projectiles.GunHolster
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 32;
-            Projectile.height = 32;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = int.MaxValue;
+            Projectile.minionSlots = 1;
+            Projectile.minion = true;
         }
 
         public override bool? CanDamage()
@@ -116,13 +120,26 @@ namespace Stellamod.Projectiles.GunHolster
 
         public override void AI()
         {
-            Projectile.width = (int)HeldTexture.Size().X;
-            Projectile.height = (int)HeldTexture.Size().Y;
-            if (!Owner.HasBuff(ModContent.BuffType<MarksMan>()))
+            if(ScorpionMountType == -1)
+            {
+                ScorpionMountType = Owner.mount.Type;
+            }
+
+            if(Owner.mount.Type != ScorpionMountType || !Owner.mount.Active)
+            {
                 Projectile.Kill();
+            }
+
+            if (Owner.HeldItem.ModItem is not BaseScorpionItem)
+            {
+                Projectile.Kill();
+            }
 
             if (Owner.noItems || Owner.CCed || Owner.dead || !Owner.active)
+            {
                 Projectile.Kill();
+            }
+             
             if (MiniGun == null)
             {
                 Projectile.Kill();
@@ -151,24 +168,35 @@ namespace Stellamod.Projectiles.GunHolster
                     AI_Hide();
                     break;
             }
+
+
         }
 
         private void AI_Holster()
         {
-            if(Projectile.owner == Main.myPlayer)
+            if (Projectile.owner == Main.myPlayer)
             {
                 Vector2 direction = Owner.Center.DirectionTo(Main.MouseWorld);
                 HoldRotation = direction.ToRotation();
                 Projectile.netUpdate = true;
             }
- 
+
             Projectile.rotation = HoldRotation;
-            bool mouseInput = IsRightHand ? Main.mouseRight : Owner.controlUseItem;
-            if (Projectile.owner == Main.myPlayer 
-                && mouseInput 
+            bool mouseInput = Owner.controlUseItem;
+            ShootTimer++;
+            if(ShootTimer < 1 + (24 * ScorpionHolsterIndex))
+            {
+                mouseInput = false;
+            }
+            else
+            {
+                ShootTimer = 0f;
+            }
+            if (Projectile.owner == Main.myPlayer
+                && mouseInput
                 && Owner.PickAmmo(Owner.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int useAmmoItemId))
             {
-                if(Projectile.spriteDirection == -1)
+                if (Projectile.spriteDirection == -1)
                 {
                     StartRotation = Projectile.rotation - MiniGun.RecoilRotationMini;
                     FireStartRotation = StartRotation + MiniGun.RecoilRotationMini;
@@ -186,7 +214,7 @@ namespace Stellamod.Projectiles.GunHolster
                 Timer = 0;
             }
 
-            DecideGunPosition();    
+            SetGunPositionFromScorpion();
         }
 
         private void AI_Prepare()
@@ -197,7 +225,7 @@ namespace Stellamod.Projectiles.GunHolster
             float easedProgress = Easing.OutCubic(progress);
             Projectile.rotation = MathHelper.Lerp(StartRotation, endRotation, easedProgress);
 
-            DecideGunPosition();
+            SetGunPositionFromScorpion();
             if (Timer >= PrepTime)
             {
                 State = ActionState.Fire;
@@ -213,9 +241,9 @@ namespace Stellamod.Projectiles.GunHolster
             float easedProgress = Easing.OutExpo(progress);
 
             Projectile.rotation = MathHelper.Lerp(StartRotation, endRotation, easedProgress);
-            DecideGunPosition();
+            SetGunPositionFromScorpion();
 
-            if(MiniGun.ShootCount > 1)
+            if (MiniGun.ShootCount > 1)
             {
                 float shootTime = ExecTime / (float)MiniGun.ShootCount;
                 if (Timer % shootTime == 0)
@@ -223,16 +251,16 @@ namespace Stellamod.Projectiles.GunHolster
                     Vector2 direction = Owner.Center.DirectionTo(Main.MouseWorld);
                     Vector2 position = Projectile.Center + direction * Projectile.width / 2;
                     MiniGun.Fire(Owner, position, direction, Projectile.damage, Projectile.knockBack);
-                } 
+                }
             }
             else
             {
-                if(Timer == 1)
+                if (Timer == 1)
                 {
                     Vector2 direction = Owner.Center.DirectionTo(Main.MouseWorld);
                     Vector2 position = Projectile.Center + direction * Projectile.width / 2;
                     MiniGun.Fire(Owner, position, direction, Projectile.damage, Projectile.knockBack);
-                }  
+                }
             }
 
             Recoil = MathHelper.Lerp(0, MiniGun.RecoilDistance, Easing.SpikeInOutExpo(progress));
@@ -249,7 +277,7 @@ namespace Stellamod.Projectiles.GunHolster
             float progress = Timer / HideTime;
             float easedProgress = Easing.OutCubic(progress);
             Projectile.rotation = MathHelper.Lerp(FireStartRotation, IdleRotation, easedProgress);
-            SetGunPositionFromHolster();
+            SetGunPositionFromScorpion();
 
             if (Timer >= HideTime)
             {
@@ -265,60 +293,16 @@ namespace Stellamod.Projectiles.GunHolster
 
         public void DecideGunPosition()
         {
-            SetGunPositionFromHolster();
-        }
-
-        public void SetGunPositionFromHolster()
-        {
-            if (MiniGun == null)
-                return;
-
-            // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
-            if (IsRightHand)
-            {
-                Owner.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
-                Vector2 armPosition = Owner.GetBackHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
-
-                armPosition.Y += Owner.gfxOffY;
-                Projectile.Center = armPosition; // Set projectile to arm position
-                Projectile.Center += MiniGun.HolsterOffset.RotatedBy(Projectile.rotation);
-                Projectile.position -= new Vector2(0, 4);
-            }
-            else
-            {
-                Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
-                Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
-
-                armPosition.Y += Owner.gfxOffY;
-                Projectile.Center = armPosition; // Set projectile to arm position
-                Projectile.Center += MiniGun.HolsterOffset.RotatedBy(Projectile.rotation);
-            }
-
-            Projectile.position += new Vector2(-Recoil, 0).RotatedBy(Projectile.rotation);
-            if (Projectile.spriteDirection == -1)
-            {
-                Projectile.position += new Vector2(0, 12).RotatedBy(Projectile.rotation);
-                Projectile.rotation -= MathHelper.ToRadians(180);
-            }
-        
-            if(Main.myPlayer == Projectile.owner)
-            {
-                Owner.direction = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
-            }
-          
-            if (!IsRightHand)
-            {
-                Owner.heldProj = Projectile.whoAmI;
-            }
+            SetGunPositionFromScorpion();
         }
 
         public void SetGunPositionFromScorpion()
         {
             if (MiniGun == null)
                 return;
-            int holsterIndex = (int)Projectile.ai[2] - 2;
+   
             ScorpionPlayer scorpionPlayer = Owner.GetModPlayer<ScorpionPlayer>();
-            Vector2 holsterPosition = scorpionPlayer.holsterPositions[holsterIndex];
+            Vector2 holsterPosition = scorpionPlayer.holsterPositions[ScorpionHolsterIndex];
             Projectile.Center = holsterPosition;
             Projectile.Center += MiniGun.HolsterOffset.RotatedBy(Projectile.rotation);
             Projectile.position += new Vector2(-Recoil, 0).RotatedBy(Projectile.rotation);

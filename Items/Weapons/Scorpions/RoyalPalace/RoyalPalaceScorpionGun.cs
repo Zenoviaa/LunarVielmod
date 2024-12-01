@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Buffs.Scorpion;
 using Stellamod.Common.ScorpionMountSystem;
 using Terraria;
 using Terraria.Audio;
@@ -7,6 +8,22 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Scorpions.RoyalPalace
 {
+    internal class RoyalPalaceScorpionPlayer : ModPlayer
+    {
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPCWithProj(proj, target, hit, damageDone);
+            if(Player.HeldItem.type == ModContent.ItemType<RoyalPalaceScorpion>() && proj.type == ProjectileID.Bullet)
+            {
+                if (!target.HasBuff<RoyalPalaceScorpionTagDebuff>())
+                {
+                    //Spawn Cool Effect Here
+
+                }
+                target.AddBuff(ModContent.BuffType<RoyalPalaceScorpionTagDebuff>(), 180);
+            }
+        }
+    }
     internal class RoyalPalaceScorpionGun : BaseScorpionGun
     {
         protected override void Shoot()
@@ -41,5 +58,6 @@ namespace Stellamod.Items.Weapons.Scorpions.RoyalPalace
             }
             Dust.NewDustPerfect(Projectile.position + velocity * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
         }
+       
     }
 }

@@ -1,4 +1,4 @@
-﻿using Stellamod.Buffs;
+﻿using Stellamod.Buffs.Scorpion;
 using Stellamod.Common.ScorpionMountSystem;
 using Terraria;
 using Terraria.ModLoader;

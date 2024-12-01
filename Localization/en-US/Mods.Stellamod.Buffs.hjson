@@ -812,3 +812,8 @@ RoyalPalaceScorpionMountBuff: {
 	DisplayName: Royal Palace Scorpion Mount Buff
 	Description: Mods.Stellamod.Buffs.RoyalPalaceScorpionMountBuff.Description
 }
+
+RoyalPalaceScorpionTagDebuff: {
+	DisplayName: Royal Palace Scorpion Tag Debuff
+	Description: Mods.Stellamod.Buffs.RoyalPalaceScorpionTagDebuff.Description
+}
