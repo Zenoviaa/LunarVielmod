@@ -121,7 +121,7 @@ namespace Stellamod.Common.ArmorReforge
                     player.endurance -= 0.1f;
                     break;
                 case ArmorReforgeType.RogueThrown:
-                    player.GetDamage(DamageClass.Ranged) += 0.12f;
+                    player.GetDamage(DamageClass.Throwing) += 0.12f;
                     player.endurance -= 0.18f;
                     player.statLifeMax2 -= 40;
                     player.lifeRegen -= 2;
