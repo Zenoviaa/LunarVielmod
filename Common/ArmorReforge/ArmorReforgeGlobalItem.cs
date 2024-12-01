@@ -30,6 +30,8 @@ namespace Stellamod.Common.ArmorReforge
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
+            if (lifeSteal <= 0)
+                return;
             if (cooldownTimer > 0)
                 return;
             cooldownTimer = 30;

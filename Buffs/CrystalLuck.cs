@@ -17,7 +17,7 @@ namespace Stellamod.Buffs
         {
             if (Main.rand.NextBool(8))
             {
-                Dust.NewDust(player.position, player.width, player.height, DustID.BoneTorch);
+        
             }
         }
     }

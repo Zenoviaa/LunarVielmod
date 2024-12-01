@@ -8304,3 +8304,8 @@ Rhino: {
 	DisplayName: Rhino
 	Tooltip: ""
 }
+
+RoyalPalaceScorpion: {
+	DisplayName: Royal Palace Scorpion
+	Tooltip: ""
+}

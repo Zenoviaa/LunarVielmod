@@ -55,7 +55,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 
         private void HolsterGun(Player player, int projectileType, int baseDamage, float knockBack)
         {
-            int newDamage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(baseDamage);
+            int newDamage = (int)player.GetTotalDamage(player.HeldItem.DamageType).ApplyTo(baseDamage);
             if (player.ownedProjectileCounts[projectileType] == 0)
             {
                 Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
