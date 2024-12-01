@@ -439,6 +439,8 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             base.SetDefaults();
             Item.damage = 16;
             LeftHand = true;
+            RightHand = true;
+            TwoHands = true;
 
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunElectric");
             soundStyle.PitchVariance = 0.5f;
