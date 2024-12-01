@@ -8,14 +8,13 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.IgniterExplosions
 {
-    public class CombustionBoomMini : ModProjectile
+    public class PiranhaBoomMini : ModProjectile
     {
         private int _frameCounter;
         private int _frameTick;
-        private float _sizeMultiplier;
         public override void SetStaticDefaults()
         {
-            Main.projFrames[Projectile.type] = 15;
+            Main.projFrames[Projectile.type] = 30;
         }
 
         public override void SetDefaults()
@@ -24,10 +23,10 @@ namespace Stellamod.Projectiles.IgniterExplosions
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.friendly = true;
-            Projectile.width = 256;
-            Projectile.height = 256;
+            Projectile.width = 1024;
+            Projectile.height = 1024;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 29;
+            Projectile.timeLeft = 30;
             Projectile.scale = 1f;
         }
 
@@ -36,25 +35,26 @@ namespace Stellamod.Projectiles.IgniterExplosions
             get => Projectile.ai[0];
             set => Projectile.ai[0] = value;
         }
+        private float _sizeMultiplier;
 
 
         public override bool PreAI()
         {
+
             Timer++;
             if (Timer == 1)
             {
                 //Randomize Size
-                _sizeMultiplier = Main.rand.NextFloat(0.2f, 0.5f);
-              //  Projectile.width = (int)((float)Projectile.width * _sizeMultiplier);
-             //   Projectile.height = (int)((float)Projectile.height * _sizeMultiplier);
+                _sizeMultiplier = Main.rand.NextFloat(0.3f, 0.8f);
+                //  Projectile.width = (int)((float)Projectile.width * _sizeMultiplier);
+                //   Projectile.height = (int)((float)Projectile.height * _sizeMultiplier);
             }
-
-            if (++_frameTick >= 2)
+            if (++_frameTick >= 1)
             {
                 _frameTick = 0;
-                if (++_frameCounter >= 15)
+                if (++_frameCounter >= 30)
                 {
-           
+                    _frameCounter = 0;
                 }
             }
             return true;
@@ -69,14 +69,23 @@ namespace Stellamod.Projectiles.IgniterExplosions
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            switch (Main.rand.Next(0, 2))
+            for (int i = 0; i < 3; i++)
             {
-                case 0:
-                    target.AddBuff(BuffID.OnFire3, 120);
-                    break;
-                case 1:
-                    target.AddBuff(BuffID.ShadowFlame, 120);
-                    break;
+                switch (Main.rand.Next(0, 4))
+                {
+                    case 0:
+                        target.AddBuff(BuffID.OnFire3, 120);
+                        break;
+                    case 1:
+                        target.AddBuff(BuffID.ShadowFlame, 120);
+                        break;
+                    case 2:
+                        target.AddBuff(BuffID.CursedInferno, 120);
+                        break;
+                    case 3:
+                        target.AddBuff(BuffID.Daybreak, 60);
+                        break;
+                }
             }
         }
 
@@ -90,11 +99,11 @@ namespace Stellamod.Projectiles.IgniterExplosions
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
 
-            float width = 512;
-            float height = 512;
+            float width = 214;
+            float height = 214;
             Vector2 origin = new Vector2(width / 2, height / 2);
             int frameSpeed = 1;
-            int frameCount = 15;
+            int frameCount = 30;
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture, drawPosition,
                 texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),

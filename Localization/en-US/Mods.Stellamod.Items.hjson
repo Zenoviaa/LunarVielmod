@@ -8309,3 +8309,8 @@ RoyalPalaceScorpion: {
 	DisplayName: Royal Palace Scorpion
 	Tooltip: ""
 }
+
+Piranha: {
+	Tooltip: ""
+	DisplayName: Piranha
+}

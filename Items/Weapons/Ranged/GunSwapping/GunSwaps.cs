@@ -477,7 +477,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                     ModContent.ProjectileType<ElectrifyingProj>(), damage, knockback, player.whoAmI);
             }
 
-            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunElectric");
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew9");
             soundStyle.PitchVariance = 0.5f;
             SoundEngine.PlaySound(soundStyle, position);
         }
@@ -660,6 +660,53 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             }
 
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/Gunsotp");
+            soundStyle.PitchVariance = 0.5f;
+            SoundEngine.PlaySound(soundStyle, position);
+        }
+    }
+
+
+    internal class Piranha : MiniGun
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = 6;
+            LeftHand = true;
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew4");
+            soundStyle.PitchVariance = 0.5f;
+            Item.UseSound = soundStyle;
+
+            //Higher is faster
+            AttackSpeed = 24;
+            ShootCount = 12;
+            //Offset it so it doesn't hold gun by weird spot
+            HolsterOffset = new Vector2(15, -6);
+
+            //Recoil
+            RecoilDistance = 3;
+        }
+
+        public override void Fire(Player player, Vector2 position, Vector2 velocity, int damage, float knockback)
+        {
+            base.Fire(player, position, velocity, damage, knockback);
+            float spread = 0.4f;
+            for (int k = 0; k < 7; k++)
+            {
+                Vector2 newDirection = velocity.RotatedByRandom(spread);
+                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+            }
+            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+            for (int i = 0; i < Main.rand.Next(1, 3); i++)
+            {
+                Vector2 vel = velocity * 16;
+                vel = vel.RotatedByRandom(MathHelper.PiOver4 / 15);
+                Projectile.NewProjectile(player.GetSource_FromThis(), position, vel,
+                    ModContent.ProjectileType<PiranhaProj>(), damage, knockback, player.whoAmI);
+            }
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew4");
             soundStyle.PitchVariance = 0.5f;
             SoundEngine.PlaySound(soundStyle, position);
         }
