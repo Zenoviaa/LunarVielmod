@@ -671,8 +671,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 6;
+            Item.damage = 4;
             LeftHand = true;
+
 
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew4");
             soundStyle.PitchVariance = 0.5f;

@@ -100,7 +100,7 @@ namespace Stellamod.Projectiles.GunHolster
                 velocity2 = velocity2.RotatedByRandom(MathHelper.PiOver4 + MathHelper.PiOver2);
                 velocity2 *= Main.rand.NextFloat(0.5f, 1f);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity2 * 0,
-                    ModContent.ProjectileType<PiranhaBoomMini>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    ModContent.ProjectileType<PiranhaBoomMini>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
             
         }
     }

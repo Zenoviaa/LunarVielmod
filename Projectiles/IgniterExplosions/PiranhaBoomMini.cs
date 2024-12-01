@@ -77,13 +77,13 @@ namespace Stellamod.Projectiles.IgniterExplosions
                         target.AddBuff(BuffID.OnFire3, 120);
                         break;
                     case 1:
-                        target.AddBuff(BuffID.ShadowFlame, 120);
+                       
                         break;
                     case 2:
-                        target.AddBuff(BuffID.CursedInferno, 120);
+                       
                         break;
                     case 3:
-                        target.AddBuff(BuffID.Daybreak, 60);
+                        
                         break;
                 }
             }
