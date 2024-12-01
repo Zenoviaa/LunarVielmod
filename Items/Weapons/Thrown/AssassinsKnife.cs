@@ -7,8 +7,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    internal class AssassinsKnife : ModItem
+    internal class AssassinsKnife : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 6;
+            Item.mana = 0;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Assassin's Knife");
@@ -24,7 +32,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.noMelee = true;
             Item.noUseGraphic = true;
             Item.knockBack = 8;
-            Item.value = Item.buyPrice(0, 0, 1, 0);
+            Item.value = Item.buyPrice(0, 5, 10, 0);
             Item.rare = ItemRarityID.Blue;
             Item.shootSpeed = 15;
             Item.autoReuse = true;
@@ -34,8 +42,8 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shootSpeed = 20f;
             Item.useAnimation = 20;
             Item.useTime = 20;
-            Item.consumable = true;
-            Item.maxStack = 9999;
+            Item.consumable = false;
+            
         }
 
         

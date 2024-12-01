@@ -11,8 +11,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    public class Hyua : ModItem
+    public class Hyua : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 38;
+            Item.mana = 0;
+        }
         public int AttackCounter = 1;
         public int combowombo = 0;
 
@@ -54,14 +62,14 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shootSpeed = 16f;
             Item.useAnimation = 20;
             Item.useTime = 20;
-            Item.consumable = true;
-            Item.maxStack = 9999;
+            Item.consumable = false;
+            Item.maxStack = 1;
             Item.UseSound = SoundID.Item71;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<HyuaProj>();
             Item.noUseGraphic = true;
             Item.rare = ItemRarityID.LightPurple;
-            Item.buyPrice(0, 0, 7, 0);
+            Item.buyPrice(1, 0, 0, 0);
         }
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)

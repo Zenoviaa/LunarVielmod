@@ -5,8 +5,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    public class AlcadThrowingCards : ModItem
-	{
+    public class AlcadThrowingCards : ClassSwapItem
+    {
+
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 25;
+            Item.mana = 0;
+        }
         public override void SetStaticDefaults() 
 		{
             // DisplayName.SetDefault("GreyBricks"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
@@ -30,9 +38,9 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shoot = ModContent.ProjectileType<Card5>();
             Item.shootSpeed = 18f;
             Item.rare = ItemRarityID.LightPurple;
-            Item.consumable = true;
-            Item.maxStack = 9999;
-            Item.buyPrice(0, 0, 10, 0);
+            Item.consumable = false;
+            Item.maxStack = 1;
+            Item.buyPrice(0, 10, 0, 0);
         }
       
     }

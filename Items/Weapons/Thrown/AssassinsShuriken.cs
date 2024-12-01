@@ -7,8 +7,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    internal class AssassinsShuriken : ModItem
+    internal class AssassinsShuriken : ClassSwapItem
     {
+
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 4;
+            Item.mana = 0;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Assassin's Shuriken");
@@ -35,7 +43,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.useAnimation = 20;
             Item.useTime = 20;
             Item.consumable = true;
-            Item.maxStack = 9999;
+            Item.maxStack = 1;
         }
 
         public override Vector2? HoldoutOffset()
