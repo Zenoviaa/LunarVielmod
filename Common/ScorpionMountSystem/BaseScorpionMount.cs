@@ -43,6 +43,7 @@ namespace Stellamod.Common.ScorpionMountSystem
         public Vector2 underseatVelocity;
         public Vector2 tailVelocity;
 
+        public float walkSpeed;
         public float legOffset;
         public float minGlowDistance;
         public float maxGlowDistance;
@@ -134,6 +135,7 @@ namespace Stellamod.Common.ScorpionMountSystem
 
 
             // This code simulates some wind resistance for the balloons.
+            walkSpeed = 0.025f;
             underseatVelocity -= player.velocity;
             underseatVelocity *= 0.52f;
             tailVelocity -= player.velocity * 5f;
@@ -157,7 +159,7 @@ namespace Stellamod.Common.ScorpionMountSystem
             ref float upperLegRotation = ref scorpionData.upperLegRotations[index];
             ref float lowerLegRotation = ref scorpionData.lowerLegRotations[index];
 
-            float x = -player.position.X * 0.015f;
+            float x = -player.position.X * walkSpeed;
             float s = MathF.Sin(x);
 
 
@@ -185,7 +187,7 @@ namespace Stellamod.Common.ScorpionMountSystem
             ref float upperLegRotation = ref scorpionData.upperLegRotations[index];
             ref float lowerLegRotation = ref scorpionData.lowerLegRotations[index];
 
-            float x = -(player.position.X + 150f) * 0.015f;
+            float x = -(player.position.X + 150f) * walkSpeed;
             float s = MathF.Sin(x);
 
             float tuRotation;
@@ -212,7 +214,7 @@ namespace Stellamod.Common.ScorpionMountSystem
             ref float upperLegRotation = ref scorpionData.upperLegRotations[index];
             ref float lowerLegRotation = ref scorpionData.lowerLegRotations[index];
 
-            float x = -(player.position.X + 150f) * 0.015f;
+            float x = -(player.position.X + 150f) * walkSpeed;
             float s = MathF.Sin(x);
 
             float tuRotation;
@@ -239,7 +241,7 @@ namespace Stellamod.Common.ScorpionMountSystem
             ref float upperLegRotation = ref scorpionData.upperLegRotations[index];
             ref float lowerLegRotation = ref scorpionData.lowerLegRotations[index];
 
-            float x = -(player.position.X + 10f) * 0.015f;
+            float x = -(player.position.X + 10f) * walkSpeed;
             float s = MathF.Sin(x);
 
             float tuRotation;
@@ -266,7 +268,7 @@ namespace Stellamod.Common.ScorpionMountSystem
             ref float upperLegRotation = ref scorpionData.upperLegRotations[index];
             ref float lowerLegRotation = ref scorpionData.lowerLegRotations[index];
 
-            float x = -(player.position.X + 90f) * 0.015f;
+            float x = -(player.position.X + 90f) * walkSpeed;
             float s = MathF.Sin(x);
 
             float tuRotation;
@@ -295,7 +297,7 @@ namespace Stellamod.Common.ScorpionMountSystem
             ref float upperLegRotation = ref scorpionData.upperLegRotations[index];
             ref float lowerLegRotation = ref scorpionData.lowerLegRotations[index];
 
-            float x = -(player.position.X + 60f) * 0.015f;
+            float x = -(player.position.X + 60f) * walkSpeed;
             float s = MathF.Sin(x);
 
             float tuRotation;

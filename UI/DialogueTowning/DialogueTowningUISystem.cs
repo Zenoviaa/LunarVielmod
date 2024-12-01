@@ -80,6 +80,7 @@ namespace Stellamod.UI.DialogueTowning
                         {
                             buttons.Add(new Tuple<string, Action>("Quest", veilTownNPC.GiveQuest));
                         }
+                        buttons.Add(new Tuple<string, Action>("Close", veilTownNPC.CloseTownDialogue));
                         foreach (var pair in buttons)
                         {
                             dialogueTowningUIState.dialogueTownButtonsUI.AddButton(pair.Item1, pair.Item2);

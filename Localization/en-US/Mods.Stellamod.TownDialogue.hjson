@@ -8,6 +8,7 @@ CompleteQuest: You've completed a quest!
 CellConverter: Weapon Swapper
 ArmorReforge: Armor Reforge
 ArmorShop: Armor Shop
+Close: Close
 TestDialogue:
 	'''
 	Aimacra joined us on our excursion as well so be sure to get a hold of her whenever you can. 

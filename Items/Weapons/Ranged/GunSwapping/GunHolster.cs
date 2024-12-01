@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.GunHolster;
 using Stellamod.UI.GunHolsterSystem;
 using System.Collections.Generic;
 using Terraria;
@@ -50,16 +51,24 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 _rightHand = value;
             }
         }
+
         public ModItem RightHandItem => RightHand.ModItem;
         public ModItem LeftHandItem => LeftHand.ModItem;
 
-        private void HolsterGun(Player player, int projectileType, int baseDamage, float knockBack)
+        public MiniGun HeldLeftHandGun => LeftHandItem as MiniGun;
+        public MiniGun HeldRightHandGun => RightHandItem as MiniGun;
+
+        private void HolsterGun(MiniGun miniGun)
         {
-            int newDamage = (int)player.GetTotalDamage(player.HeldItem.DamageType).ApplyTo(baseDamage);
-            if (player.ownedProjectileCounts[projectileType] == 0)
+            int newDamage = (int)Player.GetTotalDamage(Player.HeldItem.DamageType).ApplyTo(miniGun.Item.damage);
+            int gunHolsterType = ModContent.ProjectileType<GunHolsterProjectile>();
+            if (Player.ownedProjectileCounts[gunHolsterType] == 0)
             {
-                Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
-                    projectileType, newDamage, knockBack, player.whoAmI);
+                int rightHand = 0;
+                if (miniGun == HeldRightHandGun)
+                    rightHand = 1;
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
+                    gunHolsterType, newDamage, miniGun.Item.knockBack, Player.whoAmI, ai2: rightHand);
             }
         }
 
@@ -80,23 +89,12 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 {
                     if (!RightHand.IsAir)
                     {
-                        if (RightHandItem is MiniGun miniGun)
-                        {
-                            int toHolster = miniGun.GunHolsterProjectile;
-                            if (miniGun.GunHolsterProjectile2 != -1)
-                            {
-                                toHolster = miniGun.GunHolsterProjectile2;
-                            }
-                            HolsterGun(Player, toHolster, RightHandItem.Item.damage, RightHandItem.Item.knockBack);
-                        }
+                        HolsterGun(HeldRightHandGun);
                     }
 
                     if (!LeftHand.IsAir)
                     {
-                        if (LeftHandItem is MiniGun miniGun)
-                        {
-                            HolsterGun(Player, miniGun.GunHolsterProjectile, LeftHandItem.Item.damage, LeftHandItem.Item.knockBack);
-                        }
+                        HolsterGun(HeldLeftHandGun);
                     }
 
                     if ((Player.HeldItem.type != itemType) && Main.mouseItem.type != itemType)
@@ -118,22 +116,19 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void LoadData(TagCompound tag)
         {
             base.LoadData(tag);
-            if (tag.ContainsKey("lefthand"))
-                LeftHand = tag.Get<Item>("lefthand");
-            if (tag.ContainsKey("righthand"))
-                RightHand = tag.Get<Item>("righthand");
+            LeftHand = tag.Get<Item>("lefthand");
+            RightHand = tag.Get<Item>("righthand");
         }
     }
 
     internal class GunHolster : ClassSwapItem
     {
-
         public override DamageClass AlternateClass => DamageClass.Magic;
-
         public override void SetClassSwappedDefaults()
         {
             Item.mana = 2;
         }
+
         public override void SetDefaults()
         {
             Item.width = 62;
@@ -268,7 +263,6 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 return false;
             return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
         }
-
 
         public override Vector2? HoldoutOffset()
         {

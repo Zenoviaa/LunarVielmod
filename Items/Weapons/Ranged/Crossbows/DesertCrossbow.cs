@@ -25,7 +25,6 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
             /* Tooltip.SetDefault("Use a small crossbow and shoot three bolts!"
                 + "\n'Triple Threat!'"); */
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-
         }
 
         public override void SetDefaults()
