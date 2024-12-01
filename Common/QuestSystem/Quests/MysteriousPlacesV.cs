@@ -11,6 +11,7 @@ namespace Stellamod.Common.QuestSystem.Quests
             base.SetStaticDefaults();
             AddReward(ItemID.Wood, 10);
             IsSideQuest = true;
+            IsAutoQuest = true;
         }
 
         public override bool CanGiveQuest(Player player)
@@ -18,6 +19,7 @@ namespace Stellamod.Common.QuestSystem.Quests
             QuestPlayer questPlayer = player.GetModPlayer<QuestPlayer>();
             return questPlayer.HasFinishedQuest(QuestLoader.GetInstance<MysteriousPlacesIV>());
         }
+
         public override void StartQuest(Player player)
         {
             base.StartQuest(player);

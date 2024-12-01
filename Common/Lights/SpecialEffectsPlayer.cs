@@ -270,7 +270,7 @@ namespace Stellamod.Common.Lights
             TogglePaletteShader("LunarVeil:DarknessCurve", darknessCurve != 0);
 
 
-            if (hellPaletteActive || desertPaletteActive)
+            if (hellPaletteActive || desertPaletteActive || desertTopPaletteActive)
             {
                 darknessCurveProgress -= speed;
             }

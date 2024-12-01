@@ -136,7 +136,12 @@ namespace Stellamod.Common.QuestSystem
             {
                 GiveQuest(QuestLoader.GetInstance<TalkToZui>());
             }
-
+            foreach(var questKvp in QuestLoader.quests)
+            {
+                var quest = questKvp.Value;
+                if (quest.IsAutoQuest && !HasFinishedQuest(quest) && quest.CanGiveQuest(Player))
+                    GiveQuest(quest);
+            }
             List<Quest> questsToComplete = ActiveQuests.FindAll(x => x.CheckCompletion(Player));
             foreach(var quest in questsToComplete)
             {

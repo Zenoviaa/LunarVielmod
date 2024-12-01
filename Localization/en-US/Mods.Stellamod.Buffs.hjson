@@ -802,3 +802,8 @@ RadiatingLantern: {
 	DisplayName: Radiating Lantern
 	Description: Mods.Stellamod.Buffs.RadiatingLantern.Description
 }
+
+CrystalLuck: {
+	DisplayName: Crystal Luck
+	Description: You're feeling quite lucky...
+}
