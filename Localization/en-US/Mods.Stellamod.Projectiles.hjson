@@ -1344,3 +1344,8 @@ GoldChain.DisplayName: Gold Chain
 RadiantLanternProjectile.DisplayName: Radiant Lantern Projectile
 BasicDiscProjectile.DisplayName: Basic Disc Projectile
 WindBoomFriendly.DisplayName: Wind Boom Friendly
+NLUX.DisplayName: N L U X
+GunHolsterRhinoRightProj.DisplayName: Gun Holster Rhino Right Proj
+GunHolsterRhinoLeftProj.DisplayName: Gun Holster Rhino Left Proj
+GunHolsterGordonRightProj.DisplayName: Gun Holster Gordon Right Proj
+GunHolsterGordonLeftProj.DisplayName: Gun Holster Gordon Left Proj

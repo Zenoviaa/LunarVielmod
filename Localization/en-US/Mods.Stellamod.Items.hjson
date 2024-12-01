@@ -8284,3 +8284,13 @@ GlisteningBar: {
 	DisplayName: Glistening Bar
 	Tooltip: ""
 }
+
+Rhino: {
+	Tooltip: ""
+	DisplayName: Rhino
+}
+
+Gordon: {
+	Tooltip: ""
+	DisplayName: Gordon
+}

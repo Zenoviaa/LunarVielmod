@@ -205,15 +205,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.UseSound = soundStyle;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.Anvils);
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 9);
-
-            recipe.Register();
-        }
+       
     }
 
     internal class MsFreeze : MiniGun
@@ -383,6 +375,46 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             TwoHands = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterMeredaXLeftProj>();
             GunHolsterProjectile2 = ModContent.ProjectileType<GunHolsterMeredaXRightProj>();
+
+
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunBlasting");
+            soundStyle.PitchVariance = 0.5f;
+            Item.UseSound = soundStyle;
+        }
+    }
+
+    internal class Gordon : MiniGun
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = 24;
+            LeftHand = true;
+            RightHand = true;
+            TwoHands = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterGordonLeftProj>();
+            GunHolsterProjectile2 = ModContent.ProjectileType<GunHolsterGordonRightProj>();
+
+
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunBlasting");
+            soundStyle.PitchVariance = 0.5f;
+            Item.UseSound = soundStyle;
+        }
+    }
+
+    internal class Rhino : MiniGun
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = 8;
+            LeftHand = true;
+            RightHand = true;
+            TwoHands = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterRhinoLeftProj>();
+            GunHolsterProjectile2 = ModContent.ProjectileType<GunHolsterRhinoRightProj>();
 
 
 

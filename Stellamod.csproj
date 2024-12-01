@@ -573,6 +573,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Textures\Menu\" />
+    <Folder Include="Effects\CrystalShaders\" />
     <Folder Include="Items\Accessories\Shields\" />
     <Folder Include="NPCs\Event\Gintzearmy\BossGintze\" />
     <Folder Include="Projectiles\Hostile\" />
