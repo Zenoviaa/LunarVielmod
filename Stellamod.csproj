@@ -87,6 +87,7 @@
     <None Remove="Dusts\TSmokeTornadoDust.png" />
     <None Remove="Dusts\TSmokeTornadoDustTip.png" />
     <None Remove="Effects\Blur.fx" />
+    <None Remove="Effects\CrystalShaders\L.png" />
     <None Remove="effects\DaedusRobe.fx" />
     <None Remove="Effects\DarknessCurve - Copy.fx" />
     <None Remove="Effects\DarknessCurve.fx" />
@@ -577,7 +578,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Textures\Menu\" />
-    <Folder Include="Effects\CrystalShaders\" />
     <Folder Include="Items\Accessories\Shields\" />
     <Folder Include="NPCs\Event\Gintzearmy\BossGintze\" />
     <Folder Include="Projectiles\Hostile\" />
