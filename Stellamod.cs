@@ -20,6 +20,7 @@ using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.UI;
+using tModPorter;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace Stellamod
@@ -273,9 +274,41 @@ namespace Stellamod
                 Main.instance.LoadTiles(TileID.SnowCloud);
                 TextureAssets.Tile[TileID.SnowCloud] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/SnowCloudRE");
             }
-            
-            
-            
+           
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+
+            if (!Main.dedServ && Main.netMode != NetmodeID.Server && config.VanillaUIRespritesToggle)
+            {
+                //Replace UI
+                string categoryPanel = "Stellamod/Assets/Textures/UI/CategoryPanel";
+                string categoryPanelHot = "Stellamod/Assets/Textures/UI/CategoryPanelHot";
+
+                TextureAssets.InventoryBack = ModContent.Request<Texture2D>(categoryPanel);
+                TextureAssets.InventoryBack2 = ModContent.Request<Texture2D>(categoryPanel);
+                TextureAssets.InventoryBack3 = ModContent.Request<Texture2D>(categoryPanel);
+                TextureAssets.InventoryBack4 = ModContent.Request<Texture2D>(categoryPanel);
+                TextureAssets.InventoryBack5 = ModContent.Request<Texture2D>(categoryPanel);
+                TextureAssets.InventoryBack6 = ModContent.Request<Texture2D>(categoryPanel);
+                TextureAssets.InventoryBack7 = ModContent.Request<Texture2D>(categoryPanel);
+                TextureAssets.InventoryBack8 = ModContent.Request<Texture2D>(categoryPanel);
+                TextureAssets.InventoryBack9 = ModContent.Request<Texture2D>(categoryPanel);
+                TextureAssets.InventoryBack10 = ModContent.Request<Texture2D>(categoryPanelHot);
+                TextureAssets.InventoryBack11 = ModContent.Request<Texture2D>(categoryPanelHot);
+                TextureAssets.InventoryBack12 = ModContent.Request<Texture2D>(categoryPanelHot);
+                TextureAssets.InventoryBack13 = ModContent.Request<Texture2D>(categoryPanelHot);
+                TextureAssets.InventoryBack14 = ModContent.Request<Texture2D>(categoryPanelHot);
+                TextureAssets.InventoryBack15 = ModContent.Request<Texture2D>(categoryPanelHot);
+                TextureAssets.InventoryBack16 = ModContent.Request<Texture2D>(categoryPanelHot);
+                TextureAssets.InventoryBack17 = ModContent.Request<Texture2D>(categoryPanelHot);
+                TextureAssets.InventoryBack18 = ModContent.Request<Texture2D>(categoryPanelHot);
+                TextureAssets.InventoryBack19 = ModContent.Request<Texture2D>(categoryPanelHot);
+
+
+                TextureAssets.ScrollLeftButton = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/BackButton");
+                TextureAssets.ScrollRightButton = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/ForwardButton");
+            }
+
+
             On_UIWorldListItem.DrawSelf += (orig, self, spriteBatch) =>
             {
                 orig(self, spriteBatch);
@@ -296,9 +329,46 @@ namespace Stellamod
             TextureAssets.Wall[wallID] = ModContent.Request<Texture2D>($"Terraria/Images/Wall_{wallID}");
         }
 
+        private string InventoryBackPath(int tileID)
+        {
+            if (tileID == 0)
+                return $"Terraria/Images/Inventory_Back";
+            return $"Terraria/Images/Inventory_Back{tileID}";
+        }
+
+
         public override void Unload()
         {
             StellaMultiplayer.Unload();
+
+            if (!Main.dedServ)
+            {
+                string backButton = "Terraria/Images/UI/Bestiary/Button_Back";
+                string forwardButton = "Terraria/Images/UI/Bestiary/Button_Forward";
+
+                TextureAssets.InventoryBack = ModContent.Request<Texture2D>(InventoryBackPath(0));
+                TextureAssets.InventoryBack2 = ModContent.Request<Texture2D>(InventoryBackPath(2));
+                TextureAssets.InventoryBack3 = ModContent.Request<Texture2D>(InventoryBackPath(3));
+                TextureAssets.InventoryBack4 = ModContent.Request<Texture2D>(InventoryBackPath(4));
+                TextureAssets.InventoryBack5 = ModContent.Request<Texture2D>(InventoryBackPath(5));
+                TextureAssets.InventoryBack6 = ModContent.Request<Texture2D>(InventoryBackPath(6));
+                TextureAssets.InventoryBack7 = ModContent.Request<Texture2D>(InventoryBackPath(7));
+                TextureAssets.InventoryBack8 = ModContent.Request<Texture2D>(InventoryBackPath(8));
+                TextureAssets.InventoryBack9 = ModContent.Request<Texture2D>(InventoryBackPath(9));
+                TextureAssets.InventoryBack10 = ModContent.Request<Texture2D>(InventoryBackPath(10));
+                TextureAssets.InventoryBack11 = ModContent.Request<Texture2D>(InventoryBackPath(11));
+                TextureAssets.InventoryBack12 = ModContent.Request<Texture2D>(InventoryBackPath(12));
+                TextureAssets.InventoryBack13 = ModContent.Request<Texture2D>(InventoryBackPath(13));
+                TextureAssets.InventoryBack14 = ModContent.Request<Texture2D>(InventoryBackPath(14));
+                TextureAssets.InventoryBack15 = ModContent.Request<Texture2D>(InventoryBackPath(15));
+                TextureAssets.InventoryBack16 = ModContent.Request<Texture2D>(InventoryBackPath(16));
+                TextureAssets.InventoryBack17 = ModContent.Request<Texture2D>(InventoryBackPath(17));
+                TextureAssets.InventoryBack18 = ModContent.Request<Texture2D>(InventoryBackPath(18));
+                TextureAssets.InventoryBack19 = ModContent.Request<Texture2D>(InventoryBackPath(19));
+                TextureAssets.ScrollLeftButton = ModContent.Request<Texture2D>(backButton);
+                TextureAssets.ScrollRightButton = ModContent.Request<Texture2D>(forwardButton);
+            }
+
             if (!Main.dedServ)
             {
                 UnloadTile(TileID.Dirt);
