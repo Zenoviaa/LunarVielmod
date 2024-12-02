@@ -33,21 +33,21 @@ namespace Stellamod
         public override void Load()
         {
             base.Load();
-            _SizeSmallTexture = ModContent.Request<Texture2D>("CrystalMoon/Assets/Textures/UI/PreviewSizeWorldVeil");
-            _SizeMediumTexture = ModContent.Request<Texture2D>("CrystalMoon/Assets/Textures/UI/PreviewSizeWorldVeil");
-            _SizeLargeTexture = ModContent.Request<Texture2D>("CrystalMoon/Assets/Textures/UI/PreviewSizeWorldVeil");
+            _SizeSmallTexture = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewSizeWorldVeil");
+            _SizeMediumTexture = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewSizeWorldVeil");
+            _SizeLargeTexture = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewSizeWorldVeil");
 
-            _EvilRandomTexture = ModContent.Request<Texture2D>("CrystalMoon/Assets/Textures/UI/PreviewBlankWorld");
-            _EvilCorruptionTexture = ModContent.Request<Texture2D>("CrystalMoon/Assets/Textures/UI/PreviewBlankWorld");
-            _EvilCrimsonTexture = ModContent.Request<Texture2D>("CrystalMoon/Assets/Textures/UI/PreviewBlankWorld");
+            _EvilRandomTexture = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewBlankWorld");
+            _EvilCorruptionTexture = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewBlankWorld");
+            _EvilCrimsonTexture = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewBlankWorld");
 
 
-            _BunnyMasterTexture= ModContent.Request<Texture2D>("CrystalMoon/Assets/Textures/UI/PreviewDifficultyMaster");
-            _BunnyExpertTexture= ModContent.Request<Texture2D>("CrystalMoon/Assets/Textures/UI/PreviewDifficultyExpert");
-            _BunnyNormalTexture= ModContent.Request<Texture2D>("CrystalMoon/Assets/Textures/UI/PreviewDifficultyNormal");
-            _BunnyCreativeTexture= ModContent.Request<Texture2D>("CrystalMoon/Assets/Textures/UI/PreviewDifficultyMJourny");
+            _BunnyMasterTexture= ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewDifficultyMaster");
+            _BunnyExpertTexture= ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewDifficultyExpert");
+            _BunnyNormalTexture= ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewDifficultyNormal");
+            _BunnyCreativeTexture= ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewDifficultyMJourny");
 
-            _BorderTexture= ModContent.Request<Texture2D>("CrystalMoon/Assets/Textures/UI/PreviewBorder");
+            _BorderTexture= ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewBorder");
             _BackgroundNormalTexture = Main.Assets.Request<Texture2D>("Images/UI/WorldCreation/PreviewDifficultyNormal1");
             _BackgroundExpertTexture = Main.Assets.Request<Texture2D>("Images/UI/WorldCreation/PreviewDifficultyExpert1");
             _BackgroundMasterTexture = Main.Assets.Request<Texture2D>("Images/UI/WorldCreation/PreviewDifficultyMaster1");
