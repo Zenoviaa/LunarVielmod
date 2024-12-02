@@ -283,7 +283,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
             //Secondary fill
             trailMode = 0;
             shader.PrimaryColor = new Color(206, 101, 0);
-            shader.NoiseColor = Color.Red;
+            shader.NoiseColor = Color.Goldenrod;
             shader.OutlineColor = Color.Black;
             shader.Speed = 2.2f;
             shader.Distortion = 0.3f;
@@ -300,7 +300,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
 
             Color c = Color.DarkRed;
             shader.PrimaryColor = c;
-            shader.NoiseColor = Color.DarkRed;
+            shader.NoiseColor = Color.DarkGoldenrod;
             shader.BlendState = BlendState.AlphaBlend;
             shader.SamplerState = SamplerState.PointWrap;
             shader.Speed = 5.2f;

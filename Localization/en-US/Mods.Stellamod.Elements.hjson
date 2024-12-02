@@ -54,11 +54,10 @@ MoonElement: {
 }
 
 RadianceElement: {
-	DisplayName: Radiance Element
+	DisplayName: Sun Element
 	Tooltip:
 		'''
-		Transforms your spell with the power of the gollden sun! 
-		Radiance magic can burn targets
+		Transforms your spell with the power of the golden sun! 
 		'''
 }
 
