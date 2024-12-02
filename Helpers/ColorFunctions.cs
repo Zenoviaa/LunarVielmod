@@ -22,7 +22,7 @@ namespace Stellamod.Helpers
         public static Color RadianceYellow => new Color(255, 207, 79);
         public static Color DeeyaPink => new Color(255, 112, 170);
         public static Color IceLightBlue => new Color(38, 204, 255);
-        public static Color GuutGray => new Color(140, 158, 160);
+        public static Color VeilPink => new Color(169, 101, 255);
         public static Color DreadRed => new Color(175, 24, 34);
         public static Color WindPurple => new Color(195, 158, 255);
         public static Color NaturalGreen => new Color(95, 106, 47);

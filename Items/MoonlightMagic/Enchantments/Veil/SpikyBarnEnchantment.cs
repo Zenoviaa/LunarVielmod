@@ -4,7 +4,7 @@ using Stellamod.Items.MoonlightMagic.Elements;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Guuts
+namespace Stellamod.Items.MoonlightMagic.Enchantments.Veil
 {
     internal class SpikyBarnEnchantment : BaseEnchantment
     {
@@ -16,7 +16,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Guuts
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<GuutElement>();
+            return ModContent.ItemType<VeilElement>();
         }
 
 

@@ -92,8 +92,7 @@
     <None Remove="Effects\CrystalShaders\L.png" />
     <None Remove="Effects\CrystalShaders\LightningBolt.fx" />
     <None Remove="Effects\CrystalShaders\MagicDeeya.fx" />
-    <None Remove="Effects\CrystalShaders\MagicGuut.fx" />
-    <None Remove="Effects\CrystalShaders\MagicWind.fx" />
+    <None Remove="Effects\CrystalShaders\MagicVeil.fx" />
     <None Remove="Effects\CrystalShaders\MagicMothlightDistortion.fx" />
     <None Remove="Effects\CrystalShaders\MagicMothlightMasking.fx" />
     <None Remove="Effects\CrystalShaders\MagicNatural.fx" />
@@ -103,7 +102,7 @@
     <None Remove="Effects\CrystalShaders\MagicSparkleWater.fx" />
     <None Remove="Effects\CrystalShaders\MagicVaellus.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicDread.fx" />
-    <None Remove="Effects\CrystalShaders\PixelMagicGuut.fx" />
+    <None Remove="Effects\CrystalShaders\PixelMagicVeil.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicNatural.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicNormal.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicMoon.fx" />

@@ -17,7 +17,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
     {
         public override int GetOppositeElementType()
         {
-            return ModContent.ItemType<GuutElement>();
+            return ModContent.ItemType<VeilElement>();
         }
 
         public override void SetDefaults()

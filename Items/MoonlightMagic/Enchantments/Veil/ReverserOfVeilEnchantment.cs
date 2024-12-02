@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.MoonlightMagic.Elements;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Guuts
+namespace Stellamod.Items.MoonlightMagic.Enchantments.Veil
 {
-    internal class ReverserOfGuutsEnchantment : BaseEnchantment
+    internal class ReverserOfVeilEnchantment : BaseEnchantment
     {
 
         public override void SetDefaults()
@@ -45,7 +45,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Guuts
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<GuutElement>();
+            return ModContent.ItemType<VeilElement>();
         }
 
 

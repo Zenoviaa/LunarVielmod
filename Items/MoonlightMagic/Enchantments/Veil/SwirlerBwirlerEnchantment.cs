@@ -5,7 +5,7 @@ using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Guuts
+namespace Stellamod.Items.MoonlightMagic.Enchantments.Veil
 {
     internal class SwirlerBwirlerEnchantment : BaseEnchantment
     {
@@ -43,7 +43,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Guuts
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<GuutElement>();
+            return ModContent.ItemType<VeilElement>();
         }
     }
 }

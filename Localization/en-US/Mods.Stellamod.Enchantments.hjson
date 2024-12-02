@@ -278,9 +278,9 @@ DeeyaSwitcherEnchantment: {
 	Tooltip: Spells switch their element to Deeya!
 }
 
-GuutsSwitcherEnchantment: {
-	DisplayName: Guuts Switcher Enchantment
-	Tooltip: Spells switch their element to Guuts!
+VeilSwitcherEnchantment: {
+	DisplayName: Veil Switcher Enchantment
+	Tooltip: Spells switch their element to Veil!
 }
 
 WindSwitcherEnchantment: {
@@ -368,8 +368,8 @@ SharpTurnEnchantment: {
 	Tooltip: Your spell will instantly turn 90 degrees after a short time
 }
 
-ReverserOfGuutsEnchantment: {
-	DisplayName: Reverser Of Guuts Enchantment
+ReverserOfVeilEnchantment: {
+	DisplayName: Reverser Of Veil Enchantment
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 
@@ -413,8 +413,8 @@ RechargingShadowsEnchantment: {
 	Tooltip: Makes timers for your timed spells move 2x as fast!
 }
 
-AdditorGuutsEnchantment: {
-	DisplayName: Additor Guuts Enchantment
+AdditorVeilEnchantment: {
+	DisplayName: Additor Veil Enchantment
 	Tooltip: Makes every timed enchantment active 15 ticks later!
 }
 

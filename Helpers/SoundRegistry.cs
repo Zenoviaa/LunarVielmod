@@ -106,11 +106,11 @@ namespace Stellamod.Helpers
             variantSuffixesStart: 1,
             numVariants: 2);
 
-        public static SoundStyle GuutCast => new SoundStyle($"{Path}GuutCast",
+        public static SoundStyle VeilCast => new SoundStyle($"{Path}VeilCast",
             variantSuffixesStart: 1,
             numVariants: 2);
 
-        public static SoundStyle GuutHit => new SoundStyle($"{Path}GuutHit",
+        public static SoundStyle VeilHit => new SoundStyle($"{Path}VeilHit",
             variantSuffixesStart: 1,
             numVariants: 2);
 

@@ -5,7 +5,7 @@ using Stellamod.Items.MoonlightMagic.Elements;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Guuts
+namespace Stellamod.Items.MoonlightMagic.Enchantments.Veil
 {
     internal class SizerEnchantment : BaseEnchantment
     {
@@ -53,7 +53,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Guuts
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<GuutElement>();
+            return ModContent.ItemType<VeilElement>();
         }
 
 
@@ -66,7 +66,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Guuts
         public override void SpecialInventoryDraw(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             base.SpecialInventoryDraw(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.GuutGray);
+            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.VeilPink);
         }
     }
 }

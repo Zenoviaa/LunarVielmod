@@ -7,9 +7,9 @@ using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Guuts
+namespace Stellamod.Items.MoonlightMagic.Enchantments.Veil
 {
-    internal class GuutsSwitcherEnchantment : BaseEnchantment
+    internal class VeilSwitcherEnchantment : BaseEnchantment
     {
 
         public override void SetDefaults()
@@ -35,7 +35,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Guuts
                     Particle.NewParticle<GlowParticle>(spawnPoint, velocity, Color.White);
                 }
 
-                MagicProj.PrimaryElement = new GuutElement();
+                MagicProj.PrimaryElement = new VeilElement();
 
             }
         }
@@ -47,7 +47,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Guuts
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<GuutElement>();
+            return ModContent.ItemType<VeilElement>();
         }
 
 
