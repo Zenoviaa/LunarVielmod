@@ -46,7 +46,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
             _enchantmentsSlotGrid.ListPadding = 2f;
             _panel.Append(_enchantmentsSlotGrid);
 
-            _scrollbar = new UIScrollbar();
+            _scrollbar = new FancyScrollbar();
             _scrollbar.Width.Set(20, 0);
             _scrollbar.Height.Set(340, 0);
             _scrollbar.Left.Set(0, 0.9f);

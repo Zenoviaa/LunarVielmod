@@ -52,6 +52,16 @@ namespace Stellamod.UI.AdvancedMagicSystem
 
             return false;
         }
+        public void OpenUI()
+        {
+            Item = _staff.equippedEnchantments[index].Clone();
+        }
+
+        public void SaveUI()
+        {
+            //Save Item 
+            _staff.equippedEnchantments[index] = Item.Clone();
+        }
 
         /// <summary>
         /// Returns true if this item can be placed into the slot (either empty or a pet item)
@@ -89,13 +99,9 @@ namespace Stellamod.UI.AdvancedMagicSystem
         {
             if (Valid(Main.mouseItem))
             {
-                _prevItem = Item;
                 //Handles all the click and hover actions based on the context
                 ItemSlot.Handle(ref Item, _context);
-                if(Item != _prevItem)
-                {
-                    SaveToStaff();
-                }
+                SaveUI();
             }
         }
 
@@ -236,10 +242,5 @@ namespace Stellamod.UI.AdvancedMagicSystem
             Main.inventoryScale = oldScale;
         }
 
-        public void SaveToStaff()
-        {
-            //Save Item 
-            _staff.equippedEnchantments[index] = Item.Clone();
-        }
     }
 }

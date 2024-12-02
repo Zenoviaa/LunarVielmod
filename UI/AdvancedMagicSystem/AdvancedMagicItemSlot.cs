@@ -121,12 +121,5 @@ namespace Stellamod.UI.AdvancedMagicSystem
             var player = Main.LocalPlayer.GetModPlayer<AdvancedMagicPlayer>();
             player.Backpack[index] = Item.Clone();
         }
-
-        public void Refresh()
-        {
-            var player = Main.LocalPlayer.GetModPlayer<AdvancedMagicPlayer>();
-            Item = player.Backpack[index].Clone();
-            _prevItem = Item;
-        }
     }
 }

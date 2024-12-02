@@ -44,16 +44,21 @@ namespace Stellamod.UI.AdvancedMagicSystem
         {
             staffUIState?.staffUI?.Recalculate();
             staffUIState?.elementUI?.Recalculate();
-            staffUIState?.elementUI?.ElementSlot?.Refresh();
             itemUIState?.itemUI?.Recalculate();
         }
 
         internal void OpenUI(BaseStaff staff)
         {
-            if(Staff != staff)
+            if(Staff == staff)
             {
                 CloseStaffUI();
+                CloseBackpackUI();
+            }
+            else
+            {
                 Staff = staff;
+                staffUIState.staffUI.OpenUI(staff);
+                staffUIState.elementUI.ElementSlot.OpenUI(staff);
                 Recalculate();
                 OpenStaffUI();
                 if (_backpackInterface.CurrentState == null)
@@ -61,17 +66,10 @@ namespace Stellamod.UI.AdvancedMagicSystem
                     OpenBackpackUI();
                 }
             }
-            else
-            {
-                CloseStaffUI();
-                CloseBackpackUI();
-                Staff = null;
-            }
         }
 
         internal void ToggleUI()
         {
-            Console.WriteLine("Toggle UI");
             if (_backpackInterface.CurrentState != null)
             {
                 CloseBackpackUI();
@@ -151,6 +149,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
         internal void CloseStaffUI()
         {
             _staffInterface.SetState(null);
+            Staff = null;
         }
 
         internal void OpenBackpackUI()

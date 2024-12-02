@@ -15,7 +15,6 @@ namespace Stellamod.UI.GunHolsterSystem
     {
         private UIGrid _grid;
         private UIPanel _panel;
-        private BaseScorpionItem ScorpionItem => ModContent.GetInstance<ScorpionHolsterUISystem>().scorpionItem;
 
         public GunHolsterLeftSlot leftSlot;
         public GunHolsterRightSlot rightSlot;
@@ -25,6 +24,12 @@ namespace Stellamod.UI.GunHolsterSystem
 
         internal int RelativeLeft => 32;
         internal int RelativeTop => 0 + 256;
+
+        public ScorpionHolsterUI() : base()
+        {
+            _panel = new UIPanel();
+            _grid = new UIGrid();
+        }
 
         public override void OnInitialize()
         {
@@ -36,14 +41,14 @@ namespace Stellamod.UI.GunHolsterSystem
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
 
-            _panel = new UIPanel();
+
             _panel.Width.Pixels = Width.Pixels;
             _panel.Height.Pixels = Height.Pixels;
             _panel.BackgroundColor = Color.Transparent;
             _panel.BorderColor = Color.Transparent;
             Append(_panel);
 
-            _grid = new UIGrid();
+
             _grid.Width.Set(0, 1f);
             _grid.Height.Set(0, 1f);
             _grid.HAlign = 0.5f;
@@ -53,15 +58,18 @@ namespace Stellamod.UI.GunHolsterSystem
 
         public override void Recalculate()
         {
-            var scorpionItem = ScorpionItem;
-            _grid?.Clear();
-            if (scorpionItem == null)
-                return;
+            _grid.Recalculate();
+            base.Recalculate();
+        }
 
+        public void OpenUI(BaseScorpionItem scorpionItem)
+        {
+            _grid.Clear();
             for (int i = 0; i < scorpionItem.leftHandedGuns.Count; i++)
             {
                 var slot = new GunHolsterLeftSlot();
                 slot.scorpionIndex = i;
+                slot.OpenUI();
                 slot.Activate();
                 _grid.Add(slot);
             }
@@ -70,12 +78,10 @@ namespace Stellamod.UI.GunHolsterSystem
             {
                 var slot = new GunHolsterRightSlot();
                 slot.scorpionIndex = i;
+                slot.OpenUI();
                 slot.Activate();
                 _grid.Add(slot);
             }
-
-            _grid.Recalculate();
-            base.Recalculate();
         }
 
         public override void Update(GameTime gameTime)

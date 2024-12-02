@@ -93,6 +93,8 @@ namespace Stellamod.Common.ScorpionMountSystem
             ScorpionHolsterUISystem uiSystem = ModContent.GetInstance<ScorpionHolsterUISystem>();
             uiSystem.scorpionItem = this;
             uiSystem.ToggleUI();
+            GunHolsterUISystem gunHolsterUISystem = ModContent.GetInstance<GunHolsterUISystem>();
+            gunHolsterUISystem.CloseUI();
         }
 
         public override bool CanRightClick()

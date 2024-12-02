@@ -32,7 +32,10 @@ namespace Stellamod.UI.GunHolsterSystem
 
             Width.Set(asset.Width() * scale, 0f);
             Height.Set(asset.Height() * scale, 0f);
+            Item = new Item();
+            Item.SetDefaults(0);
         }
+
         public int scorpionIndex = -1;
         /// <summary>
         /// Returns true if this item can be placed into the slot (either empty or a pet item)
@@ -55,13 +58,13 @@ namespace Stellamod.UI.GunHolsterSystem
             {
                 _prevItem = Item;
                 ItemSlot.Handle(ref Item, _context);
-                UpdateHand();
+                SaveUI();
             }
         }
 
-        private void GetHand()
+        public void OpenUI()
         {
-            if(scorpionIndex == -1)
+            if (scorpionIndex == -1)
             {
                 GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
                 Item = gunPlayer.RightHand.Clone();
@@ -71,10 +74,9 @@ namespace Stellamod.UI.GunHolsterSystem
                 ScorpionHolsterUISystem uiSystem = ModContent.GetInstance<ScorpionHolsterUISystem>();
                 Item = uiSystem.scorpionItem.rightHandedGuns[scorpionIndex].Clone();
             }
-     
         }
 
-        private void UpdateHand()
+        public void SaveUI()
         {
             if (scorpionIndex == -1)
             {
@@ -90,9 +92,6 @@ namespace Stellamod.UI.GunHolsterSystem
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            if (Item == null)
-                GetHand();
-
             float oldScale = Main.inventoryScale;
             Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();

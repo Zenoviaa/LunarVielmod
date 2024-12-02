@@ -14,7 +14,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
     internal class AdvancedMagicElementSlot : UIElement
     {
         private Item _prevItem;
-        private BaseStaff ActiveStaff => AdvancedMagicUISystem.Staff;
+        private BaseStaff _staff;
         private readonly int _context;
         private readonly float _scale;
 
@@ -32,6 +32,17 @@ namespace Stellamod.UI.AdvancedMagicSystem
             Height.Set(inventoryBack9.Height() * scale, 0f);
         }
 
+        public void OpenUI(BaseStaff staff)
+        {
+            Item = staff.primaryElement.Clone();
+            _staff = staff;
+        }
+
+        private void SaveUI()
+        {
+            _staff.primaryElement = Item.Clone();
+        }
+
         /// <summary>
         /// Returns true if this item can be placed into the slot (either empty or a pet item)
         /// </summary>
@@ -47,10 +58,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
                 //Handles all the click and hover actions based on the context
                 _prevItem = Item;
                 ItemSlot.Handle(ref Item, _context);
-                if (_prevItem != Item)
-                {
-                    SaveElementToStaff();
-                }
+                SaveUI();
             }
         }
 
@@ -114,18 +122,6 @@ namespace Stellamod.UI.AdvancedMagicSystem
             Main.inventoryScale = oldScale;
         }
 
-        private void SaveElementToStaff()
-        {
-            if (ActiveStaff == null)
-                return;
-            ActiveStaff.primaryElement = Item.Clone();
-        }
 
-        public void Refresh()
-        {
-            if (ActiveStaff == null)
-                return;
-            Item = ActiveStaff.primaryElement.Clone();
-        }
     }
 }
