@@ -6,10 +6,10 @@ using Terraria;
 
 namespace Stellamod.Common.Shaders.MagicTrails
 {
-    internal class MagicDeeyaShader : BaseShader
+    internal class MagicRoyalMagicShader : BaseShader
     {
-        private static MagicDeeyaShader _instance;
-        public static MagicDeeyaShader Instance
+        private static MagicRoyalMagicShader _instance;
+        public static MagicRoyalMagicShader Instance
         {
             get
             {
@@ -25,7 +25,7 @@ namespace Stellamod.Common.Shaders.MagicTrails
         public Color OutlineColor { get; set; }
         public float Speed { get; set; }
         public float Distortion { get; set; }
-
+        public float Alpha { get; set; }
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -48,6 +48,7 @@ namespace Stellamod.Common.Shaders.MagicTrails
             Effect.Parameters["noiseTexture"].SetValue(NoiseTexture.Value);
             Effect.Parameters["time"].SetValue(Main.GlobalTimeWrappedHourly * Speed);
             Effect.Parameters["distortion"].SetValue(Distortion);
+            Effect.Parameters["alpha"].SetValue(Alpha);
         }
     }
 }

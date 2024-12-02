@@ -1,15 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Particles;
 using Stellamod.Helpers;
 using Stellamod.Items.MoonlightMagic.Elements;
-using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Deeya
+namespace Stellamod.Items.MoonlightMagic.Enchantments.RoyalMagic
 {
-    internal class DeeyaSwitcherEnchantment : BaseEnchantment
+    internal class ReverserOfRoyalMagicEnchantment : BaseEnchantment
     {
 
         public override void SetDefaults()
@@ -24,43 +22,45 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Deeya
 
             //Count up
             Countertimer++;
-
-            //If greater than time then start homing, we'll just swap the movement type of the projectile
-            if (Countertimer == time)
+            if (Countertimer >= time)
             {
-                for (int i = 0; i < 4; i++)
+
+                //If greater than time then start homing, we'll just swap the movement type of the projectile
+
+                foreach (var enchantment in MagicProj.Enchantments)
                 {
-                    Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(8, 8);
-                    Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                    Particle.NewParticle<GlowParticle>(spawnPoint, velocity, Color.White);
+                    //do a thing here
+                    if (enchantment.Countertimer > enchantment.time)
+                    {
+                        enchantment.Countertimer = 0;
+                    }
+
                 }
-
-                MagicProj.PrimaryElement = new DeeyaElement();
-
             }
+
         }
 
         public override float GetStaffManaModifier()
         {
-            return 0.2f;
+            return 1f;
         }
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<DeeyaElement>();
+            return ModContent.ItemType<RoyalMagicElement>();
         }
 
 
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-            // Projectile.velocity += (Projectile.velocity.SafeNormalize(Vector2.Zero) * 4).RotatedBy(MathHelper.ToRadians(15 * MathF.Sin(Countertimer)));
+
             return true;
         }
 
         public override void SpecialInventoryDraw(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             base.SpecialInventoryDraw(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.WindPurple);
+            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.RoyalMagicPink);
         }
     }
 }

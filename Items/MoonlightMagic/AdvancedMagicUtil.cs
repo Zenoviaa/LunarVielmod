@@ -9,6 +9,7 @@ namespace Stellamod.Items.MoonlightMagic
     {
         public static void NewMagicProjectile(BaseStaff item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            //
             ComboPlayer comboPlayer = player.GetModPlayer<ComboPlayer>();
             comboPlayer.ComboWaitTime = 0;
 
@@ -39,7 +40,7 @@ namespace Stellamod.Items.MoonlightMagic
 
         }
 
-
+         
         public static void CloneMagicProjectile(AdvancedMagicProjectile sourceProjectile,
             Vector2 position, Vector2 velocity, int damage, float knockback, int trailLength, float size)
         {

@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.MoonlightMagic.Elements
 {
-    internal class DeeyaElement : BaseElement
+    internal class RoyalMagicElement : BaseElement
     {
         int trailingMode = 0;
 
@@ -29,14 +29,14 @@ namespace Stellamod.Items.MoonlightMagic.Elements
 
         public override Color GetElementColor()
         {
-            return ColorFunctions.DeeyaPink;
+            return ColorFunctions.RoyalMagicPink;
         }
 
         public override bool DrawTextShader(SpriteBatch spriteBatch, Item item, DrawableTooltipLine line, ref int yOffset)
         {
             base.DrawTextShader(spriteBatch, item, line, ref yOffset);
             EnchantmentDrawHelper.DrawTextShader(spriteBatch, item, line, ref yOffset,
-                glowColor: ColorFunctions.DeeyaPink,
+                glowColor: ColorFunctions.RoyalMagicPink,
                 primaryColor: Color.White,
                 noiseColor: Color.Black);
             return true;
@@ -45,7 +45,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         public override void SpecialInventoryDraw(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             base.SpecialInventoryDraw(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.DeeyaPink);
+            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.RoyalMagicPink);
         }
 
         public override void AI()
@@ -101,7 +101,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
                 Vector2 spawnPoint = Projectile.position;
                 Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(0f, 4f);
 
-                Color color = ColorFunctions.DeeyaPink;
+                Color color = ColorFunctions.RoyalMagicPink;
                 color.A = 0;
                 Particle.NewBlackParticle<GlowParticle>(spawnPoint, velocity * 0.5f, color);
             }
@@ -127,6 +127,15 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         private Color ColorFunction(float completionRatio)
         {
             Color c = Color.White;
+            if(trailingMode == 0)
+            {
+                Color backColor = Color.Lerp(Color.Lerp(Color.Black, Color.Blue, 0.3f), Color.Black, VectorHelper.Osc(0f, 1f, speed: 3f));
+                Color frontColor = Color.Lerp(Color.Pink, Color.White, VectorHelper.Osc(0f, 1f, speed: 3f));
+                c = Color.Lerp(frontColor, backColor, Easing.OutExpo(completionRatio, 5f));
+                return c;
+            }
+           
+
             c.R = 0;
             c.G = 0;
             c.B = 0;
@@ -136,7 +145,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
 
         private float WidthFunction(float completionRatio)
         {
-            float width = 16 * 2f * MagicProj.ScaleMultiplier;
+            float width = 16 * 6f * MagicProj.ScaleMultiplier;
             completionRatio = Easing.SpikeOutCirc(completionRatio);
             switch (trailingMode)
             {
@@ -153,11 +162,11 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         private void DrawMainShader()
         {
             trailingMode = 0;
-            var shader = MagicDreadShader.Instance;
+            var shader = MagicRoyalMagicShader.Instance;
             shader.PrimaryTexture = TrailRegistry.DreadTrail;
             shader.NoiseTexture = TrailRegistry.Clouds3;
-            shader.PrimaryColor = Color.Black;
-            shader.NoiseColor = Color.Black;
+            shader.PrimaryColor = Color.White;
+            shader.NoiseColor = Color.White;
             shader.BlendState = BlendState.AlphaBlend;
             shader.SamplerState = SamplerState.PointWrap;
             shader.Speed = 5.5f;
@@ -174,11 +183,15 @@ namespace Stellamod.Items.MoonlightMagic.Elements
             shader.PrimaryTexture = TrailRegistry.DottedTrailOutline;
             shader.NoiseTexture = TrailRegistry.CloudsSmall;
             Color pink = new Color(255, 59, 247);
+            Color blue = Color.Blue;
+            Color finalColor = Color.Lerp(pink, blue, VectorHelper.Osc(0f, 1f, speed: 3f));
+
+
             Color c = Color.White;
-            c = pink;
-            pink = Color.Lerp(pink, Color.Black, 0.5f);
+            c = finalColor;
+            finalColor = Color.Lerp(finalColor, Color.Black, 0.5f);
             shader.PrimaryColor = Color.White;
-            shader.NoiseColor = pink;
+            shader.NoiseColor = finalColor;
             shader.BlendState = BlendState.AlphaBlend;
             shader.SamplerState = SamplerState.PointWrap;
             shader.Speed = 0.8f;

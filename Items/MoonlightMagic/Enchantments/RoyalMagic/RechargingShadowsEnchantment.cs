@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.MoonlightMagic.Elements;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Deeya
+namespace Stellamod.Items.MoonlightMagic.Enchantments.RoyalMagic
 {
     internal class RechargingShadowsEnchantment : BaseEnchantment
     {
@@ -46,7 +46,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Deeya
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<DeeyaElement>();
+            return ModContent.ItemType<RoyalMagicElement>();
         }
 
 

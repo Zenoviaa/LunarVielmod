@@ -1,20 +1,19 @@
 ﻿using Stellamod.Items.MoonlightMagic.Elements;
-using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Deeya
+namespace Stellamod.Items.MoonlightMagic.Enchantments.RoyalMagic
 {
-    internal class GamblerEnchantment : BaseEnchantment
+    internal class MimicryEnchantment : BaseEnchantment
     {
         bool HasSwapped;
         public override float GetStaffManaModifier()
         {
-            return 0.2f;
+            return 0.5f;
         }
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<DeeyaElement>();
+            return ModContent.ItemType<RoyalMagicElement>();
         }
 
         public override void AI()
@@ -22,11 +21,12 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Deeya
             base.AI();
             if (!HasSwapped)
             {
-                var enchantmentsToSpawn = AllEnchantments;
-                BaseEnchantment enchantmentToSwapTo = enchantmentsToSpawn[Main.rand.Next(0, enchantmentsToSpawn.Length)];
                 int indexOfThisEnchantment = MagicProj.IndexOfEnchantment(this);
+                if (indexOfThisEnchantment > 0)
+                {
+                    MagicProj.ReplaceEnchantment(MagicProj.Enchantments[indexOfThisEnchantment - 1], indexOfThisEnchantment);
+                }
 
-                MagicProj.ReplaceEnchantment(enchantmentToSwapTo, indexOfThisEnchantment);
                 HasSwapped = true;
             }
         }
