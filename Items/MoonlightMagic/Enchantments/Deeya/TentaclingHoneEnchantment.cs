@@ -30,7 +30,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Deeya
                 {
                     Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(8, 8);
                     Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                    //   Particle.NewParticle<SparkleHexParticle>(spawnPoint, velocity, Color.White);
+                    //   Particle.NewParticle<SparkleWindParticle>(spawnPoint, velocity, Color.White);
                 }
 
                 MagicProj.Movement = new TentaclingMovement();

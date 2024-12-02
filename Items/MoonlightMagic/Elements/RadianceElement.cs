@@ -24,14 +24,13 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         public override void SetDefaults()
         {
             base.SetDefaults();
-            /*
             SoundStyle castStyle = SoundRegistry.RadianceCast1;
             castStyle.PitchVariance = 0.25f;
             CastSound = castStyle;
 
             SoundStyle hitStyle = SoundRegistry.RadianceHit1;
             hitStyle.PitchVariance = 0.25f;
-            HitSound = hitStyle;*/
+            HitSound = hitStyle;
         }
 
         public override Color GetElementColor()

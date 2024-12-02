@@ -18,9 +18,9 @@ PuppetMasterEnchantment: {
 	Tooltip: Your spell will exponentially home into nearby enemies!
 }
 
-HexCloudEnchantment: {
-	DisplayName: Hex Cloud Enchantment
-	Tooltip: When your spell hits an enemy or tile, it explodes into hex!
+WindCloudEnchantment: {
+	DisplayName: Wind Cloud Enchantment
+	Tooltip: When your spell hits an enemy or tile, it explodes into Wind!
 }
 
 MoonFinderEnchantment: {
@@ -283,9 +283,9 @@ GuutsSwitcherEnchantment: {
 	Tooltip: Spells switch their element to Guuts!
 }
 
-HexSwitcherEnchantment: {
-	DisplayName: Hex Switcher Enchantment
-	Tooltip: Spells switch their element to Hex!
+WindSwitcherEnchantment: {
+	DisplayName: Wind Switcher Enchantment
+	Tooltip: Spells switch their element to Wind!
 }
 
 NaturalSwitcherEnchantment: {
@@ -303,9 +303,9 @@ RadianceSwitcherEnchantment: {
 	Tooltip: Spells switch their element to Radiance!
 }
 
-UvilisSwitcherEnchantment: {
-	DisplayName: Uvilis Switcher Enchantment
-	Tooltip: Spells switch their element to Uvilis!
+IceSwitcherEnchantment: {
+	DisplayName: Ice Switcher Enchantment
+	Tooltip: Spells switch their element to Ice!
 }
 
 SlothEnchantment: {
@@ -383,8 +383,8 @@ ReverserOfDeeyaEnchantment: {
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 
-ReverserOfHexEnchantment: {
-	DisplayName: Reverser Of Hex Enchantment
+ReverserOfWindEnchantment: {
+	DisplayName: Reverser Of Wind Enchantment
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 
@@ -403,8 +403,8 @@ ReverserOfMoonEnchantment: {
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 
-ReverserOfUvilisEnchantment: {
-	DisplayName: Reverser Of Uvilis Enchantment
+ReverserOfIceEnchantment: {
+	DisplayName: Reverser Of Ice Enchantment
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 

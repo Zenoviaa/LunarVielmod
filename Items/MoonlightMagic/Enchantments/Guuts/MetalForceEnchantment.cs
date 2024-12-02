@@ -27,7 +27,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Guuts
                 Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
 
 
-                // Particle.NewParticle<SparkleHexParticle>(spawnPoint, velocity, Color.White);
+                // Particle.NewParticle<SparkleWindParticle>(spawnPoint, velocity, Color.White);
 
             }
 

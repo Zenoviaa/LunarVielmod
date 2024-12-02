@@ -30,13 +30,9 @@ GuutElement: {
 		'''
 }
 
-HexElement: {
-	DisplayName: Hex Element
-	Tooltip:
-		'''
-		Transforms your spell with the power of manipulation! 
-		Hex magic rarely causes enemies to attack each other
-		'''
+WindElement: {
+	DisplayName: Wind Element
+	Tooltip: Transforms your spell with the power of wind!
 }
 
 NaturalElement: {
@@ -66,12 +62,12 @@ RadianceElement: {
 		'''
 }
 
-UvilisElement: {
-	DisplayName: Uvilis Element
+IceElement: {
+	DisplayName: Ice Element
 	Tooltip:
 		'''
 		Transforms your spell with the power of water and stars! 
-		Uvilis magic can cause splash damage
+		Ice magic can cause splash damage
 		'''
 }
 
@@ -83,11 +79,6 @@ PrismaticElement: {
 MothlightElement: {
 	DisplayName: Mothlight Element
 	Tooltip: Transforms your spell with the power of mothlight!
-}
-
-WindElement: {
-	DisplayName: Wind Element
-	Tooltip: Transforms your spell with the power of wind!
 }
 
 HolinessElement: {
