@@ -503,11 +503,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GunShootNew1"));
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GunShootNew6"));
             }
             else
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3"));
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GunShootNew6"));
             }
 
             //Dust Burst Towards Mouse
