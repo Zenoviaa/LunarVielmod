@@ -5,10 +5,10 @@ using Terraria;
 
 namespace Stellamod.Common.Shaders.MagicTrails
 {
-    internal class MagicPhantasmalShader : BaseShader
+    internal class MagicMoonShader : BaseShader
     {
-        private static MagicPhantasmalShader _instance;
-        public static MagicPhantasmalShader Instance
+        private static MagicMoonShader _instance;
+        public static MagicMoonShader Instance
         {
             get
             {

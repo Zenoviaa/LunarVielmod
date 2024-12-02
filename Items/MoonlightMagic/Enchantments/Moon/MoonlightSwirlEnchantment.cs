@@ -6,7 +6,7 @@ using System;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Phantasmal
+namespace Stellamod.Items.MoonlightMagic.Enchantments.Moon
 {
     internal class MoonlightSwirlEnchantment : BaseEnchantment
     {
@@ -38,7 +38,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Phantasmal
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<PhantasmalElement>();
+            return ModContent.ItemType<MoonElement>();
         }
 
 
@@ -51,7 +51,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Phantasmal
         public override void SpecialInventoryDraw(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             base.SpecialInventoryDraw(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.PhantasmalGreen);
+            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.MoonGreen);
         }
     }
 }

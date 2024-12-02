@@ -91,7 +91,6 @@
     <None Remove="Effects\CrystalShaders\FirePixel.fx" />
     <None Remove="Effects\CrystalShaders\L.png" />
     <None Remove="Effects\CrystalShaders\LightningBolt.fx" />
-    <None Remove="Effects\CrystalShaders\MagicDread.fx" />
     <None Remove="Effects\CrystalShaders\MagicDeeya.fx" />
     <None Remove="Effects\CrystalShaders\MagicGuut.fx" />
     <None Remove="Effects\CrystalShaders\MagicHex.fx" />
@@ -99,7 +98,7 @@
     <None Remove="Effects\CrystalShaders\MagicMothlightMasking.fx" />
     <None Remove="Effects\CrystalShaders\MagicNatural.fx" />
     <None Remove="Effects\CrystalShaders\MagicNormal.fx" />
-    <None Remove="Effects\CrystalShaders\MagicPhantasmal.fx" />
+    <None Remove="Effects\CrystalShaders\MagicMoon.fx" />
     <None Remove="Effects\CrystalShaders\MagicRadiance.fx" />
     <None Remove="Effects\CrystalShaders\MagicRadianceOutline.fx" />
     <None Remove="Effects\CrystalShaders\MagicSparkleWater.fx" />
@@ -108,7 +107,7 @@
     <None Remove="Effects\CrystalShaders\PixelMagicGuut.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicNatural.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicNormal.fx" />
-    <None Remove="Effects\CrystalShaders\PixelMagicPhantasmal.fx" />
+    <None Remove="Effects\CrystalShaders\PixelMagicMoon.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicSparkleWater.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicVaellus.fx" />
     <None Remove="Effects\CrystalShaders\SimpleGradientTrail.fx" />

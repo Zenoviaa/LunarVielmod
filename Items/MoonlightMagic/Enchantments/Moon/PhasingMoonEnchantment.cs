@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.MoonlightMagic.Elements;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Phantasmal
+namespace Stellamod.Items.MoonlightMagic.Enchantments.Moon
 {
     internal class PhasingMoonEnchantment : BaseEnchantment
     {
@@ -23,7 +23,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Phantasmal
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<PhantasmalElement>();
+            return ModContent.ItemType<MoonElement>();
         }
 
 

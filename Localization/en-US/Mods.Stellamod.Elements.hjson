@@ -48,12 +48,12 @@ NaturalElement: {
 		'''
 }
 
-PhantasmalElement: {
-	DisplayName: Phantasmal Element
+MoonElement: {
+	DisplayName: Moon Element
 	Tooltip:
 		'''
 		Transforms your spell with the magic of the moon! 
-		Phantasmal magic can weaken enemies
+		Moon magic can weaken enemies
 		'''
 }
 

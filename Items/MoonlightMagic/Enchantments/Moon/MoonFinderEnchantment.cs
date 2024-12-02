@@ -7,7 +7,7 @@ using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Phantasmal
+namespace Stellamod.Items.MoonlightMagic.Enchantments.Moon
 {
     internal class MoonFinderEnchantment : BaseEnchantment
     {
@@ -46,7 +46,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Phantasmal
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<PhantasmalElement>();
+            return ModContent.ItemType<MoonElement>();
         }
     }
 }

@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.MoonlightMagic.Elements
 {
-    internal class PhantasmalElement : BaseElement
+    internal class MoonElement : BaseElement
     {
         public override int GetOppositeElementType()
         {
@@ -26,14 +26,14 @@ namespace Stellamod.Items.MoonlightMagic.Elements
 
         public override Color GetElementColor()
         {
-            return ColorFunctions.PhantasmalGreen;
+            return ColorFunctions.MoonGreen;
         }
 
         public override bool DrawTextShader(SpriteBatch spriteBatch, Item item, DrawableTooltipLine line, ref int yOffset)
         {
             base.DrawTextShader(spriteBatch, item, line, ref yOffset);
             EnchantmentDrawHelper.DrawTextShader(spriteBatch, item, line, ref yOffset,
-                glowColor: ColorFunctions.PhantasmalGreen,
+                glowColor: ColorFunctions.MoonGreen,
                 primaryColor: Color.White,
                 noiseColor: Color.DarkGreen);
             return true;
@@ -42,7 +42,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         public override void SpecialInventoryDraw(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             base.SpecialInventoryDraw(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.PhantasmalGreen);
+            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.MoonGreen);
         }
 
         public override void AI()
@@ -115,7 +115,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         public override void DrawTrail()
         {
             base.DrawTrail();
-            var shader = MagicPhantasmalShader.Instance;
+            var shader = MagicMoonShader.Instance;
             shader.PrimaryTexture = TrailRegistry.GlowTrail;
             shader.NoiseTexture = TrailRegistry.SpikyTrail1;
             shader.BlendState = BlendState.Additive;
@@ -128,7 +128,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
 
         private Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(new Color(69, 196, 182), Color.SpringGreen, completionRatio);
+            return Color.Lerp(new Color(69, 96, 182), Color.SkyBlue, completionRatio);
         }
 
         private float WidthFunction(float completionRatio)

@@ -9,7 +9,7 @@ using Stellamod.Trails;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Phantasmal
+namespace Stellamod.Items.MoonlightMagic.Enchantments.Moon
 {
     internal class ShriekerEnchantment : BaseEnchantment
     {
@@ -20,7 +20,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Phantasmal
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<PhantasmalElement>();
+            return ModContent.ItemType<MoonElement>();
         }
 
 
@@ -62,7 +62,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Phantasmal
         {
             base.DrawPrims(trailPos);
             _trailMode = 0;
-            var shader = MagicPhantasmalShader.Instance;
+            var shader = MagicMoonShader.Instance;
             shader.PrimaryTexture = TrailRegistry.GlowTrail;
             shader.NoiseTexture = TrailRegistry.SpikyTrail1;
             shader.BlendState = BlendState.Additive;
@@ -78,7 +78,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Phantasmal
         {
             base.DrawMiniWispPrims(trailPos);
             _trailMode = 1;
-            var shader = MagicPhantasmalShader.Instance;
+            var shader = MagicMoonShader.Instance;
             shader.PrimaryTexture = TrailRegistry.GlowTrail;
             shader.NoiseTexture = TrailRegistry.SpikyTrail1;
             shader.BlendState = BlendState.Additive;

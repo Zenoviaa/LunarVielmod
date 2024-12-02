@@ -1,19 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Particles;
+using Stellamod.Helpers;
 using Stellamod.Items.MoonlightMagic.Elements;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Phantasmal
+namespace Stellamod.Items.MoonlightMagic.Enchantments.Moon
 {
-    internal class PhantasmalSwitcherEnchantment : BaseEnchantment
+    internal class PhaseTurnEnchantment : BaseEnchantment
     {
 
         public override void SetDefaults()
         {
             base.SetDefaults();
-            time = 45;
+            time = 30;
         }
 
         public override void AI()
@@ -30,11 +32,10 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Phantasmal
                 {
                     Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(8, 8);
                     Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                    Particle.NewParticle<GlowParticle>(spawnPoint, velocity, Color.Turquoise);
+                    Particle.NewParticle<SparkleHexParticle>(spawnPoint, velocity, Color.White);
                 }
 
-                MagicProj.PrimaryElement = new PhantasmalElement();
-
+                Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.PiOver4);
             }
         }
 
@@ -45,7 +46,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Phantasmal
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<PhantasmalElement>();
+            return ModContent.ItemType<MoonElement>();
         }
     }
 }

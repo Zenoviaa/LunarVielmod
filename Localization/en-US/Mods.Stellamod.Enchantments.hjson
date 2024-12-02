@@ -293,9 +293,9 @@ NaturalSwitcherEnchantment: {
 	Tooltip: Spells switch their element to Nature!
 }
 
-PhantasmalSwitcherEnchantment: {
-	DisplayName: Phantasmal Switcher Enchantment
-	Tooltip: Spells switch their element to Phantasmal!
+MoonSwitcherEnchantment: {
+	DisplayName: Moon Switcher Enchantment
+	Tooltip: Spells switch their element to Moon!
 }
 
 RadianceSwitcherEnchantment: {
@@ -398,8 +398,8 @@ ReverserOfRadianceEnchantment: {
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 
-ReverserOfPhantasmalEnchantment: {
-	DisplayName: Reverser Of Phantasmal Enchantment
+ReverserOfMoonEnchantment: {
+	DisplayName: Reverser Of Moon Enchantment
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 
@@ -470,7 +470,7 @@ SwirlerBwirlerEnchantment: {
 
 ShriekerEnchantment: {
 	DisplayName: Shrieker Enchantment
-	Tooltip: When your spell hits an enemy or tile, it bursts into phantasmal energy and knocks enemies upward!
+	Tooltip: When your spell hits an enemy or tile, it bursts into Moon energy and knocks enemies upward!
 }
 
 FlameWheelEnchantment: {

@@ -18,7 +18,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         private int trailMode = 0;
         public override int GetOppositeElementType()
         {
-            return ModContent.ItemType<PhantasmalElement>();
+            return ModContent.ItemType<MoonElement>();
         }
 
         public override void SetDefaults()
