@@ -6,10 +6,10 @@ using Terraria;
 
 namespace Stellamod.Common.Shaders.MagicTrails
 {
-    internal class MagicBloodletShader : BaseShader
+    internal class MagicDreadShader : BaseShader
     {
-        private static MagicBloodletShader _instance;
-        public static MagicBloodletShader Instance
+        private static MagicDreadShader _instance;
+        public static MagicDreadShader Instance
         {
             get
             {

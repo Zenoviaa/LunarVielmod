@@ -22,7 +22,7 @@ namespace Stellamod.Trails
         public static Asset<Texture2D> CloudsSmall => ModContent.Request<Texture2D>(BasePath + "SmallClouds");
         public static Asset<Texture2D> DottedTrail => ModContent.Request<Texture2D>(BasePath + "DottedTrail");
         public static Asset<Texture2D> DottedTrailOutline => ModContent.Request<Texture2D>(BasePath + "DottedTrailOutline");
-        public static Asset<Texture2D> BloodletTrail => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/BloodletTrail");
+        public static Asset<Texture2D> DreadTrail => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/DreadTrail");
         public static Asset<Texture2D> Clouds3 => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/Clouds3");
         public static Asset<Texture2D> BeamTrail => ModContent.Request<Texture2D>("Stellamod/Trails/Beam");
         public static Asset<Texture2D> BeamTrail2 => ModContent.Request<Texture2D>("Stellamod/Trails/BeamTrail");

@@ -1,9 +1,9 @@
 ﻿using Stellamod.Items.MoonlightMagic.Elements;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Bloodlet
+namespace Stellamod.Items.MoonlightMagic.Enchantments.Dread
 {
-    internal class ReverserOfBloodletEnchantment : BaseEnchantment
+    internal class ReverserOfDreadEnchantment : BaseEnchantment
     {
 
         public override void SetDefaults()
@@ -43,7 +43,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Bloodlet
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<BloodletElement>();
+            return ModContent.ItemType<DreadElement>();
         }
     }
 }

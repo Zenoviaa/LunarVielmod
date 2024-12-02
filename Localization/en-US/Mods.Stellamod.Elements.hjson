@@ -3,12 +3,12 @@ BasicElement: {
 	Tooltip: ""
 }
 
-BloodletElement: {
-	DisplayName: Bloodlet Element
+DreadElement: {
+	DisplayName: Dread Element
 	Tooltip:
 		'''
 		Transforms your spell into an ancient type of magic!
-		Bloodlet magic can life steal
+		Dread magic can life steal
 		'''
 }
 

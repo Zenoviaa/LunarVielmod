@@ -7,15 +7,15 @@ using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Bloodlet
+namespace Stellamod.Items.MoonlightMagic.Enchantments.Dread
 {
-    internal class BloodThinningEnchantment : BaseEnchantment
+    internal class DreadSwitcherEnchantment : BaseEnchantment
     {
 
         public override void SetDefaults()
         {
             base.SetDefaults();
-            time = 30;
+            time = 45;
         }
 
         public override void AI()
@@ -32,43 +32,28 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Bloodlet
                 {
                     Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(8, 8);
                     Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                    Particle.NewParticle<BloodSparkleParticle>(spawnPoint, velocity, Color.White);
+                    Particle.NewParticle<GlowParticle>(spawnPoint, velocity, Color.Red);
                 }
 
+                MagicProj.PrimaryElement = new DreadElement();
 
-
-                float damage = Projectile.damage;
-                damage *= 1.25f;
-                Projectile.damage = (int)damage;
-            }
-
-            if (Countertimer < time)
-            {
-                MagicProj.Size *= 0.98f;
             }
         }
 
         public override float GetStaffManaModifier()
         {
-            return 1f;
+            return 0.2f;
         }
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<BloodletElement>();
-        }
-
-
-        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
-        {
-
-            return true;
+            return ModContent.ItemType<DreadElement>();
         }
 
         public override void SpecialInventoryDraw(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             base.SpecialInventoryDraw(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.BloodletRed);
+            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.DreadRed);
         }
     }
 }

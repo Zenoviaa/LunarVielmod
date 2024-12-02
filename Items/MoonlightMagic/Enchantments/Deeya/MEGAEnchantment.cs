@@ -222,8 +222,8 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Deeya
         private void DrawMainShader()
         {
             trailMode = 0;
-            var shader = MagicBloodletShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.BloodletTrail;
+            var shader = MagicDreadShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.DreadTrail;
             shader.NoiseTexture = TrailRegistry.Clouds3;
             shader.PrimaryColor = Color.Black;
             shader.NoiseColor = Color.Black;

@@ -9,7 +9,7 @@ using Stellamod.Trails;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Bloodlet
+namespace Stellamod.Items.MoonlightMagic.Enchantments.Dread
 {
     internal class CoagulateEnchantment : BaseEnchantment
     {
@@ -20,7 +20,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Bloodlet
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<BloodletElement>();
+            return ModContent.ItemType<DreadElement>();
         }
 
 
@@ -100,8 +100,8 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Bloodlet
         private void DrawMainShader(Vector2[] trailPos)
         {
             //Trail
-            var shader = MagicBloodletShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.BloodletTrail;
+            var shader = MagicDreadShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.DreadTrail;
             shader.NoiseTexture = TrailRegistry.Clouds3;
             shader.PrimaryColor = new Color(255, 51, 51);
             shader.NoiseColor = Color.Lerp(shader.PrimaryColor, Color.Black, 0.5f);

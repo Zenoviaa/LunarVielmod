@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.MoonlightMagic.Elements
 {
-    internal class BloodletElement : BaseElement
+    internal class DreadElement : BaseElement
     {
         public override int GetOppositeElementType()
         {
@@ -87,14 +87,14 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         #region Visuals
         public override Color GetElementColor()
         {
-            return ColorFunctions.BloodletRed;
+            return ColorFunctions.DreadRed;
         }
 
         public override bool DrawTextShader(SpriteBatch spriteBatch, Item item, DrawableTooltipLine line, ref int yOffset)
         {
             base.DrawTextShader(spriteBatch, item, line, ref yOffset);
             EnchantmentDrawHelper.DrawTextShader(spriteBatch, item, line, ref yOffset,
-                glowColor: ColorFunctions.BloodletRed,
+                glowColor: ColorFunctions.DreadRed,
                 primaryColor: Color.White,
                 noiseColor: Color.DarkRed);
             return true;
@@ -103,7 +103,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         public override void SpecialInventoryDraw(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             base.SpecialInventoryDraw(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.BloodletRed);
+            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.DreadRed);
         }
 
         public override void DrawForm(SpriteBatch spriteBatch, Texture2D formTexture, Vector2 drawPos, Color drawColor, Color lightColor, float drawRotation, float drawScale)
@@ -116,8 +116,8 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         public override void DrawTrail()
         {
             base.DrawTrail();
-            var shader = MagicBloodletShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.BloodletTrail;
+            var shader = MagicDreadShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.DreadTrail;
             shader.NoiseTexture = TrailRegistry.Clouds3;
             shader.PrimaryColor = new Color(255, 51, 51);
             shader.NoiseColor = Color.Lerp(shader.PrimaryColor, Color.Black, 0.5f);
@@ -139,7 +139,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
 
         private float WidthFunction(float completionRatio)
         {
-            float width = 16 * 1.5f * MagicProj.ScaleMultiplier;
+            float width = 16 * 2.8f * MagicProj.ScaleMultiplier;
             return MathHelper.Lerp(width, 0, completionRatio);
         }
         #endregion

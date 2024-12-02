@@ -91,7 +91,7 @@
     <None Remove="Effects\CrystalShaders\FirePixel.fx" />
     <None Remove="Effects\CrystalShaders\L.png" />
     <None Remove="Effects\CrystalShaders\LightningBolt.fx" />
-    <None Remove="Effects\CrystalShaders\MagicBloodlet.fx" />
+    <None Remove="Effects\CrystalShaders\MagicDread.fx" />
     <None Remove="Effects\CrystalShaders\MagicDeeya.fx" />
     <None Remove="Effects\CrystalShaders\MagicGuut.fx" />
     <None Remove="Effects\CrystalShaders\MagicHex.fx" />
@@ -104,7 +104,7 @@
     <None Remove="Effects\CrystalShaders\MagicRadianceOutline.fx" />
     <None Remove="Effects\CrystalShaders\MagicSparkleWater.fx" />
     <None Remove="Effects\CrystalShaders\MagicVaellus.fx" />
-    <None Remove="Effects\CrystalShaders\PixelMagicBloodlet.fx" />
+    <None Remove="Effects\CrystalShaders\PixelMagicDread.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicGuut.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicNatural.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicNormal.fx" />
@@ -127,7 +127,7 @@
     <None Remove="Effects\PaletteHell.fx" />
     <None Remove="Effects\PaletteRoyalCapital.fx" />
     <None Remove="Effects\PaletteVirulent.fx" />
-    <None Remove="Effects\Primitives\Trails\BloodletTrail.png" />
+    <None Remove="Effects\Primitives\Trails\DreadTrail.png" />
     <None Remove="Effects\Primitives\Trails\Clouds3.png" />
     <None Remove="Effects\Primitives\Trails\DottedTrail.png" />
     <None Remove="Effects\Primitives\Trails\DottedTrailOutline.png" />

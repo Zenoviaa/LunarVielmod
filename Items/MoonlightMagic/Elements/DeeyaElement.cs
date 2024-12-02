@@ -18,7 +18,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
 
         public override int GetOppositeElementType()
         {
-            return ModContent.ItemType<BloodletElement>();
+            return ModContent.ItemType<DreadElement>();
         }
 
         public override void SetDefaults()
@@ -153,8 +153,8 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         private void DrawMainShader()
         {
             trailingMode = 0;
-            var shader = MagicBloodletShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.BloodletTrail;
+            var shader = MagicDreadShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.DreadTrail;
             shader.NoiseTexture = TrailRegistry.Clouds3;
             shader.PrimaryColor = Color.Black;
             shader.NoiseColor = Color.Black;

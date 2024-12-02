@@ -268,9 +268,9 @@ HeatSeakerEnchantment: {
 	Tooltip: Spells with speed up exponentially as well as get bigger while homing in onto enemies!
 }
 
-BloodletSwitcherEnchantment: {
-	DisplayName: Bloodlet Switcher Enchantment
-	Tooltip: Spells switch their element to Bloodlet!
+DreadSwitcherEnchantment: {
+	DisplayName: Dread Switcher Enchantment
+	Tooltip: Spells switch their element to Dread!
 }
 
 DeeyaSwitcherEnchantment: {
@@ -373,8 +373,8 @@ ReverserOfGuutsEnchantment: {
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 
-ReverserOfBloodletEnchantment: {
-	DisplayName: Reverser Of Bloodlet Enchantment
+ReverserOfDreadEnchantment: {
+	DisplayName: Reverser Of Dread Enchantment
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 

@@ -5,7 +5,7 @@ using Stellamod.Items.MoonlightMagic.Elements;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Bloodlet
+namespace Stellamod.Items.MoonlightMagic.Enchantments.Dread
 {
     internal class FlowingBloodEnchantment : BaseEnchantment
     {
@@ -48,7 +48,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Bloodlet
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<BloodletElement>();
+            return ModContent.ItemType<DreadElement>();
         }
 
 
@@ -61,7 +61,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Bloodlet
         public override void SpecialInventoryDraw(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             base.SpecialInventoryDraw(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.BloodletRed);
+            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.DreadRed);
         }
     }
 }
