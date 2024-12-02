@@ -2,6 +2,8 @@
 
 namespace Stellamod.Gores
 {
-    internal abstract class BulletCasing : ModGore { }
+    internal abstract class BulletCasingGore : ModGore { }
+
+    internal class BulletCasing : BulletCasingGore { }
 
 }
