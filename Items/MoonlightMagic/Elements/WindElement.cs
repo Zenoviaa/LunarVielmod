@@ -95,7 +95,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         {
             base.DrawTrail();
             var shader = MagicRadianceShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.SimpleTrail;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
             shader.NoiseTexture = TrailRegistry.CloudsSmall;
             shader.OutlineTexture = TrailRegistry.DottedTrailOutline;
             shader.PrimaryColor = Color.Lerp(Color.White, Color.LightGray, 0.5f);

@@ -114,10 +114,10 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Hex
             var shader = SimpleTrailShader.Instance;
 
             //Main trailing texture
-            shader.TrailingTexture = TrailRegistry.SimpleTrail;
+            shader.TrailingTexture = TrailRegistry.GlowTrail;
 
             //Blends with the main texture
-            shader.SecondaryTrailingTexture = TrailRegistry.SimpleTrail;
+            shader.SecondaryTrailingTexture = TrailRegistry.GlowTrail;
 
             //Used for blending the trail colors
             //Set it to any noise texture
@@ -139,7 +139,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Hex
             trailMode = 0;
             var shader = MagicHexShader.Instance;
 
-            shader.PrimaryTexture = TrailRegistry.SimpleTrail;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
             shader.NoiseTexture = TrailRegistry.CloudsSmall;
             shader.PrimaryColor = new Color(195, 158, 255);
             shader.NoiseColor = new Color(78, 76, 180);//new Color(78, 76, 180);

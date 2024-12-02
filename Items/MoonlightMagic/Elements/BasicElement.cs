@@ -94,7 +94,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         public override void DrawTrail()
         {
             var shader = MagicNormalShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.SimpleTrail;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
             shader.NoiseTexture = TrailRegistry.SpikyTrail1;
             shader.BlendState = BlendState.Additive;
             shader.SamplerState = SamplerState.PointWrap;

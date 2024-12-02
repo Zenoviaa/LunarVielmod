@@ -114,10 +114,10 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Nature
             var shader = SimpleTrailShader.Instance;
 
             //Main trailing texture
-            shader.TrailingTexture = TrailRegistry.SimpleTrail;
+            shader.TrailingTexture = TrailRegistry.GlowTrail;
 
             //Blends with the main texture
-            shader.SecondaryTrailingTexture = TrailRegistry.SimpleTrail;
+            shader.SecondaryTrailingTexture = TrailRegistry.GlowTrail;
 
             //Used for blending the trail colors
             //Set it to any noise texture

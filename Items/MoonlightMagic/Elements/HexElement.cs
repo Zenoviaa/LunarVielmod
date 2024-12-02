@@ -142,7 +142,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
             base.DrawTrail();
             var shader = MagicHexShader.Instance;
 
-            shader.PrimaryTexture = TrailRegistry.SimpleTrail;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
             shader.NoiseTexture = TrailRegistry.CloudsSmall;
             shader.PrimaryColor = new Color(195, 158, 255);
             shader.NoiseColor = new Color(78, 76, 180);//new Color(78, 76, 180);

@@ -116,7 +116,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         {
             base.DrawTrail();
             var shader = MagicPhantasmalShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.SimpleTrail;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
             shader.NoiseTexture = TrailRegistry.SpikyTrail1;
             shader.BlendState = BlendState.Additive;
             shader.SamplerState = SamplerState.PointWrap;

@@ -63,7 +63,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Phantasmal
             base.DrawPrims(trailPos);
             _trailMode = 0;
             var shader = MagicPhantasmalShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.SimpleTrail;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
             shader.NoiseTexture = TrailRegistry.SpikyTrail1;
             shader.BlendState = BlendState.Additive;
             shader.SamplerState = SamplerState.PointWrap;
@@ -79,7 +79,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Phantasmal
             base.DrawMiniWispPrims(trailPos);
             _trailMode = 1;
             var shader = MagicPhantasmalShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.SimpleTrail;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
             shader.NoiseTexture = TrailRegistry.SpikyTrail1;
             shader.BlendState = BlendState.Additive;
             shader.SamplerState = SamplerState.PointWrap;
