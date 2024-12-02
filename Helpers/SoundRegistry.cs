@@ -115,11 +115,11 @@ namespace Stellamod.Helpers
             numVariants: 2);
 
 
-        public static SoundStyle DeeyaCast => new SoundStyle($"{Path}DeeyaCast",
+        public static SoundStyle RoyalMagicCast => new SoundStyle($"{Path}RoyalMagicCast",
             variantSuffixesStart: 1,
             numVariants: 2);
 
-        public static SoundStyle DeeyaHit => new SoundStyle($"{Path}DeeyaHit",
+        public static SoundStyle RoyalMagicHit => new SoundStyle($"{Path}RoyalMagicHit",
             variantSuffixesStart: 1,
             numVariants: 2);
 

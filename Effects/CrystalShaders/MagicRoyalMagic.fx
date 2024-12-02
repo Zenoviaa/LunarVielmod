@@ -91,7 +91,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float3 finalCol = lerp(col, outlineCol, factor);
     
     float3 trailCol = d * finalCol;
-
+    trailCol = lerp(trailCol, input.Color.rgb, 0.75);
     float p = tex2D(primaryTex, coords + float2(time * -0.05, 0.0)).r;
     p *= d;
     

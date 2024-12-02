@@ -255,7 +255,7 @@ ExplosiveMordorEnchantment: {
 
 MEGAEnchantment: {
 	DisplayName: M E G A Enchantment
-	Tooltip: Your Spell casts a giant MEGA Deeya ball on startup and sucks in enemies as they hurt them!
+	Tooltip: Your Spell casts a giant MEGA RoyalMagic ball on startup and sucks in enemies as they hurt them!
 }
 
 BloodVesselEnchantment: {
@@ -273,9 +273,9 @@ DreadSwitcherEnchantment: {
 	Tooltip: Spells switch their element to Dread!
 }
 
-DeeyaSwitcherEnchantment: {
-	DisplayName: Deeya Switcher Enchantment
-	Tooltip: Spells switch their element to Deeya!
+RoyalMagicSwitcherEnchantment: {
+	DisplayName: RoyalMagic Switcher Enchantment
+	Tooltip: Spells switch their element to RoyalMagic!
 }
 
 VeilSwitcherEnchantment: {
@@ -378,8 +378,8 @@ ReverserOfDreadEnchantment: {
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 
-ReverserOfDeeyaEnchantment: {
-	DisplayName: Reverser Of Deeya Enchantment
+ReverserOfRoyalMagicEnchantment: {
+	DisplayName: Reverser Of RoyalMagic Enchantment
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 

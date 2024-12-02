@@ -5,7 +5,7 @@ using Stellamod.Items.MoonlightMagic.Movements;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic.Enchantments.Deeya
+namespace Stellamod.Items.MoonlightMagic.Enchantments.RoyalMagic
 {
     internal class TentaclingHoneEnchantment : BaseEnchantment
     {
@@ -44,7 +44,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Deeya
 
         public override int GetElementType()
         {
-            return ModContent.ItemType<DeeyaElement>();
+            return ModContent.ItemType<RoyalMagicElement>();
         }
     }
 }

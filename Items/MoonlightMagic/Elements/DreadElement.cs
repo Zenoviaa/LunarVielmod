@@ -16,7 +16,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
     {
         public override int GetOppositeElementType()
         {
-            return ModContent.ItemType<DeeyaElement>();
+            return ModContent.ItemType<RoyalMagicElement>();
         }
 
         public override void SetDefaults()

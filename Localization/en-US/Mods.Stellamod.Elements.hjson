@@ -12,12 +12,12 @@ DreadElement: {
 		'''
 }
 
-DeeyaElement: {
-	DisplayName: Deeya Element
+RoyalMagicElement: {
+	DisplayName: RoyalMagic Element
 	Tooltip:
 		'''
 		Transforms your spell into the ultimate magic! 
-		Deeya magic may lower the target's defense
+		RoyalMagic magic may lower the target's defense
 		'''
 }
 
