@@ -30,5 +30,7 @@ namespace Stellamod.Helpers
         public static Asset<Texture2D> IrraTexture => ModContent.Request<Texture2D>("Stellamod/Assets/Effects/IrraTexture2");
         public static Asset<Texture2D> SmallNoise => ModContent.Request<Texture2D>("Stellamod/Textures/SmallNoise");
         public static Asset<Texture2D> FourPointedStar => ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Extra_63");
+
+
     }
 }

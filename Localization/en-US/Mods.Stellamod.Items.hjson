@@ -8331,7 +8331,12 @@ Piken: {
 	DisplayName: Piken
 }
 
-Drygan: {
-	DisplayName: Drygan
+SynergyTooltipItem: {
+	DisplayName: Synergy Tooltip Item
 	Tooltip: ""
+}
+
+IronWand: {
+	Tooltip: ""
+	DisplayName: Iron Wand
 }

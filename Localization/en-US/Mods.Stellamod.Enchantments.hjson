@@ -1,0 +1,509 @@
+EnchantmentCommonTooltip: Enchantment
+EnchantmentCommonHelp: Insert into a staff to enchant your spell
+EnchantmentCommonTimed: This effect activates after {0} ticks
+EnchantmentCommonMana: "{0}% increased mana cost"
+EnchantmentCommonStaff: Staff Weapon Type
+EnchantmentCommonStaffHelp: Right click to open the enchanting menu
+EnchantmentCommonSynergy: Synergy! {0}% increased damage!
+EnchantmentCommonNoSynergy: No Synergy...
+EnchantmentCommonFailSynergy: Anti Synergy! {0}% decreased damage!
+
+FlameLashEnchantment: {
+	DisplayName: Flame Lash Enchantment
+	Tooltip: When your spell hits an enemy or tile, it explodes into fire!
+}
+
+PuppetMasterEnchantment: {
+	DisplayName: Puppet Master Enchantment
+	Tooltip: Your spell will exponentially home into nearby enemies!
+}
+
+HexCloudEnchantment: {
+	DisplayName: Hex Cloud Enchantment
+	Tooltip: When your spell hits an enemy or tile, it explodes into hex!
+}
+
+MoonFinderEnchantment: {
+	DisplayName: Moon Finder Enchantment
+	Tooltip: Your spell will find and hit nearby enemies!
+}
+
+WaveSpeedEnchantment: {
+	DisplayName: Wave Speed Enchantment
+	Tooltip: Your spell gets sent into a wave pattern!
+}
+
+BloodyHeartEnchantment: {
+	DisplayName: Bloody Heart Enchantment
+	Tooltip: Every hit on an enemy heals you for 2 health!
+}
+
+ShadowAttackEnchantment: {
+	DisplayName: Shadow Attack Enchantment
+	Tooltip: Hitting an enemy will cause the spell to try and attack it again!
+}
+
+SpikyBarnEnchantment: {
+	DisplayName: Spiky Barn Enchantment
+	Tooltip: +2 Penetration to your spells.
+}
+
+TentaclingHoneEnchantment: {
+	DisplayName: Tentacling Hone Enchantment
+	Tooltip: Spells switch from a tentacle movement to honing in on enemies.
+}
+
+BloodlustEnchantment: {
+	DisplayName: Bloodlust Enchantment
+	Tooltip: Your spell increases in damage by 25%, but hurts you if you miss...
+}
+
+SizerEnchantment: {
+	DisplayName: Sizer Enchantment
+	Tooltip: Expands your spell making it do 25% more damage!
+}
+
+SharpenEnchantment: {
+	DisplayName: Sharpen Enchantment
+	Tooltip: Make your spells bounce off your target at flying speeds increasing the damage by 10%. +1 Penetration
+}
+
+FloralBlastEnchantment: {
+	DisplayName: Floral Blast Enchantment
+	Tooltip: When your spell hits an enemy or tile, it explodes into some flowery nature!
+}
+
+FlowerfallEnchantment: {
+	DisplayName: Flowerfall Enchantment
+	Tooltip: Make that spell have gravity! Totally not a Diari reference.
+}
+
+WorldToucherEnchantment: {
+	DisplayName: World Toucher Enchantment
+	Tooltip: Hitting a tile causes the spell to get stronger by 5%! +1 Penetration
+}
+
+FlashpointEnchantment: {
+	DisplayName: Flashpoint Enchantment
+	Tooltip: Slowly increases projectile velocity!
+}
+
+HurricaneEnchantment: {
+	DisplayName: Hurricane Enchantment
+	Tooltip: Turn your projectiles into waving circles!
+}
+
+TyphoonWaverEnchantment: {
+	DisplayName: Typhoon Waver Enchantment
+	Tooltip: Swirl your projectiles in an oval!
+}
+
+RadioSilenceEnchantment: {
+	DisplayName: Radio Silence Enchantment
+	Tooltip: Randomizes projectile speeds to create shapes!
+}
+
+SecondWindEnchantment: {
+	DisplayName: Second Wind Enchantment
+	Tooltip: Makes your spell return back to you when hiting enemies!
+}
+
+MoonlightSwirlEnchantment: {
+	DisplayName: Moonlight Swirl Enchantment
+	Tooltip: Makes your spell have an extreme swirl around the moonlight!
+}
+
+ReverseMoonEnchantment: {
+	DisplayName: Reverse Moon Enchantment
+	Tooltip: Misplaces your spell after hitting an enemy!
+}
+
+BloodThinningEnchantment: {
+	DisplayName: Blood Thinning Enchantment
+	Tooltip: Shrinks your spell making it do 25% more damage!
+}
+
+PhasingMoonEnchantment: {
+	DisplayName: Phasing Moon Enchantment
+	Tooltip: Allows your spell to interact with tiles without destroying itself.
+}
+
+MesmerizerStatusEnchantment: {
+	DisplayName: Mesmerizer Status Enchantment
+	Tooltip: Slowly decreases projectile velocity with a mesmerizing gaze.
+}
+
+SpellMistEnchantment: {
+	DisplayName: Spell Mist Enchantment
+	Tooltip: Turns your spell hallow! Your spell can go through walls!
+}
+
+PheonixSwirlEnchantment: {
+	DisplayName: Phoenix Swirl Enchantment
+	Tooltip: Swirl your projectiles in a large oval!
+}
+
+LampFormEnchantment: {
+	DisplayName: Lamp Form Enchantment
+	Tooltip: Changes the form of the spell to a lamp and +10% Spell damage!
+}
+
+TreeSplitEnchantment: {
+	DisplayName: Tree Split Enchantment
+	Tooltip: Splits your projectile in 3 doing 33% less damage!
+}
+
+ArrowFormEnchantment: {
+	DisplayName: Arrow Form Enchantment
+	Tooltip: Changes the form of the spell to an arrow and +10% Spell damage!
+}
+
+BowArrowFormEnchantment: {
+	DisplayName: Bow Arrow Form Enchantment
+	Tooltip: Changes the form of the spell to a bow's arrow and +10% Spell damage!
+}
+
+CrescentFormEnchantment: {
+	DisplayName: Crescent Form Enchantment
+	Tooltip: Changes the form of the spell to a crescent moon and +1 Penetration!
+}
+
+FairyFormEnchantment: {
+	DisplayName: Fairy Form Enchantment
+	Tooltip: Changes the form of the spell to a fairy and +50% Spell speed!
+}
+
+HammerFormEnchantment: {
+	DisplayName: Hammer Form Enchantment
+	Tooltip: Changes the form of the spell to a hammer and +10% Spell damage!
+}
+
+KnifeFormEnchantment: {
+	DisplayName: Knife Form Enchantment
+	Tooltip: Changes the form of the spell to a knife and +1 Penetration!
+}
+
+OctopusFormEnchantment: {
+	DisplayName: Octopus Form Enchantment
+	Tooltip: Changes the form of the spell to an octopus and +50% Spell size!
+}
+
+RunicFormEnchantment: {
+	DisplayName: Runic Form Enchantment
+	Tooltip: Changes the form of the spell to a rune and +50% Spell speed!
+}
+
+SnakeFormEnchantment: {
+	DisplayName: Snake Form Enchantment
+	Tooltip: Changes the form of the spell to a snake and +50% Spell speed!
+}
+
+SnowglobeFormEnchantment: {
+	DisplayName: Snowglobe Form Enchantment
+	Tooltip: Changes the form of the spell to a snowglobe and +50% Spell size!
+}
+
+SpineFormEnchantment: {
+	DisplayName: Spine Form Enchantment
+	Tooltip: Changes the form of the spell to a fish spine and +1 Penetration!
+}
+
+StarFormEnchantment: {
+	DisplayName: Star Form Enchantment
+	Tooltip: Changes the form of the spell to a 4-pointed star and +1 Penetration!
+}
+
+TriangleFormEnchantment: {
+	DisplayName: Triangle Form Enchantment
+	Tooltip: Changes the form of the spell to a triangle and +1 Penetration!
+}
+
+VaseFormEnchantment: {
+	DisplayName: Vase Form Enchantment
+	Tooltip: Changes the form of the spell to a vase and +10% Spell damage!
+}
+
+HallowPurpleEnchantment: {
+	DisplayName: Hallow Purple Enchantment
+	Tooltip: Turns your spell into a giant sphere of damage.
+}
+
+TsunamiEnchantment: {
+	DisplayName: Tsunami Enchantment
+	Tooltip: When hitting an enemy or tile, your spell with turn into a swirling water explosion and hits enemies!
+}
+
+WaterDrillEnchantment: {
+	DisplayName: Water Drill Enchantment
+	Tooltip: When hitting an enemy or tile, your spell with turn into a water drill and hit enemies!
+}
+
+MetalForceEnchantment: {
+	DisplayName: Metal Force Enchantment
+	Tooltip: When your spell hits a tile, it creates metal-like wind to saw through enemies!
+}
+
+MagicMissileEnchantment: {
+	DisplayName: Magic Missile Enchantment
+	Tooltip: Sends your spell to your cursor!
+}
+
+ExplosiveMordorEnchantment: {
+	DisplayName: Explosive Mordor Enchantment
+	Tooltip: Makes tiles explode when your spell hits them! May be a bad idea.
+}
+
+MEGAEnchantment: {
+	DisplayName: M E G A Enchantment
+	Tooltip: Your Spell casts a giant MEGA Deeya ball on startup and sucks in enemies as they hurt them!
+}
+
+BloodVesselEnchantment: {
+	DisplayName: Blood Vessel Enchantment
+	Tooltip: Your spell erupts upward from the ground underneath your cursor!
+}
+
+HeatSeakerEnchantment: {
+	DisplayName: Heat Seaker Enchantment
+	Tooltip: Spells with speed up exponentially as well as get bigger while homing in onto enemies!
+}
+
+BloodletSwitcherEnchantment: {
+	DisplayName: Bloodlet Switcher Enchantment
+	Tooltip: Spells switch their element to Bloodlet!
+}
+
+DeeyaSwitcherEnchantment: {
+	DisplayName: Deeya Switcher Enchantment
+	Tooltip: Spells switch their element to Deeya!
+}
+
+GuutsSwitcherEnchantment: {
+	DisplayName: Guuts Switcher Enchantment
+	Tooltip: Spells switch their element to Guuts!
+}
+
+HexSwitcherEnchantment: {
+	DisplayName: Hex Switcher Enchantment
+	Tooltip: Spells switch their element to Hex!
+}
+
+NaturalSwitcherEnchantment: {
+	DisplayName: Natural Switcher Enchantment
+	Tooltip: Spells switch their element to Nature!
+}
+
+PhantasmalSwitcherEnchantment: {
+	DisplayName: Phantasmal Switcher Enchantment
+	Tooltip: Spells switch their element to Phantasmal!
+}
+
+RadianceSwitcherEnchantment: {
+	DisplayName: Radiance Switcher Enchantment
+	Tooltip: Spells switch their element to Radiance!
+}
+
+UvilisSwitcherEnchantment: {
+	DisplayName: Uvilis Switcher Enchantment
+	Tooltip: Spells switch their element to Uvilis!
+}
+
+SlothEnchantment: {
+	DisplayName: Sloth Enchantment
+	Tooltip: Your spell will start moving after a short time
+}
+
+SpinbackEnchantment: {
+	DisplayName: Spinback Enchantment
+	Tooltip: Doubles your spell's knockback!
+}
+
+ShadowStepEnchantment: {
+	DisplayName: Shadow Step Enchantment
+	Tooltip: Slightly randomizes the starting position and velocity of your spell!
+}
+
+BruteForceEnchantment: {
+	DisplayName: Brute Force Enchantment
+	Tooltip: When your spell hits an enemy or tile, it explodes violently and pushes enemies back quite far!
+}
+
+BowFormEnchantment: {
+	DisplayName: Bow Form Enchantment
+	Tooltip: Changes the form of the spell to a bow and double Spell knockback!
+}
+
+CoinFormEnchantment: {
+	DisplayName: Coin Form Enchantment
+	Tooltip: Changes the form of the spell to a coin and double Spell knockback!
+}
+
+LanternFormEnchantment: {
+	DisplayName: Lantern Form Enchantment
+	Tooltip: Changes the form of the spell to a lantern and +1 Penetration!
+}
+
+SkullFormEnchantment: {
+	DisplayName: Skull Form Enchantment
+	Tooltip: Changes the form of the spell to a skull and triple Spell knockback!
+}
+
+SquidFormEnchantment: {
+	DisplayName: Squid Form Enchantment
+	Tooltip: Changes the form of the spell to a squid and double Spell knockback!
+}
+
+CoagulateEnchantment: {
+	DisplayName: Coagulate Enchantment
+	Tooltip: When your spell hits an enemy or tile, it bursts into blood and knocks enemies upward!
+}
+
+HeavyMetalEnchantment: {
+	DisplayName: Heavy Metal Enchantment
+	Tooltip: Your spell will rain down from above! +12% Spell damage!
+}
+
+SharpTurnEnchantment: {
+	DisplayName: Sharp Turn Enchantment
+	Tooltip: Your spell will instantly turn 90 degrees after a short time
+}
+
+ReverserOfGuutsEnchantment: {
+	DisplayName: Reverser Of Guuts Enchantment
+	Tooltip: Takes the timer for your spells and resets it back to 0!
+}
+
+ReverserOfBloodletEnchantment: {
+	DisplayName: Reverser Of Bloodlet Enchantment
+	Tooltip: Takes the timer for your spells and resets it back to 0!
+}
+
+ReverserOfDeeyaEnchantment: {
+	DisplayName: Reverser Of Deeya Enchantment
+	Tooltip: Takes the timer for your spells and resets it back to 0!
+}
+
+ReverserOfHexEnchantment: {
+	DisplayName: Reverser Of Hex Enchantment
+	Tooltip: Takes the timer for your spells and resets it back to 0!
+}
+
+ReverserOfNatureEnchantment: {
+	DisplayName: Reverser Of Nature Enchantment
+	Tooltip: Takes the timer for your spells and resets it back to 0!
+}
+
+ReverserOfRadianceEnchantment: {
+	DisplayName: Reverser Of Radiance Enchantment
+	Tooltip: Takes the timer for your spells and resets it back to 0!
+}
+
+ReverserOfPhantasmalEnchantment: {
+	DisplayName: Reverser Of Phantasmal Enchantment
+	Tooltip: Takes the timer for your spells and resets it back to 0!
+}
+
+ReverserOfUvilisEnchantment: {
+	DisplayName: Reverser Of Uvilis Enchantment
+	Tooltip: Takes the timer for your spells and resets it back to 0!
+}
+
+RechargingShadowsEnchantment: {
+	DisplayName: Recharging Shadows Enchantment
+	Tooltip: Makes timers for your timed spells move 2x as fast!
+}
+
+AdditorGuutsEnchantment: {
+	DisplayName: Additor Guuts Enchantment
+	Tooltip: Makes every timed enchantment active 15 ticks later!
+}
+
+PhaseTurnEnchantment: {
+	DisplayName: Phase Turn Enchantment
+	Tooltip: Your spell will instantly turn 45 degrees after a short time
+}
+
+SubtractorMoonEnchantment: {
+	DisplayName: Subtractor Moon Enchantment
+	Tooltip: Makes every timed enchantment active 15 ticks earlier!
+}
+
+OppositeFlamesEnchantment: {
+	DisplayName: Opposite Flames Enchantment
+	Tooltip: Reverses the velocity of your spell!
+}
+
+StarTurnEnchantment: {
+	DisplayName: Star Turn Enchantment
+	Tooltip: Your spell will instantly turn 135 degrees after a short time
+}
+
+FlowingBloodEnchantment: {
+	DisplayName: Flowing Blood Enchantment
+	Tooltip: Makes timers for your timed spells move 2x slower!
+}
+
+TrailerEnchantment: {
+	DisplayName: Trailer Enchantment
+	Tooltip: Your Spell gains a longer trail while time is active!
+}
+
+GroundEaterEnchantment: {
+	DisplayName: Ground Eater Enchantment
+	Tooltip: Your Spell has a shorter trail while time is active!
+}
+
+GamblerEnchantment: {
+	DisplayName: Gambler Enchantment
+	Tooltip: Adds the effect of ANY random enchantment to your spell, it's different on each cast!
+}
+
+MimicryEnchantment: {
+	DisplayName: Mimicry Enchantment
+	Tooltip: Mimics the effect of the enchantment to the left of this one!
+}
+
+SwirlerBwirlerEnchantment: {
+	DisplayName: Swirler Bwirler Enchantment
+	Tooltip: Your spell will instantly turn a random amount of degrees after a short time
+}
+
+ShriekerEnchantment: {
+	DisplayName: Shrieker Enchantment
+	Tooltip: When your spell hits an enemy or tile, it bursts into phantasmal energy and knocks enemies upward!
+}
+
+FlameWheelEnchantment: {
+	DisplayName: Flame Wheel Enchantment
+	Tooltip: Your spell summons in a circle of 8 projectiles around you! Each of these projectiles do an 8th of the original damage
+}
+
+ArterySplitEnchantment: {
+	DisplayName: Artery Split Enchantment
+	Tooltip: Your spell summons in a circle of 16 projectiles around you! Each of these projectiles do an 16th of the original damage
+}
+
+The4MistsEnchantment: {
+	DisplayName: The 4 Mists Enchantment
+	Tooltip: Your spell summons in a circle of 4 projectiles around you! Each of these projectiles do an 4th of the original damage
+}
+
+DichotamyEnchantment: {
+	DisplayName: Dichotamy Enchantment
+	Tooltip: Your spell summons in 2 projectiles around you! Each of these projectiles do half of the original damage
+}
+
+HeartBurnBlastEnchantment: {
+	DisplayName: Heart Burn Blast Enchantment
+	Tooltip: Splits your projectile in 4 doing 50% less damage!
+}
+
+SparksSplitEnchantment: {
+	DisplayName: Sparks Split Enchantment
+	Tooltip: Splits your projectile into 6 when hitting the ground and bounces backwards!
+}
+
+ShitgunEnchantment: {
+	DisplayName: Shitgun Enchantment
+	Tooltip: Turns your spells into shotgun blasts with half of your original spell damage!
+}

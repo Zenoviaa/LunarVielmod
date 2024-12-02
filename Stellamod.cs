@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Backgrounds;
+using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Skies;
@@ -105,6 +106,7 @@ namespace Stellamod
             if (Main.netMode != NetmodeID.Server)
             {
                 ShaderRegistry.LoadShaders();
+                CrystalShaderRegistry.LoadShaders();
                 MedalCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<Medal>(), 999L, "Ruin medals"));
 
 
@@ -164,6 +166,7 @@ namespace Stellamod
 
                 Ref<Effect> GenericLaserShader = new(Assets.Request<Effect>("Effects/LaserShader", AssetRequestMode.ImmediateLoad).Value);
                 GameShaders.Misc["Stellamod:LaserShader"] = new MiscShaderData(GenericLaserShader, "TrailPass");
+
             }
 
 
