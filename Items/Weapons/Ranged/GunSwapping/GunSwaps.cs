@@ -69,13 +69,13 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 
                 if (LeftHand)
                 {
-                    line = new TooltipLine(Mod, "LeftHanded", "Equip to your gun holster's left hand!");
+                    line = new TooltipLine(Mod, "LeftHanded", "Equip to your gun holsters' or scorpions' left hand!");
                     line.OverrideColor = tooltipColor;
                     tooltips.Add(line);
                 }
                 if (RightHand)
                 {
-                    line = new TooltipLine(Mod, "RightHanded", "Equip to your gun holster's right hand!");
+                    line = new TooltipLine(Mod, "RightHanded", "Equip to your gun holsters' or scorpions' right hand!");
                     line.OverrideColor = tooltipColor;
                     tooltips.Add(line);
                 }
