@@ -468,11 +468,8 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             {
                 for (int k = 0; k < 7; k++)
                 {
-                    Vector2 direction = offset.RotatedByRandom(spread);
-                    Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
-                    Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, Color.IndianRed * 0.5f, Main.rand.NextFloat(0.5f, 1));
-                    Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
-                    Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction * Main.rand.NextFloat(8), 125, Color.IndianRed, Main.rand.NextFloat(0.5f, 0.8f));
+                    Vector2 newDirection = velocity.RotatedByRandom(spread);
+                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Tan, Main.rand.NextFloat(0.4f, 0.8f));
                 }
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol2"));
                 AttackSpeed = 30;            
@@ -482,7 +479,8 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             {
                 Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, Color.IndianRed * 0.5f, Main.rand.NextFloat(0.5f, 1));
             }
-
+         
+            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.White, 1);
             if (AttackSpeed > 2)
             {
                 AttackSpeed--;
@@ -496,7 +494,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 newVelocity *= 1f - Main.rand.NextFloat(0.3f);
 
                 player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int d, out float knockBack, out int useAmmoItemId, true);
-                Projectile.NewProjectile(player.GetSource_FromThis(), position, newVelocity, projToShoot, damage, knockback, player.whoAmI);
+                Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 14, projToShoot, damage, knockback, player.whoAmI);
 
                 
             }
