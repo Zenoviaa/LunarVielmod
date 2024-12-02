@@ -155,6 +155,8 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             //Yay
             GunHolsterUISystem gunHolsterUISystem = ModContent.GetInstance<GunHolsterUISystem>();
             gunHolsterUISystem.ToggleUI();
+            ScorpionHolsterUISystem scorpionHolsterUISystem = ModContent.GetInstance<ScorpionHolsterUISystem>();
+            scorpionHolsterUISystem.CloseUI();
         }
 
         public override bool CanRightClick()

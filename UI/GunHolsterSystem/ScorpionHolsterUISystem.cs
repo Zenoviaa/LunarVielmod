@@ -31,6 +31,7 @@ namespace Stellamod.UI.GunHolsterSystem
 
         public override void UpdateUI(GameTime gameTime)
         {
+
             //Close if inventory isn't open lol
             if (!Main.playerInventory && _userInterface.CurrentState != null)
             {
@@ -59,6 +60,7 @@ namespace Stellamod.UI.GunHolsterSystem
         internal void OpenUI()
         {
             //Set State
+            scorpionHolsterUIState.ui.OpenUI(scorpionItem);
             _userInterface.SetState(scorpionHolsterUIState);
         }
 

@@ -54,6 +54,8 @@ namespace Stellamod.UI.GunHolsterSystem
         internal void OpenUI()
         {
             //Set State
+            gunHolsterUIState.gunHolsterUI.leftSlot.OpenUI();
+            gunHolsterUIState.gunHolsterUI.rightSlot.OpenUI();
             _userInterface.SetState(gunHolsterUIState);
         }
 

@@ -32,6 +32,8 @@ namespace Stellamod.UI.GunHolsterSystem
 
             Width.Set(asset.Width() * scale, 0f);
             Height.Set(asset.Height() * scale, 0f);
+            Item = new Item();
+            Item.SetDefaults(0);
         }
 
         public int scorpionIndex = -1;
@@ -57,11 +59,11 @@ namespace Stellamod.UI.GunHolsterSystem
             {
                 _prevItem = Item;
                 ItemSlot.Handle(ref Item, _context);
-                UpdateHand();
+                SaveUI();
             }
         }
 
-        private void GetHand()
+        public void OpenUI()
         {
             if (scorpionIndex == -1)
             {
@@ -73,10 +75,9 @@ namespace Stellamod.UI.GunHolsterSystem
                 ScorpionHolsterUISystem uiSystem = ModContent.GetInstance<ScorpionHolsterUISystem>();
                 Item = uiSystem.scorpionItem.leftHandedGuns[scorpionIndex].Clone();
             }
-
         }
 
-        private void UpdateHand()
+        public void SaveUI()
         {
             if (scorpionIndex == -1)
             {
@@ -89,11 +90,9 @@ namespace Stellamod.UI.GunHolsterSystem
                 uiSystem.scorpionItem.leftHandedGuns[scorpionIndex] = Item.Clone();
             }
         }
+
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            if (Item == null)
-                GetHand();
-
             float oldScale = Main.inventoryScale;
             Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();

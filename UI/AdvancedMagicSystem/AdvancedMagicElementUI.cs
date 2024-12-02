@@ -14,7 +14,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
         public AdvancedMagicElementSlot ElementSlot { get; private set; }
         public AdvancedMagicElementUI() : base()
         {
-
+            ElementSlot = new();
         }
 
         public override void OnInitialize()
@@ -26,7 +26,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
             SetPos();
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
-            ElementSlot = new();
+        
             Append(ElementSlot);
         }
 

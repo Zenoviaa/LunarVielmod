@@ -28,7 +28,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
 
         internal AdvancedMagicStaffUI() : base()
         {
-
+            _enchantmentsGrid = new UIGrid();
         }
         private string AssetDirectory = $"Stellamod/UI/AdvancedMagicSystem/";
         private Texture2D
@@ -50,8 +50,6 @@ namespace Stellamod.UI.AdvancedMagicSystem
 
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
-
-            _enchantmentsGrid = new UIGrid();
             _enchantmentsGrid.Width.Set(0, 1f);
             _enchantmentsGrid.Height.Set(0, 1f);
             _enchantmentsGrid.HAlign = 0.5f;
@@ -71,10 +69,15 @@ namespace Stellamod.UI.AdvancedMagicSystem
 
         public override void Recalculate()
         {
-            var staff = ActiveStaff;
             SetPos();
-            _enchantmentsGrid?.Clear();
+            _enchantmentsGrid.Recalculate();
+            base.Recalculate();
+        }
+
+        public void OpenUI(BaseStaff staff)
+        {
             StaffSlots.Clear();
+            _enchantmentsGrid.Clear();
             if (staff == null)
                 return;
 
@@ -83,7 +86,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
                 AdvancedMagicStaffSlot slot = new AdvancedMagicStaffSlot(staff);
                 slot.index = _enchantmentsGrid._items.Count;
                 slot.Item = staff.equippedEnchantments[i].Clone();
-
+                slot.OpenUI();
                 _enchantmentsGrid.Add(slot);
                 StaffSlots.Add(slot);
             }
@@ -94,11 +97,10 @@ namespace Stellamod.UI.AdvancedMagicSystem
                 slot.index = _enchantmentsGrid._items.Count;
                 slot.Item = staff.equippedEnchantments[staff.GetNormalSlotCount() + i].Clone();
                 slot.isTimedSlot = true;
+                slot.OpenUI();
                 _enchantmentsGrid.Add(slot);
                 StaffSlots.Add(slot);
             }
-            _enchantmentsGrid.Recalculate();
-            base.Recalculate();
         }
 
         private void SetPos()

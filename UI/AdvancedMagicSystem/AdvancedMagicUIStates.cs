@@ -28,12 +28,6 @@ namespace Stellamod.UI.AdvancedMagicSystem
             elementUI = new AdvancedMagicElementUI();
             Append(elementUI);
         }
-
-        public void Refresh()
-        {
-            elementUI.ElementSlot.Refresh();
-        }
-
     }
 
     internal class ItemUIState : UIState
