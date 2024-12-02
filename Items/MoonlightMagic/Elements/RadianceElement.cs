@@ -24,14 +24,13 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         public override void SetDefaults()
         {
             base.SetDefaults();
-            /*
             SoundStyle castStyle = SoundRegistry.RadianceCast1;
             castStyle.PitchVariance = 0.25f;
             CastSound = castStyle;
 
             SoundStyle hitStyle = SoundRegistry.RadianceHit1;
             hitStyle.PitchVariance = 0.25f;
-            HitSound = hitStyle;*/
+            HitSound = hitStyle;
         }
 
         public override Color GetElementColor()
@@ -284,7 +283,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
             //Secondary fill
             trailMode = 0;
             shader.PrimaryColor = new Color(206, 101, 0);
-            shader.NoiseColor = Color.Red;
+            shader.NoiseColor = Color.Goldenrod;
             shader.OutlineColor = Color.Black;
             shader.Speed = 2.2f;
             shader.Distortion = 0.3f;
@@ -301,7 +300,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
 
             Color c = Color.DarkRed;
             shader.PrimaryColor = c;
-            shader.NoiseColor = Color.DarkRed;
+            shader.NoiseColor = Color.DarkGoldenrod;
             shader.BlendState = BlendState.AlphaBlend;
             shader.SamplerState = SamplerState.PointWrap;
             shader.Speed = 5.2f;

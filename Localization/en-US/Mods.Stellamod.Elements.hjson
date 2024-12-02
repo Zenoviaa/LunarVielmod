@@ -21,22 +21,18 @@ DeeyaElement: {
 		'''
 }
 
-GuutElement: {
-	DisplayName: Guut Element
+VeilElement: {
+	DisplayName: Veil Element
 	Tooltip:
 		'''
 		Transforms your spell with metallic properties!
-		Guut magic adds strike damage to your spells
+		Veil magic adds strike damage to your spells
 		'''
 }
 
-HexElement: {
-	DisplayName: Hex Element
-	Tooltip:
-		'''
-		Transforms your spell with the power of manipulation! 
-		Hex magic rarely causes enemies to attack each other
-		'''
+WindElement: {
+	DisplayName: Wind Element
+	Tooltip: Transforms your spell with the power of wind!
 }
 
 NaturalElement: {
@@ -58,20 +54,16 @@ MoonElement: {
 }
 
 RadianceElement: {
-	DisplayName: Radiance Element
-	Tooltip:
-		'''
-		Transforms your spell with the power of the gollden sun! 
-		Radiance magic can burn targets
-		'''
+	DisplayName: Sun Element
+	Tooltip: "Transforms your spell with the power of the golden sun! "
 }
 
-UvilisElement: {
-	DisplayName: Uvilis Element
+IceElement: {
+	DisplayName: Ice Element
 	Tooltip:
 		'''
 		Transforms your spell with the power of water and stars! 
-		Uvilis magic can cause splash damage
+		Ice magic can cause splash damage
 		'''
 }
 
@@ -83,11 +75,6 @@ PrismaticElement: {
 MothlightElement: {
 	DisplayName: Mothlight Element
 	Tooltip: Transforms your spell with the power of mothlight!
-}
-
-WindElement: {
-	DisplayName: Wind Element
-	Tooltip: Transforms your spell with the power of wind!
 }
 
 HolinessElement: {

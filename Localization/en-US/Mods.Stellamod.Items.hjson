@@ -6738,7 +6738,7 @@ IshtarCandle: {
 		'''
 		Ereshkigal grants you a gift..
 		Can use as an accessory to brighten the Ishtar.
-		A hexed flame that holds Sigfried's insanity.
+		A Winded flame that holds Sigfried's insanity.
 		'''
 }
 
@@ -8339,4 +8339,9 @@ SynergyTooltipItem: {
 IronWand: {
 	Tooltip: ""
 	DisplayName: Iron Wand
+}
+
+Drygan: {
+	DisplayName: Drygan
+	Tooltip: ""
 }

@@ -54,5 +54,86 @@ namespace Stellamod.Helpers
         public static SoundStyle Niivi_WingFlap => new SoundStyle($"{Path}NiiviWingFlap");
         public static SoundStyle Niivi_Tired => new SoundStyle($"{Path}NiiviTired");
         public static SoundStyle Niivi_Death => new SoundStyle($"{Path}NiiviDeath");
+
+        public static SoundStyle RadianceCast1 => new SoundStyle($"{Path}RadianceCast1");
+
+        public static SoundStyle RadianceHit1 => new SoundStyle($"{Path}RadianceHit1");
+
+        public static SoundStyle WindCast => new SoundStyle($"{Path}WindCast",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+
+        public static SoundStyle WindHit => new SoundStyle($"{Path}WindHit",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+
+        public static SoundStyle UvilisCast => new SoundStyle($"{Path}UvilisCast",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+
+        public static SoundStyle UvilisHit => new SoundStyle($"{Path}UvilisHit",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+
+        public static SoundStyle PrismaticHit => new SoundStyle($"{Path}PrismaticHit1");
+
+        public static SoundStyle BloodletCast => new SoundStyle($"{Path}BloodletCast1");
+
+        public static SoundStyle BloodletHit => new SoundStyle($"{Path}BloodletHit",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+
+        public static SoundStyle AutomationCast => new SoundStyle($"{Path}AutomationCast",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+
+        public static SoundStyle AutomationHit => new SoundStyle($"{Path}AutomationHit",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+        public static SoundStyle NatureCast => new SoundStyle($"{Path}NaturalCast",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+
+        public static SoundStyle NatureHit => new SoundStyle($"{Path}NaturalHit",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+
+        public static SoundStyle PrimeMagicCast => new SoundStyle($"{Path}PrimeMagicCast",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+
+        public static SoundStyle PrimeMagicHit => new SoundStyle($"{Path}PrimeMagicHit",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+
+        public static SoundStyle VeilCast => new SoundStyle($"{Path}VeilCast",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+
+        public static SoundStyle VeilHit => new SoundStyle($"{Path}VeilHit",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+
+
+        public static SoundStyle DeeyaCast => new SoundStyle($"{Path}DeeyaCast",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+
+        public static SoundStyle DeeyaHit => new SoundStyle($"{Path}DeeyaHit",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+
+        public static SoundStyle HolyCast => new SoundStyle($"{Path}HolyCast",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+
+        public static SoundStyle HolyHit => new SoundStyle($"{Path}HolyHit",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+
+        public static SoundStyle BasicMagicHit => new SoundStyle($"{Path}BasicMagicHit",
+            variantSuffixesStart: 1,
+            numVariants: 2);
+
     }
 }
