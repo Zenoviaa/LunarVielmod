@@ -57,6 +57,11 @@ Mods: {
 					Label: Low Detail Shaders Toggle
 					Tooltip: ""
 				}
+
+				VanillaUIRespritesToggle: {
+					Label: Vanilla U I Resprites Toggle
+					Tooltip: ""
+				}
 			}
 
 			LunarVeilServerConfig.DisplayName: Lunar Veil Server Config
