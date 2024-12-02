@@ -469,7 +469,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 for (int k = 0; k < 7; k++)
                 {
                     Vector2 newDirection = velocity.RotatedByRandom(spread);
-                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Tan, Main.rand.NextFloat(0.4f, 0.8f));
+                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Tan, Main.rand.NextFloat(0.2f, 0.8f));
                 }
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol2"));
                 AttackSpeed = 30;            
@@ -477,7 +477,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             }
             if (_comboCounter > 75)
             {
-                Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, Color.IndianRed * 0.5f, Main.rand.NextFloat(0.5f, 1));
+                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, Color.IndianRed * 0.5f, Main.rand.NextFloat(0.5f, 1));
             }
          
             Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.White, 1);
