@@ -1354,3 +1354,17 @@ GunHolsterProjectile.DisplayName: Gun Holster Projectile
 PiranhaProj.DisplayName: Piranha Proj
 PiranhaBoomMini.DisplayName: Piranha Boom Mini
 ScorpionHolsterProjectile.DisplayName: Scorpion Holster Projectile
+AdvancedMagicProjectile.DisplayName: Advanced Magic Projectile
+AdvancedMagicStaffProjectile.DisplayName: Advanced Magic Staff Projectile
+CoagulateEnchantmentExplosion.DisplayName: Coagulate Enchantment Explosion
+MEGAEnchantmentExplosion.DisplayName: M E G A Enchantment Explosion
+BruteForceEnchantmentExplosion.DisplayName: Brute Force Enchantment Explosion
+MetalForceEnchantmentExplosion.DisplayName: Metal Force Enchantment Explosion
+HallowPurpleEnchantmentExplosion.DisplayName: Hallow Purple Enchantment Explosion
+HexCloudEnchantmentExplosion.DisplayName: Hex Cloud Enchantment Explosion
+FloralBlastEnchantmentExplosion.DisplayName: Floral Blast Enchantment Explosion
+ShriekerEnchantmentExplosion.DisplayName: Shrieker Enchantment Explosion
+ExplosiveMordorEnchantmentExplosion.DisplayName: Explosive Mordor Enchantment Explosion
+FlameLashEnchantmentExplosion.DisplayName: Flame Lash Enchantment Explosion
+TsunamiEnchantmentExplosion.DisplayName: Tsunami Enchantment Explosion
+WaterDrillEnchantmentExplosion.DisplayName: Water Drill Enchantment Explosion

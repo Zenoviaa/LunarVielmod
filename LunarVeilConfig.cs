@@ -41,5 +41,15 @@ namespace Stellamod
         [Header("Effects")]
         [DefaultValue(true)]
         public bool ShakeToggle;
+
+
+        [Range(0f, 100f)]
+        public float EnchantMenuX = 50;
+        [Range(0f, 100f)]
+        public float EnchantMenuY = 50;
+
+        [DefaultValue(false)]
+        public bool LowDetailShadersToggle;
+
     }
 }

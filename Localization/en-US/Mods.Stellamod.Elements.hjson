@@ -1,0 +1,116 @@
+BasicElement: {
+	DisplayName: Basic Element
+	Tooltip: ""
+}
+
+BloodletElement: {
+	DisplayName: Bloodlet Element
+	Tooltip:
+		'''
+		Transforms your spell into an ancient type of magic!
+		Bloodlet magic can life steal
+		'''
+}
+
+DeeyaElement: {
+	DisplayName: Deeya Element
+	Tooltip:
+		'''
+		Transforms your spell into the ultimate magic! 
+		Deeya magic may lower the target's defense
+		'''
+}
+
+GuutElement: {
+	DisplayName: Guut Element
+	Tooltip:
+		'''
+		Transforms your spell with metallic properties!
+		Guut magic adds strike damage to your spells
+		'''
+}
+
+HexElement: {
+	DisplayName: Hex Element
+	Tooltip:
+		'''
+		Transforms your spell with the power of manipulation! 
+		Hex magic rarely causes enemies to attack each other
+		'''
+}
+
+NaturalElement: {
+	DisplayName: Natural Element
+	Tooltip:
+		'''
+		Transforms your spell with the essence of the earth! 
+		Nature magic can slow enemies
+		'''
+}
+
+PhantasmalElement: {
+	DisplayName: Phantasmal Element
+	Tooltip:
+		'''
+		Transforms your spell with the magic of the moon! 
+		Phantasmal magic can weaken enemies
+		'''
+}
+
+RadianceElement: {
+	DisplayName: Radiance Element
+	Tooltip:
+		'''
+		Transforms your spell with the power of the gollden sun! 
+		Radiance magic can burn targets
+		'''
+}
+
+UvilisElement: {
+	DisplayName: Uvilis Element
+	Tooltip:
+		'''
+		Transforms your spell with the power of water and stars! 
+		Uvilis magic can cause splash damage
+		'''
+}
+
+PrismaticElement: {
+	DisplayName: Prismatic Element
+	Tooltip: Transforms your spell with the power of prisma!
+}
+
+MothlightElement: {
+	DisplayName: Mothlight Element
+	Tooltip: Transforms your spell with the power of mothlight!
+}
+
+WindElement: {
+	DisplayName: Wind Element
+	Tooltip: Transforms your spell with the power of wind!
+}
+
+HolinessElement: {
+	DisplayName: Holiness Element
+	Tooltip: Transforms your spell with the power of the holy!
+}
+
+PrimeMagicElement: {
+	DisplayName: Prime Magic Element
+	Tooltip: Transforms your spell with the power of super efficient magic!
+}
+
+LightningElement: {
+	DisplayName: Lightning Element
+	Tooltip: Transforms your spell with the power of lightning!
+}
+
+AutomationElement: {
+	DisplayName: Automation Element
+	Tooltip: Transforms your spell with the power of automation!
+}
+
+CheckersElement: {
+	DisplayName: Checkers Element
+	Tooltip: Transforms your spell with the power of chess and checkers!
+}

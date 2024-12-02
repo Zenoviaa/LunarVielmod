@@ -8330,3 +8330,13 @@ Piken: {
 	Tooltip: ""
 	DisplayName: Piken
 }
+
+SynergyTooltipItem: {
+	DisplayName: Synergy Tooltip Item
+	Tooltip: ""
+}
+
+IronWand: {
+	Tooltip: ""
+	DisplayName: Iron Wand
+}

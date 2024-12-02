@@ -42,6 +42,21 @@ Mods: {
 					Tooltip: ""
 					Label: Liquids Toggle
 				}
+
+				EnchantMenuX: {
+					Label: Enchant Menu X
+					Tooltip: ""
+				}
+
+				EnchantMenuY: {
+					Label: Enchant Menu Y
+					Tooltip: ""
+				}
+
+				LowDetailShadersToggle: {
+					Label: Low Detail Shaders Toggle
+					Tooltip: ""
+				}
 			}
 
 			LunarVeilServerConfig.DisplayName: Lunar Veil Server Config
