@@ -40,6 +40,12 @@ namespace Stellamod.UI.AdvancedMagicSystem
             buttonUIState.Activate();
         }
 
+        public override void Unload()
+        {
+            base.Unload();
+            Staff = null;
+        }
+
         internal void Recalculate()
         {
             staffUIState?.staffUI?.Recalculate();
@@ -59,8 +65,9 @@ namespace Stellamod.UI.AdvancedMagicSystem
                 Staff = staff;
                 staffUIState.staffUI.OpenUI(staff);
                 staffUIState.elementUI.ElementSlot.OpenUI(staff);
-                Recalculate();
                 OpenStaffUI();
+                //Recalculate();
+    
                 if (_backpackInterface.CurrentState == null)
                 {
                     OpenBackpackUI();

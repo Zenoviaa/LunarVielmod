@@ -36,7 +36,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
             Item.SetDefaults(0);
 
             var asset = ModContent.Request<Texture2D>(
-                "Stellamod/UI/AdvancedMagicSystem/EnchantmentCard");
+                "Stellamod/UI/AdvancedMagicSystem/EnchantmentCard", ReLogic.Content.AssetRequestMode.ImmediateLoad);
             Width.Set(asset.Width() * scale, 0f);
             Height.Set(asset.Height() * scale, 0f);
         }

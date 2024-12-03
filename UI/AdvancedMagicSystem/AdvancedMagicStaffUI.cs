@@ -18,17 +18,15 @@ namespace Stellamod.UI.AdvancedMagicSystem
 {
     internal class AdvancedMagicStaffUI : UIPanel
     {
-        private UIGrid _enchantmentsGrid;
-        private BaseStaff ActiveStaff => AdvancedMagicUISystem.Staff;
+        private UIGrid _grid;
 
         internal const int width = 480;
         internal const int height = 155;
 
-        public List<AdvancedMagicStaffSlot> StaffSlots { get; private set; } = new();
 
         internal AdvancedMagicStaffUI() : base()
         {
-            _enchantmentsGrid = new UIGrid();
+            _grid = new UIGrid();
         }
         private string AssetDirectory = $"Stellamod/UI/AdvancedMagicSystem/";
         private Texture2D
@@ -37,7 +35,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
         public override void OnActivate()
         {
             base.OnActivate();
-            _enchantmentPanel = ModContent.Request<Texture2D>($"{AssetDirectory}EnchantmentPanel").Value;
+            _enchantmentPanel = ModContent.Request<Texture2D>($"{AssetDirectory}EnchantmentPanel", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
 
         }
 
@@ -50,11 +48,11 @@ namespace Stellamod.UI.AdvancedMagicSystem
 
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
-            _enchantmentsGrid.Width.Set(0, 1f);
-            _enchantmentsGrid.Height.Set(0, 1f);
-            _enchantmentsGrid.HAlign = 0.5f;
-            _enchantmentsGrid.ListPadding = 2f;
-            Append(_enchantmentsGrid);
+            _grid.Width.Set(0, 1f);
+            _grid.Height.Set(0, 1f);
+            _grid.HAlign = 0.5f;
+            _grid.ListPadding = 2f;
+            Append(_grid);
         }
 
 
@@ -70,38 +68,32 @@ namespace Stellamod.UI.AdvancedMagicSystem
         public override void Recalculate()
         {
             SetPos();
-            _enchantmentsGrid.Recalculate();
             base.Recalculate();
         }
 
         public void OpenUI(BaseStaff staff)
         {
-            StaffSlots.Clear();
-            _enchantmentsGrid.Clear();
-            if (staff == null)
-                return;
-
+            _grid.Clear();
             for (int i = 0; i < staff.GetNormalSlotCount(); i++)
             {
                 AdvancedMagicStaffSlot slot = new AdvancedMagicStaffSlot(staff);
-                slot.index = _enchantmentsGrid._items.Count;
+                slot.index = _grid._items.Count;
                 slot.Item = staff.equippedEnchantments[i].Clone();
                 slot.OpenUI();
-                _enchantmentsGrid.Add(slot);
-                StaffSlots.Add(slot);
+                slot.Activate();
+                _grid.Add(slot);
             }
 
             for (int i = 0; i < staff.GetTimedSlotCount(); i++)
             {
                 AdvancedMagicStaffSlot slot = new AdvancedMagicStaffSlot(staff);
-                slot.index = _enchantmentsGrid._items.Count;
+                slot.index = _grid._items.Count;
                 slot.Item = staff.equippedEnchantments[staff.GetNormalSlotCount() + i].Clone();
                 slot.isTimedSlot = true;
                 slot.OpenUI();
-                _enchantmentsGrid.Add(slot);
-                StaffSlots.Add(slot);
+                slot.Activate();
+                _grid.Add(slot);
             }
-            _enchantmentsGrid.Recalculate();
         }
 
         private void SetPos()
