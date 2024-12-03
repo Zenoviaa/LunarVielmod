@@ -56,12 +56,6 @@ namespace Stellamod.UI.GunHolsterSystem
             Append(_grid);
         }
 
-        public override void Recalculate()
-        {
-            _grid.Recalculate();
-            base.Recalculate();
-        }
-
         public void OpenUI(BaseScorpionItem scorpionItem)
         {
             _grid.Clear();
