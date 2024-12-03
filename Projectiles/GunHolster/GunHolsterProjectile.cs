@@ -38,7 +38,12 @@ namespace Stellamod.Projectiles.GunHolster
         }
         public Texture2D HeldTexture
         {
-            get => ModContent.Request<Texture2D>(MiniGun.HeldTexture).Value;
+            get
+            {
+                if (MiniGun == null)
+                    return ModContent.Request<Texture2D>(Texture).Value;
+                return ModContent.Request<Texture2D>(MiniGun.HeldTexture).Value;
+            }
         }
 
         public override string Texture => TextureRegistry.EmptyTexture;

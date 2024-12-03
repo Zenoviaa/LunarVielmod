@@ -37,6 +37,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.height = 24;
             Item.DamageType = DamageClass.Ranged;
             Item.rare = ItemRarityID.Blue;
+            Item.shoot = ProjectileID.PurificationPowder; // For some reason, all the guns in the vanilla source have this.
+            Item.shootSpeed = 10f; // The speed of the projectile (measured in pixels per frame.) This value equivalent to Handgun
+            Item.useAmmo = AmmoID.Bullet; //
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -162,24 +165,26 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 
         public override void Fire(Player player, Vector2 position, Vector2 velocity, int damage, float knockback)
         {
-            base.Fire(player, position, velocity, damage, knockback);
-            float spread = 0.4f;
-            for (int k = 0; k < 7; k++)
+            base.Fire(player, position, velocity, damage, knockback);    
+            if(player.PickAmmo(Item, out int projToShoot, out float speed, out int newDamage, out float knockBack, out int usedAmmoItemId))
             {
-                Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
-            }
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
-            Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, ProjectileID.Bullet, damage, knockback, player.whoAmI);
-
-            int Sound = Main.rand.Next(1, 3);
-            if (Sound == 1)
-            {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol"), position);
-            }
-            else
-            {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3"), position);
+                float spread = 0.4f;
+                for (int k = 0; k < 7; k++)
+                {
+                    Vector2 newDirection = velocity.RotatedByRandom(spread);
+                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                }
+                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+                Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, projToShoot, damage, knockback, player.whoAmI);
+                int Sound = Main.rand.Next(1, 3);
+                if (Sound == 1)
+                {
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol"), position);
+                }
+                else
+                {
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3"), position);
+                }
             }
         }
     }
@@ -215,29 +220,28 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void Fire(Player player, Vector2 position, Vector2 velocity, int damage, float knockback)
         {
             base.Fire(player, position, velocity, damage, knockback);
-            //Treat this like a normal shoot function
-            float spread = 0.4f;
-            for (int k = 0; k < 7; k++)
-            {
-                Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
-            }
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
-
-            player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int d, out float knockBack, out int useAmmoItemId, true);
-            Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, projToShoot, damage, knockback, player.whoAmI);
-
-
-            int Sound = Main.rand.Next(1, 3);
-            if (Sound == 1)
-            {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol"), position);
-            }
-            else
-            {
-                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3");
-                soundStyle.PitchVariance = 0.5f;
-                SoundEngine.PlaySound(soundStyle, position);
+            if (player.PickAmmo(Item, out int projToShoot, out float speed, out int newDamage, out float knockBack, out int usedAmmoItemId))
+            {            
+                //Treat this like a normal shoot function
+                float spread = 0.4f;
+                for (int k = 0; k < 7; k++)
+                {
+                    Vector2 newDirection = velocity.RotatedByRandom(spread);
+                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                }
+                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+                Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, projToShoot, damage, knockback, player.whoAmI);
+                int Sound = Main.rand.Next(1, 3);
+                if (Sound == 1)
+                {
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol"), position);
+                }
+                else
+                {
+                    SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3");
+                    soundStyle.PitchVariance = 0.5f;
+                    SoundEngine.PlaySound(soundStyle, position);
+                }
             }
         }
     }
@@ -378,6 +382,8 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void Fire(Player player, Vector2 position, Vector2 velocity, int damage, float knockback)
         {
             base.Fire(player, position, velocity, damage, knockback);
+            if (!player.PickAmmo(Item, out int projToShoot, out float speed, out int newDamage, out float knockBack, out int usedAmmoItemId))
+                return;
             float spread = 0.4f;
             for (int k = 0; k < 7; k++)
             {
@@ -385,8 +391,6 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.DarkBlue, Main.rand.NextFloat(0.2f, 0.5f));
             }
             Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.Blue, 1);
-            player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int d, out float knockBack, out int useAmmoItemId, true);
-
             projToShoot = Main.rand.Next(new int[] { ModContent.ProjectileType<FroBall2>(), ModContent.ProjectileType<FroBall1>() });
             Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, projToShoot, damage, knockback, player.whoAmI);
 
@@ -467,7 +471,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void Fire(Player player, Vector2 position, Vector2 velocity, int damage, float knockback)
         {
             base.Fire(player, position, velocity, damage, knockback);
-            float rot = velocity.ToRotation();
+            if (!player.PickAmmo(Item, out int projToShoot, out float speed, out int newDamage, out float knockBack, out int usedAmmoItemId))
+                return;
+                float rot = velocity.ToRotation();
             float spread = 0.4f;
 
             Vector2 offset = new Vector2(1.5f, -0.1f * player.direction).RotatedBy(rot);
@@ -501,8 +507,6 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 // Rotate the velocity randomly by 30 degrees at max.
                 Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(7));
                 newVelocity *= 1f - Main.rand.NextFloat(0.3f);
-
-                player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int d, out float knockBack, out int useAmmoItemId, true);
                 Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 14, projToShoot, damage, knockback, player.whoAmI);
 
                 
@@ -562,29 +566,30 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void Fire(Player player, Vector2 position, Vector2 velocity, int damage, float knockback)
         {
             base.Fire(player, position, velocity, damage, knockback);
-            float spread = 0.4f;
-            for (int k = 0; k < 4; k++)
+            if (player.PickAmmo(Item, out int projToShoot, out float speed, out int newDamage, out float knockBack, out int usedAmmoItemId))
             {
-                Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.LightCyan, Main.rand.NextFloat(0.2f, 0.5f));
-            }
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.LightCyan, 1);
-            player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int d, out float knockBack, out int useAmmoItemId, true);
+                float spread = 0.4f;
+                for (int k = 0; k < 4; k++)
+                {
+                    Vector2 newDirection = velocity.RotatedByRandom(spread);
+                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.LightCyan, Main.rand.NextFloat(0.2f, 0.5f));
+                }
+                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.LightCyan, 1);
+                int numProjectiles = Main.rand.Next(1, 2);
+                for (int p = 0; p < numProjectiles; p++)
+                {
+                    // Rotate the velocity randomly by 30 degrees at max.
+                    Vector2 vel = velocity * 8;
+                    Vector2 newVelocity = vel.RotatedByRandom(MathHelper.ToRadians(6));
+                    newVelocity *= 1f - Main.rand.NextFloat(0.3f);
+                    Projectile.NewProjectileDirect(player.GetSource_FromThis(), position, newVelocity,
+                        ModContent.ProjectileType<ElectrifyingProj>(), damage, knockback, player.whoAmI);
+                }
 
-            int numProjectiles = Main.rand.Next(1, 2);
-            for (int p = 0; p < numProjectiles; p++)
-            {
-                // Rotate the velocity randomly by 30 degrees at max.
-                Vector2 vel = velocity * 8;
-                Vector2 newVelocity = vel.RotatedByRandom(MathHelper.ToRadians(6));
-                newVelocity *= 1f - Main.rand.NextFloat(0.3f);
-                Projectile.NewProjectileDirect(player.GetSource_FromThis(), position, newVelocity,
-                    ModContent.ProjectileType<ElectrifyingProj>(), damage, knockback, player.whoAmI);
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew9");
+                soundStyle.PitchVariance = 0.5f;
+                SoundEngine.PlaySound(soundStyle, position);
             }
-
-            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew9");
-            soundStyle.PitchVariance = 0.5f;
-            SoundEngine.PlaySound(soundStyle, position);
         }
     }
 
@@ -618,19 +623,21 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void Fire(Player player, Vector2 position, Vector2 velocity, int damage, float knockback)
         {
             base.Fire(player, position, velocity, damage, knockback);
-            float spread = 0.4f;
-            for (int k = 0; k < 7; k++)
+            if (player.PickAmmo(Item, out int projToShoot, out float speed, out int newDamage, out float knockBack, out int usedAmmoItemId))
             {
-                Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
-            }
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
-            player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int d, out float knockBack, out int useAmmoItemId, true);
-            Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, ModContent.ProjectileType<RavestblastProj>(), damage, knockback, player.whoAmI);
+                float spread = 0.4f;
+                for (int k = 0; k < 7; k++)
+                {
+                    Vector2 newDirection = velocity.RotatedByRandom(spread);
+                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                }
+                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+                Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, ModContent.ProjectileType<RavestblastProj>(), damage, knockback, player.whoAmI);
 
-            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunRaving");
-            soundStyle.PitchVariance = 0.5f;
-            SoundEngine.PlaySound(soundStyle, position);
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunRaving");
+                soundStyle.PitchVariance = 0.5f;
+                SoundEngine.PlaySound(soundStyle, position);
+            }
         }
     }
 
@@ -883,26 +890,28 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void Fire(Player player, Vector2 position, Vector2 velocity, int damage, float knockback)
         {
             base.Fire(player, position, velocity, damage, knockback);
-            //Treat this like a normal shoot function
-            float spread = 0.4f;
-            for (int k = 0; k < 14; k++)
+            if (player.PickAmmo(Item, out int projToShoot, out float speed, out int newDamage, out float knockBack, out int usedAmmoItemId))
             {
-                Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.White, Main.rand.NextFloat(0.4f, 0.8f));
-            }
+                //Treat this like a normal shoot function
+                float spread = 0.4f;
+                for (int k = 0; k < 14; k++)
+                {
+                    Vector2 newDirection = velocity.RotatedByRandom(spread);
+                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.White, Main.rand.NextFloat(0.4f, 0.8f));
+                }
 
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.White, 1);
-            player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int d, out float knockBack, out int useAmmoItemId, true);
-            for (int i = 0; i < Main.rand.Next(3, 7); i++)
-            {
-                Vector2 vel = velocity * 16;
-                vel = vel.RotatedByRandom(MathHelper.PiOver4 / 2);
-                Projectile.NewProjectile(player.GetSource_FromThis(), position, vel,
-                    projToShoot, damage, knockback, player.whoAmI);
-            }
+                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.White, 1);
+                for (int i = 0; i < Main.rand.Next(3, 7); i++)
+                {
+                    Vector2 vel = velocity * 16;
+                    vel = vel.RotatedByRandom(MathHelper.PiOver4 / 2);
+                    Projectile.NewProjectile(player.GetSource_FromThis(), position, vel,
+                        projToShoot, damage, knockback, player.whoAmI);
+                }
 
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(position, 1024f, 16f);
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/gun1"), position);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(position, 1024f, 16f);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/gun1"), position);
+            }
         }
     }
 
@@ -1054,40 +1063,40 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         {
             base.Fire(player, position, velocity, damage, knockback);
             GunPlayer gunPlayer = player.GetModPlayer<GunPlayer>();
-            if (gunPlayer.HeldLeftHandGun == this)
+            if (player.PickAmmo(Item, out int projToShoot, out float speed, out int newDamage, out float knockBack, out int usedAmmoItemId))
             {
-                //Treat this like a normal shoot function
-                float spread = 0.4f;
-                for (int k = 0; k < 7; k++)
+                if (gunPlayer.HeldLeftHandGun == this)
                 {
-                    Vector2 newDirection = velocity.RotatedByRandom(spread);
-                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Black, Main.rand.NextFloat(0.2f, 0.5f));
+                    //Treat this like a normal shoot function
+                    float spread = 0.4f;
+                    for (int k = 0; k < 7; k++)
+                    {
+                        Vector2 newDirection = velocity.RotatedByRandom(spread);
+                        Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Black, Main.rand.NextFloat(0.2f, 0.5f));
+                    }
+                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.Black, 1);
+                    Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, ModContent.ProjectileType<PINKX>(), damage, knockback, player.whoAmI);
+
+                    SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunBlasting");
+                    soundStyle.PitchVariance = 0.5f;
+                    SoundEngine.PlaySound(soundStyle);
                 }
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.Black, 1);
-
-                player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int d, out float knockBack, out int useAmmoItemId, true);
-                Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, ModContent.ProjectileType<PINKX>(), damage, knockback, player.whoAmI);
-
-                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunBlasting");
-                soundStyle.PitchVariance = 0.5f;
-                SoundEngine.PlaySound(soundStyle);
-            }
-            else
-            {
-                float spread = 0.4f;
-                for (int k = 0; k < 7; k++)
+                else
                 {
-                    Vector2 newDirection = velocity.RotatedByRandom(spread);
-                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Black, Main.rand.NextFloat(0.2f, 0.5f));
+                    float spread = 0.4f;
+                    for (int k = 0; k < 7; k++)
+                    {
+                        Vector2 newDirection = velocity.RotatedByRandom(spread);
+                        Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Black, Main.rand.NextFloat(0.2f, 0.5f));
+                    }
+                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.Black, 1);
+                    Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, ModContent.ProjectileType<BLACKX>(), damage, knockBack, player.whoAmI);
+
+
+                    SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunBlasting");
+                    soundStyle.PitchVariance = 0.5f;
+                    SoundEngine.PlaySound(soundStyle);
                 }
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.Black, 1);
-                player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int d, out float knockBack, out int useAmmoItemId, true);
-                Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, ModContent.ProjectileType<BLACKX>(), damage, knockBack, player.whoAmI);
-
-
-                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunBlasting");
-                soundStyle.PitchVariance = 0.5f;
-                SoundEngine.PlaySound(soundStyle);
             }
         }
     }
@@ -1120,21 +1129,22 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void Fire(Player player, Vector2 position, Vector2 velocity, int damage, float knockback)
         {
             base.Fire(player, position, velocity, damage, knockback);
-            //Treat this like a normal shoot function
-            float spread = 0.4f;
-            for (int k = 0; k < 7; k++)
+            if (player.PickAmmo(Item, out int projToShoot, out float speed, out int newDamage, out float knockBack, out int usedAmmoItemId))
             {
-                Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Turquoise, Main.rand.NextFloat(0.2f, 0.5f));
+                //Treat this like a normal shoot function
+                float spread = 0.4f;
+                for (int k = 0; k < 7; k++)
+                {
+                    Vector2 newDirection = velocity.RotatedByRandom(spread);
+                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Turquoise, Main.rand.NextFloat(0.2f, 0.5f));
+                }
+                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.Turquoise, 1);
+                Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, ModContent.ProjectileType<NLUX>(), damage, knockback, player.whoAmI);
+
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunBlasting");
+                soundStyle.PitchVariance = 0.5f;
+                SoundEngine.PlaySound(soundStyle);
             }
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.Turquoise, 1);
-
-            player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int d, out float knockBack, out int useAmmoItemId, true);
-            Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, ModContent.ProjectileType<NLUX>(), damage, knockback, player.whoAmI);
-
-            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunBlasting");
-            soundStyle.PitchVariance = 0.5f;
-            SoundEngine.PlaySound(soundStyle);
         }
     }
 
@@ -1165,27 +1175,29 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void Fire(Player player, Vector2 position, Vector2 velocity, int damage, float knockback)
         {
             base.Fire(player, position, velocity, damage, knockback);
-            float spread = 0.4f;
-            for (int k = 0; k < 7; k++)
+            if (player.PickAmmo(Item, out int projToShoot, out float speed, out int newDamage, out float knockBack, out int usedAmmoItemId))
             {
-                Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
-            }
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.Red, 1);
-            player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int d, out float knockBack, out int useAmmoItemId, true);
-            Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, projToShoot, damage, knockBack, player.whoAmI);
+                float spread = 0.4f;
+                for (int k = 0; k < 7; k++)
+                {
+                    Vector2 newDirection = velocity.RotatedByRandom(spread);
+                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                }
+                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.Red, 1);
+                Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, projToShoot, damage, knockBack, player.whoAmI);
 
 
-            int Sound = Main.rand.Next(1, 3);
-            if (Sound == 1)
-            {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol"), position);
-            }
-            else
-            {
-                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3");
-                soundStyle.PitchVariance = 0.5f;
-                SoundEngine.PlaySound(soundStyle, position);
+                int Sound = Main.rand.Next(1, 3);
+                if (Sound == 1)
+                {
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol"), position);
+                }
+                else
+                {
+                    SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3");
+                    soundStyle.PitchVariance = 0.5f;
+                    SoundEngine.PlaySound(soundStyle, position);
+                }
             }
         }
     }
@@ -1245,49 +1257,51 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void Fire(Player player, Vector2 position, Vector2 velocity, int damage, float knockback)
         {
             base.Fire(player, position, velocity, damage, knockback);
-            //Treat this like a normal shoot function
-            float spread = 0.4f;
-            for (int k = 0; k < 14; k++)
+            if (player.PickAmmo(Item, out int projToShoot, out float speed, out int newDamage, out float knockBack, out int usedAmmoItemId))
             {
-                Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.LightGoldenrodYellow, Main.rand.NextFloat(0.4f, 0.8f));
-            }
+                //Treat this like a normal shoot function
+                float spread = 0.4f;
+                for (int k = 0; k < 14; k++)
+                {
+                    Vector2 newDirection = velocity.RotatedByRandom(spread);
+                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.LightGoldenrodYellow, Main.rand.NextFloat(0.4f, 0.8f));
+                }
 
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
-            player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int d, out float knockBack, out int useAmmoItemId, true);
-            Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, projToShoot, damage, knockback, player.whoAmI);
-            player.GetModPlayer<MyPlayer>().ShakeAtPosition(position, 1024f, 16f);
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/gun1"), position);
-
-
-            float rot = velocity.ToRotation();
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3"), position);
-
-            Vector2 offset = new Vector2(2, -0.1f * player.direction).RotatedBy(rot);
-            for (int k = 0; k < 15; k++)
-            {
-                Vector2 direction2 = offset.RotatedByRandom(spread);
-
-                Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction2 * Main.rand.NextFloat(8), 125, new Color(150, 80, 40), Main.rand.NextFloat(0.2f, 0.5f));
-            }
+                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+                Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, projToShoot, damage, knockback, player.whoAmI);
+                player.GetModPlayer<MyPlayer>().ShakeAtPosition(position, 1024f, 16f);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/gun1"), position);
 
 
-            int numProjectiles = Main.rand.Next(10, 30);
-            for (int p = 0; p < numProjectiles; p++)
-            {
+                float rot = velocity.ToRotation();
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3"), position);
+
+                Vector2 offset = new Vector2(2, -0.1f * player.direction).RotatedBy(rot);
+                for (int k = 0; k < 15; k++)
+                {
+                    Vector2 direction2 = offset.RotatedByRandom(spread);
+
+                    Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction2 * Main.rand.NextFloat(8), 125, new Color(150, 80, 40), Main.rand.NextFloat(0.2f, 0.5f));
+                }
 
 
-                Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
-                Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
+                int numProjectiles = Main.rand.Next(10, 30);
+                for (int p = 0; p < numProjectiles; p++)
+                {
+
+
+                    Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
+                    Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
 
 
 
-                // Rotate the velocity randomly by 30 degrees at max.
-                Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(25));
-                newVelocity *= 1f - Main.rand.NextFloat(0.3f);
+                    // Rotate the velocity randomly by 30 degrees at max.
+                    Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(25));
+                    newVelocity *= 1f - Main.rand.NextFloat(0.3f);
 
 
-                Projectile.NewProjectile(player.GetSource_FromThis(), position, newVelocity * 12, projToShoot, damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(player.GetSource_FromThis(), position, newVelocity * 12, projToShoot, damage, knockback, player.whoAmI);
+                }
             }
         }
     }

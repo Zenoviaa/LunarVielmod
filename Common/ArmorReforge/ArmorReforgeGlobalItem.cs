@@ -112,7 +112,8 @@ namespace Stellamod.Common.ArmorReforge
                 case ArmorReforgeType.Necromanced:
                     player.maxMinions += 1;
                     player.GetDamage(DamageClass.Summon) -= 0.1f;
-                    player.maxTurrets -= 1;
+                    if(player.maxTurrets > 0)
+                        player.maxTurrets -= 1;
                     break;
                 case ArmorReforgeType.RangedHolsting:
                     player.GetDamage(DamageClass.Ranged) += 0.1f;
