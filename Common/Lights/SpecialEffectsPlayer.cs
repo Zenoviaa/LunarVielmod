@@ -100,8 +100,6 @@ namespace Stellamod.Common.Lights
 
         private void TogglePaletteShader(string name, bool isActive)
         {
-            if (Main.netMode == NetmodeID.Server)
-                return;
 
             if (isActive)
             {
@@ -120,6 +118,9 @@ namespace Stellamod.Common.Lights
 
         private void SpecialBiomeEffects()
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
             LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
             ScreenShaderData screenShaderData;
             bool abyssPaletteActive = MyPlayer.ZoneAbyss || MyPlayer.ZoneAurelus || MyPlayer.ZoneMechanics || MyPlayer.ZoneIshtar;
