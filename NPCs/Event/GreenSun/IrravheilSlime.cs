@@ -142,7 +142,7 @@ namespace Stellamod.NPCs.Event.GreenSun
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (spawnInfo.Player.ZoneAcid() && EventWorld.GreenSun) ? 0.8f : 0f;
+            return 0f;
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)

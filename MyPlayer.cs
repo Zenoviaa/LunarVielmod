@@ -721,19 +721,19 @@ namespace Stellamod
             Player.ManageSpecialBiomeVisuals("Stellamod:VeilSky", ZoneVeil);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
 
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:GreenSunSky", EventWorld.GreenSun && ZoneAcid);
+       //     base.Player.ManageSpecialBiomeVisuals("Stellamod:GreenSunSky", EventWorld.GreenSun && ZoneAcid);
 
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosD", EventWorld.ChaosD && Player.ZoneBeach);
+           // base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosD", EventWorld.ChaosD && Player.ZoneBeach);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Veil", ZoneVeil);
 
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean && (Player.ZoneOverworldHeight || Player.ZoneSkyHeight));
+            //base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean && (Player.ZoneOverworldHeight || Player.ZoneSkyHeight));
             //base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Illuria", ZoneIlluria);
         //    base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Lab", ZoneLab);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Ishtar", ZoneIshtar);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Veriplant", ZoneVeri);
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
+         //   base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Daedussss", NPC.AnyNPCs(ModContent.NPCType<DaedusR>()));
 
 
@@ -1340,12 +1340,6 @@ namespace Stellamod
                 }
             }
 
-
-            if (EventWorld.GintzingBoss)
-            {
-                player.AddBuff(ModContent.BuffType<Gintzingwinds>(), 100);
-            }
-
             if (Player.HasBuff<Gintzingwinds>())
             {
                 if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true)
@@ -1890,7 +1884,9 @@ namespace Stellamod
                 }
             }
 
-            bool spawnAuroreanParticles = EventWorld.Aurorean && (player.ZoneOverworldHeight || player.ZoneSkyHeight);
+            //  bool spawnAuroreanParticles = EventWorld.Aurorean && (player.ZoneOverworldHeight || player.ZoneSkyHeight);
+
+            bool spawnAuroreanParticles = false;
             if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && spawnAuroreanParticles)
             {
                 Main.windPhysicsStrength = 50;
@@ -2016,7 +2012,8 @@ namespace Stellamod
 
 
 
-            bool spawnAuroreanParticles2 = EventWorld.GreenSun && ZoneAcid && (player.ZoneOverworldHeight || player.ZoneSkyHeight);
+            //bool spawnAuroreanParticles2 = EventWorld.GreenSun && ZoneAcid && (player.ZoneOverworldHeight || player.ZoneSkyHeight);
+            bool spawnAuroreanParticles2 = false;
             if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && spawnAuroreanParticles2)
             {
                 Main.windPhysicsStrength = 50;

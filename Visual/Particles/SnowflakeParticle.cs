@@ -19,6 +19,7 @@ namespace Stellamod.Visual.Particles
         public override void OnSpawn()
         {
             Frame = new Rectangle(0, 0, FrameWidth, FrameHeight);
+            Scale *= 0.12f;
         }
 
         public override void Update()

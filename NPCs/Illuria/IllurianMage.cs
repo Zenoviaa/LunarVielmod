@@ -291,7 +291,6 @@ namespace Stellamod.NPCs.Illuria
             }
             if (NPC.life <= 0)
             {
-                EventWorld.GintzeKills += 1;
                 for (int i = 0; i < 20; i++)
                 {
                     int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Copper, 0f, -2f, 180, default, .6f);

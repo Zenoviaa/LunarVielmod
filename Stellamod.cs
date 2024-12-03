@@ -144,8 +144,7 @@ namespace Stellamod
                 Filters.Scene["Stellamod:Caeva"] = new Filter(new CaevaScreenShaderData("FilterMiniTower").UseColor(0.1f, 0.6f, 0.65f).UseOpacity(0.375f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Illuria"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.4f, -0.3f, 1.3f).UseOpacity(0.275f), EffectPriority.Medium);
 
-                Filters.Scene["Stellamod:ChaosD"] = new Filter(new ChaosDScreenShaderData("FilterMiniTower").UseColor(0.1f, 0.7f, 0.1f).UseOpacity(0.375f), EffectPriority.Medium);
-                Filters.Scene["Stellamod:ChaosT"] = new Filter(new ChaosTScreenShaderData("FilterMiniTower").UseColor(0.6f, 0.2f, 0.75f).UseOpacity(0.375f), EffectPriority.Medium);
+       
                 Filters.Scene["Stellamod:Veil"] = new Filter(new ChaosPScreenShaderData("FilterMiniTower").UseColor(0.7f, 0.1f, 0.2f).UseOpacity(0.275f), EffectPriority.VeryHigh);
 
                 Ref<Effect> screenRef = new Ref<Effect>(ModContent.Request<Effect>("Stellamod/Effects/Shockwave", AssetRequestMode.ImmediateLoad).Value); // The path to the compiled shader file.

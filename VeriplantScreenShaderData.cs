@@ -16,19 +16,6 @@ namespace Stellamod
 		private void UpdateMirageIndex()
 		{
 	
-			if (EventWorld.Gintzing)
-			{
-				return;
-			}
-			GintzeIndex = -1;
-			for (int i = 0; i < Main.npc.Length; i++)
-			{
-				if (EventWorld.Gintzing)
-				{
-					GintzeIndex = i;
-					break;
-				}
-			}
 		}
 
 		public override void Apply()

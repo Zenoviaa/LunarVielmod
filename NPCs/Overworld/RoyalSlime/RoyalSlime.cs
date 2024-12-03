@@ -51,8 +51,6 @@ namespace Stellamod.NPCs.Overworld.RoyalSlime
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if(EventWorld.Gintzing)
-                return 0;
             return SpawnCondition.OverworldDaySlime.Chance * 0.02f;
         }
 

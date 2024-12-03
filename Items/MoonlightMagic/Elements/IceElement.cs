@@ -8,6 +8,8 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.MoonlightMagic.Elements
@@ -23,7 +25,13 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         public override void SetDefaults()
         {
             base.SetDefaults();
+            SoundStyle castStyle = SoundID.Item28;
+            castStyle.PitchVariance = 0.25f;
+            CastSound = castStyle;
 
+            SoundStyle hitStyle = SoundID.Item50;
+            hitStyle.PitchVariance = 0.25f;
+            HitSound = hitStyle;
         }
 
         public override bool DrawTextShader(SpriteBatch spriteBatch, Item item, DrawableTooltipLine line, ref int yOffset)
@@ -71,16 +79,21 @@ namespace Stellamod.Items.MoonlightMagic.Elements
 
                 if (Main.rand.NextBool(2))
                 {
+                    Dust.NewDustPerfect(spawnPoint, DustID.Snow, velocity);
+                }
+
+                if (Main.rand.NextBool(2))
+                {
                     Color color = Color.White;
                     color.A = 0;
-                    Particle.NewBlackParticle<WaterSparkleParticle>(spawnPoint, velocity, color);
+                    Particle.NewBlackParticle<SnowflakeParticle>(spawnPoint, velocity, color);
                 }
                 else
                 {
                     Color color = ColorFunctions.IceLightBlue;
                     color.A = 0;
                     Particle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color);
-                    Particle.NewBlackParticle<WaterSparkleParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
+                    Particle.NewBlackParticle<SnowflakeParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
                 }
             }
 
@@ -94,7 +107,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
                 {
                     Color color = ColorFunctions.IceLightBlue;
                     color.A = 0;
-                    Particle.NewBlackParticle<SparkleIceParticle>(spawnPoint, velocity, color);
+                    Particle.NewBlackParticle<SnowflakeParticle>(spawnPoint, velocity, color);
                 }
                 else
                 {
@@ -102,7 +115,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
                     Color color = Color.White;
                     color.A = 0;
                     Particle.NewBlackParticle<GlowParticle>(spawnPoint, velocity * 0.2f, color);
-                    Particle.NewBlackParticle<WaterSparkleParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
+                    Particle.NewBlackParticle<SnowflakeParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
                 }
             }
         }
@@ -122,14 +135,16 @@ namespace Stellamod.Items.MoonlightMagic.Elements
 
                     Color color = Color.White;
                     color.A = 0;
+
+
                     if (Main.rand.NextBool(7))
                     {
-                        Particle.NewBlackParticle<WaterSparkleParticle>(spawnPoint, velocity, color);
+                        Dust.NewDustPerfect(spawnPoint, DustID.Snow, velocity);
                     }
 
-                    if (Main.rand.NextBool(16))
+                    if (Main.rand.NextBool(7))
                     {
-                        Particle.NewBlackParticle<SparkleIceParticle>(spawnPoint, velocity, color);
+                        Particle.NewBlackParticle<SnowflakeParticle>(spawnPoint, velocity, color);
                     }
                 }
             }
@@ -137,133 +152,73 @@ namespace Stellamod.Items.MoonlightMagic.Elements
 
         private Color ColorFunction(float completionRatio)
         {
-            Color c = Color.Blue;
-            switch (trailingMode)
-            {
-                default:
-                case 0:
-                    break;
-                case 1:
-                    c.A = 0;
-                    break;
-                case 2:
-                    c.A = 0;
-                    break;
-            }
-
+            Color endColor = Color.Lerp(Color.SeaGreen, Color.LightBlue, VectorHelper.Osc(0f, 1f, speed: 3f));
+            endColor = Color.Lerp(Color.White, endColor, VectorHelper.Osc(0f, 1f, speed: 3f, offset: 4));
+             Color c = Color.Lerp(Color.White, endColor, completionRatio);
+            
             return c;
         }
-
         private float WidthFunction(float completionRatio)
         {
-            float width = 16 * 1.3f * MagicProj.ScaleMultiplier;
+            float width = 16 * 4f * MagicProj.ScaleMultiplier;
             completionRatio = Easing.SpikeOutCirc(completionRatio);
-            switch (trailingMode)
-            {
-                default:
-                case 0:
-                    return MathHelper.Lerp(0, width, completionRatio);
-                case 1:
-                    return MathHelper.Lerp(0, width, completionRatio);
-                case 2:
-                    return MathHelper.Lerp(0, width + 12, completionRatio);
-            }
+            return MathHelper.Lerp(0, width, completionRatio);
         }
 
 
         public override void DrawForm(SpriteBatch spriteBatch, Texture2D formTexture, Vector2 drawPos, Color drawColor, Color lightColor, float drawRotation, float drawScale)
         {
-            var shader = PixelMagicSparkleWaterShader.Instance;
-            shader.NoiseTexture = TrailRegistry.Clouds3;
-            shader.OutlineTexture = TrailRegistry.DottedTrailOutline;
-            shader.PrimaryColor = Color.Lerp(Color.White, new Color(255, 207, 79), 0.5f);
-            shader.NoiseColor = new Color(92, 100, 255);
-            shader.OutlineColor = Color.Black;
-            shader.BlendState = BlendState.Additive;
-            shader.SamplerState = SamplerState.PointWrap;
-            shader.Speed = 0.8f;
-            shader.Distortion = 0.5f;
-            shader.Power = 0.5f;
-            shader.Threshold = 0.25f;
-            shader.Apply();
-
-            float p = MathUtil.Osc(0f, 1f, speed: 3);
-            drawColor = Color.Lerp(ColorFunctions.IceLightBlue, Color.LightGoldenrodYellow, p);
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, default, default, default, shader.Effect, Main.GameViewMatrix.ZoomMatrix);
-
-            base.DrawForm(spriteBatch, formTexture, drawPos, drawColor, lightColor, drawRotation, drawScale * 2f);
-
-            spriteBatch.End();
-            spriteBatch.Begin();
             base.DrawForm(spriteBatch, formTexture, drawPos, drawColor, lightColor, drawRotation, drawScale);
+            spriteBatch.Restart(blendState: BlendState.Additive);
+         
+            for(float f = 0f; f <1f; f+= 0.1f)
+            {
+                float rot = f * MathHelper.ToRadians(360);
+                rot += Main.GlobalTimeWrappedHourly * 0.05f;
+                Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(4f, 7f);
+                base.DrawForm(spriteBatch, formTexture, drawPos  + offset, drawColor * 0.3f, lightColor, drawRotation, drawScale);
+            }
+          
+            spriteBatch.RestartDefaults();
         }
 
         private void DrawMainShader()
         {
-            trailingMode = 0;
-            var shader = MagicSparkleWaterShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.DottedTrail;
-            shader.NoiseTexture = TrailRegistry.CloudsSmall;
-            shader.OutlineTexture = TrailRegistry.DottedTrailOutline;
-            shader.PrimaryColor = Color.Lerp(Color.White, new Color(255, 207, 79), 0.5f);
-            shader.NoiseColor = new Color(92, 100, 255);
-            shader.OutlineColor = Color.Black;
-            shader.BlendState = BlendState.Additive;
-            shader.SamplerState = SamplerState.PointWrap;
-            shader.Speed = 0.8f;
-            shader.Distortion = 0.25f;
-            shader.Power = 0.5f;
-            shader.Threshold = 0.25f;
+            var shader = MagicIceShader.Instance;
+            shader.TrailTexture = TrailRegistry.IceTrailFlat;
+            shader.MorphTexture = TrailRegistry.IceTrailSpiked;
+            shader.DistortingTexture = TrailRegistry.CrystalNoise;
+            shader.BlendState = BlendState.AlphaBlend;
+            shader.TrailColor = Color.White;
+            shader.Speed = Main.GlobalTimeWrappedHourly * 0.001f;
+            shader.Speed += Projectile.velocity.Length() * 0.01f;
+            shader.Distortion = 0.015f;
+
+
             //This just applis the shader changes
             TrailDrawer.Draw(Main.spriteBatch, MagicProj.OldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
+            shader = MagicIceShader.Instance;
+            shader.TrailTexture = TrailRegistry.IceTrailFlat;
+            shader.MorphTexture = TrailRegistry.IceTrailSpiked;
+            shader.DistortingTexture = TrailRegistry.CrystalNoise;
+            shader.BlendState = BlendState.Additive;
+            shader.TrailColor = Color.White;
+            shader.GlowColor = Color.Blue;
+            shader.Speed = Main.GlobalTimeWrappedHourly * 0.001f;
+            shader.Speed += Projectile.velocity.Length() * 0.01f;
+            shader.Distortion = 0.015f;
 
-        }
 
-        private void DrawOutlineShader()
-        {
-            trailingMode = 1;
-            var shader = MagicRadianceOutlineShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.DottedTrailOutline;
-            shader.NoiseTexture = TrailRegistry.CloudsSmall;
-
-            Color c = new Color(38, 204, 255);
-            shader.PrimaryColor = c;
-            shader.NoiseColor = c;
-            shader.BlendState = BlendState.AlphaBlend;
-            shader.SamplerState = SamplerState.PointWrap;
-            shader.Speed = 0.8f;
-            shader.Distortion = 0.25f;
-            shader.Power = 2.5f;
-
+            //This just applis the shader changes
             TrailDrawer.Draw(Main.spriteBatch, MagicProj.OldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
+       
         }
 
-        private void DrawOutlineShader2()
-        {
-            trailingMode = 2;
-            var shader = MagicRadianceOutlineShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.DottedTrailOutline;
-            shader.NoiseTexture = TrailRegistry.CloudsSmall;
-
-            Color c = Color.White;
-            shader.PrimaryColor = c;
-            shader.NoiseColor = c;
-            shader.BlendState = BlendState.AlphaBlend;
-            shader.SamplerState = SamplerState.PointWrap;
-            shader.Speed = 0.8f;
-            shader.Distortion = 0.25f;
-            shader.Power = 3.5f;
-
-            TrailDrawer.Draw(Main.spriteBatch, MagicProj.OldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
-        }
 
         public override void DrawTrail()
         {
             base.DrawTrail();
             DrawMainShader();
-            DrawOutlineShader();
-            DrawOutlineShader2();
         }
     }
 }

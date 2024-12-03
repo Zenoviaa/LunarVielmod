@@ -281,7 +281,6 @@ namespace Stellamod.NPCs.Town
 			}
 			if (NPC.life <= 0)
 			{
-				EventWorld.GintzeKills += 1;
 				for (int i = 0; i < 20; i++)
 				{
 					int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Copper, 0f, -2f, 180, default, .6f);
@@ -454,7 +453,6 @@ namespace Stellamod.NPCs.Town
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), 0, 1, 3));
-			EventWorld.GintzeKills += 1;
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 6, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzeMask>(), 80, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.IronBar, 5, 1, 7));

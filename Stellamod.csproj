@@ -91,6 +91,7 @@
     <None Remove="Effects\CrystalShaders\FirePixel.fx" />
     <None Remove="Effects\CrystalShaders\L.png" />
     <None Remove="Effects\CrystalShaders\LightningBolt.fx" />
+    <None Remove="Effects\CrystalShaders\MagicIce.fx" />
     <None Remove="Effects\CrystalShaders\MagicRoyalMagic.fx" />
     <None Remove="Effects\CrystalShaders\MagicVeil.fx" />
     <None Remove="Effects\CrystalShaders\MagicMothlightDistortion.fx" />

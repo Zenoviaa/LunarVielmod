@@ -40,8 +40,6 @@ namespace Stellamod.NPCs.Overworld.IvythornSlime
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (EventWorld.Gintzing)
-                return 0;
             if (!spawnInfo.Player.ZonePurity)
                 return 0;
             return SpawnCondition.OverworldDaySlime.Chance;

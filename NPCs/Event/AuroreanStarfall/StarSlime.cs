@@ -117,9 +117,7 @@ namespace Stellamod.NPCs.Event.AuroreanStarfall
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (!EventWorld.Aurorean)
-                return 0f;
-            return SpawnCondition.Overworld.Chance;
+            return 0f;
         }
 
         public override void AI()

@@ -159,7 +159,7 @@ namespace Stellamod
                     break;
 
 				case MessageType.STARBLOCK:
-					EventWorld.Aurorean = false;
+					//EventWorld.Aurorean = false;
                     if (Main.netMode == NetmodeID.Server)
                     {
                         NetworkText auroeanStarfallEnded = NetworkText.FromLiteral("The Aurorean Starfall has been blocked! :(");

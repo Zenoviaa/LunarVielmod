@@ -362,8 +362,7 @@ namespace Stellamod.NPCs.Town
                         (int)IrrSpawnWorld.X, (int)IrrSpawnWorld.Y,
                         ModContent.NPCType<IrradiaIdle>());
                 }
-
-                else if (!NPC.AnyNPCs(ModContent.NPCType<GothiviaIdle>()) && !NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()) && !NPC.AnyNPCs(ModContent.NPCType<StartGoth>()) && EventWorld.GreenSun)
+                else if (!NPC.AnyNPCs(ModContent.NPCType<GothiviaIdle>()) && !NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()) && !NPC.AnyNPCs(ModContent.NPCType<StartGoth>()) && DownedBossSystem.downedIrradiaBoss)
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)GothSpawnWorld.X, (int)GothSpawnWorld.Y,

@@ -1,6 +1,4 @@
-﻿
-using Stellamod.WorldG;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Assets.Biomes
@@ -9,8 +7,10 @@ namespace Stellamod.Assets.Biomes
     {
         public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/CountingStars");
         public override SceneEffectPriority Priority => SceneEffectPriority.Event;
-        public override bool IsSceneEffectActive(Player player) => 
-            EventWorld.Aurorean && (player.ZoneOverworldHeight || player.ZoneSkyHeight);
+        public override bool IsSceneEffectActive(Player player)
+        {
+            return false;
+        }
         public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.Find<ModSurfaceBackgroundStyle>("Stellamod/StarbloomBackgroundStyle");
 
         public override void SpecialVisuals(Player player, bool isActive)

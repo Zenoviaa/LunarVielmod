@@ -33,6 +33,7 @@ namespace Stellamod.Items.Consumables
 
         public override bool? UseItem(Player player)/* tModPorter Suggestion: Return null instead of false */
         {
+            /*
             if (EventWorld.Aurorean)
             {
                 if(Main.netMode != NetmodeID.SinglePlayer)
@@ -45,7 +46,7 @@ namespace Stellamod.Items.Consumables
                 }
 
                 EventWorld.Aurorean = false;
-            }
+            }*/
 
             return true;
         }
