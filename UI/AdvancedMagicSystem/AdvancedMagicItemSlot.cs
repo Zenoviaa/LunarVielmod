@@ -15,29 +15,31 @@ namespace Stellamod.UI.AdvancedMagicSystem
     {
         private Item _prevItem;
         private static Item _prevTrashItem;
-        internal Item Item;
         private static int _lastTrashedIndex;
         private readonly int _context;
+        private readonly int _index;
         private readonly float _scale;
+        internal Item Item;
+        
 
-        internal event Action<int> OnEmptyMouseover;
-
-        private int timer = 0;
-
-        internal AdvancedMagicItemSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
+        internal AdvancedMagicItemSlot(int index, int context = ItemSlot.Context.InventoryItem, float scale = 1f)
         {
             _context = context;
-
+            _index = index;
             _scale = scale;
+
+            //Set to Air
             Item = new Item();
             Item.SetDefaults(0);
+         
+            //Set to the backpack item
+            var player = Main.LocalPlayer.GetModPlayer<AdvancedMagicPlayer>();
+            Item = player.Backpack[_index].Clone();
 
             var inventoryBack9 = TextureAssets.InventoryBack9;
             Width.Set(inventoryBack9.Width() * scale, 0f);
             Height.Set(inventoryBack9.Height() * scale, 0f);
         }
-
-        public int index;
 
         /// <summary>
         /// Returns true if this item can be placed into the slot (either empty or a pet item)
@@ -51,11 +53,14 @@ namespace Stellamod.UI.AdvancedMagicSystem
         {
             if (Valid(Main.mouseItem))
             {
-                _prevItem = Item;
+                //_prevItem = Item;
+
 
                 //Handles all the click and hover actions based on the context
                 ItemSlot.Handle(ref Item, _context);
-
+                var player = Main.LocalPlayer.GetModPlayer<AdvancedMagicPlayer>();
+                player.Backpack[_index] = Item.Clone();
+                /*
                 if (_prevTrashItem == null)
                 {
                     _prevTrashItem = Main.LocalPlayer.trashItem;
@@ -74,7 +79,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
                 if (Item != _prevItem)
                 {
                     SaveToBackpack();
-                }
+                }*/
             }
         }
 
@@ -102,24 +107,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
             spriteBatch.Draw(value, rectangle.TopLeft(), null, color2, 0f, default(Vector2), _scale, SpriteEffects.None, 0f);
             //DrawHelper.DrawGlowInInventory(Item, spriteBatch, centerPos, Color.AliceBlue);
             ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale, 32, Color.White);
-
-            if (contains && Item.IsAir)
-            {
-                timer++;
-                OnEmptyMouseover?.Invoke(timer);
-            }
-            else if (!contains)
-            {
-                timer = 0;
-            }
-
             Main.inventoryScale = oldScale;
-        }
-
-        public void SaveToBackpack()
-        {
-            var player = Main.LocalPlayer.GetModPlayer<AdvancedMagicPlayer>();
-            player.Backpack[index] = Item.Clone();
         }
     }
 }

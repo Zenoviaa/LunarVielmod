@@ -44,8 +44,6 @@ namespace Stellamod.UI.AdvancedMagicSystem
             base.OnInitialize();
             Width.Pixels = width;
             Height.Pixels = height;
-            SetPos();
-
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
             _grid.Width.Set(0, 1f);
@@ -65,33 +63,18 @@ namespace Stellamod.UI.AdvancedMagicSystem
             }
         }
 
-        public override void Recalculate()
-        {
-            SetPos();
-            base.Recalculate();
-        }
-
         public void OpenUI(BaseStaff staff)
         {
             _grid.Clear();
             for (int i = 0; i < staff.GetNormalSlotCount(); i++)
             {
-                AdvancedMagicStaffSlot slot = new AdvancedMagicStaffSlot(staff);
-                slot.index = _grid._items.Count;
-                slot.Item = staff.equippedEnchantments[i].Clone();
-                slot.OpenUI();
-                slot.Activate();
+                AdvancedMagicStaffSlot slot = new AdvancedMagicStaffSlot(staff, index: _grid._items.Count, isTimedSlot: false);
                 _grid.Add(slot);
             }
 
             for (int i = 0; i < staff.GetTimedSlotCount(); i++)
             {
-                AdvancedMagicStaffSlot slot = new AdvancedMagicStaffSlot(staff);
-                slot.index = _grid._items.Count;
-                slot.Item = staff.equippedEnchantments[staff.GetNormalSlotCount() + i].Clone();
-                slot.isTimedSlot = true;
-                slot.OpenUI();
-                slot.Activate();
+                AdvancedMagicStaffSlot slot = new AdvancedMagicStaffSlot(staff, index: _grid._items.Count, isTimedSlot: true);
                 _grid.Add(slot);
             }
         }
