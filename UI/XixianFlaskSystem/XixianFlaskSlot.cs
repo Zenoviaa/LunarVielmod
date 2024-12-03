@@ -14,19 +14,14 @@ namespace Stellamod.UI.XixianFlaskSystem
         private Item _prevItem;
         private readonly int _context;
         private readonly float _scale;
-
         internal Item Item;
-        internal Func<Item, bool> ValidItemFunc;
-
-        internal event Action<int> OnEmptyMouseover;
-
-        private int timer = 0;
-
         internal XixianFlaskSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
         {
             _context = context;
             _scale = scale;
 
+            Item = new Item();
+            Item.SetDefaults(0);
             var asset = ModContent.Request<Texture2D>(
                 $"{XixianFlaskUISystem.RootTexturePath}FlaskSlot", ReLogic.Content.AssetRequestMode.ImmediateLoad);
 
@@ -55,32 +50,23 @@ namespace Stellamod.UI.XixianFlaskSystem
             {
                 _prevItem = Item;
                 ItemSlot.Handle(ref Item, _context);
-                UpdateHand();
+                FlaskPlayer flaskPlayer = Main.LocalPlayer.GetModPlayer<FlaskPlayer>();
+                flaskPlayer.Insource = Item.Clone();
             }
         }
 
-        private void GetHand()
+        public void OpenUI()
         {
             FlaskPlayer flaskPlayer = Main.LocalPlayer.GetModPlayer<FlaskPlayer>();
             Item = flaskPlayer.Insource.Clone();
         }
 
-        private void UpdateHand()
-        {
-            FlaskPlayer flaskPlayer = Main.LocalPlayer.GetModPlayer<FlaskPlayer>();
-            flaskPlayer.Insource = Item.Clone();
-        }
-
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            if (Item == null)
-                GetHand();
-
             float oldScale = Main.inventoryScale;
             Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();
             bool contains = ContainsPoint(Main.MouseScreen);
-            //   Console.WriteLine(rectangle.Width);
             if (contains && !PlayerInput.IgnoreMouseInterface)
             {
                 Main.LocalPlayer.mouseInterface = true;
@@ -97,18 +83,6 @@ namespace Stellamod.UI.XixianFlaskSystem
             spriteBatch.Draw(backingTexture, rectangle.TopLeft(), null, color2, 0f, default(Vector2), _scale, SpriteEffects.None, 0f);
 
             ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale, 32, Color.White);
-
-            //ItemSlot.Draw(spriteBatch, ref Item, _context, centerPos);
-            if (contains && Item.IsAir)
-            {
-                timer++;
-                OnEmptyMouseover?.Invoke(timer);
-            }
-            else if (!contains)
-            {
-                timer = 0;
-            }
-
             Main.inventoryScale = oldScale;
         }
     }

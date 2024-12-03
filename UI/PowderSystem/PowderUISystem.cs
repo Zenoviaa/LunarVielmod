@@ -38,11 +38,6 @@ namespace Stellamod.UI.PowderSystem
             }
         }
 
-        internal void Recalculate()
-        {
-            powderUIState?.powderUI?.Recalculate();
-        }
-
         internal void ToggleUI()
         {
             if (_userInterface.CurrentState != null)
@@ -58,7 +53,7 @@ namespace Stellamod.UI.PowderSystem
         internal void OpenUI()
         {
             //Set State
-            Recalculate();
+            powderUIState.powderUI.OpenUI(Card);
             _userInterface.SetState(powderUIState);
         }
 

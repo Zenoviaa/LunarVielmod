@@ -54,6 +54,7 @@ namespace Stellamod.UI.XixianFlaskSystem
         internal void OpenUI()
         {
             //Set State
+            xixianFlaskUIState.xixianFlaskUI.slot.OpenUI();
             _userInterface.SetState(xixianFlaskUIState);
         }
 

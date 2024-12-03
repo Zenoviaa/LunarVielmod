@@ -62,7 +62,7 @@ namespace Stellamod.UI.DialogueTowning
 
         private void SetTalker(On_Player.orig_SetTalkNPC orig, Player self, int npcIndex, bool fromNet)
         {
-            if(Main.netMode != 1 && npcIndex >= 0 && npcIndex < 200)
+            if((Main.netMode != 1 || fromNet) && npcIndex >= 0 && npcIndex < 200)
             {
                 NPC npc = Main.npc[npcIndex];
                 if (npc.ModNPC is VeilTownNPC veilTownNPC && veilTownNPC.HasTownDialogue)

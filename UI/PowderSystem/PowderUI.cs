@@ -1,26 +1,16 @@
-﻿using Humanizer;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.UI.CauldronSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.Audio;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Weapons.Igniters;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader.UI.Elements;
-using Terraria.ModLoader;
-using Stellamod.Items.Weapons.Igniters;
 
 namespace Stellamod.UI.PowderSystem
 {
     internal class PowderUI : UIPanel
     {
-        private UIGrid _enchantmentsGrid;
-        private BaseIgniterCard ActiveCard => ModContent.GetInstance<PowderUISystem>().Card;
+        private UIGrid _grid;
 
         internal const int width = 480;
         internal const int height = 155;
@@ -28,11 +18,9 @@ namespace Stellamod.UI.PowderSystem
         internal int RelativeLeft => 32;
         internal int RelativeTop => 0 + 256;
 
-        public List<PowderSlot> PowderSlots { get; private set; } = new();
-
         internal PowderUI() : base()
         {
-
+            _grid = new UIGrid();
         }
 
         public override void OnInitialize()
@@ -45,12 +33,12 @@ namespace Stellamod.UI.PowderSystem
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
 
-            _enchantmentsGrid = new UIGrid();
-            _enchantmentsGrid.Width.Set(0, 1f);
-            _enchantmentsGrid.Height.Set(0, 1f);
-            _enchantmentsGrid.HAlign = 0f;
-            _enchantmentsGrid.ListPadding = 2f;
-            Append(_enchantmentsGrid);
+
+            _grid.Width.Set(0, 1f);
+            _grid.Height.Set(0, 1f);
+            _grid.HAlign = 0f;
+            _grid.ListPadding = 2f;
+            Append(_grid);
         }
 
 
@@ -63,25 +51,15 @@ namespace Stellamod.UI.PowderSystem
             }
         }
 
-        public override void Recalculate()
-        {
-            var card = ActiveCard;
-            SetPos();
-            _enchantmentsGrid?.Clear();
-            PowderSlots.Clear();
-            if (card == null)
-                return;
 
+        public void OpenUI(BaseIgniterCard card)
+        {
+            _grid.Clear();
             for (int i = 0; i < card.Powders.Count; i++)
             {
-                PowderSlot slot = new PowderSlot(card, _enchantmentsGrid._items.Count);
-                _enchantmentsGrid.Add(slot);
-                PowderSlots.Add(slot);
+                PowderSlot slot = new PowderSlot(card, _grid._items.Count);
+                _grid.Add(slot);
             }
-
-
-            _enchantmentsGrid.Recalculate();
-            base.Recalculate();
         }
 
         private void SetPos()
