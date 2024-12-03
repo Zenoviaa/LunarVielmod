@@ -101,6 +101,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
                 _enchantmentsGrid.Add(slot);
                 StaffSlots.Add(slot);
             }
+            _enchantmentsGrid.Recalculate();
         }
 
         private void SetPos()
