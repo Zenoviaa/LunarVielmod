@@ -160,12 +160,12 @@ namespace Stellamod.Items.Accessories.Players
             }
         }
 
-		// This is the perfect place to apply dash movement, it's after the vanilla movement code, and before the player's position is modified based on velocity.
-		// If they double tapped this frame, they'll move fast this frame
-		public override void PreUpdateMovement()
+        // This is the perfect place to apply dash movement, it's after the vanilla movement code, and before the player's position is modified based on velocity.
+        // If they double tapped this frame, they'll move fast this frame
+        public override void PreUpdateMovement()
 		{
 			// if the player can use our dash, has double tapped in a direction, and our dash isn't currently on cooldown
-			if (CanUseDash() && (LunarVeilKeybinds.DashKeybind.JustPressed || DoubleTapped) && DashDir != -1 && DashDelay == 0)
+			if (CanUseDash() && (LunarVeilKeybinds.DashKeybind.JustPressed || DoubleTapped) && DashDir != -1 && DashDelay == 0 && Main.myPlayer == Player.whoAmI)
 			{
                 Vector2 newVelocity = Player.velocity;
 
@@ -200,6 +200,7 @@ namespace Stellamod.Items.Accessories.Players
 				DashDelay = DashCooldown;
 				DashTimer = DashDuration;
 				Player.velocity = newVelocity;
+				
 			}
 
 			if (DashDelay > 0)

@@ -215,6 +215,7 @@ namespace Stellamod.Projectiles.GunHolster
                     HideStartRotation = StartRotation - MiniGun.RecoilRotation;
                 }
 
+                Projectile.velocity = Owner.Center.DirectionTo(Main.MouseWorld);
                 Projectile.netUpdate = true;
                 State = ActionState.Prepare;
                 Timer = 0;
@@ -254,18 +255,16 @@ namespace Stellamod.Projectiles.GunHolster
                 float shootTime = ExecTime / (float)MiniGun.ShootCount;
                 if (Timer % shootTime == 0)
                 {
-                    Vector2 direction = Owner.Center.DirectionTo(Main.MouseWorld);
-                    Vector2 position = Projectile.Center + direction * Projectile.width / 2;
-                    MiniGun.Fire(Owner, position, direction, Projectile.damage, Projectile.knockBack);
+                    Vector2 position = Projectile.Center + Projectile.velocity * Projectile.width / 2;
+                    MiniGun.Fire(Owner, position, Projectile.velocity, Projectile.damage, Projectile.knockBack);
                 }
             }
             else
             {
                 if (Timer == 1)
                 {
-                    Vector2 direction = Owner.Center.DirectionTo(Main.MouseWorld);
-                    Vector2 position = Projectile.Center + direction * Projectile.width / 2;
-                    MiniGun.Fire(Owner, position, direction, Projectile.damage, Projectile.knockBack);
+                    Vector2 position = Projectile.Center + Projectile.velocity * Projectile.width / 2;
+                    MiniGun.Fire(Owner, position, Projectile.velocity, Projectile.damage, Projectile.knockBack);
                 }
             }
 

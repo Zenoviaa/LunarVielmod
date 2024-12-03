@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -15,7 +16,7 @@ namespace Stellamod.UI.GunHolsterSystem
         public static string RootTexturePath => "Stellamod/UI/GunHolsterSystem/";
 
         public GunHolsterUIState gunHolsterUIState;
-
+        public GunHolster gunHolster;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -54,8 +55,8 @@ namespace Stellamod.UI.GunHolsterSystem
         internal void OpenUI()
         {
             //Set State
-            gunHolsterUIState.gunHolsterUI.leftSlot.OpenUI();
-            gunHolsterUIState.gunHolsterUI.rightSlot.OpenUI();
+            gunHolsterUIState.gunHolsterUI.leftSlot.OpenUI(gunHolster, null);
+            gunHolsterUIState.gunHolsterUI.rightSlot.OpenUI(gunHolster, null);
             _userInterface.SetState(gunHolsterUIState);
         }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -41,6 +42,8 @@ namespace Stellamod.Dusts
             if (dust.alpha > 100)
             {
                 dust.scale *= 0.975f;
+                float px = 0.5f;
+                dust.scale = MathF.Round(dust.scale / px) * px;
                 dust.alpha += 2;
             }
             else
@@ -51,7 +54,7 @@ namespace Stellamod.Dusts
             }
 
             dust.position += dust.velocity;
-            dust.rotation += 0.04f;
+            dust.rotation += dust.velocity.Length() * 0.04f;
 
             if (dust.alpha >= 255)
                 dust.active = false;

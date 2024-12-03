@@ -25,14 +25,17 @@ namespace Stellamod.Projectiles.GunHolster
         {
             get
             {
-                GunPlayer gunPlayer = Owner.GetModPlayer<GunPlayer>();
+                Items.Weapons.Ranged.GunSwapping.GunHolster gunHolster = Owner.HeldItem.ModItem as Items.Weapons.Ranged.GunSwapping.GunHolster;
+                if (gunHolster == null)
+                    return null;
+
                 if (IsRightHand)
                 {
-                    return gunPlayer.HeldRightHandGun;
+                    return gunHolster.HeldRightHandGun;
                 }
                 else
                 {
-                    return gunPlayer.HeldLeftHandGun;
+                    return gunHolster.HeldLeftHandGun;
                 }
             }
         }
@@ -186,6 +189,7 @@ namespace Stellamod.Projectiles.GunHolster
                     HideStartRotation = StartRotation - MiniGun.RecoilRotation;
                 }
 
+                Projectile.velocity = Owner.Center.DirectionTo(Main.MouseWorld);
                 Projectile.netUpdate = true;
                 State = ActionState.Prepare;
                 Timer = 0;
@@ -225,18 +229,16 @@ namespace Stellamod.Projectiles.GunHolster
                 float shootTime = ExecTime / (float)MiniGun.ShootCount;
                 if (Timer % shootTime == 0)
                 {
-                    Vector2 direction = Owner.Center.DirectionTo(Main.MouseWorld);
-                    Vector2 position = Projectile.Center + direction * Projectile.width / 2;
-                    MiniGun.Fire(Owner, position, direction, Projectile.damage, Projectile.knockBack);
+                    Vector2 position = Projectile.Center + Projectile.velocity * Projectile.width / 2;
+                    MiniGun.Fire(Owner, position, Projectile.velocity, Projectile.damage, Projectile.knockBack);
                 } 
             }
             else
             {
                 if(Timer == 1)
                 {
-                    Vector2 direction = Owner.Center.DirectionTo(Main.MouseWorld);
-                    Vector2 position = Projectile.Center + direction * Projectile.width / 2;
-                    MiniGun.Fire(Owner, position, direction, Projectile.damage, Projectile.knockBack);
+                    Vector2 position = Projectile.Center + Projectile.velocity * Projectile.width / 2;
+                    MiniGun.Fire(Owner, position, Projectile.velocity, Projectile.damage, Projectile.knockBack);
                 }  
             }
 

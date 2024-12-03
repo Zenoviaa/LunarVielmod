@@ -1,26 +1,14 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Buffs;
+﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials.Molds;
-using Stellamod.Projectiles.IgniterEx;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.ID;
-using Terraria;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 using Stellamod.Projectiles.IgniterExplosions;
-using Terraria.ModLoader.IO;
-using System.IO;
 using Stellamod.UI.PowderSystem;
-using Terraria.Localization;
+using System.Collections.Generic;
+using System.IO;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
@@ -39,7 +27,7 @@ namespace Stellamod.Items.Weapons.Igniters
                     item.SetDefaults(0);
                     _powders.Add(item);
                 }
-       
+
 
                 return _powders;
             }
@@ -108,14 +96,14 @@ namespace Stellamod.Items.Weapons.Igniters
         public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
         {
             base.ModifyWeaponDamage(player, ref damage);
-            for(int i = 0; i < Powders.Count; i++)
+            for (int i = 0; i < Powders.Count; i++)
             {
                 if (!Powders[i].IsAir)
                 {
                     BasePowder basePowder = Powders[i].ModItem as BasePowder;
                     damage += basePowder.DamageModifier;
                 }
-      
+
             }
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -141,22 +129,17 @@ namespace Stellamod.Items.Weapons.Igniters
             }
         }
 
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override void NetSend(BinaryWriter writer)
         {
-            Projectile projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
-            IgniterCardProjectile igniterCardProjectile = projectile.ModProjectile as IgniterCardProjectile;
-
-            //Setup the powders
-            List<BasePowder> powders = new List<BasePowder>();
-            foreach(var powderItem in Powders)
-            {
-                powders.Add(powderItem.ModItem as BasePowder);
-            }
-            igniterCardProjectile.Powders = powders;
-            igniterCardProjectile.CardItem = Item;
-            return base.Shoot(player, source, position, velocity, type, damage, knockback);
+            base.NetSend(writer);
+            writer.WriteItemList(Powders);
         }
 
+        public override void NetReceive(BinaryReader reader)
+        {
+            base.NetReceive(reader);
+            Powders = reader.ReadItemList();
+        }
         public override void SaveData(TagCompound tag)
         {
             base.SaveData(tag);

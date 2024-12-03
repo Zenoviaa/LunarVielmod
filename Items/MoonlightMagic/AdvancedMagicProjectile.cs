@@ -55,7 +55,7 @@ namespace Stellamod.Items.MoonlightMagic
             }
         }
         public List<BaseEnchantment> Enchantments { get; private set; } = new List<BaseEnchantment>();
-
+        private Player Owner => Main.player[Projectile.owner];
         public void ReplaceEnchantment(BaseEnchantment enchantmentPrefab, int index)
         {
             var instance = (ModContent.GetModItem(enchantmentPrefab.Type) as BaseEnchantment).Instantiate();
@@ -77,6 +77,7 @@ namespace Stellamod.Items.MoonlightMagic
             Projectile.friendly = true;
             Projectile.timeLeft = 360;
             Projectile.light = 0.78f;
+
         }
 
         public void SetMoonlightDefaults(AdvancedMagicProjectile item)
@@ -147,14 +148,25 @@ namespace Stellamod.Items.MoonlightMagic
         {
             base.AI();
 
+            GlobalTimer++;
+            if (GlobalTimer == 1)
+            {
+                if (!Owner.HeldItem.IsAir && Owner.HeldItem.ModItem != null)
+                {
+                    BaseStaff staff = Owner.HeldItem.ModItem as BaseStaff;
+                    TrailLength = staff.TrailLength;
+                    Size = staff.Size;
+                    SetMoonlightDefaults(staff);
+                }
+            }
+
             Projectile.width = (int)Size;
             Projectile.height = (int)Size;
 
             PrimaryElement?.AI();
             Movement?.AI();
 
-            GlobalTimer++;
-            if (GlobalTimer == 1)
+            if(GlobalTimer == 1)
             {
                 if (PrimaryElement != null)
                 {

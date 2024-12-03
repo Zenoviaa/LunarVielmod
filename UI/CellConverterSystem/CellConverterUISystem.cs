@@ -110,6 +110,7 @@ namespace Stellamod.UI.CellConverterSystem
                 swapItem.SwapDamageType();
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Converted"));
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Main.LocalPlayer.Center, 1024f, 16f);
+                item.NetStateChanged();
             }
         }
 

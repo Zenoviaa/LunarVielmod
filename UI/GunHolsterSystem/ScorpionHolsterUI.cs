@@ -63,7 +63,7 @@ namespace Stellamod.UI.GunHolsterSystem
             {
                 var slot = new GunHolsterLeftSlot();
                 slot.scorpionIndex = i;
-                slot.OpenUI();
+                slot.OpenUI(null, scorpionItem);
                 slot.Activate();
                 _grid.Add(slot);
             }
@@ -72,7 +72,7 @@ namespace Stellamod.UI.GunHolsterSystem
             {
                 var slot = new GunHolsterRightSlot();
                 slot.scorpionIndex = i;
-                slot.OpenUI();
+                slot.OpenUI(null, scorpionItem);
                 slot.Activate();
                 _grid.Add(slot);
             }

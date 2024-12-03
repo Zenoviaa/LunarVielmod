@@ -56,6 +56,7 @@ namespace Stellamod.UI.PowderSystem
                 //Handles all the click and hover actions based on the context
                 ItemSlot.Handle(ref Item, _context);
                 _card.Powders[_index] = Item.Clone();
+                _card.Item.NetStateChanged();
             }
         }
 

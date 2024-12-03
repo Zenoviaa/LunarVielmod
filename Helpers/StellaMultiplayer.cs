@@ -54,9 +54,45 @@ namespace Stellamod
 		}
 
 		public static void WaitUntil(Func<bool> condition, Action whenTrue) => _waits.Add(new Wait() { Condition = condition, Result = whenTrue });
+        public static void WriteItemList(this BinaryWriter writer, List<Item> arr)
+        {
+            writer.Write(arr.Count);
+            for (int i = 0; i < arr.Count; i++)
+            {
+                writer.Write(arr[i].type);
+            }
+        }
+        public static List<Item> ReadItemList(this BinaryReader reader)
+        {
+            int length = reader.ReadInt32();
+			List<Item> itemList = new List<Item>();
+            for (int i = 0; i < length; i++)
+            {
+				itemList.Add(new Item(reader.ReadInt32()));
+            }
+            return itemList;
+        }
 
-		// This is deprecated, DO NOT USE IT. Only here for compatability until later stages when we decide to swap it out for the new one.
-		public static ModPacket WriteToPacket(ModPacket packet, byte msg, params object[] param)
+        public static void WriteItemArray(this BinaryWriter writer, Item[] arr)
+		{
+			writer.Write(arr.Length);
+			for(int i = 0; i < arr.Length; i++)
+			{
+				writer.Write(arr[i].type);
+			}
+		}
+        public static Item[] ReadItemArray(this BinaryReader reader)
+        {
+			int length = reader.ReadInt32();
+			Item[] array = new Item[length];
+            for (int i = 0; i < length; i++)
+            {
+				array[i] = new Item(reader.ReadInt32());
+            }
+			return array;
+        }
+
+        public static ModPacket WriteToPacket(ModPacket packet, byte msg, params object[] param)
 		{
 			packet.Write(msg);
 

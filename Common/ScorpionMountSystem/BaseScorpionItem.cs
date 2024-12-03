@@ -1,11 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.UI.GunHolsterSystem;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -33,10 +30,10 @@ namespace Stellamod.Common.ScorpionMountSystem
         {
             get
             {
-                if(_leftHandedGuns == null || _leftHandedGuns.Count < GetLeftHandedCount())
+                if (_leftHandedGuns == null || _leftHandedGuns.Count < GetLeftHandedCount())
                 {
                     _leftHandedGuns = new List<Item>();
-                    for(int i = 0; i < GetLeftHandedCount(); i++)
+                    for (int i = 0; i < GetLeftHandedCount(); i++)
                     {
                         Item air = new Item();
                         air.SetDefaults(0);
@@ -101,11 +98,11 @@ namespace Stellamod.Common.ScorpionMountSystem
         {
             return true;
         }
- 
+
         public override bool CanUseItem(Player player)
         {
             ScorpionPlayer scorpionPlayer = player.GetModPlayer<ScorpionPlayer>();
-            if(player.mount.Active && player.mount.Type == Item.mountType)
+            if (player.mount.Active && player.mount.Type == Item.mountType)
             {
                 return false;
             }
@@ -131,6 +128,20 @@ namespace Stellamod.Common.ScorpionMountSystem
         public override bool ConsumeItem(Player player)
         {
             return false;
+        }
+
+        public override void NetSend(BinaryWriter writer)
+        {
+            base.NetSend(writer);
+            writer.WriteItemList(leftHandedGuns);
+            writer.WriteItemList(rightHandedGuns);
+        }
+
+        public override void NetReceive(BinaryReader reader)
+        {
+            base.NetReceive(reader);
+            leftHandedGuns = reader.ReadItemList();
+            rightHandedGuns = reader.ReadItemList();
         }
 
         public override void SaveData(TagCompound tag)

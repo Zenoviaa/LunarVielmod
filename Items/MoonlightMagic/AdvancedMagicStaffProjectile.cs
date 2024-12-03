@@ -28,8 +28,6 @@ namespace Stellamod.Items.MoonlightMagic
         private ref float _swingTime => ref Projectile.ai[2];
         private Player Owner => Main.player[Projectile.owner];
         public float trailStartOffset = 0.15f;
-        public BaseStaff staffSource;
-
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -103,7 +101,9 @@ namespace Stellamod.Items.MoonlightMagic
         {
             if (Projectile.owner == Main.myPlayer)
             {
-                AdvancedMagicUtil.NewMagicProjectile(staffSource, Projectile);
+                Item heldItem = Owner.HeldItem;
+                BaseStaff staff = heldItem.ModItem as BaseStaff;
+                AdvancedMagicUtil.NewMagicProjectile(staff, Projectile);
             }
         }
 

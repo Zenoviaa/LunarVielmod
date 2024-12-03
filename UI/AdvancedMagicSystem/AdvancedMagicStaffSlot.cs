@@ -5,6 +5,7 @@ using Stellamod.Items.MoonlightMagic;
 using System;
 using Terraria;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -75,6 +76,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
 
                 //Save Item 
                 _staff.equippedEnchantments[_index] = Item.Clone();
+                _staff.Item.NetStateChanged();
             }
         }
 

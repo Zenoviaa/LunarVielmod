@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.UI.AdvancedMagicSystem;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -14,6 +15,8 @@ namespace Stellamod.Items.MoonlightMagic
 {
     internal abstract class BaseStaff : ModItem
     {
+        private Item _primaryElement;
+        private Item[] _equippedEnchantments;
         private static Item _preReforgeElement;
         private static Item[] _preReforgeEnchants;
         public Texture2D Form { get; set; }
@@ -24,21 +27,48 @@ namespace Stellamod.Items.MoonlightMagic
         public UnifiedRandom Random { get; private set; }
 
         //Enchantment Slots
-        public Item primaryElement;
-        public Item[] equippedEnchantments;
+        public Item primaryElement
+        {
+            get
+            {
+                if(_primaryElement == null)
+                {
+                    _primaryElement = new Item();
+                    _primaryElement.SetDefaults(0);
+                }
+                return _primaryElement;
+            }
+            set
+            {
+                _primaryElement = value;
+            }
+        }
+
+        public Item[] equippedEnchantments
+        {
+            get
+            {
+                if(_equippedEnchantments == null)
+                {
+                    _equippedEnchantments = new Item[GetNormalSlotCount() + GetTimedSlotCount()];
+                    for(int i = 0; i < _equippedEnchantments.Length; i++)
+                    {
+                        _equippedEnchantments[i] = new Item();
+                        _equippedEnchantments[i].SetDefaults(0);
+                    }
+                }
+
+                return _equippedEnchantments;
+            }
+            set
+            {
+                _equippedEnchantments = value;
+            }
+        }
 
         public override void SetDefaults()
         {
             base.SetDefaults();
-            equippedEnchantments = new Item[GetNormalSlotCount() + GetTimedSlotCount()];
-            primaryElement = new Item();
-            primaryElement.SetDefaults(0);
-            for (int i = 0; i < equippedEnchantments.Length; i++)
-            {
-                equippedEnchantments[i] = new Item();
-                equippedEnchantments[i].SetDefaults(0);
-            }
-
             Item.damage = 18;
             Item.DamageType = DamageClass.Magic;
             Item.width = 40;
@@ -64,9 +94,35 @@ namespace Stellamod.Items.MoonlightMagic
             TrailLength = Random.Next(24, 32);
         }
 
+        public override void NetSend(BinaryWriter writer)
+        {
+            base.NetSend(writer);
+            writer.Write(primaryElement.type);
+            writer.Write(equippedEnchantments.Length);
+            for(int i = 0; i < equippedEnchantments.Length; i++)
+            {
+                writer.Write(equippedEnchantments[i].type);
+            }
+        }
+
+        public override void NetReceive(BinaryReader reader)
+        {
+            base.NetReceive(reader);
+            int primaryElementType = reader.ReadInt32();
+            primaryElement = new Item(primaryElementType);
+            int length = reader.ReadInt32();
+            for(int i = 0; i < length; i++)
+            {
+                int enchantmentType = reader.ReadInt32();
+                equippedEnchantments[i] = new Item(enchantmentType);
+            }
+        }
+
         public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
         {
             base.ModifyWeaponDamage(player, ref damage);
+
+            /*
             float damageModifier = 1f;
             for (int i = 0; i < equippedEnchantments.Length; i++)
             {
@@ -90,6 +146,7 @@ namespace Stellamod.Items.MoonlightMagic
             }
 
             damage *= damageModifier;
+            */
         }
 
 

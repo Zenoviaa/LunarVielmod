@@ -19,9 +19,7 @@ namespace Stellamod.Items.MoonlightMagic
                 source, position, velocity, ModContent.ProjectileType<AdvancedMagicStaffProjectile>(), damage, knockback, player.whoAmI,
                 ai0: 0, ai1: dir, ai2: item.Item.useTime);
             comboPlayer.IncreaseCombo(maxCombo: 0);
-
-            AdvancedMagicStaffProjectile proj = staff.ModProjectile as AdvancedMagicStaffProjectile;
-            proj.staffSource = item;
+            staff.netUpdate = true;
         }
 
         public static void NewMagicProjectile(BaseStaff item, Projectile sourceProjectile)
@@ -32,12 +30,7 @@ namespace Stellamod.Items.MoonlightMagic
             Projectile p = Projectile.NewProjectileDirect(
                                 sourceProjectile.GetSource_FromThis(), player.Center, velocity,
                                 ModContent.ProjectileType<AdvancedMagicProjectile>(), sourceProjectile.damage, sourceProjectile.knockBack, sourceProjectile.owner);
-            //Set Moonlight Defaults
-            AdvancedMagicProjectile moonlightMagicProjectile = p.ModProjectile as AdvancedMagicProjectile;
-            moonlightMagicProjectile.TrailLength = item.TrailLength;
-            moonlightMagicProjectile.Size = item.Size;
-            moonlightMagicProjectile.SetMoonlightDefaults(item);
-
+            p.netUpdate = true;
         }
 
          

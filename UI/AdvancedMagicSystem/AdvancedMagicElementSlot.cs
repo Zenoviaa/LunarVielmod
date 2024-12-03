@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.MoonlightMagic;
+using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -27,10 +29,9 @@ namespace Stellamod.UI.AdvancedMagicSystem
             Item = new Item();
             Item.SetDefaults(0);
 
-     
-            var inventoryBack9 = TextureAssets.InventoryBack9;
-            Width.Set(inventoryBack9.Width() * scale, 0f);
-            Height.Set(inventoryBack9.Height() * scale, 0f);
+            var v = ModContent.Request<Texture2D>("Stellamod/UI/AdvancedMagicSystem/ElementSlot", ReLogic.Content.AssetRequestMode.ImmediateLoad);
+            Width.Set(v.Width() * scale, 0f);
+            Height.Set(v.Height() * scale, 0f);
         }
 
 
@@ -53,9 +54,9 @@ namespace Stellamod.UI.AdvancedMagicSystem
         {
             if (Valid(Main.mouseItem))
             {
-                //Handles all the click and hover actions based on the context
                 ItemSlot.Handle(ref Item, _context);
                 _staff.primaryElement = Item.Clone();
+                _staff.Item.NetStateChanged();
             }
         }
 
@@ -103,7 +104,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
                 }*/
             }
 
-            ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos + new Vector2(12, 12), _scale, 64, Color.White);
+            ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale, 64, Color.White);
             Main.inventoryScale = oldScale;
         }
     }

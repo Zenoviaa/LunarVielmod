@@ -115,6 +115,7 @@
     <None Remove="Effects\DarknessCurve - Copy.fx" />
     <None Remove="Effects\DarknessCurve.fx" />
     <None Remove="Effects\DarknessVignette.fx" />
+    <None Remove="Effects\GlowCircle.fx" />
     <None Remove="Effects\GustArmor.fx" />
     <None Remove="Effects\Lava.fx" />
     <None Remove="effects\NormalDistortion.fx" />

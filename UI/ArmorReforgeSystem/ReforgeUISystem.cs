@@ -82,8 +82,9 @@ namespace Stellamod.UI.ArmorReforgeSystem
 
 
             player.RemoveItem(ModContent.ItemType<GlisteningPearl>(), 1);
-            ArmorReforgeGlobalItem armorReforgeGlobalItem = reforgeUIState.ui.reforgeSlot.Item.GetGlobalItem<ArmorReforgeGlobalItem>();
+            ArmorReforgeGlobalItem armorReforgeGlobalItem = item.GetGlobalItem<ArmorReforgeGlobalItem>();
             armorReforgeGlobalItem.reforgeType = chosenReforge;
+            item.NetStateChanged();
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Converted"));
 
             player.GetModPlayer<MyPlayer>().ShakeAtPosition(Main.LocalPlayer.Center, 1024f, 16f);

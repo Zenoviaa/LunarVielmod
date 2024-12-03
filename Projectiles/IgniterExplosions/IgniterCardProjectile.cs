@@ -20,8 +20,8 @@ namespace Stellamod.Projectiles.IgniterExplosions
             Thrown,
             Exploding
         }
-        private Item _cardItem;
-        private List<BasePowder> _powders;
+
+        private bool _init;
         private int _powderIndex;
         private Vector2 _explosionPos;
         private float _dustTimer;
@@ -39,36 +39,9 @@ namespace Stellamod.Projectiles.IgniterExplosions
         }
 
         private ref float ExplosionTime => ref Projectile.ai[2];
-        public List<BasePowder> Powders
-        {
-            get
-            {
-                _powders ??= new List<BasePowder>();
-                return _powders;
-            }
-            set
-            {
-                _powders = value;
-            }
-        }
+        public BaseIgniterCard Card;
 
-        public Item CardItem
-        {
-            get
-            {
-                if (_cardItem == null)
-                {
-                    _cardItem = new Item();
-                    _cardItem.SetDefaults(0);
-                }
-                return _cardItem;
-            }
-            set
-            {
-                _cardItem = value;
-            }
-        }
-
+        private Player Owner => Main.player[Projectile.owner];
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetStaticDefaults()
         {
@@ -94,38 +67,21 @@ namespace Stellamod.Projectiles.IgniterExplosions
         {
             base.SendExtraAI(writer);
             writer.Write(_powderIndex);
-            writer.Write(Powders.Count);
-            for (int i = 0; i < Powders.Count; i++)
-            {
-                writer.Write(Powders[i].Type);
-            }
-            writer.Write(CardItem.type);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
-            Powders.Clear();
             _powderIndex = reader.ReadInt32();
-            int count = reader.ReadInt32();
-            for (int i = 0; i < count; i++)
-            {
-                BasePowder powder = ModContent.GetModItem(reader.ReadInt32()) as BasePowder;
-                Powders.Add(powder);
-            }
-            CardItem = ModContent.GetModItem(reader.ReadInt32()).Item;
         }
 
         public override void AI()
         {
             base.AI();
-            if (Timer < 2)
+            if (!_init)
             {
-                Timer++;
-                if (Timer == 1 && Main.myPlayer == Projectile.owner)
-                {
-                    Projectile.netUpdate = true;
-                }
+                Card = Owner.HeldItem.ModItem as BaseIgniterCard;
+                _init = true;
             }
 
             switch (State)
@@ -156,16 +112,14 @@ namespace Stellamod.Projectiles.IgniterExplosions
 
             if (Timer >= ExplosionTime)
             {
-                if (_powderIndex < Powders.Count)
+                if (_powderIndex < Card.Powders.Count)
                 {
-                    BasePowder powder = Powders[_powderIndex];
-                    while (powder == null && _powderIndex < Powders.Count - 1)
+                    BasePowder powder = Card.Powders[_powderIndex].ModItem as BasePowder;
+                    while (powder == null && _powderIndex < Card.Powders.Count - 1)
                     {
                         _powderIndex++;
-                        powder = Powders[_powderIndex];
-
+                        powder = Card.Powders[_powderIndex].ModItem as BasePowder;
                     }
-
 
                     if (Main.myPlayer == Projectile.owner && powder != null)
                     {
@@ -208,9 +162,12 @@ namespace Stellamod.Projectiles.IgniterExplosions
         }
 
         public PrimDrawer TrailDrawer { get; private set; } = null;
-        private bool DrawCard => State != CardState.Exploding && CardItem.ModItem != null;
+        private bool DrawCard => State != CardState.Exploding && Card != null;
         public override bool PreDraw(ref Color lightColor)
         {
+            if (Card == null)
+                return false;
+
             //Draw Trail
             if (TrailDrawer == null)
             {
@@ -228,7 +185,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
-                string texturePath = CardItem.ModItem.Texture;
+                string texturePath = Card.Texture;
                 Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
                 Vector2 drawOrigin = texture.Size() / 2f;
 
@@ -248,7 +205,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             if (DrawCard)
             {
                 SpriteBatch spriteBatch = Main.spriteBatch;
-                string texturePath = CardItem.ModItem.Texture;
+                string texturePath = Card.Texture;
                 Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
                 Vector2 drawPos = Projectile.Center - Main.screenPosition;
                 Color drawColor = Color.White.MultiplyRGB(lightColor);

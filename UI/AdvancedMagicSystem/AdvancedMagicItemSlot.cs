@@ -60,6 +60,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
                 ItemSlot.Handle(ref Item, _context);
                 var player = Main.LocalPlayer.GetModPlayer<AdvancedMagicPlayer>();
                 player.Backpack[_index] = Item.Clone();
+
                 /*
                 if (_prevTrashItem == null)
                 {

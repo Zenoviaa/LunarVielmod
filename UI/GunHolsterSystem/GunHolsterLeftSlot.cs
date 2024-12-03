@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.ScorpionMountSystem;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using System;
 using Terraria;
@@ -11,16 +12,13 @@ namespace Stellamod.UI.GunHolsterSystem
 {
     internal class GunHolsterLeftSlot : UIElement
     {
+        private GunHolster _gunHolster;
+        private BaseScorpionItem _scorpionItem;
         private Item _prevItem;
         private readonly int _context;
         private readonly float _scale;
 
         internal Item Item;
-        internal Func<Item, bool> ValidItemFunc;
-
-        internal event Action<int> OnEmptyMouseover;
-
-        private int timer = 0;
 
         internal GunHolsterLeftSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
         {
@@ -63,17 +61,17 @@ namespace Stellamod.UI.GunHolsterSystem
             }
         }
 
-        public void OpenUI()
+        public void OpenUI(GunHolster gunHolster, BaseScorpionItem scorpionItem)
         {
+            _gunHolster = gunHolster;
+            _scorpionItem = scorpionItem;
             if (scorpionIndex == -1)
             {
-                GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
-                Item = gunPlayer.LeftHand.Clone();
+                Item = gunHolster.LeftHand.Clone();
             }
             else
             {
-                ScorpionHolsterUISystem uiSystem = ModContent.GetInstance<ScorpionHolsterUISystem>();
-                Item = uiSystem.scorpionItem.leftHandedGuns[scorpionIndex].Clone();
+                Item = _scorpionItem.leftHandedGuns[scorpionIndex].Clone();
             }
         }
 
@@ -81,13 +79,13 @@ namespace Stellamod.UI.GunHolsterSystem
         {
             if (scorpionIndex == -1)
             {
-                GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
-                gunPlayer.LeftHand = Item.Clone();
+                _gunHolster.LeftHand = Item.Clone();
+                _gunHolster.Item.NetStateChanged();
             }
             else
             {
-                ScorpionHolsterUISystem uiSystem = ModContent.GetInstance<ScorpionHolsterUISystem>();
-                uiSystem.scorpionItem.leftHandedGuns[scorpionIndex] = Item.Clone();
+                _scorpionItem.leftHandedGuns[scorpionIndex] = Item.Clone();
+                _scorpionItem.Item.NetStateChanged();
             }
         }
 
@@ -115,18 +113,6 @@ namespace Stellamod.UI.GunHolsterSystem
             spriteBatch.Draw(backingTexture, rectangle.TopLeft(), null, color2, 0f, default(Vector2), _scale, SpriteEffects.None, 0f);
 
             ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale * 2f, 32, Color.White);
-
-            //ItemSlot.Draw(spriteBatch, ref Item, _context, centerPos);
-            if (contains && Item.IsAir)
-            {
-                timer++;
-                OnEmptyMouseover?.Invoke(timer);
-            }
-            else if (!contains)
-            {
-                timer = 0;
-            }
-
             Main.inventoryScale = oldScale;
         }
     }

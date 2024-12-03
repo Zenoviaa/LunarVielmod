@@ -4,6 +4,7 @@ using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -165,6 +166,20 @@ namespace Stellamod.Common.ArmorReforge
             line = new TooltipLine(Mod, "ReforgeDownside", LangText.ArmorReforge(reforgeType, "Downside"));
             line.OverrideColor = Color.IndianRed;
             tooltips.Add(line);
+        }
+
+        public override void NetSend(Item item, BinaryWriter writer)
+        {
+            base.NetSend(item, writer);
+            ArmorReforgeGlobalItem globalItem = item.GetGlobalItem<ArmorReforgeGlobalItem>();
+            writer.Write((int)globalItem.reforgeType); 
+        }
+
+        public override void NetReceive(Item item, BinaryReader reader)
+        {
+            base.NetReceive(item, reader);
+            ArmorReforgeGlobalItem globalItem = item.GetGlobalItem<ArmorReforgeGlobalItem>();
+            globalItem.reforgeType = (ArmorReforgeType)reader.ReadInt32();
         }
 
         public override void SaveData(Item item, TagCompound tag)

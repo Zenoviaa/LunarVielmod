@@ -44,7 +44,7 @@ namespace Stellamod.Dusts
             if (!dust.noGravity)
                 dust.velocity.Y += 0.1f;
 
-            dust.velocity *= 0.99f;
+            dust.velocity *= 0.95f;
             dust.color *= 0.99f;
 
             if (!dust.noLight)
