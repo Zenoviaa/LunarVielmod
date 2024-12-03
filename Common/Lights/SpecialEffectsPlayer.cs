@@ -120,6 +120,12 @@ namespace Stellamod.Common.Lights
         {
             if (Main.netMode == NetmodeID.Server)
                 return;
+            //Darkness
+            if (!_init)
+            {
+                LoadPalettes();
+                _init = true;
+            }
 
             LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
             ScreenShaderData screenShaderData;
@@ -341,12 +347,6 @@ namespace Stellamod.Common.Lights
         public override void PostUpdate()
         {
             base.PostUpdate();
-            //Darkness
-            if (!_init)
-            {
-                LoadPalettes();
-                _init = true;
-            }
 
             SpecialBiomeEffects();
             UpdateVignette();
