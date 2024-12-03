@@ -191,7 +191,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
             shader.BlendState = BlendState.AlphaBlend;
             shader.TrailColor = Color.White;
             shader.Speed = Main.GlobalTimeWrappedHourly * 0.001f;
-            shader.Speed += Projectile.velocity.Length() * 0.01f;
+
             shader.Distortion = 0.015f;
 
 
@@ -205,7 +205,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
             shader.TrailColor = Color.White;
             shader.GlowColor = Color.Blue;
             shader.Speed = Main.GlobalTimeWrappedHourly * 0.001f;
-            shader.Speed += Projectile.velocity.Length() * 0.01f;
+
             shader.Distortion = 0.015f;
 
 
