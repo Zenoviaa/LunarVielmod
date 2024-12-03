@@ -12,24 +12,22 @@ namespace Stellamod.UI.AdvancedMagicSystem
 {
     internal class AdvancedMagicElementSlot : UIElement
     {
-        private readonly BaseStaff _staff;
+        private BaseStaff _staff;
         private readonly int _context;
         private readonly float _scale;
 
         internal Item Item;
-        internal AdvancedMagicElementSlot(BaseStaff staff, int context = ItemSlot.Context.BankItem, float scale = 1f)
+        internal AdvancedMagicElementSlot(int context = ItemSlot.Context.BankItem, float scale = 1f)
         {
             _context = context;
             _scale = scale;
-            _staff = staff;
-
+      
 
             //Set to Air
             Item = new Item();
             Item.SetDefaults(0);
 
-            //Get the primary element from the thing
-            Item = staff.primaryElement.Clone();
+     
             var inventoryBack9 = TextureAssets.InventoryBack9;
             Width.Set(inventoryBack9.Width() * scale, 0f);
             Height.Set(inventoryBack9.Height() * scale, 0f);
@@ -37,6 +35,12 @@ namespace Stellamod.UI.AdvancedMagicSystem
 
 
 
+        public void OpenUI(BaseStaff staff)
+        {
+            _staff = staff;
+            //Get the primary element from the thing
+            Item = staff.primaryElement.Clone();
+        }
         /// <summary>
         /// Returns true if this item can be placed into the slot (either empty or a pet item)
         /// </summary>
