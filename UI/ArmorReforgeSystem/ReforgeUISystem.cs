@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs;
 using Stellamod.Common.ArmorReforge;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
@@ -11,6 +10,7 @@ using Terraria.UI;
 
 namespace Stellamod.UI.ArmorReforgeSystem
 {
+    [Autoload(Side = ModSide.Client)]
     internal class ReforgeUISystem : ModSystem
     {
         private Vector2 _worldPos;
