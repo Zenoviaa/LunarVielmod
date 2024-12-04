@@ -92,7 +92,7 @@ namespace Stellamod.Projectiles.GunHolster
 
 
             //Colors
-            Color startInner = Color.Lerp(Color.AliceBlue, Color.White, VectorHelper.Osc(0f, 1f, speed: 5f)); ;
+            Color startInner = Color.Lerp(Color.AliceBlue, Color.BlueViolet, VectorHelper.Osc(0f, 1f, speed: 5f)); ;
             Color startGlow = Color.Lerp(Color.Blue, Color.CadetBlue, VectorHelper.Osc(0f, 1f, speed: 3f));
             Color startOuterGlow = Color.Lerp(Color.AliceBlue, Color.CadetBlue, VectorHelper.Osc(0f, 1f, speed: 3f));
 
@@ -113,7 +113,7 @@ namespace Stellamod.Projectiles.GunHolster
             spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
             for (int i = 0; i < 3; i++)
             {
-                spriteBatch.Draw(texture, centerPos, null, Color.White, Projectile.rotation, texture.Size() / 2f, 1f, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, centerPos, null, Color.AliceBlue, Projectile.rotation, texture.Size() / 2f, 1f, SpriteEffects.None, 0);
             }
 
             spriteBatch.RestartDefaults();
