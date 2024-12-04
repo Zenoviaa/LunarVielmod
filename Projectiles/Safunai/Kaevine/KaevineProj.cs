@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.Bases;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
@@ -50,6 +51,11 @@ namespace Stellamod.Projectiles.Safunai.Kaevine
                     stingerProj.localNPCHitCooldown = -1;
                     stingerProj.netUpdate = true;
                 }
+                FXUtil.GlowCircleBoom(target.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.Yellow,
+                    outerGlowColor: Color.Red, duration: 15, baseSize: 0.12f);
+
 
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger2"), target.position);
@@ -62,9 +68,20 @@ namespace Stellamod.Projectiles.Safunai.Kaevine
                 {
                     Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkOliveGreen, 1f).noGravity = true;
                 }
+                FXUtil.GlowCircleBoom(target.Center,
+                    innerColor: Color.Yellow,
+                    glowColor: Color.Green,
+                    outerGlowColor: Color.Black, duration: 15, baseSize: 0.24f);
+
             }
             else
             {
+                FXUtil.GlowCircleBoom(target.Center,
+                    innerColor: Color.Yellow,
+                    glowColor: Color.Green,
+                    outerGlowColor: Color.Black, duration: 15, baseSize: 0.12f);
+
+
                 for (int i = 0; i < Main.rand.Next(1, 4); i++)
                 {
                     Vector2 stingerVelocity = Vector2.One.RotatedBy(MathHelper.ToRadians(Main.rand.Next(0, 360))) * Main.rand.NextFloat(4, 6);

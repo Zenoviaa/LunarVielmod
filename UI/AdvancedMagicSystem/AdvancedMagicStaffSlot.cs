@@ -101,23 +101,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
             var uiSystem = ModContent.GetInstance<AdvancedMagicUISystem>();
             var elementItem = uiSystem.staffUIState.elementUI.ElementSlot.Item;
             ElementMatch match = ElementMatch.Neutral;
-            if (Item.ModItem is BaseEnchantment enchantment && elementItem.ModItem is BaseElement element)
-            {
-                match = element.GetMatch(enchantment);
-                switch (match)
-                {
-                    case ElementMatch.Match:
-                        color2 = element.GetElementColor();
-                        break;
-                    case ElementMatch.Mismatch:
-                        color2 = Color.Lerp(Color.White, Color.Black, 0.65f);
-                        break;
-                }
-            }
-            else
-            {
-                color2 = Color.LightGoldenrodYellow;
-            }
+            color2 = Color.LightGoldenrodYellow;
 
             Texture2D cardTexture = _isTimedSlot
                 ? ModContent.Request<Texture2D>("Stellamod/UI/AdvancedMagicSystem/TimedEnchantmentCard").Value

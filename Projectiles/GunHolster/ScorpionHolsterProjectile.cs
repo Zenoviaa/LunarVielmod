@@ -115,8 +115,6 @@ namespace Stellamod.Projectiles.GunHolster
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = int.MaxValue;
-            Projectile.minionSlots = 1;
-            Projectile.minion = true;
         }
 
         public override bool? CanDamage()
@@ -189,6 +187,10 @@ namespace Stellamod.Projectiles.GunHolster
 
             Projectile.rotation = HoldRotation;
             bool mouseInput = Owner.controlUseItem;
+
+            float remainingSlots = Owner.maxMinions - Owner.slotsMinions;
+            mouseInput = mouseInput && (ScorpionHolsterIndex+1) <= remainingSlots;
+            /*
             ShootTimer++;
             if(ShootTimer < 1 + (24 * ScorpionHolsterIndex))
             {
@@ -197,7 +199,7 @@ namespace Stellamod.Projectiles.GunHolster
             else
             {
                 ShootTimer = 0f;
-            }
+            }*/
             if (Projectile.owner == Main.myPlayer
                 && mouseInput
                 && Owner.PickAmmo(Owner.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int useAmmoItemId))

@@ -40,11 +40,12 @@ namespace Stellamod.Common.Shaders
             Speed = 5;
             BasePower = 3.0f;
             Size = 0.5f;
+       
             InnerColor = Color.White;
             GlowColor = Color.Yellow;
             OuterGlowColor = Color.Red;
             Pixelation = 1f;
-            OuterPower = 4.5f;
+            OuterPower = 4;
         }
 
         public override void Apply()
