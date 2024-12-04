@@ -50,12 +50,12 @@ namespace Stellamod.Projectiles.GunHolster
 
         private Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Yellow, Color.Transparent, completionRatio);
+            return Color.Lerp(Color.AliceBlue, Color.Transparent, completionRatio);
         }
 
         private Color ColorFunction2(float completionRatio)
         {
-            return Color.Lerp(Color.Red, Color.Transparent, completionRatio);
+            return Color.Lerp(Color.CadetBlue, Color.Transparent, completionRatio);
         }
 
         public PrimDrawer TrailDrawer { get; private set; } = null;
@@ -92,9 +92,9 @@ namespace Stellamod.Projectiles.GunHolster
 
 
             //Colors
-            Color startInner = Color.Goldenrod;
+            Color startInner = Color.White;
             Color startGlow = Color.Lerp(Color.Blue, Color.Tan, VectorHelper.Osc(0f, 1f, speed: 3f));
-            Color startOuterGlow = Color.Lerp(Color.DarkGoldenrod, Color.AliceBlue, VectorHelper.Osc(0f, 1f, speed: 3f));
+            Color startOuterGlow = Color.Lerp(Color.AliceBlue, Color.CadetBlue, VectorHelper.Osc(0f, 1f, speed: 3f));
 
             shader.InnerColor = startInner;
             shader.GlowColor = startGlow;

@@ -8350,3 +8350,33 @@ LeadWand: {
 	Tooltip: ""
 	DisplayName: Lead Wand
 }
+
+Obel: {
+	Tooltip: ""
+	DisplayName: Obel
+}
+
+TungstenWand: {
+	Tooltip: ""
+	DisplayName: Tungsten Wand
+}
+
+SilverWand: {
+	Tooltip: ""
+	DisplayName: Silver Wand
+}
+
+PlatinumWand: {
+	Tooltip: ""
+	DisplayName: Platinum Wand
+}
+
+GoldWand: {
+	Tooltip: ""
+	DisplayName: Gold Wand
+}
+
+CelestiaWand: {
+	Tooltip: ""
+	DisplayName: Celestia Wand
+}
