@@ -111,7 +111,7 @@ namespace Stellamod.Projectiles.GunHolster
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 1; i++)
             {
                 spriteBatch.Draw(texture, centerPos, null, Color.AliceBlue, Projectile.rotation, texture.Size() / 2f, 1f, SpriteEffects.None, 0);
             }
