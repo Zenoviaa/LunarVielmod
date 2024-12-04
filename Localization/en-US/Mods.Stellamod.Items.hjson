@@ -8345,3 +8345,8 @@ Drygan: {
 	DisplayName: Drygan
 	Tooltip: ""
 }
+
+LeadWand: {
+	Tooltip: ""
+	DisplayName: Lead Wand
+}
