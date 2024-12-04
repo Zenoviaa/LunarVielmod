@@ -92,8 +92,8 @@ namespace Stellamod.Projectiles.GunHolster
 
 
             //Colors
-            Color startInner = Color.White;
-            Color startGlow = Color.Lerp(Color.Blue, Color.Tan, VectorHelper.Osc(0f, 1f, speed: 3f));
+            Color startInner = Color.Lerp(Color.AliceBlue, Color.White, VectorHelper.Osc(0f, 1f, speed: 5f)); ;
+            Color startGlow = Color.Lerp(Color.Blue, Color.CadetBlue, VectorHelper.Osc(0f, 1f, speed: 3f));
             Color startOuterGlow = Color.Lerp(Color.AliceBlue, Color.CadetBlue, VectorHelper.Osc(0f, 1f, speed: 3f));
 
             shader.InnerColor = startInner;
@@ -102,7 +102,7 @@ namespace Stellamod.Projectiles.GunHolster
 
             //Idk i just included this to see how it would look
             //Don't go above 0.5;
-            shader.Pixelation = 0.0505f;
+            shader.Pixelation = 0.0055f;
 
             //This affects the outer fade
             shader.OuterPower = 13.5f;
