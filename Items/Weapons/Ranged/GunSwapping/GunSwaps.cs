@@ -859,6 +859,55 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
+
+    internal class Obel : MiniGun
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = 30;
+            RightHand = true;
+
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew10");
+            soundStyle.PitchVariance = 0.5f;
+            Item.UseSound = soundStyle;
+
+            //Higher is faster
+            AttackSpeed = 19;
+
+            //Offset it so it doesn't hold gun by weird spot
+            HolsterOffset = new Vector2(15, -6);
+
+            //Recoil
+            RecoilDistance = 4;
+        }
+
+        public override void Fire(Player player, Vector2 position, Vector2 velocity, int damage, float knockback)
+        {
+            base.Fire(player, position, velocity, damage, knockback);
+            float spread = 0.4f;
+            for (int k = 0; k < 7; k++)
+            {
+                Vector2 newDirection = velocity.RotatedByRandom(spread);
+                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.AliceBlue, Main.rand.NextFloat(0.2f, 0.5f));
+            }
+            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.LightGoldenrodYellow, 1);
+
+            Vector2 vel = velocity * 16;
+            vel = vel.RotatedByRandom(MathHelper.PiOver4 / 15);
+            if (Main.myPlayer == player.whoAmI)
+            {
+                Projectile.NewProjectile(player.GetSource_FromThis(), position, vel,
+                    ModContent.ProjectileType<EnergyBall>(), damage, knockback, player.whoAmI);
+            }
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew10");
+            soundStyle.PitchVariance = 0.5f;
+            SoundEngine.PlaySound(soundStyle, position);
+        }
+    }
+
     internal class Piranha : MiniGun
     {
         public override void SetDefaults()

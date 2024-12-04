@@ -443,6 +443,7 @@
     <None Remove="Projectiles\GunHolster\AssassinsRechargeShot.png" />
     <None Remove="Projectiles\GunHolster\AzurewrathProj.png" />
     <None Remove="Projectiles\GunHolster\BurnBlastProj.png" />
+    <None Remove="Projectiles\GunHolster\EnergyBall.png" />
     <None Remove="Projectiles\GunHolster\FroBall1.png" />
     <None Remove="Projectiles\GunHolster\FroBall2.png" />
     <None Remove="Projectiles\GunHolster\STARBULLING.png" />
