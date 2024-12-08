@@ -8,7 +8,7 @@ using Terraria.Graphics.CameraModifiers;
 namespace Stellamod.Helpers
 {
     internal static class FXUtil
-    {
+    {       
         public static GlowCircleLongBoomParticle GlowCircleLongBoom(Vector2 position, Color innerColor, Color glowColor, Color outerGlowColor, float duration = 15f, float baseSize = 0.12f)
         {
             GlowCircleLongBoomParticle boomParticle = Particle.NewParticle<GlowCircleLongBoomParticle>(position, Vector2.Zero);

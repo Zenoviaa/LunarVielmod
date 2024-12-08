@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Common.Bases;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
@@ -70,8 +71,6 @@ namespace Stellamod.Projectiles.Safunai.Blackwhip
             float speedY = Projectile.velocity.Y * Main.rand.NextFloat(.2f, .3f) * 0.01f;
             if (Slam)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
-                  ModContent.ProjectileType<AlcaricMushBoom>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
                 SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath);
                 for (int i = 0; i < 14; i++)
@@ -83,10 +82,19 @@ namespace Stellamod.Projectiles.Safunai.Blackwhip
                     Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Purple, 1f).noGravity = true;
                 }
 
+                FXUtil.GlowCircleBoom(target.Center,
+                  innerColor: Color.LightPink,
+                  glowColor: Color.Pink,
+                  outerGlowColor: Color.Purple, duration: 25, baseSize: 0.24f);
             }
             else
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger"));
+                FXUtil.GlowCircleBoom(target.Center,
+                    innerColor: Color.LightPink,
+                    glowColor: Color.Pink,
+                    outerGlowColor: Color.Purple, duration: 25, baseSize: 0.12f);
+
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger"), target.position);
                 ShakeModSystem.Shake = 4;
                 for (int i = 0; i < 4; i++)
                 {

@@ -57,14 +57,14 @@ namespace Stellamod.Projectiles.Safunai.Halhurish
                 FXUtil.GlowCircleBoom(target.Center,
                     innerColor: Color.White,
                     glowColor: Color.Yellow,
-                    outerGlowColor: Color.Red, duration: 15, baseSize: 0.24f);
+                    outerGlowColor: Color.Red, duration: 25, baseSize: 0.24f);
             }
             else
             {
                 FXUtil.GlowCircleBoom(target.Center, 
                     innerColor: Color.White, 
                     glowColor: Color.Yellow, 
-                    outerGlowColor: Color.Red, duration: 15, baseSize: 0.12f);
+                    outerGlowColor: Color.Red, duration: 25, baseSize: 0.12f);
 
 
 

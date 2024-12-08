@@ -71,7 +71,7 @@ namespace Stellamod.Projectiles.Safunai.Kaevine
                 FXUtil.GlowCircleBoom(target.Center,
                     innerColor: Color.Yellow,
                     glowColor: Color.Green,
-                    outerGlowColor: Color.Black, duration: 15, baseSize: 0.24f);
+                    outerGlowColor: Color.Black, duration: 25, baseSize: 0.24f);
 
             }
             else
@@ -79,7 +79,7 @@ namespace Stellamod.Projectiles.Safunai.Kaevine
                 FXUtil.GlowCircleBoom(target.Center,
                     innerColor: Color.Yellow,
                     glowColor: Color.Green,
-                    outerGlowColor: Color.Black, duration: 15, baseSize: 0.12f);
+                    outerGlowColor: Color.Black, duration: 25, baseSize: 0.12f);
 
 
                 for (int i = 0; i < Main.rand.Next(1, 4); i++)

@@ -54,10 +54,10 @@ namespace Stellamod.Visual.Particles
             shader.Speed = 5;
 
             float bp = BasePower;
-            shader.BasePower = MathHelper.Lerp(bp, bp * 2, Easing.SpikeOutCirc(Progress));
+            shader.BasePower = MathHelper.Lerp(bp, bp * 2, Easing.SpikeOutExpo(Progress));
 
             float s = BaseSize;
-            shader.Size = MathHelper.Lerp(s, s * 2, Easing.SpikeOutCirc(Progress));
+            shader.Size = MathHelper.Lerp(s, s * 2, Easing.SpikeOutExpo(Progress));
 
             Color startInner = InnerColor;
             Color startGlow = GlowColor;
@@ -69,6 +69,11 @@ namespace Stellamod.Visual.Particles
             shader.InnerColor = Color.Lerp(startInner, startGlow, Progress);
             shader.GlowColor = Color.Lerp(startGlow, startOuterGlow, Progress);
             shader.OuterGlowColor = Color.Lerp(startOuterGlow, Color.Black, Progress);
+
+
+            shader.InnerColor = Color.Lerp(shader.InnerColor, Color.Black, Progress);
+            shader.GlowColor = Color.Lerp(shader.GlowColor, Color.Black, Progress);
+            shader.OuterGlowColor = Color.Lerp(shader.OuterGlowColor, Color.Black, Progress);
             shader.Pixelation = Pixelation;
 
             shader.Apply();

@@ -42,14 +42,14 @@ namespace Stellamod.Projectiles.Safunai.Rinavine
                 FXUtil.GlowCircleBoom(target.Center,
                    innerColor: Color.White,
                    glowColor: Color.SeaGreen,
-                   outerGlowColor: Color.DarkBlue, duration: 15, baseSize: 0.24f);
+                   outerGlowColor: Color.DarkBlue, duration: 25, baseSize: 0.24f);
             }
             else
             {
                 FXUtil.GlowCircleBoom(target.Center,
                    innerColor: Color.White,
                    glowColor: Color.SeaGreen,
-                   outerGlowColor: Color.DarkBlue, duration: 15, baseSize: 0.12f);
+                   outerGlowColor: Color.DarkBlue, duration: 25, baseSize: 0.12f);
 
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger"), target.position);
                 ShakeModSystem.Shake = 4;

@@ -82,6 +82,33 @@ namespace Stellamod.Helpers
             // 7. doesn't have solid tiles blocking a line of sight between the projectile and NPC
             return target.CanBeChasedBy() && Collision.CanHit(currentPosition, 1, 1, target.position, target.width, target.height);
         }
+        public static NPC FindNearestEnemyThroughWalls(Vector2 currentPosition, float maxDetectDistance)
+        {
+            NPC closestNPC = null;
+
+            // Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
+            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
+
+            // Loop through all NPCs
+            foreach (var target in Main.ActiveNPCs)
+            {
+                // Check if NPC able to be targeted. 
+                if (target.CanBeChasedBy())
+                {
+                    // The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
+                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, currentPosition);
+
+                    // Check if it is within the radius
+                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
+                    {
+                        sqrMaxDetectDistance = sqrDistanceToTarget;
+                        closestNPC = target;
+                    }
+                }
+            }
+
+            return closestNPC;
+        }
         public static NPC FindNearestEnemy(Vector2 currentPosition, float maxDetectDistance)
         {
             NPC closestNPC = null;
@@ -117,13 +144,13 @@ namespace Stellamod.Helpers
             Vector2 newVelocity = projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(degreesToRotate)).ToRotationVector2() * length;
             return newVelocity;
         }
-        public static Vector2 SimpleHomingVelocity(
-            Vector2 currentPosition, Vector2 targetPosition,
-            Vector2 currentVelocity,
-            float homingFactor)
+        public static Vector2 SimpleHomingVelocity(Projectile projectile, Vector2 targetPosition,
+            Vector2 currentVelocity, float degreesToRotate = 3)
         {
-
-            return currentVelocity;
+            float length = currentVelocity.Length();
+            float targetAngle = projectile.AngleTo(targetPosition);
+            Vector2 newVelocity = currentVelocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(degreesToRotate)).ToRotationVector2() * length;
+            return newVelocity;
         }
     }
 }
