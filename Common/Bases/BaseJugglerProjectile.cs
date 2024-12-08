@@ -64,7 +64,7 @@ namespace Stellamod.Common.Bases
             Projectile.timeLeft = 180;
             Projectile.tileCollide = false;
             GlowProgress = 1f;
-            ClickDistance = 70;
+            ClickDistance = 90;
             HomingStrength = 1f;
         }
 
@@ -148,7 +148,7 @@ namespace Stellamod.Common.Bases
             Vector2 mouseWorld = Main.MouseWorld;
             float distanceToMouse = Vector2.Distance(mouseWorld, Projectile.Center);
             bool successfulHit = distanceToMouse < ClickDistance;
-            if (Main.myPlayer == Projectile.owner && Timer > 15)
+            if (Main.myPlayer == Projectile.owner && Timer > 10)
             {
                 if (Owner.controlUseItem)
                 {
@@ -162,10 +162,9 @@ namespace Stellamod.Common.Bases
                     {
                         SuccessfulInput = true;
                     }
-                    if(BufferTimer >= 8 || SuccessfulInput)
+                    if(BufferTimer >= 25 || SuccessfulInput)
                     {
-                        SuccessfulInput = false;
-                        MouseInput = false;
+ 
                         if (SuccessfulInput)
                         {
                             //Some Effects IDK
@@ -218,6 +217,10 @@ namespace Stellamod.Common.Bases
                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dirt"), Projectile.position);
                             Projectile.Kill();
                         }
+
+                        BufferTimer = 0;
+                        SuccessfulInput = false;
+                        MouseInput = false;
                     }
                 }
             }

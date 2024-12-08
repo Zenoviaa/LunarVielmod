@@ -112,8 +112,8 @@ namespace Stellamod.UI.GunHolsterSystem
                 bool canFire = (scorpionIndex + _scorpionItem.leftHandedGuns.Count + 1) <= remainingSlots;
                 if (!canFire)
                 {
-                    drawColor = drawColor.MultiplyRGB(Color.DarkGray);
-                    color2 = color2.MultiplyRGB(Color.DarkGray);
+                    drawColor = drawColor.MultiplyRGB(Color.Black);
+                    color2 = color2.MultiplyRGB(Color.Black);
                 }
             }
 
