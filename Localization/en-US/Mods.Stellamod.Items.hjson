@@ -8386,3 +8386,8 @@ CelestiaWand: {
 	Tooltip: ""
 	DisplayName: Celestia Wand
 }
+
+BasterParty: {
+	DisplayName: Baster Party
+	Tooltip: ""
+}

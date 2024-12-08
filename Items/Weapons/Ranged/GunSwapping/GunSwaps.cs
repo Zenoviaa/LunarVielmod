@@ -1064,7 +1064,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.UseSound = soundStyle;
 
             //This number is in ticks
-            AttackSpeed = 10;
+            AttackSpeed = 5;
 
             //Offset it so it doesn't hold gun by weird spot
             HolsterOffset = new Vector2(0, -6);
@@ -1073,7 +1073,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void Fire(Player player, Vector2 position, Vector2 velocity, int damage, float knockback)
         {
             base.Fire(player, position, velocity, damage, knockback);
-            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/ConfettiShot1");
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew11");
             soundStyle.PitchVariance = 0.3f;
             soundStyle.Volume = 0.8f;
             SoundEngine.PlaySound(soundStyle, position);
@@ -1081,6 +1081,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             float rot = velocity.ToRotation();
             float spread = 0.4f;
             Vector2 offset = new Vector2(6, -0.1f * player.direction).RotatedBy(rot);
+            Vector2 newDirection = velocity.RotatedByRandom(spread);
 
             //Funny Screenshake
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 32f);
@@ -1097,12 +1098,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 
                 //Get a random
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                ParticleManager.NewParticle<StarParticle2>(position + offset * distance, startVelocity * Main.rand.NextFloat(0.5f, 1f), Color.DarkGoldenrod, randScale);
 
                 // Rotate the velocity randomly by 30 degrees at max.
                 Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
-                newVelocity *= 1f - Main.rand.NextFloat(0.3f);
-                Projectile.NewProjectileDirect(player.GetSource_FromThis(), position, newVelocity, ModContent.ProjectileType<BasterPartyProj>(), damage, knockback, player.whoAmI);
+                Projectile.NewProjectileDirect(player.GetSource_FromThis(), position, newDirection * Main.rand.NextFloat(12), ModContent.ProjectileType<BasterPartyProj>(), damage, knockback, player.whoAmI);
                 for (int k = 0; k < Main.rand.Next(1, 3); k++)
                 {
                     int[] goreTypes = new int[]
