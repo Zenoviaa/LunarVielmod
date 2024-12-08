@@ -1056,7 +1056,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 50;
+            Item.damage = 80;
             RightHand = true;
             LeftHand = true;
             TwoHands = true;
