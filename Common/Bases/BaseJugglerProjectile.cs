@@ -44,7 +44,9 @@ namespace Stellamod.Common.Bases
         protected float GlowProgress;
         protected float ClickDistance;
         protected float HomingStrength;
+        protected float BufferTimer;
         protected bool MouseInput;
+        protected bool SuccessfulInput;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -122,7 +124,7 @@ namespace Stellamod.Common.Bases
             }
 
             GlowProgress *= 0.98f;
-            float maxDetectDistance = 1024;
+            float maxDetectDistance = 2048;
             NPC nearest = ProjectileHelper.FindNearestEnemyThroughWalls(Projectile.position, maxDetectDistance);
             if (nearest != null)
             {
@@ -146,65 +148,76 @@ namespace Stellamod.Common.Bases
             Vector2 mouseWorld = Main.MouseWorld;
             float distanceToMouse = Vector2.Distance(mouseWorld, Projectile.Center);
             bool successfulHit = distanceToMouse < ClickDistance;
-
-
             if (Main.myPlayer == Projectile.owner && Timer > 15)
             {
-
                 if (Owner.controlUseItem)
                 {
-     
+                    MouseInput = true;
+                }
+
+                if (MouseInput)
+                {
+                    BufferTimer++;
                     if (successfulHit)
                     {
-                        //Some Effects IDK
-                        float maxDetectDistance = 1024;
-                        for (float i = 0; i < 4; i++)
+                        SuccessfulInput = true;
+                    }
+                    if(BufferTimer >= 8 || SuccessfulInput)
+                    {
+                        SuccessfulInput = false;
+                        MouseInput = false;
+                        if (SuccessfulInput)
                         {
-                            float progress = i / 4f;
-                            float rot = progress * MathHelper.ToRadians(360);
-                            Vector2 offset = rot.ToRotationVector2() * 24;
-                            var particle = FXUtil.GlowCircleLongBoom(Projectile.Center,
-                                innerColor: Color.White,
-                                glowColor: Color.LightGray,
-                                outerGlowColor: Color.Black);
-                            particle.Rotation = rot + MathHelper.ToRadians(45);
-                        }
+                            //Some Effects IDK
+                            float maxDetectDistance = 1024;
+                            for (float i = 0; i < 4; i++)
+                            {
+                                float progress = i / 4f;
+                                float rot = progress * MathHelper.ToRadians(360);
+                                Vector2 offset = rot.ToRotationVector2() * 24;
+                                var particle = FXUtil.GlowCircleLongBoom(Projectile.Center,
+                                    innerColor: Color.White,
+                                    glowColor: Color.LightGray,
+                                    outerGlowColor: Color.Black);
+                                particle.Rotation = rot + MathHelper.ToRadians(45);
+                            }
 
-                        for (float i = 0; i < 8; i++)
-                        {
-                            float progress = i / 4f;
-                            float rot = progress * MathHelper.ToRadians(360);
-                            Vector2 dustVelocity = rot.ToRotationVector2() * 6;
-                            Dust.NewDustPerfect(Projectile.Center, DustID.SilverCoin, dustVelocity);
-                        }
+                            for (float i = 0; i < 8; i++)
+                            {
+                                float progress = i / 4f;
+                                float rot = progress * MathHelper.ToRadians(360);
+                                Vector2 dustVelocity = rot.ToRotationVector2() * 6;
+                                Dust.NewDustPerfect(Projectile.Center, DustID.SilverCoin, dustVelocity);
+                            }
 
-                        //Show Combo Count
-                        int combatText = CombatText.NewText(Juggler.Player.getRect(), Color.White, $"x{Juggler.combo + 1}", true);
-                        CombatText numText = Main.combatText[combatText];
-                        numText.lifeTime = 60;
+                            //Show Combo Count
+                            int combatText = CombatText.NewText(Juggler.Player.getRect(), Color.White, $"x{Juggler.combo + 1}", true);
+                            CombatText numText = Main.combatText[combatText];
+                            numText.lifeTime = 60;
 
-                        SoundStyle jugglerPong = SoundRegistry.JugglerPong;
-                        jugglerPong.PitchVariance = 0.15f;
-                        SoundEngine.PlaySound(jugglerPong, Projectile.position);
-                        NPC nearest = ProjectileHelper.FindNearestEnemyThroughWalls(Projectile.position, maxDetectDistance);
-                        if (nearest != null)
-                        {
-                            Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearest.Center, InitialVelocity, 900);
-                            SwitchState(AIState.Thrown);
+                            SoundStyle jugglerPong = SoundRegistry.JugglerPong;
+                            jugglerPong.PitchVariance = 0.15f;
+                            SoundEngine.PlaySound(jugglerPong, Projectile.position);
+                            NPC nearest = ProjectileHelper.FindNearestEnemyThroughWalls(Projectile.position, maxDetectDistance);
+                            if (nearest != null)
+                            {
+                                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearest.Center, InitialVelocity, 900);
+                                SwitchState(AIState.Thrown);
+                            }
+                            else
+                            {
+                                SwitchState(AIState.Thrown);
+                            }
+
+                            GlowProgress = 1f;
+                            Juggler.combo++;
                         }
                         else
                         {
-                            SwitchState(AIState.Thrown);
+                            //FAIL
+                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dirt"), Projectile.position);
+                            Projectile.Kill();
                         }
-
-                        GlowProgress = 1f;
-                        Juggler.combo++;
-                    }
-                    else
-                    {
-                        //FAIL
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dirt"), Projectile.position);
-                        Projectile.Kill();
                     }
                 }
             }
