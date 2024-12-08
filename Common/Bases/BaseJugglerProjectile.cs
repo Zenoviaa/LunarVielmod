@@ -24,25 +24,26 @@ namespace Stellamod.Common.Bases
 
     internal abstract class BaseJugglerProjectile : ModProjectile
     {
-        private enum AIState
+        protected enum AIState
         {
             Thrown,
             Catch
         }
 
-        private bool _setInitialVelocity;
-        private Vector2 InitialVelocity;
-        private ref float Timer => ref Projectile.ai[0];
-        private AIState State
+        protected bool _setInitialVelocity;
+        protected Vector2 InitialVelocity;
+        protected ref float Timer => ref Projectile.ai[0];
+        protected AIState State
         {
             get => (AIState)Projectile.ai[1];
             set => Projectile.ai[1] = (float)value;
         }
 
-        private Player Owner => Main.player[Projectile.owner];
+        protected Player Owner => Main.player[Projectile.owner];
         protected JugglePlayer Juggler => Owner.GetModPlayer<JugglePlayer>();
         protected float GlowProgress;
         protected float ClickDistance;
+        protected float HomingStrength;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -60,7 +61,8 @@ namespace Stellamod.Common.Bases
             Projectile.timeLeft = 180;
             Projectile.tileCollide = false;
             GlowProgress = 1f;
-            ClickDistance = 64;
+            ClickDistance = 70;
+            HomingStrength = 1f;
         }
 
         public override void SendExtraAI(BinaryWriter writer)
@@ -109,14 +111,9 @@ namespace Stellamod.Common.Bases
             Projectile.netUpdate = true;
         }
 
-        private void AI_Thrown()
+        public virtual void AI_Thrown()
         {
             Timer++;
-            if (Timer == 1)
-            {
-
-            }
-
             if (Timer % 16 == 0)
             {
                 //A little bit of dust never hurt anyone
@@ -129,12 +126,12 @@ namespace Stellamod.Common.Bases
             if (nearest != null)
             {
                 //Slight homing
-                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearest.Center, 1);
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearest.Center, HomingStrength);
             }
             Projectile.rotation += Projectile.velocity.Length() * 0.05f;
         }
 
-        private void AI_Catch()
+        public virtual void AI_Catch()
         {
             Timer++;
             Projectile.velocity *= 0.94f;
@@ -279,7 +276,7 @@ namespace Stellamod.Common.Bases
             return false;
         }
 
-        private void DrawTrail(ref Color lightColor)
+        public virtual void DrawTrail(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.RestartDefaults();
@@ -289,7 +286,7 @@ namespace Stellamod.Common.Bases
             TrailDrawer.DrawPrims(Projectile.oldPos, trailOffset, 155);
         }
 
-        private void DrawSprite(ref Color lightColor)
+        public virtual void DrawSprite(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
@@ -336,6 +333,11 @@ namespace Stellamod.Common.Bases
             base.OnKill(timeLeft);
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dirt"), Projectile.position);
             Juggler.ResetCombo();
+
+            FXUtil.GlowCircleBoom(Projectile.Center,
+                innerColor: Color.White,
+                glowColor: Color.Gray,
+                outerGlowColor: Color.DarkGray, duration: 25, baseSize: 0.06f);
         }
     }
 }

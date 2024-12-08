@@ -22,10 +22,10 @@ namespace Stellamod.Common.ScorpionMountSystem
         }
 
         private Player Owner => Main.player[Projectile.owner];
-        private float WhiteFlash;
-        private float RecoilRot;
-        private float RecoilOff;
-        private float UseTime;
+        protected float WhiteFlash;
+        protected float RecoilRot;
+        protected float RecoilOff;
+        protected float UseTime;
         public override void SetDefaults()
         {
             base.SetDefaults();

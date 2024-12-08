@@ -1,39 +1,23 @@
-﻿using Stellamod.Helpers;
+﻿using Stellamod.Common.Bases;
 using Stellamod.Projectiles.Thrown.Jugglers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
 
 namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
-    internal class FlinchMachine : ClassSwapItem
+    internal class FlinchMachine : BaseJugglerItem
     {
-
         public override DamageClass AlternateClass => DamageClass.Ranged;
-
         public override void SetClassSwappedDefaults()
         {
             Item.damage = 126;
             Item.mana = 0;
         }
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            base.ModifyTooltips(tooltips);
-            var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Alcarishasd",  Helpers.LangText.Common("Juggler"))
-            {
-                OverrideColor = ColorFunctions.JugglerWeaponType
-            };
-            tooltips.Add(line);
-        }
 
         public override void SetDefaults()
         {
+            base.SetDefaults();
             Item.damage = 252;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 24;
