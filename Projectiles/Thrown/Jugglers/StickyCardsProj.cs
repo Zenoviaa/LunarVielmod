@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
+using Stellamod.Common.Bases;
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Trails;
@@ -12,31 +13,11 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown.Jugglers
 {
-    internal class StickyCardsProj : ModProjectile
+    internal class StickyCardsProj : BaseJugglerProjectile
     {
-        private enum ActionState
-        {
-            Thrown,
-            Fall
-        }
-
-        private ActionState State
-        {
-            get => (ActionState)Projectile.ai[0];
-            set => Projectile.ai[0] = (float)value;
-        }
-
-        private float Timer
-        {
-            get => Projectile.ai[1];
-            set => Projectile.ai[1] = value;
-        }
-
-        private Player Owner => Main.player[Projectile.owner];
-        private JugglerPlayer Juggler => Owner.GetModPlayer<JugglerPlayer>();
         private Vector2[] BungeeGumPos;
         private Vector2[] BungeeGumAuraPos;
-        private PrimDrawer TrailDrawer { get; set; } = null;
+        public PrimDrawer BungeeGumTrailDrawer { get; private set; } = null;
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Type] = 16;
@@ -45,45 +26,21 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
         public override void SetDefaults()
         {
+            base.SetDefaults();
             Projectile.width = 16;
             Projectile.height = 22;
-            Projectile.tileCollide = true;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 600;
             BungeeGumPos = new Vector2[4];
             BungeeGumAuraPos = new Vector2[24];
+            HomingStrength = 5;
         }
 
-        public override void AI()
+        public override void AI_Catch()
         {
-            switch (State)
-            {
-                case ActionState.Thrown:
-                    AI_Thrown();
-                    break;
-                case ActionState.Fall:
-                    AI_Fall();
-                    break;
-            }
-        }
-
-        private bool IsTouchingPlayer()
-        {
-            Rectangle myRect = Projectile.getRect();
-            Rectangle playerRect = Owner.getRect();
-            return myRect.Intersects(playerRect) || myRect.Contains(playerRect);
-        }
-
-        private void AI_Thrown()
-        {
-            Projectile.velocity.Y += 0.05f;
-            Projectile.rotation += 0.25f;
-        }
-
-        private void AI_Fall()
-        {
+            base.AI_Catch();
             if (Projectile.velocity.Y < 0)
             {
                 Projectile.velocity.Y += 0.1f;
@@ -93,21 +50,8 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
                 Projectile.velocity.Y += 0.02f;
             }
 
-    
             Projectile.rotation += Projectile.velocity.Length() * 0.05f;
-            if (IsTouchingPlayer())
-            {
-                int combatText = CombatText.NewText(Juggler.Player.getRect(), Color.White, $"x{Juggler.CatchCount + 1}", true);
-                CombatText numText = Main.combatText[combatText];
-                numText.lifeTime = 60;
-
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia1"), Projectile.position);
-                Juggler.CatchCount++;
-                Juggler.DamageBonus += 1f;
-                Projectile.Kill();
-            }
-       
-            if(Vector2.Distance(Owner.Center, Projectile.Center) <= 164 || Vector2.Distance(Owner.Center, Projectile.Center) > 512)
+            if (Vector2.Distance(Owner.Center, Projectile.Center) > 512)
             {
                 Vector2 directionToOwner = Projectile.Center.DirectionTo(Owner.Center);
                 Vector2 targetVelocity = directionToOwner * 16;
@@ -142,82 +86,34 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
             }
 
             //Don't take too long or else you lose your combo
-            Timer++;
-            if (Timer >= 598)
-            {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dirt"), Projectile.position);
-                Juggler.ResetJuggle();
-                Projectile.Kill();
-            }
             Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 1.0f * Main.essScale);
-        }
-
-        public override bool OnTileCollide(Vector2 oldVelocity)
-        {
-            Juggler.ResetJuggle();
-
-            //Play womp womp sound or something 
-            return base.OnTileCollide(oldVelocity);
-        }
-
-        public override void OnKill(int timeLeft)
-        {
-            base.OnKill(timeLeft);
-            if (Projectile.friendly)
-            {
-                Juggler.ResetJuggle();
-            }
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (target.immortal)
-                Juggler.ResetJuggle();
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, new Vector2(1, 1), ModContent.ProjectileType<BungeeGumSlashProj>(),
-                Projectile.damage, Projectile.knockBack, Projectile.owner);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, new Vector2(-1, 1), ModContent.ProjectileType<BungeeGumSlashProj>(),
-                Projectile.damage, Projectile.knockBack, Projectile.owner);
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(target.position, 1024, 1);
+            base.OnHitNPC(target, hit, damageDone);
+            if (Juggler.combo <= 5)
+                return;
 
-            Projectile.timeLeft = 600;
-            Vector2 bounceVelocity = -Projectile.velocity / 2;
-            Projectile.tileCollide = false;
-            Projectile.velocity = bounceVelocity.RotatedByRandom(MathHelper.PiOver4);
-            Projectile.velocity += -Vector2.UnitY * 8;
-            Projectile.friendly = false;
-            State = ActionState.Fall;
-
-            float catchCount = Juggler.CatchCount;
-            float pitch = MathHelper.Clamp(catchCount * 0.05f, 0f, 1f);
-            SoundStyle jugglerHit = SoundRegistry.JugglerHit;
-            jugglerHit.Pitch = pitch;
-            jugglerHit.PitchVariance = 0.1f;
-            jugglerHit.Volume = 0.5f;
-            SoundEngine.PlaySound(jugglerHit, Projectile.position);
-
-            if (Juggler.CatchCount >= 5)
+            for (float i = 0; i < 4; i++)
             {
-                SoundStyle jugglerHitMax = SoundRegistry.JugglerHit;
-                pitch = MathHelper.Clamp(catchCount * 0.02f, 0f, 1f);
-                jugglerHitMax.Pitch = pitch;
-                jugglerHitMax.PitchVariance = 0.1f;
-                SoundEngine.PlaySound(jugglerHitMax, Projectile.position);
+                float progress = i / 4f;
+                float rot = progress * MathHelper.ToRadians(360);
+                Vector2 offset = rot.ToRotationVector2() * 24;
+                var particle = FXUtil.GlowCircleLongBoom(Projectile.Center,
+                    innerColor: Color.LightPink,
+                    glowColor: Color.Pink,
+                    outerGlowColor: Color.Purple);
+                particle.Rotation = rot + MathHelper.ToRadians(45);
             }
 
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit2"), Projectile.position);
-            for (int i = 0; i < 4; i++)
-            {
-                //Get a random velocity
-                Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
-
-                //Get a random
-                float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                ParticleManager.NewParticle<StarParticle2>(target.Center, velocity, Color.DarkGoldenrod, randScale);
-            }
+            FXUtil.GlowCircleBoom(target.Center,
+                 innerColor: Color.LightPink,
+                 glowColor: Color.Pink,
+                 outerGlowColor: Color.Purple, duration: 25, baseSize: 0.18f);
         }
 
-
-        public float WidthFunction(float completionRatio)
+        public override float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width;
             return baseWidth * VectorHelper.Osc(0.5f, 1f, 3);
@@ -229,7 +125,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
             return baseWidth * 0.2f;
         }
 
-        public Color ColorFunction(float completionRatio)
+        public override Color ColorFunction(float completionRatio)
         {
             return Color.Pink * VectorHelper.Osc(0.5f, 1f, 3) * 0.3f;
         }
@@ -251,28 +147,24 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
                 new Vector2(256, 256), 0.2f, SpriteEffects.None, 0f);
 
 
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            }
-
+            BungeeGumTrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
             Vector2 textureSize = new Vector2(16, 22);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.StarTrail);
-            TrailDrawer.WidthFunc = WidthFunction;
-            TrailDrawer.ColorFunc = ColorFunction;
-            TrailDrawer.DrawPrims(BungeeGumPos, textureSize * 0.5f - Main.screenPosition, 155);
+            BungeeGumTrailDrawer.WidthFunc = WidthFunction;
+            BungeeGumTrailDrawer.ColorFunc = ColorFunction;
+            BungeeGumTrailDrawer.DrawPrims(BungeeGumPos, textureSize * 0.5f - Main.screenPosition, 155);
 
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SpikyTrail1);
-            TrailDrawer.WidthFunc = WidthFunctionAura;
-            TrailDrawer.ColorFunc = ColorFunctionAura;
-            TrailDrawer.DrawPrims(BungeeGumAuraPos, textureSize * 0.5f - Main.screenPosition, 155);
+            BungeeGumTrailDrawer.WidthFunc = WidthFunctionAura;
+            BungeeGumTrailDrawer.ColorFunc = ColorFunctionAura;
+            BungeeGumTrailDrawer.DrawPrims(BungeeGumAuraPos, textureSize * 0.5f - Main.screenPosition, 155);
 
             if(Timer == 0)
             {
                 DrawHelper.DrawAdditiveAfterImage(Projectile, Color.White, Color.Transparent, ref lightColor);
             }
-     
-            return base.PreDraw(ref lightColor);
+
+            return true;
         }
     }
 }

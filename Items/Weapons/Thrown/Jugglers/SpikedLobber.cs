@@ -1,13 +1,12 @@
-﻿using Stellamod.Helpers;
+﻿using Stellamod.Common.Bases;
 using Stellamod.Projectiles.Thrown.Jugglers;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
-    internal class SpikedLobber : ClassSwapItem
+    internal class SpikedLobber : BaseJugglerItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Ranged;
@@ -17,19 +16,9 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
             Item.damage = 20;
             Item.mana = 0;
         }
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            base.ModifyTooltips(tooltips);
-            var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Alcarishasd",  Helpers.LangText.Common("Juggler"))
-            {
-                OverrideColor = ColorFunctions.JugglerWeaponType
-            };
-            tooltips.Add(line);
-        }
-
         public override void SetDefaults()
         {
+            base.SetDefaults();
             Item.damage = 40;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 24;
@@ -45,7 +34,7 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<SpikedLobberProj>();
-            Item.shootSpeed = 35;
+            Item.shootSpeed = 28;
         }
     }
 }

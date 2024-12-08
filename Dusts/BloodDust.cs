@@ -1,20 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Dusts
 {
     public class BloodDust : ModDust
-	{
+    {
 
         public override void OnSpawn(Dust dust)
         {
             dust.noGravity = false;
             dust.noLight = false;
-            //dust.frame = new Rectangle(0, 0, 4, 4);
             dust.scale = 1.5f;
         }
 

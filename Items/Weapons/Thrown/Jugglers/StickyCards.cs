@@ -1,4 +1,5 @@
-﻿using Stellamod.Helpers;
+﻿using Stellamod.Common.Bases;
+using Stellamod.Helpers;
 using Stellamod.Projectiles.Thrown.Jugglers;
 using System.Collections.Generic;
 using Terraria;
@@ -7,9 +8,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
-    internal class StickyCards : ClassSwapItem
+    internal class StickyCards : BaseJugglerItem
     {
-
         public override DamageClass AlternateClass => DamageClass.Ranged;
 
         public override void SetClassSwappedDefaults()
@@ -17,19 +17,10 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
             Item.damage = 45;
             Item.mana = 0;
         }
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            base.ModifyTooltips(tooltips);
-            var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Alcarishasd",  Helpers.LangText.Common("Juggler"))
-            {
-                OverrideColor = ColorFunctions.JugglerWeaponType
-            };
-            tooltips.Add(line);
-        }
 
         public override void SetDefaults()
         {
+            base.SetDefaults();
             Item.damage = 90;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 24;
@@ -46,7 +37,7 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<StickyCardsProj>();
-            Item.shootSpeed = 35;
+            Item.shootSpeed = 24;
         }
     }
 }
