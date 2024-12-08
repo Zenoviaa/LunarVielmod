@@ -1058,6 +1058,8 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             base.SetDefaults();
             Item.damage = 50;
             RightHand = true;
+            LeftHand = true;
+            TwoHands = true;
 
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/TentacleBubbleOut");
             soundStyle.PitchVariance = 0.5f;
