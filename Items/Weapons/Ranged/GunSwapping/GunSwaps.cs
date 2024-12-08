@@ -1082,7 +1082,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 
             float rot = velocity.ToRotation();
             float spread = 0.4f;
-            Vector2 offset = new Vector2(6, -0.1f * player.direction).RotatedBy(rot);
+            Vector2 offset = new Vector2(2, -0.1f * player.direction).RotatedBy(rot);
             Vector2 newDirection = velocity.RotatedByRandom(spread);
 
             //Funny Screenshake
