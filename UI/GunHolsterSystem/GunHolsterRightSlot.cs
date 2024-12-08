@@ -117,7 +117,7 @@ namespace Stellamod.UI.GunHolsterSystem
                 }
             }
 
-            Texture2D backingTexture = ModContent.Request<Texture2D>($"{GunHolsterUISystem.RootTexturePath}LeftSlot").Value;
+            Texture2D backingTexture = ModContent.Request<Texture2D>($"{GunHolsterUISystem.RootTexturePath}RightSlot").Value;
             int offset = (int)(backingTexture.Size().Y / 2);
             Vector2 centerPos = pos + rectangle.Size() / 2f;
             centerPos.Y -= 4;

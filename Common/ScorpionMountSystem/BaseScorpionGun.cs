@@ -45,6 +45,8 @@ namespace Stellamod.Common.ScorpionMountSystem
         public override void AI()
         {
             base.AI();
+            ScorpionPlayer scorpionPlayer = Owner.GetModPlayer<ScorpionPlayer>();
+            Projectile.Center = scorpionPlayer.gunMountPosition;
             if (Owner.mount.Active && 
                 Owner.mount._mountSpecificData is ScorpionSpecificData scorpionSpecificData && 
                 scorpionSpecificData.scorpionItem.gunType == Type)
@@ -79,8 +81,7 @@ namespace Stellamod.Common.ScorpionMountSystem
 
         private void AI_Idle()
         {
-            ScorpionPlayer scorpionPlayer = Owner.GetModPlayer<ScorpionPlayer>();
-            Projectile.Center = scorpionPlayer.gunMountPosition;
+
             if (Main.myPlayer == Projectile.owner)
             {
                 Projectile.velocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero);

@@ -44,6 +44,7 @@ namespace Stellamod.Common.Bases
         protected float GlowProgress;
         protected float ClickDistance;
         protected float HomingStrength;
+        protected bool MouseInput;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -134,8 +135,13 @@ namespace Stellamod.Common.Bases
         public virtual void AI_Catch()
         {
             Timer++;
-            Projectile.velocity *= 0.94f;
-            Projectile.velocity.Y += 0.2f;
+            Vector2 circleOffset = new Vector2(64, 0);
+            Vector2 targetPos = Owner.Center + circleOffset.RotatedBy(Timer / 60f);
+            Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, targetPos, HomingStrength * 5f);
+            if (Timer > 60 || Vector2.Distance(Projectile.Center, targetPos) < 128)
+            {
+                Projectile.velocity *= 0.92f;
+            }
 
             Vector2 mouseWorld = Main.MouseWorld;
             float distanceToMouse = Vector2.Distance(mouseWorld, Projectile.Center);
