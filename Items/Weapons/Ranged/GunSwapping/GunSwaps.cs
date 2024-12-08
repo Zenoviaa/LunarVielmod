@@ -1086,7 +1086,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Vector2 newDirection = velocity.RotatedByRandom(spread);
 
             //Funny Screenshake
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 32f);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 5f);
             int numProjectiles = Main.rand.Next(1, 3);
             float distance = 12;
             for (int p = 0; p < numProjectiles; p++)
@@ -1103,7 +1103,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 
                 // Rotate the velocity randomly by 30 degrees at max.
                 Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
-                Projectile.NewProjectileDirect(player.GetSource_FromThis(), position, newDirection * Main.rand.NextFloat(12), ModContent.ProjectileType<BasterPartyProj>(), damage, knockback, player.whoAmI);
+                Projectile.NewProjectileDirect(player.GetSource_FromThis(), position, newDirection * 2 * Main.rand.NextFloat(12), ModContent.ProjectileType<BasterPartyProj>(), damage, knockback, player.whoAmI);
                 for (int k = 0; k < Main.rand.Next(1, 3); k++)
                 {
                     int[] goreTypes = new int[]
