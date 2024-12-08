@@ -1120,7 +1120,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 }
             }
         }
-
+    }
         internal class AssassinsRecharge : MiniGun
         {
             public override void SetDefaults()
@@ -1539,4 +1539,4 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             }
         }
     }
-}
+
