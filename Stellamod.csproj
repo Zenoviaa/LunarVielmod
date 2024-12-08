@@ -224,6 +224,7 @@
     <None Remove="Items\Consumables\VoidLantern.png" />
     <None Remove="Items\Consumables\WanderingEssence.png" />
     <None Remove="Items\Materials\AcidicalDirtBlock.png" />
+    <None Remove="Items\MoonlightMagic\Weapons\LeadWand.png" />
     <None Remove="Items\Placeable\Alcadzia\AlciteI.png" />
     <None Remove="Items\Placeable\Alcadzia\AowerBottomI.png" />
     <None Remove="Items\Placeable\Alcadzia\AowerTopI.png" />

@@ -5,6 +5,8 @@ namespace Stellamod.Helpers
     internal static class SoundRegistry
     {
         private static string Path => "Stellamod/Assets/Sounds/";
+
+        public static SoundStyle JugglerPong => new SoundStyle($"{Path}JugglerPong", 1, 2);
         public static SoundStyle JugglerHit => new SoundStyle($"{Path}JugglerHit");
         public static SoundStyle JugglerHitMax => new SoundStyle($"{Path}JugglerHitMax");
         public static SoundStyle BeeBuzz1 => new SoundStyle($"{Path}BeeBuzz1");

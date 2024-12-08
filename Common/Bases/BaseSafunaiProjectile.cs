@@ -166,7 +166,7 @@ namespace Stellamod.Common.Bases
         {
             float t = Timer / 60f;
             t = MathHelper.Clamp(t, 0f, 1f);
-            return MathHelper.Lerp(0f, 32, completionRatio) * 1f - t;
+            return MathHelper.Lerp(0f, 8f, completionRatio) * 1f - t;
         }
 
         protected virtual Color ColorFunction(float completionRatio)

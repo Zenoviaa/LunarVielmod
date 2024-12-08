@@ -37,7 +37,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
     coords = round(coords / pixelation) * pixelation;
     float2 dist = coords - float2(0.5, 0.5);
     float magnitude = length(dist);
-    float power = basePower + sin(time);
+    float power = basePower + (sin(time) * 0.33);
     power = clamp(power, 0.0, 100.0);
     
     float4 finalColor = float4(1.0, 1.0, 1.0, 1.0);
@@ -49,19 +49,26 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
         finalColor.rgb = innerColor;
 
         //Calculate the glowing
-        float progress = magnitude / size;
-        progress = pow(progress, power);
-        finalColor.rgb = lerp(innerColor, glowColor, progress);
-        finalColor.rgb = lerp(finalColor.rgb, outerGlowColor, progress / 2.0);
-     
+        float totalProgress = magnitude / size;
+        if (totalProgress < 0.5)
+        {
+            float progress = totalProgress / 0.5;
+            float3 col = lerp(innerColor, glowColor, progress);
+            finalColor.rgb = col;
+        }
+        else
+        {
+            float progress = (totalProgress - 0.5) / 0.5;
+            float3 col = lerp(glowColor, outerGlowColor, progress);
+            finalColor.rgb = col;
+        }
+    
+ 
          //Then we calculate the fade out as it gets weaker
          //Tbf we could also additive draw
         float alphaProgress = magnitude / size;
-        alphaProgress = 1.0 - alphaProgress;
-         
-
-        float target = pow(2.0, (outerPower * alphaProgress - outerPower));
-        float mult = lerp(1.0, target, magnitude / size);
+        float eased = pow(2.0, (outerPower * alphaProgress - outerPower));
+        float mult = lerp(1.0, 0.0, eased);
         finalColor *= mult;
     }
     else

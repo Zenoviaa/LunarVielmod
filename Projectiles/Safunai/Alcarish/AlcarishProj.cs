@@ -46,7 +46,7 @@ namespace Stellamod.Projectiles.Safunai.Alcarish
                 FXUtil.GlowCircleBoom(target.Center,
                     innerColor: Color.White,
                     glowColor: Color.Black,
-                    outerGlowColor: Color.Black, duration: 15, baseSize: 0.24f);
+                    outerGlowColor: Color.Black, duration: 25, baseSize: 0.24f);
 
             }
             else
@@ -54,7 +54,7 @@ namespace Stellamod.Projectiles.Safunai.Alcarish
                 FXUtil.GlowCircleBoom(target.Center,
                    innerColor: Color.White,
                    glowColor: Color.Black,
-                   outerGlowColor: Color.Black, duration: 15, baseSize: 0.12f);
+                   outerGlowColor: Color.Black, duration: 25, baseSize: 0.12f);
 
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger"), target.position);
                 ShakeModSystem.Shake = 4;

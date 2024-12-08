@@ -102,7 +102,7 @@ namespace Stellamod.Projectiles.Test
 
             //Idk i just included this to see how it would look
             //Don't go above 0.5;
-            shader.Pixelation = 0.0005f;
+            shader.Pixelation = 0.005f;
 
             //This affects the outer fade
             shader.OuterPower = 13.5f;
@@ -111,7 +111,7 @@ namespace Stellamod.Projectiles.Test
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 2; i++)
             {
                 spriteBatch.Draw(texture, centerPos, null, Color.White, Projectile.rotation, texture.Size() / 2f, 1f, SpriteEffects.None, 0);
             }

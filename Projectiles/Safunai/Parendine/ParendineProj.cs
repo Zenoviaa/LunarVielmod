@@ -41,14 +41,14 @@ namespace Stellamod.Projectiles.Safunai.Parendine
                 FXUtil.GlowCircleBoom(target.Center,
                     innerColor: Color.White,
                     glowColor: Color.LightBlue,
-                    outerGlowColor: Color.Blue, duration: 15, baseSize: 0.24f);
+                    outerGlowColor: Color.Blue, duration: 25, baseSize: 0.24f);
             }
             else
             {
                 FXUtil.GlowCircleBoom(target.Center,
                     innerColor: Color.Cyan,
                     glowColor: Color.LightBlue,
-                    outerGlowColor: Color.Blue, duration: 15, baseSize: 0.12f);
+                    outerGlowColor: Color.Blue, duration: 25, baseSize: 0.12f);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Parendine2"));
                 ShakeModSystem.Shake = 4;
                 for (int i = 0; i < 8; i++)

@@ -85,17 +85,17 @@ namespace Stellamod.Projectiles.GunHolster
             shader.Speed = 10f;
 
             //This effects the distribution of colors
-            shader.BasePower = 2.5f;
+            shader.BasePower = 1f;
 
             //Radius of the circle
             shader.Size = 0.12f;
 
 
             //Colors
-            Color startInner = Color.Lerp(Color.AliceBlue, Color.BlueViolet, VectorHelper.Osc(0f, 1f, speed: 5f)); ;
-            Color startGlow = Color.Lerp(Color.Blue, Color.CadetBlue, VectorHelper.Osc(0f, 1f, speed: 3f));
-            Color startOuterGlow = Color.Lerp(Color.AliceBlue, Color.CadetBlue, VectorHelper.Osc(0f, 1f, speed: 3f));
-
+            Color startInner = Color.Lerp(Color.SkyBlue, Color.BlueViolet, VectorHelper.Osc(0f, 1f, speed: 5f)); ;
+            Color startGlow = Color.Lerp(Color.CadetBlue, Color.CadetBlue, VectorHelper.Osc(0f, 1f, speed: 3f));
+            Color startOuterGlow = Color.Lerp(Color.Black, Color.Black, VectorHelper.Osc(0f, 1f, speed: 3f));
+     
             shader.InnerColor = startInner;
             shader.GlowColor = startGlow;
             shader.OuterGlowColor = startOuterGlow;
@@ -103,19 +103,15 @@ namespace Stellamod.Projectiles.GunHolster
             //Idk i just included this to see how it would look
             //Don't go above 0.5;
             shader.Pixelation = 0.0055f;
-
-            //This affects the outer fade
-            shader.OuterPower = 13.5f;
             shader.Apply();
 
-
-            SpriteBatch spriteBatch = Main.spriteBatch;
+            SpriteBatch spriteBatch = Main.spriteBatch;  
             spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 3; i++)
             {
-                spriteBatch.Draw(texture, centerPos, null, Color.AliceBlue, Projectile.rotation, texture.Size() / 2f, 1f, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, centerPos, null, Color.White, Projectile.rotation, texture.Size() / 2f, 1f, SpriteEffects.None, 0);
             }
-
+      
             spriteBatch.RestartDefaults();
         }
 

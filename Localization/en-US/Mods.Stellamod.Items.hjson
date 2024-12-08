@@ -11,6 +11,12 @@ Common: {
 	Safunai: Safunai Weapon Type
 	Orb: Orb Weapon Type
 	Juggler: Juggler Weapon Type
+	JugglerHelp:
+		'''
+		Throws out a projectile that bounces off the enemy
+		After it bounces, click it again midair to ricochet back again
+		Keep the combo going to gain a damage multiplier!
+		'''
 	CanSwapped: Can be changed to{0}!
 	TypeSwapped: Damage Type Swapped!
 	PowderDamage: Increases igniter card damage by {0}%!

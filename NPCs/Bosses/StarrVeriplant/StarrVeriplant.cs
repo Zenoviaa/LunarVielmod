@@ -212,6 +212,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
                 OutlineOpacity = MathHelper.Lerp(OutlineOpacity, 0f, 0.1f);
             }
 
+
 			//AI States
 			switch (State)
 			{
@@ -379,7 +380,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
                         NPC.velocity.Y *= 1.5f;
                     }
 		
-					if(NPC.collideY)
+					if(NPC.collideY || Timer > 60)
 					{
 						MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
 						myPlayer.ShakeAtPosition(NPC.Center, 1024f, 30f);

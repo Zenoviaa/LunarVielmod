@@ -82,7 +82,7 @@ namespace Stellamod.Common.ScorpionMountSystem
         {
             int newDamage = (int)Player.GetTotalDamage(Player.HeldItem.DamageType).ApplyTo(miniGun.Item.damage);
             int gunHolsterType = ModContent.ProjectileType<ScorpionHolsterProjectile>();
-            if (Player.ownedProjectileCounts[gunHolsterType] == 0 && Player.slotsMinions < Player.maxMinions)
+            if (Player.ownedProjectileCounts[gunHolsterType] == 0)
             {
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
                     gunHolsterType, newDamage / 2, miniGun.Item.knockBack, Player.whoAmI, ai2: index);

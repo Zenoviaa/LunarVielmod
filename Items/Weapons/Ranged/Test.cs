@@ -61,12 +61,5 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 			return new Vector2(2f, -2f);
 		}
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            _dir = -_dir;
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai1: _dir);
-            return false;
-        }
     }
 }

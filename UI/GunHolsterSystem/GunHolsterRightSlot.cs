@@ -93,7 +93,7 @@ namespace Stellamod.UI.GunHolsterSystem
             Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();
             bool contains = ContainsPoint(Main.MouseScreen);
-            //   Console.WriteLine(rectangle.Width);
+
             if (contains && !PlayerInput.IgnoreMouseInterface)
             {
                 Main.LocalPlayer.mouseInterface = true;
@@ -102,15 +102,29 @@ namespace Stellamod.UI.GunHolsterSystem
 
             //Draw Backing
             Color color2 = Main.inventoryBack;
-            Vector2 pos = rectangle.TopLeft();
+            Color drawColor = Color.White;
 
-            Texture2D backingTexture = ModContent.Request<Texture2D>($"{GunHolsterUISystem.RootTexturePath}RightSlot").Value;
+            Vector2 pos = rectangle.TopLeft();
+            if (scorpionIndex != -1)
+            {
+                Player player = Main.LocalPlayer;
+                float remainingSlots = player.maxMinions - player.slotsMinions;
+                bool canFire = (scorpionIndex + _scorpionItem.leftHandedGuns.Count + 1) <= remainingSlots;
+                if (!canFire)
+                {
+                    drawColor = drawColor.MultiplyRGB(Color.DarkGray);
+                    color2 = color2.MultiplyRGB(Color.DarkGray);
+                }
+            }
+
+            Texture2D backingTexture = ModContent.Request<Texture2D>($"{GunHolsterUISystem.RootTexturePath}LeftSlot").Value;
             int offset = (int)(backingTexture.Size().Y / 2);
             Vector2 centerPos = pos + rectangle.Size() / 2f;
             centerPos.Y -= 4;
             spriteBatch.Draw(backingTexture, rectangle.TopLeft(), null, color2, 0f, default(Vector2), _scale, SpriteEffects.None, 0f);
 
-            ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale * 2f, 32, Color.White);
+
+            ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale * 2f, 32, drawColor);
             Main.inventoryScale = oldScale;
         }
     }

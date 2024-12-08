@@ -1,4 +1,5 @@
-﻿using Stellamod.Helpers;
+﻿using Stellamod.Common.Bases;
+using Stellamod.Helpers;
 using Stellamod.Projectiles.Thrown.Jugglers;
 using System.Collections.Generic;
 using Terraria;
@@ -7,28 +8,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
-    internal class BasicBaseball : ClassSwapItem
+    internal class BasicBaseball : BaseJugglerItem
     {
         public override DamageClass AlternateClass => DamageClass.Ranged;
         public override void SetClassSwappedDefaults()
         {
             Item.damage = 10;
-            Item.mana = 0;
-        }
-
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            base.ModifyTooltips(tooltips);
-            var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Alcarishasd",  Helpers.LangText.Common("Juggler"))
-            {
-                OverrideColor = ColorFunctions.JugglerWeaponType
-            };
-            tooltips.Add(line);
         }
 
         public override void SetDefaults()
         {
+            base.SetDefaults();
             Item.damage = 19;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 24;

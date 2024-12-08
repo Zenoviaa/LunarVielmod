@@ -28,10 +28,6 @@ namespace Stellamod.Projectiles.Safunai.Rinavine
 
             if (Slam)
             {
-                
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<GrailShot>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 3, ModContent.ProjectileType<GrailShot>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0.4f, speedY, ModContent.ProjectileType<GrailShot>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger2"), target.position);
                 for (int i = 0; i < 14; i++)
@@ -46,14 +42,14 @@ namespace Stellamod.Projectiles.Safunai.Rinavine
                 FXUtil.GlowCircleBoom(target.Center,
                    innerColor: Color.White,
                    glowColor: Color.SeaGreen,
-                   outerGlowColor: Color.DarkBlue, duration: 15, baseSize: 0.24f);
+                   outerGlowColor: Color.DarkBlue, duration: 25, baseSize: 0.24f);
             }
             else
             {
                 FXUtil.GlowCircleBoom(target.Center,
                    innerColor: Color.White,
                    glowColor: Color.SeaGreen,
-                   outerGlowColor: Color.DarkBlue, duration: 15, baseSize: 0.12f);
+                   outerGlowColor: Color.DarkBlue, duration: 25, baseSize: 0.12f);
 
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger"), target.position);
                 ShakeModSystem.Shake = 4;
