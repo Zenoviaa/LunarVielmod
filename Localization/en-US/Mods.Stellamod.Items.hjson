@@ -8391,3 +8391,8 @@ BasterParty: {
 	DisplayName: Baster Party
 	Tooltip: ""
 }
+
+OreKingdomScorpion: {
+	DisplayName: Ore Kingdom Scorpion
+	Tooltip: ""
+}

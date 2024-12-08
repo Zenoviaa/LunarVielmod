@@ -11,7 +11,7 @@ namespace Stellamod.Items.Weapons.Scorpions.OreKingdom
         {
             base.SetDefaults();
             Item.DamageType = DamageClass.Summon;
-            Item.damage = 10;
+            Item.damage = 40;
             Item.knockBack = 4;
             Item.width = 20;
             Item.height = 30;
