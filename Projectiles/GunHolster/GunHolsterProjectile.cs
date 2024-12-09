@@ -279,6 +279,10 @@ namespace Stellamod.Projectiles.GunHolster
         {
             if (MiniGun == null)
                 return;
+            if (Main.myPlayer == Projectile.owner)
+            {
+                Owner.direction = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
+            }
 
             // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
             if (IsRightHand)
@@ -308,11 +312,7 @@ namespace Stellamod.Projectiles.GunHolster
                 Projectile.rotation -= MathHelper.ToRadians(180);
             }
         
-            if(Main.myPlayer == Projectile.owner)
-            {
-                Owner.direction = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
-            }
-          
+
             if (!IsRightHand)
             {
                 Owner.heldProj = Projectile.whoAmI;

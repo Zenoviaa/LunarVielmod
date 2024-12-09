@@ -39,6 +39,12 @@ Common: {
 		If your big gun hits a summon, it will increase their damage by 25% 
 		'''
 	ScorpionRightClickHelp: "Right click in inventory to open your gun slots "
+	Crossbow: Crossbow Weapon Type
+	CrossbowHelp:
+		'''
+		Use to load an arrow into the crossbow
+		Use again to fire a powerful sniper-like arrow!
+		'''
 }
 
 SetBonus: {
@@ -1394,11 +1400,7 @@ BoneNail: {
 
 WoodenCrossbow: {
 	DisplayName: Wooden Crossbow
-	Tooltip:
-		'''
-		A simple crossbow that shoots 3 bolts
-		Hold down to shoot!
-		'''
+	Tooltip: A simple crossbow
 }
 
 Hornet: {
