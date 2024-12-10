@@ -143,7 +143,7 @@ namespace Stellamod.Items.Weapons.Ranged
                     Vector2 offset = rot.ToRotationVector2() * 24;
                     var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
                         innerColor: Color.White,
-                        glowColor: Color.SeaGreen,
+                        glowColor: Color.AliceBlue,
                         outerGlowColor: Color.Black);
                     particle.Rotation = rot + MathHelper.ToRadians(45);
                 }
