@@ -43,7 +43,7 @@ namespace Stellamod.Projectiles.Ammo
         ref float Homing_Timer => ref Projectile.ai[1];
         public override void AI()
         {
-            Projectile.rotation = Projectile.velocity.ToRotation();
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(90);
             Timer++;
             if (Timer == 1)
             {

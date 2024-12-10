@@ -39,7 +39,7 @@ namespace Stellamod.Projectiles.Ammo
         public override void AI()
         {
             base.AI();
-            Projectile.rotation = Projectile.velocity.ToRotation();
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(90);
             Lighting.AddLight(Projectile.Center, Color.Green.ToVector3() * 0.78f * Main.essScale);
         }
 
