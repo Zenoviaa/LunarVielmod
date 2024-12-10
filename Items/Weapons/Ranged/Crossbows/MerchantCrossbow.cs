@@ -1,59 +1,52 @@
-﻿using Stellamod.Projectiles.Crossbows.MerNDungeon;
+﻿using Stellamod.Common.Bases;
+using Stellamod.Projectiles.Crossbows;
+using Stellamod.Projectiles.Crossbows.MerNDungeon;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
 namespace Stellamod.Items.Weapons.Ranged.Crossbows
 {
 
-    public class MerchantCrossbow : ClassSwapItem
+    internal class MerchantCrossbow : BaseCrossbowItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 3;
-            Item.mana = 0;
-        }
-
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Wooden Crossbow"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-            /* Tooltip.SetDefault("Use a small crossbow and shoot three bolts!"
-                + "\n'Triple Threat!'"); */
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-
+            base.SetClassSwappedDefaults();
+            Item.damage = 14;
         }
 
         public override void SetDefaults()
         {
-            Item.damage = 6;
-            Item.DamageType = DamageClass.Ranged;
-            Item.width = 32;
-            Item.height = 25;
-            Item.useTime = 48;
-            Item.useAnimation = 48;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.knockBack = 4;
-            Item.rare = ItemRarityID.Blue;
-            Item.autoReuse = false;
-            Item.shootSpeed = 40f;
-            Item.shoot = ModContent.ProjectileType<MerCrossbowHold>();
-            Item.scale = 0.8f;
-            Item.noMelee = true; // The projectile will do the damage and not the item
-            Item.value = Item.buyPrice(silver: 70);
-            Item.noUseGraphic = true;
-            Item.channel = true;
+            base.SetDefaults();
+            Item.damage = 29;
+            CrossbowProjectileType = ModContent.ProjectileType<MerchantCrossbowHold>();
+        }
+    }
+
+    internal class MerchantCrossbowHold : BaseCrossbowProjectile
+    {
+        public override void Shoot(Vector2 position, Vector2 velocity)
+        {
+            base.Shoot(position, velocity);
+            if (Owner.PickAmmo(Owner.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int useAmmoItemId)
+                && Main.myPlayer == Projectile.owner)
+            {
+                Vector2 fireVelocity = velocity * speed;
+                fireVelocity *= 2f;
+                Projectile crossShot = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), position, fireVelocity,
+                    projToShoot,
+                    damage, knockBack, Projectile.owner, ai0: projToShoot);
+                crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().CrossbowShot = true;
+                crossShot.netUpdate = true;
+            }
 
 
         }
-
-
-
-    
-
-
     }
 }
