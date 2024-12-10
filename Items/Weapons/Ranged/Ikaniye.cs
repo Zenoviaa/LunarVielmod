@@ -31,7 +31,7 @@ namespace Stellamod.Items.Weapons.Ranged
 		}
         public override Vector2? HoldoutOffset()
         {
-            return new Vector2(-4, 0);
+            return new Vector2(-6, 0);
         }
         public override void SetDefaults()
 		{
