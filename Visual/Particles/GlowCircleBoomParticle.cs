@@ -5,4 +5,10 @@
 
 
     }
+
+    internal class GlowCircleDetailedBoomParticle1 : GlowCircleBoomParticle
+    {
+
+
+    }
 }

@@ -606,6 +606,7 @@
     <None Remove="Tiles\ShrineBreakers\Underground\ShrineBridgetC.png" />
     <None Remove="UI\ArmorReforgeSystem\ReforgeButton.png" />
     <None Remove="UI\ArmorReforgeSystem\ReforgeButtonSelected.png" />
+    <None Remove="Visual\Particles\GlowCircleDetailedBoomParticle1.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Accord.Fuzzy" Version="3.8.0" />

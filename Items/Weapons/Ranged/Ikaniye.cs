@@ -22,7 +22,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 80;
+            Item.damage = 160;
             Item.mana = 20;
         }
         public override void SetStaticDefaults()
@@ -35,12 +35,12 @@ namespace Stellamod.Items.Weapons.Ranged
         }
         public override void SetDefaults()
 		{
-			Item.damage = 140;
+			Item.damage = 240;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 56;
 			Item.height = 56;
-			Item.useTime = 50;
-			Item.useAnimation = 50;
+			Item.useTime = 24;
+			Item.useAnimation = 24;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 6;
 			Item.value = 100000;
@@ -135,6 +135,18 @@ namespace Stellamod.Items.Weapons.Ranged
                 {
                     Dust.NewDustPerfect(explosionCenter, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.NextFloat(0.00f, 1.00f)).RotatedByRandom(19.0), 0, Color.DarkBlue, 1f).noGravity = true;
                 }
+
+                for (float i = 0; i < 4; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.LightGray,
+                        outerGlowColor: Color.Black);
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
             }
         }
 
@@ -198,7 +210,7 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
 
-            TrailRegistry.LaserShader.UseColor(Color.Lerp(Color.DarkBlue, Color.AliceBlue, VectorHelper.Osc(0, 1)));
+            TrailRegistry.LaserShader.UseColor(Color.Lerp(Color.DarkBlue, Color.AliceBlue, VectorHelper.Osc(1, 1)));
             TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.WhispyTrail);
 
             //Put in the points
@@ -304,6 +316,18 @@ namespace Stellamod.Items.Weapons.Ranged
                 {
                     Dust.NewDustPerfect(explosionCenter, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.NextFloat(0.00f, 1.00f)).RotatedByRandom(19.0), 0, Color.DarkRed, 1f).noGravity = true;
                 }
+
+                for (float i = 0; i < 4; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.LightGray,
+                        outerGlowColor: Color.Black);
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
             }
         }
 
@@ -367,7 +391,7 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
 
-            TrailRegistry.LaserShader.UseColor(Color.Lerp(Color.DarkRed, Color.PaleVioletRed, VectorHelper.Osc(0, 1)));
+            TrailRegistry.LaserShader.UseColor(Color.Lerp(Color.DarkRed, Color.PaleVioletRed, VectorHelper.Osc(1, 1)));
             TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.SmallWhispyTrail);
 
             //Put in the points

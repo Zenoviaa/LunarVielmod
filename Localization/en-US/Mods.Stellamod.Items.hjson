@@ -8398,3 +8398,8 @@ OreKingdomScorpion: {
 	DisplayName: Ore Kingdom Scorpion
 	Tooltip: ""
 }
+
+Ikaniye: {
+	Tooltip: ""
+	DisplayName: Ikaniye
+}
