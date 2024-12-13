@@ -2871,7 +2871,11 @@ Rustvolver: {
 
 TecnoBlaster: {
 	DisplayName: Techno Blaster
-	Tooltip: Get technical
+	Tooltip:
+		'''
+		Channels a blue and pink pulsating laser!
+		Get technical
+		'''
 }
 
 TheRedSkull: {

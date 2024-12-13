@@ -30,6 +30,10 @@ namespace Stellamod.UI.Systems
 			if (_shake > 0)
 			{
                 _shake--;			
+				if(_shake <= 0)
+				{
+					_shake = 0;
+				}
 			}
 		}
 	}
