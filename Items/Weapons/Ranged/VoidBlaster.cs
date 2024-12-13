@@ -70,7 +70,7 @@ namespace Stellamod.Items.Weapons.Ranged
             //Dust Burst Towards Mouse
 
             float rot = velocity.ToRotation();
-            float spread = 0.4f;
+            float spread = 0.24f;
 
             Vector2 offset = new Vector2(1.3f, 0f * player.direction).RotatedBy(rot);
             for (int k = 0; k < 7; k++)
