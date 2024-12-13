@@ -56,10 +56,6 @@ namespace Stellamod.Items.Weapons.Ranged
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-
-
-
-
             int numberProjectiles = 1; // 4 or 5 shots
 			for (int i = 0; i < numberProjectiles; i++)
             {

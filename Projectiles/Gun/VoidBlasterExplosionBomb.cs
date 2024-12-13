@@ -1,12 +1,16 @@
 
 using Microsoft.Xna.Framework;
+using Stellamod.Dusts;
 using Stellamod.Effects;
+using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.UI.Systems;
 using Stellamod.Utilis;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -14,92 +18,73 @@ namespace Stellamod.Projectiles.Gun
 {
     public class VoidBlasterExplosionBomb : ModProjectile
     {
-        public float MaxRadius = 250;
-
-        public PrimitiveTrailCopy FireDrawer;
-
-        public ref float Time => ref Projectile.ai[0];
-
-        public ref float Radius => ref Projectile.ai[1];
-
-
-
-
+        private ref float Timer => ref Projectile.ai[0];
         public override void SetDefaults()
         {
-            Projectile.width = Projectile.height = 8;
-            Projectile.hostile = false;
+            base.SetDefaults();
+            Projectile.width = 256;
+            Projectile.height = 256;
             Projectile.friendly = true;
-            Projectile.tileCollide = false;
-            Projectile.ignoreWater = true;
+            Projectile.timeLeft = 30;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 84;
-            Projectile.MaxUpdates = 2;
-            Projectile.scale = 1f;
-            CooldownSlot = ImmunityCooldownID.Bosses;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
         }
-
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-            writer.Write(Projectile.MaxUpdates);
-            writer.Write(MaxRadius);
-        }
-
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            Projectile.MaxUpdates = reader.ReadInt32();
-            MaxRadius = reader.ReadSingle();
-        }
-
         public override void AI()
         {
-            Projectile.scale += 0.08f;
-            Radius = MathHelper.Lerp(Radius, MaxRadius, 0.1f);
-            Projectile.Opacity = Utils.GetLerpValue(8f, 42f, Projectile.timeLeft, true) * 0.55f;
-
-            Time++;
-        }
-
-        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) => Utilities.CircularCollision(targetHitbox.Center.ToVector2(), projHitbox, Radius * 0.725f) && Time <= 30f;
-
-        public override bool? CanDamage() => Projectile.Opacity >= 0.37f;
-
-        public float SunWidthFunction(float completionRatio) => Radius * MathF.Sin(MathHelper.Pi * completionRatio);
-
-        public Color SunColorFunction(float completionRatio)
-        {
-
-            return Color.Lerp(Color.DodgerBlue, Color.Blue, MathF.Sin(MathHelper.Pi * completionRatio) * 0.5f + 0.3f) * Projectile.Opacity;
-        }
-
-        public override bool PreDraw(ref Color lightColor)
-        {
-            FireDrawer ??= new PrimitiveTrailCopy(SunWidthFunction, SunColorFunction, null, true, TrailRegistry.FireWhiteVertexShader);
-
-
-            TrailRegistry.FireWhiteVertexShader.UseColor(Color.DodgerBlue);
-            TrailRegistry.FireWhiteVertexShader.UseSaturation(0.45f);
-            TrailRegistry.FireWhiteVertexShader.SetShaderTexture(TrailRegistry.CrystalNoise);
-
-            List<float> rotationPoints = new();
-            List<Vector2> drawPoints = new();
-
-            for (float offsetAngle = -MathHelper.PiOver2; offsetAngle <= MathHelper.PiOver2; offsetAngle += MathHelper.Pi / 3f)
+            base.AI();
+            Timer++;
+            if(Timer == 1)
             {
-                rotationPoints.Clear();
-                drawPoints.Clear();
+                ShakeModSystem.Shake = 4;
+                SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowExp"), Projectile.position);
+                float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
+                float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(-10, 11) * 0.2f;
 
-                float adjustedAngle = offsetAngle + MathHelper.Pi * -0.2f;
-                Vector2 offsetDirection = adjustedAngle.ToRotationVector2();
-                for (int i = 0; i < 16; i++)
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger2"), Projectile.position);
+                for (int i = 0; i < 14; i++)
                 {
-                    rotationPoints.Add(adjustedAngle);
-                    drawPoints.Add(Vector2.Lerp(Projectile.Center - offsetDirection * Radius / 2f, Projectile.Center + offsetDirection * Radius / 2f, i / 16f));
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightSeaGreen, 1f).noGravity = true;
+                }
+                for (int i = 0; i < 14; i++)
+                {
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.SeaGreen, 1f).noGravity = true;
                 }
 
-                FireDrawer.Draw(drawPoints, -Main.screenPosition, 24);
+                FXUtil.GlowCircleBoom(Projectile.Center,
+                   innerColor: Color.White,
+                   glowColor: Color.SeaGreen,
+                   outerGlowColor: Color.DarkBlue, duration: 25, baseSize: 0.3f);
+
+
+                FXUtil.GlowCircleBoom(Projectile.Center,
+                   innerColor: Color.White,
+                   glowColor: Color.SeaGreen,
+                   outerGlowColor: Color.DarkBlue, duration: 25, baseSize: 0.2f);
+
+                for (float i = 0; i < 4; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.AliceBlue,
+                        outerGlowColor: Color.Black, baseSize: 0.2f);
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger"), Projectile.position);
+                ShakeModSystem.Shake = 4;
+                for (int i = 0; i < 6; i++)
+                {
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightSeaGreen, 0.5f).noGravity = true;
+                }
+                for (int i = 0; i < 2; i++)
+                {
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkSeaGreen, 0.5f).noGravity = true;
+                }
             }
-            return false;
         }
     }
 }

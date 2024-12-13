@@ -2895,7 +2895,11 @@ TychineGun: {
 
 VoidBlaster: {
 	DisplayName: Lunar Blaster
-	Tooltip: A Lunar-powered gun, it shoots, you guessed it, bullets!
+	Tooltip:
+		'''
+		A Lunar-powered gun!
+		Fires several homing bullets in quick succession, if you land all of them on the same target, they explode for big damage!
+		'''
 }
 
 WingedFury: {

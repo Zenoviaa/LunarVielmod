@@ -158,11 +158,11 @@ namespace Stellamod.Items.Weapons.Ranged
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             float _ = 0f;
-            float width = Projectile.width * 0.8f * 0.4f;
+            float width = Projectile.width;
             Vector2 start = Projectile.Center;
 
             Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
-            Vector2 end = start + direction * (BeamLength - 80f);
+            Vector2 end = start + direction * BeamLength;
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, width, ref _);
         }
 

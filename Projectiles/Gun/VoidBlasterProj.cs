@@ -15,11 +15,19 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
+    public class VoidBlasterPlayer : ModPlayer
+    {
+        public int hitCount;
+        public int npcWhoAmI;
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+        }
+    }
     public class VoidBlasterProj : ModProjectile
 	{
-		public bool OptionallySomeCondition { get; private set; }
-
-		public override void SetStaticDefaults()
+        private Player Owner => Main.player[Projectile.owner];
+        public override void SetStaticDefaults()
 		{
             // DisplayName.SetDefault("Granite MagmumProj");
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
@@ -34,8 +42,24 @@ namespace Stellamod.Projectiles.Gun
 			Projectile.width = 15;
 			Projectile.height = 15;
 		}
+
+
 		public override void AI()
-		{
+        {
+            int num1222 = 74;
+            if (Projectile.ai[1]  % 12 == 0)
+            {
+                for (int k = 0; k < 2; k++)
+                {
+                    int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+                    Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * k;
+                    Main.dust[index2].scale = .95f;
+                    Main.dust[index2].velocity *= 0f;
+                    Main.dust[index2].noGravity = true;
+                    Main.dust[index2].noLight = false;
+                }
+            }
+
             Projectile.ai[1]++;
             if (Projectile.ai[1] >= 15)
             {
@@ -72,20 +96,7 @@ namespace Stellamod.Projectiles.Gun
                 }
             }
         }
-		public override bool PreAI()
-		{
-			int num1222 = 74;
-			for (int k = 0; k < 2; k++)
-			{
-				int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-				Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * k;
-				Main.dust[index2].scale = .95f;
-				Main.dust[index2].velocity *= 0f;
-				Main.dust[index2].noGravity = true;
-				Main.dust[index2].noLight = false;
-			}
-			return true;
-		}
+
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
 			Projectile.timeLeft = 1;
@@ -93,31 +104,20 @@ namespace Stellamod.Projectiles.Gun
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterNPC == null)
+            VoidBlasterPlayer voidBlasterPlayer = Owner.GetModPlayer<VoidBlasterPlayer>();
+            if(target.whoAmI != voidBlasterPlayer.npcWhoAmI)
             {
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHitsTime = 0;
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterNPC = target;
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHits++;
-            }
-            else if(target != Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterNPC)
-            {
-                if (Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHits < 6)
-                {
-                    Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHitsTime = 0;
-                    Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHits = 0;
-                    Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterNPC = target;
-                    Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHits++;
-                }
-
+                voidBlasterPlayer.npcWhoAmI = target.whoAmI;
+                voidBlasterPlayer.hitCount = 0;
             }
             else
             {
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHits++;
-                if (Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHits >= 7)
+                voidBlasterPlayer.hitCount++;
+                if(voidBlasterPlayer.hitCount >= 6)
                 {
-                    var EntitySource = Projectile.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, target.Center.X, target.Center.Y, 0, 0, 
-                        ModContent.ProjectileType<VoidBlasterExsplosion>(), Projectile.damage, 1, Projectile.owner, 0, ai1: target.whoAmI);
+                    voidBlasterPlayer.hitCount = 0;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center.X, target.Center.Y, 0, 0,
+                        ModContent.ProjectileType<VoidBlasterExsplosion>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 0, ai1: target.whoAmI);
                     int Sound = Main.rand.Next(1, 3);
                     if (Sound == 1)
                     {
@@ -127,10 +127,6 @@ namespace Stellamod.Projectiles.Gun
                     {
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/VoidBlasterExplosionBomb2"), Projectile.position);
                     }
-                }
-                else
-                {
-                    Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHitsTime = 0;
                 }
             }
         }
@@ -162,15 +158,15 @@ namespace Stellamod.Projectiles.Gun
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 			return false;
 		}
+
 		public override void OnKill(int timeLeft)
 		{
 			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
-
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < 7; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DodgerBlue, 0.5f).noGravity = true;
             }
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < 7; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 240, Color.DarkGray, 1f).noGravity = true;
             }
