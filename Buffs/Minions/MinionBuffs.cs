@@ -45,7 +45,7 @@ namespace Stellamod.Buffs.Minions
 
     internal class DripplerMinionBuff : MinionBuff<DripplerMinionProj> { }
 
-    internal class FireflyMinionBuff : MinionBuff<FireflyMinionProj>
+    internal class FireflyMinionBuff : MinionBuff<LilFly>
     {
         public override void SetStaticDefaults()
         {
@@ -56,15 +56,15 @@ namespace Stellamod.Buffs.Minions
         public override void Update(Player player, ref int buffIndex)
         {
             //Call this to keep the buff updated
-            if (!SummonHelper.UpdateMinionBuff<FireflyMinionProj>(player, ref buffIndex))
+            if (!SummonHelper.UpdateMinionBuff<LilFly>(player, ref buffIndex))
                 return;
 
             //Only work if summoner
             if (player.HeldItem.DamageType != DamageClass.Summon)
                 return;
 
-            int fireflyCount = player.ownedProjectileCounts[ModContent.ProjectileType<FireflyMinionProj>()];
-            int fireflyMinionType = ModContent.ProjectileType<FireflyMinionProj>();
+            int fireflyCount = player.ownedProjectileCounts[ModContent.ProjectileType<LilFly>()];
+            int fireflyMinionType = ModContent.ProjectileType<LilFly>();
             for (int i = 0; i < Main.maxProjectiles; i++)
             {
                 Projectile other = Main.projectile[i];
@@ -74,9 +74,7 @@ namespace Stellamod.Buffs.Minions
                 if (other.owner != player.whoAmI)
                     continue;
 
-
-                FireflyMinionProj fireflyMinion = other.ModProjectile as FireflyMinionProj;
-                if (fireflyMinion.AttackStyle == FireflyMinionProj.AttackState.Defense_Mode)
+                if (other.ai[1] == (float)LilFly.AIState.Defense)
                 {
                     player.statDefense += fireflyCount * 7;
                     player.lifeRegen += fireflyCount * 3;

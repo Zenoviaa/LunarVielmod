@@ -34,6 +34,7 @@ namespace Stellamod.Common.Bases
         protected float GlowProgress;
         protected float AimProgress;
         protected float CrosshairProgress;
+        protected float BurstCount;
         protected ref float Timer => ref Projectile.ai[0];
         protected AIState State
         {
@@ -175,8 +176,25 @@ namespace Stellamod.Common.Bases
             if (Timer == 1)
             {
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"), Projectile.position);
-                Shoot(Owner.Center, Projectile.velocity);
+            
             }
+
+            if(BurstCount > 1)
+            {
+                int fireDivisor = (int)(FireTime / BurstCount);
+                if(Timer % fireDivisor == 0)
+                {
+                    Shoot(Owner.Center, Projectile.velocity);
+                }
+            }
+            else
+            {
+                if(Timer == 1)
+                {
+                    Shoot(Owner.Center, Projectile.velocity);
+                }
+            }
+
 
             float scaleOutProgress = Timer / FireTime;
             float easedScaleOutProgress = Easing.OutExpo(scaleOutProgress);

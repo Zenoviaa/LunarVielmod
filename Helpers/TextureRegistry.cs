@@ -8,6 +8,7 @@ namespace Stellamod.Helpers
     {
         public static string EmptyTexture => "Stellamod/Assets/Textures/Empty";
         public static string EmptyBigTexture => "Stellamod/Assets/Textures/EmptyBig";
+        public static string EmptyGlowParticle => "Stellamod/Visual/Particles/GlowCircleBoomParticle";
         public static string FlowerTexture => "Stellamod/Effects/Masks/Flower";
         public static string FlyingSlashTexture => "Stellamod/Effects/Masks/FlyingSlash";
         public static string CircleOutline => "Stellamod/Effects/Masks/Extra_67";
@@ -30,7 +31,5 @@ namespace Stellamod.Helpers
         public static Asset<Texture2D> IrraTexture => ModContent.Request<Texture2D>("Stellamod/Assets/Effects/IrraTexture2");
         public static Asset<Texture2D> SmallNoise => ModContent.Request<Texture2D>("Stellamod/Textures/SmallNoise");
         public static Asset<Texture2D> FourPointedStar => ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Extra_63");
-
-
     }
 }
