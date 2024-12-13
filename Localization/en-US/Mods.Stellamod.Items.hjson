@@ -3121,6 +3121,7 @@ GintzlBroochA: {
 		'''
 		Adds the power of wind!
 		+4 Defense
+		Increases armor penetration by 3
 		Auto-Swing on every item!
 		'''
 }

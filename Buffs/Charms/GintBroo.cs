@@ -18,6 +18,7 @@ namespace Stellamod.Buffs.Charms
 			player.armorEffectDrawOutlines = true;
 			player.autoReuseAllWeapons = true;
 			player.statDefense += 4;
+			player.GetArmorPenetration(DamageClass.Generic) += 3;
 		}
 	}
 }
