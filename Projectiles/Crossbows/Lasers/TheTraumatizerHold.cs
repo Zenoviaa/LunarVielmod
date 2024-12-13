@@ -13,6 +13,7 @@ namespace Stellamod.Projectiles.Crossbows.Lasers
 {
 	public class TheTraumatizerHold : ModProjectile
     {
+		private float Direction=1;
         private ref float Timer => ref Projectile.ai[0];
         private ref float SwordRotation => ref Projectile.ai[1];
         public override void SetStaticDefaults()
@@ -49,11 +50,17 @@ namespace Stellamod.Projectiles.Crossbows.Lasers
 				Timer = 0;
 			}
 
-			if(Timer % 10 == 0)
+			if(Timer % 20 == 0)
 			{
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/TraumatizerLaserFire") with { PitchVariance = 0.1f }, Projectile.position);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position + Projectile.velocity.SafeNormalize(Vector2.Zero) * 25, Projectile.velocity, 
-					ModContent.ProjectileType<TraumatizingRay>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 1);
+                if(Main.myPlayer == Projectile.owner)
+				{
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position + Projectile.velocity.SafeNormalize(Vector2.Zero) * 25, Projectile.velocity,
+                            ModContent.ProjectileType<TraumatizingRay>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 1, ai1: Direction);
+					Direction = -Direction;
+                }
+
+	
             }
 
 			Player player = Main.player[Projectile.owner];
@@ -87,12 +94,6 @@ namespace Stellamod.Projectiles.Crossbows.Lasers
 			{
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/TraumatizerLaserStart"));
             }
-
-			if (Timer > 1)
-			{
-				
-				ShakeModSystem.Shake = 2;
-			}
 
 
 			Projectile.Center = playerCenter + new Vector2(40, 0).RotatedBy(SwordRotation);// customization of the hitbox position
