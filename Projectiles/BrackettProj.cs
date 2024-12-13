@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
@@ -48,7 +49,7 @@ namespace Stellamod.Projectiles
 
 		public override bool PreAI()
 		{
-			if (Main.rand.NextBool(3))
+			if (Main.rand.NextBool(12))
 			{
 				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
 				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.JunglePlants);
@@ -81,14 +82,27 @@ namespace Stellamod.Projectiles
 
 		public override void OnKill(int timeLeft)
 		{
-			for (int i = 0; i < 15; i++)
-			{
-				SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
-			}
+            for (float i = 0; i < 4; i++)
+            {
+                float progress = i / 4f;
+                float rot = progress * MathHelper.ToRadians(360);
+                Vector2 offset = rot.ToRotationVector2() * 24;
+                var particle = FXUtil.GlowCircleLongBoom(Projectile.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.LightGray,
+                    outerGlowColor: Color.Black, baseSize: 0.06f);
+                particle.Rotation = rot + MathHelper.ToRadians(45);
+            }
+            for (int i = 0; i < 16; i++)
+            {
+                float p = (float)i / 16f;
+                float rot = p * MathHelper.ToRadians(360);
+                Vector2 vel = rot.ToRotationVector2() * 6;
+                Dust d = Dust.NewDustPerfect(Projectile.Center, DustID.Dirt, vel * 0.2f);
+                d = Dust.NewDustPerfect(Projectile.Center, DustID.SilverCoin, vel * 0.4f);
+                d.noGravity = true;
+            }
 
-			
-		}
+        }
 	}
 }

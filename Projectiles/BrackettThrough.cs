@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -123,7 +124,15 @@ namespace Stellamod.Projectiles
                 Projectile.velocity.X = (Projectile.velocity.X * (num8 - 1) + num6) / num8;
                 Projectile.velocity.Y = (Projectile.velocity.Y * (num8 - 1) + num7) / num8;
             }
+
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 150, Color.White, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+            }
             Projectile.rotation -= 0.3f;
+            Lighting.AddLight(Projectile.Center, Color.LightGoldenrodYellow.ToVector3() * 1.75f * Main.essScale);
+
         }
 
         public override void OnKill(int timeLeft)
@@ -137,22 +146,28 @@ namespace Stellamod.Projectiles
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit2"), Projectile.position);
             }
-
-            for (int i = 0; i < 40; i++)
+            for (float i = 0; i < 4; i++)
             {
-                Dust.NewDustPerfect(base.Projectile.Center, 205, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(10.0), 0, default(Color), 1f).noGravity = false;
+                float progress = i / 4f;
+                float rot = progress * MathHelper.ToRadians(360);
+                Vector2 offset = rot.ToRotationVector2() * 24;
+                var particle = FXUtil.GlowCircleLongBoom(Projectile.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.LightGray,
+                    outerGlowColor: Color.Black, baseSize: 0.06f);
+                particle.Rotation = rot + MathHelper.ToRadians(45);
             }
-
-
-            for (int i = 0; i < 40; i++)
+            for (int i = 0; i < 16; i++)
             {
-                Dust.NewDustPerfect(base.Projectile.Center, DustID.SilverCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(10.0), 0, default(Color), 1f).noGravity = false;
+                float p = (float)i / 16f;
+                float rot = p * MathHelper.ToRadians(360);
+                Vector2 vel = rot.ToRotationVector2() * 6;
+                Dust d = Dust.NewDustPerfect(Projectile.Center, DustID.Dirt, vel * 0.2f);
+                d = Dust.NewDustPerfect(Projectile.Center, DustID.SilverCoin, vel * 0.4f);
+                d.noGravity = true;
             }
-
-
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 2048f, 16f);
-            var entitySource = Projectile.GetSource_FromThis();
         }
+
         Vector2 DrawOffset;
         float alphaCounter = 7;
         public override bool PreDraw(ref Color lightColor)
@@ -179,7 +194,7 @@ namespace Stellamod.Projectiles
             {
                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(Color.Lerp(new Color(200, 105, 25), new Color(151, 146, 101), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
-                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.oldRot[k] + Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
 
             Main.spriteBatch.End();
@@ -189,12 +204,7 @@ namespace Stellamod.Projectiles
 
         public override void PostDraw(Color lightColor)
         {
-            Lighting.AddLight(Projectile.Center, Color.LightGoldenrodYellow.ToVector3() * 1.75f * Main.essScale);
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-            }
+
         }
     }
 }

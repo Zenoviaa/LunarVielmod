@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -32,11 +33,6 @@ namespace Stellamod.Projectiles.Thrown
            
                 Projectile.Kill();     
             SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
-            for (int i = 0; i < 7; i++)
-            {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
-            }
             return false;
         }
         public override bool PreAI()
@@ -84,26 +80,26 @@ namespace Stellamod.Projectiles.Thrown
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 20; i++)
+            for (float i = 0; i < 4; i++)
             {
-                Dust.NewDustPerfect(base.Projectile.Center, DustID.SilverCoin, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default(Color), 1f).noGravity = false;
+                float progress = i / 4f;
+                float rot = progress * MathHelper.ToRadians(360);
+                Vector2 offset = rot.ToRotationVector2() * 24;
+                var particle = FXUtil.GlowCircleLongBoom(Projectile.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.LightGray,
+                    outerGlowColor: Color.Black, baseSize: 0.06f);
+                particle.Rotation = rot + MathHelper.ToRadians(45);
             }
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 16; i++)
             {
-                int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin, 0f, -2f, 0, default(Color), .8f);
-                Main.dust[num1].noGravity = true;
-                Main.dust[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                Main.dust[num1].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                if (Main.dust[num1].position != Projectile.Center)
-                    Main.dust[num1].velocity = Projectile.DirectionTo(Main.dust[num1].position) * 6f;
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin, 0f, -2f, 0, default(Color), .8f);
-                Main.dust[num].noGravity = true;
-                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                if (Main.dust[num].position != Projectile.Center)
-                    Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
+                float p = (float)i / 16f;
+                float rot = p * MathHelper.ToRadians(360);
+                Vector2 vel = rot.ToRotationVector2() * 6;
+                Dust d = Dust.NewDustPerfect(Projectile.Center, DustID.Dirt, vel * 0.2f);
+                d = Dust.NewDustPerfect(Projectile.Center, DustID.SilverCoin, vel * 0.4f);
+                d.noGravity = true;
             }
-
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
