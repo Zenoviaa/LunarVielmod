@@ -22,7 +22,7 @@ Common: {
 	PowderDamage: Increases igniter card damage by {0}%!
 	PowderEquip: Equip this powder to a card!
 	IgniterCard: When it hits an enemy, it explodes with the effects of all the powders equipped to it!
-	IgniterCardHelp: Right click in your inventory to put powders on your card!,
+	IgniterCardHelp: Right click in your inventory to put powders on your card!,f
 	GenericDamage: " generic damage"
 	Lantern: Lantern Light Pet
 	LanternHelp: Put it in your light pet slot or right click it to use it for more range!
@@ -3195,7 +3195,11 @@ TON618Crossbow: {
 
 Venatici: {
 	DisplayName: Venatici
-	Tooltip: I never knew there was a black hole this big :(
+	Tooltip:
+		'''
+		Shoots an exploding star!
+		I never knew there was a black hole this big :(
+		'''
 }
 
 IceboundStaff: {

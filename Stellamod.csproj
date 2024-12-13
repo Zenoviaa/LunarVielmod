@@ -170,8 +170,6 @@
     <None Remove="Items\Accessories\ClamsPearl.png" />
     <None Remove="Items\Accessories\CloudSkaters.png" />
     <None Remove="Items\Accessories\CoralBand.png" />
-    <None Remove="Items\Accessories\EaglesGrace.png" />
-    <None Remove="Items\Accessories\EaglesGrace_Wings.png" />
     <None Remove="Items\Accessories\GhostExcalibur.png" />
     <None Remove="Items\Accessories\GiftOfLife.png" />
     <None Remove="Items\Accessories\IllurineHoops.png" />

@@ -1,4 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -7,6 +10,8 @@ namespace Stellamod.Projectiles.Gun
 {
     public class VenShotIN : ModProjectile
 	{
+		private float DrawScale;
+		private ref float Timer => ref Projectile.ai[0];
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("FrostShotIN");
@@ -23,14 +28,13 @@ namespace Stellamod.Projectiles.Gun
 			Projectile.scale = 1f;
 		}
 
-		public float Timer
-		{
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
-		}
-
         public override void AI()
         {
+			Timer++;
+			float progress = Timer / 60f;
+			float easedProgress = Easing.InOutCubic(progress);
+			DrawScale = MathHelper.Lerp(0.75f, 0f, easedProgress) * VectorHelper.Osc(0.5f, 1f, offset: Projectile.whoAmI);
+
 			Projectile.rotation -= 0.03f;
 			Vector3 RGB = new(1.59f, 0.23f, 1.91f);
 			// The multiplication here wasn't doing anything
@@ -51,9 +55,22 @@ namespace Stellamod.Projectiles.Gun
 			return true;		
 		}
 
-		public override Color? GetAlpha(Color lightColor)
-		{
-			return new Color(100, 100, 100, 0) * (1f - Projectile.alpha / 50f);
-		}
-	}
+        public override bool PreDraw(ref Color lightColor)
+        {
+			SpriteBatch spriteBatch = Main.spriteBatch;
+			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+			Vector2 drawPos = Projectile.Center - Main.screenPosition;
+			Rectangle drawFrame = Projectile.Frame();
+			Vector2 drawOrigin = drawFrame.Size() / 2f;
+			Color drawColor = Color.White.MultiplyRGB(lightColor);
+			float drawScale = DrawScale;
+			spriteBatch.Restart(blendState: BlendState.Additive);
+			for(int i = 0; i < 2; i++)
+			{
+                spriteBatch.Draw(texture, drawPos, drawFrame, drawColor, Projectile.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            }
+			spriteBatch.RestartDefaults();
+			return false;
+        }
+    }
 }
