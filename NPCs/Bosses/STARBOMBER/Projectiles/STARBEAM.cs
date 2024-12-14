@@ -12,7 +12,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 {
     public class STARBEAM : ModProjectile, IPixelPrimitiveDrawer
     {
-        internal PrimitiveTrailCopy BeamDrawer;
+        internal PrimitiveTrail BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];
         public const float LaserLength = 2400f;
@@ -82,7 +82,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
-            BeamDrawer ??= new PrimitiveTrailCopy(WidthFunction, ColorFunction, null, true, TrailRegistry.GenericLaserVertexShader);
+            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.GenericLaserVertexShader);
 
             Color middleColor = Color.Lerp(Color.White, Color.Violet, 0.6f);
             Color middleColor2 = Color.Lerp(Color.Violet, Color.Purple, 0.5f);

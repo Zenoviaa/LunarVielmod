@@ -12,7 +12,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 {
     public class SupernovaBeam : ModProjectile, IPixelPrimitiveDrawer
     {
-        internal PrimitiveTrailCopy BeamDrawer;
+        internal PrimitiveTrail BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];
         public const float LaserLength = 3200f;
@@ -85,7 +85,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
-            BeamDrawer ??= new PrimitiveTrailCopy(WidthFunction, ColorFunction, null, true, TrailRegistry.GenericLaserVertexShader);
+            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.GenericLaserVertexShader);
 
             Color middleColor = Color.Lerp(Color.White, Color.Goldenrod, 0.6f);
             Color middleColor2 = Color.Lerp(Color.OrangeRed, Color.DeepPink, 0.5f);

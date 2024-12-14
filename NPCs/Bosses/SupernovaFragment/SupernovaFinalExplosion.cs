@@ -16,7 +16,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
     {
         public float MaxRadius = 200;
 
-        public PrimitiveTrailCopy FireDrawer;
+        public PrimitiveTrail FireDrawer;
 
         public ref float Time => ref Projectile.ai[0];
 
@@ -74,7 +74,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
         public override bool PreDraw(ref Color lightColor)
         {
-            FireDrawer ??= new PrimitiveTrailCopy(SunWidthFunction, SunColorFunction, null, true, TrailRegistry.FireWhiteVertexShader);
+            FireDrawer ??= new PrimitiveTrail(SunWidthFunction, SunColorFunction, null, true, TrailRegistry.FireWhiteVertexShader);
 
             TrailRegistry.FireWhiteVertexShader.UseColor(Color.White);
             TrailRegistry.FireWhiteVertexShader.UseSaturation(0.45f);

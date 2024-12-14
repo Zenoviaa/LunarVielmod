@@ -15,7 +15,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 {
     public class NovaBlast : ModProjectile
     {
-        internal PrimitiveTrailCopy BeamDrawer;
+        internal PrimitiveTrail BeamDrawer;
         private float SoulRotation;
         private float SoulOffset = 96;
         public override void SetStaticDefaults()
@@ -78,7 +78,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
         public override bool PreDraw(ref Color lightColor)
         {
-            BeamDrawer ??= new PrimitiveTrailCopy(WidthFunction, ColorFunction, null, true, TrailRegistry.GenericLaserVertexShader);
+            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.GenericLaserVertexShader);
 
             TrailRegistry.GenericLaserVertexShader.UseColor(Color.Black);
             TrailRegistry.GenericLaserVertexShader.SetShaderTexture(TrailRegistry.BulbTrail);

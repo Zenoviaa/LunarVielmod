@@ -13,7 +13,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 {
     public class VoidBeam : ModProjectile, IPixelPrimitiveDrawer
     {
-        internal PrimitiveTrailCopy BeamDrawer;
+        internal PrimitiveTrail BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];
         public const float LaserLength = 3400f;
@@ -74,7 +74,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
-            BeamDrawer ??= new PrimitiveTrailCopy(WidthFunction, ColorFunction, null, true, TrailRegistry.GenericLaserVertexShader);
+            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.GenericLaserVertexShader);
 
             Color middleColor = Color.Lerp(Color.Blue, Color.DarkBlue, 0.6f);
             Color middleColor2 = Color.Lerp(Color.DarkBlue, Color.Purple, 0.5f);
