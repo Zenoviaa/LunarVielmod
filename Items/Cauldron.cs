@@ -16,6 +16,7 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Melee.Greatswords;
+using Stellamod.Items.Weapons.Melee.Knives;
 using Stellamod.Items.Weapons.Melee.Safunais;
 using Stellamod.Items.Weapons.Melee.Shields;
 using Stellamod.Items.Weapons.Melee.Spears;

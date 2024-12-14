@@ -1,12 +1,10 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Mono.Cecil;
 using Stellamod.Common.Bases;
 using Stellamod.Common.Players;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles;
-using Stellamod.Projectiles.Magic;
 using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
@@ -179,7 +177,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             base.AI();
             if (!AuroraProj1 && _smoothedLerpValue > 0.5f)
             {
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity, ModContent.ProjectileType<Aurora>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
@@ -315,7 +313,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity, ModContent.ProjectileType<AuroranBullet>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity * 0.8f, ModContent.ProjectileType<AuroranBullet2>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity * 1.2f, ModContent.ProjectileType<AuroranBullet3>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
-           
+
                 }
                 AuroraProj2 = true;
             }
