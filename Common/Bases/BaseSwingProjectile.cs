@@ -87,7 +87,7 @@ namespace Stellamod.Common.Bases
 
         public float GetSwingTime(float baseSwingTime)
         {
-            float swingTime = baseSwingTime * ExtraUpdateMult;
+            float swingTime = baseSwingTime * (ExtraUpdateMult);
             return (int)(swingTime / Owner.GetAttackSpeed(Projectile.DamageType));
         }
 
@@ -145,7 +145,7 @@ namespace Stellamod.Common.Bases
             if (!_init)
             {
                 SetComboDefaults(_swingStyles);
-                var sw = _swingStyles[(int)Projectile.ai[0]];
+                var sw = _swingStyles[(int)ComboIndex];
                 Projectile.timeLeft = (int)GetSwingTime(sw.swingTime);
 
                 InitSwingAI();

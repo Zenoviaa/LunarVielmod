@@ -23,9 +23,11 @@ namespace Stellamod.Projectiles
 			Projectile.tileCollide = false;
 			Projectile.DamageType = DamageClass.Melee;
 			Projectile.ownerHitCheck = true;
-			Projectile.timeLeft = 360;
+			Projectile.timeLeft = 180;
 			Projectile.tileCollide = false;
 			Projectile.penetrate = -1;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = -1;
 		}
 		public float Timer
 		{

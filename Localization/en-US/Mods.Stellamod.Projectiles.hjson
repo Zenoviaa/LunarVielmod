@@ -1390,3 +1390,5 @@ BasicStaminaExplosion.DisplayName: Basic Stamina Explosion
 LightSpandStaminaSlash.DisplayName: Light Spand Stamina Slash
 LightSpandSlash.DisplayName: Light Spand Slash
 BaseHitEffect.DisplayName: Base Hit Effect
+AuroranSlash.DisplayName: Auroran Slash
+AuroranStaminaSlash.DisplayName: Auroran Stamina Slash
