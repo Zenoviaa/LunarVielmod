@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Buffs;
 using Stellamod.Particles;
 using Stellamod.Trails;
@@ -63,8 +63,7 @@ namespace Stellamod.Projectiles.Ammo
         {
             // This code and the similar code above in OnTileCollide spawn dust from the tiles collided with. SoundID.Item10 is the bounce sound you hear.
             SoundEngine.PlaySound(SoundID.Item10, Projectile.position);
-            ParticleManager.NewParticle<IceyParticle>(Projectile.Center, Vector2.Zero, Color.White, 0.4f);
-        }
+                    }
 
         internal PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)

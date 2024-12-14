@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
@@ -65,8 +65,7 @@ namespace Stellamod.Buffs
                     Vector2 pos = player.Center + Main.rand.NextVector2Circular(16, 16);
                     Vector2 velocity = -Vector2.UnitY;
                     float scale = Main.rand.NextFloat(0.5f, 0.75f);
-                    ParticleManager.NewParticle<morrowstar>(pos, velocity, Color.White, scale);
-                }
+                                    }
                 else
                 {
                     Vector2 pos = player.Center + Main.rand.NextVector2Circular(16, 16);

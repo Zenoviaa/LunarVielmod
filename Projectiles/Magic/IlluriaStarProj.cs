@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Trails;
@@ -70,8 +70,7 @@ namespace Stellamod.Projectiles.Magic
             if(Projectile.timeLeft  == Lifetime / 2)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                ParticleManager.NewParticle<StarParticle2>(Projectile.Center, velocity, StarColor, 0.5f);
-            }
+                            }
 
             if (Projectile.timeLeft > Lifetime / 2)
             {
@@ -86,8 +85,7 @@ namespace Stellamod.Projectiles.Magic
                     if (Main.rand.NextBool(16))
                     {
                         Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                        ParticleManager.NewParticle<StarParticle2>(Projectile.Center, velocity, StarColor, 0.5f);
-                    }
+                                            }
 
                     AI_Movement(npc.Center, 15);
                 }
@@ -163,8 +161,7 @@ namespace Stellamod.Projectiles.Magic
             for (int i = 0; i < 4; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                ParticleManager.NewParticle<StarParticle2>(Projectile.Center, speed, StarColor, 0.5f);
-            }
+                            }
         }
     }
 

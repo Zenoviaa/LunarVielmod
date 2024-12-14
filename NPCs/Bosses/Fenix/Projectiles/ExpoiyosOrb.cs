@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
@@ -214,13 +214,11 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 				d.noGravity = true;
 
 				Vector2 speeda = Main.rand.NextVector2CircularEdge(4f, 4f);
-				ParticleManager.NewParticle(NPC.Center, speeda * 7, ParticleManager.NewInstance<VoidParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-				;
+								;
 
 
 				
-				ParticleManager.NewParticle(NPC.Center, speeda * 11, ParticleManager.NewInstance<VoidParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-				;
+								;
 
 				Vector2 speedab = Main.rand.NextVector2CircularEdge(5f, 5f);
 				var dab = Dust.NewDustPerfect(NPC.Center, DustID.BlueTorch, speeda * 20, Scale: 3f);

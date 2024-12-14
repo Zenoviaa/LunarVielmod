@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Trails;
@@ -78,9 +78,6 @@ namespace Stellamod.Projectiles
                 visuals_Counter = 0;
                 Vector2 position = Projectile.Center + new Vector2(Main.rand.Next(0, Particle_Radius), Main.rand.Next(0, Particle_Radius));
                 float size = Main.rand.NextFloat(0.5f, 0.75f);
-                Particle p = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<SparkleTrailParticle>(), default(Color), size);
-                p.timeLeft = 20;
-                p.layer = Particle.Layer.BeforeProjectiles;
             }
 
             if (dust_Counter >= Dust_Rate)
@@ -97,15 +94,7 @@ namespace Stellamod.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < Death_Particle_Explosion_Count; i++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(Death_Particle_Explosion_Radius, Death_Particle_Explosion_Radius);
-                float size = Main.rand.NextFloat(0.75f, 1f);
-                Particle p = ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<SparkleTrailParticle>(),
-                    default(Color), size);
-                p.timeLeft = 20;
-                p.layer = Particle.Layer.BeforeProjectiles;
-            }
+
         }
     }
 }

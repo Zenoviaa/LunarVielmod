@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Particles;
 using Terraria;
@@ -55,8 +55,7 @@ namespace Stellamod.Projectiles.Yoyo
 			{
 				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BoneTorch);
 				Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-				ParticleManager.NewParticle(Projectile.Center, speed * 1, ParticleManager.NewInstance<VoidParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-			}
+							}
 
 			return true;
 		}

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Common.MaskingShaderSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Runes;

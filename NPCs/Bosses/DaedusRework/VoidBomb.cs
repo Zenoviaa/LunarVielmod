@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Terraria;
 using Terraria.DataStructures;
@@ -45,8 +45,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
 		public override void OnSpawn(IEntitySource source)
 		{
-			ParticleManager.NewParticle(Projectile.Center , Projectile.velocity * 0, ParticleManager.NewInstance<VoidSuction>(), Color.Purple, 0.4f, Projectile.whoAmI);
-			for (int i = 0; i < 150; i++)
+						for (int i = 0; i < 150; i++)
 			{
 				Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
 				var d = Dust.NewDustPerfect(Projectile.Center, DustID.GoldFlame, speed * 11, Scale: 3f);

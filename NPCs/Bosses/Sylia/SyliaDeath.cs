@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using System;
 using System.Collections.Generic;
@@ -54,8 +54,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 {
                     Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(168, 168);
                     Vector2 vel = (NPC.Center - pos).SafeNormalize(Vector2.Zero) * 4;
-                    ParticleManager.NewParticle<VoidParticle>(pos, vel, Color.White, 1f);
-                    if (i % 2 == 0)
+                                        if (i % 2 == 0)
                     {
                         Dust d = Dust.NewDustPerfect(pos, DustID.GemAmethyst, vel);
                         d.noGravity = true;

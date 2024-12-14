@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Zui.Projectiles;
 using Stellamod.Particles;

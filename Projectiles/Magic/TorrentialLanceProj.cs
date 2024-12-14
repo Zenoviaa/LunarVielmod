@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Trails;
@@ -127,13 +127,7 @@ namespace Stellamod.Projectiles.Magic
 
         private void Visuals()
         {
-            if (Timer % 4 == 0)
-            {
-                Vector2 velocity = Main.rand.NextVector2Circular(4f, 4f);
-                float scale = Main.rand.NextFloat(0.2f, 0.4f);
-                ParticleManager.NewParticle(Projectile.Center, velocity, ParticleManager.NewInstance<BubbleParticle>(),
-                    Color.White, scale);
-            }
+
 
             // Some visuals here
             Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
@@ -147,13 +141,6 @@ namespace Stellamod.Projectiles.Magic
             }
 
             SpawnBubbles = true;
-            for (int i = 0; i < 4; i++)
-            {
-                Vector2 velocity = Main.rand.NextVector2Circular(4f, 4f);
-                float scale = Main.rand.NextFloat(0.2f, 0.4f);
-                ParticleManager.NewParticle(target.Center, velocity, ParticleManager.NewInstance<BubbleParticle>(),
-                    Color.White, scale);
-            }
         }
 
         public float WidthFunction(float completionRatio)

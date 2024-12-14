@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Sylia.Projectiles;
 using Stellamod.Particles;

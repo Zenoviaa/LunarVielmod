@@ -3,7 +3,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using ReLogic.Content;
 using Stellamod.Items.Accessories;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;

@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Stellamod.Trails;
 using System;
@@ -86,8 +86,7 @@ namespace Stellamod.Projectiles.Swords
 
         public override void OnSpawn(IEntitySource source)
         {
-            ParticleManager.NewParticle(Projectile.Center, Projectile.velocity * 0, ParticleManager.NewInstance<GraveSpin>(), Color.Purple, 0.3f, Projectile.whoAmI);
-        }
+                    }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {

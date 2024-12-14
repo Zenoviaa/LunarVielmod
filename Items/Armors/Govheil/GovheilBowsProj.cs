@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Stellamod.UI.Systems;
 using Terraria;
@@ -66,8 +66,7 @@ namespace Stellamod.Items.Armors.Govheil
 				for (int r = 0; r < 37; r++)
 				{
 					Vector2 speed2 = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speed2 * 8, ParticleManager.NewInstance<BurnParticle>(), Color.Aqua, Main.rand.NextFloat(0.2f, 0.8f));
-				}
+									}
 
 				Projectile.Kill();
 				ShakeModSystem.Shake = 3;
@@ -128,8 +127,7 @@ namespace Stellamod.Items.Armors.Govheil
 			for (int r = 0; r < 37; r++)
 			{
 				Vector2 speed2 = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-				ParticleManager.NewParticle(Projectile.Center, speed2 * 8, ParticleManager.NewInstance<BurnParticle>(), Color.Aqua, Main.rand.NextFloat(0.2f, 0.8f));
-			}
+							}
 
 			ShakeModSystem.Shake = 3;
 			SoundEngine.PlaySound(SoundID.DD2_CrystalCartImpact, target.position);

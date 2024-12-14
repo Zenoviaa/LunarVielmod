@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
@@ -43,12 +43,7 @@ namespace Stellamod.Projectiles.Ammo
                     Rectangle otherRect = p.getRect();
                     if (Projectile.Colliding(myRect, otherRect) && p.active)
                     {
-                        for (int t = 0; t < 3; t++)
-                        {
-                            Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                            ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<IceyParticle>(),
-                                default(Color), 1 / 3f);
-                        }
+
 
                         //Shoot the projectile
                         NPC npc = FindClosestNPC(float.MaxValue);

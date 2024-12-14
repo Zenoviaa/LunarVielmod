@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using ReLogic.Content;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
@@ -57,8 +57,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 for (int i = 0; i < count; i++)
                 {
                     Vector2 position = NPC.Center + new Vector2(radius, 0).RotatedBy(((i * MathHelper.PiOver2 / count)) * 4);
-                    ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<Ink3>(), default(Color), Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
                 _radiusCounter = 0;
             }
         }

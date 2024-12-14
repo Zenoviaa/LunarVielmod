@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Projectiles.Ammo;
@@ -113,11 +113,6 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            for (int j = 0; j < 4; j++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                var d = ParticleManager.NewParticle<morrowstar>(Projectile.Center, speed, Color.White, Scale: 1f);
-            }
         }
     }
 }

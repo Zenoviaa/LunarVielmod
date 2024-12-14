@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using ReLogic.Content;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -115,13 +115,6 @@ namespace Stellamod.NPCs.Underground
         private void Visuals()
         {
             Vector2 drawPos = NPC.Center + new Vector2(0, -24);
-            if (Main.rand.NextBool(2))
-            {
-                Particle p = ParticleManager.NewParticle(drawPos, new Vector2(0, 7).RotatedByRandom(MathHelper.PiOver4  / 2), ParticleManager.NewInstance<ShadeParticle>(),
-                          Color.White,  2f);
-                p.layer = Particle.Layer.BeforeNPCs;
-
-            }
             if (Main.rand.NextBool(16))
             {
                 Dust.NewDustPerfect(drawPos, ModContent.DustType<GlowDust>(), new Vector2(0, 7).RotatedByRandom(MathHelper.PiOver2), 0, Color.Lerp(Color.Purple, Color.Black, 0.5f), 2f); ;

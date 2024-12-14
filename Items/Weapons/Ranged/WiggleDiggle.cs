@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Gores;
 using Stellamod.Items.Materials;
 using Stellamod.Particles;
@@ -70,8 +70,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
                 //Get a random
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                ParticleManager.NewParticle<StarParticle2>(position + offset * distance, startVelocity * Main.rand.NextFloat(0.5f, 1f), Color.DarkGoldenrod, randScale);
-
+                
                 // Rotate the velocity randomly by 30 degrees at max.
                 Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
                 newVelocity *= 1f - Main.rand.NextFloat(0.3f);

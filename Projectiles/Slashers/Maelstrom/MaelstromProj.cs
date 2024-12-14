@@ -12,7 +12,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Stellamod.Items.Accessories.Players;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Stellamod.Helpers;
 

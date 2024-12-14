@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Trails;
@@ -43,8 +43,7 @@ namespace Stellamod.Projectiles.GunHolster
                 }
   
                 Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                ParticleManager.NewParticle(Projectile.Center, speed * 1, ParticleManager.NewInstance<VoidParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-            }
+                            }
         }
 
         public float WidthFunction(float completionRatio)

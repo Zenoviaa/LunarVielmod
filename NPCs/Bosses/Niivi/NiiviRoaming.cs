@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.NPCs.Bosses.Niivi.Projectiles;
 using Stellamod.NPCs.Town;
 using Stellamod.Particles;
@@ -230,8 +230,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 SleepingTimer++;
                 if (SleepingTimer > 60 && SleepingTimer % 60 == 0)
                 {
-                    ParticleManager.NewParticle<ZeeParticle>(NPC.Center + new Vector2(64, -32), -Vector2.UnitY, Color.White, 1f);
-                }
+                                    }
             }
 
 

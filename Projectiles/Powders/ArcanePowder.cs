@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Buffs;
 using Stellamod.Buffs.Dusteffects;
 using Stellamod.Particles;
@@ -32,8 +32,7 @@ namespace Stellamod.Projectiles.Powders
 			for (int j = 0; j < 5; j++)
 			{
 				Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.6f);
-				ParticleManager.NewParticle(Projectile.Center, speed * 9, ParticleManager.NewInstance<BurnParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-
+				
 
 			}
 			Projectile.velocity *= 0.96f;

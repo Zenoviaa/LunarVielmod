@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
@@ -1664,14 +1664,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 			if (timer < 30)
 			{
-				for (int i = 0; i < 4; i++)
-				{
-					Vector2 position = NPC.Center + Main.rand.NextVector2CircularEdge(256, 256);
-					Vector2 speed = (NPC.Center - position).SafeNormalize(Vector2.Zero) * 16;
-					Particle p = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<VoidParticle>(),
-						default(Color), 1 / 3f);
-					p.layer = Particle.Layer.BeforeProjectiles;
-				}
+
 			}
 
 			if (timer == 30)

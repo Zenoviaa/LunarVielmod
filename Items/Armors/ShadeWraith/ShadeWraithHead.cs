@@ -1,5 +1,5 @@
 using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
@@ -42,13 +42,6 @@ namespace Stellamod.Items.Armors.ShadeWraith
                 //Idk some effects here or something
                 //Some sounds
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/OverGrowth_TP1"));
-                for (int i = 0; i < 16; i++)
-                {
-                    Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                    Color color = default(Color).MultiplyAlpha(0.1f);
-                    Particle p = ParticleManager.NewParticle(Player.Center, speed, ParticleManager.NewInstance<Ink2>(), color, Main.rand.NextFloat(0.2f, 0.8f));
-                    p.layer = Particle.Layer.BeforePlayersBehindNPCs;
-                }
             }
         }
     }

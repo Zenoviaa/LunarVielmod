@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Stellamod.Particles;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 
 namespace Stellamod.Items.Accessories
@@ -37,14 +37,6 @@ namespace Stellamod.Items.Accessories
                 if (!hideVisual)
                 {
                     int count = Main.rand.Next(3);
-                    for (int i = 0; i < count; i++)
-                    {
-                        Vector2 position = player.RandomPositionWithinEntity();
-                        Vector2 speed = new Vector2(0, Main.rand.NextFloat(-0.2f, -1f));
-                        Color color = Color.LightBlue.MultiplyAlpha(0.1f);
-                        Particle p = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<MoonTrailParticle>(), color, Main.rand.NextFloat(0.2f, 0.8f));
-                        p.layer = Particle.Layer.BeforePlayersBehindNPCs;
-                    }
                 }
             }
 

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using System;
@@ -55,11 +55,6 @@ namespace Stellamod.Projectiles.Ammo
         {
             base.OnKill(timeLeft);
             SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Projectile.position);
-            for (int j = 0; j < 4; j++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);
-                var d = ParticleManager.NewParticle<morrowstar>(Projectile.Center, speed, Color.White, Scale: 1f);
-            }
         }
 
         public override bool PreDraw(ref Color lightColor)

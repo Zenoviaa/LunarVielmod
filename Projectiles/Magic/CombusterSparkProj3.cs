@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
@@ -46,14 +46,6 @@ namespace Stellamod.Projectiles.Magic
             if (ai_Timer % 4 == 0)
             {
                 float scaleMult = ai_Timer / 60;
-                for (int i = 0; i < 6; i++)
-                {
-                    Vector2 vel = Main.rand.NextVector2Circular(1f, 1f);
-                    Particle p = ParticleManager.NewParticle(Projectile.Center, vel, ParticleManager.NewInstance<BurnParticle3>(),
-                        Color.OrangeRed, Vector2.One * scaleMult * 2f);
-                    p.rotation = Projectile.rotation;
-                    p.timeLeft = 8;
-                }
             }
         }
 
@@ -77,13 +69,6 @@ namespace Stellamod.Projectiles.Magic
                     ProjectileID.GreekFire3, Projectile.damage, 0f, Projectile.owner);
                 Main.projectile[index].friendly = true;
                 Main.projectile[index].hostile = false;
-            }
-
-            for (int i = 0; i < 18; i++)
-            {
-                Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
-                ParticleManager.NewParticle(Projectile.Center, velocity, ParticleManager.NewInstance<UnderworldParticle1>(),
-                    Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
             }
         }
     }

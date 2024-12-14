@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Buffs;
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Dusts;
@@ -177,17 +177,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
 
         private void SwingDusts()
         {
-            DustTimer++;
-            if (DustTimer >= 4 * Swing_Speed_Multiplier)
-            {
-                DustTimer = 0;
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
-                    ModContent.DustType<GunFlash>(), newColor: Color.White, Scale: 0.8f);
-                Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(4, 4);
-                float size = Main.rand.NextFloat(0.7f, 0.9f);
-                ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<WaterParticle>(),
-                    default(Color), size);
-            }
+
         }
 
         private void Swing1()

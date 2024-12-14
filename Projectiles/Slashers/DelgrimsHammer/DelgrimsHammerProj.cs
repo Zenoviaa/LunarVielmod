@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Particles;
@@ -192,8 +192,7 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
 
                 //Get a random
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                ParticleManager.NewParticle<StarParticle2>(target.Center, velocity, Color.DarkGoldenrod, randScale);
-            }
+                            }
 
             if (BounceTimer <= 0)
             {

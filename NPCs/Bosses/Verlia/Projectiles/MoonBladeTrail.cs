@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using System.Collections.Generic;
 using Terraria;
@@ -40,8 +40,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			if (Timer == 3)
             {
 				Vector2 speed2 = Main.rand.NextVector2CircularEdge(0.1f, 0.1f);
-				ParticleManager.NewParticle(Projectile.Center, speed2 * 0, ParticleManager.NewInstance<MoonTrailParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-				Timer = 0;
+								Timer = 0;
 			}
 		
 		}

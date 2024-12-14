@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Particles;
@@ -55,15 +55,6 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
 
         private void Visuals()
         {
-            for (int i = 0; i < Main.rand.Next(2, 4); i++)
-            {
-                Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(4, 4);
-                float size = Main.rand.NextFloat(0.25f, 0.33f);
-                Particle p = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<WaterParticle>(),
-                    default(Color), size);
-                p.layer = Particle.Layer.BeforeProjectiles;
-            }
-
             if (Main.rand.NextBool(8))
             {
                 Dust.NewDust(Projectile.Center, 2, 2, ModContent.DustType<BubbleDust>());
@@ -75,13 +66,6 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<WataBoom>(), Projectile.damage, 6, Projectile.owner);
             int count = 32;
-            for (int i = 0; i < count; i++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                Particle p = ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<WaterParticle>(),
-                    default(Color), 1 / 2f);
-            }
-
             for (int i = 0; i < count / 2; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);

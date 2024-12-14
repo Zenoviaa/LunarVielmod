@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
@@ -468,23 +468,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
         }
 
 
-        private void ChargeVisuals<T>(float timer, float maxTimer) where T : Particle
-        {
-            float progress = timer / maxTimer;
-            float minParticleSpawnSpeed = 8;
-            float maxParticleSpawnSpeed = 2;
-            int particleSpawnSpeed = (int)MathHelper.Lerp(minParticleSpawnSpeed, maxParticleSpawnSpeed, progress);
-            if (timer % particleSpawnSpeed == 0)
-            {
-                for (int i = 0; i < 4; i++)
-                {
-                    Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(168, 168);
-                    Vector2 vel = (NPC.Center - pos).SafeNormalize(Vector2.Zero) * 4;
-                    ParticleManager.NewParticle<T>(pos, vel, Color.White, 1f);
-                }
-            }
-        }
-
         #region Phase 1
         private void AI_Spawn()
         {
@@ -845,15 +828,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 float progress = Timer / 60;
                 progress = MathHelper.Clamp(progress, 0, 1);
                 float sparkleSize = MathHelper.Lerp(0f, 4f, progress);
-                if (Timer % 4 == 0)
-                {
-                    for (int i = 0; i < 2; i++)
-                    {
-                        Particle p = ParticleManager.NewParticle(NPC.Center, Vector2.Zero,
-                            ParticleManager.NewInstance<GoldSparkleParticle>(), Color.White, sparkleSize);
-                        p.timeLeft = 8;
-                    }
-                }
+
                 
                 if(Timer > 61)
                 {
@@ -880,10 +855,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     {
                         NPC.velocity *= 0.98f;
                     }
-         
 
-                    //Charge up
-                    ChargeVisuals<StarParticle2>(Timer, 60);
                 }
                 else if (Timer == 61)
                 {
@@ -915,14 +887,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
                             ai1: beamLength);
                     }
 
-                    for (int i = 0; i < 16; i++)
-                    {
-                        Vector2 particleVelocity = fireDirection * 16;
-                        particleVelocity = particleVelocity.RotatedByRandom(MathHelper.PiOver4 / 3);
-                        particleVelocity *= Main.rand.NextFloat(0.3f, 1f);
-                        ParticleManager.NewParticle(NPC.Center, particleVelocity,
-                            ParticleManager.NewInstance<StarParticle>(), Color.White, sparkleSize);
-                    }
 
                     Timer = 0;
                     AttackCount++;
@@ -1015,7 +979,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 }
 
                 //Charge up
-                ChargeVisuals<SnowFlakeParticle>(Timer, 60);
                 if (Timer >= 60)
                 {
                     if (StellaMultiplayer.IsHost)
@@ -1405,12 +1368,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 Vector2 pos = NPC.Center + HeadRotation.ToRotationVector2() * 256;
                 if (Timer % 4 == 0)
                 {
-                    for (int i = 0; i < 3; i++)
-                    {
-                        Particle p = ParticleManager.NewParticle(pos, Vector2.Zero,
-                            ParticleManager.NewInstance<GoldSparkleParticle>(), Color.White, sparkleSize);
-                        p.timeLeft = 8;
-                    }
+
                 }
 
                 if (Timer % 16 == 0)
@@ -1493,12 +1451,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 float sparkleSize = MathHelper.Lerp(0f, 4f, progress);
                 if (Timer % 4 == 0)
                 {
-                    for (int i = 0; i < 2; i++)
-                    {
-                        Particle p = ParticleManager.NewParticle(NPC.Center, Vector2.Zero,
-                            ParticleManager.NewInstance<GoldSparkleParticle>(), Color.White, sparkleSize);
-                        p.timeLeft = 8;
-                    }
+
                 }
 
                 //Rotate head 90-ish degrees upward
@@ -1512,7 +1465,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     NPC.velocity *= 1.002f;
 
                     //Charge up
-                    ChargeVisuals<StarParticle2>(Timer, 60);
+
                 }
                 else if (Timer == 61)
                 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Buffs;
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Dusts;
@@ -326,8 +326,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
                         //Get a random color
                         Color randColor = Main.rand.NextColor(Color.White, Main.DiscoColor, Color.Black);
                         float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                        ParticleManager.NewParticle<StarParticle>(Projectile.Center, velocity, randColor, randScale);
-                    }
+                                            }
 
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                         ModContent.ProjectileType<StarsBoom2>(),

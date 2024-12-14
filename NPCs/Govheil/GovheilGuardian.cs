@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
@@ -217,18 +217,15 @@ namespace Stellamod.NPCs.Govheil
 				for (int i = 0; i < 100; i++)
 				{
 					Vector2 speed = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-					ParticleManager.NewParticle(NPC.Center, speed * 10, ParticleManager.NewInstance<morrowstar>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-				}
+									}
 				for (int i = 0; i < 100; i++)
 				{
 					Vector2 speed = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-					ParticleManager.NewParticle(NPC.Center, speed * 5, ParticleManager.NewInstance<morrowstar>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-				}
+									}
 				for (int i = 0; i < 100; i++)
 				{
 					Vector2 speed = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-					ParticleManager.NewParticle(NPC.Center, speed * 7, ParticleManager.NewInstance<morrowstar>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-				}
+									}
 
 			}
 			if (timer == 24)
@@ -258,8 +255,7 @@ namespace Stellamod.NPCs.Govheil
 			for (int i = 0; i < 5; i++)
 			{
 				Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-				ParticleManager.NewParticle(NPC.Center, speed * 4, ParticleManager.NewInstance<morrowstar>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-			}
+							}
 		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{

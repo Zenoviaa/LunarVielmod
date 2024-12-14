@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Particles;

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
 using Stellamod.Particles;
@@ -180,8 +180,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             {
                 Vector2 randomOrigin = new Vector2(Main.rand.NextFloat(-8, 8f));
                 Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-                ParticleManager.NewParticle(Projectile.Center - randomOrigin, speed * 2, ParticleManager.NewInstance<SparkleTrailParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-            }
+                            }
 
             // Some visuals here
             Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);

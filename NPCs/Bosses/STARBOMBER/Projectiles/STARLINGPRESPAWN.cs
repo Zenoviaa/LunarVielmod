@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
@@ -36,8 +36,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
                 {
                     Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(168, 168);
                     Vector2 vel = (Projectile.Center - pos).SafeNormalize(Vector2.Zero) * 4;
-                    ParticleManager.NewParticle<AVoidParticle>(pos, vel, Color.RoyalBlue, 0.16f);
-                }
+                                    }
             }
         }
 

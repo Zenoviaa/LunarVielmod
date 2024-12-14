@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Buffs;
 using Stellamod.Buffs.Dusteffects;
 using Stellamod.Buffs.PocketDustEffects;
@@ -115,9 +115,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
-					ParticleManager.NewParticle(Projectile.Center, speed2 * 5, ParticleManager.NewInstance<BurnParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-					ParticleManager.NewParticle(Projectile.Center, speed * 3, ParticleManager.NewInstance<BurnParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-					npc.SimpleStrikeNPC((int)(Projectile.damage * 1f), 1, crit: false, Projectile.knockBack);
+															npc.SimpleStrikeNPC((int)(Projectile.damage * 1f), 1, crit: false, Projectile.knockBack);
 					npc.RequestBuffRemoval(ModContent.BuffType<ArcaneDust>());
 				}
 
@@ -343,8 +341,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				for (int j = 0; j < 20; j++)
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speed * 4, ParticleManager.NewInstance<FlameParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-					target.AddBuff(BuffID.OnFire, 720);
+										target.AddBuff(BuffID.OnFire, 720);
 					target.AddBuff(ModContent.BuffType<EXPtime>(), 1000);
 
 					Projectile.timeLeft = 250;
@@ -421,8 +418,7 @@ namespace Stellamod.Projectiles.IgniterEx
                 for (int j = 0; j < 20; j++)
                 {
                     Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                    ParticleManager.NewParticle(Projectile.Center, speed * 4, ParticleManager.NewInstance<FlameParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-                    target.AddBuff(BuffID.OnFire, 720);
+                                        target.AddBuff(BuffID.OnFire, 720);
                     target.AddBuff(ModContent.BuffType<EXPtime>(), 1000);
 
                     Projectile.timeLeft = 250;
@@ -496,8 +492,7 @@ namespace Stellamod.Projectiles.IgniterEx
                 for (int j = 0; j < 20; j++)
                 {
                     Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                    ParticleManager.NewParticle(Projectile.Center, speed * 4, ParticleManager.NewInstance<BurnParticle2>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-                    target.AddBuff(BuffID.OnFire, 720);
+                                        target.AddBuff(BuffID.OnFire, 720);
                     target.AddBuff(ModContent.BuffType<EXPtime>(), 1000);
 
                     Projectile.timeLeft = 250;
@@ -574,8 +569,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				for (int j = 0; j < 20; j++)
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speed * 4, ParticleManager.NewInstance<VoidParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-					target.AddBuff(BuffID.Confused, 720);
+										target.AddBuff(BuffID.Confused, 720);
 					target.AddBuff(ModContent.BuffType<EXPtime>(), 1000);
 
 					Projectile.timeLeft = 250;
@@ -653,8 +647,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				for (int j = 0; j < 20; j++)
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speed * 4, ParticleManager.NewInstance<ShadeParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-					target.AddBuff(BuffID.OnFire, 720);
+										target.AddBuff(BuffID.OnFire, 720);
 					target.AddBuff(ModContent.BuffType<EXPtime>(), 1000);
 
 					Projectile.timeLeft = 250;
@@ -736,8 +729,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				for (int j = 0; j < 20; j++)
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speed * 4, ParticleManager.NewInstance<FabledParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-					target.AddBuff(BuffID.OnFire3, 720);
+										target.AddBuff(BuffID.OnFire3, 720);
 					target.AddBuff(ModContent.BuffType<EXPtime>(), 1000);
 
 					Projectile.timeLeft = 300;
@@ -820,8 +812,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				for (int j = 0; j < 20; j++)
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speed * 4, ParticleManager.NewInstance<morrowstar>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-					target.AddBuff(BuffID.Poisoned, 720);
+										target.AddBuff(BuffID.Poisoned, 720);
 					target.AddBuff(ModContent.BuffType<EXPtime>(), 1000);
 
 					Projectile.timeLeft = 300;
@@ -925,8 +916,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				for (int d = 0; d < 20; d++)
 				{
 					Vector2 speedea = Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speedea * 4, ParticleManager.NewInstance<ShadeParticle>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
-					target.AddBuff(ModContent.BuffType<EXPtime2>(), 1000);
+										target.AddBuff(ModContent.BuffType<EXPtime2>(), 1000);
 
 					Projectile.timeLeft = 200;
 					Timer++;
@@ -1010,8 +1000,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				for (int d = 0; d < 20; d++)
 				{
 					Vector2 speedea = Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speedea * 4, ParticleManager.NewInstance<BurnParticle>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
-					target.AddBuff(ModContent.BuffType<EXPtime2>(), 1000);
+										target.AddBuff(ModContent.BuffType<EXPtime2>(), 1000);
 
 					Projectile.timeLeft = 200;
 					Timer++;
@@ -1094,8 +1083,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				for (int d = 0; d < 20; d++)
 				{
 					Vector2 speedea = Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speedea * 4, ParticleManager.NewInstance<UnderworldParticle1>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
-					target.AddBuff(ModContent.BuffType<EXPtime2>(), 1000);
+										target.AddBuff(ModContent.BuffType<EXPtime2>(), 1000);
 
 					Projectile.timeLeft = 200;
 					Timer++;
@@ -1183,8 +1171,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 
 					Vector2 speedeaax = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speedeaax * 7, ParticleManager.NewInstance<IceParticle>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
-
+					
 					target.AddBuff(ModContent.BuffType<EXPtime3>(), 1000);
 
 					Projectile.timeLeft = 80;
@@ -1295,9 +1282,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
-					ParticleManager.NewParticle(Projectile.Center, speed2 * 5, ParticleManager.NewInstance<LeafParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-					ParticleManager.NewParticle(Projectile.Center, speed * 3, ParticleManager.NewInstance<DustaParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-					npc.SimpleStrikeNPC(Projectile.damage * 1, 1, crit: false, Projectile.knockBack);
+															npc.SimpleStrikeNPC(Projectile.damage * 1, 1, crit: false, Projectile.knockBack);
 
 				}
 
@@ -1323,9 +1308,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 					Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2Circular(1f, 1f);
-					ParticleManager.NewParticle(Projectile.Center, speed2 * 5, ParticleManager.NewInstance<ArcanalParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-					ParticleManager.NewParticle(Projectile.Center, speed * 7, ParticleManager.NewInstance<FlowerParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-					npc.SimpleStrikeNPC(Projectile.damage * 1, 1, crit: false, Projectile.knockBack);
+															npc.SimpleStrikeNPC(Projectile.damage * 1, 1, crit: false, Projectile.knockBack);
 
 				}
 
@@ -1367,8 +1350,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 
 					Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
-					ParticleManager.NewParticle(Projectile.Center, speed2 * 7, ParticleManager.NewInstance<LenaSongParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-					npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
+										npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 
 				}
 
@@ -1413,8 +1395,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				{
 
 					Vector2 speedeaaxa = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speedeaaxa * 7, ParticleManager.NewInstance<GildParticle>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
-
+					
 					target.AddBuff(ModContent.BuffType<EXPtime4>(), 1000);
 
 					Projectile.timeLeft = 130;
@@ -1598,9 +1579,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				for (int d = 0; d < 20; d++)
 				{
 					Vector2 speedea = Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speedea * 7, ParticleManager.NewInstance<GeodeParticle>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
-					ParticleManager.NewParticle(Projectile.Center, speedea * 4, ParticleManager.NewInstance<CoalParticle>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
-
+										
 
 					
 
@@ -1636,8 +1615,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				for (int d = 0; d < 15; d++)
 				{
 					Vector2 speedea = Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speedea * 4, ParticleManager.NewInstance<DustaParticle>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
-
+					
 
 					
 
@@ -1657,8 +1635,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				for (int j = 0; j < 20; j++)
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speed * 4, ParticleManager.NewInstance<MoonTrailParticle>(), Color.DarkRed, Main.rand.NextFloat(0.2f, 0.8f));
-					target.AddBuff(BuffID.Slow, 1120);
+										target.AddBuff(BuffID.Slow, 1120);
 					target.AddBuff(BuffID.BrainOfConfusionBuff, 1120);
 					target.AddBuff(ModContent.BuffType<EXPtime>(), 1000);
 
@@ -1697,8 +1674,7 @@ namespace Stellamod.Projectiles.IgniterEx
 							{
 							
 								Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
-								ParticleManager.NewParticle(Projectile.Center, speed2 * 8, ParticleManager.NewInstance<MoonTrailParticle>(), Color.DarkRed, Main.rand.NextFloat(0.2f, 0.8f));
-								
+																
 								npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 							
 							}

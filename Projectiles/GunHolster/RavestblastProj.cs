@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
@@ -113,24 +113,6 @@ namespace Stellamod.Projectiles.GunHolster
                 (Color)GetAlpha(lightColor),Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0f);
             return false;
         }
-
-
-        public override void OnKill(int timeLeft)
-        {
-
-
-            for (int i = 0; i < 14; i++)
-            {
-               // ParticleManager.NewParticle(Projectile.Center, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(10.0), ParticleManager.NewInstance<Rainbow>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-            }
-
-
-
-            var entitySource = Projectile.GetSource_FromThis();
-
-        }
-
-
 
         public override void PostDraw(Color lightColor)
         {

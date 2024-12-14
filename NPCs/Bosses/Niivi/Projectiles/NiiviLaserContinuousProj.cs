@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Trails;
@@ -83,8 +83,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 {
                     Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(starRadius, starRadius);
                     Vector2 vel = (Projectile.Center - pos).SafeNormalize(Vector2.Zero) * 16;
-                    ParticleManager.NewParticle<StarParticle>(pos, vel, Color.White, 1f);
-                }
+                                    }
             }
             if (Timer % (int)(LifeTime / 4) == 0)
             {

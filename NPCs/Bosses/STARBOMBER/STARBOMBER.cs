@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
@@ -870,8 +870,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
                 {
                     Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(168, 168);
                     Vector2 vel = (NPC.Center - pos).SafeNormalize(Vector2.Zero) * 4;
-                    ParticleManager.NewParticle<AVoidParticle>(pos, vel, Color.RoyalBlue, 0.2f);
-                }
+                                    }
             }
         }
 
@@ -991,8 +990,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				for (int j = 0; j < 50; j++)
 				{
 					Vector2 speedg = Main.rand.NextVector2CircularEdge(1f, 1f);
-					ParticleManager.NewParticle(NPC.Center, speedg * 7, ParticleManager.NewInstance<BurnParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
+					
 
 				}
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
@@ -1123,8 +1121,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				for (int j = 0; j < 50; j++)
 				{
 					Vector2 speedg = Main.rand.NextVector2Circular(1f, 1f);
-					ParticleManager.NewParticle(NPC.Center, speedg * 7, ParticleManager.NewInstance<ShadeParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-				}
+									}
 				Voiden = 0;
 			}
 
@@ -1144,8 +1141,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
                 for (int j = 0; j < 30; j++)
 				{
 					Vector2 speedg = Main.rand.NextVector2CircularEdge(1f, 1f);
-					ParticleManager.NewParticle(NPC.Center, speedg * 7, ParticleManager.NewInstance<BurnParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-				}
+									}
 
 				missue = 0;
             }

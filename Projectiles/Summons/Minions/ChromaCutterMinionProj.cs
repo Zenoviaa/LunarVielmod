@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
 using Stellamod.Particles;
@@ -433,12 +433,6 @@ namespace Stellamod.Projectiles.Summons.Minions
                     SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"));
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                         ModContent.ProjectileType<CombustionBoomMini>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
-                    for (int i = 0; i < 6; i++)
-                    {
-                        Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
-                        ParticleManager.NewParticle(Projectile.Center, velocity, ParticleManager.NewInstance<UnderworldParticle1>(),
-                            Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
-                    }
 
                     for (int i = 0; i < Main.rand.Next(1, 3); i++)
                     {

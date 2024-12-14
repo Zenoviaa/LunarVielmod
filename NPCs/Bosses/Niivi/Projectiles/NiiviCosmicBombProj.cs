@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
@@ -120,8 +120,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 {
                     Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(starRadius, starRadius);
                     Vector2 vel = (Projectile.Center - pos).SafeNormalize(Vector2.Zero) * 16;
-                    ParticleManager.NewParticle<StarParticle>(pos, vel, Color.White, 1f);
-                }
+                                    }
             }
             if (Timer > 0 && Timer < 120)
             {
@@ -198,8 +197,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 {
                     Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(starRadius, starRadius);
                     Vector2 vel = (Projectile.Center - pos).SafeNormalize(Vector2.Zero) * 16;
-                    ParticleManager.NewParticle<StarParticle>(pos, vel, Main.DiscoColor, 1f);
-                }
+                                    }
             }
 
             if(Timer % 20 == 0)

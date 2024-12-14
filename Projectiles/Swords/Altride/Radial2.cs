@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -93,8 +93,7 @@ namespace Stellamod.Projectiles.Swords.Altride
            
             for (int i = 0; i < 14; i++)
             {
-                ParticleManager.NewParticle(Projectile.Center, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(10.0), ParticleManager.NewInstance<FabledParticle5>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-            }
+                            }
 
            
 

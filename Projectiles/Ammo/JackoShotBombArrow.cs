@@ -1,4 +1,4 @@
-﻿using ParticleLibrary;
+﻿
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using System;

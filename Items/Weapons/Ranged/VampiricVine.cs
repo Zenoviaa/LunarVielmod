@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
@@ -80,8 +80,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			{
 				Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
 				newVelocity *= 1f - Main.rand.NextFloat(0.3f);
-				ParticleManager.NewParticle(position, newVelocity * 0.5f, ParticleManager.NewInstance<Ink3>(), default(Color), Main.rand.NextFloat(0.2f, 0.8f));
-				
+								
 			}
 
 			//Dust Burst in Circle at Muzzle
@@ -91,8 +90,7 @@ namespace Stellamod.Items.Weapons.Ranged
 				float degrees = k * degreesPer;
 				Vector2 direction = Vector2.One.RotatedBy(MathHelper.ToRadians(degrees));
 				Vector2 vel = direction * 8;
-				ParticleManager.NewParticle(position, vel * 0.5f, ParticleManager.NewInstance<Ink3>(), default(Color), Main.rand.NextFloat(0.2f, 0.8f));
-			}
+							}
 
 			return true; // return false because we don't want tmodloader to shoot projectile
 		}

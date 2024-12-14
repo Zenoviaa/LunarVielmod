@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Sylia.Projectiles;
 using Stellamod.Particles;
@@ -48,14 +48,6 @@ namespace Stellamod.NPCs.Bosses.Sylia
             if(Timer == 120)
             {
                 //Time to emerge
-                Particle telegraphPart1 = ParticleManager.NewParticle(ArenaCenter, Vector2.Zero,
-                    ParticleManager.NewInstance<RipperSlashTelegraphParticle>(), Color.White, 1f);
-
-                Particle telegraphPart2 = ParticleManager.NewParticle(ArenaCenter, Vector2.Zero,
-                    ParticleManager.NewInstance<RipperSlashTelegraphParticle>(), Color.White, 1f);
-
-                telegraphPart1.rotation = MathHelper.ToRadians(-45);
-                telegraphPart2.rotation = MathHelper.ToRadians(45);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RipperSlashTelegraph"));
             }
 

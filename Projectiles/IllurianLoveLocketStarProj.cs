@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Trails;
@@ -68,8 +68,7 @@ namespace Stellamod.Projectiles
             if (Main.rand.NextBool(32))
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(3, 3);
-                ParticleManager.NewParticle<StarParticle2>(Projectile.Center, velocity, ColorFunctions.Niivin, 0.5f);
-            }
+                            }
         }
 
         public float WidthFunction(float completionRatio)

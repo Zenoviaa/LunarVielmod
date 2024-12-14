@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
@@ -33,8 +33,7 @@ namespace Stellamod.Projectiles.Arrows
             _particleTimer++;
             if(_particleTimer % 4 == 0)
             {
-                ParticleManager.NewParticle(Projectile.Center, Vector2.Zero, ParticleManager.NewInstance<VoidParticle>(), Color.White, 0.5f);
-            }
+                            }
         }
 
         //Trails
@@ -61,14 +60,6 @@ namespace Stellamod.Projectiles.Arrows
             SoundEngine.PlaySound(SoundID.Item89, Projectile.position);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
                 ModContent.ProjectileType<AlcaricMushBoom>(), Projectile.damage, 0f, Projectile.owner);
-
-            for (int i = 0; i < 16; i++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);
-                var p =ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<VoidParticle>(), Color.White,
-                   Main.rand.NextFloat(0.5f, 0.75f));
-                p.layer = Particle.Layer.BeforeProjectiles;
-            }
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Items.Materials;
 using Stellamod.Particles;
 using Terraria;
@@ -42,14 +42,6 @@ namespace Stellamod.Items.Accessories
             {
                 float radius = 16;
                 int count = Main.rand.Next(6);
-                for (int i = 0; i < count; i++)
-                {
-                    Vector2 position = player.Center + new Vector2(radius, 0).RotatedBy(((i * MathHelper.PiOver2 / count)) * 4);
-                    Vector2 speed = new Vector2(0, Main.rand.NextFloat(-0.2f, -1f));
-                    Color color = default(Color).MultiplyAlpha(0.1f);
-                    Particle p =ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<Ink2>(), color, Main.rand.NextFloat(0.2f, 0.8f));
-                    p.layer = Particle.Layer.BeforePlayersBehindNPCs;
-                }
             }
 
             //Increased armor pen

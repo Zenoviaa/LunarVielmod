@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Buffs;
 using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
@@ -53,8 +53,7 @@ namespace Stellamod.Projectiles.Thrown
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BoneTorch);
                 Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                ParticleManager.NewParticle(Projectile.Center, speed * 1, ParticleManager.NewInstance<ShadeParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-            }
+                            }
 
             return true;
         }
@@ -85,8 +84,7 @@ namespace Stellamod.Projectiles.Thrown
 
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin);
                 Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                ParticleManager.NewParticle(Projectile.Center, speed * 1, ParticleManager.NewInstance<VoidParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-
+                
 
             }
         }

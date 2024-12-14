@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Trails;
@@ -83,15 +83,7 @@ namespace Stellamod.Projectiles.Magic
 
         public override void OnKill(int timeLeft)
         {
-            //Charged Sound thingy
-            for (int i = 0; i < 32; i++)
-            {
-                Vector2 position = Projectile.Center;
-                Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
-                Particle p = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<VoidParticle>(),
-                    Color.White, 0.5f);
-                p.layer = Particle.Layer.BeforeProjectiles;
-            }
+
         }
 
         public float WidthFunction(float completionRatio)
@@ -117,27 +109,12 @@ namespace Stellamod.Projectiles.Magic
         {
             if(ai_Counter == 0)
             {
-                //Charged Sound thingy
-                for (int i = 0; i < 8; i++)
-                {
-                    Vector2 position = Projectile.Center;
-                    Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
-                    Particle p = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<VoidParticle>(),
-                        Color.White, 0.5f);
-                    p.layer = Particle.Layer.BeforeProjectiles;
-                }
+
             }
 
             if(ai_Counter % 5 == 0)
             {
-                for (int i = 0; i < 2; i++)
-                {
-                    Vector2 position = Projectile.Center;
-                    Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
-                    Particle p = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<VoidParticle>(),
-                        Color.White, 0.5f);
-                    p.layer = Particle.Layer.BeforeProjectiles;
-                }
+
             }
 
             if(ai_Counter % 15 == 0)

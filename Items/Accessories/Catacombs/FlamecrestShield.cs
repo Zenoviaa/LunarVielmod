@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.NPCs.Catacombs.Fire;
 using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
@@ -27,13 +27,6 @@ namespace Stellamod.Items.Accessories.Catacombs
             int combatText = CombatText.NewText(Player.getRect(), Color.OrangeRed, LangText.Misc("FlamecrestPlayer"), true);
             CombatText numText = Main.combatText[combatText];
             numText.lifeTime = 60;
-
-            for (int t = 0; t < 32; t++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                ParticleManager.NewParticle(Player.Center, speed, ParticleManager.NewInstance<UnderworldParticle1>(),
-                    default(Color), 1 / 3f);
-            }
         }
 
         public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)

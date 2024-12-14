@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Buffs;
 using Stellamod.Dusts;
 using Stellamod.Gores;
@@ -102,8 +102,7 @@ namespace Stellamod.Projectiles.Thrown
 
                 //Get a randoms
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                ParticleManager.NewParticle<StarParticle2>(Projectile.Center, velocity, Color.DarkGoldenrod, randScale);
-            }
+                            }
         }
     }
 }

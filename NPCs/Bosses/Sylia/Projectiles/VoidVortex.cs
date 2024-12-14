@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using ReLogic.Content;
 using Stellamod.Helpers;
 using Stellamod.Particles;
@@ -86,8 +86,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 			float particleSpeed = 4;
 			Vector2 position = Projectile.Center + Main.rand.NextVector2CircularEdge(distance, distance);
 			Vector2 speed = (Projectile.Center - position).SafeNormalize(Vector2.Zero) * particleSpeed;
-			ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<VoidParticle>(), default(Color), 1f);
-		}
+					}
 
 		private void VoidDustVisuals()
         {

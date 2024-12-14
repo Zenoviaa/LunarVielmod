@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Particles;
@@ -220,13 +220,11 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                     if (Main.rand.NextBool(2))
                     {
                         //Snowflake particle
-                        ParticleManager.NewParticle<SnowFlakeParticle>(NPC.Center, velocity, color, 1f);
-                    }
+                                            }
                     else
                     {
                         //Star particle
-                        ParticleManager.NewParticle<StarParticle2>(NPC.Center, velocity, color, 1f);
-                    }
+                                            }
                 }
 
             }

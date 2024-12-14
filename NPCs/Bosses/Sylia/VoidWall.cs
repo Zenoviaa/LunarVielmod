@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Trails;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Sylia.Projectiles;
@@ -160,20 +160,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
         private void SuckVisuals()
         {
-            for (int i = 0; i < 2; i++)
-            {
-                Vector2 voidAbsorbPosition = NPC.Center + Main.rand.NextVector2CircularEdge(128, 128);
-                Vector2 speed = (NPC.Center - voidAbsorbPosition).SafeNormalize(Vector2.Zero) * 8;
-                Particle p = ParticleManager.NewParticle(voidAbsorbPosition, speed, ParticleManager.NewInstance<VoidParticle>(),
-                    default(Color), 0.25f);
-                p.layer = Particle.Layer.BeforeProjectiles;
 
-                float distance = 128;
-                float particleSpeed = 4;
-                Vector2 position = NPC.Center + Main.rand.NextVector2CircularEdge(distance, distance);
-                Vector2 dustSpeed = (NPC.Center - position).SafeNormalize(Vector2.Zero) * particleSpeed;
-                Dust.NewDustPerfect(position, DustID.GemAmethyst, dustSpeed, Scale: 0.5f);
-            }
         }
 
         private void SwitchState(AttackState attackState)

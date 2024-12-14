@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
 using Stellamod.NPCs.Catacombs.Fire;
@@ -77,11 +77,7 @@ namespace Stellamod.NPCs.Catacombs
             ai_Timer++;
             if(ai_Timer % 4 == 0)
             {
-                for(int i = 0; i  < 6; i++)
-                {
-                    Particle p = ParticleManager.NewParticle(NPC.Center, Vector2.Zero, ParticleManager.NewInstance<BurnParticle>(), default(Color), _centerSparkleSize);
-                    p.timeLeft = 8;
-                }
+
             }
 
             int duration = 180;
@@ -90,22 +86,7 @@ namespace Stellamod.NPCs.Catacombs
                 ShakeModSystem.Shake = ai_Timer/18;
                 if (ai_Timer % 4 == 0)
                 {
-                    for (int i = 0; i < Main.rand.Next(1, 3); i++)
-                    {
-                        float distance = 128;
-                        float particleSpeed = 8;
-                        Vector2 position = NPC.Center + Main.rand.NextVector2CircularEdge(distance, distance);
-                        Vector2 speed = (NPC.Center - position).SafeNormalize(Vector2.Zero) * particleSpeed;
-                        Particle sparkle = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<BurnParticle>(), default(Color), Main.rand.NextFloat(0.6f, 0.8f));
-                        sparkle.timeLeft = 21;
-                    }
 
-                    //Spawn Particle
-                    Vector2 edge = Main.rand.NextVector2CircularEdge(8, 8);
-                    Vector2 spawnPosition = NPC.Center + edge;
-                    Vector2 velocity = NPC.DirectionFrom(spawnPosition);
-                    Particle p = ParticleManager.NewParticle(spawnPosition, velocity, ParticleManager.NewInstance<BurnParticle>(), default(Color), Main.rand.NextFloat(0.6f, 0.8f));
-                    p.timeLeft = 16;
                 }
 
                 if (Main.rand.NextBool(4))

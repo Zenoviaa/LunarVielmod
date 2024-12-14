@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Stellamod.Trails;
 using Terraria;
@@ -128,8 +128,7 @@ namespace Stellamod.Projectiles.Magic
             {
 
                 Vector2 speed2 = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-                ParticleManager.NewParticle(Projectile.Center, speed2 * 12, ParticleManager.NewInstance<BurnParticle2>(), Color.Aqua, Main.rand.NextFloat(0.2f, 0.8f));
-
+                
 
 
             }
@@ -138,8 +137,7 @@ namespace Stellamod.Projectiles.Magic
             {
 
                 Vector2 speed2 = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-                ParticleManager.NewParticle(Projectile.Center, speed2 * 12, ParticleManager.NewInstance<BurnParticle>(), Color.Aqua, Main.rand.NextFloat(0.2f, 0.8f));
-
+                
 
 
             }

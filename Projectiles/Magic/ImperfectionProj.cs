@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Stellamod.UI.Systems;
 using Terraria;
@@ -169,8 +169,7 @@ namespace Stellamod.Projectiles.Magic
             for (int i = 0; i < 30; i++)
             {
                 Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
-                ParticleManager.NewParticle(Projectile.Center, speed2 * 5, ParticleManager.NewInstance<BurnParticle4>(), Color.PaleVioletRed, Main.rand.NextFloat(0.2f, 0.8f));
-            }
+                            }
 
             Projectile.Kill();
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);

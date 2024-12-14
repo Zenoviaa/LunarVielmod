@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.UI.Systems;
@@ -102,8 +102,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 Color[] colors = new Color[] { Color.LightCyan, Color.Cyan, Color.White, Color.White };
                 Color color = colors[Main.rand.Next(0, colors.Length)];
                 float scale = Main.rand.NextFloat(0.5f, 0.8f);
-                ParticleManager.NewParticle<StarParticle>(Projectile.Center + randOffset, velocity, color, scale);
-            }
+                            }
 
             for (int i = 0; i < Main.maxPlayers; i++)
             {

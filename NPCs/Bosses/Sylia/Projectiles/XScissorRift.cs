@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Terraria.Audio;
 using Stellamod.Projectiles.Swords;
@@ -104,9 +104,6 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             if(Timer == 1)
             {
                 //Spawn Telegraph Particle
-                Particle p = ParticleManager.NewParticle<RipperSlashTelegraphParticle>(Projectile.Center, Vector2.Zero, Color.White, 1f);
-                p.rotation = Projectile.velocity.ToRotation();
-
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/RipperSlashTelegraph");
                 soundStyle.PitchVariance = 0.15f;
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
@@ -137,14 +134,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         {
             if (Timer % 8 == 0)
             {
-                float radius = 64;
-                for (int i = 0; i < 1; i++)
-                {
-                    Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(radius / 2, radius / 2);
-                    Particle p = ParticleManager.NewParticle(position, new Vector2(0, -2f), ParticleManager.NewInstance<VoidParticle>(),
-                        default(Color), Main.rand.NextFloat(0.1f, 0.2f));
-                    p.layer = Particle.Layer.BeforeProjectiles;
-                }
+
             }
 
             float scaleOut = 20;

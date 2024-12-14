@@ -14,7 +14,7 @@ using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using System.Collections.Generic;
 
@@ -228,8 +228,7 @@ namespace Stellamod.Projectiles.Magic
             for (int j = 0; j < 10; j++)
             {
                 Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                ParticleManager.NewParticle(Projectile.Center, speed * 6, ParticleManager.NewInstance<FabledParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-            }
+                            }
  
 
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 524f, 14f);

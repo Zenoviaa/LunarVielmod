@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Stellamod.Trails;
 using System;
@@ -52,8 +52,7 @@ namespace Stellamod.Projectiles.Bow
             for (int j = 0; j < 20; j++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-                ParticleManager.NewParticle(Projectile.Center, speed * 10, ParticleManager.NewInstance<MoonTrailParticle>(), Color.DarkRed, Main.rand.NextFloat(0.2f, 0.8f));
-            }
+                            }
 
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Suckler"));
             float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
@@ -90,8 +89,7 @@ namespace Stellamod.Projectiles.Bow
             for (int j = 0; j < 20; j++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-                ParticleManager.NewParticle(Projectile.Center, speed * 10, ParticleManager.NewInstance<MoonTrailParticle>(), Color.DarkRed, Main.rand.NextFloat(0.2f, 0.8f));
-            }
+                            }
 
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Suckler"));
             float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Particles;
@@ -44,8 +44,7 @@ namespace Stellamod.Items.Accessories
             for(int i = 0; i < 48; i++)
             {
                 Vector2 velocity = Main.rand.NextVector2CircularEdge(4, 4);
-                ParticleManager.NewParticle<StarParticle>(player.Center, velocity, Color.White, 1f);
-            }
+                            }
 
             SoundEngine.PlaySound(SoundRegistry.IridineRevive, player.position);
         }

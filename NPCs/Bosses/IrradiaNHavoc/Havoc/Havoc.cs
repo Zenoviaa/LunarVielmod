@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using ReLogic.Content;
 using Stellamod.Dusts;
 using Stellamod.Helpers;

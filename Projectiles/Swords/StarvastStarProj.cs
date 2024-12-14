@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Particles;
@@ -92,14 +92,7 @@ namespace Stellamod.Projectiles.Swords
         public override void OnKill(int timeLeft)
         {
             //Charged Sound thingy
-            for (int i = 0; i < 4; i++)
-            {
-                Vector2 position = Projectile.Center;
-                Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
-                Particle p = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<StarParticle2>(),
-                    Color.White, 0.5f);
-                p.layer = Particle.Layer.BeforeProjectiles;
-            }
+
         }
 
 
@@ -126,28 +119,14 @@ namespace Stellamod.Projectiles.Swords
             if (ai_Counter == 0)
             {
                 //Charged Sound thingy
-                for (int i = 0; i < 8; i++)
-                {
-                    Vector2 position = Projectile.Center;
-                    Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
-                    Particle p = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<StarParticle2>(),
-                        Color.White, 0.5f);
-                    p.layer = Particle.Layer.BeforeProjectiles;
-                }
+
             }
 
             if (foundTarget)
             {
                 if (ai_Counter % 8 == 0)
                 {
-                    for (int i = 0; i < 1; i++)
-                    {
-                        Vector2 position = Projectile.Center;
-                        Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
-                        Particle p = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<StarParticle2>(),
-                            Color.White, 0.5f);
-                        p.layer = Particle.Layer.BeforeProjectiles;
-                    }
+
                 }
             }
 

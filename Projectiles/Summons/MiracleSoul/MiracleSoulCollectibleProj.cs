@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Particles;
@@ -49,13 +49,6 @@ namespace Stellamod.Projectiles.Summons.MiracleSoul
                 miraclePlayer.miracleTimeLeft = miracleDuration;
                 Projectile.Kill();
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia1"), Projectile.position);
-                for (int i = 0; i < 64; i++)
-                {
-                    Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                    Particle p = ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<VoidParticle>(),
-                        default(Color), 1/3f);
-                    p.layer = Particle.Layer.BeforeProjectiles;
-                }
 
                 int combatText = CombatText.NewText(miraclePlayer.Player.getRect(), Color.Magenta, miraclePlayer.miracleLevel, true);
                 CombatText numText = Main.combatText[combatText];

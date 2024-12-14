@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using System;
@@ -40,13 +40,6 @@ namespace Stellamod.Projectiles.Magic
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item54, Projectile.position);
-            for (int i = 0; i < 4; i++)
-            {
-                Vector2 velocity = Main.rand.NextVector2Circular(4f, 4f);
-                float scale = Main.rand.NextFloat(0.2f, 0.4f);
-                ParticleManager.NewParticle(Projectile.Center, velocity, ParticleManager.NewInstance<BubbleParticle>(),
-                    Color.White, scale);
-            }
         }
 
         public override bool PreDraw(ref Color lightColor)

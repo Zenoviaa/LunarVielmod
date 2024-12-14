@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -83,8 +83,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
                     //Get a random
                     float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                    ParticleManager.NewParticle<BoreParticle>(Projectile.Center, velocity2, Color.White, randScale);
-                }
+                                    }
                 var entitySource = Projectile.GetSource_FromThis();
                 if (StellaMultiplayer.IsHost)
                 {
@@ -125,8 +124,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
                 //Get a random
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                ParticleManager.NewParticle<BoreParticle>(Projectile.Center, velocity2, Color.White, randScale);
-            }
+                            }
             var entitySource = Projectile.GetSource_FromThis();
             if (StellaMultiplayer.IsHost)
             {

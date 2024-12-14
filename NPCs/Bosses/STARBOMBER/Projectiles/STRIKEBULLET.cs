@@ -3,7 +3,7 @@ using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Particles;
 using Terraria.DataStructures;
@@ -154,13 +154,11 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			for (int j = 0; j < 10; j++)
 			{
 				Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-				ParticleManager.NewParticle(Projectile.Center, speed * 3, ParticleManager.NewInstance<BurnParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-			}
+							}
 
 			for (int i = 0; i < 7; i++)
 			{
-				ParticleManager.NewParticle(Projectile.Center, (Vector2.One * Main.rand.Next(1, 10)).RotatedByRandom(10.0), ParticleManager.NewInstance<ShadeParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-			}
+							}
 
 			return false;
 		}

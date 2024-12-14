@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Terraria;
 using Terraria.ID;
@@ -33,16 +33,6 @@ namespace Stellamod.Buffs
 			player.jumpBoost = true;
 			player.moveSpeed += 0.4f;
 			player.maxRunSpeed += 0.4f;
-			
-			for (int m = 0; m < 5; m++)
-			{
-				Vector2 position = new Vector2(player.position.X + Main.rand.Next(player.width), player.position.Y + player.height - Main.rand.Next(30));
-				Particle p = ParticleManager.NewParticle(position, new Vector2(0, -2f), ParticleManager.NewInstance<morrowstar>(),
-					default(Color), Main.rand.NextFloat(0.2f, 1));
-				p.layer = Particle.Layer.BeforePlayersBehindNPCs;
-			}
 		}
-
-
 	}
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
@@ -44,14 +44,6 @@ namespace Stellamod.Projectiles.Magic
             if (ai_Timer % 4 == 0)
             {
                 float scaleMult = ai_Timer / 60;
-                for (int i = 0; i < 6; i++)
-                {
-                    Vector2 vel = Main.rand.NextVector2Circular(1f, 1f);
-                    Particle p = ParticleManager.NewParticle(Projectile.Center, vel, ParticleManager.NewInstance<BurnParticle2>(), 
-                        Color.OrangeRed, Vector2.One * scaleMult * 1.5f);
-                    p.rotation = Projectile.rotation;
-                    p.timeLeft = 8;
-                }
             }
         }
 
@@ -61,13 +53,6 @@ namespace Stellamod.Projectiles.Magic
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<CombusterExplosionProj1>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-
-            for(int i = 0; i < 24; i++)
-            {
-                Vector2 velocity = Main.rand.NextVector2CircularEdge(16f, 16f);
-                ParticleManager.NewParticle(Projectile.Center, velocity, ParticleManager.NewInstance<UnderworldParticle1>(),
-                    Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
-            }
         }
     }
 }

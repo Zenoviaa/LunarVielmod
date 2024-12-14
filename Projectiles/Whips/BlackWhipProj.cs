@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Particles;
 using Stellamod.UI.Systems;
@@ -139,8 +139,7 @@ namespace Stellamod.Projectiles.Whips
 			for (int j = 0; j < 10; j++)
 			{
 				Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-				ParticleManager.NewParticle(npc.position, speed * 7, ParticleManager.NewInstance<ShadeParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-			}
+							}
 		}
 
 		// This method draws a line between all points of the whip, in case there's empty space between the sprites.

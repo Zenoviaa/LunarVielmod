@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Particles;
 using Terraria.DataStructures;

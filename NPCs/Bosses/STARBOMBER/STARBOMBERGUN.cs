@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
@@ -58,12 +58,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
             if (Shooter < 170)
             {
-                for (int j = 0; j < 2; j++)
-                {
-                    Vector2 speed = Main.rand.NextVector2Circular(1f, 2f);
-                    ParticleManager.NewParticle(NPC.Center, speed * 3,
-                        ParticleManager.NewInstance<ShadeParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+
             }
 
             if (Shooter > 170)
@@ -115,8 +110,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
                 for (int j = 0; j < 50; j++)
                 {
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 3f);
-                    ParticleManager.NewParticle(NPC.Center, speed * 4, ParticleManager.NewInstance<ShadeParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
                 NPC.Kill();
             }

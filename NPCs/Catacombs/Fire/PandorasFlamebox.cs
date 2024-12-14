@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;

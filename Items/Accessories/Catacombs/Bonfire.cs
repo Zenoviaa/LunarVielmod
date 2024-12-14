@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Stellamod.Projectiles;
 using Terraria;
@@ -46,15 +46,6 @@ namespace Stellamod.Items.Accessories.Catacombs
             if(player.velocity == Vector2.Zero)
             {
                 player.lifeRegen += 12;
-                for (int i = 0; i < 1; i++)
-                {
-                    float distance = 128;
-                    float particleSpeed = 8;
-                    Vector2 position = player.Center + Main.rand.NextVector2CircularEdge(distance, distance);
-                    Vector2 speed = (player.Center - position).SafeNormalize(Vector2.Zero) * particleSpeed;
-                    Particle p = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<UnderworldParticle1>(), default(Color), 0.5f);
-                    p.timeLeft = 20;
-                }
             }
             else
             {

@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Particles;
 using System.Collections.Generic;
@@ -43,8 +43,7 @@ namespace Stellamod.Projectiles.Whips
 
             //Snow flake particle
             Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
-            ParticleManager.NewParticle<SnowFlakeParticle>(target.Center, velocity, Color.White, 0.5f);
-
+            
             Player player = Main.player[Projectile.owner];
             SoundEngine.PlaySound(SoundID.DD2_WitherBeastCrystalImpact, Projectile.Center);
         }

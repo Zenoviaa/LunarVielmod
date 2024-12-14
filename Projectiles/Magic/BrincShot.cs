@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 using Stellamod.Trails;
 using Terraria.Graphics.Shaders;
 using static Terraria.ModLoader.ModContent;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -100,8 +100,7 @@ namespace Stellamod.Projectiles.Magic
             for (int j = 0; j < 4; j++)
             {
                 Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                ParticleManager.NewParticle(Projectile.Center, speed * 6, ParticleManager.NewInstance<MoonTrailParticle2>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-            }
+                            }
             var EntitySource = Projectile.GetSource_Death();
 
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 524f, 14f);

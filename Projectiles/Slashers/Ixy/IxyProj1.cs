@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using System;
 using Terraria;
@@ -84,8 +84,7 @@ namespace Stellamod.Projectiles.Slashers.Ixy
 
             if (!ParticleSpawned)
             {
-                ParticleManager.NewParticle(Owner.Center, Owner.DirectionTo(Main.MouseWorld), ParticleManager.NewInstance<IxySlash>(), Color.Purple, 0.7f, Projectile.whoAmI, Projectile.whoAmI);
-                ParticleSpawned = true;
+                                ParticleSpawned = true;
             }
         }
 

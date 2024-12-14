@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Wings;
@@ -250,8 +250,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 {
                     Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(168, 168);
                     Vector2 vel = (NPC.Center - pos).SafeNormalize(Vector2.Zero) * 4;
-                    ParticleManager.NewParticle<VoidParticle>(pos, vel, Color.White, 1f);
-                    if (i % 2 == 0)
+                                        if (i % 2 == 0)
                     {
                         var d = Dust.NewDustPerfect(pos, DustID.GemAmethyst, vel);
 						d.noGravity = true;
@@ -281,14 +280,6 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
                 //Visuals on the teleport
                 Dust.QuickDustLine(NPC.position, NPC.oldPosition, 100f, Color.Violet);
-                for (int i = 0; i < 64; i++)
-                {
-                    Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                    Particle p = ParticleManager.NewParticle(NPC.Center, speed, ParticleManager.NewInstance<VoidParticle>(),
-                        default(Color), 1 / 3f);
-                    p.layer = Particle.Layer.BeforeProjectiles;
-                }
-
                 SoundEngine.PlaySound(SoundID.Item165, NPC.position);
             }
         }

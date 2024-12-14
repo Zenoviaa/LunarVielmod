@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Particles;
 using Terraria.DataStructures;

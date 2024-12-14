@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Terraria;
 using Terraria.DataStructures;
@@ -27,8 +27,7 @@ namespace Stellamod.Projectiles
 
         public override void OnSpawn(IEntitySource source)
         {
-            ParticleManager.NewParticle(Projectile.Center, Projectile.velocity * 0, ParticleManager.NewInstance<Spinew>(), Color.Purple, 0.4f, Projectile.whoAmI);
-        }
+                    }
 
         public override void AI()
         {

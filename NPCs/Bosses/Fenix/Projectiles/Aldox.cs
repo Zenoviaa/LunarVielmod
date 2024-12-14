@@ -5,7 +5,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Particles;
 using Terraria.DataStructures;
@@ -120,8 +120,7 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 					da.noGravity = false;
 
 					Vector2 speedab = Main.rand.NextVector2CircularEdge(5f, 5f);
-					ParticleManager.NewParticle(Projectile.Center, speedab * 7, ParticleManager.NewInstance<VoidParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
+					
 				}
 				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/STARGROP"));
 

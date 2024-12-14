@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Items.Accessories.Catacombs;
 using Stellamod.Particles;
 using System.IO;
@@ -72,8 +72,6 @@ namespace Stellamod.Projectiles
 			}
 
 			Owner.GetModPlayer<BarryPlayer>().regenTimer = 300;
-            ParticleManager.NewParticle(target.Center, Vector2.Zero, ParticleManager.NewInstance<SparkleTrailParticle>(),
-								  Color.White, Main.rand.NextFloat(0.5f, 0.75f));
 			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit2"));
 			switch (Main.rand.Next(0, 2))
 			{

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Common.Bases;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -52,8 +52,7 @@ namespace Stellamod.Projectiles.Safunai.Blackwhip
                 for (int j = 0; j < 1; j++)
                 {
                     Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                    ParticleManager.NewParticle(Projectile.Center, speed * 2, ParticleManager.NewInstance<BurnParticle4>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
             }
     
 

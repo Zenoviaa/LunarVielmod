@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Trails;
@@ -39,14 +39,7 @@ namespace Stellamod.Projectiles.Magic
 
             if (Timer % 6 == 0)
             {
-                for (int i = 0; i < 1; i++)
-                {
-                    Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(2, 2);
-                    Vector2 velocity = Main.rand.NextVector2Circular(1, 1);
-                    float scale = Main.rand.NextFloat(0.2f, 0.4f);
-                    ParticleManager.NewParticle(position, velocity, ParticleManager.NewInstance<BubbleParticle>(),
-                        Color.White, scale);
-                }
+
             }
 
             if(Timer > 90)
@@ -70,13 +63,7 @@ namespace Stellamod.Projectiles.Magic
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 8; i++)
-            {
-                Vector2 velocity = Main.rand.NextVector2CircularEdge(4f, 4f);
-                float scale = Main.rand.NextFloat(0.2f, 0.4f);
-                ParticleManager.NewParticle(Projectile.Center, velocity, ParticleManager.NewInstance<BubbleParticle>(),
-                    Color.White, scale);
-            }
+
         }
 
 

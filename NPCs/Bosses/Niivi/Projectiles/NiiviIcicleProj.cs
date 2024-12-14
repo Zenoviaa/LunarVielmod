@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Stellamod.Trails;
 using Terraria;
@@ -40,8 +40,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             if (Main.rand.NextBool(30))
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
-                ParticleManager.NewParticle<SnowFlakeParticle>(Projectile.Center, velocity, Color.White, 0.5f);
-            }
+                            }
 
             Lighting.AddLight(Projectile.position, Color.White.ToVector3() * 0.78f);
         }
@@ -52,8 +51,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                 float scale = Main.rand.NextFloat(0.3f, 0.5f);
-                ParticleManager.NewParticle<SnowFlakeParticle>(Projectile.Center, velocity, Color.White, scale);
-                if (Main.rand.NextBool(2))
+                                if (Main.rand.NextBool(2))
                 {
                     Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Snow);
                 }

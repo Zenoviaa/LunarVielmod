@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Stellamod.UI.Systems;
 using Terraria;
@@ -170,8 +170,7 @@ namespace Stellamod.Projectiles.Magic
             {
 
                 Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
-                ParticleManager.NewParticle(Projectile.Center, speed2 * 5, ParticleManager.NewInstance<morrowstar>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
+                
 
             }
             Projectile.Kill();

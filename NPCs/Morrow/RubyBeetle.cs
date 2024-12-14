@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Particles;
@@ -56,8 +56,7 @@ namespace Stellamod.NPCs.Morrow
                 for (int i = 0; i < 5; i++)
                 {
                     Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                    ParticleManager.NewParticle(NPC.Center, speed * 4, ParticleManager.NewInstance<FlameParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
             }
         }
 

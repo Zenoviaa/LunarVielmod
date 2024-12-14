@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using System;
 using Terraria;
@@ -48,9 +48,7 @@ namespace Stellamod.Projectiles.Slashers.Reavestor
             int dir = (int)Projectile.ai[1];
             if (!ParticleSpawned)
             {
-                ParticleManager.NewParticle(player.Center, player.DirectionTo(Main.MouseWorld), ParticleManager.NewInstance<FabledParticle5>(), Color.Purple, 0.7f, Projectile.whoAmI, Projectile.whoAmI);
-                ParticleManager.NewParticle(player.Center, player.DirectionTo(Main.MouseWorld), ParticleManager.NewInstance<AuroranSlashParticle>(), Color.Purple, 0.7f, Projectile.whoAmI, Projectile.whoAmI);
-                ParticleSpawned = true;
+                                                ParticleSpawned = true;
             }
 
             for (int i = 0; i < 5; i++)

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
@@ -48,8 +48,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                     float scale = Main.rand.NextFloat(0.3f, 0.5f);
-                    ParticleManager.NewParticle<SnowFlakeParticle>(Projectile.Center, velocity, Color.White, scale);
-                }
+                                    }
 
                 for(int i = 0; i < Main.rand.Next(3, 6); i++)
                 {

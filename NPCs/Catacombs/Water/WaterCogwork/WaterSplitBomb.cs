@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Particles;
 using Stellamod.Projectiles;
@@ -34,13 +34,6 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
 
         private void Visuals()
         {
-            for (int i = 0; i < Main.rand.Next(2, 4); i++)
-            {
-                Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(4, 4);
-                float size = Main.rand.NextFloat(1f, 1.25f);
-                ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<WaterParticle>(),
-                    default(Color), size);
-            }
 
             if (Main.rand.NextBool(8))
             {
@@ -72,13 +65,6 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             }
 
             int count = 64;
-            for (int i = 0; i < count; i++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(5f, 5f);
-                ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<WaterParticle>(),
-                    default(Color), 1 / 2f);
-            }
-
             for (int i = 0; i < count; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(3f, 3f);

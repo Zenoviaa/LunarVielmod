@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
@@ -90,19 +90,6 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
             _particleCounter++;
             if (_particleCounter > Body_Particle_Rate)
             {
-                for (int i = 0; i < Body_Particle_Count; i++)
-                {
-                    Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
-                    float size = Main.rand.NextFloat(1.5f, 2f);
-                    Particle p = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidParticle>(),
-                        default(Color), size);
-
-                    p.layer = Particle.Layer.BeforeProjectiles;
-                    Particle tearParticle = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidTearParticle>(),
-                        default(Color), size + 0.1f);
-
-                    tearParticle.layer = Particle.Layer.BeforePlayersBehindNPCs;
-                }
 
                 _particleCounter = 0;
             }
@@ -125,20 +112,6 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
         {
             //REPLACE SOUND AT SOME POINT
             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
-            for (int i = 0; i < Explosion_Particle_Count; i++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(1.5f, 1.5f);
-                Particle p = ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<VoidParticle>(),
-                    default(Color), Main.rand.NextFloat(0.9f, 1.33f));
-            }
-
-            //Just some dusts so it looks nicer when it dies
-            for (int i = 0; i < Kill_Particle_Count; i++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);
-                var d = Dust.NewDustPerfect(Projectile.Center, DustID.GemAmethyst, speed, Scale: 3f);
-                d.noGravity = true;
-            }
         }
     }
 }

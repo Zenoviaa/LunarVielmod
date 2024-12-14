@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -78,8 +78,7 @@ namespace Stellamod.Projectiles.Magic
                 for (int j = 0; j < 60; j++)
                 {
                     Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                    ParticleManager.NewParticle(Projectile.Center, speed * 8, ParticleManager.NewInstance<FlameParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Infernis1"), Projectile.position);
                 var EntitySource = Projectile.GetSource_Death();
                 Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<StarFlowerproj3>(), Projectile.damage * 2, 1, Projectile.owner, 0, 0);

@@ -10,7 +10,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Stellamod.Helpers;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Stellamod.Trails;
 
@@ -46,8 +46,7 @@ namespace Stellamod.Projectiles.Bow
                 {
                     Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BoneTorch);
                     Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                    ParticleManager.NewParticle(Projectile.Center, speed * 1, ParticleManager.NewInstance<VoidParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
             }
 
             Projectile.velocity *= 1.001f;

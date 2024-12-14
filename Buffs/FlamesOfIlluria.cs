@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Terraria;
 using Terraria.ModLoader;
@@ -25,13 +25,11 @@ namespace Stellamod.Buffs
             if (Main.rand.NextBool(4))
             {
                 //Snowflake particle
-                ParticleManager.NewParticle<SnowFlakeParticle>(npc.Center + offset, velocity, Color.White, 0.8f);
-            }
+                            }
             else
             {
                 //Star particle
-                ParticleManager.NewParticle<StarParticle2>(npc.Center + offset, velocity, Color.White, 0.8f);
-            }
+                            }
         }
 
         public override void Update(Player player, ref int buffIndex)
@@ -44,13 +42,11 @@ namespace Stellamod.Buffs
             if (Main.rand.NextBool(4))
             {
                 //Snowflake particle
-                ParticleManager.NewParticle<SnowFlakeParticle>(player.Center + offset, velocity, Color.White, 0.8f);
-            }
+                            }
             else
             {
                 //Star particle
-                ParticleManager.NewParticle<StarParticle2>(player.Center + offset, velocity, Color.White, 0.8f);
-            }
+                            }
         }
     }
 }

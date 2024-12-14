@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Buffs;
 using Stellamod.Buffs.Minions;
 using Stellamod.Dusts;
@@ -1351,8 +1351,7 @@ namespace Stellamod
                         RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
 
                         Vector2 speed = new Vector2(4, 0);
-                        ParticleManager.NewParticle(Player.Center - RandomOrig, speed, ParticleManager.NewInstance<WindParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                    }
+                                            }
                 }
 
 
@@ -1394,8 +1393,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FabledParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
+                    
 
                 }
 
@@ -1413,8 +1411,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                        ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 1, ParticleManager.NewInstance<GoldRingParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
+                        
                         GoldenRingCooldown = 0;
                     }
                 }
@@ -1429,8 +1426,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                        ParticleManager.NewParticle(Player.Center - RandomOrig2, speed2 * 3, ParticleManager.NewInstance<GoldSparkleParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
+                        
                         GoldenSparkleCooldown = 0;
                     }
                 }
@@ -1461,8 +1457,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<morrowstar>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
+                    
 
                 }
 
@@ -1485,8 +1480,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<CrystalParticle2>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
             }
 
 
@@ -1507,8 +1501,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<BoreParticle>(), Color.Orange, Main.rand.NextFloat(0.1f, 0.9f));
-                }
+                                    }
             }
 
 
@@ -1724,8 +1717,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<CrystalParticle1>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
                 for (int j = 0; j < 2; j++)
                 {
@@ -1735,8 +1727,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<CrystalParticle2>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
             }
 
@@ -1763,22 +1754,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<FabledParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
-                }
-
-
-                for (int j = 0; j < 5; j++)
-                {
-                    RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
-                    RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
-                    RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
-
-                    Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-                    Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<morrowstar>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
+                    
 
                 }
 
@@ -1791,8 +1767,20 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<MoonTrailParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+                    
+
                 }
+
+
+                for (int j = 0; j < 5; j++)
+                {
+                    RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+                    RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+                    RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+                    Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+                    Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+                                    }
                 */
             }
 
@@ -1820,8 +1808,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FabledParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
+                    
 
                 }
 
@@ -1834,8 +1821,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<IceyParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
+                    
 
                 }
 
@@ -1847,8 +1833,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 0.5f, ParticleManager.NewInstance<FabledParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
+                    
 
                 }
                 if (GoldenRingCooldown > 2)
@@ -1861,8 +1846,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                        ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 1, ParticleManager.NewInstance<GoldRingParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
+                        
                         GoldenRingCooldown = 0;
                     }
                 }
@@ -1877,8 +1861,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                        ParticleManager.NewParticle(Player.Center - RandomOrig2, speed2 * 3, ParticleManager.NewInstance<GoldRingParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
+                        
                         GoldenSparkleCooldown = 0;
                     }
                 }
@@ -1902,8 +1885,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FabledParticle2>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -1913,8 +1895,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 0.5f, ParticleManager.NewInstance<FabledParticle2>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
                 for (int j = 0; j < 3; j++)
                 {
@@ -1924,8 +1905,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<MoonTrailParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -1935,8 +1915,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FabledParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -1946,8 +1925,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<GoldRingParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -1957,8 +1935,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 0.5f, ParticleManager.NewInstance<FabledParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
                 if (GoldenRingCooldown > 2)
                 {
@@ -1970,8 +1947,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                        ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 2, ParticleManager.NewInstance<GoldRingParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
+                        
                         GoldenRingCooldown = 0;
                     }
                 }
@@ -1986,8 +1962,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                        ParticleManager.NewParticle(Player.Center - RandomOrig2, speed2 * 3, ParticleManager.NewInstance<GoldRingParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                        GoldenSparkleCooldown = 0;
+                                                GoldenSparkleCooldown = 0;
                     }
                 }
 
@@ -2002,8 +1977,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<morrowstar>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
             }
 
 
@@ -2029,8 +2003,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FabledParticle2>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -2040,8 +2013,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 0.5f, ParticleManager.NewInstance<FabledParticle2>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -2051,8 +2023,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<MoonTrailParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -2062,8 +2033,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FabledParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
 
 
@@ -2075,8 +2045,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 0.5f, ParticleManager.NewInstance<FabledParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
 
 
@@ -2091,8 +2060,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                        ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 2, ParticleManager.NewInstance<GoldRingParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
+                        
                         GoldenRingCooldown = 0;
                     }
                 }
@@ -2107,8 +2075,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                        ParticleManager.NewParticle(Player.Center - RandomOrig2, speed2 * 3, ParticleManager.NewInstance<GoldRingParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                        GoldenSparkleCooldown = 0;
+                                                GoldenSparkleCooldown = 0;
                     }
                 }
 
@@ -2123,8 +2090,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<morrowstar>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
                 GoldenRingCooldown++;
                 GoldenSparkleCooldown++;
@@ -2152,8 +2118,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<UnderworldParticle1>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
 
 
@@ -2165,8 +2130,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FlameParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -2176,8 +2140,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<UnderworldParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -2187,8 +2150,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<UnderworldParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
             }
 
 
@@ -2219,8 +2181,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<UnderworldParticle1>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
 
 
@@ -2232,8 +2193,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FlameParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -2243,8 +2203,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<UnderworldParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -2254,8 +2213,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<UnderworldParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
             }
 
             if (Dice)
@@ -2931,12 +2889,6 @@ namespace Stellamod
                 if (ArcaneMCooldown == 601)
                 {
                     SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ArcaneExplode"));
-                    for (int j = 0; j < 7; j++)
-                    {
-                        Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-                        ParticleManager.NewParticle(Player.Center, speed * 3,
-                            ParticleManager.NewInstance<ArcanalParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                    }
                 }
 
                 if (ArcaneMCooldown > 600)

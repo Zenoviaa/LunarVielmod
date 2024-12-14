@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Projectiles.Summons.VoidMonsters;
@@ -108,15 +108,6 @@ namespace Stellamod.Projectiles.Summons.Sentries
                             projToFire, Projectile.damage, Projectile.knockBack, owner.whoAmI);
                         proj.DamageType = DamageClass.Summon;
 
-                        //Cool little circle visual
-                        for (int i = 0; i < 16; i++)
-                        {
-                            Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                            Particle p = ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<VoidParticle>(),
-                                default(Color), 1 / 3f);
-                            p.layer = Particle.Layer.BeforeProjectiles;
-                        }
-
                         //Firing Sound :P
                         SoundEngine.PlaySound(SoundID.Item73, Projectile.position);
                         _counter = 0;
@@ -153,17 +144,11 @@ namespace Stellamod.Projectiles.Summons.Sentries
             switch (_summonState)
             {
                 case SummonState.X_Slash_Telegraph:
-                    Particle telegraphPart1 = ParticleManager.NewParticle(Projectile.Center, Vector2.Zero,
-                        ParticleManager.NewInstance<RipperSlashTelegraphParticle>(), default(Color), 1f);
-                    Particle telegraphPart2 = ParticleManager.NewParticle(Projectile.Center, Vector2.Zero,
-                        ParticleManager.NewInstance<RipperSlashTelegraphParticle>(), default(Color), 1f);
-                    telegraphPart1.rotation = MathHelper.ToRadians(-45);
-                    telegraphPart2.rotation = MathHelper.ToRadians(45);
                     _summonState = SummonState.X_Slash;
                     break;
                 case SummonState.X_Slash:
                     _counter++;
-                    if (_counter > RipperSlashTelegraphParticle.Animation_Length)
+                    if (_counter > 24)
                     {
                         Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                             ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, Projectile.owner, 0f, 0f);

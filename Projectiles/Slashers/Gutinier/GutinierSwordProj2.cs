@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Particles;
 using System;
@@ -54,8 +54,7 @@ namespace Stellamod.Projectiles.Slashers.Gutinier
             int dir = (int)Projectile.ai[1];
             if (!ParticleSpawned)
             {
-                ParticleManager.NewParticle(Owner.Center, Owner.DirectionTo(Main.MouseWorld), ParticleManager.NewInstance<GutinierSlashParticle>(), Color.Purple, 0.7f, Projectile.whoAmI, Projectile.whoAmI);
-                ParticleSpawned = true;
+                                ParticleSpawned = true;
             }
 
             for (int i = 0; i < 1; i++)

@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Stellamod.Projectiles.IgniterExplosions;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Terraria.Audio;
 
@@ -34,12 +34,7 @@ namespace Stellamod.Projectiles.Thrown
             Timer++;
             if(Timer % 4 == 0)
             {
-                for (int i = 0; i < 2; i++)
-                {
-                    Particle p = ParticleManager.NewParticle(Projectile.Center, Vector2.Zero, 
-                        ParticleManager.NewInstance<GoldSparkleParticle>(), Color.White, _sparkleSize);
-                    p.timeLeft = 8;
-                }
+
             }
 
             if(Timer >= 30)

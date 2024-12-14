@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
 using Stellamod.Particles;
@@ -302,12 +302,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
                     if (Main.rand.NextBool(12))
                     {
-                        for (int j = 0; j < 5; j++)
-                        {
-                            Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                            var particle = ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<IceyParticle>(), Color.White, Main.rand.NextFloat(.2f, .4f));
-                            particle.timeLeft = 12;
-                        }
+
                     }
                     break;
                 case ActionState.Lightning_Attack:

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
@@ -60,18 +60,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         {
             if (Timer % 8 == 0)
             {
-                //Main Body
-                Vector2 position = Projectile.Center +
-                     new Vector2(Main.rand.Next(0, Body_Radius), Main.rand.Next(0, Body_Radius));
-                float size = Main.rand.NextFloat(0.75f, 1f);
-                Particle p = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidParticle>(),
-                    default(Color), size);
 
-                p.layer = Particle.Layer.BeforeProjectiles;
-                Particle tearParticle = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidTearParticle>(),
-                    default(Color), size + 0.025f);
-
-                tearParticle.layer = Particle.Layer.BeforePlayersBehindNPCs;
             }
 
             if(Timer % 16 == 0)
@@ -90,20 +79,6 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         {
             //REPLACE SOUND AT SOME POINT
             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
-            for (int i = 0; i < Explosion_Particle_Count; i++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(1.5f, 1.5f);
-                ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<VoidParticle>(),
-                    default(Color), Main.rand.NextFloat(0.9f, 1.33f));
-            }
-
-            //Just some dusts so it looks nicer when it dies
-            for (int i = 0; i < Kill_Particle_Count; i++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);
-                var d = Dust.NewDustPerfect(Projectile.Center, DustID.GemAmethyst, speed, Scale: 3f);
-                d.noGravity = true;
-            }
         }
     }
 }

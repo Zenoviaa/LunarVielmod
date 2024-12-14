@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
@@ -49,12 +49,6 @@ namespace Stellamod.Projectiles.Summons.Minions
 
             if (foundTarget)
                 Projectile.velocity = VectorHelper.VelocityHomingTo(Projectile.position, Projectile.velocity, targetCenter, 0.5f);
-            for (int j = 0; j < 5; j++)
-            {
-                Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                var particle = ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<IceyParticle>(), Color.White, Main.rand.NextFloat(.2f, .4f));
-                particle.timeLeft = 12;
-            }
         }
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
@@ -74,8 +68,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             for (int j = 0; j < count; j++)
             {
                 Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                ParticleManager.NewParticle(Projectile.Center, speed * 8, ParticleManager.NewInstance<IceyParticle>(), Color.White, Main.rand.NextFloat(.3f, .6f));
-            }
+                            }
 
             //Explosion?
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,

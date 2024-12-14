@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
@@ -124,8 +124,7 @@ namespace Stellamod.Projectiles
 
                 //Get a random
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                ParticleManager.NewParticle<StarParticle2>(Projectile.Center, velocity, Color.White, randScale);
-            }
+                            }
         }
 
         private void SpawnStarBomber()

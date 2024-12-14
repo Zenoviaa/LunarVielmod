@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using System;
@@ -300,24 +300,12 @@ namespace Stellamod.Projectiles.Summons.Sentries
             _particleCounter++;
             if (_particleCounter > Body_Particle_Rate)
             {
-                for (int i = 0; i < Body_Particle_Count; i++)
-                {
-                    Vector2 position = Projectile.position + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
-                    position += new Vector2(Projectile.width / 2, -24);
-                    Particle p = ParticleManager.NewParticle(position, new Vector2(0, -2f), ParticleManager.NewInstance<VoidParticle>(),
-                        default(Color), Main.rand.NextFloat(0.5f, 1f));
-                    p.layer = Particle.Layer.BeforeProjectiles;
-                }
+
                 _particleCounter = 0;
             }
 
 
             //This is the ring that shows where the shadow minions spawn
-            for (int i = 0; i < count; i++)
-            {
-                Vector2 position = Projectile.Center + new Vector2(Shadow_Minion_Summon_Radius, 0).RotatedBy(((i * MathHelper.PiOver2 / count) + _rotation) * 4);
-                ParticleManager.NewParticle(position, new Vector2(0, -0.25f), ParticleManager.NewInstance<VoidParticle>(), default(Color), 1 / 3f);
-            }
 
             float hoverSpeed = 5;
             float rotationSpeed = 2.5f;

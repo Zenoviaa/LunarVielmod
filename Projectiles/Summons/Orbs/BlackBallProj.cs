@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Buffs;
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Dusts;
@@ -175,8 +175,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BoneTorch);
                 Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                ParticleManager.NewParticle(Projectile.Center, speed * 1, ParticleManager.NewInstance<VoidParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
-            }
+                            }
         }
 
         private void Swing1()
@@ -325,13 +324,6 @@ namespace Stellamod.Projectiles.Summons.Orbs
                     {
                         Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 
                             ModContent.DustType<GunFlash>(), Scale: 0.8f);
-                    }
-
-                    for(int i = 0; i < 4; i++)
-                    {
-                        Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                        ParticleManager.NewParticle(Projectile.Center, speed * 1, 
-                            ParticleManager.NewInstance<VoidParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
                     }
 
                     SoundStyle soundStyle = SoundID.DD2_WitherBeastDeath;

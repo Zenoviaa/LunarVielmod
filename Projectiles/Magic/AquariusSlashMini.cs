@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Terraria.ModLoader;
 using Terraria;
 using Stellamod.Helpers;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 
 namespace Stellamod.Projectiles.Magic
@@ -82,13 +82,7 @@ namespace Stellamod.Projectiles.Magic
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            for (int i = 0; i < 4; i++)
-            {
-                Vector2 velocity = Main.rand.NextVector2Circular(4f, 4f);
-                float scale = Main.rand.NextFloat(0.2f, 0.4f);
-                ParticleManager.NewParticle(target.Center, velocity, ParticleManager.NewInstance<BubbleParticle>(),
-                    Color.White, scale);
-            }
+
         }
 
 

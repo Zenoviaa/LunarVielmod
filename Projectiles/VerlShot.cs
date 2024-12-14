@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Stellamod.UI.Systems;
 using System.Collections.Generic;
@@ -71,8 +71,7 @@ namespace Stellamod.Projectiles
 				for (int r = 0; r < 37; r++)
 				{
 					Vector2 speed2 = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speed2 * 8, ParticleManager.NewInstance<BurnParticle>(), Color.Aqua, Main.rand.NextFloat(0.2f, 0.8f));
-				}
+									}
 
 				for (int i = 0; i < 130; i++)
 				{

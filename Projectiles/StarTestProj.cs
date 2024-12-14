@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using System;
@@ -47,9 +47,7 @@ namespace Stellamod.Projectiles
                 //Get a random color
                 Color randColor = Main.rand.NextColor(Color.White, Main.DiscoColor, Color.Black);
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                ParticleManager.NewParticle<StarParticle2>(starPos1, velocity, randColor, randScale);
-                ParticleManager.NewParticle<StarParticle2>(starPos2, velocity, randColor, randScale);
-            }
+                                            }
         }
     }
 }

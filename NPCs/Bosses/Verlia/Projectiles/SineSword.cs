@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using System;
 using Terraria;
@@ -40,8 +40,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
 		public override void OnSpawn(IEntitySource source)
 		{
-			ParticleManager.NewParticle(Projectile.Center, Projectile.velocity * 0, ParticleManager.NewInstance<SpinewBlue>(), Color.Purple, 0.4f, Projectile.whoAmI);
-		}
+					}
 
 		public override void AI()
 		{

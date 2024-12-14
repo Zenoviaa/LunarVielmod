@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Trails;
@@ -66,8 +66,7 @@ namespace Stellamod.Projectiles.Gun
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                     float scale = Main.rand.NextFloat(0.3f, 0.5f);
-                    ParticleManager.NewParticle<SnowFlakeParticle>(Projectile.Center, velocity, Color.White, scale);
-                    
+                                        
                     SoundStyle soundStyle = SoundID.NPCHit11;
                     soundStyle.Pitch = 0.5f;
                     soundStyle.PitchVariance = 0.15f;
@@ -152,8 +151,7 @@ namespace Stellamod.Projectiles.Gun
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                 float scale = Main.rand.NextFloat(0.3f, 0.5f);
-                ParticleManager.NewParticle<SnowFlakeParticle>(Projectile.Center, velocity, Color.White, scale);
-                if (Main.rand.NextBool(2))
+                                if (Main.rand.NextBool(2))
                 {
                     Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Snow);
                 }

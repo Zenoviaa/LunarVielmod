@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Particles;
@@ -75,15 +75,6 @@ namespace Stellamod.Projectiles.Arrows
         {
             SoundEngine.PlaySound(SoundID.Grass, Projectile.position);
 
-
-
-            for (int i = 0; i < 4; i++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);
-                var p = ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<BurnParticle2>(), Color.White,
-                   Main.rand.NextFloat(0.5f, 0.75f));
-                p.layer = Particle.Layer.BeforeProjectiles;
-            }
         }
     }
 }

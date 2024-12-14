@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using System.Collections.Generic;
 using Terraria;
@@ -51,8 +51,7 @@ namespace Stellamod.Projectiles
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(0.2f, 0.2f);
 					Vector2 speed2 = Projectile.velocity / 2 + Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speed2, ParticleManager.NewInstance<HeatwaveTrailParticle2>(), Color.Violet, Main.rand.NextFloat(0.2f, 0.8f));
-				}
+									}
 				Timer = 0;
 			}
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
@@ -113,13 +113,6 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             if (_particleCounter > Body_Particle_Rate)
             {
                 float radius = 64;
-                for (int i = 0; i < Body_Particle_Count; i++)
-                {
-                    Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(radius / 2, radius / 2);
-                    Particle p = ParticleManager.NewParticle(position, new Vector2(0, -2f), ParticleManager.NewInstance<VoidParticle>(),
-                        default(Color), Main.rand.NextFloat(0.1f, 0.2f));
-                    p.layer = Particle.Layer.BeforeProjectiles;
-                }
                 _particleCounter = 0;
             }
 
@@ -135,14 +128,6 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 32; i++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);
-                Particle p = ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<VoidParticle>(),
-                    default(Color), 1 / 3f);
-                p.layer = Particle.Layer.BeforeProjectiles;
-            }
-
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/SyliaRiftClose");
             soundStyle.PitchVariance = 0.5f;
             SoundEngine.PlaySound(soundStyle, Projectile.position);

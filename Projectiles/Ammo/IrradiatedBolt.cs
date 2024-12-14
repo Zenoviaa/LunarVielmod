@@ -8,7 +8,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Stellamod.Trails;
 using Terraria.Audio;
@@ -62,8 +62,7 @@ namespace Stellamod.Projectiles.Ammo
         {
             // This code and the similar code above in OnTileCollide spawn dust from the tiles collided with. SoundID.Item10 is the bounce sound you hear.
             SoundEngine.PlaySound(SoundID.Item10, Projectile.position);
-            ParticleManager.NewParticle<morrowstar>(Projectile.Center, Vector2.Zero, Color.White, 0.4f);
-        }
+                    }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {

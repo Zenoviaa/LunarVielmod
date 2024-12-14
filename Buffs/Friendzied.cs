@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Terraria;
 using Terraria.ID;
@@ -32,15 +32,6 @@ namespace Stellamod.Buffs
 			player.GetAttackSpeed(DamageClass.Generic) += 0.50f;
 			player.statDefense += 10;
 			Dust.NewDustPerfect(new Vector2(player.position.X + Main.rand.Next(player.width), player.position.Y + player.height - Main.rand.Next(7)), DustID.SilverCoin, Vector2.Zero);
-			for (int m = 0; m < 20; m++)
-			{
-				Vector2 position = new Vector2(player.position.X + Main.rand.Next(player.width), player.position.Y + player.height - Main.rand.Next(7));
-				Particle p = ParticleManager.NewParticle(position, new Vector2(0, -2f), ParticleManager.NewInstance<VoidParticle>(),
-					default(Color), Main.rand.NextFloat(0.2f, 1));
-				p.layer = Particle.Layer.BeforePlayersBehindNPCs;
-			}
-		}
-
-		
+		}	
 	}
 }

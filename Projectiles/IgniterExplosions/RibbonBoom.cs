@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Particles;
@@ -70,8 +70,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
 
                     //Get a random
                     float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                    ParticleManager.NewParticle<StarParticle2>(Projectile.Center, velocity, Color.DarkGoldenrod, randScale);
-                }
+                                    }
             }
 
             Vector3 RGB = new(0.89f, 2.53f, 2.55f);

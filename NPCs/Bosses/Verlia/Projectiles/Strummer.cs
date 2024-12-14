@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Terraria;
 using Terraria.ID;
@@ -29,8 +29,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			timer++;
 			if (timer == 30)
             {
-				ParticleManager.NewParticle(Projectile.Center, Projectile.velocity * 1, ParticleManager.NewInstance<Strip>(), Color.HotPink, Main.rand.NextFloat(1f, 1f));
-			}
+							}
 			if (timer == 60)
 			{
 				if (StellaMultiplayer.IsHost)

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
@@ -72,13 +72,6 @@ namespace Stellamod.Items.Weapons.Ranged
             float distance = 16;
             Vector2 offset = new Vector2(3.2f, -0.1f * player.direction).RotatedBy(rot);
             Dust.NewDustPerfect(position + (offset * distance) + new Vector2(0, 6), ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.LightSkyBlue, 1);
-            for (int i = 0; i < 1; i++)
-            {
-                Vector2 bubbleVelocity = velocity.RotatedByRandom(MathHelper.PiOver4);
-                float scale = Main.rand.NextFloat(0.6f, 1f);
-                ParticleManager.NewParticle(position + (offset * distance) + new Vector2(0, -6), bubbleVelocity, ParticleManager.NewInstance<BubbleParticle>(),
-                    Color.White, scale);
-            }
 
             if (!hasConnector)
             {

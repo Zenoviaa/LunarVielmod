@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
@@ -47,14 +47,6 @@ namespace Stellamod.Items.Armors.Eldritchian
 				if (Main.rand.NextBool(2))
 				{
 					int count = Main.rand.Next(6);
-					for (int i = 0; i < count; i++)
-					{
-						Vector2 position = Player.RandomPositionWithinEntity();
-						Vector2 speed = new Vector2(0, Main.rand.NextFloat(-0.2f, -1f));
-						Color color = default(Color).MultiplyAlpha(0.1f);
-						Particle p = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<Ink2>(), color, Main.rand.NextFloat(0.2f, 0.8f));
-						p.layer = Particle.Layer.BeforePlayersBehindNPCs;
-					}
 				}
 			}
 		}
@@ -70,13 +62,6 @@ namespace Stellamod.Items.Armors.Eldritchian
 				_attackSpeedBoostCounter = Max_Duration * multiplier;
 				Player.AddBuff(ModContent.BuffType<ShadowBoost>(), (int)_attackSpeedBoostCounter);
 				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/OverGrowth_TP1"));
-				for (int i = 0; i < 16; i++)
-				{
-					Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-					Color color = default(Color).MultiplyAlpha(0.1f);
-					Particle p = ParticleManager.NewParticle(Player.Center, speed, ParticleManager.NewInstance<Ink2>(), color, Main.rand.NextFloat(0.2f, 0.8f));
-					p.layer = Particle.Layer.BeforePlayersBehindNPCs;
-				}
 			}
 		}
     }
@@ -121,14 +106,6 @@ namespace Stellamod.Items.Armors.Eldritchian
 			if (Main.rand.NextBool(10))
 			{
 				int count = Main.rand.Next(6);
-				for (int i = 0; i < count; i++)
-				{
-					Vector2 position = player.RandomPositionWithinEntity();
-					Vector2 speed = new Vector2(0, Main.rand.NextFloat(-0.2f, -1f));
-					Color color = default(Color).MultiplyAlpha(0.1f);
-					Particle p = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<Ink2>(), color, Main.rand.NextFloat(0.2f, 0.8f));
-					p.layer = Particle.Layer.BeforePlayersBehindNPCs;
-				}
 			}
 
 

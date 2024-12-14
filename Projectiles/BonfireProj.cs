@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Catacombs;
 using Stellamod.Particles;
@@ -84,13 +84,6 @@ namespace Stellamod.Projectiles
 
         private void Visuals()
         {
-            if (Main.rand.NextBool(8))
-            {
-                Vector2 randOffset = Main.rand.NextVector2Circular(4, 4);
-                ParticleManager.NewParticle(Projectile.Center + randOffset, Vector2.Zero, 
-                    ParticleManager.NewInstance<UnderworldParticle1>(), default(Color), 0.5f);
-            }
-
             DrawHelper.AnimateTopToBottom(Projectile, 5);
         }
     }

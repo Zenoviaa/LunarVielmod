@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Common.Bases;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Particles;
@@ -41,13 +41,6 @@ namespace Stellamod.Projectiles
                     Rectangle otherRect = p.getRect();
                     if (Projectile.Colliding(myRect, otherRect) && p.active)
                     {
-                        for (int t = 0; t < 32; t++)
-                        {
-                            Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                            ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<FabledParticle5>(),
-                                default(Color), 1 / 3f);
-                        }
-
                         SoundEngine.PlaySound(SoundID.NPCHit42, Projectile.position);
                         p.Kill();
                     }

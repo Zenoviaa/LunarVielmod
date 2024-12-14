@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Terraria;
 using Terraria.ID;
@@ -52,8 +52,7 @@ namespace Stellamod.Projectiles
                 visuals_Counter = 0;
                 Vector2 position = Projectile.Center + new Vector2(Main.rand.Next(0, Particle_Radius), Main.rand.Next(0, Particle_Radius));
                 float size = Main.rand.NextFloat(1/4f, 1/3f);
-                ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidParticle>(), default(Color), size);
-            }
+                            }
             
             if(dust_Counter >= Dust_Rate)
             {
@@ -69,13 +68,7 @@ namespace Stellamod.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < Death_Particle_Explosion_Count; i++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(Death_Particle_Explosion_Radius, Death_Particle_Explosion_Radius);
-                Particle p = ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<VoidParticle>(),
-                    default(Color), 1 / 3f);
-                p.layer = Particle.Layer.BeforeProjectiles;
-            }
+
         }
     }
 }

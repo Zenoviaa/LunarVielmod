@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Trails;
@@ -161,8 +161,7 @@ namespace Stellamod.Projectiles.Magic
                 Color[] colors = new Color[] { Color.LightCyan, Color.Cyan, Color.Blue, Color.White };
                 Color color = colors[Main.rand.Next(0, colors.Length)];
                 float scale = Main.rand.NextFloat(0.5f, 0.8f);
-                ParticleManager.NewParticle<StarParticle2>(Projectile.Center, velocity, color, scale);
-            }
+                            }
 
             Projectile.rotation += 0.05f;
             Lighting.AddLight(Projectile.position, Color.White.ToVector3() * 0.78f);
@@ -239,8 +238,7 @@ namespace Stellamod.Projectiles.Magic
             {
                 Vector2 velocity = Main.rand.NextVector2CircularEdge(4, 4);
                 float scale = Main.rand.NextFloat(0.3f, 0.5f);
-                ParticleManager.NewParticle<StarParticle2>(Projectile.Center, velocity, Main.DiscoColor, scale);
-            }
+                            }
         }
     }
 }

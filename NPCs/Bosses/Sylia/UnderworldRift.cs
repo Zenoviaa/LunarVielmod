@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using System.Collections.Generic;
@@ -227,15 +227,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 NPC.alpha = 255;
                 SoundEngine.PlaySound(SoundID.Item119, NPC.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 2048, 32f);
-                //Charged Sound thingy
-                for (int i = 0; i < 48; i++)
-                {
-                    Vector2 position = NPC.Center;
-                    Vector2 speed = Main.rand.NextVector2CircularEdge(8f, 8f);
-                    Particle p = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<VoidParticle>(),
-                        default(Color), 1);
-                    p.layer = Particle.Layer.BeforeProjectiles;
-                }
+
 
                 invisTimer++;
             }  
@@ -259,20 +251,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             {
                 int bodyParticleCount = 2;
                 float bodyRadius = 32;
-                for (int b = 0; b < bodyParticleCount; b++)
-                {
-                    Vector2 position = NPC.Center + Main.rand.NextVector2Circular(bodyRadius / 2, bodyRadius / 2);
-                    Vector2 vel = new Vector2(0, -1);
-                    float size = Main.rand.NextFloat(0.25f, 0.3f);
-                    Particle p = ParticleManager.NewParticle(position, vel, ParticleManager.NewInstance<VoidParticle>(),
-                        default(Color), size);
 
-                    p.layer = Particle.Layer.BeforeProjectiles;
-                    Particle tearParticle = ParticleManager.NewParticle(position, vel, ParticleManager.NewInstance<VoidTearParticle>(),
-                        default(Color), size + 0.025f);
-
-                    tearParticle.layer = Particle.Layer.BeforePlayersBehindNPCs;
-                }
             }
         }
 

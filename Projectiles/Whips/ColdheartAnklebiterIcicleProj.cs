@@ -1,4 +1,4 @@
-﻿using ParticleLibrary;
+﻿
 using Stellamod.Particles;
 using System;
 using System.Collections.Generic;
@@ -49,8 +49,7 @@ namespace Stellamod.Projectiles.Whips
             if (Main.rand.NextBool(30))
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
-                ParticleManager.NewParticle<SnowFlakeParticle>(Projectile.Center, velocity, Color.White, 0.5f);
-            }
+                            }
 
             Lighting.AddLight(Projectile.position, Color.White.ToVector3() * 0.78f);
         }
@@ -61,8 +60,7 @@ namespace Stellamod.Projectiles.Whips
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                 float scale = Main.rand.NextFloat(0.3f, 0.5f);
-                ParticleManager.NewParticle<SnowFlakeParticle>(Projectile.Center, velocity, Color.White, scale);
-
+                
             }
 
             SoundEngine.PlaySound(SoundID.Item27, Projectile.position);

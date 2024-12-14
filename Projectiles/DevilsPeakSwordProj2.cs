@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
 using System;
@@ -95,9 +95,7 @@ namespace Stellamod.Projectiles
                 int dir = (int)Projectile.ai[1];
                 if (!ParticleSpawned)
                 {
-                    ParticleManager.NewParticle(player.Center, player.DirectionTo(Main.MouseWorld), ParticleManager.NewInstance<FabledParticle5>(), Color.Red, 0.7f, Projectile.whoAmI, Projectile.whoAmI);
-                    ParticleManager.NewParticle(player.Center, player.DirectionTo(Main.MouseWorld), ParticleManager.NewInstance<AuroranSlashParticle>(), Color.Red, 0.7f, Projectile.whoAmI, Projectile.whoAmI);
-                    ParticleSpawned = true;
+                                                            ParticleSpawned = true;
                 }
 
 

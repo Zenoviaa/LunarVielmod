@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Buffs;
 using Stellamod.Particles;
 using Stellamod.Projectiles.Magic;
@@ -50,16 +50,6 @@ namespace Stellamod.Projectiles
                 {
                     Projectile.Kill();
                 }
-            }
-
-
-        
-
-            for (int j = 0; j < 3; j++)
-            {
-                Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                var particle = ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<BurnParticle>(), Color.White, Main.rand.NextFloat(.2f, .4f));
-                particle.timeLeft = 12;
             }
 
             Vector3 RGB = new(2.55f, 2.55f, 0.94f);

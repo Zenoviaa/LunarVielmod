@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Particles;
@@ -149,17 +149,6 @@ namespace Stellamod.Projectiles.Summons.Minions
                     {
                         Dust.NewDustPerfect(targetCenter, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5))
                             .RotatedByRandom(19.0), 0, Color.LightGoldenrodYellow, 1f).noGravity = true;
-                    }
-
-                    for (int i = 0; i < 2; i++)
-                    {
-                        //Get a random velocity
-                        Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
-
-                        //Get a random
-                        float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                        ParticleManager.NewParticle<StarParticle2>(targetCenter, velocity,
-                            Color.DarkGoldenrod, randScale);
                     }
 
                     Projectile.Center = targetCenter;

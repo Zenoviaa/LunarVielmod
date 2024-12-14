@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Common.Bases;
 using Stellamod.Dusts;
 using Stellamod.Gores;
@@ -82,8 +82,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
                     //Get a random
                     float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                    ParticleManager.NewParticle<StarParticle>(target.Center, velocity, Color.DarkGoldenrod, randScale);
-                }
+                                    }
             }
             else
             {
@@ -118,8 +117,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
                 //Get a random
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                ParticleManager.NewParticle<StarParticle2>(target.Center, velocity, Color.DarkGoldenrod, randScale);
-            }
+                            }
         }
 
     }

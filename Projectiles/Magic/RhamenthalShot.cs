@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Terraria;
@@ -51,8 +51,7 @@ namespace Stellamod.Projectiles.Magic
              
                 for (int i = 0; i < 5; i++)
                 {
-                    ParticleManager.NewParticle(Projectile.Center, (Vector2.One * Main.rand.Next(1, 10)).RotatedByRandom(10.0), ParticleManager.NewInstance<morrowstar2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-                }
+                                    }
 
                 greb = 0;
             }

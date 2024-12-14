@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
@@ -196,20 +196,6 @@ namespace Stellamod.Tiles.Structures.UnderworldRuins
 				{
 					int bodyParticleCount = 2;
 					float bodyRadius = 2;
-					for (int b = 0; b < bodyParticleCount; b++)
-					{
-						Vector2 position = pos + Main.rand.NextVector2Circular(bodyRadius / 2, bodyRadius / 2);
-						Vector2 vel = new Vector2(0, -1);
-						float size = Main.rand.NextFloat(0.25f, 0.3f);
-						Particle p = ParticleManager.NewParticle(position, vel, ParticleManager.NewInstance<VoidParticle>(),
-							default(Color), size);
-
-						p.layer = Particle.Layer.BeforeProjectiles;
-						Particle tearParticle = ParticleManager.NewParticle(position, vel, ParticleManager.NewInstance<VoidTearParticle>(),
-							default(Color), size + 0.025f);
-
-						tearParticle.layer = Particle.Layer.BeforePlayersBehindNPCs;
-					}
 				}
 			}
 		}

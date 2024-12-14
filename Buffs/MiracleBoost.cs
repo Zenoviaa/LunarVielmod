@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 using Stellamod.Projectiles.Summons.MiracleSoul;
 using Stellamod.Helpers;
@@ -50,14 +50,6 @@ namespace Stellamod.Buffs
             float miracleVisualScaleFactor = miracleLevelFloat * 0.02f;
             float minScale = 0.2f + miracleVisualScaleFactor;
             float maxScale = 0.8f + miracleVisualScaleFactor;
-
-            for (int m = 0; m < Particle_Count; m++)
-            {
-                Vector2 position = Player.RandomPositionWithinEntity();
-                Particle p = ParticleManager.NewParticle(position, new Vector2(0, -2f), ParticleManager.NewInstance<VoidParticle>(),
-                    default(Color), Main.rand.NextFloat(minScale, maxScale));
-                p.layer = Particle.Layer.BeforePlayersBehindNPCs;
-            }
         }
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)

@@ -15,7 +15,7 @@ using Terraria.GameContent;
 using Stellamod.Trails;
 using Terraria.Graphics.Shaders;
 using static Terraria.ModLoader.ModContent;
-using ParticleLibrary;
+
 using Stellamod.Particles;
 
 using Stellamod.Projectiles.IgniterExplosions;

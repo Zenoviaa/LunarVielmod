@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
+
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Projectiles.Magic;
@@ -71,8 +71,7 @@ namespace Stellamod.Items.Armors.Alcalite
                 for (int i = 0; i < 12; i++)
                 {
                     Vector2 speed = Main.rand.NextVector2CircularEdge(8f, 8f);
-                    ParticleManager.NewParticle<StarParticle2>(player.Center, speed, Color.White, 0.5f);
-                }
+                                    }
                 _starTimer = 75;
             }
         }
