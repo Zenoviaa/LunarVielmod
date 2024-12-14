@@ -48,14 +48,19 @@ namespace Stellamod
         [DefaultValue(true)]
         public bool ShakeToggle;
 
+        [DefaultValue(false)]
+        public bool LowDetailShadersToggle;
 
+        [Header("UI")]
         [Range(0f, 100f)]
         public float EnchantMenuX = 50;
         [Range(0f, 100f)]
         public float EnchantMenuY = 50;
 
-        [DefaultValue(false)]
-        public bool LowDetailShadersToggle;
+        [Range(0f, 100f)]
+        public float StaminaMeterX = 50;
+        [Range(0f, 100f)]
+        public float StaminaMeterY = 3;
 
     }
 }

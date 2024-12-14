@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.Players;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;

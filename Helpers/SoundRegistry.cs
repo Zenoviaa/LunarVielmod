@@ -5,7 +5,20 @@ namespace Stellamod.Helpers
     internal static class SoundRegistry
     {
         private static string Path => "Stellamod/Assets/Sounds/";
+        public static SoundStyle NSwordSlash1 => new SoundStyle($"{Path}NormalSwordSlash1");
 
+        public static SoundStyle HeavySwordSlash1 => new SoundStyle($"{Path}HeavySwordSlash1");
+
+        public static SoundStyle HeavySwordSlash2 => new SoundStyle($"{Path}HeavySwordSlash2");
+        public static SoundStyle NSwordSlash2 => new SoundStyle($"{Path}NormalSwordSlash2");
+
+        public static SoundStyle NSwordHit1 => new SoundStyle($"{Path}NormalSwordHit1");
+
+        public static SoundStyle CrystalHit1 => new SoundStyle($"{Path}CrystalHit1");
+
+        public static SoundStyle NSwordSpin1 => new SoundStyle($"{Path}SwordSpin1");
+        public static SoundStyle BallSwing => new SoundStyle($"{Path}BallSwing");
+        public static SoundStyle SpearHit1 => new SoundStyle($"{Path}SpearHit1");
         public static SoundStyle JugglerPong => new SoundStyle($"{Path}JugglerPong", 1, 2);
         public static SoundStyle JugglerHit => new SoundStyle($"{Path}JugglerHit");
         public static SoundStyle JugglerHitMax => new SoundStyle($"{Path}JugglerHitMax");

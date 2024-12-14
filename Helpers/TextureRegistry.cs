@@ -1,11 +1,17 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System;
 using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
 {
     internal static class TextureRegistry
     {
+        public static string PathHere(this ModType t)
+        {
+            string path = (t.GetType().Namespace).Replace('.', '/');
+            return path;
+        }
         public static string EmptyTexture => "Stellamod/Assets/Textures/Empty";
         public static string EmptyBigTexture => "Stellamod/Assets/Textures/EmptyBig";
         public static string EmptyGlowParticle => "Stellamod/Visual/Particles/GlowCircleBoomParticle";

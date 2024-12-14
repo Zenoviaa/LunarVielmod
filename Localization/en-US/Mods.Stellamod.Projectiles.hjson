@@ -1383,3 +1383,10 @@ IkaniyeGLUX.DisplayName: Ikaniye G L U X
 MerchantCrossbowHold.DisplayName: Merchant Crossbow Hold
 LilFly.DisplayName: Lil Fly
 TechnoBeam.DisplayName: Techno Beam
+VaelExplosion.DisplayName: Vael Explosion
+SimpleOrangeExplosion.DisplayName: Simple Orange Explosion
+FlameExplosion.DisplayName: Flame Explosion
+BasicStaminaExplosion.DisplayName: Basic Stamina Explosion
+LightSpandStaminaSlash.DisplayName: Light Spand Stamina Slash
+LightSpandSlash.DisplayName: Light Spand Slash
+BaseHitEffect.DisplayName: Base Hit Effect

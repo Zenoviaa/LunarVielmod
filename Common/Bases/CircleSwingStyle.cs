@@ -84,7 +84,7 @@ namespace Stellamod.Common.Bases
                 float rot = dir == 1 ? MathHelper.Lerp(start, end, smoothedTrailProgress) : MathHelper.Lerp(end, start, smoothedTrailProgress);
 
                 Vector2 pos = Owner.RotatedRelativePoint(Owner.MountedCenter);
-                pos += rot.ToRotationVector2() * SwingProjectile.GetTrailOffset();
+                pos += rot.ToRotationVector2() * (SwingProjectile.GetFramingSize());
        
                 if (spinCenter)
                 {

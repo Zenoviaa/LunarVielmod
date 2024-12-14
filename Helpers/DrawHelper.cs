@@ -12,7 +12,24 @@ namespace Stellamod.Helpers
 {
     public static class DrawHelper
     {
-		public static void Restart(this SpriteBatch spriteBatch, SpriteSortMode sortMode = SpriteSortMode.Deferred, BlendState blendState = null, Effect effect = null, SamplerState samplerState = null)
+        public static void DrawAdvancedShadingGlow(Item item, SpriteBatch spriteBatch, Vector2 position, Color glowColor)
+        {
+            float sizeLimit = 34;
+            int numberOfCloneImages = 3;
+            Main.DrawItemIcon(spriteBatch, item, position, Color.White * 0.2f, sizeLimit);
+            for (float i = 0; i < 1; i += 1f / numberOfCloneImages)
+            {
+                float cloneImageDistance = MathF.Cos(Main.GlobalTimeWrappedHourly / 2.4f * MathF.Tau / 2f) + 0.5f;
+                cloneImageDistance = MathHelper.Max(cloneImageDistance, 0.05f);
+                Color color = glowColor * 0.4f;
+                color *= 1f - cloneImageDistance * 0.2f;
+                color.A = 0;
+                cloneImageDistance *= 3;
+                Vector2 drawPos = position + (i * MathF.Tau).ToRotationVector2() * (cloneImageDistance + 2f);
+                Main.DrawItemIcon(spriteBatch, item, drawPos, color, sizeLimit);
+            }
+        }
+        public static void Restart(this SpriteBatch spriteBatch, SpriteSortMode sortMode = SpriteSortMode.Deferred, BlendState blendState = null, Effect effect = null, SamplerState samplerState = null)
 		{
 			SamplerState newSamplerState = samplerState == null ? Main.DefaultSamplerState : samplerState;
             spriteBatch.End();

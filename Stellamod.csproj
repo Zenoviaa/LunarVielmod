@@ -76,6 +76,7 @@
     <None Remove="Buffs\Whipfx\DarkWhipDebuff.png" />
     <None Remove="Buffs\Whipfx\LaceratorDebuff.png" />
     <None Remove="Buffs\Whipfx\SineSireDebuff.png" />
+    <None Remove="Common\Bases\BaseHitEffect.png" />
     <None Remove="Common\QuestSystem\QuestResetter.png" />
     <None Remove="Common\QuestSystem\Quests\CauldronCrafting.png" />
     <None Remove="Dusts\BubbleDust.png" />

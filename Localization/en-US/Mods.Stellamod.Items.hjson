@@ -8416,3 +8416,13 @@ Ikaniye: {
 	Tooltip: ""
 	DisplayName: Ikaniye
 }
+
+StaminaPotion: {
+	Tooltip: ""
+	DisplayName: Stamina Potion
+}
+
+StaminaBrew: {
+	Tooltip: ""
+	DisplayName: Stamina Brew
+}

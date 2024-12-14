@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.MoonlightMagic
+namespace Stellamod.Common.Players
 {
     internal class ComboPlayer : ModPlayer
     {

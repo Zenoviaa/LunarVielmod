@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,7 +18,7 @@ namespace Stellamod.Common.Bases
         //This is for smoothin the trail
         public static int ExtraUpdateMult => 6;
         public Vector2[] _trailPoints = new Vector2[0];
-        private BaseSwingStyle _swingStyle;
+        private List<BaseSwingStyle> _swingStyles = new();
 
 
         public float _smoothedLerpValue;
@@ -28,6 +29,7 @@ namespace Stellamod.Common.Bases
 
         public ref float Timer => ref Projectile.ai[0];
         protected int ComboDirection => (int)Projectile.ai[1];
+        protected int ComboIndex => (int)Projectile.ai[2];
 
         public float holdOffset = 60f;
         public float trailStartOffset = 0.15f;
@@ -78,7 +80,7 @@ namespace Stellamod.Common.Bases
             Projectile.localNPCHitCooldown = 10000;
         }
 
-        public virtual void SetSwingStyle(ref BaseSwingStyle swingStyle)
+        public virtual void SetSwingStyle(ref BaseSwingStyle swingStyle, int comboIndex)
         {
 
         }
@@ -131,24 +133,27 @@ namespace Stellamod.Common.Bases
 
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, Projectile.scale, ref collisionPoint);
         }
+        public virtual void SetComboDefaults(List<BaseSwingStyle> swings)
+        {
+
+        }
 
         public override void AI()
         {
             base.AI();
 
-            if(_swingStyle == null)
-            {
-                SetSwingStyle(ref _swingStyle);
-            }
-         
             if (!_init)
             {
-                Projectile.timeLeft = (int)GetSwingTime(_swingStyle.swingTime);
+                SetComboDefaults(_swingStyles);
+                var sw = _swingStyles[(int)Projectile.ai[0]];
+                Projectile.timeLeft = (int)GetSwingTime(sw.swingTime);
+
                 InitSwingAI();
                 _init = true;
             }
 
-            _swingStyle.SwingProjectile = this;
+            BaseSwingStyle swingStyle = _swingStyles[(int)ComboIndex];
+            swingStyle.SwingProjectile = this;
             if (hitstopTimer > 0)
             {
                 Timer--;
@@ -176,7 +181,7 @@ namespace Stellamod.Common.Bases
 
             Timer++;
 
-            _swingStyle.AI();
+            swingStyle.AI();
             OrientHand();
         }
 
@@ -243,11 +248,11 @@ namespace Stellamod.Common.Bases
         {
             base.OnHitNPC(target, hit, damageDone);
 
-            /*
+            
             float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
             float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center.X, target.Center.Y, speedXa * 0, speedYa * 0, ModContent.ProjectileType<BaseHitEffect>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
-            */
+            
             _hashit = true;
         }
     }

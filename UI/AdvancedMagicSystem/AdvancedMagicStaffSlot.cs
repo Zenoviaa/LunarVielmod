@@ -163,7 +163,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
 
             //Draw Orb Thingy
             cardTexture = ModContent.Request<Texture2D>("Stellamod/UI/AdvancedMagicSystem/EnchantmentOrb").Value;
-
+            /*
             Vector2 orbDrawPos = rectangle.TopLeft() +
                 new Vector2((rectangle.Width / 2) - (cardTexture.Width / 2), 96);
             spriteBatch.Draw(cardTexture, orbDrawPos, null, color2, 0f, default(Vector2), _scale, SpriteEffects.None, 0f);
@@ -186,7 +186,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
 
                 Main.hoverItemName = "Testing Testing 123";
                 Main.HoverItem = t.Item;
-            }
+            }*/
 
             Main.inventoryScale = oldScale;
         }

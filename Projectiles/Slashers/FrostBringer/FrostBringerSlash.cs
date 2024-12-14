@@ -41,21 +41,26 @@ namespace Stellamod.Projectiles.Slashers.FrostBringer
             Projectile.localNPCHitCooldown = 10000;
         }
 
-        public override void SetSwingStyle(ref BaseSwingStyle swingStyle)
+        public override void SetSwingStyle(ref BaseSwingStyle swingStyle, int comboIndex)
         {
-            base.SetSwingStyle(ref swingStyle);
-            SoundStyle swingSound = new SoundStyle("Stellamod/Assets/Sounds/NormalSwordSlash2");
-            swingSound.PitchVariance = 0.13f;
-            swingStyle = new OvalSwingStyle
+            base.SetSwingStyle(ref swingStyle, comboIndex);
+            switch (comboIndex)
             {
-                swingTime = 18,
-                swingXRadius = 128 / 1.5f,
-                swingYRadius = 64 / 1.5f,
-                swingRange = MathHelper.Pi + MathHelper.PiOver2 + MathHelper.PiOver4,
-                easingFunc = (float lerpValue) => Easing.InOutExpo(lerpValue, 5),
-                swingSound = swingSound,
-                swingSoundLerpValue = 0.5f
-            };
+                case 0:
+                    SoundStyle swingSound = new SoundStyle("Stellamod/Assets/Sounds/NormalSwordSlash2");
+                    swingSound.PitchVariance = 0.13f;
+                    swingStyle = new OvalSwingStyle
+                    {
+                        swingTime = 18,
+                        swingXRadius = 128 / 1.5f,
+                        swingYRadius = 64 / 1.5f,
+                        swingRange = MathHelper.Pi + MathHelper.PiOver2 + MathHelper.PiOver4,
+                        easingFunc = (float lerpValue) => Easing.InOutExpo(lerpValue, 5),
+                        swingSound = swingSound,
+                        swingSoundLerpValue = 0.5f
+                    };
+                    break;
+            }
         }
 
         public override void AI()

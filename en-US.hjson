@@ -11,6 +11,7 @@ Mods: {
 					Screenshake: Screenshake Header
 					Effects: Effects Header
 					Visual: Visual Header
+					UI: U I Header
 				}
 
 				VanillaParticlesToggle: {
@@ -60,6 +61,16 @@ Mods: {
 
 				VanillaUIRespritesToggle: {
 					Label: Vanilla U I Resprites Toggle
+					Tooltip: ""
+				}
+
+				StaminaMeterX: {
+					Label: Stamina Meter X
+					Tooltip: ""
+				}
+
+				StaminaMeterY: {
+					Label: Stamina Meter Y
 					Tooltip: ""
 				}
 			}

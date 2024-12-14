@@ -822,3 +822,8 @@ OreKingdomScorpionMountBuff: {
 	DisplayName: Ore Kingdom Scorpion Mount Buff
 	Description: Mods.Stellamod.Buffs.OreKingdomScorpionMountBuff.Description
 }
+
+CannotUseStaminaPotion: {
+	Description: Mods.Stellamod.Buffs.CannotUseStaminaPotion.Description
+	DisplayName: Cannot Use Stamina Potion
+}
