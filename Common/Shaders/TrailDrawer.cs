@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.Swords.Altride;
+using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -47,6 +49,7 @@ namespace Stellamod.Common.Shaders
                 pass.Apply();
             }
         }
+
 
         private static void CalculateVerticesPairs(Vector2[] trailingPoints, Func<float, Color> colorFunc,
             Func<float, float> widthFunc, List<VertexPositionColorTexture> vertices)

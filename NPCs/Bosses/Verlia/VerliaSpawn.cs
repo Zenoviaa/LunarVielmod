@@ -1,23 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
-
+using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
+using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Catacombs.Fire;
+using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
 using Stellamod.NPCs.Catacombs.Trap.Cogwork;
 using Stellamod.NPCs.Catacombs.Trap.Sparn;
 using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
 using Stellamod.NPCs.Catacombs.Water.WaterJellyfish;
-using Stellamod.Particles;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System;
-using Stellamod.Tiles.Catacombs;
-using Stellamod.Dusts;
-using Stellamod.Texts;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 
 namespace Stellamod.NPCs.Bosses.Verlia
 {

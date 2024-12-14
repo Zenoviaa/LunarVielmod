@@ -1,7 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Projectiles.IgniterEx;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -28,22 +27,7 @@ namespace Stellamod.Projectiles.Thrown
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            NPC npc = target;
-            if (Main.rand.NextBool(4))
-            {
-                npc.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, Projectile.knockBack);
-                float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-                float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-                SoundEngine.PlaySound(SoundID.DD2_DarkMageHealImpact, Projectile.Center);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<IgniterStart>(), 22, 0f, Projectile.owner, 0f, 0f);
-            }
-            else
-            {
-                float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-                float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-                SoundEngine.PlaySound(SoundID.DD2_CrystalCartImpact, Projectile.Center);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<IgniterStart>(), 6, 0f, Projectile.owner, 0f, 0f); 
-            }
+
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)

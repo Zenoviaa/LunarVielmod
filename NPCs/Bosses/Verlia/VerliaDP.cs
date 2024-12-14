@@ -1,22 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
-
+using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
 using Stellamod.NPCs.Catacombs.Fire;
+using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
 using Stellamod.NPCs.Catacombs.Trap.Cogwork;
 using Stellamod.NPCs.Catacombs.Trap.Sparn;
 using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
 using Stellamod.NPCs.Catacombs.Water.WaterJellyfish;
-using Stellamod.Particles;
 using Stellamod.UI.Systems;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System;
-using Stellamod.Tiles.Catacombs;
-using Stellamod.Dusts;
-using Stellamod.Texts;
 
 namespace Stellamod.NPCs.Bosses.Verlia
 {
@@ -45,7 +39,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (gren == 2)
             {
-               
+
             }
             _centerSparkleSize += 0.02f;
 
@@ -131,7 +125,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 
                 int bossType = bosses[Main.rand.Next(0, bosses.Length)];
-               
+
 
 
                 NPC.Kill();

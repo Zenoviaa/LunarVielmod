@@ -1,21 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
-using Stellamod.Projectiles.IgniterEx;
-using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Helpers;
+﻿using Terraria;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-	internal class IshtarCard : BaseIgniterCard
+    internal class IshtarCard : BaseIgniterCard
     {
         public override void SetClassSwappedDefaults()
         {
