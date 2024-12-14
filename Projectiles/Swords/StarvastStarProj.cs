@@ -6,6 +6,7 @@ using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Trails;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -22,7 +23,7 @@ namespace Stellamod.Projectiles.Swords
         {
             // DisplayName.SetDefault("Spragald");
             // Sets the amount of frames this minion has on its spritesheet
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 4;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
@@ -34,7 +35,7 @@ namespace Stellamod.Projectiles.Swords
             Projectile.hostile = false;
             Projectile.aiStyle = -1;
             Projectile.penetrate = 2;
-            Projectile.timeLeft = 600;
+            Projectile.timeLeft = 180;
             Projectile.tileCollide = false;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 30;
@@ -84,8 +85,9 @@ namespace Stellamod.Projectiles.Swords
                 foundTarget = false;
                 Timer += 0.02f;
                 Vector2 orbitCenter = MovementHelper.OrbitAround(owner.Center, Vector2.UnitY, 64, Timer);
-                Projectile.velocity = Vector2.Lerp(Projectile.velocity, Vector2.Zero, 0.1f);
-                Projectile.Center = Vector2.Lerp(Projectile.Center, orbitCenter, 0.8f);
+                Vector2 targetVel = (orbitCenter - Projectile.Center);
+                Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVel, 0.02f);
+          //      Projectile.Center = Vector2.Lerp(Projectile.Center, orbitCenter, 0.8f);
             }
         }
 
@@ -93,25 +95,55 @@ namespace Stellamod.Projectiles.Swords
         {
             //Charged Sound thingy
 
+            for (int i = 0; i < 2; i++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Yellow, 1f).noGravity = true;
+            }
+
+            FXUtil.GlowCircleBoom(Projectile.Center,
+                innerColor: Color.White,
+                glowColor: Color.Yellow,
+                outerGlowColor: Color.Blue, duration: 25, baseSize: 0.06f);
         }
 
 
         public float WidthFunction(float completionRatio)
         {
-            return Projectile.scale * 2f;
+            return MathHelper.Lerp(16, 0, Easing.InExpo(completionRatio));
         }
-
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(new Color(44, 84, 94), Color.Transparent, completionRatio);
+            return Color.Lerp(Color.Lerp(Color.LightCyan, Color.Blue, completionRatio), Color.Transparent, completionRatio);
         }
+
+        public PrimDrawer TrailDrawer { get; private set; } = null;
 
         //Visual Stuffs
         public override bool PreDraw(ref Color lightColor)
         {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.RestartDefaults();
+            Vector2 drawOffset = -Main.screenPosition + Projectile.Size / 2f;
+            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
+            TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
+            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.LightningTrail2);
+            TrailDrawer.DrawPrims(Projectile.oldPos, drawOffset, 252);
+
+            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
+            TrailDrawer.DrawPrims(Projectile.oldPos, drawOffset, 155);
+
+            spriteBatch.RestartDefaults();
             DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(44, 84, 94), Color.Transparent, ref lightColor);
-            return true;
+ 
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            float rotation = Projectile.rotation;
+            Vector2 drawOrigin = texture.Size() / 2f;
+            float drawScale = Projectile.scale;
+            spriteBatch.Draw(texture, drawPos, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            return false;
         }
 
         private void Visuals()
@@ -143,9 +175,7 @@ namespace Stellamod.Projectiles.Swords
 
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true);
-            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, Projectile.oldPos.Length);
-            Main.spriteBatch.ExitShaderRegion();
+
         }
     }
 }
