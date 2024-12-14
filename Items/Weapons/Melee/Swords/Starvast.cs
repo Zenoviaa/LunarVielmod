@@ -281,7 +281,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
                 FXUtil.GlowCircleBoom(Projectile.Center,
                    innerColor: Color.White,
                    glowColor: Color.LightYellow,
-                   outerGlowColor: Color.Purple, duration: 25, baseSize: 0.3f);
+                   outerGlowColor: Color.Purple, duration: 25, baseSize: 0.24f);
 
 
                 FXUtil.GlowCircleBoom(Projectile.Center,
