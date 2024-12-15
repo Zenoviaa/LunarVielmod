@@ -45,6 +45,11 @@ Common: {
 		Use to load an arrow into the crossbow
 		Use again to fire a powerful sniper-like arrow!
 		'''
+	StyleSword: Sword Attack Style
+	BasicSlash: Basic Slash: {0}
+	StaminaSlash: Stamina Slash: {0}
+	WeaponTypeSword: Sword Weapon Type
+	WeaponTypeKnives: Knives Weapon Type
 }
 
 SetBonus: {
@@ -1220,12 +1225,9 @@ Antaciz: {
 
 Auroran: {
 	DisplayName: Auroran
-	Tooltip:
-		'''
-		Sends shockwaves through the air
-			Hitting enemies with the blade will increase your attack speed!
-			Divergency Inspired!
-		'''
+	Tooltip: Divergency Inspired!
+	BasicSlash: Sends a weak frost shockwave through the air
+	StaminaSlash: Creates an auroran winter storm!
 }
 
 EnergizedNail: {
@@ -2680,12 +2682,18 @@ ArchariliteRaysword: {
 
 AssassinsSlash: {
 	DisplayName: Assassins Slash
-	Tooltip: Once attacking enemies, a charge will build up and then right click for a slash!
+	Tooltip: Only for the greatest of assassins...
+	WeaponType: Sword Weapon Type
+	BasicSlash: No special effect
+	StaminaSlash: Hit enemies are later striked by a barrage of slashes!
 }
 
 CinderBraker: {
 	DisplayName: Cinder Breaker
 	Tooltip: A slashing sword that shoots swords!
+	WeaponType: Sword Weapon Type
+	BasicSlash: Hit enemies erupt with a fiery sword
+	StaminaSlash: Unleashes a wave of volcanic eruptions!
 }
 
 EventHorizon: {
@@ -3027,6 +3035,8 @@ CyroBolt: {
 LightSpand: {
 	DisplayName: Light Spand
 	Tooltip: Burning lights of Gothivia's Light
+	BasicSlash: No special effect
+	StaminaSlash: Throws out a barrage of exploding sparks!
 }
 
 MoonMothStaff: {
@@ -3982,6 +3992,8 @@ OceanRuneI: {
 Starvast: {
 	DisplayName: Starvast
 	Tooltip: Summons stars that orbit around you and seek out enemies!
+	BasicSlash: Hit enemies erupt with a star that homes towards enemies
+	StaminaSlash: Summons a flurry of stars!
 }
 
 SawtoothNecklace: {

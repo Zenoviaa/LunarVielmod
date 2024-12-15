@@ -50,6 +50,9 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             Item.shoot = ModContent.ProjectileType<AssassinsSlashSlash>();
             Item.autoReuse = true;
 
+            //This is only going to affect the tooltip :P
+            meleeWeaponType = MeleeWeaponType.Sword;
+
             //Combo variables
             //Set combo wait time
             comboWaitTime = 60;

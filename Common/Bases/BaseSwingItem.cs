@@ -1,13 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.Players;
+using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Visual.Explosions;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace Stellamod.Common.Bases
 {
+    public enum MeleeWeaponType
+    {
+        Sword,
+        Knives
+    }
     public abstract class BaseSwingItem : ClassSwapItem
     {
         public int comboWaitTime = 60;
@@ -15,6 +22,22 @@ namespace Stellamod.Common.Bases
         public int maxStaminaCombo;
         public int staminaProjectileShoot;
         public int staminaToUse;
+        public MeleeWeaponType meleeWeaponType;
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            base.ModifyTooltips(tooltips);
+            TooltipLine line = new TooltipLine(Mod, "WeaponType", LangText.Common("WeaponType"+meleeWeaponType.ToString()));
+            line.OverrideColor = ColorFunctions.GreatswordWeaponType;
+            tooltips.Add(line);
+
+            line = new TooltipLine(Mod, "BasicSlash", LangText.Common("BasicSlash", LangText.Item(this, "BasicSlash")));
+            line.OverrideColor = new Color(124, 187, 80);
+            tooltips.Add(line);
+
+            line = new TooltipLine(Mod, "StaminaSlash", LangText.Common("StaminaSlash", LangText.Item(this, "StaminaSlash")));
+            line.OverrideColor = new Color(187, 80, 124);
+            tooltips.Add(line);
+        }
         public virtual void ShootSwing(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             ComboPlayer comboPlayer = player.GetModPlayer<ComboPlayer>();

@@ -39,6 +39,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             Item.shootSpeed = 10;
             Item.shoot = ModContent.ProjectileType<LightSpandSlash>();
             Item.autoReuse = true;
+            meleeWeaponType = MeleeWeaponType.Sword;
 
             //Combo variables
             //Set combo wait time
