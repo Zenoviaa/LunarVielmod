@@ -78,6 +78,7 @@
     <None Remove="Effects\Blur.fx" />
     <None Remove="Effects\CrystalShaders\DyeFirePixel.fx" />
     <None Remove="Effects\CrystalShaders\FirePixel.fx" />
+    <None Remove="Effects\CrystalShaders\GlowPillar.fx" />
     <None Remove="Effects\CrystalShaders\L.png" />
     <None Remove="Effects\CrystalShaders\LightningBolt.fx" />
     <None Remove="Effects\CrystalShaders\MagicIce.fx" />
@@ -569,6 +570,7 @@
     <None Remove="UI\ArmorReforgeSystem\ReforgeButton.png" />
     <None Remove="UI\ArmorReforgeSystem\ReforgeButtonSelected.png" />
     <None Remove="Visual\Particles\GlowCircleDetailedBoomParticle1.png" />
+    <None Remove="Visual\Particles\GlowSpikeParticle.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Accord.Fuzzy" Version="3.8.0" />
