@@ -15,9 +15,7 @@ namespace Stellamod.Buffs.Charms
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.statDefense += 2;
-			player.arrowDamage += 0.25f;
-			player.GetDamage(DamageClass.Ranged) += 0.02f; // Increase ALL player damage by 100%
+			player.GetDamage(DamageClass.Generic).Flat += 3;
 		}
 	}
 }

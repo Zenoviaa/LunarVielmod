@@ -12,7 +12,7 @@ namespace Stellamod.Items.Weapons.Ranged
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;
-
+        public int combo;
         public override void SetClassSwappedDefaults()
         {
             Item.damage = 7;
@@ -47,19 +47,20 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             return new Vector2(-5f, 0f);
         }
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            if (Main.rand.NextBool(2))
+            base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
+            combo++;
+            if(combo == 3)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/HeatFeather"), player.position);
-                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<HeatArrow>(), damage, knockback, player.whoAmI);
+                type = ModContent.ProjectileType<HeatArrow>();
+                velocity *= 1.1f;
+                damage += 18;
+                knockback *= 1.2f;
+                combo = 0;
             }
-
-            
-            return true;
         }
-
-
-
     }
 }

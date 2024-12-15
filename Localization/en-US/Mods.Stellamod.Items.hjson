@@ -333,10 +333,10 @@ MorrowedBroochA: {
 	DisplayName: Brooch of The Huntria Fable
 	Tooltip:
 		'''
-		+2 Defense
-		+2% increased ranged damage
-		+25% increased arrow damage
-		Use the power of the deep dark fable..
+		+3 damage
+		Consecutive hits on the same enemy slowly increase your damage
+		Hitting a different target or missing resets the bonus
+		This stacks up to a maximum of +15 damage at a combo of 10!
 		'''
 }
 
@@ -2888,7 +2888,11 @@ TecnoBlaster: {
 
 TheRedSkull: {
 	DisplayName: The Red Skull
-	Tooltip: Another skull emoji.
+	Tooltip:
+		'''
+		Every three shots on the same target will cause them to explode!
+		Another skull emoji.
+		'''
 }
 
 Tociflare: {
@@ -2912,7 +2916,7 @@ VoidBlaster: {
 
 WingedFury: {
 	DisplayName: Winged Fury
-	Tooltip: Sometimes shoots powerful sun-powered arrows!
+	Tooltip: Every few shots, launch a very powerful sun-charged arrow!
 }
 
 ArncharRemote: {
@@ -7737,7 +7741,7 @@ VoidalPassageway: {
 
 BlackEye: {
 	DisplayName: The Black Eye
-	Tooltip: Summons Rek's Eye to blast lasers at nearby enemies!
+	Tooltip: Summons Rek's Eye to blast lasers towards your cursor!
 }
 
 VulcanBreaker: {

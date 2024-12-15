@@ -44,14 +44,12 @@ namespace Stellamod.Projectiles.Magic
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekLaser2"), Projectile.position);
             }
-            float maxDetectDistance = 2400;
-            NPC npc = NPCHelper.FindClosestNPC(Projectile.position, maxDetectDistance);
-            if (npc != null)
-            {
-                Vector2 velocityToTarget = Projectile.Center.DirectionTo(npc.Center);
-                Projectile.velocity = Vector2.Lerp(Projectile.velocity, velocityToTarget, 0.2f);
-            }
 
+            if(Main.myPlayer == Projectile.owner)
+            {
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, Main.MouseWorld, 1);
+                Projectile.netUpdate = true;
+            }
             if (Time % 2 == 0)
             {
                 Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
@@ -94,7 +92,7 @@ namespace Stellamod.Projectiles.Magic
             {
                 mult = Projectile.timeLeft / (float)60;
             }
-            return Projectile.width * Projectile.scale * 1.3f * mult;
+            return Projectile.width * Projectile.scale * 1.3f * mult * Time / 30f;
         }
 
         public override bool ShouldUpdatePosition() => false;

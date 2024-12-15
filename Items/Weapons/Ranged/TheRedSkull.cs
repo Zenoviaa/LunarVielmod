@@ -1,13 +1,97 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Bow;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
+using Stellamod.Projectiles.Magic;
+using Stellamod.Projectiles.Swords;
+using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
+    public class RedSkullPlayer : ModPlayer
+    {
+        public int npcWhoAmI;
+        public int hitCount;
+        public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitNPCWithProj(proj, target, ref modifiers);
+
+            //Need to have this bow too
+            if (Player.HeldItem.type != ModContent.ItemType<TheRedSkull>())
+                return;
+            
+            //Arrows only
+            if (!proj.arrow)
+                return;
+
+            if (npcWhoAmI != target.whoAmI)
+            {
+                npcWhoAmI = target.whoAmI;
+                hitCount = 0;
+            }
+            else
+            {
+                hitCount++;
+                SoundStyle sound = new SoundStyle("Stellamod/Assets/Sounds/Pericarditis");
+                sound.Pitch = MathHelper.Lerp(0f, 1f, hitCount / 3f);
+                SoundEngine.PlaySound(sound, target.position);
+                if(hitCount < 3)
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        if(Main.rand.NextBool(4))
+                            Dust.NewDustPerfect(target.Center, ModContent.DustType<SmokeDust>(), (Vector2.One * Main.rand.Next(1, 2)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
+                        Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 2)).RotatedByRandom(19.0), 0, Color.Red, 1f).noGravity = true;
+                    }
+                }
+
+                if(hitCount == 2)
+                {
+                    for(float f = 0; f < 16; f++)
+                    {
+                        Vector2 vel = ((f / 16f) * MathHelper.ToRadians(360)).ToRotationVector2() * -4;
+                        Dust.NewDustPerfect(target.Center - vel * 16, ModContent.DustType<GlowDust>(),vel, 0, Color.Red, 1f).noGravity = true;
+                    }
+                }
+
+                if (hitCount >= 3)
+                {
+                    for (int i = 0; i < 7; i++)
+                    {
+                        Dust.NewDustPerfect(target.Center, ModContent.DustType<SmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
+                    }
+                    int Sound = Main.rand.Next(1, 3);
+                    if (Sound == 1)
+                    {
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_BoneSpawn1"), proj.position);
+                    }
+                    else
+                    {
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_BoneSpawn2"), proj.position);
+                    }
+
+                    for (int i = 0; i < 8; i++)
+                    {
+                        float progress = (float)i / 8f;
+                        float rot = progress * MathHelper.TwoPi;
+                        Vector2 vel = rot.ToRotationVector2() * 4;
+                        Dust.NewDustPerfect(proj.Center, DustID.RedTorch, vel, Scale: 1f);
+                    }
+
+
+                    Projectile.NewProjectile(proj.GetSource_FromThis(), target.Center, Vector2.Zero,
+                        ModContent.ProjectileType<PericarditisBoom>(), proj.damage, proj.knockBack, proj.owner);
+
+                    FXUtil.ShakeCamera(target.Center, 1024, 4);
+                    modifiers.FinalDamage *= 2;
+                    hitCount = 0;
+                }
+            }
+        }
+    }
     internal class TheRedSkull : ClassSwapItem
     {
 
@@ -46,19 +130,5 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             return new Vector2(-5f, 0f);
         }
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            if (Main.rand.NextBool(3))
-            {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/HeatFeather"), player.position);
-                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<DreadSkullProg>(), damage, knockback, player.whoAmI);
-            }
-
-
-            return true;
-        }
-
-
-
     }
 }
