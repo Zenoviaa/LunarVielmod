@@ -15,8 +15,8 @@ using Stellamod.Items.Quest.BORDOC;
 using Stellamod.Items.Quest.Merena;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Melee.Safunais;
+using Stellamod.Items.Weapons.Melee.Swords;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
@@ -40,9 +40,9 @@ using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Town
 {
-	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
+    // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
 
-	public class Veldris : VeilTownNPC
+    public class Veldris : VeilTownNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
 		public const string ShopName = "Shop";

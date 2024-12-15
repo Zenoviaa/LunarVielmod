@@ -24,6 +24,8 @@ namespace Stellamod.Projectiles.Swords
             Projectile.timeLeft = 900;
             Projectile.tileCollide = false;
             Projectile.aiStyle = -1;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
         }
 
         public override bool PreAI()
@@ -52,7 +54,7 @@ namespace Stellamod.Projectiles.Swords
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsSlashProj4"), Projectile.position);
                 }
 
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 8);
 
                 Projectile.rotation = Main.rand.Next(0, 360);
             }

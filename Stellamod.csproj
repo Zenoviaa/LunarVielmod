@@ -75,6 +75,7 @@
     <None Remove="Dusts\SmokeDust.png" />
     <None Remove="Dusts\TSmokeTornadoDust.png" />
     <None Remove="Dusts\TSmokeTornadoDustTip.png" />
+    <None Remove="Effects\BlackWhite.fx" />
     <None Remove="Effects\Blur.fx" />
     <None Remove="Effects\CrystalShaders\DyeFirePixel.fx" />
     <None Remove="Effects\CrystalShaders\FirePixel.fx" />
@@ -102,7 +103,6 @@
     <None Remove="Effects\CrystalShaders\SimpleGradientTrail.fx" />
     <None Remove="Effects\CrystalShaders\SimpleTrail.fx" />
     <None Remove="effects\DaedusRobe.fx" />
-    <None Remove="Effects\DarknessCurve - Copy.fx" />
     <None Remove="Effects\DarknessCurve.fx" />
     <None Remove="Effects\DarknessVignette.fx" />
     <None Remove="Effects\GlowCircle.fx" />

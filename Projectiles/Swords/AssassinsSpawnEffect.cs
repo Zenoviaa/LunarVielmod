@@ -36,8 +36,9 @@ namespace Stellamod.Projectiles.Swords
             if (Projectile.ai[0] == 1)
             {
                 Rot = Main.rand.NextFloat(0.1f, 0.4f);
+                Projectile.rotation += Rot;
             }
-            Projectile.rotation += Rot;
+          
             alphaCounter -= 0.18f;
         }
 

@@ -21,6 +21,8 @@ namespace Stellamod.Common.Lights
         private float _targetVignetteOpacity;
         private float _blurLerp;
 
+        private float _blackWhiteLerp;
+
         private Color[] _abyssPalette;
         private Color[] _alcadPalette;
         private Color[] _underworldPalette;
@@ -44,6 +46,11 @@ namespace Stellamod.Common.Lights
         public float whiteCurve;
         public float blackCurve;
         public float blurStrength;
+
+
+        public float blackWhiteStrength;
+        public float blackWhiteThreshold;
+
 
         public Vector2 rippleCenter;
         public float rippleCount;
@@ -94,6 +101,7 @@ namespace Stellamod.Common.Lights
 
             whiteCurve = 0f;
             blackCurve = 1f;
+
 
             _targetVignetteOpacity = 1f;
         }
@@ -305,6 +313,37 @@ namespace Stellamod.Common.Lights
             screenShaderData = FilterManager["LunarVeil:Blur"].GetShader();
             screenShaderData.UseProgress(blurStrength * _blurLerp);
             TogglePaletteShader("LunarVeil:Blur", blurActive);
+
+
+            bool blackWhiteActive = blackWhiteStrength != 0;
+            if (blackWhiteActive)
+            {
+                _blackWhiteLerp += 0.1f;
+                if(_blackWhiteLerp >= 1f)
+                {
+                    _blackWhiteLerp = 1f;
+                }
+            }
+            else
+            {
+                _blackWhiteLerp -= 0.1f;
+                if(_blackWhiteLerp <= 0)
+                {
+                    _blackWhiteLerp = 0f;
+                }
+            }
+            blackWhiteStrength -= 0.05f;
+            if (blackWhiteStrength <= 0f)
+            {
+                blackWhiteStrength = 0f;
+            }
+
+            float strength = MathHelper.Lerp(0, blackWhiteStrength, _blackWhiteLerp);
+  
+            screenShaderData = FilterManager["LunarVeil:BlackWhite"].GetShader();
+            screenShaderData.Shader.Parameters["strength"].SetValue(strength);
+            screenShaderData.Shader.Parameters["brightnessThreshold"].SetValue(blackWhiteThreshold);
+            TogglePaletteShader("LunarVeil:BlackWhite", _blackWhiteLerp != 0);
 
             rippleTimer--;
             if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive() && rippleTimer > 0)
