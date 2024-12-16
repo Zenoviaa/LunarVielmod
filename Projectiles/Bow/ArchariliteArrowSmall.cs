@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.GameContent;
@@ -12,6 +14,7 @@ namespace Stellamod.Projectiles.Bow
 {
     internal class ArchariliteArrowSmall : ModProjectile
     {
+        private ref float Timer => ref Projectile.ai[1];
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Archarilite Arrow");
@@ -37,29 +40,31 @@ namespace Stellamod.Projectiles.Bow
             AIType = ProjectileID.Bullet;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;
+            Projectile.extraUpdates += 1;
         }
 
         public override void AI()
         {
-            Projectile.ai[1]++;
-            Projectile.velocity *= 0.99f;
+            Timer++;
+            Projectile.velocity *= 1.01f;
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, 0f, 150, Color.White, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+            }
+            NPC nearest = ProjectileHelper.FindNearestEnemy(Projectile.position, 256);
+            if (nearest != null)
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearest.Center, 1f);
         }
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 4; i++)
             {
-                Dust.NewDustPerfect(Projectile.Center, DustID.CopperCoin, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default, 1f).noGravity = false;
-            }
-            for (int i = 0; i < 50; i++)
-            {
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, -2f, 0, default(Color), 1.5f);
-                Main.dust[num].noGravity = true;
-                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                {
-                    Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
-                }
+
+                Vector2 velocity = Projectile.oldVelocity.RotatedByRandom(MathHelper.ToRadians(15));
+                velocity *= Main.rand.NextFloat(0.2f, 1f);
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowSparkleDust>(), velocity, 0, Color.OrangeRed, Main.rand.NextFloat(0.2f, 1f)).noGravity = true;
             }
         }
 
@@ -82,12 +87,6 @@ namespace Stellamod.Projectiles.Bow
 
         public override bool PreDraw(ref Color lightColor)
         {
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-                Main.dust[dustnumber].noGravity = true;
-            }
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
@@ -99,11 +98,7 @@ namespace Stellamod.Projectiles.Bow
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.75f * Main.essScale);
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-            }
+  
         }
     }
 }
