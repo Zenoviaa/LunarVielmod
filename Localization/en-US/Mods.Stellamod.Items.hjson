@@ -2794,7 +2794,11 @@ ArchariliteEnergyShot: {
 
 AssassinsDischarge: {
 	DisplayName: Assassins Discharge
-	Tooltip: A bow, specifically made for assassins...
+	Tooltip:
+		'''
+		Launches a burst of 3 arrows: 1 powerful armor piercing arrow followed by two regular arrows!
+		A bow, specifically made for assassins...
+		'''
 }
 
 BrokenWrath: {
