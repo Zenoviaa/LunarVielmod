@@ -38,8 +38,8 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.damage = 9; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
 			Item.DamageType = DamageClass.Summon;
 			Item.mana = 20;
-			Item.useTime = 90; // The Item's use time in ticks (60 ticks == 1 second.)
-			Item.useAnimation = 30; // The length of the Item's use animation in ticks (60 ticks == 1 second.)
+			Item.useTime = 15; // The Item's use time in ticks (60 ticks == 1 second.)
+			Item.useAnimation = 15; // The length of the Item's use animation in ticks (60 ticks == 1 second.)
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.noMelee = true; //so the Item's animation doesn't do damage
 			Item.knockBack = 4; // Sets the Item's knockback. Note that projectiles shot by this weapon will use its and the used ammunition's knockback added together.

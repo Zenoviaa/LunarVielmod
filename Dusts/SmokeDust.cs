@@ -26,7 +26,7 @@ namespace Stellamod.Dusts
             float alpha = (dust.fadeIn / 45f) - ((float)Math.Pow(dust.fadeIn, 2) / 3600f);
             dust.color = new Color(255, 8, 55) * 0.4f * alpha;
 
-            dust.scale *= 0.99f;
+            dust.scale *= 0.98f;
 			if (dust.scale < 0.2f) {
 				dust.active = false;
 			}

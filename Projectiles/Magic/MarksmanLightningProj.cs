@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Gores;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
@@ -11,113 +13,149 @@ using Terraria.Utilities;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class MarksmanLightningProj : ModProjectile, IPixelPrimitiveDrawer
+    internal class MarksmanLightningProj : ModProjectile
     {
+        public float BeamLength;
+        public Vector2[] BeamPoints;
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];
-        private ref float Seed => ref Projectile.ai[1];
-        private float Lifetime => 60;
-        private Vector2[] LightningPos;
 
-        internal PrimitiveTrail BeamDrawer;
-
+        public CommonLightning Lightning { get; set; } = new CommonLightning();
         public override void SetDefaults()
         {
+            base.SetDefaults();
+            Projectile.width = 6;
+            Projectile.height = 6;
+            Projectile.penetrate = -1;
             Projectile.friendly = true;
             Projectile.hostile = false;
-            Projectile.width = 16;
-            Projectile.height = 16;
-            Projectile.timeLeft = (int)Lifetime;
-            Projectile.penetrate = -1;
+            Projectile.timeLeft = 30;
             Projectile.tileCollide = false;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
+        }
+
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
         }
 
         public override void AI()
         {
+            base.AI();
             Timer++;
-            if(Seed != 0)
-            {                
-                //Calculate
-                List<Vector2> points = new List<Vector2>();
-                Vector2 currentPoint = Projectile.Center;
-                points.Add(currentPoint);
+            float targetBeamLength = ProjectileHelper.PerformBeamHitscan(Projectile.position, Vector2.UnitY, 2400);
+            BeamLength = targetBeamLength;
+            if (Timer == 1)
+            {
+                //Sound Effect Goooo
+                SoundStyle lightningSoundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap");
+                lightningSoundStyle.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(lightningSoundStyle, Projectile.position);
 
-                int numPoints = 80;
-                UnifiedRandom random = new UnifiedRandom((int)Seed);
-                for (int i = 0; i < numPoints; i++)
+                Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
+                for (int i = 0; i < 16; i++)
                 {
-                    Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
-                    float maxRadians = MathHelper.ToRadians(30);
-                    double radians = random.NextDouble() * maxRadians - random.NextDouble() * maxRadians;
-                    direction = direction.RotatedByRandom(radians);
-                    float distance = random.NextFloat(2, 64);
-                    currentPoint = currentPoint + direction * distance;
-                    points.Add(currentPoint);
+                    Vector2 dustSpawnPoint = Projectile.Center + direction * BeamLength;
+                    Vector2 dustVelocity = Main.rand.NextVector2Circular(8, 8);
+                    Dust d = Dust.NewDustPerfect(dustSpawnPoint, DustID.GoldCoin, dustVelocity, Scale: 0.5f);
+                    d.noGravity = true;
                 }
 
-                LightningPos = points.ToArray();
-                Seed = 0;
+
+                Vector2 lightningHitPos = Projectile.position + new Vector2(0, BeamLength);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(lightningHitPos, 1024, 32);
+
+                for (int i = 0; i < 2; i++)
+                {
+                    Vector2 velocity = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
+                    velocity = velocity.RotatedByRandom(MathHelper.ToRadians(24));
+
+                    Gore.NewGore(Projectile.GetSource_FromThis(), lightningHitPos, velocity,
+                        ModContent.GoreType<FableRock1>());
+
+                    velocity = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
+                    velocity = velocity.RotatedByRandom(MathHelper.ToRadians(24));
+
+                    Gore.NewGore(Projectile.GetSource_FromThis(), lightningHitPos, velocity,
+                        ModContent.GoreType<FableRock2>());
+
+                    velocity = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
+                    velocity = velocity.RotatedByRandom(MathHelper.ToRadians(24));
+
+                    Gore.NewGore(Projectile.GetSource_FromThis(), lightningHitPos, velocity,
+                        ModContent.GoreType<FableRock3>());
+
+                    velocity = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
+                    velocity = velocity.RotatedByRandom(MathHelper.ToRadians(24));
+
+                    Gore.NewGore(Projectile.GetSource_FromThis(), lightningHitPos, velocity,
+                        ModContent.GoreType<FableRock4>());
+                }
+
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), lightningHitPos + new Vector2(0, 24), Vector2.Zero,
+                        ModContent.ProjectileType<GroundCracking>(), 0, 0, Projectile.owner);
+                }
             }
-        }
 
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            //Electrifying!!!! nEMIES!!!
-            target.AddBuff(BuffID.Electrified, 120);
-            SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.position);
-
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < Lightning.Trails.Length; i++)
             {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(1, 1);
-                var d = Dust.NewDustPerfect(Projectile.Center, DustID.Electric, speed, Scale: 1.5f);
-                d.noGravity = true;
+                float progress = (float)i / (float)Lightning.Trails.Length;
+                var trail = Lightning.Trails[i];
+                trail.LightningRandomOffsetRange = MathHelper.Lerp(32, 8, progress) * MathHelper.Lerp(2f, 0, Timer / 30f);
+                trail.LightningRandomExpand = MathHelper.Lerp(64, 16, progress);
+                trail.PrimaryColor = Color.Lerp(Color.White, Color.Yellow, progress);
+                trail.NoiseColor = Color.Lerp(Color.White, Color.Yellow, progress);
+            }
+
+            //Setup lightning stuff
+            //Should make it scale in/out
+            float lightningProgress = Timer / 30f;
+            float easedLightningProgress = Easing.SpikeOutCirc(lightningProgress);
+            Lightning.WidthMultiplier = MathHelper.Lerp(0f, 8, easedLightningProgress);
+            if (Timer % 3 == 0)
+            {
+                List<Vector2> beamPoints = new List<Vector2>();
+                Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
+                for (int i = 0; i <= 8; i++)
+                {
+                    float maxProgress = MathHelper.Lerp(0f, 1f, Easing.OutExpo(Timer / 15f));
+                    float progress = MathHelper.Lerp(0f, maxProgress, i / 8f);
+                    beamPoints.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + direction * BeamLength, progress));
+                }
+                BeamPoints = beamPoints.ToArray();
+                Lightning.RandomPositions(BeamPoints);
             }
         }
 
-        public float WidthFunction(float completionRatio)
+        public override bool? CanDamage()
         {
-            float baseWidth = Projectile.scale * 194;
-            float timeLeft = Projectile.timeLeft;
-            float progress = timeLeft / Lifetime;
-            float easedProgress = Easing.SpikeInOutCirc(1f - progress);
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio) * easedProgress;
+            return Timer > 5 && Timer < 30;
         }
 
-        public Color ColorFunction(float completionRatio)
+        public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            Color startColor = Color.DarkGoldenrod;
-            Color endColor = Color.Transparent;
-            return Color.Lerp(startColor, endColor, completionRatio);
+            return false;
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            if (LightningPos == null)
-                return false;
-            //This damages everything in the trail
-            Vector2[] positions = LightningPos;
-            float collisionPoint = 0;
-            for (int i = 1; i < positions.Length; i++)
-            {
-                Vector2 position = positions[i];
-                Vector2 previousPosition = positions[i - 1];
-                if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, 80, ref collisionPoint))
-                    return true;
-            }
-            return base.Colliding(projHitbox, targetHitbox);
+            float _ = 0f;
+            float width = Projectile.width * 0.8f;
+            Vector2 start = Projectile.Center;
+
+            Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
+            Vector2 end = start + direction * (BeamLength);
+            return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, width, ref _);
         }
 
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
+        public override bool PreDraw(ref Color lightColor)
         {
-            if (LightningPos == null || LightningPos.Length == 0)
-                return;
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.LightGoldenrodYellow);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.FadedStreak);
-
-            BeamDrawer.DrawPixelated(LightningPos, -Main.screenPosition, LightningPos.Length);
-            Main.spriteBatch.ExitShaderRegion();
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Lightning.Draw(spriteBatch, BeamPoints, Projectile.oldRot);
+            return false;
         }
     }
 }

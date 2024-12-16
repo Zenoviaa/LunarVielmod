@@ -97,23 +97,17 @@ namespace Stellamod.Projectiles.Magic
         }
         public override void OnKill(int timeLeft)
         {
-            for (int j = 0; j < 4; j++)
-            {
-                Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                            }
             var EntitySource = Projectile.GetSource_Death();
-
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 524f, 14f);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 524f, 2);
             for (int i = 0; i < 2; i++)
             {
                 int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustType<GlowDust>(), 0f, -2f, 0, default(Color), 1.5f);
                 Main.dust[num].noGravity = true;
                 Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                {
-                    Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
-                }
+                Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
             }
+
             for (int i = 0; i < 10; i++)
             {
                 Dust.NewDustPerfect(Projectile.Center, DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Purple, 0.7f).noGravity = true;
@@ -124,11 +118,11 @@ namespace Stellamod.Projectiles.Magic
             }
             for (int i = 0; i < 2; i++)
             {
-                Dust.NewDustPerfect(base.Projectile.Center, DustID.BoneTorch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 0.6f).noGravity = true;
+                Dust.NewDustPerfect(Projectile.Center, DustID.BoneTorch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 0.6f).noGravity = true;
             }
             for (int i = 0; i < 2; i++)
             {
-                Dust.NewDustPerfect(base.Projectile.Center, DustID.BoneTorch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 0.2f).noGravity = false;
+                Dust.NewDustPerfect(Projectile.Center, DustID.BoneTorch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 0.2f).noGravity = false;
             }
             SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Projectile.position);
         }

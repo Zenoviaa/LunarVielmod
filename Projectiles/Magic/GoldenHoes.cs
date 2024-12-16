@@ -1,174 +1,95 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.ModLoader;
-using Stellamod.NPCs.Bosses.DaedusRework;
-using Stellamod.UI.Systems;
-using Terraria.Audio;
-using Terraria.ID;
-using static Terraria.ModLoader.ModContent;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Trails;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
-using Stellamod.NPCs.Bosses.singularityFragment;
-using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
-
-using Stellamod.Particles;
-using System.Collections.Generic;
+using Terraria.ID;
+using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Magic
 {
-	public class GoldenHoes : ModProjectile
-	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Frost Shot");
-			Main.projFrames[Projectile.type] = 1;
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 20;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
-			//The recording mode
-		}
-		public override void SetDefaults()
-		{
-			Projectile.damage = 100;
-			Projectile.width = 12;
-			Projectile.height = 12;
-			Projectile.light = 1.5f;
-			Projectile.friendly = true;
-			Projectile.ignoreWater = true;
-			Projectile.tileCollide = false;
-			Projectile.timeLeft = 300;
-			Projectile.tileCollide = true;
-			Projectile.penetrate = -1;
+    public class GoldenHoes : ModProjectile
+    {
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Frost Shot");
+            Main.projFrames[Projectile.type] = 1;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+            //The recording mode
+        }
+        public override void SetDefaults()
+        {
+            Projectile.damage = 100;
+            Projectile.width = 12;
+            Projectile.height = 12;
+            Projectile.light = 1.5f;
+            Projectile.friendly = true;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = 300;
+            Projectile.tileCollide = true;
+            Projectile.penetrate = 2;
+            Projectile.extraUpdates = 1;
+            Projectile.hostile = false;
 
-			Projectile.hostile = false;
+        }
+        public float Timer
+        {
+            get => Projectile.ai[0];
+            set => Projectile.ai[0] = value;
+        }
 
-		}
-		public float Timer
-		{
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
-		}
-		public float Timer2;
+        private ref float MaxDegreesRotate => ref Projectile.ai[1];
+        public float Timer2;
         private bool Moved;
         private float alphaCounter = 0;
         int Spin = 0;
         public override void AI()
-		{
-			Timer2++;
-			Projectile.velocity *= 1.03f;
-
-			Timer++;
-
-            Projectile.ai[1]++;
-
-            if (Projectile.ai[1] >= 10)
+        {
+            Timer++;
+            if (Timer == 1)
             {
-                Projectile.tileCollide = true;
-            }
-            if (Projectile.ai[1] <= 1)
-            {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2"), Projectile.position);
-            }
-            if (alphaCounter <= 1)
-            {
-                alphaCounter += 0.08f;
-            }
-
-
-            Projectile.spriteDirection = Projectile.direction;
-            Projectile.rotation += 0.08f;
-
-
-
-            Projectile.velocity.Y += 0.1f;
-            Projectile.rotation = Main.rand.NextFloat(-0.2f, 0.2f);
-            Projectile.spriteDirection = Projectile.direction;
-            Projectile.ai[0]++;
-            if (Projectile.ai[0] == 2)
-            {
-                if(Main.myPlayer == Projectile.owner)
-                {
-                    float offsetX = Main.rand.Next(-200, 200) * 0.03f;
-                    float offsetY = Main.rand.Next(-200, 200) * 0.03f;
-
-                    Projectile.velocity.X += offsetX;
-                    Projectile.velocity.Y += offsetY;
-                    Projectile.netUpdate = true;
-                }
-
                 int Sound = Main.rand.Next(1, 4);
+                SoundStyle mySound = SoundID.Item42;
                 if (Sound == 1)
                 {
-                    SoundEngine.PlaySound((SoundID.Item42), Projectile.position);
+                    mySound = SoundID.Item42;
                 }
                 if (Sound == 2)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Morrowarrow"), Projectile.position);
+                    mySound = new SoundStyle("Stellamod/Assets/Sounds/Morrowarrow");
                 }
                 if (Sound == 3)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CinderBraker"), Projectile.position);
-
+                    mySound = new SoundStyle("Stellamod/Assets/Sounds/CinderBraker");
                 }
-                Spin = Main.rand.Next(0, 2);
-                Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
-                Projectile.netUpdate = true;
-            }
-
-
-
-            Player playerToHomeTo = Main.player[Main.myPlayer];
-			float closestDistance = Vector2.Distance(Projectile.position, playerToHomeTo.position);
-			for (int i = 0; i < Main.maxPlayers; i++)
-			{
-				Player player = Main.player[i];
-				float distanceToPlayer = Vector2.Distance(Projectile.position, player.position);
-				if (distanceToPlayer < closestDistance)
-				{
-					closestDistance = distanceToPlayer;
-					playerToHomeTo = player;
-				}
-			}
-
-
-
-
-			float maxDetectRadius = 1f; // The maximum radius at which a projectile can detect a target
-			float projSpeed = 8f; // The speed at which the projectile moves towards the target
-
-
-            if (Timer2 < 15)
-            {
-                maxDetectRadius = 1f;
-                Projectile.rotation = Projectile.DirectionTo(playerToHomeTo.Center).ToRotation() - MathHelper.PiOver2;
-            }
-
-            if (Timer2 > 15)
-            {
-                if (Timer2 < 35)
+                mySound.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(mySound, Projectile.position);
+                if(Main.myPlayer == Projectile.owner)
                 {
-                    maxDetectRadius = 2000f;
-                    Projectile.rotation = Projectile.DirectionTo(playerToHomeTo.Center).ToRotation() - MathHelper.PiOver2;
+                    MaxDegreesRotate = Main.rand.NextFloat(0.5f, 4f);
+                    Projectile.position += Main.rand.NextVector2Circular(32, 32);
+                    Projectile.velocity = Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(15));
+                    Projectile.netUpdate = true;
                 }
-
-
             }
 
-
-
-
-            NPC closestNPC = FindClosestNPC(maxDetectRadius);
-            if (closestNPC == null)
-                return;
-
-            // If found, change the velocity of the projectile and turn it in the direction of the target
-            // Use the SafeNormalize extension method to avoid NaNs returned by Vector2.Normalize when the vector is zero
-            Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * projSpeed;
+            float maxDetectDistance = 1024;
+            NPC npc = ProjectileHelper.FindNearestEnemy(Projectile.position, maxDetectDistance);
+            if(npc != null)
+            {
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, npc.Center, degreesToRotate: MaxDegreesRotate);
+            }
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
+
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
             overPlayers.Add(index);
@@ -225,40 +146,17 @@ namespace Stellamod.Projectiles.Magic
 
         public override void OnKill(int timeLeft)
         {
-            for (int j = 0; j < 10; j++)
+            for (int i = 0; i < 2; i++)
             {
-                Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                            }
- 
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<SmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
+            }
 
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 524f, 14f);
-            for (int i = 0; i < 20; i++)
-            {
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GoldCoin, 0f, -2f, 0, default(Color), 1.5f);
-                Main.dust[num].noGravity = true;
-                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                {
-                    Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
-                }
-            }
-            for (int i = 0; i < 14; i++)
-            {
-                Dust.NewDustPerfect(base.Projectile.Center, DustID.GoldCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 2f).noGravity = false;
-            }
-            for (int i = 0; i < 20; i++)
-            {
-                Dust.NewDustPerfect(base.Projectile.Center, DustID.GoldCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(10.0), 0, default(Color), 1f).noGravity = false;
-            }
-            for (int i = 0; i < 15; i++)
-            {
-                Dust.NewDustPerfect(base.Projectile.Center, DustID.GoldCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 0.6f).noGravity = true;
-            }
-            for (int i = 0; i < 20; i++)
-            {
-                Dust.NewDustPerfect(base.Projectile.Center, DustID.GoldCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 0.2f).noGravity = false;
-            }
-            Projectile.active = false;
+            float size = Main.rand.NextFloat(0.02f, 0.06f);
+            float time = Main.rand.NextFloat(12, 24);
+            FXUtil.GlowCircleBoom(Projectile.Center,
+                innerColor: Color.White,
+                glowColor: Color.Yellow,
+                outerGlowColor: Color.DarkOrange, duration: time, baseSize: size);
             SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Projectile.position);
         }
 

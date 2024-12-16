@@ -25,6 +25,7 @@ namespace Stellamod.Projectiles.Summons.Minions
     // If it isn't attacking, it will float near the player with minimal movement
     public class AuroranSeekerMinionProj : ModProjectile
     {
+        private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Spragald");
@@ -38,10 +39,9 @@ namespace Stellamod.Projectiles.Summons.Minions
             ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; ; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
         }
-        float TimerShoot = 0;
+      
         public sealed override void SetDefaults()
         {
-            Projectile.originalDamage = (int)9f;
             Projectile.width = 28;
             Projectile.height = 28;
             Projectile.tileCollide = false; // Makes the minion go through tiles freely
@@ -52,8 +52,14 @@ namespace Stellamod.Projectiles.Summons.Minions
             Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
             Projectile.minionSlots = 1f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
             Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
-            Projectile.scale = 0.8f;
+            Projectile.scale = 1f;
         }
+
+        public override bool MinionContactDamage()
+        {
+            return false;
+        }
+
         // Her
         // e you can decide if your minion breaks things like grass or pots
         public override bool? CanCutTiles()
@@ -69,19 +75,32 @@ namespace Stellamod.Projectiles.Summons.Minions
             if (!SummonHelper.CheckMinionActive<AuroranSeekerMinionBuff>(owner, Projectile))
                 return;
 
-            GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
+  
             SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-            Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
+            int minionIndex = SummonHelper.GetProjectileIndex(Projectile);
+
+            //Now we can calculate the circle position	
+            int fireflyCount = owner.ownedProjectileCounts[Type];
+            float degreesBetweenFirefly = 360 / (float)fireflyCount;
+            float degrees = degreesBetweenFirefly * minionIndex;
+            float circleDistance = 48f;
+
+            Vector2 circlePosition = owner.Center + new Vector2(circleDistance, 0).RotatedBy(MathHelper.ToRadians(degrees + Main.GlobalTimeWrappedHourly * 64));
+            Projectile.velocity = (circlePosition - Projectile.Center) * 0.1f;
             Visuals();
 
-            TimerShoot++;
-            if (TimerShoot >= 100)
+            Timer++;
+            if (Timer >= 120 && foundTarget && distanceFromTarget < 2048)
             {
 
-                float speedXa = Projectile.velocity.X / 6 + Main.rand.NextFloat(-10f, 10f);
-                float speedYa = Projectile.velocity.Y / 6 + Main.rand.Next(-10, 10);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1f, speedYa * 1.4f, ProjectileType<SeekerProj>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
-                TimerShoot = 0;
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Vector2 velocity = -Vector2.UnitY * 8;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                        ModContent.ProjectileType<SeekerProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 0f, 0f);
+                }
+
+                Timer = 0;
             }
         }
 

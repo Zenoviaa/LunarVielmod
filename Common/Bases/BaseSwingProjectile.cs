@@ -182,6 +182,7 @@ namespace Stellamod.Common.Bases
             Timer++;
 
             swingStyle.AI();
+            
             OrientHand();
         }
 
@@ -203,18 +204,24 @@ namespace Stellamod.Common.Bases
 
         private void OrientHand()
         {
-            float rotation = Projectile.rotation;
-            Owner.heldProj = Projectile.whoAmI;
-            Owner.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
+            float rotation = Projectile.rotation; 
+            Owner.ChangeDir(Projectile.direction);
+            Projectile.spriteDirection = Owner.direction;
+            if (Main.myPlayer == Projectile.owner)
+            {
+                Owner.direction = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
+            }
+
             Owner.itemRotation = rotation * Owner.direction;
             Owner.itemTime = 2;
             Owner.itemAnimation = 2;
 
             // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
-            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
-            Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
+            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
+            Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, rotation - (float)Math.PI / 2); // get position of hand
 
             armPosition.Y += Owner.gfxOffY;
+            Owner.heldProj = Projectile.whoAmI;
         }
 
         protected virtual void DrawSlashTrail(Vector2[] trailPoints, Vector2 drawOffset)
@@ -226,8 +233,7 @@ namespace Stellamod.Common.Bases
         {
             base.PostDraw(lightColor);
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Restart(blendState: BlendState.Additive);
             Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
 
             int frameHeight = texture.Height / Main.projFrames[Projectile.type];
@@ -240,8 +246,7 @@ namespace Stellamod.Common.Bases
             spriteBatch.Draw(texture,
                 Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
                 sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0); // drawing the sword itself
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.RestartDefaults();
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

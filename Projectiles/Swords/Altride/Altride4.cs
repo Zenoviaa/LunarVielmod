@@ -1,7 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -13,6 +14,7 @@ namespace Stellamod.Projectiles.Swords.Altride
 {
     internal class Altride4 : ModProjectile
     {
+        private ref float Timer => ref Projectile.ai[1];
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Pericarditis");
@@ -38,13 +40,23 @@ namespace Stellamod.Projectiles.Swords.Altride
             Projectile.scale = 0.5f;
             Projectile.DamageType = DamageClass.Melee;
             Projectile.friendly = true;
+            Projectile.tileCollide = false;
         }
 
         public override void AI()
         {
-            Projectile.ai[1]++;
+            Timer++;
             Projectile.velocity *= 1.02f;
-            if (Projectile.ai[1] == 1)
+            if (Timer > 30)
+            {
+                Projectile.tileCollide = true;
+            }
+            if (Main.rand.NextBool(16))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Green, 0f, 0f, 150, Color.White, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+            }
+            if (Timer == 1)
             {
 
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit2"), Projectile.position);
@@ -55,7 +67,6 @@ namespace Stellamod.Projectiles.Swords.Altride
                     vector2 += -Vector2.UnitY.RotatedBy(j * 3.141591734f / 6f, default) * new Vector2(8f, 16f);
                     vector2 = vector2.RotatedBy(Projectile.rotation - 1.57079637f, default);
                     int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.FireworkFountain_Green, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-                    Main.dust[num8].scale = 1.3f;
                     Main.dust[num8].noGravity = true;
                     Main.dust[num8].position = Projectile.Center + vector2;
                     Main.dust[num8].velocity = Projectile.velocity * 0.1f;
@@ -64,6 +75,7 @@ namespace Stellamod.Projectiles.Swords.Altride
                 }
 
             }
+            Lighting.AddLight(Projectile.Center, Color.DarkViolet.ToVector3() * 1.75f * Main.essScale);
         }
 
         public override void OnKill(int timeLeft)
@@ -78,23 +90,14 @@ namespace Stellamod.Projectiles.Swords.Altride
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer5"), Projectile.position);
             }
 
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < 4; i++)
             {
-                            }
-
-            for (int i = 0; i < 40; i++)
-            {
-
-              
-                
-             
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(30)) * Main.rand.NextFloat(0.2f, 1f), 0, Color.Teal, 1f).noGravity = true;
             }
 
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Projectile.position);
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 1024f, 4f);
-            var entitySource = Projectile.GetSource_FromThis();
-
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 2f);
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -136,12 +139,8 @@ namespace Stellamod.Projectiles.Swords.Altride
 
         public override void PostDraw(Color lightColor)
         {
-            Lighting.AddLight(Projectile.Center, Color.DarkViolet.ToVector3() * 1.75f * Main.essScale);
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Green, 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-            }
+
+
         }
     }
 }

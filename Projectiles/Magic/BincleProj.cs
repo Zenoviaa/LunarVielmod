@@ -1,4 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
+using Stellamod.Trails;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -6,88 +10,105 @@ namespace Stellamod.Projectiles.Magic
 {
 	public class BincleProj : ModProjectile
 	{
-		private ref float SwordRotation => ref Projectile.ai[0];
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("SalfaCirle");
-			Main.projFrames[Projectile.type] = 24;
-		}
-		public override void SetDefaults()
-		{
-			Projectile.friendly = false;
-			Projectile.DamageType = DamageClass.Magic;
-			Projectile.width = 250;
-			Projectile.height = 250;
-			Projectile.penetrate = -1;
-			Projectile.scale = 1f;
-			DrawOriginOffsetY = 0;
-			Projectile.damage = 0;
-			Projectile.timeLeft = 48;
+        private ref float Timer => ref Projectile.ai[0];
+        private Player Owner => Main.player[Projectile.owner];
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            Main.projFrames[Type] = 24;
+        }
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 64;
+            Projectile.height = 64;
+            Projectile.penetrate = -1;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = int.MaxValue;
+        }
 
-		}
-		public override bool PreAI()
-		{
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Rectangle frame = Projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            drawColor.A = 0;
+            float drawRotation = Projectile.rotation;
+            float drawScale = MathHelper.Lerp(0f, 1f, Easing.InOutCubic(Timer / 15f));
+            spriteBatch.Draw(texture, drawPos, frame, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            return false;
+        }
 
-			Projectile.tileCollide = false;
+        private bool ShouldConsumeMana()
+        {
+            // Should mana be consumed this frame?
+            bool consume = Timer % 6 == 0;
+            return consume;
+        }
 
-			return true;
-		}
-		public override Color? GetAlpha(Color lightColor)
-		{
-			return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 50f);
-		}
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
 
-		public int It = 0;
-		public override void AI()
-		{
 
-			It++;
-			Player player = Main.player[Projectile.owner];
-
-			if (It >= 6)
+            if (Main.myPlayer == Projectile.owner)
             {
+                bool manaIsAvailable = !ShouldConsumeMana() || Owner.CheckMana(Owner.HeldItem.mana, true, false);
+                Projectile.velocity = (Main.MouseWorld - Owner.Center).SafeNormalize(Vector2.Zero);
+                // The Prism immediately stops functioning if the player is Cursed (player.noItems) or "Crowd Controlled", e.g. the Frozen debuff.
+                // player.channel indicates whether the player is still holding down the mouse button to use the item.
+                bool stillInUse = Owner.channel && manaIsAvailable && !Owner.noItems && !Owner.CCed;
+                if (stillInUse && Timer % 6 == 0)
+                {
+                    Vector2 spawnPos = Projectile.Center - Projectile.velocity * 65;
+                    Vector2 shootVelocity = Projectile.velocity * 12;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), spawnPos, shootVelocity,
+                        ModContent.ProjectileType<BrincShot>(), (int)(Projectile.damage), Projectile.knockBack, Projectile.owner);
+                }
+                else if (!stillInUse)
+                {
+                    Projectile.Kill();
+                }
 
-				float speedX = Projectile.velocity.X * 12;
-				float speedY = Projectile.velocity.Y * 12;
-
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center.X, player.Center.Y, speedX, speedY, ModContent.ProjectileType<BrincShot>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
-				It = 0;
+          
+                Projectile.netUpdate = true;
             }
 
-		
-			if (player.noItems || player.CCed || player.dead || !player.active)
-				Projectile.Kill();
+            DrawHelper.AnimateTopToBottom(Projectile, 2);
+            Owner.ChangeDir(Projectile.direction);
+            Projectile.spriteDirection = Owner.direction;
+            Projectile.rotation = Projectile.velocity.ToRotation();
+            Projectile.Center = Owner.Center + Projectile.velocity * 120;
 
-			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-			if (Main.myPlayer == Projectile.owner)
-			{
-				player.ChangeDir(Projectile.direction);
-				SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
-				if (!player.channel)
-					Projectile.Kill();
-				Projectile.netUpdate = true;
-			}
+            if (Timer == 1)
+            {
+                FXUtil.GlowCircleBoom(Projectile.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.LightPink,
+                    outerGlowColor: Color.DarkViolet, duration: 15, baseSize: 0.12f);
+            }
 
-			Projectile.velocity = SwordRotation.ToRotationVector2();
+            SetHoldPosition();
+        }
 
-			Projectile.spriteDirection = player.direction;
-			if (Projectile.spriteDirection == 1)
-				Projectile.rotation = Projectile.velocity.ToRotation();
-			else
-				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
+        private void SetHoldPosition()
+        {
+            if (Main.myPlayer == Projectile.owner)
+            {
+                Owner.direction = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
+            }
 
-			Projectile.Center = playerCenter + new Vector2(120, 0).RotatedBy(SwordRotation);
+            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
+            Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
 
-			if (++Projectile.frameCounter >= 2)
-			{
-				Projectile.frameCounter = 0;
-				if (++Projectile.frame >= 24)
-				{
-					Projectile.frame = 0;
-				}
-			}
-		}
-	}
+            armPosition.Y += Owner.gfxOffY;
+            Owner.heldProj = Projectile.whoAmI;
+        }
+    }
 }
 
 

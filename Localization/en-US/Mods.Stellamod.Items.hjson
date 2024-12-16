@@ -2849,7 +2849,7 @@ Irradishark: {
 
 IvynShot: {
 	DisplayName: Ivyn Shot
-	Tooltip: It's a bow, there's nothing else special about it
+	Tooltip: Shoots out two leaves every few shots that home into enemies
 }
 
 JackoShot: {

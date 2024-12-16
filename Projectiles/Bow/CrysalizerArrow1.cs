@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Utilis;
 using Terraria;
@@ -14,6 +16,7 @@ namespace Stellamod.Projectiles.Bow
 {
     internal class CrysalizerArrow1 : ModProjectile
     {
+        private ref float Timer => ref Projectile.ai[1];
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Archarilite Arrow");
@@ -23,87 +26,87 @@ namespace Stellamod.Projectiles.Bow
 
         public override void SetDefaults()
         {
-            Projectile.width = 17;
-            Projectile.height = 17;
+            Projectile.width = 8;
+            Projectile.height = 8;
 
             Projectile.knockBack = 12.9f;
             Projectile.aiStyle = 1;
             AIType = ProjectileID.Bullet;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;
+            Projectile.penetrate = 3;
         }
 
         public override void AI()
         {
-            Projectile.ai[1]++;
-            Projectile.velocity *= 1.02f;
+            Timer++;
+            NPC nearest = ProjectileHelper.FindNearestEnemy(Projectile.position, 1024);
+            if (nearest != null && Projectile.penetrate < 3)
+            {
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearest.Center, degreesToRotate: 6f);
+            }
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Electric, 0f, 0f, 150, Color.White, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+                Main.dust[dustnumber].noGravity = true;
+            }
+            if(Timer % 6 == 0)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.Teal, Main.rand.NextFloat(1f, 1.5f));
+            }
+
+            Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.75f * Main.essScale);
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Player player = Main.player[Projectile.owner];
-            if (player.GetModPlayer<MyPlayer>().CrysalizerNpc == null)
+
+        }
+
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            if (Projectile.velocity.X != oldVelocity.X)
             {
-                player.GetModPlayer<MyPlayer>().CrysalizerNpc = target;
-                player.GetModPlayer<MyPlayer>().CrysalizerHits = 0;
+                Projectile.velocity.X = -oldVelocity.X;
             }
-            else
+            if (Projectile.velocity.Y != oldVelocity.Y)
             {
-                if(target == player.GetModPlayer<MyPlayer>().CrysalizerNpc)
-                {
-                    player.GetModPlayer<MyPlayer>().CrysalizerHits += 1;
-                    if (player.GetModPlayer<MyPlayer>().CrysalizerHits == 1)
-                    {
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer1"), player.position);
-                    }
-                    if (player.GetModPlayer<MyPlayer>().CrysalizerHits == 2)
-                    {
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer2"), player.position);
-                    }
-                    if (player.GetModPlayer<MyPlayer>().CrysalizerHits == 3)
-                    {
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer3"), player.position);
-                    }
-                    if (player.GetModPlayer<MyPlayer>().CrysalizerHits == 4)
-                    {
-                        Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 2048f, 32f);
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, 
-                            ModContent.ProjectileType<CrysalizerExplosion>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-                        player.GetModPlayer<MyPlayer>().CrysalizerHits = 0;
-                    }
-                }
-                else
-                {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer5"), player.position);
-                    player.GetModPlayer<MyPlayer>().CrysalizerNpc = target;
-                    player.GetModPlayer<MyPlayer>().CrysalizerHits = 0;
-                }
+                Projectile.velocity.Y = -oldVelocity.Y;
             }
+            Projectile.velocity *= 0.75f;
+            Projectile.penetrate--;
+            if (Projectile.penetrate <= 0)
+            {
+                Projectile.Kill();
+            }
+            return false;
         }
 
         public override void OnKill(int timeLeft)
         {
-
-            for (int i = 0; i < 20; i++)
+            switch (Main.rand.Next(4))
             {
-                Dust.NewDustPerfect(Projectile.Center, DustID.Electric, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default, 1f).noGravity = false;
+                case 0:
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer1"), Projectile.position);
+                    break;
+                case 1:
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer2"), Projectile.position);
+                    break;
+                case 2:
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer3"), Projectile.position);
+                    break;
+                case 3:
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer4"), Projectile.position);
+                    break;
             }
-            for (int i = 0; i < 50; i++)
+            for (float f = 0; f < 12; f++)
             {
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Electric, 0f, -2f, 0, default(Color), 1.5f);
-                Main.dust[num].noGravity = true;
-                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                {
-                    Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
-                }
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
+                    (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Teal, Main.rand.NextFloat(1f, 3f)).noGravity = true;
             }
+        }
 
-        }
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return Color.White;
-        }
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
@@ -116,12 +119,6 @@ namespace Stellamod.Projectiles.Bow
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Electric, 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-                Main.dust[dustnumber].noGravity = true;
-            }
 
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
@@ -129,16 +126,6 @@ namespace Stellamod.Projectiles.Bow
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
             return false;
-        }
-
-        public override void PostDraw(Color lightColor)
-        {
-            Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.75f * Main.essScale);
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Electric, 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-            }
         }
     }
 }

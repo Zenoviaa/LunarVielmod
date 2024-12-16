@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
+using Stellamod.Projectiles;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -8,14 +9,14 @@ namespace Stellamod.Items.Weapons.Ranged
 {
     internal class IvynShot : ClassSwapItem
     {
-
         public override DamageClass AlternateClass => DamageClass.Throwing;
-
+        public int combo;
         public override void SetClassSwappedDefaults()
         {
             Item.damage = 3;
             Item.mana = 0;
         }
+
         public override void SetDefaults()
         {
             Item.damage = 5;
@@ -38,10 +39,25 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.consumeAmmoOnLastShotOnly = true;
             Item.noMelee = true;
         }
+     
 
         public override Vector2? HoldoutOffset()
         {
-            return new Vector2(-2f, 0f);
+            return new Vector2(0, 0f);
+        }
+
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            float rads = 16;
+            combo++;
+            if(combo >= 3)
+            {
+                Projectile.NewProjectile(source, position, velocity.RotatedBy(MathHelper.ToRadians(-rads)) * 0.5f, ModContent.ProjectileType<Logger>(), damage / 2, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, velocity.RotatedBy(MathHelper.ToRadians(rads)) * 0.5f, ModContent.ProjectileType<Logger>(), damage / 2, knockback, player.whoAmI);
+                combo = 0;
+            }
+         
+            return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
     }
 }

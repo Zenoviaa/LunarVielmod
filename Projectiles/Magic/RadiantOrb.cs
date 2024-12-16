@@ -1,132 +1,115 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ModLoader;
-using System.Collections.Generic;
-using Terraria.ID;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Trails;
+using System;
+using Terraria;
+using Terraria.ModLoader;
 
 
 namespace Stellamod.Projectiles.Magic
 {
-	public class RadiantOrb : ModProjectile
+    public class RadiantOrb : ModProjectile
     {
-        public float Timer
+        private ref float Timer => ref Projectile.ai[0];
+        private Player Owner => Main.player[Projectile.owner];
+        public override void SetStaticDefaults()
         {
-            get => Projectile.ai[0];
-            set => Projectile.ai[0] = value;
+            base.SetStaticDefaults();
+            Main.projFrames[Type] = 72;
         }
-        private ref float SwordRotation => ref Projectile.ai[1];
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("SalfaCirle");
-			Main.projFrames[Projectile.type] = 72;
-		}
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 64;
+            Projectile.height = 64;
+            Projectile.penetrate = -1;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = int.MaxValue;
+        }
 
-		private int _frameCounter;
-		private int _frameTick;
-		public override void SetDefaults()
-		{
-			Projectile.friendly = false;
-			Projectile.DamageType = DamageClass.Magic;
-			Projectile.width = 99;
-			Projectile.height = 99;
-			Projectile.penetrate = -1;
-			Projectile.scale = 1f;
-			DrawOriginOffsetY = 0;
-			Projectile.damage = 0;
-			Projectile.timeLeft = 72;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Rectangle frame = Projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            drawColor.A = 0;
+            float drawRotation = Projectile.rotation;
+            float drawScale = MathHelper.Lerp(0f, 1f, Easing.InOutCubic(Timer / 15f));
+            spriteBatch.Draw(texture, drawPos, frame, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            return false;
+        }
 
-		}
-		public override Color? GetAlpha(Color lightColor)
-		{
-			return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 50f);
-		}
+        private bool ShouldConsumeMana()
+        {
+            // Should mana be consumed this frame?
+            bool consume = Timer % 6 == 0;
+            return consume;
+        }
 
-		public int It = 0;
-
-		public override bool PreDraw(ref Color lightColor)
-		{
-			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-			Vector2 drawPosition = Projectile.Center - Main.screenPosition;
-
-			float width = 99;
-			float height = 99;
-			Vector2 origin = new Vector2(width / 2, height / 2);
-			int frameSpeed = 1;
-			int frameCount = 72;
-			SpriteBatch spriteBatch = Main.spriteBatch;
-			spriteBatch.Draw(texture, drawPosition,
-				texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
-				(Color)GetAlpha(lightColor), 0f, origin, 1.8f, SpriteEffects.None, 0f);
-			return false;
-		}
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
 
 
-		public override bool PreAI()
-		{
-			if (++_frameTick >= 1)
-			{
-				_frameTick = 0;
-				if (++_frameCounter >= 72)
-				{
-					_frameCounter = 0;
-				}
-			}
+            if (Main.myPlayer == Projectile.owner)
+            {
+                bool manaIsAvailable = !ShouldConsumeMana() || Owner.CheckMana(Owner.HeldItem.mana, true, false);
 
-			Projectile.tileCollide = false;
-			return true;
-		}
+                // The Prism immediately stops functioning if the player is Cursed (player.noItems) or "Crowd Controlled", e.g. the Frozen debuff.
+                // player.channel indicates whether the player is still holding down the mouse button to use the item.
+                bool stillInUse = Owner.channel && manaIsAvailable && !Owner.noItems && !Owner.CCed;
+                if (stillInUse && Timer % 6 == 0)
+                {
+                    Vector2 spawnPos = Projectile.Center;
+                    Vector2 shootVelocity = Projectile.velocity * 12;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), spawnPos, shootVelocity,
+                        ModContent.ProjectileType<GoldenHoes>(), (int)(Projectile.damage), Projectile.knockBack, Projectile.owner);
+                }
+                else if (!stillInUse)
+                {
+                    Projectile.Kill();
+                }
 
-		public override void AI()
-		{
+                Projectile.velocity = (Main.MouseWorld - Owner.Center).SafeNormalize(Vector2.Zero);
+                Projectile.netUpdate = true;
+            }
 
-			It++;
-			Player player = Main.player[Projectile.owner];
+            DrawHelper.AnimateTopToBottom(Projectile, 1);
+            Owner.ChangeDir(Projectile.direction);
+            Projectile.spriteDirection = Owner.direction;
+            Projectile.rotation = Projectile.velocity.ToRotation();
+            Projectile.Center = Owner.Center + Projectile.velocity * 65;
 
-			if (It >= 6)
-			{
+            if (Timer == 1)
+            {
+                FXUtil.GlowCircleBoom(Projectile.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.Yellow,
+                    outerGlowColor: Color.DarkOrange, duration: 15, baseSize: 0.12f);
+            }
 
-				float speedX = Projectile.velocity.X * 12;
-				float speedY = Projectile.velocity.Y * 12;
+            SetHoldPosition();
+        }
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center.X, player.Center.Y, speedX, speedY, ModContent.ProjectileType<GoldenHoes>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
-				It = 0;
-			}
+        private void SetHoldPosition()
+        {
+            if (Main.myPlayer == Projectile.owner)
+            {
+                Owner.direction = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
+            }
 
+            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
+            Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
 
-			if (player.noItems || player.CCed || player.dead || !player.active)
-				Projectile.Kill();
-
-			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-			if (Main.myPlayer == Projectile.owner)
-			{
-				player.ChangeDir(Projectile.direction);
-				SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
-				Projectile.netUpdate = true;
-				if (!player.channel)
-					Projectile.Kill();
-			}
-			Projectile.velocity = SwordRotation.ToRotationVector2();
-
-			Projectile.spriteDirection = player.direction;
-			if (Projectile.spriteDirection == 1)
-				Projectile.rotation = Projectile.velocity.ToRotation();
-			else
-				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
-
-			Projectile.Center = playerCenter + new Vector2(65, 0).RotatedBy(SwordRotation);
-
-			if (++Projectile.frameCounter >= 1)
-			{
-				Projectile.frameCounter = 0;
-				if (++Projectile.frame >= 72)
-				{
-					Projectile.frame = 0;
-				}
-			}
-		}
-	}
+            armPosition.Y += Owner.gfxOffY;
+            Owner.heldProj = Projectile.whoAmI;
+        }
+    }
 }
 
 

@@ -35,10 +35,10 @@ namespace Stellamod.Items.Weapons.Mage
             Item.damage = 120;
             Item.DamageType = DamageClass.Magic;
             Item.width = 32;
-            Item.mana = 3;
+            Item.mana = 7;
             Item.height = 25;
-            Item.useTime = 46;
-            Item.useAnimation = 46;
+            Item.useTime = 16;
+            Item.useAnimation = 16;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 2;
             Item.rare = ItemRarityID.Orange;
@@ -54,6 +54,10 @@ namespace Stellamod.Items.Weapons.Mage
 
         }
 
+        public override bool CanUseItem(Player player)
+        {
+            return player.ownedProjectileCounts[Item.shoot] < 1;
+        }
 
 
         public override void AddRecipes()

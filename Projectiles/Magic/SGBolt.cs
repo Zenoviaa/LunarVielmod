@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using Terraria;
@@ -14,6 +16,7 @@ namespace Stellamod.Projectiles.Magic
 {
     internal class SGBolt : ModProjectile
     {
+        private ref float Timer => ref Projectile.ai[0];
         bool Moved;
 
         public override void SetStaticDefaults()
@@ -24,20 +27,27 @@ namespace Stellamod.Projectiles.Magic
         }
         public override void SetDefaults()
         {
-            base.Projectile.penetrate = 4;
-            base.Projectile.width = 10;
-            base.Projectile.height = 10;
-            base.Projectile.timeLeft = 700;
-            base.Projectile.alpha = 255;
-            base.Projectile.friendly = true;
-            base.Projectile.hostile = false;
-            base.Projectile.ignoreWater = true;
-            base.Projectile.tileCollide = false;
+            Projectile.penetrate = 3;
+            Projectile.width = 10;
+            Projectile.height = 10;
+            Projectile.timeLeft = 700;
+            Projectile.alpha = 255;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
         }
         public override void AI()
         {
-            Projectile.ai[1]++;
-            if (!Moved && Projectile.ai[1] >= 0)
+            Timer++;
+            if (Timer % 3 == 0)
+            {
+
+                Dust.NewDustPerfect(Projectile.Bottom, ModContent.DustType<GlyphDust>(),
+                    (Vector2.One * Main.rand.NextFloat(0.2f, 1f)).RotatedByRandom(19.0), 0, Color.Purple, 2f).noGravity = true;
+
+            }
+            if (Timer==1)
             {
 
 
@@ -57,9 +67,8 @@ namespace Stellamod.Projectiles.Magic
                     Main.dust[num8].noLight = true;
                     Main.dust[num8].velocity = Vector2.Normalize(Projectile.Center - Projectile.velocity * 3f - Main.dust[num8].position) * 1.25f;
                 }
-                Moved = true;
             }
-            if (Projectile.ai[1] >= 20)
+            if (Timer >= 20)
             {
                 Projectile.tileCollide = true;
             }
@@ -74,14 +83,13 @@ namespace Stellamod.Projectiles.Magic
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            NPC npc = target;
-            npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), npc.Center, Vector2.Zero, ModContent.ProjectileType<Skullboom>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, 
+                ModContent.ProjectileType<Skullboom>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
         }
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 60; i++)
+            for (int i = 0; i < 20; i++)
             {
                 int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Shadowflame, 0f, -2f, 0, default(Color), .8f);
                 Main.dust[num1].noGravity = true;
@@ -96,10 +104,26 @@ namespace Stellamod.Projectiles.Magic
                 if (Main.dust[num].position != Projectile.Center)
                     Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
             }
+            for(float f = 0; f < 30; f++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
+                    (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Purple, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+            }
             SoundEngine.PlaySound(SoundID.DD2_SkeletonHurt, Projectile.position);
-            float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-            float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<Skullboom>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+            for (float i = 0; i< 4; i++)
+            {
+                float progress = i / 4f;
+                float rot = progress * MathHelper.ToRadians(360);
+                Vector2 offset = rot.ToRotationVector2() * 24;
+                var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.Purple,
+                    outerGlowColor: Color.Black,
+                    baseSize: 0.3f);
+                particle.Rotation = rot + MathHelper.ToRadians(45);
+            }
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+                ModContent.ProjectileType<Skullboom>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
 
         }
         float alphaCounter = 2;

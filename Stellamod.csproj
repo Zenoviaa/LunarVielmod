@@ -264,6 +264,7 @@
     <None Remove="Items\Weapons\Scorpions\OreKingdom\OreKingdomScorpionMountBuff.png" />
     <None Remove="Items\Weapons\Scorpions\RoyalPalace\RoyalPalaceScorpionMount_Back.png" />
     <None Remove="Items\Weapons\Scorpions\RoyalPalace\RoyalPalaceScorpionMount_Front.png" />
+    <None Remove="Items\Weapons\Summon\WindPortal.png" />
     <None Remove="Localization\en-US\Mods.Stellamod.ArmorReforge.hjson" />
     <None Remove="Localization\en-US\Mods.Stellamod.Dialogue.hjson" />
     <None Remove="Localization\en-US\Mods.Stellamod.Elements.hjson" />

@@ -40,23 +40,6 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.autoReuse = true;
 			Item.crit = 15;
 		}
-
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		{
-			// NewProjectile returns the index of the projectile it creates in the NewProjectile array.
-			// Here we are using it to gain access to the projectile object.
-			int projectileID = Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
-			Projectile projectile = Main.projectile[projectileID];
-
-			ProjectileModifications globalProjectile = projectile.GetGlobalProjectile<ProjectileModifications>();
-			// For more context, see ExampleProjectileModifications.cs
-			globalProjectile.SetTrail(Color.DarkKhaki);
-			globalProjectile.sayTimesHitOnThirdHit = false;
-			globalProjectile.applyBuffOnHit = true;
-
-			// We do not want vanilla to spawn a duplicate projectile.
-			return false;
-		}
 	}
 }
 
