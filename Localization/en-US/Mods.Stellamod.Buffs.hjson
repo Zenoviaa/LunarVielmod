@@ -374,8 +374,8 @@ AbyssalFlame: {
 }
 
 VehementMinionBuff: {
-	Description: Mods.Stellamod.Buffs.VehementBuff.Description
 	DisplayName: Vehement Buff
+	Description: A musical thingy protects you!
 }
 
 VampireTorchMinionBuff: {

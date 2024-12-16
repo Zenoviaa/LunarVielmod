@@ -93,7 +93,7 @@ namespace Stellamod.Items.Weapons.Summon
 						Main.projectile[i].originalDamage = Item.damage + (int)(4 * Main.projectile[i].minionSlots);
 						if (Main.projectile[i].scale < 1.3f)
                         {
-							Main.projectile[i].scale += .062f;
+							Main.projectile[i].scale += 0.1f;
 						}
 							
 					}

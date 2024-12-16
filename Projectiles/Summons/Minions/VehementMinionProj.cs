@@ -15,17 +15,18 @@ using Terraria.ModLoader;
 using Terraria;
 using Stellamod.Helpers;
 using Stellamod.Buffs.Minions;
+using Stellamod.Dusts;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    /*
-             * This minion shows a few mandatory things that make it behave properly. 
-             * Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
-             * If the player targets a certain NPC with right-click, it will fly through tiles to it
-             * If it isn't attacking, it will float near the player with minimal movement
-             */
+
+
     public class VehementMinionProj : ModProjectile
     {
+        private Player Owner => Main.player[Projectile.owner];
+        private ref float Timer => ref Projectile.ai[0];
+        private ref float SpeedTimer => ref Projectile.ai[1];
+        private ref float HitCount => ref Projectile.ai[2];
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Irradiated Creeper");
@@ -52,12 +53,12 @@ namespace Stellamod.Projectiles.Summons.Minions
             Projectile.tileCollide = false; // Makes the minion go through tiles freely
                                             // These below are needed for a minion weapon
             Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)// Declares this as a minion (has many effects)
-            Projectile.DamageType = DamageClass.Melee; // Declares the damage type (needed for it to deal damage) // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
+            Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage) // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
             Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
             Projectile.timeLeft = 1500;
-            Projectile.scale = 0.7f;
-            Projectile.CloneDefaults(ProjectileID.DeadlySphere);
-            AIType = ProjectileID.DeadlySphere;
+            Projectile.minion = true;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 15;
         }
 
         // Here you can decide if your minion breaks things like grass or pots
@@ -74,9 +75,41 @@ namespace Stellamod.Projectiles.Summons.Minions
         private float alphaCounter = 0;
         public override void AI()
         {
+            Timer++;
+            if(SpeedTimer > 0)
+            {
+                SpeedTimer--;
+                Projectile.extraUpdates = 3;
+            }
+            else
+            {
+                Projectile.extraUpdates = 0;
+            }
+            if(Timer % 6 == 0)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.Goldenrod, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+            }
             Player player = Main.player[Projectile.owner];
             if (!SummonHelper.CheckMinionActive<VehementMinionBuff>(player, Projectile))
                 return;
+
+            NPC target = ProjectileHelper.FindNearestEnemyThroughWalls(Projectile.Center, 1024);
+            if(target != null)
+            {
+                float progress = MathHelper.Clamp(Timer / 35f, 0f ,1f);
+                float d = MathHelper.Lerp(3f, 45, progress);
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, target.Center,d);
+                if(Projectile.velocity.Length() < 15)
+                {
+                    Projectile.velocity *= 1.5f;
+                }
+            }
+            else
+            {
+                SummonHelper.CalculateIdleValues(Owner, Projectile, Owner.Center, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
+                SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
+            }
+            Projectile.rotation += Projectile.velocity.Length() * 0.05f;
 
             // Some visuals here
             Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
@@ -88,26 +121,39 @@ namespace Stellamod.Projectiles.Summons.Minions
             {
                 target.AddBuff(BuffID.OnFire, 180);
             }
-            var EntitySource = Projectile.GetSource_Death();
-            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<CandleShotProj2>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+            if(SpeedTimer <= 0)
+            {
+                HitCount++;
+                if (HitCount >= 15)
+                {
+                    HitCount = 0;
+                    SpeedTimer = 240;
+                }
+            }
 
+            var EntitySource = Projectile.GetSource_Death();
+            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0,
+                ModContent.ProjectileType<VehementBoom>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+            Projectile.velocity = -Projectile.velocity;
             int Sound = Main.rand.Next(1, 6);
+            SoundStyle mySound = new SoundStyle("Stellamod/Assets/Sounds/Rhap1");
             if (Sound == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Rhap1"), Projectile.position);
+                mySound = new SoundStyle("Stellamod/Assets/Sounds/Rhap1");
             }
             if (Sound == 2)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Rhap2"), Projectile.position);
+                mySound = new SoundStyle("Stellamod/Assets/Sounds/Rhap2");
             }
             if (Sound == 3)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Rhap3"), Projectile.position);
+                mySound = new SoundStyle("Stellamod/Assets/Sounds/Rhap3");
 
             }
-
-
-
+            Timer = 1;
+            mySound.Volume = 0.3f;
+            mySound.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(mySound, Projectile.position);
         }
 
         public override Color? GetAlpha(Color lightColor)
@@ -118,7 +164,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
-            float baseWidth = Projectile.scale * Projectile.width * 1.3f;
+            float baseWidth = Projectile.scale * Projectile.width;
             return MathHelper.SmoothStep(baseWidth, 0.5f, completionRatio);
         }
 
@@ -134,11 +180,56 @@ namespace Stellamod.Projectiles.Summons.Minions
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(35f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (5 + 0.6f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(35f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), Projectile.scale, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.BeamTrail2);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.7f - Main.screenPosition, 155);
+            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
+            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
             return false;
+        }
+    }
+
+    public class VehementBoom : ModProjectile
+    {
+        private ref float Timer => ref Projectile.ai[0];
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 32;
+            Projectile.height = 32;
+            Projectile.friendly = true;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
+            Projectile.usesIDStaticNPCImmunity = true;
+            Projectile.idStaticNPCHitCooldown = 100;
+            Projectile.timeLeft = 15;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            if(Timer == 1)
+            {
+                for (float f = 0; f < 6; f++)
+                {
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<MusicDust>(),
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Orange, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                }
+                for (float i = 0; i < 4; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.Orange,
+                        outerGlowColor: Color.Black,
+                        duration: Main.rand.NextFloat(12, 25),
+                        baseSize: Main.rand.NextFloat(0.01f, 0.15f));
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
+            }
         }
     }
 }
