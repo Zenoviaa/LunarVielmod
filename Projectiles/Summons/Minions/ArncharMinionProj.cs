@@ -111,8 +111,8 @@ namespace Stellamod.Projectiles.Summons.Minions
             Texture2D glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
             for (float f = 0f; f < 4f; f++)
             {
-                float rot = ((f / 4f) * MathHelper.ToRadians(360) + Main.GlobalTimeWrappedHourly * 8) * VectorHelper.Osc(3f, 4f);
-                spriteBatch.Draw(glowTexture, Projectile.Center - Main.screenPosition,
+                Vector2 offset = ((f / 4f) * MathHelper.ToRadians(360) + Main.GlobalTimeWrappedHourly * 8).ToRotationVector2() * VectorHelper.Osc(3f, 4f);
+                spriteBatch.Draw(glowTexture, Projectile.Center - Main.screenPosition + offset,
                     Projectile.Frame(), Color.White * VectorHelper.Osc(0f, 0.5f), Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             }
         }
