@@ -93,6 +93,7 @@
     <None Remove="Effects\CrystalShaders\MagicRadianceOutline.fx" />
     <None Remove="Effects\CrystalShaders\MagicSparkleWater.fx" />
     <None Remove="Effects\CrystalShaders\MagicVaellus.fx" />
+    <None Remove="Effects\CrystalShaders\MotionBlur.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicDread.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicVeil.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicNatural.fx" />

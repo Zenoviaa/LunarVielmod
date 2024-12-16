@@ -103,6 +103,11 @@ namespace Stellamod.Projectiles.Summons.Minions
                 {
                     Projectile.velocity *= 1.5f;
                 }
+
+                if(Projectile.velocity == Vector2.Zero)
+                {
+                    Projectile.velocity.Y -= 1;
+                }
             }
             else
             {

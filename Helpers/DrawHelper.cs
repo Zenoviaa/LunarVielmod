@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using ReLogic.Utilities;
 using Stellamod.Trails;
 using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
@@ -29,6 +31,54 @@ namespace Stellamod.Helpers
                 Main.DrawItemIcon(spriteBatch, item, drawPos, color, sizeLimit);
             }
         }
+        public static void Draw2(this SpriteBatch spriteBatch, Projectile projectile, ref Color lightColor,
+			Color? drawColor = null,
+			Vector2? drawPosOffset = null,
+			Vector2? drawOriginOffset = null,
+			float rotationOffset = 0f,
+			Vector2? drawScale = null,
+			SpriteEffects spriteEffects = SpriteEffects.None)
+        {
+            Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
+            Vector2 drawPos = projectile.Center - Main.screenPosition;
+            Rectangle frame = projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
+
+            if (drawOriginOffset.HasValue)
+                drawOrigin += (Vector2)drawOriginOffset;
+            if (drawPosOffset.HasValue)
+                drawPos += (Vector2)drawPosOffset;
+
+            float rotation = projectile.rotation + rotationOffset;
+            Color finalColor = drawColor.HasValue ? ((Color)drawColor).MultiplyRGB(lightColor) : Color.White.MultiplyRGB(lightColor);
+
+			Vector2 scale = drawScale.HasValue ? (Vector2)drawScale : Vector2.One;
+            spriteBatch.Draw(texture, drawPos, frame, finalColor, rotation, drawOrigin, scale, spriteEffects, 0);
+        }
+        public static void Draw(this SpriteBatch spriteBatch, Projectile projectile, ref Color lightColor, 
+			Color? drawColor = null,
+			Vector2? drawPosOffset = null, 
+			Vector2? drawOriginOffset = null,
+			float rotationOffset = 0f,
+			float drawScale = 1f, 
+			SpriteEffects spriteEffects = SpriteEffects.None)
+        {
+			Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
+			Vector2 drawPos = projectile.Center - Main.screenPosition;
+			Rectangle frame = projectile.Frame();
+			Vector2 drawOrigin = frame.Size() / 2f;
+
+			if (drawOriginOffset.HasValue)
+				drawOrigin += (Vector2)drawOriginOffset;
+			if (drawPosOffset.HasValue)
+				drawPos += (Vector2)drawPosOffset;
+
+			float rotation = projectile.rotation + rotationOffset;
+			Color finalColor = drawColor.HasValue ? ((Color)drawColor).MultiplyRGB(lightColor) : Color.White.MultiplyRGB(lightColor);
+ 
+			spriteBatch.Draw(texture, drawPos, frame, finalColor, rotation, drawOrigin, drawScale, spriteEffects, 0);
+        }
+
         public static void Restart(this SpriteBatch spriteBatch, SpriteSortMode sortMode = SpriteSortMode.Deferred, BlendState blendState = null, Effect effect = null, SamplerState samplerState = null)
 		{
 			SamplerState newSamplerState = samplerState == null ? Main.DefaultSamplerState : samplerState;

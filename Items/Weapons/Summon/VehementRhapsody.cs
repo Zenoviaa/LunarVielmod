@@ -59,6 +59,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.buffType = ModContent.BuffType<VehementMinionBuff>();
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
 			Item.shoot = ModContent.ProjectileType<VehementMinionProj>();
+			Item.shootSpeed = 1;
 		}
 		
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
