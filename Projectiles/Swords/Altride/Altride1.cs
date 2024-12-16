@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -11,6 +13,7 @@ namespace Stellamod.Projectiles.Swords.Altride
 {
     internal class Altride1 : ModProjectile
     {
+        private ref float Timer => ref Projectile.ai[1];
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Pericarditis");
@@ -36,13 +39,18 @@ namespace Stellamod.Projectiles.Swords.Altride
             AIType = ProjectileID.Bullet;
             Projectile.DamageType = DamageClass.Melee;
             Projectile.friendly = true;
+            Projectile.tileCollide = false;
         }
        
         public override void AI()
         {
-            Projectile.ai[1]++;
+            Timer++;
             Projectile.velocity *= 1.02f;
-            if (Projectile.ai[1] == 1)
+            if (Timer > 30)
+            {
+                Projectile.tileCollide = true;
+            }
+            if (Timer == 1)
             {
               
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit2"), Projectile.position);
@@ -66,10 +74,13 @@ namespace Stellamod.Projectiles.Swords.Altride
             }
 
 
-               
-               
-               
-            
+            if (Timer % 12 == 0)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.CadetBlue, Main.rand.NextFloat(1f, 1.5f)).noGravity = true;
+            }
+
+
+
         }
 
         public override void OnKill(int timeLeft)
@@ -84,21 +95,13 @@ namespace Stellamod.Projectiles.Swords.Altride
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Astalaiya3"), Projectile.position);
             }
 
-            for (int i = 0; i < 14; i++)
+
+            for (int i = 0; i < 2; i++)
             {
-                Dust.NewDustPerfect(base.Projectile.Center, DustID.CoralTorch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = true;
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(30)) * Main.rand.NextFloat(0.2f, 1f), 0, Color.Pink, 1f).noGravity = true;
             }
 
-            for (int i = 0; i < 40; i++)
-            {
-                Dust.NewDustPerfect(base.Projectile.Center, DustID.CoralTorch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(10.0), 0, default(Color), 1f).noGravity = false;
-            }
-
-          //  SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
-         //   SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Projectile.position);
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 1024f, 4f);
-            var entitySource = Projectile.GetSource_FromThis();
-           
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 0.5f);
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -141,11 +144,6 @@ namespace Stellamod.Projectiles.Swords.Altride
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.DarkViolet.ToVector3() * 1.75f * Main.essScale);
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CrystalSerpent, 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-            }
         }
     }
 }

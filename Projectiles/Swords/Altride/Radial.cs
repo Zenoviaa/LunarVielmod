@@ -1,11 +1,9 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Particles;
+using Stellamod.Helpers;
+using Stellamod.Trails;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -15,12 +13,9 @@ namespace Stellamod.Projectiles.Swords.Altride
     {
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Pericarditis");
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 1;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
             Main.projFrames[Projectile.type] = 34;
         }
-        
+
 
         public override void SetDefaults()
         {
@@ -34,88 +29,28 @@ namespace Stellamod.Projectiles.Swords.Altride
             Projectile.scale = 1f;
             Projectile.DamageType = DamageClass.Melee;
             Projectile.friendly = false;
-            DrawOriginOffsetY = 0;
-        }
-
-        public override bool PreAI()
-        {
-
             Projectile.tileCollide = false;
-
-            return true;
         }
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return new Color(130, 130, 130, 0) * (1f - Projectile.alpha / 50f);
-        }
-
 
         public override void AI()
         {
-            Projectile.ai[1]++;
             Projectile.velocity *= 0.93f;
-            if (Projectile.ai[1] == 1)
-            {
-
-               
-
-                for (int j = 0; j < 10; j++)
-                {
-                    Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;
-                    vector2 += -Vector2.UnitY.RotatedBy(j * 3.141591734f / 6f, default) * new Vector2(8f, 16f);
-                    vector2 = vector2.RotatedBy(Projectile.rotation - 1.57079637f, default);
-                    int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.GoldCoin, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-                    Main.dust[num8].scale = 1.3f;
-                    Main.dust[num8].noGravity = true;
-                    Main.dust[num8].position = Projectile.Center + vector2;
-                    Main.dust[num8].velocity = Projectile.velocity * 0.1f;
-                    Main.dust[num8].noLight = true;
-                    Main.dust[num8].velocity = Vector2.Normalize(Projectile.Center - Projectile.velocity * 3f - Main.dust[num8].position) * 1.25f;
-                }
-
-            }
-
-            if (Projectile.ai[1] > 1)
-            {
-                Projectile.alpha++;
-            }
-
-
-            if (++Projectile.frameCounter >= 2)
-            {
-                Projectile.frameCounter = 0;
-                if (++Projectile.frame >= 34)
-                {
-                    Projectile.frame = 0;
-                }
-            }
-
-        }
-
-        public override void OnKill(int timeLeft)
-        {
-       
-           
-            for (int i = 0; i < 14; i++)
-            {
-                            }
-
-           
-
-            var entitySource = Projectile.GetSource_FromThis();
-
-        }
-
-      
-
-        public override void PostDraw(Color lightColor)
-        {
+            DrawHelper.AnimateTopToBottom(Projectile, 2);
             Lighting.AddLight(Projectile.Center, Color.Gold.ToVector3() * 1.75f * Main.essScale);
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GoldCoin, 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-            }
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Rectangle frame = Projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            drawColor.A = 0;
+            float drawRotation = Projectile.rotation;
+            float drawScale = 0.5f;
+            spriteBatch.Draw(texture, drawPos, frame, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            return false;
         }
     }
 }
