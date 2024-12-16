@@ -55,8 +55,7 @@ namespace Stellamod.Projectiles.Summons
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            Projectile.Kill();
-            SoundEngine.PlaySound(SoundID.Item109, Projectile.position);
+
             return false;
         }
 

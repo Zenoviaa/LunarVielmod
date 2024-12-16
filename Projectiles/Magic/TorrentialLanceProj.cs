@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories.Players;
+using Stellamod.Items.Accessories;
 using Stellamod.Particles;
 using Stellamod.Trails;
 using System;
@@ -14,8 +16,58 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
+    public class TorrientialLanceDashPlayer : ModPlayer
+    {
+        // These indicate what direction is what in the timer arrays used
+        public int DashCooldown = 67; // Time (frames) between starting dashes. If this is shorter than DashDuration you can start a new dash before an old one has finished
+        public int DashDuration = 30; // Duration of the dash afterimage effect in frames
+
+        // The initial velocity.  10 velocity is about 37.5 tiles/second or 50 mph
+        public float DashVelocity = 10f;
+
+
+        // The fields related to the dash accessory
+        public int DashDelay = 0; // frames remaining till we can dash again
+        public int DashTimer = 0; // frames remaining in the dash
+        public int DashDir;
+
+        public override void ResetEffects()
+        {
+            DashVelocity = 25f;
+            DashDuration = 30;
+            DashCooldown = 67;
+        }
+
+        // This is the perfect place to apply dash movement, it's after the vanilla movement code, and before the player's position is modified based on velocity.
+        // If they double tapped this frame, they'll move fast this frame
+        public override void PreUpdateMovement()
+        {
+            // if the player can use our dash, has double tapped in a direction, and our dash isn't currently on cooldown
+            if (DashDir != 0 && Main.myPlayer == Player.whoAmI)
+            {
+                Vector2 newVelocity = Player.velocity;
+                float dashDirection = DashDir == 1 ? 1 : -1;
+                newVelocity.X = DashDir * DashVelocity;
+
+                // start our dash
+                DashDir = 0;
+                DashTimer = DashDuration;
+                Player.velocity = newVelocity;
+
+            }
+
+
+            if (DashTimer > 0)
+            {
+                Player.velocity *= 0.98f;
+                DashTimer--;
+            }
+
+        }
+    }
     internal class TorrentialLanceProj : ModProjectile
     {
+        private Vector2[] _oldPos;
         private ref float Timer => ref Projectile.ai[0];
         private bool SpawnBubbles;
 
@@ -31,20 +83,21 @@ namespace Stellamod.Projectiles.Magic
 
         public override void SetDefaults()
         {
-            Projectile.width = 30;
-            Projectile.height = 30;
+            _oldPos = new Vector2[32];
+            Projectile.width = 64;
+            Projectile.height = 64;
             Projectile.timeLeft = (int)SwingTime;
             Projectile.friendly = true;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.penetrate = -1;
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = -1;
+            Projectile.localNPCHitCooldown = 3;
         }
 
         public override void AI()
         {
-            ProjectileID.Sets.TrailCacheLength[Type] = 48;
+
             Timer++;
             if(SpawnBubbles && Timer % 8 == 0)
             {
@@ -55,28 +108,25 @@ namespace Stellamod.Projectiles.Magic
                     ModContent.ProjectileType<TorrentialLanceBubbleProj>(), Projectile.damage / 2, Projectile.knockBack / 2, Projectile.owner);
             }
 
-            AI_Dash();
+            for (int i = _oldPos.Length - 1; i > 0; i--)
+            {
+                _oldPos[i] = _oldPos[i - 1];
+            }
+
+            if (_oldPos.Length > 0)
+                _oldPos[0] = Owner.Center;
+
+
+ 
             AI_Immune();
             AI_AttachToPlayer();
             Visuals();
-        }
-
-        private void AI_Dash()
-        {
-            Vector2 oldMouseWorld = Main.MouseWorld;
-            if (Timer < 3)
+            if (Timer == 1)
             {
-                Vector2 directionToMouse = Projectile.DirectionTo(oldMouseWorld);
-                Owner.velocity.X = directionToMouse.X * 20f;
-                Projectile.velocity.X = directionToMouse.X;
-                Projectile.velocity.Y = 0;
-            }
-
-            if(Timer > 30)
-            {
-                Owner.velocity *= 0.9f;
+                Owner.GetModPlayer<TorrientialLanceDashPlayer>().DashDir = Owner.direction;
             }
         }
+
 
         private void AI_Immune()
         {
@@ -115,7 +165,6 @@ namespace Stellamod.Projectiles.Magic
             else
             {
                 Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi - MathHelper.PiOver4;
-                Projectile.Center += new Vector2(-30, 0);
             }
 
             player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
@@ -137,6 +186,24 @@ namespace Stellamod.Projectiles.Magic
         {
             if (!SpawnBubbles)
             {
+                for (float i = 0; i < 4; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(target.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.CornflowerBlue,
+                        outerGlowColor: Color.Black,
+                        baseSize: Main.rand.NextFloat(0.06f, 0.12f));
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
+
+                for (float f = 0; f < 12; f++)
+                {
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.CornflowerBlue, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                }
                 SoundEngine.PlaySound(SoundRegistry.BubbleIn, target.position);
             }
 
@@ -145,31 +212,29 @@ namespace Stellamod.Projectiles.Magic
 
         public float WidthFunction(float completionRatio)
         {
-            float baseWidth = Projectile.scale * Projectile.width * 1f;
+            float baseWidth = 36;
             return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
         }
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Aquamarine, Color.Transparent, completionRatio) * 0.7f;
+            return Color.Lerp(Color.Transparent, Color.Aquamarine, Easing.SpikeOutExpo(completionRatio)) * 0.7f;
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Vector2 textureSize = texture.Size();
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.CausticTrail);
-
-            Vector2 trailOffset = Vector2.Zero;
-            if (Projectile.spriteDirection == 1)
-                trailOffset = new Vector2(32, -4);
-            else
+            if (TrailDrawer == null)
             {
-                trailOffset = new Vector2(-32, -4);
+                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
             }
 
-            TrailDrawer.DrawPrims(Projectile.oldPos, textureSize * 0.5f - Main.screenPosition + trailOffset, 155);
+            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.Dashtrail);
+            TrailDrawer.DrawPrims(_oldPos, -Main.screenPosition, 255);
+
+            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
+            TrailDrawer.DrawPrims(_oldPos, -Main.screenPosition, 255);
             return true;
         }
     }

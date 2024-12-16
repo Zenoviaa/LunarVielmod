@@ -2839,7 +2839,10 @@ IceWalker: {
 
 IrradieagleWrath: {
 	DisplayName: Irradieagle Wrath
-	Tooltip: Shoots a spread of arrows
+	Tooltip:
+		'''
+		Rains acid from above!
+		'''
 }
 
 Irradishark: {
