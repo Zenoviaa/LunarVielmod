@@ -1,19 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
+using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using System;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    public class VampireTorchMinionProj : ModProjectile,
-            IPixelPrimitiveDrawer
+    public class VampireTorchMinionProj : ModProjectile
     {
-        public Vector2[] CirclePos = new Vector2[48];
-        public const float Beam_Width = 8;
+        public Vector2[] CirclePos = new Vector2[16];
         public override void SetStaticDefaults()
         {
             // Sets the amount of frames this minion has on its spritesheet
@@ -70,13 +71,18 @@ namespace Stellamod.Projectiles.Summons.Minions
                 }
             }
 
-            DrawHelper.DrawCircle(owner.Center, 320, CirclePos);
+            DrawHelper.DrawCircle(owner.Center, VectorHelper.Osc(280, 320), CirclePos);
             Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
         }
 
         public float WidthFunction(float completionRatio)
         {
-            return Projectile.scale * Beam_Width;
+            float sin = MathF.Sin(Main.GlobalTimeWrappedHourly + (completionRatio * 48));
+            if (sin < 0)
+                sin = 0;
+            float sin2 = MathF.Sin(Main.GlobalTimeWrappedHourly * 2 + completionRatio * 16) * VectorHelper.Osc(1f, 2f);
+            float sin3 = MathF.Cos(Main.GlobalTimeWrappedHourly * 3 + completionRatio * 32) * VectorHelper.Osc(0.5f, 1f);
+            return Projectile.scale * 8 * sin * sin2 * sin3;
         }
 
         public Color ColorFunction(float completionRatio)
@@ -84,16 +90,15 @@ namespace Stellamod.Projectiles.Summons.Minions
             return Color.Red;
         }
 
-        internal PrimitiveTrail BeamDrawer;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
+        public PrimDrawer TrailDrawer { get; private set; } = null;
+        public override bool PreDraw(ref Color lightColor)
         {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.Black);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
-
-            BeamDrawer.DrawPixelated(CirclePos, -Main.screenPosition, CirclePos.Length);
-            Main.spriteBatch.ExitShaderRegion();
+            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
+            TrailDrawer.ColorFunc = ColorFunction;
+            TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
+            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.LightningTrail2);
+            TrailDrawer.DrawPrims(CirclePos, -Main.screenPosition, 64);
+            return true;
         }
     }
 }

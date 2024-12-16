@@ -827,3 +827,8 @@ CannotUseStaminaPotion: {
 	Description: Mods.Stellamod.Buffs.CannotUseStaminaPotion.Description
 	DisplayName: Cannot Use Stamina Potion
 }
+
+VampiricFlames: {
+	DisplayName: Vampiric Flames
+	Description: Your life is being stolen away...
+}

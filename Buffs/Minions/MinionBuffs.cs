@@ -156,31 +156,30 @@ namespace Stellamod.Buffs.Minions
             if (player.ownedProjectileCounts[ModContent.ProjectileType<VampireTorchMinionProj>()] > 0)
             {
                 player.buffTime[buffIndex] = 18000;
+                player.statLifeMax2 /= 2;
                 player.lifeRegenCount = 0;
-
-                //Health Loss
-                SearchForTargets(player, out bool foundTarget, out float distanceFromTarget);
-                if (foundTarget)
+                _vampiricTimer++;
+                foreach(var npc in Main.ActiveNPCs)
                 {
-                    _vampiricTimer++;
-                    if (_vampiricTimer >= 9 && player.statLife > 10)
+                    if (!npc.CanBeChasedBy())
+                        continue;
+
+                    float distanceToNpc = Vector2.Distance(player.Center, npc.Center);
+                    if(distanceToNpc < 320)
                     {
-                        player.statLife += -1;
-                        _vampiricTimer = 0;
+                        if (_vampiricTimer % 24 == 0)
+                        {
+                            if(player.whoAmI == Main.myPlayer)
+                            {
+                                player.Heal(Main.rand.Next(2, 4));
+                            }
+                            
+                        }
+                        npc.AddBuff(ModContent.BuffType<VampiricFlames>(), 10);
                     }
                 }
-
-                if (player.GetModPlayer<VampirePlayer>().isMagic)
-                {
-                    player.GetDamage(DamageClass.Magic) += 0.33f;
-                    player.GetModPlayer<VampirePlayer>().lifesteal = true;
-                }
-                else
-                {
-                    player.GetDamage(DamageClass.Summon) += 0.33f;
-                    player.GetModPlayer<VampirePlayer>().lifesteal = true;
-                }
-
+                player.GetDamage(DamageClass.Summon) += 0.3f;
+                player.GetDamage(DamageClass.Magic) += 0.3f;
             }
             else
             {

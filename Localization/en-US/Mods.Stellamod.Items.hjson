@@ -3887,8 +3887,9 @@ VampireScepter: {
 	Tooltip:
 		'''
 		Summons a vampiric torch to aid you in battle
-		The torch completely negates life regen, however you have immense lifesteal while close to enemies
-		Greatly increases summon damage while active
+		Cuts your max health in half and removes your life regen, however...
+		Nearby enemies are afflicted with Vampiric Flames, rapidly stealing their life
+		Increases summon and magic damage by 30% while active
 		There can only be one
 		'''
 }
