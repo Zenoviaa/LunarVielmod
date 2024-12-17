@@ -44,8 +44,12 @@ namespace Stellamod.Projectiles.Magic
                 target.AddBuff(BuffID.OnFire, 180);
             }
             var EntitySource = Projectile.GetSource_Death();
-            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<CandleShotProj2>(), Projectile.damage, 1, Projectile.owner, 0, 0);
-            SpawnedProj = true;
+            if (!SpawnedProj)
+            {
+                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<CandleShotProj2>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                SpawnedProj = true;
+            }
+
             Projectile.velocity *= 0.1f;
         }
 
@@ -78,7 +82,11 @@ namespace Stellamod.Projectiles.Magic
             {
                 var EntitySource = Projectile.GetSource_Death();
                 Projectile.velocity = Vector2.Zero;
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<CandleShotProj2>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                if(Main.myPlayer == Projectile.owner && !SpawnedProj)
+                {
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<CandleShotProj2>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                    SpawnedProj = true;
+                }
             }
             if (Projectile.ai[1] == 110)
             {

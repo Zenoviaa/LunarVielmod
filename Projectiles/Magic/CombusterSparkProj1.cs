@@ -1,8 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-
-using Stellamod.Particles;
-using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.UI.Systems;
+using Stellamod.Dusts;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -12,8 +9,8 @@ namespace Stellamod.Projectiles.Magic
 {
     internal class CombusterSparkProj1 : ModProjectile
     {
-        private ref float ai_Timer => ref Projectile.ai[0];
-        private ref float ai_RotationTimer => ref Projectile.ai[1];
+        private ref float Timer => ref Projectile.ai[0];
+        private ref float RotationTimer => ref Projectile.ai[1];
         public override void SetDefaults()
         {
             Projectile.width = 16;
@@ -25,32 +22,41 @@ namespace Stellamod.Projectiles.Magic
 
         public override void AI()
         {
-            ai_Timer++;
-            float rotationMulti = 1f - (ai_Timer / 60);
-            ai_RotationTimer += rotationMulti * 5;
-            Projectile.rotation = MathHelper.ToRadians(ai_RotationTimer);
-            if(ai_Timer == 1)
+            Timer++;
+            float rotationMulti = 1f - (Timer / 60);
+            RotationTimer += rotationMulti * 5;
+            Projectile.rotation = MathHelper.ToRadians(RotationTimer);
+            if (Timer == 1)
             {
                 Player owner = Main.player[Projectile.owner];
-                Dust.QuickDustLine(Projectile.Center, owner.Center, 32, Color.Orange);
+                for (float f = 0; f < 32; f++)
+                {
+                    float progress = f / 32f;
+                    Vector2 pos = Vector2.Lerp(Projectile.Center, owner.Center, progress);
+                    Dust.NewDustPerfect(pos, DustID.Torch, Vector2.Zero, Scale: Main.rand.NextFloat(0.5f, 1.5f));
+                }
+                for (float f = 0; f < 7; f++)
+                {
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowSparkleDust>(),
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 0.4f)).RotatedByRandom(19.0), 0, Color.Yellow, Main.rand.NextFloat(0.5f, 1f)).noGravity = true;
+                }
+
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CombusterSnap") with { PitchVariance = 0.15f });
             }
 
-            if(ai_Timer == 45)
+            if (Timer == 45)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CombusterReady"));
             }
 
-            if (ai_Timer % 4 == 0)
+            if (Timer % 4 == 0)
             {
-                float scaleMult = ai_Timer / 60;
+                float scaleMult = Timer / 60;
             }
         }
 
         public override void OnKill(int timeLeft)
         {
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.position, 2048, 4);
-            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<CombusterExplosionProj1>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
         }

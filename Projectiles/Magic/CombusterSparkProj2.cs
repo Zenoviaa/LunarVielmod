@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-
+using Stellamod.Dusts;
 using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
@@ -13,8 +13,8 @@ namespace Stellamod.Projectiles.Magic
 {
     internal class CombusterSparkProj2 : ModProjectile
     {
-        private ref float ai_Timer => ref Projectile.ai[0];
-        private ref float ai_RotationTimer => ref Projectile.ai[1];
+        private ref float Timer => ref Projectile.ai[0];
+        private ref float RotationTimer => ref Projectile.ai[1];
         public override void SetDefaults()
         {
             Projectile.width = 16;
@@ -26,23 +26,33 @@ namespace Stellamod.Projectiles.Magic
 
         public override void AI()
         {
-            ai_Timer++;
-            float rotationMulti = 1f - (ai_Timer / 60);
-            ai_RotationTimer += rotationMulti * 5;
-            Projectile.rotation = MathHelper.ToRadians(ai_RotationTimer);
-            if (ai_Timer == 1)
+            Timer++;
+            float rotationMulti = 1f - (Timer / 60);
+            RotationTimer += rotationMulti * 5;
+            Projectile.rotation = MathHelper.ToRadians(RotationTimer);
+            if (Timer == 1)
             {
                 Player owner = Main.player[Projectile.owner];
-                Dust.QuickDustLine(Projectile.Center, owner.Center, 32, Color.Orange);
+                for (float f = 0; f < 32; f++)
+                {
+                    float progress = f / 32f;
+                    Vector2 pos = Vector2.Lerp(Projectile.Center, owner.Center, progress);
+                    Dust.NewDustPerfect(pos, DustID.Torch, Vector2.Zero, Scale: Main.rand.NextFloat(0.5f, 1.5f));
+                }
+                for (float f = 0; f < 7; f++)
+                {
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowSparkleDust>(),
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 0.4f)).RotatedByRandom(19.0), 0, Color.Orange, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                }
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CombusterSnap") with { PitchVariance = 0.15f });
             }
 
-            if (ai_Timer == 45)
+            if (Timer == 45)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CombusterReady"));
             }
 
-            if (ai_Timer % 4 == 0)
+            if (Timer % 4 == 0)
             {
 
             }
