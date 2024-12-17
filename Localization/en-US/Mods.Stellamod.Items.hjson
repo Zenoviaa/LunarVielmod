@@ -1485,7 +1485,7 @@ StarCall: {
 	DisplayName: Starbomber
 	Tooltip:
 		'''
-		Your summons will explode into big stary bits!
+		Explodes into big stary bits!
 		Takes 2 slots to summon
 		They will act as temporary summons for big damage
 		Definitely gonna bring flashbacks after Diari releases
@@ -7142,7 +7142,7 @@ WaterGun: {
 	DisplayName: Water Gun
 	Tooltip:
 		'''
-		Shoots a constant stream of water!
+		Shoots a constant stream of magically and electrically charged water!
 		Extra fun at parties
 		'''
 }

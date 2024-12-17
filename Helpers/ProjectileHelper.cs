@@ -109,6 +109,38 @@ namespace Stellamod.Helpers
 
             return closestNPC;
         }
+        public static NPC FindNearestEnemyUnderneath(Vector2 currentPosition, float maxDetectDistance, float maxXDistance)
+        {
+            NPC closestNPC = null;
+
+            // Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
+            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
+
+            // Loop through all NPCs
+            foreach (var target in Main.ActiveNPCs)
+            {
+                if (target.position.Y < currentPosition.Y)
+                    continue;
+                if (MathF.Abs(target.position.X - currentPosition.X) > maxXDistance)
+                    continue;
+
+                // Check if NPC able to be targeted. 
+                if (IsValidTarget(target, currentPosition))
+                {
+                    // The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
+                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, currentPosition);
+
+                    // Check if it is within the radius
+                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
+                    {
+                        sqrMaxDetectDistance = sqrDistanceToTarget;
+                        closestNPC = target;
+                    }
+                }
+            }
+
+            return closestNPC;
+        }
         public static NPC FindNearestEnemy(Vector2 currentPosition, float maxDetectDistance)
         {
             NPC closestNPC = null;

@@ -176,6 +176,7 @@ namespace Stellamod.Projectiles.Thrown
                     ProjectileID.ClusterSnowmanRocketII,
                     ProjectileID.BouncyBomb,
                     ProjectileID.BouncyDynamite,
+                    ProjectileID.ScarabBomb,
                 };
                 for (int i = 0; i < 7; i++)
                 {
@@ -185,7 +186,7 @@ namespace Stellamod.Projectiles.Thrown
                     Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), target.Center, -Vector2.UnitY * Main.rand.NextFloat(3f, 7f),
                                  id, Projectile.damage, 1, Projectile.owner);
                     target.AddBuff(Main.rand.Next(0, 200), 180);
-                    if (!p.friendly || p.hostile || p.minion || ProjectileID.Sets.LightPet[p.type] || Main.projPet[p.type])
+                    if (!p.friendly || p.hostile || p.minion || ProjectileID.Sets.LightPet[p.type] || Main.projPet[p.type] || p.IsMinionOrSentryRelated)
                         p.active = false;
                 }
 

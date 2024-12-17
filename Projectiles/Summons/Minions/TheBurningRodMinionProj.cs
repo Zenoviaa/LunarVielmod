@@ -1,10 +1,13 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Accord.Statistics.Distributions.Univariate;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -20,6 +23,7 @@ namespace Stellamod.Projectiles.Summons.Minions
     {
         public PrimDrawer TrailDrawer { get; private set; } = null;
         private ref float Timer => ref Projectile.ai[0];
+        private float WhiteTimer;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("HMArncharMinion");
@@ -43,7 +47,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             Projectile.height = 28;
             // Makes the minion go through tiles freely
             Projectile.tileCollide = false;
-
+            
             // These below are needed for a minion weapon
             // Only controls if it deals damage to enemies on contact (more on that later)
             Projectile.friendly = true;
@@ -67,35 +71,40 @@ namespace Stellamod.Projectiles.Summons.Minions
             return false;
         }
 
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return Color.White;
-        }
-
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 1.3f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.OrangeRed, Color.Transparent, completionRatio) * 0.7f;
-        }
-
         public override bool PreDraw(ref Color lightColor)
         {
-            var effects = Projectile.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
-            for (int k = 0; k < Projectile.oldPos.Length; k++)
-            {
-                Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-                Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, effects, 0f);
-            }
-            return true;
+            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Rectangle frame = Projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
+
+            float rotation = Projectile.rotation;
+            Color finalColor = Color.White.MultiplyRGB(lightColor);
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, Projectile.Frame(), Color.White, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+
+
+            Texture2D glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
+            spriteBatch.Restart(blendState: BlendState.Additive);
+            for (int i = 0; i < 6; i++)
+                spriteBatch.Draw(glowTexture, drawPos, frame, finalColor * WhiteTimer, rotation, drawOrigin, Vector2.One, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
+            spriteBatch.RestartDefaults();
+            return false;
         }
 
+
+        public override void PostDraw(Color lightColor)
+        {
+            base.PostDraw(lightColor);
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
+            for (float f = 0f; f < 4f; f++)
+            {
+                Vector2 offset = ((f / 4f) * MathHelper.ToRadians(360) + Main.GlobalTimeWrappedHourly * 8).ToRotationVector2() * VectorHelper.Osc(3f, 4f);
+                spriteBatch.Draw(glowTexture, Projectile.Center - Main.screenPosition + offset,
+                    Projectile.Frame(), Color.White * VectorHelper.Osc(0f, 0.5f), Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            }
+        }
         private void AI_MoveToward(Vector2 targetCenter, float speed = 8, float accel = 16)
         {
             //chase target
@@ -148,6 +157,15 @@ namespace Stellamod.Projectiles.Summons.Minions
             if (!SummonHelper.CheckMinionActive<TheBurningRodMinionBuff>(player, Projectile))
                 return;
 
+            WhiteTimer *= 0.98f;
+            if (Main.rand.NextBool(12))
+            {
+                if (Main.rand.NextBool(2))
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.OrangeRed, Main.rand.NextFloat(1f, 2f)).noGravity = true;
+                else
+                    Dust.NewDustPerfect(Projectile.Center, DustID.Torch, Projectile.velocity * 0.1f, 0, Color.OrangeRed, 1f).noGravity = true;
+            }
+
             SummonHelper.SearchForTargets(player, Projectile, 
                 out bool foundTarget, 
                 out float distanceFromTarget, 
@@ -171,11 +189,19 @@ namespace Stellamod.Projectiles.Summons.Minions
                     Timer++;
                     if (Timer >= 30 && distanceFromTarget < 252)
                     {
-                        Vector2 velocity = Projectile.Center.DirectionTo(targetCenter) * 8;
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity.RotatedByRandom(MathHelper.PiOver4 / 3),
-                            ProjectileID.GoldenShowerFriendly, Projectile.damage, 0f, Projectile.owner);
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity.RotatedByRandom(MathHelper.PiOver4 / 3),
-                            ProjectileID.GoldenShowerFriendly, Projectile.damage, 0f, Projectile.owner);
+                        if(Main.myPlayer == Projectile.owner)
+                        {
+                            Vector2 velocity = Projectile.Center.DirectionTo(targetCenter) * 8;
+                            Projectile.velocity -= velocity;
+                            Projectile.velocity = Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(45));
+                            Projectile.netUpdate = true;
+                            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity.RotatedByRandom(MathHelper.PiOver4 / 3),
+                                ProjectileID.GoldenShowerFriendly, Projectile.damage, 0f, Projectile.owner);
+                            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity.RotatedByRandom(MathHelper.PiOver4 / 3),
+                                ProjectileID.GoldenShowerFriendly, Projectile.damage, 0f, Projectile.owner);
+                        }
+
+                        WhiteTimer = 1f;
                         Timer = 0;
                     }
                 }
@@ -201,7 +227,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             }
 
             // Some visuals here
-            Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
+            Lighting.AddLight(Projectile.Center, Color.OrangeRed.ToVector3() * 0.78f);
         }
     }
 }

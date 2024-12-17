@@ -1,8 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
+using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,142 +15,219 @@ namespace Stellamod.Projectiles.Summons
 {
     public class Starbomb : ModProjectile
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Starbomb");
-            Main.projFrames[Projectile.type] = 1;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 2;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
-        }
-       
-        private int rippleCount = 3;
-        private int rippleSize = 5;
-        private int rippleSpeed = 15;
-        private float distortStrength = 100f;
-
+        private ref float Timer => ref Projectile.ai[0];
+        private float ScaleProgress => Easing.InExpo(Timer / 60f);
         public override void SetDefaults()
         {
-          
-            Projectile.width = 22;
-            Projectile.height = 22;
-            Projectile.tileCollide = false; // Makes the minion go through tiles freely
-            // These below are needed for a minion weapon
-            Projectile.friendly = false; // Only controls if it deals damage to enemies on contact (more on that later)
-            Projectile.minion = true; // Declares this as a minion (has many effects)
-            Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
-            Projectile.minionSlots = 2f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-            Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
-            Projectile.timeLeft = 300;
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 5;
+            base.SetDefaults();
+            Projectile.width = 16;
+            Projectile.height = 16;
+            Projectile.friendly = true;
+            Projectile.penetrate = -1;
         }
 
         public override void AI()
         {
-            // ai[0] = state
-            // 0 = unexploded
-            // 1 = exploded
-            Projectile.velocity *= 0.95f;
-            if (Projectile.timeLeft == 180)
+            base.AI();
+            ProjectileID.Sets.TrailCacheLength[Type] = 32;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
+            if (Main.rand.NextBool(8))
             {
-                ShakeModSystem.Shake = 6;
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Starexplosion"));
-                for (int j = 0; j < 40; j++)
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Yellow, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+            }
+            if (Main.rand.NextBool(8))
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Purple, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+            }
+            Projectile.velocity *= 0.98f;
+            Projectile.rotation += Projectile.velocity.Length() * 0.05f + 0.05f;
+            if(Projectile.velocity.Length() <= 0.25f)
+            {
+                Timer++;
+                if(Timer >= 60)
                 {
-
-                    Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, speed2 * 9 + Projectile.velocity, ModContent.ProjectileType<Starout>(), 320 + Projectile.damage, 0f, 0, 0f, 0f);
+                    Projectile.Kill();
                 }
             }
-            if (Projectile.timeLeft <= 180)
-            {
-               
-                if (Projectile.ai[0] == 0)
-                {
-                    Projectile.ai[0] = 1; // Set state to exploded
-                    Projectile.alpha = 255; // Make the Projectile invisible.
-                  
+        }
 
-                    if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                    {
-                        Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", Projectile.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(Projectile.Center);
-                    }
-                }
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            return false;
+        }
 
-                if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                {
-                    float progress = (180f - Projectile.timeLeft) / 60f;
-                    Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
-                }
-            }
+        public PrimDrawer TrailDrawer { get; private set; } = null;
+        public float WidthFunction(float completionRatio)
+        {
+            float baseWidth = Projectile.scale * Projectile.width * 4;
+            return MathHelper.SmoothStep(baseWidth, 0.5f, completionRatio);
+        }
 
-            if (Projectile.timeLeft == 0)
-            {
-                Projectile.Kill();
-            }
-            Vector3 RGB = new(2.55f, 0.45f, 0.94f);
-            // The multiplication here wasn't doing anything
-            Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+        public Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.Goldenrod, Color.Blue, completionRatio) * 0.7f;
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
-           /*
-            Vector2 center = Projectile.Center + new Vector2(0f, Projectile.height * -0.1f);
-
-            // This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
-            Vector2 direction = Main.rand.NextVector2CircularEdge(Projectile.width * 0.6f, Projectile.height * 0.6f);
-            float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
-            Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);*/
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-            // Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
-
-
-
-
-
-            Rectangle frame = texture.Frame(1, Main.projFrames[Projectile.type], frameY: Projectile.frame);
-            Vector2 frameOrigin = frame.Size() / 2;
-            Vector2 offset = new Vector2(Projectile.width - frameOrigin.X);
-            Vector2 drawPos = Projectile.position - Main.screenPosition + frameOrigin + offset;
-
-            float time = Main.GlobalTimeWrappedHourly;
-            float timer = Main.GlobalTimeWrappedHourly / 2f + time * 0.04f;
-
-            time %= 4f;
-            time /= 2f;
-
-            if (time >= 1f)
-            {
-                time = 2f - time;
-            }
-
-            time = time * 0.5f + 0.5f;
-            if (Projectile.timeLeft >= 180)
-            {
-                for (float i = 0f; i < 1f; i += 0.25f)
-                {
-                    float radians = (i + timer) * MathHelper.TwoPi;
-                    Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, frame, new Color(209, 220, 34, 70), Projectile.rotation, frameOrigin, Projectile.scale, SpriteEffects.None, 0);
-                }
-
-                for (float i = 0f; i < 1f; i += 0.34f)
-                {
-                    float radians = (i + timer) * MathHelper.TwoPi;
-                    Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(209, 0, 180, 77), Projectile.rotation, frameOrigin, Projectile.scale, SpriteEffects.None, 0);
-                }
-            }
-                      
-            return true;
+            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Color glowColor = Color.Aqua;
+            glowColor.A = 0;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, glowColor, Projectile.rotation, new Vector2(32, 32), 0.17f * (5 + 0.6f), SpriteEffects.None, 0f);
+      
+            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+            spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White.MultiplyRGB(lightColor), Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), Projectile.scale + ScaleProgress, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
+            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.LoveTrail);
+            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
+            return false;
         }
 
+        public override void PostDraw(Color lightColor)
+        {
+            base.PostDraw(lightColor);
+            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Color glowColor = Color.Yellow;
+            glowColor.A = 0;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            for(int i = 0; i < 8; i++)
+            {
+                spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, glowColor * ScaleProgress, Projectile.rotation, new Vector2(32, 32), 0.17f * (5 + 0.6f) + ScaleProgress, SpriteEffects.None, 0f);
+            }
+        }
         public override void OnKill(int timeLeft)
         {
-            if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+            base.OnKill(timeLeft);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+                ModContent.ProjectileType<StarBoomer>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+        }
+    }
+
+    public class StarBoomer : ModProjectile
+    {
+        private ref float Timer => ref Projectile.ai[0];
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 16;
+            Projectile.height = 16;
+            Projectile.friendly = true;
+            Projectile.penetrate = -1;
+            Projectile.tileCollide = false;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            float progress = Timer / 120f;
+            int divisor = (int)MathHelper.Lerp(20, 10, progress);
+            if(Timer % divisor == 0 || Timer == 1)
             {
-                Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + Main.rand.NextVector2Circular(24, 24), Vector2.Zero, 
+                        ModContent.ProjectileType<StarBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
             }
-        }    
+
+            if(Timer >= 120)
+            {
+                Projectile.Kill();
+            }
+        }
+    }
+
+    public class StarBoom : ModProjectile
+    {
+        private ref float Timer => ref Projectile.ai[0];
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetDefaults()
+        {
+            Projectile.width = 128;
+            Projectile.height = 128;
+            Projectile.friendly = true;
+            Projectile.penetrate = -1;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = 15;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            if(Timer == 1)
+            {
+
+                FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+                SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
+                for (float f = 0; f < 16; f++)
+                {
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowSparkleDust>(),
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Yellow, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                }
+
+                SoundStyle morrowExp = new SoundStyle($"Stellamod/Assets/Sounds/MorrowExp");
+                morrowExp.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(morrowExp, Projectile.position);
+
+                switch (Main.rand.Next(3))
+                {
+                    case 0:
+                        morrowExp = new SoundStyle($"Stellamod/Assets/Sounds/StarFlower1");
+                        break;
+                    case 1:
+                        morrowExp = new SoundStyle($"Stellamod/Assets/Sounds/StarFlower1");
+                        break;
+                    case 2:
+                        morrowExp = new SoundStyle($"Stellamod/Assets/Sounds/StarFlower3");
+                        break;
+                }
+
+                morrowExp.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(morrowExp, Projectile.position);
+
+                FXUtil.GlowCircleBoom(Projectile.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.Yellow,
+                    outerGlowColor: Color.Blue, duration: 25, baseSize: 0.24f);
+
+                for (float i = 0; i < 8; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.Yellow,
+                        outerGlowColor: Color.Blue,
+                        baseSize: Main.rand.NextFloat(0.1f, 0.2f),
+                        duration: Main.rand.NextFloat(15, 25));
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
+
+                for (int i = 0; i < 8; i++)
+                {
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
+                }
+
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    float oofed = Main.rand.NextFloat(-1f, 1f);
+                    for (float f = 0; f < 4; f++)
+                    {
+                        float rot = (f / 4f) * MathHelper.TwoPi;
+                        rot += oofed;
+                        Vector2 velocity = rot.ToRotationVector2() * 8;
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, ProjectileID.SuperStar, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    }
+                }
+            }
+        }
     }
 }

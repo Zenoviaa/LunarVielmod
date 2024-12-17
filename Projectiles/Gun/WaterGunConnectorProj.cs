@@ -1,27 +1,30 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders.MagicTrails;
+using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
-using Stellamod.Projectiles.Magic;
-using Stellamod.Trails;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
+using Stellamod.Trails;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
+using Stellamod.Dusts;
+using System;
+
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class WaterGunConnectorProj : ModProjectile
+    internal class WaterGunConnectorProj : ModProjectile,
+         IPixelPrimitiveDrawer
     {
-        Vector2[] TargetConnectorPos;
-        Vector2[] ConnectorPos;
-        List<Vector2> Connector;
-        List<Vector2> Target;
-        int FrameTick;
-        int FrameCounter;
-
+        private Vector2[] TrailPoints = new Vector2[1];
+        private List<Projectile> Projectiles = new List<Projectile>();
+        private List<Vector2> Connector = new List<Vector2>();
+        private List<Vector2> Target = new List<Vector2>();
+        private int trailingMode = 0;
+        private int Smooth;
+        private ref float Timer => ref Projectile.ai[0];
         public override void SetDefaults()
         {
             Projectile.width = 16;
@@ -32,7 +35,7 @@ namespace Stellamod.Projectiles.Gun
             Projectile.tileCollide = false;
             Projectile.friendly = true;
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 14;
+            Projectile.localNPCHitCooldown = 9;
         }
 
         public override void AI()
@@ -47,14 +50,27 @@ namespace Stellamod.Projectiles.Gun
             bool isReal = false;
             Player player = Main.player[Projectile.owner];
             Projectile.Center = player.Center;
-            foreach(var proj in Main.ActiveProjectiles)
+            foreach (var proj in Main.ActiveProjectiles)
             {
-                if(proj.type == ModContent.ProjectileType<WaterGunNodeProj>() && proj.owner == Projectile.owner)
+                if (proj.type == ModContent.ProjectileType<WaterGunNodeProj>() && proj.owner == Projectile.owner)
                 {
                     isReal = true;
                 }
             }
 
+            Timer++;
+            if(Timer % 6 == 0)
+            {
+                Smooth = Main.rand.Next(65, 155);
+                for(int i =0;i < TrailPoints.Length; i++)
+                {
+                    Vector2 trailPoint = TrailPoints[i];
+                    if (Main.rand.NextBool(300))
+                    {
+                        Dust.NewDustPerfect(trailPoint, ModContent.DustType<GlyphDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Aqua, 2f).noGravity = true;
+                    }
+                }
+            }
             if (!isReal)
             {
                 Projectile.Kill();
@@ -64,31 +80,49 @@ namespace Stellamod.Projectiles.Gun
         private void AI_FillPoints()
         {
             //Get the points to connect
-            List<Vector2> points = new List<Vector2>();
-            List<Projectile> projectiles = new List<Projectile>();
+            Connector.Clear();
+            Projectiles.Clear();
             int nodeType = ModContent.ProjectileType<WaterGunNodeProj>();
-            foreach(var proj in Main.ActiveProjectiles)
+            foreach (var proj in Main.ActiveProjectiles)
             {
                 if (proj.owner != Projectile.owner)
                     continue;
                 if (proj.type != nodeType)
                     continue;
-                projectiles.Add(proj);
+                Projectiles.Add(proj);
             }
 
-            projectiles.Sort((x, y) => y.timeLeft.CompareTo(x.timeLeft));
-            for(int i = 0; i < projectiles.Count; i++)
+            Projectiles.Sort((x, y) => y.timeLeft.CompareTo(x.timeLeft));
+            for (int i = 1; i < Projectiles.Count; i++)
             {
-                points.Add(projectiles[i].Center);
+                for(float j = 0; j < 8f; j++)
+                {
+                    Connector.Add(Vector2.Lerp(Projectiles[i - 1].Center, Projectiles[i].Center, j / 8f));
+                }
+           
             }
 
-            Connector = points;
+
+            TrailPoints = Connector.ToArray();
+            for (int i = 1; i < TrailPoints.Length - 1; i++)
+            {
+                float p = (float)i / (float)TrailPoints.Length - 1;
+                ref Vector2 pos = ref TrailPoints[i];
+                ref Vector2 nextPos = ref TrailPoints[i + 1];
+                Vector2 vec = (nextPos - pos);
+                vec = vec.RotatedBy(MathHelper.ToRadians(90));
+                vec *= p;
+
+                pos += vec * MathF.Sin(Main.GlobalTimeWrappedHourly * -12 + p * 24);
+                pos += vec * MathF.Sin((Main.GlobalTimeWrappedHourly + 4) * -12 + p * 12);
+
+            }
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             //This damages everything in the trail
-            Vector2[] positions = Connector.ToArray();
+            Vector2[] positions = TrailPoints;
             float collisionPoint = 0;
             for (int i = 1; i < positions.Length; i++)
             {
@@ -99,56 +133,39 @@ namespace Stellamod.Projectiles.Gun
             }
             return base.Colliding(projHitbox, targetHitbox);
         }
-        internal PrimitiveTrail BeamDrawer;
-
-
-        public float WidthFunction(float completionRatio)
-        {
-            return Projectile.width * Projectile.scale * 1.3f;
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            Color color = Color.White;
-            return color;
-        }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            var oldPos = Connector;
-            if (oldPos.Count == 0)
-                return false;
-
-         
-            Texture2D chainTexture = ModContent.Request<Texture2D>(Texture).Value;
-            int frameCount = 8;
-            int frameTime = 2;
-            Rectangle animationFrame = chainTexture.AnimationFrame(
-                ref FrameCounter, ref FrameTick, frameTime, frameCount, true);
-            SpriteBatch spriteBatch = Main.spriteBatch;
-
-
-
-            for (int i = 1; i < oldPos.Count; i++)
-            {
-                
-                //Draw from center bottom of texture
-                Vector2 frameSize = animationFrame.Size();
-                Vector2 origin = new Vector2(frameSize.X / 2, frameSize.Y);
-
-                Vector2 start = oldPos[i];
-                Vector2 end = oldPos[i - 1];
-                Vector2 position = start;
-
-                float rotation = (start - end).ToRotation() - MathHelper.PiOver2; //Calculate rotation based on direction from last point
-                float distance = Vector2.Distance(start, end);
-                float yScale = Vector2.Distance(oldPos[i], oldPos[i - 1]) / frameSize.Y; //Calculate how much to squash/stretch for smooth chain based on distance between points
-
-                Vector2 scale = new Vector2(1, yScale); // Stretch/Squash chain segment
-                spriteBatch.Draw(chainTexture, position - Main.screenPosition, animationFrame,
-                    Color.White, rotation, origin, scale, SpriteEffects.None, 0);
-            }
             return false;
+        }
+
+        public PrimDrawer TrailDrawer2 { get; private set; } = null;
+        public float WidthFunction2(float completionRatio)
+        {
+            float baseWidth = Projectile.scale * Projectile.width;
+            if (Timer % 6 == 0)
+            {
+                baseWidth *= 1.2f;
+            }
+            return MathHelper.SmoothStep(baseWidth, baseWidth, completionRatio) * 0.8f;
+        }
+
+        public Color ColorFunction2(float completionRatio)
+        {
+            Color color = Color.CadetBlue;
+            if(Timer % 6 == 0)
+            {
+                color = Color.LightGoldenrodYellow;
+            }
+            return Color.Lerp(color, color, completionRatio);
+        }
+
+        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
+        {
+            TrailDrawer2 ??= new PrimDrawer(WidthFunction2, ColorFunction2, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
+            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
+            TrailDrawer2.DrawPixelPrims(TrailPoints, -Main.screenPosition, Smooth);
+            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

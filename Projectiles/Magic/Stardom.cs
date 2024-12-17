@@ -1,22 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Particles;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Magic
 {
     public class Stardom : ModProjectile
     {
-
-        public bool OptionallySomeCondition { get; private set; }
-
+        private ref float Timer => ref Projectile.ai[1];
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Granite MagmumProj");
@@ -34,10 +31,12 @@ namespace Stellamod.Projectiles.Magic
             float baseWidth = Projectile.scale * Projectile.width * 1.0f;
             return MathHelper.SmoothStep(baseWidth, 0.35f, completionRatio);
         }
+
         public Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(Color.LightCyan, Color.BlueViolet, completionRatio) * 0.7f;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             Main.spriteBatch.End();
@@ -53,16 +52,7 @@ namespace Stellamod.Projectiles.Magic
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
-        public override void PostDraw(Color lightColor)
-        {
-            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
 
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (7 + 0.6f), SpriteEffects.None, 0f);
-            Lighting.AddLight(Projectile.Center, Color.Blue.ToVector3() * 1.0f * Main.essScale);
-
-        }
 
         public override void SetDefaults()
         {
@@ -72,40 +62,16 @@ namespace Stellamod.Projectiles.Magic
             Projectile.width = 15;
             Projectile.height = 15;
             Projectile.tileCollide = true;
+            Projectile.extraUpdates += 1;
         }
-       
-        public override bool PreAI()
-        {
-            if (Main.rand.NextBool(13))
-            {
-
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BlueTorch);
-            }
-
-            int num1222 = 74;
-            for (int k = 0; k < 2; k++)
-            {
-                int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-                Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * k;
-                Main.dust[index2].scale = .95f;
-                Main.dust[index2].velocity *= 0f;
-                Main.dust[index2].noGravity = true;
-                Main.dust[index2].noLight = false;
-            }
-            return true;
 
 
-           
-        }
-        
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Crysalizer5"));
-            for (int i = 0; i < 15; i++)
-            {
-                SoundEngine.PlaySound(SoundID.DeerclopsIceAttack, Projectile.Center);
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
-            }
+            SoundStyle impactSound = new SoundStyle($"Stellamod/Assets/Sounds/Crysalizer5");
+            impactSound.PitchVariance = 0.3f;
+            impactSound.Volume = 0.5f;
+            SoundEngine.PlaySound(impactSound, Projectile.position);
 
             for (int i = 0; i < 20; i++)
             {
@@ -123,87 +89,66 @@ namespace Stellamod.Projectiles.Magic
                     Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
             }
 
-
-            for (int r = 0; r < 37; r++)
+            for (float f = 0; f < 4; f++)
             {
-
-                Vector2 speed2 = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-                
-
-
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
+                    (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.LightBlue, Main.rand.NextFloat(1f, 2f)).noGravity = true;
             }
-
-            for (int r = 0; r < 37; r++)
+            FXUtil.GlowCircleBoom(Projectile.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.LightCyan,
+                    outerGlowColor: Color.BlueViolet, duration: 25, baseSize: 0.04f);
+            for (float i = 0; i < 4; i++)
             {
-
-                Vector2 speed2 = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-                
-
-
+                float progress = i / 4f;
+                float rot = progress * MathHelper.ToRadians(360);
+                rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                Vector2 offset = rot.ToRotationVector2() * 24;
+                var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.LightBlue,
+                    outerGlowColor: Color.Black,
+                    duration: Main.rand.NextFloat(6, 12),
+                    baseSize: Main.rand.NextFloat(0.02f, 0.1f));
+                particle.Rotation = rot + MathHelper.ToRadians(45);
             }
-
-            for (int i = 0; i < 130; i++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
-                var d = Dust.NewDustPerfect(Projectile.Center, DustID.DrillContainmentUnit, speed * 15, Scale: 1f);
-                ;
-                d.noGravity = true;
-            }
-
         }
-
-
-
-
 
         public override void AI()
         {
+            if (Main.rand.NextBool(13))
+            {
+
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BlueTorch);
+            }
+
+            int num1222 = 74;
+            for (int k = 0; k < 2; k++)
+            {
+                int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+                Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * k;
+                Main.dust[index2].scale = .95f;
+                Main.dust[index2].velocity *= 0f;
+                Main.dust[index2].noGravity = true;
+                Main.dust[index2].noLight = false;
+            }
+
             Projectile.frame = (int)Projectile.ai[0] % 4 > 2 ? 1 : 0;
-          
+
             Projectile.rotation += 0.55f;
             Projectile.ai[0] += 0.55f;
 
-            Projectile.ai[1]++;
-            if (Projectile.ai[1] == 2)
+            Timer++;
+            if (Timer == 2)
             {
                 float offsetX = Main.rand.Next(-200, 200) * 0.01f;
                 float offsetY = Main.rand.Next(-200, 200) * 0.01f;
-
-
                 Projectile.velocity.X += offsetX;
                 Projectile.velocity.Y += offsetY;
-
             }
-
-        }
-
-
-
-
-
-
-        float alphaCounter = 0;
-       
-       
-       
-
-
-
-
-
-
-
-
-        
-
-
-           
-        
-
-        
-           
         }
     }
+}
 
 
 

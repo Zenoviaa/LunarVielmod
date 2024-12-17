@@ -1,4 +1,5 @@
-﻿using Stellamod.Helpers;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +17,38 @@ namespace Stellamod.Projectiles.Gun
             get => Projectile.ai[0];
             set => Projectile.ai[0] = value;
         }
+        private ref float Timer => ref Projectile.ai[1];
 
         public override void SetDefaults()
         {
-            Projectile.width = 1;
-            Projectile.height = 1;
+            Projectile.width = 4;
+            Projectile.height = 4;
             Projectile.friendly = false;
             Projectile.penetrate = -1;
-            Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 120;
+            Projectile.timeLeft = 800;
+            Projectile.extraUpdates = 1;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            if(Timer < 30)
+            {
+                Projectile.velocity.Y += 0.1f;
+            }
+            else
+            {
+                Projectile.velocity *= 0.9f;
+            }
+          
+        }
+
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            Projectile.velocity *= 0.1f;
+            return false;
         }
     }
 }

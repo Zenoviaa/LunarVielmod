@@ -47,7 +47,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			int numProjectiles = Main.rand.Next(4, 7);
+			int numProjectiles = Main.rand.Next(2, 5);
 			for (int p = 0; p < numProjectiles; p++)
 			{
 				// Rotate the velocity randomly by 30 degrees at max.

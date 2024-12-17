@@ -35,9 +35,10 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.mana = 10;
 			Item.width = 32;
 			Item.height = 32;
-			Item.useTime = 36;
-			Item.useAnimation = 36;
+			Item.useTime = 18;
+			Item.useAnimation = 18;
 			Item.useStyle = ItemUseStyleID.Shoot;
+   
             Item.value = Item.sellPrice(0, 1, 33, 0);
             Item.rare = ItemRarityID.Pink;
 
@@ -59,13 +60,17 @@ namespace Stellamod.Items.Weapons.Summon
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		{
-			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
-			player.AddBuff(Item.buffType, 2);
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GSummon"), player.position);
-            // Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position.
+        {
+            player.AddBuff(Item.buffType, 2);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone3"), player.position);
+            // This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
             position = Main.MouseWorld;
-			return true;
+            player.AddBuff(Item.buffType, 2);
+            var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
+            projectile.originalDamage = Item.damage;
+
+            player.UpdateMaxTurrets();
+            return false;
 		}
 	}
 }

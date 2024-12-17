@@ -88,8 +88,14 @@ namespace Stellamod.Projectiles
 
 				}
 			
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 70, Projectile.position.Y, speedX, speedY, ModContent.ProjectileType<ScissorianSlash>(), (int)(Projectile.damage * 0.6), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, ModContent.ProjectileType<Stardom>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
+				if(Main.myPlayer == Projectile.owner)
+				{
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 70, Projectile.position.Y, speedX, speedY,
+						ModContent.ProjectileType<ScissorianSlash>(), (int)(Projectile.damage * 0.6), 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, 
+						ModContent.ProjectileType<Stardom>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
+                }
+
 			}
 
 			if (Timer == 24)
@@ -112,9 +118,13 @@ namespace Stellamod.Projectiles
 						break;
 
 				}
-
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, ModContent.ProjectileType<Stardom2>(), (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 70, Projectile.position.Y, speedX, speedY, ModContent.ProjectileType<ScissorianSlash2>(), (int)(Projectile.damage * 1.4), 0f, Projectile.owner, 0f, 0f);
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, 
+						ModContent.ProjectileType<Stardom2>(), (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 70, Projectile.position.Y, speedX, speedY,
+						ModContent.ProjectileType<ScissorianSlash2>(), (int)(Projectile.damage * 1.4), 0f, Projectile.owner, 0f, 0f);
+				}
 			}
 
 			if (Timer == 36)

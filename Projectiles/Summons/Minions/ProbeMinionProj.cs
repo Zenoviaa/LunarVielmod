@@ -3,9 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Trails;
 using System;
+using System.Collections.Generic;
+using System.Net;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -15,11 +19,11 @@ namespace Stellamod.Projectiles.Summons.Minions
 {
     public class ProbeMinionProj : ModProjectile
     {
-        public PrimDrawer TrailDrawer { get; private set; } = null;
+        private ref float Timer => ref Projectile.ai[0];
+        private ref float ShootRotation => ref Projectile.ai[1];
+        private Player Owner => Main.player[Projectile.owner];
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 22;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
             // DisplayName.SetDefault("Jelly Minion");
             // Sets the amount of frames this minion has on its spritesheet
             // This is necessary for right-click targeting
@@ -28,6 +32,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             // These below are needed for a minion
             // Denotes that this projectile is a pet or minion
             Main.projPet[Projectile.type] = true;
+            Main.projFrames[Type] = 4;
             // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
             ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
             // Don't mistake this with "if this is true, then it will automatically home". It is just for damage reduction for certain NPCs
@@ -45,9 +50,9 @@ namespace Stellamod.Projectiles.Summons.Minions
             // Only controls if it deals damage to enemies on contact (more on that later)
             Projectile.friendly = true;
             // Only determines the damage type
-            Projectile.minion = true;
-            // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-            Projectile.minionSlots = 1f;
+            Projectile.sentry = true;
+            Projectile.timeLeft = Projectile.SentryLifeTime;
+
             // Needed so the minion doesn't despawn on collision with enemies or tiles
             Projectile.penetrate = -1;
         }
@@ -61,233 +66,192 @@ namespace Stellamod.Projectiles.Summons.Minions
         // This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
         public override bool MinionContactDamage()
         {
-            return true;
-        }
-
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return Color.White;
-        }
-
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 1.3f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.DarkRed, Color.Transparent, completionRatio) * 0.7f;
-        }
-
-        public override bool PreDraw(ref Color lightColor)
-        {
-            if (Main.rand.NextBool(3))
-            {
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkRed, 0.4f).noGravity = true;
-            }
-
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
             return false;
         }
 
         public override void AI()
         {
-            Player player = Main.player[Projectile.owner];
-            if (!SummonHelper.CheckMinionActive<ProbeMinionBuff>(player, Projectile))
-                return;
-
-
-            #region General behavior
-            Vector2 idlePosition = player.Center;
-            idlePosition.Y -= 1f; // Go up 48 coordinates (three tiles from the center of the player)
-
-            // If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
-            // The index is projectile.minionPos
-            float minionPositionOffsetX = (10 + Projectile.minionPos * 40) * -player.direction;
-
-            // All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
-
-            // Teleport to player if distance is too big
-            Vector2 vectorToIdlePosition = idlePosition - Projectile.Center;
-            float distanceToIdlePosition = vectorToIdlePosition.Length();
-            if (Main.myPlayer == player.whoAmI && distanceToIdlePosition > 1000f)
+            base.AI();
+            Timer++;
+            if(Timer == 1)
             {
-                // Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
-                // and then set netUpdate to true
-                Projectile.position = idlePosition;
-                Projectile.velocity *= 0.20f;
-                Projectile.netUpdate = true;
-            }
-
-            // If your minion is flying, you want to do this independently of any conditions
-            float overlapVelocity = 0.04f;
-            for (int i = 0; i < Main.maxProjectiles; i++)
-            {
-                // Fix overlap with other minions
-                Projectile other = Main.projectile[i];
-                if (i != Projectile.whoAmI && other.active && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width)
+                for (float f = 0; f < 8; f++)
                 {
-                    if (Projectile.position.X < other.position.X) Projectile.velocity.X -= overlapVelocity;
-                    else Projectile.velocity.X += overlapVelocity;
-
-                    if (Projectile.position.Y < other.position.Y) Projectile.velocity.Y -= overlapVelocity;
-                    else Projectile.velocity.Y += overlapVelocity;
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Red, Main.rand.NextFloat(2f, 3f)).noGravity = true;
                 }
+
+
             }
-            #endregion
-
-
-            #region Find target
-            // Starting search distance
-            float distanceFromTarget = 900f;
-            Vector2 targetCenter = Projectile.position;
-            bool foundTarget = false;
-
-            // This code is required if your minion weapon has the targeting feature
-            if (player.HasMinionAttackTargetNPC)
+            if (Owner.dead || !Owner.active)
             {
-                NPC npc = Main.npc[player.MinionAttackTargetNPC];
-                float between = Vector2.Distance(npc.Center, Projectile.Center);
-                // Reasonable distance away so it doesn't target across multiple screens
-                if (between < 2000f)
-                {
-                    distanceFromTarget = between;
-                    targetCenter = npc.Center;
-                    foundTarget = true;
-                }
+                Owner.ClearBuff(ModContent.BuffType<ProbeMinionBuff>());
             }
-            if (!foundTarget)
+
+            if (!Owner.HasBuff(ModContent.BuffType<ProbeMinionBuff>()))
             {
-                // This code is required either way, used for finding a target
-                for (int i = 0; i < Main.maxNPCs; i++)
+                Projectile.Kill();
+            }
+
+            if (Timer % 6 == 0)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.Red, Main.rand.NextFloat(0.5f, 1.5f)).noGravity = true;
+            }
+
+            if(Timer % 10 == 0)
+            {
+                if(Main.myPlayer == Projectile.owner)
                 {
-                    NPC npc = Main.npc[i];
-                    if (npc.CanBeChasedBy())
+                    NPC nearest = ProjectileHelper.FindNearestEnemyUnderneath(Projectile.position, 1024, 256);
+                    if(nearest != null)
                     {
-                        float between = Vector2.Distance(npc.Center, Projectile.Center);
-                        bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
-                        bool inRange = between < distanceFromTarget;
-                        bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
-                        // Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
-                        // The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
-                        bool closeThroughWall = between < 100f;
-                        if (((closest && inRange) || !foundTarget) && (lineOfSight || closeThroughWall))
-                        {
-                            distanceFromTarget = between;
-                            targetCenter = npc.Center;
-                            foundTarget = true;
-                        }
+                        Vector2 velocity = (nearest.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+                        ShootRotation = velocity.ToRotation() - MathHelper.ToRadians(90);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity.RotatedByRandom(MathHelper.ToRadians(7)),
+                            ModContent.ProjectileType<ProbeLaser>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                        Projectile.netUpdate = true;
                     }
+
                 }
+
             }
 
-            // friendly needs to be set to true so the minion can deal contact damage
-            // friendly needs to be set to false so it doesn't damage things like target dummies while idling
-            // Both things depend on if it has a target or not, so it's just one assignment here
-            // You don't need this assignment if your minion is shooting things instead of dealing contact damage
-            Projectile.friendly = foundTarget;
-            #endregion
-
-            #region Movement
-
-            // Default movement parameters (here for attacking)
-            float speed = 11f;
-            float inertia = 20f;
-
-            if (foundTarget)
-            {
-                Projectile.rotation = Projectile.DirectionTo(targetCenter).ToRotation() - MathHelper.PiOver2;
-                if (distanceFromTarget > 100f)
-                {
-                    // The immediate range around the target (so it doesn't latch onto it when close)
-                    Vector2 direction = targetCenter - Projectile.Center;
-                    direction.Normalize();
-                    direction *= speed;
-                    Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
-
-                    Projectile.ai[1]++;
-
-                    if (Projectile.ai[1] >= 30)
-                    {
-                        float rot = direction.ToRotation();
-                        float spread = 0.4f;
-
-                        Vector2 offset = new Vector2(1.5f, -0.1f * Projectile.direction).RotatedBy(rot);
-
-                        for (int k = 0; k < 7; k++)
-                        {
-                            Vector2 direction2 = offset.RotatedByRandom(spread);
-
-                            Dust.NewDustPerfect(Projectile.position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction2 * Main.rand.NextFloat(8), 125, new Color(180, 50, 40), Main.rand.NextFloat(0.2f, 0.5f));
-                        }
-                        Dust.NewDustPerfect(Projectile.position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
-                        Dust.NewDustPerfect(Projectile.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
-
-                        var EntitySource = Projectile.GetSource_Death();
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
-                            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 25, direction.Y * 25, ProjectileID.Bullet, 40, 1, Main.myPlayer, 0, 0);
-                        Projectile.ai[1] = 0;
-                    }
-                }
-            }
-            else
-            {
-                Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
-                // Minion doesn't have a target: return to player and idle
-                if (distanceToIdlePosition > 600f)
-                {
-                    // Speed up the minion if it's away from the player
-                    speed = 30f;
-                    inertia = 60f;
-                }
-                else
-                {
-                    // Slow down the minion if closer to the player
-                    speed = 4f;
-                    inertia = 80f;
-                }
-                if (distanceToIdlePosition > 20f)
-                {
-                    // The immediate range around the player (when it passively floats about)
-
-                    // This is a simple movement formula using the two parameters and its desired direction to create a "homing" movement
-                    vectorToIdlePosition.Normalize();
-                    vectorToIdlePosition *= speed;
-                    Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
-                }
-                else if (Projectile.velocity == Vector2.Zero)
-                {
-                    // If there is a case where it's not moving at all, give it a little "poke"
-                    Projectile.velocity.X = -0.15f;
-                    Projectile.velocity.Y = -0.05f;
-                }
-            }
-            #endregion
-
-            #region Animation and visuals
-            // So it will lean slightly towards the direction it's moving
-
-            // This is a simple "loop through all frames from top to bottom" animation
-            int frameSpeed = 5;
-            Projectile.frameCounter++;
-            if (Projectile.frameCounter >= frameSpeed)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-                if (Projectile.frame >= Main.projFrames[Projectile.type])
-                {
-                    Projectile.frame = 0;
-                }
-            }
-
-            // Some visuals here
-            Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
-            #endregion
+            Projectile.velocity.Y = MathF.Sin(Timer * 0.1f);
+            DrawHelper.AnimateTopToBottom(Projectile, 4);
         }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Rectangle frame = Projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
+
+            float rotation = ShootRotation;
+            Color finalColor = Color.White.MultiplyRGB(lightColor);
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, Projectile.Frame(), Color.White, rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            return false;
+        }
+
+        public override void PostDraw(Color lightColor)
+        {
+            base.PostDraw(lightColor);
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
+            float rotation = ShootRotation;
+            for (float f = 0f; f < 4f; f++)
+            {
+                Vector2 offset = ((f / 4f) * MathHelper.ToRadians(360) + Main.GlobalTimeWrappedHourly * 8).ToRotationVector2() * VectorHelper.Osc(3f, 4f);
+                spriteBatch.Draw(glowTexture, Projectile.Center - Main.screenPosition + offset,
+                    Projectile.Frame(), Color.White * VectorHelper.Osc(0f, 0.15f), rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            }
+        }
+    }
+
+
+    public class ProbeLaser : ModProjectile, IPixelPrimitiveDrawer
+    {
+        private PrimitiveTrail BeamDrawer;
+        private float BeamLength;
+        private Vector2 EndPoint => Projectile.position + Projectile.velocity * BeamLength + Projectile.Size / 2 - new Vector2(0, 8);
+        private ref float Timer => ref Projectile.ai[0];
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 8;
+            Projectile.height = 8;
+            Projectile.friendly = true;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 15;
+            Projectile.timeLeft = 7;
+        }
+
+        public override bool ShouldUpdatePosition() => false;
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+
+            float targetBeamLength = ProjectileHelper.PerformBeamHitscan(Projectile.position, Projectile.velocity, 2400);
+            BeamLength = targetBeamLength;
+            if (Timer == 1)
+            {
+                for (float f = 0; f < 2; f++)
+                {
+                    Dust.NewDustPerfect(EndPoint, ModContent.DustType<GlowSparkleDust>(),
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.White, Main.rand.NextFloat(0.2f, 1f)).noGravity = true;
+                }
+
+                SoundStyle mySound = new SoundStyle($"Stellamod/Assets/Sounds/GunShootNew5");
+                mySound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(mySound, Projectile.position);
+
+                FXUtil.GlowCircleBoom(EndPoint,
+                    innerColor: Color.White,
+                    glowColor: Color.Red,
+                    outerGlowColor: Color.Black, duration: 5, baseSize: Main.rand.NextFloat(0.02f, 0.2f));
+
+                for (float i = 0; i < 8; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(EndPoint,
+                        innerColor: Color.White,
+                        glowColor: Color.Red,
+                        outerGlowColor: Color.Black,
+                        baseSize: Main.rand.NextFloat(0.05f, 0.1f),
+                        duration: Main.rand.NextFloat(5, 10));
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
+            }
+        }
+
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            float _ = 0f;
+            float width = Projectile.width * 0.8f;
+            Vector2 start = Projectile.Center;
+
+            Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
+            Vector2 end = start + direction * (BeamLength);
+            return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, width, ref _);
+        }
+
+        public float WidthFunction(float completionRatio)
+        {
+            return Projectile.width * Projectile.scale * 1.3f * Easing.SpikeOutCirc(Timer / 7f);
+        }
+
+        public Color ColorFunction(float completionRatio)
+        {
+            Color color = Color.Lerp(Color.White, Color.Red, 0.65f);
+            return color * Projectile.Opacity * MathF.Pow(Utils.GetLerpValue(0f, 0.1f, completionRatio, true), 3f);
+        }
+
+        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
+        {
+            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
+
+            TrailRegistry.LaserShader.UseColor(Color.White);
+            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
+
+
+            List<Vector2> points = new();
+            for (int i = 0; i <= 8; i++)
+            {
+                points.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity * BeamLength, i / 8f));
+            }
+
+            BeamDrawer.DrawPixelated(points, -Main.screenPosition, 32);
+            Main.spriteBatch.ExitShaderRegion();
+        }
+
     }
 }

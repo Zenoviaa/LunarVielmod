@@ -21,6 +21,8 @@ namespace Stellamod.Projectiles.IgniterExplosions
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 18;
 			Projectile.scale = 1f;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = -1;
 		}
 
 		public float Timer
