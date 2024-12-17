@@ -2803,7 +2803,11 @@ AssassinsDischarge: {
 
 BrokenWrath: {
 	DisplayName: Arncharlite's Wrath Sniper
-	Tooltip: Shoots a bunch of scrap
+	Tooltip:
+		'''
+		Converts musket balls into speeding missiles
+		Shoots a spread of scrap too!
+		'''
 }
 
 CloudBow: {
