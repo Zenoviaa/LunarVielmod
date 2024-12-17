@@ -5601,7 +5601,7 @@ OnionOfHeight: {
 
 TheAurora: {
 	DisplayName: Astral Blast
-	Tooltip: Take the aurora with smart blasts!
+	Tooltip: Rapidly launches bits of stars that home towards your cursor!
 }
 
 ChromaCutter: {
