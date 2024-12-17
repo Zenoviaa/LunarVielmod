@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Trails;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -13,6 +12,7 @@ namespace Stellamod.Projectiles.Gun
 {
     internal class XX4160Shot : ModProjectile
     {
+        private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
@@ -26,41 +26,27 @@ namespace Stellamod.Projectiles.Gun
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.tileCollide = true;
-
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
             Projectile.extraUpdates = 5;
         }
 
-        private ref float AI_Timer => ref Projectile.ai[0];
         public override void AI()
         {
-            AI_Timer++;
+            Timer++;
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
-
-
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.Slow, 300);
-            if (Main.rand.NextBool(3))
-            {
-
-                for (int i = 0; i <= 10; i++)
-                {
-                    Dust.NewDust(base.Projectile.Center, 22, 22, ModContent.DustType<GlowLineDust>(), base.Projectile.velocity.X * 0.2f, base.Projectile.velocity.Y * 0.2f);
-                    Dust.NewDust(base.Projectile.Center, 22, 22, ModContent.DustType<GlowDust>(), 0f, 0f, 0, Color.Red, 0.3f);
-                }
-            }
         }
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i <= 10; i++)
+            for (int i = 0; i < 2; i++)
             {
-                Dust.NewDust(base.Projectile.Center, 22, 22, ModContent.DustType<GlowLineDust>(), base.Projectile.velocity.X * 0.2f, base.Projectile.velocity.Y * 0.2f);
-                Dust.NewDust(base.Projectile.Center, 22, 22, ModContent.DustType<GlowDust>(), 0f, 0f, 0, Color.Red, 0.3f);
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(30)) * Main.rand.NextFloat(0.2f, 1f), 0, Color.Red, 1f).noGravity = true;
             }
         }
 
@@ -68,6 +54,7 @@ namespace Stellamod.Projectiles.Gun
         {
             return Color.White;
         }
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
@@ -82,7 +69,6 @@ namespace Stellamod.Projectiles.Gun
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
-
             int frameHeight = texture.Height / Main.projFrames[Projectile.type];
             int startY = frameHeight * Projectile.frame;
             Player player = Main.player[Projectile.owner];
@@ -100,8 +86,6 @@ namespace Stellamod.Projectiles.Gun
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
-
             return false;
         }
     }

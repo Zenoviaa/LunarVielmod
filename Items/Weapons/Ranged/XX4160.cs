@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
 using Stellamod.Projectiles.Swords;
@@ -62,15 +63,11 @@ namespace Stellamod.Items.Weapons.Ranged
             {
                 if (LAZERMode)
                 {
-                    Item.damage = 18;
-                    Item.shootSpeed = 35f;
                     LAZERMode = false;
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/XX41604"));
                 }
                 else
                 {
-                    Item.damage = 20;
-                    Item.shootSpeed = 3f;
                     LAZERMode = true;
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/XX41603"));
                 }
@@ -92,6 +89,59 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.Register();
         }
 
+        public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+        {
+            base.ModifyWeaponDamage(player, ref damage);
+            if (player.HasBuff(ModContent.BuffType<Overheated>()))
+            {
+                damage *= 0.5f;
+            } 
+            else if (LAZERMode)
+            {
+                damage *= 1.5f;
+            }
+        }
+
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
+            if (player.HasBuff(ModContent.BuffType<Overheated>()))
+            {
+                velocity *= 0.5f;
+            }
+            else if (LAZERMode)
+            {
+                velocity *= 0.5f;
+            }
+
+            if (player.HasBuff(ModContent.BuffType<Overheated>()))
+            {
+                Item.useTime = 15;
+                Item.useAnimation = 15;
+            }
+            else if (LAZERMode)
+            {
+                Item.useTime = 3;
+                Item.useAnimation = 3;
+
+                LAZERAlpha -= 4;
+                if (LAZERAlpha <= 7)
+                {
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol2"));
+                    player.AddBuff(ModContent.BuffType<Overheated>(), 1500);
+                    Item.useTime = 105;
+                    Item.useAnimation = 105;
+                    LAZERMode = false;
+                    LAZERAlpha = 255;
+                }
+            }
+            else
+            {
+                Item.useTime = 5;
+                Item.useAnimation = 5;
+            }
+        }
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
 
@@ -107,20 +157,17 @@ namespace Stellamod.Items.Weapons.Ranged
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3"));
             }
 
-
             float rot = velocity.ToRotation();
             float spread = 0.4f;
-
             Vector2 offset = new Vector2(3.1f, 0.3f * player.direction).RotatedBy(rot);
-
             for (int k = 0; k < 7; k++)
             {
                 Vector2 direction = offset.RotatedByRandom(spread);
-
                 Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
             }
             Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125,  Color.DarkRed, 1);
             Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, Color.White * 0.5f, Main.rand.NextFloat(0.5f, 1));
+          
             if (LAZERMode && !player.HasBuff(ModContent.BuffType<Overheated>()))
             {
                 int Sound2 = Main.rand.Next(1, 3);
@@ -133,7 +180,7 @@ namespace Stellamod.Items.Weapons.Ranged
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/XX41602"));
                 }
 
-                LAZERAlpha -= 4;
+
                 for (int k = 0; k < 3; k++)
                 {
                     Vector2 direction = offset.RotatedByRandom(spread);
@@ -155,42 +202,15 @@ namespace Stellamod.Items.Weapons.Ranged
                     {
                         Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 0, Color.LightGoldenrodYellow * 0.5f, Main.rand.NextFloat(0.5f, 1));
                     }
-
-                    if(LAZERAlpha <= 7)
-                    {
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol2"));
-                        player.AddBuff(ModContent.BuffType<Overheated>(), 1500);
-                        Item.useTime = 105;
-                        Item.useAnimation = 105;
-                        LAZERMode = false;
-                        LAZERAlpha = 255;
-                    }
                 }
 
-                Item.damage = 25;
-                Item.shootSpeed = 3f;
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 30f);
-                Item.useTime = 3;
-                Item.useAnimation = 3;
-                Projectile.NewProjectile(source, position, velocity * 2, ModContent.ProjectileType<XX4160Shot>(), damage * 2, knockback, player.whoAmI, 1);
+                Projectile.NewProjectile(source, position, velocity * 2, 
+                    ModContent.ProjectileType<XX4160Shot>(), damage * 2, knockback, player.whoAmI, 1);
+                FXUtil.ShakeCamera(position, 1024, 5);
             }
             else
             {
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 15f);
-                if (player.HasBuff(ModContent.BuffType<Overheated>()))
-                {
-                    Item.damage = 10;
-                    Item.shootSpeed = 35f;
-                    Item.useTime = 15;
-                    Item.useAnimation = 15;
-                }
-                else
-                {
-                    Item.damage = 20;
-                    Item.shootSpeed = 35f;
-                    Item.useTime = 5;
-                    Item.useAnimation = 5;
-                }
+ 
 
                 return base.Shoot(player, source, position, velocity, type, damage, knockback);
             }

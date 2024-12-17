@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
 using Terraria;
@@ -12,6 +14,8 @@ namespace Stellamod.Projectiles
 {
     public class PoisonedAngelProj : ModProjectile
     {
+        private ref float Timer => ref Projectile.ai[0];
+        private Player Owner => Main.player[Projectile.owner];
         public override void SetDefaults()
         {          
             Projectile.penetrate = 1;
@@ -34,25 +38,15 @@ namespace Stellamod.Projectiles
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
-        public float Timer
-        {
-            get => Projectile.ai[0];
-            set => Projectile.ai[0] = value;
-        }
 
         public override void AI()
         {
-            Player player = Main.player[Projectile.owner];
             float rotation = Projectile.rotation;
             Timer++;
 
-            player.RotatedRelativePoint(Projectile.Center);
+            Owner.RotatedRelativePoint(Projectile.Center);
             Projectile.rotation  -= 0.5f;
             Projectile.velocity *= 0.97f;
-            if (Timer == 1)
-            {
-                ShakeModSystem.Shake = 1;
-            }
             if (Timer < 30)
             {
                 if (Main.mouseLeft && Main.myPlayer == Projectile.owner)
@@ -60,40 +54,29 @@ namespace Stellamod.Projectiles
                     Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * Projectile.Distance(Main.MouseWorld) / 12;
                     Projectile.netUpdate = true;
                 }
-   
-                player.heldProj = Projectile.whoAmI;
-                player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
-                player.itemTime = 10;
-                player.itemAnimation = 10;
-                player.itemRotation = rotation * player.direction;
+
+                Owner.heldProj = Projectile.whoAmI;
+                Owner.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
+                Owner.itemTime = 10;
+                Owner.itemAnimation = 10;
+                Owner.itemRotation = rotation * Owner.direction;
             }
 
             if (Timer == 99)
             {
-                ShakeModSystem.Shake = 4;
-                float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-                float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<JungleBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
-                SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
-                Projectile.Kill();
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                        ModContent.ProjectileType<VerstiExSps>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner);
+                }
+                ExplodeEffects();
             }
 
-            Vector3 RGB = new(2.55f, 2.55f, 0.94f);
-            // The multiplication here wasn't doing anything
-            Lighting.AddLight(Projectile.Center, RGB.X, RGB.Y, RGB.Z);
-            //Projectile.netUpdate = true;
+            Lighting.AddLight(Projectile.position, Color.GreenYellow.ToVector3() * 0.78f);
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, 0f, 150, Color.MediumPurple, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-                Main.dust[dustnumber].noGravity = true;
-            }
-
             SpriteEffects Effects = Projectile.spriteDirection != 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -115,11 +98,40 @@ namespace Stellamod.Projectiles
         }
 
 
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            return false;
+        }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            ShakeModSystem.Shake = 5;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
-                ModContent.ProjectileType<JungleBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
+                ModContent.ProjectileType<VerstiExSps>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
+            ExplodeEffects();
+        }
+
+        private void ExplodeEffects()
+        {
+            FXUtil.ShakeCamera(Projectile.position, 1024, 2);
+            for (float f = 0; f < 6; f++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
+                    (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Green, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+            }
+
+            for (float i = 0; i < 4; i++)
+            {
+                float progress = i / 4f;
+                float rot = progress * MathHelper.ToRadians(360);
+                Vector2 offset = rot.ToRotationVector2() * 24;
+                var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.Green,
+                    outerGlowColor: Color.Black,
+                    duration: Main.rand.NextFloat(12, 25),
+                    baseSize: Main.rand.NextFloat(0.08f, 0.2f));
+                particle.Rotation = rot + MathHelper.ToRadians(45);
+            }
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             Projectile.Kill();
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
@@ -66,18 +67,17 @@ namespace Stellamod.Projectiles.Gun
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity,
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + oldVelocity, Projectile.velocity,
               ModContent.ProjectileType<WigglerStick2>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             return base.OnTileCollide(oldVelocity);
         }
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 16; i++)
+            for (float f = 0; f < 6; f++)
             {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);
-                var d = Dust.NewDustPerfect(Projectile.Center, DustID.GemSapphire, speed * 4);
-                d.noGravity = true;
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
+                    (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Blue, Main.rand.NextFloat(1f, 2f)).noGravity = true;
             }
         }
     }

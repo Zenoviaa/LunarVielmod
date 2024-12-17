@@ -27,8 +27,8 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.height = 44;
             Item.damage = 25;
             Item.DamageType = DamageClass.Ranged;
-            Item.useTime = 10;
-            Item.useAnimation = 10;
+            Item.useTime = 15;
+            Item.useAnimation = 15;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 2;
             Item.rare = ItemRarityID.LightRed;
@@ -53,23 +53,9 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             if (player.altFunctionUse == 2)
             {
-                for (int i = 0; i < Main.maxProjectiles; i++)
-                {
-                    Projectile p = Main.projectile[i];
-                    if (!p.active)
-                        continue;
 
-                    if (p.type == ModContent.ProjectileType<WigglerStick>() || 
-                        p.type == ModContent.ProjectileType<WigglerStick2>())
-                    {
-                        if (p.ai[2] == 0)
-                        {
-                            p.ai[1] = Main.rand.NextFloat(30, 90);
-                            p.ai[2] = 1;
-                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/clickk"));
-                        }
-                    }
-                }
+                Projectile.NewProjectileDirect(source, position, velocity, ModContent.ProjectileType<WigglerDetonator>(), damage, knockback, player.whoAmI);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/clickk"));
                 return false;
             }
 
@@ -92,16 +78,7 @@ namespace Stellamod.Items.Weapons.Ranged
             SoundStyle soundStyle = new SoundStyle(soundPath) with { PitchVariance = 0.1f };
             SoundEngine.PlaySound(soundStyle, position);
 
-            //Dust Burst Towards Mouse
-            int count = 4;
-            for (int k = 0; k < count; k++)
-            {
-                Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(7));
-                newVelocity *= 1f - Main.rand.NextFloat(0.3f);
-                Dust.NewDust(position, 0, 0, DustID.GemSapphire, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
-            }
-
-            int numProjectiles = Main.rand.Next(0, 3);
+            int numProjectiles = Main.rand.Next(0, 2);
             for (int p = 0; p < numProjectiles; p++)
             {
                 // Rotate the velocity randomly by 30 degrees at max.

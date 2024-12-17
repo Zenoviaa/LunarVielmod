@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
@@ -61,15 +62,15 @@ namespace Stellamod.Projectiles.Gun
                 detonationTimer--;
                 if(detonationTimer == 10)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CombusterReady"));
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CombusterReady"), Projectile.position);
+                    ExplodeEffects();
                 }
 
                 if(detonationTimer < 0)
                 {
                     ShakeModSystem.Shake = 3;
-                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"));
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                        ModContent.ProjectileType<KaBoomBlue>(), Projectile.damage * 3, Projectile.knockBack, Projectile.owner);
+                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"), Projectile.position);
+                    Boom();
                     Projectile.Kill();
                 }
 
@@ -78,13 +79,53 @@ namespace Stellamod.Projectiles.Gun
             Visuals();
         }
 
+        private void Boom()
+        {
+            if (Main.myPlayer == Projectile.owner)
+            {
+                int projType;
+                switch (Main.rand.Next(3))
+                {
+                    default:
+                    case 0:
+                        projType = ModContent.ProjectileType<SparklyBoom>();
+                        break;
+                    case 1:
+                        projType = ModContent.ProjectileType<BongoBoom>();
+                        break;
+                    case 2:
+                        projType = ModContent.ProjectileType<SparklyBoom>();
+                        break;
+                }
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, projType, Projectile.damage * 3, Projectile.knockBack, Projectile.owner);
+            }
+        }
+        private void ExplodeEffects()
+        {
+            for (float f = 0; f < 12; f++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
+                    (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Blue, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+            }
+        
+            for (float i = 0; i < 4; i++)
+            {
+                float progress = i / 4f;
+                float rot = progress * MathHelper.ToRadians(360);
+                Vector2 offset = rot.ToRotationVector2() * 24;
+                var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.Blue,
+                    outerGlowColor: Color.Black,
+                    baseSize: Main.rand.NextFloat(0.1f, 0.2f),
+                    duration: Main.rand.NextFloat(12, 24f));
+                particle.Rotation = rot + MathHelper.ToRadians(45);
+            }
+        }
+
         private void Visuals()
         {
             DrawHelper.AnimateTopToBottom(Projectile, 5);
-            if (Main.rand.NextBool(60))
-            {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemSapphire);
-            }
         }
 
         public override void PostDraw(Color lightColor)
