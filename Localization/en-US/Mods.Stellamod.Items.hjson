@@ -5090,6 +5090,16 @@ BlackRose: {
 	Tooltip: Using a mana potion hurts you a little instead of sickening you
 }
 
+BlackManaRose: {
+	DisplayName: Black Mana Rose
+	Tooltip:
+		'''
+		Using a mana potion hurts you a little instead of sickening you
+		8% reduced mana cost
+		Automatically use mana potions when needed
+		'''
+}
+
 LittleWand: {
 	DisplayName: Little Wand
 	Tooltip:
