@@ -7137,8 +7137,8 @@ DogmaBalls: {
 	DisplayName: Dogma Balls
 	Tooltip:
 		'''
-		Throws a BOOK filled with Illurian propaganda
-		Randomly summons words that inflict a variety of debuffs
+		Throws a BOOK filled with Illurian propaganda and magic
+		Can summon a random assortment of Terrarian projectiles...
 		'''
 }
 
