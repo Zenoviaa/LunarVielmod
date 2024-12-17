@@ -2,6 +2,8 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -12,7 +14,20 @@ namespace Stellamod.Projectiles.Gun
 {
     public class BrokenMissile : ModProjectile
 	{
+		private ref float Style => ref Projectile.ai[1];
 		public bool OptionallySomeCondition { get; private set; }
+		private Color MainColor
+		{
+			get
+			{
+				if(Style == 1)
+				{
+					return Color.Cyan;
+				}
+				return Color.Orange;
+			}
+		}
+
 
 		public override void SetStaticDefaults()
 		{
@@ -28,10 +43,11 @@ namespace Stellamod.Projectiles.Gun
 			Projectile.penetrate = 3;
 			Projectile.width = 15;
 			Projectile.height = 15;
+			Projectile.extraUpdates += 1;
 		}
 		public override void AI()
 		{
-			Projectile.velocity /= 0.99f;
+			Projectile.velocity *= 1.01f;
 		}
 		public override bool PreAI()
 		{
@@ -61,7 +77,7 @@ namespace Stellamod.Projectiles.Gun
 			for (int k = 0; k < Projectile.oldPos.Length; k++)
 			{
 				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(Color.Lerp(new Color(253, 255, 31), new Color(182, 83, 38), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
+				Color color = Projectile.GetAlpha(Color.Lerp(MainColor, Color.Transparent, 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
                 Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
 			}
             Main.spriteBatch.End();
@@ -71,27 +87,24 @@ namespace Stellamod.Projectiles.Gun
 		public override void OnKill(int timeLeft)
 		{
 			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
-			for (int i = 0; i < 180; i++)
-			{
-				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, -2f, 0, default(Color), 1.5f);
-				Main.dust[num].noGravity = true;
-				Main.dust[num].scale = 1.9f;
-				Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-				Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-				{
-					Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 10f;
-				}
-			}
-			for (int i = 0; i < 80; i++)
-			{
-				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, -2f, 0, default(Color), 2.5f);
-				Main.dust[num].noGravity = true;
-				Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-				Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-				{
-					Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 10f;
-				}
-			}
-		}
+            for (float f = 0; f < 30; f++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
+                    (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, MainColor, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+            }
+            for (float i = 0; i < 4; i++)
+            {
+                float progress = i / 4f;
+                float rot = progress * MathHelper.ToRadians(360);
+                Vector2 offset = rot.ToRotationVector2() * 24;
+                var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                    innerColor: Color.White,
+                    glowColor: MainColor,
+                    outerGlowColor: Color.Black,
+                    baseSize: Main.rand.NextFloat(0.02f, 0.16f),
+					duration: Main.rand.NextFloat(12, 24));
+                particle.Rotation = rot + MathHelper.ToRadians(45);
+            }
+        }
 	}
 }
