@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
+using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -11,6 +13,8 @@ namespace Stellamod.Projectiles.Gun
 {
     public class DeathShotBomb : ModProjectile
     {
+        private ref float Timer => ref Projectile.ai[0];
+        public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("DeathShotBomb");
@@ -25,26 +29,26 @@ namespace Stellamod.Projectiles.Gun
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.penetrate = 30;
-            Projectile.timeLeft = 300;
-            Projectile.height = 1;
-            Projectile.width = 1;
+            Projectile.timeLeft = 25;
+            Projectile.height = 80;
+            Projectile.width = 80;
             Projectile.extraUpdates = 1;
+            Projectile.tileCollide = false;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
         }
 
         private Vector2 ProjectilePos;
         private Vector2 alphaPos;
-        private float alphaCounter = 0.1f;
-        private float alphaCounter3 = 0.1f;
-        private float alphaCounter2 = 0.2f;
         public override void AI()
         {
             var EntitySource = Projectile.GetSource_FromThis();
             ProjectilePos.Y = Projectile.Center.Y;
             ProjectilePos.X = Projectile.Center.X;
-            Projectile.ai[0]++;
-            if (Projectile.ai[0] == 2)
+            Timer++;
+            if (Timer == 2)
             {
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.position, 2048f, 54f);
+                FXUtil.ShakeCamera(Projectile.position, 1024, 8);
                 int Sound = Main.rand.Next(1, 3);
                 if (Sound == 1)
                 {
@@ -56,49 +60,40 @@ namespace Stellamod.Projectiles.Gun
                 }
                 for (int i = 0; i < 14; i++)
                 {
-                    Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<SmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<SmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
                 }
-
-                for (int i = 0; i < 13; i++)
+                for (float f = 0; f < 6; f++)
                 {
-                    Projectile.NewProjectile(EntitySource, ProjectilePos.X += Main.rand.Next(-10, 10), ProjectilePos.Y += Main.rand.Next(-10, 10), Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), 
-                        ModContent.ProjectileType<DeathShotBombFX>(), Projectile.damage / 2, 1, Projectile.owner, 0, 0);
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Red, Main.rand.NextFloat(1f, 3f)).noGravity = true;
                 }
+                for (float i = 0; i < 4; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.Red,
+                        outerGlowColor: Color.Black,
+                        duration: Main.rand.NextFloat(12, 25),
+                        baseSize: Main.rand.NextFloat(0.08f, 0.2f));
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
+    
             }
 
-            if (Projectile.ai[0] <= 100)
+            if (Timer == 14 && Main.myPlayer == Projectile.owner)
             {
-                if (alphaCounter <= 1.5)
-                {
-                    alphaCounter3 += 0.08f;
-                    alphaCounter += 0.08f;
-                }
+
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                    ModContent.ProjectileType<PericarditisBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
-            else
+
+            if(Timer == 22)
             {
-                if (alphaCounter >= 0)
-                {
-                    alphaCounter -= 0.08f;
-                }
-                else
-                {
-                    Projectile.active = false;
-                }
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowSkullDust>(), Vector2.Zero, 0, Color.Purple, 1f).noGravity = true;
             }
-
-            alphaCounter2 *= 1.01f;
-        }
-
-        public override bool PreDraw(ref Color lightColor)
-        {
-            alphaPos.X = Projectile.Center.X;
-            alphaPos.Y = Projectile.Center.Y - alphaCounter2;
-            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/Skull").Value;
-            Main.spriteBatch.Draw(texture2D4, alphaPos - Main.screenPosition, null, new Color((int)(65f * alphaCounter), (int)(15f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(24, 24), 0.4f * (alphaCounter3 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, alphaPos - Main.screenPosition, null, new Color((int)(65f * alphaCounter), (int)(15f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(24, 24), 0.4f * (alphaCounter3 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, alphaPos - Main.screenPosition, null, new Color((int)(65f * alphaCounter), (int)(15f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(24, 24), 0.4f * (alphaCounter3 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, alphaPos - Main.screenPosition, null, new Color((int)(65f * alphaCounter), (int)(15f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(24, 24), 0.4f * (alphaCounter3 + 0.6f), SpriteEffects.None, 0f);
-            return true;
         }
     }
 }

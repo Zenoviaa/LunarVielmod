@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -10,11 +11,9 @@ namespace Stellamod.Projectiles.Gun
 {
     public class DeathShotProj : ModProjectile
 	{
-		public bool OptionallySomeCondition { get; private set; }
-
+		private ref float Timer => ref Projectile.ai[1];
 		public override void SetStaticDefaults()
 		{
-            // DisplayName.SetDefault("Granite MagmumProj");
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
 		}
@@ -29,8 +28,14 @@ namespace Stellamod.Projectiles.Gun
 		public override void AI()
 		{
 			Projectile.velocity /= 0.99f;
-		}
-		public override bool PreAI()
+			Timer++;
+            if (Timer % 5 == 0)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.Red, 1f).noGravity = true;
+            }
+        }
+
+        public override bool PreAI()
 		{
 			int num1222 = 74;
 			for (int k = 0; k < 2; k++)
@@ -43,11 +48,6 @@ namespace Stellamod.Projectiles.Gun
 				Main.dust[index2].noLight = false;
 			}
 			return true;
-		}
-		public override bool OnTileCollide(Vector2 oldVelocity)
-		{
-			Projectile.timeLeft = 1;
-			return false;
 		}
 
 		public override bool PreDraw(ref Color lightColor)
@@ -65,33 +65,12 @@ namespace Stellamod.Projectiles.Gun
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 			return false;
 		}
+
 		public override void OnKill(int timeLeft)
         {
-            var EntitySource = Projectile.GetSource_Death();
-            if (Main.netMode != NetmodeID.MultiplayerClient)
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<DeathShotBomb>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+				ModContent.ProjectileType<DeathShotBomb>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 0, 0);
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
-			for (int i = 0; i < 180; i++)
-			{
-				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.RedTorch, 0f, -2f, 0, default(Color), 1.5f);
-				Main.dust[num].noGravity = true;
-				Main.dust[num].scale = 1.9f;
-				Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-				Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-				{
-					Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 10f;
-				}
-			}
-			for (int i = 0; i < 80; i++)
-			{
-				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.RedTorch, 0f, -2f, 0, default(Color), 2.5f);
-				Main.dust[num].noGravity = true;
-				Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-				Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-				{
-					Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 10f;
-				}
-			}
 		}
 	}
 }

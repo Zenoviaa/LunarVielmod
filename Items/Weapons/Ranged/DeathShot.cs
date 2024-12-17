@@ -49,7 +49,8 @@ namespace Stellamod.Items.Weapons.Ranged
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            if (type == ProjectileID.Bullet) type = ModContent.ProjectileType<DeathShotProj>();
+            if (type == ProjectileID.Bullet) 
+                type = ModContent.ProjectileType<DeathShotProj>();
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)
             {
