@@ -37,19 +37,12 @@ namespace Stellamod.Items.Accessories.Foods
             Item.rare = ItemRarityID.Green;
             Item.consumable = true;
             Item.UseSound = SoundID.Item2;
-            Item.accessory = true;
         }
 
         public override bool CanUseItem(Player player)
         {
             player.AddBuff(BuffID.Honey, 8000);
             return true;
-        }
-
-        public override void UpdateAccessory(Player player, bool hideVisual)
-        {
-            //  player.statDefense += 2;
-            player.moveSpeed += 0.4f;
         }
     }
 }

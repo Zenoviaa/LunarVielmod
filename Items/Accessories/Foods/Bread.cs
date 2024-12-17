@@ -38,18 +38,12 @@ namespace Stellamod.Items.Accessories.Foods
             Item.consumable = true;
             Item.UseSound = SoundID.Item2;
             Item.accessory = true;
-            Item.defense = 2;
         }
 
         public override bool CanUseItem(Player player)
         {
             player.AddBuff(BuffID.Endurance, 8000);
             return true;
-        }
-
-        public override void UpdateAccessory(Player player, bool hideVisual)
-        {
-            player.statDefense += 2;
-        }
+        } 
     }
 }
