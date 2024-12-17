@@ -40,7 +40,7 @@ namespace Stellamod.Projectiles.Thrown
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.Turquoise, Main.rand.NextFloat(1f, 1.5f));
                 if (Main.rand.NextBool(2))
                     Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowHeartDust>(), Projectile.velocity * 0.1f, 0, Color.Turquoise, Main.rand.NextFloat(1f, 1.5f));
-                else
+                else if (Main.rand.NextBool(2))
                     Gore.NewGore(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * 0.1f, GoreID.Pages);
             }
             Projectile.velocity.Y += 0.2f;
