@@ -21,12 +21,7 @@ namespace Stellamod.Projectiles.Gun
 
         public override void PostDraw(Color lightColor)
         {
-            Lighting.AddLight(Projectile.Center, Color.Brown.ToVector3() * 1.75f * Main.essScale);
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-            }
+
         }
 
         public override void SetDefaults()
@@ -53,6 +48,9 @@ namespace Stellamod.Projectiles.Gun
             }
 
             Projectile.velocity.Y -= 0.01f;
+
+
+            Lighting.AddLight(Projectile.Center, Color.Brown.ToVector3() * 1.75f * Main.essScale);
         }
 
         public override void OnKill(int timeLeft)
@@ -66,7 +64,7 @@ namespace Stellamod.Projectiles.Gun
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/M38F30Bomb4"), Projectile.position);
             }
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 10; i++)
             {
                 int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, -2f, 0, default, .8f);
                 Main.dust[num1].noGravity = true;
@@ -91,7 +89,7 @@ namespace Stellamod.Projectiles.Gun
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
-            float baseWidth = Projectile.scale * Projectile.width * 1.3f;
+            float baseWidth = Projectile.scale * Projectile.width;
             return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
         }
 

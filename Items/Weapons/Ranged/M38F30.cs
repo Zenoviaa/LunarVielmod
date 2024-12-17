@@ -70,8 +70,10 @@ namespace Stellamod.Items.Weapons.Ranged
             //generate the remaining projectiles
 
 
-            Vector2 newVect = origVect.RotatedBy(System.Math.PI / (Main.rand.Next(72, 1300) / 23));
-            Projectile.NewProjectile(source, position.X, position.Y, newVect.X * 0.4f, newVect.Y, ModContent.ProjectileType<M38F30Rocks>(), damage, 3, player.whoAmI, 0, 0f);
+            Vector2 newVelocity = velocity;
+            newVelocity.Y -= 2;
+            newVelocity.X *= 0.5f;
+            Projectile.NewProjectile(source, position, newVelocity, ModContent.ProjectileType<M38F30Rocks>(), damage, 3, player.whoAmI, 0, 0f);
 
             for (int index1 = 0; index1 < 19; ++index1)
             {

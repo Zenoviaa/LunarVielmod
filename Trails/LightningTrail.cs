@@ -27,6 +27,7 @@ namespace Stellamod.Trails
         public PrimDrawer.ColorTrailFunction ColorFunction { get; set; }
         public PrimDrawer.WidthTrailFunction WidthTrailFunction { get; set; }
         public LightningTrail[] Trails { get; init; }
+        public bool SyncOffsets { get; set; }
         public float DefaultWidthFunction(float completionRatio)
         {
             float progress = completionRatio / 0.3f;
@@ -58,10 +59,22 @@ namespace Stellamod.Trails
 
         public void RandomPositions(Vector2[] oldPos)
         {
-            for (int t = 0; t < Trails.Length; t++)
+            if (SyncOffsets)
             {
-                Trails[t].RandomPositions(oldPos);
+                Trails[0].RandomPositions(oldPos);
+                for(int t = 1; t < Trails.Length; t++)
+                {
+                    Trails[t].ClonePositions(Trails[0]);
+                }
             }
+            else
+            {
+                for (int t = 0; t < Trails.Length; t++)
+                {
+                    Trails[t].RandomPositions(oldPos);
+                }
+            }
+  
         }
 
         public void Draw(SpriteBatch spriteBatch, 
@@ -119,7 +132,17 @@ namespace Stellamod.Trails
         public Asset<Texture2D> NoiseTexture;
         public float Speed;
         public float Distortion;
-        public float Power;
+        public float Power; 
+        public void ClonePositions(LightningTrail other)
+        {
+            _offsets = other._offsets;
+        }
+
+        public void ClonePositions(Vector2[] other)
+        {
+            _offsets = other;
+        }
+
         public void RandomPositions(Vector2[] oldPos)
         {
             Vector2[] offsets = new Vector2[oldPos.Length];

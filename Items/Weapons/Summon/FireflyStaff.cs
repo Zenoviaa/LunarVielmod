@@ -57,8 +57,6 @@ namespace Stellamod.Items.Weapons.Summon
                     SoundEngine.PlaySound(SoundID.Item43, player.position);
                 }
 
-
-                int fireflyMinionType = ModContent.ProjectileType<FireflyMinionProj>();
                 foreach (var proj in Main.ActiveProjectiles)
                 {
                     if (proj.type != ModContent.ProjectileType<LilFly>())

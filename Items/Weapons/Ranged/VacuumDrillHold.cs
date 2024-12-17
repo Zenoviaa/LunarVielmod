@@ -90,13 +90,6 @@ namespace Stellamod.Items.Weapons.Ranged
                 Projectile.rotation = targetRotation;
             }
 
-            if (Timer > 1)
-            {
-
-                ShakeModSystem.Shake = 1;
-            }
-
-
             Projectile.Center = playerCenter + new Vector2(40, 0).RotatedBy(swordRotation); ;// customization of the hitbox position
 
             player.heldProj = Projectile.whoAmI;

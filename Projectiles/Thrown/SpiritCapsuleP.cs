@@ -1,13 +1,13 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Buffs;
-using Stellamod.Particles;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -15,78 +15,81 @@ namespace Stellamod.Projectiles.Thrown
 {
     public class SpiritCapsuleP : ModProjectile
     {
+        private float Timer;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Acidius");
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 8;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 32;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
         public override void SetDefaults()
         {
             Projectile.CloneDefaults(ProjectileID.BouncingShield);
+            Projectile.width = 8;
+            Projectile.height = 8;
             AIType = ProjectileID.BouncingShield;
             Projectile.penetrate = 5;
         }
 
-        public override void PostDraw(Color lightColor)
+        public override void PostAI()
         {
-            Lighting.AddLight(Projectile.Center, Color.YellowGreen.ToVector3() * 1.75f * Main.essScale);
-        }
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            if (Main.rand.NextBool(2))
-                target.AddBuff(ModContent.BuffType<AcidFlame>(), 180);
-
-
-
-            float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-            float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<SpiritualBoom>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Briskfly"));
-        }
-
-        public override bool PreAI()
-        {
-            if (Main.rand.NextBool(3))
+            base.PostAI(); ProjectileID.Sets.TrailCacheLength[Projectile.type] = 32;
+            Timer++;
+            if (Timer % 12 == 0)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BoneTorch);
-                Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                            }
+                if (Main.rand.NextBool(2))
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.Pink, Main.rand.NextFloat(0.5f, 1f)).noGravity = true;
+                else
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowHeartDust>(), Projectile.velocity * 0.1f, 0, Color.Pink, Main.rand.NextFloat(1f, 2f)).noGravity = true;
+            }
+            Lighting.AddLight(Projectile.Center, Color.LightPink.ToVector3() * 1.75f * Main.essScale);
+        }
 
-            return true;
+        private float WidthFunction(float completionRatio)
+        {
+            return MathHelper.Lerp(32, 0f, completionRatio);
+        }
+
+        private Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.Pink, Color.Transparent, completionRatio);
+        }
+
+        public PrimDrawer TrailDrawer { get; private set; } = null;
+        private void DrawTrail()
+        {
+            Main.spriteBatch.RestartDefaults();
+            Vector2 drawOffset = -Main.screenPosition + Projectile.Size / 2f;
+            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
+            TrailDrawer.ColorFunc = ColorFunction;
+            TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
+            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.LoveTrail);
+            TrailDrawer.DrawPrims(Projectile.oldPos, drawOffset, 255);
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.instance.LoadProjectile(Projectile.type);
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-            Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-            for (int k = 0; k < Projectile.oldPos.Length; k++)
-            {
-                Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
-            }
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            DrawTrail();
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Draw2(Projectile, ref lightColor, rotationOffset: Timer * 0.05f);
             return false;
         }
 
-        public override void OnKill(int timeLeft)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            for (int i = 0; i < 15; i++)
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
+                ModContent.ProjectileType<SpiritualBoom>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+            for (float f = 0; f < 16; f++)
             {
-
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin);
-                Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                
-
+                float p = f / 16f;
+                Vector2 spawnPoint = Projectile.Center + VectorHelper.PointOnHeart(p * 8, 6);
+                Vector2 vel = (spawnPoint - Projectile.Center).SafeNormalize(Vector2.Zero) * 5;
+                Dust.NewDustPerfect(spawnPoint, ModContent.DustType<GlowHeartDust>(), vel, 0, Color.Pink, 2f).noGravity = true;
             }
+            SoundStyle explosionSound = new SoundStyle($"Stellamod/Assets/Sounds/Briskfly");
+            explosionSound.PitchVariance = 0.2f;
+            SoundEngine.PlaySound(explosionSound, Projectile.position);
         }
     }
 }

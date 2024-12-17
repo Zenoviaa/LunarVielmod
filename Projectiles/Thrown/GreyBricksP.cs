@@ -15,7 +15,7 @@ namespace Stellamod.Projectiles.Thrown
 		{
             // DisplayName.SetDefault("Grey Brick");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 8;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
 		}
 
 		public override void SetDefaults()
@@ -49,7 +49,7 @@ namespace Stellamod.Projectiles.Thrown
             {
                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.oldRot[k], drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
 
             return false;
@@ -62,7 +62,7 @@ namespace Stellamod.Projectiles.Thrown
             int Gore2 = ModContent.Find<ModGore>("Stellamod/GreyBricks2").Type;
             Gore.NewGore(EntitySource, Projectile.position, Projectile.velocity, Gore1);
             Gore.NewGore(EntitySource, Projectile.position, Projectile.velocity, Gore2);
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 7; i++)
             {
                 SoundEngine.PlaySound(SoundID.DD2_CrystalCartImpact, Projectile.Center);
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
