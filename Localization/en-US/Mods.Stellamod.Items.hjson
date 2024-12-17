@@ -2986,7 +2986,11 @@ VoidStaff: {
 
 X3144: {
 	DisplayName: Probe Remote (X3144)
-	Tooltip: Summons a destroyer probe to fight for you!
+	Tooltip:
+		'''
+		Summons a sentry
+		Summons a destroyer probe to shoot a barrage of lasers at enemies!
+		'''
 }
 
 AcidicLancher: {
