@@ -9,7 +9,6 @@ namespace Stellamod.Projectiles.Summons.Minions
 {
     internal class ClimateTornadoProj : ModProjectile
     {
-        private Projectile Parent => Main.projectile[(int)Projectile.ai[0]];
         private ref float Timer => ref Projectile.ai[1];
         private float Scale = 0f;
         public override void SetDefaults()
@@ -29,11 +28,6 @@ namespace Stellamod.Projectiles.Summons.Minions
         public override void AI()
         {
             Timer++;
-            if(Parent.active && Parent.type == ModContent.ProjectileType<CloudMinionProj>())
-            {
-                Projectile.Center = Parent.Center;
-            }
-          
             Projectile.rotation += 0.5f;
      
             float progress = Timer / 60f;

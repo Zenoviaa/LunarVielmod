@@ -318,8 +318,12 @@ namespace Stellamod.Projectiles.Summons.Minions
                 if (Grenns > 50)
                 {
                     Vector2 bulletVelocity = Projectile.Center.DirectionTo(targetCenter) * 52;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, bulletVelocity,
-                        ModContent.ProjectileType<EldritchBolt>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    if(Main.myPlayer == Projectile.owner)
+                    {
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, bulletVelocity,
+                            ModContent.ProjectileType<EldritchBolt>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    }
+          
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Laserlock") { Pitch = Main.rand.NextFloat(-5f, 5f) }, Projectile.Center);
 
 
@@ -701,54 +705,8 @@ namespace Stellamod.Projectiles.Summons.Minions
         }
 
 
-
-        public TrailRenderer SwordSlash;
-        public TrailRenderer SwordSlash2;
-        public TrailRenderer SwordSlash3;
-
         public override bool PreDraw(ref Color lightColor)
         {
-
-
-            var TrailTex = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/StarTrail").Value;
-            var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/StringTrail").Value;
-            var TrailTex3 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/CrystalTrail").Value;
-            Color color = Color.Multiply(new(1.50f, 1.75f, 3.5f, 0), 200);
-            if (SwordSlash == null)
-            {
-                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass,
-                    (p) => Vector2.Lerp(new Vector2(150), new Vector2(100), p),
-                    (p) => new Color(230, 255, 255, 125) * (1f - p));
-                SwordSlash.drawOffset = Projectile.Size / 2f;
-            }
-            if (SwordSlash2 == null)
-            {
-                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass,
-                    (p) => Vector2.Lerp(new Vector2(75), new Vector2(55), p),
-                    (p) => new Color(247, 178, 239, 125) * (1f - p));
-                SwordSlash2.drawOffset = Projectile.Size / 2f;
-            }
-            if (SwordSlash3 == null)
-            {
-                SwordSlash3 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass,
-                    (p) => Vector2.Lerp(new Vector2(30), new Vector2(30), p),
-                    (p) => new Color(69, 93, 149, 125) * (1f - p));
-                SwordSlash3.drawOffset = Projectile.Size / 2f;
-            }
-
-
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Texture, null, null, null, null, null, Main.GameViewMatrix.ZoomMatrix);
-
-
-            SwordSlash.Draw(Projectile.oldPos, Projectile.oldRot);
-            SwordSlash2.Draw(Projectile.oldPos, Projectile.oldRot);
-            SwordSlash3.Draw(Projectile.oldPos, Projectile.oldRot);
-
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin();
-
-
             Main.spriteBatch.End();
 
             int projectileAmount = 0;
@@ -820,7 +778,6 @@ namespace Stellamod.Projectiles.Summons.Minions
             sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
             sb.End();
-
             sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
 
             var drawData = new DrawData(playerRT, Vector2.Zero, Color.White);
@@ -854,11 +811,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             }
 
             sb.End();
-
             sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
-
-
-            DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(85, 112, 188) * 0.4f, Color.Transparent, ref lightColor);
             return false;
         }
 

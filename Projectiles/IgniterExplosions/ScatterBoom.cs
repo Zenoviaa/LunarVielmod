@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -16,6 +19,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
 
 		public override void SetDefaults()
 		{
+			Projectile.tileCollide = false;
 			Projectile.localNPCHitCooldown = -1;
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.friendly = true;
@@ -26,25 +30,20 @@ namespace Stellamod.Projectiles.IgniterExplosions
 			Projectile.hostile = true;
 		}
 
-		public float Timer
-		{
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
-		}
 		public override void AI()
 		{
-
-			Vector3 RGB = new(0.89f, 2.53f, 2.55f);
-			// The multiplication here wasn't doing anything
-			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-
+			Lighting.AddLight(Projectile.position, Color.Red.ToVector3() * 1.5f);
 		}
 
+        public override bool ShouldUpdatePosition()
+        {
+			return false;
+        }
 
-
-		public override bool PreAI()
-		{
-			Projectile.tileCollide = false;
+        public override bool PreAI()
+        {
+ 
+            Projectile.tileCollide = false;
 			if (++Projectile.frameCounter >= 3)
 			{
 				Projectile.frameCounter = 0;
@@ -54,16 +53,20 @@ namespace Stellamod.Projectiles.IgniterExplosions
 				}
 			}
 			return true;
-
-
 		}
 
-		public override Color? GetAlpha(Color lightColor)
-		{
-			return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 50f);
-		}
+        public override bool PreDraw(ref Color lightColor)
+        {
+			Color drawColor = Color.White;
+		//	drawColor = drawColor.MultiplyRGB(lightColor);
+			drawColor.A = 0;
+			Texture2D texture = TextureAssets.Projectile[Type].Value;
+			SpriteBatch spriteBatch = Main.spriteBatch;
+			spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, Projectile.Frame(), drawColor, Projectile.velocity.ToRotation() - MathHelper.PiOver2, Projectile.Frame().Size() / 2f, 1f, SpriteEffects.None, 0);
+			return false;
+        }
 
 
-	}
+    }
 
 }

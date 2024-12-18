@@ -336,23 +336,24 @@ namespace Stellamod.Helpers
 			if (!foundTarget)
 			{
 				// This code is required either way, used for finding a target
-				for (int i = 0; i < Main.maxNPCs; i++)
+				foreach(var npc in Main.ActiveNPCs)
 				{
-					NPC npc = Main.npc[i];
-					if (npc.CanBeChasedBy())
-					{
-						float between = Vector2.Distance(npc.Center, minion.Center);
-						bool closest = Vector2.Distance(minion.Center, targetCenter) > between;
-						bool inRange = between < distanceFromTarget;
-						bool lineOfSight = Collision.CanHitLine(minion.position, minion.width, minion.height, npc.position, npc.width, npc.height);
-						if (((closest && inRange) || !foundTarget) && lineOfSight)
-						{
-							distanceFromTarget = between;
-							targetCenter = npc.Center;
-							foundTarget = true;
-						}
-					}
-				}
+					if (npc.position.Y < 0 || npc.position.X < 0)
+						continue;
+                    if (npc.CanBeChasedBy())
+                    {
+                        float between = Vector2.Distance(npc.Center, minion.Center);
+                        bool closest = Vector2.Distance(minion.Center, targetCenter) > between;
+                        bool inRange = between < distanceFromTarget;
+                        bool lineOfSight = Collision.CanHitLine(minion.position, minion.width, minion.height, npc.position, npc.width, npc.height);
+                        if (((closest && inRange) || !foundTarget) && lineOfSight)
+                        {
+                            distanceFromTarget = between;
+                            targetCenter = npc.Center;
+                            foundTarget = true;
+                        }
+                    }
+                }
 			}
 		}
 

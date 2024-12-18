@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
+using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -24,11 +25,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.useTime = 45;
 			Item.useAnimation = 45;
 		}
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Pearlescent Ice Ball");
-			// Tooltip.SetDefault("Shoots fast homing sparks of light!");
-		}
+
 		public override void SetDefaults()
 		{
 			Item.damage = 62;
@@ -46,7 +43,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.rare = ItemRarityID.LightRed;
 			Item.UseSound = SoundID.DD2_DarkMageSummonSkeleton;
 			Item.autoReuse = true;
-			Item.shoot = ProjectileID.ChlorophyteBullet;
+			Item.shoot = ModContent.ProjectileType<LanternOfTheFallenFly>();
 			Item.shootSpeed = 7f;
 			Item.autoReuse = true;
 			Item.crit = 22;
@@ -55,15 +52,10 @@ namespace Stellamod.Items.Weapons.Mage
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			
-			Projectile.NewProjectile(source, position, velocity, ProjectileID.ChlorophyteBullet, damage, knockback, player.whoAmI);
-			float numberProjectiles = 3;
-			float rotation = MathHelper.ToRadians(15);
-			position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 25f;
-			for (int i = 0; i < numberProjectiles; i++)
+			velocity.Y = -7;
+			for(int i = 0; i < Main.rand.Next(2, 6); i++)
 			{
-				Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f; // This defines the projectile roatation and speed. .4f == projectile speed
-				Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, ProjectileID.ChlorophyteBullet, damage, knockback, player.whoAmI);
+				Projectile.NewProjectile(source, position, velocity.RotatedByRandom(MathHelper.PiOver4), type, damage, knockback, player.whoAmI);
 			}
 			return false;
 		}

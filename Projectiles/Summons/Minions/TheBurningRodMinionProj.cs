@@ -1,5 +1,4 @@
-﻿using Accord.Statistics.Distributions.Univariate;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
 using Stellamod.Dusts;
@@ -7,7 +6,6 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -47,7 +45,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             Projectile.height = 28;
             // Makes the minion go through tiles freely
             Projectile.tileCollide = false;
-            
+
             // These below are needed for a minion weapon
             // Only controls if it deals damage to enemies on contact (more on that later)
             Projectile.friendly = true;
@@ -166,14 +164,14 @@ namespace Stellamod.Projectiles.Summons.Minions
                     Dust.NewDustPerfect(Projectile.Center, DustID.Torch, Projectile.velocity * 0.1f, 0, Color.OrangeRed, 1f).noGravity = true;
             }
 
-            SummonHelper.SearchForTargets(player, Projectile, 
-                out bool foundTarget, 
-                out float distanceFromTarget, 
+            SummonHelper.SearchForTargets(player, Projectile,
+                out bool foundTarget,
+                out float distanceFromTarget,
                 out Vector2 targetCenter);
             if (!foundTarget)
             {
-                SummonHelper.CalculateIdleValues(player, Projectile, 
-                    out Vector2 vectorToIdlePosition, 
+                SummonHelper.CalculateIdleValues(player, Projectile,
+                    out Vector2 vectorToIdlePosition,
                     out float distanceToIdlePosition);
                 SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
             }
@@ -189,7 +187,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                     Timer++;
                     if (Timer >= 30 && distanceFromTarget < 252)
                     {
-                        if(Main.myPlayer == Projectile.owner)
+                        if (Main.myPlayer == Projectile.owner)
                         {
                             Vector2 velocity = Projectile.Center.DirectionTo(targetCenter) * 8;
                             Projectile.velocity -= velocity;

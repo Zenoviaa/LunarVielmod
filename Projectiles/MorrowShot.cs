@@ -1,88 +1,90 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
     public class MorrowShot : ModProjectile
     {
-        public float Timer
+        private ref float Timer => ref Projectile.ai[0];
+        public override void SetDefaults()
         {
-            get => Projectile.ai[0];
-            set => Projectile.ai[0] = value;
+            base.SetDefaults();
+            Projectile.width = 24;
+            Projectile.height = 24;
+            Projectile.penetrate = 2;
+            Projectile.extraUpdates = 1;
+            Projectile.timeLeft = 300;
         }
 
-        public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("morrowshot");
-			Main.projFrames[Projectile.type] = 1;
-			//The recording mode
-		}
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            if (Timer % 3 == 0)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowSparkleDust>(), newColor: Color.White, Scale: Main.rand.NextFloat(0.25f, 0.5f));
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+            }
+            if (Timer < 100)
+            {
+                if (Projectile.velocity.Length() < 35)
+                    Projectile.velocity *= 1.05f;
+            }
 
-		public override void SetDefaults()
-		{
-			Projectile.damage = 12;
-			Projectile.width = 40;
-			Projectile.height = 40;
-			Projectile.light = 1.5f;
-			Projectile.friendly = true;
-			Projectile.ignoreWater = true;
-			Projectile.tileCollide = false;
-			Projectile.DamageType = DamageClass.Ranged;
-			Projectile.maxPenetrate = 3;
-			Projectile.ownerHitCheck = true;
-		}
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+        }
 
-		public override void AI()
-		{
-			Timer++;
-			float distance = 0f;
-			Player player = Main.player[Projectile.owner];
-			
-			if (Timer <= 1)
-				Projectile.position = player.position + Vector2.UnitY.RotatedBy(MathHelper.ToRadians(Projectile.ai[1])) * distance;
-			if (Timer < 2)
-				Projectile.velocity = 20 * Vector2.Normalize(Projectile.DirectionTo(Main.MouseWorld));
+        public override bool PreDraw(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
 
-			Projectile.direction = Projectile.spriteDirection = Projectile.velocity.X > 0f ? 1 : -1;
-			Projectile.rotation = Projectile.velocity.ToRotation();
-			
-			if (Projectile.velocity.Y > 16f)
-				Projectile.velocity.Y = 16f;
-			
-			// Since our sprite has an orientation, we need to adjust rotation to compensate for the draw flipping.
-			if (Projectile.spriteDirection == -1)
-				Projectile.rotation += MathHelper.Pi;
+            //Setup the shader
+            MotionBlurShader shader = MotionBlurShader.Instance;
+            float maxSpeed = 0.4f;
+            float speed = MathHelper.Clamp(Projectile.velocity.Length() * 0.02f, 0f, maxSpeed);
 
-			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-		}
+            //This is gonna make it like stretch itself as it moves faster
+            Vector2 scale = Vector2.Lerp(Vector2.One, new Vector2(2f, 0.18f), Easing.InOutCubic(speed));
 
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-		{
-			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
-			float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(-10, 11) * 0.2f;
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.Spark, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-			Projectile.Kill();
-		}
+            shader.Velocity = Vector2.UnitY * speed;
 
-		public override bool PreDraw(ref Color lightColor)
-		{
-			int height = Main.player[Projectile.owner].height / 1; // 5 is frame count
-			int y = height * Projectile.frame;
-			var rect = new Rectangle(0, y, Main.player[Projectile.owner].width, height);
-			var drawOrigin = new Vector2(Main.player[Projectile.owner].width / 2, Projectile.height / 2);
+            //This just affects the opacity of the blur, prob don't need to change this number
+            shader.BlurStrength = 2f;
+            shader.Apply();
 
-			for (int k = 0; k < Projectile.oldPos.Length; k++)
-			{
-				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.EntitySpriteDraw((Texture2D)TextureAssets.Projectile[Projectile.type], drawPos, rect, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
-			}
+            //Draw the texture
+            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Rectangle frame = Projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
 
-			return true;
-		}
-	}
+            float rotation = Projectile.rotation;
+            Color finalColor = Color.White.MultiplyRGB(lightColor);
+            spriteBatch.Draw(texture, drawPos, frame, finalColor, rotation, drawOrigin, scale, SpriteEffects.None, 0);
+
+            //Draw the blurring on top
+            spriteBatch.Restart(effect: shader.Effect);
+            spriteBatch.Draw(texture, drawPos, frame, finalColor * 0.5f, rotation, drawOrigin, scale, SpriteEffects.None, 0);
+            spriteBatch.RestartDefaults();
+            return false;
+        }
+
+
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+            for(float f = 0; f < 3; f++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowSparkleDust>(), Velocity: Projectile.oldVelocity.RotatedByRandom(MathHelper.ToRadians(30)) * Main.rand.NextFloat(0.3f, 0.6f), newColor: Color.White, Scale: Main.rand.NextFloat(0.25f, 0.5f));
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Velocity: Projectile.oldVelocity.RotatedByRandom(MathHelper.ToRadians(30)) * Main.rand.NextFloat(0.3f, 0.6f), newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+            }
+        }
+    }
 }

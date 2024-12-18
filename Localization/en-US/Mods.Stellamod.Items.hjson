@@ -1205,7 +1205,7 @@ FlameburstBalls: {
 
 GildedStaff: {
 	DisplayName: Gilded Staff
-	Tooltip: Shoots two spinning pieces of spiritual magic at your foes
+	Tooltip: Hold to charge a weak, magical energy ball!
 }
 
 PrismaticBalls: {
@@ -1459,10 +1459,8 @@ AlcadizDagger: {
 	DisplayName: Fabled String n' Brooch
 	Tooltip:
 		'''
-		Your summons will target focused enemies
-		Summons will manifest out of your string shield
-		They will act as temporary summons to give your other minions company!
-		The Brooch above gives you 10+ Defense while active!
+		Summons a sentient string to latch onto nearby enemies and wriggle them around!
+		Creepy~
 		'''
 }
 
@@ -1632,10 +1630,8 @@ SwordsOfRevengence: {
 	Tooltip:
 		'''
 		I love ya!
-		Summons a Curlistine sword that brings Verlia's small swords to life!
-		Only works if an enemy is nearby!
-		Activates Verlia's Brooch effects! 
-		(Inc mana by 50, Def by 5, Heavy snowflakes on hit!) 
+		Summons Verlia's small swords to protect you!
+		They're very fast and ferocious!
 		'''
 	DisplayName: Swords Of Revengence
 }
@@ -2643,7 +2639,12 @@ TheDeafen: {
 
 TheShrieker: {
 	DisplayName: The Shrieker
-	Tooltip: Ow, my ears, but the damage...
+	Tooltip:
+		'''
+		I'm so sorry...
+		I need the damage...
+		Sends an ear piercing shockwave throughout the lands...
+		'''
 }
 
 TomeOfTheSingularity: {
@@ -2812,7 +2813,11 @@ BrokenWrath: {
 
 CloudBow: {
 	DisplayName: Cloud Bow
-	Tooltip: Its so floaty while shooting some cloud shots
+	Tooltip:
+		'''
+		Shoots a cloud arrow that can cause enemies to rise into the sky!
+		Also shoots a spread of 3 arrows
+		'''
 }
 
 Crysalizer: {
@@ -3463,7 +3468,11 @@ GovhenShield: {
 
 GreekLantern: {
 	DisplayName: Greek Lantern
-	Tooltip: Gothivia is greek???
+	Tooltip:
+		'''
+		Summons pretty green flies that slowly home in aggressively to nearby enemies!
+		Gothivia is greek???
+		'''
 }
 
 LanternOfAFallen: {
@@ -3871,7 +3880,11 @@ Voyager: {
 
 Hyua: {
 	DisplayName: Hyua
-	Tooltip: Throw these weird circular magic hoops, or balls, I dont know.
+	Tooltip:
+		'''
+		Throw these weird circular magic hoops, or balls, I don't know.
+		They slowly speed up and slice through enemies!
+		'''
 }
 
 Poya: {
@@ -4091,8 +4104,8 @@ Thunderstaff: {
 	DisplayName: Thunderstaff
 	Tooltip:
 		'''
-		Summons a lil' cloud to protect you!
-		The clouds perform different attacks based on the number that you have
+		Summons a thundercloud to protect you!
+		The cloud performs more attacks based on the number that you have
 			Lvl 1 - Frost Bolts
 			Lvl 2 - Lightning Bolts
 			Lvl 3 - Vortexes
@@ -4603,7 +4616,11 @@ TheButcher: {
 
 BookOfSkullsII: {
 	DisplayName: Book Of Skulls II
-	Tooltip: Woa mom its the second version!
+	Tooltip:
+		'''
+		Summons homing flaming skulls that explode!
+		Woa mom its the second version!
+		'''
 }
 
 DreadGauntlets: {

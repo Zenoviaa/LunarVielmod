@@ -15,11 +15,11 @@ namespace Stellamod.Projectiles.Magic
 {
     public class LarveinScriputeProg2 : ModProjectile
     {
-        private float Red;
-        private bool Moved;
+        private ref float Timer => ref Projectile.ai[0];
+        private ref float Red => ref Projectile.ai[1];
+        private ref float AlphaCounter => ref Projectile.ai[2];
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Shadow Hand");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 9;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
@@ -36,26 +36,18 @@ namespace Stellamod.Projectiles.Magic
             Projectile.tileCollide = true;
         }
 
-        public override void OnHitPlayer(Player target, Player.HurtInfo info)
-        {
-            target.AddBuff(BuffType<AbyssalFlame>(), 200);
-        }
-
-        private float alphaCounter = 1;
         public override void AI()
         {
             Projectile.velocity.Y -= 0.08f;
             Projectile.velocity.X *= 0.97f;
-            Projectile.ai[1]++;
-            if (!Moved && Projectile.ai[1] >= 0)
+            Timer++;
+            if (Timer == 1)
             {
                 Projectile.spriteDirection = Projectile.direction;
-
                 Projectile.alpha = 255;
-                Moved = true;
             }
 
-            if (Projectile.ai[1] <= 1)
+            if (Timer <= 1)
             {
                 if(Main.myPlayer == Projectile.owner)
                 {
@@ -89,8 +81,6 @@ namespace Stellamod.Projectiles.Magic
                 Main.dust[dustnumber].noGravity = true;
                 Main.dust[dustnumber].noLight = false;
             }
-  
-
 
             Projectile.spriteDirection = Projectile.direction;
         }
@@ -98,10 +88,6 @@ namespace Stellamod.Projectiles.Magic
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
-        }
-        public override void OnKill(int timeLeft)
-        {
-  
         }
 
         public PrimDrawer TrailDrawer { get; private set; } = null;
@@ -127,14 +113,13 @@ namespace Stellamod.Projectiles.Magic
         public override void PostDraw(Color lightColor)
         {
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(Red * alphaCounter), (int)(15f * alphaCounter), (int)(85f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(Red * alphaCounter), (int)(15f * alphaCounter), (int)(85f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(Red * alphaCounter), (int)(15f * alphaCounter), (int)(85f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(Red * alphaCounter), (int)(15f * alphaCounter), (int)(85f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (7 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(Red * AlphaCounter), (int)(15f * AlphaCounter), (int)(85f * AlphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(Red * AlphaCounter), (int)(15f * AlphaCounter), (int)(85f * AlphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(Red * AlphaCounter), (int)(15f * AlphaCounter), (int)(85f * AlphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(Red * AlphaCounter), (int)(15f * AlphaCounter), (int)(85f * AlphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (7 + 0.6f), SpriteEffects.None, 0f);
             Lighting.AddLight(Projectile.Center, Color.Blue.ToVector3() * 1.0f * Main.essScale);
         }
     }
-
 }
 
 

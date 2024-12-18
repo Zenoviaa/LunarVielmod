@@ -3,9 +3,13 @@ using Stellamod.Buffs;
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.Projectiles.Magic;
 using Stellamod.Trails;
 using System;
+using System.IO;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -21,8 +25,24 @@ namespace Stellamod.Projectiles.Summons.Minions
      */
     public class IrradiatedCreeperMinionProj : ModProjectile
     {
+        private enum AIState
+        {
+            Seeking,
+            GoToSpot,
+            Exploding
+        }
         public PrimDrawer TrailDrawer { get; private set; } = null;
-        private ref float Timer => ref Projectile.ai[0];
+        
+        private AIState State
+        {
+            get => (AIState)Projectile.ai[0];
+            set => Projectile.ai[0] = (float)value;
+        }
+
+        private Player Owner => Main.player[Projectile.owner];
+        private ref float Timer => ref Projectile.ai[1];
+        private ref float ExplodingProgress => ref Projectile.ai[2];
+        private Vector2 TargetPosition;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Irradiated Creeper");
@@ -44,7 +64,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
         }
 
-        public sealed override void SetDefaults()
+        public  override void SetDefaults()
         {
             Projectile.width = 30;
             Projectile.height = 30;
@@ -67,6 +87,18 @@ namespace Stellamod.Projectiles.Summons.Minions
             Projectile.localNPCHitCooldown = 60;
         }
 
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.WriteVector2(TargetPosition);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            TargetPosition = reader.ReadVector2();
+        }
+
         // Here you can decide if your minion breaks things like grass or pots
         public override bool? CanCutTiles()
         {
@@ -85,61 +117,131 @@ namespace Stellamod.Projectiles.Summons.Minions
             if (!SummonHelper.CheckMinionActive<IrradiatedCreeperMinionBuff>(player, Projectile))
                 return;
 
-            SummonHelper.SearchForTargets(player, Projectile, 
-                out bool foundTarget, 
-                out float distanceFromTarget, 
-                out Vector2 targetCenter);
-            Timer--;
-            if (foundTarget && Timer <= 0)
+            switch (State)
             {
-                float distance = 15f;
-                float speed = 13;
-
-                Vector2 initialSpeed = Projectile.Center.DirectionTo(targetCenter);
-                if(distanceFromTarget < speed)
-                {
-                    speed = distanceFromTarget;
-                    for (int i = 0; i < 4; i++)
-                    {
-                        Vector2 randVelocity = Main.rand.NextVector2CircularEdge(2, 2);
-                        Dust.NewDustPerfect(Projectile.Center, DustID.CursedTorch, randVelocity);
-                    }
-                }
-                initialSpeed*= speed;
-
-                Vector2 offset = initialSpeed.RotatedBy(Math.PI / 2);
-                offset.Normalize();
-                offset *= (float)(Math.Cos(Timer* (Math.PI / 180)) * (distance / 3));
-                Projectile.velocity = initialSpeed + offset;
-
-            }
-            else if (Timer > 0)
-            {
-                Projectile.velocity *= 0.99f;
-            }
-            else
-            {
-                SummonHelper.CalculateIdleValues(player, Projectile, 
-                     out Vector2 vectorToIdlePosition,
-                     out float distanceToIdlePosition);
-                SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
+                case AIState.Seeking:
+                    AI_Seeking();
+                    break;
+                case AIState.GoToSpot:
+                    AI_GoToSpot();
+                    break;
+                case AIState.Exploding:
+                    AI_Exploding();
+                    break;
             }
             Visuals();
         }
 
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        private void SwitchState(AIState state)
         {
-            base.OnHitNPC(target, hit, damageDone);
-            Projectile.velocity += Main.rand.NextVector2CircularEdge(8, 8);
-            Projectile.velocity = Projectile.velocity.RotatedByRandom(MathHelper.TwoPi);
-            Timer = 30;
-            for (int i = 0; i < 8; i++)
+            State = state;
+            Timer = 0;
+            ExplodingProgress = 0f;
+            Projectile.netUpdate = true;
+        }
+        private void AI_Seeking()
+        {
+            Timer++;
+            SummonHelper.SearchForTargets(Owner, Projectile, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
+            if (foundTarget)
             {
-                Vector2 randVelocity = Main.rand.NextVector2CircularEdge(2, 2);
-                Dust.NewDustPerfect(Projectile.Center, DustID.CursedTorch, randVelocity);
+                TargetPosition = targetCenter;
+                SwitchState(AIState.GoToSpot);
             }
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<JungleBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-            target.AddBuff(ModContent.BuffType<AcidFlame>(), 60);
+            else
+            {
+                SummonHelper.CalculateIdleValues(Owner, Projectile, Owner.Center, out Vector2 idleVector, out float idleDistance);
+                SummonHelper.Idle(Projectile, idleDistance, idleVector);
+            }
+        }
+
+        private void AI_GoToSpot()
+        {
+            Timer++;
+            if (Projectile.velocity == Vector2.Zero)
+                Projectile.velocity = Vector2.UnitY;
+            else
+            {
+                if(Projectile.velocity.Length() < 5)
+                    Projectile.velocity *= 1.02f;
+                Projectile.extraUpdates = (int)MathHelper.Lerp(0f, 2f, Timer / 120f);
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, TargetPosition, 6f);
+            }
+
+            if(Timer >= 120)
+            {
+                SwitchState(AIState.Exploding);
+            }
+        }
+
+        private void AI_Exploding()
+        {
+            Timer++;
+            SummonHelper.SearchForTargets(Owner, Projectile, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
+            if (foundTarget)
+            {
+                TargetPosition = targetCenter;
+            }
+            Vector2 vel = (TargetPosition - Projectile.Center) * 0.1f;
+            Projectile.velocity = Vector2.Lerp(Projectile.velocity, vel, 0.1f);
+            Projectile.extraUpdates = 0;
+            ExplodingProgress = Easing.InExpo(Timer / 30f);
+            if(Timer >= 30)
+            {
+                //EXPLODE
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<IrradiatedBoom>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                }
+                for (float f = 0; f < 32; f++)
+                {
+                    Dust.NewDustPerfect(Projectile.Center, DustID.GreenTorch,
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.White, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                }
+
+                FXUtil.GlowCircleBoom(Projectile.Center,
+                  innerColor: Color.White,
+                  glowColor: Color.Green,
+                  outerGlowColor: Color.Black, duration: 25, baseSize: Main.rand.NextFloat(0.1f, 0.2f));
+
+                for (float i = 0; i < 8; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.Green,
+                        outerGlowColor: Color.Black,
+                        baseSize: Main.rand.NextFloat(0.1f, 0.2f),
+                        duration: Main.rand.NextFloat(15, 25));
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
+
+                SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
+                int S1 = Main.rand.Next(0, 3);
+                if (S1 == 0)
+                {
+                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/ITBomb1"), Projectile.position);
+                }
+                if (S1 == 1)
+                {
+                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/ITBomb2"), Projectile.position);
+                }
+                if (S1 == 2)
+                {
+                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/ITBomb3"), Projectile.position);
+                }
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048f, 16f);
+                Projectile.velocity = -Vector2.UnitY * 8;
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.velocity = Projectile.velocity.RotatedByRandom(MathHelper.TwoPi);
+                    Projectile.netUpdate = true;
+                }
+                SwitchState(AIState.Seeking);
+            }
         }
 
         private void Visuals()

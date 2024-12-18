@@ -1,10 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil;
 
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -22,7 +20,7 @@ namespace Stellamod.Projectiles.Gun
             Fire
         }
 
-        const float Max_Charge_Time = 180;
+        private float Max_Charge_Time => 120;
 
         ActionState State
         {
@@ -73,6 +71,8 @@ namespace Stellamod.Projectiles.Gun
         private void ChargeVisuals(float timer, float maxTimer)
         {
             float progress = timer / maxTimer;
+            if (progress >= 1f)
+                return;
             float minParticleSpawnSpeed = 24;
             float maxParticleSpawnSpeed = 12;
             int particleSpawnSpeed = (int)MathHelper.Lerp(minParticleSpawnSpeed, maxParticleSpawnSpeed, progress);
@@ -82,7 +82,7 @@ namespace Stellamod.Projectiles.Gun
                 {
                     Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(168, 168);
                     Vector2 vel = (Projectile.Center - pos).SafeNormalize(Vector2.Zero) * 5;
-                    var d = Dust.NewDustPerfect(pos, ModContent.DustType<GlowDust>(), vel, newColor: Color.White, Scale: 0.5f);
+                    var d = Dust.NewDustPerfect(pos, ModContent.DustType<GlyphDust>(), vel, newColor: Color.White, Scale: 1.2f);
                     d.noGravity = true;
                 }
             }
@@ -132,18 +132,19 @@ namespace Stellamod.Projectiles.Gun
             }
 
             ChargeTimer++;
-            if(ChargeTimer == 1)
+            if (ChargeTimer == 1)
             {
                 SoundEngine.PlaySound(SoundRegistry.Niivi_LaserBlastReady, Projectile.position);
             }
 
             ChargeVisuals(ChargeTimer, Max_Charge_Time);
 
-   
+
             ChargeTimer = MathHelper.Clamp(ChargeTimer, 0, Max_Charge_Time);
             if (!player.channel)
             {
                 State = ActionState.Fire;
+                Projectile.netUpdate = true;
             }
         }
 
@@ -175,7 +176,7 @@ namespace Stellamod.Projectiles.Gun
             player.itemRotation = (float)Math.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
 
             FireTimer++;
-            if(FireTimer == 1)
+            if (FireTimer == 1)
             {
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Wave");
                 soundStyle.PitchVariance = 0.15f;
@@ -183,7 +184,7 @@ namespace Stellamod.Projectiles.Gun
 
                 Vector2 velocity = Projectile.velocity;
                 //Funny Recoil
-                float recoilStrength = 14;
+                float recoilStrength = 7;
                 Vector2 targetVelocity = -velocity.SafeNormalize(Vector2.Zero) * recoilStrength;
                 player.velocity = VectorHelper.VelocityUpTo(player.velocity, targetVelocity);
 
@@ -208,7 +209,7 @@ namespace Stellamod.Projectiles.Gun
 
             }
 
-            if(FireTimer >= 60)
+            if (FireTimer >= 60)
             {
                 Projectile.Kill();
             }

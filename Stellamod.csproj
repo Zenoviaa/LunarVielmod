@@ -103,6 +103,7 @@
     <None Remove="Effects\CrystalShaders\PixelMagicVaellus.fx" />
     <None Remove="Effects\CrystalShaders\SimpleGradientTrail.fx" />
     <None Remove="Effects\CrystalShaders\SimpleTrail.fx" />
+    <None Remove="Effects\CrystalShaders\ThunderCloud.fx" />
     <None Remove="effects\DaedusRobe.fx" />
     <None Remove="Effects\DarknessCurve.fx" />
     <None Remove="Effects\DarknessVignette.fx" />

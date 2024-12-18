@@ -13,21 +13,22 @@ using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 
 using static Terraria.ModLoader.ModContent;
+using Stellamod.Helpers;
+using Stellamod.Dusts;
 
 
 namespace Stellamod.Projectiles.Magic
 {
 	public class SparkBallsP : ModProjectile
 	{
+		private ref float Timer => ref Projectile.ai[0];
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("MeatBall");
 			Main.projFrames[Projectile.type] = 1;
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 30;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
-			//The recording mode
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
 		}
-		private float alphaCounter = 0;
 		public override void SetDefaults()
 		{
 			Projectile.damage = 12;
@@ -43,24 +44,7 @@ namespace Stellamod.Projectiles.Magic
 			Projectile.tileCollide = false;
 			Projectile.penetrate = 1;
 		}
-		public float Timer
-		{
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
-		}
-		public float Timer2;
 
-		public override void OnKill(int timeLeft)
-		{
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
-				ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
-			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Starexplosion"), Projectile.position);
-		}
-
-		public override Color? GetAlpha(Color lightColor)
-		{
-			return Color.White;
-		}
 		public PrimDrawer TrailDrawer { get; private set; } = null;
 		public float WidthFunction(float completionRatio)
 		{
@@ -73,138 +57,101 @@ namespace Stellamod.Projectiles.Magic
 		}
 		public override bool PreDraw(ref Color lightColor)
 		{
-			if (Main.rand.NextBool(5))
-			{
-				int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Pink, 0f, 0f, 150, Color.White, 1f);
-				Main.dust[dustnumber].velocity *= 0.3f;
-				Main.dust[dustnumber].noGravity = true;
-			}
 			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 			Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
 			TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-			GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
+			GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.LoveTrail);
 			TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
 			return false;
 		}
 
 		public override void PostDraw(Color lightColor)
 		{
 			Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
-			Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(85f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-			Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(85f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-			Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(85f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (7 + 0.6f), SpriteEffects.None, 0f);
-			Lighting.AddLight(Projectile.Center, Color.LightPink.ToVector3() * 1.0f * Main.essScale);
+			Color glowColor = Color.LightPink;
+			glowColor.A = 0;
+			glowColor *= Timer / 30f;
+			for (int i = 0; i < 3; i++)
+			{
+				Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, glowColor, Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
+			}
 		}
 
-
-		public override void AI()
-		{
-			Timer2++;
-
-
-
+        public override void AI()
+        {
+            base.AI();
 			Timer++;
-
-			if (alphaCounter <= 2)
+			if(Timer % 6 == 0)
 			{
-				alphaCounter += 0.08f;
-			}
-
-
-
-			float maxDetectRadius = 2f; // The maximum radius at which a projectile can detect a target
-			float projSpeed = 20f; // The speed at which the projectile moves towards the target
-
-
-
-
-
-			if (Timer > 40)
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.Pink, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+            }
+            if (Main.rand.NextBool(10))
             {
-			 maxDetectRadius = 3000f;
-			}
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Pink, 0f, 0f, 150, Color.White, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+                Main.dust[dustnumber].noGravity = true;
+            }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			// Trying to find NPC closest to the projectile
-			NPC closestNPC = FindClosestNPC(maxDetectRadius);
-			if (closestNPC == null)
-				return;
-
-			// If found, change the velocity of the projectile and turn it in the direction of the target
-			// Use the SafeNormalize extension method to avoid NaNs returned by Vector2.Normalize when the vector is zero
-			Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * projSpeed;
-			Projectile.rotation = Projectile.velocity.ToRotation();
-		}
-		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-		{
-			overPlayers.Add(index);
-
-		}
-		// Finding the closest NPC to attack within maxDetectDistance range
-		// If not found then returns null
-		public NPC FindClosestNPC(float maxDetectDistance)
-		{
-			NPC closestNPC = null;
-
-			// Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
-			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-			// Loop through all NPCs(max always 200)
-			for (int k = 0; k < Main.maxNPCs; k++)
+			Projectile.velocity *= 1.02f;
+            NPC nearest = ProjectileHelper.FindNearestEnemy(Projectile.position, 1024);
+            if(nearest != null)
 			{
-				NPC target = Main.npc[k];
-				// Check if NPC able to be targeted. It means that NPC is
-				// 1. active (alive)
-				// 2. chaseable (e.g. not a cultist archer)
-				// 3. max life bigger than 5 (e.g. not a critter)
-				// 4. can take damage (e.g. moonlord core after all it's parts are downed)
-				// 5. hostile (!friendly)
-				// 6. not immortal (e.g. not a target dummy)
-				if (target.CanBeChasedBy())
-				{
-					// The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
-					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-					// Check if it is within the radius
-					if (sqrDistanceToTarget < sqrMaxDetectDistance)
-					{
-						sqrMaxDetectDistance = sqrDistanceToTarget;
-						closestNPC = target;
-					}
-				}
+				Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearest.Center, 6);
 			}
 
-			Projectile.rotation += 0.1f;
-			{
+			Lighting.AddLight(Projectile.Center, Color.LightPink.ToVector3() * 1.0f * Main.essScale);
+        }
 
+        public override void OnKill(int timeLeft)
+        {
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                ModContent.ProjectileType<StarringBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
+        }
+    }
 
-				Projectile.direction = Projectile.spriteDirection = Projectile.velocity.X > 0f ? 1 : -1;
-				Projectile.rotation = Projectile.velocity.ToRotation();
-				if (Projectile.velocity.Y > 25f)
-				{
-					Projectile.velocity.Y = 25f;
-				}
-			}
-			return closestNPC;
-		}
+	public class StarringBoom : ModProjectile
+	{
+		private ref float Timer => ref Projectile.ai[0];
+		public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+			Projectile.width = 64;
+			Projectile.height = 64;
+			Projectile.penetrate = -1;
+			Projectile.timeLeft = 15;
+			Projectile.friendly = true;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = -1;
+        }
 
+        public override void AI()
+        {
+            base.AI();
+			Timer++;
+			if(Timer == 1)
+            {
+                for (float f = 0; f < 6; f++)
+                {
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Pink, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                }
+                for (float i = 0; i < 4; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.Pink,
+                        outerGlowColor: Color.Black,
+                        duration: Main.rand.NextFloat(12, 25),
+                        baseSize: Main.rand.NextFloat(0.01f, 0.15f));
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Starexplosion"), Projectile.position);
+            }
 
-
-	}
+        }
+    }
 }

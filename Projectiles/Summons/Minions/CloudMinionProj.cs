@@ -2,11 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Buffs.Minions;
+using Stellamod.Common.Shaders;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -14,24 +16,13 @@ namespace Stellamod.Projectiles.Summons.Minions
 {
     public class CloudMinionProj : ModProjectile
     {
-        private static float _orbitCounter;
-        private enum ActionState
-        {
-            Frost_Attack = 0,
-            Lightning_Attack = 1,
-            Tornado_Attack = 2
-        }
-
+        private float FlashTimer;
+        private Vector2 FlashPos;
         private ref float Timer => ref Projectile.ai[0];
-        private ActionState State
-        {
-            get => (ActionState)Projectile.ai[1];
-            set => Projectile.ai[1] = (float)value;
-        }
-
-        private ref float AttackTimer => ref Projectile.ai[2];
-        private Vector2 TargetPos;
-        private Vector3 HuntrianColorXyz;
+        private ref float LightningTimer => ref Projectile.ai[1];
+        private ref float TornadoTimer => ref Projectile.ai[2];
+        private bool DoLightning => Projectile.minionSlots >= 3;
+        private bool DoTornado => Projectile.minionSlots >= 6;
         private Player Owner => Main.player[Projectile.owner];
 
         public override void SetStaticDefaults()
@@ -48,7 +39,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override void SetDefaults()
         {
-            Projectile.width = 34;
+            Projectile.width = 128;
             Projectile.height = 34;
             Projectile.tileCollide = false; // Makes the minion go through tiles freely
 
@@ -60,287 +51,170 @@ namespace Stellamod.Projectiles.Summons.Minions
             Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
         }
 
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-            writer.WriteVector2(TargetPos);
-            writer.Write(_orbitCounter);
-        }
-
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            TargetPos = reader.ReadVector2();
-            _orbitCounter = reader.ReadSingle();
-        }
-
         public override void AI()
         {
             Player owner = Main.player[Projectile.owner];
             if (!SummonHelper.CheckMinionActive<CloudMinionBuff>(owner, Projectile))
                 return;
 
-            //minion count
-            int minionCount = owner.ownedProjectileCounts[Type];
-            if (minionCount <= 3)
-            {
-                State = ActionState.Frost_Attack;
-            }
-            else if (minionCount <= 6)
-            {
-                State = ActionState.Lightning_Attack;
-            }
-            else
-            {
-                State = ActionState.Tornado_Attack;
-            }
-   
-            switch (State)
-            {
-                case ActionState.Frost_Attack:
-                    AI_FrostAttack();
-                    break;
-
-                case ActionState.Lightning_Attack:
-                    AI_LightningAttack();
-                    break;
-
-                case ActionState.Tornado_Attack:
-                    AI_TornadoAttack();
-                    break;
-            }
-
-            Visuals();
-        }
-
-        private void AI_FrostAttack()
-        {
-            SummonHelper.CalculateIdleValues(Owner, Projectile, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
             SummonHelper.SearchForTargets(Owner, Projectile, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-            SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
-
-            //Frost Nearby Enemies
-            if (foundTarget)
-            {
-                //Shoot
-                AttackTimer++;
-                if (AttackTimer > 90)
-                {
-                    Vector2 velocity = VectorHelper.VelocityDirectTo(Projectile.Center, targetCenter, 30);
-
-                    //Auroran Bullet Placeholder, it will be instanteous lightning projectile
-                    //Maybe just directly damage the target? idk
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                        ModContent.ProjectileType<ClimateIceProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-
-                    AttackTimer = 0;
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer1"), Projectile.position);
-                }
-            }
-        }
-
-        private void AI_LightningAttack()
-        {
-            SummonHelper.CalculateIdleValues(Owner, Projectile, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
-            SummonHelper.SearchForTargets(Owner, Projectile, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-            //I want  it to move around erratically
             Timer++;
-            if (Timer >= 10)
+            if (Main.rand.NextBool(100))
             {
-                int range = 200;
-                if (!foundTarget)
-                    targetCenter = Owner.Center;
+         
+    
+                FlashPos = Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(0, Projectile.height));
+                for (float f = 0; f < 16; f++)
+                {
+                    int d = Dust.NewDust(FlashPos, 1, 1, ModContent.DustType<GlyphDust>(), newColor: GetMainColor(), Scale: Main.rand.NextFloat(0.5f, 2f));
+                    Main.dust[d].velocity = Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(4f, 9f);
+                }
+                FlashTimer = 1.5f;
+            }
+            if(Timer % 6 == 0)
+            {
 
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<GlyphDust>(), newColor: GetMainColor(), Scale: Main.rand.NextFloat(0.5f, 2f));
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Rain, newColor: GetMainColor(), Scale: Main.rand.NextFloat(0.5f, 2f));
+            }
+            FlashTimer *= 0.912f;
+            if(Timer > 12 && foundTarget)
+            {
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Vector2 offset = new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(0, Projectile.height));
+                    Vector2 pos = Projectile.position + offset;
+                    Vector2 velocity = (targetCenter - pos).SafeNormalize(Vector2.Zero) * 12;
+                   
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), pos, velocity,
+                            ProjectileID.WandOfFrostingFrost, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
                 Timer = 0;
-                if (Main.myPlayer == Projectile.owner)
-                {
-                    //Get a new position
-                    TargetPos = targetCenter + Main.rand.NextVector2CircularEdge(range, range);
-                    Projectile.netUpdate = true;
-                }
             }
-
-            Projectile.velocity = VectorHelper.VelocityDirectTo(Projectile.position, TargetPos, 15f);
-
-            //Zap Nearby Enemies
-            if (foundTarget)
+            if (DoLightning && foundTarget)
             {
-                AttackTimer++;
-                if (AttackTimer > 55)
+          
+                LightningTimer++;
+       
+                if(LightningTimer == 60)
                 {
-                    Vector2 velocity = VectorHelper.VelocityDirectTo(Projectile.Center, targetCenter, 30);
-
-                    //Auroran Bullet Placeholder, it will be instanteous lightning projectile
-                    //Maybe just directly damage the target? idk
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                        ModContent.ProjectileType<ClimateLightningProj>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity.RotatedByRandom(MathHelper.PiOver4) * 0.5f,
-                      ModContent.ProjectileType<ClimateLightningProj>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity.RotatedByRandom(MathHelper.PiOver4) * 0.5f,
-                      ModContent.ProjectileType<ClimateLightningProj>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
-                    AttackTimer = 0;
-                    SoundEngine.PlaySound(SoundID.DD2_LightningAuraZap, Projectile.position);
-                }
-            }
-
-            //Merge above the player and do large thunderbolts
-        }
-
-        private void AI_TornadoAttack()
-        {
-            _orbitCounter += 0.05f;
-            //OK SO
-            //WHAT WE NEED TO DO IS.
-            //Have the guys move in a n ellipse, how do we do tahat?
-            Projectile.Center = CalculateCirclePosition(Owner);
-
-            //Suck in nearby NPCS
-            float suckingStrength = 0.95f;
-            float suckingDistance = 128;
-            for (int i = 0; i < Main.maxNPCs; i++)
-            {
-                NPC npc = Main.npc[i];
-
-                if (npc.active && !npc.friendly && !npc.boss)
-                {
-                    float distance = Vector2.Distance(Projectile.Center, npc.Center);
-                    if (distance <= suckingDistance)
+                    FlashTimer = 2f;
+                    SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.position);
+                    if (Main.myPlayer == Projectile.owner)
                     {
-                        Vector2 direction = npc.Center - Projectile.Center;
-                        direction = direction.SafeNormalize(Vector2.Zero);
-                        npc.velocity -= direction * suckingStrength;
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.UnitY,
+                            ModContent.ProjectileType<TempestLightningBolt>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                     }
                 }
+                if(LightningTimer > 240)
+                {
+                    LightningTimer = 0;
+                }
             }
-            Timer++;
-            if (Timer >= 30)
+
+            if (DoTornado && foundTarget)
             {
-                Timer = 0;
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<ClimateTornadoProj>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner, ai0: Projectile.whoAmI);
+                TornadoTimer++;
+                if(TornadoTimer > 120 && TornadoTimer % 30 == 0)
+                {
+                    if (Main.myPlayer == Projectile.owner)
+                    {
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                            ModContent.ProjectileType<ClimateTornadoProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    }
+                }
+                if(TornadoTimer > 180)
+                {
+
+                    TornadoTimer = 0;
+                }
             }
+            Vector2 targetPosition = Owner.Center + new Vector2(0, -Projectile.height * 4);
+            Projectile.velocity = (targetPosition - Projectile.Center) * 0.1f;
+            // So it will lean slightly towards the direction it's moving
+            Projectile.rotation = Projectile.velocity.X * 0.005f;
+
+
+            // Some visuals here
+            Lighting.AddLight(Projectile.Center, GetMainColor().ToVector3() * 2.5f);
         }
 
-        private Vector2 CalculateCirclePosition(Player owner)
-        {      
-            //Get the index of this minion
-            int minionIndex = SummonHelper.GetProjectileIndex(Projectile);
-
-            //Now we can calculate the circle position	
-            int count = owner.ownedProjectileCounts[Type];
-            float between = 360 / (float)count;
-            float degrees = between * minionIndex;
-            float circleDistance = 256 + 16;
-            Vector2 circlePosition = owner.Center + new Vector2(circleDistance, 0).RotatedBy(
-                MathHelper.ToRadians(degrees + _orbitCounter));
-            return circlePosition;
-        }
-
-        public override Color? GetAlpha(Color lightColor)
+    
+        private Color GetMainColor()
         {
-            return new Color(
-                Color.DeepPink.R,
-                Color.DeepPink.G,
-                Color.DeepPink.B, 0);
+            if (DoTornado)
+                return Color.Green;
+            if (DoLightning)
+                return Color.Goldenrod;
+            return Color.Cyan;
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            switch (State)
-            {
-                case ActionState.Frost_Attack:
-                    DrawHelper.DrawAdditiveAfterImage(Projectile, Color.LightCyan * 0.3f, Color.White * 0.3f, ref lightColor);
-                    break;
-                case ActionState.Lightning_Attack:
-                    DrawHelper.DrawAdditiveAfterImage(Projectile, Color.MediumPurple * 0.3f, Color.White * 0.3f, ref lightColor);
-                    break;
-                case ActionState.Tornado_Attack:
-                    DrawHelper.DrawAdditiveAfterImage(Projectile, Color.LightGreen * 0.3f, Color.White * 0.3f, ref lightColor);
-                    break;
-            }
+            ThunderCloudShader shader = ThunderCloudShader.Instance;
+            shader.CloudColor = Color.Lerp(GetMainColor(), Color.Black, 0.7f);
+            shader.CloudColor = Color.White;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D texture = TextureAssets.Projectile[Type].Value;
+            shader.SourceSize = texture.Size();
 
-            return true;
+
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            Vector2 drawOrigin = texture.Size() / 2f;
+            float drawRotation = Projectile.rotation;
+            shader.CloudColor = GetMainColor();
+            shader.Apply();
+
+            float off = 112;
+            spriteBatch.Restart(effect: shader.Effect, sortMode: SpriteSortMode.Immediate, blendState: BlendState.Additive);
+            spriteBatch.Draw(texture, drawPos + new Vector2(off, 0), null, drawColor, drawRotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
+            for (float f = 0; f < 8; f++)
+            {
+                float p = f / 8f;
+                float rot = p * MathHelper.TwoPi;
+                rot += Main.GlobalTimeWrappedHourly;
+                Vector2 offset = rot.ToRotationVector2() * 8;
+                spriteBatch.Draw(texture, drawPos + new Vector2(off, 0) + offset, null, drawColor, drawRotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
+            }
+            shader.CloudColor = Color.Black;
+            shader.Apply();
+            spriteBatch.Restart(effect: shader.Effect, sortMode: SpriteSortMode.Immediate, blendState: BlendState.AlphaBlend);
+            spriteBatch.Draw(texture, drawPos + new Vector2(off, 0), null, drawColor, drawRotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
+  
+            shader.CloudColor = Color.Lerp(Color.Black, GetMainColor(), FlashTimer);
+            shader.Apply();
+            spriteBatch.Restart(effect: shader.Effect, sortMode: SpriteSortMode.Immediate, blendState: BlendState.Additive);
+
+           
+            for(int i = 0; i < 1; i++)
+                spriteBatch.Draw(texture, drawPos + new Vector2(off, 0), null, drawColor, drawRotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
+
+            spriteBatch.RestartDefaults();
+
+
+            shader.CloudColor = Color.Lerp(Color.Black, Color.Gold, FlashTimer);
+            shader.Apply();
+            spriteBatch.Restart(effect: shader.Effect, sortMode: SpriteSortMode.Immediate, blendState: BlendState.Additive);
+
+
+            for (int i = 0; i < 1; i++)
+                spriteBatch.Draw(texture, drawPos + new Vector2(off, 0), null, drawColor, drawRotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
+            spriteBatch.RestartDefaults();
+            return false;
         }
 
         public override void PostDraw(Color lightColor)
         {
-            switch (State)
+            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Color glowColor = GetMainColor();
+            glowColor.A = 0;
+            glowColor *= FlashTimer;
+            for (int i = 0; i < 3; i++)
             {
-                case ActionState.Frost_Attack:
-                    DrawHelper.DrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.LightCyan, lightColor, 2);
-                    break;
-                case ActionState.Lightning_Attack:
-                    DrawHelper.DrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.MediumPurple, lightColor, 2);
-                    break;
-                case ActionState.Tornado_Attack:
-                    DrawHelper.DrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.LightGreen, lightColor, 2);
-                    break;
+                Main.spriteBatch.Draw(texture2D4, FlashPos - Main.screenPosition, null, glowColor, Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
             }
         }
 
-        private void Visuals()
-        {
-            // So it will lean slightly towards the direction it's moving
-            Projectile.rotation = Projectile.velocity.X * 0.05f;
-            DrawHelper.AnimateTopToBottom(Projectile, 7);
-
-            switch (State)
-            {
-                case ActionState.Frost_Attack:
-                    HuntrianColorXyz = DrawHelper.HuntrianColorOscillate(
-                        new Vector3(85, 45, 150),
-                        new Vector3(15, 60, 60),
-                        new Vector3(3, 3, 3), 0);
-
-
-                    if (Main.rand.NextBool(12))
-                    {
-                        int count = 2;
-                        for (int k = 0; k < count; k++)
-                        {
-                            Dust.NewDust(Projectile.position, 8, 8, DustID.Frost);
-                        }
-                    }
-
-                    if (Main.rand.NextBool(12))
-                    {
-
-                    }
-                    break;
-                case ActionState.Lightning_Attack:
-                    HuntrianColorXyz = DrawHelper.HuntrianColorOscillate(
-                        new Vector3(125, 100, 40),
-                        new Vector3(15, 60, 60),
-                        new Vector3(3, 3, 3), 0);
-
-                    if (Main.rand.NextBool(12))
-                    {
-                        int count = 2;
-                        for (int k = 0; k < count; k++)
-                        {
-                            Dust.NewDust(Projectile.position, 8, 8, DustID.Electric);
-                        }
-                    }
-
-                    break;
-                case ActionState.Tornado_Attack:
-                    HuntrianColorXyz = DrawHelper.HuntrianColorOscillate(
-                        new Vector3(125, 150, 40),
-                        new Vector3(15, 60, 60),
-                        new Vector3(3, 3, 3), 0);
-
-                    if (Main.rand.NextBool(12))
-                    {
-                        int count = 2;
-                        for (int k = 0; k < count; k++)
-                        {
-                            Dust.NewDust(Projectile.position, 8, 8, DustID.Vortex);
-                        }
-                    }
-
-                    break;
-            }
-
-            // Some visuals here
-            Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
-        }
     }
 }

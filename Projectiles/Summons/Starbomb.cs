@@ -29,8 +29,7 @@ namespace Stellamod.Projectiles.Summons
         public override void AI()
         {
             base.AI();
-            ProjectileID.Sets.TrailCacheLength[Type] = 32;
-            ProjectileID.Sets.TrailingMode[Type] = 2;
+
             if (Main.rand.NextBool(8))
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Yellow, Main.rand.NextFloat(1f, 3f)).noGravity = true;

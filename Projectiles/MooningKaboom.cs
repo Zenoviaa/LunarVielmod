@@ -25,7 +25,9 @@ namespace Stellamod.Projectiles
 			Projectile.height = 220;
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 56;
-			Projectile.scale = 1f;		
+			Projectile.scale = 1f;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = -1;
 		}
 
         public override void AI()
@@ -40,10 +42,10 @@ namespace Stellamod.Projectiles
 		public override bool PreAI()
 		{
 			Projectile.tileCollide = false;
-			if (++Projectile.frameCounter >= 2)
+			if (++Projectile.frameCounter >= 1)
 			{
 				Projectile.frameCounter = 0;
-				if (++Projectile.frame >= 56)
+				if (++Projectile.frame >= 28)
 				{
 					Projectile.frame = 0;
 				}

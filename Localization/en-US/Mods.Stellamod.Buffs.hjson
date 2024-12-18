@@ -832,3 +832,18 @@ VampiricFlames: {
 	DisplayName: Vampiric Flames
 	Description: Your life is being stolen away...
 }
+
+Clouded: {
+	DisplayName: Clouded
+	Description: Mods.Stellamod.Buffs.Clouded.Description
+}
+
+RevengenceMinionBuff: {
+	DisplayName: Swords of Revengence
+	Description: An army of blades protects you!
+}
+
+StringMinionBuff: {
+	DisplayName: Stringy Friends
+	Description: Wiggle Wiggle~
+}
