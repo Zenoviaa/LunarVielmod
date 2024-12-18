@@ -16,6 +16,7 @@ namespace Stellamod.Projectiles
         public override void SetDefaults()
         {
             base.SetDefaults();
+            Projectile.friendly = true;
             Projectile.width = 24;
             Projectile.height = 24;
             Projectile.penetrate = 2;
