@@ -574,6 +574,7 @@
     <None Remove="UI\ArmorReforgeSystem\ReforgeButtonSelected.png" />
     <None Remove="Visual\Particles\GlowCircleDetailedBoomParticle1.png" />
     <None Remove="Visual\Particles\GlowSpikeParticle.png" />
+    <None Remove="Visual\Particles\GlowStretchParticle.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Accord.Fuzzy" Version="3.8.0" />

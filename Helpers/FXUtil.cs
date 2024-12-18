@@ -9,6 +9,28 @@ namespace Stellamod.Helpers
 {
     internal static class FXUtil
     {
+        public static GlowStretchParticle GlowStretch(Vector2 position,Vector2 velocity)
+        {
+            GlowStretchParticle particle = Particle.NewParticle<GlowStretchParticle>(position, Vector2.Zero);
+            particle.Velocity = velocity;
+            //The inside color of the circle
+            particle.InnerColor = Color.White;
+
+            //The main color it fades to
+            particle.GlowColor = Color.LightCyan;
+
+            //The final color it fades to
+            particle.OuterGlowColor = Color.DarkBlue;
+
+            //How long to last
+            particle.Duration = 15;
+
+            //How big the circle is, don't make it too big or it'll go outside the square
+            particle.BaseSize = 0.06f;
+            particle.Pixelation = 0.0015f;
+            return particle;
+        }
+
         public static GlowSpikeParticle GlowSpikeBoom(Vector2 position, Color innerColor, Color glowColor, Color outerGlowColor, float duration = 15f, float baseSize = 0.12f)
         {
             GlowSpikeParticle boomParticle = Particle.NewParticle<GlowSpikeParticle>(position, Vector2.Zero);

@@ -211,7 +211,7 @@ namespace Stellamod.Items.Weapons.Mage
 			{
 				if(Main.myPlayer == Projectile.owner)
 				{
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity, ModContent.ProjectileType<GildedStaffBlast>(), (int)(Projectile.damage * ChargeProgress * 2f), Projectile.knockBack, Projectile.owner, ai1: ChargeProgress);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity, ModContent.ProjectileType<GildedStaffBlast>(), (int)(Projectile.damage * ChargeProgress * 3f), Projectile.knockBack, Projectile.owner, ai1: ChargeProgress);
 				}
                 FXUtil.ShakeCamera(Projectile.position, 1024, 2);
               
@@ -331,6 +331,18 @@ namespace Stellamod.Items.Weapons.Mage
 			Timer++;
             if(Timer == 1)
             {
+                for (int i = 0; i < 7 * Charge; i++)
+                {
+                    Vector2 velocity = Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(30)) * Main.rand.NextFloat(25f, 45f);
+                    var particle = FXUtil.GlowStretch(Projectile.Center, velocity);
+                    particle.InnerColor = Color.White;
+                    particle.GlowColor = Color.LightCyan;
+                    particle.OuterGlowColor = Color.Black;
+                    particle.Duration = Main.rand.NextFloat(25, 50) * Charge;
+                    particle.BaseSize = Main.rand.NextFloat(0.09f, 0.18f) * Charge;
+                    particle.VectorScale *= 0.5f;
+                }
+
                 SoundStyle mySound = new SoundStyle("Stellamod/Assets/Sounds/Starblast");
                 mySound.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(mySound, Projectile.position);
@@ -440,6 +452,21 @@ namespace Stellamod.Items.Weapons.Mage
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
                     (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.White, Main.rand.NextFloat(1f, 3f)).noGravity = true;
             }
+            for (int i = 0; i < 3 * Charge; i++)
+            {
+                //Old velocity is the velocity before this tick, so it won't be zero or whatever
+                Vector2 velocity = Projectile.oldVelocity.RotatedByRandom(MathHelper.ToRadians(30)).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5, 15);
+                
+                //I love this particle type
+                var particle = FXUtil.GlowStretch(Projectile.Center, velocity);
+                particle.InnerColor = Color.White;
+                particle.GlowColor = Color.LightCyan;
+                particle.OuterGlowColor = Color.Black;
+                particle.Duration = Main.rand.NextFloat(25, 50) * Charge;
+                particle.BaseSize = Main.rand.NextFloat(0.09f, 0.18f) * Charge;
+                particle.VectorScale *= 0.5f;
+            }
+
             for (float i = 0; i < 4; i++)
             {
                 float progress = i / 4f;
