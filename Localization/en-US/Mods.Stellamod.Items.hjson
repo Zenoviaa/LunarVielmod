@@ -6071,7 +6071,11 @@ DirtGlove: {
 
 TwilitTome: {
 	DisplayName: Twilight Tome
-	Tooltip: ""
+	Tooltip:
+		'''
+		Channels two rapidly spinning and piercing discs around you!
+		Slice em' up!
+		'''
 }
 
 Voltenstein: {

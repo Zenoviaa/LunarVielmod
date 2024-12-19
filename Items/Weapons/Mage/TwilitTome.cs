@@ -5,6 +5,7 @@ using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -41,66 +42,26 @@ namespace Stellamod.Items.Weapons.Mage
             Item.autoReuse = true;
      
             Item.DamageType = DamageClass.Magic;
-            Item.shoot = ModContent.ProjectileType<TwilitTomeRed>();
+            Item.shoot = ModContent.ProjectileType<TwilightDisc>();
             Item.shootSpeed = 10f;
-            Item.mana = 5;
+            Item.mana = 8;
             Item.useAnimation = 10;
             Item.useTime = 10;
+            Item.UseSound = SoundID.Item84;
             Item.consumeAmmoOnLastShotOnly = true;
+            Item.autoReuse = false;
+            Item.channel = true;
         }
-        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+
+        public override bool CanUseItem(Player player)
         {
-            Player player = Main.player[Main.myPlayer];
-            if (Main.dayTime)
-            {
-                Texture2D iconTexture = ModContent.Request<Texture2D>("Stellamod/Items/Weapons/Mage/TwilitTomeDay").Value;
-                spriteBatch.Draw(iconTexture, position, null, drawColor, 0f, origin, scale, SpriteEffects.None, 0);
-                return false;
-            }
-            else
-            {
-                Texture2D iconTexture = ModContent.Request<Texture2D>("Stellamod/Items/Weapons/Mage/TwilitTome").Value;
-                spriteBatch.Draw(iconTexture, position, null, drawColor, 0f, origin, scale, SpriteEffects.None, 0);
-                return false;
-            }
-            return true;
+            return player.ownedProjectileCounts[Item.shoot] < 1;
         }
-        public override Vector2? HoldoutOffset()
+
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            return new Vector2(-3f, -2f);
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai0: 0, ai1: 1, ai2: 15);
+            return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            Star += 1;
-            if (Main.dayTime)
-            {
-                if (Star >= 2)
-                {
-                    Star = 0;
-                    type = ModContent.ProjectileType<TwilitTomeRed>();
-                }
-                if (Star == 1)
-                {
-                    type = ModContent.ProjectileType<TwilitTomeGreen>();
-                }
-
-            }
-            else
-            {
-                if (Star >= 2)
-                {
-                    Star = 0;
-                    type = ModContent.ProjectileType<TwilitTomeBlue>();
-                }
-                if (Star == 1)
-                {
-                    type = ModContent.ProjectileType<TwilitTomePurple>();
-                }
-            }
-
-        }
-
-
-
     }
 }
