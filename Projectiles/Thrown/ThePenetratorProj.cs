@@ -170,7 +170,7 @@ namespace Stellamod.Projectiles.Thrown
         public TrailRenderer Trail;
         public override bool PreDraw(ref Color lightColor)
         {
-            var TrailTex = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/StarTrail").Value;
+            var TrailTex = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/StarTrail").Value;
 
             if (Trail == null)
             {

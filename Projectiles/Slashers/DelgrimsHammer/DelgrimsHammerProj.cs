@@ -230,10 +230,10 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
         {
             Main.spriteBatch.End();
 
-            var TrailTex = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/SpikyTrail1").Value;
-            var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/SpikyTrail2").Value;
-            var TrailTex3 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/StarTrail").Value;
-            var TrailTex4 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/TerraTrail").Value;
+            var TrailTex = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SpikyTrail1").Value;
+            var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SpikyTrail2").Value;
+            var TrailTex3 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/StarTrail").Value;
+            var TrailTex4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/TerraTrail").Value;
             Color color = Color.Multiply(new(1.50f, 1.75f, 3.5f, 0), 200);
 
             if (SwordSlash == null)

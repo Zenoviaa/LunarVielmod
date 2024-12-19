@@ -121,13 +121,13 @@ namespace Stellamod.Skies
 
 				Effect storm = Neffect;
 				storm.Parameters["uScreenSize"].SetValue(Main.ScreenSize.ToVector2());
-				storm.Parameters["uTexture0"].SetValue(ModContent.Request<Texture2D>("Stellamod/Textures/Noise1").Value);
-				storm.Parameters["uTexture1"].SetValue(ModContent.Request<Texture2D>("Stellamod/Textures/Noise2").Value);
+				storm.Parameters["uTexture0"].SetValue(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Noise1").Value);
+				storm.Parameters["uTexture1"].SetValue(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Noise2").Value);
 				storm.Parameters["uOffsetPosition"].SetValue(offset);
 				storm.Parameters["uWorldPosition"].SetValue((Main.screenPosition + Main.ScreenSize.ToVector2() / 2f) / 5.5f);
 				storm.Parameters["uTime"].SetValue(_windSpeed / 2f);
 				storm.Parameters["uCurveFactor"].SetValue(1.2f);
-				storm.Parameters["uColorMap"].SetValue(ModContent.Request<Texture2D>("Stellamod/Textures/ColorMap").Value);
+				storm.Parameters["uColorMap"].SetValue(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/ColorMap").Value);
 				storm.Parameters["uColorMapSection"].SetValue(0.2f);
 				storm.Parameters["uStrength"].SetValue(0.8f);
 				storm.Parameters["uPower"].SetValue(2.2f);
@@ -142,7 +142,7 @@ namespace Stellamod.Skies
 
 
 				//glowing up the sky
-				Texture2D backGlow = (ModContent.Request<Texture2D>("Stellamod/Textures/Backglow").Value);
+				Texture2D backGlow = (ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Backglow").Value);
 				float glowYPos = worldSurface - Utils.GetLerpValue(-worldSurface * 2, worldSurface, Main.screenPosition.Y) * worldSurface + backGlow.Height / 3 * 2;
 				Vector2 glowPosition = new Vector2(Main.screenWidth / 2, glowYPos); //creating vertical parallax
 				Rectangle glowFrame = new Rectangle(0, 0, Main.screenWidth, backGlow.Height);
@@ -163,13 +163,13 @@ namespace Stellamod.Skies
 
 				Effect storm = Neffect;
 				storm.Parameters["uScreenSize"].SetValue(Main.ScreenSize.ToVector2());
-				storm.Parameters["uTexture0"].SetValue(ModContent.Request<Texture2D>("Stellamod/Textures/Noise1").Value);
-				storm.Parameters["uTexture1"].SetValue(ModContent.Request<Texture2D>("Stellamod/Textures/Noise2").Value);
+				storm.Parameters["uTexture0"].SetValue(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Noise1").Value);
+				storm.Parameters["uTexture1"].SetValue(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Noise2").Value);
 				storm.Parameters["uOffsetPosition"].SetValue(offset);
 				storm.Parameters["uWorldPosition"].SetValue((Main.screenPosition + Main.ScreenSize.ToVector2() / 2f) / 2.5f);
 				storm.Parameters["uTime"].SetValue(_windSpeed);
 				storm.Parameters["uCurveFactor"].SetValue(1.6f);
-				storm.Parameters["uColorMap"].SetValue(ModContent.Request<Texture2D>("Stellamod/Textures/ColorMap").Value);
+				storm.Parameters["uColorMap"].SetValue(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/ColorMap").Value);
 				storm.Parameters["uColorMapSection"].SetValue(0.2f);
 				storm.Parameters["uStrength"].SetValue(1.6f);
 				storm.Parameters["uPower"].SetValue(5f);

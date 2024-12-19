@@ -554,10 +554,10 @@ namespace Stellamod.Projectiles.Steins
 		{
 			Main.spriteBatch.End();
 
-			var TrailTex = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/SkiTrail").Value;
-			var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WaterTrail").Value;
-			var TrailTex3 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WaterTrail").Value;
-			var TrailTex4 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/SkiTrail").Value;
+			var TrailTex = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SkiTrail").Value;
+			var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/WaterTrail").Value;
+			var TrailTex3 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/WaterTrail").Value;
+			var TrailTex4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SkiTrail").Value;
 			Color color = Color.Multiply(new(1.50f, 1.75f, 3.5f, 0), 200);
 
 

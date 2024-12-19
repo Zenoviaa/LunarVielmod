@@ -52,6 +52,7 @@ namespace Stellamod.Trails
         }
         private void InnerLoadArrayProperty(PropertyInfo p)
         {
+            /*
             string folderSpace = InnerGetPath(p);
             int arrLength = p.GetCustomAttribute<ImgArrAttribute>().Length;
             var arr = new Asset<Texture2D>[arrLength];
@@ -59,12 +60,13 @@ namespace Stellamod.Trails
             {
                 arr[i] = ModContent.Request<Texture2D>("Stellamod/" + folderSpace + "/Trail");
             }
-            p.SetMethod.Invoke(null, new object[] { arr });
+            p.SetMethod.Invoke(null, new object[] { arr });*/
         }
         private void InnerLoadProperty(PropertyInfo p)
         {
+            /*
             string folderSpace = InnerGetPath(p);
-            p.SetMethod.Invoke(null, new object[] { ModContent.Request<Texture2D>("Stellamod/" + folderSpace + "/Trail") });
+            p.SetMethod.Invoke(null, new object[] { ModContent.Request<Texture2D>("Stellamod/" + folderSpace + "/Trail") });*/
         }
         private string InnerGetPath(PropertyInfo p)
         {

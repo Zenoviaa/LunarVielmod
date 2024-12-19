@@ -154,7 +154,7 @@ namespace Stellamod.Skies
         /*
         private void DrawWaterRays(SpriteBatch spriteBatch)
         {
-            Texture2D noise = ModContent.Request<Texture2D>("Stellamod/Textures/BlurryPerlinNoise", AssetRequestMode.ImmediateLoad).Value;
+            Texture2D noise = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BlurryPerlinNoise", AssetRequestMode.ImmediateLoad).Value;
             Effect waterRays = StellasEffectsRegistry.UnderwaterRayShader.Shader;
             waterRays.Parameters["noiseMap"].SetValue(noise);
             waterRays.Parameters["mainColor"].SetValue(Color.SkyBlue.ToVector3() * 1.5f);

@@ -137,10 +137,10 @@ namespace Stellamod.Projectiles.Slashers.Volcant
         {
             Main.spriteBatch.End();
 
-            var TrailTex = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WhiteTrail").Value;
-            var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WhiteTrail").Value;
-            var TrailTex3 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/CrystalTrail").Value;
-            var TrailTex4 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/CrystalTrail").Value;
+            var TrailTex = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/WhiteTrail").Value;
+            var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/WhiteTrail").Value;
+            var TrailTex3 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/CrystalTrail").Value;
+            var TrailTex4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/CrystalTrail").Value;
             Color color = Color.Multiply(new(1.50f, 1.75f, 3.5f, 0), 200);
             if (SwordSlash == null)
             {

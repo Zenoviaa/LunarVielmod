@@ -106,7 +106,7 @@ namespace Stellamod.Skies
                             Color.DeepPink
                         };
 
-                        Texture2D BeamTexture = ModContent.Request<Texture2D>("Stellamod/Textures/StarbloomSkyBeam").Value;
+                        Texture2D BeamTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/StarbloomSkyBeam").Value;
 
                         spriteBatch.Draw(BeamTexture, PillarPosition + new Vector2(0, 600), null, Color.Lerp(BeamColors[index], BeamColors[(index + 1) % 3], fade) * 0.75f * scale * opacity,
                         i % 2 == 0 ? MathF.Sin(-Rotation) : MathF.Sin(Rotation), new Vector2(0, BeamTexture.Height), new Vector2(realDepth / 70f, realDepth / 45f), SpriteEffects.None, 0f);
@@ -164,8 +164,8 @@ namespace Stellamod.Skies
 
                         float Rotation = Main.GlobalTimeWrappedHourly * 0.4f;
 
-                        Texture2D BeamTextureTop = ModContent.Request<Texture2D>("Stellamod/Textures/StarbloomSkyBeam").Value;
-                        Texture2D BeamTextureBottom = ModContent.Request<Texture2D>("Stellamod/Textures/StarbloomSkyBeam2").Value;
+                        Texture2D BeamTextureTop = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/StarbloomSkyBeam").Value;
+                        Texture2D BeamTextureBottom = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/StarbloomSkyBeam2").Value;
 
                         spriteBatch.Draw(BeamTextureTop, position + new Vector2(0, 1550), null,
                         i % 2 == 0 ? Color.Lerp(BeamColors2[index], BeamColors2[(index + 1) % 3], fade) * 0.3f * opacity : Color.Lerp(BeamColors[index], BeamColors[(index + 1) % 3], fade) * 0.3f * opacity,
@@ -188,7 +188,7 @@ namespace Stellamod.Skies
                             Color.Black
                 };
 
-                Texture2D SkyTexture = ModContent.Request<Texture2D>("Stellamod/Textures/StarbloomSkyBeam").Value;
+                Texture2D SkyTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/StarbloomSkyBeam").Value;
 
                 spriteBatch.Draw(SkyTexture, new Rectangle(0, Math.Max(0, (int)((Main.worldSurface * 16.0 - Main.screenPosition.Y - 2000) * 0.1f)), Main.screenWidth, Main.screenHeight),
                 Color.Lerp(SkyColors[index], SkyColors[(index + 1) % 3], fade) * Math.Min(1f, (Main.screenPosition.Y - 800f) / 1000f * opacity));

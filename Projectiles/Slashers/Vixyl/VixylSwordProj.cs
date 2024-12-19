@@ -140,7 +140,7 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
         public override bool PreDraw(ref Color lightColor)
         {
             Main.spriteBatch.End();
-            var TrailTex = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/StarTrail").Value;
+            var TrailTex = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/StarTrail").Value;
             Color color = Color.Multiply(new(1.50f, 1.75f, 3.5f, 0), 200);
 
 

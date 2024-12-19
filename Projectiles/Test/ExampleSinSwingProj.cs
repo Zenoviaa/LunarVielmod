@@ -110,7 +110,7 @@ namespace Stellamod.Projectiles.Test
                 oldPos[i] += Projectile.rotation.ToRotationVector2() * Projectile.width / 3f;
             }
 
-            Texture2D tipSlashTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/TerraTrail").Value;
+            Texture2D tipSlashTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/TerraTrail").Value;
             if (SwordSlash == null)
             {
                 SwordSlash = new TrailRenderer(tipSlashTexture, TrailRenderer.DefaultPass, 

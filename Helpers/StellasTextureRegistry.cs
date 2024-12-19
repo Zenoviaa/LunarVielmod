@@ -10,17 +10,17 @@ namespace Stellamod.Helpers.Separate
     {
        
 
-        public static Asset<Texture2D> BloomLine => ModContent.Request<Texture2D>("Stellamod/Textures/BloomLine");
+        public static Asset<Texture2D> BloomLine => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine");
 
-        public static Asset<Texture2D> BloomLineSmall => ModContent.Request<Texture2D>("Stellamod/Textures/BloomLineSmall");
+        public static Asset<Texture2D> BloomLineSmall => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLineSmall");
 
-        public static Asset<Texture2D> Invisible => ModContent.Request<Texture2D>("Stellamod/Textures/Invisible");
+        public static Asset<Texture2D> Invisible => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Invisible");
 
      
-        public static Asset<Texture2D> LaserCircle => ModContent.Request<Texture2D>("Stellamod/Textures/LaserCircle");
+        public static Asset<Texture2D> LaserCircle => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/LaserCircle");
 
-        public static Asset<Texture2D> Line => ModContent.Request<Texture2D>("IStellamod/Textures/Line");
+        public static Asset<Texture2D> Line => ModContent.Request<Texture2D>("IStellamod/Assets/NoiseTextures/Line");
 
-        public static string InvisPath => "IStellamod/Textures/Invisible";
+        public static string InvisPath => "IStellamod/Assets/NoiseTextures/Invisible";
     }
 }
