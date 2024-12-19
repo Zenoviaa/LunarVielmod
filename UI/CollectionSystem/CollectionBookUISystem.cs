@@ -11,7 +11,7 @@ using Terraria.UI;
 namespace Stellamod.UI.CollectionSystem
 {
     [Autoload(Side = ModSide.Client)]
-    internal class CollectionBookUISystem : ModSystem
+    internal class CollectionBookUISystem : BaseUISystem
     {
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
@@ -28,6 +28,8 @@ namespace Stellamod.UI.CollectionSystem
 
         public QuestTabUIState questTabUIState;
         public ActiveQuestUIState activeQuestUIState;
+
+        public override int uiSlot => Slot_MajorUI;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -100,6 +102,12 @@ namespace Stellamod.UI.CollectionSystem
             }
         }
 
+        public override void CloseThis()
+        {
+            base.CloseThis();
+            CloseBookUI();
+        }
+
         internal void ToggleUI()
         {
             if (_userInterface.CurrentState != null)
@@ -115,12 +123,14 @@ namespace Stellamod.UI.CollectionSystem
         internal void OpenBookUI()
         {
             //Set State
+            TakeSlot();
             _userInterface.SetState(collectionBookUI);
             collectionBookUI.bookUI.book.Open();
         }
 
         internal void CloseBookUI()
         {
+            ClearSlot();
             collectionBookUI.bookUI.book.Close();
             CloseRightUI();
             CloseTabUI();

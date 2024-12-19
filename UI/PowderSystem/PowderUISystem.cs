@@ -8,13 +8,14 @@ using Terraria.UI;
 namespace Stellamod.UI.PowderSystem
 {
     [Autoload(Side = ModSide.Client)]
-    internal class PowderUISystem : ModSystem
+    internal class PowderUISystem : BaseUISystem
     {
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
         public PowderUIState powderUIState;
         public BaseIgniterCard Card { get; set; }
         public static string RootTexturePath => "Stellamod/UI/PowderSystem/";
+        public override int uiSlot => Slot_MinorUI;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -38,6 +39,12 @@ namespace Stellamod.UI.PowderSystem
             }
         }
 
+        public override void CloseThis()
+        {
+            base.CloseThis();
+            CloseUI();
+        }
+
         internal void ToggleUI()
         {
             if (_userInterface.CurrentState != null)
@@ -53,12 +60,14 @@ namespace Stellamod.UI.PowderSystem
         internal void OpenUI()
         {
             //Set State
+            TakeSlot();
             powderUIState.powderUI.OpenUI(Card);
             _userInterface.SetState(powderUIState);
         }
 
         internal void CloseUI()
         {
+            ClearSlot();
             _userInterface.SetState(null);
         }
 

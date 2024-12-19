@@ -125,6 +125,20 @@ namespace Stellamod.UI.CollectionSystem.Quests
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
             Glow *= 0.985f;
+            _panel.Height.Pixels = _slotGrid.GetTotalHeight() + 32;
+            float progress = _panel.Height.Pixels / Height.Pixels;
+            progress = MathHelper.Clamp(progress, 0f, 1f);
+            _scrollbar.Height.Set(Height.Pixels * progress, 0);
+
+            //Hacky way to get invisible scrollbar when there's no need for it
+            if (_panel.Height.Pixels < Height.Pixels)
+            {
+                _scrollbar.Top.Set(500000, 0f);
+            }
+            else
+            {
+                _scrollbar.Top.Set(0.05f, 0f);
+            }
         }
     }
 }

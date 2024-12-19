@@ -9,7 +9,7 @@ namespace Stellamod.UI.GunHolsterSystem
 {
 
     [Autoload(Side = ModSide.Client)]
-    internal class GunHolsterUISystem : ModSystem
+    internal class GunHolsterUISystem : BaseUISystem
     {
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
@@ -17,6 +17,7 @@ namespace Stellamod.UI.GunHolsterSystem
 
         public GunHolsterUIState gunHolsterUIState;
         public GunHolster gunHolster;
+        public override int uiSlot => Slot_MinorUI;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -40,6 +41,12 @@ namespace Stellamod.UI.GunHolsterSystem
             }
         }
 
+        public override void CloseThis()
+        {
+            base.CloseThis();
+            CloseUI();
+        }
+
         internal void ToggleUI()
         {
             if (_userInterface.CurrentState != null)
@@ -55,6 +62,7 @@ namespace Stellamod.UI.GunHolsterSystem
         internal void OpenUI()
         {
             //Set State
+            TakeSlot();
             gunHolsterUIState.gunHolsterUI.leftSlot.OpenUI(gunHolster, null);
             gunHolsterUIState.gunHolsterUI.rightSlot.OpenUI(gunHolster, null);
             _userInterface.SetState(gunHolsterUIState);
@@ -62,6 +70,7 @@ namespace Stellamod.UI.GunHolsterSystem
 
         internal void CloseUI()
         {
+            ClearSlot();
             _userInterface.SetState(null);
         }
 

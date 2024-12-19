@@ -11,7 +11,7 @@ using Terraria.UI;
 namespace Stellamod.UI.ArmorReforgeSystem
 {
     [Autoload(Side = ModSide.Client)]
-    internal class ReforgeUISystem : ModSystem
+    internal class ReforgeUISystem : BaseUISystem
     {
         private Vector2 _worldPos;
         private GameTime _lastUpdateUiGameTime;
@@ -19,6 +19,8 @@ namespace Stellamod.UI.ArmorReforgeSystem
         public ReforgeUIState reforgeUIState;
         public static string RootTexturePath => "Stellamod/UI/ArmorReforgeSystem/";
 
+
+        public override int uiSlot => Slot_MajorUI;
         public override void OnModLoad()
         {
             base.OnModLoad();

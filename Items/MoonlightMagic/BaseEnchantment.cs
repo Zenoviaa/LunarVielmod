@@ -16,6 +16,17 @@ namespace Stellamod.Items.MoonlightMagic
         ICloneable
     {
         private static BaseEnchantment[] _enchantments;
+        public static int[] GetTypes()
+        {
+            BaseEnchantment[] allEnchantments = BaseEnchantment.AllEnchantments;
+            int numResults = allEnchantments.Length;
+            int[] enchantmentTypes = new int[numResults];
+            for (int i = 0; i < enchantmentTypes.Length; i++)
+            {
+                enchantmentTypes[i] = allEnchantments[i].Type;
+            }
+            return enchantmentTypes;
+        }
         public static BaseEnchantment[] AllEnchantments
         {
             get

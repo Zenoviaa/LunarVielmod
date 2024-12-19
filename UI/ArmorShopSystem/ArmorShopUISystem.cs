@@ -10,7 +10,7 @@ using Terraria.Audio;
 
 namespace Stellamod.UI.ArmorShopSystem
 {
-    internal class ArmorShopUISystem : ModSystem
+    internal class ArmorShopUISystem : BaseUISystem
     {
         private Vector2 _worldPos;
         private GameTime _lastUpdateUiGameTime;
@@ -18,6 +18,7 @@ namespace Stellamod.UI.ArmorShopSystem
         public ArmorShopUIState armorShopUIState;
         public static string RootTexturePath => "Stellamod/UI/ArmorShopSystem/";
 
+        public override int uiSlot => Slot_MinorUI;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -44,6 +45,12 @@ namespace Stellamod.UI.ArmorShopSystem
             {
                 _userInterface.Update(gameTime);
             }
+        }
+
+        public override void CloseThis()
+        {
+            base.CloseThis();
+            CloseUI();
         }
 
         internal void ToggleUI()
@@ -92,12 +99,14 @@ namespace Stellamod.UI.ArmorShopSystem
         internal void OpenUI()
         {
             //Set State
+            TakeSlot();
             _worldPos = Main.LocalPlayer.position;
             _userInterface.SetState(armorShopUIState);
         }
 
         internal void CloseUI()
         {
+            ClearSlot();
             _userInterface.SetState(null);
         }
 

@@ -9,7 +9,7 @@ using Terraria.UI;
 namespace Stellamod.UI.AdvancedMagicSystem
 {
     [Autoload(Side = ModSide.Client)]
-    internal class AdvancedMagicUISystem : ModSystem
+    internal class AdvancedMagicUISystem : BaseUISystem
     {
         private UserInterface _backpackInterface;
         private UserInterface _staffInterface;
@@ -22,7 +22,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
         public static BaseStaff Staff { get; private set; }
         private GameTime _lastUpdateUiGameTime;
 
-        
+        public override int uiSlot => Slot_MajorUI;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -53,8 +53,11 @@ namespace Stellamod.UI.AdvancedMagicSystem
             itemUIState?.itemUI?.Recalculate();
         }
 
+
+
         internal void OpenUI(BaseStaff staff)
         {
+   
             if(Staff == staff)
             {
                 CloseStaffUI();
@@ -140,6 +143,12 @@ namespace Stellamod.UI.AdvancedMagicSystem
             //Set State
             _btnInterface.SetState(buttonUIState);
         }
+        public override void CloseThis()
+        {
+            base.CloseThis();
+            CloseStaffUI();
+            CloseBackpackUI();
+        }
 
         internal void CloseButtonUI()
         {
@@ -162,11 +171,13 @@ namespace Stellamod.UI.AdvancedMagicSystem
         internal void OpenBackpackUI()
         {
             //Set State
+            TakeSlot();
             _backpackInterface.SetState(itemUIState);
         }
 
         internal void CloseBackpackUI()
         {
+            ClearSlot();
             _backpackInterface.SetState(null);
         }
 

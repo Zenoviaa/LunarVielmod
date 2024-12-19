@@ -10,7 +10,7 @@ using Terraria.UI;
 namespace Stellamod.UI.CellConverterSystem
 {
     [Autoload(Side = ModSide.Client)]
-    internal class CellConverterUISystem : ModSystem
+    internal class CellConverterUISystem : BaseUISystem
     {
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
@@ -20,6 +20,7 @@ namespace Stellamod.UI.CellConverterSystem
         public int CellConverterX;
         public int CellConverterY;
         public Vector2 CellConverterPos;
+        public override int uiSlot => Slot_MinorUI;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -51,6 +52,12 @@ namespace Stellamod.UI.CellConverterSystem
             }
         }
 
+        public override void CloseThis()
+        {
+            base.CloseThis();
+            CloseUI();
+        }
+
         internal void ToggleUI()
         {
             if (_userInterface.CurrentState != null)
@@ -66,11 +73,13 @@ namespace Stellamod.UI.CellConverterSystem
         internal void OpenUI()
         {
             //Set State
+            TakeSlot();
             _userInterface.SetState(converterUIState);
         }
 
         internal void CloseUI()
         {
+            ClearSlot();
             Item mold = converterUIState.converterUI.convertSlot.Item;
             if (!mold.IsAir)
             {

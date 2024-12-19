@@ -1227,3 +1227,6 @@ OkHand.DisplayName: Ok Hand
 OpenPalm.DisplayName: Open Palm
 ScissorHand.DisplayName: Scissor Hand
 Manman.DisplayName: Manman
+CommonChest.DisplayName: Common Chest
+MythicalChest.DisplayName: Mythical Chest
+RareChest.DisplayName: Rare Chest

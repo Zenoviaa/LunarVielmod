@@ -1,25 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Stellamod.Common;
 using Stellamod.Common.QuestSystem;
 using Stellamod.Helpers;
-using Stellamod.UI.CauldronSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Stellamod.UI.DialogueTowning
 {
     [Autoload(Side = ModSide.Client)]
-    public class DialogueTowningUISystem : ModSystem
+    public class DialogueTowningUISystem : BaseUISystem
     {
         private float _dialogueTimer;
         public enum Animation
@@ -43,7 +39,7 @@ namespace Stellamod.UI.DialogueTowning
 
         public int WhosTalking { get; set; }
         public static string RootTexturePath => "Stellamod/UI/DialogueTowning/";
-
+        public override int uiSlot => -1;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -60,14 +56,20 @@ namespace Stellamod.UI.DialogueTowning
             On_Player.SetTalkNPC -= SetTalker;
         }
 
+        public override void CloseThis()
+        {
+            base.CloseThis();
+            CloseUI();
+        }
+
         private void SetTalker(On_Player.orig_SetTalkNPC orig, Player self, int npcIndex, bool fromNet)
         {
-            if(npcIndex >= 0 && npcIndex < 200)
+            if (npcIndex >= 0 && npcIndex < 200)
             {
                 NPC npc = Main.npc[npcIndex];
                 if (npc.ModNPC is VeilTownNPC veilTownNPC && veilTownNPC.HasTownDialogue)
                 {
-                    if(WhosTalking != npc.ModNPC.Type)
+                    if (WhosTalking != npc.ModNPC.Type)
                     {
                         string text = string.Empty;
                         string portrait = "FenixPortrait";
@@ -95,9 +97,9 @@ namespace Stellamod.UI.DialogueTowning
                         _talkWorld = Main.LocalPlayer.position;
                         WhosTalking = veilTownNPC.NPC.type;
                         orig(self, npcIndex, fromNet);
-                    } 
+                    }
                     return;
-                } 
+                }
             }
             _killUi = false;
             orig(self, npcIndex, fromNet);
@@ -197,6 +199,7 @@ namespace Stellamod.UI.DialogueTowning
         {
             if (_animation != Animation.Open)
             {
+                TakeSlot();
                 SwitchState(Animation.Open);
                 if (_userInterface.CurrentState == null)
                 {
@@ -206,19 +209,22 @@ namespace Stellamod.UI.DialogueTowning
                     _userInterface.SetState(dialogueTowningUIState);
                 }
             }
-                //Set State;
+            //Set State;
 
         }
 
         internal void CloseUI()
         {
-            if(_animation != Animation.Close)
+          
+            if (_animation != Animation.Close)
             {
+                Main.CloseNPCChatOrSign();
+                ClearSlot();
                 SoundStyle soundStyle = SoundID.MenuClose;
                 SoundEngine.PlaySound(soundStyle);
                 SwitchState(Animation.Close);
             }
-  
+
         }
 
         public override void PreSaveAndQuit()

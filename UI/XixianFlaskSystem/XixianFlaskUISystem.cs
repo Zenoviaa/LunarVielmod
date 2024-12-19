@@ -8,7 +8,7 @@ namespace Stellamod.UI.XixianFlaskSystem
 {
 
     [Autoload(Side = ModSide.Client)]
-    internal class XixianFlaskUISystem : ModSystem
+    internal class XixianFlaskUISystem : BaseUISystem
     {
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
@@ -16,6 +16,7 @@ namespace Stellamod.UI.XixianFlaskSystem
 
         public XixianFlaskUIState xixianFlaskUIState;
 
+        public override int uiSlot => Slot_MinorUI;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -39,6 +40,12 @@ namespace Stellamod.UI.XixianFlaskSystem
             }
         }
 
+        public override void CloseThis()
+        {
+            base.CloseThis();
+            CloseUI();
+        }
+
         internal void ToggleUI()
         {
             if (_userInterface.CurrentState != null)
@@ -54,12 +61,14 @@ namespace Stellamod.UI.XixianFlaskSystem
         internal void OpenUI()
         {
             //Set State
+            TakeSlot();
             xixianFlaskUIState.xixianFlaskUI.slot.OpenUI();
             _userInterface.SetState(xixianFlaskUIState);
         }
 
         internal void CloseUI()
         {
+            ClearSlot();
             _userInterface.SetState(null);
         }
 

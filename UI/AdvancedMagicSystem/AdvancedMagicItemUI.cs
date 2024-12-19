@@ -52,7 +52,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
             _scrollbar.Width.Set(20, 0);
             _scrollbar.Height.Set(340, 0);
             _scrollbar.Left.Set(0, 0.9f);
-            _scrollbar.Top.Set(0, 0.1f);
+            _scrollbar.Top.Set(0, 0f);
 
             float maxViewSize = 48 * 8f;
             _scrollbar.SetView(0, maxViewSize);
@@ -98,6 +98,21 @@ namespace Stellamod.UI.AdvancedMagicSystem
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
+            _panel.Height.Pixels = _grid.GetTotalHeight() + 32;
+            float progress = _panel.Height.Pixels / Height.Pixels;
+            progress = MathHelper.Clamp(progress, 0f, 1f);
+            _scrollbar.Height.Set(Height.Pixels * progress, 0);
+
+
+            //Hacky way to get invisible scrollbar when there's no need for it
+            if(_panel.Height.Pixels < Height.Pixels)
+            {
+                _scrollbar.Top.Set(500000, 0f);
+            }
+            else
+            {
+                _scrollbar.Top.Set(0, 0f);
+            }
         }
     }
 }
