@@ -113,6 +113,17 @@ namespace Stellamod.Projectiles.Thrown
                     innerColor: Color.White,
                     glowColor: Color.Yellow,
                     outerGlowColor: Color.Red, duration: 25, baseSize: 0.24f);
+                for (int i = 0; i < 16; i++)
+                {
+                    Vector2 velocity = -Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(30)).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(25f, 45f);
+                    var particle = FXUtil.GlowStretch(Projectile.Center, velocity);
+                    particle.InnerColor = Color.White;
+                    particle.GlowColor = Color.OrangeRed;
+                    particle.OuterGlowColor = Color.Red;
+                    particle.Duration = Main.rand.NextFloat(25, 50);
+                    particle.BaseSize = Main.rand.NextFloat(0.09f, 0.18f);
+                    particle.VectorScale *= 0.5f;
+                }
 
                 for (float i = 0; i < 8; i++)
                 {

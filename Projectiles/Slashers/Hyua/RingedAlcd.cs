@@ -142,12 +142,29 @@ namespace Stellamod.Projectiles.Slashers.Hyua
             FXUtil.GlowCircleBoom(target.Center,
                 innerColor: Color.LightPink,
                 glowColor: Color.LightBlue,
-                outerGlowColor: Color.Blue, duration: 25, baseSize: 0.12f);
+                outerGlowColor: Color.Blue, duration: Main.rand.NextFloat(12, 25), baseSize: Main.rand.NextFloat(0.06f, 0.12f));
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Parendine2"), target.position);
             ShakeModSystem.Shake = 4;
             for (int i = 0; i < 8; i++)
             {
                 Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 0, Color.LightPink, 0.5f).noGravity = true;
+            }
+
+            for (float f = 0; f < 4; f++)
+            {
+                float progress = f / 4f;
+                float rot = progress * MathHelper.ToRadians(360);
+                rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(25f, 35f);
+                velocity.Y *= 0.2f;
+                var particle = FXUtil.GlowStretch(target.Center, velocity);
+                particle.InnerColor = Color.White;
+                particle.GlowColor = Color.LightPink;
+                particle.OuterGlowColor = Color.Black;
+                particle.Duration = Main.rand.NextFloat(25, 50);
+                particle.BaseSize = Main.rand.NextFloat(0.09f, 0.18f);
+                particle.VectorScale *= 0.5f;
+
             }
             Projectile.velocity *= 0.15f;
             HitTimer = 15;
