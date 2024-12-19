@@ -82,8 +82,22 @@ namespace Stellamod.Projectiles.Gun
                 {
                     Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(168, 168);
                     Vector2 vel = (Projectile.Center - pos).SafeNormalize(Vector2.Zero) * 5;
-                    var d = Dust.NewDustPerfect(pos, ModContent.DustType<GlyphDust>(), vel, newColor: Color.White, Scale: 1.2f);
-                    d.noGravity = true;
+                    if (Main.rand.NextBool(4))
+                    {
+                        var d = Dust.NewDustPerfect(pos, ModContent.DustType<GlyphDust>(), vel, newColor: Color.White, Scale: 1.2f);
+                        d.noGravity = true;
+                    }
+                    else
+                    {
+                        var particle = FXUtil.GlowStretch(pos, vel * 3f);
+                        particle.InnerColor = Color.White;
+                        particle.GlowColor = Color.LightCyan;
+                        particle.OuterGlowColor = Color.Black;
+                        particle.Duration = Main.rand.NextFloat(12, 25);
+                        particle.BaseSize = Main.rand.NextFloat(0.09f, 0.18f);
+                        particle.VectorScale *= 0.35f;
+                    }
+   
                 }
             }
         }

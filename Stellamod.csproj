@@ -79,6 +79,7 @@
     <None Remove="Effects\Blur.fx" />
     <None Remove="Effects\CrystalShaders\DyeFirePixel.fx" />
     <None Remove="Effects\CrystalShaders\FirePixel.fx" />
+    <None Remove="Effects\CrystalShaders\Foggy.fx" />
     <None Remove="Effects\CrystalShaders\GlowPillar.fx" />
     <None Remove="Effects\CrystalShaders\L.png" />
     <None Remove="Effects\CrystalShaders\LightningBolt.fx" />

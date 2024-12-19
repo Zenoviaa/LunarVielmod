@@ -9,6 +9,13 @@ namespace Stellamod.Helpers
 {
     internal static class FXUtil
     {
+        public static FogParticle Fog(Vector2 position, Vector2 velocity)
+        {
+            FogParticle particle = Particle.NewParticle<FogParticle>(position, Vector2.Zero);
+            particle.Velocity = velocity;
+            return particle;
+        }
+
         public static GlowStretchParticle GlowStretch(Vector2 position,Vector2 velocity)
         {
             GlowStretchParticle particle = Particle.NewParticle<GlowStretchParticle>(position, Vector2.Zero);

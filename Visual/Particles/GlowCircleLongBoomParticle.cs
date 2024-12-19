@@ -33,6 +33,7 @@ namespace Stellamod.Visual.Particles
             BasePower = 0.5f;
             BaseSize = 0.025f;
             Pixelation = 1f;
+            customShader = GlowCircleShader.Instance;
         }
 
         public override void Update()
@@ -77,14 +78,10 @@ namespace Stellamod.Visual.Particles
             shader.Pixelation = Pixelation;
 
             shader.Apply();
-
-            spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
             for (int i = 0; i < 3; i++)
             {
                 spriteBatch.Draw(GetTexture().Value, centerPos, null, Color.White, Rotation, GetTexture().Size() / 2f, Scale, SpriteEffects.None, 0);
             }
-
-            spriteBatch.RestartDefaults();
         }
 
      

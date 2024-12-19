@@ -124,6 +124,21 @@ namespace Stellamod.Projectiles.Gun
                     particle.Rotation = rot + MathHelper.ToRadians(45);
                 }
 
+                for(float f = 0; f < 24; f++)
+                {
+                    float progress = f / 24f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                    Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(4f, 25f);
+                    var particle = FXUtil.GlowStretch(explosionCenter, velocity);
+                    particle.InnerColor = Color.White;
+                    particle.GlowColor = Color.LightCyan;
+                    particle.OuterGlowColor = Color.Black;
+                    particle.Duration = Main.rand.NextFloat(25, 50);
+                    particle.BaseSize = Main.rand.NextFloat(0.09f, 0.18f);
+                    particle.VectorScale *= 0.5f;
+
+                }
                 for (int i = 0; i < 8; i++)
                 {
                     Dust.NewDustPerfect(explosionCenter, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;

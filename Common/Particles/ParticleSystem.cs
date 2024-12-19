@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common.Shaders;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Shaders;
@@ -173,7 +174,7 @@ namespace Stellamod.Common.Particles
 
         public void DrawParticles(SpriteBatch spriteBatch)
         {
-            ArmorShaderData armorShaderData = null;
+            BaseShader myCustomShader = null;
             for (int i = 0; i < Particles.Count; i++)
             {
                 var particle = Particles[i];
@@ -183,26 +184,19 @@ namespace Stellamod.Common.Particles
                 if (!ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
                     continue;
 
-                if (particle.shader != armorShaderData)
+                if (particle.customShader != myCustomShader)
                 {
                     spriteBatch.End();
-                    armorShaderData = particle.shader;
-                    if (armorShaderData == null)
+                    myCustomShader = particle.customShader;
+                    if (myCustomShader == null)
                         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, default, default, default, Main.GameViewMatrix.TransformationMatrix);
                     else
                     {
-                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.Transform);
-                        particle.shader.Apply(null);
+                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, 
+                            myCustomShader.Effect, Main.Transform);  
                     }
                 }
-
                 particle.Draw(spriteBatch);
-            }
-
-            if (armorShaderData != null)
-            {
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, default, default, default, Main.GameViewMatrix.TransformationMatrix);
             }
         }
     }

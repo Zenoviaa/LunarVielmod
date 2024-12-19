@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common.Shaders;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -25,6 +26,7 @@ namespace Stellamod.Common.Particles
         public Color color;
         public Rectangle Frame;
         public ArmorShaderData shader;
+        public BaseShader customShader;
 
         protected sealed override void Register()
         {

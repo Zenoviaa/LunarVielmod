@@ -67,7 +67,6 @@ namespace Stellamod.Projectiles.Safunai.Halhurish
                     outerGlowColor: Color.Red, duration: 25, baseSize: 0.12f);
 
 
-
                // Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<GlowCircleBoom>(), 0, 0, Projectile.owner);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger"), target.position);
                 ShakeModSystem.Shake = 4;
