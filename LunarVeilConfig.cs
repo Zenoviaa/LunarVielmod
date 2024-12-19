@@ -41,12 +41,18 @@ namespace Stellamod
         [DefaultValue(true)]
         public bool LiquidsToggle;
 
+        [DefaultValue(true)] // This sets the configs default value. // Marking it with [ReloadRequired] makes tModLoader force a mod reload if the option is changed. It should be used for things like item toggles, which only take effect during mod loading
+        public bool SkiesToggle;
+
         [DefaultValue(true)] // This sets the configs default value.// Marking it with [ReloadRequired] makes tModLoader force a mod reload if the option is changed. It should be used for things like item toggles, which only take effect during mod loading
         public bool ParticlesToggle;
 
         [Header("Effects")]
         [DefaultValue(true)]
         public bool ShakeToggle;
+
+        [Range(0f, 100f)]
+        public float CameraSmoothness = 100;
 
         [DefaultValue(false)]
         public bool LowDetailShadersToggle;
@@ -61,6 +67,9 @@ namespace Stellamod
         public float StaminaMeterX = 50;
         [Range(0f, 100f)]
         public float StaminaMeterY = 3;
-
+        [Range(0f, 100f)]
+        public float DashMeterX = 50;
+        [Range(0f, 100f)]
+        public float DashMeterY = 50;
     }
 }

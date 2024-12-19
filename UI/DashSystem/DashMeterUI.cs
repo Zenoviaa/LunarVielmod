@@ -10,6 +10,7 @@ using Terraria.UI;
 
 namespace Stellamod.UI.DashSystem
 {
+    /*
     [Autoload(Side = ModSide.Client)]
     internal class DashMeter : ModSystem
     {
@@ -130,5 +131,5 @@ namespace Stellamod.UI.DashSystem
             Rectangle source = new Rectangle(0, 0, (int)width, _filled.Height);
             spriteBatch.Draw(texture2D, drawPos, source, Color, Rotation, vector * NormalizedOrigin, drawScale, SpriteEffects.None, 0f);
         }
-    }
+    }*/
 }

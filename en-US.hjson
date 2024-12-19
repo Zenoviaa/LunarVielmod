@@ -73,6 +73,26 @@ Mods: {
 					Label: Stamina Meter Y
 					Tooltip: ""
 				}
+
+				DashMeterY: {
+					Tooltip: ""
+					Label: Dash Meter Y
+				}
+
+				DashMeterX: {
+					Tooltip: ""
+					Label: Dash Meter X
+				}
+
+				CameraSmoothness: {
+					Tooltip: ""
+					Label: Camera Smoothness
+				}
+
+				SkiesToggle: {
+					Tooltip: ""
+					Label: Skies Toggle
+				}
 			}
 
 			LunarVeilServerConfig.DisplayName: Lunar Veil Server Config

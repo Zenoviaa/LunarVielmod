@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Common.LoadingSystems;
+using Stellamod.Common.Skies;
 using Stellamod.Skies;
 using System;
 using System.Collections.Generic;
@@ -50,12 +51,23 @@ namespace Stellamod.Helpers
         public static MiscShaderData MiscDistortionShader => GameShaders.Misc[DistortionShaderName];
 
         public static AssetRepository Assets => Stellamod.Instance.Assets;
-
+        public static MiscShaderData GradientShader => GameShaders.Misc["CrystalMoon:Gradient"];
+        public static MiscShaderData CloudsShader => GameShaders.Misc["CrystalMoon:Clouds"];
+        public static MiscShaderData CloudsFrontShader => GameShaders.Misc["CrystalMoon:CloudsFront"];
+        public static MiscShaderData NightCloudsShader => GameShaders.Misc["CrystalMoon:NightClouds"];
+        public static MiscShaderData CloudsDesertShader => GameShaders.Misc["CrystalMoon:CloudsDesert"];
+        public static MiscShaderData CloudsDesertNightShader => GameShaders.Misc["CrystalMoon:CloudsDesertNight"];
         private static void RegisterMiscShader(string name, string path, string pass)
         {
             Asset<Effect> miscShader = Assets.Request<Effect>(path, AssetRequestMode.ImmediateLoad);
             var miscShaderData = new MiscShaderData(miscShader, pass);
             GameShaders.Misc[name] = miscShaderData;
+        }
+        private static void RegisterMiscCrystalShader(string name, string pass)
+        {
+            string assetPath = $"Effects/CrystalShaders/{name}";
+            Asset<Effect> miscShader = Assets.Request<Effect>(assetPath, AssetRequestMode.ImmediateLoad);
+            GameShaders.Misc[$"CrystalMoon:{name}"] = new MiscShaderData(miscShader, pass);
         }
         private static void RegisterScreenShader(string name, string path, EffectPriority effectPriority = EffectPriority.Medium)
         {
@@ -187,6 +199,22 @@ namespace Stellamod.Helpers
 
             SkyManager.Instance["Stellamod:VillageSky"] = new VillageSky();
             SkyManager.Instance["Stellamod:VillageSky"].Load();
+
+            RegisterMiscCrystalShader("Clouds", "ScreenPass");
+            RegisterMiscCrystalShader("CloudsFront", "ScreenPass");
+            RegisterMiscCrystalShader("NightClouds", "ScreenPass");
+            RegisterMiscCrystalShader("CloudsDesert", "ScreenPass");
+            RegisterMiscCrystalShader("CloudsDesertNight", "ScreenPass");
+            RegisterMiscCrystalShader("Gradient", "ScreenPass");
+
+            //Crystal Moon Skies
+            SkyManager.Instance["CrystalMoon:CloudySky"] = new CloudySky();
+            SkyManager.Instance["CrystalMoon:CloudySky"].Load();
+            Filters.Scene["CrystalMoon:CloudySky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
+
+            SkyManager.Instance["CrystalMoon:DesertSky"] = new DesertSky();
+            SkyManager.Instance["CrystalMoon:DesertSky"].Load();
+            Filters.Scene["CrystalMoon:DesertSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
             LoadOrderedLoadables();
         }
 
