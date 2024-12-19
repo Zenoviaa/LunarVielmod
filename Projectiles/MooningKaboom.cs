@@ -24,7 +24,7 @@ namespace Stellamod.Projectiles
 			Projectile.width = 227;
 			Projectile.height = 220;
 			Projectile.penetrate = -1;
-			Projectile.timeLeft = 56;
+			Projectile.timeLeft = 28;
 			Projectile.scale = 1f;
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = -1;
