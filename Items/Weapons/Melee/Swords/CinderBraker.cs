@@ -1,25 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
-using Mono.Cecil;
 using Stellamod.Common.Bases;
-using Stellamod.Common.Particles;
-using Stellamod.Common.Players;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles;
-using Stellamod.Projectiles.Magic;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Melee.Swords
 {
@@ -198,8 +189,8 @@ namespace Stellamod.Items.Weapons.Melee.Swords
                 Hit = true;
                 hitstopTimer = 4 * ExtraUpdateMult;
             }
-            
-            for(int i = 0; i < 3; i++)
+
+            for (int i = 0; i < 3; i++)
             {
                 Vector2 vel = Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(18));
                 vel *= Main.rand.NextFloat(0.25f, 1.0f);
@@ -208,7 +199,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
 
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center + Projectile.velocity, Projectile.velocity, ModContent.ProjectileType<CinderBrakerSword>(),
                 Projectile.damage, Projectile.knockBack, Projectile.owner);
-            if(Main.rand.NextBool(4))
+            if (Main.rand.NextBool(4))
                 target.AddBuff(BuffID.OnFire, 180);
         }
 
@@ -371,7 +362,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             }
             target.AddBuff(BuffID.OnFire, 180);
         }
-       
+
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
@@ -440,18 +431,18 @@ namespace Stellamod.Items.Weapons.Melee.Swords
         {
             base.AI();
             Timer++;
-            if(Timer >= 5)
+            if (Timer >= 5)
             {
                 Timer = 0;
             }
-            if(Timer == 1 && EruptionCount < 15 && Main.myPlayer == Projectile.owner)
+            if (Timer == 1 && EruptionCount < 15 && Main.myPlayer == Projectile.owner)
             {
-               
+
                 EruptionCount++;
 
                 float offset = ProjectileHelper.PerformBeamHitscan(Projectile.Top, Vector2.UnitY, 1200);
                 Vector2 spawnPoint = Projectile.Top + new Vector2(0, offset);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), spawnPoint - new Vector2(0, 384/2), Vector2.Zero, 
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), spawnPoint - new Vector2(0, 384 / 2), Vector2.Zero,
                     ModContent.ProjectileType<CinderBreakerEruption>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
         }
@@ -484,7 +475,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 ShakeModSystem.Shake = 4;
                 FXUtil.ShakeCamera(Projectile.position, 1024, 8);

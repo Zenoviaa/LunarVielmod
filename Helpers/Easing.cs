@@ -8,7 +8,18 @@ namespace Stellamod.Helpers
     /// </summary>
     public static class Easing
     {
-
+        public static float QuickInFadeOut(float t, float p = 8)
+        {
+            if (t <= 0.2f)
+            {
+                return InExpo(t / 0.2f, p);
+            }
+            else
+            {
+                float t2 = t - 0.2f;
+                return 1 - OutCirc(t2 / 0.8f);
+            }
+        }
         private static float Clamp(float t)
         {
             return Math.Clamp(t, 0, 1);

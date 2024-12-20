@@ -25,7 +25,7 @@ namespace Stellamod.Items.Weapons.Melee.Knives
             Item.mana = 0;
         }
 
-        // The Display Name and Tooltip of this item can be edited in the 'Localization/en-US_Mods.CrystalMoon.hjson' file.
+        // The Display Name and Tooltip of this item can be edited in the 'Localization/en-US_Mods.Stellamod.hjson' file.
         public override void SetDefaults()
         {
             Item.damage = 9;

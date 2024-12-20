@@ -15,6 +15,9 @@ namespace Stellamod.Trails
         public static Asset<Texture2D> GlowTrailNoBlack =>
             ModContent.Request<Texture2D>($"{BasePath}GlowTrailNoBlack");
 
+        public static Asset<Texture2D> NoiseTextureSpaceStars =>
+            ModContent.Request<Texture2D>($"{BasePath}SpaceStars");
+
         public static Asset<Texture2D> GlowTrailNoBlackOutline =>
             ModContent.Request<Texture2D>($"{BasePath}GlowTrailNoBlackOutline");
         public static Asset<Texture2D> IceTrail => ModContent.Request<Texture2D>(BasePath + "IceTrail");
@@ -53,6 +56,7 @@ namespace Stellamod.Trails
         public static Asset<Texture2D> WaterTrail => ModContent.Request<Texture2D>(BasePath+"WaterTrail");
 
         public static Asset<Texture2D> CrystalTrail => ModContent.Request<Texture2D>(BasePath+"CrystalTrail");
+        public static Asset<Texture2D> CrystalTrail2 => ModContent.Request<Texture2D>(BasePath + "CrystalTrail2");
         public static Asset<Texture2D> VortexTrail => ModContent.Request<Texture2D>(BasePath+"VortexTrail");
         public static Asset<Texture2D> WhispyTrail => ModContent.Request<Texture2D>(BasePath+"WhispyTrail");
         public static Asset<Texture2D> CorkscrewTrail => ModContent.Request<Texture2D>(BasePath+"CorkscrewTrail");

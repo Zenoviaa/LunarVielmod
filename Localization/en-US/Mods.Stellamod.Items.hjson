@@ -8490,3 +8490,68 @@ StaminaBrew: {
 	Tooltip: ""
 	DisplayName: Stamina Brew
 }
+
+Pearling: {
+	Tooltip: ""
+	DisplayName: Pearling
+}
+
+LightKnives: {
+	Tooltip: ""
+	DisplayName: Light Knives
+}
+
+RuneSmasher: {
+	Tooltip: ""
+	DisplayName: Rune Smasher
+}
+
+Zhielhander: {
+	Tooltip: ""
+	DisplayName: Zhielhander
+}
+
+NoxianRider: {
+	Tooltip: ""
+	DisplayName: Noxian Rider
+}
+
+StormWelder: {
+	Tooltip: ""
+	DisplayName: Storm Welder
+}
+
+MothlightStar: {
+	Tooltip: ""
+	DisplayName: Mothlight Star
+}
+
+Vaikus: {
+	DisplayName: Vaikus
+	Tooltip: ""
+}
+
+CrystalPointer: {
+	DisplayName: Crystal Pointer
+	Tooltip: ""
+}
+
+CrystallineSlasher: {
+	DisplayName: Crystalline Slasher
+	Tooltip: ""
+}
+
+Vael: {
+	DisplayName: Vael
+	Tooltip: ""
+}
+
+WarriorsGrace: {
+	DisplayName: Warriors Grace
+	Tooltip: ""
+}
+
+IronBall: {
+	DisplayName: Iron Ball
+	Tooltip: ""
+}

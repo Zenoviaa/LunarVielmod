@@ -1,4 +1,4 @@
-﻿using CrystalMoon.Systems.MiscellaneousMath;
+﻿using Stellamod.Systems.MiscellaneousMath;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;

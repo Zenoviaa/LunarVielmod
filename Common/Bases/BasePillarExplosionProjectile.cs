@@ -3,7 +3,7 @@ using Stellamod.Helpers;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace CrystalMoon.Content.Bases
+namespace Stellamod.Content.Bases
 {
     internal abstract class BasePillarExplosionProjectile : ModProjectile
     {

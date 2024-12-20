@@ -93,6 +93,11 @@ Mods: {
 					Tooltip: ""
 					Label: Skies Toggle
 				}
+
+				RedDamageNumbersToggle: {
+					Tooltip: ""
+					Label: Red Damage Numbers Toggle
+				}
 			}
 
 			LunarVeilServerConfig.DisplayName: Lunar Veil Server Config

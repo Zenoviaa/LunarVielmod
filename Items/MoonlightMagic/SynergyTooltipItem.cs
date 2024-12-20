@@ -27,12 +27,12 @@ namespace Stellamod.Items.MoonlightMagic
                         break;
                     case ElementMatch.Match:
                         tooltipLine = new TooltipLine(Mod, "SynergyHelp",
-                                Language.GetTextValue("Mods.CrystalMoon.Enchantments.EnchantmentCommonSynergy", 4));
+                                Language.GetTextValue("Mods.Stellamod.Enchantments.EnchantmentCommonSynergy", 4));
                         tooltips.Add(tooltipLine);
                         break;
                     case ElementMatch.Mismatch:
                         tooltipLine = new TooltipLine(Mod, "SynergyFail",
-                                Language.GetTextValue("Mods.CrystalMoon.Enchantments.EnchantmentCommonFailSynergy", 4));
+                                Language.GetTextValue("Mods.Stellamod.Enchantments.EnchantmentCommonFailSynergy", 4));
                         tooltips.Add(tooltipLine);
                         break;
                 }
@@ -46,7 +46,7 @@ namespace Stellamod.Items.MoonlightMagic
         private void AddNoSynergyText(List<TooltipLine> tooltips)
         {
             var tooltipLine = new TooltipLine(Mod, "NoSynergyHelp",
-             Language.GetTextValue("Mods.CrystalMoon.Enchantments.EnchantmentCommonNoSynergy"));
+             Language.GetTextValue("Mods.Stellamod.Enchantments.EnchantmentCommonNoSynergy"));
             tooltipLine.OverrideColor = Color.Gray;
             tooltips.Add(tooltipLine);
         }

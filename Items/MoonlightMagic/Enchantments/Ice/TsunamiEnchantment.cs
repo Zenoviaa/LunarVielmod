@@ -1,4 +1,4 @@
-﻿using CrystalMoon.Systems.MiscellaneousMath;
+﻿using Stellamod.Systems.MiscellaneousMath;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Bases;

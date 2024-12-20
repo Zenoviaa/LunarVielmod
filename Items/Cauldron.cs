@@ -21,7 +21,6 @@ using Stellamod.Items.Weapons.Melee.Safunais;
 using Stellamod.Items.Weapons.Melee.Shields;
 using Stellamod.Items.Weapons.Melee.Spears;
 using Stellamod.Items.Weapons.Melee.Swords;
-using Stellamod.Items.Weapons.Melee.Yoyos;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.Crossbows;
@@ -789,13 +788,6 @@ namespace Stellamod.Items
                   yield: 1);
 
             //Gintzl Metal x Juggler
-            AddBrew(
-                 result: ModContent.ItemType<Blackdot>(),
-                 mold: ModContent.ItemType<BlankOrb>(),
-                 material: ModContent.ItemType<GintzlMetal>(),
-                 materialCount: 10,
-                 weight: 1.0f,
-                 yield: 1);
 
             AddBrew(
                  result: ModContent.ItemType<GintzlSpear>(),

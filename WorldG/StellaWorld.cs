@@ -20,7 +20,6 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Melee.Greatswords;
 using Stellamod.Items.Weapons.Melee.Spears;
-using Stellamod.Items.Weapons.Melee.Yoyos;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.Crossbows;
@@ -3611,7 +3610,7 @@ namespace Stellamod.WorldG
                                 break;
 
                             case 8:
-                                itemsToAdd.Add((ModContent.ItemType<Blackdot>(), Main.rand.Next(1, 1)));
+                       
                                 itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                                 itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
                                 itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));

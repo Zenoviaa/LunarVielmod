@@ -1,4 +1,4 @@
-﻿using CrystalMoon.Systems.MiscellaneousMath;
+﻿using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Microsoft.Xna.Framework;

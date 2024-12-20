@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 
-namespace CrystalMoon.Systems.MiscellaneousMath
+namespace Stellamod.Systems.MiscellaneousMath
 {
     internal static class MathUtil
     {
