@@ -29,7 +29,7 @@ using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Summon.Orbs;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Thrown.Jugglers;
-using Stellamod.Items.Weapons.Whips;
+
 using Stellamod.UI.Dialogue;
 using System.Collections.Generic;
 using System.Linq;

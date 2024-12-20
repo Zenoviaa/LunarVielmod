@@ -30,7 +30,6 @@ using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Summon.Orbs;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Thrown.Jugglers;
-using Stellamod.Items.Weapons.Whips;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,11 +54,11 @@ namespace Stellamod.Items
             NothingFailChance = 15;
             InkFailChance = 25;
         }
-        
+
         public override void PostUpdate()
         {
             base.PostUpdate();
-            if(CrystalStarCount > 0)
+            if (CrystalStarCount > 0)
             {
                 Player.AddBuff(ModContent.BuffType<CrystalLuck>(), 2);
             }
@@ -936,6 +935,7 @@ namespace Stellamod.Items
                 weight: 1.0f,
                 yield: 1);
 
+            /*
             AddBrew(
                 result: ModContent.ItemType<DesertWhip>(),
                 mold: ModContent.ItemType<BlankSafunai>(),
@@ -943,7 +943,7 @@ namespace Stellamod.Items
                 materialCount: 10,
                 weight: 1.0f,
                 yield: 1);
-
+            */
             //Gintzl Metal x Shield
             AddBrew(
                 result: ModContent.ItemType<PointedEdge>(),
@@ -1133,7 +1133,7 @@ namespace Stellamod.Items
             }
 
             bool consumeStar = true;
-            if(random.elements.Count == 0)
+            if (random.elements.Count == 0)
             {
                 consumeStar = false;
                 for (int i = 0; i < possibleBrews.Count; i++)
@@ -1154,10 +1154,10 @@ namespace Stellamod.Items
 
 
             int starCount = cauldronPlayer.CrystalStarCount;
-            if(cauldronPlayer.CrystalStarCount > 0 && consumeStar)
+            if (cauldronPlayer.CrystalStarCount > 0 && consumeStar)
             {
                 cauldronPlayer.Make(ModContent.GetModItem(result.result).Item);
-                cauldronPlayer.CrystalStarCount-=1;
+                cauldronPlayer.CrystalStarCount -= 1;
             }
             else
             {

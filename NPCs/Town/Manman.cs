@@ -22,7 +22,7 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
-using Stellamod.Items.Weapons.Whips;
+
 using Stellamod.UI.ArmorReforgeSystem;
 using Stellamod.UI.ArmorShopSystem;
 using System;

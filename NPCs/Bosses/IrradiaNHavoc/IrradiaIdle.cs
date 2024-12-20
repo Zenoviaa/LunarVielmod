@@ -27,7 +27,7 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Summon.Orbs;
 using Stellamod.Items.Weapons.Thrown;
-using Stellamod.Items.Weapons.Whips;
+
  
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
 using Stellamod.NPCs.Bosses.Zui;

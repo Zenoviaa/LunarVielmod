@@ -19,7 +19,7 @@ using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
-using Stellamod.Items.Weapons.Whips;
+
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.Fenix;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;

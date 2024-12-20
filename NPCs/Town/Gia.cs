@@ -15,7 +15,7 @@ using Stellamod.Items.Weapons.Melee.Greatswords;
 using Stellamod.Items.Weapons.Melee.Safunais;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
-using Stellamod.Items.Weapons.Whips;
+
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
