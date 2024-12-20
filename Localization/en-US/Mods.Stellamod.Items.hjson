@@ -8555,3 +8555,8 @@ IronBall: {
 	DisplayName: Iron Ball
 	Tooltip: ""
 }
+
+PrimeRing: {
+	Tooltip: ""
+	DisplayName: Prime Ring
+}
