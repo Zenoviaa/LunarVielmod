@@ -44,7 +44,7 @@ namespace Stellamod.Projectiles.Swords
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/Extra_63").Value;
+            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_63").Value;
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(05f * alphaCounter), (int)(05f * alphaCounter), 0), Projectile.rotation, new Vector2(256, 256), 0.2f * (alphaCounter + 0.2f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(55f * alphaCounter), (int)(05f * alphaCounter), (int)(05f * alphaCounter), 0), Projectile.rotation, new Vector2(256, 256), 0.4f * (alphaCounter + 0.2f), SpriteEffects.None, 0f);
             return true;

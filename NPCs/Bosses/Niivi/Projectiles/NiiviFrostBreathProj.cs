@@ -22,7 +22,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             set => Projectile.ai[0] = value;
         }
 
-        private string FrostTexture => "Stellamod/Effects/Masks/ZuiEffect";
+        private string FrostTexture => "Stellamod/Assets/NoiseTextures/ZuiEffect";
         private float LifeTime = 90;
         private float MaxScale = 1f;
 

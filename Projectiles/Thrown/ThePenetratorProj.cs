@@ -185,7 +185,7 @@ namespace Stellamod.Projectiles.Thrown
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
             
             Trail.Draw(Projectile.oldPos);
-            Texture2D spinTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Spiin").Value;
+            Texture2D spinTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Spiin").Value;
             for (int i = 0; i < 2; i++)
             {
                 Main.spriteBatch.Draw(spinTexture, Projectile.Center - Main.screenPosition, null,

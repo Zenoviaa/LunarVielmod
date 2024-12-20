@@ -66,7 +66,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
         {
 
             Texture2D chainTex = ModContent.Request<Texture2D>(Texture + "_Chain").Value;
-            Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
 
             Curvature curve = new Curvature(new Vector2[] { _targetCenter, projBottom });
             int numPoints = 30;

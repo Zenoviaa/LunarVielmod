@@ -106,7 +106,7 @@ namespace Stellamod.Projectiles
             }
 
 
-            Texture2D texture = Request<Texture2D>("Stellamod/Effects/Masks/Spiin").Value;
+            Texture2D texture = Request<Texture2D>("Stellamod/Assets/NoiseTextures/Spiin").Value;
             float r = 234;
             float g = 118;
             float b = 135;

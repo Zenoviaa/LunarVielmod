@@ -200,7 +200,7 @@ namespace Stellamod.Projectiles.Magic
 
         public override void PostDraw(Color lightColor)
         {
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             Color glowColor = MainColor;
             glowColor.A = 0;
             glowColor *= 0.5f;

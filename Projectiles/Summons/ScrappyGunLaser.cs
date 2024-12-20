@@ -150,7 +150,7 @@ namespace Stellamod.Projectiles.Summons
         public float alphaCounter = 1;
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             Vector2 drawPos = _lightningArcPos[_lightningArcPos.Length - 1];
             Vector2 drawOrigin = new Vector2(32, 32);
             for (int i = 0; i < 3; i++)

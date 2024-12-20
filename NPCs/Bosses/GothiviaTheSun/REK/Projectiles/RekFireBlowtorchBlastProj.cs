@@ -127,7 +127,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             if(Timer < LifeTime / 2f)
             {
                 float progress = Timer / (LifeTime / 2f);
-                Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Extra_47").Value;
+                Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_47").Value;
                 Color lineDrawColor = new Color(
                     Color.White.R,
                     Color.White.G,

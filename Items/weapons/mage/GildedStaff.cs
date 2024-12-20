@@ -286,7 +286,7 @@ namespace Stellamod.Items.Weapons.Mage
             }
 
             spriteBatch.RestartDefaults();
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             Color glowColor = Color.White;
             glowColor.A = 0;
             glowColor *= Timer / 30f;
@@ -383,7 +383,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             Color drawColor = Color.White;
             drawColor.A = 0;
             SpriteBatch spriteBatch = Main.spriteBatch;

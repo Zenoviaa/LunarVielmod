@@ -39,7 +39,7 @@ namespace Stellamod.NPCs.Bosses.Caeva
         public override bool PreDraw(ref Color lightColor)
         {
 
-            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/Extra_56").Value;
+            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_56").Value;
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(05f * alphaCounter), (int)(65f * alphaCounter), (int)(55f * alphaCounter), 0), Projectile.rotation, new Vector2(171, 51), 0.4f * (alphaCounter + 0.6f), SpriteEffects.None, 0f);
 
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(05f * alphaCounter), (int)(65f * alphaCounter), (int)(55f * alphaCounter), 0), Projectile.rotation, new Vector2(171, 51), 0.6f * (alphaCounter + 0.6f), SpriteEffects.None, 0f);

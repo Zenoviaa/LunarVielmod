@@ -1104,17 +1104,17 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                     spriteEffects,
                 0);
             }
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             Main.spriteBatch.Draw(texture2D4, (NPC.Center - Main.screenPosition), null, new Color((int)(55f * alphaCounter), (int)(55f * alphaCounter), (int)(45f * alphaCounter), 0), NPC.rotation, new Vector2(64 / 2, 64 / 2), 0.2f * (counter + 0.3f), SpriteEffects.None, 0f);
 
 
-            Texture2D texture2D5 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D texture2D5 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             Main.spriteBatch.Draw(texture2D5, (NPC.Center - Main.screenPosition), null, new Color((int)(55f * alphaCounter), (int)(55f * alphaCounter), (int)(15f * alphaCounter), 0), NPC.rotation, new Vector2(64 / 2, 64 / 2), 0.2f * (counter + 0.3f * 2), SpriteEffects.None, 0f);
 
-            Texture2D texture2D6 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D texture2D6 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             Main.spriteBatch.Draw(texture2D6, (NPC.Center - Main.screenPosition), null, new Color((int)(55f * alphaCounter), (int)(55f * alphaCounter), (int)(15f * alphaCounter), 0), NPC.rotation, new Vector2(64 / 2, 64 / 2), 0.2f * (counter + 0.3f * 6), SpriteEffects.None, 0f);
 
-            Texture2D texture2D7 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D texture2D7 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             Main.spriteBatch.Draw(texture2D7, (NPC.Center - Main.screenPosition), null, new Color((int)(55f * alphaCounter), (int)(55f * alphaCounter), (int)(15f * alphaCounter), 0), NPC.rotation, new Vector2(64 / 2, 64 / 2), 0.2f * (counter + 0.3f * 7), SpriteEffects.None, 0f);
         }
         float alphaCounter = 0;

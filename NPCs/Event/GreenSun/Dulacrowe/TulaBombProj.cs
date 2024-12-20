@@ -263,7 +263,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
 
         public override bool PreDraw(ref Color lightColor)
         {
-            var texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/GreenSunEffect2");
+            var texture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GreenSunEffect2");
 
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
             Vector2 drawSize = texture.Size();

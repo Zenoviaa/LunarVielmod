@@ -31,7 +31,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D tex = Request<Texture2D>("Stellamod/Effects/Masks/Extra_47").Value;
+            Texture2D tex = Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_47").Value;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             SpriteBatch spriteBatch = Main.spriteBatch;
             for (int i = 0; i < 3; i++)

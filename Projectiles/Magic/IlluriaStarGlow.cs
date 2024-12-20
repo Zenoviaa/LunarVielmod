@@ -29,7 +29,7 @@ namespace Stellamod.Projectiles.Magic
 
         public override bool PreDraw(ref Color lightColor)
         {
-            string texture = "Stellamod/Effects/Masks/ZuiEffect";
+            string texture = "Stellamod/Assets/NoiseTextures/ZuiEffect";
             Texture2D maskTexture = ModContent.Request<Texture2D>(texture).Value;
 
             Vector2 textureSize = new Vector2(143, 143);

@@ -82,7 +82,7 @@ namespace Stellamod.Items.Armors.AcidArmour
 
         public override bool PreDraw(ref Color lightColor)
         {
-            string texture = "Stellamod/Effects/Masks/Extra_67";
+            string texture = "Stellamod/Assets/NoiseTextures/Extra_67";
             Texture2D maskTexture = ModContent.Request<Texture2D>(texture).Value;
 
             Vector2 textureSize = maskTexture.Size();

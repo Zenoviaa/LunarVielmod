@@ -132,7 +132,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
 
 
 
-            Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Extra_47").Value;
+            Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_47").Value;
             Color drawColor = (Color)GetLineAlpha(lightColor);
             drawColor *= AlphaTimer;
 

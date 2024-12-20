@@ -71,7 +71,7 @@ namespace Stellamod.Projectiles.Bow
         public override void PostDraw(Color lightColor)
         {
             base.PostDraw(lightColor);
-            Texture2D dimLightTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D dimLightTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             float drawScale = 1f;
             SpriteBatch spriteBatch = Main.spriteBatch;
             for (int i = 0; i < 2; i++)

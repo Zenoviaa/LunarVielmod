@@ -48,7 +48,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles
         public override bool PreDraw(ref Color lightColor)
         {
             float alpha = Timer / LifeTime;
-            Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Extra_47").Value;
+            Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_47").Value;
             Color drawColor = (Color)GetAlpha(lightColor);
             drawColor *= alpha;
 

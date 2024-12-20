@@ -51,7 +51,7 @@ namespace Stellamod.NPCs.Bosses.Jack
         bool Moved;
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/RayLight").Value;
+            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight").Value;
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(55f * alphaCounter), (int)(55f * alphaCounter), (int)(45f * alphaCounter), 0), Projectile.rotation, new Vector2(171 / 2, 51 / 2), 0.4f * (alphaCounter + 0.6f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(55f * alphaCounter), (int)(55f * alphaCounter), (int)(45f * alphaCounter), 0), Projectile.rotation, new Vector2(171 / 2, 51 / 2), 0.4f * (alphaCounter + 0.6f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(55f * alphaCounter), (int)(55f * alphaCounter), (int)(25f * alphaCounter), 0), Projectile.rotation, new Vector2(171 / 2, 51 / 2), 0.8f * (alphaCounter + 0.6f), SpriteEffects.None, 0f);

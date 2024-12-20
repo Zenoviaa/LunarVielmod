@@ -69,7 +69,7 @@ namespace Stellamod.Projectiles.Summons
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             Color glowColor = Color.Aqua;
             glowColor.A = 0;
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -86,7 +86,7 @@ namespace Stellamod.Projectiles.Summons
         public override void PostDraw(Color lightColor)
         {
             base.PostDraw(lightColor);
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             Color glowColor = Color.Yellow;
             glowColor.A = 0;
             SpriteBatch spriteBatch = Main.spriteBatch;

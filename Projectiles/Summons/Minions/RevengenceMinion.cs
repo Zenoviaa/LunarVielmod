@@ -157,7 +157,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             Color glowColor = Color.LightBlue;
             glowColor.A = 0;
             for(int i = 0; i < 2; i++)

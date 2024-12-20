@@ -42,7 +42,7 @@ namespace Stellamod.Items.Armors.Terric
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
 
-            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/Pentagram").Value;
+            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Assets/NoiseTextures/Pentagram").Value;
             Main.spriteBatch.Draw(texture2D4, NPC.Center - Main.screenPosition, null, new Color((int)(55f * alphaCounter), (int)(15f * alphaCounter), (int)(25f * alphaCounter), 0), NPC.rotation, new Vector2(157, 157), 0.2f * (counter + 0.05f), SpriteEffects.None, 0f);
             return true;
         }

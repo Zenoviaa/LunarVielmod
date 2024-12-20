@@ -206,7 +206,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override void PostDraw(Color lightColor)
         {
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             Color glowColor = GetMainColor();
             glowColor.A = 0;
             glowColor *= FlashTimer;

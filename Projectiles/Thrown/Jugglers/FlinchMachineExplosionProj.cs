@@ -32,7 +32,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
         public override bool PreDraw(ref Color lightColor)
         {
-            var texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Skull");
+            var texture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Skull");
 
             float progress = Timer / LifeTime;
             float easedProgress = Easing.OutExpo(progress);

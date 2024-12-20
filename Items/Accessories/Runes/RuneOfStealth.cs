@@ -41,7 +41,7 @@ namespace Stellamod.Items.Accessories.Runes
 
         public override bool PreDraw(ref Color lightColor)
         {
-            string texture = "Stellamod/Effects/Masks/ZuiEffect";
+            string texture = "Stellamod/Assets/NoiseTextures/ZuiEffect";
             Texture2D maskTexture = ModContent.Request<Texture2D>(texture).Value;
             Vector2 drawOrigin = maskTexture.Size() / 2;
             SpriteBatch spriteBatch = Main.spriteBatch;

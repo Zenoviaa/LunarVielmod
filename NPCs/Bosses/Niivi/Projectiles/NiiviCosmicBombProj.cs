@@ -257,7 +257,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            var texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/ZuiEffect");
+            var texture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/ZuiEffect");
 
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
             Vector2 drawSize = texture.Size();

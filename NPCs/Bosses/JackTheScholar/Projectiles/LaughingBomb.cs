@@ -158,7 +158,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
         {
             base.PostDraw(lightColor);
             float drawScaleMult = MathHelper.Lerp(0.4f, 1.4f, (Timer - 60f) / 120f);
-            Texture2D dimLightTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D dimLightTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             float drawScale = 1f * drawScaleMult;
             SpriteBatch spriteBatch = Main.spriteBatch;
             int chance = (int)MathHelper.Lerp(16, 1, (Timer - 60f) / 120f);

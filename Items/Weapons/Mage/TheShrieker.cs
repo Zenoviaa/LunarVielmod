@@ -108,7 +108,7 @@ namespace Stellamod.Items.Weapons.Mage
         private float DrawScale = 0f;
         private Color DrawColor;
         private ref float Timer => ref Projectile.ai[0];
-        public override string Texture => "Stellamod/Effects/Masks/Extra_67";
+        public override string Texture => "Stellamod/Assets/NoiseTextures/Extra_67";
         public override void SetDefaults()
         {
             base.SetDefaults();

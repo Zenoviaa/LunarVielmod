@@ -135,7 +135,7 @@ namespace Stellamod.Projectiles.Thrown
         public override void PostDraw(Color lightColor)
         {
             base.PostDraw(lightColor);
-            Texture2D dimLightTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D dimLightTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             float drawScale = 1f;
             SpriteBatch spriteBatch = Main.spriteBatch;
             int chance = (int)MathHelper.Lerp(16, 1, Timer / 60f);

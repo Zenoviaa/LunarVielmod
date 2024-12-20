@@ -148,7 +148,7 @@ namespace Stellamod.Projectiles.Gun
         public override void PostDraw(Color lightColor)
         {
             base.PostDraw(lightColor);
-            Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             for (int i = 0; i < 6; i++)
             {
                 Color glowColor = Color.Teal;

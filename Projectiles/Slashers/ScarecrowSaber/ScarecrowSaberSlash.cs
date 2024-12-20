@@ -274,7 +274,7 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
 
             Vector2 trailOffset = -Main.screenPosition;
             TrailDrawer.DrawPrims(_oldSwingPos, trailOffset, 155);
-            Texture2D spinTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Spiin").Value;
+            Texture2D spinTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Spiin").Value;
             SpriteBatch spriteBatch = Main.spriteBatch;
 
             Vector2 drawPos = Owner.Center - Main.screenPosition;

@@ -239,7 +239,7 @@ namespace Stellamod.NPCs.Underground
 
 
 
-            Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             Vector3 huntrianColorXyz = DrawHelper.HuntrianColorOscillate(
                     Color.Purple.ToVector3(),
                     Color.Violet.ToVector3(),

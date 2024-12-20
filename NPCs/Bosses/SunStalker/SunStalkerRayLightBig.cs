@@ -61,7 +61,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/RayLight").Value;
+            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight").Value;
             Main.spriteBatch.Draw(texture2D4, (NPC.Center - Main.screenPosition), null, new Color((int)(55f * alphaCounter), (int)(55f * alphaCounter), (int)(45f * alphaCounter), 0), NPC.rotation, new Vector2(171 / 2, 51 / 2), 0.2f * (counter + 0.3f), SpriteEffects.None, 0f);
             return true;
         }

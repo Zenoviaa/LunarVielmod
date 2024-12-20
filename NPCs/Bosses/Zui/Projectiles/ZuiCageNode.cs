@@ -40,7 +40,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
         private void DrawChainCurve(SpriteBatch spriteBatch, Vector2 projBottom, Color lightColor, out Vector2[] chainPositions)
         {
             Texture2D chainTex = ModContent.Request<Texture2D>(Texture + "_Chain").Value;
-            Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
 
             Curvature curve = new Curvature(new Vector2[] { targetProjectile.Center, projBottom });
             int numPoints = 30;

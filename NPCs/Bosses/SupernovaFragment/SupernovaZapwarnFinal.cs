@@ -39,7 +39,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         float counter = 8;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/Extra_47").Value;
+            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_47").Value;
             Main.spriteBatch.Draw(texture2D4, NPC.Center - Main.screenPosition, null, new Color((int)(75f * alphaCounter), (int)(35f * alphaCounter), (int)(15f * alphaCounter), 0), NPC.rotation, new Vector2(30 / 4, 1028 / 2), 0.2f * (counter + 0.3f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, NPC.Center - Main.screenPosition, null, new Color((int)(75f * alphaCounter), (int)(35f * alphaCounter), (int)(15f * alphaCounter), 0), NPC.rotation, new Vector2(30 / 4, 1028 / 2), 0.2f * (counter + 0.3f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, NPC.Center - Main.screenPosition, null, new Color((int)(75f * alphaCounter), (int)(35f * alphaCounter), (int)(15f * alphaCounter), 0), NPC.rotation, new Vector2(30 / 4, 1028 / 2), 0.2f * (counter + 0.3f), SpriteEffects.None, 0f);
