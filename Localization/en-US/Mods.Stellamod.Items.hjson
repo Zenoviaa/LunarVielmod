@@ -8560,3 +8560,18 @@ PrimeRing: {
 	Tooltip: ""
 	DisplayName: Prime Ring
 }
+
+FogSpawnerBlock: {
+	DisplayName: Fog Spawner Block
+	Tooltip: ""
+}
+
+ToolbarEnabler: {
+	Tooltip: ""
+	DisplayName: Toolbar Enabler
+}
+
+FogSpawnerWallItem: {
+	Tooltip: ""
+	DisplayName: Fog Spawner Wall Item
+}
