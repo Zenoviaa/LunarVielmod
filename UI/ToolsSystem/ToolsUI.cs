@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.UI.StructureSelector;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI.Elements;
@@ -41,6 +42,9 @@ namespace Stellamod.UI.ToolsSystem
 
             FogButton fogButton = new FogButton();
             _grid.Add(fogButton);
+
+            UndoButton undoButton = new UndoButton();
+            _grid.Add(undoButton);
         }
 
         public override void Update(GameTime gameTime)

@@ -322,6 +322,7 @@ namespace Stellamod
             shakeDrama = strength * (1f - base.Player.Center.Distance(position) / distance) * 0.5f;
         }
 
+
         public override void CatchFish(FishingAttempt attempt,
             ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
         {

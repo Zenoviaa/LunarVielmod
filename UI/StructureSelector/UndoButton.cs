@@ -1,19 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Foggy;
-using Stellamod.UI.PopupSystem;
-using Terraria;
+using Stellamod.WorldG.StructureManager;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace Stellamod.UI.ToolsSystem
+namespace Stellamod.UI.StructureSelector
 {
-    internal class FogButton : UIPanel
+    internal class UndoButton : UIPanel
     {
-
-        private UIPanel _button;
-
         internal const int width = 42;
         internal const int height = 56;
 
@@ -26,21 +23,14 @@ namespace Stellamod.UI.ToolsSystem
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
             OnLeftClick += OnButtonClick;
-            OnMouseOver += OnMouseHover;
         }
 
         private void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
-            FogSystem fogSystem = ModContent.GetInstance<FogSystem>();
-            fogSystem.doDraws = !fogSystem.doDraws;
+            SnapshotSystem system = ModContent.GetInstance<SnapshotSystem>();
+            system.Undo();
             // We can do stuff in here!
-        }
-
-        private void OnMouseHover(UIMouseEvent evt, UIElement listeningElement)
-        {
-            // AdvancedMagicUISystem uiSystem = ModContent.GetInstance<AdvancedMagicUISystem>();
-            //  uiSystem.ToggleUI();
-            // We can do stuff in here! 
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
 
         public override void Update(GameTime gameTime)
@@ -57,11 +47,11 @@ namespace Stellamod.UI.ToolsSystem
             Texture2D textureToDraw;
             if (IsMouseHovering)
             {
-                textureToDraw = ModContent.Request<Texture2D>(ToolsUISystem.RootTexturePath + "PaperSelected").Value;
+                textureToDraw = ModContent.Request<Texture2D>(StructureSelectorUISystem.RootTexturePath + "UndoSelected").Value;
             }
             else
             {
-                textureToDraw = ModContent.Request<Texture2D>(ToolsUISystem.RootTexturePath + "Paper").Value;
+                textureToDraw = ModContent.Request<Texture2D>(StructureSelectorUISystem.RootTexturePath + "Undo").Value;
             }
             spriteBatch.Draw(textureToDraw, new Rectangle(point.X, point.Y, textureToDraw.Width, textureToDraw.Height), null, Color.White);
         }

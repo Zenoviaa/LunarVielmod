@@ -1,4 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
+using Stellamod.UI.StructureSelector;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +21,8 @@ namespace Stellamod.WorldG.StructureManager
         static Point? BottomLeft = null;
         static Mod Mod = ModContent.GetInstance<Stellamod>();
         public static event Action<Point, string> OnStructPlace;
+        public static bool FlipStructure;
+        public static string SelectedStructure;
         public static Rectangle ReadRectangle(string Path)
         {
             using (var stream = Mod.GetFileStream(Path + ".str"))
@@ -105,6 +110,70 @@ namespace Stellamod.WorldG.StructureManager
             return true;
         }
 
+        public static Tile ReadTile(BinaryReader reader)
+        {
+            Tile t = new Tile();
+            t.ClearEverything();
+            //tile
+            bool hastile = reader.ReadBoolean();
+            t.LiquidType = reader.ReadInt32();
+            t.LiquidAmount = reader.ReadByte();
+            t.BlueWire = reader.ReadBoolean();
+            t.RedWire = reader.ReadBoolean();
+            t.GreenWire = reader.ReadBoolean();
+            t.YellowWire = reader.ReadBoolean();
+            t.HasActuator = reader.ReadBoolean();
+            t.IsActuated = reader.ReadBoolean();
+            if (hastile)
+            {
+                t.HasTile = hastile;
+                bool Modded = reader.ReadBoolean();
+                int TileType = 0;
+                if (Modded)
+                {
+                    TileType = ReadModTile(reader);
+                }
+                else
+                {
+                    TileType = reader.ReadInt16();
+                }
+
+                t.TileType = (ushort)TileType;
+                t.BlockType = (BlockType)reader.ReadByte();
+                t.IsHalfBlock = reader.ReadBoolean();
+                //t.LiquidType = reader.ReadInt32();
+                t.Slope = (SlopeType)reader.ReadByte();
+                t.TileFrameNumber = reader.ReadInt32();
+                t.TileFrameX = reader.ReadInt16();
+                t.TileFrameY = reader.ReadInt16();
+                t.TileColor = reader.ReadByte();
+                t.IsTileInvisible = reader.ReadBoolean();
+                t.IsTileFullbright = reader.ReadBoolean();
+                //byte slope = reader.ReadByte();
+
+                bool Chest = reader.ReadBoolean();
+            }
+
+
+            //wall
+            int WallType = 0;
+            bool ModdedWall = reader.ReadBoolean();
+            if (ModdedWall)
+            {
+                WallType = ReadModWall(reader);
+            }
+            else
+            {
+                WallType = reader.ReadInt16();
+            }
+            t.WallType = (ushort)WallType;
+            t.WallFrameX = reader.ReadInt32();
+            t.WallFrameY = reader.ReadInt32();
+            t.WallColor = reader.ReadByte();
+            t.IsWallInvisible = reader.ReadBoolean();
+            t.IsWallFullbright = reader.ReadBoolean();
+            return t;
+        }
 
         private static int[] ReadStruct(Stream stream, Point bottomLeft, int[] tileBlend = null)
         {
@@ -113,154 +182,183 @@ namespace Stellamod.WorldG.StructureManager
                 List<int> ChestIndexs = new List<int>();
                 int Xlenght = reader.ReadInt32();
                 int Ylenght = reader.ReadInt32();
-                for (int i = 0; i <= Xlenght; i++)
+                void InnerLoop(int i, int j)
                 {
+                    Tile t = Framing.GetTileSafely(bottomLeft.X + i, bottomLeft.Y - j);
 
-                    for (int j = 0; j <= Ylenght; j++)
+                    //Get old values incase we don't want this tile
+                    int oldLiquidType = t.LiquidType;
+                    byte oldLiquidAmount = t.LiquidAmount;
+                    bool oldBlueWire = t.BlueWire;
+                    bool oldGreenWire = t.GreenWire;
+                    bool oldYellowWire = t.YellowWire;
+                    bool oldHasActuator = t.HasActuator;
+                    bool oldIsActuated = t.IsActuated;
+                    bool oldHasTile = t.HasTile;
+                    ushort oldTileType = t.TileType;
+                    BlockType oldBlockType = t.BlockType;
+                    bool oldIsHalfBlock = t.IsHalfBlock;
+                    SlopeType oldSlopeType = t.Slope;
+                    int oldTileFrameNumber = t.TileFrameNumber;
+                    short oldTileFrameX = t.TileFrameX;
+                    short oldTileFrameY = t.TileFrameY;
+                    ushort oldWallType = t.WallType;
+                    int oldWallFrameX = t.WallFrameX;
+                    int oldWallFrameY = t.WallFrameY;
+                    byte oldTileColor = t.TileColor;
+                    byte oldWallColor = t.WallColor;
+                    bool makeOld = false;
+                    t.ClearEverything();
+                    //tile
+                    bool hastile = reader.ReadBoolean();
+                    t.LiquidType = reader.ReadInt32();
+                    t.LiquidAmount = reader.ReadByte();
+                    t.BlueWire = reader.ReadBoolean();
+                    t.RedWire = reader.ReadBoolean();
+                    t.GreenWire = reader.ReadBoolean();
+                    t.YellowWire = reader.ReadBoolean();
+                    t.HasActuator = reader.ReadBoolean();
+                    t.IsActuated = reader.ReadBoolean();
+                    if (hastile)
                     {
-                        Tile t = Framing.GetTileSafely(bottomLeft.X + i, bottomLeft.Y - j);
-
-                        //Get old values incase we don't want this tile
-                        int oldLiquidType = t.LiquidType;
-                        byte oldLiquidAmount = t.LiquidAmount;
-                        bool oldBlueWire = t.BlueWire;
-                        bool oldGreenWire = t.GreenWire;
-                        bool oldYellowWire = t.YellowWire;
-                        bool oldHasActuator = t.HasActuator;
-                        bool oldIsActuated = t.IsActuated;
-                        bool oldHasTile = t.HasTile;
-                        ushort oldTileType = t.TileType;
-                        BlockType oldBlockType = t.BlockType;
-                        bool oldIsHalfBlock = t.IsHalfBlock;
-                        SlopeType oldSlopeType = t.Slope;
-                        int oldTileFrameNumber = t.TileFrameNumber;
-                        short oldTileFrameX = t.TileFrameX;
-                        short oldTileFrameY = t.TileFrameY;
-                        ushort oldWallType = t.WallType;
-                        int oldWallFrameX = t.WallFrameX;
-                        int oldWallFrameY = t.WallFrameY;
-                        byte oldTileColor = t.TileColor;
-                        byte oldWallColor = t.WallColor;
-                        bool makeOld = false;
-                        t.ClearEverything();
-                        //tile
-                        bool hastile = reader.ReadBoolean();
-                        t.LiquidType = reader.ReadInt32();
-                        t.LiquidAmount = reader.ReadByte();
-                        t.BlueWire = reader.ReadBoolean();
-                        t.RedWire = reader.ReadBoolean();
-                        t.GreenWire = reader.ReadBoolean();
-                        t.YellowWire = reader.ReadBoolean();
-                        t.HasActuator = reader.ReadBoolean();
-                        t.IsActuated = reader.ReadBoolean();
-                        if (hastile)
+                        t.HasTile = hastile;
+                        bool Modded = reader.ReadBoolean();
+                        int TileType = 0;
+                        if (Modded)
                         {
-                            t.HasTile = hastile;
-                            bool Modded = reader.ReadBoolean();
-                            int TileType = 0;
-                            if (Modded)
-                            {
-                                TileType = ReadModTile(reader);
-                            }
-                            else
-                            {
-                                TileType = reader.ReadInt16();
-                                if (tileBlend != null)
-                                {
-                                    for (int tb = 0; tb < tileBlend.Length; tb++)
-                                    {
-                                        int tbTileType = tileBlend[tb];
-                                        if (TileType == tbTileType)
-                                        {
-                                            makeOld = true;
-                                            break;
-                                        }
-
-                                    }
-                                }
-                                else
-                                {
-
-                                }
-                            }
-
-                            t.TileType = (ushort)TileType;
-                            t.BlockType = (BlockType)reader.ReadByte();
-                            t.IsHalfBlock = reader.ReadBoolean();
-                            //t.LiquidType = reader.ReadInt32();
-                            t.Slope = (SlopeType)reader.ReadByte();
-                            t.TileFrameNumber = reader.ReadInt32();
-                            t.TileFrameX = reader.ReadInt16();
-                            t.TileFrameY = reader.ReadInt16();
-                            t.TileColor = reader.ReadByte();
-                            t.IsTileInvisible = reader.ReadBoolean();
-                            t.IsTileFullbright = reader.ReadBoolean();
-
-                            bool Chest = reader.ReadBoolean();
-                            if (Chest)
-                            {
-                                ChestIndexs.Add(Terraria.Chest.CreateChest(bottomLeft.X + i, bottomLeft.Y - j));
-                            }
-                            //byte slope = reader.ReadByte();
-
-
-                        }
-
-                        //Auto air blend
-                        if (tileBlend == null && !hastile)
-                        {
-                            makeOld = true;
-                        }
-
-                        //wall
-                        int WallType = 0;
-                        bool ModdedWall = reader.ReadBoolean();
-                        if (ModdedWall)
-                        {
-                            WallType = ReadModWall(reader);
+                            TileType = ReadModTile(reader);
                         }
                         else
                         {
-                            WallType = reader.ReadInt16();
-                        }
-                        t.WallType = (ushort)WallType;
-                        t.WallFrameX = reader.ReadInt32();
-                        t.WallFrameY = reader.ReadInt32();
-                        t.WallColor = reader.ReadByte();
-                        t.IsWallInvisible = reader.ReadBoolean();
-                        t.IsWallFullbright = reader.ReadBoolean();
+                            TileType = reader.ReadInt16();
+                            if (tileBlend != null)
+                            {
+                                for (int tb = 0; tb < tileBlend.Length; tb++)
+                                {
+                                    int tbTileType = tileBlend[tb];
+                                    if (TileType == tbTileType)
+                                    {
+                                        makeOld = true;
+                                        break;
+                                    }
 
-                        if (makeOld && t.WallType == 0 && t.LiquidAmount <= 0)
-                        {
-                            t.LiquidType = oldLiquidType;
-                            t.LiquidAmount = oldLiquidAmount;
-                            t.BlueWire = oldBlueWire;
-                            t.GreenWire = oldGreenWire;
-                            t.YellowWire = oldGreenWire;
-                            t.HasActuator = oldHasActuator;
-                            t.IsActuated = oldIsActuated;
-                            t.HasTile = oldHasTile;
-                            t.TileType = oldTileType;
-                            t.BlockType = oldBlockType;
-                            t.IsHalfBlock = oldIsHalfBlock;
-                            t.Slope = oldSlopeType;
-                            t.TileFrameNumber = oldTileFrameNumber;
-                            t.TileFrameX = oldTileFrameX;
-                            t.TileFrameY = oldTileFrameY;
-                            t.WallType = oldWallType;
-                            t.WallFrameX = oldWallFrameX;
-                            t.WallFrameY = oldWallFrameY;
-                            t.TileColor = oldTileColor;
-                            t.WallColor = oldWallColor;
+                                }
+                            }
+                            else
+                            {
+
+                            }
                         }
+
+                        t.TileType = (ushort)TileType;
+                        t.BlockType = (BlockType)reader.ReadByte();
+                        t.IsHalfBlock = reader.ReadBoolean();
+                        //t.LiquidType = reader.ReadInt32();
+                        t.Slope = (SlopeType)reader.ReadByte();
+                        t.TileFrameNumber = reader.ReadInt32();
+                        t.TileFrameX = reader.ReadInt16();
+                        t.TileFrameY = reader.ReadInt16();
+                        t.TileColor = reader.ReadByte();
+                        t.IsTileInvisible = reader.ReadBoolean();
+                        t.IsTileFullbright = reader.ReadBoolean();
+
+                        bool Chest = reader.ReadBoolean();
+                        if (Chest)
+                        {
+                            ChestIndexs.Add(Terraria.Chest.CreateChest(bottomLeft.X + i, bottomLeft.Y - j));
+                        }
+                        //byte slope = reader.ReadByte();
+
+
                     }
 
+                    //Auto air blend
+                    if (tileBlend == null && !hastile)
+                    {
+                        makeOld = true;
+                    }
+
+                    //wall
+                    int WallType = 0;
+                    bool ModdedWall = reader.ReadBoolean();
+                    if (ModdedWall)
+                    {
+                        WallType = ReadModWall(reader);
+                    }
+                    else
+                    {
+                        WallType = reader.ReadInt16();
+                    }
+                    t.WallType = (ushort)WallType;
+                    t.WallFrameX = reader.ReadInt32();
+                    t.WallFrameY = reader.ReadInt32();
+                    t.WallColor = reader.ReadByte();
+                    t.IsWallInvisible = reader.ReadBoolean();
+                    t.IsWallFullbright = reader.ReadBoolean();
+
+                    if (makeOld && t.WallType == 0 && t.LiquidAmount <= 0)
+                    {
+                        t.LiquidType = oldLiquidType;
+                        t.LiquidAmount = oldLiquidAmount;
+                        t.BlueWire = oldBlueWire;
+                        t.GreenWire = oldGreenWire;
+                        t.YellowWire = oldGreenWire;
+                        t.HasActuator = oldHasActuator;
+                        t.IsActuated = oldIsActuated;
+                        t.HasTile = oldHasTile;
+                        t.TileType = oldTileType;
+                        t.BlockType = oldBlockType;
+                        t.IsHalfBlock = oldIsHalfBlock;
+                        t.Slope = oldSlopeType;
+                        t.TileFrameNumber = oldTileFrameNumber;
+                        t.TileFrameX = oldTileFrameX;
+                        t.TileFrameY = oldTileFrameY;
+                        t.WallType = oldWallType;
+                        t.WallFrameX = oldWallFrameX;
+                        t.WallFrameY = oldWallFrameY;
+                        t.TileColor = oldTileColor;
+                        t.WallColor = oldWallColor;
+                    }
                 }
+                if (FlipStructure)
+                {
+                    for (int i = Xlenght; i >= 0; i--)
+                    {
+                        for (int j = 0; j <= Ylenght; j++)
+                        {
+                            InnerLoop(i, j);
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i <= Xlenght; i++)
+                    {
+                        for (int j = 0; j <= Ylenght; j++)
+                        {
+                            InnerLoop(i, j);
+                        }
+                    }
+                }
+               
 
     
                 return ChestIndexs.ToArray();
             }
         }
+
+        public static string[] GetPaths()
+        {
+            List<string> paths = new List<string>();
+            List<string> fileNames = Mod.GetFileNames();
+            foreach(var fileName in fileNames)
+            {
+                if(fileName.Contains(".str"))
+                    paths.Add(fileName);
+            }
+            return paths.ToArray();
+        }
+
         /// <summary>
         /// reads a .str file and places its structure
         /// </summary>
@@ -296,7 +394,7 @@ namespace Stellamod.WorldG.StructureManager
             }
         }
 
-        private static int ReadModWall(BinaryReader reader)
+        public static int ReadModWall(BinaryReader reader)
         {
 
             string frommod = reader.ReadString();
@@ -313,7 +411,7 @@ namespace Stellamod.WorldG.StructureManager
             }
         }
 
-        private static int ReadModTile(BinaryReader reader)
+        public static int ReadModTile(BinaryReader reader)
         {
             string FromMod = reader.ReadString();
             string Name = reader.ReadString();
@@ -479,12 +577,24 @@ namespace Stellamod.WorldG.StructureManager
             Item.useTime = Item.useAnimation = 15;
         }
 
+        public override bool AltFunctionUse(Player player)
+        {
+            return true;
+        }
         public override bool? UseItem(Player player)
         {
-            Structurizer.SaveStruct(Main.MouseWorld.ToTileCoordinates());
-            int x = (int)Main.MouseWorld.X / 16;
-            int y = (int)Main.MouseWorld.Y / 16;
-            Dust.QuickBox(new Vector2(x, y) * 16, new Vector2(x + 1, y + 1) * 16, 2, Color.YellowGreen, null);
+            if(player.altFunctionUse == 2)
+            {
+                StructureSelectorUISystem uiSystem = ModContent.GetInstance<StructureSelectorUISystem>();
+                uiSystem.ToggleUI();
+            }
+            else
+            {
+                Structurizer.SaveStruct(Main.MouseWorld.ToTileCoordinates());
+                int x = (int)Main.MouseWorld.X / 16;
+                int y = (int)Main.MouseWorld.Y / 16;
+                Dust.QuickBox(new Vector2(x, y) * 16, new Vector2(x + 1, y + 1) * 16, 2, Color.YellowGreen, null);
+            }
 
             return true;
         }
@@ -515,10 +625,90 @@ namespace Stellamod.WorldG.StructureManager
             }
         }
 
+        public override bool AltFunctionUse(Player player)
+        {
+            return true;
+        }
+
         public override bool? UseItem(Player player)
         {
-            Structurizer.ReadSavedStruct(Main.MouseWorld.ToTileCoordinates());
+            if (player.altFunctionUse == 2)
+            {
+                Structurizer.FlipStructure = !Structurizer.FlipStructure;
+            }
+            else
+            {
+                SnapshotSystem snapshotSystem = ModContent.GetInstance<SnapshotSystem>();
+                snapshotSystem.Save();
+                if (Structurizer.SelectedStructure != null)
+                {
+                    Structurizer.ReadStruct(Main.MouseWorld.ToTileCoordinates(), Structurizer.SelectedStructure);
+                    Structurizer.SelectedStructure = null;
+                }
+                else
+                {
+                    Structurizer.ReadSavedStruct(Main.MouseWorld.ToTileCoordinates());
+                }
+            }
+
+            //ModelingPreviewer.texturePreview = null;
             return true;
+        }
+    }
+
+    public class ModelingPreviewer : ModSystem
+    {
+        public static Texture2D texturePreview;
+        public override void Load()
+        {
+            base.Load();
+            On_Main.DrawDust += DrawPreview;
+        }
+
+        public override void Unload()
+        {
+            base.Unload();
+            On_Main.DrawDust -= DrawPreview;
+        }
+
+        /*
+        private Texture2D GetPreviewTexture()
+        {
+            using (FileStream stream = File.Open(Main.SavePath + "/SavedStruct.str", FileMode.Open))
+            {
+                Texture2D texture = StructurePreview.GeneratePreview(stream);
+                return texture;
+            }
+            
+        }*/
+
+        private void DrawPreview(On_Main.orig_DrawDust orig, Main self)
+        {
+            orig(self);
+            bool draw = Main.LocalPlayer.HeldItem.type == ModContent.ItemType<ModelizingPlacer>();
+            /*
+            if (draw)
+            {
+                SpriteBatch spriteBatch = Main.spriteBatch;
+
+                if (texturePreview == null)
+                    texturePreview = GetPreviewTexture();
+                //Apply Fog Shader
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
+                    null, Main.GameViewMatrix.TransformationMatrix);
+
+          
+                int x = (int)Main.MouseWorld.X / 16;
+                int y = (int)Main.MouseWorld.Y / 16;
+                Vector2 drawOring = texturePreview.Size();
+                drawOring.X = 0;
+                spriteBatch.Draw(texturePreview, new Vector2(x, y) - Main.screenPosition, null, Color.White, 0, drawOring, 1f, SpriteEffects.None, 0);
+
+                spriteBatch.End();
+            }
+
+            */
+  
         }
     }
 }
