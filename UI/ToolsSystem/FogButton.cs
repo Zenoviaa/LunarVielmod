@@ -4,6 +4,7 @@ using Stellamod.Common.Foggy;
 using Stellamod.UI.PopupSystem;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -47,6 +48,11 @@ namespace Stellamod.UI.ToolsSystem
         {
             base.Update(gameTime);
             BackgroundColor = Color.Transparent;
+            bool contains = ContainsPoint(Main.MouseScreen);
+            if (contains && !PlayerInput.IgnoreMouseInterface)
+            {
+                Main.LocalPlayer.mouseInterface = true;
+            }
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)

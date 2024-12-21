@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.WorldG.StructureManager;
+using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -37,6 +39,11 @@ namespace Stellamod.UI.StructureSelector
         {
             base.Update(gameTime);
             BackgroundColor = Color.Transparent;
+            bool contains = ContainsPoint(Main.MouseScreen);
+            if (contains && !PlayerInput.IgnoreMouseInterface)
+            {
+                Main.LocalPlayer.mouseInterface = true;
+            }
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
