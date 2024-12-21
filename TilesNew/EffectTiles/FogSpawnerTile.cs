@@ -89,5 +89,7 @@ namespace Stellamod.TilesNew.EffectTiles
             Item.consumable = true;
             Item.createTile = ModContent.TileType<FogSpawnerTile>();
         }
+
+
     }
 }

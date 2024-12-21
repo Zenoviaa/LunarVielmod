@@ -29,6 +29,7 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
+using Stellamod.Items.Weapons.Mage.Tomes;
 
 namespace Stellamod.NPCs.Town
 {

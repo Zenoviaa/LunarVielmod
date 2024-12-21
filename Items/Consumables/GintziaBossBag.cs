@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Ores;
-using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Mage.Tomes;
 using Stellamod.Items.Weapons.Melee.Shields;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Thrown;

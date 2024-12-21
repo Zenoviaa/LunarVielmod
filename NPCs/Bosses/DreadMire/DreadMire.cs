@@ -6,6 +6,7 @@ using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Mage.Tomes;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;

@@ -4,6 +4,7 @@ using Stellamod.Common.Lights;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Mage.Tomes;
 using Stellamod.Projectiles.Magic;
 using Stellamod.UI.Systems;
 using Terraria;

@@ -144,6 +144,7 @@ namespace Stellamod.Projectiles.Magic
 
         protected virtual void DrawWindTrail(ref Color lightColor)
         {
+            Main.spriteBatch.RestartDefaults();
             Trail ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
             GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.SimpleTrail);
             Trail.DrawPrims(_soundWavePos, -Main.screenPosition + Projectile.Size / 2, totalTrailPoints: 155);

@@ -90,7 +90,9 @@ namespace Stellamod.Common.Bases
             {
                 _initialSpeed = Projectile.velocity.Length();
             }
-
+            Player player = Main.player[Projectile.owner];
+            Vector2 rrp = player.RotatedRelativePoint(player.MountedCenter, true);
+            UpdatePlayerVisuals(player, rrp);
             AI_MoveTowardsCursor();
             AI_Attack();
         }
@@ -143,7 +145,7 @@ namespace Stellamod.Common.Bases
             {
                 Vector2 mouseWorld = Main.MouseWorld;
                 Vector2 directionToMouse = (mouseWorld - Owner.Center).SafeNormalize(Vector2.Zero);
-                Vector2 velocity = directionToMouse * _initialSpeed;
+                Vector2 velocity = directionToMouse * Owner.HeldItem.shootSpeed;
                 Shoot(Owner, Projectile.GetSource_FromThis(), Projectile.Center, velocity, Projectile.damage, Projectile.knockBack);
             }
 
@@ -152,6 +154,19 @@ namespace Stellamod.Common.Bases
             {
                 Projectile.Kill();
             }
+        }
+        private void UpdatePlayerVisuals(Player player, Vector2 playerHandPos)
+        {
+            // The Prism is a holdout Projectile, so change the player's variables to reflect that.
+            // Constantly resetting player.itemTime and player.itemAnimation prevents the player from switching items or doing anything else.
+            int playerDir = Projectile.Center.X > player.Center.X ? 1 : -1;
+            player.ChangeDir(playerDir);
+            player.heldProj = Projectile.whoAmI;
+            player.itemTime = 2;
+            player.itemAnimation = 2;
+
+            // If you do not multiply by Projectile.direction, the player's hand will point the wrong direction while facing left.
+            player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
         }
         private void UpdateDamageForManaSickness(Player player)
         {
