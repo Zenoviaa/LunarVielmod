@@ -8575,3 +8575,68 @@ FogSpawnerWallItem: {
 	Tooltip: ""
 	DisplayName: Fog Spawner Wall Item
 }
+
+CrescentStaff: {
+	Tooltip: ""
+	DisplayName: Crescent Staff
+}
+
+ChalicemanSepter: {
+	Tooltip: ""
+	DisplayName: Chaliceman Septer
+}
+
+BloodletSepter: {
+	DisplayName: Bloodlet Septer
+	Tooltip: ""
+}
+
+FoxNMagic: {
+	DisplayName: Fox N Magic
+	Tooltip: ""
+}
+
+Ghettingberg: {
+	DisplayName: Ghettingberg
+	Tooltip: ""
+}
+
+HexxingStaff: {
+	DisplayName: Hexxing Staff
+	Tooltip: ""
+}
+
+MirrorStaff: {
+	DisplayName: Mirror Staff
+	Tooltip: ""
+}
+
+MothwingStaff: {
+	DisplayName: Mothwing Staff
+	Tooltip: ""
+}
+
+RainsyStaff: {
+	DisplayName: Rainsy Staff
+	Tooltip: ""
+}
+
+RewinderStaff: {
+	DisplayName: Rewinder Staff
+	Tooltip: ""
+}
+
+Snowflake: {
+	DisplayName: Snowflake
+	Tooltip: ""
+}
+
+ThePingler: {
+	DisplayName: The Pingler
+	Tooltip: ""
+}
+
+WillowOfTheWisps: {
+	DisplayName: Willow Of The Wisps
+	Tooltip: ""
+}
