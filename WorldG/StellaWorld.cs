@@ -56,6 +56,9 @@ namespace Stellamod.WorldG
 
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
+            //We don't need this for now
+            return;
+
             int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Lakes"));
             int RoyalGen = tasks.FindIndex(genpass => genpass.Name.Equals("Corruption"));
 

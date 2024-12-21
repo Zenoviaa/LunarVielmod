@@ -398,6 +398,7 @@ namespace Stellamod.WorldG.StructureManager
         {
 
             string frommod = reader.ReadString();
+            frommod = Mod.Name;
             string name = reader.ReadString();
             Mod m = null;
             if (ModLoader.TryGetMod(frommod, out m))
@@ -414,6 +415,7 @@ namespace Stellamod.WorldG.StructureManager
         public static int ReadModTile(BinaryReader reader)
         {
             string FromMod = reader.ReadString();
+            FromMod = Mod.Name;
             string Name = reader.ReadString();
             Mod m = null;
             if (ModLoader.TryGetMod(FromMod, out m))
