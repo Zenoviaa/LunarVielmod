@@ -1,19 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 using ReLogic.Utilities;
 using Stellamod.Items.Ores;
-using Stellamod.NPCs;
-using Stellamod.Projectiles.Swords.Altride;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Veil;
+using Stellamod.TilesNew.RainforestTiles;
 using Stellamod.WorldG.StructureManager;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.IO.Pipes;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ObjectData;
 using Terraria.WorldBuilding;
 
 namespace Stellamod.WorldG
@@ -52,7 +51,7 @@ namespace Stellamod.WorldG
               tileToPlace: TileID.Sandstone,
               addTile: true);
             VeilGen.GenerateDuneHoleEdges((colosseumPoint + new Point(51, 0)).ToVector2(), Vector2.UnitY, caveStrength * 2f, Vector2.Zero, caveWidth,
-                caveSteps: fallSteps ,
+                caveSteps: fallSteps,
                 tileToPlace: TileID.Sandstone,
                 addTile: true);
             VeilGen.GenerateDuneHoleEdges((colosseumPoint + new Point(51, 0)).ToVector2(), Vector2.UnitY, caveStrength, Vector2.Zero, caveWidth,
@@ -60,7 +59,7 @@ namespace Stellamod.WorldG
                 tileToPlace: -1,
                 addTile: false);
             VeilGen.GenerateColosseum(colosseumPosition.ToPoint());
-          
+
         }
 
         private void GenerateCavernToAbyss()
@@ -113,8 +112,8 @@ namespace Stellamod.WorldG
             int caveSteps = 100;
             VeilGen.GenerateFallingIceCavern(cavePosition, caveVelocity, pullDirection, caveStrength, caveWidth, caveSteps);
         }
-        
-       
+
+
         private void GenerateIceCavern()
         {
             var genRand = WorldGen.genRand;
@@ -769,13 +768,111 @@ namespace Stellamod.WorldG
 
     internal static class VeilGen
     {
-     
+        public static Vector2 TileAdj => (Lighting.Mode == Terraria.Graphics.Light.LightMode.Retro || Lighting.Mode == Terraria.Graphics.Light.LightMode.Trippy) ? Vector2.Zero : Vector2.One * 12;
+        public static bool IsAir(int x, int y, int w)
+        {
+            for (int k = 0; k < w; k++)
+            {
+                Tile tile = Framing.GetTileSafely(x + k, y);
+                if (tile.HasTile && Main.tileSolid[tile.TileType])
+                    return false;
+            }
+
+            return true;
+        }
+
+        public static bool IsRainforestTreeGround(int x, int y, int w)
+        {
+            for (int k = 0; k < w; k++)
+            {
+                Tile tile = Framing.GetTileSafely(x + k, y);
+                if (!(tile.HasTile && tile.Slope == SlopeType.Solid && !tile.IsHalfBlock && (tile.TileType == ModContent.TileType<RainforestGrass>())))
+                    return false;
+
+                Tile tile2 = Framing.GetTileSafely(x + k, y - 1);
+                if (tile2.HasTile && Main.tileSolid[tile2.TileType])
+                    return false;
+            }
+
+            return true;
+        }
+        public static void PlaceMultitile(Point16 position, int type, int style = 0)
+        {
+            var data = TileObjectData.GetTileData(type, style); //magic numbers and uneccisary params begone!
+
+            if (position.X + data.Width > Main.maxTilesX || position.X < 0)
+                return; //make sure we dont spawn outside of the world!
+
+            if (position.Y + data.Height > Main.maxTilesY || position.Y < 0)
+                return;
+
+            int xVariants = 0;
+            int yVariants = 0;
+
+            if (data.StyleHorizontal)
+                xVariants = Main.rand.Next(data.RandomStyleRange);
+            else
+                yVariants = Main.rand.Next(data.RandomStyleRange);
+
+            for (int x = 0; x < data.Width; x++) //generate each column
+            {
+                for (int y = 0; y < data.Height; y++) //generate each row
+                {
+                    Tile tile = Framing.GetTileSafely(position.X + x, position.Y + y); //get the targeted tile
+                    tile.TileType = (ushort)type; //set the type of the tile to our multitile
+
+                    int yHeight = 0;
+                    for (int k = 0; k < data.CoordinateHeights.Length; k++)
+                    {
+                        yHeight += data.CoordinateHeights[k] + data.CoordinatePadding;
+                    }
+
+                    tile.TileFrameX = (short)((x + data.Width * xVariants) * (data.CoordinateWidth + data.CoordinatePadding)); //set the X frame appropriately
+                    tile.TileFrameY = (short)(y * (data.CoordinateHeights[y > 0 ? y - 1 : y] + data.CoordinatePadding) + yVariants * yHeight); //set the Y frame appropriately
+                    tile.HasTile = true; //activate the tile
+                }
+            }
+        }
+        public static void PlaceRaintrees(int treex, int treey, int height)
+        {
+            treey -= 1;
+
+            if (treey - height < 1)
+                return;
+
+            for (int x = -1; x < 3; x++)
+            {
+                for (int y = 0; y < (height + 2); y++)
+                {
+                    WorldGen.KillTile(treex + x, treey - y);
+                }
+            }
+
+            PlaceMultitile(new Point16(treex, treey - 1), ModContent.TileType<RainforestTreeBase>());
+
+            for (int x = 0; x < 2; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    WorldGen.PlaceTile(treex + x, treey - (y + 2), ModContent.TileType<RainforestTree>(), true, true);
+                }
+            }
+
+            for (int x = -1; x < 3; x++)
+            {
+                for (int y = 0; y < (height + 2); y++)
+                {
+                    WorldGen.TileFrame(treex + x, treey + y);
+                }
+            }
+        }
+
         public static void GenerateIceSpike(Vector2 cavePosition, double width, Vector2D endOffset, ushort tileId = TileID.IceBlock)
         {
-             WorldUtils.Gen(cavePosition.ToPoint(), new Shapes.Tail(width, endOffset), Actions.Chain(new GenAction[]
-             {
+            WorldUtils.Gen(cavePosition.ToPoint(), new Shapes.Tail(width, endOffset), Actions.Chain(new GenAction[]
+            {
                     new Actions.SetTile(tileId),
-             }));
+            }));
         }
 
         public static void GenerateFallingIceCavern(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 pullDirection, Vector2 caveStrength, int caveWidth, int caveSteps)
@@ -844,7 +941,7 @@ namespace Stellamod.WorldG
             };
 
             int ignoreTile = ModContent.TileType<AbyssalDirt>();
-            for(int s = 0; s < caveSteps; s++)
+            for (int s = 0; s < caveSteps; s++)
             {
                 float radiansOffset = MathF.Sin(s * 0.5f) * MathHelper.ToRadians(45);
                 Vector2 shiftedVelocity = baseCaveDirection.RotatedBy(radiansOffset);
@@ -861,7 +958,7 @@ namespace Stellamod.WorldG
                 if (genRand.NextBool(2))
                 {
                     Vector2D endOffset = new Vector2D(
-                        genRand.Next(-10, 10), 
+                        genRand.Next(-10, 10),
                         genRand.Next(-20, -3));
                     Vector2 spikePosition = cavePosition;
                     spikePosition += new Vector2(0, -10);
@@ -880,7 +977,7 @@ namespace Stellamod.WorldG
                 }
 
                 //Place Walls
-                for(int w = 0; w < 5; w++)
+                for (int w = 0; w < 5; w++)
                 {
                     ushort wallType = wallTypes[genRand.Next(0, wallTypes.Length)];
                     if (genRand.NextBool(2))
@@ -1194,7 +1291,7 @@ namespace Stellamod.WorldG
                 //  caveStrength *= 0.99f;
             }
         }
-   
+
         public static void GenerateDuneHole(Vector2 cavePosition, Vector2 baseCaveDirection, Vector2 caveStrength, Vector2 pullDirection, int caveWidth, int caveSteps, int tileToPlace = -1, bool addTile = false)
         {
             var genRand = WorldGen.genRand;
@@ -1253,7 +1350,7 @@ namespace Stellamod.WorldG
 
                 if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
                 {
-                    if(j > 6)
+                    if (j > 6)
                     {
 
 
@@ -1261,7 +1358,7 @@ namespace Stellamod.WorldG
                                               genRand.NextFloat(breakStrength.X, breakStrength.Y),
                                               genRand.Next(4, 5), tileToPlace, addTile);
                     }
-             
+
 
                 }
 
@@ -1292,12 +1389,12 @@ namespace Stellamod.WorldG
                     continue;
                 counter++;
                 breakStrength *= 0.9995f;
-     
+
 
                 if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
                 {
-     
-                    if(tileToPlace == -1)
+
+                    if (tileToPlace == -1)
                     {
                         WorldUtils.Gen(new Point((int)cavePosition.X, (int)cavePosition.Y),
                             new Shapes.Circle(8, 8), new Actions.ClearTile());
@@ -2324,7 +2421,7 @@ namespace Stellamod.WorldG
                 }
 
                 for (int beamX = rectangle.Location.X;
-                    beamX < rectangle.Location.X + rectangle.Width; beamX+=8)
+                    beamX < rectangle.Location.X + rectangle.Width; beamX += 8)
                 {
                     //Place beams
                     int beamY = rectangle.Location.Y;

@@ -8640,3 +8640,158 @@ WillowOfTheWisps: {
 	DisplayName: Willow Of The Wisps
 	Tooltip: ""
 }
+
+MediumIceyStoneBlock: {
+	DisplayName: Medium Icey Stone Block
+	Tooltip: ""
+}
+
+LargeIceyStoneBlock: {
+	Tooltip: ""
+	DisplayName: Large Icey Stone Block
+}
+
+IceyAlterBlock: {
+	Tooltip: ""
+	DisplayName: Icey Alter Block
+}
+
+BorealReinforcementBlock: {
+	Tooltip: ""
+	DisplayName: Boreal Reinforcement Block
+}
+
+RunicIceBlock: {
+	DisplayName: Runic Ice Block
+	Tooltip: ""
+}
+
+SmallIceyStoneBlock: {
+	DisplayName: Small Icey Stone Block
+	Tooltip: ""
+}
+
+MothlightBrickBlock: {
+	DisplayName: Mothlight Brick Block
+	Tooltip: ""
+}
+
+MothlightGrassBlock: {
+	DisplayName: Mothlight Grass Block
+	Tooltip: ""
+}
+
+MothlightBannerBlock: {
+	DisplayName: Mothlight Banner Block
+	Tooltip: ""
+}
+
+MothlightBannerHangerBlock: {
+	DisplayName: Mothlight Banner Hanger Block
+	Tooltip: ""
+}
+
+MothlightBannerSmallBlock: {
+	DisplayName: Mothlight Banner Small Block
+	Tooltip: ""
+}
+
+MothlightBookshelfBlock: {
+	DisplayName: Mothlight Bookshelf Block
+	Tooltip: ""
+}
+
+MothlightBowlBlock: {
+	DisplayName: Mothlight Bowl Block
+	Tooltip: ""
+}
+
+MothlightChairLeftBlock: {
+	DisplayName: Mothlight Chair Left Block
+	Tooltip: ""
+}
+
+MothlightChairRightBlock: {
+	DisplayName: Mothlight Chair Right Block
+	Tooltip: ""
+}
+
+MothlightClockBlock: {
+	DisplayName: Mothlight Clock Block
+	Tooltip: ""
+}
+
+MothlightDoorBlock: {
+	DisplayName: Mothlight Door Block
+	Tooltip: ""
+}
+
+MothlightFloorBlock: {
+	DisplayName: Mothlight Floor Block
+	Tooltip: ""
+}
+
+MothlightFlowerbedBlock: {
+	DisplayName: Mothlight Flowerbed Block
+	Tooltip: ""
+}
+
+MothlightHangerBlock: {
+	DisplayName: Mothlight Hanger Block
+	Tooltip: ""
+}
+
+MothlightHighTableBlock: {
+	DisplayName: Mothlight High Table Block
+	Tooltip: ""
+}
+
+MothlightLeftStairsBlock: {
+	DisplayName: Mothlight Left Stairs Block
+	Tooltip: ""
+}
+
+MothlightPalendineBlock: {
+	DisplayName: Mothlight Palendine Block
+	Tooltip: ""
+}
+
+MothlightRightStairsBlock: {
+	DisplayName: Mothlight Right Stairs Block
+	Tooltip: ""
+}
+
+MothlightTableBlock: {
+	DisplayName: Mothlight Table Block
+	Tooltip: ""
+}
+
+MothlightWallBlock: {
+	DisplayName: Mothlight Wall Block
+	Tooltip: ""
+}
+
+MothlightWindowBlock: {
+	DisplayName: Mothlight Window Block
+	Tooltip: ""
+}
+
+MothlightMushroomBlock: {
+	DisplayName: Mothlight Mushroom Block
+	Tooltip: ""
+}
+
+MothlightSpawnerBrickBlock: {
+	DisplayName: Mothlight Spawner Brick Block
+	Tooltip: ""
+}
+
+RainforestGrassBlock: {
+	DisplayName: Rainforest Grass Block
+	Tooltip: ""
+}
+
+RainforestTreeAcorn: {
+	DisplayName: Rainforest Tree Acorn
+	Tooltip: ""
+}

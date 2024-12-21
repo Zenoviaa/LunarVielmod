@@ -1,13 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.TilesNew.RainforestTiles;
 using System;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Common.Particles
 {
     internal static class ParticleUtils
     {
+
+
+
         public static int ParticleType<T>() where T : Particle => ModContent.GetInstance<T>()?.Type ?? 0;
 
         public static bool OnScreen(Vector2 pos) => pos.X > -16 && pos.X < Main.screenWidth + 16 && pos.Y > -16 && pos.Y < Main.screenHeight + 16;

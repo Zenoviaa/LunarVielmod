@@ -157,3 +157,10 @@ CauldronTile.MapEntry: Cauldron Tile
 AurelusTempleDiscTile.MapEntry: Aurelus Temple Disc Tile
 GlisteningOreTile.MapEntry: Glistening Ore Tile
 FogSpawnerTile.MapEntry: Fog Spawner Tile
+RainforestTreeSapling.MapEntry: Rainforest Tree Sapling
+RainforestTreeBase.MapEntry: Rainforest Tree Base
+RainforestTree.MapEntry: Rainforest Tree
+MothlightSpawnerBrick.MapEntry: Mothlight Spawner Brick
+MothlightMushroom.MapEntry: Mothlight Mushroom
+MothlightGrass.MapEntry: Mothlight Grass
+MothlightBrick.MapEntry: Mothlight Brick
