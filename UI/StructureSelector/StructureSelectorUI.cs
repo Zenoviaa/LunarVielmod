@@ -18,6 +18,7 @@ namespace Stellamod.UI.StructureSelector
 {
     internal class StructureSelectorUI : UIPanel
     {
+        private StructureBackground _background;
         private UIList _uiList;
         private UIPanel _panel;
         private UIGrid _grid;
@@ -31,6 +32,7 @@ namespace Stellamod.UI.StructureSelector
 
         public StructureSelectorUI() : base()
         {
+            _background = new StructureBackground();
             _panel = new UIPanel();
             _grid = new UIGrid();
             _scrollbar = new FancyScrollbar();
@@ -40,12 +42,14 @@ namespace Stellamod.UI.StructureSelector
         public override void OnInitialize()
         {
             base.OnInitialize();
-            Width.Pixels = 420;
-            Height.Pixels = 48 * 16;
+            Width.Pixels = 350;
+            Height.Pixels = 210;
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
+
+            Append(_background);
 
             _panel.Width.Pixels = Width.Pixels;
             _panel.Height.Pixels = Height.Pixels;
@@ -61,7 +65,7 @@ namespace Stellamod.UI.StructureSelector
 
             _scrollbar.Width.Set(20, 0);
             _scrollbar.Height.Set(340, 0);
-            _scrollbar.Left.Set(0, 0.9f);
+            _scrollbar.Left.Set(0, 0.93f);
             _scrollbar.Top.Set(0, 0f);
 
             float maxViewSize = 48 * 8f;
@@ -106,6 +110,7 @@ namespace Stellamod.UI.StructureSelector
                 _scrollbar.Top.Set(0, 0f);
             }
         }
+
         static Mod Mod = ModContent.GetInstance<Stellamod>();
         public void Refresh()
         {

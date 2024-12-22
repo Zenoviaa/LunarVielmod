@@ -1,17 +1,10 @@
-﻿using Accord.Statistics.Distributions.Univariate;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.UI.StructureSelector;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -86,7 +79,7 @@ namespace Stellamod.WorldG.StructureManager
                 Main.LocalPlayer.itemAnimation = 12;
                 Main.LocalPlayer.heldProj = Projectile.whoAmI;
             }
-     
+
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -100,7 +93,7 @@ namespace Stellamod.WorldG.StructureManager
             }
             spriteBatch.Restart(samplerState: SamplerState.PointWrap);
 
-       
+
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             spriteBatch.Draw(TextureAssets.Projectile[Type].Value, drawPos, null, drawColor, Projectile.rotation, TextureAssets.Projectile[Type].Value.Size() / 2, scale, SpriteEffects.None, 0);
             return false;
@@ -155,7 +148,7 @@ namespace Stellamod.WorldG.StructureManager
             Projectile.height = 16;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
-            Projectile.timeLeft=int.MaxValue;
+            Projectile.timeLeft = int.MaxValue;
         }
 
         public override void AI()
@@ -163,13 +156,13 @@ namespace Stellamod.WorldG.StructureManager
             base.AI();
             Player owner = Main.player[Projectile.owner];
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 _capturedMouse = false;
                 _isDragging = false;
                 if (IsTopRight)
                 {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Vector2.Zero, 
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Vector2.Zero,
                         ModContent.ProjectileType<Save>(), 1, 1, Projectile.owner, ai0: Projectile.whoAmI);
                 }
             }
@@ -179,7 +172,7 @@ namespace Stellamod.WorldG.StructureManager
                 _isDragging = true;
                 _capturedMouse = true;
             }
-            if(_isDragging && !Main.mouseLeft)
+            if (_isDragging && !Main.mouseLeft)
             {
                 _isDragging = false;
                 _capturedMouse = false;
@@ -191,8 +184,8 @@ namespace Stellamod.WorldG.StructureManager
                 int y = (int)Main.MouseWorld.Y / 16;
                 Vector2 roundedPoint = new Vector2(x, y) * 16;
                 Projectile.position = roundedPoint;
-             
-         
+
+
             }
             if (IsTopRight)
             {
@@ -286,7 +279,7 @@ namespace Stellamod.WorldG.StructureManager
 
             if (SpawnSelection)
             {
-                foreach(var proj in Main.ActiveProjectiles)
+                foreach (var proj in Main.ActiveProjectiles)
                 {
                     if (proj.type == ModContent.ProjectileType<StructurePoint>())
                         proj.Kill();
@@ -301,7 +294,7 @@ namespace Stellamod.WorldG.StructureManager
 
                 Projectile.NewProjectile(player.GetSource_FromThis(), roundedPoint, Vector2.Zero, ModContent.ProjectileType<StructurePoint>(), 0, 0,
                     player.whoAmI);
-                Projectile.NewProjectile(player.GetSource_FromThis(), roundedPoint2, Vector2.Zero, ModContent.ProjectileType<StructurePoint>(), 0, 0, 
+                Projectile.NewProjectile(player.GetSource_FromThis(), roundedPoint2, Vector2.Zero, ModContent.ProjectileType<StructurePoint>(), 0, 0,
                     player.whoAmI, ai0: 1);
                 SpawnSelection = false;
             }
