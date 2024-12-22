@@ -23,7 +23,7 @@ namespace Stellamod.WorldG.StructureManager
         static Mod Mod = ModContent.GetInstance<Stellamod>();
         public static event Action<Point, string> OnStructPlace;
         public static bool FlipStructure;
-        public static string SelectedStructure;
+        public static string SelectedStructure= string.Empty;
         public static Rectangle ReadRectangle(string Path)
         {
             using (var stream = Mod.GetFileStream(Path + ".str"))
@@ -392,6 +392,22 @@ namespace Stellamod.WorldG.StructureManager
                 return ReadStruct(stream, BottomLeft, tileBlend);
             }
         }
+        public static Rectangle ReadSavedRectangle(string filePath)
+        {
+            if (!filePath.Contains(".str"))
+                filePath += ".str";
+            string savedPath = Main.SavePath + "/ModSources/" + Mod.Name + "/" + filePath;
+            if (!File.Exists(savedPath))
+            {
+                return new Rectangle(0, 0, 1, 1);
+            }
+
+            using (FileStream stream = File.Open(savedPath, FileMode.Open))
+            {
+                return ReadRectangle(stream);
+            }
+        }
+
         public static Rectangle ReadSavedRectangle()
         {
             if (!File.Exists(Main.SavePath + "/SavedStruct.str"))
@@ -708,7 +724,7 @@ namespace Stellamod.WorldG.StructureManager
                 int x = (int)Main.MouseWorld.X / 16;
                 int y = (int)Main.MouseWorld.Y / 16;
 
-                Rectangle rectangle = Structurizer.ReadSavedRectangle();
+                Rectangle rectangle = Structurizer.ReadSavedRectangle(Structurizer.SelectedStructure);
                 Vector2 bottomRight = new Vector2(x + 1, y + 1) * 16;
                 Vector2 topLeft = new Vector2(x + rectangle.Width, y - rectangle.Height) * 16;
                 Dust.QuickBox(topLeft, bottomRight, 2, Color.YellowGreen, null);
@@ -732,9 +748,14 @@ namespace Stellamod.WorldG.StructureManager
         
                 if (!string.IsNullOrEmpty(Structurizer.SelectedStructure))
                 {
+                    Rectangle rectangle = Structurizer.ReadSavedRectangle(Structurizer.SelectedStructure);
+                    Point bottomLeft = Main.MouseWorld.ToTileCoordinates();
+                    Console.WriteLine(rectangle.Width);
+                    Console.WriteLine(rectangle.Height);
+                    Point topRight = bottomLeft + new Point(rectangle.Width, -rectangle.Height);
                     SnapshotSystem snapshotSystem = ModContent.GetInstance<SnapshotSystem>();
-                    snapshotSystem.Save();
-                    Structurizer.ReadSavedStruct(Structurizer.SelectedStructure, Main.MouseWorld.ToTileCoordinates());
+                    snapshotSystem.Save(bottomLeft, topRight);
+                    Structurizer.ReadSavedStruct(Structurizer.SelectedStructure, bottomLeft);
                 }
                 else
                 {

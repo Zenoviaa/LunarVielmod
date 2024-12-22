@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,9 @@ namespace Stellamod.WorldG.StructureManager
     internal class SnapshotSystem : ModSystem
     {
         public Stack<Snapshot> Snapshots = new Stack<Snapshot>();
-        public void Save()
+        public void Save(Point bottomLeft, Point topRight)
         {
-            Snapshot snapshot = new Snapshot();
+            Snapshot snapshot = new Snapshot(bottomLeft, topRight);
             Snapshots.Push(snapshot);
         }
 
@@ -24,7 +25,7 @@ namespace Stellamod.WorldG.StructureManager
                 Snapshot snapshot = Snapshots.Pop();
                 snapshot.RestoreSnapshot();
             }
-        }
+        } 
     }
 
     internal class Snapshot
@@ -37,15 +38,24 @@ namespace Stellamod.WorldG.StructureManager
             TileWallBrightnessInvisibilityData TileWallBrightnessInvisibilityData);
 
         public TileData[,] snap;
-        public Snapshot()
+        public Point bottomLeft;
+        public Point topRight;
+        public Snapshot(Point bottomLeft, Point topRight)
         {
-            snap = new TileData[Main.maxTilesX, Main.maxTilesY];
-            for (int i = 0; i < Main.maxTilesX; i++)
+            this.bottomLeft = bottomLeft;
+            this.topRight = topRight;
+            int width = (int)(topRight.X - bottomLeft.X);
+            int height = (int)(bottomLeft.Y - topRight.Y);
+            snap = new TileData[width+1, height+1];
+           // Console.WriteLine(bottomLeft);
+        //    Console.WriteLine(topRight);
+            for (int x = (int)(bottomLeft.X); x <= topRight.X; x++)
             {
-                for (int j = 0; j < Main.maxTilesY; j++)
+                for (int y = (int)(topRight.Y); y <= bottomLeft.Y; y++)
                 {
-                    Tile tile = Main.tile[i, j];
-                    snap[i, j] = new(
+                    Tile tile = Main.tile[x, y];
+                   
+                    snap[x - bottomLeft.X, y - topRight.Y] = new(
                         tile.Get<TileTypeData>(),
                         tile.Get<WallTypeData>(), 
                         tile.Get<TileWallWireStateData>(),
@@ -57,16 +67,17 @@ namespace Stellamod.WorldG.StructureManager
 
         public void RestoreSnapshot()
         {
-            for (int i = 0; i < Main.maxTilesX; i++)
+            for (int x = (int)(bottomLeft.X); x <= topRight.X; x++)
             {
-                for (int j = 0; j < Main.maxTilesY; j++)
+                for (int y = (int)(topRight.Y); y <= bottomLeft.Y; y++)
                 {
-                    Tile tile = Main.tile[i, j];
-                    tile.TileType = snap[i, j].TileTypeData.Type;
-                    tile.WallType = snap[i, j].WallTypeData.Type;
-                    tile.Get<TileWallWireStateData>() = snap[i, j].TileWallWireStateData;
-                    tile.Get<LiquidData>() = snap[i, j].LiquidData;
-                    tile.Get<TileWallBrightnessInvisibilityData>() = snap[i, j].TileWallBrightnessInvisibilityData;
+                    Tile tile = Main.tile[x, y];
+                    var tileData = snap[x - bottomLeft.X, y - topRight.Y];
+                    tile.TileType = tileData.TileTypeData.Type;
+                    tile.WallType = tileData.WallTypeData.Type;
+                    tile.Get<TileWallWireStateData>() = tileData.TileWallWireStateData;
+                    tile.Get<LiquidData>() = tileData.LiquidData;
+                    tile.Get<TileWallBrightnessInvisibilityData>() = tileData.TileWallBrightnessInvisibilityData;
                 }
             }
         }
