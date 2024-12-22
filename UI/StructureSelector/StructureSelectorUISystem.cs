@@ -41,13 +41,13 @@ namespace Stellamod.UI.StructureSelector
             }
         }
 
-        internal void ToggleUI()
+        internal void ToggleUI(bool isOn)
         {
-            if (_userInterface?.CurrentState != null)
+            if (_userInterface?.CurrentState != null && !isOn)
             {
                 CloseUI();
             }
-            else
+            else if (_userInterface?.CurrentState == null && isOn)
             {
                 OpenUI();
             }
@@ -63,8 +63,8 @@ namespace Stellamod.UI.StructureSelector
             selectorUIState.ui.Refresh();
             _userInterface.SetState(selectorUIState);
         }
-
-        private void CloseUI()
+  
+        public void CloseUI()
         {
             saveUIState.ui.Textbox.Unfocus();
             _userInterface.SetState(null);

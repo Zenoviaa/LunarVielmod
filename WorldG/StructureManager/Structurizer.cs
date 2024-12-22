@@ -729,6 +729,14 @@ namespace Stellamod.WorldG.StructureManager
                 Vector2 topLeft = new Vector2(x + rectangle.Width, y - rectangle.Height) * 16;
                 Dust.QuickBox(topLeft, bottomRight, 2, Color.YellowGreen, null);
                 Dust.QuickBox(new Vector2(x, y) * 16, new Vector2(x + 1, y + 1) * 16, 2, Color.Red, null);
+
+                StructureSelectorUISystem uiSystem = ModContent.GetInstance<StructureSelectorUISystem>();
+                uiSystem.ToggleUI(true);
+            }
+            else
+            {
+                StructureSelectorUISystem uiSystem = ModContent.GetInstance<StructureSelectorUISystem>();
+                uiSystem.ToggleUI(false);
             }
         }
 
@@ -750,18 +758,12 @@ namespace Stellamod.WorldG.StructureManager
                 {
                     Rectangle rectangle = Structurizer.ReadSavedRectangle(Structurizer.SelectedStructure);
                     Point bottomLeft = Main.MouseWorld.ToTileCoordinates();
-                    Console.WriteLine(rectangle.Width);
-                    Console.WriteLine(rectangle.Height);
                     Point topRight = bottomLeft + new Point(rectangle.Width, -rectangle.Height);
                     SnapshotSystem snapshotSystem = ModContent.GetInstance<SnapshotSystem>();
                     snapshotSystem.Save(bottomLeft, topRight);
                     Structurizer.ReadSavedStruct(Structurizer.SelectedStructure, bottomLeft);
                 }
-                else
-                {
-                    StructureSelectorUISystem uiSystem = ModContent.GetInstance<StructureSelectorUISystem>();
-                    uiSystem.ToggleUI();
-                }
+     
             }
 
             //ModelingPreviewer.texturePreview = null;
