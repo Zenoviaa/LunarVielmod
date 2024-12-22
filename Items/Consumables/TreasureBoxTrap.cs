@@ -45,8 +45,7 @@ namespace Stellamod.Items.Consumables
                 ModContent.ItemType<SpikedEmblem>(),
                 ModContent.ItemType<Panacea>(),
                 ModContent.ItemType<DungeonedRockCard>(),
-                ModContent.ItemType<Devolver>(),
-                ModContent.ItemType<Ragsaw>()));
+                ModContent.ItemType<Devolver>()));
 
         }
 

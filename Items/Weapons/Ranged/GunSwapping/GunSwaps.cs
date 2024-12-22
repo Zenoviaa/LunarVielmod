@@ -1492,52 +1492,5 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 }
             }
         }
-
-        internal class AzureWrath : MiniGun
-        {
-            public override void SetDefaults()
-            {
-                base.SetDefaults();
-                Item.damage = 49;
-                RightHand = true;
-
-                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/TON618");
-                soundStyle.PitchVariance = 0.5f;
-                Item.UseSound = soundStyle;
-
-
-                //Higher is faster
-                AttackSpeed = 1;
-
-                //Offset it so it doesn't hold gun by weird spot
-                HolsterOffset = new Vector2(15, -6);
-
-                //Recoil
-                RecoilDistance = 1;
-            }
-
-            public override void Fire(Player player, Vector2 position, Vector2 velocity, int damage, float knockback)
-            {
-                base.Fire(player, position, velocity, damage, knockback);
-                //Treat this like a normal shoot function
-                float spread = 0.4f;
-                for (int k = 0; k < 7; k++)
-                {
-                    Vector2 newDirection = velocity.RotatedByRandom(spread);
-                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.MediumPurple, Main.rand.NextFloat(0.2f, 0.5f));
-                }
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.BlueViolet, 1);
-
-                Vector2 vel = velocity * 16;
-                vel = vel.RotatedByRandom(MathHelper.PiOver4 / 15);
-                if (Main.myPlayer == player.whoAmI)
-                {
-                    Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity, ModContent.ProjectileType<AzurewrathProj>(), damage, knockback, player.whoAmI);
-                }
-                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/TON618");
-                soundStyle.PitchVariance = 0.5f;
-                SoundEngine.PlaySound(soundStyle, position);
-            }
-        }
     }
 

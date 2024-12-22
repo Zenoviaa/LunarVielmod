@@ -480,7 +480,6 @@ namespace Stellamod.NPCs.Town
             .Add<Hyua>(MerenaQuestSystem.ShopConditionExploreMorrowedVillage) //{ shopCustomPrice = Item.buyPrice(silver: 10) })
 			.Add<BlossomingScissor>(MerenaQuestSystem.ShopConditionGive100DustBags)
 			.Add<Bagitem>(MerenaQuestSystem.ShopConditionGive100DustBags)//{ shopCustomPrice = Item.buyPrice(platinum: 1) })
-			.Add<AlcadThrowingCards>(MerenaQuestSystem.ShopConditionMakeMagicPaper)//{ shopCustomPrice = Item.buyPrice(silver: 10) })
 			.Add<AlcaricMush>(MerenaQuestSystem.ShopConditionTome); //{ shopCustomPrice = Item.buyPrice(gold: 2) })
 			npcShop.Register(); // Name of this shop tab		
 		}

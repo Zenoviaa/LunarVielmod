@@ -371,21 +371,6 @@ namespace Stellamod.NPCs.Town
 						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					})
 
-					.Add(new Item(ModContent.ItemType<Items.Consumables.BagOfCards>(), 1)
-					{
-						shopCustomPrice = 2,
-						
-						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
-					})
-
-					.Add(new Item(ModContent.ItemType<Items.Weapons.Thrown.ThrowingCards>())
-					{
-						shopCustomPrice = 1,
-					
-						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
-					})
-
-
 					.Add(new Item(ModContent.ItemType<Items.Weapons.Thrown.IgniterCards>())
 					{
 						shopCustomPrice = 1,
@@ -417,11 +402,11 @@ namespace Stellamod.NPCs.Town
 
 					.Add<Items.Weapons.PowdersItem.Verstidust>(Condition.DownedQueenBee)
 				
+		
+				;
 
 			
 
-					.Add<Items.Weapons.Summon.BloodLamp>(Condition.BloodMoon)
-				;
 				
 				
 			

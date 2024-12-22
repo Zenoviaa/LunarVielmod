@@ -390,8 +390,6 @@ namespace Stellamod.NPCs.Town
 			{
 
 				var entitySource = NPC.GetSource_GiftOrReward();
-				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
-            
             }
 
             //Setting all previous quests to be complete, so it's backwards compatible with the old version.

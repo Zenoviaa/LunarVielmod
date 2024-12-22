@@ -474,8 +474,6 @@ namespace Stellamod.NPCs.Town
 						Dust.NewDustPerfect(NPC.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Silver, 1f).noGravity = true;
 					}
 
-					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
-
 					if (DownedBossSystem.downedSupernovaFragmentBoss)
 					{
 
@@ -535,13 +533,11 @@ namespace Stellamod.NPCs.Town
 								break;
 
 							case 1:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ReflectionSeeker>(), 1);
 								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
 
 								break;
 
 							case 2:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
 								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
 								Main.npcChatText = LangText.Chat(this, "Special3");
 								break;

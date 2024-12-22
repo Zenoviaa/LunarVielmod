@@ -1,11 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Effects;
 using Stellamod.Helpers;
-using Stellamod.Projectiles.Crossbows.Gemmed;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -68,12 +65,12 @@ namespace Stellamod.Projectiles.Thrown
             switch (State)
             {
                 case ActionState.Spin:
-                    if(Timer == 0)
+                    if (Timer == 0)
                     {
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsSlashCharge"), Projectile.position);
                     }
 
-                    if(Timer < Charge_Time)
+                    if (Timer < Charge_Time)
                     {
                         Timer++;
                         Speed += 0.005f;
@@ -90,9 +87,9 @@ namespace Stellamod.Projectiles.Thrown
                         SoundPitch += 0.03f;
                     }
 
-        
+
                     Vector2 playerCenter = player.MountedCenter;
-            
+
                     Projectile.rotation += Speed;
                     Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position
                     player.heldProj = Projectile.whoAmI;
@@ -134,7 +131,7 @@ namespace Stellamod.Projectiles.Thrown
 
                 case ActionState.Throw:
                     Projectile.rotation += Speed;
-                    Projectile.velocity.Y += 0.1f;              
+                    Projectile.velocity.Y += 0.1f;
                     break;
             }
 
@@ -174,8 +171,8 @@ namespace Stellamod.Projectiles.Thrown
 
             if (Trail == null)
             {
-                Trail = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, 
-                    (p) => Vector2.Lerp(new Vector2(90), Vector2.Zero, p), 
+                Trail = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass,
+                    (p) => Vector2.Lerp(new Vector2(90), Vector2.Zero, p),
                     (p) => ColorFunctions.MiracleVoid * (1f - p));
                 Trail.drawOffset = Projectile.Size / 2f;
             }
@@ -183,7 +180,7 @@ namespace Stellamod.Projectiles.Thrown
             DrawHelper.DrawAdditiveAfterImage(Projectile, ColorFunctions.MiracleVoid, Color.Transparent, ref lightColor);
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
-            
+
             Trail.Draw(Projectile.oldPos);
             Texture2D spinTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Spiin").Value;
             for (int i = 0; i < 2; i++)
@@ -205,7 +202,7 @@ namespace Stellamod.Projectiles.Thrown
         {
             Texture2D glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
             Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, 
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone,
                 null, Main.GameViewMatrix.TransformationMatrix);
 
             Projectile projectile = Projectile;

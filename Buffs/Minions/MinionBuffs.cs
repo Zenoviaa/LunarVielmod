@@ -1,11 +1,9 @@
-﻿using Stellamod.Items.Weapons.Summon;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Projectiles.Summons.Minions;
 using Stellamod.Projectiles.Summons.Sentries;
-using Stellamod.Projectiles.Summons.Orbs;
 using Terraria;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Stellamod.Helpers;
 
 namespace Stellamod.Buffs.Minions
 {
@@ -114,13 +112,12 @@ namespace Stellamod.Buffs.Minions
 
     internal class MushroomStaveMinionBuff : MinionBuff<MushroomStaveMinionProj> { }
 
-    internal class ReflectionSeekerMinionBuff : MinionBuff<ReflectionSeekerMinionProj> { }
 
     internal class SolMothMinionBuff : MinionBuff<SolMothMinionProj> { }
 
     internal class TheBurningRodMinionBuff : MinionBuff<TheBurningRodMinionProj> { }
 
-  //  internal class ToxicHornetMinionBuff : MinionBuff<ToxicHornetMinionProj> { }
+    //  internal class ToxicHornetMinionBuff : MinionBuff<ToxicHornetMinionProj> { }
 
     internal class VampireTorchMinionBuff : MinionBuff<VampireTorchMinionProj>
     {
@@ -161,21 +158,21 @@ namespace Stellamod.Buffs.Minions
                 player.statLifeMax2 /= 2;
                 player.lifeRegenCount = 0;
                 _vampiricTimer++;
-                foreach(var npc in Main.ActiveNPCs)
+                foreach (var npc in Main.ActiveNPCs)
                 {
                     if (!npc.CanBeChasedBy())
                         continue;
 
                     float distanceToNpc = Vector2.Distance(player.Center, npc.Center);
-                    if(distanceToNpc < 320)
+                    if (distanceToNpc < 320)
                     {
                         if (_vampiricTimer % 24 == 0)
                         {
-                            if(player.whoAmI == Main.myPlayer)
+                            if (player.whoAmI == Main.myPlayer)
                             {
                                 player.Heal(Main.rand.Next(2, 4));
                             }
-                            
+
                         }
                         npc.AddBuff(ModContent.BuffType<VampiricFlames>(), 10);
                     }

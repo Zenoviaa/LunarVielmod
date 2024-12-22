@@ -136,8 +136,6 @@
     <None Remove="Gores\Bricks2.png" />
     <None Remove="Gores\GraniteProbe1.png" />
     <None Remove="Gores\GraniteProbe2.png" />
-    <None Remove="Gores\GreyBricks1.png" />
-    <None Remove="Gores\GreyBricks2.png" />
     <None Remove="Gores\Jack1.png" />
     <None Remove="Gores\Rock1.png" />
     <None Remove="Gores\Rock2.png" />
@@ -625,6 +623,7 @@
     <Folder Include="Projectiles\Hostile\" />
     <Folder Include="Projectiles\FX\" />
     <Folder Include="Projectiles\Slashers\NewFolder\" />
+    <Folder Include="Projectiles\Slashers\X3107\" />
     <Folder Include="Projectiles\Swords\Slashes\" />
     <Folder Include="Structures\Catacombs\" />
   </ItemGroup>
