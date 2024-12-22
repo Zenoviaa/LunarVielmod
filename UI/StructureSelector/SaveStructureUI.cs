@@ -1,16 +1,6 @@
-﻿using Humanizer;
-using Microsoft.Xna.Framework;
-using Stellamod.WorldG.StructureManager;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.GameContent.UI.Elements;
-using Terraria.ModLoader.UI.Elements;
-using Terraria.ModLoader;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.GameContent.UI.Elements;
 
 namespace Stellamod.UI.StructureSelector
 {
@@ -22,8 +12,8 @@ namespace Stellamod.UI.StructureSelector
         internal const int width = 480;
         internal const int height = 155;
 
-        internal int RelativeLeft => 470 + 108;
-        internal int RelativeTop => 0 + 12;
+        internal int RelativeLeft => Main.screenWidth / 2 - width / 2;
+        internal int RelativeTop => Main.screenHeight / 2 - height / 2;
         public string FileName => _textBox.Text;
         public UIInputTextField Textbox => _textBox;
         public SaveStructureUI() : base()
@@ -60,7 +50,7 @@ namespace Stellamod.UI.StructureSelector
             Top.Pixels = RelativeTop;
             _textBox.Width.Pixels = Width.Pixels;
             _textBox.Height.Pixels = 32;
-        
+
         }
 
     }

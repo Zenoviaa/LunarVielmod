@@ -8,6 +8,7 @@ using System.IO;
 using System.Text;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
@@ -185,7 +186,17 @@ namespace Stellamod.WorldG.StructureManager
                 int Ylenght = reader.ReadInt32();
                 void InnerLoop(int i, int j)
                 {
-                    Tile t = Framing.GetTileSafely(bottomLeft.X + i, bottomLeft.Y - j);
+                    Tile t;
+                    if (FlipStructure)
+                    {
+                        t = Framing.GetTileSafely(bottomLeft.X + Xlenght - i, bottomLeft.Y - j);
+                    }
+                    else
+                    {
+                        t = Framing.GetTileSafely(bottomLeft.X + i, bottomLeft.Y - j);
+
+                    }
+
 
                     //Get old values incase we don't want this tile
                     int oldLiquidType = t.LiquidType;
@@ -259,6 +270,7 @@ namespace Stellamod.WorldG.StructureManager
                         t.TileFrameNumber = reader.ReadInt32();
                         t.TileFrameX = reader.ReadInt16();
                         t.TileFrameY = reader.ReadInt16();
+ 
                         t.TileColor = reader.ReadByte();
                         t.IsTileInvisible = reader.ReadBoolean();
                         t.IsTileFullbright = reader.ReadBoolean();
@@ -321,29 +333,16 @@ namespace Stellamod.WorldG.StructureManager
                         t.WallColor = oldWallColor;
                     }
                 }
-                if (FlipStructure)
+                for (int i = 0; i <= Xlenght; i++)
                 {
-                    for (int i = Xlenght; i >= 0; i--)
+                    for (int j = 0; j <= Ylenght; j++)
                     {
-                        for (int j = 0; j <= Ylenght; j++)
-                        {
-                            InnerLoop(i, j);
-                        }
+                        InnerLoop(i, j);
                     }
                 }
-                else
-                {
-                    for (int i = 0; i <= Xlenght; i++)
-                    {
-                        for (int j = 0; j <= Ylenght; j++)
-                        {
-                            InnerLoop(i, j);
-                        }
-                    }
-                }
-               
 
-    
+
+
                 return ChestIndexs.ToArray();
             }
         }
@@ -730,13 +729,11 @@ namespace Stellamod.WorldG.StructureManager
                 Dust.QuickBox(topLeft, bottomRight, 2, Color.YellowGreen, null);
                 Dust.QuickBox(new Vector2(x, y) * 16, new Vector2(x + 1, y + 1) * 16, 2, Color.Red, null);
 
-                StructureSelectorUISystem uiSystem = ModContent.GetInstance<StructureSelectorUISystem>();
-                uiSystem.ToggleUI(true);
+ 
             }
             else
             {
-                StructureSelectorUISystem uiSystem = ModContent.GetInstance<StructureSelectorUISystem>();
-                uiSystem.ToggleUI(false);
+     
             }
         }
 

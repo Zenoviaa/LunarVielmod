@@ -213,6 +213,9 @@
     <None Remove="Items\Consumables\VoidLantern.png" />
     <None Remove="Items\Consumables\WanderingEssence.png" />
     <None Remove="Items\Materials\AcidicalDirtBlock.png" />
+    <None Remove="Items\Materials\AncientLunarStone.png" />
+    <None Remove="Items\Materials\LunarStone.png" />
+    <None Remove="Items\Materials\RareLunarStone.png" />
     <None Remove="Items\MoonlightMagic\Weapons\BloodletSepter.png" />
     <None Remove="Items\MoonlightMagic\Weapons\ChalicemanSepter.png" />
     <None Remove="Items\MoonlightMagic\Weapons\CrescentStaff.png" />
@@ -418,6 +421,7 @@
     <None Remove="NPCs\TestLaserNPC.png" />
     <None Remove="NPCs\Town\Merena_Head.png" />
     <None Remove="NPCs\Town\Merena_Party.png" />
+    <None Remove="NPCs\Town\Mordred.png" />
     <None Remove="NPCs\Underground\AbandonedMinorSummon.png" />
     <None Remove="NPCs\Underground\FloweredRedLight.png" />
     <None Remove="NPCs\Underground\FloweredWhiteLight.png" />
@@ -602,6 +606,11 @@
     <None Remove="UI\StructureSelector\UndoSelected.png" />
     <None Remove="UI\ToolsSystem\Paper.png" />
     <None Remove="UI\ToolsSystem\PaperSelected.png" />
+    <None Remove="UI\WeaponUpgradeSystem\NoMaterial.png" />
+    <None Remove="UI\WeaponUpgradeSystem\Pearl.png" />
+    <None Remove="UI\WeaponUpgradeSystem\ReforgeButton.png" />
+    <None Remove="UI\WeaponUpgradeSystem\ReforgeButtonSelected.png" />
+    <None Remove="UI\WeaponUpgradeSystem\UpgradeSlot.png" />
     <None Remove="Visual\Particles\GlowCircleDetailedBoomParticle1.png" />
     <None Remove="Visual\Particles\GlowSpikeParticle.png" />
     <None Remove="Visual\Particles\GlowStretchParticle.png" />

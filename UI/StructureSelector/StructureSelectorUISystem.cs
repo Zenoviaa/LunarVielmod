@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.UI.ToolsSystem;
+using Stellamod.WorldG.StructureManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace Stellamod.UI.StructureSelector
     {
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
+        private UserInterface _saveUserInterface;
         public static string RootTexturePath => "Stellamod/UI/StructureSelector/";
 
         public StructureSelectorUIState selectorUIState;
@@ -23,12 +25,14 @@ namespace Stellamod.UI.StructureSelector
         public override void OnModLoad()
         {
             base.OnModLoad();
+            _saveUserInterface = new UserInterface();
             _userInterface = new UserInterface();
             selectorUIState = new StructureSelectorUIState();
             selectorUIState.Activate();
             saveUIState = new StructureSaveUIState();
             saveUIState.Activate();
             _userInterface.SetState(null);
+            _saveUserInterface.SetState(null);
         }
 
         public override void UpdateUI(GameTime gameTime)
@@ -38,6 +42,16 @@ namespace Stellamod.UI.StructureSelector
             if (_userInterface?.CurrentState != null)
             {
                 _userInterface.Update(gameTime);
+            }
+
+
+            if(Main.LocalPlayer.HeldItem.type == ModContent.ItemType<ModelizingPlacer>())
+            {
+                ToggleUI(true);
+            }
+            else
+            {
+                ToggleUI(false);
             }
         }
 
@@ -55,15 +69,17 @@ namespace Stellamod.UI.StructureSelector
 
         internal void OpenSaveUI()
         {
-            _userInterface.SetState(saveUIState);
+            _saveUserInterface.SetState(saveUIState);
         }
-
+        internal void CloseSaveUI()
+        {
+            _saveUserInterface.SetState(null);
+        }
         internal void OpenUI()
         {
             selectorUIState.ui.Refresh();
             _userInterface.SetState(selectorUIState);
         }
-  
         public void CloseUI()
         {
             saveUIState.ui.Textbox.Unfocus();
@@ -77,6 +93,10 @@ namespace Stellamod.UI.StructureSelector
             if (_userInterface.CurrentState != null)
             {
                 _userInterface.SetState(null);
+            }
+            if (_saveUserInterface.CurrentState != null)
+            {
+                _saveUserInterface.SetState(null);
             }
         }
 
@@ -92,6 +112,10 @@ namespace Stellamod.UI.StructureSelector
                         if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)
                         {
                             _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                        }
+                        if (_lastUpdateUiGameTime != null && _saveUserInterface?.CurrentState != null)
+                        {
+                            _saveUserInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
                         }
                         return true;
                     },
