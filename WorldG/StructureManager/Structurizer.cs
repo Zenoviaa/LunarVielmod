@@ -684,18 +684,9 @@ namespace Stellamod.WorldG.StructureManager
         }
         public override bool? UseItem(Player player)
         {
-            if(player.altFunctionUse == 2)
-            {
-                StructureSelectorUISystem uiSystem = ModContent.GetInstance<StructureSelectorUISystem>();
-                uiSystem.ToggleUI();
-            }
-            else
-            {
-                StructureSelection selection = ModContent.GetInstance<StructureSelection>();
-                selection.SpawnSelection = true;
-                SoundEngine.PlaySound(SoundID.Item47);
-            }
-
+            StructureSelection selection = ModContent.GetInstance<StructureSelection>();
+            selection.SpawnSelection = true;
+            SoundEngine.PlaySound(SoundID.Item47);
             return true;
         }
     }
@@ -738,16 +729,17 @@ namespace Stellamod.WorldG.StructureManager
             }
             else
             {
-                SnapshotSystem snapshotSystem = ModContent.GetInstance<SnapshotSystem>();
-                snapshotSystem.Save();
+        
                 if (Structurizer.SelectedStructure != null)
                 {
+                    SnapshotSystem snapshotSystem = ModContent.GetInstance<SnapshotSystem>();
+                    snapshotSystem.Save();
                     Structurizer.ReadSavedStruct(Structurizer.SelectedStructure, Main.MouseWorld.ToTileCoordinates());
-                    Structurizer.SelectedStructure = null;
                 }
                 else
                 {
-                    Structurizer.ReadSavedStruct(Main.MouseWorld.ToTileCoordinates());
+                    StructureSelectorUISystem uiSystem = ModContent.GetInstance<StructureSelectorUISystem>();
+                    uiSystem.ToggleUI();
                 }
             }
 
