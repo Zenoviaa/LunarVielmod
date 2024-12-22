@@ -730,7 +730,7 @@ namespace Stellamod.WorldG.StructureManager
             else
             {
         
-                if (Structurizer.SelectedStructure != null)
+                if (!string.IsNullOrEmpty(Structurizer.SelectedStructure))
                 {
                     SnapshotSystem snapshotSystem = ModContent.GetInstance<SnapshotSystem>();
                     snapshotSystem.Save();
