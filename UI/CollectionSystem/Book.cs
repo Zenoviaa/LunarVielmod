@@ -52,7 +52,7 @@ namespace Stellamod.UI.CollectionSystem
             {
 
                 _closeTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if(_closeTimer <= 0)
+                if (_closeTimer <= 0)
                 {
                     _closeTimer = 0;
                 }
@@ -60,7 +60,7 @@ namespace Stellamod.UI.CollectionSystem
             else
             {
                 _closeTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if(_closeTimer >= 1f)
+                if (_closeTimer >= 1f)
                 {
                     _closeTimer = 1f;
                 }
@@ -117,10 +117,10 @@ namespace Stellamod.UI.CollectionSystem
                 case State.Closed:
                     _frameCounter = 0;
                     _frame = 0;
-                
-                    if(_closeTimer >= 1f)
+
+                    if (_closeTimer >= 1f)
                     {
-             
+
                         collectionBookUISystem.ReallyCloseBookUI();
                     }
                     _open = false;
@@ -145,11 +145,11 @@ namespace Stellamod.UI.CollectionSystem
 
             Texture2D texture = ModContent.Request<Texture2D>(
                 $"{CollectionBookUISystem.RootTexturePath}Book").Value;
-          
+
             int offset = (int)(texture.Size().Y / 2);
             Vector2 drawOrigin = texture.GetFrame(_frame, totalFrameCount: 10).Size() / 2f;
             Vector2 centerPos = pos + drawOrigin;
-       
+
             centerPos += Offset;
             spriteBatch.Draw(texture, centerPos, texture.GetFrame(_frame, totalFrameCount: 10), Color.White, 0f, drawOrigin, _scale * 1.75f, SpriteEffects.None, 0f);
             Main.inventoryScale = oldScale;
@@ -157,10 +157,11 @@ namespace Stellamod.UI.CollectionSystem
 
         public void Toggle()
         {
-            if(_state == State.Open || _state == State.Opened)
+            if (_state == State.Open || _state == State.Opened)
             {
                 _state = State.Close;
-            } else if (_state == State.Close || _state == State.Closed)
+            }
+            else if (_state == State.Close || _state == State.Closed)
             {
                 _state = State.Open;
             }

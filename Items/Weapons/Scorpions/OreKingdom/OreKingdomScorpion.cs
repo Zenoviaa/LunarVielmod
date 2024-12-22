@@ -1,6 +1,4 @@
 ﻿using Stellamod.Common.ScorpionMountSystem;
-using Stellamod.Items.Materials.Tech;
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -33,19 +31,6 @@ namespace Stellamod.Items.Weapons.Scorpions.OreKingdom
         public override int GetRightHandedCount()
         {
             return 1;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.TungstenBar, 10);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-
-            Recipe recipe2 = CreateRecipe();
-            recipe2.AddIngredient(ItemID.SilverBar, 10);
-            recipe2.AddTile(TileID.Anvils);
-            recipe2.Register();
         }
     }
 }

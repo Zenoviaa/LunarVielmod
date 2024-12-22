@@ -1,6 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-
-using Stellamod.Particles;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
@@ -20,7 +18,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         {
             if (hasBonfire)
             {
-                if(Player.ownedProjectileCounts[ModContent.ProjectileType<BonfireProj>()] == 0)
+                if (Player.ownedProjectileCounts[ModContent.ProjectileType<BonfireProj>()] == 0)
                 {
                     Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
                         ModContent.ProjectileType<BonfireProj>(), 1, 1, Player.whoAmI);
@@ -43,7 +41,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<BonfirePlayer>().hasBonfire = true;
-            if(player.velocity == Vector2.Zero)
+            if (player.velocity == Vector2.Zero)
             {
                 player.lifeRegen += 12;
             }

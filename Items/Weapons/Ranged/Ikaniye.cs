@@ -2,9 +2,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Tech;
-using Stellamod.Projectiles.Gun;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using System.Collections.Generic;
@@ -26,31 +23,31 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.mana = 20;
         }
         public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("DeathShot"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-		}
+        {
+            // DisplayName.SetDefault("DeathShot"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
+        }
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-6, 0);
         }
         public override void SetDefaults()
-		{
-			Item.damage = 240;
-			Item.DamageType = DamageClass.Ranged;
-			Item.width = 56;
-			Item.height = 56;
-			Item.useTime = 24;
-			Item.useAnimation = 24;
-			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.knockBack = 6;
-			Item.value = 100000;
-			Item.rare = ItemRarityID.Orange;
-			Item.UseSound = SoundID.Item11;
-			Item.autoReuse = true;
+        {
+            Item.damage = 240;
+            Item.DamageType = DamageClass.Ranged;
+            Item.width = 56;
+            Item.height = 56;
+            Item.useTime = 24;
+            Item.useAnimation = 24;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.knockBack = 6;
+            Item.value = 100000;
+            Item.rare = ItemRarityID.Orange;
+            Item.UseSound = SoundID.Item11;
+            Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<IkaniyeGLUX>();
             Item.shopCustomPrice = 23;
-			Item.shootSpeed = 15;
-			Item.useAmmo = AmmoID.Bullet;
+            Item.shootSpeed = 15;
+            Item.useAmmo = AmmoID.Bullet;
             Item.noMelee = true;
         }
 
@@ -86,9 +83,9 @@ namespace Stellamod.Items.Weapons.Ranged
 
 
 
-      
 
-	}
+
+    }
 
 
     internal class IkaniyeGLUX : ModProjectile,

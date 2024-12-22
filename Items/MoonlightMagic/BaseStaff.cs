@@ -31,7 +31,7 @@ namespace Stellamod.Items.MoonlightMagic
         {
             get
             {
-                if(_primaryElement == null)
+                if (_primaryElement == null)
                 {
                     _primaryElement = new Item();
                     _primaryElement.SetDefaults(0);
@@ -48,10 +48,10 @@ namespace Stellamod.Items.MoonlightMagic
         {
             get
             {
-                if(_equippedEnchantments == null)
+                if (_equippedEnchantments == null)
                 {
                     _equippedEnchantments = new Item[GetNormalSlotCount() + GetTimedSlotCount()];
-                    for(int i = 0; i < _equippedEnchantments.Length; i++)
+                    for (int i = 0; i < _equippedEnchantments.Length; i++)
                     {
                         _equippedEnchantments[i] = new Item();
                         _equippedEnchantments[i].SetDefaults(0);
@@ -99,7 +99,7 @@ namespace Stellamod.Items.MoonlightMagic
             base.NetSend(writer);
             writer.Write(primaryElement.type);
             writer.Write(equippedEnchantments.Length);
-            for(int i = 0; i < equippedEnchantments.Length; i++)
+            for (int i = 0; i < equippedEnchantments.Length; i++)
             {
                 writer.Write(equippedEnchantments[i].type);
             }
@@ -111,7 +111,7 @@ namespace Stellamod.Items.MoonlightMagic
             int primaryElementType = reader.ReadInt32();
             primaryElement = new Item(primaryElementType);
             int length = reader.ReadInt32();
-            for(int i = 0; i < length; i++)
+            for (int i = 0; i < length; i++)
             {
                 int enchantmentType = reader.ReadInt32();
                 equippedEnchantments[i] = new Item(enchantmentType);

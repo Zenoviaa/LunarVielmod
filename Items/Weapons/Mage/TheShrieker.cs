@@ -3,9 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Lights;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Mage.Tomes;
-using Stellamod.Projectiles.Magic;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
@@ -27,38 +24,31 @@ namespace Stellamod.Items.Weapons.Mage
         }
 
         public override void SetDefaults()
-		{
-			Item.damage = 90;
-			Item.DamageType = DamageClass.Magic;
-			Item.width = 40;
-			Item.height = 40;
-			Item.useTime = 100;
-			Item.useAnimation = 100;
-			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.knockBack = 6;
-			Item.value = 10000;
-			Item.rare = ItemRarityID.Green;
+        {
+            Item.damage = 90;
+            Item.DamageType = DamageClass.Magic;
+            Item.width = 40;
+            Item.height = 40;
+            Item.useTime = 100;
+            Item.useAnimation = 100;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.knockBack = 6;
+            Item.value = 10000;
+            Item.rare = ItemRarityID.Green;
 
-			Item.autoReuse = true;
-			Item.shoot = ModContent.ProjectileType<ShriekerBoom>();
-			Item.shootSpeed = 6f;
-			Item.mana = 50;
+            Item.autoReuse = true;
+            Item.shoot = ModContent.ProjectileType<ShriekerBoom>();
+            Item.shootSpeed = 6f;
+            Item.mana = 50;
             Item.noMelee = true;
 
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<TheDeafen>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 26);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+
         public override Vector2? HoldoutOffset()
-		{
-			return new Vector2(-2, 0);
-		}
-	}
+        {
+            return new Vector2(-2, 0);
+        }
+    }
 
     public class ShriekerBoom : ModProjectile
     {
@@ -90,13 +80,13 @@ namespace Stellamod.Items.Weapons.Mage
             Timer++;
 
 
-          
+
             if (Timer % 15 == 0)
             {
-     
+
                 if (Main.myPlayer == Projectile.owner)
                 {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                         ModContent.ProjectileType<ShriekerWave>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
             }
@@ -129,11 +119,11 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void AI()
         {
-            base.AI(); 
+            base.AI();
             SpecialEffectsPlayer specialEffectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
             specialEffectsPlayer.blurStrength = 0.66f;
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 ShakeModSystem.Shake = 4;
                 FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
@@ -141,7 +131,7 @@ namespace Stellamod.Items.Weapons.Mage
                 SoundStyle mySound = new SoundStyle("Stellamod/Assets/Sounds/TheDeafen");
                 if (Sound == 1)
                 {
-                
+
                 }
                 else
                 {

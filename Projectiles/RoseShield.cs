@@ -2,7 +2,6 @@
 
 using Stellamod.Common.Bases;
 using Stellamod.Items.Accessories.Brooches;
-using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

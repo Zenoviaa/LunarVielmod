@@ -4,13 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.MaskingShaderSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Runes;
-using Stellamod.NPCs.Bosses.DaedusRework;
-using Stellamod.Particles;
-using Stellamod.Projectiles.Slashers.ScarecrowSaber;
 using Stellamod.Trails;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Graphics.Shaders;
@@ -42,7 +37,7 @@ namespace Stellamod.Projectiles.Magic
         public float WidthFunc(float p)
         {
             return MathHelper.Lerp(384, 0, Easing.InCubic(p)) * scale * randScale;
-         }
+        }
 
         public void DrawPrims(PrimDrawer primDrawer)
         {
@@ -96,7 +91,7 @@ namespace Stellamod.Projectiles.Magic
 
             Player player = Owner;
             UpdateDamageForManaSickness(player);
-            bool stillInUse = player.channel &&  player.ownedProjectileCounts[ModContent.ProjectileType<AlcadBombHeldProj>()] > 0;
+            bool stillInUse = player.channel && player.ownedProjectileCounts[ModContent.ProjectileType<AlcadBombHeldProj>()] > 0;
             if (!stillInUse)
             {
                 Die = 1;
@@ -109,7 +104,7 @@ namespace Stellamod.Projectiles.Magic
             base.AI();
             Timer++;
             Projectile.velocity = Vector2.Zero;
-            if(Timer == 1 && Main.myPlayer == Projectile.owner)
+            if (Timer == 1 && Main.myPlayer == Projectile.owner)
             {
                 float maxBeamLength = Vector2.Distance(Owner.Center, Main.MouseWorld);
                 Vector2 direction = (Main.MouseWorld - Owner.Center).SafeNormalize(Vector2.Zero);
@@ -118,9 +113,9 @@ namespace Stellamod.Projectiles.Magic
                 Projectile.netUpdate = true;
             }
 
-            if(Timer == 10)
+            if (Timer == 10)
             {
-                for(float f = 0; f < 32; f++)
+                for (float f = 0; f < 32; f++)
                 {
                     float progress = f / 32;
                     float rot = progress * MathHelper.TwoPi;
@@ -131,8 +126,8 @@ namespace Stellamod.Projectiles.Magic
                 SoundEngine.PlaySound(explodeStyle, Projectile.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.position, 1024, 10);
             }
-           
-            if(Timer < 60)
+
+            if (Timer < 60)
             {
                 float progress = Timer / 60f;
                 float easedProgress = Easing.OutExpo(progress);
@@ -141,7 +136,7 @@ namespace Stellamod.Projectiles.Magic
                 _scaleOutMult = 1f;
             }
 
-            if(Die == 0)
+            if (Die == 0)
             {
                 _drawScale += 0.005f;
                 if (_drawScale >= 2f)
@@ -152,7 +147,7 @@ namespace Stellamod.Projectiles.Magic
             else if (Die == 1)
             {
                 _drawScale *= 0.926f;
-                if(_drawScale <= 0.01f)
+                if (_drawScale <= 0.01f)
                 {
                     Projectile.Kill();
                 }
@@ -178,7 +173,7 @@ namespace Stellamod.Projectiles.Magic
 
                 float distance = Vector2.Distance(npc.Center, Projectile.Center);
                 float maxPullDistance = 800 * MathHelper.Clamp(Timer / 60f, 0f, 1f);
-                if(distance <= maxPullDistance)
+                if (distance <= maxPullDistance)
                 {
                     Vector2 blowVelocity = Projectile.Center - npc.Center;
                     float p = distance / maxPullDistance;
@@ -213,7 +208,7 @@ namespace Stellamod.Projectiles.Magic
         private void ManageSuckDraws()
         {
             float radius = 82;
-            if(Timer % 1 == 0)
+            if (Timer % 1 == 0)
             {
                 Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(radius, radius);
                 AlcadBombSuckDraw suckDraw = new AlcadBombSuckDraw
@@ -226,7 +221,7 @@ namespace Stellamod.Projectiles.Magic
 
 
             //Mange them all
-            for(int i = 0; i < _suckDraws.Count; i++)
+            for (int i = 0; i < _suckDraws.Count; i++)
             {
                 AlcadBombSuckDraw suckDraw = _suckDraws[i];
                 suckDraw.timer++;
@@ -317,14 +312,14 @@ namespace Stellamod.Projectiles.Magic
             Color drawColor = Color.White;
             Vector2 drawOrigin = texture.Size() / 2f;
 
-            for(int i = 0; i < _suckDraws.Count; i++)
+            for (int i = 0; i < _suckDraws.Count; i++)
             {
                 AlcadBombSuckDraw suckDraw = _suckDraws[i];
                 DrawSuckParticle(spriteBatch, suckDraw);
             }
 
             //Draw Main Texture
-          //  spriteBatch.Draw(texture, drawPos, null, drawColor, Projectile.rotation, drawOrigin, _drawScale * _scaleOutMult, SpriteEffects.None, 0f);
+            //  spriteBatch.Draw(texture, drawPos, null, drawColor, Projectile.rotation, drawOrigin, _drawScale * _scaleOutMult, SpriteEffects.None, 0f);
         }
         public override bool PreDraw(ref Color lightColor)
         {

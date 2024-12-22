@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -42,15 +41,15 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public override void AI()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 for (int i = 0; i < 16; i++)
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                     float scale = Main.rand.NextFloat(0.3f, 0.5f);
-                                    }
+                }
 
-                for(int i = 0; i < Main.rand.Next(3, 6); i++)
+                for (int i = 0; i < Main.rand.Next(3, 6); i++)
                 {
                     float speed = 12;
                     Vector2 velocity = -Vector2.UnitY * speed;

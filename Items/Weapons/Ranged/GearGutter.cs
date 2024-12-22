@@ -1,7 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Dusts;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;
@@ -69,19 +66,5 @@ namespace Stellamod.Items.Weapons.Ranged
 
         }
     }
-
-    /*
-    public override void AddRecipes()
-    {
-        Recipe recipe = CreateRecipe();
-        recipe.AddTile(TileID.MythrilAnvil);
-        recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-        recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
-        recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 10);
-        recipe.AddIngredient(ItemID.PhoenixBlaster, 1);
-        recipe.AddRecipeGroup(nameof(ItemID.IronBar), 20);
-        recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
-        recipe.Register();
-    }*/
 }
 

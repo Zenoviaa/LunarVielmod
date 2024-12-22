@@ -1,14 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Shaders;
-using Stellamod.UI.StructureSelector;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
@@ -24,7 +21,7 @@ namespace Stellamod.WorldG.StructureManager
         static Mod Mod = ModContent.GetInstance<Stellamod>();
         public static event Action<Point, string> OnStructPlace;
         public static bool FlipStructure;
-        public static string SelectedStructure= string.Empty;
+        public static string SelectedStructure = string.Empty;
         public static Rectangle ReadRectangle(string Path)
         {
             using (var stream = Mod.GetFileStream(Path + ".str"))
@@ -270,7 +267,7 @@ namespace Stellamod.WorldG.StructureManager
                         t.TileFrameNumber = reader.ReadInt32();
                         t.TileFrameX = reader.ReadInt16();
                         t.TileFrameY = reader.ReadInt16();
- 
+
                         t.TileColor = reader.ReadByte();
                         t.IsTileInvisible = reader.ReadBoolean();
                         t.IsTileFullbright = reader.ReadBoolean();
@@ -351,9 +348,9 @@ namespace Stellamod.WorldG.StructureManager
         {
             List<string> paths = new List<string>();
             List<string> fileNames = Mod.GetFileNames();
-            foreach(var fileName in fileNames)
+            foreach (var fileName in fileNames)
             {
-                if(fileName.Contains(".str"))
+                if (fileName.Contains(".str"))
                     paths.Add(fileName);
             }
             return paths.ToArray();
@@ -385,7 +382,7 @@ namespace Stellamod.WorldG.StructureManager
         {
             if (!filePath.Contains(".str"))
                 filePath += ".str";
-            string savedPath = Main.SavePath + "/ModSources/" + Mod.Name + "/"  + filePath;
+            string savedPath = Main.SavePath + "/ModSources/" + Mod.Name + "/" + filePath;
             using (FileStream stream = File.Open(savedPath, FileMode.Open))
             {
                 return ReadStruct(stream, BottomLeft, tileBlend);
@@ -729,11 +726,11 @@ namespace Stellamod.WorldG.StructureManager
                 Dust.QuickBox(topLeft, bottomRight, 2, Color.YellowGreen, null);
                 Dust.QuickBox(new Vector2(x, y) * 16, new Vector2(x + 1, y + 1) * 16, 2, Color.Red, null);
 
- 
+
             }
             else
             {
-     
+
             }
         }
 
@@ -750,7 +747,7 @@ namespace Stellamod.WorldG.StructureManager
             }
             else
             {
-        
+
                 if (!string.IsNullOrEmpty(Structurizer.SelectedStructure))
                 {
                     Rectangle rectangle = Structurizer.ReadSavedRectangle(Structurizer.SelectedStructure);
@@ -760,7 +757,7 @@ namespace Stellamod.WorldG.StructureManager
                     snapshotSystem.Save(bottomLeft, topRight);
                     Structurizer.ReadSavedStruct(Structurizer.SelectedStructure, bottomLeft);
                 }
-     
+
             }
 
             //ModelingPreviewer.texturePreview = null;
@@ -820,7 +817,7 @@ namespace Stellamod.WorldG.StructureManager
             }
 
             */
-  
+
         }
     }
 }

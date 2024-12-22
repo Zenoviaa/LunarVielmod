@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -15,7 +14,7 @@ namespace Stellamod.Projectiles.Chains
         public int FrameCounter;
         public int FrameTick;
         ref float NPCToFollow => ref Projectile.ai[0];
-    
+
         public override void SetDefaults()
         {
             Projectile.width = 16;
@@ -59,7 +58,7 @@ namespace Stellamod.Projectiles.Chains
             {
                 NPC npc = Main.npc[npcIndex];
                 if (npc.active && npc.HasBuff<SupernovaChained>())
-                {            
+                {
                     //Fade In
                     Projectile.alpha += 2;
                     if (Projectile.alpha >= 255)

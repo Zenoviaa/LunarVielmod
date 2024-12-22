@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.DrawEffects;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;

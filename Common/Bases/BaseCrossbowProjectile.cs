@@ -1,10 +1,9 @@
-﻿using Stellamod.Systems.MiscellaneousMath;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil;
 using ReLogic.Content;
 using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
+using Stellamod.Systems.MiscellaneousMath;
 using System;
 using System.IO;
 using Terraria;
@@ -176,20 +175,20 @@ namespace Stellamod.Common.Bases
             if (Timer == 1)
             {
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"), Projectile.position);
-            
+
             }
 
-            if(BurstCount > 1)
+            if (BurstCount > 1)
             {
                 int fireDivisor = (int)(FireTime / BurstCount);
-                if(Timer % fireDivisor == 0)
+                if (Timer % fireDivisor == 0)
                 {
                     Shoot(Owner.Center, Projectile.velocity);
                 }
             }
             else
             {
-                if(Timer == 1)
+                if (Timer == 1)
                 {
                     Shoot(Owner.Center, Projectile.velocity);
                 }
@@ -360,7 +359,7 @@ namespace Stellamod.Common.Bases
         }
 
         public void DrawArrow(ref Color lightColor)
-        { 
+        {
             SpriteBatch spriteBatch = Main.spriteBatch;
             Owner.PickAmmo(Owner.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int useAmmoItemId, dontConsume: true);
             Main.instance.LoadProjectile(projToShoot);

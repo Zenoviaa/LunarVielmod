@@ -3,10 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Common.Bases;
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Trails;
 using Terraria;
-using Terraria.Audio;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -129,7 +127,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
         {
             return Color.Pink * VectorHelper.Osc(0.5f, 1f, 3) * 0.3f;
         }
-        
+
         public Color ColorFunctionAura(float completionRatio)
         {
             return Color.Pink * VectorHelper.Osc(0.5f, 1f, 3);
@@ -159,7 +157,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
             BungeeGumTrailDrawer.ColorFunc = ColorFunctionAura;
             BungeeGumTrailDrawer.DrawPrims(BungeeGumAuraPos, textureSize * 0.5f - Main.screenPosition, 155);
 
-            if(Timer == 0)
+            if (Timer == 0)
             {
                 DrawHelper.DrawAdditiveAfterImage(Projectile, Color.White, Color.Transparent, ref lightColor);
             }

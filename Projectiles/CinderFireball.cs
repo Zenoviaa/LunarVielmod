@@ -1,12 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

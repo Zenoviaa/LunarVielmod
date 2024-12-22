@@ -1,6 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.ID;
@@ -47,12 +45,13 @@ namespace Stellamod.Items.Weapons.Mage
         {
             int slowdown = 6;
             int maxCombo = 15;
-            if(_combo == maxCombo)
+            if (_combo == maxCombo)
             {
                 type = ModContent.ProjectileType<CombusterSparkProj3>();
                 Item.useTime /= slowdown;
                 Item.useAnimation /= slowdown;
-            } else if(_combo == maxCombo - 1)
+            }
+            else if (_combo == maxCombo - 1)
             {
                 type = ModContent.ProjectileType<CombusterSparkProj2>();
                 Item.useTime *= slowdown;
@@ -65,21 +64,9 @@ namespace Stellamod.Items.Weapons.Mage
             }
 
             _combo++;
-            if (_combo >= maxCombo+1)
+            if (_combo >= maxCombo + 1)
                 _combo = 0;
             position = Main.MouseWorld;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Bottle, 1);
-            recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 18);
-            recipe.AddRecipeGroup(nameof(ItemID.GoldBar), 10);
-            recipe.AddIngredient(ItemID.SoulofLight, 10);
-            recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 12);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
         }
     }
 }

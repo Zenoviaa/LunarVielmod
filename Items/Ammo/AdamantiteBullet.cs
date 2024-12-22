@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Stellamod.Projectiles.Ammo;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
-using Stellamod.Projectiles.Ammo;
 
 namespace Stellamod.Items.Ammo
 {
@@ -31,16 +26,6 @@ namespace Stellamod.Items.Ammo
             Item.shoot = ModContent.ProjectileType<AdamantiteBulletProj>(); // The projectile that weapons fire when using this item as ammunition.
             Item.shootSpeed = 16f; // The speed of the projectile.
             Item.ammo = AmmoID.Bullet; // The ammo class this ammo belongs to.
-        }
-
-        // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-        public override void AddRecipes()
-        {
-            CreateRecipe(100)
-                .AddIngredient(ItemID.MusketBall, 100)
-                .AddIngredient(ItemID.AdamantiteBar, 2)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
         }
     }
 }

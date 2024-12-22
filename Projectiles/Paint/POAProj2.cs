@@ -1,18 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
-
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
-using Stellamod.Particles;
+using Stellamod.Projectiles.Visual;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Trails;
-using Stellamod.Utilis;
-using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
-using Stellamod.Projectiles.Visual;
+using Terraria.ModLoader;
 
 
 namespace Stellamod.Projectiles.Paint
@@ -27,7 +21,7 @@ namespace Stellamod.Projectiles.Paint
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
-        public byte Timer2; 
+        public byte Timer2;
         public override void OnSpawn(IEntitySource source)
         {
             for (int i = 0; i < Projectile.oldPos.Length; i++)
@@ -50,7 +44,7 @@ namespace Stellamod.Projectiles.Paint
             Projectile.localNPCHitCooldown = 4;
         }
 
-      
+
 
         public override void AI()
         {
@@ -58,7 +52,7 @@ namespace Stellamod.Projectiles.Paint
             float rotation = Projectile.rotation;
             player.RotatedRelativePoint(Projectile.Center);
 
-      
+
             if (Main.myPlayer == Projectile.owner && Main.mouseLeft)
             {
                 Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * Projectile.Distance(Main.MouseWorld) / 15;
@@ -72,7 +66,7 @@ namespace Stellamod.Projectiles.Paint
                     Projectile.Kill();
                 }
             }
-            
+
             Vector3 RGB = new(2.55f, 2.55f, 0.94f);
             // The multiplication here wasn't doing anything
             Lighting.AddLight(Projectile.Center, RGB.X, RGB.Y, RGB.Z);

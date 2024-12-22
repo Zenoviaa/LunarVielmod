@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
@@ -35,7 +35,7 @@ namespace Stellamod.Visual.Particles
             BaseSize = 0.025f;
             Pixelation = 1f;
             Height = 1.0f;
-            customShader = GlowPillarShader.Instance; 
+            customShader = GlowPillarShader.Instance;
         }
 
         public override void Update()

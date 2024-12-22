@@ -62,7 +62,7 @@ namespace Stellamod.Tiles.Ishtar
                 zero = Vector2.Zero;
             }
             int height = tile.TileFrameY == 36 ? 18 : 16;
-           
+
         }
 
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)

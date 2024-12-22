@@ -3,9 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Runes;
-using Stellamod.Items.Ores;
 using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
-using Stellamod.Projectiles.Summons;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -13,36 +11,36 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Summon
 {
     public class Valtotude : ClassSwapItem
-	{
-		public override DamageClass AlternateClass => DamageClass.Magic;
+    {
+        public override DamageClass AlternateClass => DamageClass.Magic;
 
         public override void SetClassSwappedDefaults()
         {
-			Item.damage = 4;
+            Item.damage = 4;
         }
 
         public override void SetDefaults()
-		{
-			Item.width = 20;
-			Item.height = 20;
-			Item.rare = ItemRarityID.Blue;
+        {
+            Item.width = 20;
+            Item.height = 20;
+            Item.rare = ItemRarityID.Blue;
             Item.value = Item.sellPrice(0, 0, 33, 0);
-           
-			Item.damage = 7; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
-			Item.DamageType = DamageClass.Summon;
-			Item.mana = 30;
-			Item.useTime = 30; // The Item's use time in ticks (60 ticks == 1 second.)
-			Item.useAnimation = 30; // The length of the Item's use animation in ticks (60 ticks == 1 second.)
-			Item.useStyle = ItemUseStyleID.Swing;
-			Item.noMelee = true; //so the Item's animation doesn't do damage
-			Item.knockBack = 0; // Sets the Item's knockback. Note that projectiles shot by this weapon will use its and the used ammunition's knockback added together.
-			Item.value = 10000; // how much the Item sells for (measured in copper)
-			Item.UseSound = SoundID.Item46; // The sound that this Item plays when used.
-			Item.autoReuse = false; // if you can hold click to automatically use it again
-			Item.shoot = ModContent.ProjectileType<WindPortal>();
-			Item.shootSpeed = 0f; // the speed of the projectile (measured in pixels per frame)
-			Item.channel = true;
-		}
+
+            Item.damage = 7; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
+            Item.DamageType = DamageClass.Summon;
+            Item.mana = 30;
+            Item.useTime = 30; // The Item's use time in ticks (60 ticks == 1 second.)
+            Item.useAnimation = 30; // The length of the Item's use animation in ticks (60 ticks == 1 second.)
+            Item.useStyle = ItemUseStyleID.Swing;
+            Item.noMelee = true; //so the Item's animation doesn't do damage
+            Item.knockBack = 0; // Sets the Item's knockback. Note that projectiles shot by this weapon will use its and the used ammunition's knockback added together.
+            Item.value = 10000; // how much the Item sells for (measured in copper)
+            Item.UseSound = SoundID.Item46; // The sound that this Item plays when used.
+            Item.autoReuse = false; // if you can hold click to automatically use it again
+            Item.shoot = ModContent.ProjectileType<WindPortal>();
+            Item.shootSpeed = 0f; // the speed of the projectile (measured in pixels per frame)
+            Item.channel = true;
+        }
 
         public override bool CanUseItem(Player player)
         {
@@ -50,18 +48,18 @@ namespace Stellamod.Items.Weapons.Summon
         }
 
         public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
-		{
-			Lighting.AddLight(Item.position, 0.46f, .07f, .52f);
-		}
+        {
+            Lighting.AddLight(Item.position, 0.46f, .07f, .52f);
+        }
 
-		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-		{
-			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position
-			position = Main.MouseWorld;
-		}
-	}
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            // Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position
+            position = Main.MouseWorld;
+        }
+    }
 
-	public class WindPortal : BaseWindProjectile
+    public class WindPortal : BaseWindProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -103,11 +101,11 @@ namespace Stellamod.Items.Weapons.Summon
                 Wind.NewSlash(offset, rotation);
             }
 
-            if(Timer % 6 == 0)
+            if (Timer % 6 == 0)
             {
                 Vector2 spawnPoint = Projectile.Center + (Vector2.UnitY * 256).RotatedBy(Timer / 10f);
                 Vector2 vel = (Projectile.Center - spawnPoint) * 0.05f;
-                Dust.NewDustPerfect(spawnPoint, ModContent.DustType<GlyphDust>(),vel, 0, Color.White, 1f).noGravity = true;
+                Dust.NewDustPerfect(spawnPoint, ModContent.DustType<GlyphDust>(), vel, 0, Color.White, 1f).noGravity = true;
 
                 spawnPoint = Projectile.Center - (Vector2.UnitY * 256).RotatedBy(Timer / 10f);
                 vel = (Projectile.Center - spawnPoint) * 0.05f;

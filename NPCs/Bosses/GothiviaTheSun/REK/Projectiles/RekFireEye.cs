@@ -75,11 +75,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             {
                 case 0:
                     Timer++;
-                    if(Timer >= 360)
+                    if (Timer >= 360)
                     {
                         LaserDirection = NPC.Center.DirectionTo(Target.Center);
                         LaserDirection = LaserDirection.RotatedBy(MathHelper.PiOver2);
-                      
+
                         AttackTimer++;
                         Timer = 0;
                     }
@@ -87,7 +87,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                 case 1:
                     Timer++;
                     NPC.Center = Vector2.Lerp(NPC.Center, Target.Center + new Vector2(0, -384), 0.1f);
-                    if(Timer >= 60)
+                    if (Timer >= 60)
                     {
                         if (StellaMultiplayer.IsHost)
                         {
@@ -102,7 +102,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                     break;
                 case 2:
                     Timer++;
-                    if(Timer >= 90)
+                    if (Timer >= 90)
                     {
                         AttackTimer = 0;
                         Timer = 0;
@@ -120,7 +120,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
             Vector2 offset = -Vector2.UnitY;
             float progress = Timer / 240f;
-            if(AttackTimer <= 0)
+            if (AttackTimer <= 0)
             {
                 Vector2 targetCenter = Owner.Center + offset.RotatedBy(progress * MathHelper.TwoPi) * radius;
                 NPC.Center = Vector2.Lerp(NPC.Center, targetCenter, 0.05f);
@@ -165,7 +165,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             TrailDrawer.DrawPrims(NPC.oldPos, frameSize * 0.5f - screenPos, 155);
 
             //Draw Telegraph Line like on the axe
-            if(AttackTimer == 1)
+            if (AttackTimer == 1)
             {
                 float progress = Timer / 60f;
                 Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_47").Value;

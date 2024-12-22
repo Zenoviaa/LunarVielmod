@@ -1,14 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.NPCs.Bosses.DreadMire;
-using Stellamod.NPCs.Bosses.DreadMire.Heart;
-using Stellamod.NPCs.Bosses.Fenix.Projectiles;
-using Stellamod.Projectiles.Crossbows;
-using Stellamod.UI.Systems;
 using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -99,7 +93,7 @@ namespace Stellamod.Projectiles.Spears
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 32f);
                 float speedX = Projectile.velocity.X * 10;
                 float speedY = Projectile.velocity.Y * 7;
-                Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, new Vector2(0,0), ModContent.ProjectileType<DreadSpawnEffect>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+               // Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, new Vector2(0, 0), ModContent.ProjectileType<DreadSpawnEffect>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 32f, ModContent.ProjectileType<VeiizalsUmbrellaWaveProj>(), Projectile.damage * 2, Projectile.knockBack, player.whoAmI);
                 SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, player.position);
                 float recoilStrength = 7;

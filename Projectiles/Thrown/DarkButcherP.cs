@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -11,26 +10,26 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown
 {
-	public class DarkButcherP : ModProjectile
-	{
-		public override void SetStaticDefaults()
-		{
+    public class DarkButcherP : ModProjectile
+    {
+        public override void SetStaticDefaults()
+        {
             // DisplayName.SetDefault("Beachthrow");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
-		public override void SetDefaults()
-		{
-			Projectile.width = 10;
-			Projectile.height = 10;
-			Projectile.aiStyle = 3;
-			Projectile.friendly = true;
-			Projectile.DamageType = DamageClass.Throwing;
-			Projectile.penetrate = 10;
-			Projectile.timeLeft = 600;
-			Projectile.scale = 0.65f;
-			AIType = ProjectileID.PossessedHatchet;
-		}
+        public override void SetDefaults()
+        {
+            Projectile.width = 10;
+            Projectile.height = 10;
+            Projectile.aiStyle = 3;
+            Projectile.friendly = true;
+            Projectile.DamageType = DamageClass.Throwing;
+            Projectile.penetrate = 10;
+            Projectile.timeLeft = 600;
+            Projectile.scale = 0.65f;
+            AIType = ProjectileID.PossessedHatchet;
+        }
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;

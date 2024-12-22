@@ -91,7 +91,7 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Timer <= 120 )
+            if (Timer <= 120)
             {
                 Player player = Main.player[Projectile.owner];
 

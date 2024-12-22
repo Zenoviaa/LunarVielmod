@@ -1,17 +1,12 @@
-﻿using Stellamod.Dusts;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.Audio;
+using Stellamod.Trails;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Stellamod.Helpers;
-using Stellamod.Trails;
 
 namespace Stellamod.Items.Armors.Astrasilk
 {
@@ -73,7 +68,7 @@ namespace Stellamod.Items.Armors.Astrasilk
 
             for (int i = 0; i < 14; i++)
             {
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), 
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(),
                     (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightSkyBlue, 1f).noGravity = true;
             }
 

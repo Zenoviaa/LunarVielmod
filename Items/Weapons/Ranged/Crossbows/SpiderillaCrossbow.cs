@@ -1,7 +1,4 @@
-﻿using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Molds;
-using Stellamod.Items.Ores;
-using Stellamod.Projectiles.Crossbows.Sniper;
+﻿using Stellamod.Projectiles.Crossbows.Sniper;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;

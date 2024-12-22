@@ -1,9 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Particles;
 using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -38,7 +35,7 @@ namespace Stellamod.Projectiles.Slashers.Voyager
         int timer2 = 0;
 
         public override void AI()
-        {  
+        {
             Player player = Main.player[Projectile.owner];
             timer2++;
             if (timer2 == 1)
@@ -78,7 +75,7 @@ namespace Stellamod.Projectiles.Slashers.Voyager
 
             if (!ParticleSpawned)
             {
-                                ParticleSpawned = true;
+                ParticleSpawned = true;
             }
         }
 

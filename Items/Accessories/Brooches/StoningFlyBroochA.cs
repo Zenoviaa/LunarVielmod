@@ -1,7 +1,4 @@
 ﻿using Stellamod.Common.Bases;
-using Stellamod.Items.Materials.Molds;
-using Stellamod.Items.Ores;
-using Stellamod.Tiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -31,18 +28,6 @@ namespace Stellamod.Items.Accessories.Brooches
 
             // the stone brooch nerfs it remember
             player.GetDamage(DamageClass.Generic) *= 1.25f;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<StoniaBroochA>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<FlyingFishBroochA>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<SlimeBroochA>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<RadianuiBar>(), 15);
-            recipe.AddTile(ModContent.TileType<BroochesTable>());
-            recipe.Register();
         }
     }
 }

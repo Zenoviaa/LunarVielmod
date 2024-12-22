@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.ID;
@@ -71,7 +70,7 @@ namespace Stellamod.Items.Armors.Alcalite
                 for (int i = 0; i < 12; i++)
                 {
                     Vector2 speed = Main.rand.NextVector2CircularEdge(8f, 8f);
-                                    }
+                }
                 _starTimer = 75;
             }
         }

@@ -2,11 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
@@ -43,12 +39,12 @@ namespace Stellamod
             _EvilCrimsonTexture = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewBlankWorld");
 
 
-            _BunnyMasterTexture= ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewDifficultyMaster");
-            _BunnyExpertTexture= ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewDifficultyExpert");
-            _BunnyNormalTexture= ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewDifficultyNormal");
-            _BunnyCreativeTexture= ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewDifficultyMJourny");
+            _BunnyMasterTexture = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewDifficultyMaster");
+            _BunnyExpertTexture = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewDifficultyExpert");
+            _BunnyNormalTexture = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewDifficultyNormal");
+            _BunnyCreativeTexture = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewDifficultyMJourny");
 
-            _BorderTexture= ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewBorder");
+            _BorderTexture = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/PreviewBorder");
             _BackgroundNormalTexture = Main.Assets.Request<Texture2D>("Images/UI/WorldCreation/PreviewDifficultyNormal1");
             _BackgroundExpertTexture = Main.Assets.Request<Texture2D>("Images/UI/WorldCreation/PreviewDifficultyExpert1");
             _BackgroundMasterTexture = Main.Assets.Request<Texture2D>("Images/UI/WorldCreation/PreviewDifficultyMaster1");
@@ -143,7 +139,7 @@ namespace Stellamod
                     break;
             }
 
-            spriteBatch.Draw(_BorderTexture.Value, new Vector2(dimensions.X, dimensions.Y), Color.White);  
+            spriteBatch.Draw(_BorderTexture.Value, new Vector2(dimensions.X, dimensions.Y), Color.White);
         }
     }
 }

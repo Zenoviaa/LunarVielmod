@@ -36,7 +36,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
         public override void AI()
         {
             Timer++;
-            if(Timer > 60)
+            if (Timer > 60)
             {
                 Projectile.velocity *= 0.98f;
             }

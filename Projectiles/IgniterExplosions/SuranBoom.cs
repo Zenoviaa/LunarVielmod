@@ -1,11 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Terraria;
+using Terraria.ModLoader;
 
 
 
@@ -79,7 +76,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             return false;
         }
 
-        
+
 
 
     }

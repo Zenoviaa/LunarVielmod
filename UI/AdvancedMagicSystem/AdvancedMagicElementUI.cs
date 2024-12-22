@@ -1,5 +1,4 @@
-﻿using Stellamod.Items.MoonlightMagic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
@@ -26,7 +25,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
             SetPos();
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
-        
+
             Append(ElementSlot);
         }
 

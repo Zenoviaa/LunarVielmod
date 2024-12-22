@@ -1,6 +1,4 @@
-﻿using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Ammo;
-using Stellamod.Projectiles.Arrows;
+﻿using Stellamod.Projectiles.Arrows;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -31,7 +29,7 @@ namespace Stellamod.Items.Ammo
         }
 
         // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-      
+
 
     }
 }

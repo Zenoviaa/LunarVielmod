@@ -84,7 +84,7 @@ namespace Stellamod.Common.QuestSystem
         public bool IsQuestAvailable(Player player)
         {
             QuestPlayer questPlayer = player.GetModPlayer<QuestPlayer>();
-            if(questPlayer.HasActiveQuest(this) || questPlayer.HasCompletedQuest(this) || questPlayer.HasRewardQuest(this))
+            if (questPlayer.HasActiveQuest(this) || questPlayer.HasCompletedQuest(this) || questPlayer.HasRewardQuest(this))
             {
                 return false;
             }
@@ -110,7 +110,7 @@ namespace Stellamod.Common.QuestSystem
         {
             SoundStyle sound = new SoundStyle("Stellamod/Assets/Sounds/Bliss2");
             SoundEngine.PlaySound(sound);
-           
+
         }
 
         public virtual bool CheckCompletion(Player player) { return true; }
@@ -123,7 +123,7 @@ namespace Stellamod.Common.QuestSystem
             }
             SoundStyle questCompleteSound = new SoundStyle("Stellamod/Assets/Sounds/Bliss1");
             SoundEngine.PlaySound(questCompleteSound);
-            for(int i =0; i < 32; i++)
+            for (int i = 0; i < 32; i++)
             {
                 float f = i;
                 float num = 32;
@@ -132,7 +132,7 @@ namespace Stellamod.Common.QuestSystem
                 Vector2 vel = rot.ToRotationVector2() * 3;
                 Dust.NewDustPerfect(player.Center, DustID.GoldCoin, vel);
             }
-         
+
         }
 
         public virtual void QuestIntroDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)

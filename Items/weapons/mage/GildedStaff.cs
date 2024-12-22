@@ -3,9 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Ranged.GunSwapping;
-using Stellamod.Projectiles;
 using Stellamod.Trails;
 using System;
 using Terraria;
@@ -28,34 +25,34 @@ namespace Stellamod.Items.Weapons.Mage
             Item.mana = 6;
         }
         public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Gilded Staff");
-			// Tooltip.SetDefault("Shoots two spinning pieces of spiritual magic at your foes!\nThe fabric is super magical, it turned wood into something like a flamethrower! :>");
-		}
-		public override void SetDefaults()
-		{
-			Item.damage = 15;
-			Item.mana = 5;
-			Item.width = 40;
-			Item.height = 40;
-			Item.useTime = 32;
-			Item.useAnimation = 32;
-			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.staff[Item.type] = true;
-			Item.noMelee = true;
+        {
+            // DisplayName.SetDefault("Gilded Staff");
+            // Tooltip.SetDefault("Shoots two spinning pieces of spiritual magic at your foes!\nThe fabric is super magical, it turned wood into something like a flamethrower! :>");
+        }
+        public override void SetDefaults()
+        {
+            Item.damage = 15;
+            Item.mana = 5;
+            Item.width = 40;
+            Item.height = 40;
+            Item.useTime = 32;
+            Item.useAnimation = 32;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.staff[Item.type] = true;
+            Item.noMelee = true;
             Item.noUseGraphic = true;
-			Item.knockBack = 2f;
-			Item.DamageType = DamageClass.Magic;
-			Item.value = Item.sellPrice(silver: 10);
-			Item.rare = ItemRarityID.Blue;
-	
-	
-			Item.shoot = ModContent.ProjectileType<GildedStaffHold>();
-			Item.shootSpeed = 8f;
+            Item.knockBack = 2f;
+            Item.DamageType = DamageClass.Magic;
+            Item.value = Item.sellPrice(silver: 10);
+            Item.rare = ItemRarityID.Blue;
+
+
+            Item.shoot = ModContent.ProjectileType<GildedStaffHold>();
+            Item.shootSpeed = 8f;
             Item.channel = true;
-			Item.autoReuse = false;
-			Item.crit = 22;
-		}
+            Item.autoReuse = false;
+            Item.crit = 22;
+        }
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[Item.shoot] < 1;
@@ -63,49 +60,49 @@ namespace Stellamod.Items.Weapons.Mage
 
     }
 
-	public class GildedStaffHold : ModProjectile
-	{
-		private enum AIState
-		{
-			Charge,
-			Release
-		}
-		private AIState State
-		{
-			get => (AIState)Projectile.ai[0];
-			set => Projectile.ai[0] = (float)value;
-		}
+    public class GildedStaffHold : ModProjectile
+    {
+        private enum AIState
+        {
+            Charge,
+            Release
+        }
+        private AIState State
+        {
+            get => (AIState)Projectile.ai[0];
+            set => Projectile.ai[0] = (float)value;
+        }
 
-		private float MaxChargeTime => 60;
+        private float MaxChargeTime => 60;
 
-		private ref float Timer => ref Projectile.ai[1];
-		private ref float ChargeProgress => ref Projectile.ai[2];
-		public override string Texture => this.PathHere() + "/GildedStaff";
-		private Player Owner => Main.player[Projectile.owner];
+        private ref float Timer => ref Projectile.ai[1];
+        private ref float ChargeProgress => ref Projectile.ai[2];
+        public override string Texture => this.PathHere() + "/GildedStaff";
+        private Player Owner => Main.player[Projectile.owner];
         private Vector2 EndPoint => Projectile.Center + Projectile.velocity * 64;
         public override void SetDefaults()
         {
             base.SetDefaults();
-			Projectile.width = 8;
-			Projectile.height = 8;
-			Projectile.penetrate = -1;
-			Projectile.tileCollide = false;
-			Projectile.friendly = false;
-			Projectile.timeLeft = int.MaxValue;
+            Projectile.width = 8;
+            Projectile.height = 8;
+            Projectile.penetrate = -1;
+            Projectile.tileCollide = false;
+            Projectile.friendly = false;
+            Projectile.timeLeft = int.MaxValue;
         }
 
         public override void AI()
         {
             base.AI();
-			switch (State)
-			{
-				case AIState.Charge:
-					AI_Charge();
-					break;
-				case AIState.Release:
-					AI_Release();
-					break;
-			}
+            switch (State)
+            {
+                case AIState.Charge:
+                    AI_Charge();
+                    break;
+                case AIState.Release:
+                    AI_Release();
+                    break;
+            }
 
 
             Owner.heldProj = Projectile.whoAmI;
@@ -116,22 +113,22 @@ namespace Stellamod.Items.Weapons.Mage
         }
 
         private void SwitchState(AIState state)
-		{
-			State = state;
-			Timer = 0;
-			Projectile.netUpdate = true;
-		}
+        {
+            State = state;
+            Timer = 0;
+            Projectile.netUpdate = true;
+        }
 
-		private void SetHoldPosition()
+        private void SetHoldPosition()
         {
             if (Main.myPlayer == Projectile.owner)
             {
-               // Projectile.spriteDirection = (int)Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
-    
+                // Projectile.spriteDirection = (int)Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
+
                 Projectile.netUpdate = true;
             }
 
-      
+
             if (Main.myPlayer == Projectile.owner)
             {
                 Owner.direction = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
@@ -145,16 +142,16 @@ namespace Stellamod.Items.Weapons.Mage
             Owner.heldProj = Projectile.whoAmI;
             if (Projectile.spriteDirection == -1)
             {
-               // Projectile.rotation += MathHelper.ToRadians(90);
+                // Projectile.rotation += MathHelper.ToRadians(90);
             }
 
 
         }
 
         private void AI_Charge()
-		{
+        {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle mySound = new SoundStyle("Stellamod/Assets/Sounds/StormKnight_Rechage");
                 mySound.PitchVariance = 0.3f;
@@ -167,64 +164,64 @@ namespace Stellamod.Items.Weapons.Mage
                 Projectile.velocity = Owner.Center.DirectionTo(Main.MouseWorld);
                 Projectile.netUpdate = true;
             }
-            if(Timer == MaxChargeTime)
-			{
+            if (Timer == MaxChargeTime)
+            {
                 for (float f = 0; f < 7; f++)
                 {
-					if (Main.rand.NextBool(2))
-					{
+                    if (Main.rand.NextBool(2))
+                    {
                         Dust.NewDustPerfect(EndPoint, ModContent.DustType<GlowSparkleDust>(), (Vector2.One * Main.rand.NextFloat(0.2f, 0.4f)).RotatedByRandom(19.0), 0, Color.White, Main.rand.NextFloat(0.5f, 1f)).noGravity = true;
                     }
-					else
-					{
-                        Dust.NewDustPerfect(EndPoint, ModContent.DustType<GlyphDust>(),  (Vector2.One * Main.rand.NextFloat(0.2f, 0.4f)).RotatedByRandom(19.0), 0, Color.White, Main.rand.NextFloat(0.5f, 1f)).noGravity = true;
+                    else
+                    {
+                        Dust.NewDustPerfect(EndPoint, ModContent.DustType<GlyphDust>(), (Vector2.One * Main.rand.NextFloat(0.2f, 0.4f)).RotatedByRandom(19.0), 0, Color.White, Main.rand.NextFloat(0.5f, 1f)).noGravity = true;
                     }
                 }
             }
             else if (Timer < MaxChargeTime)
-			{
-				if(Timer % 5 == 0)
-				{
-					Vector2 spawnPos = EndPoint + Main.rand.NextVector2CircularEdge(64, 64);
-					Vector2 vel = (EndPoint - spawnPos).SafeNormalize(Vector2.Zero) * 4;
-					Dust.NewDustPerfect(spawnPos, ModContent.DustType<GlyphDust>(), vel, newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1.5f));
-				}
-			}
-			ChargeProgress = Timer / MaxChargeTime;
-			ChargeProgress = MathHelper.Clamp(ChargeProgress, 0, 1);	
-			if(Main.myPlayer == Projectile.owner)
-			{
-				if (!Owner.channel)
-				{
+            {
+                if (Timer % 5 == 0)
+                {
+                    Vector2 spawnPos = EndPoint + Main.rand.NextVector2CircularEdge(64, 64);
+                    Vector2 vel = (EndPoint - spawnPos).SafeNormalize(Vector2.Zero) * 4;
+                    Dust.NewDustPerfect(spawnPos, ModContent.DustType<GlyphDust>(), vel, newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1.5f));
+                }
+            }
+            ChargeProgress = Timer / MaxChargeTime;
+            ChargeProgress = MathHelper.Clamp(ChargeProgress, 0, 1);
+            if (Main.myPlayer == Projectile.owner)
+            {
+                if (!Owner.channel)
+                {
                     SwitchState(AIState.Release);
-				}
-			}
-			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
+                }
+            }
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
             Lighting.AddLight((Projectile.Center + Projectile.velocity * 64), Color.LightCyan.ToVector3() * 1.5f);
-			SetHoldPosition();
+            SetHoldPosition();
         }
 
-		private void AI_Release()
+        private void AI_Release()
         {
             Timer++;
-			if(Timer == 1)
-			{
-				if(Main.myPlayer == Projectile.owner)
-				{
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity, ModContent.ProjectileType<GildedStaffBlast>(), (int)(Projectile.damage * ChargeProgress * 3f), Projectile.knockBack, Projectile.owner, ai1: ChargeProgress);
-				}
+            if (Timer == 1)
+            {
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity, ModContent.ProjectileType<GildedStaffBlast>(), (int)(Projectile.damage * ChargeProgress * 3f), Projectile.knockBack, Projectile.owner, ai1: ChargeProgress);
+                }
                 FXUtil.ShakeCamera(Projectile.position, 1024, 2);
-              
-			}
-            if(Timer >= 4)
+
+            }
+            if (Timer >= 4)
             {
                 Projectile.Kill();
             }
             SetHoldPosition();
         }
 
-		private void DrawStaff(ref Color lightColor)
-		{
+        private void DrawStaff(ref Color lightColor)
+        {
             Texture2D texture = TextureAssets.Projectile[Type].Value;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -236,15 +233,15 @@ namespace Stellamod.Items.Weapons.Mage
             spriteBatch.Draw(texture, drawPos + Projectile.velocity * 24, null, drawColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
             spriteBatch.Restart(blendState: BlendState.Additive);
 
-            for(int i =0;i < 6; i++)
+            for (int i = 0; i < 6; i++)
             {
                 spriteBatch.Draw(texture, drawPos + Projectile.velocity * 24, null, drawColor * ChargeProgress, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
             }
             spriteBatch.RestartDefaults();
         }
 
-		private void DrawEnergyBall(ref Color lightColor)
-		{
+        private void DrawEnergyBall(ref Color lightColor)
+        {
             //Draw Code for the orb
             Texture2D texture = ModContent.Request<Texture2D>(TextureRegistry.EmptyGlowParticle).Value;
             Vector2 centerPos = Projectile.Center - Main.screenPosition;
@@ -298,38 +295,38 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override bool PreDraw(ref Color lightColor)
         {
-			DrawStaff(ref lightColor);
-            if(State == AIState.Charge)
-			    DrawEnergyBall(ref lightColor);
+            DrawStaff(ref lightColor);
+            if (State == AIState.Charge)
+                DrawEnergyBall(ref lightColor);
             return false;
         }
     }
 
-	public class GildedStaffBlast : ModProjectile
-	{
-		private ref float Timer => ref Projectile.ai[0];
+    public class GildedStaffBlast : ModProjectile
+    {
+        private ref float Timer => ref Projectile.ai[0];
         private ref float Charge => ref Projectile.ai[1];
-		public override string Texture => TextureRegistry.EmptyTexture;
+        public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-			ProjectileID.Sets.TrailCacheLength[Type] = 16;
-			ProjectileID.Sets.TrailingMode[Type] = 2;
+            ProjectileID.Sets.TrailCacheLength[Type] = 16;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
         }
 
         public override void SetDefaults()
         {
             base.SetDefaults();
-			Projectile.width = 16;
-			Projectile.height = 16;
-			Projectile.friendly = true;
-			Projectile.timeLeft = 240;
+            Projectile.width = 16;
+            Projectile.height = 16;
+            Projectile.friendly = true;
+            Projectile.timeLeft = 240;
         }
         public override void AI()
         {
             base.AI();
-			Timer++;
-            if(Timer == 1)
+            Timer++;
+            if (Timer == 1)
             {
                 for (int i = 0; i < 7 * Charge; i++)
                 {
@@ -361,7 +358,7 @@ namespace Stellamod.Items.Weapons.Mage
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.LightCyan, Main.rand.NextFloat(0.2f, 1f)).noGravity = true;
             }
             NPC nearest = ProjectileHelper.FindNearestEnemy(Projectile.position, 367);
-            if(nearest != null)
+            if (nearest != null)
             {
                 Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearest.Center, 1);
             }
@@ -456,7 +453,7 @@ namespace Stellamod.Items.Weapons.Mage
             {
                 //Old velocity is the velocity before this tick, so it won't be zero or whatever
                 Vector2 velocity = Projectile.oldVelocity.RotatedByRandom(MathHelper.ToRadians(30)).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5, 15);
-                
+
                 //I love this particle type
                 var particle = FXUtil.GlowStretch(Projectile.Center, velocity);
                 particle.InnerColor = Color.White;

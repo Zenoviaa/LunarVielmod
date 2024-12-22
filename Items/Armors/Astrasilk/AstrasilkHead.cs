@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -35,7 +34,7 @@ namespace Stellamod.Items.Armors.Astrasilk
             if (!hasSetBonus)
                 return;
 
-            if(OwnedStars < _starCount)
+            if (OwnedStars < _starCount)
             {
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
                     StarProjType, 0, 1, Player.whoAmI);
@@ -112,7 +111,7 @@ namespace Stellamod.Items.Armors.Astrasilk
 				"\n+35 Health" +
 				"\nIncreased Pickaxe Speed!"); */
             ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
-        
+
 
             // If your head equipment should draw hair while drawn, use one of the following:
             // ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; // Don't draw the head at all. Used by Space Creature Mask
@@ -139,7 +138,7 @@ namespace Stellamod.Items.Armors.Astrasilk
 
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
-            return body.type == ModContent.ItemType<AstrasilkBody>() 
+            return body.type == ModContent.ItemType<AstrasilkBody>()
                 && legs.type == ModContent.ItemType<AstrasilkLegs>();
         }
 
@@ -152,15 +151,6 @@ namespace Stellamod.Items.Armors.Astrasilk
         {
             player.setBonus = LangText.SetBonus(this);//"Stars orbit around you\nHit an enemy 5 times to rain down a gigantic star upon them!");
             player.GetModPlayer<AstrasilkPlayer>().hasSetBonus = true;
-        }
-
-        public override void AddRecipes() 
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 8);
-            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 2);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
         }
     }
 }

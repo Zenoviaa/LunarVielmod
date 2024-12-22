@@ -1,4 +1,3 @@
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -28,14 +27,6 @@ namespace Stellamod.Items.Armors.ForestCore
             player.GetCritChance(DamageClass.Generic) += 2f;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Wood, 10);
-            recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 3);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
-        }
 
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.MoonlightMagic.Elements;
 using Stellamod.Items.MoonlightMagic.Movements;
 using Terraria;

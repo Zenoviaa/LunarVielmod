@@ -59,7 +59,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             UpdateFrame(1f, 1, 50);
         }
 
-        
+
         public override Color? GetAlpha(Color lightColor)
         {
             return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 50f);

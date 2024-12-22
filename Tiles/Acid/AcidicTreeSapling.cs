@@ -10,7 +10,7 @@ using Terraria.ObjectData;
 namespace Stellamod.Tiles.Acid
 {
     public class AcidicTreeSapling : ModTile
-	{
+    {
         public override void SetStaticDefaults()
         {
             Main.tileFrameImportant[Type] = true;
@@ -39,7 +39,7 @@ namespace Stellamod.Tiles.Acid
             TileID.Sets.SwaysInWindBasic[Type] = true;
 
 
-  
+
             AddMapEntry(new Color(200, 200, 200));
 
             DustType = DustID.Stone;

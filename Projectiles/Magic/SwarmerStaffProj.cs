@@ -53,7 +53,7 @@ namespace Stellamod.Projectiles.Magic
 
         public override void OnKill(int timeLeft)
         {
-            for(int i = 0; i < 16; i++)
+            for (int i = 0; i < 16; i++)
             {
                 Vector2 randVelocity = Main.rand.NextVector2CircularEdge(3, 3);
                 Dust.NewDustPerfect(Projectile.Center, DustID.DesertTorch, randVelocity);

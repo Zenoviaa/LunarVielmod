@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Minions;
 using Stellamod.Projectiles.Summons.Minions;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -21,12 +20,12 @@ namespace Stellamod.Items.Weapons.Summon
             Item.mana = 10;
         }
         public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Irradiated Creeper Staff");
-			// Tooltip.SetDefault("Summons an Irradiated Creeper to fight with you");
-			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
-			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
-		}
+        {
+            // DisplayName.SetDefault("Irradiated Creeper Staff");
+            // Tooltip.SetDefault("Summons an Irradiated Creeper to fight with you");
+            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
+            ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
+        }
 
         public override void SetDefaults()
         {
@@ -50,8 +49,8 @@ namespace Stellamod.Items.Weapons.Summon
             Item.shoot = ModContent.ProjectileType<IrradiatedCreeperMinionProj>();
         }
 
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		{
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
             // This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
             player.AddBuff(Item.buffType, 2);
 
@@ -63,5 +62,5 @@ namespace Stellamod.Items.Weapons.Summon
             // Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
             return false;
         }
-	}
+    }
 }

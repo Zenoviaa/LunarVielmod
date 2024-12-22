@@ -1,6 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil;
 using Stellamod.Common.Bases;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Slashers.Swords;
@@ -66,7 +64,7 @@ namespace Stellamod.Projectiles.Slashers.FrostBringer
         public override void AI()
         {
             base.AI();
-            if(_smoothedLerpValue >= 0.4f)
+            if (_smoothedLerpValue >= 0.4f)
             {
                 if (!_hasFired && Main.myPlayer == Projectile.owner)
                 {
@@ -81,7 +79,7 @@ namespace Stellamod.Projectiles.Slashers.FrostBringer
         {
             float t = Timer / 60f;
             t = MathHelper.Clamp(t, 0f, 1f);
-            return MathHelper.Lerp(0f, 312, Easing.SpikeOutCirc(completionRatio) *t);
+            return MathHelper.Lerp(0f, 312, Easing.SpikeOutCirc(completionRatio) * t);
         }
 
         public Color ColorFunction(float completionRatio)

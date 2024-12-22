@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -34,14 +33,14 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public override void AI()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 for (int i = 0; i < 14; i++)
                 {
-                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), Projectile.velocity.RotatedByRandom(MathHelper.PiOver4/2) * Main.rand.NextFloat(0.5f, 1f), 0, Color.LightSkyBlue, 1f).noGravity = true;
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), Projectile.velocity.RotatedByRandom(MathHelper.PiOver4 / 2) * Main.rand.NextFloat(0.5f, 1f), 0, Color.LightSkyBlue, 1f).noGravity = true;
                 }
             }
-            if(Timer > LifeTime - 60)
+            if (Timer > LifeTime - 60)
             {
                 Projectile.hostile = false;
                 Scale = MathHelper.Lerp(Scale, 0f, 0.1f);

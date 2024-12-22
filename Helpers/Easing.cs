@@ -253,7 +253,7 @@ namespace Stellamod.Helpers
                 return InOutExpo(t / .5f, 8);
             else
             {
-                return InOutExpo((1-t) / 0.5f, 8); 
+                return InOutExpo((1 - t) / 0.5f, 8);
             }
         }
 

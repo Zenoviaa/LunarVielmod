@@ -1,13 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.Lights;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Brooches;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Ores;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee.Shields;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.EliteCommander.Projectiles;
 using Stellamod.NPCs.Colosseum.Common;
 using System.IO;
@@ -308,7 +301,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
                     NPC.velocity = new Vector2(NPC.direction * distance, jumpHeight);
                     NPC.netUpdate = true;
                 }
-                
+
             }
 
             if (Timer > 20 && NPC.collideY)
@@ -385,7 +378,8 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
                         if (Main.rand.NextBool(2))
                         {
                             SwitchState(AIState.Jump);
-                        } else
+                        }
+                        else
                         {
                             SwitchState(AIState.Idle);
                         }
@@ -395,7 +389,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
                 {
                     SwitchState(AIState.Idle);
                 }
-              
+
             }
         }
 

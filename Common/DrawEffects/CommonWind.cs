@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 
 namespace Stellamod.Common.DrawEffects

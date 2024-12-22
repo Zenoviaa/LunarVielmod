@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -46,16 +45,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.useTime = 50;
             Item.consumeAmmoOnLastShotOnly = true;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 50);
-            recipe.AddIngredient(ModContent.ItemType<WanderingFlame>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-            recipe.AddIngredient(ItemID.FallenStar, 5);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+
 
         public override Vector2? HoldoutOffset()
         {

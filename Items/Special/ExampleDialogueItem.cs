@@ -1,11 +1,5 @@
 ﻿using Stellamod.Helpers;
 using Stellamod.UI.Dialogue;
-using Stellamod.UI.Scripture;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -29,7 +23,7 @@ namespace Stellamod.Items.Special
         {
             //1. Get the dialogue system
             DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
-    
+
             //2. Create a new instance of your dialogue
             ExampleDialogue exampleDialogue = new ExampleDialogue();
 

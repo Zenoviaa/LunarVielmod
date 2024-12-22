@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -61,23 +59,5 @@ namespace Stellamod.Items.Weapons.Ranged
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>());
-            recipe.AddIngredient(ModContent.ItemType<BrokenTech>(), 8);
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 2);
-            recipe.AddIngredient(ItemID.Musket, 1);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-
-            Recipe recipe2 = CreateRecipe();
-            recipe2.AddIngredient(ModContent.ItemType<BasicGunParts>());
-            recipe2.AddIngredient(ModContent.ItemType<BrokenTech>(), 8);
-            recipe2.AddIngredient(ModContent.ItemType<WeaponDrive>(), 2);
-            recipe2.AddIngredient(ItemID.TheUndertaker, 1);
-            recipe2.AddTile(TileID.Anvils);
-            recipe2.Register();
-        }
     }
 }

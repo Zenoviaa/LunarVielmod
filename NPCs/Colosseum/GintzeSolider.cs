@@ -1,13 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Foods;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Ores;
 using Stellamod.NPCs.Colosseum.Common;
-using Stellamod.WorldG;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -26,7 +20,7 @@ namespace Stellamod.NPCs.Colosseum
             Jump
         }
         private ref float Timer => ref NPC.ai[0];
-     
+
         private AIState State
         {
             get => (AIState)NPC.ai[1];
@@ -38,7 +32,7 @@ namespace Stellamod.NPCs.Colosseum
         {
             get
             {
-                if(Target.Center.X < NPC.Center.X)
+                if (Target.Center.X < NPC.Center.X)
                 {
                     return -1;
                 }
@@ -76,15 +70,15 @@ namespace Stellamod.NPCs.Colosseum
                 _frame++;
                 NPC.frameCounter = 0f;
             }
-            if(_frame >= Main.npcFrameCount[Type])
+            if (_frame >= Main.npcFrameCount[Type])
             {
                 _frame = 0;
             }
             switch (State)
             {
                 case AIState.Jump:
-                _frame = 6;
-                break;
+                    _frame = 6;
+                    break;
             }
             NPC.frame.Y = frameHeight * _frame;
         }
@@ -121,7 +115,7 @@ namespace Stellamod.NPCs.Colosseum
             float moveSpeed = 2;
             Vector2 targetVelocity = new Vector2(DirectionToTarget * moveSpeed, 0);
             NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetVelocity.X, 0.3f);
-            if(Target.Top.Y < NPC.Top.Y && NPC.collideY)
+            if (Target.Top.Y < NPC.Top.Y && NPC.collideY)
             {
                 SwitchState(AIState.Jump);
             }
@@ -130,18 +124,18 @@ namespace Stellamod.NPCs.Colosseum
         private void AI_Jump()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.velocity.Y -= 10;
             }
 
-            if(Timer > 10 && NPC.collideY)
+            if (Timer > 10 && NPC.collideY)
             {
                 SwitchState(AIState.Chase);
             }
 
             //Failsafe
-            if(Timer > 120)
+            if (Timer > 120)
             {
                 SwitchState(AIState.Chase);
             }

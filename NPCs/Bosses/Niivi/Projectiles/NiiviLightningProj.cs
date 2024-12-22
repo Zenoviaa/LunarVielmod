@@ -5,7 +5,6 @@ using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -16,7 +15,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];
         private float Lifetime => 24;
-        private Vector2[] LightningPos; 
+        private Vector2[] LightningPos;
 
         internal PrimitiveTrail BeamDrawer;
 
@@ -34,7 +33,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public override void AI()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 //Calculate
                 List<Vector2> points = new List<Vector2>();
@@ -42,7 +41,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 points.Add(currentPoint);
 
                 int numPoints = 80;
-                for(int i = 0; i < numPoints; i++)
+                for (int i = 0; i < numPoints; i++)
                 {
                     Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
                     direction = direction.RotatedByRandom(MathHelper.ToRadians(30));

@@ -64,7 +64,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
 
     public class WarriorsSwordSlash : BaseSwingProjectile
     {
-        public override string Texture => this.PathHere()+"/WarriorsGrace";
+        public override string Texture => this.PathHere() + "/WarriorsGrace";
 
         public bool Hit;
 
@@ -249,7 +249,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
     }
     public class WarriorsSwordStaminaSlash : BaseSwingProjectile
     {
-        public override string Texture => this.PathHere()+"/WarriorsGrace";
+        public override string Texture => this.PathHere() + "/WarriorsGrace";
 
         public bool Hit;
 

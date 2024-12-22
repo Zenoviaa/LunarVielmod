@@ -18,7 +18,7 @@ namespace Stellamod.Items.Accessories.Runes
             npc.velocity += BlowVelocity;
             BlowVelocity *= 0.6f;
         }
-      
+
     }
 
     internal class RuneOfWindShield : ModProjectile
@@ -49,7 +49,7 @@ namespace Stellamod.Items.Accessories.Runes
 
             if (runeOfWindPlayer.hardBlowingTimer > 0)
             {
-                Timer+=3;
+                Timer += 3;
             }
             else
             {

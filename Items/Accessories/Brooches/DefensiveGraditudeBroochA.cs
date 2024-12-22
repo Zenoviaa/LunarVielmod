@@ -1,7 +1,4 @@
 ﻿using Stellamod.Common.Bases;
-using Stellamod.Items.Materials.Molds;
-using Stellamod.Items.Ores;
-using Stellamod.Tiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -28,16 +25,6 @@ namespace Stellamod.Items.Accessories.Brooches
             broochSpawnerPlayer.broochesToSpawn.Add(ModContent.ItemType<SpragaldBroochA>());
             broochSpawnerPlayer.broochesToSpawn.Add(ModContent.ItemType<MorrowedJelliesBroochA>());
             player.GetDamage(DamageClass.Generic) *= 0.70f;
-        }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<MorrowedJelliesBroochA>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<SpragaldBroochA>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<RadianuiBar>(), 15);
-            recipe.AddTile(ModContent.TileType<BroochesTable>());
-            recipe.Register();
         }
     }
 }

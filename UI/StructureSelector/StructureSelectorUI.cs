@@ -1,18 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.MoonlightMagic;
-using Stellamod.UI.AdvancedMagicSystem;
 using Stellamod.WorldG.StructureManager;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI.Elements;
-using tModPorter;
 
 namespace Stellamod.UI.StructureSelector
 {
@@ -80,7 +73,7 @@ namespace Stellamod.UI.StructureSelector
 
             _grid.Clear();
             string[] structurePaths = Structurizer.GetPaths();
-            foreach(var path in structurePaths)
+            foreach (var path in structurePaths)
             {
                 StructureSelectionButton btn = new StructureSelectionButton(path);
                 _grid.Add(btn);

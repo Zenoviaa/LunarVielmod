@@ -24,7 +24,7 @@ namespace Stellamod.Items.Accessories.Catacombs
             if (hasBarry && Player.ownedProjectileCounts[ModContent.ProjectileType<BarrySpike>()] == 0)
             {
                 float count = 9;
-                for(float i = 0; i < count; i++)
+                for (float i = 0; i < count; i++)
                 {
                     float progress = i / count;
                     float rot = progress * 360;

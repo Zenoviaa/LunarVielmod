@@ -1,6 +1,4 @@
-﻿using Stellamod.UI.CollectionSystem.Quests;
-using Terraria;
-using Terraria.UI;
+﻿using Terraria.UI;
 
 namespace Stellamod.UI.CollectionSystem
 {

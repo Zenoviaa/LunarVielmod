@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.DataStructures;
@@ -33,7 +32,7 @@ namespace Stellamod.Items.Discs
 
             AddMapEntry(new Color(191, 142, 111), Language.GetText("ItemName.MusicBox"));
 
-            ModItem item = ModContent.Find<ModItem>("Stellamod/"+DiscItem);
+            ModItem item = ModContent.Find<ModItem>("Stellamod/" + DiscItem);
             RegisterItemDrop(item.Type);
         }
 
@@ -44,7 +43,7 @@ namespace Stellamod.Items.Discs
             bool right = Framing.GetTileSafely(i + 1, j).TileType == Type;
             bool up = Framing.GetTileSafely(i, j - 1).TileType == Type;
             bool down = Framing.GetTileSafely(i, j + 1).TileType == Type;
-            if(!up && !left)
+            if (!up && !left)
             {
 
                 Vector2 coords = new Vector2(i, j);
@@ -63,7 +62,7 @@ namespace Stellamod.Items.Discs
 
                 spriteBatch.Restart(blendState: BlendState.Additive);
 
-                for(float f = 0f; f < 1f; f+= 0.2f)
+                for (float f = 0f; f < 1f; f += 0.2f)
                 {
                     Color backGlowColor = drawColor * VectorHelper.Osc(0.5f, 1f);
                     float rot = f * MathHelper.TwoPi;
@@ -84,7 +83,7 @@ namespace Stellamod.Items.Discs
 
                 spriteBatch.RestartDefaults();
             }
-          
+
         }
     }
 }

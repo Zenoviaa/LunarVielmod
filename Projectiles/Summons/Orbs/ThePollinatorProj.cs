@@ -145,7 +145,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
                 SoundStyle soundStyle = SoundID.Item7;
                 soundStyle.PitchVariance = 0.15f;
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Morrowarrow") { PitchVariance = 0.15f}, Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Morrowarrow") { PitchVariance = 0.15f }, Projectile.position);
 
                 OrbHelper.PlaySummonSound(Projectile.position);
                 Reset();
@@ -307,7 +307,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
 
             int gore1 = GoreHelper.TypeFallingLeafWhite;
             int gore2 = GoreHelper.TypeFallingLeafRed;
-            for(int i = 0; i< 2; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
                 Gore.NewGore(Projectile.GetSource_FromThis(), target.position, velocity, gore1);
@@ -329,7 +329,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
                     soundStyle = SoundID.Grass;
                     soundStyle.PitchVariance = 0.15f;
                     SoundEngine.PlaySound(soundStyle, Projectile.position);
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MorrowExp") { PitchVariance = 0.15f}, Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MorrowExp") { PitchVariance = 0.15f }, Projectile.position);
                     break;
 
                 case ActionState.Swing_3:
@@ -340,7 +340,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
 
                     for (int i = 0; i < 14; i++)
                     {
-                      
+
                         Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGoldenrod, 1f).noGravity = true;
                     }
 

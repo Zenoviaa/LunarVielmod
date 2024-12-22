@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Flasks;
-using System;
 using Terraria;
 using Terraria.GameInput;
 using Terraria.ModLoader;

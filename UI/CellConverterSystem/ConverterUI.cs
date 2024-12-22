@@ -1,11 +1,4 @@
-﻿using Humanizer;
-using Microsoft.Xna.Framework;
-using Stellamod.UI.CauldronSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 
 namespace Stellamod.UI.CellConverterSystem

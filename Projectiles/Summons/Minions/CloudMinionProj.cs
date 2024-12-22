@@ -5,7 +5,6 @@ using Stellamod.Buffs.Minions;
 using Stellamod.Common.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -61,8 +60,8 @@ namespace Stellamod.Projectiles.Summons.Minions
             Timer++;
             if (Main.rand.NextBool(100))
             {
-         
-    
+
+
                 FlashPos = Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(0, Projectile.height));
                 for (float f = 0; f < 16; f++)
                 {
@@ -71,21 +70,21 @@ namespace Stellamod.Projectiles.Summons.Minions
                 }
                 FlashTimer = 1.5f;
             }
-            if(Timer % 6 == 0)
+            if (Timer % 6 == 0)
             {
 
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<GlyphDust>(), newColor: GetMainColor(), Scale: Main.rand.NextFloat(0.5f, 2f));
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Rain, newColor: GetMainColor(), Scale: Main.rand.NextFloat(0.5f, 2f));
             }
             FlashTimer *= 0.912f;
-            if(Timer > 12 && foundTarget)
+            if (Timer > 12 && foundTarget)
             {
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     Vector2 offset = new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(0, Projectile.height));
                     Vector2 pos = Projectile.position + offset;
                     Vector2 velocity = (targetCenter - pos).SafeNormalize(Vector2.Zero) * 12;
-                   
+
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), pos, velocity,
                             ProjectileID.WandOfFrostingFrost, Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
@@ -93,10 +92,10 @@ namespace Stellamod.Projectiles.Summons.Minions
             }
             if (DoLightning && foundTarget)
             {
-          
+
                 LightningTimer++;
-       
-                if(LightningTimer == 60)
+
+                if (LightningTimer == 60)
                 {
                     FlashTimer = 2f;
                     SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.position);
@@ -106,7 +105,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                             ModContent.ProjectileType<TempestLightningBolt>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                     }
                 }
-                if(LightningTimer > 240)
+                if (LightningTimer > 240)
                 {
                     LightningTimer = 0;
                 }
@@ -115,7 +114,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             if (DoTornado && foundTarget)
             {
                 TornadoTimer++;
-                if(TornadoTimer > 120 && TornadoTimer % 30 == 0)
+                if (TornadoTimer > 120 && TornadoTimer % 30 == 0)
                 {
                     if (Main.myPlayer == Projectile.owner)
                     {
@@ -123,7 +122,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                             ModContent.ProjectileType<ClimateTornadoProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                     }
                 }
-                if(TornadoTimer > 180)
+                if (TornadoTimer > 180)
                 {
 
                     TornadoTimer = 0;
@@ -139,7 +138,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             Lighting.AddLight(Projectile.Center, GetMainColor().ToVector3() * 2.5f);
         }
 
-    
+
         private Color GetMainColor()
         {
             if (DoTornado)
@@ -181,13 +180,13 @@ namespace Stellamod.Projectiles.Summons.Minions
             shader.Apply();
             spriteBatch.Restart(effect: shader.Effect, sortMode: SpriteSortMode.Immediate, blendState: BlendState.AlphaBlend);
             spriteBatch.Draw(texture, drawPos + new Vector2(off, 0), null, drawColor, drawRotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
-  
+
             shader.CloudColor = Color.Lerp(Color.Black, GetMainColor(), FlashTimer);
             shader.Apply();
             spriteBatch.Restart(effect: shader.Effect, sortMode: SpriteSortMode.Immediate, blendState: BlendState.Additive);
 
-           
-            for(int i = 0; i < 1; i++)
+
+            for (int i = 0; i < 1; i++)
                 spriteBatch.Draw(texture, drawPos + new Vector2(off, 0), null, drawColor, drawRotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
 
             spriteBatch.RestartDefaults();

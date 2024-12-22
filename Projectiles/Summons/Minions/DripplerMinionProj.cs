@@ -1,17 +1,13 @@
-﻿using Stellamod.Helpers;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs.Minions;
+using Stellamod.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria;
 using Terraria.Audio;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
-using Stellamod.Buffs.Minions;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.Graphics.Shaders;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
@@ -95,11 +91,11 @@ namespace Stellamod.Projectiles.Summons.Minions
             //This code should give quite interesting movement
             //Accelerate to being on top of the player
             Vector2 dirToNpc = (targetCenter - Projectile.Center).SafeNormalize(Vector2.Zero);
-            if(Projectile.velocity.Length() < moveSpeed)
+            if (Projectile.velocity.Length() < moveSpeed)
             {
                 Projectile.velocity += dirToNpc * accel;
             }
-       
+
             Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, targetCenter, degreesToRotate: 0.5f);
         }
 
@@ -117,7 +113,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             Vector2 offset = new Vector2(xOffset, yOffset);
             Vector2 targetCenter = Owner.Center + offset + new Vector2(0, -64);
             Projectile.velocity = (targetCenter - Projectile.Center) * 0.1f;
-           // AI_Movement(targetCenter, moveSpeed: 20);
+            // AI_Movement(targetCenter, moveSpeed: 20);
         }
 
 
@@ -132,7 +128,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 out float distanceFromTarget,
                 out Vector2 targetCenter);
 
-            if(Main.rand.NextBool(12))
+            if (Main.rand.NextBool(12))
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Blood);
             }
@@ -144,7 +140,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
             if (foundTarget)
             {
-                if(_targetNpc == -1)
+                if (_targetNpc == -1)
                 {
                     Projectile.velocity = (targetCenter - Projectile.Center) * 0.05f;
                 }
@@ -160,7 +156,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         private void AI_Sticking()
         {
             StickTimer--;
-            if(StickTimer <= 0)
+            if (StickTimer <= 0)
             {
                 _targetNpc = -1;
             }
@@ -195,12 +191,12 @@ namespace Stellamod.Projectiles.Summons.Minions
                 SoundEngine.PlaySound(SoundID.NPCHit18, targetNpc.Center);
                 SoundEngine.PlaySound(SoundID.Item171, targetNpc.Center);
 
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), (int)targetNpc.Center.X, (int)targetNpc.Center.Y, speed.X, speed.Y,
                                       ModContent.ProjectileType<BloodWaterProj>(), Projectile.damage / 2, 1f, Projectile.owner);
                 }
-              
+
                 Timer = 0;
             }
         }

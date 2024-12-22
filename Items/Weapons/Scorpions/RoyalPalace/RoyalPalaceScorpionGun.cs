@@ -13,7 +13,7 @@ namespace Stellamod.Items.Weapons.Scorpions.RoyalPalace
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPCWithProj(proj, target, hit, damageDone);
-            if(Player.HeldItem.type == ModContent.ItemType<RoyalPalaceScorpion>() && proj.type == ProjectileID.Bullet)
+            if (Player.HeldItem.type == ModContent.ItemType<RoyalPalaceScorpion>() && proj.type == ProjectileID.Bullet)
             {
                 if (!target.HasBuff<RoyalPalaceScorpionTagDebuff>())
                 {
@@ -58,6 +58,6 @@ namespace Stellamod.Items.Weapons.Scorpions.RoyalPalace
             }
             Dust.NewDustPerfect(Projectile.position + velocity * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
         }
-       
+
     }
 }

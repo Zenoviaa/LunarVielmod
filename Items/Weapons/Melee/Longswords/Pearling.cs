@@ -64,7 +64,7 @@ namespace Stellamod.Items.Weapons.Melee.Longswords
     public class PearlingSwordSlash : BaseSwingProjectile
     {
         public override string Texture => this.PathHere() + "/Pearling";
-    
+
         public bool Hit;
 
         public override void SetStaticDefaults()
@@ -363,8 +363,8 @@ namespace Stellamod.Items.Weapons.Melee.Longswords
     }
     public class PearlingSwordStaminaSlash : BaseSwingProjectile
     {
-        public override string Texture => this.PathHere()+"/Pearling";
-    
+        public override string Texture => this.PathHere() + "/Pearling";
+
         public bool Hit;
 
         public override void SetStaticDefaults()

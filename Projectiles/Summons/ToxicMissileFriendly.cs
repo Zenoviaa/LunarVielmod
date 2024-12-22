@@ -23,7 +23,7 @@ namespace Stellamod.Projectiles.Summons
             Projectile.width = 20;
             Projectile.height = 30;
             Projectile.friendly = true;
-            Projectile.hostile = false; 
+            Projectile.hostile = false;
             Projectile.timeLeft = 1000;
             Projectile.tileCollide = true;
             Projectile.aiStyle = 1;
@@ -77,7 +77,7 @@ namespace Stellamod.Projectiles.Summons
             {
                 Dust.NewDustPerfect(base.Projectile.Center, 74, (Vector2.One * Main.rand.Next(1, 4)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
             }
-        //    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
+            //    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Missile_Land"), Projectile.Center);
         }
         public override bool PreDraw(ref Color lightColor)

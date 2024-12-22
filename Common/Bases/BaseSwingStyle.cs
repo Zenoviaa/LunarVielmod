@@ -24,7 +24,7 @@ namespace Stellamod.Common.Bases
         {
             if (_playSound)
                 return;
-            if(smoothedLerpValue >= swingSoundLerpValue)
+            if (smoothedLerpValue >= swingSoundLerpValue)
             {
                 SoundEngine.PlaySound(swingSound, SwingProjectile.Projectile.position);
                 _playSound = true;

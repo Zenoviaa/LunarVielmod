@@ -1,12 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.Bases;
-using Stellamod.Projectiles.Safunai.Parendine;
 using Stellamod.Projectiles.Safunai.Vinger;
 using System.Collections.Generic;
-using System.IO;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -22,29 +18,29 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
             Item.damage = 17;
             Item.mana = 0;
         }
-      
-		public override void ModifyTooltips(List<TooltipLine> tooltips)
-		{
 
-			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
-			var line = new TooltipLine(Mod, "", "");
-			line = new TooltipLine(Mod, "Vinger",  Helpers.LangText.Common("Safunai"))
-			{
-				OverrideColor = new Color(308, 71, 99)
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
 
-			};
-			tooltips.Add(line);
+            // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
+            var line = new TooltipLine(Mod, "", "");
+            line = new TooltipLine(Mod, "Vinger", Helpers.LangText.Common("Safunai"))
+            {
+                OverrideColor = new Color(308, 71, 99)
 
-			line = new TooltipLine(Mod, "Vinger", "(C) Medium Damage Scaling (spikyballs) On Hit!")
-			{
-				OverrideColor = new Color(220, 87, 24)
+            };
+            tooltips.Add(line);
 
-			};
-			tooltips.Add(line);
-		}
+            line = new TooltipLine(Mod, "Vinger", "(C) Medium Damage Scaling (spikyballs) On Hit!")
+            {
+                OverrideColor = new Color(220, 87, 24)
 
-		public override void SetDefaults()
-		{
+            };
+            tooltips.Add(line);
+        }
+
+        public override void SetDefaults()
+        {
             Item.width = 32;
             Item.height = 36;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -61,6 +57,5 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
             Item.damage = 35;
             Item.rare = ItemRarityID.Blue;
         }
-	}
+    }
 }
-	

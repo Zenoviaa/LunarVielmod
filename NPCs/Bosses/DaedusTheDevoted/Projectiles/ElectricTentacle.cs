@@ -2,11 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -46,7 +41,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 soundStyle.PitchVariance = 0.15f;
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
 
-                for(int i = 0; i < 16; i++)
+                for (int i = 0; i < 16; i++)
                 {
                     Dust.NewDustPerfect(Projectile.Center, DustID.GoldCoin, Main.rand.NextVector2Circular(8, 8));
                 }
@@ -58,7 +53,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             }
 
             Player player = PlayerHelper.FindClosestPlayer(Projectile.position, float.MaxValue);
-            if(player != null)
+            if (player != null)
             {
                 Vector2 dirToNpc = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
                 Projectile.velocity += dirToNpc * 0.05f;
@@ -104,7 +99,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            for(int i = 1; i < Projectile.oldPos.Length; i++)
+            for (int i = 1; i < Projectile.oldPos.Length; i++)
             {
                 if (Main.rand.NextBool(2))
                 {
@@ -113,7 +108,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                     Vector2 vel = currentPoint - prevPoint;
                     Dust.NewDustPerfect(prevPoint, DustID.GoldCoin, vel, Scale: 1);
                 }
-   
+
             }
         }
     }

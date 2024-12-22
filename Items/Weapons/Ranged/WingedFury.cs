@@ -2,7 +2,6 @@
 using Stellamod.Projectiles.Bow;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -52,7 +51,7 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
             combo++;
-            if(combo == 3)
+            if (combo == 3)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/HeatFeather"), player.position);
                 type = ModContent.ProjectileType<HeatArrow>();

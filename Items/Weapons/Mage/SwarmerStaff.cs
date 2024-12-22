@@ -50,9 +50,9 @@ namespace Stellamod.Items.Weapons.Mage
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             int numProjectiles = 3;
-            for(int i = 0; i < numProjectiles; i++)
+            for (int i = 0; i < numProjectiles; i++)
             {
-                Vector2 shootVelocity = velocity.RotatedByRandom(MathHelper.PiOver4 /2);
+                Vector2 shootVelocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 2);
                 Projectile.NewProjectile(source, position, shootVelocity, type, damage, knockback, player.whoAmI);
             }
 

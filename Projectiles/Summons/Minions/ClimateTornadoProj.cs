@@ -29,7 +29,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         {
             Timer++;
             Projectile.rotation += 0.5f;
-     
+
             float progress = Timer / 60f;
             float easedProgress = Easing.SpikeOutCirc(progress);
             Scale = MathHelper.Lerp(0f, 1f, easedProgress);

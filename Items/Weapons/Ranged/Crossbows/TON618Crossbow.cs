@@ -45,13 +45,13 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
             Item.value = Item.buyPrice(silver: 3);
             Item.noUseGraphic = true;
             Item.channel = true;
-       
+
 
         }
 
 
 
-        
+
 
 
     }

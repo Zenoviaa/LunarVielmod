@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
-using Stellamod.Projectiles.Spears;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -47,15 +45,6 @@ namespace Stellamod.Items.Weapons.Mage
             Item.shoot = ModContent.ProjectileType<AquariusHold>();
             Item.shootSpeed = 30;
         }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<PureHeart>(), 1);
-            recipe.AddTile(TileID.LunarCraftingStation);
-            recipe.Register();
-        }
-
 
         public override void PostUpdate()
         {

@@ -2,11 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -45,7 +40,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 InitialVelocity = Projectile.velocity;
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
@@ -66,13 +61,13 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
             {
                 _target = PlayerHelper.FindClosestPlayer(Projectile.Center, maxDetectDistance: 1024);
             }
-            if(Timer < 30)
+            if (Timer < 30)
             {
                 _scale = MathHelper.Lerp(0f, Main.rand.NextFloat(0.25f, 1f), Easing.InCubic(Timer / 30f));
                 Projectile.velocity *= 0.5f;
             }
 
-            if(Timer == 30)
+            if (Timer == 30)
             {
                 //Ping Sound
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/Jack_FirePing");
@@ -80,15 +75,15 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
             }
 
-            if(Timer == 90)
+            if (Timer == 90)
             {
-                if(_target != null && _target.active)
+                if (_target != null && _target.active)
                 {
                     TargetVelocity = Projectile.velocity = (_target.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * InitialVelocity.Length();
-                }       
+                }
             }
 
-            if(Timer > 90)
+            if (Timer > 90)
             {
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, TargetVelocity, 0.02f);
             }

@@ -2,8 +2,6 @@
 using Stellamod.Common.Bases;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Projectiles.Slashers.GrailAxe;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;

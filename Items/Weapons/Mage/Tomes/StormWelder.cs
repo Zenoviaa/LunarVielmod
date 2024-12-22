@@ -1,18 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Bases;
-using Stellamod.Common.MaskingShaderSystem;
 using Stellamod.Common.Particles;
-using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -24,14 +20,14 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
         {
             base.SetDefaults();
             Item.shoot = ModContent.ProjectileType<StormWelderTome>();
-           
+
         }
     }
 
     internal class StormWelderTome : BaseMagicTomeProjectile
     {
         private float _dustTimer;
-        public override string Texture => this.PathHere()+"/StormWelder";
+        public override string Texture => this.PathHere() + "/StormWelder";
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -53,7 +49,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
         {
             base.AI();
             _dustTimer++;
-            if(_dustTimer % 16 == 0)
+            if (_dustTimer % 16 == 0)
             {
                 Color color = Color.Lerp(Color.White, Color.LightGoldenrodYellow, Main.rand.NextFloat(0f, 1f));
                 color.A = 0;
@@ -91,7 +87,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
 
         public void Update(float timer)
         {
-            if(timer % 6 == 0)
+            if (timer % 6 == 0)
             {
                 Trail.RandomPositions(LightningPos);
             }
@@ -134,7 +130,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             //This damages everything in the trail
-            for(int i = 0; i < _beams.Count; i++)
+            for (int i = 0; i < _beams.Count; i++)
             {
                 StormWelderBeam beam = _beams[i];
                 Vector2[] positions = beam.LightningPos;
@@ -147,7 +143,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
                         return true;
                 }
             }
-  
+
             return false;
         }
 
@@ -155,7 +151,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
         {
             float maxSeekingDistance = MaxBeamLength;
             NPC nextTarget = null;
-            foreach(var npc in Main.ActiveNPCs)
+            foreach (var npc in Main.ActiveNPCs)
             {
                 float distanceToNpc = Vector2.Distance(ImpactPos, npc.Center);
                 if (distanceToNpc <= maxSeekingDistance && !exclude.Contains(npc))
@@ -219,7 +215,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
                 BeamLength = targetBeamLength;
                 ImpactPos = Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * BeamLength;
                 float distanceToMouse = Vector2.Distance(Projectile.Center, Main.MouseWorld);
-                if(distanceToMouse <= BeamLength)
+                if (distanceToMouse <= BeamLength)
                 {
                     ImpactPos = Main.MouseWorld;
                 }
@@ -234,7 +230,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
 
             if (Timer % 2 == 0 || Timer == 1)
             {
-                HashSet<NPC> npcsThatHaveBeenHit = new HashSet<NPC>();     
+                HashSet<NPC> npcsThatHaveBeenHit = new HashSet<NPC>();
                 _beams.Clear();
                 InitialRay();
                 NPC nextTarget = FindNextTarget(npcsThatHaveBeenHit);
@@ -292,7 +288,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
             lightningShader.NoiseColor = new Color(120, 215, 255);
             lightningShader.Speed = 5;
 
-            for(int i = 0; i < _beams.Count; i++)
+            for (int i = 0; i < _beams.Count; i++)
             {
                 StormWelderBeam beam = _beams[i];
                 beam.Trail.Draw(spriteBatch, beam.LightningPos, Projectile.oldRot, ColorFunction, WidthFunction, lightningShader, offset: Projectile.Size / 2f);
@@ -305,7 +301,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
             float rounded = Easing.SpikeOutCirc(progress);
             float spikeProgress = Easing.SpikeOutExpo(completionRatio);
             float fireball = MathHelper.Lerp(rounded, spikeProgress, Easing.OutExpo(1.0f - completionRatio));
-           
+
             float midWidth = _trailWidth;
             float w = MathHelper.Lerp(0, midWidth, fireball);
             _trailWidth -= 0.02f;

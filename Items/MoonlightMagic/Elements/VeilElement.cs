@@ -1,8 +1,6 @@
-﻿using Stellamod.Systems.MiscellaneousMath;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Particles;
-using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -115,7 +113,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
             //Trail
 
 
-            
+
             SpriteBatch spriteBatch = Main.spriteBatch;
             var shader = MagicVaellusShader.Instance;
             shader.PrimaryTexture = TrailRegistry.LightningTrail2;
@@ -138,7 +136,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
             //This number makes it more lightning like, lower this is the straighter it is
             _lightningTrail.LightningRandomExpand = 12;
             _lightningTrail.Draw(spriteBatch, MagicProj.OldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2f);
-       
+
             /*
 
             for (int i = 0; i < _lightning.Trails.Length; i++)

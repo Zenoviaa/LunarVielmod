@@ -1,15 +1,7 @@
-using Terraria;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Terraria.ID;
-using static Terraria.ModLoader.ModContent;
-using Stellamod.Items.Materials;
 using Stellamod.Helpers;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Windmillion
 {
@@ -18,10 +10,10 @@ namespace Stellamod.Items.Armors.Windmillion
     {
         public bool Spetalite = false;
         public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Astrasilk Hat");
-			// Tooltip.SetDefault("Increases Mana Regen by 4%");
-		}
+        {
+            // DisplayName.SetDefault("Astrasilk Hat");
+            // Tooltip.SetDefault("Increases Mana Regen by 4%");
+        }
 
         public override void SetDefaults()
         {
@@ -58,6 +50,6 @@ namespace Stellamod.Items.Armors.Windmillion
             player.GetKnockback(DamageClass.Throwing) += 0.3f;
         }
 
-       
+
     }
 }

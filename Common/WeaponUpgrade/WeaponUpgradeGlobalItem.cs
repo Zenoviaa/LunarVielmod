@@ -1,11 +1,9 @@
-﻿using Stellamod.Common.ArmorReforge;
-using Stellamod.Helpers;
+﻿using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -43,10 +41,11 @@ namespace Stellamod.Common.WeaponUpgrade
             if (weaponLevel < 5)
             {
                 return lunarStone;
-            } else if (weaponLevel < 10)
+            }
+            else if (weaponLevel < 10)
             {
                 return rareLunarStone;
-            } 
+            }
             else if (weaponLevel < 15)
             {
                 return ancientLunarStone;
@@ -92,7 +91,7 @@ namespace Stellamod.Common.WeaponUpgrade
                     return 5;
             }
         }
-        
+
         public bool CanUpgrade(Item item, Player player)
         {
             int mat = GetMaterialType();
@@ -108,7 +107,7 @@ namespace Stellamod.Common.WeaponUpgrade
             weaponLevel += 1;
             item.NetStateChanged();
         }
-    
+
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(item, tooltips);
@@ -117,7 +116,7 @@ namespace Stellamod.Common.WeaponUpgrade
 
             TooltipLine itemNameLine = tooltips.Find(x => x.Name == "ItemName");
             itemNameLine.Text = itemNameLine.Text + " " + $"+{weaponLevel}";
-            if(weaponLevel >= 15)
+            if (weaponLevel >= 15)
             {
                 item.rare = ModContent.RarityType<GoldenSpecialRarity>();
             }

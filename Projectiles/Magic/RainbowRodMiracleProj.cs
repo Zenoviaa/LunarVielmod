@@ -66,7 +66,7 @@ namespace Stellamod.Projectiles.Magic
 
         public override void AI()
         {
-            if(Projectile.owner == Main.myPlayer)
+            if (Projectile.owner == Main.myPlayer)
             {
                 float speed = Projectile.ai[0];
                 AI_Movement(Main.MouseWorld, speed);

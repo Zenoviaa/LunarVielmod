@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Items.Consumables;
 using System;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
@@ -65,7 +64,7 @@ namespace Stellamod.UI.WeaponUpgradeSystem
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-   
+
             CalculatedStyle dimensions = GetDimensions();
             Point point = new Point((int)dimensions.X, (int)dimensions.Y);
             Texture2D textureToDraw;
@@ -91,7 +90,7 @@ namespace Stellamod.UI.WeaponUpgradeSystem
             Color drawColor = Color.White;
 
             float rotation = 0;
-  
+
             Rectangle rectangle = GetDimensions().ToRectangle();
             Texture2D background = ModContent.Request<Texture2D>(WeaponUpgradeUISystem.RootTexturePath + "MaterialBox").Value;
             spriteBatch.Draw(background, rectangle, null, drawColor, rotation, Vector2.Zero, SpriteEffects.None, 0);

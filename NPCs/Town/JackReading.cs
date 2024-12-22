@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.JackTheScholar;
@@ -7,7 +6,6 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 
@@ -146,7 +144,7 @@ namespace Stellamod.NPCs.Town
         public override void SetChatButtons(ref string button, ref string button2)
         {
             // What the chat buttons are when you open up the chat UI
-           // button2 = Language.GetTextValue("LegacyInterface.28");
+            // button2 = Language.GetTextValue("LegacyInterface.28");
             button = LangText.Chat(this, "Button");
         }
 

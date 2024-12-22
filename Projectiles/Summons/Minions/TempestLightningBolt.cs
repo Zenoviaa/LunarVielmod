@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -7,13 +7,10 @@ using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
@@ -24,7 +21,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         private ref float Timer => ref Projectile.ai[0];
 
         private Vector2 TargetPosition;
-        
+
         private Player Owner => Main.player[Projectile.owner];
         public CommonLightning Lightning { get; set; } = new CommonLightning();
         public override string Texture => TextureRegistry.EmptyTexture;
@@ -74,7 +71,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             Vector2 targetPosition = Owner.Center + new Vector2(0, -34 * 4);
             Projectile.position += (targetPosition - Projectile.Center) * 0.1f;
             Projectile.velocity = (TargetPosition - Projectile.Center).SafeNormalize(Vector2.Zero);
-      
+
 
             //Dunno if this is needed but whatever
             Projectile.rotation = Projectile.velocity.ToRotation();
@@ -133,7 +130,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public float WidthFunction(float completionRatio)
         {
-            return MathHelper.SmoothStep(24, 16, completionRatio) * Easing.SpikeOutCirc(Timer/120f);
+            return MathHelper.SmoothStep(24, 16, completionRatio) * Easing.SpikeOutCirc(Timer / 120f);
         }
 
         public Color ColorFunction(float completionRatio)

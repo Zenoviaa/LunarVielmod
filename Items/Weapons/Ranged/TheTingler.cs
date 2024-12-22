@@ -1,6 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;
@@ -65,18 +63,5 @@ namespace Stellamod.Items.Weapons.Ranged
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
 
         }
-        /*
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 10);
-            recipe.AddRecipeGroup(nameof(ItemID.IronBar), 10);
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
-            recipe.AddIngredient(ItemID.Spike, 100);
-            recipe.Register();
-        }*/
     }
 }

@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.Sylia;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
@@ -50,7 +49,7 @@ namespace Stellamod.Projectiles.Gun
             float targetBeamLength = PerformBeamHitscan();
             BeamLength = targetBeamLength;
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 switch (Main.rand.Next(2))
                 {
@@ -124,7 +123,7 @@ namespace Stellamod.Projectiles.Gun
                     particle.Rotation = rot + MathHelper.ToRadians(45);
                 }
 
-                for(float f = 0; f < 24; f++)
+                for (float f = 0; f < 24; f++)
                 {
                     float progress = f / 24f;
                     float rot = progress * MathHelper.ToRadians(360);

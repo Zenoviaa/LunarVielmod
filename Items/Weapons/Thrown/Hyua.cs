@@ -39,7 +39,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.DamageType = DamageClass.Throwing;
             Item.width = 0;
             Item.height = 0;
-   
+
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 4;
             Item.value = 700;

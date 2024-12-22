@@ -1,7 +1,4 @@
-﻿using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Molds;
-using Stellamod.Items.Ores;
-using Stellamod.Projectiles.Crossbows.Ultras;
+﻿using Stellamod.Projectiles.Crossbows.Ultras;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -49,24 +46,10 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
             Item.value = Item.buyPrice(silver: 12);
             Item.noUseGraphic = true;
             Item.channel = true;
-       
+
 
         }
 
-
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Coral, 10);
-            recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<BlankCrossbow>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<DesertCrossbow>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<DungeonCrossbow>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<FrostyCrossbow>(), 1);
-            recipe.Register();
-        }
 
 
     }

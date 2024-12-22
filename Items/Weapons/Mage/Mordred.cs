@@ -1,10 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Magic;
-using Stellamod.Projectiles.Spears;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -23,12 +20,12 @@ namespace Stellamod.Items.Weapons.Mage
         }
         public override void SetStaticDefaults()
         {
-     
-             // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
+
+            // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
             ItemID.Sets.ItemNoGravity[Item.type] = true; // Makes the item have no gravity
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
-     
+
 
         public override void SetDefaults()
         {

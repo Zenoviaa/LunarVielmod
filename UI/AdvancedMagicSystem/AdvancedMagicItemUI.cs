@@ -105,7 +105,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
 
 
             //Hacky way to get invisible scrollbar when there's no need for it
-            if(_panel.Height.Pixels < Height.Pixels)
+            if (_panel.Height.Pixels < Height.Pixels)
             {
                 _scrollbar.Top.Set(500000, 0f);
             }

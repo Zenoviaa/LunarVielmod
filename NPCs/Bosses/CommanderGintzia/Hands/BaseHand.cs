@@ -94,7 +94,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
             {
                 SwitchState(AIState.Despawn);
             }
-  
+
             switch (State)
             {
                 case AIState.Orbit:
@@ -129,7 +129,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
             Timer++;
             DespawnProgress = Timer / 60f;
             NPC.velocity *= 0.92f;
-            if(Timer >= 60)
+            if (Timer >= 60)
             {
                 NPC.Kill();
             }
@@ -171,7 +171,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
             float drawScale = NPC.scale;
             float dp = 1f - DespawnProgress;
 
-            if(State == AIState.Orbit)
+            if (State == AIState.Orbit)
             {
                 drawColor = drawColor.MultiplyRGB(Color.Gray);
             }

@@ -34,7 +34,7 @@ namespace Stellamod.Items.MoonlightMagic
             p.netUpdate = true;
         }
 
-         
+
         public static void CloneMagicProjectile(AdvancedMagicProjectile sourceProjectile,
             Vector2 position, Vector2 velocity, int damage, float knockback, int trailLength, float size)
         {

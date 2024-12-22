@@ -1,10 +1,10 @@
-﻿using Stellamod.Systems.MiscellaneousMath;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Helpers;
+using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using Terraria;
@@ -127,14 +127,14 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         private Color ColorFunction(float completionRatio)
         {
             Color c = Color.White;
-            if(trailingMode == 0)
+            if (trailingMode == 0)
             {
                 Color backColor = Color.Lerp(Color.Lerp(Color.Black, Color.Blue, 0.3f), Color.Black, VectorHelper.Osc(0f, 1f, speed: 3f));
                 Color frontColor = Color.Lerp(Color.Pink, Color.White, VectorHelper.Osc(0f, 1f, speed: 3f));
                 c = Color.Lerp(frontColor, backColor, Easing.OutExpo(completionRatio, 5f));
                 return c;
             }
-           
+
 
             c.R = 0;
             c.G = 0;

@@ -1,13 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 
 namespace Stellamod.Common.Shaders
@@ -40,7 +34,7 @@ namespace Stellamod.Common.Shaders
             NoiseTexture = TrailRegistry.CrystalNoise;
             SourceSize = CloudTexture.Value.Size();
 
-            CloudColor = Color.Lerp(Color.DarkGray,  Color.DarkGoldenrod, 0.5f);
+            CloudColor = Color.Lerp(Color.DarkGray, Color.DarkGoldenrod, 0.5f);
             Speed = 5;
             Pixelation = 0.01f;
             Distortion = 0.0015f;

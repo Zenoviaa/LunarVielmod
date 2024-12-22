@@ -3,10 +3,9 @@ using Stellamod.Common.ArmorShop;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.UI;
 using Terraria.Audio;
+using Terraria.ID;
+using Terraria.UI;
 
 namespace Stellamod.UI.ArmorShopSystem
 {
@@ -80,7 +79,7 @@ namespace Stellamod.UI.ArmorShopSystem
                 if (player.CountItem(armorSet.material.type) >= armorSet.material.stack)
                     return true;
             }
-  
+
             return false;
         }
 
@@ -91,7 +90,7 @@ namespace Stellamod.UI.ArmorShopSystem
             {
                 player.RemoveItem(armorSet.material.type, armorSet.material.stack);
             }
-  
+
             armorSet.QuickSpawn(player);
             SoundEngine.PlaySound(SoundID.Coins);
         }

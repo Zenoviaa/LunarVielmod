@@ -46,7 +46,7 @@ namespace Stellamod.Items.Accessories.Catacombs
                             break;
                     }
                 }
-               
+
 
                 if (hit.Crit && Main.rand.NextBool(2))
                 {

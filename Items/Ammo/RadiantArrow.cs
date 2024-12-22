@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Stellamod.Projectiles.Ammo;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
-using Stellamod.Projectiles.Ammo;
-using Stellamod.Items.Ores;
 
 namespace Stellamod.Items.Ammo
 {
@@ -33,16 +27,5 @@ namespace Stellamod.Items.Ammo
             Item.shootSpeed = 16f; // The speed of the projectile.
             Item.ammo = AmmoID.Arrow; // The ammo class this ammo belongs to.
         }
-
-        // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-        public override void AddRecipes()
-        {
-            CreateRecipe(100)
-                .AddIngredient(ItemID.WoodenArrow, 100)
-                .AddIngredient(ModContent.ItemType<RadianuiBar>(), 2)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
-        }
-    
     }
 }

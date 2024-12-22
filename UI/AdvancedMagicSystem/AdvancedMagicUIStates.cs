@@ -1,13 +1,4 @@
-﻿using Stellamod.Items.MoonlightMagic;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System.Reflection;
-using System;
-using Terraria.ModLoader.Config;
-using Terraria.ModLoader;
-using Terraria;
-using Terraria.UI;
-using Microsoft.Xna.Framework;
+﻿using Terraria.UI;
 
 namespace Stellamod.UI.AdvancedMagicSystem
 {
@@ -17,7 +8,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
         public AdvancedMagicElementUI elementUI;
         public StaffUIState() : base()
         {
- 
+
         }
 
         public override void OnInitialize()
@@ -59,6 +50,6 @@ namespace Stellamod.UI.AdvancedMagicSystem
             Append(_buttonUI);
         }
 
-  
+
     }
 }

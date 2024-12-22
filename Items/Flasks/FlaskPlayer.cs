@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -35,7 +34,7 @@ namespace Stellamod.Items.Flasks
                 int ownedCount = Player.ownedProjectileCounts[ModContent.ProjectileType<InsourceDefaultProjectile>()];
                 if (ownedCount == 0)
                 {
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, 
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
                         ModContent.ProjectileType<InsourceDefaultProjectile>(), 0, 0,
                         Owner: Player.whoAmI, ai1: Insource.type);
                 }

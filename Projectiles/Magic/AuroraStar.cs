@@ -57,14 +57,14 @@ namespace Stellamod.Projectiles.Magic
             base.AI();
 
             Timer++;
-            if(Timer > 120)
+            if (Timer > 120)
             {
                 Projectile.tileCollide = true;
             }
 
             if (Timer % 36 == 0)
             {
-              //  Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, MainColor, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                //  Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, MainColor, Main.rand.NextFloat(1f, 3f)).noGravity = true;
             }
             if (Main.myPlayer == Projectile.owner && TargetPosition == Vector2.Zero)
             {

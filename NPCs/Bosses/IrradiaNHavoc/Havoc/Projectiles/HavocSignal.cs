@@ -1,7 +1,7 @@
-﻿using Terraria.ModLoader;
+﻿using Stellamod.Helpers;
 using Terraria;
 using Terraria.DataStructures;
-using Stellamod.Helpers;
+using Terraria.ModLoader;
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles
 {
     internal class HavocSignal : ModNPC

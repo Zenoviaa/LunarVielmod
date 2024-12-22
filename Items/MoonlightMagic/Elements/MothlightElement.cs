@@ -1,8 +1,8 @@
-﻿using Stellamod.Systems.MiscellaneousMath;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
+using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Graphics.Shaders;

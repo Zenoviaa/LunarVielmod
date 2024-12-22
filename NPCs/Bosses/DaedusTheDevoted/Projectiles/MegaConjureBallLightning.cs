@@ -88,7 +88,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Wave");
                 soundStyle.PitchVariance = 0.15f;
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
-       
+
             }
 
             if (Timer % 3 == 0)
@@ -101,7 +101,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                     float osc = VectorHelper.Osc(256, 384, speed: 3);
                     float p = Timer / 300f;
                     osc *= MathHelper.Lerp(1f, 0.5f, p);
-                    Vector2 offset = rot.ToRotationVector2() * MathF.Sin(Timer * 8 * i) * MathF.Sin(Timer * i) * osc; 
+                    Vector2 offset = rot.ToRotationVector2() * MathF.Sin(Timer * 8 * i) * MathF.Sin(Timer * i) * osc;
                     _lightningZaps[i] = Projectile.Center + offset;
                 }
                 Lightning.RandomPositions(_lightningZaps);
@@ -126,9 +126,9 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 _scale = MathHelper.Lerp(0f, Main.rand.NextFloat(4.5f, 6), Timer / 300f);
             }
 
-            if(Timer < 300)
+            if (Timer < 300)
             {
-                if(Parent != -1)
+                if (Parent != -1)
                 {
                     NPC parentNpc = Main.npc[(int)Parent];
                     Projectile.Center = parentNpc.Center - new Vector2(0, 256);
@@ -137,13 +137,13 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 
             }
 
-            if(Timer > 300)
+            if (Timer > 300)
             {
 
                 Projectile.velocity = Vector2.UnitY * 3;
             }
 
-            if(Timer > 450)
+            if (Timer > 450)
             {
                 Projectile.tileCollide = true;
             }

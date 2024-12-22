@@ -1,9 +1,6 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
-using Stellamod.NPCs.Bosses.Zui.Projectiles;
+﻿using Stellamod.NPCs.Bosses.Zui.Projectiles;
 using Terraria;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 
 namespace Stellamod.UI.Dialogue
 {
@@ -62,7 +59,7 @@ namespace Stellamod.UI.Dialogue
                 {
                     ZuiDeath zui = npc.ModNPC as ZuiDeath;
                     zui.DM = true;
-                  
+
                 }
             }
             //Do something when the dialogue is completely finished

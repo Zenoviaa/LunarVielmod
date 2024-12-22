@@ -110,7 +110,7 @@ namespace Stellamod.NPCs.Desert
             }
 
             Player target = Main.player[NPC.target];
-            if (NPC.HasValidTarget && 
+            if (NPC.HasValidTarget &&
                 Collision.CanHitLine(NPC.position, NPC.width, NPC.height, target.position, target.width, target.height))
             {
                 Vector2 targetCenter = target.Center + new Vector2(WanderX * 20, WanderY * 20);

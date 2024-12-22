@@ -18,7 +18,7 @@ namespace Stellamod.Items.MoonlightMagic
             var uiSystem = ModContent.GetInstance<AdvancedMagicUISystem>();
             bool success = false;
             int updateIndex = 0;
-            for(int i = 0; i < Backpack.Count; i++)
+            for (int i = 0; i < Backpack.Count; i++)
             {
                 if (Backpack[i].IsAir)
                 {
@@ -33,7 +33,7 @@ namespace Stellamod.Items.MoonlightMagic
             {
                 updateIndex = Backpack.Count;
                 Backpack.Add(item);
-            }    
+            }
 
             int airCount = 0;
             for (int i = 0; i < Backpack.Count; i++)
@@ -70,7 +70,7 @@ namespace Stellamod.Items.MoonlightMagic
                 uiSystem.Recalculate();
             }
 
-            for(int i = 0; i < Backpack.Count; i++)
+            for (int i = 0; i < Backpack.Count; i++)
             {
                 if (Backpack[i].IsAir && i + 1 < Backpack.Count)
                 {

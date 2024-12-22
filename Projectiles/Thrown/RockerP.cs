@@ -62,12 +62,12 @@ namespace Stellamod.Projectiles.Thrown
             if (Timer == 99)
             {
                 ShakeModSystem.Shake = 4;
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(),Projectile.Center, Vector2.Zero,
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                         ModContent.ProjectileType<AivanKaboom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
                 }
-          
+
                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
                 Projectile.Kill();
             }

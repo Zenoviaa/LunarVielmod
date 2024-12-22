@@ -237,7 +237,6 @@
     <None Remove="Items\Placeable\Alcadzia\RectiteI.png" />
     <None Remove="Items\Placeable\Alcadzia\SkullpileI.png" />
     <None Remove="Items\Placeable\CatacombsDoor.png" />
-    <None Remove="Items\Placeable\CatacombsSummoni.png" />
     <None Remove="Items\Placeable\Cathedral\GovheilCastleBlock.png" />
     <None Remove="Items\Placeable\Govheil\GothivA.png" />
     <None Remove="Items\Placeable\Govheil\GothWall.png" />
@@ -247,7 +246,6 @@
     <None Remove="Items\Placeable\Illurian\IlluriaTreeMedI.png" />
     <None Remove="Items\Placeable\Illurian\IlluriaTreeSmallI.png" />
     <None Remove="Items\Placeable\Ishtar\BushyEyesI.png" />
-    <None Remove="Items\Placeable\Laboratory\GLabCrystal.png" />
     <None Remove="Items\Placeable\Laboratory\LabHall.png" />
     <None Remove="Items\Placeable\Manor\DrakonicCageI.png" />
     <None Remove="Items\Placeable\Manor\DrakonicHallI.png" />
@@ -619,6 +617,7 @@
   <ItemGroup>
     <Folder Include="Assets\Textures\Menu\" />
     <Folder Include="Items\Accessories\Shields\" />
+    <Folder Include="Items\Shrines\UnderworldRuins\" />
     <Folder Include="NPCs\Event\Gintzearmy\BossGintze\" />
     <Folder Include="Projectiles\Hostile\" />
     <Folder Include="Projectiles\FX\" />
@@ -626,6 +625,7 @@
     <Folder Include="Projectiles\Slashers\X3107\" />
     <Folder Include="Projectiles\Swords\Slashes\" />
     <Folder Include="Structures\Catacombs\" />
+    <Folder Include="Tiles\Structures\UnderworldRuins\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ParticleLibrary">

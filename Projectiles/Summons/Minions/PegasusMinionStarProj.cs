@@ -2,8 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
-using Stellamod.Projectiles;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -64,7 +62,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
 
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 OldVelocity = Projectile.velocity;
             }
@@ -90,7 +88,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 Color[] colors = new Color[] { Color.LightCyan, Color.Cyan, Color.Blue, Color.White };
                 Color color = colors[Main.rand.Next(0, colors.Length)];
                 float scale = Main.rand.NextFloat(0.5f, 0.8f);
-                            }
+            }
 
             Projectile.rotation += 0.05f;
             Lighting.AddLight(Projectile.position, Color.White.ToVector3() * 0.78f);
@@ -161,7 +159,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                 float scale = Main.rand.NextFloat(0.3f, 0.5f);
-                            }
+            }
         }
     }
 }

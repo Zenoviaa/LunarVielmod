@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Projectiles.Gun;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using Terraria;
@@ -87,7 +86,7 @@ namespace Stellamod.Projectiles.GunHolster
             }
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 16f);
-          
+
 
 
 
@@ -96,12 +95,12 @@ namespace Stellamod.Projectiles.GunHolster
             SoundEngine.PlaySound(soundStyle, Projectile.position);
 
             Vector2 velocity2 = Projectile.velocity;
-                velocity2 = -velocity2;
-                velocity2 = velocity2.RotatedByRandom(MathHelper.PiOver4 + MathHelper.PiOver2);
-                velocity2 *= Main.rand.NextFloat(0.5f, 1f);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity2 * 0,
-                    ModContent.ProjectileType<PiranhaBoomMini>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
-            
+            velocity2 = -velocity2;
+            velocity2 = velocity2.RotatedByRandom(MathHelper.PiOver4 + MathHelper.PiOver2);
+            velocity2 *= Main.rand.NextFloat(0.5f, 1f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity2 * 0,
+                ModContent.ProjectileType<PiranhaBoomMini>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+
         }
     }
 }

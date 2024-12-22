@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Trails;
 using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -20,13 +19,13 @@ namespace Stellamod.Projectiles.Slashers.ArchariliteRaysword
         public int combowombo;
         private bool _initialized;
         private int timer;
-          public override void SetStaticDefaults()
-          {
+        public override void SetStaticDefaults()
+        {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 4;
         }
 
-          
+
         public override void SetDefaults()
         {
             Projectile.damage = 10;

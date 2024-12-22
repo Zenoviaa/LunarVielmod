@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Foggy;
-using Stellamod.UI.PopupSystem;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;

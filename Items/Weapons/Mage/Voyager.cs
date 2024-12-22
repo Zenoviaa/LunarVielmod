@@ -1,8 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Slashers.Voyager;
 using Terraria;
 using Terraria.Audio;
@@ -85,22 +83,10 @@ namespace Stellamod.Items.Weapons.Mage
             }
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage * 3, knockback, player.whoAmI, 1, dir);
-           
 
-           
+
+
             return false;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 23);
-            recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 30);
-            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
-            recipe.AddIngredient(ModContent.ItemType<AlcadizMetal>(), 9);
-            recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
-            recipe.Register();
         }
     }
 }

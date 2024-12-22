@@ -1,5 +1,4 @@
-﻿using Stellamod.Systems.MiscellaneousMath;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
@@ -154,8 +153,8 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         {
             Color endColor = Color.Lerp(Color.SeaGreen, Color.LightBlue, VectorHelper.Osc(0f, 1f, speed: 3f));
             endColor = Color.Lerp(Color.White, endColor, VectorHelper.Osc(0f, 1f, speed: 3f, offset: 4));
-             Color c = Color.Lerp(Color.White, endColor, completionRatio);
-            
+            Color c = Color.Lerp(Color.White, endColor, completionRatio);
+
             return c;
         }
         private float WidthFunction(float completionRatio)
@@ -170,15 +169,15 @@ namespace Stellamod.Items.MoonlightMagic.Elements
         {
             base.DrawForm(spriteBatch, formTexture, drawPos, drawColor, lightColor, drawRotation, drawScale);
             spriteBatch.Restart(blendState: BlendState.Additive);
-         
-            for(float f = 0f; f <1f; f+= 0.1f)
+
+            for (float f = 0f; f < 1f; f += 0.1f)
             {
                 float rot = f * MathHelper.ToRadians(360);
                 rot += Main.GlobalTimeWrappedHourly * 0.05f;
                 Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(4f, 7f);
-                base.DrawForm(spriteBatch, formTexture, drawPos  + offset, drawColor * 0.3f, lightColor, drawRotation, drawScale);
+                base.DrawForm(spriteBatch, formTexture, drawPos + offset, drawColor * 0.3f, lightColor, drawRotation, drawScale);
             }
-          
+
             spriteBatch.RestartDefaults();
         }
 
@@ -211,7 +210,7 @@ namespace Stellamod.Items.MoonlightMagic.Elements
 
             //This just applis the shader changes
             TrailDrawer.Draw(Main.spriteBatch, MagicProj.OldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
-       
+
         }
 
 

@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
+﻿using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Terraria;
 using Terraria.ID;
@@ -46,10 +45,10 @@ namespace Stellamod.UI.Dialogue
         {
 
             //Do something when the dialogue is completely finished
-            if(Main.netMode != NetmodeID.SinglePlayer)
+            if (Main.netMode != NetmodeID.SinglePlayer)
             {
-                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), 
-                    (byte)MessageType.StartBossFromDialogue, 
+                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(),
+                    (byte)MessageType.StartBossFromDialogue,
                     (int)DialogueType.Start_Verlia).Send(-1);
             }
             else
@@ -64,7 +63,7 @@ namespace Stellamod.UI.Dialogue
                     }
                 }
             }
-       
+
             base.Complete();
         }
     }

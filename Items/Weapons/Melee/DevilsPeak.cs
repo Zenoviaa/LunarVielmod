@@ -1,10 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -80,6 +77,6 @@ namespace Stellamod.Items.Weapons.Melee
             return false;
         }
 
-     
+
     }
 }

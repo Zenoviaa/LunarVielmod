@@ -1,16 +1,15 @@
-﻿using Stellamod.Helpers;
-using Terraria;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Items.Armors.Scrappy;
-using Stellamod.Projectiles.Gun;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
-using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons
 {
-    internal class ScrappyGunProj  : ModProjectile
+    internal class ScrappyGunProj : ModProjectile
     {
         private bool _flip;
         public override void SetStaticDefaults()
@@ -44,7 +43,7 @@ namespace Stellamod.Projectiles.Summons
             Projectile.Center = player.Center + new Vector2(0, -64) + new Vector2(0, VectorHelper.Osc(0, -2));
             if (foundTarget)
             {
-                if(ai_Kill == 1)
+                if (ai_Kill == 1)
                 {
                     ai_Kill = 0;
                     Vector2 velocity = Projectile.rotation.ToRotationVector2();
@@ -52,14 +51,14 @@ namespace Stellamod.Projectiles.Summons
                         ModContent.ProjectileType<ScrappyGunLaser>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai0: Projectile.whoAmI);
                     SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.position);
                 }
-            
+
                 float targetRotation = Projectile.DirectionTo(targetCenter).ToRotation();
                 Projectile.rotation = MathHelper.WrapAngle(MathHelper.Lerp(Projectile.rotation, targetRotation, 0.04f));
                 if (targetCenter.X < Projectile.Center.X)
                     _flip = true;
                 else
                     _flip = false;
-            } 
+            }
             else
             {
                 ai_Kill = 1;
@@ -76,7 +75,7 @@ namespace Stellamod.Projectiles.Summons
         {
             Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
             SpriteEffects spriteEffects = SpriteEffects.None;
-            if(_flip)
+            if (_flip)
             {
                 spriteEffects = SpriteEffects.FlipVertically;
             }

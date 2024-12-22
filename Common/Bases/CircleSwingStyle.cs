@@ -1,11 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ID;
 using Terraria;
+using Terraria.ID;
 
 namespace Stellamod.Common.Bases
 {
@@ -85,7 +80,7 @@ namespace Stellamod.Common.Bases
 
                 Vector2 pos = Owner.RotatedRelativePoint(Owner.MountedCenter);
                 pos += rot.ToRotationVector2() * (SwingProjectile.GetFramingSize());
-       
+
                 if (spinCenter)
                 {
                     Vector2 d = (Owner.RotatedRelativePoint(Owner.MountedCenter) - pos).SafeNormalize(Vector2.Zero);

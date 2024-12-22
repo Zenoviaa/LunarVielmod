@@ -1,18 +1,8 @@
-﻿using Stellamod.Helpers;
-using Stellamod.Projectiles.Gun;
-using Stellamod.UI.Systems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.Audio;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
-using Microsoft.Xna.Framework;
-
-using Stellamod.Particles;
 
 namespace Stellamod.Projectiles.GunHolster
 {

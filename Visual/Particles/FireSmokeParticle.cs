@@ -1,10 +1,5 @@
-﻿using Stellamod.Common.Particles;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.Particles;
 using Terraria;
 
 namespace Stellamod.Visual.Particles
@@ -29,7 +24,7 @@ namespace Stellamod.Visual.Particles
             Velocity *= 0.98f;
             Rotation += 0.01f;
             Scale *= 0.96f;
-          //  color *= 0.99f;
+            //  color *= 0.99f;
 
             FrameCounter++;
             if (FrameCounter >= TicksPerFrame)

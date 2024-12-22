@@ -1,7 +1,6 @@
 ﻿using Stellamod.Common.Bases;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Thrown.Jugglers;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

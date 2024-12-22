@@ -64,7 +64,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
     public class ZhielhanderSwordSlash : BaseSwingProjectile
     {
         private NPCSucker _npcSucker;
-        public override string Texture => this.PathHere()+"/Zhielhander";
+        public override string Texture => this.PathHere() + "/Zhielhander";
         public bool Hit;
 
         public override void SetStaticDefaults()
@@ -354,7 +354,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
     }
     public class ZhielhanderStaminaSlash : BaseSwingProjectile
     {
-        public override string Texture => this.PathHere()+"/Zhielhander";
+        public override string Texture => this.PathHere() + "/Zhielhander";
         public bool Hit;
 
         public override void SetStaticDefaults()

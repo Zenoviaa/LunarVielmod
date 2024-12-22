@@ -41,7 +41,7 @@ namespace Stellamod.Items.Weapons.Melee.Spears
             Item.DamageType = DamageClass.Melee;
             Item.shoot = ModContent.ProjectileType<StalkersTallonSpear>();
             Item.shootSpeed = 20f;
-  
+
             Item.useAnimation = 20;
             Item.useTime = 30;
             Item.consumeAmmoOnLastShotOnly = true;

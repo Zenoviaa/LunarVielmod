@@ -1,10 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -46,12 +43,12 @@ namespace Stellamod.Projectiles.Magic
 
             if (greb == 5)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<KaBoomFenix>(), Projectile.damage / 5, 0f, Projectile.owner, 0f, 0f);
-             
+
                 for (int i = 0; i < 5; i++)
                 {
-                                    }
+                }
 
                 greb = 0;
             }

@@ -1,7 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.DataStructures;
@@ -54,15 +51,7 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             return new Vector2(-5f, 0f);
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 12);
-            recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 20);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             damage = Item.damage / 2;

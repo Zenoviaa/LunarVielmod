@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials.Tech;
 using Terraria;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -51,14 +49,6 @@ namespace Stellamod.Items.Consumables
             float y = VectorHelper.Osc(-hoverRange, hoverRange, hoverSpeed);
             Vector2 position = new Vector2(Item.position.X, Item.position.Y + y);
             Item.position = position;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<FocusingCrystal>(), 1);
-            recipe.AddCondition(Condition.NearLava);
-            recipe.Register();
         }
     }
 }

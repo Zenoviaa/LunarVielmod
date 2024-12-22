@@ -1,5 +1,4 @@
-﻿using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Thrown;
+﻿using Stellamod.Projectiles.Thrown;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -35,17 +34,6 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<DogmaBallsProj>();
             Item.shootSpeed = 20;
-        }
-
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Book, 1);
-            recipe.AddIngredient(ModContent.ItemType<IllurineScale>(), 16);
-            recipe.AddIngredient(ItemID.Ectoplasm, 5);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
         }
     }
 }

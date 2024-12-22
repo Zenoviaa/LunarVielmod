@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Dusts;
-using Stellamod.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -25,29 +24,29 @@ namespace Stellamod.Projectiles.Gun
         }
     }
     public class VoidBlasterProj : ModProjectile
-	{
+    {
         private Player Owner => Main.player[Projectile.owner];
         public override void SetStaticDefaults()
-		{
+        {
             // DisplayName.SetDefault("Granite MagmumProj");
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
-		}
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+        }
 
-		public override void SetDefaults()
-		{
-			Projectile.CloneDefaults(ProjectileID.Bullet);
-			AIType = ProjectileID.Bullet;
-			Projectile.penetrate = 1;
-			Projectile.width = 15;
-			Projectile.height = 15;
-		}
+        public override void SetDefaults()
+        {
+            Projectile.CloneDefaults(ProjectileID.Bullet);
+            AIType = ProjectileID.Bullet;
+            Projectile.penetrate = 1;
+            Projectile.width = 15;
+            Projectile.height = 15;
+        }
 
 
-		public override void AI()
+        public override void AI()
         {
             int num1222 = 74;
-            if (Projectile.ai[1]  % 12 == 0)
+            if (Projectile.ai[1] % 12 == 0)
             {
                 for (int k = 0; k < 2; k++)
                 {
@@ -71,8 +70,8 @@ namespace Stellamod.Projectiles.Gun
                 int jim = 1;
                 for (int index1 = 0; index1 < 200; index1++)
                 {
-					if (Main.npc[index1].CanBeChasedBy(Projectile, false)
-						&& Projectile.Distance(Main.npc[index1].Center) < 500
+                    if (Main.npc[index1].CanBeChasedBy(Projectile, false)
+                        && Projectile.Distance(Main.npc[index1].Center) < 500
                         && Collision.CanHit(Projectile.Center, 1, 1, Main.npc[index1].Center, 1, 1))
                     {
                         flag25 = true;
@@ -97,15 +96,15 @@ namespace Stellamod.Projectiles.Gun
             }
         }
 
-		public override bool OnTileCollide(Vector2 oldVelocity)
-		{
-			Projectile.timeLeft = 1;
-			return false;
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            Projectile.timeLeft = 1;
+            return false;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             VoidBlasterPlayer voidBlasterPlayer = Owner.GetModPlayer<VoidBlasterPlayer>();
-            if(target.whoAmI != voidBlasterPlayer.npcWhoAmI)
+            if (target.whoAmI != voidBlasterPlayer.npcWhoAmI)
             {
                 voidBlasterPlayer.npcWhoAmI = target.whoAmI;
                 voidBlasterPlayer.hitCount = 0;
@@ -113,7 +112,7 @@ namespace Stellamod.Projectiles.Gun
             else
             {
                 voidBlasterPlayer.hitCount++;
-                if(voidBlasterPlayer.hitCount >= 6)
+                if (voidBlasterPlayer.hitCount >= 6)
                 {
                     voidBlasterPlayer.hitCount = 0;
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center.X, target.Center.Y, 0, 0,
@@ -144,24 +143,24 @@ namespace Stellamod.Projectiles.Gun
         }
 
         public override bool PreDraw(ref Color lightColor)
-		{
-			Main.spriteBatch.End();
+        {
+            Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-			Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
-			for (int k = 0; k < Projectile.oldPos.Length; k++)
-			{
-				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(Color.Lerp(new Color(1, 244, 255), new Color(67, 37, 172), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
+            Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
+            for (int k = 0; k < Projectile.oldPos.Length; k++)
+            {
+                Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
+                Color color = Projectile.GetAlpha(Color.Lerp(new Color(1, 244, 255), new Color(67, 37, 172), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
                 Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
-			}
+            }
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-			return false;
-		}
+            return false;
+        }
 
-		public override void OnKill(int timeLeft)
-		{
-			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+        public override void OnKill(int timeLeft)
+        {
+            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
             for (int i = 0; i < 7; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DodgerBlue, 0.5f).noGravity = true;
@@ -171,5 +170,5 @@ namespace Stellamod.Projectiles.Gun
                 Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 240, Color.DarkGray, 1f).noGravity = true;
             }
         }
-	}
+    }
 }

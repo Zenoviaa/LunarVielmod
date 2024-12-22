@@ -72,7 +72,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             base.SendExtraAI(writer);
             writer.WriteVector2(HoverOffset);
         }
-        
+
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
@@ -114,20 +114,20 @@ namespace Stellamod.Projectiles.Summons.Minions
         {
             Vector2 hoverPosition = Owner.Center + HoverOffset;
             Vector2 targetVelocity = (hoverPosition - Projectile.Center).SafeNormalize(Vector2.Zero);
-   
+
             Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, hoverPosition, 3);
             float distanceToOwner = Vector2.Distance(Projectile.Center, Owner.Center);
-            if(distanceToOwner > 512)
+            if (distanceToOwner > 512)
             {
                 Projectile.velocity *= 1.01f;
             }
             else
             {
-                if(Projectile.velocity.Length() > 5)
+                if (Projectile.velocity.Length() > 5)
                     Projectile.velocity *= 0.98f;
             }
 
-            if(Main.myPlayer == Projectile.owner)
+            if (Main.myPlayer == Projectile.owner)
             {
                 if (Main.rand.NextBool(25))
                 {
@@ -152,7 +152,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                     Projectile.netUpdate = true;
                 }
 
-        
+
                 ShootTimer = 15;
                 //_scaleOffset += 0.1f;
             }
@@ -249,7 +249,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             float drawRotation = Projectile.rotation;
             float drawScale = VectorHelper.Osc(0.75f, 1f, offset: Projectile.whoAmI);
 
-    
+
             drawScale += MathHelper.Lerp(0.25f, 0.5f, ep);
             SpriteEffects dir = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             spriteBatch.Draw(texture, drawPos, frame, drawColor, drawRotation, drawOrigin, drawScale, dir, 0);

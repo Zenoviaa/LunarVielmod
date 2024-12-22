@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -113,8 +112,10 @@ namespace Stellamod.Projectiles.Summons.Minions
                 Projectile.velocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, targetCenter + offset, 8);
                 if (Timer == 1)
                 {
+                    /*
                     NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y,
                      ModContent.NPCType<SingularitySpark>());
+                    */
                 }
 
                 if (Timer > 20 && Timer % 7 == 0 && Timer < 100)

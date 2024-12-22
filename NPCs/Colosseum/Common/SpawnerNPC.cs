@@ -107,11 +107,11 @@ namespace Stellamod.NPCs.Colosseum.Common
             Vector2 drawOrigin = NPC.frame.Size() / 2f;
             float rotation = NPC.rotation;
             float scale = NPC.scale;
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor, rotation, drawOrigin, scale, SpriteEffects.None, 0);
             }
-          
+
             spriteBatch.RestartDefaults();
         }
 
@@ -130,12 +130,12 @@ namespace Stellamod.NPCs.Colosseum.Common
             float progress = Timer / 100f;
             float easedProgress = Easing.InOutCubic(progress);
             float scale = NPC.scale * easedProgress;
-            for(int i = 0; i < 8; i++)
+            for (int i = 0; i < 8; i++)
             {
                 spriteBatch.Draw(texture, drawPos, frame, drawColor, rotation, drawOrigin, scale, SpriteEffects.None, 0);
             }
             spriteBatch.RestartDefaults();
-           
+
         }
     }
 }

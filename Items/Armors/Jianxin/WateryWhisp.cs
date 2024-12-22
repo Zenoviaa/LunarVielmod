@@ -67,7 +67,7 @@ namespace Stellamod.Items.Armors.Jianxin
             UpdateFrame(1f, 1, 96);
         }
 
-        
+
         public override Color? GetAlpha(Color lightColor)
         {
             return new Color(200, 200, 200, 0) * (1f - Projectile.alpha / 50f);

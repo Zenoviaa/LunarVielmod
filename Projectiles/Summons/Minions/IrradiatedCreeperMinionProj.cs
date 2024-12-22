@@ -1,15 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs;
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Projectiles.Magic;
 using Stellamod.Trails;
-using System;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -32,7 +28,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             Exploding
         }
         public PrimDrawer TrailDrawer { get; private set; } = null;
-        
+
         private AIState State
         {
             get => (AIState)Projectile.ai[0];
@@ -64,7 +60,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
         }
 
-        public  override void SetDefaults()
+        public override void SetDefaults()
         {
             Projectile.width = 30;
             Projectile.height = 30;
@@ -74,13 +70,13 @@ namespace Stellamod.Projectiles.Summons.Minions
             // These below are needed for a minion weapon
             // Only controls if it deals damage to enemies on contact (more on that later)
             Projectile.friendly = true;
-            
+
             // Only determines the damage type
             Projectile.minion = true;
-           
+
             // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
             Projectile.minionSlots = 1f;
-          
+
             // Needed so the minion doesn't despawn on collision with enemies or tiles
             Projectile.penetrate = -1;
             Projectile.usesLocalNPCImmunity = true;
@@ -162,13 +158,13 @@ namespace Stellamod.Projectiles.Summons.Minions
                 Projectile.velocity = Vector2.UnitY;
             else
             {
-                if(Projectile.velocity.Length() < 5)
+                if (Projectile.velocity.Length() < 5)
                     Projectile.velocity *= 1.02f;
                 Projectile.extraUpdates = (int)MathHelper.Lerp(0f, 2f, Timer / 120f);
                 Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, TargetPosition, 6f);
             }
 
-            if(Timer >= 120)
+            if (Timer >= 120)
             {
                 SwitchState(AIState.Exploding);
             }
@@ -186,10 +182,10 @@ namespace Stellamod.Projectiles.Summons.Minions
             Projectile.velocity = Vector2.Lerp(Projectile.velocity, vel, 0.1f);
             Projectile.extraUpdates = 0;
             ExplodingProgress = Easing.InExpo(Timer / 30f);
-            if(Timer >= 30)
+            if (Timer >= 30)
             {
                 //EXPLODE
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<IrradiatedBoom>(), Projectile.damage, 1, Projectile.owner, 0, 0);
                 }
@@ -235,7 +231,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 }
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048f, 16f);
                 Projectile.velocity = -Vector2.UnitY * 8;
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     Projectile.velocity = Projectile.velocity.RotatedByRandom(MathHelper.TwoPi);
                     Projectile.netUpdate = true;

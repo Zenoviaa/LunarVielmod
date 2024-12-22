@@ -4,12 +4,11 @@ using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviFrostCircleProj: ModProjectile,
+    internal class NiiviFrostCircleProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         public override string Texture => TextureRegistry.EmptyTexture;
@@ -31,7 +30,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
         public override void AI()
         {
-            if(Projectile.timeLeft > 25)
+            if (Projectile.timeLeft > 25)
             {
                 Alpha += 0.01f;
                 if (Alpha >= 0.25f)
@@ -48,7 +47,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             foreach (var player in Main.ActivePlayers)
             {
                 float distance = Vector2.Distance(Projectile.Center, player.Center);
-                if(distance > CircleRadius)
+                if (distance > CircleRadius)
                 {
                     player.AddBuff(ModContent.BuffType<FlamesOfIlluria>(), 2);
                 }
@@ -68,7 +67,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         internal PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, 
+            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true,
                 TrailRegistry.LaserShader);
             // Some visuals here
             BeamDrawer.SpecialShader = TrailRegistry.FireWhiteVertexShader;

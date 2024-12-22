@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Magic;
@@ -7,7 +6,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Gun
 {
@@ -80,7 +78,7 @@ namespace Stellamod.Projectiles.Gun
                         baseSize: Main.rand.NextFloat(0.08f, 0.2f));
                     particle.Rotation = rot + MathHelper.ToRadians(45);
                 }
-    
+
             }
 
             if (Timer == 14 && Main.myPlayer == Projectile.owner)
@@ -90,7 +88,7 @@ namespace Stellamod.Projectiles.Gun
                     ModContent.ProjectileType<PericarditisBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
 
-            if(Timer == 22)
+            if (Timer == 22)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowSkullDust>(), Vector2.Zero, 0, Color.Purple, 1f).noGravity = true;
             }

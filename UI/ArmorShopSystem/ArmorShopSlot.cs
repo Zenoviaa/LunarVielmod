@@ -1,10 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.ArmorShop;
-using Stellamod.UI.ArmorReforgeSystem;
 using System;
 using Terraria;
-using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -61,14 +59,14 @@ namespace Stellamod.UI.ArmorShopSystem
 
             spriteBatch.End();
             spriteBatch.Begin(default, BlendState.Additive, default, default, default, default, Main.UIScaleMatrix);
-            for(int i =0; i <4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos + new Vector2(0, 3) + new Vector2(-2, 0), _scale, 32, Color.White);
                 ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos + new Vector2(0, 3) + new Vector2(2, 0), _scale, 32, Color.White);
                 ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos + new Vector2(0, 3) + new Vector2(0, -2), _scale, 32, Color.White);
                 ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos + new Vector2(0, 3) + new Vector2(0, 2), _scale, 32, Color.White);
             }
-           
+
             spriteBatch.End();
             spriteBatch.Begin(default, default, default, default, default, default, Main.UIScaleMatrix);
 
@@ -81,10 +79,10 @@ namespace Stellamod.UI.ArmorShopSystem
             {
                 ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos + new Vector2(0, 3), _scale, 32, Color.Black);
             }
-            
 
 
-           
+
+
             Main.inventoryScale = oldScale;
         }
     }

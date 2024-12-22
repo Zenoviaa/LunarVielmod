@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Gores;
-using Stellamod.Items.Materials;
-using Stellamod.Particles;
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;
@@ -64,18 +62,18 @@ namespace Stellamod.Items.Weapons.Ranged
                 //Particles and stuff
                 Dust.NewDustPerfect(position + offset * distance, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
                 Dust.NewDustPerfect(player.Center + offset * distance, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
-                
+
                 //Get a random velocity
                 Vector2 startVelocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 2);
 
                 //Get a random
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                
+
                 // Rotate the velocity randomly by 30 degrees at max.
                 Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
                 newVelocity *= 1f - Main.rand.NextFloat(0.3f);
                 Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
-                for(int k = 0; k < Main.rand.Next(2, 7); k++)
+                for (int k = 0; k < Main.rand.Next(2, 7); k++)
                 {
                     int[] goreTypes = new int[]
                     {
@@ -93,16 +91,6 @@ namespace Stellamod.Items.Weapons.Ranged
             }
 
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Shotgun);
-            recipe.AddIngredient(ModContent.ItemType<Teraciz>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<IshtarCandle>(), 1);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
         }
     }
 }

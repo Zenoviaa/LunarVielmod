@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -75,7 +74,7 @@ namespace Stellamod.Projectiles.Bow
             }
             Projectile.velocity *= 0.75f;
             Projectile.penetrate--;
-            if(Projectile.penetrate <= 0)
+            if (Projectile.penetrate <= 0)
             {
                 Projectile.Kill();
             }

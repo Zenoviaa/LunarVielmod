@@ -1,10 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-
-namespace Stellamod.UI.Dialogue
+﻿namespace Stellamod.UI.Dialogue
 {
     internal class DreadDialogue1 : Dialogue
     {
@@ -161,7 +155,7 @@ namespace Stellamod.UI.Dialogue
                     DialogueSystem.WriteText(GetLocalizedText("DreadTalk5"));
                     break;
 
- 
+
 
             }
         }

@@ -33,14 +33,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
         public override void AI()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekFireballShoot"), Projectile.position);
             }
 
-            if(Timer % 8 == 0)
+            if (Timer % 8 == 0)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
                     ModContent.DustType<GlowDust>(), newColor: Color.Orange, Scale: 0.2f);
             }
         }
@@ -56,7 +56,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             for (int i = 0; i < 2; i++)
 
             {
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), 
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(),
                     (Vector2.One * Main.rand.Next(1, 2)).RotatedByRandom(19.0), 0, Color.DarkGray, 0.5f).noGravity = true;
             }
         }
@@ -79,7 +79,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);   
+            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
             BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
             BeamDrawer.SpecialShader.UseColor(Color.DarkGoldenrod);
             BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.WaterTrail);
@@ -90,8 +90,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, TrailRegistry.LaserShader.Shader, Main.GameViewMatrix.TransformationMatrix);
-                  
-            spriteBatch.Draw(ModContent.Request<Texture2D>(Texture).Value, Projectile.Center - Main.screenPosition, Projectile.Frame(), 
+
+            spriteBatch.Draw(ModContent.Request<Texture2D>(Texture).Value, Projectile.Center - Main.screenPosition, Projectile.Frame(),
                 Color.White, Projectile.rotation, Projectile.Frame().Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
 
             spriteBatch.End();

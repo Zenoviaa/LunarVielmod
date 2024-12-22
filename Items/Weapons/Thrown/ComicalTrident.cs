@@ -1,12 +1,7 @@
-﻿
-using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
-using Stellamod.Projectiles.Thrown;
+﻿using Stellamod.Projectiles.Thrown;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
@@ -41,17 +36,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shootSpeed = 19f;
             Item.rare = ItemRarityID.Orange;
             Item.consumable = false;
-          
-        }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<GintzlMetal>(), 100);
-            recipe.AddIngredient(ItemType<GraftedSoul>(), 100);
-            recipe.AddIngredient(ItemID.ChlorophyteBar, 10);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
         }
     }
 }

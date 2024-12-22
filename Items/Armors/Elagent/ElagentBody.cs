@@ -1,9 +1,7 @@
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.Elagent
 {
@@ -32,17 +30,6 @@ namespace Stellamod.Items.Armors.Elagent
         public override void UpdateEquip(Player player)
         {
             player.maxMinions += 1;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<StarSilk>(), 9);
-            recipe.AddIngredient(ItemType<PearlescentScrap>(), 9);
-            recipe.AddIngredient(ItemID.Feather, 2);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Projectiles.GunHolster;
-using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -36,21 +35,21 @@ namespace Stellamod.Common.ScorpionMountSystem
                 }
             }
 
-            for(int i = 0; i < holsterPositions.Length; i++)
+            for (int i = 0; i < holsterPositions.Length; i++)
             {
                 float progress = (float)i / (float)holsterPositions.Length;
                 Vector2 holsterPosition = Player.Center + new Vector2(0, 12);
                 holsterPosition += Vector2.Lerp(-Vector2.UnitX * 64, Vector2.UnitX * 64, progress);
-                if(Player.direction == -1)
+                if (Player.direction == -1)
                 {
                     holsterPosition.X += 32;
                 }
                 holsterPositions[i] = holsterPosition;
             }
-            if(Player.HeldItem.ModItem is BaseScorpionItem myScorpionItem)
+            if (Player.HeldItem.ModItem is BaseScorpionItem myScorpionItem)
             {
                 int index = 0;
-                foreach(var minigunItem in myScorpionItem.leftHandedGuns)
+                foreach (var minigunItem in myScorpionItem.leftHandedGuns)
                 {
                     miniGuns[index] = null;
                     if (minigunItem.ModItem is MiniGun miniGun)

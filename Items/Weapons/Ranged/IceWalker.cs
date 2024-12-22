@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Bow;
 using Terraria;
 using Terraria.Audio;

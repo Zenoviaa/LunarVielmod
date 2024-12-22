@@ -1,15 +1,10 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.QuestSystem;
+using Terraria;
 using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
-using Terraria;
-using Stellamod.Common.QuestSystem;
 
 namespace Stellamod.UI.CollectionSystem.Quests
 {
@@ -34,7 +29,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
         }
 
         public float Glow { get; set; }
-        public Quest Quest { get; set; } 
+        public Quest Quest { get; set; }
         private void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
 

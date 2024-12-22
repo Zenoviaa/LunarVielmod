@@ -1,8 +1,8 @@
-﻿using Stellamod.Content.Bases;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
+using Stellamod.Content.Bases;
 using Stellamod.Helpers;
 using Stellamod.Items.MoonlightMagic.Elements;
 using Stellamod.Trails;

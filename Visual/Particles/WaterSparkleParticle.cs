@@ -1,5 +1,5 @@
-﻿using Stellamod.Common.Particles;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.Particles;
 using Terraria;
 
 namespace Stellamod.Visual.Particles
@@ -22,7 +22,7 @@ namespace Stellamod.Visual.Particles
         public override void Update()
         {
             Velocity *= 0.98f;
-          //  Velocity.Y += 0.15f;
+            //  Velocity.Y += 0.15f;
             Rotation += 0.01f;
             Scale *= 0.997f;
             color *= 0.99f;

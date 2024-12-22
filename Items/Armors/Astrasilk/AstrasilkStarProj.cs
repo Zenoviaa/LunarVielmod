@@ -10,7 +10,7 @@ namespace Stellamod.Items.Armors.Astrasilk
     {
         private static float _orbitingOffset;
         private Player Owner => Main.player[Projectile.owner];
-     
+
         private float Timer
         {
             get => Projectile.ai[0];
@@ -40,7 +40,7 @@ namespace Stellamod.Items.Armors.Astrasilk
 
             Vector2 targetCirclePosition = CalculateCirclePosition();
             Projectile.Center = Vector2.Lerp(Projectile.Center, targetCirclePosition, 0.075f);
-        
+
             Timer++;
             if (Timer == 1)
             {

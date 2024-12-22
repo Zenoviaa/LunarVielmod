@@ -1,8 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
-using Stellamod.Projectiles.IgniterExplosions;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -88,19 +85,6 @@ namespace Stellamod.Items.Weapons.Ranged
             }
 
             return true;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 12);
-            recipe.AddIngredient(ItemID.HallowedBar, 15);
-            recipe.AddIngredient(ItemID.ChlorophyteBar, 12);
-            recipe.AddIngredient(ItemID.SoulofMight, 10);
-            recipe.AddIngredient(ItemID.Gel, 100);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
         }
     }
 }

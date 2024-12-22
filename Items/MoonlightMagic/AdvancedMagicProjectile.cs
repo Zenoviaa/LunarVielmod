@@ -166,7 +166,7 @@ namespace Stellamod.Items.MoonlightMagic
             PrimaryElement?.AI();
             Movement?.AI();
 
-            if(GlobalTimer == 1)
+            if (GlobalTimer == 1)
             {
                 if (PrimaryElement != null)
                 {

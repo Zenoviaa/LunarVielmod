@@ -1,10 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Magic;
-using Stellamod.Projectiles.Swords;
+﻿using Stellamod.Projectiles.Magic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -46,16 +41,6 @@ namespace Stellamod.Items.Weapons.Melee
             Item.autoReuse = true;
             Item.shoot = ProjectileType<ScytheOfSoulsProj>();
             Item.shootSpeed = 8f;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Bone, 15);
-            recipe.AddIngredient(ItemType<EldritchSoul>(), 8);
-            recipe.AddIngredient(ItemID.Sickle, 1);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
         }
     }
 }

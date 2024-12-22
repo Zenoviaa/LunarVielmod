@@ -54,13 +54,13 @@ namespace Stellamod.Effects
 
             WriteLine($"const float3 colors[{colors.Length}] = ");
             WriteLine("{");
-            for(int c = 0; c < colors.Length; c++)
+            for (int c = 0; c < colors.Length; c++)
             {
                 Vector3 v = colors[c].ToVector3();
                 float r = v.X;
                 float g = v.Y;
                 float b = v.Z;
-                if(c + 1 < colors.Length)
+                if (c + 1 < colors.Length)
                 {
                     WriteLine($"float3({r}, {g}, {b}),");
                 }
@@ -68,7 +68,7 @@ namespace Stellamod.Effects
                 {
                     WriteLine($"float3({r}, {g}, {b})");
                 }
-              
+
             }
             WriteLine("};");
             return output;

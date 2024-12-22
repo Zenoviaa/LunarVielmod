@@ -1,17 +1,12 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Stellamod.UI.ArmorReforgeSystem;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.ArmorShop;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
-using Terraria;
-using Microsoft.Xna.Framework;
-using Stellamod.Common.ArmorShop;
 
 namespace Stellamod.UI.ArmorShopSystem
 {

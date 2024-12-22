@@ -2,16 +2,15 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Accessories
 
 {
     public class SoulStrideres : ModItem
-    {    
+    {
         public override void SetStaticDefaults()
         {
-    
+
         }
 
         public override void SetDefaults()
@@ -20,16 +19,6 @@ namespace Stellamod.Items.Accessories
             Item.accessory = true;
             Item.value = Item.sellPrice(silver: 12);
             Item.rare = ItemRarityID.LightRed;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<AcidStaketers>(), 1);
-            recipe.AddIngredient(ItemID.SpectreBoots, 1);
-            recipe.AddIngredient(ItemID.SoulofFlight, 20);
-            recipe.AddTile(TileID.TinkerersWorkbench);
-            recipe.Register();
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)

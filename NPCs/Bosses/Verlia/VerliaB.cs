@@ -4,8 +4,6 @@ using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Vanity.Verlia;
 using Stellamod.Items.Consumables;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Quest.Merena;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
@@ -2014,27 +2012,6 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
                 // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
             }
-        }
-
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
-        {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedBravery>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StolenMagicTome>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.VerliBossRel>()));
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<VerliaBossBag>()));
-
-            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-            notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
-                 ModContent.ItemType<VerliaHat>(),
-                 ModContent.ItemType<SwordsOfRevengence>(),
-                 ModContent.ItemType<SupernovaSitar>(),
-                 ModContent.ItemType<HarmonicBlasphemy>(),
-                 ModContent.ItemType<Curlistine>()));
-
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<PearlescentScrap>(), minimumDropped: 3, maximumDropped: 25));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<VerliaBroochA>()));
-            npcLoot.Add(notExpertRule);
         }
 
         private void FinishResetTimers()

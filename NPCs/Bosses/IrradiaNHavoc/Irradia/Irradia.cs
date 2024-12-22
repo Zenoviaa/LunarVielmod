@@ -5,17 +5,10 @@ using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Vanity.Gothivia;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Thrown;
-using Stellamod.NPCs.Bosses.DaedusRework;
-using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
-using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
-using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -27,92 +20,92 @@ using Terraria.ModLoader;
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 {
     [AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
-	public class Irradia : ModNPC
-	{
-		private bool _resetTimers;
-		public enum ActionState
-		{
+    public class Irradia : ModNPC
+    {
+        private bool _resetTimers;
+        public enum ActionState
+        {
 
 
-			Idle,
-			ReallyIdle,
-			Idle2,
-			StartGothivia,
-			StartRollLeft,
-			RollLeft,
-			StartRollRight,
-			RollRight,
-			PunchingFirstPhaseLaserBomb,
-			Jump,
-			Fall,
-			JumpToMiddle,
-			PunchingSecondPhaseFlameBalls,
-			PunchingSecondPhaseStopSign,
-			Land,
-			FallToMiddle,
-			LandToMiddle,
+            Idle,
+            ReallyIdle,
+            Idle2,
+            StartGothivia,
+            StartRollLeft,
+            RollLeft,
+            StartRollRight,
+            RollRight,
+            PunchingFirstPhaseLaserBomb,
+            Jump,
+            Fall,
+            JumpToMiddle,
+            PunchingSecondPhaseFlameBalls,
+            PunchingSecondPhaseStopSign,
+            Land,
+            FallToMiddle,
+            LandToMiddle,
 
 
-			CallHavoc,
-			StartIrr,
-			Blastout,
-			FallingBlast,
-			HideIrr,
-			STARTNODES,
-			STARTAXE,
-			STARTSPIKE,
-			STARTLASER,
-			ReallyStartIrr,
-			LandIrr,
+            CallHavoc,
+            StartIrr,
+            Blastout,
+            FallingBlast,
+            HideIrr,
+            STARTNODES,
+            STARTAXE,
+            STARTSPIKE,
+            STARTLASER,
+            ReallyStartIrr,
+            LandIrr,
 
 
 
-		}
-		private ActionState _state = ActionState.ReallyStartIrr;
-		// Current state
-		public int Jumpin = 0;
-		public ActionState State
-		{
-			get
-			{
-				return _state;
-			}
-			set
-			{
-				_state = value;
-				if(StellaMultiplayer.IsHost)
-					NPC.netUpdate = true;
-			}
-		}
+        }
+        private ActionState _state = ActionState.ReallyStartIrr;
+        // Current state
+        public int Jumpin = 0;
+        public ActionState State
+        {
+            get
+            {
+                return _state;
+            }
+            set
+            {
+                _state = value;
+                if (StellaMultiplayer.IsHost)
+                    NPC.netUpdate = true;
+            }
+        }
 
-		// Current frame
-		public int frameCounter;
-		// Current frame's progress
-		public int frameTick;
-		// Current state's timer
-		public float timer;
+        // Current frame
+        public int frameCounter;
+        // Current frame's progress
+        public int frameTick;
+        // Current state's timer
+        public float timer;
 
-		// AI counter
-		public int counter;
+        // AI counter
+        public int counter;
 
-		public int rippleCount = 20;
-		public int rippleSize = 5;
-		public int rippleSpeed = 15;
-		public float distortStrength = 300f;
+        public int rippleCount = 20;
+        public int rippleSize = 5;
+        public int rippleSpeed = 15;
+        public float distortStrength = 300f;
         public float GothiviaStartPosTime;
         public Vector2 GothiviaStartPos;
         public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Verlia of The Moon");
+        {
+            // DisplayName.SetDefault("Verlia of The Moon");
 
-			Main.npcFrameCount[Type] = 33;
-			NPCID.Sets.TrailCacheLength[NPC.type] = 10;
-			NPCID.Sets.TrailingMode[NPC.type] = 0;
+            Main.npcFrameCount[Type] = 33;
+            NPCID.Sets.TrailCacheLength[NPC.type] = 10;
+            NPCID.Sets.TrailingMode[NPC.type] = 0;
 
-			// Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)
-			// Automatically group with other bosses
-			NPCID.Sets.BossBestiaryPriority.Add(Type);
-			NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+            // Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)
+            // Automatically group with other bosses
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             // Influences how the NPC looks in the Bestiary
 
             NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
@@ -122,41 +115,41 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
 
-		public override void SetDefaults()
-		{
-			NPC.Size = new Vector2(40, 45);
-			NPC.damage = 1;
-			NPC.defense = 20;
-			NPC.lifeMax = 17000;
-			NPC.HitSound = SoundID.NPCHit1;
-			NPC.DeathSound = SoundID.NPCDeath1;
-			NPC.knockBackResist = 0f;
-			NPC.noGravity = false;
-			NPC.noTileCollide = false;
-			NPC.value = Item.buyPrice(gold: 5);
-			NPC.boss = true;
-			NPC.npcSlots = 10f;
-			NPC.scale = 1f;
-			NPC.BossBar = ModContent.GetInstance<IrradiaBossBar>();
+        public override void SetDefaults()
+        {
+            NPC.Size = new Vector2(40, 45);
+            NPC.damage = 1;
+            NPC.defense = 20;
+            NPC.lifeMax = 17000;
+            NPC.HitSound = SoundID.NPCHit1;
+            NPC.DeathSound = SoundID.NPCDeath1;
+            NPC.knockBackResist = 0f;
+            NPC.noGravity = false;
+            NPC.noTileCollide = false;
+            NPC.value = Item.buyPrice(gold: 5);
+            NPC.boss = true;
+            NPC.npcSlots = 10f;
+            NPC.scale = 1f;
+            //  NPC.BossBar = ModContent.GetInstance<IrradiaBossBar>();
             NPC.takenDamageMultiplier = 0.8f;
 
-			// Take up open spawn slots, preventing random NPCs from spawning during the fight
+            // Take up open spawn slots, preventing random NPCs from spawning during the fight
 
-			// Don't set immunities like this as of 1.4:
-			// NPC.buffImmune[BuffID.Confused] = true;
-			// immunities are handled via dictionaries through NPCID.Sets.DebuffImmunitySets
+            // Don't set immunities like this as of 1.4:
+            // NPC.buffImmune[BuffID.Confused] = true;
+            // immunities are handled via dictionaries through NPCID.Sets.DebuffImmunitySets
 
-			// Custom AI, 0 is "bound town NPC" AI which slows the NPC down and changes sprite orientation towards the target
-			NPC.aiStyle = -1;
+            // Custom AI, 0 is "bound town NPC" AI which slows the NPC down and changes sprite orientation towards the target
+            NPC.aiStyle = -1;
 
-			// Custom boss bar
+            // Custom boss bar
 
-			// The following code assigns a music track to the boss in a simple way.
-			if (!Main.dedServ)
-			{
-				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/CatacombsBoss");
-			}
-		}
+            // The following code assigns a music track to the boss in a simple way.
+            if (!Main.dedServ)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/CatacombsBoss");
+            }
+        }
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
         {
             NPC.lifeMax = (int)(NPC.lifeMax * balance);
@@ -180,169 +173,169 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
         }
 
         public override void SendExtraAI(BinaryWriter writer)
-		{
-			writer.Write((float)_state);
-			writer.Write(_resetTimers);
+        {
+            writer.Write((float)_state);
+            writer.Write(_resetTimers);
             writer.Write(Jumpin);
         }
 
-		public override void ReceiveExtraAI(BinaryReader reader)
-		{
-			_state = (ActionState)reader.ReadSingle();
-			_resetTimers = reader.ReadBoolean();
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            _state = (ActionState)reader.ReadSingle();
+            _resetTimers = reader.ReadBoolean();
             Jumpin = reader.ReadInt32();
         }
 
-		bool axed = false;
+        bool axed = false;
         bool p2 = false;
-		public override void HitEffect(NPC.HitInfo hit)
-		{
-			for (int k = 0; k < 20; k++)
-			{
-				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SolarFlare, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
-			}
-		}
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            for (int k = 0; k < 20; k++)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SolarFlare, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
+            }
+        }
 
-		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-		{
-			Player player = Main.player[NPC.target];
-			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-			SpriteEffects effects = SpriteEffects.None;
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Player player = Main.player[NPC.target];
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            SpriteEffects effects = SpriteEffects.None;
 
-			if (player.Center.X > NPC.Center.X)
-			{
-				effects = SpriteEffects.FlipHorizontally;
-			}
+            if (player.Center.X > NPC.Center.X)
+            {
+                effects = SpriteEffects.FlipHorizontally;
+            }
 
-			Rectangle rect;
-			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) + new Vector2(100, 80);
+            Rectangle rect;
+            originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) + new Vector2(100, 80);
 
-			///Animation Stuff for Verlia
-			/// 1 - 2 Summon Start
-			/// 3 - 7 Summon Idle / Idle
-			/// 8 - 11 Summon down
-			/// 12 - 19 Hold UP
-			/// 20 - 30 Sword UP
-			/// 31 - 35 Sword Slash Simple
-			/// 36 - 45 Hold Sword
-			/// 46 - 67 Barrage 
-			/// 68 - 75 Explode
-			/// 76 - 80 Appear
-			/// 133 width
-			/// 92 height
-
-
-			///Animation Stuff for Veribloom
-			/// 1 = Idle
-			/// 2 = Blank
-			/// 2 - 8 Appear Pulse
-			/// 9 - 19 Pulse Buff Att
-			/// 20 - 26 Disappear Pulse
-			/// 27 - 33 Appear Winding
-			/// 34 - 38 Wind Up
-			/// 39 - 45 Dash
-			/// 46 - 52 Slam Appear
-			/// 53 - 58 Slam
-			/// 59 - 64 Spin
-			/// 80 width
-			/// 89 height
-			/// 
-
-			/// 1 = Idle
-			/// 1 - 4 Jump Startup
-			/// 5 - 8 Jump
-			/// 9 - 12 land
-			/// 13 - 29 Doublestart
-			/// 30 - 42 Tiptoe
+            ///Animation Stuff for Verlia
+            /// 1 - 2 Summon Start
+            /// 3 - 7 Summon Idle / Idle
+            /// 8 - 11 Summon down
+            /// 12 - 19 Hold UP
+            /// 20 - 30 Sword UP
+            /// 31 - 35 Sword Slash Simple
+            /// 36 - 45 Hold Sword
+            /// 46 - 67 Barrage 
+            /// 68 - 75 Explode
+            /// 76 - 80 Appear
+            /// 133 width
+            /// 92 height
 
 
+            ///Animation Stuff for Veribloom
+            /// 1 = Idle
+            /// 2 = Blank
+            /// 2 - 8 Appear Pulse
+            /// 9 - 19 Pulse Buff Att
+            /// 20 - 26 Disappear Pulse
+            /// 27 - 33 Appear Winding
+            /// 34 - 38 Wind Up
+            /// 39 - 45 Dash
+            /// 46 - 52 Slam Appear
+            /// 53 - 58 Slam
+            /// 59 - 64 Spin
+            /// 80 width
+            /// 89 height
+            /// 
 
-			switch (State)
-			{
-				case ActionState.Idle:
-					rect = new(0, 1 * 52, 56, 1 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 100, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
+            /// 1 = Idle
+            /// 1 - 4 Jump Startup
+            /// 5 - 8 Jump
+            /// 9 - 12 land
+            /// 13 - 29 Doublestart
+            /// 30 - 42 Tiptoe
 
-				case ActionState.ReallyIdle:
-					rect = new(0, 1 * 52, 56, 1 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 300, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
 
-				case ActionState.Idle2:
-					rect = new(0, 1 * 52, 56, 1 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 100, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
 
-				case ActionState.StartGothivia:
-					rect = new(0, 1 * 52, 56, 1 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 100, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
+            switch (State)
+            {
+                case ActionState.Idle:
+                    rect = new(0, 1 * 52, 56, 1 * 52);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 100, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    break;
 
-				case ActionState.StartRollLeft:
-					rect = new(0, 29 * 52, 56, 9 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 9, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
+                case ActionState.ReallyIdle:
+                    rect = new(0, 1 * 52, 56, 1 * 52);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 300, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    break;
 
-				case ActionState.StartRollRight:
-					rect = new(0, 29 * 52, 56, 9 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 9, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
+                case ActionState.Idle2:
+                    rect = new(0, 1 * 52, 56, 1 * 52);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 100, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    break;
 
-				case ActionState.RollLeft:
-					rect = new(0, 38 * 52, 56, 3 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
+                case ActionState.StartGothivia:
+                    rect = new(0, 1 * 52, 56, 1 * 52);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 100, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    break;
 
-				case ActionState.RollRight:
-					rect = new(0, 38 * 52, 56, 3 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
+                case ActionState.StartRollLeft:
+                    rect = new(0, 29 * 52, 56, 9 * 52);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 9, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    break;
 
-				case ActionState.PunchingFirstPhaseLaserBomb:
-					rect = new(0, 1 * 52, 56, 16 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 16, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
+                case ActionState.StartRollRight:
+                    rect = new(0, 29 * 52, 56, 9 * 52);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 9, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    break;
 
-				case ActionState.PunchingSecondPhaseFlameBalls:
-					rect = new(0, 1 * 52, 56, 16 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 16, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
+                case ActionState.RollLeft:
+                    rect = new(0, 38 * 52, 56, 3 * 52);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    break;
 
-				case ActionState.PunchingSecondPhaseStopSign:
-					rect = new(0, 1 * 52, 56, 16 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 16, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
+                case ActionState.RollRight:
+                    rect = new(0, 38 * 52, 56, 3 * 52);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    break;
 
-				case ActionState.Fall:
-					rect = new(0, 24 * 52, 56, 1 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 300, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
+                case ActionState.PunchingFirstPhaseLaserBomb:
+                    rect = new(0, 1 * 52, 56, 16 * 52);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 16, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    break;
 
-				case ActionState.Land:
-					rect = new(0, 25 * 52, 56, 3 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
+                case ActionState.PunchingSecondPhaseFlameBalls:
+                    rect = new(0, 1 * 52, 56, 16 * 52);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 16, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    break;
 
-				case ActionState.Jump:
-					rect = new(0, 17 * 52, 56, 6 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 6, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
+                case ActionState.PunchingSecondPhaseStopSign:
+                    rect = new(0, 1 * 52, 56, 16 * 52);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 16, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    break;
 
-				case ActionState.JumpToMiddle:
-					rect = new(0, 17 * 52, 56, 6 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 10, 6, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
+                case ActionState.Fall:
+                    rect = new(0, 24 * 52, 56, 1 * 52);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 300, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    break;
 
-				case ActionState.FallToMiddle:
-					rect = new(0, 24 * 52, 56, 1 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 300, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
+                case ActionState.Land:
+                    rect = new(0, 25 * 52, 56, 3 * 52);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    break;
 
-				case ActionState.LandToMiddle:
-					rect = new(0, 25 * 52, 56, 3 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
+                case ActionState.Jump:
+                    rect = new(0, 17 * 52, 56, 6 * 52);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 6, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    break;
+
+                case ActionState.JumpToMiddle:
+                    rect = new(0, 17 * 52, 56, 6 * 52);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 10, 6, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    break;
+
+                case ActionState.FallToMiddle:
+                    rect = new(0, 24 * 52, 56, 1 * 52);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 300, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    break;
+
+                case ActionState.LandToMiddle:
+                    rect = new(0, 25 * 52, 56, 3 * 52);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    break;
 
 
 
@@ -405,33 +398,33 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             }
 
 
-			return false;
-		}
+            return false;
+        }
 
-		//Custom function so that I don't have to copy and paste the same thing in FindFrame
-		int bee = 220;
-		private Vector2 originalHitbox;
-		//int Timer2 = 0;
-		float timert = 0;
-		public float Spawner = 0;
+        //Custom function so that I don't have to copy and paste the same thing in FindFrame
+        int bee = 220;
+        private Vector2 originalHitbox;
+        //int Timer2 = 0;
+        float timert = 0;
+        public float Spawner = 0;
 
         public bool Elect = false;
-		public override void AI()
-		{
-			p2 = NPC.life < NPC.lifeMax * 0.5f;
+        public override void AI()
+        {
+            p2 = NPC.life < NPC.lifeMax * 0.5f;
             bee--;
             //Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
             NPC.damage = 0;
-			GothiviaStartPosTime++;
+            GothiviaStartPosTime++;
 
             if (GothiviaStartPosTime <= 1)
-			{
+            {
 
-				GothiviaStartPos = NPC.position;
+                GothiviaStartPos = NPC.position;
 
             }
 
-			/*
+            /*
 			for (int k = 0; k < Main.maxNPCs; k++)
 			{
 				NPC ba = Main.npc[k];
@@ -461,19 +454,19 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
 
 
-			if (bee == 0)
-			{
-				bee = 220;
-			}
+            if (bee == 0)
+            {
+                bee = 220;
+            }
 
-			Vector3 RGB = new(2.30f, 0.21f, 0.72f);
-			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
-			NPC.spriteDirection = NPC.direction;
+            Vector3 RGB = new(2.30f, 0.21f, 0.72f);
+            Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
+            NPC.spriteDirection = NPC.direction;
 
-			if (!NPC.HasValidTarget)
-			{
-				NPC.TargetClosest();
-				if (!NPC.HasValidTarget)
+            if (!NPC.HasValidTarget)
+            {
+                NPC.TargetClosest();
+                if (!NPC.HasValidTarget)
                 {               // If the targeted player is dead, flee
                     NPC.velocity.Y += 0.5f;
                     NPC.noTileCollide = true;
@@ -481,16 +474,16 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                     // This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
                     NPC.EncourageDespawn(1);
                 }
-			}  
+            }
 
-			FinishResetTimers();
-			switch (State)
-			{
+            FinishResetTimers();
+            switch (State)
+            {
 
 
-				
-				
-				
+
+
+
 
 
                 case ActionState.ReallyStartIrr:
@@ -537,7 +530,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                     NPC.noTileCollide = false;
                     if (NPC.velocity.Y == 0)
                     {
-                        
+
                         State = ActionState.LandIrr;
                         frameCounter = 0;
                         frameTick = 0;
@@ -586,7 +579,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                     NPC.aiStyle = -1;
                     break;
             }
-		}
+        }
 
 
         private void ReallyIdleIrr()
@@ -598,11 +591,11 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             {
                 if (StellaMultiplayer.IsHost)
                 {
-                 
+
                 }
             }
 
-            
+
 
             if (timer == 2)
             {
@@ -645,7 +638,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                     Elect = false;
                 }
-              
+
 
 
                 if (StellaMultiplayer.IsHost)
@@ -664,7 +657,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                     }
                 }
             }
-           
+
 
             if (timer == 68)
             {
@@ -680,8 +673,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
             if (timer == 45)
             {
-               if (Jumpin < 1)
-				{
+                if (Jumpin < 1)
+                {
                     if (StellaMultiplayer.IsHost)
                     {
                         switch (Main.rand.Next(6))
@@ -986,8 +979,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             float ai1 = NPC.whoAmI;
             NPC.velocity.X *= 0;
             timer++;
-			if (timer == 49)
-			{
+            if (timer == 49)
+            {
 
                 if (StellaMultiplayer.IsHost)
                 {
@@ -1064,17 +1057,17 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             }
 
 
-          
 
-         
+
+
 
             if (timer == 240)
             {
 
-             
-                    ResetTimers();
-                    State = ActionState.StartIrr;
-               
+
+                ResetTimers();
+                State = ActionState.StartIrr;
+
             }
         }
 
@@ -1177,23 +1170,23 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
 
         private void IdleGothivia()
-		{
-			NPC.spriteDirection = NPC.direction;
-			timer++;
-			if (timer == 40)
-			{
-	
-				if (NPC.life >= NPC.lifeMax / 2)
+        {
+            NPC.spriteDirection = NPC.direction;
+            timer++;
+            if (timer == 40)
+            {
+
+                if (NPC.life >= NPC.lifeMax / 2)
                 {
                     ResetTimers();
                     State = ActionState.PunchingFirstPhaseLaserBomb;
                 }
 
-				if (NPC.life < NPC.lifeMax / 2)
+                if (NPC.life < NPC.lifeMax / 2)
                 {
                     ResetTimers();
-					if (StellaMultiplayer.IsHost)
-					{
+                    if (StellaMultiplayer.IsHost)
+                    {
                         switch (Main.rand.Next(3))
                         {
                             case 0:
@@ -1209,29 +1202,29 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                                 break;
                         }
                     }
-				}
-			}
-		}
+                }
+            }
+        }
 
 
-		private void IdleGothivia2()
-		{
-			NPC.spriteDirection = NPC.direction;
-			timer++;
-			if (timer == 40)
-			{
+        private void IdleGothivia2()
+        {
+            NPC.spriteDirection = NPC.direction;
+            timer++;
+            if (timer == 40)
+            {
 
-				if (NPC.life >= NPC.lifeMax / 2)
+                if (NPC.life >= NPC.lifeMax / 2)
                 {
                     ResetTimers();
                     State = ActionState.PunchingFirstPhaseLaserBomb;
-				}
+                }
 
-				if (NPC.life < NPC.lifeMax / 2)
-				{
+                if (NPC.life < NPC.lifeMax / 2)
+                {
                     ResetTimers();
-					if (StellaMultiplayer.IsHost)
-					{
+                    if (StellaMultiplayer.IsHost)
+                    {
                         switch (Main.rand.Next(3))
                         {
                             case 0:
@@ -1247,149 +1240,100 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                                 break;
                         }
                     }
-				}
-			}
-		}
+                }
+            }
+        }
 
-		private void StartGothivia()
-		{
-			NPC.spriteDirection = NPC.direction;
-			timer++;
-			if (timer == 40)
-			{
+        private void StartGothivia()
+        {
+            NPC.spriteDirection = NPC.direction;
+            timer++;
+            if (timer == 40)
+            {
                 ResetTimers();
                 State = ActionState.StartRollLeft;
-			}
-		}
+            }
+        }
 
-		private void StartRollLeft()
-		{
-			NPC.spriteDirection = NPC.direction;
-			timer++;
-			if (timer == 27)
-			{
+        private void StartRollLeft()
+        {
+            NPC.spriteDirection = NPC.direction;
+            timer++;
+            if (timer == 27)
+            {
                 ResetTimers();
                 State = ActionState.RollLeft;
-			}
-		}
+            }
+        }
 
-		private void RollLeft()
-		{
-			NPC.spriteDirection = NPC.direction;
-			timer++;
-			if (timer <= 1)
-			{
-				NPC.velocity.X += 15;
+        private void RollLeft()
+        {
+            NPC.spriteDirection = NPC.direction;
+            timer++;
+            if (timer <= 1)
+            {
+                NPC.velocity.X += 15;
             }
 
             if (NPC.velocity.Y == 0 && timer >= 60)
-			{
+            {
                 ResetTimers();
                 NPC.velocity.X -= 1;
-				if (StellaMultiplayer.IsHost)
-				{
+                if (StellaMultiplayer.IsHost)
+                {
                     var entitySource = NPC.GetSource_FromThis();
                     Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0),
                         Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0, Owner: Main.myPlayer);
                 }
 
                 State = ActionState.Idle2;
-			}
-		}
+            }
+        }
 
-		private void StartRollRight()
-		{
-			NPC.spriteDirection = NPC.direction;
-			timer++;
-			if (timer == 27)
-			{
+        private void StartRollRight()
+        {
+            NPC.spriteDirection = NPC.direction;
+            timer++;
+            if (timer == 27)
+            {
                 ResetTimers();
                 State = ActionState.RollRight;
-			}
-		}
+            }
+        }
 
-		private void RollRight()
-		{
-			NPC.spriteDirection = NPC.direction;
-			timer++;
+        private void RollRight()
+        {
+            NPC.spriteDirection = NPC.direction;
+            timer++;
             if (timer <= 1)
             {
                 NPC.velocity.X -= 15;
             }
             if (NPC.velocity.Y == 0 && timer >= 60)
-			{
+            {
                 ResetTimers();
 
-				if (StellaMultiplayer.IsHost)
+                if (StellaMultiplayer.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0),
                         Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0, Owner: Main.myPlayer);
                 }
-       
-                NPC.velocity.X += 1;  
+
+                NPC.velocity.X += 1;
                 State = ActionState.Idle;
             }
-		}
-
-	
-
-		
-
-		
-
-		
-
-		public override void ModifyNPCLoot(NPCLoot npcLoot)
-		{
-			// Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
-
-			// Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
-			//	npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
+        }
 
 
 
 
-			// ItemDropRule.MasterModeCommonDrop for the relic
 
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 7));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Twirlers>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedCommitment>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GothiviaBag>()));
-			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
-			//npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
 
-		// All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
-			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-			notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
-				ModContent.ItemType<BurningGBroochA>(),
-                ModContent.ItemType<BurnBlast>()));
-			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
 
-			// Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
-			// Boss masks are spawned with 1/7 chance
-			//notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MinionBossMask>(), 7));
 
-			// This part is not required for a boss and is just showcasing some advanced stuff you can do with drop rules to control how items spawn
-			// We make 12-15 ExampleItems spawn randomly in all directions, like the lunar pillar fragments. Hereby we need the DropOneByOne rule,
-			// which requires these parameters to be defined
-			//int itemType = ModContent.ItemType<Gambit>();
-			//var parameters = new DropOneByOne.Parameters()
-			//{
-			//	ChanceNumerator = 1,
-			//	ChanceDenominator = 1,
-			//	MinimumStackPerChunkBase = 1,
-			//	MaximumStackPerChunkBase = 1,
-			//	MinimumItemDropsCount = 1,
-			//	MaximumItemDropsCount = 3,
-			//};
 
-			//notExpertRule.OnSuccess(new DropOneByOne(itemType, parameters));
-
-			// Finally add the leading rule
-			npcLoot.Add(notExpertRule);
-		}
+  
         private void FinishResetTimers()
         {
             if (_resetTimers)
@@ -1411,14 +1355,14 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
         }
 
         public override void OnKill()
-		{
-			
-			if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-			{
-				Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-			}
-			NPC.SetEventFlagCleared(ref DownedBossSystem.downedIrradiaBoss, -1);
-		}
+        {
 
-	}
+            if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+            {
+                Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+            }
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedIrradiaBoss, -1);
+        }
+
+    }
 }

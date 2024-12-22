@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Summons.Minions;
 using Terraria;
 using Terraria.Audio;
@@ -65,24 +64,16 @@ namespace Stellamod.Items.Weapons.Summon
                 player.whoAmI, 0);
             projectile.originalDamage = Item.damage;
 
-            projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, 
+            projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback,
                 player.whoAmI, 1);
             projectile.originalDamage = Item.damage;
 
-            projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, 
+            projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback,
                 player.whoAmI, 2);
             projectile.originalDamage = Item.damage;
 
             // Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
             return false;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<PureHeart>(), 1);
-            recipe.AddTile(TileID.LunarCraftingStation);
-            recipe.Register();
         }
     }
 }

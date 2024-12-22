@@ -1,5 +1,4 @@
-﻿using Stellamod.Items.Materials.Molds;
-using Stellamod.Projectiles.Crossbows.Magical;
+﻿using Stellamod.Projectiles.Crossbows.Magical;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -45,7 +44,7 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
             Item.noMelee = true; // The projectile will do the damage and not the item
             Item.value = Item.buyPrice(silver: 3);
             Item.noUseGraphic = true;
-            Item.channel = true;    
+            Item.channel = true;
         }
     }
 }

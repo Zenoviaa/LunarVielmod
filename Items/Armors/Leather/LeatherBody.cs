@@ -1,9 +1,6 @@
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 
 
@@ -32,16 +29,6 @@ namespace Stellamod.Items.Armors.Leather
         public override void UpdateEquip(Player player)
         {
             player.GetCritChance(DamageClass.Ranged) += 4;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Leather, 2);
-            recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 6);
-            recipe.AddRecipeGroup(nameof(ItemID.IronBar), 5);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
         }
     }
 }

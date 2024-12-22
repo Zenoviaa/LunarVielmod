@@ -1,5 +1,4 @@
-﻿using Stellamod.Items.Materials;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -15,16 +14,7 @@ namespace Stellamod.Items.Accessories
             Item.rare = ItemRarityID.Orange;
             Item.accessory = true;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.FallenStar, 5);
-            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<WanderingFlame>(), 25);
-            recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 10);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
-        }
+
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetDamage(DamageClass.Magic) *= 1.1f;

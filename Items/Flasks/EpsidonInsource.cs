@@ -1,9 +1,6 @@
-﻿using Stellamod.Items.Materials;
-using Stellamod.Tiles;
-using Terraria;
+﻿using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace Stellamod.Items.Flasks
 {
@@ -28,18 +25,6 @@ namespace Stellamod.Items.Flasks
             player.AddBuff(BuffID.Honey, 1200);
             player.AddBuff(BuffID.Swiftness, 1200);
             player.AddBuff(BuffID.Ironskin, 1200);
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<STARCORE>(), 3);
-            recipe.AddIngredient(ModContent.ItemType<MiracleThread>(), 10);
-            recipe.AddIngredient(ItemID.Fireblossom, 10);
-            recipe.AddIngredient(ItemID.Deathweed, 2);
-            recipe.AddIngredient(ItemID.GreaterHealingPotion, 10);
-            recipe.AddTile(ModContent.TileType<AlcaologyTable>());
-            recipe.Register();
         }
     }
 }

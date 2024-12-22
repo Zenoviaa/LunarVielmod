@@ -1,23 +1,15 @@
 
 using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Minions;
-using Stellamod.Helpers;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles;
 using Stellamod.Projectiles.Summons.Minions;
-using System;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Stellamod.Items.Weapons.Summon.DripplerStaff;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	public class DripplerStaff : ClassSwapItem
+    public class DripplerStaff : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;
@@ -28,12 +20,12 @@ namespace Stellamod.Items.Weapons.Summon
             Item.mana = 10;
         }
         public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Drippler Staff");
-			// Tooltip.SetDefault("Summons an Drippler to fight with you");
-			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
-			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
-		}
+        {
+            // DisplayName.SetDefault("Drippler Staff");
+            // Tooltip.SetDefault("Summons an Drippler to fight with you");
+            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
+            ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
+        }
 
         public override void SetDefaults()
         {
@@ -57,17 +49,8 @@ namespace Stellamod.Items.Weapons.Summon
             Item.shoot = ModContent.ProjectileType<DripplerMinionProj>();
         }
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemType<TerrorFragments>(), 5);
-			recipe.AddIngredient(ItemType<DarkEssence>(), 10);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
-		}
-
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		{
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
             // This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
             player.AddBuff(Item.buffType, 2);
 
@@ -79,5 +62,5 @@ namespace Stellamod.Items.Weapons.Summon
             // Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
             return false;
         }
-	}
+    }
 }

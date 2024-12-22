@@ -1,5 +1,4 @@
-﻿using Stellamod.Items.Materials.Tech;
-using Stellamod.Projectiles;
+﻿using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

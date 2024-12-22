@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Spears;
 using Terraria;
 using Terraria.ID;
@@ -36,7 +35,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.useTime = 32;
             Item.useAnimation = 32;
             Item.useStyle = ItemUseStyleID.Swing;
-   
+
             Item.knockBack = 6;
             Item.value = Item.sellPrice(0, 20, 0, 0);
             Item.noUseGraphic = true;
@@ -44,14 +43,6 @@ namespace Stellamod.Items.Weapons.Melee
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<SiriusProj>();
             Item.shootSpeed = 30;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<PureHeart>(), 1);
-            recipe.AddTile(TileID.LunarCraftingStation);
-            recipe.Register();
         }
 
 

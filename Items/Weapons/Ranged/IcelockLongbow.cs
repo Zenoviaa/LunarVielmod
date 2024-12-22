@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Bow;
 using Terraria;
 using Terraria.Audio;
@@ -43,7 +42,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.noMelee = true;
             Item.consumeAmmoOnLastShotOnly = true;
         }
-        
+
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-2f, 0f);
@@ -53,12 +52,12 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             int maxCombo = 7;
             _combo++;
-            if(_combo >= maxCombo)
+            if (_combo >= maxCombo)
             {
                 _combo = 1;
             }
 
-            if(_combo < maxCombo - 1)
+            if (_combo < maxCombo - 1)
             {
                 for (int i = 0; i < _combo; i++)
                 {
@@ -67,25 +66,16 @@ namespace Stellamod.Items.Weapons.Ranged
                     newVelocity *= 1f - Main.rand.NextFloat(0.3f);
                     Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
                 }
-            } 
+            }
             else if (_combo == maxCombo - 1)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterboundArrow"), player.position);
                 type = ModContent.ProjectileType<IcelockArrow>();
                 Projectile.NewProjectile(source, position, velocity, type, damage * 2, knockback, player.whoAmI);
             }
-    
+
 
             return false;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<IllurineScale>(), 18);
-            recipe.AddIngredient(ItemID.Ectoplasm, 8);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
         }
     }
 }

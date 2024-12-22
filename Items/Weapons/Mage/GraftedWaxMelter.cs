@@ -1,14 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Tech;
-using Stellamod.Items.Ores;
-using Stellamod.Projectiles;
 using Stellamod.Projectiles.Magic;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -98,21 +92,6 @@ namespace Stellamod.Items.Weapons.Mage
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-3, 0);
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
-            recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 100);
-            recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 20);
-            recipe.AddIngredient(ItemID.SoulofMight, 10);
-            recipe.AddIngredient(ItemID.SoulofFright, 10);
-            recipe.AddRecipeGroup(nameof(ItemID.IronBar), 10);
-
-            recipe.Register();
         }
     }
 }

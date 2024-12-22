@@ -3,7 +3,6 @@ using Stellamod.Common.Bases;
 using Stellamod.Common.Players;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Projectiles;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Trails;
 using System.Collections.Generic;

@@ -1,10 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Trails;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -67,11 +65,11 @@ namespace Stellamod.Projectiles.Magic
             Visuals();
             ai_Counter++;
             Player owner = Main.player[Projectile.owner];
-            SummonHelper.SearchForTargets(owner, Projectile, 
+            SummonHelper.SearchForTargets(owner, Projectile,
                 out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
 
 
-            if(foundTarget)
+            if (foundTarget)
             {
                 AI_Movement(targetCenter, 15);
             }
@@ -107,17 +105,17 @@ namespace Stellamod.Projectiles.Magic
 
         private void Visuals()
         {
-            if(ai_Counter == 0)
+            if (ai_Counter == 0)
             {
 
             }
 
-            if(ai_Counter % 5 == 0)
+            if (ai_Counter % 5 == 0)
             {
 
             }
 
-            if(ai_Counter % 15 == 0)
+            if (ai_Counter % 15 == 0)
             {
                 Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(1f, 1f);
                 Dust dust = Dust.NewDustPerfect(position, DustID.GemAmethyst, Scale: Main.rand.NextFloat(0.5f, 1f));

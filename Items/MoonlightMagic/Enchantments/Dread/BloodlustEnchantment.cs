@@ -1,7 +1,7 @@
-﻿using Stellamod.Items.MoonlightMagic.Elements;
+﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.Particles;
+using Stellamod.Items.MoonlightMagic.Elements;
 using Stellamod.Visual.Particles;
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -9,7 +9,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Dread
 {
     internal class BloodlustEnchantment : BaseEnchantment
     {
-        
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -20,7 +20,7 @@ namespace Stellamod.Items.MoonlightMagic.Enchantments.Dread
         {
             base.AI();
             Countertimer++;
-            if(Countertimer == time)
+            if (Countertimer == time)
             {
                 for (int i = 0; i < 6; i++)
                 {

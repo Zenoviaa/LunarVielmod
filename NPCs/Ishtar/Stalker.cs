@@ -1,5 +1,4 @@
 ﻿using Stellamod.Assets.Biomes;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Thrown.Jugglers;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
@@ -48,7 +47,6 @@ namespace Stellamod.NPCs.Ishtar
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IshtarCandle>(), 20, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FlinchMachine>(), 12, 1, 1));
         }
     }

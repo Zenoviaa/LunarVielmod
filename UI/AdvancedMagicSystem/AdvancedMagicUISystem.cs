@@ -1,6 +1,5 @@
-﻿using Stellamod.Items.MoonlightMagic;
-using Microsoft.Xna.Framework;
-using System;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.MoonlightMagic;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -34,7 +33,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
             itemUIState = new ItemUIState();
             buttonUIState = new ButtonUIState();
 
-          
+
             staffUIState.Activate();
             itemUIState.Activate();
             buttonUIState.Activate();
@@ -57,8 +56,8 @@ namespace Stellamod.UI.AdvancedMagicSystem
 
         internal void OpenUI(BaseStaff staff)
         {
-   
-            if(Staff == staff)
+
+            if (Staff == staff)
             {
                 CloseStaffUI();
                 CloseBackpackUI();
@@ -70,7 +69,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
                 staffUIState.elementUI.ElementSlot.OpenUI(staff);
                 OpenStaffUI();
                 //Recalculate();
-    
+
                 if (_backpackInterface.CurrentState == null)
                 {
                     OpenBackpackUI();
@@ -92,16 +91,16 @@ namespace Stellamod.UI.AdvancedMagicSystem
 
         public override void UpdateUI(GameTime gameTime)
         {
-            if(_btnInterface?.CurrentState == null && Main.playerInventory)
+            if (_btnInterface?.CurrentState == null && Main.playerInventory)
             {
                 OpenButtonUI();
             }
-            else if(_btnInterface?.CurrentState != null && !Main.playerInventory)
+            else if (_btnInterface?.CurrentState != null && !Main.playerInventory)
             {
                 CloseButtonUI();
             }
 
-            if(!Main.playerInventory && _backpackInterface?.CurrentState != null)
+            if (!Main.playerInventory && _backpackInterface?.CurrentState != null)
             {
                 CloseBackpackUI();
             }
@@ -131,7 +130,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
             //Calls Deactivate and drops the item
             if (_backpackInterface.CurrentState != null)
             {
-             //   RenamePetUI.saveItemInUI = true;
+                //   RenamePetUI.saveItemInUI = true;
                 _backpackInterface.SetState(null);
                 _staffInterface.SetState(null);
                 _btnInterface.SetState(null);
