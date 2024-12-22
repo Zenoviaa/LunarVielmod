@@ -37,7 +37,7 @@ namespace Stellamod.UI.StructureSelector
             string fileName = ModContent.GetInstance<StructureSelectorUISystem>().saveUIState.ui.FileName;
             StructureSelection selection = ModContent.GetInstance<StructureSelection>();
             selection.SaveSelection(fileName);
-            ModContent.GetInstance<StructureSelectorUISystem>().ToggleUI(false);
+            ModContent.GetInstance<StructureSelectorUISystem>().CloseSaveUI();
             // We can do stuff in here!
             SoundEngine.PlaySound(SoundID.MenuTick);
         }

@@ -512,7 +512,7 @@ namespace Stellamod.NPCs.Town
 								break;
 
 							case 1:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mordred>(), 1);
+					//			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mordred>(), 1);
 								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
 								break;
 

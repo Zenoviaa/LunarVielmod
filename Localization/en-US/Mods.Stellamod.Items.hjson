@@ -8795,3 +8795,18 @@ RainforestTreeAcorn: {
 	DisplayName: Rainforest Tree Acorn
 	Tooltip: ""
 }
+
+RareLunarStone: {
+	Tooltip: ""
+	DisplayName: Rare Lunar Stone
+}
+
+LunarStone: {
+	Tooltip: ""
+	DisplayName: Lunar Stone
+}
+
+AncientLunarStone: {
+	Tooltip: ""
+	DisplayName: Ancient Lunar Stone
+}

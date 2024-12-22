@@ -8,6 +8,7 @@ CompleteQuest: You've completed a quest!
 CellConverter: Weapon Swapper
 ArmorReforge: Armor Reforge
 ArmorShop: Armor Shop
+WeaponUpgrade: Weapon Upgrade
 Close: Close
 TestDialogue:
 	'''
