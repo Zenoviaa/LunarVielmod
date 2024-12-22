@@ -2,7 +2,7 @@
 
 namespace Stellamod.Items.MoonlightMagic.Weapons
 {
-    internal class WillowOfTheWisps : BaseStaff
+    internal class WillowOfTheSouls : BaseStaff
     {
         public override void SetDefaults()
         {
