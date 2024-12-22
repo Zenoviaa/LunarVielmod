@@ -981,7 +981,7 @@ namespace Stellamod.WorldG
                                 for (int da = 0; da < 1; da++)
                                 {
                                     Point Loc = new Point(smx, smy - 5);
-                                    string path = "Struct/IceStruct/HouseSurfaceIce1";//
+                                    string path = "Structures/IceStruct/HouseSurfaceIce1";//
 
                                     Structurizer.ProtectStructure(Loc, path);
                                     int[] ChestIndexs = Structurizer.ReadStruct(Loc, path);
@@ -1093,7 +1093,7 @@ namespace Stellamod.WorldG
                                 for (int da = 0; da < 1; da++)
                                 {
                                     Point Loc = new Point(smx, smy - 8);
-                                    string path = "Struct/IceStruct/HouseSurfaceIce2";//
+                                    string path = "Structures/IceStruct/HouseSurfaceIce2";//
 
                                     Structurizer.ProtectStructure(Loc, path);
                                     int[] ChestIndexs = Structurizer.ReadStruct(Loc, path);
@@ -1245,8 +1245,8 @@ namespace Stellamod.WorldG
                             for (int da = 0; da < 1; da++)
                             {
                                 Point Loc = new Point(X, yBelow + 5);
-                                //Structurizer.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
-                                string path = "Struct/IceStruct/HouseSurfaceIce1";//
+                                //Structurizer.ReadStruct(Loc, "Structures/Underground/Manor", tileBlend);
+                                string path = "Structures/IceStruct/HouseSurfaceIce1";//
                                 int[] ChestIndexs = Structurizer.ReadStruct(Loc, path);
                                 Structurizer.ProtectStructure(Loc, path);
                                 foreach (int chestIndex in ChestIndexs)
@@ -1356,8 +1356,8 @@ namespace Stellamod.WorldG
                             for (int da = 0; da < 1; da++)
                             {
                                 Point Loc = new Point(X, yBelow + 3);
-                                //Structurizer.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
-                                string path = "Struct/IceStruct/HouseSurfaceIce2";//
+                                //Structurizer.ReadStruct(Loc, "Structures/Underground/Manor", tileBlend);
+                                string path = "Structures/IceStruct/HouseSurfaceIce2";//
                                 int[] ChestIndexs = Structurizer.ReadStruct(Loc, path);
                                 Structurizer.ProtectStructure(Loc, path);
                                 foreach (int chestIndex in ChestIndexs)
@@ -1612,8 +1612,8 @@ namespace Stellamod.WorldG
                                 for (int da = 0; da < 1; da++)
                                 {
                                     Point Loc = new Point(smx - 15, smy + 10);
-                                    //Structurizer.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
-                                    string path = "Struct/IceStruct/BridgeIce1";//
+                                    //Structurizer.ReadStruct(Loc, "Structures/Underground/Manor", tileBlend);
+                                    string path = "Structures/IceStruct/BridgeIce1";//
 
 
                                     int[] ChestIndexs = Structurizer.ReadStruct(Loc, path);
@@ -1711,8 +1711,8 @@ namespace Stellamod.WorldG
                                 for (int da = 0; da < 1; da++)
                                 {
                                     Point Loc = new Point(smx - 20, smy + 20);
-                                    //Structurizer.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
-                                    string path = "Struct/IceStruct/BridgeIce2";//
+                                    //Structurizer.ReadStruct(Loc, "Structures/Underground/Manor", tileBlend);
+                                    string path = "Structures/IceStruct/BridgeIce2";//
 
 
                                     int[] ChestIndexs = Structurizer.ReadStruct(Loc, path);
@@ -1810,8 +1810,8 @@ namespace Stellamod.WorldG
                                 for (int da = 0; da < 1; da++)
                                 {
                                     Point Loc = new Point(smx - 15, smy + 10);
-                                    //Structurizer.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
-                                    string path = "Struct/IceStruct/BridgeIce3";//
+                                    //Structurizer.ReadStruct(Loc, "Structures/Underground/Manor", tileBlend);
+                                    string path = "Structures/IceStruct/BridgeIce3";//
 
                                     int[] ChestIndexs = Structurizer.ReadStruct(Loc, path);
                                     //Structurizer.ProtectStructure(Loc, path);
@@ -1908,8 +1908,8 @@ namespace Stellamod.WorldG
                                 for (int da = 0; da < 1; da++)
                                 {
                                     Point Loc = new Point(smx - 20, smy + 10);
-                                    //Structurizer.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
-                                    string path = "Struct/IceStruct/BridgeIce3";//
+                                    //Structurizer.ReadStruct(Loc, "Structures/Underground/Manor", tileBlend);
+                                    string path = "Structures/IceStruct/BridgeIce3";//
 
                                     int[] ChestIndexs = Structurizer.ReadStruct(Loc, path);
                                     //Structurizer.ProtectStructure(Loc, path);
@@ -2479,8 +2479,8 @@ namespace Stellamod.WorldG
                 for (int y = 0; y < height; y++)
                 {
                     Point Loc = new Point(treex + x, treey - (y));
-                    //Structurizer.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
-                    string path = "Struct/IceStruct/FogSpammer";//
+                    //Structurizer.ReadStruct(Loc, "Structures/Underground/Manor", tileBlend);
+                    string path = "Structures/IceStruct/FogSpammer";//
                     Structurizer.ReadStruct(Loc, path);
                     Structurizer.ProtectStructure(Loc, path);
                 }

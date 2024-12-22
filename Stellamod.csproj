@@ -105,6 +105,8 @@
     <None Remove="Effects\CrystalShaders\SimpleGradientTrail.fx" />
     <None Remove="Effects\CrystalShaders\SimpleTrail.fx" />
     <None Remove="Effects\CrystalShaders\ThunderCloud.fx" />
+    <None Remove="Effects\CrystalShaders\Water.fx" />
+    <None Remove="Effects\CrystalShaders\WaterBasic.fx" />
     <None Remove="effects\DaedusRobe.fx" />
     <None Remove="Effects\DarknessCurve.fx" />
     <None Remove="Effects\DarknessVignette.fx" />
@@ -596,6 +598,8 @@
     <None Remove="UI\ArmorReforgeSystem\ReforgeButtonSelected.png" />
     <None Remove="UI\StructureSelector\Paper.png" />
     <None Remove="UI\StructureSelector\PaperSelected.png" />
+    <None Remove="UI\StructureSelector\Save.png" />
+    <None Remove="UI\StructureSelector\UndoSelected.png" />
     <None Remove="UI\ToolsSystem\Paper.png" />
     <None Remove="UI\ToolsSystem\PaperSelected.png" />
     <None Remove="Visual\Particles\GlowCircleDetailedBoomParticle1.png" />
@@ -613,7 +617,7 @@
     <Folder Include="Projectiles\FX\" />
     <Folder Include="Projectiles\Slashers\NewFolder\" />
     <Folder Include="Projectiles\Swords\Slashes\" />
-    <Folder Include="Struct\Catacombs\" />
+    <Folder Include="Structures\Catacombs\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ParticleLibrary">

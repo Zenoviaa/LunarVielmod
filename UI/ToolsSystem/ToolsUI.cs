@@ -15,7 +15,7 @@ namespace Stellamod.UI.ToolsSystem
         internal const int height = 280;
 
         internal int RelativeLeft => Main.screenWidth / 2;
-        internal int RelativeTop => 0 + 32;
+        internal int RelativeTop => Main.screenHeight - 164;
 
 
         public Vector2 Offset;

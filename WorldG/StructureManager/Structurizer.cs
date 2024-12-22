@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
@@ -381,6 +382,16 @@ namespace Stellamod.WorldG.StructureManager
                 return ReadStruct(stream, BottomLeft, tileBlend);
             }
         }
+        public static int[] ReadSavedStruct(string filePath, Point BottomLeft, int[] tileBlend = null)
+        {
+            if (!filePath.Contains(".str"))
+                filePath += ".str";
+            string savedPath = Main.SavePath + "/ModSources/" + Mod.Name + "/"  + filePath;
+            using (FileStream stream = File.Open(savedPath, FileMode.Open))
+            {
+                return ReadStruct(stream, BottomLeft, tileBlend);
+            }
+        }
         public static Rectangle ReadSavedRectangle()
         {
             if (!File.Exists(Main.SavePath + "/SavedStruct.str"))
@@ -429,6 +440,93 @@ namespace Stellamod.WorldG.StructureManager
                 return TileID.Dirt;
             }
         }
+        public static void SaveStruct(string fileName, Point bottomLeft, Point topRight)
+        {
+            //string Path = Main.SavePath + "/" + "ModSources" + "/" + Mod.Name + "/" + "SavedStruct.str";
+            string savePath = Main.SavePath + $"/ModSources/{Mod.Name}/Structures/{fileName}.str";
+            using (var stream = File.Open(savePath, FileMode.Create))
+            {
+                using (var writer = new BinaryWriter(stream))
+                {
+                    int Xlength = (int)(topRight.X - bottomLeft.X);
+                    int Ylength = (int)(bottomLeft.Y - topRight.Y);
+                    writer.Write(Xlength);
+                    writer.Write(Ylength);
+                    for (int x = (int)(bottomLeft.X); x <= topRight.X; x++)
+                    {
+                        for (int y = (int)(bottomLeft.Y); y >= topRight.Y; y--)
+                        {
+                            //tile
+                            Tile t = Framing.GetTileSafely(x, y);
+                            bool hastile = t.HasTile;
+                            writer.Write(hastile);
+                            writer.Write(t.LiquidType);
+                            writer.Write(t.LiquidAmount);
+                            writer.Write(t.BlueWire);
+                            writer.Write(t.RedWire);
+                            writer.Write(t.GreenWire);
+                            writer.Write(t.YellowWire);
+                            writer.Write(t.HasActuator);
+                            writer.Write(t.IsActuated);
+                            if (hastile)
+                            {
+                                bool Modded = t.TileType > TileID.Count;
+                                writer.Write(Modded);
+                                if (Modded)
+                                {
+                                    WriteModdedTile(writer, t);
+                                }
+                                else
+                                {
+                                    WriteVanillaTile(writer, t);
+                                }
+                                writer.Write((byte)t.BlockType);
+                                writer.Write(t.IsHalfBlock);
+                                writer.Write((byte)t.Slope);
+                                writer.Write(t.TileFrameNumber);
+                                writer.Write(t.TileFrameX);
+                                writer.Write(t.TileFrameY);
+
+                                //Paint
+                                writer.Write(t.TileColor);
+                                writer.Write(t.IsTileInvisible);
+                                writer.Write(t.IsTileFullbright);
+
+                                bool Chest = false;
+                                foreach (Chest c in Main.chest)
+                                {
+                                    if (c == null)
+                                        continue;
+                                    if (c.x == x && c.y == y)
+                                    {
+                                        Chest = true;
+                                    }
+                                }
+                                writer.Write(Chest);
+                            }
+                            bool WallModded = t.WallType >= WallID.Count;
+                            writer.Write(WallModded);
+                            if (WallModded)
+                            {
+                                WriteModdedWall(writer, t);
+                            }
+                            else
+                            {
+                                WriteVanillaWall(writer, t);
+                            }
+                            writer.Write(t.WallFrameX);
+                            writer.Write(t.WallFrameY);
+                            writer.Write(t.WallColor);
+                            writer.Write(t.IsWallInvisible);
+                            writer.Write(t.IsWallFullbright);
+                        }
+                    }
+
+                }
+            }
+            Main.NewText("Structure Saved");
+        }
+
         /// <summary>
         /// saves a struct to a .str file to be read. This method must be called 2 times, the first one being the bottom left, the second being the top right. the first call will not create a .str. After the second call, the file will be in the mod sources folder for your mod. Rename it then build + reload to place it with the other method
         /// </summary>
@@ -443,7 +541,8 @@ namespace Stellamod.WorldG.StructureManager
             }
 
             //string Path = Main.SavePath + "/" + "ModSources" + "/" + Mod.Name + "/" + "SavedStruct.str";
-            using (var stream = File.Open(Main.SavePath + "/SavedStruct.str", FileMode.Create))
+            string savePath = Main.SavePath + $"/ModSources/{Mod.Name}/Structures/SavedStruct.str";
+            using (var stream = File.Open(savePath, FileMode.Create))
             {
                 using (var writer = new BinaryWriter(stream))
                 {
@@ -592,10 +691,9 @@ namespace Stellamod.WorldG.StructureManager
             }
             else
             {
-                Structurizer.SaveStruct(Main.MouseWorld.ToTileCoordinates());
-                int x = (int)Main.MouseWorld.X / 16;
-                int y = (int)Main.MouseWorld.Y / 16;
-                Dust.QuickBox(new Vector2(x, y) * 16, new Vector2(x + 1, y + 1) * 16, 2, Color.YellowGreen, null);
+                StructureSelection selection = ModContent.GetInstance<StructureSelection>();
+                selection.SpawnSelection = true;
+                SoundEngine.PlaySound(SoundID.Item47);
             }
 
             return true;
@@ -644,7 +742,7 @@ namespace Stellamod.WorldG.StructureManager
                 snapshotSystem.Save();
                 if (Structurizer.SelectedStructure != null)
                 {
-                    Structurizer.ReadStruct(Main.MouseWorld.ToTileCoordinates(), Structurizer.SelectedStructure);
+                    Structurizer.ReadSavedStruct(Structurizer.SelectedStructure, Main.MouseWorld.ToTileCoordinates());
                     Structurizer.SelectedStructure = null;
                 }
                 else

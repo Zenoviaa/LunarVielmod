@@ -33,7 +33,7 @@ namespace Stellamod.UI.StructureSelector
 
 
 
-            _panel.Width.Pixels = Width.Pixels - 64;
+            _panel.Width.Pixels = Width.Pixels - 128;
             _panel.Height.Pixels = Height.Pixels;
             _panel.BackgroundColor = Color.Transparent;
             Append(_text);

@@ -4,12 +4,15 @@ using Stellamod.UI.AdvancedMagicSystem;
 using Stellamod.WorldG.StructureManager;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader;
 using Terraria.ModLoader.UI.Elements;
+using tModPorter;
 
 namespace Stellamod.UI.StructureSelector
 {
@@ -101,6 +104,26 @@ namespace Stellamod.UI.StructureSelector
             else
             {
                 _scrollbar.Top.Set(0, 0f);
+            }
+        }
+        static Mod Mod = ModContent.GetInstance<Stellamod>();
+        public void Refresh()
+        {
+            _grid.Clear();
+            string[] filePaths = Directory.GetFiles(Main.SavePath + $"/ModSources/{Mod.Name}", "*.str",
+                                         SearchOption.AllDirectories);
+            Uri path1 = new Uri(Main.SavePath + $"/ModSources/{Mod.Name}");
+            foreach (var filePath in filePaths)
+            {
+                if (!filePath.Contains("Structures"))
+                    continue;
+
+                Uri path2 = new Uri(filePath);
+                Uri diff = path1.MakeRelativeUri(path2);
+                string finalString = diff.ToString();
+                finalString = finalString.Replace(Mod.Name + "/", "");
+                StructureSelectionButton btn = new StructureSelectionButton(finalString);
+                _grid.Add(btn);
             }
         }
     }

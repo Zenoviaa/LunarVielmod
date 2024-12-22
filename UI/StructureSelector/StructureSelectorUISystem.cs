@@ -19,12 +19,15 @@ namespace Stellamod.UI.StructureSelector
         public static string RootTexturePath => "Stellamod/UI/StructureSelector/";
 
         public StructureSelectorUIState selectorUIState;
+        public StructureSaveUIState saveUIState;
         public override void OnModLoad()
         {
             base.OnModLoad();
             _userInterface = new UserInterface();
             selectorUIState = new StructureSelectorUIState();
             selectorUIState.Activate();
+            saveUIState = new StructureSaveUIState();
+            saveUIState.Activate();
             _userInterface.SetState(null);
         }
 
@@ -50,13 +53,20 @@ namespace Stellamod.UI.StructureSelector
             }
         }
 
+        internal void OpenSaveUI()
+        {
+            _userInterface.SetState(saveUIState);
+        }
+
         internal void OpenUI()
         {
+            selectorUIState.ui.Refresh();
             _userInterface.SetState(selectorUIState);
         }
 
         private void CloseUI()
         {
+            saveUIState.ui.Textbox.Unfocus();
             _userInterface.SetState(null);
         }
 
