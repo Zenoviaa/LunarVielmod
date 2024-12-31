@@ -151,6 +151,13 @@ namespace Stellamod.Items
                 yield: 1);
 
             //Spring Mushroom x Juggler
+            AddBrew(
+                result: ModContent.ItemType<DirtGlove>(),
+                mold: ModContent.ItemType<BlankJuggler>(),
+                material: ModContent.ItemType<Mushroom>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
 
             AddBrew(
               result: ModContent.ItemType<BasicBaseball>(),
@@ -490,6 +497,14 @@ namespace Stellamod.Items
                yield: 1);
 
             //Fable Scrap x Blank Card
+            AddBrew(
+               result: ModContent.ItemType<GothivCard>(),
+               mold: ModContent.ItemType<BlankCard>(),
+               material: ModContent.ItemType<AlcadizScrap>(),
+               materialCount: 10,
+               weight: 1.0f,
+               yield: 1);
+
             //Fable Scrap x Blank Dust
             AddBrew(
                result: ModContent.ItemType<FlamePowder>(),
@@ -696,6 +711,14 @@ namespace Stellamod.Items
                 yield: 1);
 
             //Winterborn Shard x Blank Orb
+            AddBrew(
+               result: ModContent.ItemType<EvasiveBalls>(),
+               mold: ModContent.ItemType<BlankOrb>(),
+               material: ModContent.ItemType<WinterbornShard>(),
+               materialCount: 10,
+               weight: 1.0f,
+               yield: 1);
+
 
             //Gintz Metal x Sword
             AddBrew(
@@ -782,6 +805,14 @@ namespace Stellamod.Items
                 weight: 1.0f,
                 yield: 1);
 
+
+            AddBrew(
+                result: ModContent.ItemType<GreyBricks>(),
+                mold: ModContent.ItemType<BlankOrb>(),
+                material: ModContent.ItemType<GintzlMetal>(),
+                materialCount: 10,
+                weight: 1.0f,
+                yield: 1);
 
             AddBrew(
                 result: ModContent.ItemType<SpikedLobber>(),

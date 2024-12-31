@@ -65,6 +65,7 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
             recipe.AddIngredient(ModContent.ItemType<DesertCrossbow>(), 1);
             recipe.AddIngredient(ModContent.ItemType<DungeonCrossbow>(), 1);
             recipe.AddIngredient(ModContent.ItemType<FrostyCrossbow>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<MoltenCrossbow>(), 1);
             recipe.Register();
         }
 

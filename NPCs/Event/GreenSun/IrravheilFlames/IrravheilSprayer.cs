@@ -309,6 +309,7 @@ namespace Stellamod.NPCs.Event.GreenSun.IrravheilFlames
         }
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Irrasprayer>(), 10, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LostScrap>(), 4, 1, 5));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VirulentPlating>(), 3, 1, 5));
         }

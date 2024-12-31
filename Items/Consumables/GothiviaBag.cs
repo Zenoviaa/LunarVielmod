@@ -50,6 +50,7 @@ namespace Stellamod.Items.Consumables
         {
 			itemLoot.Add(ItemDropRule.OneFromOptions(1,
 				ModContent.ItemType<BurningGBroochA>(),
+                ModContent.ItemType<GothiviasCard>(),
 				ModContent.ItemType<BurnBlast>()));
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));

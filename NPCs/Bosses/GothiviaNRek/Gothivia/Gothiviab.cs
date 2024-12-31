@@ -1097,6 +1097,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
 				ModContent.ItemType<BurningGBroochA>(),
 				ModContent.ItemType<Items.Weapons.Melee.Helios>(),
+				ModContent.ItemType<GothiviasCard>(),
 				ModContent.ItemType<Twirlers>(),
 				ModContent.ItemType<WeddingDay>()));
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
