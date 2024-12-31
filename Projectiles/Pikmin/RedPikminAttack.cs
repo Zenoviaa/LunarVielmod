@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -32,7 +34,7 @@ namespace Stellamod.Projectiles.Pikmin
         public override void AI()
         {
 
-
+           
             int targetNpc = (int)Projectile.ai[0];
             NPC target = Main.npc[targetNpc];
             if (target.active && !_setOffset)
@@ -54,7 +56,7 @@ namespace Stellamod.Projectiles.Pikmin
                 Projectile.velocity = (directionToTarget * dist) + new Vector2(0.001f, 0.001f);
             }
 
-
+          
             Projectile.rotation = Projectile.velocity.ToRotation();
             Visuals();
             Attacktime++;

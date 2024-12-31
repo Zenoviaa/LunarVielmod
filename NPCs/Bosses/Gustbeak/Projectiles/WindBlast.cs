@@ -38,7 +38,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
                 float range = MathHelper.Lerp(16, 16, chargeProgress);
                 Vector2 offset = Main.rand.NextVector2CircularEdge(range, range);
                 float rotation = offset.ToRotation();
-                // rotation += Main.rand.NextFloat(-1f, 1f);
+               // rotation += Main.rand.NextFloat(-1f, 1f);
                 Wind.NewSlash(offset, rotation);
 
                 offset = Main.rand.NextVector2CircularEdge(range, range);
@@ -54,11 +54,11 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
         public override bool PreDraw(ref Color lightColor)
         {
             base.PreDraw(ref lightColor);
-
+            
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Restart(blendState: BlendState.Additive);
 
-            for (float f = 0f; f < 1f; f += 0.25f)
+            for(float f = 0f; f < 1f; f += 0.25f)
             {
                 Vector2 drawPos = Projectile.Center - Main.screenPosition;
                 float rotation = f * MathHelper.TwoPi;
@@ -68,7 +68,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
             }
             DrawWindBall(Projectile.Center - Main.screenPosition, ref lightColor);
             spriteBatch.RestartDefaults();
-
+     
             return false;
         }
         public override void OnKill(int timeLeft)

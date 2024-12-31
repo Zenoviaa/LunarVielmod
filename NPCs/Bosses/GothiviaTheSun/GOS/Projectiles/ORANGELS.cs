@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Effects;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
@@ -14,12 +16,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
     public class ORANGELS : ModProjectile, IPixelPrimitiveDrawer
     {
 
-
+        
         internal PrimitiveTrail BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];
         public const float LaserLength = 2000f;
-
+       
 
         public override void SetDefaults()
         {

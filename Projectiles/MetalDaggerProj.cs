@@ -7,7 +7,7 @@ namespace Stellamod.Projectiles
     public class MetalDaggerProj : ModProjectile
     {
         public override void SetDefaults()
-        {
+        {           
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
@@ -18,7 +18,7 @@ namespace Stellamod.Projectiles
             Projectile.scale = 1f;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 10;
-            Projectile.timeLeft = 200;
+            Projectile.timeLeft = 200;     
         }
 
         public float Timer
@@ -34,7 +34,7 @@ namespace Stellamod.Projectiles
             Timer++;
 
             player.RotatedRelativePoint(Projectile.Center);
-            Projectile.rotation -= 0.2f;
+            Projectile.rotation  -= 0.2f;
 
             Vector3 RGB = new(2.55f, 2.55f, 0.94f);
             // The multiplication here wasn't doing anything

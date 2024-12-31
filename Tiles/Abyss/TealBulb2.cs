@@ -24,7 +24,7 @@ namespace Stellamod.Tiles.Abyss
             TileObjectData.newTile.Width = 1;
             TileObjectData.newTile.CoordinateHeights = new int[]
             {
-            16,
+            16,                  
             };
             TileObjectData.addTile(Type);
             DustType = DustID.Stone;

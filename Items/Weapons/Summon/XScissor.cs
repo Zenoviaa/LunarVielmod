@@ -4,7 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
+using Stellamod.Items.Materials;
+using Stellamod.Particles;
 using Stellamod.Projectiles.Summons.Sentries;
+using Stellamod.Projectiles.Summons.VoidMonsters;
 using Stellamod.Projectiles.Swords;
 using System.Collections.Generic;
 using Terraria;
@@ -16,22 +19,22 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Summon
 {
     public class XScissorComboPlayer : ModPlayer
-    {
-        public float speed = 1f;
-        public float timer;
+	{
+		public float speed = 1f;
+		public float timer;
         public override void UpdateEquips()
         {
             base.UpdateEquips();
-            timer++;
-            if (timer >= 120)
-            {
-                speed = 1;
+			timer++;
+			if(timer >= 120)
+			{
+				speed = 1;
                 timer = 0;
-            }
+			}
         }
     }
 
-    public class XScissor : ClassSwapItem
+	public class XScissor : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;
@@ -42,29 +45,29 @@ namespace Stellamod.Items.Weapons.Summon
             Item.mana = 10;
         }
         private int _attackStyle;
-        private int _dir;
+		private int _dir;
         public override void SetDefaults()
         {
-            Item.damage = 100;
-            Item.knockBack = 3f;
-            Item.mana = 20;
-            Item.width = 76;
-            Item.height = 80;
-            Item.useTime = 18;
-            Item.useAnimation = 18;
-            Item.useStyle = ItemUseStyleID.Swing;
+			Item.damage = 100;
+			Item.knockBack = 3f;
+			Item.mana = 20;
+			Item.width = 76;
+			Item.height = 80;
+			Item.useTime = 18;
+			Item.useAnimation = 18;
+			Item.useStyle = ItemUseStyleID.Swing;
             Item.value = Item.sellPrice(0, 0, 33, 0);
             Item.rare = ItemRarityID.LightPurple;
-            Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/RipperSlashTelegraph");
+			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/RipperSlashTelegraph");
 
-            // These below are needed for a minion weapon
-            Item.noMelee = true;
-            Item.DamageType = DamageClass.Summon;
+			// These below are needed for a minion weapon
+			Item.noMelee = true;
+			Item.DamageType = DamageClass.Summon;
 
             // No buffTime because otherwise the item tooltip would say something like "1 minute duration"
             Item.buffType = ModContent.BuffType<XScissorMinionBuff>();
-            Item.shoot = ModContent.ProjectileType<XScissorMinionProj>();
-        }
+			Item.shoot = ModContent.ProjectileType<XScissorMinionProj>();
+		}
 
         private void ChangeForm(int newForm)
         {
@@ -72,8 +75,8 @@ namespace Stellamod.Items.Weapons.Summon
             if (_attackStyle == 1)
             {
                 Item.damage = 166;
-                Item.UseSound = null;
-                Item.DamageType = DamageClass.Melee;
+				Item.UseSound = null; 
+				Item.DamageType = DamageClass.Melee;
                 Item.mana = 4;
                 Item.useTime = 5;
                 Item.useAnimation = 5;
@@ -87,7 +90,7 @@ namespace Stellamod.Items.Weapons.Summon
             }
             else if (_attackStyle == 0)
             {
-
+      
                 Item.damage = 100;
                 Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/RipperSlashTelegraph");
                 Item.DamageType = DamageClass.Summon;
@@ -185,7 +188,7 @@ namespace Stellamod.Items.Weapons.Summon
             }
 
             if (_attackStyle == 0)
-            {
+			{
                 //Spawn at the mouse cursor position
                 position = Main.MouseWorld;
                 player.AddBuff(Item.buffType, 2);
@@ -193,18 +196,18 @@ namespace Stellamod.Items.Weapons.Summon
                 projectile.originalDamage = Item.damage;
 
                 player.UpdateMaxTurrets();
-            }
-            else
-            {
+			}
+			else
+			{
                 // Using the shoot function, we override the swing projectile to set ai[0] (which attack it is)
-                float speed = player.GetModPlayer<XScissorComboPlayer>().speed;
-                float speedProgress = speed / 3;
+				float speed = player.GetModPlayer<XScissorComboPlayer>().speed;
+				float speedProgress = speed / 3;
                 //Sound
                 if (Main.rand.NextBool(2))
                 {
                     SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeProg");
                     soundStyle.PitchVariance = 0.15f;
-                    soundStyle.Pitch = 0.75f + speedProgress * 0.2f;
+					soundStyle.Pitch = 0.75f + speedProgress * 0.2f;
                     SoundEngine.PlaySound(soundStyle, player.position);
                 }
                 else
@@ -231,7 +234,18 @@ namespace Stellamod.Items.Weapons.Summon
                 Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, _dir);
             }
 
-            return false;
-        }
+			return false;
+		}
+
+        public override void AddRecipes()
+        {
+			CreateRecipe()
+				.AddIngredient(ItemID.Excalibur, 1)
+				.AddIngredient(ModContent.ItemType<MiracleThread>(), 12)
+				.AddIngredient(ModContent.ItemType<AlcaricMush>(), 4)
+				.AddIngredient(ModContent.ItemType<EldritchSoul>(), 4)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
+		}
     }
 }

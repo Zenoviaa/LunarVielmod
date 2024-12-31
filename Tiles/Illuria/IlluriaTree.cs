@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Items.Materials;
+using Stellamod.Tiles.Acid;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;

@@ -1,6 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Gores;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories;
+using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.CommanderGintzia.Hands;
 using Stellamod.NPCs.Bosses.EliteCommander.Projectiles;
@@ -92,7 +96,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
         {
             base.SetStaticDefaults();
             Main.npcFrameCount[Type] = 30;
-            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+                        NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             NPCID.Sets.BossBestiaryPriority.Add(Type);
         }
 
@@ -123,7 +127,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
         {
             base.FindFrame(frameHeight);
             NPC.frameCounter += 0.5f;
-            if (NPC.frameCounter >= 1f)
+            if(NPC.frameCounter >= 1f)
             {
                 NPC.frameCounter = 0f;
                 _frame++;
@@ -182,12 +186,12 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
         public override void AI()
         {
             base.AI();
-            if (Timer % 120 == 0)
+            if(Timer % 120 == 0)
             {
                 FollowCenter = Target.Center;
             }
             NPC.TargetClosest();
-            if (!NPC.HasValidTarget && State != AIState.Despawn)
+            if(!NPC.HasValidTarget && State != AIState.Despawn)
             {
                 SwitchState(AIState.Despawn);
             }
@@ -310,9 +314,9 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             {
                 if (StellaMultiplayer.IsHost)
                 {
-
-                    _comeHereIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<ComeHere>(),
-                        ai2: NPC.whoAmI,
+        
+                    _comeHereIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<ComeHere>(), 
+                        ai2: NPC.whoAmI, 
                         ai3: (between * 1));
                 }
                 PlaySound();
@@ -350,7 +354,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 }
                 PlaySound();
             }
-
+            
             if (Timer == 130)
             {
                 if (StellaMultiplayer.IsHost)
@@ -361,7 +365,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 }
                 PlaySound();
             }
-
+            
             if (Timer == 160)
             {
                 if (StellaMultiplayer.IsHost)
@@ -383,7 +387,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 }
                 PlaySound();
             }
-
+ 
 
             if (Timer >= 210)
             {
@@ -422,7 +426,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             FollowTarget();
             if (Timer >= 60)
             {
-                if (InPhase2 && !Phase2Transition)
+                if(InPhase2 && !Phase2Transition)
                 {
                     SwitchState(AIState.Phase_2_Transition);
                     Phase2Transition = true;
@@ -445,7 +449,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                     }
                     else
                     {
-                        SwitchState(AIState.Summon_Hands);
+                        SwitchState(AIState.Summon_Hands);    
                     }
                 }
             }
@@ -454,7 +458,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
         private void AI_SummonHands()
         {
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 if (StellaMultiplayer.IsHost)
                 {
@@ -580,7 +584,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
         private void AI_Slam()
         {
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 NPC.velocity.Y = 0;
                 NPC.velocity.X = 0;
@@ -590,7 +594,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 PutAwayCarpet(_evilCarpetIndex);
             }
 
-            if (NPC.velocity.Y > 0)
+            if(NPC.velocity.Y > 0)
             {
                 Vector2 startPos = NPC.position;
                 Vector2 endPos = Target.position;
@@ -611,7 +615,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             Timer++;
             NPC.velocity.X *= 0.94f;
             NPC.rotation *= 0.94f;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 if (StellaMultiplayer.IsHost)
                 {
@@ -657,7 +661,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             }
 
 
-            if (Timer >= 60)
+            if(Timer >= 60)
             {
                 SwitchState(AIState.Recover);
             }
@@ -666,14 +670,14 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
         private void AI_Recover()
         {
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 ReSummonCarpet(_evilCarpetIndex);
             }
 
             NPC.noGravity = true;
             NPC.noTileCollide = true;
-            if (Timer >= 60)
+            if(Timer >= 60)
             {
                 SwitchState(AIState.Idle);
             }
@@ -682,7 +686,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
         private void AI_Phase2Transition()
         {
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 TransitionHand(_fistIndex);
                 TransitionHand(_okHandIndex);
@@ -693,7 +697,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 TransitionHand(_scissorHandIndex);
             }
 
-            if (Timer % 10 == 0)
+            if(Timer % 10 == 0)
             {
                 Vector2 dustSpawnPos = NPC.Center + Main.rand.NextVector2CircularEdge(64, 64);
                 Vector2 dustVelocity = (NPC.Center - dustSpawnPos).SafeNormalize(Vector2.Zero);
@@ -709,12 +713,12 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             float progress = Timer / 180f;
             float easedProgress = Easing.SpikeOutCirc(progress);
             TransitionColorProgress = easedProgress;
-            if (Timer % 16 == 0)
+            if(Timer % 16 == 0)
             {
                 FXUtil.ShakeCamera(NPC.position, 1024, 4);
             }
 
-            if (Timer > 180)
+            if(Timer > 180)
             {
                 SwitchState(AIState.Idle);
             }
@@ -724,7 +728,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
         {
             Timer++;
             NPC.dontTakeDamage = true;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 //Play some sort of sound
                 KillHand(_fistIndex);
@@ -736,7 +740,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 KillHand(_scissorHandIndex);
             }
 
-            if (Timer % 8 == 0)
+            if(Timer % 8 == 0)
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GemDiamond);
             }
@@ -763,7 +767,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             Vector2 velocity = (colosseumWorld - NPC.Center).SafeNormalize(Vector2.Zero);
             float distance = Vector2.Distance(NPC.Center, colosseumWorld);
             float maxSpeed = 6;
-            if (distance < maxSpeed)
+            if(distance < maxSpeed)
             {
                 velocity *= distance;
             }
@@ -772,24 +776,23 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 velocity *= maxSpeed;
             }
 
-
+  
             NPC.rotation = NPC.velocity.X * 0.025f;
 
-            if (Timer < 150)
+            if(Timer < 150)
             {
                 NPC.velocity = Vector2.Lerp(NPC.velocity, velocity, 0.3f);
                 NPC.velocity.Y += MathF.Sin(Timer * 0.2f) * 0.1f;
             }
 
-            if (Timer == 150)
+            if(Timer == 150)
             {
-                /*
                 if (StellaMultiplayer.IsHost)
                 {
                     int itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(),
                         ModContent.ItemType<VoidKey>(), Main.rand.Next(1, 1));
                     NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
-                }*/
+                }
                 if (StellaMultiplayer.IsHost)
                 {
                     int itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(),
@@ -798,9 +801,9 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 }
             }
 
-            if (Timer > 150)
+            if(Timer > 150)
             {
-                if (NPC.velocity.Y > -14)
+                if(NPC.velocity.Y > -14)
                 {
                     NPC.velocity.Y -= 0.1f;
                 }
@@ -811,9 +814,9 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 NPC.SetEventFlagCleared(ref DownedBossSystem.downedCommanderGintziaBoss, -1);
                 ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
                 colosseumSystem.Progress();
-
+          
             }
-            if (Timer == 241)
+            if(Timer == 241)
             {
                 NPC.active = false;
             }
@@ -877,10 +880,10 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             spriteBatch.RestartDefaults();
             spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
 
-            if (TransitionColorProgress > 0)
+            if(TransitionColorProgress > 0)
             {
                 spriteBatch.Restart(blendState: BlendState.Additive);
-                for (int i = 0; i < 2; i++)
+                for(int i = 0; i < 2; i++)
                 {
                     spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor * TransitionColorProgress, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
                 }
@@ -893,6 +896,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
         {
             base.ModifyNPCLoot(npcLoot);
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<CommanderGintziaBossRel>()));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VoidKey>()));
         }
 
         public override void OnKill()

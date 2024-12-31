@@ -1,8 +1,14 @@
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Bow;
+using Stellamod.Projectiles.Gun;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -39,7 +45,15 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.consumeAmmoOnLastShotOnly = true;
             Item.noMelee = true;
         }
-
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.BorealWood, 10);
+            recipe.AddIngredient(ItemType<EldritchSoul>(), 12);
+            recipe.AddIngredient(ItemType<StarSilk>(), 5);
+            recipe.AddTile(TileID.Furnaces);
+            recipe.Register();
+        }
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-2f, 0f);

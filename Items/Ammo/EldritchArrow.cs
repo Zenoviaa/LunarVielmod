@@ -1,4 +1,5 @@
-﻿using Stellamod.Projectiles.Ammo;
+﻿using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Ammo;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -27,5 +28,16 @@ namespace Stellamod.Items.Ammo
             Item.shootSpeed = 16f; // The speed of the projectile.
             Item.ammo = AmmoID.Arrow; // The ammo class this ammo belongs to.
         }
+
+        // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+        public override void AddRecipes()
+        {
+            CreateRecipe(100)
+                .AddIngredient(ItemID.WoodenArrow, 100)
+                .AddIngredient(ModContent.ItemType<EldritchSoul>(), 2)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
+        }
+    
     }
 }

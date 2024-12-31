@@ -1,13 +1,28 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Magic;
-using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
+using Terraria;
+using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Magic;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
+using Stellamod.Helpers;
+using Stellamod.Dusts;
+using System.IO;
+using Terraria.Audio;
 
 namespace Stellamod.Items.Weapons.Mage
-{
+{ 
     public class TheAurora : ClassSwapItem
     {
         //Alternate class you want it to change to
@@ -52,7 +67,7 @@ namespace Stellamod.Items.Weapons.Mage
             SoundStyle shootSound = new SoundStyle("Stellamod/Assets/Sounds/MiniPistol");
             if (Sound == 1)
             {
-
+         
 
             }
             else
@@ -69,7 +84,7 @@ namespace Stellamod.Items.Weapons.Mage
             float rot = velocity.ToRotation();
             float spread = 0.4f;
 
-            Vector2 offset = new Vector2(1, 0f).RotatedBy(rot);
+            Vector2 offset = new Vector2(1,0f).RotatedBy(rot);
             for (int k = 0; k < 5; k++)
             {
                 Vector2 direction = offset.RotatedByRandom(spread);
@@ -79,7 +94,7 @@ namespace Stellamod.Items.Weapons.Mage
             Dust.NewDustPerfect(position + offset * 80, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.Goldenrod, 1);
             Dust.NewDustPerfect(player.Center + offset * 80, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
 
-            for (int k = 0; k < 2; k++)
+            for(int k = 0; k < 2; k++)
             {
                 Projectile.NewProjectile(source, position, -velocity.RotatedByRandom(MathHelper.ToRadians(65)), type, damage, knockback, player.whoAmI);
             }

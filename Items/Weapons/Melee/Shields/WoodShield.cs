@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Shields;
 using Terraria;
 using Terraria.DataStructures;

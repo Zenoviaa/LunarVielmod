@@ -86,6 +86,6 @@ namespace Stellamod.Visual.Particles
             }
         }
 
-
+     
     }
 }

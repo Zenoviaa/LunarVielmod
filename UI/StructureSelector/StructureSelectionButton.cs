@@ -51,7 +51,7 @@ namespace Stellamod.UI.StructureSelector
             else
             {
                 Structurizer.SelectedStructure = _structurePath;
-
+       
                 Main.NewText($"Selected {Structurizer.SelectedStructure}");
             }
         }
@@ -80,7 +80,7 @@ namespace Stellamod.UI.StructureSelector
                     _panel.BackgroundColor = Color.Lerp(_panel.BackgroundColor, Color.Transparent, 0.1f);
                 }
             }
-
+   
 
         }
     }

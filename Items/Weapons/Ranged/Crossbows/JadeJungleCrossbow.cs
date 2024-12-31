@@ -1,4 +1,6 @@
-﻿using Stellamod.Projectiles.Crossbows.Sniper;
+﻿using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Projectiles.Crossbows.Sniper;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -49,6 +51,19 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
 
 
         }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddTile(TileID.Anvils);
+            recipe.AddIngredient(ModContent.ItemType<BlankCrossbow>(), 1);
+            recipe.AddIngredient(ItemID.Stinger, 3);
+            recipe.AddIngredient(ItemID.JungleSpores, 12);
+            recipe.AddIngredient(ItemID.WoodenBow, 1);
+            recipe.Register();
+
+        }
+
 
 
 

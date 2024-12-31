@@ -33,7 +33,7 @@ namespace Stellamod.Projectiles.Magic
             _width = 1;
             _lightningZaps = new Vector2[12];
             LightningTrailPath = new LightningTrail[4];
-            for (int i = 0; i < 4; i++)
+            for(int i = 0; i < 4; i++)
             {
                 LightningTrailPath[i] = new LightningTrail();
             }
@@ -87,12 +87,12 @@ namespace Stellamod.Projectiles.Magic
             Main.graphics.GraphicsDevice.BlendState = prevBelndState;
 
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            //    spriteBatch.Draw(texture, drawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
+        //    spriteBatch.Draw(texture, drawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
-
+      
             for (int i = 0; i < 16; i++)
             {
                 Vector2 flameDrawPos = drawPos + Main.rand.NextVector2Circular(2, 2);

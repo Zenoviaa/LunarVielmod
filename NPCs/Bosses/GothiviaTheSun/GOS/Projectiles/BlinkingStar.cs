@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
@@ -34,7 +35,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         public override void AI()
         {
 
-
+       
             Projectile.rotation = Projectile.velocity.ToRotation();
             NPC npc = Main.npc[(int)Projectile.ai[1]];
             Projectile.Center = npc.Center;

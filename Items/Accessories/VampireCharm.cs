@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using System;
 using Terraria;
@@ -20,7 +22,7 @@ namespace Stellamod.Items.Accessories
 
         public override void PostUpdateEquips()
         {
-            if (lifestealCooldown > 0)
+            if(lifestealCooldown > 0)
                 lifestealCooldown--;
         }
 
@@ -94,6 +96,19 @@ namespace Stellamod.Items.Accessories
             //Increased Crit Chance
             player.GetCritChance(DamageClass.Generic) += 4f;
             player.GetModPlayer<VampireCritPlayer>().hasVampireCharm = true;
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.SharkToothNecklace);
+            recipe.AddIngredient(ItemID.SoulofFright, 15);
+            recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 30);
+            recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 12);
+            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
         }
     }
 }

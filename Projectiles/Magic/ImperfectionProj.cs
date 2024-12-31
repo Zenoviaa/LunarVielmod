@@ -1,12 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Trails;
+
+using Stellamod.Particles;
+using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.Trails;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Magic
@@ -42,7 +45,7 @@ namespace Stellamod.Projectiles.Magic
 
 
 
-
+           
 
             if (alphaCounter < 3)
             {
@@ -123,7 +126,7 @@ namespace Stellamod.Projectiles.Magic
             Projectile.timeLeft = 200;
         }
 
-
+     
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
@@ -166,7 +169,7 @@ namespace Stellamod.Projectiles.Magic
             for (int i = 0; i < 30; i++)
             {
                 Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
-            }
+                            }
 
             Projectile.Kill();
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);

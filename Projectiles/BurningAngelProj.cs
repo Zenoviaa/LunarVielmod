@@ -12,7 +12,7 @@ namespace Stellamod.Projectiles
     public class BurningAngelProj : ModProjectile
     {
         public override void SetDefaults()
-        {
+        {          
             Projectile.penetrate = 1;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = true;
@@ -46,7 +46,7 @@ namespace Stellamod.Projectiles
             Timer++;
 
             player.RotatedRelativePoint(Projectile.Center);
-            Projectile.rotation -= 0.5f;
+            Projectile.rotation  -= 0.5f;
             Projectile.velocity *= 0.97f;
             if (Timer == 1)
             {
@@ -59,7 +59,7 @@ namespace Stellamod.Projectiles
                     Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * Projectile.Distance(Main.MouseWorld) / 12;
                     Projectile.netUpdate = true;
                 }
-
+   
                 player.heldProj = Projectile.whoAmI;
                 player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
                 player.itemTime = 10;
@@ -121,7 +121,7 @@ namespace Stellamod.Projectiles
             float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcadizBombExplosion>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
-            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
+            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode,  Projectile.position);
             Projectile.Kill();
         }
     }

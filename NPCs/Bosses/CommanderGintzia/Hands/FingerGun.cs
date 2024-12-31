@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using System;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -70,8 +71,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
                     targetVelocity *= maxSpeed;
                 }
                 NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.05f);
-            }
-            else
+            } else
             {
                 NPC.velocity *= 0.92f;
             }

@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Mage
 {
     public class TorrentialLance : ClassSwapItem
-    {
+	{
         public override DamageClass AlternateClass => DamageClass.Magic;
         public override Vector2? HoldoutOffset()
         {

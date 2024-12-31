@@ -1,5 +1,6 @@
 ﻿
 using Terraria;
+using Terraria.ID;
 
 namespace Stellamod.Items.MoonlightMagic.Weapons
 {
@@ -25,6 +26,14 @@ namespace Stellamod.Items.MoonlightMagic.Weapons
         public override int GetTimedSlotCount()
         {
             return 0;
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.IronBar, 8);
+            recipe.AddTile(TileID.Anvils);
+            recipe.Register();
         }
     }
 }

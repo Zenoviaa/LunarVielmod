@@ -50,36 +50,36 @@ namespace Stellamod.WorldG
             int lastMaxTilesY = (int)WorldGen_lastMaxTilesY.GetValue(null);
 
             // TODO: investigate cpu/ram trade-off for reducing this later when regular-sized worlds loaded.
+    
+                // Goal: Increase limits, don't decrease anything lower than normal max for compatibility.
+                Main.maxTilesX = NewMaxTilesX;
+                Main.maxTilesY = NewMaxTilesY;
 
-            // Goal: Increase limits, don't decrease anything lower than normal max for compatibility.
-            Main.maxTilesX = NewMaxTilesX;
-            Main.maxTilesY = NewMaxTilesY;
+                // TODO: dynamically change mapTargetX and Y to support any dimensions. (simple division.)
+                // Map render targets. -- ingame map number of images to write to. The textures themselves
+                Main.mapTargetX = 10; // change that 4 in vanilla to target-x
+                Main.mapTargetY = 4; // change that 
+                Main.instance.mapTarget = new RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
 
-            // TODO: dynamically change mapTargetX and Y to support any dimensions. (simple division.)
-            // Map render targets. -- ingame map number of images to write to. The textures themselves
-            Main.mapTargetX = 10; // change that 4 in vanilla to target-x
-            Main.mapTargetY = 4; // change that 
-            Main.instance.mapTarget = new RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
+                int intendedMaxX = Math.Max(Main.maxTilesX + 1, 8401);
+                int intendedMaxY = Math.Max(Main.maxTilesY + 1, 2401);
 
-            int intendedMaxX = Math.Max(Main.maxTilesX + 1, 8401);
-            int intendedMaxY = Math.Max(Main.maxTilesY + 1, 2401);
+                // Individual map tiles
+                Main.Map = new WorldMap(intendedMaxX, intendedMaxY);
 
-            // Individual map tiles
-            Main.Map = new WorldMap(intendedMaxX, intendedMaxY);
+                // Space for more tiles -- Actual tiles
 
-            // Space for more tiles -- Actual tiles
+                Tilemap tileMap = (Tilemap)typeof(Tilemap).GetConstructor(
+                  BindingFlags.NonPublic | BindingFlags.Instance,
+                  null, new Type[] { typeof(ushort), typeof(ushort) }, null).Invoke(new object[]
+                  { (ushort)intendedMaxX, (ushort)intendedMaxY });
+                Main.tile = tileMap;
 
-            Tilemap tileMap = (Tilemap)typeof(Tilemap).GetConstructor(
-              BindingFlags.NonPublic | BindingFlags.Instance,
-              null, new Type[] { typeof(ushort), typeof(ushort) }, null).Invoke(new object[]
-              { (ushort)intendedMaxX, (ushort)intendedMaxY });
-            Main.tile = tileMap;
+                // Color for each tile
 
-            // Color for each tile
-
-            Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
-            Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
-
+                Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
+                Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
+            
 
         }
     }

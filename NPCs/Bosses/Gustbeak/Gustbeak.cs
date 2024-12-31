@@ -8,6 +8,7 @@ using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
 using Stellamod.NPCs.Colosseum.Common;
 using Stellamod.Projectiles;
+using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
@@ -395,7 +396,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             base.AI();
             float rotToTarget = (TargetCenter - NPC.Center).ToRotation();
             Head.position = NPC.Center;
-            if (State == AIState.Spawn)
+            if(State == AIState.Spawn)
             {
                 Head.position = NPC.Center + new Vector2(42, -16);
                 TailPosition = Head.position + (new Vector2(-48 * FlipValue, 80)).RotatedBy(NPC.rotation);
@@ -562,7 +563,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                 SoundEngine.PlaySound(clankSound, NPC.position);
             }
 
-            if (Timer < 210)
+            if(Timer < 210)
             {
                 CageDraw = 1f;
             }
@@ -571,18 +572,18 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                 CageDraw = MathHelper.Lerp(1f, 0f, (Timer - 210) / 30f);
             }
 
-            if (Timer == 120)
+            if(Timer == 120)
             {
                 SoundStyle soundStyle = SoundID.DD2_WyvernScream;
                 soundStyle.PitchVariance = 0.1f;
                 SoundEngine.PlaySound(soundStyle, NPC.position);
             }
 
-            if (Timer == 240)
+            if(Timer == 240)
             {
                 if (StellaMultiplayer.IsHost)
                 {
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, 
                         ModContent.ProjectileType<AivanKaboom>(), 0, 0, Main.myPlayer);
                 }
 
@@ -596,7 +597,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                 FXUtil.ShakeCamera(NPC.position, 2048, 16);
             }
 
-            if (Timer > 240)
+            if(Timer > 240)
             {
                 SwitchState(AIState.Idle);
             }

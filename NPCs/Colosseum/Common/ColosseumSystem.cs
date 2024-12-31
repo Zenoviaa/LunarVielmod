@@ -5,6 +5,7 @@ using Stellamod.NPCs.Bosses.EliteCommander;
 using Stellamod.NPCs.Bosses.Gustbeak;
 using Stellamod.UI.TitleSystem;
 using Stellamod.WorldG.StructureManager;
+using System;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
@@ -99,7 +100,7 @@ namespace Stellamod.NPCs.Colosseum.Common
 
         private bool AllPlayersDead()
         {
-            foreach (var player in Main.ActivePlayers)
+            foreach(var player in Main.ActivePlayers)
             {
                 if (!player.dead)
                     return false;
@@ -152,16 +153,16 @@ namespace Stellamod.NPCs.Colosseum.Common
 
                 return;
             }
-
+     
             if (!StellaMultiplayer.IsHost)
                 return;
 
             spawnTimer++;
-            if (spawnTimer < 120)
+            if(spawnTimer < 120)
             {
                 return;
             }
-
+            
             if (!completedBronzeColosseum)
             {
                 if (!NPC.AnyNPCs(ModContent.NPCType<BronzeGong>()))
@@ -200,7 +201,7 @@ namespace Stellamod.NPCs.Colosseum.Common
         {
             if (!StellaMultiplayer.IsHost)
                 return;
-
+ 
             switch (colosseumIndex)
             {
                 case 0:
@@ -252,7 +253,7 @@ namespace Stellamod.NPCs.Colosseum.Common
                     Spawn(new Point(0, 10), ModContent.NPCType<GintzeCaptain>());
                     Spawn(new Point(-33, 0), ModContent.NPCType<GintzeSolider>());
                     Spawn(new Point(33, 0), ModContent.NPCType<GintzeSolider>());
-                    Spawn(new Point(-15, 10), ModContent.NPCType<Gintzling>());
+                    Spawn(new Point(-15, 10), ModContent.NPCType<Gintzling>());                   
                     Spawn(new Point(15, 10), ModContent.NPCType<Gintzling>());
                     break;
                 case 6:
@@ -398,11 +399,11 @@ namespace Stellamod.NPCs.Colosseum.Common
             enemyCount--;
             if (enemyCount < 0)
             {
-
-
+          
+         
                 Spawn();
                 waveIndex++;
-
+     
             }
             NetMessage.SendData(MessageID.WorldData);
         }
@@ -424,7 +425,7 @@ namespace Stellamod.NPCs.Colosseum.Common
 
 
             //Spawn Chains so you can't leave
-            Projectile.NewProjectile(new EntitySource_WorldEvent(), GongSpawnWorld + new Vector2(0, -266), Vector2.Zero,
+            Projectile.NewProjectile(new EntitySource_WorldEvent(), GongSpawnWorld + new Vector2(0, -266), Vector2.Zero, 
                 ModContent.ProjectileType<GoldChain>(), 25, 4, Main.myPlayer);
             Projectile.NewProjectile(new EntitySource_WorldEvent(), GongSpawnWorld + new Vector2(0, 412), Vector2.Zero,
                 ModContent.ProjectileType<GoldChain>(), 25, 4, Main.myPlayer);
@@ -477,7 +478,7 @@ namespace Stellamod.NPCs.Colosseum.Common
                     break;
             }
 
-
+ 
             NetMessage.SendData(MessageID.WorldData);
         }
     }

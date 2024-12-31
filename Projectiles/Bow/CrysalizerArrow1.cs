@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -50,7 +51,7 @@ namespace Stellamod.Projectiles.Bow
                 Main.dust[dustnumber].velocity *= 0.3f;
                 Main.dust[dustnumber].noGravity = true;
             }
-            if (Timer % 6 == 0)
+            if(Timer % 6 == 0)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.Teal, Main.rand.NextFloat(1f, 1.5f));
             }

@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Summons.Orbs;
 using System.Collections.Generic;
 using Terraria;
@@ -27,7 +30,7 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
 
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Common("Orb"))
+            line = new TooltipLine(Mod, "Alcarishasd",  Helpers.LangText.Common("Orb"))
             {
                 OverrideColor = ColorFunctions.OrbWeaponType
             };
@@ -66,7 +69,7 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            for (int i = 0; i < Main.projectile.Length; i++)
+            for(int i = 0; i < Main.projectile.Length; i++)
             {
                 if (Main.projectile[i].type == ModContent.ProjectileType<ThePollinatorProj>() && Main.projectile[i].owner == player.whoAmI)
                 {
@@ -76,6 +79,17 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
             }
 
             return false;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe(1)
+                 .AddIngredient(ModContent.ItemType<BlankOrb>(), 1)
+                 .AddIngredient(ModContent.ItemType<FlowerBatch>(), 7)
+                 .AddIngredient(ModContent.ItemType<RadianuiBar>(), 5)
+                 .AddTile(TileID.MythrilAnvil)
+                 .Register();
+
         }
     }
 }

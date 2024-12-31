@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -48,9 +49,9 @@ namespace Stellamod.UI.Dialogue
             Text.PaddingLeft = 172;
             Text.Width.Set(681, 0);
             Text.Height.Set(237, 0);
-
+         
             Text.Activate();
-            UIPanel.Append(Text);
+            UIPanel.Append(Text);      
         }
     }
 }

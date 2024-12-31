@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Trails;
+using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -162,7 +163,7 @@ namespace Stellamod.Projectiles.Paint
                 }
             }
 
-
+        
             return true;
         }
 

@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs;
 using Stellamod.Common.ScorpionMountSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
+using System;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
@@ -122,12 +124,12 @@ namespace Stellamod.Projectiles.GunHolster
 
         public override void AI()
         {
-            if (ScorpionMountType == -1)
+            if(ScorpionMountType == -1)
             {
                 ScorpionMountType = Owner.mount.Type;
             }
 
-            if (Owner.mount.Type != ScorpionMountType || !Owner.mount.Active)
+            if(Owner.mount.Type != ScorpionMountType || !Owner.mount.Active)
             {
                 Projectile.Kill();
             }
@@ -141,7 +143,7 @@ namespace Stellamod.Projectiles.GunHolster
             {
                 Projectile.Kill();
             }
-
+             
             if (MiniGun == null)
             {
                 Projectile.Kill();
@@ -187,7 +189,7 @@ namespace Stellamod.Projectiles.GunHolster
             bool mouseInput = Owner.controlUseItem;
 
             float remainingSlots = Owner.maxMinions - Owner.slotsMinions;
-            mouseInput = mouseInput && (ScorpionHolsterIndex + 1) <= remainingSlots;
+            mouseInput = mouseInput && (ScorpionHolsterIndex+1) <= remainingSlots;
             /*
             ShootTimer++;
             if(ShootTimer < 1 + (24 * ScorpionHolsterIndex))
@@ -305,7 +307,7 @@ namespace Stellamod.Projectiles.GunHolster
         {
             if (MiniGun == null)
                 return;
-
+   
             ScorpionPlayer scorpionPlayer = Owner.GetModPlayer<ScorpionPlayer>();
             Vector2 holsterPosition = scorpionPlayer.holsterPositions[ScorpionHolsterIndex];
             Projectile.Center = holsterPosition;

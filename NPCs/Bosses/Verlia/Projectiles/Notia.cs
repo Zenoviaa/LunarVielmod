@@ -8,32 +8,32 @@ using Terraria.ModLoader;
 namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 {
     public class Notia : ModProjectile
-    {
-        public int timer = 0;
-        public override void SetDefaults()
-        {
-            Projectile.width = 30;
-            Projectile.height = 30;
-            Projectile.friendly = false;
-            Projectile.tileCollide = false;
-            Projectile.penetrate = -1;
-            Projectile.timeLeft = 150;
-            Projectile.ignoreWater = true;
-            Projectile.hostile = true;
-        }
+	{
+		public int timer = 0;
+		public override void SetDefaults()
+		{
+			Projectile.width = 30;
+			Projectile.height = 30;
+			Projectile.friendly = false;
+			Projectile.tileCollide = false;
+			Projectile.penetrate = -1;
+			Projectile.timeLeft = 150;
+			Projectile.ignoreWater = true;
+			Projectile.hostile = true;
+		}
 
-        public override bool PreAI()
-        {
-            timer++;
-            Projectile.tileCollide = false;
-            if (timer == 5)
+		public override bool PreAI()
+		{
+			timer++; 
+			Projectile.tileCollide = false;
+			if (timer == 5)
             {
-                int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.FireworkFountain_Blue, 0f, 0f);
-                Main.dust[dust].scale = 0.5f;
-                timer = 0;
-            }
-            return true;
-        }
+				int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.FireworkFountain_Blue, 0f, 0f);
+				Main.dust[dust].scale = 0.5f;
+				timer = 0;
+			}
+			return true;
+		}
 
 
         public override bool PreDraw(ref Color lightColor)
@@ -78,7 +78,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
-            behindNPCs.Add(index);
+            behindNPCs.Add(index);  
         }
 
     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.MoonlightMagic.Elements;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.MoonlightMagic.Enchantments.Ice

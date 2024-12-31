@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Foods;
+using Stellamod.Items.Ores;
 using Stellamod.NPCs.Colosseum.Common;
 using Stellamod.NPCs.Colosseum.Projectiles;
 using System;
@@ -25,7 +26,7 @@ namespace Stellamod.NPCs.Colosseum
 
         private int _frame = 0;
         private ref float Timer => ref NPC.ai[0];
-
+        
         private AIState State
         {
             get => (AIState)NPC.ai[1];
@@ -126,7 +127,7 @@ namespace Stellamod.NPCs.Colosseum
             float targetSineLineProgress = Timer / 120f;
             SightLineProgress = MathHelper.Lerp(SightLineProgress, targetSineLineProgress, 0.1f);
             FireVelocity = Vector2.Lerp(FireVelocity, (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero), 0.1f);
-            if (Timer >= 120)
+            if(Timer >= 120)
             {
                 if (StellaMultiplayer.IsHost)
                 {
@@ -238,7 +239,7 @@ namespace Stellamod.NPCs.Colosseum
             switch (State)
             {
                 case AIState.Pace:
-                    if (_frame >= 4)
+                    if(_frame >= 4)
                     {
                         _frame = 0;
                     }
@@ -250,7 +251,7 @@ namespace Stellamod.NPCs.Colosseum
                     }
                     break;
             }
-
+     
             NPC.frame.Y = frameHeight * _frame;
         }
     }

@@ -1,12 +1,19 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Helpers;
-using Stellamod.Projectiles.Slashers.Chillrend;
+﻿using Stellamod.Helpers;
+using Stellamod.Projectiles.Slashers.DelgrimsHammer;
+using System;
 using System.Collections.Generic;
-using Terraria;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
+using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Slashers.Maelstrom;
+using Stellamod.Projectiles.Slashers.Chillrend;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Melee.Greatswords
 {
@@ -27,7 +34,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
 
-            line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Common("Greatsword"))
+            line = new TooltipLine(Mod, "Alcarishasd",  Helpers.LangText.Common("Greatsword"))
             {
                 OverrideColor = ColorFunctions.GreatswordWeaponType
             };
@@ -91,6 +98,16 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage * 3, knockback, player.whoAmI, 1, dir);
             return false;
+        }
+
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<IllurineScale>(), 30);
+            recipe.AddIngredient(ItemID.Ectoplasm, 12);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
         }
     }
 }

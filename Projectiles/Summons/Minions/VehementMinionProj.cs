@@ -1,15 +1,21 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs.Minions;
-using Stellamod.Dusts;
-using Stellamod.Helpers;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Magic;
 using Stellamod.Trails;
-using Terraria;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
+using Stellamod.Helpers;
+using Stellamod.Buffs.Minions;
+using Stellamod.Dusts;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
@@ -70,7 +76,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         public override void AI()
         {
             Timer++;
-            if (SpeedTimer > 0)
+            if(SpeedTimer > 0)
             {
                 SpeedTimer--;
                 Projectile.extraUpdates = 3;
@@ -79,7 +85,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             {
                 Projectile.extraUpdates = 0;
             }
-            if (Timer % 6 == 0)
+            if(Timer % 6 == 0)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.Goldenrod, Main.rand.NextFloat(1f, 3f)).noGravity = true;
             }
@@ -88,17 +94,17 @@ namespace Stellamod.Projectiles.Summons.Minions
                 return;
 
             NPC target = ProjectileHelper.FindNearestEnemyThroughWalls(Projectile.Center, 1024);
-            if (target != null)
+            if(target != null)
             {
-                float progress = MathHelper.Clamp(Timer / 35f, 0f, 1f);
+                float progress = MathHelper.Clamp(Timer / 35f, 0f ,1f);
                 float d = MathHelper.Lerp(3f, 45, progress);
-                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, target.Center, d);
-                if (Projectile.velocity.Length() < 15)
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, target.Center,d);
+                if(Projectile.velocity.Length() < 15)
                 {
                     Projectile.velocity *= 1.5f;
                 }
 
-                if (Projectile.velocity == Vector2.Zero)
+                if(Projectile.velocity == Vector2.Zero)
                 {
                     Projectile.velocity.Y -= 1;
                 }
@@ -120,7 +126,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             {
                 target.AddBuff(BuffID.OnFire, 180);
             }
-            if (SpeedTimer <= 0)
+            if(SpeedTimer <= 0)
             {
                 HitCount++;
                 if (HitCount >= 15)
@@ -208,7 +214,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         {
             base.AI();
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 for (float f = 0; f < 6; f++)
                 {

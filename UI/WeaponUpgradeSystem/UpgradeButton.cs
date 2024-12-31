@@ -37,12 +37,12 @@ namespace Stellamod.UI.WeaponUpgradeSystem
 
         private void OnMouseHover(UIMouseEvent evt, UIElement listeningElement)
         {
-
+   
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-
+ 
             CalculatedStyle dimensions = GetDimensions();
             Point point = new Point((int)dimensions.X, (int)dimensions.Y);
             Texture2D textureToDraw;

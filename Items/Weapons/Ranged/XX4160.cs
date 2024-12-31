@@ -1,7 +1,9 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
+using Stellamod.Projectiles.Swords;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -25,9 +27,9 @@ namespace Stellamod.Items.Weapons.Ranged
         public int LAZERAlpha = 255;
         public bool LAZERMode;
         public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Divine Sharpshooter"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-        }
+		{
+			// DisplayName.SetDefault("Divine Sharpshooter"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
+		}
         public override bool AltFunctionUse(Player player) => true;
 
         public override void SetDefaults()
@@ -52,8 +54,8 @@ namespace Stellamod.Items.Weapons.Ranged
         }
 
         public override Vector2? HoldoutOffset()
-        {
-            return new Vector2(-2, 0);
+		{
+			return new Vector2(-2, 0);
         }
         public override bool CanUseItem(Player player)
         {
@@ -78,6 +80,14 @@ namespace Stellamod.Items.Weapons.Ranged
             return base.CanUseItem(player);
         }
 
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
+            recipe.AddIngredient(ItemID.SoulofFright, 20);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
+        }
 
         public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
         {
@@ -85,7 +95,7 @@ namespace Stellamod.Items.Weapons.Ranged
             if (player.HasBuff(ModContent.BuffType<Overheated>()))
             {
                 damage *= 0.5f;
-            }
+            } 
             else if (LAZERMode)
             {
                 damage *= 1.5f;
@@ -155,9 +165,9 @@ namespace Stellamod.Items.Weapons.Ranged
                 Vector2 direction = offset.RotatedByRandom(spread);
                 Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
             }
-            Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+            Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125,  Color.DarkRed, 1);
             Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, Color.White * 0.5f, Main.rand.NextFloat(0.5f, 1));
-
+          
             if (LAZERMode && !player.HasBuff(ModContent.BuffType<Overheated>()))
             {
                 int Sound2 = Main.rand.Next(1, 3);
@@ -194,17 +204,17 @@ namespace Stellamod.Items.Weapons.Ranged
                     }
                 }
 
-                Projectile.NewProjectile(source, position, velocity * 2,
+                Projectile.NewProjectile(source, position, velocity * 2, 
                     ModContent.ProjectileType<XX4160Shot>(), damage * 2, knockback, player.whoAmI, 1);
                 FXUtil.ShakeCamera(position, 1024, 5);
             }
             else
             {
-
+ 
 
                 return base.Shoot(player, source, position, velocity, type, damage, knockback);
             }
             return false;
-        }
-    }
+		}
+	}
 }

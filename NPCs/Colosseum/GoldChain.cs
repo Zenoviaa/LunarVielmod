@@ -3,6 +3,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Colosseum.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -46,20 +51,19 @@ namespace Stellamod.NPCs.Colosseum
         {
             base.AI();
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 OriginalCenter = Projectile.Center;
             }
             float leftLength = ProjectileHelper.PerformBeamHitscan(OriginalCenter, -Vector2.UnitX, 2400);
-            Projectile.Left = OriginalCenter + new Vector2(-leftLength, 0) + new Vector2(8, 0);
+            Projectile.Left = OriginalCenter + new Vector2(-leftLength, 0) + new Vector2(8, 0) ;
             Length = ProjectileHelper.PerformBeamHitscan(Projectile.Left, Vector2.UnitX, 2400);
-
+ 
             ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
             if (!colosseumSystem.IsActive())
             {
                 Die = true;
-            }
-            else
+            } else
             {
                 Projectile.timeLeft = 60;
             }
@@ -88,7 +92,7 @@ namespace Stellamod.NPCs.Colosseum
             Vector2 drawOrigin = new Vector2(0, texture.Height / 2);
 
             Color chainColor = Color.White.MultiplyRGB(lightColor);
-
+   
             chainColor = Color.Lerp(Color.Transparent, chainColor, inProgress);
             chainColor = Color.Lerp(chainColor, Color.Transparent, deathProgress);
 
@@ -97,7 +101,7 @@ namespace Stellamod.NPCs.Colosseum
 
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, chainColor, Projectile.rotation, drawOrigin, SpriteEffects.None, 0);
             spriteBatch.RestartDefaults();
-            //     spriteBatch.Draw(texture, drawPos, null, chainColor, Projectile.rotation, drawOrigin, 5f, SpriteEffects.None, 0);
+       //     spriteBatch.Draw(texture, drawPos, null, chainColor, Projectile.rotation, drawOrigin, 5f, SpriteEffects.None, 0);
             return false;
         }
 

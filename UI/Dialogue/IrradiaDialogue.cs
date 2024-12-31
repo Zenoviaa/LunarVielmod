@@ -1,5 +1,7 @@
-﻿using Stellamod.Helpers;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
+using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -46,13 +48,12 @@ namespace Stellamod.UI.Dialogue
 
             //Do something when the dialogue is completely finished
 
-            if (Main.netMode != NetmodeID.SinglePlayer)
+            if(Main.netMode != NetmodeID.SinglePlayer)
             {
-                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(),
-                    (byte)MessageType.StartBossFromDialogue,
+                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), 
+                    (byte)MessageType.StartBossFromDialogue, 
                     (int)DialogueType.Start_Irradia).Send(-1);
-            }
-            else
+            } else
             {
                 foreach (NPC npc in Main.ActiveNPCs)
                 {
@@ -64,8 +65,8 @@ namespace Stellamod.UI.Dialogue
                     }
                 }
             }
-
-            base.Complete();
+       
+             base.Complete();
         }
     }
 }

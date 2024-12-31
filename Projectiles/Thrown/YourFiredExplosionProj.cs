@@ -1,14 +1,20 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using ReLogic.Content;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Terraria;
-using Terraria.Audio;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.Graphics.Shaders;
-using Terraria.ID;
+using Terraria;
 using Terraria.ModLoader;
+using Terraria.ID;
+using Terraria.Audio;
+using Stellamod.UI.Systems;
 
 namespace Stellamod.Projectiles.Thrown
 {
@@ -73,7 +79,7 @@ namespace Stellamod.Projectiles.Thrown
 
         public override void AI()
         {
-            if (DelayTimer > 0)
+            if(DelayTimer > 0)
             {
                 Projectile.friendly = false;
                 Projectile.timeLeft = (int)LifeTime;
@@ -83,7 +89,7 @@ namespace Stellamod.Projectiles.Thrown
 
             Projectile.friendly = true;
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16f);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"), Projectile.position);

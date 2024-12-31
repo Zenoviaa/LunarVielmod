@@ -16,12 +16,12 @@ namespace Stellamod.Helpers.Separate
             internal set;
         }
 
-        // public static MiscShaderData UnderwaterRayShader => GameShaders.Misc["Stellamod:UnderwaterRays"];
-        #endregion
+       // public static MiscShaderData UnderwaterRayShader => GameShaders.Misc["Stellamod:UnderwaterRays"];
+             #endregion
 
         #region Screen Shaders
         public static Filter BloomShader => Filters.Scene["Stellamod:Bloom"];
-
+    
         #endregion
 
         #region Methods
@@ -29,28 +29,28 @@ namespace Stellamod.Helpers.Separate
         {
             var assets = Stellamod.Instance.Assets;
 
-
+          
             LoadScreenShaders(assets);
 
-
+         
         }
 
 
 
         public static void LoadScreenShaders(AssetRepository assets)
         {
-
+         
 
             // Flower of the ocean sky.
             Filters.Scene["Stellamod:GovheilSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0.1f, 0.2f, 0.5f).UseOpacity(0.53f), EffectPriority.High);
             SkyManager.Instance["Stellamod:GovheilSky"] = new GovheilSky();
 
             // Fireball shader.
+     
 
+          
 
-
-
-
+           
         }
         #endregion
     }

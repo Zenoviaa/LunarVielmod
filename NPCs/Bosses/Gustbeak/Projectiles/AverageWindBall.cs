@@ -32,7 +32,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
         public override void AI()
         {
             base.AI();
-
+ 
             Wind.ColorFunc = WindColorFunction;
             float chargeProgress = Timer / 60f;
             int divisor = (int)MathHelper.Lerp(6, 6, chargeProgress);
@@ -80,7 +80,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
                 }
             }
 
-            if (Timer > 420)
+            if(Timer > 420)
             {
                 ShadowScale = MathHelper.Lerp(1f, 0f, (Timer - 420) / 20f);
             }

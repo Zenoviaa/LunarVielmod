@@ -45,7 +45,7 @@ namespace Stellamod.Projectiles.Ammo
 
         public Color ColorFunction(float completionRatio)
         {
-            if (completionRatio < 0.33f)
+            if(completionRatio < 0.33f)
             {
                 return Color.Lerp(Color.White, Color.Red, completionRatio / 0.33f);
             }

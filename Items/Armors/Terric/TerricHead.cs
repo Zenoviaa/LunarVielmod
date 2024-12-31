@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -23,7 +24,14 @@ namespace Stellamod.Items.Armors.Terric
             Item.defense = 6;
 
         }
-
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemType<TerrorFragments>(), 5);
+            recipe.AddIngredient(ItemType<DreadFoil>(), 9);
+            recipe.AddTile(TileID.Anvils);
+            recipe.Register();
+        }
         public override void UpdateEquip(Player player)
         {
             player.GetDamage(DamageClass.Magic) += 0.13f;

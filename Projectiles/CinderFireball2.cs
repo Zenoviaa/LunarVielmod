@@ -39,8 +39,8 @@ namespace Stellamod.Projectiles
 
         private void Visuals()
         {
-            float radius = 1 / 6f;
-            for (int i = 0; i < 2; i++)
+            float radius = 1/6f;
+            for(int i = 0; i < 2; i++)
             {
                 float speedX = Main.rand.NextFloat(-radius, radius);
                 float speedY = Main.rand.NextFloat(-radius, radius);

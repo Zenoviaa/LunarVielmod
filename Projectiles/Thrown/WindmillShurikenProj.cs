@@ -29,9 +29,9 @@ namespace Stellamod.Projectiles.Thrown
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-
-
-            Projectile.Kill();
+           
+           
+                Projectile.Kill();     
             SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
             return false;
         }

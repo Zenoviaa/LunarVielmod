@@ -1,6 +1,14 @@
 using Terraria;
-using Terraria.ID;
+using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.ModLoader;
+using Terraria.ID;
+using static Terraria.ModLoader.ModContent;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Armors.LunarianVoid
 {
@@ -9,10 +17,10 @@ namespace Stellamod.Items.Armors.LunarianVoid
     {
         public bool Spetalite = false;
         public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Astrasilk Hat");
-            // Tooltip.SetDefault("Increases Mana Regen by 4%");
-        }
+		{
+			// DisplayName.SetDefault("Astrasilk Hat");
+			// Tooltip.SetDefault("Increases Mana Regen by 4%");
+		}
 
         public override void SetDefaults()
         {
@@ -44,6 +52,15 @@ namespace Stellamod.Items.Armors.LunarianVoid
         public override void UpdateArmorSet(Player player)
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().Leather = true;
+        }
+
+        public override void AddRecipes() 
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 8);
+            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 20);
+            recipe.AddTile(TileID.Anvils);
+            recipe.Register();
         }
     }
 }

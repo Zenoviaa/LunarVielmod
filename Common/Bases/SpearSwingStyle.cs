@@ -20,7 +20,7 @@ namespace Stellamod.Common.Bases
             float swingProgress = lerpValue;
             float targetRotation = Projectile.velocity.ToRotation();
             SwingProjectile.uneasedLerpValue = lerpValue;
-            swingProgress = easingFunc(swingProgress);
+            swingProgress = easingFunc(swingProgress);      
             SwingProjectile._smoothedLerpValue = swingProgress;
             PlaySwingSound(swingProgress);
 
@@ -37,7 +37,7 @@ namespace Stellamod.Common.Bases
             Projectile.Center = Owner.Center +
                 Vector2.Lerp(Vector2.Zero, swingVelocity, swingProgress) + swingDirection * SwingProjectile.holdOffset;
             Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
-            if (spinRotationRange != 0)
+            if(spinRotationRange != 0)
             {
                 float spinRotationProgress;
                 if (spinRotationEasingFunc != null)
@@ -48,7 +48,7 @@ namespace Stellamod.Common.Bases
                 Projectile.rotation += spinRotation;
             }
 
-
+       
 
             if (spinRotationRange == 0)
             {
@@ -108,7 +108,7 @@ namespace Stellamod.Common.Bases
                     float rot = dir2 == 1 ? MathHelper.Lerp(0, spinRotationRange, smoothedTrailProgress) : MathHelper.Lerp(spinRotationRange, 0, smoothedTrailProgress);
 
                     Vector2 pos = Projectile.Center;
-                    pos += rot.ToRotationVector2() * (SwingProjectile.GetTrailOffset() * spinTrailOffset) / 2;
+                    pos += rot.ToRotationVector2() * (SwingProjectile.GetTrailOffset()*spinTrailOffset) / 2 ;
                     points[i] = pos - SwingProjectile.GetFramingSize() / 2;
                 }
                 SwingProjectile._trailPoints = points;

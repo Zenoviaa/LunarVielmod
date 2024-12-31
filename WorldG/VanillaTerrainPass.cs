@@ -1,7 +1,11 @@
 ﻿using System;
-using Terraria;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.IO;
 using Terraria.WorldBuilding;
+using Terraria;
 
 namespace Stellamod.WorldG
 {
@@ -113,8 +117,7 @@ namespace Stellamod.WorldG
                 {
                     num3 = Utils.Clamp(num3, Main.maxTilesY * 0.17, num9);
                 }
-                else */
-                if (num3 < Main.maxTilesY * num10)
+                else */if (num3 < Main.maxTilesY * num10)
                 {
                     num3 = Main.maxTilesY * num10;
                     num2 = 0;

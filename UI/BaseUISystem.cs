@@ -26,7 +26,7 @@ namespace Stellamod.UI
 
         public void ClearSlot()
         {
-            if (uiSlot != -1)
+            if(uiSlot != -1)
             {
                 ref BaseUISystem current = ref Slots[uiSlot];
                 if (current == this)

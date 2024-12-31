@@ -1,4 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Buffs;
+using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.Niivi.Projectiles;
+using Stellamod.NPCs.Catacombs.Trap.Sparn;
+using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
+using Stellamod.Projectiles;
+using Stellamod.Projectiles.Chains;
+using Stellamod.Projectiles.Gun;
 using Stellamod.Projectiles.Test;
 using Terraria;
 using Terraria.Audio;

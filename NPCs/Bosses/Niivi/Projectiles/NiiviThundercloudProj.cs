@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
@@ -65,7 +67,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap");
             SoundEngine.PlaySound(soundStyle, Projectile.position);
 
-            for (int i = 0; i < 7; i++)
+            for(int i = 0; i < 7; i++)
             {
                 int type = ModContent.ProjectileType<NiiviLightningProj>();
                 int damage = Projectile.damage;

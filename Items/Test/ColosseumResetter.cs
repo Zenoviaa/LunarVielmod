@@ -1,9 +1,16 @@
-﻿using Stellamod.NPCs.Colosseum.Common;
-using Terraria;
+﻿using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
+using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
+using Terraria;
 using Terraria.ModLoader;
+using Stellamod.NPCs.Colosseum.Common;
 
 namespace Stellamod.Items.Test
 {

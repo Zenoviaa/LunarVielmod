@@ -2,9 +2,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.Projectiles.Spears;
 using Stellamod.Trails;
+using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -113,7 +116,7 @@ namespace Stellamod.Projectiles.Magic
                 Rectangle otherRect = p.getRect();
                 if (Projectile.Colliding(myRect, otherRect))
                 {
-                    if (Projectile.ai[1] <= 100)
+                    if(Projectile.ai[1] <= 100)
                     {
                         SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ITPrimer"), Projectile.position);
                         Projectile.ai[1] = 111;
@@ -128,7 +131,7 @@ namespace Stellamod.Projectiles.Magic
             Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<IrradiatedBoom>(), Projectile.damage, 1, Projectile.owner, 0, 0);
 
             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
-            Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<ITExplosionProj>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+             Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<ITExplosionProj>(), Projectile.damage, 1, Projectile.owner, 0, 0);
             int S1 = Main.rand.Next(0, 3);
             if (S1 == 0)
             {

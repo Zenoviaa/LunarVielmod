@@ -109,7 +109,7 @@ public class ForegroundHelper : ModSystem
             return PlayerLayerItems[AddItem(item, forced, playerLayer)];
     }
 
-
+  
     /// <param name="name">Name of the requested texture.</param>
     public static Texture2D GetTexture(string name) => Stellamod.Instance.Assets.Request<Texture2D>("Gores/Foreground/" + name).Value;
 

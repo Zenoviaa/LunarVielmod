@@ -59,8 +59,8 @@ namespace Stellamod.Projectiles.Chains
                     direction = -direction;
                     player.velocity += direction * 8;
                     player.wingTime = player.wingTimeMax;
-                }
-                else if (distanceToPlayer > Circle_Radius + 64 && distanceToPlayer < Outer_Circle_Radius)
+                } 
+                else if(distanceToPlayer > Circle_Radius + 64 && distanceToPlayer < Outer_Circle_Radius)
                 {
                     Vector2 direction = Projectile.DirectionTo(player.Center);
                     Vector2 teleportPosition = Projectile.Center + direction * Circle_Radius;
@@ -133,7 +133,7 @@ namespace Stellamod.Projectiles.Chains
 
         public override bool PreDraw(ref Color lightColor)
         {
-
+            
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
 
             TrailRegistry.LaserShader.UseColor(Color.Red);
@@ -141,7 +141,7 @@ namespace Stellamod.Projectiles.Chains
 
             BeamDrawer.DrawPixelated(CirclePos, -Main.screenPosition, CirclePos.Length);
             Main.spriteBatch.ExitShaderRegion();
-
+            
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D chainTexture = ModContent.Request<Texture2D>(Texture).Value;
             spriteBatch.End();

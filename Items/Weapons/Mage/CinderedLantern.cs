@@ -1,4 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -35,7 +39,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.rare = ItemRarityID.Green;
             Item.shootSpeed = 15;
             Item.autoReuse = true;
-
+     
             Item.DamageType = DamageClass.Magic;
             Item.shoot = ModContent.ProjectileType<LampShot>();
             Item.shootSpeed = 10f;
@@ -47,6 +51,20 @@ namespace Stellamod.Items.Weapons.Mage
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-4f, 2f);
+        }
+
+
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddTile(TileID.Anvils);
+            recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 5);
+            recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 100);
+            recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
+            recipe.Register();
         }
     }
 }

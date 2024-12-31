@@ -4,6 +4,7 @@ using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -43,7 +44,7 @@ namespace Stellamod.UI.ArmorReforgeSystem
         internal bool Valid(Item item)
         {
             bool isArmor = item.headSlot >= 0 || item.bodySlot >= 0 || item.legSlot >= 0;
-
+         
             return isArmor || item.IsAir;
         }
 

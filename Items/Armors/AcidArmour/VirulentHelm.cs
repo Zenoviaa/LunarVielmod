@@ -1,9 +1,11 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.AcidArmour
 {
@@ -85,6 +87,14 @@ standing still gives you an acid aura that stays where you were when you leave T
             player.setBonus = LangText.SetBonus(this);//"Stand still to emit a toxic aura!");
             player.moveSpeed += 0.2f;
             player.GetModPlayer<AcidPlayer>().hasSetBonus = true;
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemType<VirulentPlating>(), 5);
+            recipe.AddTile(TileID.Anvils);
+            recipe.Register();
         }
     }
 }

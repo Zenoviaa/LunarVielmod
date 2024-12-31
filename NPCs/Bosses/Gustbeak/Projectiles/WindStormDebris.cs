@@ -35,7 +35,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
         {
             base.AI();
             Timer++;
-            if (Timer == 1 && Main.myPlayer == Projectile.owner)
+            if(Timer == 1 && Main.myPlayer == Projectile.owner)
             {
                 FallDownTime = Main.rand.NextFloat(80, 120);
                 Projectile.netUpdate = true;
@@ -43,7 +43,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
             Projectile.velocity.Y += MathF.Sin(Timer * 0.2f) * 0.1f;
             Projectile.rotation += 0.02f;
             Projectile.rotation -= Projectile.velocity.Length() * 0.025f;
-            if (Timer > FallDownTime)
+            if(Timer > FallDownTime)
             {
                 Projectile.tileCollide = true;
                 Projectile.velocity.Y += 1f;
@@ -86,22 +86,22 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.RestartDefaults();
             DrawWindTrail(ref lightColor);
-
+     
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             Vector2 drawOrigin = texture.Size() / 2;
-
+            
             float drawScale = 1f;
             float drawRotation = Projectile.rotation;
             Color colorToDrawIn = Color.White.MultiplyRGB(lightColor);
             SpriteEffects spriteEffects = SpriteEffects.None;
 
             spriteBatch.Restart(blendState: BlendState.Additive);
-
-
-            for (float f = 0f; f < 1f; f += 0.1f)
+          
+            
+            for(float f = 0f; f < 1f; f += 0.1f)
             {
-                Vector2 o = (f * MathHelper.TwoPi).ToRotationVector2() * VectorHelper.Osc(2f, 3f, speed: 3f);
+                Vector2 o = (f*MathHelper.TwoPi).ToRotationVector2() * VectorHelper.Osc(2f, 3f, speed: 3f);
                 spriteBatch.Draw(texture, drawPos + o, null, colorToDrawIn, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
             }
             spriteBatch.RestartDefaults();

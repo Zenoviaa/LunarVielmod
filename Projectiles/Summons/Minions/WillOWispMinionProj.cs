@@ -69,7 +69,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             if (!SummonHelper.CheckMinionActive<WillOWispMinionBuff>(Owner, Projectile))
                 return;
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 _oldPlayerPos = new Vector2[32];
                 for (int i = 0; i < _oldPlayerPos.Length; i++)
@@ -98,7 +98,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
             Vector2 nextPos = Owner.Center;
             float distanceToCurrent = Vector2.Distance(nextPos, _oldPlayerPos[0]);
-            if (distanceToCurrent > 64)
+            if(distanceToCurrent > 64)
             {
                 for (int i = _oldPlayerPos.Length - 1; i > 0; i--)
                 {
@@ -111,7 +111,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             //Get the index of this minion
             int minionIndex = SummonHelper.GetProjectileIndex(Projectile);
             Vector2 targetPos;
-            if (minionIndex < _oldPlayerPos.Length)
+            if(minionIndex < _oldPlayerPos.Length)
             {
                 targetPos = _oldPlayerPos[minionIndex];
             }
@@ -123,7 +123,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             //Move to that position
             Vector2 dirToPos = (targetPos - Projectile.Center) * 0.05f;
             Projectile.velocity = dirToPos;
-
+          
             //All that's left is to do this ai, uhh
             Projectile.rotation = Projectile.velocity.X * 0.05f;
             DrawHelper.AnimateTopToBottom(Projectile, 4);

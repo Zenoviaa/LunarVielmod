@@ -80,7 +80,7 @@ namespace Stellamod.TilesNew.Colosseum
         public override SpriteEffects GetSpriteEffects(int i, int j)
         {
             Player player = Main.LocalPlayer;
-            Vector2 worldPos = new Vector2(i * 16, j * 16);
+            Vector2 worldPos = new Vector2(i*16, j*16);
             if (player.Center.X < worldPos.X)
             {
                 return SpriteEffects.FlipHorizontally;

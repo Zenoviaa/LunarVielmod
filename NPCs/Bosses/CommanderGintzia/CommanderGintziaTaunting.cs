@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Colosseum.Common;
 using System;
@@ -53,7 +54,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.value = Item.buyPrice(gold: 1);
-
+       
             NPC.dontCountMe = true;
             NPC.dontTakeDamage = true;
             NPC.dontTakeDamageFromHostiles = true;
@@ -134,7 +135,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
 
             FadeProgress = Timer / 90f;
             NPC.velocity.Y = MathHelper.Lerp(10, 0f, Timer / 90f);
-            if (Timer >= 90f)
+            if(Timer >= 90f)
             {
                 SwitchState(AIState.FlyingAround);
             }
@@ -143,7 +144,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
         private void AI_FlyingAround()
         {
             Timer++;
-            if (Timer % 900 == 0)
+            if(Timer % 900 == 0)
             {
                 BattleTaunt();
             }
@@ -170,7 +171,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             float targetRotation = NPC.velocity.X * 0.025f;
             NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.1f);
             ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
-            if (!colosseumSystem.IsActive() ||
+            if (!colosseumSystem.IsActive() || 
                 (colosseumSystem.waveIndex == 6 && colosseumSystem.colosseumIndex == 2))
             {
                 SwitchState(AIState.Despawn);
@@ -180,7 +181,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
         private void AI_Despawn()
         {
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 DeathTaunt();
             }

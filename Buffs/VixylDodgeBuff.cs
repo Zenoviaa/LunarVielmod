@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Items.Weapons.Melee;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Buffs

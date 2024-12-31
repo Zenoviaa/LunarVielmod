@@ -1,6 +1,10 @@
-﻿using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
+using Stellamod.NPCs.Bosses.Verlia.Projectiles;
+using Stellamod.NPCs.Bosses.Zui.Projectiles;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace Stellamod.UI.Dialogue
 {
@@ -137,7 +141,7 @@ namespace Stellamod.UI.Dialogue
                 {
                     GothiviaDeath zui = npc.ModNPC as GothiviaDeath;
                     zui.DM = true;
-
+                  
                 }
             }
             //Do something when the dialogue is completely finished

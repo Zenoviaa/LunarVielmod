@@ -1,12 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
 using Terraria.ModLoader;
+using Terraria.ID;
+using Microsoft.Xna.Framework;
+using Stellamod.Particles;
+
+using Stellamod.Helpers;
 
 namespace Stellamod.Items.Accessories
 {
     internal class LunarBand : ModItem
-    {
+    { 
         public override void SetDefaults()
         {
             Item.width = 20;

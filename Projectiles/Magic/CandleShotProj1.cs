@@ -4,6 +4,7 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -81,7 +82,7 @@ namespace Stellamod.Projectiles.Magic
             {
                 var EntitySource = Projectile.GetSource_Death();
                 Projectile.velocity = Vector2.Zero;
-                if (Main.myPlayer == Projectile.owner && !SpawnedProj)
+                if(Main.myPlayer == Projectile.owner && !SpawnedProj)
                 {
                     Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<CandleShotProj2>(), Projectile.damage, 1, Projectile.owner, 0, 0);
                     SpawnedProj = true;
@@ -137,7 +138,7 @@ namespace Stellamod.Projectiles.Magic
             var textureAsset = TextureRegistry.CloudTexture;
 
             float progress = 1f;
-            if (Timer > 70)
+            if(Timer > 70)
             {
                 progress = (Timer - 70) / 40f;
             }

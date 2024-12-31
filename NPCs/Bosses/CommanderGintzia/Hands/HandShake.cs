@@ -1,11 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria.ID;
 using Terraria;
 using Terraria.Audio;
-using Terraria.ID;
 
 namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 {
@@ -78,7 +82,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
                 NPC.velocity *= 0.92f;
             }
 
-            if (Timer > 111)
+            if(Timer > 111)
             {
                 NPC.velocity *= 0.98f;
             }

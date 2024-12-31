@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.TilesNew;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -13,7 +14,7 @@ namespace Stellamod.Tiles
         {
             base.KillTile(i, j, type, ref fail, ref effectOnly, ref noItem);
             Tile tile = Main.tile[i, j];
-            if (tile.WallType != 0)
+            if(tile.WallType != 0)
             {
                 DecorativeWall decorativeWall = ModContent.GetModWall(tile.WallType) as DecorativeWall;
                 if (decorativeWall == null)
@@ -49,11 +50,11 @@ namespace Stellamod.Tiles
                 behindDecorativeWall.DrawItem(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
                 return true;
             }
-
-
+           
+         
 
             DecorativeWall decorativeWall = ModContent.GetModWall(Item.createWall) as DecorativeWall;
-            if (decorativeWall != null)
+            if(decorativeWall != null)
             {
                 decorativeWall.DrawItem(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
                 return true;
@@ -154,7 +155,7 @@ namespace Stellamod.Tiles
                     drawOrigin = new Vector2(drawFrame.Width / 2, drawFrame.Height / 2);
                     break;
             }
-            spriteBatch.Draw(texture,
+            spriteBatch.Draw(texture, 
                 drawPos - Main.screenPosition,
                 drawFrame, color2.MultiplyRGB(StructureColor), 0, drawOrigin, DrawScale, SpriteEffects.None, 0);
         }
@@ -209,7 +210,7 @@ namespace Stellamod.Tiles
         public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
         {
             base.PostDraw(i, j, spriteBatch);
-
+           
         }
 
         public void DrawDecor(int i, int j, SpriteBatch spriteBatch)
@@ -234,7 +235,7 @@ namespace Stellamod.Tiles
 
                 int frame = (int)(time % FrameCount);
                 drawFrame = texture.GetFrame(frame, FrameCount);
-                if (HorizontalFrameCount > 1)
+                if(HorizontalFrameCount > 1)
                 {
                     drawFrame = texture.GetFrame(frame, HorizontalFrameCount, VerticalFrameCount);
                 }
@@ -254,9 +255,9 @@ namespace Stellamod.Tiles
                     drawOrigin = new Vector2(drawFrame.Width / 2, drawFrame.Height / 2);
                     break;
             }
-
-            spriteBatch.Draw(texture,
-                drawPos - Main.screenPosition,
+    
+            spriteBatch.Draw(texture, 
+                drawPos - Main.screenPosition, 
                 drawFrame, color2.MultiplyRGB(StructureColor), 0, drawOrigin, DrawScale, GetSpriteEffects(i, j), 0);
         }
 

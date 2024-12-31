@@ -1,7 +1,9 @@
-﻿using Stellamod.Helpers;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Projectiles.Thrown.Jugglers;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -21,7 +23,7 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
         {
             base.ModifyTooltips(tooltips);
             var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Common("Juggler"))
+            line = new TooltipLine(Mod, "Alcarishasd",  Helpers.LangText.Common("Juggler"))
             {
                 OverrideColor = ColorFunctions.JugglerWeaponType
             };

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+
+using Stellamod.Particles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -49,14 +51,14 @@ namespace Stellamod.Projectiles
             {
                 visuals_Counter = 0;
                 Vector2 position = Projectile.Center + new Vector2(Main.rand.Next(0, Particle_Radius), Main.rand.Next(0, Particle_Radius));
-                float size = Main.rand.NextFloat(1 / 4f, 1 / 3f);
-            }
-
-            if (dust_Counter >= Dust_Rate)
+                float size = Main.rand.NextFloat(1/4f, 1/3f);
+                            }
+            
+            if(dust_Counter >= Dust_Rate)
             {
                 dust_Counter = 0;
                 Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(Particle_Radius / 2, Particle_Radius / 2);
-                float size = Main.rand.NextFloat(1 / 4f, 1 / 3f);
+                float size = Main.rand.NextFloat(1/4f, 1/3f);
                 Dust dust = Dust.NewDustPerfect(position, DustID.GemAmethyst, Scale: size);
                 dust.noGravity = true;
             }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.MoonlightMagic;
+using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader;
 
@@ -15,7 +16,7 @@ namespace Stellamod.NPCs.Special
         public override void AI()
         {
             base.AI();
-            if (Timer == 1)
+            if(Timer == 1)
             {
 
             }

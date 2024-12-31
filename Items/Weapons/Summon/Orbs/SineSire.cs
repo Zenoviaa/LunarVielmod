@@ -1,13 +1,16 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs.Whipfx;
+﻿using Stellamod.Buffs.Whipfx;
 using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Summons.Orbs;
 using System.Collections.Generic;
-using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
 namespace Stellamod.Items.Weapons.Summon.Orbs
 {
@@ -27,7 +30,7 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
 
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Common("Orb"))
+            line = new TooltipLine(Mod, "Alcarishasd",  Helpers.LangText.Common("Orb"))
             {
                 OverrideColor = ColorFunctions.OrbWeaponType
             };
@@ -68,7 +71,7 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
         {
             for (int i = 0; i < Main.projectile.Length; i++)
             {
-                if (Main.projectile[i].type == ModContent.ProjectileType<SineSireProj>() &&
+                if (Main.projectile[i].type == ModContent.ProjectileType<SineSireProj>() && 
                     Main.projectile[i].owner == player.whoAmI)
                 {
                     Main.projectile[i].ai[0]++;

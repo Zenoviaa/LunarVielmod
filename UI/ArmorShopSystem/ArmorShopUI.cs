@@ -1,5 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.ArmorShop;
+using Stellamod.Common.QuestSystem;
+using Stellamod.UI.CollectionSystem.Quests;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
@@ -49,7 +56,7 @@ namespace Stellamod.UI.ArmorShopSystem
             _scrollbar.Height.Set(340, 0);
             _scrollbar.Left.Set(0, 0.9f);
             _scrollbar.Top.Set(0, 0.05f);
-
+          
             float maxViewSize = 48 * 8f;
             _scrollbar.SetView(0, maxViewSize);
             Append(_scrollbar);
@@ -78,14 +85,14 @@ namespace Stellamod.UI.ArmorShopSystem
             if (_slotGrid.Count == 0)
             {
                 _slotGrid.Clear();
-                foreach (var set in groups.Armors)
+                foreach(var set in groups.Armors)
                 {
                     ArmorShopCost cost = new ArmorShopCost();
                     cost.Item = set.material;
                     cost.armorSet = set;
                     cost.Activate();
                     _slotGrid.Add(cost);
-
+        
                     ArmorShopSlot lSlot = new ArmorShopSlot();
                     lSlot.Item = set.legs[0];
                     lSlot.Activate();
@@ -119,7 +126,7 @@ namespace Stellamod.UI.ArmorShopSystem
         {
             base.Update(gameTime);
             Width.Pixels = 48 * 7;
-
+        
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;

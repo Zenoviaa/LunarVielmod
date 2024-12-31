@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.ID;
@@ -40,9 +41,9 @@ namespace Stellamod.Projectiles.GunHolster
                 {
                     Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BoneTorch);
                 }
-
+  
                 Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-            }
+                            }
         }
 
         public float WidthFunction(float completionRatio)

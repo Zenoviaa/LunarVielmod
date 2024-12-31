@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+using Stellamod.Particles;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -45,11 +47,11 @@ namespace Stellamod.Projectiles.Slashers.Swingaling
         {
             Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
             Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-
+   
             int dir = (int)Projectile.ai[1];
             if (!ParticleSpawned)
             {
-                ParticleSpawned = true;
+                                                ParticleSpawned = true;
             }
 
             for (int i = 0; i < 1; i++)

@@ -36,9 +36,9 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
             ref float ai_Phase = ref npc.ai[0];
             ref float ai_AttackState = ref npc.ai[1];
             ref float ai_Timer = ref npc.ai[2];
-
+       
             //Passive fire once low on HP
-            if (npc.life < npc.lifeMax / 4 && npc.HasValidTarget)
+            if(npc.life < npc.lifeMax / 4 && npc.HasValidTarget)
             {
                 _passiveFireCounter++;
                 Vector2 targetCenter = Main.player[npc.target].Center;
@@ -90,18 +90,18 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                     case SpinDashState.Spinning:
                         //The spin will gradually speed up
                         npc.velocity = Vector2.Lerp(npc.velocity, new Vector2(0, -2), 0.5f);
-                        npc.rotation += _counter * 0.01f;
+                        npc.rotation+= _counter * 0.01f;
 
                         //Spin for 2 seconds
                         _counter++;
                         _fireCounter++;
-
-                        if (_fireCounter > 20)
+     
+                        if(_fireCounter > 20)
                         {
                             SoundEngine.PlaySound(SoundID.Item73, npc.position);
                             _fireCounter = 0;
                             float speedVariance = 5;
-                            for (int i = 0; i < 20; i++)
+                            for(int i =0; i < 20; i++)
                             {
                                 float speedX = Main.rand.NextFloat(-speedVariance, speedVariance);
                                 float speedY = Main.rand.NextFloat(-speedVariance, speedVariance);
@@ -110,7 +110,7 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                                     ProjectileID.GreekFire1, 15, 1f);
                             }
                         }
-
+  
                         if (_counter >= 120 && npc.HasValidTarget)
                         {
                             _dashDirection = npc.DirectionTo(Main.player[npc.target].Center);
@@ -134,16 +134,16 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
 
                         _counter++;
                         _fireCounter++;
-                        if (_fireCounter >= 20)
+                        if(_fireCounter >= 20)
                         {
                             int spawnCount = Main.rand.Next(2, 6);
                             int spawnRectVariance = 32;
-                            for (int i = 0; i < spawnCount; i++)
+                            for(int i = 0; i < spawnCount; i++)
                             {
                                 int x = Main.rand.Next(-spawnRectVariance, spawnRectVariance);
                                 int y = Main.rand.Next(-spawnRectVariance, spawnRectVariance);
                                 int n = NPC.NewNPC(npc.GetSource_FromThis(), (int)npc.Center.X + x, (int)npc.Center.Y + y, NPCID.ServantofCthulhu);
-
+                                
                                 //Make the servants burst out
                                 NPC servant = Main.npc[n];
                                 servant.velocity = (servant.Center - npc.Center).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(7);
@@ -160,7 +160,7 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                             _fireCounter = 0;
                         }
 
-                        if (_counter >= 40)
+                        if(_counter >= 40)
                         {
                             _spinDashState = SpinDashState.Preparing;
 

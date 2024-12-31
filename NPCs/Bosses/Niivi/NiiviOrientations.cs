@@ -24,11 +24,11 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
             float duration = 300f;
             //Oscillate
-            OscTimer += OscDir;
-            if (OscTimer >= duration)
+            OscTimer +=  OscDir;
+            if(OscTimer >= duration)
             {
                 OscDir = -1;
-            }
+            } 
             else if (OscTimer <= 0)
             {
                 OscDir = 1;
@@ -67,7 +67,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
 
             HeadRotation = MathHelper.Lerp(HeadRotation, targetHeadRotation, 0.04f);
-            if (lookProgress >= 0.5f)
+            if(lookProgress >= 0.5f)
             {
                 HeadRotation = MathHelper.Clamp(HeadRotation, -0.8f, 1f);
             }
@@ -111,11 +111,10 @@ namespace Stellamod.NPCs.Bosses.Niivi
             float distanceToTarget = Vector2.Distance(NPC.Center, target.Center);
             float tiles = 96;
             Vector2 directionToTarget = NPC.Center.DirectionTo(target.Center);
-            if (distanceToTarget < tiles.TilesToDistance())
+            if(distanceToTarget < tiles.TilesToDistance())
             {
                 TargetHeadRotation = NPC.Center.DirectionTo(target.Center).ToRotation() * LookDirection;
-            }
-            else
+            } else
             {
                 TargetHeadRotation = MathHelper.PiOver4;
             }

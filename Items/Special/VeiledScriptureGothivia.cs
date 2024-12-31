@@ -1,9 +1,9 @@
-﻿using Stellamod.Helpers;
-using Stellamod.UI.Scripture;
+﻿using Stellamod.UI.Scripture;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Stellamod.Helpers;
 namespace Stellamod.Items.Special
 {
     internal class VeiledScriptureGothivia : ModItem

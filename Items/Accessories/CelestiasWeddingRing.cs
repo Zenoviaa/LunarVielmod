@@ -1,5 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+
+using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
+using Stellamod.Items.Quest.Merena;
+using Stellamod.Items.Weapons.Melee;
 using Stellamod.NPCs.Town;
+using Stellamod.Tiles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -50,6 +56,20 @@ namespace Stellamod.Items.Accessories
             Item.accessory = true;
         }
 
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<STARCORE>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<StolenMagicTome>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<Bridget>(), 1);
+            recipe.AddIngredient(ItemID.SoulofNight, 5);
+            recipe.AddIngredient(ItemID.ObsidianShield, 1);
+            recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 50);
+            recipe.AddIngredient(ModContent.ItemType<GrailBar>(), 15);
+            recipe.AddTile(ModContent.TileType<BroochesTable>());
+            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 30);
+            recipe.Register();
+        }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {

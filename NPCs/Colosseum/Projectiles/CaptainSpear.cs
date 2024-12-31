@@ -73,8 +73,8 @@ namespace Stellamod.NPCs.Colosseum.Projectiles
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, Scale: 0.5f);
             }
 
-
-            if (Timer < 30)
+          
+            if(Timer < 30)
             {
                 Projectile.velocity *= 0.96f;
                 Projectile.rotation = InitialVelocity.ToRotation();
@@ -91,12 +91,12 @@ namespace Stellamod.NPCs.Colosseum.Projectiles
                 Projectile.rotation = Projectile.velocity.ToRotation();
             }
 
-            if (Timer > 40)
+            if(Timer > 40)
             {
-
+      
                 Projectile.tileCollide = true;
             }
-
+      
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -123,14 +123,14 @@ namespace Stellamod.NPCs.Colosseum.Projectiles
             spriteBatch.RestartDefaults();
             float b = (Timer / 30f);
             b = MathHelper.Clamp(b, 0f, 1f);
-            spriteBatch.Draw(texture, drawPos, null, drawColor * b, rotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, drawPos, null, drawColor *b , rotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
             return false;
         }
 
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            for (int i = 0; i < 4; i++)
+            for(int i = 0; i < 4; i++)
             {
                 Vector2 vel = -Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(15)).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(1f, 5f);
                 Dust.NewDustPerfect(Projectile.Center, DustID.GemDiamond, vel);

@@ -36,7 +36,7 @@ namespace Stellamod.Projectiles.Magic
             Projectile.ai[0]++;
             if (Projectile.ai[0] == 2)
             {
-                if (Main.myPlayer == Projectile.owner)
+                if(Main.myPlayer  == Projectile.owner)
                 {
                     float offsetX = Main.rand.Next(-200, 200) * 0.01f;
                     float offsetY = Main.rand.Next(-200, 200) * 0.01f;

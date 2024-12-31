@@ -16,7 +16,7 @@ namespace Stellamod.Buffs
                 case NPCID.TheDestroyerBody:
                 case NPCID.TheDestroyerTail:
                     entity.buffImmune[buffType] = true;
-                    break;
+                break;
             }
             if (entity.boss)
             {

@@ -1,6 +1,15 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Ores;
+using Stellamod.Items.Weapons.Melee;
+using Stellamod.Projectiles;
+using Stellamod.Projectiles.Magic;
+using Stellamod.Projectiles.Slashers;
+using Stellamod.Projectiles.Slashers.Ixy;
 using Stellamod.Projectiles.Slashers.Swingaling;
 using Terraria;
 using Terraria.Audio;
@@ -131,5 +140,16 @@ namespace Stellamod.Items.Weapons.Mage
             return false;
         }
 
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddTile(TileID.Anvils);
+
+            recipe.AddIngredient(ItemID.Book, 5);
+            recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 5);
+            recipe.AddIngredient(ModContent.ItemType<UnknownCircuitry>(), 25);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 3);
+            recipe.Register();
+        }
     }
 }

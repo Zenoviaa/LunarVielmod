@@ -2,6 +2,12 @@
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
+using Stellamod.NPCs.Catacombs.Fire;
+using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
+using Stellamod.NPCs.Catacombs.Trap.Cogwork;
+using Stellamod.NPCs.Catacombs.Trap.Sparn;
+using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
+using Stellamod.NPCs.Catacombs.Water.WaterJellyfish;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
@@ -91,6 +97,43 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
                 //oh wait i need net code
                 // NPC.NewNPC(, (int)ai_Boss_Spawn);
+
+
+                int[] fireBosses = new int[]
+                {
+                    ModContent.NPCType<BlazingSerpentHead>(),
+                    ModContent.NPCType<PandorasFlamebox>()
+                };
+
+                int[] waterBosses = new int[]
+                {
+                    ModContent.NPCType<WaterCogwork>(),
+                    ModContent.NPCType<WaterJellyfish>()
+                };
+
+                int[] trapBosses = new int[]
+                {
+                    ModContent.NPCType<Cogwork>(),
+                    ModContent.NPCType<Sparn>()
+                };
+
+                int[] bosses;
+                switch (_bossType)
+                {
+                    default:
+                    case 0:
+                        bosses = fireBosses;
+                        break;
+                    case 1:
+                        bosses = trapBosses;
+                        break;
+                    case 2:
+                        bosses = waterBosses;
+                        break;
+                }
+
+
+                int bossType = bosses[Main.rand.Next(0, bosses.Length)];
                 if (StellaMultiplayer.IsHost)
                 {
                     //Main.NewText(LangText.Misc("")"Jack has awoken!", Color.Gold);

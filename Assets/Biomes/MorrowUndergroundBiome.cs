@@ -1,37 +1,38 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Assets.Biomes
 {
     public class MorrowUndergroundBiome : ModBiome
-    {
-        // Select all the scenery
-        public override ModUndergroundBackgroundStyle UndergroundBackgroundStyle => ModContent.Find<ModUndergroundBackgroundStyle>("Stellamod/MorrowUndergroundBackgroundStyle");
+	{
+		// Select all the scenery
+		public override ModUndergroundBackgroundStyle UndergroundBackgroundStyle => ModContent.Find<ModUndergroundBackgroundStyle>("Stellamod/MorrowUndergroundBackgroundStyle");
 
-        // Select Music
-        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/morrowunderground");
+		// Select Music
+		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/morrowunderground");
 
-        // Sets how the Scene Effect associated with this biome will be displayed with respect to vanilla Scene Effects. For more information see SceneEffectPriority & its values.
-        public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow; // We have set the SceneEffectPriority to be BiomeLow for purpose of example, however default behavour is BiomeLow.
+		// Sets how the Scene Effect associated with this biome will be displayed with respect to vanilla Scene Effects. For more information see SceneEffectPriority & its values.
+		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow; // We have set the SceneEffectPriority to be BiomeLow for purpose of example, however default behavour is BiomeLow.
 
-        // Populate the Bestiary Filter
-        public override string BestiaryIcon => base.BestiaryIcon;
-        public override string BackgroundPath => base.BackgroundPath;
-        public override Color? BackgroundColor => base.BackgroundColor;
+		// Populate the Bestiary Filter
+		public override string BestiaryIcon => base.BestiaryIcon;
+		public override string BackgroundPath => base.BackgroundPath;
+		public override Color? BackgroundColor => base.BackgroundColor;
 
-        // Use SetStaticDefaults to assign the display name
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Morrow Underground");
-        }
+		// Use SetStaticDefaults to assign the display name
+		public override void SetStaticDefaults()
+		{
+			// DisplayName.SetDefault("Morrow Underground");
+		}
 
-        // Calculate when the biome is active.
-        public override bool IsBiomeActive(Player player)
-        {
-            // Limit the biome height to be underground in either rock layer or dirt layer
-            return false;
+		// Calculate when the biome is active.
+		public override bool IsBiomeActive(Player player)
+		{
+			// Limit the biome height to be underground in either rock layer or dirt layer
+			return false;
 
         }
         public override void OnEnter(Player player) => player.GetModPlayer<MyPlayer>().ZoneMorrow = true;

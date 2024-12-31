@@ -1,9 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Dusts;
+using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.REK;
+using Stellamod.Particles;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
@@ -18,13 +26,13 @@ namespace Stellamod.Buffs
             if (Player.HasBuff<GothivianFlames>())
             {
                 _timer++;
-                if (_timer >= 4)
+                if(_timer >= 4)
                 {
                     _maxHealthLoss--;
                     _timer = 0;
                 }
             }
-            if ((!NPC.AnyNPCs(ModContent.NPCType<RekSnake>()) && NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>())) || Player.dead)
+            if ((!NPC.AnyNPCs(ModContent.NPCType<RekSnake>()) && !NPC.AnyNPCs(ModContent.NPCType<DaedusR>()) && !NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>())) || Player.dead)
             {
                 _maxHealthLoss = 0;
             }
@@ -34,7 +42,7 @@ namespace Stellamod.Buffs
         {
             base.PostUpdateEquips();
             Player.statLifeMax2 += _maxHealthLoss;
-
+            
         }
     }
 
@@ -57,7 +65,7 @@ namespace Stellamod.Buffs
                     Vector2 pos = player.Center + Main.rand.NextVector2Circular(16, 16);
                     Vector2 velocity = -Vector2.UnitY;
                     float scale = Main.rand.NextFloat(0.5f, 0.75f);
-                }
+                                    }
                 else
                 {
                     Vector2 pos = player.Center + Main.rand.NextVector2Circular(16, 16);

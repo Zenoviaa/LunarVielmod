@@ -44,7 +44,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
             }
 
 
-
+         
         }
 
         public override void AI()
@@ -54,7 +54,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
             // The multiplication here wasn't doing anything
             Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
 
-
+            
 
             if (++Projectile.frameCounter >= 1)
             {

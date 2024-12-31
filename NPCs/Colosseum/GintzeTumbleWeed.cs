@@ -1,6 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Accessories.Foods;
+using Stellamod.Items.Ores;
 using Stellamod.NPCs.Colosseum.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
@@ -101,7 +107,7 @@ namespace Stellamod.NPCs.Colosseum
             {
                 SwitchState(AIState.Jump);
             }
-            if (jumpWhenBouncing)
+            if(jumpWhenBouncing)
             {
                 NPC.velocity.Y = -NPC.velocity.Y;
             }

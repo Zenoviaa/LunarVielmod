@@ -1,4 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+
+using Stellamod.Items.Materials;
+using Stellamod.Particles;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
@@ -22,7 +25,7 @@ namespace Stellamod.Items.Accessories
         }
 
         public override void SetDefaults()
-        {
+        {   
             Item.width = 32;
             Item.height = 36;
             Item.value = 2500;
@@ -63,6 +66,18 @@ namespace Stellamod.Items.Accessories
                     npc.AddBuff(BuffID.OnFire3, 2);
                 }
             }
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.Robe, 1);
+            recipe.AddIngredient(ItemID.SoulofSight, 15);
+            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 30);
+            recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 12);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
         }
     }
 }

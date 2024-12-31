@@ -5,21 +5,21 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Placeable.Alcadzia
 {
     public class CurtainLeftRCI : ModItem
-    {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("CurtainLeft");
-            // Tooltip.SetDefault("Curtain");
+	{
+		public override void SetStaticDefaults()
+		{
+			// DisplayName.SetDefault("CurtainLeft");
+			// Tooltip.SetDefault("Curtain");
 
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        }
-        public override void SetDefaults()
-        {
-            Item.DefaultToPlaceableTile(ModContent.TileType<CurtainLeftRC>());
-            Item.value = 150;
-            Item.maxStack = 20;
-            Item.width = 38;
-            Item.height = 24;
-        }
-    }
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		}
+		public override void SetDefaults()
+		{
+			Item.DefaultToPlaceableTile(ModContent.TileType<CurtainLeftRC>());
+			Item.value = 150;
+			Item.maxStack = 20;
+			Item.width = 38;
+			Item.height = 24;
+		}
+	}
 }

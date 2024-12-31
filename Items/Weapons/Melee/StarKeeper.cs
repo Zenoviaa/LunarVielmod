@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Swords;
 using Terraria;
 using Terraria.Audio;
@@ -44,6 +45,14 @@ namespace Stellamod.Items.Weapons.Melee
             Item.DamageType = DamageClass.Melee;
         }
 
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.Starfury, 1);
+            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 15);
+            recipe.AddTile(TileID.Anvils);
+            recipe.Register();
+        }
 
         public override void MeleeEffects(Player player, Rectangle hitbox)
         {

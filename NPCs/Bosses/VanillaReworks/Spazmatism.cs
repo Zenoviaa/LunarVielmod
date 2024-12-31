@@ -134,7 +134,7 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                         if (_fireCounter >= 20)
                         {
                             int spawnCount = Main.rand.Next(2, 6);
-
+                          
 
                             for (int i = 0; i < 32; i++)
                             {
@@ -177,7 +177,7 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                             if (_fireCounter >= 20)
                             {
                                 int spawnCount = Main.rand.Next(2, 6);
-
+   
 
                                 for (int i = 0; i < 32; i++)
                                 {
@@ -217,7 +217,7 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                             if (_fireCounter >= 20)
                             {
                                 int spawnCount = Main.rand.Next(2, 6);
-
+                               
 
                                 for (int i = 0; i < 32; i++)
                                 {
@@ -262,8 +262,8 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                             if (_fireCounter >= 20)
                             {
                                 int spawnCount = Main.rand.Next(2, 6);
-
-
+                             
+                                
 
                                 for (int i = 0; i < 32; i++)
                                 {
@@ -308,8 +308,8 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                             if (_fireCounter >= 20)
                             {
                                 int spawnCount = Main.rand.Next(2, 6);
-
-
+                            
+                               
 
                                 for (int i = 0; i < 32; i++)
                                 {
@@ -343,8 +343,8 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
 
 
 
-
-
+                   
+                
             }
 
             //Return true to run the vanilla AI

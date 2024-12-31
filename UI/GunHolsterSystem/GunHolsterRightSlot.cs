@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.ScorpionMountSystem;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
+using System;
 using Terraria;
 using Terraria.GameInput;
 using Terraria.ModLoader;
@@ -38,7 +39,7 @@ namespace Stellamod.UI.GunHolsterSystem
         /// </summary>
         internal bool Valid(Item item)
         {
-            if (item.ModItem is MiniGun miniGun)
+            if(item.ModItem is MiniGun miniGun)
             {
                 if (miniGun.RightHand || miniGun.TwoHands)
                     return true;

@@ -76,7 +76,7 @@ namespace Stellamod.NPCs.Town
 
         public static void SendCompleteQuestPacket()
         {
-            if (Main.netMode != NetmodeID.SinglePlayer)
+            if(Main.netMode != NetmodeID.SinglePlayer)
             {
                 Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.CompleteZuiQuest).Send(-1);
             }

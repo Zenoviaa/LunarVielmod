@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.DataStructures;
@@ -45,12 +46,22 @@ namespace Stellamod.Items.Weapons.Ranged
             int count = 2;
             for (int k = 0; k < count; k++)
             {
-                Vector2 newVelocity = (velocity * 20).RotatedByRandom(MathHelper.ToRadians(15));
+                Vector2 newVelocity = (velocity*20).RotatedByRandom(MathHelper.ToRadians(15));
                 newVelocity *= 1f - Main.rand.NextFloat(0.3f);
                 Dust.NewDust(position, 0, 0, DustID.Electric, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
             }
 
             return true;
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>());
+            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 5);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 10);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
         }
     }
 }

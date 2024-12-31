@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Thrown;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -36,6 +38,15 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.useTime = 20;
             Item.consumable = true;
             Item.maxStack = Item.CommonMaxStack;
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe(50);
+            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 3);
+            recipe.AddIngredient(ItemID.ThrowingKnife, 50);
+            recipe.AddTile(TileID.WorkBenches);
+            recipe.Register();
         }
 
         public override Vector2? HoldoutOffset()

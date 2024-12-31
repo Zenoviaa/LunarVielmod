@@ -1,15 +1,20 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Terraria;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
 
 namespace Stellamod.Projectiles.Thrown
 {
-    internal class PumkinBolt : ModProjectile
+    internal class PumkinBolt :  ModProjectile
     {
         bool Moved;
         public PrimDrawer TrailDrawer { get; private set; } = null;

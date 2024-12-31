@@ -1,13 +1,23 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using Stellamod.Projectiles.Slashers.Maelstrom;
-using System.Collections.Generic;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
+using Stellamod.Projectiles;
+using Stellamod.Projectiles.Slashers;
+using Stellamod.Projectiles.Slashers.ThefirstAurora;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+
+using Stellamod.Projectiles.Safunai.Alcarish;
+using System.Collections.Generic;
+using System.IO;
+
+using Stellamod.Projectiles.Slashers.Maelstrom;
 
 namespace Stellamod.Items.Weapons.Melee.Greatswords
 {
@@ -37,7 +47,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
 
-            line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Common("Greatsword"))
+            line = new TooltipLine(Mod, "Alcarishasd",  Helpers.LangText.Common("Greatsword"))
             {
                 OverrideColor = ColorFunctions.GreatswordWeaponType
             };
@@ -114,8 +124,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
 
                 player.GetModPlayer<MyPlayer>().SwordCombo = 0;
                 player.GetModPlayer<MyPlayer>().SwordComboR = 0;
-            }
-            else
+            } else
             {
                 player.GetModPlayer<MyPlayer>().SwordCombo++;
                 player.GetModPlayer<MyPlayer>().SwordComboR = 240;

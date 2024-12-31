@@ -1,5 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+
+using Stellamod.Particles;
 using Stellamod.Projectiles.Summons.MiracleSoul;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -22,7 +25,7 @@ namespace Stellamod.Buffs
                 miracleTimeLeft = 0;
                 miracleLevel = 0;
             }
-
+      
             hasMiracleSet = false;
         }
 

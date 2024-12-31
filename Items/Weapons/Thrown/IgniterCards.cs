@@ -1,3 +1,5 @@
+
+using Microsoft.Xna.Framework;
 using Stellamod.Projectiles.Thrown;
 using Terraria;
 using Terraria.ID;
@@ -6,9 +8,9 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Thrown
 {
     public class IgniterCards : ModItem
-    {
-        public override void SetStaticDefaults()
-        {
+	{
+        public override void SetStaticDefaults() 
+		{
             // DisplayName.SetDefault("GreyBricks"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
         }
 
@@ -32,6 +34,6 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shootSpeed = 15f;
             Item.consumable = true;
             Item.maxStack = Item.CommonMaxStack;
-        }
+        }   
     }
 }

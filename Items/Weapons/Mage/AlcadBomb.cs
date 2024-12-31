@@ -10,7 +10,7 @@ namespace Stellamod.Items.Weapons.Mage
 {
     internal class AlcadBomb : ClassSwapItem
     {
-
+   
         public override DamageClass AlternateClass => DamageClass.Summon;
 
         public override void SetClassSwappedDefaults()

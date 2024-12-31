@@ -29,7 +29,7 @@ namespace Stellamod.UI.Dialogue
         public override void Load()
         {
             Panel = new DialoguePanel();
-            Panel.OnLeftClick += OnButtonClick;
+            Panel.OnLeftClick += OnButtonClick; 
             Panel.Activate();
             _panel = new UserInterface();
         }
@@ -48,7 +48,7 @@ namespace Stellamod.UI.Dialogue
             }
 
             _dialogueIndex++;
-            if (_dialogueIndex >= Dialogue.Length)
+            if(_dialogueIndex >= Dialogue.Length)
             {
                 //End
                 ResetTexts();
@@ -114,7 +114,7 @@ namespace Stellamod.UI.Dialogue
             {
                 _panel?.SetState(Panel);
                 _easeTimer++;
-
+              
                 float progress = _easeTimer / easeLength;
                 float easedProgress = Easing.OutCubic(progress);
                 Panel.UIPanel.VAlign = MathHelper.Lerp(2, Panel.PresetVAlign, easedProgress);
@@ -125,7 +125,7 @@ namespace Stellamod.UI.Dialogue
                 float progress = _easeTimer / easeLength;
                 float easedProgress = Easing.OutCubic(progress);
                 Panel.UIPanel.VAlign = MathHelper.Lerp(2, Panel.PresetVAlign, easedProgress);
-                if (_easeTimer <= 0)
+                if(_easeTimer <= 0)
                 {
                     _panel?.SetState(null);
                 }
@@ -139,7 +139,7 @@ namespace Stellamod.UI.Dialogue
             UpdateVisibility();
             if (_fullText != string.Empty && _text != _fullText)
             {
-
+         
                 NextCharacter();
             }
         }
@@ -170,7 +170,7 @@ namespace Stellamod.UI.Dialogue
                 _easeTimer = 0;
                 Panel.UIPanel.VAlign = 3;
             }
-
+       
             IsVisible = true;
 
             //Reset the dialogue index so we start from the beginning

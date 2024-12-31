@@ -9,13 +9,13 @@ using static Terraria.ModLoader.ModContent;
 namespace Stellamod.Projectiles.Swords
 {
     public class IrradiatedGreatBladeThrow : ModProjectile
-    {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Acid Blast");
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
-        }
+	{
+		public override void SetStaticDefaults()
+		{
+			// DisplayName.SetDefault("Acid Blast");
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+		}
 
         public override void SetDefaults()
         {
@@ -38,7 +38,7 @@ namespace Stellamod.Projectiles.Swords
 
             Projectile.rotation += 0.1f;
         }
-
+    
         float alphaCounter = 2;
         float counter = 3;
         public override void PostDraw(Color lightColor)

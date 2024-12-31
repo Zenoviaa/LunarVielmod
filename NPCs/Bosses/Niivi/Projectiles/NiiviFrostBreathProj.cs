@@ -1,8 +1,12 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
 using Stellamod.Helpers;
+using Stellamod.Trails;
+using System;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -71,8 +75,8 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public override Color? GetAlpha(Color lightColor)
         {
             return new Color(
-                Color.White.R,
-                Color.LightCyan.G,
+                Color.White.R, 
+                Color.LightCyan.G, 
                 Color.LightCyan.B, 0);
         }
 

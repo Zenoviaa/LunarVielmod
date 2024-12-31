@@ -34,7 +34,7 @@ namespace Stellamod.Projectiles.Magic
             Projectile.alpha -= 10;
             int npcIndex = (int)TargetNPC;
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 for (int i = 0; i < 4; i++)
                 {
@@ -43,7 +43,7 @@ namespace Stellamod.Projectiles.Magic
                         ModContent.GoreType<RibbonRed>());
                 }
 
-                for (int i = 0; i < 3; i++)
+                for(int i = 0; i < 3; i++)
                 {
                     Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
                         ModContent.DustType<Dusts.GunFlash>(), newColor: Color.White);
@@ -51,7 +51,7 @@ namespace Stellamod.Projectiles.Magic
             }
 
             NPC target = Main.npc[npcIndex];
-            if (!target.active || !target.HasBuff(ModContent.BuffType<RibbonWrapped>()))
+            if(!target.active || !target.HasBuff(ModContent.BuffType<RibbonWrapped>()))
             {
                 Projectile.Kill();
             }

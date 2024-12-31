@@ -1,16 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.DaedusRework;
+using Stellamod.Particles;
+using Stellamod.Projectiles.Slashers.ScarecrowSaber;
 using Stellamod.Trails;
+using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.Graphics.Shaders;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Players
 {
 
-    public class DashProjectile : ModProjectile
-    {
+	public class DashProjectile : ModProjectile
+	{
         private Vector2[] _oldSwingPos;
         private ref float Timer => ref Projectile.ai[0];
         private Player Owner => Main.player[Projectile.owner];
@@ -60,15 +67,15 @@ namespace Stellamod.Items.Accessories.Players
         {
             Color startColor = Color.White;
 
-            float progress = 1f;
-            if (Timer > 30)
-            {
+			float progress = 1f;
+			if(Timer > 30) 
+			{
                 progress = (Timer - 30f) / 30f;
                 progress = MathHelper.Clamp(progress, 0f, 1f);
                 progress = 1f - progress;
                 startColor *= progress;
             }
-
+       
             return Color.Lerp(startColor, Color.Transparent, completionRatio);
         }
 

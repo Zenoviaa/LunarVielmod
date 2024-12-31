@@ -49,7 +49,7 @@ namespace Stellamod.Items.Accessories.Catacombs
             {
                 int cooldownInSeconds = 30;
                 int cooldownInTicks = cooldownInSeconds * 60;
-
+           
                 _cooldown = cooldownInTicks;
                 modifiers.FinalDamage *= 0f;
                 SoundEngine.PlaySound(SoundID.NPCDeath58, Player.position);
@@ -61,7 +61,7 @@ namespace Stellamod.Items.Accessories.Catacombs
                     float degrees = k * degreesPer;
                     Vector2 direction = Vector2.One.RotatedBy(MathHelper.ToRadians(degrees));
                     Vector2 vel = direction * 4;
-                    Dust.NewDust(Player.Center, 1, 1, DustID.Water, vel.X, vel.Y);
+                    Dust.NewDust(Player.Center, 1, 1, DustID.Water, vel.X , vel.Y);
                 }
 
                 _waterShieldProj.Kill();

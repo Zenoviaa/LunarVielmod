@@ -4,6 +4,7 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
@@ -56,7 +57,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             protected virtual Texture2D GetArmoredTexture(string name)
             {
                 string path = $"Stellamod/NPCs/Bosses/Gustbeak/Gustbeak_{name}_Armored";
-                if (ModContent.RequestIfExists<Texture2D>(path, out var asset))
+                if(ModContent.RequestIfExists<Texture2D>(path, out var asset))
                 {
                     return asset.Value;
                 }
@@ -95,7 +96,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                     return;
 
                 MiscShaderData miscShaderData = GameShaders.Misc["LunarVeil:GustArmor"];
-                miscShaderData.Shader.Parameters["time"].SetValue(MathF.Sin(Main.GlobalTimeWrappedHourly * 0.02f) * 24);
+                miscShaderData.Shader.Parameters["time"].SetValue(MathF.Sin(Main.GlobalTimeWrappedHourly * 0.02f ) * 24);
                 miscShaderData.Shader.Parameters["noiseTexture"].SetValue(TrailRegistry.CrystalNoise.Value);
                 miscShaderData.Shader.Parameters["noiseTextureSize"].SetValue(TrailRegistry.CrystalNoise.Value.Size());
                 miscShaderData.Apply();
@@ -232,7 +233,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                         drawRotation -= MathHelper.ToRadians(90);
                     }
                 }
-
+    
                 spriteBatch.Draw(texture, drawPos, animationFrame, colorToDrawIn, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
             }
         }

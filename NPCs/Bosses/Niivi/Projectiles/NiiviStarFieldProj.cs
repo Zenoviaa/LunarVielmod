@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Stellamod.UI.Systems;
 using System.Collections.Generic;
 using Terraria;
@@ -39,23 +40,22 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public override void AI()
         {
             ShakeModSystem.Shake = 2;
-            if (Timer < 60)
+            if(Timer < 60)
             {
                 Scale = MathHelper.Lerp(Scale, 1f, 0.04f);
-            }
-            else if (Timer > 600)
+            } else if (Timer > 600)
             {
                 Scale = MathHelper.Lerp(Scale, 0f, 0.04f);
             }
-
+  
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048, 32);
                 SoundEngine.PlaySound(SoundRegistry.Niivi_Voidfield, Projectile.position);
             }
 
-            if (Timer == 300)
+            if(Timer == 300)
             {
                 SoundEngine.PlaySound(SoundRegistry.Niivi_Voidence, Projectile.position);
             }
@@ -75,11 +75,11 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
             }
 
-            if (Timer % 12 == 0 && Timer >= 60)
+            if(Timer % 12 == 0 && Timer >= 60)
             {
                 float maxDetectDistance = 2000;
                 Player player = PlayerHelper.FindClosestPlayer(Projectile.Center, maxDetectDistance);
-                if (player != null)
+                if(player != null)
                 {
                     Vector2 randOffset = Main.rand.NextVector2Circular(64, 64);
                     Vector2 predictiveOffset = player.velocity.SafeNormalize(Vector2.Zero) * 8;
@@ -102,7 +102,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 Color[] colors = new Color[] { Color.LightCyan, Color.Cyan, Color.White, Color.White };
                 Color color = colors[Main.rand.Next(0, colors.Length)];
                 float scale = Main.rand.NextFloat(0.5f, 0.8f);
-            }
+                            }
 
             for (int i = 0; i < Main.maxPlayers; i++)
             {

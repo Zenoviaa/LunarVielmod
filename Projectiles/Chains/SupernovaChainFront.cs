@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -43,7 +44,7 @@ namespace Stellamod.Projectiles.Chains
             float ovalAngle = MathHelper.Pi;
             float ovalRotation = MathHelper.PiOver4 / 2;
             float ovalRotationOsc = VectorHelper.Osc(0f, 1f, 1f) * (MathHelper.PiOver4 / 4);
-            DrawHelper.DrawChainOval(chainCenter, ovalXRadius, ovalYRadius, ovalAngle,
+            DrawHelper.DrawChainOval(chainCenter, ovalXRadius, ovalYRadius, ovalAngle, 
                 ovalRotation + ovalRotationOsc + Projectile.rotation,
                 ref ChainPos);
         }

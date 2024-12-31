@@ -61,17 +61,17 @@ namespace Stellamod.Projectiles.Magic
     }
 
     public class Gelatin : ModProjectile
-    {
+	{
         private ref float Timer => ref Projectile.ai[0];
-        public override void SetStaticDefaults()
-        {
+		public override void SetStaticDefaults()
+		{
             // DisplayName.SetDefault("Gelatin");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
-        public override void SetDefaults()
-        {
+		public override void SetDefaults()
+		{
             Projectile.width = 16;
             Projectile.height = 16;
             Projectile.friendly = true;

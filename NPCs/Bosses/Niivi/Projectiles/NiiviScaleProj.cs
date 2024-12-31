@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
-using Stellamod.Trails;
-using Terraria;
 using Terraria.Audio;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.Helpers;
+using Stellamod.Trails;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {

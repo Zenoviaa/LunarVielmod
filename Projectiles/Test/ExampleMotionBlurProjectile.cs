@@ -5,6 +5,7 @@ using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 using static Stellamod.Helpers.DrawHelper;
@@ -28,17 +29,17 @@ namespace Stellamod.Projectiles.Test
         {
             base.AI();
             Timer++;
-            if (Timer % 3 == 0)
+            if(Timer % 3 == 0)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowSparkleDust>(), newColor: Color.White, Scale: Main.rand.NextFloat(0.25f, 0.5f));
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
             }
-            if (Timer < 100)
+            if(Timer < 100)
             {
-                if (Projectile.velocity.Length() < 35)
+                if(Projectile.velocity.Length() < 35)
                     Projectile.velocity *= 1.05f;
             }
-
+           
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
@@ -69,7 +70,7 @@ namespace Stellamod.Projectiles.Test
             float rotation = Projectile.rotation;
             Color finalColor = Color.White.MultiplyRGB(lightColor);
             spriteBatch.Draw(texture, drawPos, frame, finalColor, rotation, drawOrigin, scale, SpriteEffects.None, 0);
-
+            
             //Draw the blurring on top
             spriteBatch.Restart(effect: shader.Effect);
             spriteBatch.Draw(texture, drawPos, frame, finalColor * 0.5f, rotation, drawOrigin, scale, SpriteEffects.None, 0);

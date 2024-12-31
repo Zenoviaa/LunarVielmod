@@ -1,14 +1,18 @@
+
+using Microsoft.Xna.Framework;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Thrown;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
     public class GintzlSpear : ModItem
-    {
-        public override void SetStaticDefaults()
-        {
+	{
+        public override void SetStaticDefaults() 
+		{
             // DisplayName.SetDefault("GreyBricks"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
         }
 

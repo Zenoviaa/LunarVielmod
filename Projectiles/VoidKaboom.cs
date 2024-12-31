@@ -2,13 +2,14 @@
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
     public class VoidKaboom : BaseIgniterExplosion
-    {
+	{
         public override int FrameCount => 30;
         public override void Start()
         {

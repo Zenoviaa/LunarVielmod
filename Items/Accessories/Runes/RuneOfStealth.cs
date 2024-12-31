@@ -33,7 +33,7 @@ namespace Stellamod.Items.Accessories.Runes
 
             Projectile.Center = owner.Center;
             Timer++;
-            if (Timer % 32 == 0)
+            if(Timer % 32 == 0)
             {
                 Dust.NewDust(owner.position, owner.width, owner.height, DustID.Firework_Red, Scale: 0.2f);
             }
@@ -82,7 +82,7 @@ namespace Stellamod.Items.Accessories.Runes
             base.PostUpdateEquips();
             if (hasStealthRune)
             {
-                stealthRuneTimer++;
+                stealthRuneTimer++;  
             }
             else
             {

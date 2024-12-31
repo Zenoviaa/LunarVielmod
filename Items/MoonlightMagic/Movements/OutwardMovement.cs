@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Stellamod.Systems.MiscellaneousMath;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 

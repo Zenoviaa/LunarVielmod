@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.MoonlightMagic;
+using System;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -20,7 +23,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
         {
             _context = context;
             _scale = scale;
-
+      
 
             //Set to Air
             Item = new Item();

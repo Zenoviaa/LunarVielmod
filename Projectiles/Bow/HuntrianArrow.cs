@@ -38,11 +38,11 @@ namespace Stellamod.Projectiles.Bow
             if (Main.rand.NextBool(2))
                 target.AddBuff(BuffID.OnFire, 180);
         }
-
+        
         public override void AI()
         {
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 Projectile.spriteDirection = Projectile.direction;
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
@@ -73,7 +73,7 @@ namespace Stellamod.Projectiles.Bow
         public override void PostDraw(Color lightColor)
         {
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-            for (int i = 0; i < 3; i++)
+            for(int i = 0; i < 3; i++)
             {
                 Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * 1), (int)(45f * 1), (int)(15f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
             }
@@ -81,7 +81,7 @@ namespace Stellamod.Projectiles.Bow
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 8; i++)
+            for(int i = 0; i < 8; i++)
             {
                 Vector2 vel = -Projectile.velocity.RotatedByRandom(MathHelper.PiOver4);
                 vel *= Main.rand.NextFloat(0.1f, 0.2f);

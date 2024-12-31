@@ -1,7 +1,13 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
+using Stellamod.Items.Weapons.Melee;
+using Stellamod.Projectiles;
 using Stellamod.Projectiles.Magic;
+using Stellamod.Projectiles.Slashers;
 using Stellamod.Projectiles.Slashers.Ixy;
 using Terraria;
 using Terraria.Audio;
@@ -130,6 +136,17 @@ namespace Stellamod.Items.Weapons.Mage
 
 
             return false;
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.AddIngredient(ModContent.ItemType<CinderedLantern>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 22);
+            recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 22);
+            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 50);
+            recipe.Register();
         }
     }
 }

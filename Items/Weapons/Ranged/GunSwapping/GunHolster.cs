@@ -77,7 +77,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void LoadData(TagCompound tag)
         {
             base.LoadData(tag);
-
+          
         }
     }
 

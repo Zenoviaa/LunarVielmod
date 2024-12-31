@@ -3,7 +3,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -34,7 +37,7 @@ namespace Stellamod.Projectiles.GunHolster
             Projectile.friendly = true;
             DrawOriginOffsetY = 0;
         }
-
+        
         public override bool PreAI()
         {
 
@@ -48,7 +51,7 @@ namespace Stellamod.Projectiles.GunHolster
                 }
             }
             return true;
-
+        
         }
         public override Color? GetAlpha(Color lightColor)
         {
@@ -89,7 +92,7 @@ namespace Stellamod.Projectiles.GunHolster
             }
 
 
-
+         
 
         }
         private int _frameCounter;
@@ -107,7 +110,7 @@ namespace Stellamod.Projectiles.GunHolster
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture, drawPosition,
                 texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
-                (Color)GetAlpha(lightColor), Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0f);
+                (Color)GetAlpha(lightColor),Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0f);
             return false;
         }
 

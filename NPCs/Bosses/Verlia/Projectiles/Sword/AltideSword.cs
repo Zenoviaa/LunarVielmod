@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.IO;
+using System.Net;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -78,7 +79,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword
                     endPoint = wantedEndPoint;
                 }
             }
-
+            
             //Net Sync
             if (!initialization && Main.myPlayer == Projectile.owner)
             {

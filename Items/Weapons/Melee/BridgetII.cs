@@ -1,4 +1,8 @@
-﻿using Stellamod.Projectiles;
+﻿using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Ores;
+using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -48,6 +52,16 @@ namespace Stellamod.Items.Weapons.Melee
 
 
         }
-
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.BorealWood, 6);
+            recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 15);
+            recipe.AddIngredient(ModContent.ItemType<Bridget>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 3);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
+        }
     }
 }

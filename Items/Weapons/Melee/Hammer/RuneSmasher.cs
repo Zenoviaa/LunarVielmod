@@ -62,7 +62,7 @@ namespace Stellamod.Items.Weapons.Melee.Hammer
     public class RuneHammerSlash : BaseSwingProjectile
     {
         public override string Texture => this.PathHere() + "/RuneSmasher";
-
+    
         public bool Hit;
         public int BounceTimer;
         public int BounceDelay;
@@ -455,8 +455,8 @@ namespace Stellamod.Items.Weapons.Melee.Hammer
 
     public class RuneHammerStaminaSlash : BaseSwingProjectile
     {
-        public override string Texture => this.PathHere() + "/RuneSmasher";
-
+        public override string Texture => this.PathHere()+"/RuneSmasher";
+    
         public bool Hit;
         public int BounceTimer;
         public int BounceDelay;

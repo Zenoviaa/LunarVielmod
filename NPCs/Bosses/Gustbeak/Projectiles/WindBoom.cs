@@ -24,7 +24,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
         public override void AI()
         {
             base.AI();
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 SoundStyle windHit = new SoundStyle($"Stellamod/Assets/Sounds/WindHit", variantSuffixesStart: 1, numVariants: 2);
                 windHit.PitchVariance = 0.15f;
@@ -42,7 +42,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
             float progress = Timer / 30f;
             float easedProgress = Easing.OutCirc(progress);
             float spikingEasedProgress = Easing.OutCirc(progress);
-            if (Timer < 10)
+            if(Timer < 10)
             {
                 Vector2 offset = (Timer / 10f).ToRotationVector2() * 4;
                 float rotation = offset.ToRotation();

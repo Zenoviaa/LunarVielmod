@@ -1,4 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -42,6 +45,18 @@ namespace Stellamod.Items.Accessories
         {
             base.UpdateAccessory(player, hideVisual);
             player.GetModPlayer<CinderedQuiverPlayer>().hasQuiver = true;
+        }
+
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 50);
+            recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 7);
+            recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
+            recipe.AddIngredient(ItemID.HellfireArrow, 10);
+            recipe.AddTile(TileID.Anvils);
+            recipe.Register();
         }
     }
 }

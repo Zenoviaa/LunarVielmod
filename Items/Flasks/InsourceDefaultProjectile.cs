@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -85,17 +86,17 @@ namespace Stellamod.Items.Flasks
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D texture = ModContent.Request<Texture2D>(projectileTexturePath).Value;
-
+           
             Color drawColor = Color.White.MultiplyRGB(lightColor);
             float drawRotation = Projectile.rotation;
             float drawScale = 1f;
 
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
-
+       
             spriteBatch.Draw(texture, drawPos, Projectile.Frame(overrideTexture: texture), drawColor, drawRotation,
                 Projectile.Frame(overrideTexture: texture).Size() / 2f, drawScale, SpriteEffects.None, 0);
             return false;
-
+        
         }
 
         private void Visuals()

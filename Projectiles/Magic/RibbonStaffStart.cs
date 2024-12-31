@@ -40,7 +40,7 @@ namespace Stellamod.Projectiles.Magic
             {
                 Projectile.Kill();
             }
-            else if (Main.myPlayer == Projectile.owner)
+            else if(Main.myPlayer == Projectile.owner)
             {
                 Projectile.Center = Main.MouseWorld;
                 Projectile.netUpdate = true;

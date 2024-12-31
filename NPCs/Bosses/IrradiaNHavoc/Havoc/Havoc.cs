@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+using ReLogic.Content;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
@@ -9,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Animations;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -120,7 +123,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
 
         public override void AI()
         {
-            if (Segments == null)
+            if(Segments == null)
             {
                 //Initialize Segments
                 Segments = new HavocSegment[5];
@@ -236,7 +239,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
 
         private ActionState ReceiveSignal()
         {
-            foreach (NPC npc in Main.ActiveNPCs)
+            foreach(NPC npc in Main.ActiveNPCs)
             {
                 if (npc.type != ModContent.NPCType<HavocSignal>())
                     continue;
@@ -264,9 +267,9 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
         {
             DrawChargeTrail = false;
             NPC.TargetClosest();
-
-            OrbitDistance += 100;
-            if (OrbitDistance >= 500)
+            
+            OrbitDistance+=100;
+            if(OrbitDistance >= 500)
             {
                 OrbitDistance = 500;
             }
@@ -335,7 +338,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             else if (Timer < 180)
             {
                 DrawChargeTrail = true;
-
+          
 
                 if (Timer == 151)
                 {
@@ -353,7 +356,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             }
             else
             {
-
+  
                 ResetState(ActionState.Idle);
             }
 
@@ -414,7 +417,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
         {
             Vector2 arenaLeft = ArenaCenter + new Vector2(-4000, 0);
             if (AttackTimer == 0)
-            {
+            {  
                 float distanceToLeft = Vector2.Distance(NPC.Center, arenaLeft);
                 AI_MoveToward(arenaLeft, 32);
                 if (distanceToLeft <= 16)
@@ -425,37 +428,37 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
                         TargetSegmentStretch = Main.rand.NextFloat(2, 5);
                         NPC.netUpdate = true;
                     }
-
-
+        
+            
                     AttackTimer++;
                 }
-            }
+            } 
             else if (AttackTimer == 1)
             {
                 //Delay before he charges
                 NPC.velocity *= 0.8f;
                 Timer++;
-                if (Timer >= 45)
+                if(Timer >= 45)
                 {
                     AttackTimer++;
                     Timer = 0;
                 }
-            }
+            } 
             else if (AttackTimer == 2)
             {
                 float speed = 32;
                 Vector2 arenaCenterOffset = ArenaCenter + new Vector2(288, 0);
                 float distanceToTarget = Vector2.Distance(NPC.Center, arenaCenterOffset);
                 AI_MoveToward(arenaCenterOffset, speed);
-                if (distanceToTarget <= LaserAttackDistance)
+                if(distanceToTarget <= LaserAttackDistance)
                 {
                     AttackTimer++;
                     Timer = 0;
                 }
-            }
+            } 
             else if (AttackTimer == 3)
             {
-                if (NPC.velocity.Length() <= 1f)
+                if(NPC.velocity.Length() <= 1f)
                 {
                     NPC.velocity = Vector2.UnitX;
                 }
@@ -463,20 +466,20 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
                 {
                     NPC.velocity *= 0.94f;
                 }
-
-
+                
+            
                 Timer++;
 
-                if (Timer == 1)
+                if(Timer == 1)
                 {
                     SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_WaveCharge");
                     SoundEngine.PlaySound(soundStyle, NPC.position);
 
 
                 }
-
+      
                 //Visuals
-                for (int i = 1; i < Segments.Length - 1; i++)
+                for (int i = 1; i < Segments.Length- 1; i++)
                 {
                     var segment = Segments[i];
                     float progress = Timer / 60;
@@ -494,22 +497,22 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
                     }
                 }
 
-                if (Timer >= 60)
+                if(Timer >= 60)
                 {
                     AttackTimer++;
                     Timer = 0;
                 }
-            }
+            } 
             else if (AttackTimer == 4)
             {
                 Timer++;
-                if (Timer == 0)
+                if(Timer == 0)
                 {
                     NPC.velocity = Vector2.UnitX;
-
+        
                 }
 
-                if (Timer == 1)
+                if(Timer == 1)
                 {
                     for (int i = 1; i < Segments.Length - 1; i++)
                     {
@@ -525,9 +528,9 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
                     }
                 }
 
-
+               
                 NPC.velocity *= 1.02f;
-                if (Timer >= 120)
+                if(Timer >= 120)
                 {
                     ResetState(ActionState.Idle);
                 }
@@ -547,7 +550,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             {
                 NPC.TargetClosest();
                 Timer++;
-                if (Timer == 1)
+                if(Timer == 1)
                 {
                     SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge2");
                     SoundEngine.PlaySound(soundStyle, NPC.position);
@@ -572,22 +575,22 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
                     }
                 }
 
-                OrbitDistance -= 2;
+                OrbitDistance-=2;
                 if (OrbitDistance <= 0)
                 {
                     Timer = 0;
                     AttackTimer++;
                 }
-            }
+            } 
             else if (AttackTimer == 1)
             {
                 NPC.velocity *= 0.98f;
-                if (Timer == 1)
+                if(Timer == 1)
                 {
                     SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_LAZER");
                     SoundEngine.PlaySound(soundStyle, NPC.position);
 
-
+        
                     if (StellaMultiplayer.IsHost)
                     {
                         int type = ModContent.ProjectileType<HavocLaserBigProj>();
@@ -598,8 +601,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
                             type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
                     }
                 }
-
-                if (Timer % 2 == 0)
+                
+                if(Timer % 2 == 0)
                 {
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.position, 1024, 16);
                     Vector2 pos = NPC.Center + Main.rand.NextVector2Circular(64, 64);
@@ -608,13 +611,13 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
                     Dust.NewDustPerfect(pos, ModContent.DustType<GlowDust>(), vel, 0, Color.OrangeRed, scale).noGravity = true;
                     if (Main.rand.NextBool(10))
                     {
-                        Dust.NewDustPerfect(pos, ModContent.DustType<TSmokeDust>(), vel, 0, Color.OrangeRed, scale / 2).noGravity = true;
+                        Dust.NewDustPerfect(pos, ModContent.DustType<TSmokeDust>(), vel, 0, Color.OrangeRed, scale / 2).noGravity=true;
                     }
                 }
 
                 NPC.rotation += MathHelper.TwoPi / 360;
                 Timer++;
-                if (Timer >= 360)
+                if(Timer >= 360)
                 {
                     ResetState(ActionState.Idle);
                 }
@@ -709,7 +712,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
 
         public float WidthFunctionCharge(float completionRatio)
         {
-            return NPC.width * NPC.scale / 0.75f * (1f - completionRatio);
+            return NPC.width * NPC.scale / 0.75f * (1f- completionRatio);
         }
 
         public Color ColorFunctionCharge(float completionRatio)
@@ -803,9 +806,9 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             for (int i = Segments.Length - 1; i > -1; i--)
             {
                 HavocSegment segment = Segments[i];
-                /*  if (!segment.HasGlowTexture)
-                      continue;
-                */
+              /*  if (!segment.HasGlowTexture)
+                    continue;
+              */
                 Vector2 drawPosition = segment.Position - screenPos + HitboxFixer;
                 float drawRotation = segment.Rotation;
                 Vector2 drawOrigin = segment.Size / 2;

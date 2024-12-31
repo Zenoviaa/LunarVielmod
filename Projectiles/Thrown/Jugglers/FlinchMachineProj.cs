@@ -1,11 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Common.Bases;
 using Stellamod.Dusts;
 using Stellamod.Gores;
 using Stellamod.Helpers;
+using Stellamod.Particles;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -38,7 +44,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
             bool extremeHitEffect = false;
             if (Juggler.combo >= 5)
             {
-                if (HitCount >= 3)
+                if(HitCount >= 3)
                 {
                     HitCount = 0;
                     extremeHitEffect = true;
@@ -54,7 +60,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
                 SoundEngine.PlaySound(fanHit2, Projectile.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.position, 2048, 64);
                 target.SimpleStrikeNPC(Projectile.damage * 5, hit.HitDirection, damageType: Projectile.DamageType);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, 
                     ModContent.ProjectileType<FlinchMachineExplosionProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
 
                 FXUtil.GlowCircleBoom(target.Center,
@@ -76,7 +82,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
                     //Get a random
                     float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                }
+                                    }
             }
             else
             {
@@ -111,7 +117,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
                 //Get a random
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-            }
+                            }
         }
 
     }

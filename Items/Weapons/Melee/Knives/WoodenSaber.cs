@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Common.Bases;
 using Stellamod.Common.Players;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Projectiles;
 using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;

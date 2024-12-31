@@ -58,7 +58,7 @@ namespace Stellamod.Projectiles.Bow
                 }
                 Moved = true;
             }
-
+  
 
             if (Projectile.alpha >= 255)
             {
@@ -66,7 +66,7 @@ namespace Stellamod.Projectiles.Bow
             }
 
             Projectile.spriteDirection = Projectile.direction;
-
+    
         }
         public override void OnKill(int timeLeft)
         {

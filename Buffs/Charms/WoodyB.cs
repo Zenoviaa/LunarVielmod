@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Charms
@@ -33,7 +34,7 @@ namespace Stellamod.Buffs.Charms
             else
             {
                 player.GetDamage(DamageClass.Generic) -= 0.3f;
-            }
+            }  
         }
     }
 }

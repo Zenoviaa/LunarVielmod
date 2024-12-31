@@ -1,6 +1,7 @@
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ID;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Armors.LunarianVoid
 {
@@ -24,6 +25,15 @@ namespace Stellamod.Items.Armors.LunarianVoid
         public override void UpdateEquip(Player player)
         {
             player.GetCritChance(DamageClass.Throwing) += 10f;
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 14);
+            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 30);
+            recipe.AddTile(TileID.Anvils);
+            recipe.Register();
         }
     }
 }

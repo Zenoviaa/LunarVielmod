@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -16,7 +17,7 @@ namespace Stellamod.Projectiles
         private ref float Timer => ref Projectile.ai[0];
         private Player Owner => Main.player[Projectile.owner];
         public override void SetDefaults()
-        {
+        {          
             Projectile.penetrate = 1;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = true;
@@ -44,7 +45,7 @@ namespace Stellamod.Projectiles
             Timer++;
 
             Owner.RotatedRelativePoint(Projectile.Center);
-            Projectile.rotation -= 0.5f;
+            Projectile.rotation  -= 0.5f;
             Projectile.velocity *= 0.97f;
             if (Timer < 30)
             {
@@ -63,7 +64,7 @@ namespace Stellamod.Projectiles
 
             if (Timer == 99)
             {
-                if (Main.myPlayer == Projectile.owner)
+                if(Main.myPlayer == Projectile.owner)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                         ModContent.ProjectileType<VerstiExSps>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner);
@@ -104,7 +105,7 @@ namespace Stellamod.Projectiles
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
                 ModContent.ProjectileType<VerstiExSps>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
             ExplodeEffects();
         }

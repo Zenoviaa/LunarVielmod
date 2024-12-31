@@ -75,7 +75,7 @@ namespace Stellamod.Projectiles.Magic
             var EntitySource = Projectile.GetSource_Death();
             for (int i = 0; i < 3; i++)
             {
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-2, 2), Main.rand.Next(-2, 2),
+                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), 
                     ModContent.ProjectileType<FungalFlaceCloud>(), 5, 1, Projectile.owner);
             }
             for (int i = 0; i < 14; i++)
@@ -92,7 +92,7 @@ namespace Stellamod.Projectiles.Magic
             {
                 Projectile.timeLeft = 2;
                 if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-2, 2), Main.rand.Next(-2, 2),
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), 
                         ModContent.ProjectileType<FungalFlaceCloudGreen>(), 5, 1, Projectile.owner);
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(-2, 2)).RotatedByRandom(19.0), 0, Color.DarkOliveGreen, 1f).noGravity = true;
             }

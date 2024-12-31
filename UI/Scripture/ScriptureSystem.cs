@@ -6,7 +6,7 @@ using Terraria.UI;
 
 namespace Stellamod.UI.Scripture
 {
-    public class ScripturePlayer : ModPlayer
+    public class ScripturePlayer : ModPlayer 
     {
         public bool hasScripture;
         public override void ResetEffects()

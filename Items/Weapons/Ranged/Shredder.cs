@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Gun;
 using Stellamod.Projectiles.Magic;
 using System.Collections.Generic;
@@ -171,9 +172,9 @@ namespace Stellamod.Items.Weapons.Ranged
                     Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(24, 24), newVelocity * speedMultiplier, ModContent.ProjectileType<RainbowRodMiracleProj>(),
                         damage, knockback, player.whoAmI, ai0: Main.rand.NextFloat(10, 20));
                 }
-
+    
                 return false;
-            }
+            } 
             else
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StormDragon_CloudBolt"), player.position);
@@ -181,7 +182,7 @@ namespace Stellamod.Items.Weapons.Ranged
                 //Funny Screenshake
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 16);
                 int numProjectiles = Main.rand.Next(6, 9);
-
+        
                 for (int p = 0; p < numProjectiles; p++)
                 {
                     float direction = Main.rand.NextBool(2) ? -1 : 1;
@@ -194,6 +195,18 @@ namespace Stellamod.Items.Weapons.Ranged
             }
 
             return false;
+        }
+
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.RainbowRod, 1)
+                .AddIngredient(ModContent.ItemType<MiracleThread>(), 15)
+                .AddIngredient(ModContent.ItemType<AlcaricMush>(), 4)
+                .AddIngredient(ModContent.ItemType<EldritchSoul>(), 4)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 }

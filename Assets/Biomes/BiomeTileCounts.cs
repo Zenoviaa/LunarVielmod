@@ -4,12 +4,14 @@ using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Abyss.Aurelus;
 using Stellamod.Tiles.Acid;
 using Stellamod.Tiles.Catacombs;
-using Stellamod.Tiles.Ishtar;
-using Stellamod.Tiles.RoyalCapital;
 using Stellamod.Tiles.Veil;
+using Stellamod.Tiles.RoyalCapital;
 using System;
-using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.Tiles.Ishtar;
+using Stellamod.Items.Placeable;
+using Terraria.ID;
+using Terraria;
 
 namespace Stellamod
 {
@@ -30,7 +32,7 @@ namespace Stellamod
 
         public int StarbloomCount;
         public static bool InStarbloom => ModContent.GetInstance<BiomeTileCounts>().StarbloomCount > 20;
-
+      
         public int NaxtrinCount;
         public static bool InNaxtrin => ModContent.GetInstance<BiomeTileCounts>().NaxtrinCount > 10;
 
@@ -52,7 +54,7 @@ namespace Stellamod
         public int TrapCount;
         public static bool InCatatrap => ModContent.GetInstance<BiomeTileCounts>().TrapCount > 20;
 
-        public int WaterCount;
+            public int WaterCount;
         public static bool InCatawater => ModContent.GetInstance<BiomeTileCounts>().WaterCount > 20;
 
         public int XixCount;
@@ -80,7 +82,7 @@ namespace Stellamod
         public int IshtarCount;
         public static bool InIshtar => ModContent.GetInstance<BiomeTileCounts>().IshtarCount > 5;
 
-        public int ColosseumCount;
+         public int ColosseumCount;
         public static bool InColosseum => ModContent.GetInstance<BiomeTileCounts>().ColosseumCount > 5;
 
 
@@ -113,7 +115,7 @@ namespace Stellamod
             CinderCount = tileCounts[ModContent.TileType<CindersparkDirt>()];
             ManorCount = tileCounts[ModContent.TileType<ManorBlock>()];
             MechCount = tileCounts[ModContent.TileType<StarbloomTempleBlock>()];
-           // LabCount = tileCounts[ModContent.TileType<LostScrapT>()];
+            LabCount = tileCounts[ModContent.TileType<LostScrapT>()];
             IlluriaCount = tileCounts[ModContent.TileType<IlluriaGrass>()];
             VeilCount = tileCounts[ModContent.TileType<CatagrassBlock>()];
             IshtarCount = tileCounts[ModContent.TileType<IshtarMoss>()];

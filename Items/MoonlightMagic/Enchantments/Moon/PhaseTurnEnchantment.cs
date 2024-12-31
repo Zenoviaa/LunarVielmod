@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Particles;
+using Stellamod.Helpers;
 using Stellamod.Items.MoonlightMagic.Elements;
 using Stellamod.Visual.Particles;
 using Terraria;

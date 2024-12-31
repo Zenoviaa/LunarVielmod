@@ -1,4 +1,5 @@
-﻿using Stellamod.Projectiles.Ammo;
+﻿using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Ammo;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -26,6 +27,16 @@ namespace Stellamod.Items.Ammo
             Item.shoot = ModContent.ProjectileType<SpacialDistortionBulletProj>(); // The projectile that weapons fire when using this item as ammunition.
             Item.shootSpeed = 16f; // The speed of the projectile.
             Item.ammo = AmmoID.Bullet; // The ammo class this ammo belongs to.
+        }
+
+        // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+        public override void AddRecipes()
+        {
+            CreateRecipe(100)
+                .AddIngredient(ItemID.MusketBall, 100)
+                .AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 2)
+                .AddTile(TileID.Anvils)
+                .Register();
         }
     }
 }

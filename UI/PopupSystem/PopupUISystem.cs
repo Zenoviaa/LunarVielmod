@@ -55,7 +55,7 @@ namespace Stellamod.UI.PopupSystem
                     break;
                 case AIState.Idle:
                     _idleTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    if (_idleTimer >= _duration)
+                    if(_idleTimer >= _duration)
                     {
                         SwitchState(AIState.Close);
                     }

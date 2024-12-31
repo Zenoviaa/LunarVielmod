@@ -1,6 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Particles;
+using Stellamod.Projectiles.Magic;
 using Stellamod.Trails;
 using System;
 using System.IO;
@@ -85,7 +89,7 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
         }
 
         public override bool? CanDamage()
-        {
+        {            
             //Get the swing progress
             float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
 
@@ -106,7 +110,7 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
 
         private void Swing()
         {
-            if (BounceDelay > 0)
+            if(BounceDelay > 0)
             {
                 BounceDelay--;
             }
@@ -188,15 +192,15 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
 
                 //Get a random
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-            }
+                            }
 
             if (BounceTimer <= 0)
             {
-                if (Main.myPlayer == player.whoAmI)
+                if(Main.myPlayer == player.whoAmI)
                 {
                     player.velocity = Projectile.DirectionTo(oldMouseWorld) * -2f;
                 }
-
+ 
                 BounceTimer = 10 * Swing_Speed_Multiplier;
                 BounceDelay = 2 * Swing_Speed_Multiplier;
                 Projectile.netUpdate = true;
@@ -234,8 +238,8 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
 
             if (SwordSlash == null)
             {
-                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass,
-                    (p) => Vector2.Lerp(new Vector2(50), new Vector2(40), Easing.InCirc(p)),
+                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, 
+                    (p) => Vector2.Lerp(new Vector2(50), new Vector2(40), Easing.InCirc(p)), 
                     (p) => new Color(0, 2, 30, 50) * (1f - p));
                 SwordSlash.drawOffset = Projectile.Size / 2f;
             }
@@ -243,7 +247,7 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
             if (SwordSlash2 == null)
             {
                 SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass,
-                   (p) => Vector2.Lerp(new Vector2(50), new Vector2(40), Easing.InCirc(p)),
+                   (p) => Vector2.Lerp(new Vector2(50), new Vector2(40), Easing.InCirc(p)), 
                     (p) => new Color(50, 15, 250, 4) * (1f - p));
                 SwordSlash2.drawOffset = Projectile.Size / 2f;
             }
@@ -251,7 +255,7 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
             if (SwordSlash3 == null)
             {
                 SwordSlash3 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass,
-                    (p) => Vector2.Lerp(new Vector2(100), new Vector2(75), Easing.InCirc(p)),
+                    (p) => Vector2.Lerp(new Vector2(100), new Vector2(75), Easing.InCirc(p)), 
                     (p) => new Color(81, 21, 31, 100) * (1f - p));
                 SwordSlash3.drawOffset = Projectile.Size / 2f;
             }
@@ -259,7 +263,7 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
             if (SwordSlash4 == null)
             {
                 SwordSlash4 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass,
-                    (p) => Vector2.Lerp(new Vector2(80), new Vector2(60), Easing.InCirc(p)),
+                    (p) => Vector2.Lerp(new Vector2(80), new Vector2(60), Easing.InCirc(p)), 
                     (p) => new Color(105, 105, 105, 5) * (1f - p));
                 SwordSlash4.drawOffset = Projectile.Size / 2f;
 

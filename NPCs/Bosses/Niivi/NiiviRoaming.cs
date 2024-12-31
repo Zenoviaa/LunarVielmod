@@ -2,9 +2,13 @@
 
 using Stellamod.NPCs.Bosses.Niivi.Projectiles;
 using Stellamod.NPCs.Town;
+using Stellamod.Particles;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -90,7 +94,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             NPC.damage = 240;
             NPC.width = 178;
             NPC.height = 108;
-
+          
             //It won't be considered a boss or take up slots until the fight actually starts
             //So the values are like this for now
             NPC.npcSlots = 0.1f;
@@ -137,7 +141,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                         ModContent.ProjectileType<NiiviScaleProj>(), 0, 1, Main.myPlayer);
                 }
                 ScaleDamageCounter = 0;
-            }
+            }   
 
             if (AggroDamageCounter >= lifeToGiveIllurineScale * 15)
             {
@@ -166,7 +170,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         {
             OnlyTakeDamageWhenClose();
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 NPC.velocity = Vector2.UnitX;
             }
@@ -217,7 +221,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 StartSegmentDirection = -Vector2.UnitX;
 
                 //Go sleep
-                Vector2 sleepPos = new Vector2(0, 1024);
+                Vector2 sleepPos = AlcadSpawnSystem.NiiviSpawnWorld + new Vector2(0, 164);
                 NPC.Center = Vector2.Lerp(NPC.Center, sleepPos, 0.01f);
                 NPC.velocity = Vector2.Zero;
 
@@ -226,7 +230,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 SleepingTimer++;
                 if (SleepingTimer > 60 && SleepingTimer % 60 == 0)
                 {
-                }
+                                    }
             }
 
 
@@ -284,7 +288,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private void AIRoaming_FlyAroundTree()
         {
             float orbitDistance = 2000;
-            Vector2 home = new Vector2(0, 1024);
+            Vector2 home = AlcadSpawnSystem.NiiviSpawnWorld + new Vector2(0, 1024);
             Vector2 direction = home.DirectionTo(NPC.Center);
             direction = direction.RotatedBy(MathHelper.TwoPi / 2000);
             Vector2 targetCenter = home + direction * orbitDistance;
@@ -312,7 +316,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         private void AI_Roaming_GoHome()
         {
-            Vector2 home = new Vector2(0, 1024);
+            Vector2 home = AlcadSpawnSystem.NiiviSpawnWorld;
             Vector2 directionToHome = NPC.Center.DirectionTo(home);
             float distanceToHome = Vector2.Distance(NPC.Center, home);
 

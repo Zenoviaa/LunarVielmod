@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+using Stellamod.Particles;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -82,7 +84,7 @@ namespace Stellamod.Projectiles.Slashers.Ixy
 
             if (!ParticleSpawned)
             {
-                ParticleSpawned = true;
+                                ParticleSpawned = true;
             }
         }
 

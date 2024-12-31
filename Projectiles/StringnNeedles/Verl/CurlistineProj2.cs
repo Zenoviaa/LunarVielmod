@@ -12,7 +12,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
     {
         NPC target;
         int afterImgCancelDrawCount = 0;
-
+     
         Vector2 endPoint;
         Vector2 controlPoint1;
         Vector2 controlPoint2;

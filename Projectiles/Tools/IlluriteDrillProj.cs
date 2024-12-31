@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Terraria;
 using Terraria.Audio;
@@ -99,7 +100,7 @@ namespace Stellamod.Projectiles.Tools
 
             Projectile.timeLeft = 60;
             ExplodingTimer++;
-            if (ExplodingTimer >= Exploding_Time)
+            if(ExplodingTimer >= Exploding_Time)
             {
                 Explode();
                 ExplodingTimer = 0;

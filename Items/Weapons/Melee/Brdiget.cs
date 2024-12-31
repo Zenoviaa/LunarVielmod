@@ -1,4 +1,7 @@
-﻿using Stellamod.Projectiles;
+﻿using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
+using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -48,6 +51,14 @@ namespace Stellamod.Items.Weapons.Melee
 
 
         }
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
 
+            recipe.AddIngredient(ItemID.DirtBlock, 99);
+            recipe.AddIngredient(ItemID.Arkhalis, 1);
+
+            recipe.Register();
+        }
     }
 }

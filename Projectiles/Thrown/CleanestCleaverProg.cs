@@ -3,10 +3,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.Swords;
+using Stellamod.Trails;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -93,14 +97,14 @@ namespace Stellamod.Projectiles.Thrown
                     Projectile.velocity.Y += 0.3f;
                     Projectile.velocity.X *= 0.96f;
                     Projectile.ai[0] = 0;
-
+   
                 }
                 else
                 {
                     Projectile.ai[0] = 0;
                 }
 
-                if (Projectile.velocity.X >= 0)
+                if(Projectile.velocity.X >= 0)
                 {
                     Projectile.rotation += 0.35f;
                 }
@@ -122,7 +126,7 @@ namespace Stellamod.Projectiles.Thrown
             Vector2 drawOrigin = Blood1Texture.Size() / 2f;
 
             //Lerping
-            if (Bloody == 1)
+            if(Bloody == 1)
             {
                 Color drawColor = Color.Lerp(Color.Transparent, Color.White, 1);
                 Vector2 drawPosition = Projectile.Center - Main.screenPosition;
@@ -131,13 +135,13 @@ namespace Stellamod.Projectiles.Thrown
             if (Bloody == 2)
             {
                 Color drawColor = Color.Lerp(Color.Transparent, Color.White, 1);
-                Vector2 drawPosition = Projectile.Center - Main.screenPosition;
+                Vector2 drawPosition = Projectile.Center - Main.screenPosition ;
                 Main.spriteBatch.Draw(Blood2Texture, drawPosition, null, drawColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
             }
             if (Bloody == 3)
             {
                 Color drawColor = Color.Lerp(Color.Transparent, Color.White, 1);
-                Vector2 drawPosition = Projectile.Center - Main.screenPosition;
+                Vector2 drawPosition = Projectile.Center - Main.screenPosition ;
                 Main.spriteBatch.Draw(Blood3Texture, drawPosition, null, drawColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
             }
 
@@ -217,7 +221,7 @@ namespace Stellamod.Projectiles.Thrown
             if (!Hit && Bloody <= 2)
             {
                 Bloody += 1;
-                if (Bloody == 3)
+                if(Bloody == 3)
                 {
 
                     Projectile.velocity.Y = -10;

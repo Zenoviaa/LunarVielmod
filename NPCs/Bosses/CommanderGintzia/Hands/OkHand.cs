@@ -2,7 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Slashers.ScarecrowSaber;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -11,7 +17,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 {
     internal class OkHand : BaseHand
     {
-        private int GrabbedPlayer = -1;
+        private int GrabbedPlayer=-1;
         private bool HasDoneGrab;
         private Vector2 ThrowVelocity;
         private float ChargeProgress;
@@ -45,7 +51,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
         protected override void AI_Attack()
         {
             base.AI_Attack();
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 HasDoneGrab = false;
                 GrabbedPlayer = -1;
@@ -59,7 +65,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
             }
 
             ChargeProgress = MathHelper.Lerp(ChargeProgress, 1f, 0.1f);
-            if (GrabbedPlayer == -1)
+            if(GrabbedPlayer == -1)
             {
                 Vector2 directionToTarget = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
                 Vector2 targetVelocity = directionToTarget;
@@ -80,7 +86,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
             }
             else
             {
-                if (Timer == 3)
+                if(Timer == 3)
                 {
                     FXUtil.ShakeCamera(NPC.position, 1024, 8);
                     if (StellaMultiplayer.IsHost)
@@ -90,7 +96,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
                     }
                 }
 
-                if (Timer < 90)
+                if(Timer < 90)
                 {
                     Vector2 targetVelocity = ThrowVelocity;
                     targetVelocity *= MathHelper.Lerp(0f, 30, Timer / 60f);
@@ -100,8 +106,8 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
                     Player target = Main.player[GrabbedPlayer];
                     target.Center = NPC.Center;
                 }
-
-                if (Timer == 90)
+               
+                if(Timer == 90)
                 {
                     Player target = Main.player[GrabbedPlayer];
                     ScarecrowSaberPlayer scarecrowSaberPlayer = target.GetModPlayer<ScarecrowSaberPlayer>();
@@ -122,13 +128,13 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
                     SoundEngine.PlaySound(soundStyle, NPC.position);
                 }
 
-                if (Timer > 90)
+                if(Timer > 90)
                 {
                     NPC.velocity *= 0.92f;
                 }
             }
 
-            if (Timer > 240)
+            if(Timer > 240)
             {
                 SwitchState(AIState.Orbit);
             }
@@ -138,7 +144,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
         {
             base.OnHitPlayer(target, hurtInfo);
 
-            if (GrabbedPlayer == -1 && !HasDoneGrab)
+            if(GrabbedPlayer == -1 && !HasDoneGrab)
             {
                 Timer = 2;
                 GrabbedPlayer = target.whoAmI;

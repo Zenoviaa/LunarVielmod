@@ -1,4 +1,6 @@
 ﻿using Stellamod.Common.Bases;
+using Stellamod.Items.Ores;
+using Stellamod.Tiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -25,6 +27,17 @@ namespace Stellamod.Items.Accessories.Brooches
             broochSpawnerPlayer.broochesToSpawn.Add(ModContent.ItemType<VixedBroochA>());
             broochSpawnerPlayer.broochesToSpawn.Add(ModContent.ItemType<RoseBroochA>());
             broochSpawnerPlayer.broochesToSpawn.Add(ModContent.ItemType<DreadBroochA>());
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<VixedBroochA>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<DreadBroochA>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<RoseBroochA>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<RadianuiBar>(), 25);
+            recipe.AddTile(ModContent.TileType<BroochesTable>());
+            recipe.Register();
         }
     }
 }

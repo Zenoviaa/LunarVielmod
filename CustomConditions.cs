@@ -1,6 +1,7 @@
 ﻿using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Terraria;
+using Terraria.ModLoader;
 
 namespace Stellamod
 {

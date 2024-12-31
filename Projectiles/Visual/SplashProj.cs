@@ -32,7 +32,7 @@ namespace Stellamod.Projectiles.Visual
         public override void AI()
         {
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 Color = Main.rand.Next(6);
                 switch (Color)
@@ -121,7 +121,7 @@ namespace Stellamod.Projectiles.Visual
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true);
-
+          
 
             BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
             Main.spriteBatch.ExitShaderRegion();

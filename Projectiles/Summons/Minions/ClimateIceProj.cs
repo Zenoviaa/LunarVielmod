@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -67,7 +68,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             for (int j = 0; j < count; j++)
             {
                 Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-            }
+                            }
 
             //Explosion?
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,

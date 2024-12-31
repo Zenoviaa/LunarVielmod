@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
 using Terraria;
 using Terraria.Chat;
@@ -13,7 +14,7 @@ namespace Stellamod.NPCs.Global
     {
         public override void OnKill(NPC npc)
         {
-            if (npc.type == NPCID.Plantera && !NPC.downedPlantBoss)
+            if(npc.type == NPCID.Plantera && !NPC.downedPlantBoss)
             {
                 string text = "Zui has something to offer you...";
                 Color color = Color.Gold;
@@ -43,7 +44,7 @@ namespace Stellamod.NPCs.Global
                 }
             }
 
-            if (npc.type == NPCID.WallofFlesh && !Main.hardMode)
+            if(npc.type == NPCID.WallofFlesh && !Main.hardMode)
             {
                 string text = "The Abysm and Virulent stir...";
                 Color color = Color.Red;
@@ -56,8 +57,8 @@ namespace Stellamod.NPCs.Global
                 {
                     Main.NewText(text, color.R, color.G, color.B);
                 }
-            }
-
+            } 
+           
             if (npc.type == NPCID.EyeofCthulhu && !NPC.downedBoss1)
             {
                 string text = "Azurewrath's dreams alcadize the sky.";

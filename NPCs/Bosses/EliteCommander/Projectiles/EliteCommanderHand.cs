@@ -1,6 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -11,7 +16,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
     {
         private int _frame = -1;
         private ref float Timer => ref Projectile.ai[0];
-
+        
         private int ParentNPC
         {
             get => (int)Projectile.ai[1];
@@ -49,12 +54,12 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
         public override void AI()
         {
             base.AI();
-            if (_frame == -1)
+            if(_frame == -1)
             {
                 _frame = Main.rand.Next(0, Main.projFrames[Type]);
             }
             Timer++;
-
+          
 
             if (Timer == 1)
             {
@@ -74,13 +79,13 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
             }
 
             Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 1024);
-            if (player != null)
+            if(player != null)
             {
                 float distance = Vector2.Distance(Projectile.Center, player.Center);
-                if (distance < Radius)
+                if(distance < Radius)
                 {
                     PunchTimer++;
-                    if (PunchTimer >= 45)
+                    if(PunchTimer >= 45)
                     {
                         PunchTimer = 45;
                     }
@@ -88,19 +93,18 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
                 else
                 {
                     PunchTimer--;
-                    if (PunchTimer <= 0)
+                    if(PunchTimer <= 0)
                     {
                         PunchTimer = 0;
                     }
                 }
             }
-
+            
             NPC parent = Main.npc[ParentNPC];
             if (!parent.active || Timer > Duration - 60)
             {
                 Die = true;
-            }
-            else if (parent.active && !Die)
+            } else if (parent.active && !Die)
             {
                 AlphaTimer = MathHelper.Lerp(AlphaTimer, 1f, 0.1f);
                 float rot = (Timer / 120f) * MathHelper.TwoPi;
@@ -114,7 +118,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
             {
                 AlphaTimer = MathHelper.Lerp(1f, 0f, KillTimer / 60f);
                 KillTimer++;
-                if (KillTimer >= 60)
+                if(KillTimer >= 60)
                 {
                     Projectile.Kill();
                 }
@@ -133,7 +137,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
             float drawScale = 1f;
 
             spriteBatch.Restart(blendState: BlendState.Additive);
-            for (float f = 0f; f < 1f; f += 0.25f)
+            for(float f = 0f; f < 1f; f += 0.25f)
             {
                 float rot = f * MathHelper.TwoPi;
                 Vector2 glowDrawOffset = rot.ToRotationVector2() * VectorHelper.Osc(2f, 5f, speed: 2f);

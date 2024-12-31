@@ -54,7 +54,7 @@ namespace Stellamod.Projectiles.Swords
                 }
                 Moved = true;
             }
-            if (Projectile.ai[1] >= 20)
+            if ( Projectile.ai[1] >= 20)
             {
                 Projectile.tileCollide = true;
             }
@@ -64,7 +64,7 @@ namespace Stellamod.Projectiles.Swords
             }
             if (Projectile.alpha >= 255)
             {
-
+ 
             }
 
             Projectile.spriteDirection = Projectile.direction;

@@ -20,7 +20,7 @@ namespace Stellamod.Items.Accessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             _starTimer--;
-            if (_starTimer <= 0)
+            if(_starTimer <= 0)
             {
                 Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
                     ModContent.ProjectileType<IllurianLoveLocketStarProj>(), 150, 1, player.whoAmI);

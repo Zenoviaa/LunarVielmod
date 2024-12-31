@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Trails;
@@ -295,15 +296,15 @@ namespace Stellamod.Projectiles.Summons.Minions
                     }
                     else if (AI_Timer == 12)
                     {
-                        if (Main.myPlayer == Projectile.owner)
+                        if(Main.myPlayer == Projectile.owner)
                         {
                             _targetCenter = Main.MouseWorld;
                             Projectile.netUpdate = true;
                         }
-
+                   
                         Projectile.velocity = VectorHelper.VelocityDirectTo(Projectile.Center, _targetCenter, 36);
                         Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
-
+               
                         PlayShootSound();
                     }
                     else if (AI_Timer > 128)
@@ -315,13 +316,13 @@ namespace Stellamod.Projectiles.Summons.Minions
                 case ActionState.Green:
                     if (AI_Timer < 12)
                     {
-                        if (Main.myPlayer == Projectile.owner)
+                        if(Main.myPlayer == Projectile.owner)
                         {
                             Vector2 directionToMouse = owner.Center.DirectionTo(Main.MouseWorld);
                             _prepareCenter = owner.Center - (directionToMouse * 128 * (AI_Timer / 12));
                             Projectile.netUpdate = true;
                         }
-
+       
                         Projectile.velocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, _prepareCenter, 45);
                         Projectile.rotation = Projectile.Center.DirectionTo(Main.MouseWorld).ToRotation() + MathHelper.ToRadians(45);
                     }
@@ -465,7 +466,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                     break;
 
                 case ActionState.Green:
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Main.rand.NextVector2Circular(1, 1),
+                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Main.rand.NextVector2Circular(1,1),
                         ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, Projectile.owner, 0f, 0f);
 
                     break;

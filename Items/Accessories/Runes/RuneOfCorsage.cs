@@ -22,7 +22,7 @@ namespace Stellamod.Items.Accessories.Runes
             if (hasRuneOfCorsage)
             {
                 NPC[] npcsInRange = NPCHelper.FindNPCsInRange(Player.Center, maxDetectDistance: 128, -1);
-                foreach (NPC npc in npcsInRange)
+                foreach(NPC npc in npcsInRange)
                 {
                     npc.AddBuff(BuffID.Poisoned, 60);
                 }
@@ -50,7 +50,7 @@ namespace Stellamod.Items.Accessories.Runes
                 _dustTimer++;
                 if (!hideVisual)
                 {
-                    if (_dustTimer % 8 == 0)
+                    if(_dustTimer % 8 == 0)
                     {
                         Vector2 pos = player.Center + Main.rand.NextVector2CircularEdge(64, 64);
                         Vector2 velocity = player.Center - pos;

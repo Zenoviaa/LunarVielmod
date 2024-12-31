@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,7 +21,7 @@ namespace Stellamod.Items.Armors.Winterborn
             if (!hasSetBonus)
                 return;
             _timer--;
-            if (_timer <= 0 && Player.ownedProjectileCounts[ModContent.ProjectileType<WinterbornIcicleProj>()] < 3)
+            if(_timer <= 0 && Player.ownedProjectileCounts[ModContent.ProjectileType<WinterbornIcicleProj>()] < 3)
             {
                 //Spawn one
                 int damage = 15;
@@ -38,7 +39,7 @@ namespace Stellamod.Items.Armors.Winterborn
     {
         public bool Spetalite = false;
         public override void SetStaticDefaults()
-        {
+		{
             // DisplayName.SetDefault("Winterborn Head");
             // Tooltip.SetDefault("Increases Mana Regen by 4%");
 
@@ -76,6 +77,15 @@ namespace Stellamod.Items.Armors.Winterborn
         {
             player.setBonus = LangText.SetBonus(this);//"Up to three icicles surround you to protect you from attacks!");
             player.GetModPlayer<WinterbornPlayer>().hasSetBonus = true;
+        }
+
+        public override void AddRecipes() 
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.BorealWood, 8);
+            recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 7);
+            recipe.AddTile(TileID.Anvils);
+            recipe.Register();
         }
     }
 }

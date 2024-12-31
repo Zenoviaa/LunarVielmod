@@ -51,7 +51,7 @@ namespace Stellamod.Projectiles.Magic
                 Sounded = true;
             }
 
-            if (Type == 1)
+            if(Type == 1)
             {
                 base.Projectile.velocity = base.Projectile.velocity.RotatedBy(1.1);
             }

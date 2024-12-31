@@ -46,7 +46,7 @@ namespace Stellamod.Helpers
             _useVignette = true;
             _targetVignetteOpacity = opacity;
             _targetVignetteStrength = strength;
-            if (timer != -1)
+            if(timer != -1)
             {
                 _vignetteTimer = timer;
             }
@@ -74,7 +74,7 @@ namespace Stellamod.Helpers
             _useDistortion = true;
             _distortionScrollSpeed = scrollSpeed;
             _targetDistortionBlend = blend;
-            if (timer != -1)
+            if(timer != -1)
             {
                 _distortionTimer = timer;
             }
@@ -98,7 +98,7 @@ namespace Stellamod.Helpers
             _useTint = true;
             _tintColor = color;
             _targetTintOpacity = targetOpacity;
-            if (timer != -1)
+            if(timer != -1)
             {
                 _tintTimer = timer;
             }
@@ -146,14 +146,14 @@ namespace Stellamod.Helpers
             }
             else
             {
-                if (_vignetteStrength != 0)
+                if(_vignetteStrength != 0)
                 {
                     _vignetteOpacity = MathHelper.Lerp(_targetVignetteOpacity, 0, 0.1f);
                     _vignetteStrength = MathHelper.Lerp(_vignetteStrength, 0, 0.1f);
                     var shaderData = FilterManager[ShaderRegistry.Screen_Vignette].GetShader();
                     shaderData.UseProgress(_vignetteStrength);
                     shaderData.UseOpacity(_vignetteOpacity);
-                }
+                } 
                 else
                 {
                     if (FilterManager[ShaderRegistry.Screen_Vignette].IsActive())
@@ -166,10 +166,10 @@ namespace Stellamod.Helpers
 
         private void UpdateDistortion()
         {
-            if (_distortionTimer > 0)
+            if(_distortionTimer > 0)
             {
                 _distortionTimer--;
-                if (_distortionTimer <= 0)
+                if(_distortionTimer <= 0)
                 {
                     _useDistortion = false;
                 }
@@ -183,7 +183,7 @@ namespace Stellamod.Helpers
                 }
 
                 _distortionBlend += 0.005f;
-                if (_distortionBlend >= _targetDistortionBlend)
+                if(_distortionBlend >= _targetDistortionBlend)
                 {
                     _distortionBlend = _targetDistortionBlend;
                 }
@@ -213,8 +213,8 @@ namespace Stellamod.Helpers
                 }
 
 
-
-
+     
+      
             }
         }
 
@@ -237,7 +237,7 @@ namespace Stellamod.Helpers
                 }
 
                 _tintOpacity += 0.01f;
-                if (_tintOpacity >= _targetTintOpacity)
+                if(_tintOpacity >= _targetTintOpacity)
                 {
                     _tintOpacity = _targetTintOpacity;
                 }
@@ -249,7 +249,7 @@ namespace Stellamod.Helpers
             else
             {
                 _tintOpacity -= 0.01f;
-                if (_tintOpacity <= 0)
+                if(_tintOpacity <= 0)
                 {
                     _tintOpacity = 0;
                     if (FilterManager[ShaderRegistry.Screen_Tint].IsActive())

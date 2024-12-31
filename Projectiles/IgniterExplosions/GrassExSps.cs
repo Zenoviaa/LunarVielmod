@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.Visual;
 using Terraria;
 
 namespace Stellamod.Projectiles.IgniterExplosions

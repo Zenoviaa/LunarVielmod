@@ -1,5 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Ores;
+using Stellamod.Projectiles.Nails;
 using Stellamod.Projectiles.Steins;
 using System.Collections.Generic;
 using Terraria;
@@ -26,7 +31,7 @@ namespace Stellamod.Items.Weapons.Melee
 
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Common("Stein"))
+            line = new TooltipLine(Mod, "Alcarishasd",  Helpers.LangText.Common("Stein"))
             {
                 OverrideColor = ColorFunctions.SteinWeaponType
             };

@@ -5,6 +5,7 @@ using Stellamod.Buffs;
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Stellamod.Trails;
 using System;
 using System.IO;
@@ -405,7 +406,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             {
                 rotation[i] = Projectile.oldRot[i] - MathHelper.ToRadians(45);
             }
-
+        
             SwordSlash.Draw(Projectile.oldPos, rotation);
             SwordSlash2.Draw(Projectile.oldPos, rotation);
             SwordSlash3.Draw(Projectile.oldPos, rotation);

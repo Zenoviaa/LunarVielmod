@@ -43,6 +43,6 @@ namespace Stellamod.Brooches
             Projectile.rotation += 0.3f;
         }
 
-
+        
     }
 }

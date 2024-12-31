@@ -6,11 +6,11 @@ namespace Stellamod.Tiles.Acid
 {
 
     public class AcidWallNatural : ModWall
-    {
-        public override void SetStaticDefaults()
-        {
-            Main.wallHouse[Type] = false;
-            AddMapEntry(new Color(60, 80, 60));
-        }
-    }
+	{
+		public override void SetStaticDefaults()
+		{
+			Main.wallHouse[Type] = false;
+			AddMapEntry(new Color(60, 80, 60));
+		}
+	}
 }

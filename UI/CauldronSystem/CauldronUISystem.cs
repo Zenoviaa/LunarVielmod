@@ -1,7 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -31,7 +36,7 @@ namespace Stellamod.UI.CauldronSystem
         {
             Vector2 worldPos = new Vector2(CauldronX * 16, CauldronY * 16);
             float dist = Vector2.Distance(Main.LocalPlayer.position, CauldronPos);
-            if (dist > 160)
+            if(dist > 160)
             {
                 CloseUI();
             }
@@ -39,7 +44,7 @@ namespace Stellamod.UI.CauldronSystem
             _lastUpdateUiGameTime = gameTime;
             if (_cauldronInterface?.CurrentState != null)
             {
-
+               
                 _cauldronInterface.Update(gameTime);
             }
         }
@@ -109,7 +114,7 @@ namespace Stellamod.UI.CauldronSystem
             //Add the result to the inventory
             Player player = Main.LocalPlayer;
             int item = player.QuickSpawnItem(player.GetSource_FromThis(), result.result, result.yield);
-
+            
 
             if (mold.IsAir)
             {

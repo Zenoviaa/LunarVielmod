@@ -20,7 +20,7 @@ namespace Stellamod.Projectiles.Test
         public override void AI()
         {
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 //Starting position of the figure 8
                 FigureEightStartCenter = Projectile.Center;

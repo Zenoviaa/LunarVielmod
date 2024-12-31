@@ -1,5 +1,8 @@
-﻿using Stellamod.Projectiles.Spears;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Magic;
+using Stellamod.Projectiles.Spears;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -14,7 +17,7 @@ namespace Stellamod.Items.Weapons.Melee.Spears
         public override void SetClassSwappedDefaults()
         {
             Item.damage = 26;
-
+          
         }
         public override void SetStaticDefaults()
         {
@@ -40,7 +43,7 @@ namespace Stellamod.Items.Weapons.Melee.Spears
             Item.DamageType = DamageClass.Melee;
             Item.shoot = ModContent.ProjectileType<TheIrradiaspearP>();
             Item.shootSpeed = 20f;
-
+  
             Item.useAnimation = 20;
             Item.useTime = 20;
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Minions;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Summons.Minions;
 using Terraria;
 using Terraria.Audio;
@@ -27,24 +28,24 @@ namespace Stellamod.Items.Weapons.Summon
         }
         public override void SetDefaults()
         {
-            Item.damage = 48;
-            Item.knockBack = 3f;
-            Item.mana = 10;
-            Item.width = 48;
-            Item.height = 62;
-            Item.useTime = 36;
-            Item.useAnimation = 36;
-            Item.useStyle = ItemUseStyleID.Swing;
+			Item.damage = 48;
+			Item.knockBack = 3f;
+			Item.mana = 10;
+			Item.width = 48;
+			Item.height = 62;
+			Item.useTime = 36;
+			Item.useAnimation = 36;
+			Item.useStyle = ItemUseStyleID.Swing;
             Item.value = Item.sellPrice(0, 1, 33, 0);
             Item.rare = ItemRarityID.LightRed;
 
-            // These below are needed for a minion weapon
-            Item.noMelee = true;
-            Item.UseSound = SoundID.Item46;
-            Item.DamageType = DamageClass.Summon;
-            Item.buffType = ModContent.BuffType<CloudMinionBuff>();
-            Item.shoot = ModContent.ProjectileType<CloudMinionProj>();
-        }
+			// These below are needed for a minion weapon
+			Item.noMelee = true;
+			Item.UseSound = SoundID.Item46;
+			Item.DamageType = DamageClass.Summon;
+			Item.buffType = ModContent.BuffType<CloudMinionBuff>();
+			Item.shoot = ModContent.ProjectileType<CloudMinionProj>();
+		}
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {

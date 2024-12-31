@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -55,7 +56,7 @@ namespace Stellamod.Projectiles.Gun
                 {
                     SoundEngine.PlaySound(SoundID.Item86, Projectile.position);
                 }
-
+     
                 Target = target;
             }
 
@@ -63,7 +64,7 @@ namespace Stellamod.Projectiles.Gun
         public override void AI()
         {
 
-            if (Target != null && !Target.boss)
+            if(Target != null && !Target.boss)
             {
                 Projectile.velocity.Y -= 0.19f;
                 Projectile.scale = 1.2f;

@@ -68,7 +68,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
 
 
         }
-
+   
 
 
     }

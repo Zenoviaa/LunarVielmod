@@ -1,11 +1,17 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
-using Stellamod.Projectiles.Gun;
-using Terraria;
-using Terraria.GameContent.Creative;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
+using Terraria.GameContent.Creative;
+using Stellamod.Helpers;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Materials;
+using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Gun;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -46,6 +52,15 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.value = Item.buyPrice(silver: 12);
             Item.noUseGraphic = true;
             Item.channel = true;
+        }
+
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<PureHeart>(), 1);
+            recipe.AddTile(TileID.LunarCraftingStation);
+            recipe.Register();
         }
 
 

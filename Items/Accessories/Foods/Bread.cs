@@ -43,6 +43,6 @@ namespace Stellamod.Items.Accessories.Foods
         {
             player.AddBuff(BuffID.Endurance, 8000);
             return true;
-        }
+        } 
     }
 }

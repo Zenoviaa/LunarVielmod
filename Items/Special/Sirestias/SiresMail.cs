@@ -1,8 +1,48 @@
 ﻿using Stellamod.Helpers;
 using Stellamod.UI.Dialogue;
+using Stellamod.UI.Scripture;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.Assets.Biomes;
+using Stellamod.Dusts;
+using Stellamod.Items.Accessories;
+using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Armors.Vanity.Gia;
+using Stellamod.Items.Consumables;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Ores;
+using Stellamod.Items.Placeable;
+using Stellamod.Items.Quest.BORDOC;
+using Stellamod.Items.Quest.Merena;
+using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Mage.Stein;
+using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Melee.Greatswords;
+using Stellamod.Items.Weapons.Melee.Safunais;
+using Stellamod.Items.Weapons.PowdersItem;
+using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Summon;
+using Stellamod.Items.Weapons.Thrown;
+
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.Personalities;
+using Terraria.Localization;
+using Terraria.ModLoader.Utilities;
+using Terraria.Utilities;
 
 namespace Stellamod.Items.Special.Sirestias
 {
@@ -29,10 +69,10 @@ namespace Stellamod.Items.Special.Sirestias
 
 
                     case 0:
-                        CallDialogue1 exampleDialogue = new CallDialogue1();
+                            CallDialogue1 exampleDialogue = new CallDialogue1();
 
-
-                        dialogueSystem.StartDialogue(exampleDialogue);
+                       
+                             dialogueSystem.StartDialogue(exampleDialogue);
                         break;
 
                     case 1:
@@ -53,7 +93,7 @@ namespace Stellamod.Items.Special.Sirestias
 
 
                 }
-
+                      
 
 
 
@@ -63,22 +103,22 @@ namespace Stellamod.Items.Special.Sirestias
             {
 
                 if (player.GetModPlayer<MyPlayer>().ZoneFable)
-                    switch (Main.rand.Next(1))
-                    {
+                switch (Main.rand.Next(1))
+                {
 
 
-                        case 0:
-                            CallDialogue2 exampleDialogue = new CallDialogue2();
+                    case 0:
+                        CallDialogue2 exampleDialogue = new CallDialogue2();
 
 
-                            dialogueSystem.StartDialogue(exampleDialogue);
-                            break;
+                        dialogueSystem.StartDialogue(exampleDialogue);
+                        break;
+
+                   
 
 
 
-
-
-                    }
+                }
 
                 if (!player.GetModPlayer<MyPlayer>().ZoneFable)
                     switch (Main.rand.Next(1))
@@ -269,7 +309,7 @@ namespace Stellamod.Items.Special.Sirestias
                                             break;
 
 
-
+                                 
                                     }
 
 
@@ -406,14 +446,14 @@ namespace Stellamod.Items.Special.Sirestias
 
 
 
+                                    }
+
+
+
+
+
+
                                 }
-
-
-
-
-
-
-                            }
 
 
 
@@ -450,12 +490,12 @@ namespace Stellamod.Items.Special.Sirestias
 
 
             }
-            //1. Get the dialogue system
+                //1. Get the dialogue system
 
 
-            //2. Create a new instance of your dialogue
+                //2. Create a new instance of your dialogue
 
-            return true;
+                return true;
         }
     }
 
@@ -466,51 +506,51 @@ namespace Stellamod.Items.Special.Sirestias
 
 
 
-    internal class CallDialogue9 : Dialogue
-    {
-        //The number of steps in this dialogue
-        public override int Length => 1;
-
-        public override void Next(int index)
+        internal class CallDialogue9 : Dialogue
         {
-            base.Next(index);
+            //The number of steps in this dialogue
+            public override int Length => 1;
 
-            //This starts the dialogue
-            switch (index)
+            public override void Next(int index)
             {
-                case 0:
-                    //Set the texture of the portrait
-                    DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+                base.Next(index);
 
-                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
-                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk15"));
-                    break;
+                //This starts the dialogue
+                switch (index)
+                {
+                    case 0:
+                        //Set the texture of the portrait
+                        DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+
+                        //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                        DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk15"));
+                        break;
 
 
 
+                }
             }
-        }
 
-        public override void Update(int index)
-        {
-            base.Update(index);
-            //If you want stuff to happen while they're talking you can do it here ig
-            //But that might not be a good idea since you can just speed through dialogues
-        }
+            public override void Update(int index)
+            {
+                base.Update(index);
+                //If you want stuff to happen while they're talking you can do it here ig
+                //But that might not be a good idea since you can just speed through dialogues
+            }
 
-        public override void Complete()
-        {
+            public override void Complete()
+            {
 
-            //Do something when the dialogue is completely finished
+                //Do something when the dialogue is completely finished
 
 
-            base.Complete();
-        }
-
+                base.Complete();
+            }
 
 
 
 
+        
     }
 
 
@@ -545,7 +585,7 @@ namespace Stellamod.Items.Special.Sirestias
 
                 case 1:
                     //Set the texture of the portrait
-
+           
 
                     //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
                     DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk17"));
@@ -554,7 +594,7 @@ namespace Stellamod.Items.Special.Sirestias
 
                 case 2:
                     //Set the texture of the portrait
-
+                  
 
                     //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
                     DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk18"));
@@ -687,14 +727,14 @@ namespace Stellamod.Items.Special.Sirestias
             {
                 case 0:
                     //Set the texture of the portrait
-                    // DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+                   // DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
 
                     //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
                     DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk20"));
                     break;
 
 
-
+                
 
             }
         }
@@ -738,7 +778,7 @@ namespace Stellamod.Items.Special.Sirestias
             {
                 case 0:
                     //Set the texture of the portrait
-                    DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+                     DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
 
                     //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
                     DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk21"));
@@ -966,7 +1006,7 @@ namespace Stellamod.Items.Special.Sirestias
             {
                 case 0:
                     //Set the texture of the portrait
-                    //      DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+              //      DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
 
                     //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
                     DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk30"));

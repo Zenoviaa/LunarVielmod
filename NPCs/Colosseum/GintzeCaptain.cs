@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Foods;
 using Stellamod.Items.Armors.Pieces.RareMetals;
+using Stellamod.Items.Ores;
 using Stellamod.NPCs.Colosseum.Common;
 using Stellamod.NPCs.Colosseum.Projectiles;
 using Terraria;
@@ -68,7 +69,7 @@ namespace Stellamod.NPCs.Colosseum
         {
             NPC.TargetClosest();
             NPC.spriteDirection = NPC.direction;
-            if (!IsColosseumActive())
+            if(!IsColosseumActive())
             {
                 DespawnExplosion();
             }

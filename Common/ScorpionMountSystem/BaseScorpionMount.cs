@@ -124,7 +124,7 @@ namespace Stellamod.Common.ScorpionMountSystem
             chairTexture = ModContent.Request<Texture2D>(Texture + "_Chair");
             underseatTexture = ModContent.Request<Texture2D>(Texture + "_ChairUnder");
             tailTexture = ModContent.Request<Texture2D>(Texture + "_Tail");
-            //            gunTexture = ModContent.Request<Texture2D>(Texture + "_Gun");
+//            gunTexture = ModContent.Request<Texture2D>(Texture + "_Gun");
             legLowerTexture = ModContent.Request<Texture2D>(Texture + "_LegLower");
             legUpperTexture = ModContent.Request<Texture2D>(Texture + "_LegUpper");
         }

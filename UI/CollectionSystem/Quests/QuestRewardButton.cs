@@ -21,7 +21,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
             var asset = ModContent.Request<Texture2D>(
                 $"{CollectionBookUISystem.RootTexturePath}QuestRewardButton", ReLogic.Content.AssetRequestMode.ImmediateLoad);
 
-
+    
             Width.Set(asset.Width() * scale, 0f);
             Height.Set(asset.Height() * scale, 0f);
             OnLeftClick += OnButtonClick;
@@ -70,7 +70,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
             QuestPlayer questPlayer = Main.LocalPlayer.GetModPlayer<QuestPlayer>();
             if (questPlayer.CompletedQuests.Contains(Quest) || questPlayer.ActiveQuests.Contains(Quest))
             {
-                if (_text != null)
+                if(_text != null)
                     _text.SetText("");
             }
             else

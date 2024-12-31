@@ -161,7 +161,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
                 startSwingRotOffset = -circleRange,
                 endSwingRotOffset = circleRange,
                 easingFunc = (lerpValue) => Easing.InOutExpo(lerpValue, 10),
-                swingDistance = 16,
+                swingDistance=16,
                 swingSound = swingSound3
             });
         }
@@ -378,18 +378,18 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             }
 
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), myNpc.Center, Vector2.Zero,
       ModContent.ProjectileType<AssassinsSpawnEffect>(), Projectile.damage * 2, 1, Projectile.owner, 0, 0);
             }
-            if (Timer <= 10)
+            if(Timer <= 10)
             {
                 SpecialEffectsPlayer player = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
                 player.blackWhiteStrength = 0.66f;
                 player.blackWhiteThreshold = 0.5f;
             }
-            if (Timer >= 20)
+            if(Timer >= 20)
             {
                 SpecialEffectsPlayer player = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
                 player.blackWhiteStrength = 1f;

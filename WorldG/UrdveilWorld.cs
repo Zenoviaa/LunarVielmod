@@ -267,7 +267,7 @@ namespace Stellamod.WorldG
                 }
 
             }*/
-
+            
             int startX = AbysmStart2.X - 500;
             int endX = AbysmStart2.X + 500;
             int startY = AbysmStart2.Y - 90;
@@ -279,7 +279,7 @@ namespace Stellamod.WorldG
             endY = (int)MathHelper.Clamp(endY, 0, Main.maxTilesY);
 
             int steps = 5000;
-            for (int j = 0; j < steps; j++)
+            for(int j  = 0;j < steps; j++)
             {
                 int x = Main.rand.Next(startX, endX);
                 int y = Main.rand.Next(startY, endY);
@@ -287,7 +287,7 @@ namespace Stellamod.WorldG
                 Vector2 WallPosition = new Vector2(x, yBelow);
                 if (!WorldGen.SolidTile(x, yBelow))
                     continue;
-
+  
                 if (Main.tile[x, yBelow].TileType == TileID.SnowBlock ||
                     Main.tile[x, yBelow].TileType == TileID.IceBlock)
                 {

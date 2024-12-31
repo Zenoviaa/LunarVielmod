@@ -47,7 +47,7 @@ namespace Stellamod.Projectiles.Magic
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
             }
 
-            if (Timer % 24 == 0)
+            if(Timer % 24 == 0)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Sand);
             }
@@ -100,7 +100,7 @@ namespace Stellamod.Projectiles.Magic
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
                 ModContent.ProjectileType<WindBoomFriendly>(), Projectile.damage / 4, Projectile.knockBack, Projectile.owner);
         }
 

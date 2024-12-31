@@ -8,7 +8,7 @@ namespace Stellamod.Helpers.Separate
 {
     public static class StellasTextureRegistry
     {
-
+       
 
         public static Asset<Texture2D> BloomLine => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine");
 
@@ -16,7 +16,7 @@ namespace Stellamod.Helpers.Separate
 
         public static Asset<Texture2D> Invisible => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Invisible");
 
-
+     
         public static Asset<Texture2D> LaserCircle => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/LaserCircle");
 
         public static Asset<Texture2D> Line => ModContent.Request<Texture2D>("IStellamod/Assets/NoiseTextures/Line");

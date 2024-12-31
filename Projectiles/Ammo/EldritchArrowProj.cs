@@ -1,5 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -37,7 +42,7 @@ namespace Stellamod.Projectiles.Ammo
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-            for (int i = 0; i < Main.rand.Next(1, 3); i++)
+            for(int i = 0; i < Main.rand.Next(1, 3); i++)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,

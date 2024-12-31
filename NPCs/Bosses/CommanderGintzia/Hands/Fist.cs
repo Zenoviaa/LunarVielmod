@@ -15,7 +15,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
     {
         private float ChargeProgress;
         private float StartOffset;
-        private float ColorProgress;
+        private float ColorProgress; 
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -68,11 +68,11 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
             Vector2 offsetVel = Vector2.UnitX * 152;
             Vector2 targetPos = targetCenter + offsetVel.RotatedBy(StartOffset);
 
-
+         
             ChargeProgress = Timer / 150f;
             if (Timer < 120)
             {
-
+          
                 //Home to this point
                 NPC.velocity = (targetPos - NPC.Center) * 0.1f;
                 NPC.velocity.Y += MathF.Sin(Timer * 0.1f) * 0.02f;
@@ -83,7 +83,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
                 NPC.velocity *= 0.92f;
             }
 
-            if (Timer < 150)
+            if(Timer < 150)
             {
                 float rotation = (Target.Center - NPC.Center).ToRotation();
                 NPC.rotation = MathHelper.Lerp(NPC.rotation, MathHelper.WrapAngle(rotation), 0.2f);
@@ -109,7 +109,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
                 SoundEngine.PlaySound(soundStyle, NPC.position);
             }
 
-            if (Timer > 180)
+            if(Timer > 180)
             {
                 NPC.velocity *= 0.92f;
             }
@@ -142,7 +142,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
             spriteBatch.RestartDefaults();
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
             GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.Dashtrail);
-            Vector2 trailOffset = -Main.screenPosition + NPC.Size / 2;
+            Vector2 trailOffset = -Main.screenPosition + NPC.Size/ 2;
             TrailDrawer.DrawPrims(NPC.oldPos, trailOffset, 155);
 
 

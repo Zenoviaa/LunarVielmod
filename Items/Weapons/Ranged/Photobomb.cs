@@ -1,4 +1,7 @@
-﻿using Stellamod.Projectiles.Paint;
+﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Ores;
+using Stellamod.Projectiles.Paint;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -49,6 +52,22 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.noMelee = true;
 
         }
+
+
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<KaleidoscopicInk>(), 20);
+            recipe.AddIngredient(ModContent.ItemType<ArtisanBar>(), 5);
+            recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 5);
+            recipe.AddIngredient(ItemID.PainterPaintballGun, 1);
+            recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 5);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
+        }
+
 
     }
 }

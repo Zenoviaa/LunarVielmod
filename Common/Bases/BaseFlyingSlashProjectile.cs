@@ -1,12 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria.ID;
+using Terraria;
+using Terraria.ModLoader;
+using Stellamod.Trails;
+using Terraria.Graphics.Shaders;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
-using Stellamod.Helpers;
-using Stellamod.Trails;
-using Terraria;
-using Terraria.Graphics.Shaders;
-using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace Stellamod.Common.Bases
 {
@@ -44,7 +49,7 @@ namespace Stellamod.Common.Bases
         }
         public virtual void AI_Dusts()
         {
-            if (Timer % 4 == 0)
+            if(Timer % 4 == 0)
             {
                 Vector2 dustPos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
                 Vector2 dustVelocity = Vector2.Zero;
@@ -99,9 +104,9 @@ namespace Stellamod.Common.Bases
             Vector2 drawOrigin = texture.Size() / 2;
             Vector2 drawScale = Vector2.One;
 
-            SpriteBatch spriteBatch = Main.spriteBatch;
+                  SpriteBatch spriteBatch = Main.spriteBatch;
 
-            for (int i = 0; i < Projectile.oldPos.Length; i++)
+            for(int i = 0; i < Projectile.oldPos.Length; i++)
             {
                 float progress = (float)i / (float)Projectile.oldPos.Length;
                 float scaleMult = MathHelper.Lerp(1f, 0f, progress);

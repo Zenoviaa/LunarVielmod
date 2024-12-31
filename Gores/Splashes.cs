@@ -21,7 +21,7 @@ namespace Stellamod.Gores
             gore.frameCounter = 0;
             gore.velocity = Vector2.Zero;
             gore.timeLeft--;
-            if (gore.timeLeft <= 0)
+            if(gore.timeLeft<= 0)
             {
                 gore.active = false;
             }

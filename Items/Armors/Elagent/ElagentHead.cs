@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
-using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Buffs;
+using Stellamod.Items.Materials;
+using Stellamod.NPCs.Bosses.Niivi;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -66,7 +68,7 @@ namespace Stellamod.Items.Armors.Elagent
 
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
-            return body.type == ModContent.ItemType<ElagentBody>()
+            return body.type == ModContent.ItemType<ElagentBody>() 
                 && legs.type == ModContent.ItemType<ElagentLegs>();
         }
 
@@ -81,6 +83,16 @@ namespace Stellamod.Items.Armors.Elagent
             player.maxMinions += 1;
             player.statLifeMax2 += 45;
             player.GetModPlayer<ElegantPlayer>().hasSetBonus = true;
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 8);
+            recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 8);
+            recipe.AddIngredient(ItemID.Feather, 2);
+            recipe.AddTile(TileID.Anvils);
+            recipe.Register();
         }
     }
 }

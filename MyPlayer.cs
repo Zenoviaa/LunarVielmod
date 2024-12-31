@@ -15,15 +15,27 @@ using Stellamod.Items.Armors.Govheil;
 using Stellamod.Items.Armors.Lovestruck;
 using Stellamod.Items.Armors.Terric;
 using Stellamod.Items.Armors.Verl;
+using Stellamod.Items.Consumables;
 using Stellamod.Items.Special.Sirestias;
 using Stellamod.Items.Weapons.Melee;
+using Stellamod.NPCs.Bosses.DaedusRework;
+using Stellamod.NPCs.Bosses.DreadMire;
+using Stellamod.NPCs.Bosses.DreadMire.Heart;
+using Stellamod.NPCs.Bosses.Fenix;
+using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
+using Stellamod.NPCs.Bosses.singularityFragment;
+using Stellamod.NPCs.Bosses.SupernovaFragment;
 using Stellamod.NPCs.Bosses.Verlia;
+using Stellamod.NPCs.Minibosses;
+using Stellamod.Particles;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Ambient;
 using Stellamod.Projectiles.Paint;
 using Stellamod.Projectiles.Summons.Minions;
 using Stellamod.Projectiles.Swords;
 using Stellamod.UI.Dialogue;
+using Stellamod.WorldG;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -31,6 +43,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.WorldBuilding;
 
 namespace Stellamod
 {
@@ -310,7 +323,57 @@ namespace Stellamod
         }
 
 
-     
+        public override void CatchFish(FishingAttempt attempt,
+            ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
+        {
+            int chance = 35;
+            string jellyfishWarning = "You feel threatened...";
+            if (Player.ZoneBeach && Main.rand.NextBool(chance))
+            {
+                int npc = ModContent.NPCType<GoliathJellyfish>();
+                if (!NPC.AnyNPCs(npc))
+                {
+                    // Make sure itemDrop = -1 when summoning an NPC, as otherwise terraria will only spawn the item
+                    npcSpawn = npc;
+                    itemDrop = -1;
+
+                    // Also, to make it cooler, we will make a special sonar message for when it shows up
+                    sonar.Text = jellyfishWarning;
+                    sonar.Color = Color.LimeGreen;
+                    sonar.Velocity = Vector2.Zero;
+                    sonar.DurationInFrames = 300;
+
+                    // And that text shows up on the player's head, not on the bobber location.
+                    sonarPosition = new Vector2(Player.position.X, Player.position.Y - 64);
+
+                    return; // This is important so your code after this that rolls items will not run
+                }
+            }
+
+
+            if (Player.ZoneSnow && Main.rand.NextBool(chance))
+            {
+                int npc = ModContent.NPCType<GoliathCryogenicJellyfish>();
+                if (!NPC.AnyNPCs(npc))
+                {
+                    // Make sure itemDrop = -1 when summoning an NPC, as otherwise terraria will only spawn the item
+                    npcSpawn = npc;
+                    itemDrop = -1;
+
+                    // Also, to make it cooler, we will make a special sonar message for when it shows up
+                    sonar.Text = jellyfishWarning;
+                    sonar.Color = Color.LimeGreen;
+                    sonar.Velocity = Vector2.Zero;
+                    sonar.DurationInFrames = 300;
+
+                    // And that text shows up on the player's head, not on the bobber location.
+                    sonarPosition = new Vector2(Player.position.X, Player.position.Y - 64);
+
+                    return; // This is important so your code after this that rolls items will not run
+                }
+            }
+        }
+
         public override void ModifyScreenPosition()
         {
             if (shouldFocus)
@@ -659,22 +722,39 @@ namespace Stellamod
             Player.ManageSpecialBiomeVisuals("Stellamod:VeilSky", ZoneVeil);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
 
-            //     base.Player.ManageSpecialBiomeVisuals("Stellamod:GreenSunSky", EventWorld.GreenSun && ZoneAcid);
+       //     base.Player.ManageSpecialBiomeVisuals("Stellamod:GreenSunSky", EventWorld.GreenSun && ZoneAcid);
 
-            // base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosD", EventWorld.ChaosD && Player.ZoneBeach);
+           // base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosD", EventWorld.ChaosD && Player.ZoneBeach);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Veil", ZoneVeil);
 
             //base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean && (Player.ZoneOverworldHeight || Player.ZoneSkyHeight));
             //base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Illuria", ZoneIlluria);
-            //    base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
+        //    base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Lab", ZoneLab);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Ishtar", ZoneIshtar);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Veriplant", ZoneVeri);
-            //   base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
+         //   base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:Daedussss", NPC.AnyNPCs(ModContent.NPCType<DaedusR>()));
+
+
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:Jellyfish1", NPC.AnyNPCs(ModContent.NPCType<GoliathJellyfish>()));
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:Jellyfish2", NPC.AnyNPCs(ModContent.NPCType<GoliathCryogenicJellyfish>()));
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Govheil", ZoneGovheil);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Mechanics", ZoneMechanics);
+        }
+
+        public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
+        {
+
+            return (IEnumerable<Item>)(object)new Item[2]
+            {
+                new Item(ModContent.ItemType<SirestiasStarterBag>(), 1, 0),
+
+
+                new Item(ModContent.ItemType<SiresMail>(), 1, 0),
+            };
         }
 
         public override void OnEnterWorld()
@@ -683,7 +763,7 @@ namespace Stellamod
         }
         public override void PostUpdate()
         {
-
+ 
 
             if (Main.netMode != NetmodeID.Server)
             {
@@ -839,9 +919,33 @@ namespace Stellamod
                 }
             }
 
+            bool expertMode = Main.expertMode;
+            if (NPC.AnyNPCs(ModContent.NPCType<DreadMire>()) || NPC.AnyNPCs(ModContent.NPCType<DreadMiresHeart>()))
+            {
 
+            }
+            else
+            {
+                heart = false;
+                heartDead = 0;
+            }
+           
+            if (NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()) ||
+                NPC.AnyNPCs(ModContent.NPCType<ALCADHOLE>()) ||
+                NPC.AnyNPCs(ModContent.NPCType<SupernovaFragment>()) ||
+                NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
+            {
+                SingularityFragment = true;
+            }
+            else if (ZoneIlluria)
+            {
+                SingularityFragment = true;
+            }
+            else
+            {
+                SingularityFragment = false;
+            }
 
-    
 
             if (SingularityFragment || NiiviFight)
             {
@@ -1248,7 +1352,7 @@ namespace Stellamod
                         RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
 
                         Vector2 speed = new Vector2(4, 0);
-                    }
+                                            }
                 }
 
 
@@ -1290,7 +1394,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-
+                    
 
                 }
 
@@ -1308,7 +1412,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-
+                        
                         GoldenRingCooldown = 0;
                     }
                 }
@@ -1323,7 +1427,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-
+                        
                         GoldenSparkleCooldown = 0;
                     }
                 }
@@ -1354,7 +1458,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-
+                    
 
                 }
 
@@ -1377,7 +1481,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
             }
 
 
@@ -1398,7 +1502,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
             }
 
 
@@ -1614,7 +1718,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
                 for (int j = 0; j < 2; j++)
                 {
@@ -1624,7 +1728,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
             }
 
@@ -1705,7 +1809,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-
+                    
 
                 }
 
@@ -1718,7 +1822,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-
+                    
 
                 }
 
@@ -1730,7 +1834,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-
+                    
 
                 }
                 if (GoldenRingCooldown > 2)
@@ -1743,7 +1847,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-
+                        
                         GoldenRingCooldown = 0;
                     }
                 }
@@ -1758,7 +1862,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-
+                        
                         GoldenSparkleCooldown = 0;
                     }
                 }
@@ -1782,7 +1886,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -1792,7 +1896,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
                 for (int j = 0; j < 3; j++)
                 {
@@ -1802,7 +1906,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -1812,7 +1916,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -1822,7 +1926,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -1832,7 +1936,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
                 if (GoldenRingCooldown > 2)
                 {
@@ -1844,7 +1948,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-
+                        
                         GoldenRingCooldown = 0;
                     }
                 }
@@ -1859,7 +1963,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                        GoldenSparkleCooldown = 0;
+                                                GoldenSparkleCooldown = 0;
                     }
                 }
 
@@ -1874,7 +1978,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
             }
 
 
@@ -1900,7 +2004,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -1910,7 +2014,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -1920,7 +2024,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -1930,7 +2034,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
 
 
@@ -1942,7 +2046,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
 
 
@@ -1957,7 +2061,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-
+                        
                         GoldenRingCooldown = 0;
                     }
                 }
@@ -1972,7 +2076,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                        GoldenSparkleCooldown = 0;
+                                                GoldenSparkleCooldown = 0;
                     }
                 }
 
@@ -1987,7 +2091,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
                 GoldenRingCooldown++;
                 GoldenSparkleCooldown++;
@@ -2015,7 +2119,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
 
 
@@ -2027,7 +2131,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -2037,7 +2141,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -2047,7 +2151,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
             }
 
 
@@ -2078,7 +2182,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
 
 
@@ -2090,7 +2194,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -2100,7 +2204,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -2110,13 +2214,151 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                }
+                                    }
             }
 
-          
+            if (Dice)
+            {
+                Timer++;
+                if (Timer == 90 || DiceCooldown == 90)
+                {
+                    var entitySource = player.GetSource_FromThis();
+
+                    switch (Main.rand.Next(5))
+                    {
+
+                        case 0:
 
 
-    
+                            CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("Dice.1"), true, false);
+                            for (int i = 0; i < player.inventory.Length; i++)
+
+                            {
+
+                                if (player.inventory[i].type == ModContent.ItemType<GambitToken>())
+
+                                {
+                                    Item item = new Item();
+                                    player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 1));
+                                    player.inventory[i].TurnToAir();
+                                    player.inventory[i] = item;
+                                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+
+
+                                    Dice = false;
+                                    break;
+
+                                }
+                            }
+                            break;
+
+                        case 1:
+
+
+                            CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("Dice.2"), true, false);
+                            for (int i = 0; i < player.inventory.Length; i++)
+
+                            {
+
+                                if (player.inventory[i].type == ModContent.ItemType<GambitToken>())
+
+                                {
+                                    Item item = new Item();
+                                    player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 2));
+                                    player.inventory[i].TurnToAir();
+                                    player.inventory[i] = item;
+                                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+
+
+                                    Dice = false;
+                                    break;
+
+                                }
+                            }
+                            break;
+
+                        case 2:
+
+
+                            CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("Dice.3"), true, false);
+                            for (int i = 0; i < player.inventory.Length; i++)
+
+                            {
+
+                                if (player.inventory[i].type == ModContent.ItemType<GambitToken>())
+
+                                {
+                                    Item item = new Item();
+                                    player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(0, 1));
+                                    player.inventory[i].TurnToAir();
+                                    player.inventory[i] = item;
+                                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+
+
+                                    Dice = false;
+                                    break;
+
+                                }
+                            }
+                            break;
+
+                        case 3:
+
+
+                            CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("Dice.4"), true, false);
+                            for (int i = 0; i < player.inventory.Length; i++)
+
+                            {
+
+                                if (player.inventory[i].type == ModContent.ItemType<GambitToken>())
+
+                                {
+                                    Item item = new Item();
+
+                                    player.inventory[i].TurnToAir();
+                                    player.inventory[i] = item;
+                                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+
+                                    Dice = false;
+                                    break;
+
+                                }
+                            }
+                            break;
+
+
+                        case 4:
+
+                            CombatText.NewText(player.getRect(), Color.YellowGreen, LangText.Misc("Dice.5"), true, false);
+                            for (int i = 0; i < player.inventory.Length; i++)
+
+                            {
+
+                                if (player.inventory[i].type == ModContent.ItemType<GambitToken>())
+
+                                {
+                                    Item item = new Item();
+                                    player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(2, 2));
+                                    player.inventory[i].TurnToAir();
+                                    player.inventory[i] = item;
+                                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+
+
+                                    Dice = false;
+                                    break;
+
+                                }
+                            }
+                            break;
+
+                    }
+                    Timer = 0;
+
+                }
+
+
+
+            }
 
 
             #region//--------------------------------------------------------------------- Bridget lmaooo (1000 lines)
@@ -2531,7 +2773,6 @@ namespace Stellamod
 
         public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
         {
-            /*
             if (ThornedBook)
             {
                 if (npc.type != ModContent.NPCType<SingularityFragment>() && npc.type != ModContent.NPCType<Rek>() && npc.type != ModContent.NPCType<SupernovaFragment>())
@@ -2548,7 +2789,7 @@ namespace Stellamod
                     npc.SimpleStrikeNPC(hurtInfo.Damage * 3, hurtInfo.HitDirection, crit: false, hurtInfo.Knockback);
                 }
             }
-            */
+
 
             if (ADisease)
             {

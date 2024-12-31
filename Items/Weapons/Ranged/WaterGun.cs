@@ -1,5 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+
+using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
+using Stellamod.Particles;
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;
@@ -32,7 +36,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.knockBack = 6;
             Item.value = 10000;
             Item.rare = ItemRarityID.Lime;
-            //  Item.UseSound = SoundID.Item11;
+          //  Item.UseSound = SoundID.Item11;
             Item.autoReuse = true;
 
             Item.shoot = ModContent.ProjectileType<WaterGunNodeProj>();
@@ -50,7 +54,7 @@ namespace Stellamod.Items.Weapons.Ranged
             int connectorType = ModContent.ProjectileType<WaterGunConnectorProj>();
             foreach (var proj in Main.ActiveProjectiles)
             {
-                if (proj.type == connectorType)
+                if(proj.type == connectorType)
                 {
                     hasConnector = true;
                     break;
@@ -76,6 +80,16 @@ namespace Stellamod.Items.Weapons.Ranged
 
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.WaterGun);
+            recipe.AddIngredient(ModContent.ItemType<IllurineScale>(), 8);
+            recipe.AddIngredient(ItemID.Ectoplasm, 4);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
         }
     }
 }

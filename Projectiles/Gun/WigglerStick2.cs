@@ -2,6 +2,7 @@
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.UI.CollectionSystem;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;

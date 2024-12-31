@@ -1,9 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.IgniterExplosions;
+﻿using Terraria.ModLoader;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
-using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.IgniterExplosions;
+
+using Stellamod.Particles;
+using Terraria.Audio;
 
 namespace Stellamod.Projectiles.Thrown
 {
@@ -30,12 +32,12 @@ namespace Stellamod.Projectiles.Thrown
             _sparkleSize += 0.02f;
 
             Timer++;
-            if (Timer % 4 == 0)
+            if(Timer % 4 == 0)
             {
 
             }
 
-            if (Timer >= 30)
+            if(Timer >= 30)
             {
                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,

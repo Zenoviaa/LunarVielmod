@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.Zui.Projectiles;
+using Stellamod.Particles;
 using Stellamod.Trails;
 using System;
 using Terraria;
@@ -33,7 +35,7 @@ namespace Stellamod.Projectiles.Ammo
             Projectile.light = 0.5f; // How much light emit around the projectile
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
             Projectile.tileCollide = true; // Can the projectile collide with tiles?
-                                           //      Projectile.extraUpdates = 1; // Set to above 0 if you want the projectile to update multiple time in a frame
+      //      Projectile.extraUpdates = 1; // Set to above 0 if you want the projectile to update multiple time in a frame
             Projectile.ArmorPenetration = 1000;
         }
 
@@ -50,7 +52,7 @@ namespace Stellamod.Projectiles.Ammo
             }
 
             Homing_Timer++;
-            if (Homing_Timer == 44)
+            if(Homing_Timer == 44)
             {
                 for (int i = 0; i < 8; i++)
                 {
@@ -80,7 +82,7 @@ namespace Stellamod.Projectiles.Ammo
                     Vector2 targetVelocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * projSpeed;
                     Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.2f);
                 }
-            }
+            } 
             else
             {
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, Vector2.Zero, 0.03f);
@@ -88,7 +90,7 @@ namespace Stellamod.Projectiles.Ammo
 
             // And create bright light.
             Lighting.AddLight(Projectile.Center, Color.DarkGoldenrod.ToVector3() * 1.5f);
-
+ 
         }
 
         // Finding the closest NPC to attack within maxDetectDistance range
@@ -176,14 +178,14 @@ namespace Stellamod.Projectiles.Ammo
                 DrawHelper.DrawAdditiveAfterImage(Projectile, Color.DarkGoldenrod, Color.GreenYellow, ref lightColor);
             }
 
-
+    
             return base.PreDraw(ref lightColor);
         }
 
         public override void PostDraw(Color lightColor)
         {
             base.PostDraw(lightColor);
-            if (Homing_Timer < 45)
+            if(Homing_Timer < 45)
             {
                 Main.spriteBatch.End();
                 Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -196,12 +198,12 @@ namespace Stellamod.Projectiles.Ammo
 
                 Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
                 Vector2 drawOrigin = sourceRectangle.Size() / 2f;
-
+  
                 //drawOrigin.X = projectile.spriteDirection == 1 ? sourceRectangle.Width - offsetX : offsetX;
                 for (int k = 0; k < projectile.oldPos.Length; k++)
                 {
                     Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + drawOrigin;// + new Vector2(0f, projectile.gfxOffY);
-                    Color color = projectile.GetAlpha(Color.Lerp(Color.White, Color.White, (1f / projectile.oldPos.Length * k) * (1f - 1f / projectile.oldPos.Length * k)) * (Timer / 45));
+                    Color color = projectile.GetAlpha(Color.Lerp(Color.White, Color.White, (1f / projectile.oldPos.Length * k) * (1f - 1f / projectile.oldPos.Length * k)) * (Timer/45));
                     Main.spriteBatch.Draw(texture, drawPos, sourceRectangle, color, projectile.oldRot[k], drawOrigin, projectile.scale, SpriteEffects.None, 0f);
                 }
 
@@ -220,7 +222,7 @@ namespace Stellamod.Projectiles.Ammo
 
             TrailRegistry.LaserShader.UseColor(Color.LightYellow);
             TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.SpikyTrail2);
-
+      
             BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
             Main.spriteBatch.ExitShaderRegion();
         }

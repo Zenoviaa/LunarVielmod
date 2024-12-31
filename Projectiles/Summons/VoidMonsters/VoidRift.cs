@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -104,7 +105,7 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
             }
 
             float scaleOut = 20;
-            if (Projectile.timeLeft < scaleOut && Projectile.DamageType != DamageClass.Summon)
+            if(Projectile.timeLeft < scaleOut && Projectile.DamageType != DamageClass.Summon)
             {
                 Projectile.scale = MathHelper.Lerp(0f, 1f, Projectile.timeLeft / scaleOut);
             }

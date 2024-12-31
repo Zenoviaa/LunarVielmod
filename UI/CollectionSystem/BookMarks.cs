@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
+using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -43,7 +45,7 @@ namespace Stellamod.UI.CollectionSystem
             {
                 Main.LocalPlayer.mouseInterface = true;
             }
-
+          
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)

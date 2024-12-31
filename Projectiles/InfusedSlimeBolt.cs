@@ -35,7 +35,7 @@ namespace Stellamod.Projectiles
 
         public override void OnSpawn(IEntitySource source)
         {
-            for (int i = 0; i < Projectile.oldPos.Length; i++)
+            for(int i = 0; i < Projectile.oldPos.Length; i++)
             {
                 Projectile.oldPos[i] = Projectile.position;
             }
@@ -44,17 +44,17 @@ namespace Stellamod.Projectiles
         public override void AI()
         {
             AI_Timer++;
-
+        
             if (AI_Timer % 2 == 0)
             {
-                if (Main.myPlayer == Projectile.owner)
+                if(Main.myPlayer == Projectile.owner)
                 {
                     Seed = Main.rand.Next(1, int.MaxValue);
                     Projectile.netUpdate = true;
                 }
             }
 
-            if (Seed != 0)
+            if(Seed != 0)
             {
                 UnifiedRandom random = new UnifiedRandom((int)Seed);
                 float maxRadians = MathHelper.ToRadians(210);

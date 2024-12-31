@@ -1,7 +1,12 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Projectiles.Magic;
 using Stellamod.Projectiles.Slashers.GrailAxe;
+using Stellamod.Projectiles.Slashers.Helios;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -96,18 +101,18 @@ namespace Stellamod.Items.Weapons.Melee
             }
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage * 3, knockback, player.whoAmI, 1, dir);
-
-
-
+            
+            
+         
             float numberProjectiles2 = 4;
             float rotation = MathHelper.ToRadians(20);
             float rotation2 = MathHelper.ToRadians(20);
             position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 45f;
             for (int i = 0; i < numberProjectiles2; i++)
             {
-
+               
                 Vector2 perturbedSpeed2 = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation2, rotation2, i / (numberProjectiles2 - 1))) * 1f;// This defines the projectile roatation and speed. .4f == projectile speed
-
+              
                 Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed2.X, perturbedSpeed2.Y, ModContent.ProjectileType<GrailShot>(), damage, Item.knockBack, player.whoAmI);
             }
             Projectile.NewProjectile(source, position, velocity * 1f, ModContent.ProjectileType<GrailAxeProj>(), damage * 1, knockback, player.whoAmI, 1, dir);

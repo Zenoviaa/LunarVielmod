@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -51,6 +52,6 @@ namespace Stellamod.Items.Weapons.Mage
             return new Vector2(-5f, 0f);
         }
 
-
+       
     }
 }

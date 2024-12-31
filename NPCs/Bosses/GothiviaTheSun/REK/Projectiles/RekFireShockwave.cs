@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
@@ -68,16 +69,16 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
         public override void AI()
         {
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 //Shockwave Push
                 float shockwavePushDistance = 1024;
-                for (int i = 0; i < Main.maxPlayers; i++)
+                for(int i = 0; i < Main.maxPlayers; i++)
                 {
                     Player player = Main.player[i];
                     if (!player.active)
                         continue;
-                    if (Vector2.Distance(player.Center, Projectile.Center) <= shockwavePushDistance)
+                    if(Vector2.Distance(player.Center, Projectile.Center) <= shockwavePushDistance)
                     {
                         Vector2 directionToPlayer = Projectile.Center.DirectionTo(player.Center);
                         Vector2 pushVelocity = directionToPlayer * 24f;

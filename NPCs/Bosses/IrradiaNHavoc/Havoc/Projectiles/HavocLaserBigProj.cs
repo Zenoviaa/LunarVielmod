@@ -5,13 +5,14 @@ using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles
 {
     internal class HavocLaserBigProj : ModProjectile,
         IPixelPrimitiveDrawer
-    {
+    {       
         internal PrimitiveTrail BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];
@@ -61,7 +62,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles
         public float WidthFunction(float completionRatio)
         {
             float mult = 1;
-            if (Projectile.timeLeft < 60)
+            if(Projectile.timeLeft < 60)
             {
                 mult = (float)Projectile.timeLeft / (float)60;
             }

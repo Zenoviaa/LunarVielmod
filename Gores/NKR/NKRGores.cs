@@ -1,4 +1,7 @@
-﻿using Terraria.ModLoader;
+﻿using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Gores.NKR
 {

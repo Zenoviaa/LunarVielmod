@@ -1,4 +1,5 @@
-﻿using Stellamod.Projectiles.Magic;
+﻿using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -24,7 +25,7 @@ namespace Stellamod.Items.Weapons.Mage
 
             Item.DamageType = DamageClass.Magic;
             Item.damage = 52;
-            Item.mana = 8;
+            Item.mana = 8; 
 
             Item.useTime = 45;
             Item.useAnimation = 45;
@@ -36,6 +37,16 @@ namespace Stellamod.Items.Weapons.Mage
             Item.noMelee = true;
             Item.channel = true;
             Item.noUseGraphic = true;
+        }
+
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<IllurineScale>(), 16);
+            recipe.AddIngredient(ItemID.Ectoplasm, 8);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
         }
     }
 }

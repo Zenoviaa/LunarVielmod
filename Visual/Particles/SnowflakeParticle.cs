@@ -1,5 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.Particles;
+﻿using Stellamod.Common.Particles;
+using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Stellamod.Visual.Particles
 {
@@ -27,18 +32,18 @@ namespace Stellamod.Visual.Particles
             FrameCounter++;
             if (FrameCounter >= TicksPerFrame)
             {
-                if (Frame.X < FrameWidth * MaxHorizontalFrameCount)
+                if(Frame.X < FrameWidth * MaxHorizontalFrameCount)
                 {
                     Frame.X += FrameWidth;
-
+                  
                 }
 
-                if (Frame.X >= Frame.Width * MaxHorizontalFrameCount)
+                if(Frame.X >= Frame.Width * MaxHorizontalFrameCount)
                 {
                     Frame.Y += FrameHeight;
                 }
 
-                if (Frame.Y >= Frame.Height * MaxVerticalFrameCount)
+                if(Frame.Y >= Frame.Height * MaxVerticalFrameCount)
                 {
                     active = false;
                 }

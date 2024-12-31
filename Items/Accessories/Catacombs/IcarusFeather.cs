@@ -1,4 +1,8 @@
-﻿using Stellamod.Buffs;
+﻿using Microsoft.Xna.Framework;
+
+using Stellamod.Buffs;
+using Stellamod.Helpers;
+using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -21,7 +25,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             //Infinite Flight but only when you run out
-            if (player.wingTime <= 2 && player.controlJump && !player.HasBuff<Zuid>())
+            if(player.wingTime <= 2 && player.controlJump && !player.HasBuff<Zuid>())
             {
                 player.AddBuff(BuffID.OnFire, 2);
                 player.wingTime = 2;
@@ -29,14 +33,14 @@ namespace Stellamod.Items.Accessories.Catacombs
                 player.runAcceleration /= 2;
                 player.jumpSpeedBoost /= 2;
                 player.maxRunSpeed /= 2;
-
-
+              
+               
                 _counter++;
-                if (_counter % 2 == 0)
+                if(_counter % 2 == 0)
                 {
 
                 }
-                if (_counter % 8 == 0)
+                if(_counter % 8 == 0)
                 {
                     SoundEngine.PlaySound(SoundID.LiquidsWaterLava, player.position);
                 }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
+using Stellamod.UI.PopupSystem;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -46,7 +48,7 @@ namespace Stellamod.UI.ToolsSystem
         }
 
         internal void OpenUI()
-        {
+        {  
             _userInterface.SetState(toolsUIState);
         }
 

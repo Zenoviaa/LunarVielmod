@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Nails;
 using Terraria;
 using Terraria.DataStructures;
@@ -85,6 +87,20 @@ namespace Stellamod.Items.Weapons.Melee.Shields
             }
             return false;
 
+        }
+
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.AddIngredient(ItemID.Bone, 22);
+            recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 5);
+            recipe.AddIngredient(ItemID.HallowedBar, 5);
+
+
+            recipe.Register();
         }
     }
 }

@@ -1,9 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Helpers;
+﻿using Stellamod.Items.Armors.Miracle;
 using Stellamod.Projectiles.Summons;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Materials;
+using Stellamod.Helpers;
 
 namespace Stellamod.Items.Armors.Scrappy
 {
@@ -60,6 +63,21 @@ namespace Stellamod.Items.Armors.Scrappy
                 Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
                     ModContent.ProjectileType<ScrappyGunProj>(), 70, 4, player.whoAmI);
             }
+        }
+
+        // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.AddIngredient(ModContent.ItemType<ArmorDrive>(), 8);
+            recipe.AddIngredient(ModContent.ItemType<BrokenTech>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<DriveConstruct>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
+            recipe.AddIngredient(ItemID.Ectoplasm, 5);
+            recipe.AddRecipeGroup(nameof(ItemID.IronBar), 10);
+
+            recipe.Register();
         }
     }
 }

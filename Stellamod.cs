@@ -6,6 +6,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Skies;
+using Stellamod.WorldG;
 using System.IO;
 using System.Reflection;
 using Terraria;
@@ -19,6 +20,7 @@ using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.UI;
+using tModPorter;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace Stellamod
@@ -40,14 +42,14 @@ namespace Stellamod
             Instance = this;
 
         }
-
+      
         public ModPacket GetPacket(MessageType type, int capacity)
         {
             ModPacket packet = GetPacket(capacity + 1);
             packet.Write((byte)type);
             return packet;
         }
-
+        
         // this is alright, and i'll expand it so it can still be used, but really this shouldn't be used
         public static ModPacket WriteToPacket(ModPacket packet, byte msg, params object[] param)
         {
@@ -81,14 +83,14 @@ namespace Stellamod
         }
 
 
-
+       
 
 
         public static Stellamod Instance;
         public static int MedalCurrencyID;
-
-
-
+ 
+      
+        
         public static int MOKCurrencyID;
         public static int MOPCurrencyID;
 
@@ -99,7 +101,7 @@ namespace Stellamod
         public static int MOLCurrencyID;
         public override void Load()
         {
-
+           
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
             if (Main.netMode != NetmodeID.Server)
@@ -107,6 +109,22 @@ namespace Stellamod
                 ShaderRegistry.LoadShaders();
                 CrystalShaderRegistry.LoadShaders();
                 MedalCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<Medal>(), 999L, "Ruin medals"));
+
+
+                //Anxuety Dreadmire
+                MOACurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Manifestments.ManifestmentOfAnxiety(ModContent.ItemType<ManifestedAnxiety>(), 999L, "Manifestation Of Anxiety"));
+
+                //Bravery Verlia
+                MOBCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Manifestments.ManifestmentOfBravery(ModContent.ItemType<ManifestedBravery>(), 999L, "Manifestation Of Bravery"));
+
+                //Committment Irradia
+                MOCCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Manifestments.ManifestmentOfCommittment(ModContent.ItemType<ManifestedCommitment>(), 999L, "Manifestation Of Committment"));
+
+                //Humility Azurerin
+                MOHCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Manifestments.ManifestmentOfLove(ModContent.ItemType<ManifestedHumility>(), 999L, "Manifestation Of Humility"));
+
+                //Love Gothivia
+                MOLCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Manifestments.ManifestmentOfLove(ModContent.ItemType<ManifestedLove>(), 999L, "Manifestation Of Love"));
 
                 //----------------------------------------------- Shaders
                 Filters.Scene["Stellamod:Daedussss"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.3f, -0.3f, -0.3f).UseOpacity(0.375f), EffectPriority.Medium);
@@ -126,7 +144,7 @@ namespace Stellamod
                 Filters.Scene["Stellamod:Caeva"] = new Filter(new CaevaScreenShaderData("FilterMiniTower").UseColor(0.1f, 0.6f, 0.65f).UseOpacity(0.375f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Illuria"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.4f, -0.3f, 1.3f).UseOpacity(0.275f), EffectPriority.Medium);
 
-
+       
                 Filters.Scene["Stellamod:Veil"] = new Filter(new ChaosPScreenShaderData("FilterMiniTower").UseColor(0.7f, 0.1f, 0.2f).UseOpacity(0.275f), EffectPriority.VeryHigh);
 
                 Ref<Effect> screenRef = new Ref<Effect>(ModContent.Request<Effect>("Stellamod/Effects/Shockwave", AssetRequestMode.ImmediateLoad).Value); // The path to the compiled shader file.
@@ -255,7 +273,7 @@ namespace Stellamod
                 Main.instance.LoadTiles(TileID.SnowCloud);
                 TextureAssets.Tile[TileID.SnowCloud] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/SnowCloudRE");
             }
-
+           
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
 
             if (!Main.dedServ && Main.netMode != NetmodeID.Server && config.VanillaUIRespritesToggle)
@@ -295,7 +313,7 @@ namespace Stellamod
                 orig(self, spriteBatch);
                 DrawWorldSelectItemOverlay(self, spriteBatch);
             };
-
+            
 
             Instance = this;
         }
@@ -380,7 +398,7 @@ namespace Stellamod
                 UnloadTile(TileID.ObsidianBrick);
                 UnloadTile(TileID.Cloud);
                 UnloadTile(TileID.Pearlsand);
-                UnloadTile(TileID.SnowCloud);
+                UnloadTile(TileID.SnowCloud);   
             }
         }
 
@@ -426,7 +444,7 @@ namespace Stellamod
         public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Menutheme");
 
         public override ModSurfaceBackgroundStyle MenuBackgroundStyle => ModContent.GetInstance<StarbloomBackgroundStyle>();
-
+       
         public override string DisplayName => "Lunar Veil";
         public override void OnSelected()
         {

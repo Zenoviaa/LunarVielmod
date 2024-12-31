@@ -1,4 +1,6 @@
-﻿using Stellamod.Items.MoonlightMagic.Elements;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.MoonlightMagic.Elements;
 using Stellamod.Items.MoonlightMagic.Forms;
 using Terraria;
 using Terraria.ModLoader;

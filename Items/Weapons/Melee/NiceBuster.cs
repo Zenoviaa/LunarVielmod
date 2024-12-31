@@ -1,10 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Magic;
 using Stellamod.Projectiles.Slashers.NiceBuster;
+using Stellamod.Projectiles.Swords;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Melee
 {
@@ -74,6 +80,14 @@ namespace Stellamod.Items.Weapons.Melee
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, dir);
             return false; // return false to prevent original projectile from being shot
         }
-
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemType<AlcaricMush>(), 25);
+            recipe.AddIngredient(ItemType<IshtarCandle>(), 1);
+            recipe.AddIngredient(ItemType<Curlistine>(), 1);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
+        }
     }
 }

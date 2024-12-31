@@ -16,7 +16,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
     {
         public override void SetStaticDefaults()
         {
-
+          
             DustType = ModContent.DustType<Orb1Glow>();
             HitSound = SoundID.DD2_WitherBeastCrystalImpact;
 
@@ -32,7 +32,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
             TileObjectData.newTile.Height = 10;
             TileObjectData.newTile.Width = 4;
 
-            TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16, 16, 16, 16, 16, 16, 16, 16 };
+            TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16, 16, 16, 16, 16, 16, 16, 16};
             TileObjectData.newTile.StyleWrapLimit = 2; //not really necessary but allows me to add more subtypes of chairs below the example chair texture
             TileObjectData.newTile.StyleMultiplier = 2; //same as above
             TileObjectData.newTile.StyleHorizontal = true;
@@ -41,7 +41,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
             LocalizedText name = CreateMapEntryName();
 
             // name.SetDefault("Crystal Orb");
-
+       
 
             AddMapEntry(new Color(109, 225, 90));
         }

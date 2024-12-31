@@ -68,7 +68,7 @@ namespace Stellamod.NPCs.Town
 
         public override void NetReceive(BinaryReader reader)
         {
-            bool con1 = reader.ReadBoolean();
+            bool con1 = reader.ReadBoolean(); 
             bool con2 = reader.ReadBoolean();
             bool con3 = reader.ReadBoolean();
             bool con4 = reader.ReadBoolean();
@@ -91,8 +91,8 @@ namespace Stellamod.NPCs.Town
             HandleCompleteQuest(questType);
             if (Main.netMode != NetmodeID.SinglePlayer)
             {
-                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(),
-                    (byte)MessageType.CompleteMerenaQuest,
+                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), 
+                    (byte)MessageType.CompleteMerenaQuest, 
                     (byte)questType).Send(-1);
             }
         }

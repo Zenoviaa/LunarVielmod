@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Slashers.Reavestor;
 using System.Collections.Generic;
 using Terraria;
@@ -103,5 +105,15 @@ namespace Stellamod.Items.Weapons.Melee
             return false;
         }
 
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 22);
+            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 100);
+            recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 10);
+            recipe.AddIngredient(ItemID.SoulofLight, 5);
+            recipe.Register();
+        }
     }
 }

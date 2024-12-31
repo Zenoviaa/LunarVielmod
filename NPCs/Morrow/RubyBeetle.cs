@@ -2,6 +2,7 @@
 
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Particles;
 using Stellamod.Utilis;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
@@ -55,7 +56,7 @@ namespace Stellamod.NPCs.Morrow
                 for (int i = 0; i < 5; i++)
                 {
                     Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                }
+                                    }
             }
         }
 

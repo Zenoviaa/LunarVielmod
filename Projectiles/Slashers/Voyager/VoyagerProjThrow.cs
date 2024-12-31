@@ -14,7 +14,7 @@ namespace Stellamod.Projectiles.Slashers.Voyager
     {
         public override void SetDefaults()
         {
-
+            
             Projectile.penetrate = 5;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
@@ -25,7 +25,7 @@ namespace Stellamod.Projectiles.Slashers.Voyager
             Projectile.scale = 1f;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 5;
-            Projectile.timeLeft = 100;
+            Projectile.timeLeft = 100;       
         }
 
         public override void SetStaticDefaults()
@@ -48,7 +48,7 @@ namespace Stellamod.Projectiles.Slashers.Voyager
             Timer++;
 
             player.RotatedRelativePoint(Projectile.Center);
-            Projectile.rotation -= 0.2f;
+            Projectile.rotation  -= 0.2f;
 
 
             Projectile.velocity *= 0.97f;
@@ -62,11 +62,11 @@ namespace Stellamod.Projectiles.Slashers.Voyager
                 player.GetModPlayer<MyPlayer>().SwordComboSlash += 1;
             }
 
-            //   Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + (speedXa * 5), Projectile.position.Y + (speedYa * 5), speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
+         //   Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + (speedXa * 5), Projectile.position.Y + (speedYa * 5), speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
             if (Timer == 99)
             {
                 ShakeModSystem.Shake = 4;
-
+              
 
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
@@ -116,7 +116,7 @@ namespace Stellamod.Projectiles.Slashers.Voyager
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             ShakeModSystem.Shake = 5;
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, 
                 ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
             SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, Projectile.position);
         }

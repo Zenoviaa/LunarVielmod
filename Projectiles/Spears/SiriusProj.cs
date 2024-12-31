@@ -71,7 +71,7 @@ namespace Stellamod.Projectiles.Spears
                     Exploding();
                     break;
             }
-
+   
         }
 
         private void StickToTarget()
@@ -110,7 +110,7 @@ namespace Stellamod.Projectiles.Spears
         {
             ChargeVisuals(ExplodingTimer, Exploding_Time);
 
-            if (ExplodingTimer == 1)
+            if(ExplodingTimer == 1)
             {
                 //Play charging up sound
                 SoundStyle summonSoundStyle = new SoundStyle("Stellamod/Assets/Sounds/RisingSummon");

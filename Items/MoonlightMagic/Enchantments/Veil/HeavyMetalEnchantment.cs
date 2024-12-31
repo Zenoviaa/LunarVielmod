@@ -1,13 +1,18 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.MoonlightMagic.Elements;
-using Terraria;
+﻿using Stellamod.Items.MoonlightMagic.Elements;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.ModLoader;
+using Terraria;
+using Microsoft.Xna.Framework;
 
 namespace Stellamod.Items.MoonlightMagic.Enchantments.Veil
 {
     internal class HeavyMetalEnchantment : BaseEnchantment
     {
-
+        
         public override void SetMagicDefaults()
         {
             base.SetMagicDefaults();

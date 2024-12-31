@@ -48,7 +48,7 @@ namespace Stellamod.Projectiles.Spears
             Projectile.rotation = Projectile.velocity.ToRotation() + Projectile.velocity.Length() * 0.05f;
 
             float lifeTime = LifeTime + RandOffset;
-            if (Timer >= lifeTime)
+            if(Timer >= lifeTime)
             {
                 Projectile.Kill();
             }

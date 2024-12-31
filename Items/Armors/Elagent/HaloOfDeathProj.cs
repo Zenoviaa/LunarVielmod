@@ -123,9 +123,9 @@ namespace Stellamod.Items.Armors.Elagent
         private void AI_Out()
         {
             Projectile.velocity += new Vector2(0, -0.1f);
-            Projectile.alpha += 4;
+            Projectile.alpha+=4;
             Timer++;
-            if (Timer >= Duration * 2)
+            if(Timer >= Duration * 2)
             {
                 Projectile.Kill();
             }

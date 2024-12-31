@@ -65,8 +65,8 @@ namespace Stellamod.UI.WeaponUpgradeSystem
 
             upgradeBackground.Left.Set(0, 0.1f);
             upgradeBackground.Top.Set(0, 0.2f);
-            // reforgeSlot.Left.Pixels = reforgeButton.Left.Pixels + 32;
-            // reforgeSlot.Top.Pixels = reforgeButton.Top.Pixels + 24;
+           // reforgeSlot.Left.Pixels = reforgeButton.Left.Pixels + 32;
+           // reforgeSlot.Top.Pixels = reforgeButton.Top.Pixels + 24;
 
             // pearl.Left.Pixels = reforgeSlot.Left.Pixels + 82;
             //pearl.Top.Pixels = reforgeSlot.Top.Pixels + 48;

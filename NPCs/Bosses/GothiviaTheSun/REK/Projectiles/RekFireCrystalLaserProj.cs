@@ -1,15 +1,19 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs;
-using Stellamod.Dusts;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
-using Terraria.Audio;
-using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.UI.Systems;
+using Stellamod.Dusts;
+using Terraria.ID;
+using Terraria.Audio;
+using Stellamod.Buffs;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
@@ -49,7 +53,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
             Projectile.Center = Owner.Center;
             Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.TwoPi / speed);
-            if (Time % 2 == 0)
+            if(Time % 2 == 0)
             {
                 Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(64, 64);
                 Vector2 vel = Projectile.velocity * 8;
@@ -60,7 +64,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                     Dust.NewDustPerfect(pos, ModContent.DustType<TSmokeDust>(), vel, 0, Color.OrangeRed, scale / 2).noGravity = true;
                 }
             }
-            if (Time == 1)
+            if(Time == 1)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekLaser2"), Projectile.position);
             }
@@ -73,13 +77,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             // Fade in.
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
 
-            if (Projectile.scale < 1f || Time <= 1)
+            if(Projectile.scale < 1f || Time <= 1)
             {
                 Projectile.scale = MathF.Sin(Time / 600f * MathHelper.Pi) * 3f;
                 if (Projectile.scale > 1f)
                     Projectile.scale = 1f;
             }
-
+  
 
 
             // And create bright light.

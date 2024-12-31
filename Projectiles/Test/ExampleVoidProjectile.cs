@@ -8,52 +8,52 @@ namespace Stellamod.Projectiles.Test
 {
     internal class ExampleVoidProjectile : ModProjectile
     {
-        public override string Texture => TextureRegistry.FlowerTexture;
+            public override string Texture => TextureRegistry.FlowerTexture;
 
-        private float Timer
-        {
-            get => Projectile.ai[0];
-            set => Projectile.ai[0] = value;
-        }
-
-        private float LifeTime => 360;
-        private float MaxScale => 0.66f;
-        public override void SetDefaults()
-        {
-            Projectile.width = 64;
-            Projectile.height = 64;
-            Projectile.friendly = false;
-            Projectile.hostile = true;
-            Projectile.tileCollide = false;
-            Projectile.penetrate = -1;
-            Projectile.timeLeft = (int)LifeTime;
-        }
-
-        public override void AI()
-        {
-            Timer++;
-            if (Timer == 1)
+            private float Timer
             {
-                //Play sound an effects and stuff
-                //Freezing sound, probably like crumbling paper or something
+                get => Projectile.ai[0];
+                set => Projectile.ai[0] = value;
             }
 
-            float progress = Timer / LifeTime;
-            float easedProgress = Easing.SpikeInOutCirc(progress);
-            Projectile.width = Projectile.height = (int)(64 * easedProgress);
-            if (progress >= 0.75f)
+            private float LifeTime => 360;
+            private float MaxScale => 0.66f;
+            public override void SetDefaults()
             {
-                Projectile.hostile = false;
+                Projectile.width = 64;
+                Projectile.height = 64;
+                Projectile.friendly = false;
+                Projectile.hostile = true;
+                Projectile.tileCollide = false;
+                Projectile.penetrate = -1;
+                Projectile.timeLeft = (int)LifeTime;
             }
-        }
 
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return new Color(
-                Color.LightCyan.R,
-                Color.LightCyan.G,
-                Color.LightCyan.B, 0) * (1f - Projectile.alpha / 50f);
-        }
+            public override void AI()
+            {
+                Timer++;
+                if (Timer == 1)
+                {
+                    //Play sound an effects and stuff
+                    //Freezing sound, probably like crumbling paper or something
+                }
+
+                float progress = Timer / LifeTime;
+                float easedProgress = Easing.SpikeInOutCirc(progress);
+                Projectile.width = Projectile.height = (int)(64 * easedProgress);
+                if (progress >= 0.75f)
+                {
+                    Projectile.hostile = false;
+                }
+            }
+
+            public override Color? GetAlpha(Color lightColor)
+            {
+                return new Color(
+                    Color.LightCyan.R,
+                    Color.LightCyan.G,
+                    Color.LightCyan.B, 0) * (1f - Projectile.alpha / 50f);
+            }
 
         public override bool PreDraw(ref Color lightColor)
         {

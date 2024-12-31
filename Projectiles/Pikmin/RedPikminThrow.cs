@@ -35,7 +35,7 @@ namespace Stellamod.Projectiles.Pikmin
 
         private void Visuals()
         {
-
+            
             if (Main.rand.NextBool(60))
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.RedTorch);
@@ -76,7 +76,7 @@ namespace Stellamod.Projectiles.Pikmin
 
         public override bool PreAI()
         {
-
+           
             if (++Projectile.frameCounter >= 3)
             {
                 Projectile.frameCounter = 0;

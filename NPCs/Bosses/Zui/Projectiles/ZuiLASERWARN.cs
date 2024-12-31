@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Projectiles;
+using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -82,7 +83,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
             NPC.TargetClosest();
             gren++;
             Player target = Main.player[NPC.target];
-
+           
 
             if (gren < 50)
             {
@@ -95,8 +96,8 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
 
 
             }
-
-
+            
+        
             float ai1 = NPC.whoAmI;
             if (!Down)
             {
@@ -134,17 +135,17 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                     var EntitySource = NPC.GetSource_FromThis();
                     if (StellaMultiplayer.IsHost)
                     {
-
+                        
 
 
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, velocity.X, velocity.Y,
                         ModContent.ProjectileType<ZuiRay>(), 250, 10, Main.myPlayer, ai0: NPC.whoAmI);
 
-                        Projectile.NewProjectile(EntitySource, LightPos.X + 150, LightPos.Y + 150, 0, 0,
+                        Projectile.NewProjectile(EntitySource, LightPos.X + 150, LightPos.Y + 150, 0, 0, 
                         ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 1, Owner: Main.myPlayer, 0, 0);
                     }
                 }
-
+                  
                 if (y >= 10)
                 {
                     if (alphaCounter <= 0)

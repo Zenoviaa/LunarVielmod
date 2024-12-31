@@ -38,7 +38,7 @@ namespace Stellamod.Projectiles.Summons
             if (AI_Timer % 2 == 0)
             {
                 float degrees = 12;
-                if (Main.myPlayer == Projectile.owner)
+                if(Main.myPlayer == Projectile.owner)
                 {
                     if (AI_Pattern == 0)
                     {              //Randomly teleport to make the jagged effect

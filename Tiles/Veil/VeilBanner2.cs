@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -25,7 +26,7 @@ namespace Stellamod.Tiles.Veil
                 16,
                 16
             };
-
+          
 
             TileObjectData.addTile(Type);
             LocalizedText name = CreateMapEntryName();

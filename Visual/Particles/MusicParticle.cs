@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.Particles;
+﻿using Stellamod.Common.Particles;
+using Microsoft.Xna.Framework;
 using Terraria;
 
 namespace Stellamod.Visual.Particles
@@ -24,22 +24,22 @@ namespace Stellamod.Visual.Particles
             Velocity *= 0.98f;
             Rotation += 0.01f;
             Scale *= 0.997f;
-
+    
             FrameCounter++;
             if (FrameCounter >= TicksPerFrame)
             {
-                if (Frame.X < FrameWidth * MaxHorizontalFrameCount)
+                if(Frame.X < FrameWidth * MaxHorizontalFrameCount)
                 {
                     Frame.X += FrameWidth;
-
+                  
                 }
 
-                if (Frame.X >= Frame.Width * MaxHorizontalFrameCount)
+                if(Frame.X >= Frame.Width * MaxHorizontalFrameCount)
                 {
                     Frame.Y += FrameHeight;
                 }
 
-                if (Frame.Y >= Frame.Height * MaxVerticalFrameCount)
+                if(Frame.Y >= Frame.Height * MaxVerticalFrameCount)
                 {
                     active = false;
                 }

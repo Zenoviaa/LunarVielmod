@@ -1,6 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Helpers;
+using Stellamod.Particles;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -33,13 +39,13 @@ namespace Stellamod.Projectiles.Ammo
             float hoverRange = 12f;
             float y = VectorHelper.Osc(-hoverRange, hoverRange, hoverSpeed);
             Projectile.velocity = Vector2.Lerp(Projectile.velocity, Vector2.Zero + new Vector2(0, y), 0.04f);
-
+            
             NPC npc = FindClosestNPC(600);
-            if (npc != null)
+            if(npc != null)
             {
                 Projectile.spriteDirection = npc.position.X < Projectile.position.X ? -1 : 1;
                 Timer++;
-                if (Timer > 92)
+                if(Timer > 92)
                 {
                     Vector2 velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 12;
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
@@ -47,7 +53,7 @@ namespace Stellamod.Projectiles.Ammo
                     int Sound = Main.rand.Next(1, 3);
                     if (Sound == 1)
                     {
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GraniteMagmum1") { PitchVariance = 0.15f }, Projectile.position);
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GraniteMagmum1") { PitchVariance=0.15f}, Projectile.position);
                     }
                     else
                     {

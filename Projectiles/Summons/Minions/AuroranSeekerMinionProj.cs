@@ -2,9 +2,12 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
+using Stellamod.Items.Weapons.Summon;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
@@ -36,7 +39,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; ; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
         }
-
+      
         public sealed override void SetDefaults()
         {
             Projectile.width = 28;
@@ -72,7 +75,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             if (!SummonHelper.CheckMinionActive<AuroranSeekerMinionBuff>(owner, Projectile))
                 return;
 
-
+  
             SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
             int minionIndex = SummonHelper.GetProjectileIndex(Projectile);
 
@@ -90,7 +93,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             if (Timer >= 120 && foundTarget && distanceFromTarget < 2048)
             {
 
-                if (Main.myPlayer == Projectile.owner)
+                if(Main.myPlayer == Projectile.owner)
                 {
                     Vector2 velocity = -Vector2.UnitY * 8;
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,

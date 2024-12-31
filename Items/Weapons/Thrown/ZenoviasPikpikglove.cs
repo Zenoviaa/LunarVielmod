@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Pikmin;
+using Stellamod.Projectiles.Thrown;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -44,16 +46,16 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shootSpeed = 15f;
             Item.rare = ItemRarityID.Blue;
         }
-        public int AttackCounter = 1;
+		public int AttackCounter = 1;
         float yellowpikpik = 0.7f;
         float redpikpik = 1.5f;
         float whitepikpik = 0.3f;
         float purplepikpik = 2.0f;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            int dir = AttackCounter;
-            if (player.GetModPlayer<MyPlayer>().Onion1)
-            {
+		{
+			int dir = AttackCounter;
+			if (player.GetModPlayer<MyPlayer>().Onion1)
+			{
                 switch (Main.rand.Next(2))
                 {
                     case 0:
@@ -69,7 +71,7 @@ namespace Stellamod.Items.Weapons.Thrown
                 }
 
 
-
+               
             }
 
             else if (player.GetModPlayer<MyPlayer>().Onion2)
@@ -168,7 +170,7 @@ namespace Stellamod.Items.Weapons.Thrown
             switch (Main.rand.Next(4))
             {
                 case 0:
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminthrow1") with { Volume = 0.5f }, position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminthrow1") with { Volume=0.5f}, position);
                     break;
 
                 case 1:
@@ -192,7 +194,7 @@ namespace Stellamod.Items.Weapons.Thrown
 
 
             return false;
-        }
+		}
 
-    }
+	}
 }

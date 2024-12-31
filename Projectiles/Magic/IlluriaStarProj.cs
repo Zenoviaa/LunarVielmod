@@ -2,8 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Stellamod.Trails;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -65,10 +67,10 @@ namespace Stellamod.Projectiles.Magic
 
         public override void AI()
         {
-            if (Projectile.timeLeft == Lifetime / 2)
+            if(Projectile.timeLeft  == Lifetime / 2)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-            }
+                            }
 
             if (Projectile.timeLeft > Lifetime / 2)
             {
@@ -83,7 +85,7 @@ namespace Stellamod.Projectiles.Magic
                     if (Main.rand.NextBool(16))
                     {
                         Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                    }
+                                            }
 
                     AI_Movement(npc.Center, 15);
                 }
@@ -127,7 +129,7 @@ namespace Stellamod.Projectiles.Magic
         //Visual Stuffs
         public override bool PreDraw(ref Color lightColor)
         {
-            if (Projectile.timeLeft < 90)
+            if(Projectile.timeLeft < 90)
             {
                 DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.CausticTrail);
                 DrawHelper.DrawAdditiveAfterImage(Projectile, StarColor, Color.Transparent, ref lightColor);
@@ -159,7 +161,7 @@ namespace Stellamod.Projectiles.Magic
             for (int i = 0; i < 4; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-            }
+                            }
         }
     }
 

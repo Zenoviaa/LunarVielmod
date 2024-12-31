@@ -1,4 +1,9 @@
-﻿using Stellamod.Projectiles.Thrown;
+﻿
+using Microsoft.Xna.Framework;
+using Stellamod.Items.Ores;
+using Stellamod.Projectiles;
+using Stellamod.Projectiles.Paint;
+using Stellamod.Projectiles.Thrown;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

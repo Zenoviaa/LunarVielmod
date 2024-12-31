@@ -1,4 +1,7 @@
-﻿using Stellamod.Projectiles.Magic;
+﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
+using Stellamod.Projectiles.Crossbows.Ultras;
+using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -55,5 +58,17 @@ namespace Stellamod.Items.Weapons.Mage
         {
             return player.ownedProjectileCounts[Item.shoot] < 1;
         }
+
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<IshtarCandle>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<Relagis>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 250);
+            recipe.Register();
+        }
+
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Items.Materials;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -21,6 +22,18 @@ namespace Stellamod.Items.Accessories
 
             //Increased armor pen
             player.GetArmorPenetration(DamageClass.Generic) += 12;
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.SharkToothNecklace, 1);
+            recipe.AddIngredient(ItemID.SoulofMight, 15);
+            recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 20);
+            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
         }
     }
 }

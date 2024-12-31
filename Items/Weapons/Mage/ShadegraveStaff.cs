@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -47,7 +48,13 @@ namespace Stellamod.Items.Weapons.Mage
             Item.consumeAmmoOnLastShotOnly = true;
         }
 
-
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
+            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 55);
+        }
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-5f, 0f);

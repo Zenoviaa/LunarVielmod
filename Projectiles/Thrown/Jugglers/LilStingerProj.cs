@@ -1,7 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Stellamod.Trails;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -74,7 +78,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
         private void AI_Thrown()
         {
             VelTimer++;
-            if (VelTimer == 1)
+            if(VelTimer == 1)
             {
                 OldVelocity = Projectile.velocity;
                 switch (Main.rand.Next(2))
@@ -119,7 +123,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
 
 
-            if (Timer < 45)
+            if(Timer < 45)
             {
                 Vector2 targetVelocity = Projectile.Center.DirectionTo(Juggler.Player.Center) * OldVelocity.Length();
                 Vector2 velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.08f);
@@ -246,7 +250,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
                 //Get a random
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-            }
+                            }
         }
 
         public PrimDrawer TrailDrawer { get; private set; } = null;
@@ -263,9 +267,9 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
         public override bool PreDraw(ref Color lightColor)
         {
-            if (Juggler.CatchCount >= 5)
+            if(Juggler.CatchCount >= 5)
             {
-                if (State == ActionState.Thrown)
+                if(State == ActionState.Thrown)
                 {
                     Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
                     Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);

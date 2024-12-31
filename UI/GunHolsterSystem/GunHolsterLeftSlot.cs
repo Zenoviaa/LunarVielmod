@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.ScorpionMountSystem;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
+using System;
 using Terraria;
 using Terraria.GameInput;
 using Terraria.ModLoader;
@@ -111,7 +112,7 @@ namespace Stellamod.UI.GunHolsterSystem
                 Player player = Main.LocalPlayer;
                 float remainingSlots = player.maxMinions - player.slotsMinions;
                 bool canFire = scorpionIndex < remainingSlots;
-
+ 
                 if (!canFire)
                 {
                     drawColor = drawColor.MultiplyRGB(Color.Black);
@@ -125,7 +126,7 @@ namespace Stellamod.UI.GunHolsterSystem
             centerPos.Y -= 4;
             spriteBatch.Draw(backingTexture, rectangle.TopLeft(), null, color2, 0f, default(Vector2), _scale, SpriteEffects.None, 0f);
 
-
+  
             ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale * 2f, 32, drawColor);
             Main.inventoryScale = oldScale;
         }

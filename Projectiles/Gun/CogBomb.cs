@@ -50,7 +50,7 @@ namespace Stellamod.Projectiles.Gun
         public override void AI()
         {
             Projectile.rotation += _rotation;
-            _rotation += 0.01f;
+            _rotation+=0.01f;
 
             Vector3 RGB = new(1.00f, 0.37f, 0.30f);
             // The multiplication here wasn't doing anything
@@ -63,7 +63,7 @@ namespace Stellamod.Projectiles.Gun
 
         public override void OnKill(int timeLeft)
         {
-
+         
             for (int i = 0; i < 14; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.OrangeRed, 1f).noGravity = true;
@@ -74,7 +74,7 @@ namespace Stellamod.Projectiles.Gun
             }
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
-            for (int i = 0; i < Main.rand.Next(3, 7); i++)
+            for(int i = 0; i < Main.rand.Next(3, 7); i++)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
                 int index = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,

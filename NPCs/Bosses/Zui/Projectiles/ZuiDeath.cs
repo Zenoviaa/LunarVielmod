@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.Jack;
 using Stellamod.UI.Dialogue;
 using Stellamod.Utilis;
 using Terraria;
@@ -177,9 +178,9 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                 }
 
             }
-
-
-
+            
+         
+           
         }
     }
 }

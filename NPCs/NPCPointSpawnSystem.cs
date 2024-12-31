@@ -115,7 +115,7 @@ namespace Stellamod.NPCs
                     spawnTimer = 0;
                     return;
                 }
-
+            
 
                 spawnTimer++;
                 if (spawnTimer < 30)
@@ -169,7 +169,7 @@ namespace Stellamod.NPCs
 
         public Point GetStructureTile(string name)
         {
-            for (int i = 0; i < Structures.Count; i++)
+            for(int i = 0; i < Structures.Count; i++)
             {
                 Structure structure = Structures[i];
                 if (structure.name == name)

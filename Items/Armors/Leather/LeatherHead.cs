@@ -1,6 +1,9 @@
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.Leather
 {
@@ -35,6 +38,16 @@ namespace Stellamod.Items.Armors.Leather
         public override void UpdateArmorSet(Player player)
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().Leather = true;
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.Leather, 1);
+            recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 4);
+            recipe.AddRecipeGroup(nameof(ItemID.IronBar), 3);
+            recipe.AddTile(TileID.Anvils);
+            recipe.Register();
         }
     }
 }

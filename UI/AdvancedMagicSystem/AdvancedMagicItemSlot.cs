@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.MoonlightMagic;
+using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameInput;
@@ -19,7 +20,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
         private readonly int _index;
         private readonly float _scale;
         internal Item Item;
-
+        
 
         internal AdvancedMagicItemSlot(int index, int context = ItemSlot.Context.InventoryItem, float scale = 1f)
         {
@@ -30,7 +31,7 @@ namespace Stellamod.UI.AdvancedMagicSystem
             //Set to Air
             Item = new Item();
             Item.SetDefaults(0);
-
+         
             //Set to the backpack item
             var player = Main.LocalPlayer.GetModPlayer<AdvancedMagicPlayer>();
             Item = player.Backpack[_index].Clone();

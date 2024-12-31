@@ -2,6 +2,7 @@
 
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -37,7 +38,7 @@ namespace Stellamod.Projectiles.Summons.MiracleSoul
             Player owner = Main.player[Projectile.owner];
             Rectangle myRect = Projectile.getRect();
             Rectangle ownerRect = owner.getRect();
-            if (Projectile.Colliding(myRect, ownerRect) && Projectile.active)
+            if(Projectile.Colliding(myRect, ownerRect) && Projectile.active)
             {
                 //Add the buff for 12 seconds
                 int miracleDuration = 720;
@@ -57,7 +58,7 @@ namespace Stellamod.Projectiles.Summons.MiracleSoul
             //Visuals
             float hoverSpeed = 5;
             float yVelocity = VectorHelper.Osc(1, -1, hoverSpeed);
-            if (Vector2.Distance(Projectile.position, owner.position) <= 128)
+            if(Vector2.Distance(Projectile.position, owner.position) <= 128)
             {
                 _homeToOwner = true;
             }

@@ -49,12 +49,12 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
         {
             //Oscillate movement
             Timer++;
-            if (Timer < 60)
+            if(Timer < 60)
             {
                 float ySpeed = Timer / 60;
                 ySpeed = Easing.SpikeInOutCirc(ySpeed);
                 NPC.velocity = new Vector2(0, -ySpeed);
-            }
+            } 
             else if (Timer < 120)
             {
                 //Inverse
@@ -63,13 +63,13 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
                 NPC.velocity = new Vector2(0, ySpeed);
             }
 
-            if (Timer == 120)
+            if(Timer == 120)
             {
                 Timer = 0;
             }
 
             LifeTimer++;
-            if (LifeTimer >= 480)
+            if(LifeTimer>= 480)
             {
                 NPC.Kill();
             }

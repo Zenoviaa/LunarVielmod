@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
@@ -109,7 +110,7 @@ namespace Stellamod.Common.Bases
                 progress = Easing.InOutCubic(progress);
 
             }
-
+         
             //Starts at owner center, goes to peak range, then returns to owner center
             float distance = MathHelper.Clamp(SwingDistance, ThrowRange * 0.1f, ThrowRange) * MathHelper.Lerp((float)Math.Sin(progress * MathHelper.Pi), 1, 0.04f);
             distance = Math.Max(distance, 100); //Dont be too close to player
@@ -130,7 +131,7 @@ namespace Stellamod.Common.Bases
                 SoundEngine.PlaySound(SoundID.NPCDeath7, Projectile.Center);
 
             Vector2[] swingPos = new Vector2[60];
-            for (int i = 0; i < swingPos.Length; i++)
+            for(int i = 0; i < swingPos.Length; i++)
             {
                 float l = swingPos.Length;
                 //Lerp between the points
@@ -170,7 +171,7 @@ namespace Stellamod.Common.Bases
 
         protected virtual Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Transparent, Color.Purple, completionRatio);
+            return Color.Lerp(Color.Transparent,Color.Purple,completionRatio);
         }
 
         public PrimDrawer TrailDrawer { get; private set; } = null;
@@ -211,7 +212,7 @@ namespace Stellamod.Common.Bases
 
             spriteBatch.Restart(blendState: BlendState.Additive);
             float glowProgress = Easing.SpikeOutCirc(Timer / SwingTime);
-            for (int i = 0; i < 1; i++)
+            for(int i = 0; i < 1; i++)
             {
                 spriteBatch.Draw(glowTexture, projBottom - Main.screenPosition, null, Color.White * glowProgress, newRotation, origin, Projectile.scale * scaleMult, flip, 0);
             }

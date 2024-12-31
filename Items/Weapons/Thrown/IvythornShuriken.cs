@@ -1,9 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Thrown;
-using Terraria;
+﻿using Stellamod.Projectiles.Thrown;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
+using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Thrown
 {

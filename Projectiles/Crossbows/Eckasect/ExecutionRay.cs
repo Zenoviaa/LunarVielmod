@@ -1,12 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
+
+using Stellamod.Helpers;
+using Stellamod.Particles;
 using Stellamod.Trails;
-using System;
 using System.Collections.Generic;
+using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.Buffs;
 
 namespace Stellamod.Projectiles.Crossbows.Eckasect
 {
@@ -115,12 +119,12 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
             if (npc.active && npc.HasBuff<Executor>())
             {
+                
+               
+                 npc.SimpleStrikeNPC(Projectile.damage * 7, 1, crit: false, Projectile.knockBack);
+                    
 
-
-                npc.SimpleStrikeNPC(Projectile.damage * 7, 1, crit: false, Projectile.knockBack);
-
-
-
+                
             }
         }
 

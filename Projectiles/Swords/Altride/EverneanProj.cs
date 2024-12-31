@@ -1,5 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -64,7 +67,7 @@ namespace Stellamod.Projectiles.Swords.Altride
                 }
                 else
                 {
-                    if (Main.myPlayer == Projectile.owner)
+                    if(Main.myPlayer == Projectile.owner)
                     {
                         int randy = Main.rand.Next(-75, 75);
                         int randx = Main.rand.Next(-75, 75);

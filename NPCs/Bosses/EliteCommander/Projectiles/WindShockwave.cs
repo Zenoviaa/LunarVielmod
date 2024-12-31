@@ -73,19 +73,19 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
                 List<Vector2> shockwavePos = new List<Vector2>();
                 float totalP = (float)i / (float)Projectile.oldPos.Length;
                 totalP = 1f - totalP;
-                for (int s = 0; s < 8; s++)
+                for(int s = 0;s <8; s++)
                 {
                     float p = (float)s / 8f;
                     Vector2 pos = Vector2.Lerp(oldPos, oldPos - Vector2.UnitY * 80 * totalP *
                         VectorHelper.Osc(0.5f, 1f, speed: 6, offset: i * 4) * MathHelper.Clamp(Timer / 30f, 0f, 1f), p);
-                    //
+                   //
                     shockwavePos.Add(pos);
                 }
                 Vector2[] shockPos = shockwavePos.ToArray();
                 Vector2 trailOffset = -Main.screenPosition + Projectile.Size / 2;
                 TrailDrawer.DrawPrims(shockPos, trailOffset, 155);
                 shockwavePos.Clear();
-
+  
                 for (int s = 0; s < 8; s++)
                 {
                     float p = (float)s / 8f;
@@ -96,9 +96,9 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
                 TrailDrawer.DrawPrims(shockPos, trailOffset, 155);
             }
 
-
-
-
+  
+         
+      
             return false;
         }
     }

@@ -2,7 +2,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Items.Accessories.Foods;
+using Stellamod.Items.Ores;
 using Stellamod.NPCs.Colosseum.Common;
+using Stellamod.WorldG;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -99,7 +101,7 @@ namespace Stellamod.NPCs.Colosseum
                 }
             }
         }
-
+        
         private int _frame = 0;
         public override void FindFrame(int frameHeight)
         {

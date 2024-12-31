@@ -4,8 +4,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Dusts
 {
-    public class TSmokeTornadoDust : ModDust
-    {
+	public class TSmokeTornadoDust : ModDust
+	{
         public override void OnSpawn(Dust dust)
         {
             dust.noGravity = true;
@@ -13,7 +13,7 @@ namespace Stellamod.Dusts
             dust.frame = new Rectangle(0, Main.rand.Next(2) * 32, 32, 32);
             dust.rotation = Main.rand.NextFloat(6.28f);
             dust.alpha = 100;
-            //    dust.scale = 0.3f;
+        //    dust.scale = 0.3f;
         }
 
         public override Color? GetAlpha(Dust dust, Color lightColor)

@@ -6,6 +6,7 @@ using Stellamod.Trails;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -151,7 +152,7 @@ namespace Stellamod.Projectiles.Magic
 
             }
 
-            if (ChargeTimer % 9 == 0)
+            if(ChargeTimer % 9 == 0)
             {
                 SoundStyle soundStyle = SoundID.DD2_LightningAuraZap;
                 soundStyle.PitchVariance = 0.2f;
@@ -216,7 +217,7 @@ namespace Stellamod.Projectiles.Magic
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, MathHelper.Lerp(0, 32, chargeProgress));
 
                 //Dust Burst Towards Mouse
-
+            
                 int count = (int)(48f * chargeProgress);
                 for (int k = 0; k < count; k++)
                 {
@@ -260,7 +261,7 @@ namespace Stellamod.Projectiles.Magic
         {
             //Player player = Main.player[Projectile.owner];
             SpriteEffects spriteEffects = SpriteEffects.None;
-
+    
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
@@ -288,7 +289,7 @@ namespace Stellamod.Projectiles.Magic
         {
             string glowTexture = Texture + "_White";
             SpriteEffects spriteEffects = SpriteEffects.None;
-
+  
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D texture = ModContent.Request<Texture2D>(glowTexture).Value;

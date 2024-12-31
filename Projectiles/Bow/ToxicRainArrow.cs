@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.GameContent;
@@ -82,7 +83,7 @@ namespace Stellamod.Projectiles.Bow
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-            //     spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.Green.MultiplyRGB(lightColor), Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+       //     spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.Green.MultiplyRGB(lightColor), Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
             GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.LightningTrail2);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);

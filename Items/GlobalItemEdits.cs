@@ -11,10 +11,10 @@ namespace Stellamod.Items
         public override void SetDefaults(Item entity)
         {
             base.SetDefaults(entity);
-            if (entity.type == ItemID.SDMG)
+            if(entity.type == ItemID.SDMG)
             {
                 entity.damage -= 12;
-            }
+            } 
             else if (entity.type == ItemID.Celeb2)
             {
                 entity.damage -= 20;
@@ -26,7 +26,7 @@ namespace Stellamod.Items
             else if (entity.type == ItemID.LastPrism)
             {
                 entity.damage -= 56;
-            }
+            } 
             else if (entity.type == ItemID.Meowmere)
             {
                 entity.damage -= 40;
@@ -34,7 +34,7 @@ namespace Stellamod.Items
             else if (entity.type == ItemID.LunarFlareBook)
             {
                 entity.damage -= 40;
-            }
+            } 
             else if (entity.type == ItemID.StardustDragonStaff)
             {
                 entity.damage -= 20;

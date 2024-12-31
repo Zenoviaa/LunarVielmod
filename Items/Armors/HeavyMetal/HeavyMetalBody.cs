@@ -1,6 +1,8 @@
+using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.HeavyMetal
 {
@@ -20,6 +22,14 @@ namespace Stellamod.Items.Armors.HeavyMetal
             Item.value = Item.sellPrice(0, 0, 20, 0);
             Item.rare = ItemRarityID.Blue;
             Item.defense = 3;
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemType<GintzlMetal>(), 22);
+            recipe.AddTile(TileID.Anvils);
+            recipe.Register();
         }
     }
 }

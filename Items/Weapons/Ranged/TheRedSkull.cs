@@ -2,6 +2,8 @@
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Magic;
+using Stellamod.Projectiles.Swords;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -20,7 +22,7 @@ namespace Stellamod.Items.Weapons.Ranged
             //Need to have this bow too
             if (Player.HeldItem.type != ModContent.ItemType<TheRedSkull>())
                 return;
-
+            
             //Arrows only
             if (!proj.arrow)
                 return;
@@ -36,22 +38,22 @@ namespace Stellamod.Items.Weapons.Ranged
                 SoundStyle sound = new SoundStyle("Stellamod/Assets/Sounds/Pericarditis");
                 sound.Pitch = MathHelper.Lerp(0f, 1f, hitCount / 3f);
                 SoundEngine.PlaySound(sound, target.position);
-                if (hitCount < 3)
+                if(hitCount < 3)
                 {
                     for (int i = 0; i < 3; i++)
                     {
-                        if (Main.rand.NextBool(4))
+                        if(Main.rand.NextBool(4))
                             Dust.NewDustPerfect(target.Center, ModContent.DustType<SmokeDust>(), (Vector2.One * Main.rand.Next(1, 2)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
                         Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 2)).RotatedByRandom(19.0), 0, Color.Red, 1f).noGravity = true;
                     }
                 }
 
-                if (hitCount == 2)
+                if(hitCount == 2)
                 {
-                    for (float f = 0; f < 16; f++)
+                    for(float f = 0; f < 16; f++)
                     {
                         Vector2 vel = ((f / 16f) * MathHelper.ToRadians(360)).ToRotationVector2() * -4;
-                        Dust.NewDustPerfect(target.Center - vel * 16, ModContent.DustType<GlowDust>(), vel, 0, Color.Red, 1f).noGravity = true;
+                        Dust.NewDustPerfect(target.Center - vel * 16, ModContent.DustType<GlowDust>(),vel, 0, Color.Red, 1f).noGravity = true;
                     }
                 }
 

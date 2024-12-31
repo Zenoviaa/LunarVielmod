@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;

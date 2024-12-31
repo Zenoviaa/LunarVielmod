@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Bow;
 using Terraria;
 using Terraria.Audio;
@@ -44,6 +45,14 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.noMelee = true;
         }
 
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
+            recipe.AddIngredient(ModContent.ItemType<IceWalker>(), 1);
+            recipe.AddIngredient(ItemID.CrystalShard, 5);
+        }
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-2f, 0f);

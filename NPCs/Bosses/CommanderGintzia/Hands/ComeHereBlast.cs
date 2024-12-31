@@ -55,7 +55,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
             Vector2 end = start + direction * Projectile.velocity;
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, width, ref _);
         }
-
+        
         public override void AI()
         {
             base.AI();
@@ -75,7 +75,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 
             foreach (var player in Main.ActivePlayers)
             {
-                if (Colliding(Projectile.getRect(), player.getRect()).Value)
+                if(Colliding(Projectile.getRect(), player.getRect()).Value)
                 {
                     Vector2 suckVelocity = player.Center - Projectile.Center;
                     Vector2 vel = suckVelocity;

@@ -1,8 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -36,7 +40,7 @@ namespace Stellamod.Projectiles.Test
 
         public float WidthFunction(float completionRatio)
         {
-            return Projectile.width * Projectile.scale * MathF.Sin(completionRatio * 2
+            return Projectile.width * Projectile.scale * MathF.Sin(completionRatio * 2 
                 * VectorHelper.Osc(0.9f, 1f, 12)) * VectorHelper.Osc(0.5f, 1f, 12);
         }
 

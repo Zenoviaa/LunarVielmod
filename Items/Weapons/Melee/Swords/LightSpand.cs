@@ -221,7 +221,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
     public class LightSpandStaminaSlash : BaseSwingProjectile
     {
         public override string Texture => this.PathHere() + "/LightSpand";
-
+    
         float ProjTimer;
         public bool Hit;
 

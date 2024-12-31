@@ -1,7 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.Bases;
+﻿using Stellamod.Common.Bases;
+using Stellamod.Projectiles.Crossbows;
+using Stellamod.Projectiles.Crossbows.MerNDungeon;
 using Terraria;
+using Terraria.GameContent.Creative;
+using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
 namespace Stellamod.Items.Weapons.Ranged.Crossbows
 {

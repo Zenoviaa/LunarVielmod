@@ -47,7 +47,7 @@ namespace Stellamod.Common.ArmorShop
 
         public ArmorShopSet FindSet(Item item)
         {
-            foreach (var armor in Armors)
+            foreach(var armor in Armors)
             {
                 if (armor.IsInSet(item))
                     return armor;

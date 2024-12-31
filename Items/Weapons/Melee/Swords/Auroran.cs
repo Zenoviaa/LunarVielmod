@@ -245,7 +245,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
     public class AuroranStaminaSlash : BaseSwingProjectile
     {
         public override string Texture => this.PathHere() + "/Auroran";
-
+    
         float ProjTimer;
         public bool Hit;
         public bool AuroraProj1;

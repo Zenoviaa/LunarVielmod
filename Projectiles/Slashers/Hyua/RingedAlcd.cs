@@ -8,6 +8,7 @@ using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -19,7 +20,7 @@ namespace Stellamod.Projectiles.Slashers.Hyua
         private ref float HitTimer => ref Projectile.ai[1];
         public override void SetStaticDefaults()
         {
-
+          
             ProjectileID.Sets.TrailCacheLength[Type] = 16;
             ProjectileID.Sets.TrailingMode[Type] = 2;
             Main.projFrames[Projectile.type] = 30;
@@ -54,14 +55,14 @@ namespace Stellamod.Projectiles.Slashers.Hyua
             }
 
             NPC nearest = ProjectileHelper.FindNearestEnemy(Projectile.Center, 1024);
-            if (nearest != null)
+            if(nearest != null)
             {
                 //Very weak homing
                 Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearest.Center, 0.5f);
             }
             if (Projectile.velocity.Length() < 25)
                 Projectile.velocity *= 1.1f;
-            if (HitTimer > 0)
+            if(HitTimer > 0)
             {
                 Projectile.velocity = Projectile.velocity.RotatedBy(0.01f);
             }
@@ -105,7 +106,7 @@ namespace Stellamod.Projectiles.Slashers.Hyua
                 float swingRange = MathHelper.TwoPi;
                 float swingXRadius = 64 * buildProgress;
                 float swingYRadius = 8 * buildProgress;
-                float swingProgress = Timer * speed + progress * MathHelper.TwoPi;
+                float swingProgress = Timer * speed  + progress * MathHelper.TwoPi;
 
                 float xOffset = swingXRadius * MathF.Sin(swingProgress * swingRange + swingRange);
                 float yOffset = swingYRadius * MathF.Cos(swingProgress * swingRange + swingRange);

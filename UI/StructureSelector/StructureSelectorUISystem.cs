@@ -1,6 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.UI.ToolsSystem;
 using Stellamod.WorldG.StructureManager;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -40,7 +45,7 @@ namespace Stellamod.UI.StructureSelector
             }
 
 
-            if (Main.LocalPlayer.HeldItem.type == ModContent.ItemType<ModelizingPlacer>())
+            if(Main.LocalPlayer.HeldItem.type == ModContent.ItemType<ModelizingPlacer>())
             {
                 ToggleUI(true);
             }

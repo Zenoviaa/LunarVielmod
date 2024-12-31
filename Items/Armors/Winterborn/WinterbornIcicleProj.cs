@@ -2,7 +2,12 @@
 
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -48,7 +53,7 @@ namespace Stellamod.Items.Armors.Winterborn
         public override void AI()
         {
             Timer++;
-            if (Timer == 1 && Main.myPlayer == Projectile.owner)
+            if(Timer == 1 && Main.myPlayer == Projectile.owner)
             {
                 SoundEngine.PlaySound(SoundID.Item28, Projectile.position);
                 Timer += Main.rand.NextFloat(0, 240);
@@ -56,12 +61,12 @@ namespace Stellamod.Items.Armors.Winterborn
             }
 
             _dustTimer++;
-            if (_dustTimer >= 24)
+            if(_dustTimer >= 24)
             {
                 _dustTimer = 0;
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
                     ModContent.DustType<GunFlash>(), newColor: Color.LightCyan, Scale: 0.6f);
-                Dust.NewDustPerfect(Projectile.position,
+                Dust.NewDustPerfect(Projectile.position, 
                     ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.NextFloat(0.2f, 1f)).RotatedByRandom(19.0), 0, Color.LightCyan, 0.5f).noGravity = true;
             }
 
@@ -101,16 +106,16 @@ namespace Stellamod.Items.Armors.Winterborn
                             float scale = Main.rand.NextFloat(0.5f, 0.75f);
                             Dust.NewDustPerfect(Projectile.Center, DustID.Ice, speed, newColor: Color.White, Scale: scale);
                         }
-
+        
                         Health -= p.damage;
-                        if (Health <= 0)
+                        if(Health <= 0)
                         {
                             Projectile.Kill();
                         }
 
                         SoundEngine.PlaySound(SoundID.Item27, Projectile.position);
                         p.Kill();
-
+                
                     }
                 }
             }
@@ -133,7 +138,7 @@ namespace Stellamod.Items.Armors.Winterborn
 
             SoundEngine.PlaySound(SoundID.Item27, Projectile.position);
             Health -= damageDone;
-            if (Health <= 0)
+            if(Health <= 0)
             {
                 Projectile.Kill();
             }

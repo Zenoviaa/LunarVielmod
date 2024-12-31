@@ -1,10 +1,10 @@
 ﻿
-using Stellamod.Brooches;
 using Stellamod.Buffs.Charms;
 using Stellamod.Common.Bases;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.Brooches;
 
 namespace Stellamod.Items.Accessories.Brooches
 {

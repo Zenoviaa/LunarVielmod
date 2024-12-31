@@ -78,7 +78,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
             Vector2 drawOrigin = texture.Size() / 2f;
             Color drawColor = Color.White.MultiplyRGB(lightColor);
             float drawRotation = Projectile.rotation;
-            float drawScale = _scale + VectorHelper.Osc(-0.015f, 0.015f, speed: 16, offset: Projectile.whoAmI);
+            float drawScale = _scale +  VectorHelper.Osc(-0.015f, 0.015f, speed: 16, offset: Projectile.whoAmI);
 
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             spriteBatch.Draw(texture, drawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);

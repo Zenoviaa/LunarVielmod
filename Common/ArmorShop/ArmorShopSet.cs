@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Mono.Cecil;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -96,20 +97,20 @@ namespace Stellamod.Common.ArmorShop
         {
             var source = player.GetSource_FromThis();
             ArmorShopPlayer armorShopPlayer = player.GetModPlayer<ArmorShopPlayer>();
-            for (int i = 0; i < heads.Count; i++)
+            for(int i = 0; i < heads.Count; i++)
             {
                 Item head = heads[i];
                 player.QuickSpawnItem(source, head.type);
                 armorShopPlayer.PurchasedArmors.Add(head);
             }
 
-            for (int i = 0; i < bodies.Count; i++)
+            for(int i = 0; i < bodies.Count; i++)
             {
                 Item body = bodies[i];
                 player.QuickSpawnItem(source, body.type);
                 armorShopPlayer.PurchasedArmors.Add(body);
             }
-            for (int i = 0; i < legs.Count; i++)
+            for(int i = 0; i < legs.Count; i++)
             {
                 Item leg = legs[i];
                 player.QuickSpawnItem(source, legs[i].type);

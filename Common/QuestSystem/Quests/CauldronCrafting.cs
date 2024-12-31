@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Tools;
 using Terraria;
@@ -30,7 +31,7 @@ namespace Stellamod.Common.QuestSystem.Quests
         public override void StartQuest(Player player)
         {
             base.StartQuest(player);
-            player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<Ivythorn>(), stack: 10);
+            player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<Mushroom>(), stack: 10);
         }
 
         public override void QuestIntroDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)

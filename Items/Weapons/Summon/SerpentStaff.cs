@@ -1,12 +1,24 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Stellamod.Buffs.Minions;
-using Stellamod.Projectiles.Summons.Minions;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Magic;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Stellamod.Items.Weapons.Summon.VehementRhapsody;
+using static Terraria.ModLoader.ModContent;
+using Stellamod.Trails;
+using Terraria.Graphics.Shaders;
+using Stellamod.Projectiles.Summons.Minions;
+using Stellamod.Buffs.Minions;
+using Stellamod.Helpers;
+using System.Collections.Generic;
 
 
 namespace Stellamod.Items.Weapons.Summon
@@ -43,7 +55,7 @@ namespace Stellamod.Items.Weapons.Summon
             Item.value = Item.sellPrice(0, 0, 33, 0);
             Item.rare = ItemRarityID.Purple;
             Item.UseSound = SoundID.Item44;
-
+    
             // These below are needed for a minion weapon
             Item.noMelee = true;
             Item.DamageType = DamageClass.Summon;

@@ -47,13 +47,13 @@ namespace Stellamod.Projectiles.Magic
                     (Vector2.One * Main.rand.NextFloat(0.2f, 1f)).RotatedByRandom(19.0), 0, Color.Purple, 2f).noGravity = true;
 
             }
-            if (Timer == 1)
+            if (Timer==1)
             {
 
 
                 Projectile.spriteDirection = Projectile.direction;
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
-
+  
                 for (int j = 0; j < 10; j++)
                 {
                     Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;
@@ -83,7 +83,7 @@ namespace Stellamod.Projectiles.Magic
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, 
                 ModContent.ProjectileType<Skullboom>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
         }
 
@@ -104,13 +104,13 @@ namespace Stellamod.Projectiles.Magic
                 if (Main.dust[num].position != Projectile.Center)
                     Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
             }
-            for (float f = 0; f < 30; f++)
+            for(float f = 0; f < 30; f++)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
                     (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Purple, Main.rand.NextFloat(1f, 3f)).noGravity = true;
             }
             SoundEngine.PlaySound(SoundID.DD2_SkeletonHurt, Projectile.position);
-            for (float i = 0; i < 4; i++)
+            for (float i = 0; i< 4; i++)
             {
                 float progress = i / 4f;
                 float rot = progress * MathHelper.ToRadians(360);
@@ -122,7 +122,7 @@ namespace Stellamod.Projectiles.Magic
                     baseSize: 0.3f);
                 particle.Rotation = rot + MathHelper.ToRadians(45);
             }
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
                 ModContent.ProjectileType<Skullboom>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
 
         }

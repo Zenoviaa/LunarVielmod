@@ -1,4 +1,5 @@
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -10,10 +11,10 @@ namespace Stellamod.Items.Armors.ForestCore
     {
         public bool Spetalite = false;
         public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Forest Core Helmet");
-            // Tooltip.SetDefault("Increases ranged ramage by 2%");
-        }
+		{
+			// DisplayName.SetDefault("Forest Core Helmet");
+			// Tooltip.SetDefault("Increases ranged ramage by 2%");
+		}
 
         public override void SetDefaults()
         {
@@ -26,7 +27,7 @@ namespace Stellamod.Items.Armors.ForestCore
 
         public override void UpdateEquip(Player player)
         {
-            // player.GetDamage(DamageClass.Ranged) += 0.25f;
+           // player.GetDamage(DamageClass.Ranged) += 0.25f;
             player.GetDamage(DamageClass.Generic).Flat += 2;
         }
 
@@ -44,6 +45,15 @@ namespace Stellamod.Items.Armors.ForestCore
         {
             player.setBonus = LangText.SetBonus(this);//"Summons a forest bow to fight for you!");
             Main.LocalPlayer.GetModPlayer<MyPlayer>().FCArmor = true;
+        }
+
+        public override void AddRecipes() 
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.Wood, 2);
+            recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 3);
+            recipe.AddTile(TileID.WorkBenches);
+            recipe.Register();
         }
     }
 }

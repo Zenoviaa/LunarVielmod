@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
 using System;
 using Terraria;
@@ -93,7 +95,7 @@ namespace Stellamod.Projectiles
                 int dir = (int)Projectile.ai[1];
                 if (!ParticleSpawned)
                 {
-                    ParticleSpawned = true;
+                                                            ParticleSpawned = true;
                 }
 
 
@@ -106,7 +108,7 @@ namespace Stellamod.Projectiles
                 }
                 player.statDefense += 10;
 
-
+             
                 float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft));
                 // the actual rotation it should have
                 float defRot = Projectile.velocity.ToRotation();

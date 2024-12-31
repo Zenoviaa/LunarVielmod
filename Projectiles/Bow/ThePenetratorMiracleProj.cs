@@ -32,7 +32,7 @@ namespace Stellamod.Projectiles.Bow
         {
             Player player = Main.player[Projectile.owner];
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 HoldOffset = Main.rand.NextVector2CircularEdge(48, 48);
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/CrossbowPull");
@@ -49,7 +49,7 @@ namespace Stellamod.Projectiles.Bow
             Projectile.Center = player.Center + holdOffset;
 
             float rotationOffset = MathHelper.Lerp(MathHelper.TwoPi, 0, easedProgress);
-            if (Timer < 44 && Main.myPlayer == Projectile.owner)
+            if(Timer < 44 && Main.myPlayer == Projectile.owner)
             {
                 Rotation = Projectile.Center.DirectionTo(Main.MouseWorld).ToRotation();
                 Rotation += rotationOffset;
@@ -65,19 +65,19 @@ namespace Stellamod.Projectiles.Bow
                 SoundEngine.PlaySound(soundStyle);
             }
 
-            if (Timer == 50)
+            if(Timer == 50)
             {
                 Vector2 velocity = Projectile.rotation.ToRotationVector2() * 15;
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
                     ModContent.ProjectileType<ThePenetratorMiracleArrowProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-
-                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GallinLock2");
+                
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GallinLock2"); 
                 soundStyle.PitchVariance = 0.15f;
                 soundStyle.Volume = 0.5f;
                 soundStyle.Pitch = 0.75f;
                 SoundEngine.PlaySound(soundStyle);
                 Projectile.Kill();
-            }
+            } 
         }
 
         public override void OnKill(int timeLeft)
@@ -93,7 +93,7 @@ namespace Stellamod.Projectiles.Bow
             float progress = Timer / 44;
             float scale = MathHelper.Lerp(1.5f, 1f, progress);
             Color color = Color.Black * progress;
-
+        
 
             float width = 54;
             float height = 82;

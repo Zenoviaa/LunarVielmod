@@ -3,10 +3,10 @@
 namespace Stellamod.Dusts
 {
     public class Solution : ModDust
-    {
-        public override void SetStaticDefaults()
-        {
-            UpdateType = 110;
-        }
-    }
+	{
+		public override void SetStaticDefaults()
+		{
+			UpdateType = 110;
+		}
+	}
 }

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Dusts
 {
     public class RuneDust : ModDust
-    {
+	{
         public override void OnSpawn(Dust dust)
         {
 
@@ -18,17 +18,16 @@ namespace Stellamod.Dusts
         }
 
         public override bool Update(Dust dust)
-        {
-            dust.position += dust.velocity;
-            dust.velocity *= 0.95f;
+		{
+			dust.position += dust.velocity;
+			dust.velocity *= 0.95f;
             Lighting.AddLight(dust.position, Color.DarkRed.ToVector3() * 1f * Main.essScale);
 
             dust.scale *= 0.99f;
-            if (dust.scale < 0.2f)
-            {
-                dust.active = false;
-            }
-            return false;
-        }
-    }
+			if (dust.scale < 0.2f) {
+				dust.active = false;
+			}
+			return false;
+		}
+	}
 }

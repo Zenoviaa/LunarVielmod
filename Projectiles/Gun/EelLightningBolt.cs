@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
@@ -39,7 +41,7 @@ namespace Stellamod.Projectiles.Gun
         {
             base.AI();
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 BeamWidthMultiplier = Main.rand.NextFloat(0.15f, 1f);
             }

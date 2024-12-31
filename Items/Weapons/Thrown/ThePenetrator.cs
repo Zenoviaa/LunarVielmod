@@ -2,7 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Summon;
 using Stellamod.Projectiles.Bow;
+using Stellamod.Projectiles.Swords;
 using Stellamod.Projectiles.Thrown;
 using System.Collections.Generic;
 using Terraria;
@@ -37,7 +40,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.channel = true;
             Item.autoReuse = false;
             Item.UseSound = SoundID.Item1;
-
+    
             Item.shoot = ModContent.ProjectileType<ThePenetratorProj>();
             Item.shootSpeed = 1f;
             Item.noUseGraphic = true;
@@ -148,6 +151,16 @@ namespace Stellamod.Items.Weapons.Thrown
             }
 
             return true;
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.HallowedRepeater, 1)
+                .AddIngredient(ModContent.ItemType<MiracleThread>(), 15)
+                .AddIngredient(ModContent.ItemType<AlcaricMush>(), 4)
+                .AddIngredient(ModContent.ItemType<EldritchSoul>(), 4)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 }

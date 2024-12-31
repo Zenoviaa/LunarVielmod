@@ -1,9 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.ScorpionMountSystem;
+using System;
 using System.Collections.Generic;
-using Terraria;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.ModLoader;
 using Terraria.UI;
+using Terraria;
+using Stellamod.Common.ScorpionMountSystem;
 
 namespace Stellamod.UI.GunHolsterSystem
 {

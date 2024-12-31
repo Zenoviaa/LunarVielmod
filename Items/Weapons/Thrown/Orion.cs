@@ -1,10 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.Projectiles.Thrown;
-using Terraria;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Spears;
 using Terraria.ID;
+using Terraria;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Thrown;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
@@ -43,6 +45,15 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shoot = ModContent.ProjectileType<OrionProj>();
             Item.shootSpeed = 15;
         }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<PureHeart>(), 1);
+            recipe.AddTile(TileID.LunarCraftingStation);
+            recipe.Register();
+        }
+
 
         public override void PostUpdate()
         {

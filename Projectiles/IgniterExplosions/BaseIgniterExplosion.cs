@@ -24,7 +24,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             Main.projFrames[Type] = FrameCount;
         }
 
-
+ 
         public override void SetDefaults()
         {
             base.SetDefaults();

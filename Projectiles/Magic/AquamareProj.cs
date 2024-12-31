@@ -38,7 +38,7 @@ namespace Stellamod.Projectiles.Magic
         public override void AI()
         {
             Timer++;
-            if (Timer % 8 == 0)
+            if(Timer % 8 == 0)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.Aquamarine, Main.rand.NextFloat(1f, 2f)).noGravity = true;
             }

@@ -1,12 +1,17 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
-using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
+﻿using Stellamod.Projectiles.Test;
+using System;
 using System.Collections.Generic;
-using Terraria;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
+using Microsoft.Xna.Framework;
+using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
+using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
 
 namespace Stellamod.Items.Test
 {
@@ -81,7 +86,7 @@ namespace Stellamod.Items.Test
 
         public override bool? UseItem(Player player)
         {
-            if (player.altFunctionUse == 2)
+            if(player.altFunctionUse == 2)
             {
                 _useIndex++;
                 if (_useIndex >= 3)

@@ -1,10 +1,16 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
-using System.IO;
-using Terraria;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria;
+using Stellamod.Helpers;
+using System.IO;
 
 namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 {
@@ -45,7 +51,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
         public override void AI()
         {
             base.AI();
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 BoomerangVelocity = -Projectile.velocity;
             }
@@ -94,7 +100,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
         {
             base.OnKill(timeLeft);
             var source = Projectile.GetSource_FromThis();
-            for (int i = 0; i < 12; i++)
+            for(int i = 0; i < 12; i++)
             {
                 float f = i;
                 float num = 12;

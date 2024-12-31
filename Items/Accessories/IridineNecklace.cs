@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -22,7 +23,7 @@ namespace Stellamod.Items.Accessories
         public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource)
         {
             Player player = Player;
-            if (player.whoAmI == Main.myPlayer
+            if (player.whoAmI == Main.myPlayer 
                 && player.statLife <= 0 && !player.HasBuff<IridineNecklaceCDBuff>() && hasIridineNecklace)
             {
                 Revive(player);
@@ -40,10 +41,10 @@ namespace Stellamod.Items.Accessories
 
             int reviveCooldown = 60 * 60 * 5;
             player.AddBuff(ModContent.BuffType<IridineNecklaceCDBuff>(), reviveCooldown);
-            for (int i = 0; i < 48; i++)
+            for(int i = 0; i < 48; i++)
             {
                 Vector2 velocity = Main.rand.NextVector2CircularEdge(4, 4);
-            }
+                            }
 
             SoundEngine.PlaySound(SoundRegistry.IridineRevive, player.position);
         }

@@ -1,3 +1,4 @@
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -24,6 +25,15 @@ namespace Stellamod.Items.Armors.Astrasilk
         public override void UpdateEquip(Player player)
         {
             player.GetCritChance(DamageClass.Magic) += 15f;
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 14);
+            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 3);
+            recipe.AddTile(TileID.Anvils);
+            recipe.Register();
         }
     }
 }

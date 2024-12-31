@@ -36,7 +36,7 @@ namespace Stellamod.Projectiles.Thrown
         {
             Player owner = Main.player[Projectile.owner];
             Timer++;
-            if (Timer == 44)
+            if(Timer == 44)
             {
                 StartCenter = Projectile.Center;
                 ReturnCenter = owner.Center;
@@ -66,14 +66,14 @@ namespace Stellamod.Projectiles.Thrown
                 }
             }
 
-            if (Timer >= 45)
-            {
+            if(Timer >= 45)
+            {         
                 float returnTime = 45;
                 float progress = (Timer - 45) / returnTime;
                 float easedProgress = Easing.InOutExpo(progress);
                 Projectile.Center = Vector2.Lerp(StartCenter, ReturnCenter, easedProgress);
                 Projectile.rotation += easedProgress * 0.06f;
-                if (easedProgress >= 1f)
+                if(easedProgress >= 1f)
                 {
                     Projectile.Kill();
                 }
@@ -96,12 +96,12 @@ namespace Stellamod.Projectiles.Thrown
 
         public override bool PreDraw(ref Color lightColor)
         {
-            if (Timer >= 45)
+            if(Timer >= 45)
             {
                 DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.VortexTrail);
                 DrawHelper.DrawAdditiveAfterImage(Projectile, Color.DarkGoldenrod * 0.5f, Color.Transparent, ref lightColor);
             }
-
+          
             return base.PreDraw(ref lightColor);
         }
 

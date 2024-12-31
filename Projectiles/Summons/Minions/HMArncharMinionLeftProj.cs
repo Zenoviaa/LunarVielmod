@@ -8,6 +8,7 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
@@ -231,7 +232,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                     {
                         Vector2 velocity = (targetCenter - Projectile.Center).SafeNormalize(Vector2.Zero) * 25;
                         var EntitySource = Projectile.GetSource_Death();
-                        Projectile.NewProjectile(EntitySource, Projectile.Center, velocity,
+                        Projectile.NewProjectile(EntitySource, Projectile.Center, velocity, 
                             ModContent.ProjectileType<GintzeSpearMini>(), Projectile.damage, 1, Projectile.owner, 0, 0);
                         Projectile.ai[1] = 0;
                     }

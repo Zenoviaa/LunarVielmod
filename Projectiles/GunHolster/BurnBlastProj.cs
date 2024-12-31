@@ -97,8 +97,8 @@ namespace Stellamod.Projectiles.GunHolster
             }
 
 
-
-            for (int i = 0; i < Main.rand.Next(2, 7); i++)
+            
+            for(int i = 0; i < Main.rand.Next(2, 7); i++)
             {
                 Vector2 velocity = Projectile.velocity;
                 velocity = -velocity;

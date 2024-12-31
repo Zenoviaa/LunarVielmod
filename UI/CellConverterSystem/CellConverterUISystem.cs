@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items;
+using Stellamod.NPCs.Town;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;

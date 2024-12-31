@@ -50,14 +50,14 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
             _comboIndex++;
-            if (_comboIndex >= 3)
+            if(_comboIndex >= 3)
             {
                 type = ModContent.ProjectileType<JackoShotBombArrow>();
                 _comboIndex = 0;
                 velocity *= 1.5f;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/HeatFeather"), player.position);
             }
-
+  
         }
     }
 }

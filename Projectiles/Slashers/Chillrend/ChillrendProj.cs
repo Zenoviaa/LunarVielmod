@@ -101,7 +101,7 @@ namespace Stellamod.Projectiles.Slashers.Chillrend
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Player player = Main.player[Projectile.owner];
+            Player player = Main.player[Projectile.owner];     
             Vector2 oldMouseWorld = Main.MouseWorld;
             if (!bounced)
             {
@@ -147,15 +147,15 @@ namespace Stellamod.Projectiles.Slashers.Chillrend
 
             if (SwordSlash == null)
             {
-                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass,
-                    (p) => new Vector2(50f),
+                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, 
+                    (p) => new Vector2(50f), 
                     (p) => new Color(Color.White.R, Color.White.G, Color.White.B, 50) * (1f - p));
                 SwordSlash.drawOffset = Projectile.Size / 1.8f;
             }
             if (SwordSlash2 == null)
             {
-                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass,
-                    (p) => new Vector2(90f),
+                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, 
+                    (p) => new Vector2(90f), 
                     (p) => new Color(Color.LightCyan.R, Color.LightCyan.G, Color.LightCyan.B, 40) * (1f - p));
                 SwordSlash2.drawOffset = Projectile.Size / 1.9f;
 
@@ -163,7 +163,7 @@ namespace Stellamod.Projectiles.Slashers.Chillrend
             if (SwordSlash3 == null)
             {
                 SwordSlash3 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass,
-                    (p) => new Vector2(100f),
+                    (p) => new Vector2(100f), 
                     (p) => new Color(Color.Cyan.R, Color.Cyan.G, Color.Cyan.B, 40) * (1f - p));
                 SwordSlash3.drawOffset = Projectile.Size / 2f;
 
