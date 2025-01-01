@@ -3,6 +3,8 @@ using Stellamod.Buffs.Charms;
 using Stellamod.Common.Bases;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -105,6 +107,11 @@ namespace Stellamod.Items.Accessories.Brooches
             Item.rare = ItemRarityID.Green;
             Item.buffType = ModContent.BuffType<Morrow>();
             Item.accessory = true;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBrooch>(), material: ModContent.ItemType<AlcadizScrap>());
         }
     }
 }

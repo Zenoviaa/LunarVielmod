@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Summons.Minions;
 using System;
@@ -57,16 +58,13 @@ namespace Stellamod.Items.Weapons.Summon
             Item.shoot = ModContent.ProjectileType<DripplerMinionProj>();
         }
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemType<TerrorFragments>(), 5);
-			recipe.AddIngredient(ItemType<DarkEssence>(), 10);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
-		}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<TerrorFragments>());
+        }
 
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
             // This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
             player.AddBuff(Item.buffType, 2);

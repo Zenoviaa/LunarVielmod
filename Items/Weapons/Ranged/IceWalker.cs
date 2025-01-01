@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Bow;
 using Terraria;
 using Terraria.Audio;
@@ -57,6 +58,10 @@ namespace Stellamod.Items.Weapons.Ranged
                 type = ModContent.ProjectileType<WinterboundArrow>();
             }
         }
-
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBow>(), material: ModContent.ItemType<WinterbornShard>());
+        }
     }
 }

@@ -421,7 +421,6 @@
     <None Remove="NPCs\TestLaserNPC.png" />
     <None Remove="NPCs\Town\Merena_Head.png" />
     <None Remove="NPCs\Town\Merena_Party.png" />
-    <None Remove="NPCs\Town\Mordred.png" />
     <None Remove="NPCs\Underground\AbandonedMinorSummon.png" />
     <None Remove="NPCs\Underground\FloweredRedLight.png" />
     <None Remove="NPCs\Underground\FloweredWhiteLight.png" />

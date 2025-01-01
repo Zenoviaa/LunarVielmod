@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -48,15 +49,9 @@ namespace Stellamod.Items.Weapons.Mage
         }
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 50);
-            recipe.AddIngredient(ModContent.ItemType<WanderingFlame>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-            recipe.AddIngredient(ItemID.FallenStar, 5);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<AlcadizScrap>());
         }
-
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-5f, 0f);

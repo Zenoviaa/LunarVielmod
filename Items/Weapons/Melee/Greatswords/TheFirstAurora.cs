@@ -16,6 +16,7 @@ using Terraria.ModLoader;
 using Stellamod.Projectiles.Safunai.Alcarish;
 using System.Collections.Generic;
 using System.IO;
+using Stellamod.Items.Materials.Molds;
 
 
 namespace Stellamod.Items.Weapons.Melee.Greatswords
@@ -115,6 +116,10 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
             return false;
         }
 
-        
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<WinterbornShard>());
+        }
     }
 }

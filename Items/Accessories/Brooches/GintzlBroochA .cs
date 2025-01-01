@@ -1,5 +1,7 @@
 ﻿using Stellamod.Buffs.Charms;
 using Stellamod.Common.Bases;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,6 +19,11 @@ namespace Stellamod.Items.Accessories.Brooches
             Item.rare = ItemRarityID.Green;
             Item.buffType = ModContent.BuffType<GintBroo>();
             Item.accessory = true;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBrooch>(), material: ModContent.ItemType<GintzlMetal>());
         }
     }
 }

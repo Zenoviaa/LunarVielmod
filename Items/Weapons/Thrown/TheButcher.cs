@@ -1,5 +1,6 @@
 ﻿using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Thrown;
@@ -46,16 +47,10 @@ namespace Stellamod.Items.Weapons.Thrown
 			Item.noUseGraphic = true;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Ichor, 5);
-			recipe.AddIngredient(ItemID.TissueSample, 5);
-			recipe.AddIngredient(ModContent.ItemType<VerianOre>(), 25);
-			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 25);
-			recipe.AddIngredient(ItemID.ThrowingKnife, 3);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), material: ModContent.ItemType<TerrorFragments>());
+        }
+    }
 }

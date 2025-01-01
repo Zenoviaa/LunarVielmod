@@ -2,6 +2,8 @@
 
 using Stellamod.Buffs.Charms;
 using Stellamod.Common.Bases;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -28,5 +30,11 @@ namespace Stellamod.Items.Accessories.Brooches
             base.UpdateBrooch(player);
             player.frogLegJumpBoost = true;  // Increase ALL player damage by 100%
         }
-	}
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBrooch>(), material: ModContent.ItemType<Ivythorn>());
+        }
+    }
 }

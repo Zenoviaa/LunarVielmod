@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -27,6 +29,11 @@ namespace Stellamod.Items.Accessories
             player.spikedBoots = 2;
             player.iceSkate = true;
             player.statLifeMax2 += 10;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<WinterbornShard>());
         }
     }
 }

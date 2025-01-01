@@ -1,4 +1,6 @@
-﻿using Stellamod.Projectiles;
+﻿using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -34,5 +36,10 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.channel = true;
             Item.noMelee = true;
         }
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBow>(), material: ModContent.ItemType<AlcadizScrap>());
+        }
+    }
 }

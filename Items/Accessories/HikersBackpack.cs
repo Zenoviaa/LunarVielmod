@@ -1,4 +1,6 @@
 ﻿using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -33,6 +35,11 @@ namespace Stellamod.Items.Accessories
 			player.GetDamage(DamageClass.Generic) += 0.03f; // Increase ALL player damage by 100%
 			player.GetModPlayer<MyPlayer>().HikersBCooldown--;
 			player.lifeRegen += 1;
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<Ivythorn>());
+        }
+    }
 }

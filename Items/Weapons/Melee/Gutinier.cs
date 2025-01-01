@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Slashers.Gutinier;
 using System.Collections.Generic;
 using Terraria;
@@ -8,6 +10,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.Items.Ores;
 
 namespace Stellamod.Items.Weapons.Melee
 {
@@ -105,6 +108,11 @@ namespace Stellamod.Items.Weapons.Melee
             Projectile.NewProjectile(source, position, velocity, ProjectileID.ThrowingKnife, damage * 2, knockback, player.whoAmI, 1, dir);
 
             return false;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<GintzlMetal>());
         }
     }
 }

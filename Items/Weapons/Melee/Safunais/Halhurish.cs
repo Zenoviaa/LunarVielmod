@@ -63,7 +63,12 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			Item.DamageType = DamageClass.Melee;
 			Item.damage = 12;
 			Item.rare = ItemRarityID.Blue;
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSafunai>(), material: ModContent.ItemType<AlcadizScrap>());
+        }
+    }
 }
 	

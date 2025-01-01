@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
 using Terraria;
@@ -62,13 +63,9 @@ namespace Stellamod.Items.Weapons.Ranged
             }
         }
         public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Bone, 25);
-			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 3);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<TerrorFragments>());
         }
-	}
+    }
 }

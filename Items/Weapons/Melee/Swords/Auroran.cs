@@ -4,6 +4,8 @@ using Stellamod.Common.Bases;
 using Stellamod.Common.Players;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using Stellamod.Trails;
 using System.Collections.Generic;
@@ -62,6 +64,11 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             maxStaminaCombo = 2;
             //Set stamina projectile
             staminaProjectileShoot = ModContent.ProjectileType<AuroranStaminaSlash>();
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<WinterbornShard>());
         }
     }
 

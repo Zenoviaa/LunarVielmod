@@ -10,6 +10,7 @@ using Stellamod.Projectiles.Swords;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Stellamod.Projectiles;
+using Stellamod.Items.Materials.Molds;
 
 namespace Stellamod.Items.Weapons.Melee
 {
@@ -82,6 +83,11 @@ namespace Stellamod.Items.Weapons.Melee
 
 			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, dir);
 			return false; // return false to prevent original projectile from being shot
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<AlcadizScrap>());
+        }
+    }
 }

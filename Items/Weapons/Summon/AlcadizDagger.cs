@@ -11,6 +11,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.Items.Materials.Molds;
 
 namespace Stellamod.Items.Weapons.Summon
 {
@@ -63,6 +64,11 @@ namespace Stellamod.Items.Weapons.Summon
             var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
             projectile.originalDamage = Item.damage;
             return false;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<AlcadizScrap>());
         }
     }
 }

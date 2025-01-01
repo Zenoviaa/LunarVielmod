@@ -3,7 +3,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Lights;
 using Stellamod.Items.Accessories.Runes;
-
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -103,5 +104,10 @@ namespace Stellamod.Items.Accessories
                     ModContent.ProjectileType<SunGlyphCrown>(), 0, 0, player.whoAmI);
             }
         }
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<GintzlMetal>());
+        }
+    }
 }

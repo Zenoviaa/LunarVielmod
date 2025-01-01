@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
@@ -57,6 +59,11 @@ namespace Stellamod.Items.Weapons.Summon
 			globalProjectile.applyBuffOnHit = true;
 
 			return false;
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankOrb>(), material: ModContent.ItemType<TerrorFragments>());
+        }
+    }
 }

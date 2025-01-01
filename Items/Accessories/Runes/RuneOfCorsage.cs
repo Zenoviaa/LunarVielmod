@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.Bases;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -62,6 +64,11 @@ namespace Stellamod.Items.Accessories.Runes
 
             RuneOfCorsagePlayer runeOfCorsagePlayer = player.GetModPlayer<RuneOfCorsagePlayer>();
             runeOfCorsagePlayer.hasRuneOfCorsage = true;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankRune>(), material: ModContent.ItemType<Ivythorn>());
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Swords;
 using Terraria;
 using Terraria.Audio;
@@ -46,6 +48,11 @@ namespace Stellamod.Items.Weapons.Melee
         {
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
             return false; // return false to prevent original projectile from being shot
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<GintzlMetal>());
         }
     }
 }

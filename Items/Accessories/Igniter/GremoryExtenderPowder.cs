@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Tiles;
 using System.Collections.Generic;
@@ -42,17 +43,12 @@ namespace Stellamod.Items.Accessories.Igniter
 		}
 
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-
-			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 5);
-			recipe.AddRecipeGroup(nameof(ItemID.ShadowScale), 10);
-			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
-			recipe.Register();
-		}
-		public override void SetDefaults()
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<TerrorFragments>());
+        }
+        public override void SetDefaults()
 		{
 			Item.width = 24;
 			Item.height = 28;

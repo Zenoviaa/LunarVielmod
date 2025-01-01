@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.ID;
@@ -42,8 +43,13 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.autoReuse = true;
 			Item.crit = 12;
 			Item.noUseGraphic = true;
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankOrb>(), material: ModContent.ItemType<WinterbornShard>());
+        }
+    }
 }
 
 

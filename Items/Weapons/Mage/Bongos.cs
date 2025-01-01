@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Terraria;
@@ -53,7 +54,12 @@ namespace Stellamod.Items.Weapons.Mage
 		{
 			Projectile.NewProjectile(source, Main.MouseWorld, Vector2.Zero, type, damage, knockback, player.whoAmI, 0f, 0f);
 			return false;
-			
-		}
-	}
+
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<AlcadizScrap>());
+        }
+    }
 }

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Summons.Minions;
 using System;
 using Terraria;
@@ -68,5 +69,10 @@ namespace Stellamod.Items.Weapons.Summon
             // Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
             return false;
         }
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<Ivythorn>());
+        }
+    }
 }

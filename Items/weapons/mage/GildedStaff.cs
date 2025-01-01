@@ -4,6 +4,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Projectiles;
 using Stellamod.Trails;
@@ -60,7 +61,11 @@ namespace Stellamod.Items.Weapons.Mage
         {
             return player.ownedProjectileCounts[Item.shoot] < 1;
         }
-
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<AlcadizScrap>());
+        }
     }
 
 	public class GildedStaffHold : ModProjectile

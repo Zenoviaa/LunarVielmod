@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -52,6 +54,10 @@ namespace Stellamod.Items.Weapons.Mage
         }
 
 
-
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<GintzlMetal>());
+        }
     }
 }
