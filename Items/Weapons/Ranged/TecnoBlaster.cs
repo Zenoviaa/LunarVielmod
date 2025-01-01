@@ -1,4 +1,6 @@
-﻿using Stellamod.Projectiles.Gun;
+﻿using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -43,6 +45,11 @@ namespace Stellamod.Items.Weapons.Ranged
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[Item.shoot] == 0;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<AuroreanStarI>());
         }
     }
 }

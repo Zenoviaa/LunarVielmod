@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.Bases;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Safunai.Parendine;
 using Stellamod.Projectiles.Safunai.Vinger;
 using System.Collections.Generic;
@@ -61,6 +63,11 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
             Item.damage = 35;
             Item.rare = ItemRarityID.Blue;
         }
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSafunai>(), material: ModContent.ItemType<AuroreanStarI>());
+        }
+    }
 }
 	

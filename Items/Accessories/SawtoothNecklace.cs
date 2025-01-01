@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -24,16 +25,11 @@ namespace Stellamod.Items.Accessories
             player.GetArmorPenetration(DamageClass.Generic) += 12;
         }
 
+
         public override void AddRecipes()
         {
             base.AddRecipes();
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.SharkToothNecklace, 1);
-            recipe.AddIngredient(ItemID.SoulofMight, 15);
-            recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 20);
-            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<AuroreanStarI>());
         }
     }
 }

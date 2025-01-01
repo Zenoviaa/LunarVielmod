@@ -878,6 +878,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             soundStyle.PitchVariance = 0.5f;
             SoundEngine.PlaySound(soundStyle, position);
         }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<AuroreanStarI>());
+        }
     }
 
 
@@ -1583,6 +1588,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/TON618");
                 soundStyle.PitchVariance = 0.5f;
                 SoundEngine.PlaySound(soundStyle, position);
+            }
+            public override void AddRecipes()
+            {
+                base.AddRecipes();
+                this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<AuroreanStarI>());
             }
         }
     }

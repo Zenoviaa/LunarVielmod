@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Summons;
@@ -67,15 +68,11 @@ namespace Stellamod.Items.Weapons.Summon
 			return false;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 200);
-            recipe.AddIngredient(ItemID.FallenStar, 10);
-            recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 9);
-			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
-			recipe.Register();
-		}
-	}
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<AuroreanStarI>());
+        }
+    }
 }

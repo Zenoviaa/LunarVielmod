@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Crossbows.Ultras;
 using Stellamod.Projectiles.Magic;
@@ -62,13 +63,9 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<IshtarCandle>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<Relagis>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 250);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<AuroreanStarI>());
         }
-
 
     }
 }

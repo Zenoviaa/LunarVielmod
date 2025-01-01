@@ -20,6 +20,7 @@ using Stellamod.Helpers;
 using Stellamod.Dusts;
 using System.IO;
 using Terraria.Audio;
+using Stellamod.Items.Materials.Molds;
 
 namespace Stellamod.Items.Weapons.Mage
 { 
@@ -101,6 +102,11 @@ namespace Stellamod.Items.Weapons.Mage
 
             return false;
 
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<AuroreanStarI>());
         }
     }
 }
