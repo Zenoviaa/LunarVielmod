@@ -1,5 +1,7 @@
 ﻿using Stellamod.Common.Bases;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Thrown.Jugglers;
 using System.Collections.Generic;
 using Terraria;
@@ -38,6 +40,11 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<StickyCardsProj>();
             Item.shootSpeed = 24;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), material: ModContent.ItemType<PearlescentScrap>());
         }
     }
 }

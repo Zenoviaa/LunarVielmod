@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
@@ -112,15 +114,9 @@ namespace Stellamod.Items.Weapons.Ranged
             return false;
         }
         public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 16);
-			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 4);
-			recipe.AddIngredient(ItemID.Minishark, 1);
-			recipe.Register();
-		}
-
-	}
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<Cinderscrap>());
+        }
+    }
 }

@@ -631,6 +631,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 SoundEngine.PlaySound(soundStyle, position);
             }
         }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<ConvulgingMater>());
+        }
     }
 
     internal class RavestBlast : MiniGun
@@ -922,6 +927,12 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             soundStyle.PitchVariance = 0.5f;
             SoundEngine.PlaySound(soundStyle, position);
         }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<PearlescentScrap>());
+        }
+
     }
 
     internal class Piranha : MiniGun
@@ -1344,8 +1355,13 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                     soundStyle.PitchVariance = 0.5f;
                     SoundEngine.PlaySound(soundStyle);
                 }
-            }
         }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<ConvulgingMater>());
+        }
+    }
 
         internal class Rhino : MiniGun
         {

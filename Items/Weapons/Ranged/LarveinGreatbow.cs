@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Bow;
 using Stellamod.Projectiles.Gun;
 using Terraria;
@@ -47,12 +48,8 @@ namespace Stellamod.Items.Weapons.Ranged
         }
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.BorealWood, 10);
-            recipe.AddIngredient(ItemType<EldritchSoul>(), 12);
-            recipe.AddIngredient(ItemType<StarSilk>(), 5);
-            recipe.AddTile(TileID.Furnaces);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBow>(), material: ModContent.ItemType<ConvulgingMater>());
         }
         public override Vector2? HoldoutOffset()
         {

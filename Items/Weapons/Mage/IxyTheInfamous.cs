@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Projectiles;
@@ -140,13 +141,8 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.AddIngredient(ModContent.ItemType<CinderedLantern>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 22);
-            recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 22);
-            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 50);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<Cinderscrap>());
         }
     }
 }

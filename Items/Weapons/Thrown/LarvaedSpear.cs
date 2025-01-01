@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Thrown;
 using Terraria;
@@ -45,9 +46,13 @@ namespace Stellamod.Items.Weapons.Thrown
 			Item.consumable = false;
 			Item.maxStack = Item.CommonMaxStack;
 		}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), material: ModContent.ItemType<ConvulgingMater>());
+        }
 
-
-	}
+    }
 }
 
 

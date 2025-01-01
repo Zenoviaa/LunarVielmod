@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.ID;
@@ -69,17 +70,10 @@ namespace Stellamod.Items.Weapons.Mage
                 _combo = 0;
             position = Main.MouseWorld;
         }
-
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Bottle, 1);
-            recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 18);
-            recipe.AddRecipeGroup(nameof(ItemID.GoldBar), 10);
-            recipe.AddIngredient(ItemID.SoulofLight, 10);
-            recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 12);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), material: ModContent.ItemType<Cinderscrap>());
         }
     }
 }

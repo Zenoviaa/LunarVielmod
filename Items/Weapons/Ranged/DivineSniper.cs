@@ -1,4 +1,6 @@
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
 using Terraria;
 using Terraria.DataStructures;
@@ -59,6 +61,12 @@ namespace Stellamod.Items.Weapons.Ranged
 				Projectile.NewProjectile(EntitySource, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, Item.knockBack, player.whoAmI);
 			}
 			return false;
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<PearlescentScrap>());
+        }
+
+    }
 }

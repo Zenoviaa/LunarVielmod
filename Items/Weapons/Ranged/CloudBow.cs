@@ -1,4 +1,6 @@
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Bow;
 using Terraria;
 using Terraria.DataStructures;
@@ -71,6 +73,10 @@ namespace Stellamod.Items.Weapons.Ranged
                 return true;
             }
         }
-
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBow>(), material: ModContent.ItemType<PearlescentScrap>());
+        }
     }
 }

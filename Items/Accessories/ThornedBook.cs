@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -33,6 +34,11 @@ namespace Stellamod.Items.Accessories
 			player.GetModPlayer<MyPlayer>().ThornedBook = true;
 			player.GetDamage(DamageClass.Melee) += 0.03f; 
 			player.statDefense -= 5;
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<Cinderscrap>());
+        }
+    }
 }

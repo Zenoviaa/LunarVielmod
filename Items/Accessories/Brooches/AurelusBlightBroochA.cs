@@ -2,6 +2,8 @@
 
 using Stellamod.Buffs.Charms;
 using Stellamod.Common.Bases;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -21,6 +23,11 @@ namespace Stellamod.Items.Accessories.Brooches
 			Item.rare = ItemRarityID.Green;
 			Item.buffType = ModContent.BuffType<AurelusB>();
 			Item.accessory = true;
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBrooch>(), material: ModContent.ItemType<ConvulgingMater>());
+        }
+    }
 }

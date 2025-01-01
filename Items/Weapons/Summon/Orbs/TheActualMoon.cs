@@ -82,12 +82,8 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
 
         public override void AddRecipes()
         {
-            CreateRecipe(1)
-                 .AddIngredient(ModContent.ItemType<BlankOrb>(), 1)
-                 .AddIngredient(ModContent.ItemType<PearlescentScrap>(), 15)
-                 .AddTile(TileID.Anvils)
-                 .Register();
-
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankOrb>(), material: ModContent.ItemType<PearlescentScrap>());
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Common.Lights;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -29,6 +31,11 @@ namespace Stellamod.Items.Accessories
             }
 
             Lighting.AddLight(player.position, Color.LightSkyBlue.ToVector3() * 2f);
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<ConvulgingMater>());
         }
     }
 }

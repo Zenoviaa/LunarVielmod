@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Terraria;
 using Terraria.ID;
@@ -32,11 +34,7 @@ namespace Stellamod.Items.Accessories
         public override void AddRecipes()
         {
             base.AddRecipes();
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 15);
-            recipe.AddRecipeGroup(nameof(ItemID.ShadowScale), 10);
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
-            recipe.Register();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<Cinderscrap>());
         }
     }
  }

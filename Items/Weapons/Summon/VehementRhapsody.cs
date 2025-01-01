@@ -17,6 +17,7 @@ using Stellamod.Trails;
 using Terraria.Graphics.Shaders;
 using Stellamod.Projectiles.Summons.Minions;
 using Stellamod.Buffs.Minions;
+using Stellamod.Items.Materials.Molds;
 
 
 namespace Stellamod.Items.Weapons.Summon
@@ -103,14 +104,11 @@ namespace Stellamod.Items.Weapons.Summon
 			return true;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 50);
-			recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 5);
-			recipe.AddTile(TileID.Hellforge);
-			recipe.Register();
-		}
-	}
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<Cinderscrap>());
+        }
+    }
 }

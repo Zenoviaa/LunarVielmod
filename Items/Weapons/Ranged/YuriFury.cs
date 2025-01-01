@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Bow;
@@ -51,14 +52,8 @@ namespace Stellamod.Items.Weapons.Ranged
         }
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<ArchariliteEnergyShot>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 50);
-            recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<VeroshotBow>(), 1);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBow>(), material: ModContent.ItemType<Cinderscrap>());
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {

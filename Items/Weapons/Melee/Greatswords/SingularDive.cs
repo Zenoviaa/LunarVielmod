@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Gun;
@@ -151,16 +152,12 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
             return false;
 		}
 
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-			recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 20);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 10);
-			recipe.Register();
-		}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<ConvulgingMater>());
+        }
 
 
-	}
+    }
 }

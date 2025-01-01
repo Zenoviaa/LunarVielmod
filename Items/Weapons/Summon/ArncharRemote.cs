@@ -2,7 +2,9 @@
 
 using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Minions;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Summons.Minions;
 using Terraria;
@@ -52,16 +54,12 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.shoot = ModContent.ProjectileType<ArncharMinionProj>();
 		}
 
-		public override void AddRecipes()
-		{
-            Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 11);
-			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 2);
-			recipe.AddTile(TileID.Furnaces);
-			recipe.Register();
-		}
-
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<Cinderscrap>());
+        }
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
 			player.AddBuff(Item.buffType, 2);

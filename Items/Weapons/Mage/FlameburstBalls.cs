@@ -1,4 +1,6 @@
-﻿using Stellamod.Items.Materials;
+﻿using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.ID;
@@ -43,25 +45,15 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.crit = 2;
 			Item.noUseGraphic = true;
 		}
-		
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.HellstoneBar, 10);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 10);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-	
-			Recipe recipe2 = CreateRecipe();
-			recipe2.AddIngredient(ItemID.Flamelash, 1);
-			recipe2.AddTile(TileID.Anvils);
-			recipe2.Register();
-			recipe2.AddIngredient(ModContent.ItemType<EvasiveBalls>(), 1);
-			
-		}
-	}
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankOrb>(), material: ModContent.ItemType<Cinderscrap>());
+        }
+
+    }
 }
 
 
