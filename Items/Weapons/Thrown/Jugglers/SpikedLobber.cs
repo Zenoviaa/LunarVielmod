@@ -1,4 +1,6 @@
 ﻿using Stellamod.Common.Bases;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Thrown.Jugglers;
 using Terraria;
 using Terraria.ID;
@@ -35,6 +37,11 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<SpikedLobberProj>();
             Item.shootSpeed = 28;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), material: ModContent.ItemType<GintzlMetal>());
         }
     }
 }

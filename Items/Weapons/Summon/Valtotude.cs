@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Runes;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
 using Stellamod.Projectiles.Summons;
@@ -59,7 +60,12 @@ namespace Stellamod.Items.Weapons.Summon
 			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position
 			position = Main.MouseWorld;
 		}
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<GintzlMetal>());
+        }
+    }
 
 	public class WindPortal : BaseWindProjectile
     {

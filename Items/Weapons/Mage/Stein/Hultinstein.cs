@@ -2,7 +2,9 @@
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Nails;
 using Stellamod.Projectiles.Steins;
 using System.Collections.Generic;
@@ -101,6 +103,11 @@ namespace Stellamod.Items.Weapons.Mage.Stein
 				Item.shoot = ModContent.ProjectileType<HultFist>();
 			}
 			return false;
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStein>(), material: ModContent.ItemType<GintzlMetal>());
+        }
+    }
 }

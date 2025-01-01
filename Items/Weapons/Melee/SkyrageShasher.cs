@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Swords;
 using Terraria;
@@ -86,6 +87,10 @@ namespace Stellamod.Items.Weapons.Melee
 			proj.netUpdate = true;
 			return false;
 		}
-		
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<PearlescentScrap>());
+        }
+    }
 }

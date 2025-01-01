@@ -1,6 +1,8 @@
 
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Thrown;
 using Terraria;
 using Terraria.ID;
@@ -40,6 +42,11 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shoot = ModContent.ProjectileType<CleanestCleaverProg>();
             Item.shootSpeed = 15f;
             Item.rare = ItemRarityID.Blue;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), material: ModContent.ItemType<GintzlMetal>());
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Thrown;
 using Terraria;
@@ -42,12 +44,8 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe(3);
-            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 5);
-            recipe.AddIngredient(ModContent.ItemType<UnknownCircuitry>(), 5);
-            recipe.AddIngredient(ModContent.ItemType<BrokenTech>(), 3);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankOrb>(), material: ModContent.ItemType<Cinderscrap>());
         }
 
         public override Vector2? HoldoutOffset()

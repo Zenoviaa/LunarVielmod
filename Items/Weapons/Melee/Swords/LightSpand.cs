@@ -2,6 +2,8 @@ using Microsoft.Xna.Framework;
 using Stellamod.Common.Bases;
 using Stellamod.Common.Players;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
 using Stellamod.Trails;
 using System.Collections.Generic;
@@ -54,6 +56,11 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             maxStaminaCombo = 2;
             //Set stamina projectile
             staminaProjectileShoot = ModContent.ProjectileType<LightSpandStaminaSlash>();
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<AlcadizScrap>());
         }
     }
 

@@ -8810,3 +8810,18 @@ AncientLunarStone: {
 	Tooltip: ""
 	DisplayName: Ancient Lunar Stone
 }
+
+CrowEggStaff: {
+	DisplayName: Crow Egg Staff
+	Tooltip: ""
+}
+
+WillowOfTheSouls: {
+	DisplayName: Willow Of The Souls
+	Tooltip: ""
+}
+
+SpringGrassBlock: {
+	DisplayName: Spring Grass Block
+	Tooltip: ""
+}

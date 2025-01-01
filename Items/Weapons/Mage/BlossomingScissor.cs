@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Slashers.Voyager;
 using Terraria;
@@ -53,6 +55,11 @@ namespace Stellamod.Items.Weapons.Mage
 			//	Item.shoot = ModContent.ProjectileType<FrostSwProj>();
 
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<MiracleThread>());
+        }
+    }
 }

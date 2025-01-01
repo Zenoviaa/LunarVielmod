@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Shields;
 using Terraria;
 using Terraria.DataStructures;
@@ -53,6 +54,11 @@ namespace Stellamod.Items.Weapons.Melee.Shields
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
             return false;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankShield>(), material: ModContent.ItemType<Ivythorn>());
         }
     }
 }

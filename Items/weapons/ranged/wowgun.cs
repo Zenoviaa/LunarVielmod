@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles;
 using Terraria;
@@ -58,6 +59,11 @@ namespace Stellamod.Items.Weapons.Ranged
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(2f, -2f);
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<AlcadizScrap>());
+        }
+    }
 }

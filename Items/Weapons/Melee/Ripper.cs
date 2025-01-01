@@ -4,6 +4,7 @@ using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Magic;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Projectiles.Swords.Ripper;
@@ -183,16 +184,11 @@ namespace Stellamod.Items.Weapons.Melee
 			}
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
-	
-		public override void AddRecipes()
+
+        public override void AddRecipes()
         {
-            CreateRecipe()
-                .AddIngredient(ItemID.SkyFracture, 1)
-                .AddIngredient(ModContent.ItemType<MiracleThread>(), 15)
-                .AddIngredient(ModContent.ItemType<AlcaricMush>(), 4)
-                .AddIngredient(ModContent.ItemType<EldritchSoul>(), 4)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<MiracleThread>());
         }
     }
 }

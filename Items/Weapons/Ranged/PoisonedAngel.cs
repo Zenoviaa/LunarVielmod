@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles;
 using System.Collections.Generic;
@@ -67,18 +68,13 @@ namespace Stellamod.Items.Weapons.Ranged
 			return new Vector2(2f, -2f);
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 12);
-			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 50);
-			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 20);
-			recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 10);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-		}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), material: ModContent.ItemType<VirulentPlating>());
+        }
 
-	}
+    }
 }
 
 

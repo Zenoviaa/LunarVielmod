@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -28,21 +29,13 @@ namespace Stellamod.Items.Accessories
 
 
 		}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<VirulentPlating>());
+        }
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<CharmofRot>(), 1);
-            recipe.AddIngredient(ItemID.SoulofSight, 15);
-            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
-
-		public override void UpdateAccessory(Player player, bool hideVisual)
+        public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.GetDamage(DamageClass.Summon) += 0.10f; 
 			player.maxMinions += 2;

@@ -1,4 +1,6 @@
-﻿using Terraria;
+﻿using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials.Molds;
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -39,6 +41,11 @@ namespace Stellamod.Items.Accessories
 
 
 
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<Cinderscrap>());
+        }
 
-	}
+    }
 }

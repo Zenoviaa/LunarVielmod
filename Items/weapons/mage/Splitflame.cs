@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -38,6 +40,11 @@ namespace Stellamod.Items.Weapons.Mage
             Item.shootSpeed = 4f;
             Item.autoReuse = true;
             Item.crit = 7;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<Cinderscrap>());
         }
     }
 

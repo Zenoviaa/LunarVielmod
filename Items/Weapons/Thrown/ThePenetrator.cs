@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Projectiles.Bow;
 using Stellamod.Projectiles.Swords;
@@ -154,13 +155,8 @@ namespace Stellamod.Items.Weapons.Thrown
         }
         public override void AddRecipes()
         {
-            CreateRecipe()
-                .AddIngredient(ItemID.HallowedRepeater, 1)
-                .AddIngredient(ModContent.ItemType<MiracleThread>(), 15)
-                .AddIngredient(ModContent.ItemType<AlcaricMush>(), 4)
-                .AddIngredient(ModContent.ItemType<EldritchSoul>(), 4)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), material: ModContent.ItemType<MiracleThread>());
         }
     }
 }

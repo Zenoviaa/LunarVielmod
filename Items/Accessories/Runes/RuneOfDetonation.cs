@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.Bases;
 using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.IgniterExplosions;
 using Terraria;
 using Terraria.Audio;
@@ -111,6 +113,11 @@ namespace Stellamod.Items.Accessories.Runes
         {
             RuneOfDetonationPlayer detonationPlayer = player.GetModPlayer<RuneOfDetonationPlayer>();
             detonationPlayer.hasDetonationRune = true;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankRune>(), material: ModContent.ItemType<Cinderscrap>());
         }
     }
 }

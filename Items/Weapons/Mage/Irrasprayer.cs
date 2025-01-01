@@ -11,6 +11,8 @@ using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Stellamod.Projectiles.Gun;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Mage
 {
@@ -51,6 +53,11 @@ namespace Stellamod.Items.Weapons.Mage
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-16, 0);
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<VirulentPlating>());
         }
     }
 }

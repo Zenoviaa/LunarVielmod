@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Spears;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -52,6 +54,11 @@ namespace Stellamod.Items.Weapons.Melee.Spears
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-3f, -2f);
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<Cinderscrap>());
         }
     }
 }

@@ -15,6 +15,7 @@ using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Materials;
 using Stellamod.Buffs.Minions;
 using Stellamod.Projectiles.Summons.Minions;
+using Stellamod.Items.Materials.Molds;
 
 namespace Stellamod.Items.Weapons.Summon
 {
@@ -65,13 +66,8 @@ namespace Stellamod.Items.Weapons.Summon
 
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Wire, 100);
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 5);
-            recipe.AddIngredient(ModContent.ItemType<DriveConstruct>(), 20);
-            recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 20);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<VirulentPlating>());
         }
     }
 }

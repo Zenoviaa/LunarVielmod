@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
@@ -26,6 +28,11 @@ namespace Stellamod.Items.Accessories
                     ModContent.ProjectileType<IllurianLoveLocketStarProj>(), 150, 1, player.whoAmI);
                 _starTimer = 10;
             }
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<IllurineScale>());
         }
     }
 }

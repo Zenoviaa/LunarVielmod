@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.Audio;
@@ -62,6 +63,11 @@ namespace Stellamod.Items.Weapons.Mage
         {
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai0: 0, ai1: 1, ai2: 15);
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<AuroreanStarI>());
         }
     }
 }

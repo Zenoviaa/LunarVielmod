@@ -1,5 +1,6 @@
 ﻿using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Stellamod.Tiles;
@@ -46,6 +47,11 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.shootSpeed = 10f;
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<GintzlMetal>());
+        }
+    }
 }

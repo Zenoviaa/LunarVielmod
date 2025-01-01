@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -32,6 +33,11 @@ namespace Stellamod.Items.Accessories
 			player.GetDamage(DamageClass.Generic) += 0.03f;
             player.GetCritChance(DamageClass.Generic) += 3f;
             player.lifeRegen += 1;
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<Ivythorn>());
+        }
+    }
 }

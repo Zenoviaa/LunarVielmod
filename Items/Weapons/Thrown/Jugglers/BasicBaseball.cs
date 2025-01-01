@@ -1,4 +1,6 @@
 ﻿using Stellamod.Common.Bases;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Thrown.Jugglers;
 using Terraria;
 using Terraria.ID;
@@ -33,6 +35,11 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<BasicBaseballProj>();
             Item.shootSpeed = 24;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), material: ModContent.ItemType<Mushroom>());
         }
     }
 }

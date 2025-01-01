@@ -1,5 +1,6 @@
 ﻿using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Thrown;
 using Terraria;
@@ -48,23 +49,12 @@ namespace Stellamod.Items.Weapons.Thrown
 		}
 
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Ectoplasm, 35);
-			recipe.AddIngredient(ItemID.SoulofFlight, 35);
-			recipe.AddIngredient(ItemID.SoulofFright, 35);
-			recipe.AddIngredient(ItemID.SoulofSight, 35);
-			recipe.AddIngredient(ItemID.SoulofMight, 35);
-			recipe.AddIngredient(ItemID.SoulofLight, 35);
-			recipe.AddIngredient(ItemID.SoulofNight, 35);
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 35);
-			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 35);
-			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 35);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), material: ModContent.ItemType<AuroreanStarI>());
+        }
+    }
 }
 
 

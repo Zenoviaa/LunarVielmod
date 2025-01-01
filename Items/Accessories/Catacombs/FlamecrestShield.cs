@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.NPCs.Catacombs.Fire;
 using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
 using Stellamod.Particles;
@@ -140,6 +142,11 @@ namespace Stellamod.Items.Accessories.Catacombs
             player.ClearBuff(BuffID.ShadowFlame);
             player.ClearBuff(BuffID.CursedInferno);
             player.ClearBuff(BuffID.Burning);
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankShield>(), material: ModContent.ItemType<Cinderscrap>());
         }
     }
 }

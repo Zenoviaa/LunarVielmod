@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.Bases;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Safunai.Alcarish;
 using System.Collections.Generic;
 using System.IO;
@@ -60,6 +62,12 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			Item.rare = ItemRarityID.Blue;
 			Item.value = 10000;
 		}
-	}
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSafunai>(), material: ModContent.ItemType<GintzlMetal>());
+        }
+    }
 }
 	

@@ -2,6 +2,7 @@
 using Mono.Cecil;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Bow;
 using Stellamod.Projectiles.Swords;
@@ -56,16 +57,9 @@ namespace Stellamod.Items.Weapons.Ranged
         }
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-
-            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 50);
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<Cinderscrap>());
         }
-
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (player.GetModPlayer<MyPlayer>().ArchariliteSC)

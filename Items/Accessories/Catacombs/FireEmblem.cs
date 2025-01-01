@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
 using Terraria;
@@ -77,6 +79,11 @@ namespace Stellamod.Items.Accessories.Catacombs
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<FireEmblemPlayer>().hasFireEmblem = true;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<AlcadizScrap>());
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Stellamod.Projectiles;
+﻿using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -34,6 +36,11 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shoot = ModContent.ProjectileType<HornetLob>();
             Item.shootSpeed = 14f;
             Item.rare = ItemRarityID.Blue;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), material: ModContent.ItemType<AlcadizScrap>());
         }
     }
 }

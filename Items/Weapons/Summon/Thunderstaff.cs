@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Minions;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Summons.Minions;
 using Terraria;
 using Terraria.Audio;
@@ -85,6 +86,11 @@ namespace Stellamod.Items.Weapons.Summon
                 }
             }
             return true;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<IllurineScale>());
         }
     }
 }

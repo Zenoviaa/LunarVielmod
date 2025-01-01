@@ -22,7 +22,6 @@ using Stellamod.Items.Weapons.Melee.Greatswords;
 using Stellamod.Items.Weapons.Melee.Spears;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Ranged.Crossbows;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
@@ -57,8 +56,6 @@ namespace Stellamod.WorldG
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
             //We don't need this for now
-            return;
-
             int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Lakes"));
             int RoyalGen = tasks.FindIndex(genpass => genpass.Name.Equals("Corruption"));
 
@@ -3127,7 +3124,7 @@ namespace Stellamod.WorldG
                                     break;
 
                                 case 5:
-                                    itemsToAdd.Add((ModContent.ItemType<IronCrossbow>(), Main.rand.Next(1, 1)));
+                                 //   itemsToAdd.Add((ModContent.ItemType<IronCrossbow>(), Main.rand.Next(1, 1)));
                                     itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
                                     itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
                                     itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 3)));
@@ -3613,7 +3610,7 @@ namespace Stellamod.WorldG
                                 break;
 
                             case 8:
-                       
+
                                 itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                                 itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
                                 itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
@@ -4063,7 +4060,7 @@ namespace Stellamod.WorldG
                                 itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
                                 break;
                             case 3:
-                                itemsToAdd.Add((ModContent.ItemType<TON618Crossbow>(), Main.rand.Next(1, 1)));
+                           //     itemsToAdd.Add((ModContent.ItemType<TON618Crossbow>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
                                 itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
                                 itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
@@ -4231,7 +4228,7 @@ namespace Stellamod.WorldG
                                 itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
                                 break;
                             case 3:
-                                itemsToAdd.Add((ModContent.ItemType<TON618Crossbow>(), Main.rand.Next(1, 1)));
+                             //   itemsToAdd.Add((ModContent.ItemType<TON618Crossbow>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
                                 itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
                                 itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));

@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Bases;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -138,6 +140,11 @@ namespace Stellamod.Items.Accessories.Runes
                 Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
                     ModContent.ProjectileType<RuneOfStealthGlow>(), 0, 0, player.whoAmI);
             }
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankRune>(), material: ModContent.ItemType<TerrorFragments>());
         }
     }
 }

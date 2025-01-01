@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Gun;
@@ -39,17 +40,11 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.autoReuse = true;
             Item.noMelee = true;
         }
-
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 5);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<VirulentPlating>());
         }
-
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-5, 0);

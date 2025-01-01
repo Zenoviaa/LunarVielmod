@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,13 +18,8 @@ namespace Stellamod.Items.Accessories
         }
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.FallenStar, 5);
-            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<WanderingFlame>(), 25);
-            recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 10);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<AuroreanStarI>());
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {

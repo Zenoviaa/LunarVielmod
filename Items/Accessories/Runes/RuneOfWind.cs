@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.Bases;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Graphics.Shaders;
@@ -163,6 +165,11 @@ namespace Stellamod.Items.Accessories.Runes
                 Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
                     ModContent.ProjectileType<RuneOfWindShield>(), 0, 0, player.whoAmI);
             }
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankRune>(), material: ModContent.ItemType<GintzlMetal>());
         }
     }
 }

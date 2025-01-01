@@ -4,6 +4,7 @@ using Stellamod.Buffs.Charms;
 using Stellamod.Common.Bases;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 using Stellamod.Tiles;
 using System.Collections.Generic;
 using Terraria;
@@ -24,6 +25,11 @@ namespace Stellamod.Items.Accessories.Brooches
 			Item.rare = ItemRarityID.Blue;
 			Item.accessory = true;
 			Item.buffType = ModContent.BuffType<SandyB>();
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBrooch>(), material: ModContent.ItemType<GintzlMetal>());
+        }
+    }
 }

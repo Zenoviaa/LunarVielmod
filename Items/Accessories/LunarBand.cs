@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework;
 using Stellamod.Particles;
 
 using Stellamod.Helpers;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Accessories
 {
@@ -41,6 +43,11 @@ namespace Stellamod.Items.Accessories
             }
 
             player.GetCritChance(DamageClass.Generic) += 8;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<ConvulgingMater>());
         }
     }
 }

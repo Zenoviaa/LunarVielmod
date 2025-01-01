@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -56,6 +57,11 @@ namespace Stellamod.Items.Weapons.Melee
 			// Inflict the OnFire debuff for 1 second onto any NPC/Monster that this hits.
 			// 60 frames = 1 second
 			target.AddBuff(BuffID.OnFire, 20);
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<AlcadizScrap>());
+        }
+    }
 }

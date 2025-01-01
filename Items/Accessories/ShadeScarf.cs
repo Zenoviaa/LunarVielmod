@@ -1,5 +1,6 @@
 ﻿using Stellamod.Items.Accessories.Players;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -25,18 +26,12 @@ namespace Stellamod.Items.Accessories
 			Item.accessory = true;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<Steali>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
-			recipe.AddTile(TileID.TinkerersWorkbench);
-			recipe.Register();
-		}
-
-		public override void UpdateAccessory(Player player, bool hideVisual)
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<PearlescentScrap>());
+        }
+        public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			base.UpdateAccessory(player, hideVisual);
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();

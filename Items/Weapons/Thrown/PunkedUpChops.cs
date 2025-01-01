@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Thrown;
 using Terraria;
@@ -37,18 +38,12 @@ namespace Stellamod.Items.Weapons.Thrown
 			Item.consumable = true;
 			Item.maxStack = 9999;
 		}
-
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe(250);
-			recipe.AddIngredient(ItemID.Cog, 5);
-			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 2);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), material: ModContent.ItemType<VirulentPlating>());
+        }
+    }
 }
 
 

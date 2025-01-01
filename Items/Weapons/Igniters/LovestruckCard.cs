@@ -1,4 +1,7 @@
-﻿using Terraria;
+﻿using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
@@ -21,6 +24,11 @@ namespace Stellamod.Items.Weapons.Igniters
         {
 
             return 2;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankCard>(), material: ModContent.ItemType<TerrorFragments>());
         }
     }
 }

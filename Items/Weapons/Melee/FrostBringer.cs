@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.Bases;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Slashers.FrostBringer;
 using Stellamod.Projectiles.Slashers.Swords;
 using Stellamod.Projectiles.Swords;
@@ -50,6 +51,11 @@ namespace Stellamod.Items.Weapons.Melee
                 player.whoAmI, 0, dir);
      
             return false;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<WinterbornShard>());
         }
     }
 }

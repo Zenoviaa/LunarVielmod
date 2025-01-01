@@ -2,6 +2,7 @@
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Magic;
 using Stellamod.Projectiles.Slashers.NiceBuster;
 using Stellamod.Projectiles.Swords;
@@ -82,12 +83,9 @@ namespace Stellamod.Items.Weapons.Melee
         }
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<AlcaricMush>(), 25);
-            recipe.AddIngredient(ItemType<IshtarCandle>(), 1);
-            recipe.AddIngredient(ItemType<Curlistine>(), 1);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<AuroreanStarI>());
         }
+
     }
 }

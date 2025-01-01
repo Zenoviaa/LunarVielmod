@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.ID;
@@ -44,29 +45,12 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.noUseGraphic = true;
 		}
 
-	
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Ectoplasm, 10);
-			recipe.AddIngredient(ItemID.CrystalSerpent, 1);
-			recipe.AddIngredient(ItemID.CrystalBall, 1);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 10);
-
-
-
-			Recipe recipe2 = CreateRecipe();
-			recipe2.AddIngredient(ItemID.Ectoplasm, 10);
-			recipe2.AddIngredient(ItemID.RainbowRod, 1);
-			recipe2.AddTile(TileID.MythrilAnvil);
-			recipe2.Register();
-			recipe2.AddIngredient(ModContent.ItemType<FlameburstBalls>(), 1);
-			
-		}
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankOrb>(), material: ModContent.ItemType<KaleidoscopicInk>());
+        }
+    }
 }
 
 

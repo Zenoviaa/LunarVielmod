@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Nails;
 using Terraria;
 using Terraria.DataStructures;
@@ -83,6 +85,11 @@ namespace Stellamod.Items.Weapons.Ranged
 			}
 			return false;
 
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+			this.RegisterBrew(mold: ModContent.ItemType<BlankShield>(), material: ModContent.ItemType<TerrorFragments>());
+        }
+    }
 }

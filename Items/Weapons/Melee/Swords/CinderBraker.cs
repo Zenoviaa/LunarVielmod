@@ -2,6 +2,8 @@
 using Stellamod.Common.Bases;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
@@ -64,6 +66,11 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             maxStaminaCombo = 1;
             //Set stamina projectile
             staminaProjectileShoot = ModContent.ProjectileType<CinderBreakerStaminaSlash>();
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<Cinderscrap>());
         }
     }
 

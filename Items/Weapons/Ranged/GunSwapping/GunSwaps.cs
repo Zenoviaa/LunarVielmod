@@ -4,6 +4,8 @@ using Mono.Cecil;
 
 using Stellamod.Gores;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Particles;
 using Stellamod.Projectiles.Gun;
 using Stellamod.Projectiles.GunHolster;
@@ -13,6 +15,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.Items.Ores;
 
 namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 {
@@ -249,6 +252,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 }
             }
         }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<GintzlMetal>());
+        }
     }
 
     internal class BurnBlast : MiniGun
@@ -419,6 +427,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             soundStyle.PitchVariance = 0.5f;
             SoundEngine.PlaySound(soundStyle, position);
         }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<WinterbornShard>());
+        }
     }
 
     internal class MsFreeze : MiniGun
@@ -467,6 +480,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunLaser");
             soundStyle.PitchVariance = 0.5f;
             SoundEngine.PlaySound(soundStyle, position);
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<IllurineScale>());
         }
     }
 
@@ -617,6 +635,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 soundStyle.PitchVariance = 0.5f;
                 SoundEngine.PlaySound(soundStyle, position);
             }
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<ConvulgingMater>());
         }
     }
 
@@ -860,6 +883,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             soundStyle.PitchVariance = 0.5f;
             SoundEngine.PlaySound(soundStyle, position);
         }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<AuroreanStarI>());
+        }
     }
 
 
@@ -909,6 +937,12 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             soundStyle.PitchVariance = 0.5f;
             SoundEngine.PlaySound(soundStyle, position);
         }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<PearlescentScrap>());
+        }
+
     }
 
     internal class Piranha : MiniGun
@@ -1156,6 +1190,12 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 player.GetModPlayer<MyPlayer>().ShakeAtPosition(position, 1024f, 16f);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/gun1"), position);
             }
+
+            public override void AddRecipes()
+            {
+                base.AddRecipes();
+                this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<TerrorFragments>());
+            }
         }
 
 
@@ -1325,8 +1365,13 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                     soundStyle.PitchVariance = 0.5f;
                     SoundEngine.PlaySound(soundStyle);
                 }
-            }
         }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<ConvulgingMater>());
+        }
+    }
 
         internal class Rhino : MiniGun
         {
@@ -1421,6 +1466,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 }
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/gun1"), position);
             }
+            public override void AddRecipes()
+            {
+                base.AddRecipes();
+                this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<VirulentPlating>());
+            }
         }
 
         internal class TheReaving : MiniGun
@@ -1491,6 +1541,12 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                     }
                 }
             }
+
+            public override void AddRecipes()
+            {
+                base.AddRecipes();
+                this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<VirulentPlating>());
+            }
         }
 
         internal class AzureWrath : MiniGun
@@ -1537,6 +1593,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/TON618");
                 soundStyle.PitchVariance = 0.5f;
                 SoundEngine.PlaySound(soundStyle, position);
+            }
+            public override void AddRecipes()
+            {
+                base.AddRecipes();
+                this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<AuroreanStarI>());
             }
         }
     }

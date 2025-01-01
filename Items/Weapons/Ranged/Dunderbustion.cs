@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Bow;
 using Stellamod.Projectiles.Gun;
 using Terraria;
@@ -86,7 +88,11 @@ namespace Stellamod.Items.Weapons.Ranged
 
             return false;
         }
-
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<GintzlMetal>());
+        }
 
     }
 }

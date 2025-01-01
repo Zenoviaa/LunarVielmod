@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Nails;
 using Terraria;
@@ -93,13 +94,8 @@ namespace Stellamod.Items.Weapons.Melee.Shields
         }
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.Anvils);
-            recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<HornedNail>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
-
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankShield>(), material: ModContent.ItemType<PearlescentScrap>());
         }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
@@ -90,6 +91,11 @@ namespace Stellamod.Items.Accessories.Wings
 			float y = VectorHelper.Osc(-hoverRange, hoverRange, hoverSpeed);
 			Vector2 position = new Vector2(Item.position.X, Item.position.Y + y);
 			Item.position = position;
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<MiracleThread>());
+        }
+    }
 }

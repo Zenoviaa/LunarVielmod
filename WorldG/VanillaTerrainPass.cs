@@ -62,9 +62,9 @@ namespace Stellamod.WorldG
             progress.Message = "Generating Terrain";
             TerrainFeatureType terrainFeatureType = TerrainFeatureType.Plateau;
             int num2 = 0;
-            double num3 = Main.maxTilesY * 0.6;
+            double num3 = Main.maxTilesY * 0.3;
             num3 *= GenBase._random.Next(90, 110) * 0.005;
-            double num4 = num3 + Main.maxTilesY * 0.4;
+            double num4 = num3 + Main.maxTilesY * 0.2;
             num4 *= GenBase._random.Next(90, 110) * 0.01;
             if (WorldGen.remixWorldGen)
             {
@@ -79,7 +79,7 @@ namespace Stellamod.WorldG
             double num6 = num3;
             double num7 = num4;
             double num8 = num4;
-            double num9 = Main.maxTilesY * 0.46;
+            double num9 = Main.maxTilesY * 0.23;
             SurfaceHistory surfaceHistory = new SurfaceHistory(500);
             num2 = GenVars.leftBeachEnd + num;
             for (int i = 0; i < Main.maxTilesX; i++)
@@ -105,19 +105,19 @@ namespace Stellamod.WorldG
                     terrainFeatureType = TerrainFeatureType.Plateau;
 
                 num3 += GenerateWorldSurfaceOffset(terrainFeatureType);
-                double num10 = 0.34;
-                double num11 = 0.52;
+                double num10 = 0.17;
+                double num11 = 0.26;
                 if (WorldGen.drunkWorldGen)
                 {
                     num10 = 0.15;
                     num11 = 0.28;
                 }
-                /*
+
                 if (i < GenVars.leftBeachEnd + num || i > GenVars.rightBeachStart - num)
                 {
                     num3 = Utils.Clamp(num3, Main.maxTilesY * 0.17, num9);
                 }
-                else */if (num3 < Main.maxTilesY * num10)
+                else if (num3 < Main.maxTilesY * num10)
                 {
                     num3 = Main.maxTilesY * num10;
                     num2 = 0;
@@ -156,7 +156,6 @@ namespace Stellamod.WorldG
 
                 surfaceHistory.Record(num3);
                 FillColumn(i, num3, num4);
-                /*
                 if (i == GenVars.rightBeachStart - num)
                 {
                     if (num3 > num9)
@@ -164,7 +163,7 @@ namespace Stellamod.WorldG
 
                     terrainFeatureType = TerrainFeatureType.Plateau;
                     num2 = Main.maxTilesX - i;
-                }*/
+                }
             }
 
             Main.worldSurface = (int)(num6 + 25.0);

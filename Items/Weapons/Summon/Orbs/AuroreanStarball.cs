@@ -79,5 +79,10 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
 
             return false;
         }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankOrb>(), material: ModContent.ItemType<AuroreanStarI>());
+        }
     }
 }

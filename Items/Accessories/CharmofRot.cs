@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -32,6 +33,11 @@ namespace Stellamod.Items.Accessories
 		{
 			player.GetDamage(DamageClass.Summon) += 0.08f; // Increase ALL player damage by 100%
 
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<TerrorFragments>());
+        }
+    }
 }

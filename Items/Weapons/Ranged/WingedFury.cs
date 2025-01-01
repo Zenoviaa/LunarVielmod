@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Bow;
 using Terraria;
 using Terraria.Audio;
@@ -61,6 +63,11 @@ namespace Stellamod.Items.Weapons.Ranged
                 knockback *= 1.2f;
                 combo = 0;
             }
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBow>(), material: ModContent.ItemType<GintzlMetal>());
         }
     }
 }

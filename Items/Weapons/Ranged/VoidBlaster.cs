@@ -1,4 +1,6 @@
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;
@@ -83,6 +85,12 @@ namespace Stellamod.Items.Weapons.Ranged
             Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
 
             return false; // return false because we don't want tmodloader to shoot projectile
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<PearlescentScrap>());
+        }
+
+    }
 }

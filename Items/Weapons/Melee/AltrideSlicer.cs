@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Slashers.Voyager;
@@ -51,19 +52,10 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
 		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.MythrilAnvil);
-            recipe.AddIngredient(ModContent.ItemType<MooningSlicer>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 10);
-		
-			recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 12);
-
-			recipe.Register();
-		}
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<AuroreanStarI>());
+        }
+    }
 }

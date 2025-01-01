@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Crossbows.Lasers;
 using Terraria;
@@ -46,17 +48,10 @@ namespace Stellamod.Items.Weapons.Ranged
             Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<TraumatizingRay>(), damage, knockback, player.whoAmI, 1);
             return false;
         }
-
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 18);
-            recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 12);
-            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 10);
-            recipe.AddIngredient(ItemID.Lens, 7);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<Cinderscrap>());
         }
     }
 }

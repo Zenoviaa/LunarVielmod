@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Melee;
@@ -139,17 +140,10 @@ namespace Stellamod.Items.Weapons.Mage
 
             return false;
         }
-
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.Anvils);
-
-            recipe.AddIngredient(ItemID.Book, 5);
-            recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 5);
-            recipe.AddIngredient(ModContent.ItemType<UnknownCircuitry>(), 25);
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 3);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<VirulentPlating>());
         }
     }
 }

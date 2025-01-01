@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles;
 using Stellamod.UI.Systems;
 using Terraria;
@@ -39,8 +40,13 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.shootSpeed = 10f;
 			Item.autoReuse = true;
 			Item.crit = 15;
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankOrb>(), material: ModContent.ItemType<Ivythorn>());
+        }
+    }
 }
 
 

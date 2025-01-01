@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -50,6 +52,11 @@ namespace Stellamod.Items.Weapons.Mage
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-5f, 0f);
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<TerrorFragments>());
         }
     }
 }

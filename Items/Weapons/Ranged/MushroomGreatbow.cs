@@ -1,14 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Bow;
-using Stellamod.Projectiles.Gun;
+using Stellamod.Items.Materials.Molds;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -61,6 +57,12 @@ namespace Stellamod.Items.Weapons.Ranged
             }
 
             return false;
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBow>(), material: ModContent.ItemType<Mushroom>());
         }
     }
 }

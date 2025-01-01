@@ -25,6 +25,11 @@ namespace Stellamod.Items.Accessories.Brooches
 			Item.buffType = ModContent.BuffType<AmethystBroo>();
 			Item.accessory = true;
 			BroochType = BroochType.Simple;
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBrooch>(), material: ModContent.ItemType<Mushroom>());
+        }
+    }
 }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
@@ -51,6 +53,11 @@ namespace Stellamod.Items.Accessories.Catacombs
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<BarryPlayer>().hasBarry = true;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<GintzlMetal>());
         }
     }
 }

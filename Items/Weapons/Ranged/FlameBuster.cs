@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
 using Terraria;
@@ -114,16 +116,10 @@ namespace Stellamod.Items.Weapons.Ranged
 
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
-
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Shotgun, 1);
-            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 18);
-            recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 12);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<Cinderscrap>());
         }
     }
 }

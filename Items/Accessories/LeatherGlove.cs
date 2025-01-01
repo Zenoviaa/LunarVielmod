@@ -1,4 +1,6 @@
 
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -22,5 +24,10 @@ namespace Stellamod.Items.Accessories
             player.GetDamage(DamageClass.Throwing).Flat += 3;
             player.ThrownVelocity += 2;
         }
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<Mushroom>());
+        }
+    }
 }

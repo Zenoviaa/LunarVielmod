@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Tiles;
 using System.Collections.Generic;
@@ -51,20 +52,12 @@ namespace Stellamod.Items.Accessories.Igniter
 
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-
-			recipe.AddIngredient(ModContent.ItemType<ReverieExtenderPowder>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<GrailBar>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<STARCORE>(), 1);
-			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
-			recipe.Register();
-		}
-
-
-		public override void UpdateAccessory(Player player, bool hideVisual)
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<MiracleThread>());
+        }
+        public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 
 			player.GetModPlayer<MyPlayer>().IgniterVelocity = 2f;

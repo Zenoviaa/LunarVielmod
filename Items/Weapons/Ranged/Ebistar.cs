@@ -1,4 +1,6 @@
-﻿using Stellamod.Items.Ores;
+﻿using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
@@ -33,6 +35,11 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.shoot = ModContent.ProjectileType<EbistarProj>();
 			Item.shootSpeed = 0f; // the speed of the projectile (measured in pixels per frame)
 			Item.channel = true;
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBow>(), material: ModContent.ItemType<WinterbornShard>());
+        }
+    }
 }
