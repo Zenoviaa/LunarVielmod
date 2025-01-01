@@ -73,13 +73,13 @@ As some issues arose in 1.6 due to complications of a member stealing a bunch of
 Stone golem has also gotten a much needed rework as well as a few new items and rebalancing! New visuals to many projectiles and bosses!
 If there are issues please let us know :)
 --------------------------
-Ereshkigal's Love: 2.0 The Final Content Update for Lunar veil!
+Ereshkigal's Love: 2.0 The Final Content Update for Lunar veil! Moving onto Medallion of Urdveil!
 Yeah the mod changed, for once too many changes to list sorry :(
 
 I'll give a small list though or major content changes and additions:
 
 All weapons are now switchable for class swapping (modded)
-4 New bosses! Ereshkigal, Ashoti, Veizal, and a secret boss!
+A New boss! Ereshkigal!
 All the structures have been redone as well as world generation to match the mod and make it feel more comfortable
 Deletion of a bunch of random and bloated systems and made one centralized systems for pretty much all of our items in the mod, the cauldron!
 Lore restructuring and remaking of the world entirely
