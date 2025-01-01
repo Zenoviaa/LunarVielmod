@@ -736,6 +736,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3"), position);
             }
         }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<AlcaricMush>());
+        }
     }
 
 
@@ -1083,6 +1088,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             soundStyle.PitchVariance = 0.5f;
             SoundEngine.PlaySound(soundStyle, position);
         }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<AlcaricMush>());
+        }
     }
 
     internal class BasterParty : MiniGun
@@ -1426,8 +1436,13 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                         SoundEngine.PlaySound(soundStyle, position);
                     }
                 }
-            }
         }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<GrailBar>());
+        }
+    }
 
         internal class SrTetanus : MiniGun
         {

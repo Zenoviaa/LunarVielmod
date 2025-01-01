@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Projectiles.Magic;
@@ -118,6 +119,11 @@ namespace Stellamod.Items.Weapons.Melee
             Projectile.NewProjectile(source, position, velocity * 1f, ModContent.ProjectileType<GrailAxeProj>(), damage * 1, knockback, player.whoAmI, 1, dir);
 
             return false;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<GrailBar>());
         }
     }
 }

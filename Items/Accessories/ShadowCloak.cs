@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Particles;
 using Terraria;
 using Terraria.DataStructures;
@@ -71,13 +72,7 @@ namespace Stellamod.Items.Accessories
         public override void AddRecipes()
         {
             base.AddRecipes();
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Robe, 1);
-            recipe.AddIngredient(ItemID.SoulofSight, 15);
-            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 30);
-            recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 12);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<AlcaricMush>());
         }
     }
 }

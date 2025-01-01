@@ -1,5 +1,6 @@
 ﻿using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Terraria;
@@ -38,6 +39,11 @@ namespace Stellamod.Items.Weapons.Melee
             Item.channel = true;
             Item.noUseGraphic = true;
             Item.autoReuse = false;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<AlcaricMush>());
         }
     }
 }

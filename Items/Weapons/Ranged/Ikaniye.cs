@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
 using Stellamod.Trails;
@@ -86,9 +87,13 @@ namespace Stellamod.Items.Weapons.Ranged
 
 
 
-      
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<AlcaricMush>());
+        }
 
-	}
+    }
 
 
     internal class IkaniyeGLUX : ModProjectile,

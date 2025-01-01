@@ -93,15 +93,11 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
             return false;
         }
 
+
         public override void AddRecipes()
         {
-            CreateRecipe(1)
-                 .AddIngredient(ModContent.ItemType<BlankOrb>(), 2)
-                 .AddIngredient(ModContent.ItemType<STARCORE>(), 1)
-                 .AddIngredient(ModContent.ItemType<AuroreanStarI>(), 150)
-                 .AddTile(TileID.MythrilAnvil)
-                 .Register();
-
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankOrb>(), material: ModContent.ItemType<AlcaricMush>());
         }
     }
 }

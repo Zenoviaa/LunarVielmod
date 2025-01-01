@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Projectiles.Magic;
@@ -113,6 +114,11 @@ namespace Stellamod.Items.Weapons.Mage
             }
 
             return true;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBow>(), material: ModContent.ItemType<AlcaricMush>());
         }
     }
 }

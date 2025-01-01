@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Magic;
 using Stellamod.Projectiles.Spears;
 using Terraria;
@@ -56,14 +57,8 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 23);
-            recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 30);
-            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
-            recipe.AddIngredient(ModContent.ItemType<AlcadizMetal>(), 9);
-            recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<AlcaricMush>());
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Stellamod.Items.Weapons.Igniters;
+﻿using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
+using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Projectiles.IgniterExplosions;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -18,6 +20,11 @@ namespace Stellamod.Items.Weapons.PowdersItem
             explosionSoundStyle.PitchVariance = 0.15f;
             ExplosionSound = explosionSoundStyle;
             ExplosionScreenshakeAmt = 2f;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<GrailBar>());
         }
     }
 }

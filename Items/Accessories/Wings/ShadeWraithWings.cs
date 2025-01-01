@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
@@ -38,16 +39,11 @@ namespace Stellamod.Items.Accessories.Wings
 			constantAscend = 0.135f;
 		}
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes()
-		{
-			CreateRecipe()
-				.AddIngredient<DarkEssence>(30)
-				.AddIngredient(ItemID.SoulofFlight, 20)
-				.AddIngredient<EldritchSoul>(12)
-				.AddTile(TileID.MythrilAnvil)
-				.SortBefore(Main.recipe.First(recipe => recipe.createItem.wingSlot != -1)) // Places this recipe before any wing so every wing stays together in the crafting menu.
-				.Register();
-		}
-	}
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<AlcaricMush>());
+        }
+    }
 }

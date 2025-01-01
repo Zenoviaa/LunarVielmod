@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Quest.Merena;
 using Stellamod.Items.Weapons.Melee;
@@ -47,16 +48,13 @@ namespace Stellamod.Items.Accessories
 			Item.accessory = true;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<GrailBar>(), 3);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-		}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<GrailBar>());
+        }
 
-		public override void UpdateAccessory(Player player, bool hideVisual)
+        public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.vortexMonolithShader = true;
 			player.maxMinions += 1;

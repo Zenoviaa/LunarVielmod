@@ -60,5 +60,10 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
             Item.damage = 76;
             Item.rare = ItemRarityID.LightRed;
         }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSafunai>(), material: ModContent.ItemType<GrailBar>());
+        }
     }
 }

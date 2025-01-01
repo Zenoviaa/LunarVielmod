@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.Bases;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Safunai.Blackwhip;
 using System.Collections.Generic;
 using Terraria;
@@ -55,6 +57,11 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
             Item.DamageType = DamageClass.Melee;
             Item.damage = 160;
             Item.rare = ItemRarityID.LightRed;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSafunai>(), material: ModContent.ItemType<AlcaricMush>());
         }
     }
 }

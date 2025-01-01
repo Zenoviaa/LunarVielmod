@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.DataStructures;
@@ -43,6 +45,11 @@ namespace Stellamod.Items.Weapons.Mage
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[Item.shoot] == 0;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<AlcaricMush>());
         }
     }
 }

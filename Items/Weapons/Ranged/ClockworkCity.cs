@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Gun;
@@ -59,17 +60,10 @@ namespace Stellamod.Items.Weapons.Ranged
             return true; // return false because we don't want tmodloader to shoot projectile
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.AddIngredient(ItemID.Shotgun, 1);
-			recipe.AddIngredient(ItemID.Cog, 5);
-            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<GrailBar>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 35);
-			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
-			recipe.Register();
-		}
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<GrailBar>());
+        }
+    }
 }
