@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Projectiles.Nails;
@@ -134,18 +135,10 @@ namespace Stellamod.Items.Weapons.Melee
 			return false;
 		}
 
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<Antaciz>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<KaleidoscopicInk>(), 20);
-			recipe.AddIngredient(ModContent.ItemType<ArtisanBar>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 20);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
-
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+			this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<KaleidoscopicInk>());
+        }
+    }
 }

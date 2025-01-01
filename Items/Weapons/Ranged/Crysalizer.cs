@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Bow;
 using Terraria;
 using Terraria.Audio;
@@ -47,11 +49,8 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
-            recipe.AddIngredient(ModContent.ItemType<IceWalker>(), 1);
-            recipe.AddIngredient(ItemID.CrystalShard, 5);
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBow>(), material: ModContent.ItemType<KaleidoscopicInk>());
         }
         public override Vector2? HoldoutOffset()
         {

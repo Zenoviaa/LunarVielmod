@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Minions;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Summons.Minions;
@@ -54,17 +55,10 @@ namespace Stellamod.Items.Weapons.Summon
 			return false;
 		}
 
-		public override void AddRecipes()
-		{
-			CreateRecipe()
-				.AddIngredient(ModContent.ItemType<KaleidoscopicInk>(), 20)
-				.AddIngredient(ModContent.ItemType<ArtisanBar>(), 5)
-				.AddIngredient(ItemID.WaterBucket, 1)
-				.AddIngredient(ItemID.LavaBucket, 1)
-				.AddIngredient(ItemID.HoneyBucket, 1)
-				.AddIngredient(ModContent.ItemType<WeaponDrive>(), 5)
-				.AddTile(TileID.MythrilAnvil)
-				.Register();
-		}
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<KaleidoscopicInk>());
+        }
+    }
 }

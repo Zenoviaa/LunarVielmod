@@ -1,5 +1,6 @@
 
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Paint;
 using Stellamod.Projectiles.Thrown;
@@ -46,12 +47,8 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.CrystalShard, 13);
-            recipe.AddIngredient(ModContent.ItemType<KaleidoscopicInk>(), 20);
-            recipe.AddIngredient(ModContent.ItemType<ArtisanBar>(), 3);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), material: ModContent.ItemType<KaleidoscopicInk>());
         }
     }
 }
