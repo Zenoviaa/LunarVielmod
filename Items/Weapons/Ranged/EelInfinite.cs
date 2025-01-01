@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
 using Terraria;
@@ -56,12 +58,8 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>());
-            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 5);
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 10);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<IllurineScale>());
         }
     }
 }

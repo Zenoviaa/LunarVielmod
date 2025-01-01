@@ -14,6 +14,8 @@ using Microsoft.Xna.Framework;
 using Stellamod.Projectiles.Slashers.Maelstrom;
 using Stellamod.Projectiles.Slashers.Chillrend;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 
 namespace Stellamod.Items.Weapons.Melee.Greatswords
 {
@@ -100,14 +102,10 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
             return false;
         }
 
-
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<IllurineScale>(), 30);
-            recipe.AddIngredient(ItemID.Ectoplasm, 12);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<IllurineScale>());
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.ID;
@@ -42,11 +43,8 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<IllurineScale>(), 16);
-            recipe.AddIngredient(ItemID.Ectoplasm, 8);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<IllurineScale>());
         }
     }
 }

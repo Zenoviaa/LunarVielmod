@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Bow;
 using Terraria;
 using Terraria.Audio;
@@ -81,11 +82,8 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<IllurineScale>(), 18);
-            recipe.AddIngredient(ItemID.Ectoplasm, 8);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBow>(), material: ModContent.ItemType<IllurineScale>());
         }
     }
 }

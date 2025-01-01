@@ -1,5 +1,7 @@
 ﻿using Stellamod.Buffs.Charms;
 using Stellamod.Common.Bases;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -36,6 +38,11 @@ namespace Stellamod.Items.Accessories.Brooches
             Item.buffType = ModContent.BuffType<IllurianB>();
             Item.accessory = true;
             BroochType = BroochType.Advanced;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBrooch>(), material: ModContent.ItemType<IllurineScale>());
         }
     }
 }

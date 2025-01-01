@@ -11,6 +11,7 @@ using Stellamod.Helpers;
 using Stellamod.Buffs;
 using Stellamod.Projectiles.Magic;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 
 namespace Stellamod.Items.Accessories
 {
@@ -111,16 +112,10 @@ namespace Stellamod.Items.Accessories
             player.manaCost -= 0.1f;
             player.manaRegen += 1;
         }
-
         public override void AddRecipes()
         {
             base.AddRecipes();
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<StarflareBand>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 100);
-            recipe.AddIngredient(ModContent.ItemType<IllurineScale>(), 10);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<IllurineScale>());
         }
     }
 }
