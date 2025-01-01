@@ -1,5 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Swords;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -58,7 +60,12 @@ namespace Stellamod.Items.Weapons.Melee
 				// Emit dusts when the sword is swung
 				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.SilverCoin);
 			}
-		}
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-	}
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), material: ModContent.ItemType<VirulentPlating>());
+        }
+        // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+    }
 }

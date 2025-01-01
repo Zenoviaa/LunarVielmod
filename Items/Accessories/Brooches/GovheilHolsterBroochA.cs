@@ -22,17 +22,11 @@ namespace Stellamod.Items.Accessories.Brooches
             Item.accessory = true;
             BroochType = BroochType.Advanced;
         }
-
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 30);
-            recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 30);
-            recipe.AddIngredient(ModContent.ItemType<GintzlBroochA>(), 1);
-            recipe.AddIngredient(ItemID.SoulofNight, 10);
-            recipe.AddTile(ModContent.TileType<BroochesTable>());
-            recipe.Register();
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<VirulentPlating>());
         }
+
     }
 }

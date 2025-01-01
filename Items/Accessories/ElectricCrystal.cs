@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -38,8 +39,13 @@ namespace Stellamod.Items.Accessories
 
 		}
 
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<VirulentPlating>());
+        }
 
 
 
-	}
+    }
 }

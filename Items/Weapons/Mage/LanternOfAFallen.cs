@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Magic;
 using Terraria;
@@ -59,19 +60,12 @@ namespace Stellamod.Items.Weapons.Mage
 			}
 			return false;
 		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<GreekLantern>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 20);
-			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 20);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-
-		}
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<VirulentPlating>());
+        }
+    }
 }
 
 

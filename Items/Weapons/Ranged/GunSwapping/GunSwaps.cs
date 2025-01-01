@@ -1456,6 +1456,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 }
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/gun1"), position);
             }
+            public override void AddRecipes()
+            {
+                base.AddRecipes();
+                this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<VirulentPlating>());
+            }
         }
 
         internal class TheReaving : MiniGun
@@ -1525,6 +1530,12 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                         Projectile.NewProjectile(player.GetSource_FromThis(), position, newVelocity * 12, projToShoot, damage, knockback, player.whoAmI);
                     }
                 }
+            }
+
+            public override void AddRecipes()
+            {
+                base.AddRecipes();
+                this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<VirulentPlating>());
             }
         }
 

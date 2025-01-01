@@ -13,6 +13,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Common.Bases;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Accessories.Brooches
 {
@@ -30,5 +32,11 @@ namespace Stellamod.Items.Accessories.Brooches
             Item.accessory = true;
             BroochType = BroochType.Advanced;
         }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBrooch>(), material: ModContent.ItemType<VirulentPlating>());
+        }
+
     }
 }

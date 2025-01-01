@@ -11,6 +11,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria;
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Summon
 {
@@ -65,6 +67,11 @@ namespace Stellamod.Items.Weapons.Summon
             // Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position.
             position = Main.MouseWorld;
             return false;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<VirulentPlating>());
         }
     }
 }
