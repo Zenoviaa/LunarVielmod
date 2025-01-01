@@ -6,6 +6,7 @@ using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Particles;
 using Stellamod.Projectiles.Summons.Sentries;
 using System.Collections.Generic;
@@ -53,15 +54,9 @@ namespace Stellamod.Items.Weapons.Summon
 
         public override void AddRecipes()
         {
-			CreateRecipe()
-				.AddIngredient(ItemID.CookingPot, 1)
-                .AddIngredient(ModContent.ItemType<MiracleThread>(), 20)
-                .AddIngredient(ModContent.ItemType<AlcaricMush>(), 4)
-                .AddIngredient(ModContent.ItemType<EldritchSoul>(), 4)
-                .AddTile(TileID.MythrilAnvil)
-				.Register();
-		}
-
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<MiracleThread>());
+        }
         private void ChangeForm(int newForm)
         {
             _attackStyle = newForm;

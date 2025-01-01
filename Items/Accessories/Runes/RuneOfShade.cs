@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.Bases;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -66,6 +68,11 @@ namespace Stellamod.Items.Accessories.Runes
             RuneOfShadePlayer shadePlayer = player.GetModPlayer<RuneOfShadePlayer>();
             shadePlayer.hasShadeRune = true;
             shadePlayer.hideShadeRuneVisual = hideVisual;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankRune>(), material: ModContent.ItemType<MiracleThread>());
         }
     }
 }

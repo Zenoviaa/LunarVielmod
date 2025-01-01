@@ -2,6 +2,7 @@
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Nails;
 using Stellamod.Projectiles.Steins;
@@ -104,20 +105,11 @@ namespace Stellamod.Items.Weapons.Mage.Stein
 		}
 
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.MythrilAnvil);
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStein>(), material: ModContent.ItemType<MiracleThread>());
+        }
 
-			recipe.AddIngredient(ItemID.ChlorophyteBar, 10);
-			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 150);
-			recipe.AddIngredient(ModContent.ItemType<Hultinstein>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<MiracleThread>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
-
-			recipe.Register();
-		}
-
-
-	}
+    }
 }

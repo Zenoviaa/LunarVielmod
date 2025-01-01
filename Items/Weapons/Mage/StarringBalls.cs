@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Quest.Merena;
 using Stellamod.Projectiles.Magic;
 using Terraria;
@@ -41,17 +42,13 @@ namespace Stellamod.Items.Weapons.Mage
 
 
 		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 160);
-			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 16);
-			recipe.AddIngredient(ModContent.ItemType<STARCORE>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 15);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
-		public override Vector2? HoldoutOffset()
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankOrb>(), material: ModContent.ItemType<MiracleThread>());
+        }
+        public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(-2, 0);
 		}

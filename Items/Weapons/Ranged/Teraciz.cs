@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
@@ -56,19 +57,10 @@ namespace Stellamod.Items.Weapons.Ranged
 			type = Main.rand.Next(new int[] { type, ModContent.ProjectileType<MeatBullet3>(), ModContent.ProjectileType<MeatBullet2>() });
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 3);
-            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 3);
-			recipe.AddIngredient(ItemID.RedPaint, 200);
-			recipe.AddIngredient(ItemID.BlackPaint, 200);
-			recipe.AddIngredient(ItemID.PurplePaint, 200);
-
-			recipe.Register();
-		}
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<MiracleThread>());
+        }
+    }
 }
