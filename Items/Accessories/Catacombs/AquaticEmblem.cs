@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

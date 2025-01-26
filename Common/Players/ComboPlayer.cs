@@ -28,7 +28,7 @@ namespace Stellamod.Common.Players
         {
             base.PostUpdate();
             _comboWaitTimer++;
-            if(_comboWaitTimer >= ComboWaitTime)
+            if (_comboWaitTimer >= ComboWaitTime)
             {
                 StaminaComboCounter = 0;
                 ComboCounter = 0;
@@ -51,7 +51,7 @@ namespace Stellamod.Common.Players
         {
             _comboWaitTimer = 0;
             ComboCounter++;
-            if(ComboCounter >= maxCombo)
+            if (ComboCounter >= maxCombo)
             {
                 ComboCounter = 0;
             }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.QuestSystem;
-using System;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI.Elements;
@@ -109,11 +108,11 @@ namespace Stellamod.UI.CollectionSystem.Quests
                     slot.Activate();
                     _slotGrid.Add(slot);
                 }
-   
+
                 _slotGrid.Recalculate();
             }
-      
-   
+
+
             //We just need to get the number of unique materials since that's how we're sorting things
             base.Recalculate();
         }

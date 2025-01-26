@@ -27,10 +27,10 @@ namespace Stellamod.Common.Bases
                 }
                 Player.velocity = dashDirection * speed;
 
-                
+
             }
 
-            if(DashSlowdownTimer > 0)
+            if (DashSlowdownTimer > 0)
             {
                 DashSlowdownTimer--;
                 Player.velocity *= 0.97f;
@@ -92,14 +92,14 @@ namespace Stellamod.Common.Bases
                 {
                     newSwingProgress = dashEasingFunc(newLerpValue);
                 }
-               // Owner.Center = Vector2.Lerp(_startOwnerPos, _throwPos, newSwingProgress);
-                if(newLerpValue >= 0.75f && !_hasDashed)
+                // Owner.Center = Vector2.Lerp(_startOwnerPos, _throwPos, newSwingProgress);
+                if (newLerpValue >= 0.75f && !_hasDashed)
                 {
                     Owner.GetModPlayer<KnifeDashPlayer>().DashToPosition = _throwPos;
                     _hasDashed = true;
                 }
             }
-            
+
 
             if (spinRotationRange != 0)
             {

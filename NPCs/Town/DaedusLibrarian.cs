@@ -1,35 +1,17 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.JackTheScholar;
+using Stellamod.Items.Weapons.Mage.Tomes;
+using Stellamod.NPCs.Bosses.DaedusTheDevoted;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities;
-using Terraria;
-using Stellamod.NPCs.Bosses.DaedusTheDevoted;
-using Microsoft.Xna.Framework;
-using Stellamod.NPCs.Bosses.DaedusRework;
-using Terraria.Audio;
-using Stellamod.Common;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Armors.Vanity.Azalean;
-using Stellamod.Items.Armors.Vanity.Nyxia;
-using Stellamod.Items.Armors.Vanity.Solarian;
-using Stellamod.Items.Armors.Witchen;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Materials.Tech;
-using Stellamod.Items.Quest.Zui;
-using Stellamod.Items.Weapons.Igniters;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.Items.Weapons.Thrown;
-using Stellamod.Items.Weapons.Mage.Tomes;
 
 namespace Stellamod.NPCs.Town
 {
@@ -118,11 +100,7 @@ namespace Stellamod.NPCs.Town
                 return _robeSegment;
             }
         }
-        public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
-        {
-            spawner.structureToSpawnIn = "Struct/Huntria/FableBiomeFinal";
-            spawner.spawnTileOffset = new Point(169, -23);
-        }
+
 
         public override void SetDefaults()
         {

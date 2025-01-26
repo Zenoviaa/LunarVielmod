@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials.Molds;
-using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Slashers.Gutinier;
 using System.Collections.Generic;
 using Terraria;
@@ -10,7 +10,6 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Items.Ores;
 
 namespace Stellamod.Items.Weapons.Melee
 {
@@ -45,7 +44,7 @@ namespace Stellamod.Items.Weapons.Melee
             };
             tooltips.Add(line);
 
-           
+
 
         }
         public override void SetDefaults()
@@ -84,9 +83,9 @@ namespace Stellamod.Items.Weapons.Melee
             }
         }
 
-         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-        
+
             int dir = AttackCounter;
             if (player.direction == 1)
             {

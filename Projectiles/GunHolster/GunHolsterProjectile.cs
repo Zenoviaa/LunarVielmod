@@ -163,20 +163,20 @@ namespace Stellamod.Projectiles.GunHolster
 
         private void AI_Holster()
         {
-            if(Projectile.owner == Main.myPlayer)
+            if (Projectile.owner == Main.myPlayer)
             {
                 Vector2 direction = Owner.Center.DirectionTo(Main.MouseWorld);
                 HoldRotation = direction.ToRotation();
                 Projectile.netUpdate = true;
             }
- 
+
             Projectile.rotation = HoldRotation;
             bool mouseInput = IsRightHand ? Main.mouseRight : Owner.controlUseItem;
-            if (Projectile.owner == Main.myPlayer 
-                && mouseInput 
+            if (Projectile.owner == Main.myPlayer
+                && mouseInput
                 && Owner.PickAmmo(Owner.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int useAmmoItemId))
             {
-                if(Projectile.spriteDirection == -1)
+                if (Projectile.spriteDirection == -1)
                 {
                     StartRotation = Projectile.rotation - MiniGun.RecoilRotationMini;
                     FireStartRotation = StartRotation + MiniGun.RecoilRotationMini;
@@ -195,7 +195,7 @@ namespace Stellamod.Projectiles.GunHolster
                 Timer = 0;
             }
 
-            DecideGunPosition();    
+            DecideGunPosition();
         }
 
         private void AI_Prepare()
@@ -224,22 +224,22 @@ namespace Stellamod.Projectiles.GunHolster
             Projectile.rotation = MathHelper.Lerp(StartRotation, endRotation, easedProgress);
             DecideGunPosition();
 
-            if(MiniGun.ShootCount > 1)
+            if (MiniGun.ShootCount > 1)
             {
                 float shootTime = ExecTime / (float)MiniGun.ShootCount;
                 if (Timer % shootTime == 0)
                 {
                     Vector2 position = Projectile.Center + Projectile.velocity * Projectile.width / 2;
                     MiniGun.Fire(Owner, position, Projectile.velocity, Projectile.damage, Projectile.knockBack);
-                } 
+                }
             }
             else
             {
-                if(Timer == 1)
+                if (Timer == 1)
                 {
                     Vector2 position = Projectile.Center + Projectile.velocity * Projectile.width / 2;
                     MiniGun.Fire(Owner, position, Projectile.velocity, Projectile.damage, Projectile.knockBack);
-                }  
+                }
             }
 
             Recoil = MathHelper.Lerp(0, MiniGun.RecoilDistance, Easing.SpikeInOutExpo(progress));
@@ -311,7 +311,7 @@ namespace Stellamod.Projectiles.GunHolster
                 Projectile.position += new Vector2(0, 12).RotatedBy(Projectile.rotation);
                 Projectile.rotation -= MathHelper.ToRadians(180);
             }
-        
+
 
             if (!IsRightHand)
             {

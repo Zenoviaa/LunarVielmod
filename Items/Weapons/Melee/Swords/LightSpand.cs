@@ -2,8 +2,8 @@ using Microsoft.Xna.Framework;
 using Stellamod.Common.Bases;
 using Stellamod.Common.Players;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Magic;
 using Stellamod.Trails;
 using System.Collections.Generic;
@@ -228,7 +228,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
     public class LightSpandStaminaSlash : BaseSwingProjectile
     {
         public override string Texture => this.PathHere() + "/LightSpand";
-    
+
         float ProjTimer;
         public bool Hit;
 

@@ -1,14 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Particles;
-using Stellamod.Trails;
 using System;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -56,7 +51,7 @@ namespace Stellamod.Projectiles.Swords
                 {
                     ParOffset.X = Projectile.Center.X - 18;
                     ParOffset.Y = Projectile.Center.Y;
-  
+
                     Projectile.velocity.Y += 3.2f;
                 }
 
@@ -71,7 +66,7 @@ namespace Stellamod.Projectiles.Swords
                     float speed = Projectile.velocity.Length();
                     Projectile.velocity = directionToPlayer * speed;
                 }
-            }   
+            }
         }
 
 
@@ -86,7 +81,7 @@ namespace Stellamod.Projectiles.Swords
 
         public override void OnSpawn(IEntitySource source)
         {
-                    }
+        }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {

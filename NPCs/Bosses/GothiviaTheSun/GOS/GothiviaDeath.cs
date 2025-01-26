@@ -1,48 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Brooches;
-using Stellamod.Items.Armors.Vanity.Gothivia;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Weapons.Igniters;
-using Stellamod.Items.Weapons.Ranged.GunSwapping;
-using Stellamod.Items.Weapons.Thrown;
-using Stellamod.NPCs.Bosses.DaedusRework;
-using Stellamod.NPCs.Bosses.Fenix.Projectiles;
-using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles;
-using Stellamod.NPCs.Bosses.GothiviaTheSun.REK;
-using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
-using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
-using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
-using Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
-using Stellamod.NPCs.Bosses.Zui.Projectiles;
 using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
-using Stellamod.UI.Dialogue;
 using Stellamod.UI.Systems;
-using Stellamod.Utilis;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 {
     // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
-    
+
 
     public class GothiviaDeath : ModNPC
     {
@@ -142,7 +115,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             Spawner = reader.ReadSingle();
             _resetTimers = reader.ReadBoolean();
         }
-    
+
         public int NumberOfTimesTalkedTo = 0;
         public const string ShopName = "Shop";
         public const string ShopName2 = "New Shop";
@@ -205,7 +178,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             // Custom boss bar
 
             // The following code assigns a music track to the boss in a simple way.
-         
+
         }
         public override bool CheckActive()
         {
@@ -217,16 +190,16 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             return false;
         }
 
-       
 
-       
+
+
 
         bool axed = false;
         bool p2 = false;
 
         public float squish = 0f;
         private int _wingFrameCounter;
-        private int _wingFrameTick;    
+        private int _wingFrameTick;
 
         float ChargeTrailOpacity;
         bool DrawChargeTrail;
@@ -375,7 +348,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
 
-               
+
                 //------------------------ Gothivia
 
 
@@ -507,13 +480,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             timer++;
             if (timer == 1)
             {
-                DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
 
-                //2. Create a new instance of your dialogue
-                GothiviaBeatDialogue exampleDialogue = new GothiviaBeatDialogue();
-
-                //3. Start it
-                dialogueSystem.StartDialogue(exampleDialogue);
 
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 4f);
                 CombatText.NewText(NPC.getRect(), Color.Gold, LangText.Misc("GothiviaDeath.1"), true, false);
@@ -608,9 +575,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                             Dust.NewDustPerfect(base.NPC.Center, DustID.GoldFlame, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(10.0), 0, default(Color), 1f).noGravity = false;
                         }
 
-                      //  int Gore2 = ModContent.Find<ModGore>("Stellamod/ZuiHat").Type;
-                      //  Gore.NewGore(EntitySource, NPC.position, NPC.velocity, Gore2);
-                       // Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, 0, ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, -1, 0, NPC.whoAmI);
+                        //  int Gore2 = ModContent.Find<ModGore>("Stellamod/ZuiHat").Type;
+                        //  Gore.NewGore(EntitySource, NPC.position, NPC.velocity, Gore2);
+                        // Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, 0, ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, -1, 0, NPC.whoAmI);
 
                         NPC.active = false;
                     }
@@ -857,9 +824,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     NPC.aiStyle = -1;
                     break;
 
-              
 
-               
+
+
             }
         }
 
@@ -2553,7 +2520,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
 
-        
 
 
 
@@ -2565,7 +2531,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
 
-       
+
+
         private void FinishResetTimers()
         {
             if (_resetTimers)

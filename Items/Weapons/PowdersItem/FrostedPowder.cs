@@ -1,8 +1,7 @@
-﻿using Stellamod.Items.Materials.Molds;
-using Stellamod.Items.Materials;
+﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Projectiles;
-using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
 

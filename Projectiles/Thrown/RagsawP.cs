@@ -83,7 +83,7 @@ namespace Stellamod.Projectiles.Thrown
         {
             Projectile.velocity.X *= 1.02f;
 
-           
+
         }
 
         // Finding the closest NPC to attack within maxDetectDistance range

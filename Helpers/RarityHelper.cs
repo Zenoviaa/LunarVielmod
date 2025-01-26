@@ -30,11 +30,11 @@ namespace Stellamod.Helpers
             glowColor.A = 0;
 
             // Draw the glow texture.
-            if(glowTexture != null)
+            if (glowTexture != null)
             {
                 Main.spriteBatch.Draw(glowTexture, glowPosition, null, glowColor * 0.85f, 0f, glowTexture.Size() * 0.5f, glowScale, SpriteEffects.None, 0f);
             }
-       
+
             // Get an offset to the afterimageOffset based on a sine wave.
             float sine = (float)((1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2.5f)) / 2);
             float sineOffset = MathHelper.Lerp(0.5f, 1f, sine);

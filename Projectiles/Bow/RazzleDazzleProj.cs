@@ -73,17 +73,17 @@ namespace Stellamod.Projectiles.Bow
         {
             for (int i = 0; i < 12; i++)
             {
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<Sparkle>(), 
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<Sparkle>(),
                     (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.White, 1f).noGravity = false;
             }
 
             for (int i = 0; i < Main.rand.Next(2, 5); i++)
             {
                 Vector2 velocity = -Projectile.velocity;
-                velocity = velocity.RotatedByRandom(MathHelper.PiOver4 + MathHelper.PiOver4/ 2);
+                velocity = velocity.RotatedByRandom(MathHelper.PiOver4 + MathHelper.PiOver4 / 2);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, velocity,
                              ProjectileID.BabySpider, Projectile.damage, Projectile.knockBack, Projectile.owner);
-            }         
+            }
         }
     }
 }

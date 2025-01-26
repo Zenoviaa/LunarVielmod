@@ -1,4 +1,3 @@
-using Stellamod.NPCs.Bosses.Verlia;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
@@ -17,7 +16,6 @@ namespace Stellamod
 
         private void UpdateMirageIndex()
         {
-            VerliaBIndex = NPC.AnyNPCs(ModContent.NPCType<VerliaB>());
             if (VerliaBIndex)
             {
                 return;

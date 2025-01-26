@@ -60,7 +60,7 @@ namespace Stellamod.UI.DialogueTowning
             if (IsMouseHovering)
             {
                 _timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if(_timer >= 0.12f)
+                if (_timer >= 0.12f)
                 {
                     _timer = 0.12f;
                 }
@@ -68,7 +68,7 @@ namespace Stellamod.UI.DialogueTowning
             else
             {
                 _timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if(_timer <= 0)
+                if (_timer <= 0)
                 {
                     _timer = 0f;
                 }
@@ -98,7 +98,7 @@ namespace Stellamod.UI.DialogueTowning
             CalculatedStyle dimensions = GetDimensions();
             Point point = new Point((int)dimensions.X, (int)dimensions.Y);
             Texture2D textureToDraw = ModContent.Request<Texture2D>($"{DialogueTowningUISystem.RootTexturePath}DialogueBoxButton").Value;
-  
+
 
             spriteBatch.Draw(textureToDraw, point.ToVector2(), null,
                 drawColor, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);

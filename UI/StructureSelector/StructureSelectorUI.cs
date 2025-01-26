@@ -1,18 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.MoonlightMagic;
-using Stellamod.UI.AdvancedMagicSystem;
 using Stellamod.WorldG.StructureManager;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI.Elements;
-using tModPorter;
 
 namespace Stellamod.UI.StructureSelector
 {
@@ -27,8 +20,8 @@ namespace Stellamod.UI.StructureSelector
         internal const int width = 480;
         internal const int height = 155;
 
-        internal int RelativeLeft => 470 + 108;
-        internal int RelativeTop => 0 + 12;
+        internal int RelativeLeft => Main.screenWidth / 2 - (int)Width.Pixels / 2;
+        internal int RelativeTop => Main.screenHeight / 2 - (int)Height.Pixels / 2;
 
         public StructureSelectorUI() : base()
         {
@@ -80,7 +73,7 @@ namespace Stellamod.UI.StructureSelector
 
             _grid.Clear();
             string[] structurePaths = Structurizer.GetPaths();
-            foreach(var path in structurePaths)
+            foreach (var path in structurePaths)
             {
                 StructureSelectionButton btn = new StructureSelectionButton(path);
                 _grid.Add(btn);
@@ -95,6 +88,8 @@ namespace Stellamod.UI.StructureSelector
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
             _panel.Height.Pixels = _grid.GetTotalHeight() + 32;
+
+            _panel.BackgroundColor = Color.Transparent;
             float progress = _panel.Height.Pixels / Height.Pixels;
             progress = MathHelper.Clamp(progress, 0f, 1f);
             _scrollbar.Height.Set(Height.Pixels * progress, 0);

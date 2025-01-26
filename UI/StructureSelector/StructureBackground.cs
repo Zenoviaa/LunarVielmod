@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
-using Terraria.GameInput;
 using Terraria.ModLoader;
 
 namespace Stellamod.UI.StructureSelector
@@ -33,12 +32,6 @@ namespace Stellamod.UI.StructureSelector
         {
             base.DrawSelf(spriteBatch);
             Rectangle rectangle = GetDimensions().ToRectangle();
-            bool contains = ContainsPoint(Main.MouseScreen);
-            if (contains && !PlayerInput.IgnoreMouseInterface)
-            {
-                Main.LocalPlayer.mouseInterface = true;
-            }
-
 
             //Draw Backing
             Color color2 = Main.inventoryBack;

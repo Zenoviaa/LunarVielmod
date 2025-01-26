@@ -2,11 +2,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Lights;
-using Stellamod.Items.Accessories.Runes;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
@@ -28,7 +26,7 @@ namespace Stellamod.Items.Accessories
         {
             base.AI();
             SunGlyphPlayer glyphPlayer = Owner.GetModPlayer<SunGlyphPlayer>();
-            if(glyphPlayer.hasSunGlyph && !glyphPlayer.hideSunGlyphVisual)
+            if (glyphPlayer.hasSunGlyph && !glyphPlayer.hideSunGlyphVisual)
             {
                 Projectile.timeLeft = 2;
             }
@@ -52,7 +50,7 @@ namespace Stellamod.Items.Accessories
                 drawPos.X -= 4;
             for (float f = 0; f < 1f; f += 0.1f)
             {
-                Vector2 glowDrawPos = drawPos + (f*MathHelper.TwoPi).ToRotationVector2() * VectorHelper.Osc(0.75f, 1f) * 8f;
+                Vector2 glowDrawPos = drawPos + (f * MathHelper.TwoPi).ToRotationVector2() * VectorHelper.Osc(0.75f, 1f) * 8f;
                 spriteBatch.Draw(texture, glowDrawPos, null, Color.LightGoldenrodYellow * 0.2f, Projectile.rotation, drawOrigin, 1f, spriteEffects, 0f);
             }
 
@@ -76,16 +74,16 @@ namespace Stellamod.Items.Accessories
     }
 
     public class SunGlyph : ModItem
-	{
-		public override void SetDefaults()
+    {
+        public override void SetDefaults()
         {
             Item.width = 26;
             Item.height = 34;
             Item.value = Item.sellPrice(gold: 1);
             Item.accessory = true;
-		}
+        }
 
-		public override void UpdateAccessory(Player player, bool hideVisual)
+        public override void UpdateAccessory(Player player, bool hideVisual)
         {
             SunGlyphPlayer sunGlyphPlayer = player.GetModPlayer<SunGlyphPlayer>();
             sunGlyphPlayer.hasSunGlyph = true;

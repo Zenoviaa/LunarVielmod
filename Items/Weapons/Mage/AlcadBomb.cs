@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.DataStructures;
@@ -12,7 +12,7 @@ namespace Stellamod.Items.Weapons.Mage
 {
     internal class AlcadBomb : ClassSwapItem
     {
-   
+
         public override DamageClass AlternateClass => DamageClass.Summon;
 
         public override void SetClassSwappedDefaults()

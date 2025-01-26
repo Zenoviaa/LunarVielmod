@@ -67,13 +67,13 @@ namespace Stellamod.Helpers
                 {
                     int x = location.X + j;
                     int y = location.Y - i;
-                    if(x >= Main.maxTilesX || y >= Main.maxTilesY)
+                    if (x >= Main.maxTilesX || y >= Main.maxTilesY)
                     {
                         return false;
                     }
 
                     Tile otherTile = Main.tile[x, y];
-                    for(int t = 0; t < tilesToCheckFor.Length; t++)
+                    for (int t = 0; t < tilesToCheckFor.Length; t++)
                     {
                         if (tilesToCheckFor[t] == otherTile.TileType)
                             return false;
@@ -94,7 +94,7 @@ namespace Stellamod.Helpers
         /// <param name="BottomLeft"> bottom left of the placed structure</param>
         /// <param name="Path">path, starting past the mod root folder to read the .str from. Do not inculde the name of the mod in the path, or .str</param>
         /// <returns>A array of ints, corrsponding to the index of chests placed in the struct, from bottom left to top right</returns>
-        public static int[] ReadStruct(Point BottomLeft, string Path, int[] tileBlend=null)
+        public static int[] ReadStruct(Point BottomLeft, string Path, int[] tileBlend = null)
         {
             using (var stream = Mod.GetFileStream(Path + ".str"))
             {
@@ -109,7 +109,7 @@ namespace Stellamod.Helpers
                         for (int j = 0; j <= Ylenght; j++)
                         {
                             Tile t = Framing.GetTileSafely(BottomLeft.X + i, BottomLeft.Y - j);
-                  
+
                             //Get old values incase we don't want this tile
                             int oldLiquidType = t.LiquidType;
                             byte oldLiquidAmount = t.LiquidAmount;
@@ -129,7 +129,7 @@ namespace Stellamod.Helpers
                             ushort oldWallType = t.WallType;
                             int oldWallFrameX = t.WallFrameX;
                             int oldWallFrameY = t.WallFrameY;
-  
+
                             bool makeOld = false;
                             t.ClearEverything();
                             //tile
@@ -154,7 +154,7 @@ namespace Stellamod.Helpers
                                 else
                                 {
                                     TileType = reader.ReadInt16();
-                                    if(tileBlend != null)
+                                    if (tileBlend != null)
                                     {
                                         for (int tb = 0; tb < tileBlend.Length; tb++)
                                         {
@@ -164,7 +164,7 @@ namespace Stellamod.Helpers
                                                 makeOld = true;
                                                 break;
                                             }
-                                          
+
                                         }
                                     }
                                 }
@@ -223,8 +223,8 @@ namespace Stellamod.Helpers
                                 t.WallFrameX = oldWallFrameX;
                                 t.WallFrameY = oldWallFrameY;
                             }
-                        }                 
-                        
+                        }
+
                     }
 
                     OnStructPlace?.Invoke(BottomLeft, Path);

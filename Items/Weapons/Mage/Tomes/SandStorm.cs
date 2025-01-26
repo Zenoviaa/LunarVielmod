@@ -53,7 +53,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
             base.Shoot(player, source, position, velocity, damage, knockback);
             if (Main.myPlayer == Projectile.owner)
             {
-                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<Nado>(), damage, knockback, Projectile.owner);
+
             }
         }
     }

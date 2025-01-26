@@ -1,8 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-
-using Stellamod.Particles;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
@@ -25,7 +22,7 @@ namespace Stellamod.Projectiles
             Projectile.localNPCHitCooldown = 5;
         }
 
-    
+
 
         public override void AI()
         {

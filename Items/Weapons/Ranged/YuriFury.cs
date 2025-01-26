@@ -1,10 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
-using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles;
-using Stellamod.Projectiles.Bow;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -67,19 +64,19 @@ namespace Stellamod.Items.Weapons.Ranged
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArchariliteEnergyShot2"));
             }
 
-         
-                Item.useTime = 25;
-                Item.shootSpeed = 30f;
-                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<HeatedShot>(), damage * 2, knockback, player.whoAmI);
-                float numberProjectiles = 4;
-                float rotation = MathHelper.ToRadians(15);
-                position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 25f;
-                for (int i = 0; i < numberProjectiles; i++)
-                {
-                    Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f; // This defines the projectile roatation and speed. .4f == projectile speed
-                    Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, ProjectileID.DD2PhoenixBowShot, damage, knockback, player.whoAmI);
-                }
-            
+
+            Item.useTime = 25;
+            Item.shootSpeed = 30f;
+            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<HeatedShot>(), damage * 2, knockback, player.whoAmI);
+            float numberProjectiles = 4;
+            float rotation = MathHelper.ToRadians(15);
+            position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 25f;
+            for (int i = 0; i < numberProjectiles; i++)
+            {
+                Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f; // This defines the projectile roatation and speed. .4f == projectile speed
+                Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, ProjectileID.DD2PhoenixBowShot, damage, knockback, player.whoAmI);
+            }
+
 
             return false;
         }

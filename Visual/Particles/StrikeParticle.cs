@@ -1,10 +1,5 @@
-﻿using Stellamod.Common.Particles;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.Particles;
 using Terraria;
 
 namespace Stellamod.Visual.Particles
@@ -30,10 +25,10 @@ namespace Stellamod.Visual.Particles
             color *= 0.99f;
 
             FrameCounter++;
-            if(FrameCounter >= TicksPerFrame)
+            if (FrameCounter >= TicksPerFrame)
             {
                 Frame.Y += FrameHeight;
-                if(Frame.Y >= FrameHeight * MaxFrameCount)
+                if (Frame.Y >= FrameHeight * MaxFrameCount)
                 {
                     Frame.Y = 0;
                 }

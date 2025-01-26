@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Trails;
-using Stellamod.Utilis;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
@@ -39,7 +38,7 @@ namespace Stellamod.Projectiles.Bow
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<AlcadizBombExplosion>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);                       
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<AlcadizBombExplosion>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
         }
 
         public override void OnKill(int timeLeft)
@@ -81,7 +80,7 @@ namespace Stellamod.Projectiles.Bow
         {
             if (Main.rand.NextBool(5))
             {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
                     DustID.YellowTorch, 25, 25, 0, Color.White, 1f);
                 Main.dust[dustnumber].velocity *= 0.3f;
                 Main.dust[dustnumber].noGravity = true;

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.MaskingShaderSystem;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
@@ -117,7 +116,7 @@ namespace Stellamod.Common.Lights
             //shaderData.Shader.Parameters["distortingNoiseTexture"].SetValue(DistortingNoiseTexture.Value);
 
             Color drawColor = Color.White;
-          //  drawColor.A = 0;
+            //  drawColor.A = 0;
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendState.Multiply, SamplerState.PointClamp, DepthStencilState.None,
                 Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 

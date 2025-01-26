@@ -1,7 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Slashers.Voyager;
@@ -86,9 +85,9 @@ namespace Stellamod.Items.Weapons.Mage
             }
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage * 3, knockback, player.whoAmI, 1, dir);
-           
 
-           
+
+
             return false;
         }
 

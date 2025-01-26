@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
 using Terraria;
@@ -48,7 +48,7 @@ namespace Stellamod.Items.Accessories.Catacombs
                             break;
                     }
                 }
-               
+
 
                 if (hit.Crit && Main.rand.NextBool(2))
                 {

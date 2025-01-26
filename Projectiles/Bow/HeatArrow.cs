@@ -4,9 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -49,7 +47,7 @@ namespace Stellamod.Projectiles.Bow
             base.AI();
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(90);
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
 
             }
@@ -68,7 +66,7 @@ namespace Stellamod.Projectiles.Bow
                     innerColor: Color.White,
                     glowColor: Color.Yellow,
                     outerGlowColor: Color.Red, duration: 15, baseSize: 0.06f);
-            var spikeParticle =  FXUtil.GlowSpikeBoom(Projectile.Center - Projectile.oldVelocity.SafeNormalize(Vector2.Zero) * 192,
+            var spikeParticle = FXUtil.GlowSpikeBoom(Projectile.Center - Projectile.oldVelocity.SafeNormalize(Vector2.Zero) * 192,
                     innerColor: Color.White,
                     glowColor: Color.Yellow,
                     outerGlowColor: Color.Red, duration: 15, baseSize: 0.3f);

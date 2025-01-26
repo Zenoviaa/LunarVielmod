@@ -55,7 +55,7 @@ namespace Stellamod.Projectiles.Thrown
             _rotation += 0.01f;
 
             Vector3 RGB = new(1.00f, 0.37f, 0.30f);
-   
+
 
             int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f);
             Main.dust[dust].scale = 0.6f;
@@ -96,7 +96,7 @@ namespace Stellamod.Projectiles.Thrown
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
                 for (float f = 0; f < 60; f++)
@@ -147,11 +147,11 @@ namespace Stellamod.Projectiles.Thrown
                 FXUtil.ShakeCamera(Projectile.position, 1024, 8);
             }
 
-            if(Timer == 6)
+            if (Timer == 6)
             {
                 if (Main.myPlayer == Projectile.owner)
                 {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center - Projectile.velocity.SafeNormalize(Vector2.Zero) * 128, Projectile.velocity, 
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center - Projectile.velocity.SafeNormalize(Vector2.Zero) * 128, Projectile.velocity,
                         ModContent.ProjectileType<ScatterBoom>(), Projectile.damage * 3, Projectile.knockBack, Projectile.owner);
                 }
                 for (float f = 0; f < 20; f++)

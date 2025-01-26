@@ -1,6 +1,4 @@
 ﻿using Stellamod.Common.ScorpionMountSystem;
-using Stellamod.Items.Materials.Tech;
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

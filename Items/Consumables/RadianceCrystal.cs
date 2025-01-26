@@ -1,11 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials.Tech;
 using Stellamod.NPCs.Bosses.Zui;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -136,7 +133,7 @@ namespace Stellamod.Items.Consumables
 
 
 
-            
+
 
 
             return true;

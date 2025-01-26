@@ -190,7 +190,7 @@ namespace Stellamod.Helpers.Separate
             }
         }
 
-       
+
 
         public static void CreateFireExplosion(Vector2 topLeft, Vector2 area, Vector2 force)
         {
@@ -277,7 +277,7 @@ namespace Stellamod.Helpers.Separate
         /// <param name="typeOneIncrement">If mode 1 is used, this controls the loop increment. Set it to more than 1 to skip afterimages.</param>
         /// <param name="texture">The texture to draw. Set to <b>null</b> to draw the projectile's own loaded texture.</param>
         /// <param name="drawCentered">If <b>false</b>, the afterimages will be centered on the projectile's position instead of its own center.</param>
-        
+
 
         public static void DisplayText(string text, Color? color = null)
         {
@@ -322,11 +322,11 @@ namespace Stellamod.Helpers.Separate
             }
         }
 
-       
 
-       
 
-     
+
+
+
 
         public static void EmptyDrawCache(this List<DrawData> drawCache)
         {
@@ -345,7 +345,7 @@ namespace Stellamod.Helpers.Separate
             }
         }
 
-       
+
         public static void SwapToRenderTarget(this RenderTarget2D renderTarget, Color? flushColor = null)
         {
             // Local variables for convinience.
@@ -364,9 +364,9 @@ namespace Stellamod.Helpers.Separate
             graphicsDevice.Clear(flushColor.Value);
         }
 
-       
 
-      
+
+
 
         /// <summary>
         /// Return a matrix suitable for use when resetting spritebatches in CustomSkys for shader work.

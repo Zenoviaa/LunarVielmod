@@ -16,7 +16,7 @@ namespace Stellamod.Helpers
             return particle;
         }
 
-        public static GlowStretchParticle GlowStretch(Vector2 position,Vector2 velocity)
+        public static GlowStretchParticle GlowStretch(Vector2 position, Vector2 velocity)
         {
             GlowStretchParticle particle = Particle.NewParticle<GlowStretchParticle>(position, Vector2.Zero);
             particle.Velocity = velocity;

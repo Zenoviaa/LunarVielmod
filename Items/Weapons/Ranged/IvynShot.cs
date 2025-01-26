@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.DataStructures;
@@ -41,7 +41,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.consumeAmmoOnLastShotOnly = true;
             Item.noMelee = true;
         }
-     
+
 
         public override Vector2? HoldoutOffset()
         {
@@ -52,13 +52,13 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             float rads = 16;
             combo++;
-            if(combo >= 3)
+            if (combo >= 3)
             {
                 Projectile.NewProjectile(source, position, velocity.RotatedBy(MathHelper.ToRadians(-rads)) * 0.5f, ModContent.ProjectileType<Logger>(), damage / 2, knockback, player.whoAmI);
                 Projectile.NewProjectile(source, position, velocity.RotatedBy(MathHelper.ToRadians(rads)) * 0.5f, ModContent.ProjectileType<Logger>(), damage / 2, knockback, player.whoAmI);
                 combo = 0;
             }
-         
+
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
         public override void AddRecipes()

@@ -32,7 +32,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 _targetVelocity = Projectile.velocity;
                 Projectile.velocity = _targetVelocity.SafeNormalize(Vector2.Zero);
@@ -40,7 +40,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 
             Projectile.velocity = Vector2.Lerp(Projectile.velocity, _targetVelocity, 0.1f);
             DrawHelper.AnimateTopToBottom(Projectile, 2);
-            if(Timer > 50)
+            if (Timer > 50)
             {
                 Projectile.hostile = false;
             }

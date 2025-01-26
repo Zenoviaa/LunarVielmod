@@ -30,7 +30,7 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
 
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Alcarishasd",  Helpers.LangText.Common("Orb"))
+            line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Common("Orb"))
             {
                 OverrideColor = ColorFunctions.OrbWeaponType
             };
@@ -69,7 +69,7 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            for(int i = 0; i < Main.projectile.Length; i++)
+            for (int i = 0; i < Main.projectile.Length; i++)
             {
                 if (Main.projectile[i].type == ModContent.ProjectileType<BlackBallProj>()
                     && Main.projectile[i].owner == player.whoAmI)

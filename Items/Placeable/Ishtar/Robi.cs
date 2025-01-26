@@ -1,27 +1,25 @@
-﻿using Stellamod.Tiles.RoyalCapital;
-using Stellamod.Tiles.DrakonicManor;
+﻿using Stellamod.Tiles.Ishtar;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using Stellamod.Tiles.Ishtar;
 
 namespace Stellamod.Items.Placeable.Ishtar
 {
-	public class Robi : ModItem
-	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("CurtainLeft");
-			// Tooltip.SetDefault("Curtain");
+    public class Robi : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("CurtainLeft");
+            // Tooltip.SetDefault("Curtain");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
-		public override void SetDefaults()
-		{
-			Item.DefaultToPlaceableTile(ModContent.TileType<Robic>());
-			Item.value = 150;
-			Item.maxStack = 9999;
-			Item.width = 38;
-			Item.height = 24;
-		}
-	}
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
+        public override void SetDefaults()
+        {
+            Item.DefaultToPlaceableTile(ModContent.TileType<Robic>());
+            Item.value = 150;
+            Item.maxStack = 9999;
+            Item.width = 38;
+            Item.height = 24;
+        }
+    }
 }

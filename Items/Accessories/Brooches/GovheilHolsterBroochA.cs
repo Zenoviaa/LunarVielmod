@@ -2,7 +2,6 @@
 using Stellamod.Common.Bases;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
-using Stellamod.Tiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

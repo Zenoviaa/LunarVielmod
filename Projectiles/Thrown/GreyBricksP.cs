@@ -10,16 +10,16 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles.Thrown
 {
     public class GreyBricksP : ModProjectile
-	{
-		public override void SetStaticDefaults()
-		{
+    {
+        public override void SetStaticDefaults()
+        {
             // DisplayName.SetDefault("Grey Brick");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 8;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
-		}
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+        }
 
-		public override void SetDefaults()
-		{
+        public override void SetDefaults()
+        {
             Projectile.CloneDefaults(ProjectileID.FrostDaggerfish);
             AIType = ProjectileID.FrostDaggerfish;
         }
@@ -30,16 +30,16 @@ namespace Stellamod.Projectiles.Thrown
         }
 
         public override bool PreAI()
-		{
-			if (Main.rand.NextBool(3))
-			{
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Stone);
-			}
-			return true;
-		}
+        {
+            if (Main.rand.NextBool(3))
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Stone);
+            }
+            return true;
+        }
 
-		public override bool PreDraw(ref Color lightColor)
+        public override bool PreDraw(ref Color lightColor)
         {
             Main.instance.LoadProjectile(Projectile.type);
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
@@ -53,9 +53,9 @@ namespace Stellamod.Projectiles.Thrown
             }
 
             return false;
-		}
+        }
 
-		public override void OnKill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             var EntitySource = Projectile.GetSource_Death();
             int Gore1 = ModContent.Find<ModGore>("Stellamod/GreyBricks1").Type;

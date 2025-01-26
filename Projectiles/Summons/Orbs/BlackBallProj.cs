@@ -5,7 +5,6 @@ using Stellamod.Buffs;
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using System;
@@ -175,7 +174,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BoneTorch);
                 Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                            }
+            }
         }
 
         private void Swing1()
@@ -223,7 +222,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
                         State = ActionState.Swing_1;
                     }
                     ComboCounter = 0;
-            
+
                     Timer = 0;
                 }
                 else if (Timer > SwingTime + Combo_Time)
@@ -322,7 +321,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
                 case ActionState.Swing_2:
                     for (int i = 0; i < 4; i++)
                     {
-                        Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 
+                        Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
                             ModContent.DustType<GunFlash>(), Scale: 0.8f);
                     }
 
@@ -345,7 +344,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center + new Vector2(0, -80), Vector2.Zero, ModContent.ProjectileType<KaBoomSigil2>(),
                         Projectile.damage, Projectile.knockBack, Projectile.owner);
-          
+
                     target.SimpleStrikeNPC(Projectile.damage, hit.HitDirection);
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower3") { PitchVariance = 0.15f, Pitch = -0.75f }, Projectile.position);
                     break;

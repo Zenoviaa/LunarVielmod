@@ -57,7 +57,7 @@ namespace Stellamod.NPCs.Cinderspark
         {
             if (StellaMultiplayer.IsHost)
             {
-                for(int i = 0; i < 1; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     int radius = 8;
                     int x = (int)NPC.Center.X + Main.rand.Next(-radius, radius);

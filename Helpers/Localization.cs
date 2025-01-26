@@ -1,6 +1,5 @@
 using Stellamod.Common.ArmorReforge;
 using Stellamod.Common.QuestSystem;
-using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 namespace Stellamod.Helpers

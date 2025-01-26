@@ -110,11 +110,11 @@ namespace Stellamod.Projectiles.Slashers.Swingers
             if (!_exploded)
             {
                 float num = 8;
-                for(float i = 0; i < num; i++)
+                for (float i = 0; i < num; i++)
                 {
                     float progress = i / num;
                     float rot = MathHelper.TwoPi * progress;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, rot.ToRotationVector2(), 
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, rot.ToRotationVector2(),
                         ModContent.ProjectileType<VulcanBreakerBlowtorchProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
 

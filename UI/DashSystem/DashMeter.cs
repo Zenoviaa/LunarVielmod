@@ -1,8 +1,8 @@
-﻿using Stellamod.Systems.MiscellaneousMath;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Stellamod.Items.Accessories.Players;
+using Stellamod.Systems.MiscellaneousMath;
 using System;
 using System.Collections.Generic;
 using System.Reflection;

@@ -55,7 +55,7 @@ namespace Stellamod.Projectiles.Magic
         public override void OnKill(int timeLeft)
         {
             var source = Projectile.GetSource_Death();
-            if(Main.myPlayer == Projectile.owner)
+            if (Main.myPlayer == Projectile.owner)
             {
                 for (int i = 0; i < 3; i++)
                 {

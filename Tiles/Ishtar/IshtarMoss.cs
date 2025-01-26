@@ -112,6 +112,6 @@ namespace Stellamod.Tiles.Ishtar
             }
         }
 
-        
+
     }
 }

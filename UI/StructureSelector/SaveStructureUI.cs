@@ -32,7 +32,6 @@ namespace Stellamod.UI.StructureSelector
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
 
-
             _saveStructureButton.Width.Pixels = 16;
             _saveStructureButton.Height.Pixels = 16;
             _saveStructureButton.Left.Pixels = 320;

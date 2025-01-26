@@ -1,6 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-
-using Stellamod.Particles;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -27,7 +25,7 @@ namespace Stellamod.Projectiles
 
         public override void OnSpawn(IEntitySource source)
         {
-                    }
+        }
 
         public override void AI()
         {

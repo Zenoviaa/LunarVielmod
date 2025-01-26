@@ -1,8 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Effects;
-using Stellamod.Helpers;
-using System;
-using System.Diagnostics.Metrics;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
@@ -91,7 +88,7 @@ namespace Stellamod.Common.Lights
             hasSunGlyph = false;
             darkness = 0;
             darknessCurve = 0.79f;
-           // blurStrength = 0;
+            // blurStrength = 0;
 
 
             //Curve based
@@ -115,7 +112,8 @@ namespace Stellamod.Common.Lights
                 {
                     FilterManager.Activate(name);
                 }
-            } else if (!isActive)
+            }
+            else if (!isActive)
             {
                 if (FilterManager[name].IsActive())
                 {
@@ -296,7 +294,7 @@ namespace Stellamod.Common.Lights
             darknessCurveProgress = MathHelper.Clamp(darknessCurveProgress, 0f, 1f);
 
             blurStrength -= 0.05f;
-            if(blurStrength <= 0f)
+            if (blurStrength <= 0f)
             {
                 blurStrength = 0f;
             }
@@ -319,7 +317,7 @@ namespace Stellamod.Common.Lights
             if (blackWhiteActive)
             {
                 _blackWhiteLerp += 0.1f;
-                if(_blackWhiteLerp >= 1f)
+                if (_blackWhiteLerp >= 1f)
                 {
                     _blackWhiteLerp = 1f;
                 }
@@ -327,7 +325,7 @@ namespace Stellamod.Common.Lights
             else
             {
                 _blackWhiteLerp -= 0.1f;
-                if(_blackWhiteLerp <= 0)
+                if (_blackWhiteLerp <= 0)
                 {
                     _blackWhiteLerp = 0f;
                 }
@@ -339,7 +337,7 @@ namespace Stellamod.Common.Lights
             }
 
             float strength = MathHelper.Lerp(0, blackWhiteStrength, _blackWhiteLerp);
-  
+
             screenShaderData = FilterManager["LunarVeil:BlackWhite"].GetShader();
             screenShaderData.Shader.Parameters["strength"].SetValue(strength);
             screenShaderData.Shader.Parameters["brightnessThreshold"].SetValue(blackWhiteThreshold);
@@ -359,7 +357,7 @@ namespace Stellamod.Common.Lights
                 Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(rippleDistortStrength * (1 - progress / 3f));
             }
         }
-        
+
         private void CalculateDarkness()
         {
             if (hasSpiritPendant)

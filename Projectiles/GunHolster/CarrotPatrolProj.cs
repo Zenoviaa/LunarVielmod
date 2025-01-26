@@ -1,13 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -38,7 +32,7 @@ namespace Stellamod.Projectiles.GunHolster
             if (Main.rand.NextBool(8))
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Plantera_Green);
-          
+
             }
         }
 
@@ -62,7 +56,7 @@ namespace Stellamod.Projectiles.GunHolster
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            for(int i = 0; i < Main.rand.Next(2, 5); i++)
+            for (int i = 0; i < Main.rand.Next(2, 5); i++)
             {
                 Vector2 velocity = -Projectile.velocity;
                 velocity *= Main.rand.NextFloat(0.2f, 1f);

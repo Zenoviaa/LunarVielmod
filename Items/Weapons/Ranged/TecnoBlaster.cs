@@ -1,5 +1,5 @@
-﻿using Stellamod.Items.Materials.Molds;
-using Stellamod.Items.Materials;
+﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.ID;
@@ -42,15 +41,15 @@ namespace Stellamod.Projectiles.Magic
 
             }
 
-            if(Timer > 90)
+            if (Timer > 90)
             {
                 NPC npc = NPCHelper.FindClosestNPC(Projectile.position, 512);
-                if(npc != null)
+                if (npc != null)
                 {
                     Vector2 targetVelocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 4;
                     // If found, change the velocity of the projectile and turn it in the direction of the target
                     // Use the SafeNormalize extension method to avoid NaNs returned by Vector2.Normalize when the vector is zero
-                    Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.2f); 
+                    Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.2f);
                     Projectile.rotation = Projectile.velocity.ToRotation();
                 }
             }

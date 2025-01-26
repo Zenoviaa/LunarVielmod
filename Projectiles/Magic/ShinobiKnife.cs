@@ -70,7 +70,7 @@ namespace Stellamod.Projectiles.Magic
         public override void OnKill(int timeLeft)
         {
             float radius = Main.rand.NextFloat(0.25f, 1f);
-            for(float f = 0; f < 1f; f+= 0.1f)
+            for (float f = 0; f < 1f; f += 0.1f)
             {
                 float rot = f * MathHelper.TwoPi;
                 Vector2 vel = rot.ToRotationVector2() * radius;

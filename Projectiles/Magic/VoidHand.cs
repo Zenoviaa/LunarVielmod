@@ -86,7 +86,7 @@ namespace Stellamod.Projectiles.Magic
                 Dust.NewDustPerfect(Projectile.Center, DustID.Shadowflame, velocity);
             }
             SoundEngine.PlaySound(SoundID.DD2_SkeletonHurt, Projectile.position);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<Skullboom>(), Projectile.damage / 4, Projectile.knockBack, Projectile.owner);
         }
 
@@ -111,7 +111,7 @@ namespace Stellamod.Projectiles.Magic
             float drawRotation = Projectile.rotation;
             float drawScale = 1f;
             spriteBatch.Restart(blendState: BlendState.Additive);
-            for(float f = 0f; f < 1f; f += 0.12f)
+            for (float f = 0f; f < 1f; f += 0.12f)
             {
                 float rot = f * MathHelper.ToRadians(360);
                 rot += Main.GlobalTimeWrappedHourly * 8;
@@ -120,7 +120,7 @@ namespace Stellamod.Projectiles.Magic
                 Vector2 glowDrawPos = drawPos + offset;
                 spriteBatch.Draw(texture, glowDrawPos, frame, drawColor * 0.52f, drawRotation, drawOrigin, drawScale, SpriteEffects.None, layerDepth: 0);
             }
-          
+
             spriteBatch.RestartDefaults();
         }
 
@@ -151,10 +151,10 @@ namespace Stellamod.Projectiles.Magic
             DrawGlow(ref lightColor);
             DrawTrail(ref lightColor);
             DrawSprite(ref lightColor);
-  
+
             return false;
         }
- 
+
     }
 }
 

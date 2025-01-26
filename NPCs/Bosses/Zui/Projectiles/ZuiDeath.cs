@@ -1,8 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.Jack;
-using Stellamod.UI.Dialogue;
 using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
@@ -71,14 +69,6 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
             timer++;
             if (timer == 1)
             {
-                DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
-
-                //2. Create a new instance of your dialogue
-                ZuiBeatDialogue exampleDialogue = new ZuiBeatDialogue();
-
-                //3. Start it
-                dialogueSystem.StartDialogue(exampleDialogue);
-
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 4f);
                 CombatText.NewText(NPC.getRect(), Color.Gold, LangText.Misc("ZuiDeath.1"), true, false);
             }
@@ -178,9 +168,9 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                 }
 
             }
-            
-         
-           
+
+
+
         }
     }
 }

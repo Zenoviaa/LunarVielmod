@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ID;
-using Terraria.ModLoader;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.GameContent.Creative;
-using Stellamod.Helpers;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Items.Materials;
-using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Gun;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {

@@ -1,18 +1,11 @@
-﻿using Stellamod.Projectiles.Bow;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ID;
-using Terraria;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Bow;
+using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials.Tech;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -37,7 +30,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.value = Item.sellPrice(0, 10, 0, 0);
             Item.rare = ItemRarityID.Lime;
 
-      
+
             Item.autoReuse = true;
             Item.DamageType = DamageClass.Ranged;
 
@@ -88,7 +81,7 @@ namespace Stellamod.Items.Weapons.Ranged
                 Projectile.NewProjectile(source, position, velocity.RotatedBy(MathHelper.PiOver4 / 7), type, damage, knockback, player.whoAmI);
                 Projectile.NewProjectile(source, position, velocity.RotatedBy(-MathHelper.PiOver4 / 7), type, damage, knockback, player.whoAmI);
             }
-            
+
             return false;
         }
 

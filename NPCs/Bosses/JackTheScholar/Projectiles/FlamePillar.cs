@@ -63,7 +63,7 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
                 SoundEngine.PlaySound(SoundID.Item73, Projectile.position);
             }
 
-            if(Timer > 60)
+            if (Timer > 60)
             {
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, InitialVelocity, 0.1f);
             }

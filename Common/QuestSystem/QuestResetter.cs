@@ -1,14 +1,8 @@
-﻿using Stellamod.NPCs.Colosseum.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
 
 namespace Stellamod.Common.QuestSystem
 {

@@ -1,9 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
@@ -49,8 +45,8 @@ namespace Stellamod.Helpers
         public static void DrawCustomTooltipLine(DrawableTooltipLine tooltipLine)
         {
             // Draw the base tooltip text and glow.
-            RarityHelper.DrawBaseTooltipTextAndGlow(tooltipLine, 
-                Color.DarkGoldenrod, 
+            RarityHelper.DrawBaseTooltipTextAndGlow(tooltipLine,
+                Color.DarkGoldenrod,
                 Color.Lerp(Color.DarkGoldenrod, Color.LightGoldenrodYellow, VectorHelper.Osc(0, 1, 2)), new Color(12, 26, 47), RarityTextureRegistry.ThornedRarityGlow, glowScaleOffset: new Vector2(0.75f, 0.5f));
 
             // Draw base sparkles.

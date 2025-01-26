@@ -5,8 +5,6 @@ using Stellamod.Buffs;
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Weapons.Summon.Orbs;
-using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using System;
@@ -29,7 +27,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
         }
 
         public const float Swing_Revolutions = 1.33f;
-        public const float Swing_Time = 34  *  Swing_Speed_Multiplier;
+        public const float Swing_Time = 34 * Swing_Speed_Multiplier;
         public const float Swing_Time_2 = 53 * Swing_Speed_Multiplier;
         public const float Final_Swing_Distance = 252;
         public const float Combo_Time = 8;
@@ -142,7 +140,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             float orbitDistance = 256;
             OrbitRotation += 0.003f;
             Vector2 targetOrbitPos = MovementHelper.OrbitAround(Owner.Center, Vector2.UnitY, orbitDistance, OrbitRotation);
-            
+
             //Lerp
             Projectile.Center = Vector2.Lerp(Projectile.Center, targetOrbitPos, 0.12f / Swing_Speed_Multiplier);
             if (ComboCounter >= 1)
@@ -182,11 +180,11 @@ namespace Stellamod.Projectiles.Summons.Orbs
 
             float progress = Timer / SwingTime;
             EasedProgress = Easing.SpikeInOutExpo(progress);
-            float orbitRotation = MathHelper.Lerp(-MathHelper.TwoPi * Swing_Revolutions , 0, EasedProgress);
+            float orbitRotation = MathHelper.Lerp(-MathHelper.TwoPi * Swing_Revolutions, 0, EasedProgress);
             float orbitDistance = MathHelper.Lerp(0, OrbitSwingDistance, EasedProgress);
 
             Vector2 start = SwingStart;
-            Vector2 end =  MovementHelper.OrbitAround(Owner.Center, SwingVelocity.RotatedBy(MathHelper.PiOver2), orbitDistance, orbitRotation);
+            Vector2 end = MovementHelper.OrbitAround(Owner.Center, SwingVelocity.RotatedBy(MathHelper.PiOver2), orbitDistance, orbitRotation);
             Vector2 lerpPosition = Vector2.Lerp(start, end, EasedProgress);
 
             Projectile.Center = Vector2.Lerp(Projectile.Center, end, EasedProgress);
@@ -270,7 +268,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             Vector2 end = SwingTarget + (SwingTarget - start).SafeNormalize(Vector2.Zero) * Final_Swing_Distance;
 
             //This should be cool
-          
+
             Vector2 lerpPosition = Vector2.Lerp(start, end, EasedProgress);
             lerpPosition += MathF.Sin(EasedProgress * 32) * (SwingVelocity.RotatedBy(MathHelper.PiOver2)) * 8;
 
@@ -293,7 +291,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
                 case ActionState.Swing_2:
                     for (int i = 0; i < 4; i++)
                     {
-                        Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 
+                        Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
                             ModContent.DustType<GunFlash>(), newColor: Color.Black, Scale: 0.8f);
                     }
 
@@ -326,9 +324,9 @@ namespace Stellamod.Projectiles.Summons.Orbs
                         //Get a random color
                         Color randColor = Main.rand.NextColor(Color.White, Main.DiscoColor, Color.Black);
                         float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                                            }
+                    }
 
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                         ModContent.ProjectileType<StarsBoom2>(),
                         Projectile.damage, Projectile.knockBack, Projectile.owner);
 

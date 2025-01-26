@@ -12,12 +12,12 @@ namespace Stellamod.Common.Bases
         public Vector2 SuckVelocity;
         public override bool PreAI(NPC npc)
         {
-            if(SuckVelocity.Length() > 2)
+            if (SuckVelocity.Length() > 2)
             {
                 SuckVelocity = Vector2.Lerp(SuckVelocity, Vector2.Zero, 0.2f);
                 npc.velocity = SuckVelocity;
             }
-           
+
             return base.PreAI(npc);
         }
     }
@@ -35,7 +35,7 @@ namespace Stellamod.Common.Bases
             _targets = new();
         }
 
-      //  public bool IgnoreKBResist;
+        //  public bool IgnoreKBResist;
         public bool HasSuckerTarget(NPC npc)
         {
             return _targets.Find(x => x.npcToPull == npc.whoAmI) != null;

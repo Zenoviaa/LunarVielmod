@@ -55,7 +55,7 @@ namespace Stellamod.Items.Flasks
             };
             tooltips.Add(line);
         }
-     
+
 
         public override void SetDefaults()
         {
@@ -69,8 +69,8 @@ namespace Stellamod.Items.Flasks
             Item.potion = true;
             Item.UseSound = SoundID.Item2;
             Item.healLife = 10;
-          
-        
+
+
         }
 
         public override void RightClick(Player player)
@@ -90,7 +90,7 @@ namespace Stellamod.Items.Flasks
             return false;
         }
 
-       
+
         public override void GetHealLife(Player player, bool quickHeal, ref int healValue)
         {
             base.GetHealLife(player, quickHeal, ref healValue);
@@ -131,9 +131,9 @@ namespace Stellamod.Items.Flasks
             FlaskPlayer flaskPlayer = player.GetModPlayer<FlaskPlayer>();
             if (flaskPlayer.Insource.ModItem is BaseInsource insource)
             {
-               
+
             }
-                
+
             if (player.HasBuff<CannotUseFlask>() || player.HasBuff(BuffID.PotionSickness))
             {
                 return false;

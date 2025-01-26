@@ -1,7 +1,6 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Materials.Tech
 {
@@ -23,6 +22,6 @@ namespace Stellamod.Items.Materials.Tech
             Item.useAnimation = 10;
             Item.useStyle = ItemUseStyleID.Swing;
         }
-        
+
     }
 }

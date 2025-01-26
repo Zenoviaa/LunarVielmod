@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

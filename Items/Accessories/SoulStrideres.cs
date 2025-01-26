@@ -8,10 +8,10 @@ namespace Stellamod.Items.Accessories
 
 {
     public class SoulStrideres : ModItem
-    {    
+    {
         public override void SetStaticDefaults()
         {
-    
+
         }
 
         public override void SetDefaults()

@@ -8,8 +8,6 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Thrown;
-using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.JackTheScholar.Projectiles;
 using Terraria;
 using Terraria.Audio;
@@ -327,11 +325,6 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                             NPC.velocity.Y = -8;
                             NPC.netUpdate = true;
                         }
-
-                        int explosion = ModContent.ProjectileType<DaedusBombExplosion>();
-                        int damage = 0;
-                        int knockback = 2;
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, Vector2.Zero, explosion, damage, knockback);
 
                         //Dust Particles
                         for (int k = 0; k < 7; k++)
@@ -841,11 +834,6 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
                 float jumpHorizontalSpeed = 6;
                 NPC.velocity.X = DirectionToTarget.X * jumpHorizontalSpeed;
 
-                int explosion = ModContent.ProjectileType<DaedusBombExplosion>();
-                int damage = 24;
-                int knockback = 2;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, Vector2.Zero, explosion, damage, knockback);
-
                 //Dust Particles
                 for (int k = 0; k < 7; k++)
                 {
@@ -982,10 +970,9 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<JackoBag>()));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
+
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WanderingFlame>(), minimumDropped: 20, maximumDropped: 50));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<PumkinPopper>(), chanceDenominator: 2, minimumDropped: 150, maximumDropped: 300));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Summon.WillOWisp>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<JackoShot>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StaffOFlame>(), chanceDenominator: 2));

@@ -1,7 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Special.MinerLogs;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -40,16 +37,6 @@ namespace Stellamod.Items.Accessories
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<VeiledScriptureMiner1>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<VeiledScriptureMiner2>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<VeiledScriptureMiner3>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<VeiledScriptureMiner4>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<VeiledScriptureMiner5>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<VeiledScriptureMiner6>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<VeiledScriptureMiner7>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<VeiledScriptureMiner8>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<VeiledScriptureMiner9>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<VeiledScriptureMiner10>(), 1);
             recipe.Register();
         }
     }

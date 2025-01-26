@@ -5,9 +5,7 @@ using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Summons.Glyph;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Terraria;
-using Terraria.Audio;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -43,11 +41,11 @@ namespace Stellamod.Projectiles.Summons
         {
 
             Timer++;
-            if(Timer < 60)
+            if (Timer < 60)
             {
                 Projectile.velocity.Y *= 0.9f;
-            } 
-            if(Timer == 71)
+            }
+            if (Timer == 71)
             {
                 Projectile.velocity.Y = 2f;
             }
@@ -60,7 +58,7 @@ namespace Stellamod.Projectiles.Summons
             NPC nearest = ProjectileHelper.FindNearestEnemy(Projectile.position, maxDetectDistance);
             Projectile.rotation = Projectile.velocity.ToRotation();
 
-            if(Timer > 71)
+            if (Timer > 71)
             {
                 if (nearest != null)
                 {
@@ -124,7 +122,7 @@ namespace Stellamod.Projectiles.Summons
                     baseSize: Main.rand.NextFloat(0.06f, 0.12f));
                 particle.Rotation = rot + MathHelper.ToRadians(45);
             }
-          
+
 
         }
 
@@ -151,11 +149,11 @@ namespace Stellamod.Projectiles.Summons
             Color startGlow = new Color(VectorHelper.Osc(0f, 1f, speed: 2), VectorHelper.Osc(0f, 1f, speed: 4), VectorHelper.Osc(0f, 1f, speed: 7));
             Color startOuterGlow = Color.Black;
 
-            if(Projectile.penetrate == 1)
+            if (Projectile.penetrate == 1)
             {
                 startOuterGlow = startGlow;
                 startGlow = Color.White;
-               
+
                 shader.Size *= 1.5f;
             }
 

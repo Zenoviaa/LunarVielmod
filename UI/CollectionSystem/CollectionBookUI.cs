@@ -7,7 +7,7 @@ namespace Stellamod.UI.CollectionSystem
     internal class CollectionBookUI : UIPanel
     {
         public Book book;
- 
+
         internal const int width = 432;
         internal const int height = 800;
 

@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
@@ -17,7 +16,7 @@ namespace Stellamod.Projectiles.Gun
 {
     internal class VacuumLightningBolt : ModProjectile
     {
-        private Vector2[] _lightningArcPos = new Vector2[1]; 
+        private Vector2[] _lightningArcPos = new Vector2[1];
         public const int Trail_Width = 24;
         private ref float Timer => ref Projectile.ai[0];
 
@@ -42,7 +41,7 @@ namespace Stellamod.Projectiles.Gun
             Projectile.localNPCHitCooldown = 10;
             Projectile.tileCollide = false;
         }
-        
+
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
@@ -61,7 +60,7 @@ namespace Stellamod.Projectiles.Gun
                 TargetPosition = Owner.Center;
             Vector2 playerCenter = Owner.RotatedRelativePoint(Owner.MountedCenter, true);
             Timer++;
-      
+
             if (Main.myPlayer == Projectile.owner)
             {
                 Owner.ChangeDir(Projectile.direction);
@@ -73,11 +72,11 @@ namespace Stellamod.Projectiles.Gun
             }
 
             Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position
-           
+
             //Dunno if this is needed but whatever
             Projectile.rotation = Projectile.velocity.ToRotation();
             _lightningArcPos = CalculateLightningArc();
-            for(int i =1;i < _lightningArcPos.Length - 1; i++)
+            for (int i = 1; i < _lightningArcPos.Length - 1; i++)
             {
                 float p = (float)i / (float)_lightningArcPos.Length - 1;
                 ref Vector2 pos = ref _lightningArcPos[i];
@@ -101,11 +100,11 @@ namespace Stellamod.Projectiles.Gun
                 trail.NoiseColor = Color.Lerp(Color.White, Color.Cyan, progress);
                 Lightning.WidthTrailFunction = WidthFunction;
             }
-            if(Timer % 3 == 0)
+            if (Timer % 3 == 0)
             {
-               // Lightning.SyncOffsets = true;
+                // Lightning.SyncOffsets = true;
                 Lightning.RandomPositions(_lightningArcPos);
-                for(int i = 0; i < _lightningArcPos.Length - 3; i++)
+                for (int i = 0; i < _lightningArcPos.Length - 3; i++)
                 {
                     Vector2 pos = _lightningArcPos[i];
                     if (Main.rand.NextBool(8))
@@ -157,11 +156,11 @@ namespace Stellamod.Projectiles.Gun
                 positions.Add(currentPosition);
 
 
-        
+
                 Vector2 targetCenter = currentPosition;
                 bool foundTarget = false;
                 NPC nearest = ProjectileHelper.FindNearestEnemy(currentPosition, teleportDistance);
-                if(nearest != null)
+                if (nearest != null)
                 {
                     targetCenter = nearest.Center;
                     positions.Add(targetCenter);
@@ -206,7 +205,7 @@ namespace Stellamod.Projectiles.Gun
             Lightning.Draw(spriteBatch, _lightningArcPos, Projectile.oldRot);
 
             Texture2D texture = ModContent.Request<Texture2D>(TextureRegistry.EmptyGlowParticle).Value;
-            Vector2 centerPos = _lightningArcPos[_lightningArcPos.Length-1] - Main.screenPosition;
+            Vector2 centerPos = _lightningArcPos[_lightningArcPos.Length - 1] - Main.screenPosition;
             centerPos += Main.rand.NextVector2Circular(8, 8);
             GlowCircleShader shader = GlowCircleShader.Instance;
 

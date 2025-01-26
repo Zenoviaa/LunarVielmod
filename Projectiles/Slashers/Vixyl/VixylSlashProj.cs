@@ -59,7 +59,7 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
             UpdateFrame(0.8f, 1, 36);
         }
 
-        
+
         public override Color? GetAlpha(Color lightColor)
         {
             return new Color(200, 200, 200, 0) * (1f - Projectile.alpha / 50f);

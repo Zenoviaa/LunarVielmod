@@ -69,7 +69,7 @@ namespace Stellamod.Projectiles.Gun
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
                     (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Orange, Main.rand.NextFloat(1f, 3f)).noGravity = true;
-            } 
+            }
 
             for (float i = 0; i < 4; i++)
             {

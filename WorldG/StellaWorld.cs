@@ -3,17 +3,11 @@ using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.AlcadChests;
 using Stellamod.Items.Accessories.Brooches;
-using Stellamod.Items.Armors.Alcalite;
-using Stellamod.Items.Armors.Stone;
-using Stellamod.Items.Armors.Windmillion;
-using Stellamod.Items.Consumables;
 using Stellamod.Items.Flasks;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
-using Stellamod.Items.Quest.Merena;
-using Stellamod.Items.Special.MinerLogs;
 using Stellamod.Items.Tools;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Mage;
@@ -24,7 +18,6 @@ using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
-using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
@@ -1658,7 +1651,6 @@ namespace Stellamod.WorldG
                 for (int da = 0; da < 1; da++)
                 {
                     Point Loc = new Point(smx + 10, smy + 53);
-                    NPCs.Town.AlcadSpawnSystem.FableTile = Loc;
                     Structurizer.ReadStruct(Loc, "Struct/Huntria/FableBiomeFinal", tileBlend);
                     Structurizer.ProtectStructure(Loc, "Struct/Huntria/FableBiomeFinal");
                     //This code just places
@@ -1822,7 +1814,6 @@ namespace Stellamod.WorldG
 
 
 
-                    NPCs.Town.AlcadSpawnSystem.OrdinTile = Loc;
                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path, tileBlend);
                     StructureLoader.ProtectStructure(Loc, path);
                     foreach (int chestIndex in ChestIndexs)
@@ -1853,7 +1844,6 @@ namespace Stellamod.WorldG
                         {
                             case 0:
                                 itemsToAdd.Add((ModContent.ItemType<CinderedCard>(), Main.rand.Next(1, 1)));
-                                itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner5>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(10, 30)));
                                 itemsToAdd.Add((ModContent.ItemType<ArncharChunk>(), Main.rand.Next(3, 10)));
                                 itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
@@ -1863,7 +1853,6 @@ namespace Stellamod.WorldG
                             case 1:
                                 itemsToAdd.Add((ModContent.ItemType<Volcant>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ModContent.ItemType<VerianBar>(), Main.rand.Next(1, 10)));
-                                itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner5>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(10, 30)));
                                 itemsToAdd.Add((ModContent.ItemType<ArncharChunk>(), Main.rand.Next(3, 10)));
                                 itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
@@ -1881,7 +1870,6 @@ namespace Stellamod.WorldG
                             case 3:
                                 itemsToAdd.Add((ModContent.ItemType<CinderNeedle>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(10, 30)));
-                                itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner5>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ModContent.ItemType<ArncharChunk>(), Main.rand.Next(3, 10)));
                                 itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
                                 itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
@@ -2103,9 +2091,6 @@ namespace Stellamod.WorldG
                         switch (Main.rand.Next(5))
                         {
                             case 0:
-                                itemsToAdd.Add((ModContent.ItemType<StoniaHat>(), Main.rand.Next(1, 1)));
-                                itemsToAdd.Add((ModContent.ItemType<StoniaBoots>(), Main.rand.Next(1, 1)));
-                                itemsToAdd.Add((ModContent.ItemType<StoniaChestplate>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
                                 itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
                                 itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
@@ -2135,9 +2120,6 @@ namespace Stellamod.WorldG
 
                                 break;
                             case 4:
-                                itemsToAdd.Add((ModContent.ItemType<StoniaHat>(), Main.rand.Next(1, 1)));
-                                itemsToAdd.Add((ModContent.ItemType<StoniaBoots>(), Main.rand.Next(1, 1)));
-                                itemsToAdd.Add((ModContent.ItemType<StoniaChestplate>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
                                 itemsToAdd.Add((ItemID.GenderChangePotion, Main.rand.Next(1, 3)));
                                 itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
@@ -2627,7 +2609,7 @@ namespace Stellamod.WorldG
 
                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
                     StructureLoader.ProtectStructure(Loc, path);
-                    NPCs.Town.AlcadSpawnSystem.DaedenTile = Loc;
+
                     foreach (int chestIndex in ChestIndexs)
                     {
                         var chest = Main.chest[chestIndex];
@@ -2798,12 +2780,9 @@ namespace Stellamod.WorldG
                     switch (Main.rand.Next(4))
                     {
                         case 0:
-                            itemsToAdd.Add((ModContent.ItemType<WindmillShuriken>(), genRand.Next(1, 1)));
                             break;
                         case 1:
-                            itemsToAdd.Add((ModContent.ItemType<WindmillionRobe>(), genRand.Next(1, 1)));
-                            itemsToAdd.Add((ModContent.ItemType<WindmillionHat>(), genRand.Next(1, 1)));
-                            itemsToAdd.Add((ModContent.ItemType<WindmillionBoots>(), genRand.Next(1, 1)));
+
                             break;
 
                         case 2:
@@ -3124,7 +3103,7 @@ namespace Stellamod.WorldG
                                     break;
 
                                 case 5:
-                                 //   itemsToAdd.Add((ModContent.ItemType<IronCrossbow>(), Main.rand.Next(1, 1)));
+                                    //   itemsToAdd.Add((ModContent.ItemType<IronCrossbow>(), Main.rand.Next(1, 1)));
                                     itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
                                     itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
                                     itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 3)));
@@ -3254,8 +3233,6 @@ namespace Stellamod.WorldG
                         Point Loc = new Point(smx, smy + 5);
                         rectangle.Location = Loc;
                         StructureLoader.ReadStruct(Loc, "Struct/Acid/GiaHouse");
-                        NPCs.Town.AlcadSpawnSystem.GiaTile = Loc;
-
 
 
 
@@ -3328,9 +3305,6 @@ namespace Stellamod.WorldG
                         Point Loc = new Point(smx, smy + 5);
                         rectangle.Location = Loc;
                         StructureLoader.ReadStruct(Loc, "Struct/Acid/GiaHouse");
-                        NPCs.Town.AlcadSpawnSystem.GiaTile = Loc;
-
-
 
 
                     }
@@ -3509,8 +3483,7 @@ namespace Stellamod.WorldG
                     pointToPlaceOn.X -= rectangle.Width / 2;
                     int[] ChestIndexs = StructureLoader.ReadStruct(pointToPlaceOn, path, tileBlend);
                     rectangle.Location = pointL;
-                    NPCs.Town.AlcadSpawnSystem.IrrTile = pointL;
-                    NPCs.Town.AlcadSpawnSystem.GothTile = pointL;
+
                     StructureLoader.ProtectStructure(pointL, path);
                     foreach (int chestIndex in ChestIndexs)
                     {
@@ -3524,8 +3497,7 @@ namespace Stellamod.WorldG
                         int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 
                             Tuple.Create(ModContent.ItemType<AlcadizScrap>(), 0.5),
-                            Tuple.Create(ModContent.ItemType<LostScrap>(), 0.4),
-                            Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.1)
+                            Tuple.Create(ModContent.ItemType<LostScrap>(), 0.4)
 
                         // Choose no item with a high weight of 7.
                         );
@@ -3573,7 +3545,7 @@ namespace Stellamod.WorldG
 
                                 break;
                             case 4:
-                                itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
+
                                 itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                                 itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
                                 itemsToAdd.Add((ItemID.JungleSpores, Main.rand.Next(3, 7)));
@@ -4056,11 +4028,10 @@ namespace Stellamod.WorldG
                                 itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
                                 itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                                 itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
-                                itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner8>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
                                 break;
                             case 3:
-                           //     itemsToAdd.Add((ModContent.ItemType<TON618Crossbow>(), Main.rand.Next(1, 1)));
+                                //     itemsToAdd.Add((ModContent.ItemType<TON618Crossbow>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
                                 itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
                                 itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
@@ -4082,7 +4053,6 @@ namespace Stellamod.WorldG
 
                             case 5:
                                 itemsToAdd.Add((ModContent.ItemType<AurelusBlightBroochA>(), Main.rand.Next(1, 1)));
-                                itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner8>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
                                 itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                                 itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
@@ -4092,7 +4062,6 @@ namespace Stellamod.WorldG
 
                             case 6:
                                 itemsToAdd.Add((ModContent.ItemType<AbyssalPowder>(), Main.rand.Next(1, 1)));
-                                itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner8>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ItemID.Shiverthorn, Main.rand.Next(2, 15)));
                                 itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
                                 itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
@@ -4184,8 +4153,7 @@ namespace Stellamod.WorldG
                         // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
                         int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 
-                            Tuple.Create(ModContent.ItemType<OldCarianTome>(), 0.5)
-
+ 
 
                         // Choose no item with a high weight of 7.
                         );
@@ -4228,7 +4196,7 @@ namespace Stellamod.WorldG
                                 itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
                                 break;
                             case 3:
-                             //   itemsToAdd.Add((ModContent.ItemType<TON618Crossbow>(), Main.rand.Next(1, 1)));
+                                //   itemsToAdd.Add((ModContent.ItemType<TON618Crossbow>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
                                 itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
                                 itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
@@ -4361,7 +4329,7 @@ namespace Stellamod.WorldG
 
 
                     Point Loc = new Point(smx, smy + 343);
-                    NPCs.Town.AlcadSpawnSystem.LiberatTile = Loc;
+
                     //
 
 
@@ -4471,8 +4439,6 @@ namespace Stellamod.WorldG
 
 
 
-                    NPCs.Town.AlcadSpawnSystem.LiberatTile = pointLil;
-                    NPCs.Town.AlcadSpawnSystem.JhoviaTile = pointLil;
                     //
 
                     //This code just places
@@ -4607,7 +4573,7 @@ namespace Stellamod.WorldG
                     Point Loc = new Point(smx + 20, smyy + 10);
 
                     rectangle.Location = Loc;
-                    NPCs.Town.AlcadSpawnSystem.AlcadTile = Loc;
+
                     Structurizer.ProtectStructure(Loc, "Struct/Alcad/RoyalCapital3");
                     var tileBlend = new int[]
                     {
@@ -4628,8 +4594,7 @@ namespace Stellamod.WorldG
                         // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
                         int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 
-                            Tuple.Create(ModContent.ItemType<LostScrap>(), 0.1),
-                            Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+                            Tuple.Create(ModContent.ItemType<LostScrap>(), 0.1)
 
                         // Choose no item with a high weight of 7.
                         );
@@ -4678,7 +4643,7 @@ namespace Stellamod.WorldG
 
                                 break;
                             case 4:
-                                itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
+
                                 itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                                 itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
                                 itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
@@ -4787,7 +4752,7 @@ namespace Stellamod.WorldG
                     // NPCs.Town.AlcadSpawnSystem.AlcadTile = Loc;
                     StructureLoader.ProtectStructure(Loc, "Struct/Overworld/Illuria");
                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/Illuria");
-                    NPCs.Town.AlcadSpawnSystem.IlluriaTile = Loc;
+
                     foreach (int chestIndex in ChestIndexs)
                     {
                         var chest = Main.chest[chestIndex];
@@ -4800,8 +4765,7 @@ namespace Stellamod.WorldG
                         int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 
                             Tuple.Create(ModContent.ItemType<AlcadizScrap>(), 0.5),
-                            Tuple.Create(ModContent.ItemType<LostScrap>(), 0.1),
-                            Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+                            Tuple.Create(ModContent.ItemType<LostScrap>(), 0.1)
 
                         // Choose no item with a high weight of 7.
                         );
@@ -4850,7 +4814,7 @@ namespace Stellamod.WorldG
 
                                 break;
                             case 4:
-                                itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
+
                                 itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                                 itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
                                 itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
@@ -4972,7 +4936,7 @@ namespace Stellamod.WorldG
                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, randomStructure, tileBlend);
 
                     //GUARDS!!!
-                    IllurianGuardSpawnSystem.Add(Loc, randomStructure);
+
                     placed = true;
                     foreach (int chestIndex in ChestIndexs)
                     {
@@ -4992,9 +4956,7 @@ namespace Stellamod.WorldG
                                     break;
                                 case 1:
                                     //Alcalite Set
-                                    itemsToAdd.Add((ModContent.ItemType<AlcaliteMask>(), 1));
-                                    itemsToAdd.Add((ModContent.ItemType<AlcaliteRobe>(), 1));
-                                    itemsToAdd.Add((ModContent.ItemType<AlcaliteTrunks>(), 1));
+
                                     break;
                                 case 2:
                                     //Illurite Dril
@@ -5265,8 +5227,7 @@ namespace Stellamod.WorldG
                                 // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
                                 int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 
-                                    Tuple.Create(ModContent.ItemType<AlcadizMetal>(), 0.5),
-                                    Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+                                    Tuple.Create(ModContent.ItemType<AlcadizMetal>(), 0.5)
 
                                 // Choose no item with a high weight of 7.
                                 );
@@ -5278,7 +5239,7 @@ namespace Stellamod.WorldG
                                 switch (Main.rand.Next(9))
                                 {
                                     case 0:
-                                        itemsToAdd.Add((ModContent.ItemType<LifeSeekingVial>(), Main.rand.Next(1, 1)));
+
                                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 
                                         itemsToAdd.Add((ModContent.ItemType<UnknownCircuitry>(), Main.rand.Next(2, 3)));
@@ -5318,7 +5279,7 @@ namespace Stellamod.WorldG
                                     case 4:
                                         itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 10)));
                                         itemsToAdd.Add((ModContent.ItemType<UnknownCircuitry>(), Main.rand.Next(2, 10)));
-                                        itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
+
                                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                                         itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
                                         itemsToAdd.Add((ItemID.LeadOre, Main.rand.Next(1, 100)));
@@ -5362,7 +5323,6 @@ namespace Stellamod.WorldG
                                         break;
 
                                     case 9:
-                                        itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner1>(), Main.rand.Next(1, 1)));
                                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                                         itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 6)));
 
@@ -5416,8 +5376,7 @@ namespace Stellamod.WorldG
                                 // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
                                 int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 
-                                    Tuple.Create(ModContent.ItemType<AlcadizMetal>(), 0.5),
-                                    Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+                                    Tuple.Create(ModContent.ItemType<AlcadizMetal>(), 0.5)
 
                                 // Choose no item with a high weight of 7.
                                 );
@@ -5429,7 +5388,7 @@ namespace Stellamod.WorldG
                                 switch (Main.rand.Next(9))
                                 {
                                     case 0:
-                                        itemsToAdd.Add((ModContent.ItemType<LifeSeekingVial>(), Main.rand.Next(1, 1)));
+
                                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 
                                         itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
@@ -5466,7 +5425,6 @@ namespace Stellamod.WorldG
                                         break;
                                     case 4:
                                         itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 10)));
-                                        itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
                                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                                         itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
                                         itemsToAdd.Add((ItemID.LeadOre, Main.rand.Next(1, 100)));
@@ -5557,8 +5515,7 @@ namespace Stellamod.WorldG
                                 // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
                                 int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 
-                                    Tuple.Create(ModContent.ItemType<AlcadizMetal>(), 0.5),
-                                    Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+                                    Tuple.Create(ModContent.ItemType<AlcadizMetal>(), 0.5)
 
                                 // Choose no item with a high weight of 7.
                                 );
@@ -5570,7 +5527,6 @@ namespace Stellamod.WorldG
                                 switch (Main.rand.Next(9))
                                 {
                                     case 0:
-                                        itemsToAdd.Add((ModContent.ItemType<LifeSeekingVial>(), Main.rand.Next(1, 1)));
                                         itemsToAdd.Add((ModContent.ItemType<UnknownCircuitry>(), Main.rand.Next(2, 3)));
                                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 
@@ -5607,7 +5563,7 @@ namespace Stellamod.WorldG
                                         break;
                                     case 4:
                                         itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 10)));
-                                        itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
+
                                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                                         itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
                                         itemsToAdd.Add((ItemID.LeadOre, Main.rand.Next(1, 100)));
@@ -5705,8 +5661,7 @@ namespace Stellamod.WorldG
                                 // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
                                 int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 
-                                    Tuple.Create(ModContent.ItemType<AlcadizMetal>(), 0.5),
-                                    Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+                                    Tuple.Create(ModContent.ItemType<AlcadizMetal>(), 0.5)
 
                                 // Choose no item with a high weight of 7.
                                 );
@@ -5718,7 +5673,6 @@ namespace Stellamod.WorldG
                                 switch (Main.rand.Next(9))
                                 {
                                     case 0:
-                                        itemsToAdd.Add((ModContent.ItemType<LifeSeekingVial>(), Main.rand.Next(1, 1)));
                                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 
                                         itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
@@ -5756,7 +5710,6 @@ namespace Stellamod.WorldG
                                         break;
                                     case 4:
                                         itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 10)));
-                                        itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
                                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                                         itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
                                         itemsToAdd.Add((ItemID.LeadOre, Main.rand.Next(1, 100)));
@@ -5853,8 +5806,7 @@ namespace Stellamod.WorldG
                                 // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
                                 int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 
-                                    Tuple.Create(ModContent.ItemType<AlcadizMetal>(), 0.5),
-                                    Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+                                    Tuple.Create(ModContent.ItemType<AlcadizMetal>(), 0.5)
 
                                 // Choose no item with a high weight of 7.
                                 );
@@ -5866,7 +5818,6 @@ namespace Stellamod.WorldG
                                 switch (Main.rand.Next(9))
                                 {
                                     case 0:
-                                        itemsToAdd.Add((ModContent.ItemType<LifeSeekingVial>(), Main.rand.Next(1, 1)));
                                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 
                                         itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
@@ -5904,7 +5855,7 @@ namespace Stellamod.WorldG
                                     case 4:
                                         itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 10)));
                                         itemsToAdd.Add((ModContent.ItemType<UnknownCircuitry>(), Main.rand.Next(1, 3)));
-                                        itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
+
                                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                                         itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
                                         itemsToAdd.Add((ItemID.LeadOre, Main.rand.Next(1, 100)));
@@ -6000,8 +5951,7 @@ namespace Stellamod.WorldG
                                 // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
                                 int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 
-                                    Tuple.Create(ModContent.ItemType<AlcadizMetal>(), 0.5),
-                                    Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+                                    Tuple.Create(ModContent.ItemType<AlcadizMetal>(), 0.5)
 
                                 // Choose no item with a high weight of 7.
                                 );
@@ -6013,7 +5963,7 @@ namespace Stellamod.WorldG
                                 switch (Main.rand.Next(9))
                                 {
                                     case 0:
-                                        itemsToAdd.Add((ModContent.ItemType<LifeSeekingVial>(), Main.rand.Next(1, 1)));
+
                                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 
                                         itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
@@ -6048,7 +5998,6 @@ namespace Stellamod.WorldG
                                         break;
                                     case 4:
                                         itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 10)));
-                                        itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
                                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                                         itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
                                         itemsToAdd.Add((ItemID.LeadOre, Main.rand.Next(1, 100)));
@@ -6183,8 +6132,8 @@ namespace Stellamod.WorldG
                                 // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
                                 int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 
-                                    Tuple.Create(ModContent.ItemType<AlcaricMush>(), 0.5),
-                                    Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+                                    Tuple.Create(ModContent.ItemType<AlcaricMush>(), 0.5)
+
 
                                 // Choose no item with a high weight of 7.
                                 );
@@ -6229,7 +6178,7 @@ namespace Stellamod.WorldG
 
                                         break;
                                     case 4:
-                                        itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
+
                                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 
                                         itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
@@ -6322,8 +6271,7 @@ namespace Stellamod.WorldG
                                 // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
                                 int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 
-                                    Tuple.Create(ModContent.ItemType<Gambit>(), 0.5),
-                                    Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+
 
                                 // Choose no item with a high weight of 7.
                                 );
@@ -6368,7 +6316,6 @@ namespace Stellamod.WorldG
 
                                         break;
                                     case 4:
-                                        itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
                                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 
                                         itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
@@ -6456,8 +6403,7 @@ namespace Stellamod.WorldG
                                     // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
                                     int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 
-                                        Tuple.Create(ModContent.ItemType<AlcaricMush>(), 0.5),
-                                        Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+                                        Tuple.Create(ModContent.ItemType<AlcaricMush>(), 0.5)
 
                                     // Choose no item with a high weight of 7.
                                     );
@@ -6502,7 +6448,7 @@ namespace Stellamod.WorldG
 
                                             break;
                                         case 4:
-                                            itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
+
                                             itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 
                                             itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
@@ -6648,7 +6594,7 @@ namespace Stellamod.WorldG
 
                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
                     StructureLoader.ProtectStructure(Loc, path);
-                    NPCs.Town.AlcadSpawnSystem.MechanicsTownTile = Loc;
+
                     foreach (int chestIndex in ChestIndexs)
                     {
                         var chest = Main.chest[chestIndex];
@@ -6659,8 +6605,6 @@ namespace Stellamod.WorldG
 
                         // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
                         int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-                            Tuple.Create(ModContent.ItemType<OldCarianTome>(), 0.5)
 
 
                         // Choose no item with a high weight of 7.
@@ -6827,7 +6771,7 @@ namespace Stellamod.WorldG
                     if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Ice/VeldrisHouse"))
                         continue;
                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Ice/VeldrisHouse");
-                    NPCs.Town.AlcadSpawnSystem.VelTile = Loc;
+
                     Chest c = Main.chest[ChestIndexs[0]];
 
                     foreach (int chestIndex in ChestIndexs)
@@ -6877,7 +6821,7 @@ namespace Stellamod.WorldG
 
                                 break;
                             case 4:
-                                itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
+
                                 itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
                                 itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
                                 itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));

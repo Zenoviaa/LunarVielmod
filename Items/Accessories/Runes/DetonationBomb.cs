@@ -24,7 +24,7 @@ namespace Stellamod.Items.Accessories.Runes
             Projectile.hostile = false;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
-     
+
         }
 
         public override void AI()

@@ -47,8 +47,8 @@ namespace Stellamod.Common.ScorpionMountSystem
             base.AI();
             ScorpionPlayer scorpionPlayer = Owner.GetModPlayer<ScorpionPlayer>();
             Projectile.Center = scorpionPlayer.gunMountPosition;
-            if (Owner.mount.Active && 
-                Owner.mount._mountSpecificData is ScorpionSpecificData scorpionSpecificData && 
+            if (Owner.mount.Active &&
+                Owner.mount._mountSpecificData is ScorpionSpecificData scorpionSpecificData &&
                 scorpionSpecificData.scorpionItem.gunType == Type)
             {
                 Projectile.timeLeft = 3;
@@ -135,7 +135,7 @@ namespace Stellamod.Common.ScorpionMountSystem
             SpriteEffects spriteEffects = Projectile.velocity.X < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
             spriteBatch.Restart(blendState: BlendState.Additive);
-            for(float f = 0f; f < 1f; f += 0.1f)
+            for (float f = 0f; f < 1f; f += 0.1f)
             {
                 float rot = f * MathHelper.ToRadians(360);
                 rot += Main.GlobalTimeWrappedHourly * 5f;
@@ -145,7 +145,7 @@ namespace Stellamod.Common.ScorpionMountSystem
             }
             spriteBatch.RestartDefaults();
         }
-        
+
         private void DrawGunSprite(ref Color lightColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
@@ -174,7 +174,7 @@ namespace Stellamod.Common.ScorpionMountSystem
             float drawScale = 1f;
             SpriteEffects spriteEffects = Projectile.velocity.X < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             spriteBatch.Restart(blendState: BlendState.Additive);
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
                 spriteBatch.Draw(texture, drawPos, null, drawColor * WhiteFlash, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
             spriteBatch.RestartDefaults();
         }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.Bases;
 using Terraria;
-using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Crossbows
 {

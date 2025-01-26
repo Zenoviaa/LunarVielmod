@@ -31,9 +31,9 @@ namespace Stellamod.Projectiles.Gun
             Projectile.ai[0]++;
             if (Projectile.ai[0] == 2)
             {
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                         ModContent.ProjectileType<VoidBlasterSpawnEffect>(), Projectile.damage / 4, 1, Projectile.owner, 0, 0);
                 }
             }
@@ -48,7 +48,7 @@ namespace Stellamod.Projectiles.Gun
                 {
                     Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DodgerBlue, 1.5f).noGravity = true;
                 }
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                         ModContent.ProjectileType<VoidBlasterExplosionBomb>(), Projectile.damage * 4, 1, Projectile.owner, 0, 0);

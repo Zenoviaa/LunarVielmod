@@ -128,7 +128,7 @@ namespace Stellamod.Common.Bases
 
             spriteBatch.RestartDefaults();
 
-        
+
             spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(lightColor), Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
 
 

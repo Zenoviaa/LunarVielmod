@@ -3,7 +3,6 @@ using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -45,7 +44,7 @@ namespace Stellamod.Projectiles.Gun
 
         public override bool PreDraw(ref Color lightColor)
         {
-            if(_targetNpc == -1)
+            if (_targetNpc == -1)
             {
                 DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.SpikyTrail1);
                 DrawHelper.DrawAdditiveAfterImage(Projectile, Color.OrangeRed, Color.Transparent, ref lightColor);
@@ -56,7 +55,7 @@ namespace Stellamod.Projectiles.Gun
 
         public override void AI()
         {
-            if(_targetNpc != -1)
+            if (_targetNpc != -1)
             {
                 NPC target = Main.npc[_targetNpc];
                 if (!target.active)
@@ -75,8 +74,8 @@ namespace Stellamod.Projectiles.Gun
                 Projectile.rotation = Projectile.velocity.ToRotation();
             }
 
-           
-      
+
+
             Vector3 RGB = new(1.00f, 0.37f, 0.30f);
             // The multiplication here wasn't doing anything
             Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
@@ -84,12 +83,12 @@ namespace Stellamod.Projectiles.Gun
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(BuffID.Bleeding, 180);       
+            target.AddBuff(BuffID.Bleeding, 180);
             target.AddBuff(BuffID.Poisoned, 180);
-            if(_targetNpc == -1)
+            if (_targetNpc == -1)
             {
                 _targetNpc = target.whoAmI;
-                _targetOffset = (target.position - Projectile.position) + new Vector2(0.001f, 0.001f); 
+                _targetOffset = (target.position - Projectile.position) + new Vector2(0.001f, 0.001f);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<NailKaboom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             }

@@ -63,7 +63,7 @@ namespace Stellamod.UI.CauldronSystem
             Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();
             bool contains = ContainsPoint(Main.MouseScreen);
-         //   Console.WriteLine(rectangle.Width);
+            //   Console.WriteLine(rectangle.Width);
             if (contains && !PlayerInput.IgnoreMouseInterface)
             {
                 Main.LocalPlayer.mouseInterface = true;

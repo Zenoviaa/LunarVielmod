@@ -2,12 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
-using Stellamod.Items.Weapons.Igniters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -47,7 +41,7 @@ namespace Stellamod.Common.Bases
             shader.Speed = 5;
 
             float bp = 0.5f;
-            shader.BasePower = MathHelper.Lerp(bp, bp * 2, Easing.SpikeOutCirc(Progress)); 
+            shader.BasePower = MathHelper.Lerp(bp, bp * 2, Easing.SpikeOutCirc(Progress));
 
             float s = 0.00525f;
             shader.Size = MathHelper.Lerp(s, s * 2, Easing.SpikeOutCirc(Progress));
@@ -66,11 +60,11 @@ namespace Stellamod.Common.Bases
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 spriteBatch.Draw(texture, centerPos, null, Color.White, Projectile.rotation, texture.Size() / 2f, Projectile.scale, SpriteEffects.None, 0);
             }
-         
+
             spriteBatch.RestartDefaults();
             return false;
         }

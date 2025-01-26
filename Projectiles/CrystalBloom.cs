@@ -2,13 +2,12 @@
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using Terraria;
-using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
     public class CrystalBloom : BaseIgniterExplosion
-	{
-		public override int FrameCount => 60;
+    {
+        public override int FrameCount => 60;
 
         public override void SetDefaults()
         {

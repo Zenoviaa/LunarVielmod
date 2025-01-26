@@ -14,12 +14,13 @@ namespace Stellamod.Common.Skies
             if (Main.netMode == NetmodeID.Server)
                 return;
 
-            if (!SkyManager.Instance["CrystalMoon:CloudySky"].IsActive() 
+            if (!SkyManager.Instance["CrystalMoon:CloudySky"].IsActive()
                 && Player.ZoneOverworldHeight || Player.ZoneSkyHeight || Player.ZoneUnderworldHeight)
             {
                 Vector2 targetCenter = Player.Center;
                 SkyManager.Instance.Activate("CrystalMoon:CloudySky", targetCenter);
-            }else if (SkyManager.Instance["CrystalMoon:CloudySky"].IsActive())
+            }
+            else if (SkyManager.Instance["CrystalMoon:CloudySky"].IsActive())
             {
                 SkyManager.Instance.Deactivate("CrystalMoon:CloudySky");
             }
@@ -28,7 +29,8 @@ namespace Stellamod.Common.Skies
             {
                 Vector2 targetCenter = Player.Center;
                 SkyManager.Instance.Activate("CrystalMoon:DesertSky", targetCenter);
-            } else if (SkyManager.Instance["CrystalMoon:DesertSky"].IsActive())
+            }
+            else if (SkyManager.Instance["CrystalMoon:DesertSky"].IsActive())
             {
                 SkyManager.Instance.Deactivate("CrystalMoon:DesertSky");
             }

@@ -49,7 +49,7 @@ namespace Stellamod.Projectiles.Magic
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
                 Projectile.alpha = 255;
 
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     float offsetNum = 17;
                     Projectile.position.X = Main.rand.NextFloat(Projectile.position.X - offsetNum, Projectile.position.X + offsetNum);
@@ -72,7 +72,7 @@ namespace Stellamod.Projectiles.Magic
                 }
                 Moved = true;
             }
-            if ( Projectile.ai[1] >= 20)
+            if (Projectile.ai[1] >= 20)
             {
                 Projectile.tileCollide = true;
             }

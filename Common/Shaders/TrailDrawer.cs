@@ -1,9 +1,7 @@
-﻿using Stellamod.Systems.MiscellaneousMath;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.Projectiles.Swords.Altride;
-using Stellamod.Trails;
+using Stellamod.Systems.MiscellaneousMath;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -121,7 +119,7 @@ namespace Stellamod.Common.Shaders
         }
 
 
-        public static void DrawWithMiscShader(SpriteBatch spriteBatch, 
+        public static void DrawWithMiscShader(SpriteBatch spriteBatch,
             Vector2[] oldPos,
             float[] oldRot,
             Func<float, Color> colorFunc,
@@ -148,7 +146,7 @@ namespace Stellamod.Common.Shaders
             Vector2? offset = null)
         {
             //Apply passes
-            if(shader != null)
+            if (shader != null)
             {
                 shader.Apply();
                 ApplyPasses(shader.Effect);
@@ -163,17 +161,17 @@ namespace Stellamod.Common.Shaders
                     oldPos = filledPos;
                 }
             }
-     
+
             //
             var vertices = CalculateVertices(oldPos, oldRot, colorFunc, widthFunc, offset);
             DrawPrimsTriangles(vertices, shader);
-           
-            if(shader != null)
+
+            if (shader != null)
             {
                 shader.FillShape = false;
 
             }
-       
+
         }
 
 
@@ -189,7 +187,7 @@ namespace Stellamod.Common.Shaders
 
             graphicsDevice.RasterizerState.CullMode = CullMode.None;
 
-            if(shader != null)
+            if (shader != null)
             {
                 graphicsDevice.BlendState = shader.BlendState;
                 graphicsDevice.SamplerStates[0] = shader.SamplerState;

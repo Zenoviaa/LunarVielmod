@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
-using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;
@@ -46,12 +44,12 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             return new Vector2(-24, 0);
         }
-       
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
 
             _comboCounter++;
-            if(_comboCounter > 28)
+            if (_comboCounter > 28)
             {
                 //Reset
                 Item.useTime = 29;
@@ -59,7 +57,7 @@ namespace Stellamod.Items.Weapons.Ranged
                 _comboCounter = 0;
             }
 
-            if(_comboCounter > 5)
+            if (_comboCounter > 5)
             {
                 Item.useTime--;
                 Item.useAnimation--;
@@ -84,7 +82,7 @@ namespace Stellamod.Items.Weapons.Ranged
                     // Rotate the velocity randomly by 30 degrees at max.
                     Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
                     newVelocity *= 1f - Main.rand.NextFloat(0.3f);
-                    Projectile.NewProjectileDirect(source, position, newVelocity, 
+                    Projectile.NewProjectileDirect(source, position, newVelocity,
                         ProjectileID.WandOfSparkingSpark, damage, knockback, player.whoAmI);
                 }
 

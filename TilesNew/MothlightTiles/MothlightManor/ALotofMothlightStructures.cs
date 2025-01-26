@@ -2,7 +2,6 @@
 using Stellamod.Tiles;
 using Terraria;
 using Terraria.GameContent.Creative;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
@@ -119,7 +118,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
     {
         public override void SetStaticDefaults()
         {
-            
+
             base.SetStaticDefaults();
             StructureColor = Color.Gray;
             //If you need other static defaults it go here
@@ -389,7 +388,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
     {
         public override void SetStaticDefaults()
         {
-           // Origin = DrawOrigin.TopDown;
+            // Origin = DrawOrigin.TopDown;
             base.SetStaticDefaults();
             StructureColor = Color.Gray;
             //If you need other static defaults it go here
@@ -488,7 +487,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
 
     #endregion
 
-   
+
 
     #region MothlightBiggerTable
     public class MothlightHighTableBlock : DecorativeWallItem

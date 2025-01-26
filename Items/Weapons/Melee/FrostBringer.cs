@@ -3,10 +3,7 @@ using Stellamod.Common.Bases;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Slashers.FrostBringer;
-using Stellamod.Projectiles.Slashers.Swords;
-using Stellamod.Projectiles.Swords;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -49,7 +46,7 @@ namespace Stellamod.Items.Weapons.Melee
             int dir = swingPlayer.SwingDirection;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback,
                 player.whoAmI, 0, dir);
-     
+
             return false;
         }
         public override void AddRecipes()

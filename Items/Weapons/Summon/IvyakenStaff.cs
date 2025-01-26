@@ -1,22 +1,17 @@
 
 using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Minions;
-using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Summons.Minions;
-using System;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Stellamod.Items.Weapons.Summon.IvyakenStaff;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	public class IvyakenStaff : ClassSwapItem
+    public class IvyakenStaff : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;
@@ -27,12 +22,12 @@ namespace Stellamod.Items.Weapons.Summon
             Item.mana = 10;
         }
         public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Ivyaken Staff");
-			// Tooltip.SetDefault("Summons an Ivyaken to fight for you");
-			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
-			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
-		}
+        {
+            // DisplayName.SetDefault("Ivyaken Staff");
+            // Tooltip.SetDefault("Summons an Ivyaken to fight for you");
+            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
+            ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
+        }
 
         public override void SetDefaults()
         {
@@ -56,8 +51,8 @@ namespace Stellamod.Items.Weapons.Summon
             Item.shoot = ModContent.ProjectileType<IvyakenMinionProj>();
         }
 
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		{
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
             // This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
             player.AddBuff(Item.buffType, 2);
 

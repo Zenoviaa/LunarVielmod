@@ -4,7 +4,6 @@ using Stellamod.Buffs;
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Weapons.Summon.Orbs;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using System.IO;
@@ -145,12 +144,12 @@ namespace Stellamod.Projectiles.Summons.Orbs
                 Reset();
                 SwingVelocity = Owner.DirectionTo(SwingTarget);
                 SwingStart = Owner.Center;
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     SwingTarget = GetSwingTarget();
                     Projectile.netUpdate = true;
                 }
-   
+
                 SwingTime = Swing_Time;
                 State = ActionState.Swing_1;
                 ComboCounter = 0;

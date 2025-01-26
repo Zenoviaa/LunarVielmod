@@ -1,12 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Players;
-using System;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
-using Terraria.UI;
 
 namespace Stellamod.UI.TitleSystem
 {
@@ -48,7 +45,7 @@ namespace Stellamod.UI.TitleSystem
             _text.Height.Pixels = Height.Pixels;
             _text.HAlign = 0.5f;
             _text.Top.Pixels = 0;
-         
+
             Append(_text);
         }
 

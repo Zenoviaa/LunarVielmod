@@ -4,8 +4,8 @@ using Stellamod.Common.Bases;
 using Stellamod.Common.Players;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles;
 using Stellamod.Trails;
 using System.Collections.Generic;
@@ -252,7 +252,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
     public class AuroranStaminaSlash : BaseSwingProjectile
     {
         public override string Texture => this.PathHere() + "/Auroran";
-    
+
         float ProjTimer;
         public bool Hit;
         public bool AuroraProj1;

@@ -8,9 +8,7 @@ using Stellamod.Items.Weapons.Melee.Greatswords.INY;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Summon.Orbs;
-using Stellamod.Items.Weapons.Thrown.Jugglers;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
@@ -30,7 +28,7 @@ namespace Stellamod.Items.Consumables
             Item.height = 28;
             Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
             Item.value = Item.sellPrice(1, 0, 0, 0);
-     
+
         }
 
 
@@ -55,10 +53,6 @@ namespace Stellamod.Items.Consumables
             Recipe recipe5 = CreateRecipe();
             recipe5.AddIngredient(ModContent.ItemType<IshNYire>(), 1);
             recipe5.Register();
-
-            Recipe recipe6 = CreateRecipe();
-            recipe6.AddIngredient(ModContent.ItemType<StickyCards>(), 1);
-            recipe6.Register();
 
             Recipe recipe7 = CreateRecipe();
             recipe7.AddIngredient(ModContent.ItemType<Mordred>(), 1);

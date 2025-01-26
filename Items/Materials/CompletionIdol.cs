@@ -1,11 +1,7 @@
 ﻿
 using Stellamod.Helpers;
-using Stellamod.Items.Armors.Vanity.Gothivia;
-using Stellamod.Items.Ores;
-using Stellamod.Items.Special;
 using Terraria;
 using Terraria.GameContent.Creative;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
@@ -30,19 +26,7 @@ namespace Stellamod.Items.Materials
         }
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe(1);
-            recipe.AddIngredient(ModContent.ItemType<VeiledScriptureGothivia>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<Twirlers>(), 1);
-            recipe.Register();
 
-            Recipe recipe2 = CreateRecipe(1);
-            recipe2.AddIngredient(ModContent.ItemType<VeiledScriptureCozmire>(), 1);
-            recipe2.Register();
-
-            Recipe recipe3 = CreateRecipe(1);
-            recipe3.AddIngredient(ModContent.ItemType<VeiledScriptureAzurerin>(), 1);
-            recipe3.AddIngredient(ModContent.ItemType<Superfragment>(), 10);
-            recipe3.Register();
         }
 
     }

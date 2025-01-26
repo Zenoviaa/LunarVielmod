@@ -65,11 +65,11 @@ namespace Stellamod.Items.Weapons.Summon
                 player.whoAmI, 0);
             projectile.originalDamage = Item.damage;
 
-            projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, 
+            projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback,
                 player.whoAmI, 1);
             projectile.originalDamage = Item.damage;
 
-            projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, 
+            projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback,
                 player.whoAmI, 2);
             projectile.originalDamage = Item.damage;
 

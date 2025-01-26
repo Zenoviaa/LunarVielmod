@@ -5,7 +5,6 @@ using Stellamod.Projectiles.IgniterExplosions;
 
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -71,7 +70,7 @@ namespace Stellamod.Projectiles.Thrown
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch);
             }
 
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(),Projectile.Center, Vector2.Zero, 
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<FunBoom>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ComicBoom"), Projectile.position);
         }

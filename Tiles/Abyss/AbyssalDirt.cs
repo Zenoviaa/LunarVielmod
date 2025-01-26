@@ -21,7 +21,7 @@ namespace Stellamod.Tiles.Abyss
             Main.tileBlockLight[Type] = true;
             AddMapEntry(new Color(57, 55, 172));
         }
-   
+
         public override void RandomUpdate(int i, int j)
         {
             Tile tile = Framing.GetTileSafely(i, j);

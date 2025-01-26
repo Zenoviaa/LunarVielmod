@@ -7,20 +7,20 @@ using Terraria.ModLoader;
 namespace Stellamod.Tiles
 {
     public class OvermorrowdirtWall : ModWall
-	{
-		public override void SetStaticDefaults()
-		{
-			
-			Main.wallDungeon[Type] = true;
+    {
+        public override void SetStaticDefaults()
+        {
 
-			DustType = ModContent.DustType<Solution>();
-			RegisterItemDrop(ModContent.ItemType<Items.Materials.OvermorrowdirtwallBlock>());
+            Main.wallDungeon[Type] = true;
 
-			AddMapEntry(new Color(11, 13, 17));
-		}
-		public override void NumDust(int i, int j, bool fail, ref int num)
-		{
-			num = fail ? 1 : 3;
-		}
-	}
+            DustType = ModContent.DustType<Solution>();
+            RegisterItemDrop(ModContent.ItemType<Items.Materials.OvermorrowdirtwallBlock>());
+
+            AddMapEntry(new Color(11, 13, 17));
+        }
+        public override void NumDust(int i, int j, bool fail, ref int num)
+        {
+            num = fail ? 1 : 3;
+        }
+    }
 }

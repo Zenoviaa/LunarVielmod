@@ -8,8 +8,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-	public class BincleProj : ModProjectile
-	{
+    public class BincleProj : ModProjectile
+    {
         private ref float Timer => ref Projectile.ai[0];
         private Player Owner => Main.player[Projectile.owner];
         public override void SetStaticDefaults()
@@ -74,7 +74,7 @@ namespace Stellamod.Projectiles.Magic
                     Projectile.Kill();
                 }
 
-          
+
                 Projectile.netUpdate = true;
             }
 

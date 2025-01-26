@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Magic;
-using Stellamod.Projectiles.Spears;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -13,7 +11,7 @@ namespace Stellamod.Items.Weapons.Mage
 {
     internal class Poya : ClassSwapItem
     {
-      
+
         public override DamageClass AlternateClass => DamageClass.Summon;
 
         public override void SetClassSwappedDefaults()

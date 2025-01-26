@@ -1,5 +1,4 @@
 ﻿using Stellamod.Items.Ores;
-using Stellamod.Items.Quest.BORDOC;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -55,7 +54,6 @@ namespace Stellamod.Items.Weapons.Mage
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.ChlorophyteBar, 10);
             recipe.AddIngredient(ModContent.ItemType<RadianuiBar>(), 20);
-            recipe.AddIngredient(ModContent.ItemType<RottenHeart>(), 1);
             recipe.Register();
         }
 

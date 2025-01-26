@@ -1,22 +1,15 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
-using Stellamod.Projectiles;
-using Stellamod.Projectiles.Slashers;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Slashers.ThefirstAurora;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-
-using Stellamod.Projectiles.Safunai.Alcarish;
-using System.Collections.Generic;
-using System.IO;
-using Stellamod.Items.Materials.Molds;
 
 
 namespace Stellamod.Items.Weapons.Melee.Greatswords
@@ -47,7 +40,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
 
-            line = new TooltipLine(Mod, "Alcarishasd",  Helpers.LangText.Common("Greatsword"))
+            line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Common("Greatsword"))
             {
                 OverrideColor = ColorFunctions.GreatswordWeaponType
             };
@@ -110,9 +103,9 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Swinger") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage * 3, knockback, player.whoAmI, 1, dir);
-           // Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<AuroranBullet>(), damage * 2, knockback, player.whoAmI, 1, dir);
-          //  Projectile.NewProjectile(source, position, velocity * 0.8f, ModContent.ProjectileType<AuroranBullet2>(), damage * 2, knockback, player.whoAmI, 1, dir);
-           // Projectile.NewProjectile(source, position, velocity * 1.2f, ModContent.ProjectileType<AuroranBullet3>(), damage * 2, knockback, player.whoAmI, 1, dir);
+            // Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<AuroranBullet>(), damage * 2, knockback, player.whoAmI, 1, dir);
+            //  Projectile.NewProjectile(source, position, velocity * 0.8f, ModContent.ProjectileType<AuroranBullet2>(), damage * 2, knockback, player.whoAmI, 1, dir);
+            // Projectile.NewProjectile(source, position, velocity * 1.2f, ModContent.ProjectileType<AuroranBullet3>(), damage * 2, knockback, player.whoAmI, 1, dir);
             return false;
         }
 
