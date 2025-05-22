@@ -38,6 +38,6 @@ namespace Stellamod.Items.Ammo
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
-
+    
     }
 }

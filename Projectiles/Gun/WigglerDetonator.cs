@@ -24,7 +24,7 @@ namespace Stellamod.Projectiles.Gun
             Timer++;
             foreach (var p in Main.ActiveProjectiles)
             {
-                if (Main.myPlayer == Projectile.owner)
+                if(Main.myPlayer == Projectile.owner)
                 {
                     if (p.type == ModContent.ProjectileType<WigglerStick>() ||
                             p.type == ModContent.ProjectileType<WigglerStick2>())

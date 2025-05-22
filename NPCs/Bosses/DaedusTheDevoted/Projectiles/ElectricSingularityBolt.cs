@@ -8,7 +8,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
-{
+{ 
     internal class ElectricSingularityBolt : ModProjectile
     {
         private CommonLightning _lightning;

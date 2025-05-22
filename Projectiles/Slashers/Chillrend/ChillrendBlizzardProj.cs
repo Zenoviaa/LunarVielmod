@@ -1,9 +1,16 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Trails;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria.Graphics.Shaders;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace Stellamod.Projectiles.Slashers.Chillrend
 {
@@ -19,12 +26,12 @@ namespace Stellamod.Projectiles.Slashers.Chillrend
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 512;
-
+          
             Projectile.tileCollide = false;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 60;
-
+            
         }
 
         public override void AI()

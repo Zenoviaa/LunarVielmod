@@ -1,15 +1,24 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Dusts;
-using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Trails;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using Stellamod.UI.Systems;
-using Terraria;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
+using Stellamod.Dusts;
+using Terraria.GameContent;
+using Stellamod.Trails;
+using Terraria.Graphics.Shaders;
+using static Terraria.ModLoader.ModContent;
+
+using Stellamod.Particles;
+
+using Stellamod.Projectiles.IgniterExplosions;
 
 namespace Stellamod.Projectiles.GunHolster
 {
@@ -164,7 +173,7 @@ namespace Stellamod.Projectiles.GunHolster
             return false;
         }
 
-
+        
 
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

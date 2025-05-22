@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Stellamod.TilesNew.RainforestTiles;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;

@@ -1,12 +1,18 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using System;
 using System.Collections.Generic;
-using Terraria;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.ID;
+using Terraria;
 using Terraria.ModLoader;
+using Stellamod.Gores;
+using Stellamod.Projectiles.Visual;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {

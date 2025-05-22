@@ -1,7 +1,15 @@
 ﻿
 
 using Stellamod.Helpers;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Melee.Greatswords;
+using Stellamod.Items.Weapons.Melee.Greatswords.INY;
+using Stellamod.Items.Weapons.Ranged.GunSwapping;
+using Stellamod.Items.Weapons.Summon;
+using Stellamod.Items.Weapons.Summon.Orbs;
+using Stellamod.Items.Weapons.Thrown.Jugglers;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
@@ -21,10 +29,10 @@ namespace Stellamod.Items.Consumables
             Item.height = 28;
             Item.rare = ModContent.RarityType<GoldenSpecialRarity>();
             Item.value = Item.sellPrice(0, 0, 1, 0);
-
+     
         }
 
 
-
+       
     }
 }

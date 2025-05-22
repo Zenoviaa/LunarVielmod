@@ -55,7 +55,7 @@ namespace Stellamod.Items.Weapons.Melee
         {
             _swingDir = position.X + velocity.X > player.position.X ? 1 : -1;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai1: _swingDir);
-
+           
             return false;
         }
 

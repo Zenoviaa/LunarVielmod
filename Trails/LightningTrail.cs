@@ -12,7 +12,7 @@ namespace Stellamod.Trails
         public CommonLightning()
         {
             Trails = new LightningTrail[4];
-            for (int t = 0; t < Trails.Length; t++)
+            for(int t = 0; t < Trails.Length; t++)
             {
                 Trails[t] = new LightningTrail();
             }
@@ -62,7 +62,7 @@ namespace Stellamod.Trails
             if (SyncOffsets)
             {
                 Trails[0].RandomPositions(oldPos);
-                for (int t = 1; t < Trails.Length; t++)
+                for(int t = 1; t < Trails.Length; t++)
                 {
                     Trails[t].ClonePositions(Trails[0]);
                 }
@@ -74,11 +74,11 @@ namespace Stellamod.Trails
                     Trails[t].RandomPositions(oldPos);
                 }
             }
-
+  
         }
 
-        public void Draw(SpriteBatch spriteBatch,
-            Vector2[] oldPos,
+        public void Draw(SpriteBatch spriteBatch, 
+            Vector2[] oldPos, 
             float[] oldRot, Vector2? offset = null)
         {
             var prevBelndState = Main.graphics.GraphicsDevice.BlendState;
@@ -132,7 +132,7 @@ namespace Stellamod.Trails
         public Asset<Texture2D> NoiseTexture;
         public float Speed;
         public float Distortion;
-        public float Power;
+        public float Power; 
         public void ClonePositions(LightningTrail other)
         {
             _offsets = other._offsets;

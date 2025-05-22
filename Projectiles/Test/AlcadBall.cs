@@ -1,11 +1,16 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using Stellamod.Common.MaskingShaderSystem;
 using Stellamod.Helpers;
-using Terraria;
-using Terraria.Graphics.Shaders;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
+using Terraria.Graphics.Shaders;
 
 namespace Stellamod.Projectiles.Test
 {

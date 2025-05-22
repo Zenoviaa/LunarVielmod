@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -55,10 +56,10 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
                 SlowdownTimer--;
             }
 
-            if (CooldownTimer > 0)
+            if(CooldownTimer > 0)
             {
                 CooldownTimer--;
-                if (CooldownTimer == 0)
+                if(CooldownTimer == 0)
                 {
                     float num = 24;
                     for (int i = 0; i < num; i++)
@@ -126,6 +127,10 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
             {
                 //Thrust the player
                 scarecrowSaberPlayer.DashVelocity = Projectile.velocity;
+                int explosion = ModContent.ProjectileType<DaedusBombExplosion>();
+                int damage = 0;
+                int knockback = 2;
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Bottom, Vector2.Zero, explosion, damage, knockback);
 
                 //Dust Particles
                 for (int k = 0; k < 7; k++)

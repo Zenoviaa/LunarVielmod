@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Slashers.ArchariliteRaysword;
 using Stellamod.Projectiles.Swords;
 using Terraria;
@@ -73,7 +75,7 @@ namespace Stellamod.Items.Weapons.Melee
             }
 
         }
-
+       
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {

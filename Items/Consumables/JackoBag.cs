@@ -9,8 +9,10 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
+using Stellamod.Items.Weapons.Thrown;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.GameContent.Creative;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -50,6 +52,7 @@ namespace Stellamod.Items.Consumables
         public override void ModifyItemLoot(ItemLoot itemLoot)
         {
             itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<BurningScarf>()));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<PumkinPopper>(), chanceDenominator: 2, minimumDropped: 150, maximumDropped: 450));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<WanderingFlame>(), minimumDropped: 20, maximumDropped: 50));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<WillOWisp>(), chanceDenominator: 2));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<JackoShot>(), chanceDenominator: 2));

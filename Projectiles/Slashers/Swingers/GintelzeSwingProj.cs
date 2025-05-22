@@ -2,8 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
+using Stellamod.UI.Systems;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -56,7 +58,7 @@ namespace Stellamod.Projectiles.Test
         public override void AI()
         {
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 for (int i = 0; i < Projectile.oldPos.Length; i++)
                 {
@@ -109,23 +111,23 @@ namespace Stellamod.Projectiles.Test
         {
             //Tip Trail stuff underneath
             Vector2[] oldPos = new Vector2[Projectile.oldPos.Length];
-
-
-
-
-
+           
+           
+           
+            
+            
             for (int i = 0; i < oldPos.Length; i++)
             {
                 oldPos[i] = Projectile.oldPos[i];
                 oldPos[i] += Projectile.rotation.ToRotationVector2() * Projectile.width / 3f;
             }
 
-
+        
 
             Texture2D tipSlashTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/TerraTrail").Value;
             if (SwordSlash == null)
             {
-                SwordSlash = new TrailRenderer(tipSlashTexture, TrailRenderer.DefaultPass,
+                SwordSlash = new TrailRenderer(tipSlashTexture, TrailRenderer.DefaultPass, 
                     (p) => new Vector2(145f),
                     (p) => Color.White * (1f - p));
                 SwordSlash.drawOffset = Projectile.Size / 2f;
@@ -166,21 +168,21 @@ namespace Stellamod.Projectiles.Test
             float speedY = Projectile.velocity.Y * Main.rand.NextFloat(.2f, .3f) * 0.01f;
 
 
-
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-           ModContent.ProjectileType<WhiteStrikeCircle>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 16f);
-            SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath);
-
-            for (int i = 0; i < 4; i++)
-            {
-                Dust.NewDustPerfect(target.Center, ModContent.DustType<LumiDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 170, Color.White, 1f).noGravity = true;
-            }
-            for (int i = 0; i < 4; i++)
-            {
-                Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Black, 0.5f).noGravity = true;
-            }
-
+            
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+               ModContent.ProjectileType<WhiteStrikeCircle>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 16f);
+                SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath);
+           
+                for (int i = 0; i < 4; i++)
+                {
+                    Dust.NewDustPerfect(target.Center, ModContent.DustType<LumiDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 170, Color.White, 1f).noGravity = true;
+                }
+                for (int i = 0; i < 4; i++)
+                {
+                    Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Black, 0.5f).noGravity = true;
+                }
+            
 
 
 

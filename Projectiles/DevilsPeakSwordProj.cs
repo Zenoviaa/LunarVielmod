@@ -1,6 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+using Stellamod.Particles;
+using Stellamod.Projectiles.IgniterExplosions;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -123,8 +127,8 @@ namespace Stellamod.Projectiles
 
                 if (!ParticleSpawned)
                 {
-
-                    ParticleSpawned = true;
+                 
+                                        ParticleSpawned = true;
                 }
 
             }

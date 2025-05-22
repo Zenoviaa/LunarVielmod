@@ -1,14 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
+using ReLogic.Content;
+using Stellamod.Trails;
+using Terraria.Graphics.Shaders;
+
+using Stellamod.Particles;
 
 namespace Stellamod.Projectiles.Swords.Fenix
 {
@@ -19,7 +22,7 @@ namespace Stellamod.Projectiles.Swords.Fenix
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shadow Hand");
-            // Main.projFrames[Projectile.type] = 30;
+           // Main.projFrames[Projectile.type] = 30;
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 35;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
@@ -144,7 +147,7 @@ namespace Stellamod.Projectiles.Swords.Fenix
             return false;
         }
 
-
+       
 
         public override void AI()
         {
@@ -242,41 +245,41 @@ namespace Stellamod.Projectiles.Swords.Fenix
             {
                 BombOffset.X = Projectile.Center.X - 50;
                 BombOffset.Y = Projectile.Center.Y;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0,
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, 
                     ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Projectile.owner);
 
                 BombOffset.X = Projectile.Center.X + 70;
                 BombOffset.Y = Projectile.Center.Y;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0,
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, 
                     ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Projectile.owner);
 
                 BombOffset.X = Projectile.Center.X - 150;
                 BombOffset.Y = Projectile.Center.Y;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0,
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, 
                     ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Projectile.owner);
 
                 BombOffset.X = Projectile.Center.X + 170;
                 BombOffset.Y = Projectile.Center.Y;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0,
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, 
                     ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Projectile.owner);
 
                 BombOffset.X = Projectile.Center.X - 250;
                 BombOffset.Y = Projectile.Center.Y;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0,
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, 
                     ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Projectile.owner);
 
                 BombOffset.X = Projectile.Center.X + 270;
                 BombOffset.Y = Projectile.Center.Y;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0,
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, 
                     ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Projectile.owner);
 
-                Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, -Projectile.velocity,
+                Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, -Projectile.velocity, 
                     ProjectileID.LostSoulFriendly, Projectile.damage * 1, 0f, Projectile.owner);
 
                 Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, -Projectile.velocity * 0.5f,
                     ProjectileID.LostSoulFriendly, Projectile.damage * 1, 0f, Projectile.owner);
 
-                Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, -Projectile.velocity * 1.5f,
+                Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, -Projectile.velocity * 1.5f, 
                     ProjectileID.LostSoulFriendly, Projectile.damage * 1, 0f, Projectile.owner);
             }
 
@@ -313,7 +316,7 @@ namespace Stellamod.Projectiles.Swords.Fenix
         float alphaCounter = 0;
         Vector2 DrawOffset;
 
-
+       
 
 
         public override void PostDraw(Color lightColor)

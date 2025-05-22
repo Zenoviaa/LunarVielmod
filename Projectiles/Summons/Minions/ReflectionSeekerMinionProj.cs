@@ -24,7 +24,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override void Load()
         {
-            if (!Main.dedServ)
+            if(!Main.dedServ)
             {
                 using var eventSlim = new ManualResetEventSlim();
                 Main.QueueMainThreadAction(() =>
@@ -318,12 +318,12 @@ namespace Stellamod.Projectiles.Summons.Minions
                 if (Grenns > 50)
                 {
                     Vector2 bulletVelocity = Projectile.Center.DirectionTo(targetCenter) * 52;
-                    if (Main.myPlayer == Projectile.owner)
+                    if(Main.myPlayer == Projectile.owner)
                     {
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, bulletVelocity,
                             ModContent.ProjectileType<EldritchBolt>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                     }
-
+          
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Laserlock") { Pitch = Main.rand.NextFloat(-5f, 5f) }, Projectile.Center);
 
 

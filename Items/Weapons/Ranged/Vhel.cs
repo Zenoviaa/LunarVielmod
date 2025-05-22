@@ -1,10 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Items.Ores;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles;
+using Stellamod.Projectiles.Bow;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Ranged
 {

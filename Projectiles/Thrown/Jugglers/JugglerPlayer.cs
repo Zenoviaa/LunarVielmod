@@ -29,9 +29,9 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
         {
             bool isLegal = false;
-            for (int i = 0; i < _legalProjectiles.Length; i++)
+            for(int i = 0; i < _legalProjectiles.Length; i++)
             {
-                if (proj.type == _legalProjectiles[i])
+                if(proj.type == _legalProjectiles[i])
                 {
                     isLegal = true;
                     break;

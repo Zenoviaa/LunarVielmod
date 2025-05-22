@@ -6,7 +6,10 @@ using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Thrown;
+using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles;
+using Stellamod.NPCs.Town;
 using Stellamod.Trails;
 using System;
 using System.IO;
@@ -16,8 +19,9 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 using Conditions = Terraria.GameContent.ItemDropRules.Conditions;
-
+using Gambit = Stellamod.Items.Consumables.Gambit;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
 {
@@ -56,7 +60,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                 {
                     frame = 0;
                 }
-            }
+            }    
         }
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -77,10 +81,10 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             Smile,
             Scared
         }
-        public DaedusFaceSegment(NPC npc) : base(npc)
-        {
+        public DaedusFaceSegment(NPC npc) : base(npc) 
+        { 
             Animation = AnimationState.Smile;
-
+  
         }
         public AnimationState Animation { get; set; }
         public bool Glow { get; set; }
@@ -188,8 +192,8 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
         }
 
 
-        public DaedusArmSegment(NPC npc) : base(npc)
-        {
+        public DaedusArmSegment(NPC npc) : base(npc)  
+        { 
             Animation = AnimationState.Hold_Down;
         }
 
@@ -232,7 +236,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
         public override void AI()
         {
             base.AI();
-
+      
             frameCounter += 0.5f;
             if (Fast)
             {
@@ -289,7 +293,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
     {
         public DaedusBackSegment(NPC npc) : base(npc)
         {
-
+       
         }
 
         public override void AI()
@@ -315,9 +319,9 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             //Ok so we need some glowing huhh
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-
-            for (float f = 0; f < 1f; f += 0.1f)
+           
+            
+            for(float f = 0; f < 1f; f += 0.1f)
             {
                 float rot = f * MathHelper.TwoPi;
                 Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(4f, 8f, speed: 3);
@@ -335,7 +339,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
     {
         public DaedusRobeSegment(NPC npc) : base(npc)
         {
-
+        
         }
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -549,7 +553,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             NPC.boss = true;
             NPC.npcSlots = 10f;
             NPC.takenDamageMultiplier = 0.9f;
-          //  NPC.BossBar = ModContent.GetInstance<DaedusBossBar>();
+            NPC.BossBar = ModContent.GetInstance<DaedusBossBar>();
 
             NPC.aiStyle = 0;
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Daedus");
@@ -568,16 +572,16 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
         public override void AI()
         {
             base.AI();
-            if (ArenaCenter == default(Vector2))
+            if(ArenaCenter == default(Vector2))
             {
                 ArenaCenter = NPC.Center;
             }
 
             //Teleport Go!!!
-            if (TeleportTarget != Vector2.Zero)
+            if(TeleportTarget != Vector2.Zero)
             {
                 NPC.Center = TeleportTarget;
-                for (int i = 0; i < 24; i++)
+                for(int i =0; i < 24; i++)
                 {
                     float progress = i / 24f;
                     float rot = progress * MathHelper.TwoPi;
@@ -633,7 +637,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                     rotatedOffset = rotatedOffset.RotatedBy(-NPC.rotation);
                     rotatedOffset.X *= VectorHelper.Osc(0.2f, 1f, speed: 5 * flapSpeed);
                     Vector2 rotatedVector = (rotatedOffset * 128 * VectorHelper.Osc(0.9f, 1f, 9));
-
+                 
                     if (i % 8 == 0)
                     {
                         _blackLightningZaps[i] = NPC.Center + rotatedVector * 0.5f * MathF.Cos(Main.GlobalTimeWrappedHourly * 4) * Phase2WingsProgress;
@@ -662,7 +666,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             ArmSegment.AI();
             RobeSegment.AI();
 
-            if (State == AIState.Death)
+            if(State == AIState.Death)
             {
                 Phase2WingsProgress = MathHelper.Lerp(Phase2WingsProgress, 0f, 0.01f);
             }
@@ -670,7 +674,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             {
                 Phase2WingsProgress = MathHelper.Lerp(Phase2WingsProgress, 1f, 0.1f);
             }
-
+   
             //Retarget if can't attack current bro
             if (!NPC.HasValidTarget)
             {
@@ -719,7 +723,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
 
             float targetRotation = NPC.velocity.X * 0.025f;
             float lerpedRotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.2f);
-            NPC.rotation = lerpedRotation + _deathRotation;
+            NPC.rotation = lerpedRotation + _deathRotation; 
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -732,7 +736,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                 BlackLightning.Draw(spriteBatch, _blackLightningZaps, null);
                 BlackLightning.Draw(spriteBatch, _blackLightningZaps2, null);
             }
-
+          
             BackSegment.Draw(spriteBatch, screenPos, drawColor);
             ArmSegment.Draw(spriteBatch, screenPos, drawColor);
             TopSegment.Draw(spriteBatch, screenPos, drawColor);
@@ -821,7 +825,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                                 nextAttack = AIState.Conjure_Ball_Lightning;
                             }
 
-
+                      
                             break;
                         case 1:
                             if (Main.rand.NextBool(2))
@@ -852,7 +856,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                             {
                                 nextAttack = AIState.Conjure_Ball_Lightning_Mega;
                             }
-
+                          
                             break;
                         case 4:
                             if (Main.rand.NextBool(2))
@@ -904,21 +908,21 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             {
                 case 0:
                     Timer++;
-                    if (Timer == 1)
+                    if(Timer == 1)
                     {
                         NPC.velocity.Y -= 15;
                     }
 
                     NPC.velocity.X *= 0.98f;
-                    if (NPC.velocity.Y < 12)
+                    if(NPC.velocity.Y < 12)
                     {
                         NPC.velocity.Y += 0.33f;
                     }
-
+               
 
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Scared;
-                    if (Timer >= 180)
+                    if(Timer >= 180)
                     {
                         Timer = 0;
                         AttackCounter++;
@@ -932,7 +936,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
 
                     float transitionProgress = Timer / 300f;
                     float divisor = (int)MathHelper.Lerp(60, 20, transitionProgress);
-                    if (Timer % divisor == 0)
+                    if(Timer % divisor == 0)
                     {
                         SoundStyle laughSound = new SoundStyle("Stellamod/Assets/Sounds/Jack_Laugh");
                         laughSound.PitchVariance = 1f;
@@ -946,7 +950,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                             NPC.netUpdate = true;
                         }
                     }
-                    if (Timer >= 300f)
+                    if(Timer >= 300f)
                     {
                         Timer = 0;
                         AttackCounter++;
@@ -955,7 +959,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                 case 2:
                     Timer++;
                     NPC.velocity = NPC.velocity.RotatedBy(0.05f);
-                    if (Timer == 30)
+                    if(Timer == 30)
                     {
                         if (StellaMultiplayer.IsHost)
                         {
@@ -965,7 +969,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         }
                     }
 
-                    if (Timer >= 90)
+                    if(Timer >= 90)
                     {
                         Phase2Transition = true;
                         SwitchState(AIState.Idle);
@@ -1057,7 +1061,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         if (StellaMultiplayer.IsHost)
                         {
                             int damage = 21;
-                            int knockback = 1;
+                            int knockback = 1; 
                             Vector2 startPos = Target.Center;
                             startPos.Y -= 128;
 
@@ -1092,7 +1096,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
         }
 
         private void AI_LightningStrike()
-        {
+        {    
             //Lighting strike attack - He strikes the players specifically making the player dodge
             Vector2 lightningSpawnPos = NPC.Center;
             lightningSpawnPos.Y -= 48;
@@ -1109,7 +1113,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
 
                         if (StellaMultiplayer.IsHost)
                         {
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(),
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), 
                                 Target.Center - new Vector2(0, 128), Vector2.UnitY * 64,
                                 ModContent.ProjectileType<LightningStrikeWarn>(), 0, 0, Main.myPlayer, ai1: Target.whoAmI);
                         }
@@ -1157,7 +1161,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                             int damage = LightningStrikeDamage;
                             int knockback = 1;
                             Vector2 firePos = Target.Center - new Vector2(0, 512);
-
+     
                             float charge = Timer / 90f;
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), firePos, Vector2.UnitY,
                                 ModContent.ProjectileType<LightningStrike>(), damage, knockback, Main.myPlayer);
@@ -1192,7 +1196,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             {
                 case 0:
                     Timer++;
-                    if (Timer == 1)
+                    if(Timer == 1)
                     {
                         SoundStyle laughSound = new SoundStyle("Stellamod/Assets/Sounds/Jack_Laugh");
                         laughSound.PitchVariance = 0.1f;
@@ -1213,7 +1217,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                     FaceSegment.Glow = true;
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Raise;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Laughing;
-                    if (Timer % 4 == 0)
+                    if(Timer % 4 == 0)
                     {
                         Vector2 dustSpawnPoint = NPC.Center + Main.rand.NextVector2CircularEdge(64, 64);
                         Vector2 dustVelocity = (lightningSpawnPos - dustSpawnPoint).SafeNormalize(Vector2.Zero);
@@ -1224,7 +1228,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         d.noGravity = true;
                     }
 
-                    if (Timer >= 80)
+                    if(Timer >= 80)
                     {
                         Timer = 0;
                         AttackCounter++;
@@ -1264,7 +1268,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         }
                     }
 
-                    if (Timer >= 90)
+                    if(Timer >= 90)
                     {
                         Timer = 0;
                         AttackCounter++;
@@ -1277,7 +1281,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                     FaceSegment.Glow = false;
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
-                    if (Timer >= 30)
+                    if(Timer >= 30)
                     {
                         SwitchState(AIState.Idle);
                     }
@@ -1334,7 +1338,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
 
                 case 1:
                     Timer++;
-
+                  
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Raise;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
                     if (Timer % 4 == 0)
@@ -1352,7 +1356,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                     Vector2 tv = v * 0.07f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, tv, 0.2f);
                     LightningBallTimer += 1 / 30f;
-                    if (Timer % 12 == 0)
+                    if(Timer % 12 == 0)
                     {
                         SoundStyle soundStyle = SoundID.DD2_LightningAuraZap;
                         soundStyle.PitchVariance = 0.3f;
@@ -1471,7 +1475,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                     Vector2 tv = v * 0.07f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, tv, 0.2f);
 
-
+  
                     if (Timer % 12 == 0)
                     {
                         SoundStyle soundStyle = SoundID.DD2_LightningAuraZap;
@@ -1485,7 +1489,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         FaceSegment.BlackTimer = 1f;
                         Timer = 0;
                         AttackCounter++;
-
+       
                     }
 
                     break;
@@ -1503,7 +1507,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                     break;
             }
         }
-
+  
         private void AI_ElectricField()
         {
             Vector2 lightningSpawnPos = NPC.Center;
@@ -1595,7 +1599,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         }
                     }
 
-                    if (Timer >= 300)
+                    if(Timer >= 300)
                     {
                         Timer = 0;
                         AttackCounter++;
@@ -1769,7 +1773,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                 case 1:
                     Timer++;
 
-
+      
                     if (Timer % 4 == 0)
                     {
                         Vector2 dustSpawnPoint = lightningSpawnPos;
@@ -1779,7 +1783,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         d.noGravity = true;
                     }
 
-                    if (Timer < 230)
+                    if(Timer < 230)
                     {
                         Vector2 offset = new Vector2(0, -252);
                         Vector2 targetPos = Target.Center + offset;
@@ -1787,7 +1791,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         Vector2 tv = v * 0.25f;
                         NPC.velocity = Vector2.Lerp(NPC.velocity, tv, 0.2f);
                     }
-
+      
                     if (Timer % 12 == 0)
                     {
                         SoundStyle soundStyle = SoundID.DD2_LightningAuraZap;
@@ -1795,7 +1799,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         SoundEngine.PlaySound(soundStyle, NPC.position);
                     }
 
-                    if (Timer % 60 == 0 && Timer < 240)
+                    if(Timer % 60 == 0 && Timer < 240)
                     {
                         int damage = ThunderslapDamage;
                         int knockback = 1;
@@ -1811,14 +1815,14 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                             ModContent.ProjectileType<ThunderSlapWarn>(), damage, knockback, Main.myPlayer);
                     }
 
-                    if (Timer >= 230)
+                    if(Timer >= 230)
                     {
                         NPC.velocity.Y -= 0.5f;
                         ArmSegment.Fast = true;
                         ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
                         FaceSegment.Animation = DaedusFaceSegment.AnimationState.Laughing;
                     }
-                    else if (Timer >= 210)
+                    else if(Timer >= 210)
                     {
                         FaceSegment.Animation = DaedusFaceSegment.AnimationState.Laughing;
                     }
@@ -1834,7 +1838,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         FaceSegment.BlackTimer = 1f;
                         Timer = 0;
                         AttackCounter++;
-
+     
                         if (StellaMultiplayer.IsHost)
                         {
                             int damage = ThunderslapDamage;
@@ -1850,7 +1854,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
 
                 case 2:
                     Timer++;
-                    if (Timer == 1)
+                    if(Timer == 1)
                     {
                         NPC.velocity.Y -= 15;
                     }
@@ -1961,7 +1965,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                         }
                     }
 
-                    if (Timer >= 240)
+                    if(Timer >= 240)
                     {
                         Timer = 0;
                         AttackCounter++;
@@ -1984,7 +1988,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
         public override void HitEffect(NPC.HitInfo hit)
         {
             base.HitEffect(hit);
-
+           
             if (NPC.life <= 0 && State != AIState.Death)
             {
                 _hitDirection = hit.HitDirection;
@@ -2005,7 +2009,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
             {
                 case 0:
                     Timer++;
-                    if (Timer == 1)
+                    if(Timer == 1)
                     {
                         NPC.velocity.X = _hitDirection * 7;
                         NPC.velocity.Y -= 15;
@@ -2015,13 +2019,13 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                     {
                         _deathRotation += _hitDirection * 0.0025f;
                     }
-
+          
                     NPC.noGravity = false;
-
+                
 
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Scared;
-                    if (Timer >= 180f)
+                    if(Timer >= 180f)
                     {
                         Timer = 0;
                         AttackCounter++;
@@ -2031,7 +2035,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                     Timer++;
                     _deathRotation = 0;
                     NPC.noGravity = true;
-                    if (Timer == 1)
+                    if(Timer == 1)
                     {
                         SoundStyle laughSound = new SoundStyle("Stellamod/Assets/Sounds/Jack_Laugh");
                         laughSound.PitchVariance = 1f;
@@ -2052,19 +2056,20 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                     Vector2 tv = v * 0.007f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, tv, 0.2f);
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
-                    if (Timer >= 120)
+                    if(Timer >= 120)
                     {
                         NPC.Kill();
                     }
-
+       
                     break;
-
+                    
             }
         }
-
+        
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 2));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GothiviasSeal>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<DaedusBag>()));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.DaedusBossRel>()));
@@ -2080,6 +2085,8 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                 ItemDropRule.Common(ModContent.ItemType<VixedBroochA>(), chanceDenominator: numResults),
                 ItemDropRule.Common(ModContent.ItemType<HeatGlider>(), chanceDenominator: numResults),
                  ItemDropRule.Common(ModContent.ItemType<DaedCard>(), chanceDenominator: numResults)));
+
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
             // Finally add the leading rule
             npcLoot.Add(notExpertRule);

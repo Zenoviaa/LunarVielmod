@@ -10,27 +10,27 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles.Thrown
 {
     public class GintzeSpear : ModProjectile
-    {
-        public bool OptionallySomeCondition { get; private set; }
+	{
+		public bool OptionallySomeCondition { get; private set; }
 
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Cactius2");
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 3;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
-        }
+		public override void SetStaticDefaults()
+		{
+			// DisplayName.SetDefault("Cactius2");
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 3;
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
+		}
 
-        public override void SetDefaults()
-        {
+		public override void SetDefaults()
+		{
             Projectile.CloneDefaults(ProjectileID.JavelinFriendly);
             AIType = ProjectileID.JavelinFriendly;
             Projectile.penetrate = 1;
-        }
+		}
 
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.NextBool(2))
-                target.AddBuff(BuffID.Poisoned, 180);
+			if (Main.rand.NextBool(2))
+				target.AddBuff(BuffID.Poisoned, 180);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -56,10 +56,10 @@ namespace Stellamod.Projectiles.Thrown
             return false;
         }
         public override bool PreAI()
-        {
-            return true;
-        }
-        public override bool PreDraw(ref Color lightColor)
+		{
+			return true;
+		}
+		public override bool PreDraw(ref Color lightColor)
         {
             Main.instance.LoadProjectile(Projectile.type);
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
@@ -72,9 +72,9 @@ namespace Stellamod.Projectiles.Thrown
                 Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
-            return false;
-        }
-        public override void OnKill(int timeLeft)
+			return false;
+		}
+		public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 15; i++)
             {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using System;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
+using static tModPorter.ProgressUpdate;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
@@ -69,19 +71,19 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             }
 
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 SoundEngine.PlaySound(SoundRegistry.Niivi_PrimRay, Projectile.position);
             }
 
-            if (Timer % 4 == 0)
+            if(Timer % 4 == 0)
             {
                 float starRadius = 1024;
                 for (int i = 0; i < 4; i++)
                 {
                     Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(starRadius, starRadius);
                     Vector2 vel = (Projectile.Center - pos).SafeNormalize(Vector2.Zero) * 16;
-                }
+                                    }
             }
             if (Timer % (int)(LifeTime / 4) == 0)
             {
@@ -138,20 +140,20 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             List<Vector2> points = new();
             for (int i = 0; i <= 8; i++)
             {
-
+  
                 points.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity * LaserLength, i / 8f));
             }
 
             BeamDrawer.Draw(points, -Main.screenPosition, 32);
 
-
+      
             float numOrbPoints = 4;
             float orbRadius = 32;
             float numOrbTrails = 32;
 
 
             DrawMode = 1;
-            for (float j = 0; j < numOrbTrails; j++)
+            for(float j = 0; j < numOrbTrails; j++)
             {
                 points.Clear();
                 for (float i = 0; i < numOrbPoints; i++)

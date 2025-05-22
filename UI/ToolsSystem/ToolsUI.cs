@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using Stellamod.UI.StructureSelector;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI.Elements;
@@ -24,8 +24,8 @@ namespace Stellamod.UI.ToolsSystem
         {
             base.OnInitialize();
             _scale = 1f;
-
-
+            Width.Pixels = 48 * 5f;
+            Height.Pixels = 48 * 16;
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
             BackgroundColor = Color.Transparent;
@@ -40,25 +40,17 @@ namespace Stellamod.UI.ToolsSystem
             _grid.ListPadding = 2f;
             Append(_grid);
 
-            foreach (Type type in Stellamod.Instance.Code.GetTypes())
-            {
-                if (!type.IsAbstract && type.BaseType == typeof(BaseToolbarButton))
-                {
-                    object instance = Activator.CreateInstance(type);
-                    BaseToolbarButton btn = (BaseToolbarButton)instance;
-                    _grid.Add(btn);
-                }
-            }
-            Width.Pixels = (_grid.Count + 1) * 64;
-            Height.Pixels = 64;
+            FogButton fogButton = new FogButton();
+            _grid.Add(fogButton);
+
+            UndoButton undoButton = new UndoButton();
+            _grid.Add(undoButton);
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Width.Pixels = (_grid.Count + 1) * 64;
-            Height.Pixels = 64;
-            _grid.ListPadding = 8;
+
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft + Offset.X - (Width.Pixels / 2);
             Top.Pixels = RelativeTop + Offset.Y;

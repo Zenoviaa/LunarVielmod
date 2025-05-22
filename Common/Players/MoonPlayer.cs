@@ -16,7 +16,7 @@ namespace Stellamod.Common.Players
             if (ModContent.GetInstance<LunarVeilClientConfig>().RedDamageNumbersToggle)
             {
                 modifiers.HideCombatText();
-            }
+            }     
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

@@ -88,7 +88,7 @@ namespace Stellamod.Projectiles.Magic
             }
 
             Timer++;
-            if (Timer % 15 == 0)
+            if(Timer % 15 == 0)
             {
                 SoundStyle soundStyle = SoundRegistry.WindCast;
                 soundStyle.Pitch = MathHelper.Lerp(0f, 1f, Timer / 120f);

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials.Tech;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -9,7 +11,7 @@ namespace Stellamod.Items.Accessories
 
 {
     public class ArncharSuperCharger : ModItem
-    {
+    {    
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Toxic Striders");
@@ -35,5 +37,5 @@ namespace Stellamod.Items.Accessories
             this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<Cinderscrap>());
         }
     }
-}
+ }
 

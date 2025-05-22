@@ -1,11 +1,18 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
-using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
+using Stellamod.Projectiles.Magic;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
+using Terraria.Audio;
 
 namespace Stellamod.Items.Weapons.Mage
 {

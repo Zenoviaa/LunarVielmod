@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
+using Stellamod.Items.Weapons.Summon;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.ID;
@@ -81,12 +82,12 @@ namespace Stellamod.Projectiles.Summons.Minions
             Heart++;
             if (Heart == 1260)
             {
-                if (Main.myPlayer == Projectile.owner)
+                if(Main.myPlayer == Projectile.owner)
                 {
                     int itemIndex = Item.NewItem(Projectile.GetSource_FromThis(), Projectile.Center, new Vector2(10, 10), ItemID.Heart, 1);
                     NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
                 }
-
+          
                 Heart = 0;
             }
         }

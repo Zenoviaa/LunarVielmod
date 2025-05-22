@@ -50,7 +50,7 @@ namespace Stellamod.Projectiles.Crossbows.Magical
             float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(0f, 4f);
             float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(1, 2) * 0.2f;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 0, speedY * 0, ModContent.ProjectileType<AlcadizBombExplosion>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
-
+            
         }
 
 

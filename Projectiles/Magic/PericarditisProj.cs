@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -17,7 +18,7 @@ namespace Stellamod.Projectiles.Magic
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 8;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
-
+       
         public override void SetDefaults()
         {
             Projectile.width = 12;
@@ -30,7 +31,7 @@ namespace Stellamod.Projectiles.Magic
         public override void AI()
         {
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pericarditis"), Projectile.position);
             }
@@ -43,7 +44,7 @@ namespace Stellamod.Projectiles.Magic
             }
         }
 
-
+       
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
@@ -62,7 +63,7 @@ namespace Stellamod.Projectiles.Magic
                 spriteBatch.Draw(texture, trailDrawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
             }
 
-            for (float f = 0f; f < 1f; f += 0.1f)
+            for(float f = 0f; f < 1f; f += 0.1f)
             {
                 float rot = f * MathHelper.TwoPi;
                 Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(0.5f, 1f) * 3;
@@ -102,7 +103,7 @@ namespace Stellamod.Projectiles.Magic
             }
 
 
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
                 ModContent.ProjectileType<PericarditisBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
         }
 

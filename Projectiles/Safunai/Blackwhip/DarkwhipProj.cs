@@ -1,11 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Common.Bases;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Particles;
+using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
+using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -42,14 +47,14 @@ namespace Stellamod.Projectiles.Safunai.Blackwhip
         public override void AI()
         {
             base.AI();
-            if (Timer % 16 == 0)
+            if(Timer % 16 == 0)
             {
                 for (int j = 0; j < 1; j++)
                 {
                     Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                }
+                                    }
             }
-
+    
 
             if (t > 1)
             {

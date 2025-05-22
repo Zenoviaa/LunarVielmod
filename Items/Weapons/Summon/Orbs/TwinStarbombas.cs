@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
 
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Common("Orb"))
+            line = new TooltipLine(Mod, "Alcarishasd",  Helpers.LangText.Common("Orb"))
             {
                 OverrideColor = ColorFunctions.OrbWeaponType
             };
@@ -72,7 +72,7 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
             int found = 0;
             for (int i = 0; i < Main.projectile.Length; i++)
             {
-                if (Main.projectile[i].type == ModContent.ProjectileType<TwinStarbombasProj1>()
+                if (Main.projectile[i].type == ModContent.ProjectileType<TwinStarbombasProj1>() 
                     && Main.projectile[i].owner == player.whoAmI)
                 {
                     Main.projectile[i].ai[0]++;
@@ -84,7 +84,7 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
                     Main.projectile[i].ai[0]++;
                     found++;
                 }
-                if (found >= 2)
+                if(found >= 2)
                 {
                     break;
                 }

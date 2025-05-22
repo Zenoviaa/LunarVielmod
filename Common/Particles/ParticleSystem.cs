@@ -192,8 +192,8 @@ namespace Stellamod.Common.Particles
                         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, default, default, default, Main.GameViewMatrix.TransformationMatrix);
                     else
                     {
-                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-                            myCustomShader.Effect, Main.Transform);
+                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, 
+                            myCustomShader.Effect, Main.Transform);  
                     }
                 }
                 particle.Draw(spriteBatch);

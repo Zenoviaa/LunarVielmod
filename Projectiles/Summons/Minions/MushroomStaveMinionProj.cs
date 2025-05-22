@@ -1,12 +1,16 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs.Minions;
-using Stellamod.Helpers;
+﻿using Microsoft.Xna.Framework.Graphics;
 using System;
-using Terraria;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
+using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
+using Stellamod.Buffs.Minions;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {

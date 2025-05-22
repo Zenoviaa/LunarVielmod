@@ -106,14 +106,14 @@ namespace Stellamod.NPCs.Cinderspark
             ai_Counter++;
             NPC.TargetClosest();
             Player target = Main.player[NPC.target];
-
+           
             AI_Movement(target.Center, 5, accel: 0.05f);
-            if (ai_Counter % 3 == 0)
+            if(ai_Counter % 3 == 0)
             {
                 float speedX = Main.rand.NextFloat(-1f, 1f);
                 float speedY = Main.rand.NextFloat(-1f, 1f);
                 float scale = Main.rand.NextFloat(0.5f, 0.75f);
-                Dust.NewDust(NPC.position, NPC.width, NPC.height,
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, 
                     DustID.InfernoFork, speedX, speedY, Scale: scale);
             }
         }

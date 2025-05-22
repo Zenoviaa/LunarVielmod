@@ -1,12 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Dusts;
-using Stellamod.Trails;
-using System;
+using Stellamod.Common.Shaders.MagicTrails;
+using Stellamod.Common.Shaders;
+using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
+using Stellamod.Trails;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
+using Stellamod.Dusts;
+using System;
 
 
 namespace Stellamod.Projectiles.Gun
@@ -55,10 +59,10 @@ namespace Stellamod.Projectiles.Gun
             }
 
             Timer++;
-            if (Timer % 6 == 0)
+            if(Timer % 6 == 0)
             {
                 Smooth = Main.rand.Next(65, 155);
-                for (int i = 0; i < TrailPoints.Length; i++)
+                for(int i =0;i < TrailPoints.Length; i++)
                 {
                     Vector2 trailPoint = TrailPoints[i];
                     if (Main.rand.NextBool(300))
@@ -91,11 +95,11 @@ namespace Stellamod.Projectiles.Gun
             Projectiles.Sort((x, y) => y.timeLeft.CompareTo(x.timeLeft));
             for (int i = 1; i < Projectiles.Count; i++)
             {
-                for (float j = 0; j < 8f; j++)
+                for(float j = 0; j < 8f; j++)
                 {
                     Connector.Add(Vector2.Lerp(Projectiles[i - 1].Center, Projectiles[i].Center, j / 8f));
                 }
-
+           
             }
 
 
@@ -149,7 +153,7 @@ namespace Stellamod.Projectiles.Gun
         public Color ColorFunction2(float completionRatio)
         {
             Color color = Color.CadetBlue;
-            if (Timer % 6 == 0)
+            if(Timer % 6 == 0)
             {
                 color = Color.LightGoldenrodYellow;
             }

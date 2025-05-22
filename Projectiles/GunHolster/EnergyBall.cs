@@ -34,7 +34,7 @@ namespace Stellamod.Projectiles.GunHolster
         {
             base.AI();
             Timer++;
-            if (Timer % 8 == 0)
+            if(Timer % 8 == 0)
             {
                 int dustIndex = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<GlowDust>(), newColor: Color.DarkGoldenrod);
                 Dust dust = Main.dust[dustIndex];
@@ -62,7 +62,7 @@ namespace Stellamod.Projectiles.GunHolster
         private void DrawTrail()
         {
             Main.spriteBatch.RestartDefaults();
-            Vector2 drawOffset = -Main.screenPosition + Projectile.Size / 2f;
+            Vector2 drawOffset = -Main.screenPosition + Projectile.Size / 2f; 
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
             TrailDrawer.ColorFunc = ColorFunction;
             TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
@@ -95,7 +95,7 @@ namespace Stellamod.Projectiles.GunHolster
             Color startInner = Color.Lerp(Color.SkyBlue, Color.BlueViolet, VectorHelper.Osc(0f, 1f, speed: 5f)); ;
             Color startGlow = Color.Lerp(Color.CadetBlue, Color.CadetBlue, VectorHelper.Osc(0f, 1f, speed: 3f));
             Color startOuterGlow = Color.Lerp(Color.Black, Color.Black, VectorHelper.Osc(0f, 1f, speed: 3f));
-
+     
             shader.InnerColor = startInner;
             shader.GlowColor = startGlow;
             shader.OuterGlowColor = startOuterGlow;
@@ -105,13 +105,13 @@ namespace Stellamod.Projectiles.GunHolster
             shader.Pixelation = 0.0055f;
             shader.Apply();
 
-            SpriteBatch spriteBatch = Main.spriteBatch;
+            SpriteBatch spriteBatch = Main.spriteBatch;  
             spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
             for (int i = 0; i < 3; i++)
             {
                 spriteBatch.Draw(texture, centerPos, null, Color.White, Projectile.rotation, texture.Size() / 2f, 1f, SpriteEffects.None, 0);
             }
-
+      
             spriteBatch.RestartDefaults();
         }
 

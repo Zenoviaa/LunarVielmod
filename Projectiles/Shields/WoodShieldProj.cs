@@ -18,7 +18,7 @@ namespace Stellamod.Projectiles.Shields
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 1;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5; 
         }
 
         public override void SetDefaults()

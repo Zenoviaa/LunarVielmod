@@ -12,13 +12,13 @@ namespace Stellamod.Helpers
             {
                 if (item.type == reqItem)
                 {
-                    while (item.stack > 0 && removedAmount < count)
+                    while(item.stack > 0 && removedAmount < count)
                     {
                         item.stack--;
                         removedAmount++;
                     }
-
-
+                
+          
                 }
             }
             if (removedAmount >= count)

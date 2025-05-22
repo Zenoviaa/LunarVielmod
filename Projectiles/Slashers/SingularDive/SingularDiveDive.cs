@@ -2,9 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Trails;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -65,7 +67,7 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
             var EntitySource = Projectile.GetSource_Death();
 
             if (Grenber >= 60 * Swing_Speed_Multiplier)
-            {
+             {
                 for (int i = 0; i < 150; i++)
                 {
                     Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
@@ -73,8 +75,8 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
                     d.noGravity = true;
                 }
 
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-10, 10),
-                    Projectile.Center.Y + Main.rand.Next(-10, 10), Main.rand.Next(-4, 5), Main.rand.Next(-4, 5), ModContent.ProjectileType<SingularOrb>(), Projectile.damage * 2, 1,
+                Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-10, 10), 
+                    Projectile.Center.Y + Main.rand.Next(-10, 10), Main.rand.Next(-4, 5), Main.rand.Next(-4, 5), ModContent.ProjectileType<SingularOrb>(), Projectile.damage * 2, 1, 
                     Projectile.owner);
                 Grenber = 0;
             }
@@ -159,10 +161,10 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
                 }
                 target.SimpleStrikeNPC(200, 1, crit: false, 1);
                 Bounced = true;
-
+               
 
             }
-
+           
             if (target.lifeMax <= 800)
             {
                 if (target.life < target.lifeMax / 2)

@@ -88,7 +88,7 @@ namespace Stellamod.Projectiles.Visual
                     Vector2 rand = Main.rand.NextVector2CircularEdge(EndRadius, EndRadius);
                     Vector2 pos = Projectile.Center + rand;
                     Dust d = Dust.NewDustPerfect(pos, ModContent.DustType<GlowDust>(), Vector2.Zero,
-                        newColor: BackCircleStartDrawColor,
+                        newColor: BackCircleStartDrawColor, 
                         Scale: Main.rand.NextFloat(0.1f, 0.3f));
                     d.noGravity = true;
                 }

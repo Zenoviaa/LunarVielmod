@@ -2,9 +2,10 @@
 
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-
+ 
 using Stellamod.Utilis;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -30,23 +31,23 @@ namespace Stellamod.Items.Consumables
             Item.rare = ItemRarityID.Orange;
         }
 
-        /*  public override void AddRecipes()
-          {
-              Recipe recipe = CreateRecipe();
-              recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 30);
-              recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 20);
-              recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 15);
-              recipe.AddTile(TileID.WorkBenches);
-              recipe.Register();
-          }
+      /*  public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 30);
+            recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 20);
+            recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 15);
+            recipe.AddTile(TileID.WorkBenches);
+            recipe.Register();
+        }
 
-  */
+*/
         public override bool? UseItem(Player player)/* tModPorter Suggestion: Return null instead of false */
         {
             if (player.ZoneAcid() || player.GetModPlayer<MyPlayer>().ZoneLab)
             {
-
-
+                             
+               
                 int TextToSpawn = Main.rand.Next(1, 8 + 1);
 
                 CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), LangText.Misc("EDR." + TextToSpawn));
@@ -54,7 +55,7 @@ namespace Stellamod.Items.Consumables
             }
             else
             {
-                // SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Button"));
+               // SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Button"));
                 CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), LangText.Misc("EDR.9"));
 
                 return false;

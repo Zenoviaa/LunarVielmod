@@ -28,7 +28,7 @@ namespace Stellamod.NPCs.Desert
         {
             if (!_spawn && StellaMultiplayer.IsHost)
             {
-                for (int i = 0; i < Main.rand.Next(3, 8); i++)
+                for(int i =0;i < Main.rand.Next(3, 8); i++)
                 {
                     NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                         ModContent.NPCType<BabySwarmer>());
@@ -46,7 +46,7 @@ namespace Stellamod.NPCs.Desert
             //0.05f should make it 20 less common than normal spawns.
             if (!NPC.downedPlantBoss)
                 return 0;
-
+          
             return (SpawnCondition.DesertCave.Chance * 0.05f) + (SpawnCondition.OverworldDayDesert.Chance * 0.05f);
         }
     }

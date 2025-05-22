@@ -1,5 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -29,12 +34,12 @@ namespace Stellamod.Projectiles.Thrown
             Projectile.velocity *= 0.98f;
             Projectile.rotation = VectorHelper.Osc(-MathHelper.PiOver4 / 2, MathHelper.PiOver4 / 2);
             Projectile.scale += 0.01f;
-
-            if (Projectile.scale >= 1f)
+       
+            if(Projectile.scale >= 1f)
             {
                 Projectile.scale = 1f;
             }
-            if (Projectile.timeLeft < 60)
+            if(Projectile.timeLeft < 60)
             {
                 float timeLeft = (float)Projectile.timeLeft;
                 float progress = timeLeft / 60f;
@@ -46,7 +51,7 @@ namespace Stellamod.Projectiles.Thrown
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 position = Projectile.position - Main.screenPosition;
-            Main.EntitySpriteDraw(texture, position, null, Color.White.MultiplyRGBA(lightColor),
+            Main.EntitySpriteDraw(texture, position, null, Color.White.MultiplyRGBA(lightColor), 
                 Projectile.rotation, texture.Size() / 2, Projectile.scale, SpriteEffects.None);
             return false;
         }

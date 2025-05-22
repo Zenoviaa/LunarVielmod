@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Placeable
 {
     public class AurelusBanner2i : ModItem
-    {
+	{
         public override void SetDefaults()
         {
             // Vanilla has many useful methods like these, use them! This substitutes setting Item.createTile and Item.placeStyle aswell as setting a few values that are common across all placeable items

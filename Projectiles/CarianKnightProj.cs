@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -48,14 +50,14 @@ namespace Stellamod.Projectiles
                 }
             }
 
-            if (ai_Counter < 70)
+            if(ai_Counter < 70)
             {
                 float speed = 8;
                 Vector2 velocity;
                 Vector2 direction = Projectile.DirectionTo(playerToHomeTo.Center);
                 Vector2 maxVelocity = direction * (speed * ai_Counter / 60);
                 float distanceToTarget = Vector2.Distance(playerToHomeTo.Center, Projectile.Center);
-                if (distanceToTarget < speed)
+                if(distanceToTarget < speed)
                 {
                     velocity = direction * distanceToTarget;
                 }
@@ -64,7 +66,7 @@ namespace Stellamod.Projectiles
                     velocity = maxVelocity;
                 }
 
-
+      
                 Projectile.velocity = velocity;
             }
 
@@ -109,11 +111,11 @@ namespace Stellamod.Projectiles
             float g = 118;
             float b = 135;
 
-            for (int i = 0; i < 2; i++)
+            for(int i = 0; i < 2; i++)
             {
                 Main.spriteBatch.Draw(texture, DrawOffset - Main.screenPosition, null, new Color((int)r, (int)g, (int)b, 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
             }
-
+         
             return true;
         }
 

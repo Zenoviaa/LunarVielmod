@@ -1,7 +1,12 @@
-﻿using Stellamod.Projectiles.Ammo;
-using Terraria;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
+using Stellamod.Projectiles.Ammo;
 
 namespace Stellamod.Items.Ammo
 {

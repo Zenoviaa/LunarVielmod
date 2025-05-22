@@ -38,7 +38,7 @@ namespace Stellamod.Projectiles.Swords
                 Rot = Main.rand.NextFloat(0.1f, 0.4f);
                 Projectile.rotation += Rot;
             }
-
+          
             alphaCounter -= 0.18f;
         }
 

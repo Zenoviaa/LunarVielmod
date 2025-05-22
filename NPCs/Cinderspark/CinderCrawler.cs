@@ -2,12 +2,16 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
+using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.NPCs.Bosses.StarrVeriplant;
 using Stellamod.Projectiles;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -98,7 +102,7 @@ namespace Stellamod.NPCs.Cinderspark
                 float yDist = Math.Abs(target.Center.Y - NPC.Center.Y);
 
                 //Switch Direction
-                if (_movementTimer > 60)
+                if(_movementTimer > 60)
                 {
                     if (xDist > yDist)
                     {
@@ -132,7 +136,7 @@ namespace Stellamod.NPCs.Cinderspark
                 Vector2 targetDirection = new Vector2(_xDir, _yDir);
                 Vector2 targetVelocity = new Vector2(_xDir, _yDir) * 1.2f;
                 NPC.velocity = targetVelocity;
-                if (_attackCounter > 120)
+                if(_attackCounter > 120)
                 {
                     if (StellaMultiplayer.IsHost)
                     {

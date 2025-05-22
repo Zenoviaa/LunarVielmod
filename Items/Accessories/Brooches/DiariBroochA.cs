@@ -4,19 +4,20 @@ using Stellamod.Buffs.Charms;
 using Stellamod.Common.Bases;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Brooches
 {
     public class DiariBroochA : BaseBrooch
-    {
+	{
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            base.ModifyTooltips(tooltips);
+			base.ModifyTooltips(tooltips);
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Brooch of the Tale of Diari", "Love you and have fun -Sirestias")
+			line = new TooltipLine(Mod, "Brooch of the Tale of Diari", "Love you and have fun -Sirestias")
             {
                 OverrideColor = new Color(220, 87, 24)
 
@@ -40,15 +41,15 @@ namespace Stellamod.Items.Accessories.Brooches
 
         }
         public override void SetDefaults()
-        {
+		{
             base.SetDefaults();
-            Item.width = 24;
-            Item.height = 28;
-            Item.value = Item.sellPrice(silver: 50);
-            Item.rare = ItemRarityID.Green;
-            Item.accessory = true;
+			Item.width = 24;
+			Item.height = 28;
+			Item.value = Item.sellPrice(silver: 50);
+			Item.rare = ItemRarityID.Green;
+			Item.accessory = true;
             Item.buffType = ModContent.BuffType<Diarii>();
-        }
+		}
 
         public override void UpdateBrooch(Player player)
         {
@@ -59,5 +60,5 @@ namespace Stellamod.Items.Accessories.Brooches
                     DustID.SolarFlare, Vector2.Zero);
             }
         }
-    }
+	}
 }

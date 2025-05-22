@@ -10,10 +10,9 @@ using Terraria.ModLoader;
 
 namespace Stellamod.WorldG.StructureManager
 {
-    internal abstract class BaseSelectionProjectile : ModProjectile
+    internal class Save : ModProjectile
     {
         private bool _pressed;
-        public float YOffset;
         private Rectangle Rectangle
         {
             get
@@ -61,12 +60,12 @@ namespace Stellamod.WorldG.StructureManager
             {
                 Projectile.position = Parent.TopRight;
                 Projectile.position.X += 8;
-                Projectile.position.Y += YOffset;
             }
 
             if (Main.mouseLeftRelease && _pressed)
             {
-                Press();
+                StructureSelection structureSelection = ModContent.GetInstance<StructureSelection>();
+                structureSelection.OpenSaveSelectionUI();
                 _pressed = false;
             }
             if (IsMouseHovering && Main.mouseLeft && !_pressed)
@@ -80,11 +79,6 @@ namespace Stellamod.WorldG.StructureManager
                 Main.LocalPlayer.itemAnimation = 12;
                 Main.LocalPlayer.heldProj = Projectile.whoAmI;
             }
-
-        }
-
-        protected virtual void Press()
-        {
 
         }
         public override bool PreDraw(ref Color lightColor)
@@ -103,29 +97,6 @@ namespace Stellamod.WorldG.StructureManager
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             spriteBatch.Draw(TextureAssets.Projectile[Type].Value, drawPos, null, drawColor, Projectile.rotation, TextureAssets.Projectile[Type].Value.Size() / 2, scale, SpriteEffects.None, 0);
             return false;
-        }
-    }
-    internal class Magic : BaseSelectionProjectile
-    {
-        public override void SetDefaults()
-        {
-            base.SetDefaults();
-            YOffset = 24;
-        }
-        protected override void Press()
-        {
-            base.Press();
-            StructureSelection structureSelection = ModContent.GetInstance<StructureSelection>();
-            structureSelection.OpenMagicSelectionUI();
-        }
-    }
-    internal class Save : BaseSelectionProjectile
-    {
-        protected override void Press()
-        {
-            base.Press();
-            StructureSelection structureSelection = ModContent.GetInstance<StructureSelection>();
-            structureSelection.OpenSaveSelectionUI();
         }
     }
 
@@ -170,12 +141,6 @@ namespace Stellamod.WorldG.StructureManager
         private ref float Timer => ref Projectile.ai[1];
 
         private Player Owner => Main.player[Projectile.owner];
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            ProjectileID.Sets.DrawScreenCheckFluff[Projectile.type] = 51200;
-        }
-
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -189,7 +154,6 @@ namespace Stellamod.WorldG.StructureManager
         public override void AI()
         {
             base.AI();
-
             Player owner = Main.player[Projectile.owner];
             Timer++;
             if (Timer == 1)
@@ -200,8 +164,6 @@ namespace Stellamod.WorldG.StructureManager
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Vector2.Zero,
                         ModContent.ProjectileType<Save>(), 1, 1, Projectile.owner, ai0: Projectile.whoAmI);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Vector2.Zero,
-                        ModContent.ProjectileType<Magic>(), 1, 1, Projectile.owner, ai0: Projectile.whoAmI);
                 }
             }
 
@@ -342,108 +304,11 @@ namespace Stellamod.WorldG.StructureManager
         {
             ModContent.GetInstance<StructureSelectorUISystem>().OpenSaveUI();
         }
-        public void OpenMagicSelectionUI()
-        {
-            ModContent.GetInstance<StructureSelectorUISystem>().OpenMagicWandUI();
-        }
 
         public void SaveSelection(string fileName)
         {
             Structurizer.SaveStruct(fileName, BottomLeft, TopRight);
-            TileEntityStructurizer.SaveStruct(fileName, BottomLeft, TopRight);
             SoundEngine.PlaySound(SoundID.AchievementComplete);
-        }
-
-        public void MagicWandReplace(Item targetItem, Item replaceItem)
-        {
-            //So you can undo this
-            SnapshotSystem snapshotSystem = ModContent.GetInstance<SnapshotSystem>();
-            snapshotSystem.Save(BottomLeft, TopRight);
-            if (targetItem.createTile != -1 && replaceItem.createWall != -1)
-            {
-                MagicWandTileToWall(targetItem.createTile, replaceItem.createWall);
-            }
-            else if (targetItem.createTile != -1 && replaceItem.createTile != -1)
-            {
-                MagicWandTileToTile(targetItem.createTile, replaceItem.createTile);
-            }
-            else if (targetItem.createWall != -1 && replaceItem.createTile != -1)
-            {
-                MagicWandWallToTile(targetItem.createWall, replaceItem.createTile);
-            }
-            else if (targetItem.createWall != -1 && replaceItem.createWall != -1)
-            {
-                MagicWandWallToWall(targetItem.createWall, replaceItem.createWall);
-            }
-
-            SoundEngine.PlaySound(SoundID.AchievementComplete);
-        }
-
-        public void MagicWandTileToWall(int targetTileType, int newWallType)
-        {
-            for (int x = (int)(BottomLeft.X); x <= TopRight.X; x++)
-            {
-                for (int y = (int)(TopRight.Y); y <= BottomLeft.Y; y++)
-                {
-                    Tile tile = Main.tile[x, y];
-                    if (tile.TileType == targetTileType)
-                    {
-                        WorldGen.KillTile(x, y, noItem: true);
-                        if (tile.WallType != 0)
-                            tile.WallType = 0;
-
-                        WorldGen.PlaceWall(x, y, newWallType);
-                    }
-                }
-            }
-        }
-
-        public void MagicWandWallToTile(int targetWallType, int newTileType)
-        {
-            for (int x = (int)(BottomLeft.X); x <= TopRight.X; x++)
-            {
-                for (int y = (int)(TopRight.Y); y <= BottomLeft.Y; y++)
-                {
-                    Tile tile = Main.tile[x, y];
-                    if (tile.WallType == targetWallType)
-                    {
-                        tile.WallType = 0;
-                        WorldGen.PlaceTile(x, y, newTileType);
-                        // ModTile modTile = ModContent.GetModTile(newTileType);
-                        // modTile.PlaceInWorld(x, y, new Item());
-                        //WorldGen.PlaceTile(x, y, newTileType);
-                    }
-                }
-            }
-        }
-        public void MagicWandTileToTile(int targetTileType, int newTileType)
-        {
-            for (int x = (int)(BottomLeft.X); x <= TopRight.X; x++)
-            {
-                for (int y = (int)(TopRight.Y); y <= BottomLeft.Y; y++)
-                {
-                    Tile tile = Main.tile[x, y];
-                    if (tile.TileType == targetTileType)
-                    {
-                        tile.TileType = (ushort)newTileType;
-                    }
-                }
-            }
-        }
-
-        public void MagicWandWallToWall(int targetWallType, int newWallType)
-        {
-            for (int x = (int)(BottomLeft.X); x <= TopRight.X; x++)
-            {
-                for (int y = (int)(TopRight.Y); y <= BottomLeft.Y; y++)
-                {
-                    Tile tile = Main.tile[x, y];
-                    if (tile.WallType == targetWallType)
-                    {
-                        tile.WallType = (ushort)newWallType;
-                    }
-                }
-            }
         }
     }
 }

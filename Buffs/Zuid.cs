@@ -17,7 +17,7 @@ namespace Stellamod.Buffs
 
         public override void Update(NPC npc, ref int buffIndex)
         {
-
+           
             if (Main.rand.NextBool(2))
             {
                 int dust = Dust.NewDust(npc.position, npc.width, npc.height, DustID.GoldCoin);
@@ -28,8 +28,8 @@ namespace Stellamod.Buffs
 
         public override void Update(Player player, ref int buffIndex)
         {
-
-            player.wingTime = 0;
+          
+            player.wingTime = 0; 
             if (Main.rand.NextBool(2))
             {
                 int dust = Dust.NewDust(player.position, player.width, player.height, DustID.GoldCoin);

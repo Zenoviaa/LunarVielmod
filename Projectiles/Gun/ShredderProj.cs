@@ -1,18 +1,23 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using Stellamod.Trails;
-using Terraria;
-using Terraria.DataStructures;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
+using Terraria.DataStructures;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class ShredderProj : ModProjectile,
+    internal class ShredderProj : ModProjectile, 
         IPixelPrimitiveDrawer
     {
         private float _rotationSpeed;
-
+     
         public override void OnSpawn(IEntitySource source)
         {
             for (int i = 0; i < Projectile.oldPos.Length; i++)
@@ -43,7 +48,7 @@ namespace Stellamod.Projectiles.Gun
         {
             float rotationDirection = Projectile.ai[0];
             Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(_rotationSpeed * rotationDirection));
-            _rotationSpeed += 0.2f;
+            _rotationSpeed+=0.2f;
 
             //Dunno if this is needed but whatever
             Projectile.rotation = Projectile.velocity.ToRotation();

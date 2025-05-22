@@ -32,7 +32,7 @@ namespace Stellamod.Projectiles.Thrown
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);
                 var d = Dust.NewDustPerfect(Main.LocalPlayer.Center, DustID.FireworkFountain_Pink, speed * 6, Scale: 0.9f);
-
+                
                 d.noGravity = true;
                 d.velocity *= 0.3f;
             }

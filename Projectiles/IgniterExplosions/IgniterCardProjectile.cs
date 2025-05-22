@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Trails;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -99,7 +100,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
         private void AI_Thrown()
         {
             _dustTimer++;
-            if (_dustTimer % 16 == 0)
+            if(_dustTimer % 16 == 0)
             {
                 Dust.NewDustPerfect(Projectile.Center, DustID.WhiteTorch);
             }
@@ -177,7 +178,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             Vector2 trailOffset = -Main.screenPosition + Projectile.Size / 2;
             TrailDrawer.DrawPrims(Projectile.oldPos, trailOffset, 155);
 
-
+            
             if (DrawCard)
             {
                 SpriteBatch spriteBatch = Main.spriteBatch;
@@ -198,7 +199,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
-
+            
 
             //Throw the Card
             if (DrawCard)

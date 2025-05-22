@@ -1,14 +1,18 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
-using Stellamod.Trails;
-using System;
-using Terraria;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.ModLoader;
+using Terraria;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
+using Stellamod.Helpers;
 
 namespace Stellamod.Projectiles.Test
 {
-    internal class CircleTestProj : ModProjectile,
+    internal class CircleTestProj : ModProjectile, 
         IPixelPrimitiveDrawer
     {
         public enum ActionState
@@ -62,7 +66,7 @@ namespace Stellamod.Projectiles.Test
 
         public override void AI()
         {
-
+   
             switch (State)
             {
                 case ActionState.Start:
@@ -99,7 +103,7 @@ namespace Stellamod.Projectiles.Test
             float circleEasedProgress = Easing.InOutExpo(circleProgress);
             float circleRadius = MathHelper.Lerp(Max_Circle_Radius, Min_Circle_Radius, circleEasedProgress);
             DrawCircle(circleRadius);
-            if (Timer >= Circle_Enclose_Time)
+            if(Timer >= Circle_Enclose_Time)
             {
                 Timer = 0;
                 State = ActionState.Out;
@@ -113,7 +117,7 @@ namespace Stellamod.Projectiles.Test
             float outEasedProgress = Easing.InOutExpo(outProgress);
             Projectile.scale = MathHelper.Lerp(1f, 0f, outEasedProgress);
             DrawCircle(Min_Circle_Radius);
-            if (Timer >= Circle_Out_Time)
+            if(Timer >= Circle_Out_Time)
             {
                 Timer = 0;
                 Projectile.Kill();
@@ -126,10 +130,10 @@ namespace Stellamod.Projectiles.Test
             for (int i = 0; i < CirclePos.Length; i++)
             {
                 float circleProgress = i / (float)(CirclePos.Length);
-                float radiansToRotateBy = circleProgress * (MathHelper.TwoPi + MathHelper.PiOver4 / 2);
+                float radiansToRotateBy = circleProgress * (MathHelper.TwoPi + MathHelper.PiOver4/2);
                 CirclePos[i] = Projectile.Center + startDirection.RotatedBy(radiansToRotateBy) * radius;
             }
-
+ 
         }
 
         public float WidthFunction(float completionRatio)

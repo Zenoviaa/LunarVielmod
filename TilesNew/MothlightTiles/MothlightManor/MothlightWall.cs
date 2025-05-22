@@ -8,23 +8,23 @@ using static Stellamod.TilesNew.MothlightTiles.MothlightBrick;
 
 namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
 {
-    public class MothlightWall : ModWall
-    {
-        public override void SetStaticDefaults()
-        {
-            Main.wallHouse[Type] = false;
+    public class MothlightWall: ModWall
+	{
+		public override void SetStaticDefaults()
+		{
+			Main.wallHouse[Type] = false;
 
-            //DustType = ModContent.DustType<Sparkle>();
-            RegisterItemDrop(ModContent.ItemType<MothlightWallBlock>());
+			//DustType = ModContent.DustType<Sparkle>();
+			RegisterItemDrop(ModContent.ItemType<MothlightWallBlock>());
 
-            AddMapEntry(new Color(200, 200, 200));
-        }
-        public override void NumDust(int i, int j, bool fail, ref int num)
-        {
-            num = fail ? 1 : 3;
-        }
-        public override bool CanExplode(int i, int j) => false;
-    }
+			AddMapEntry(new Color(200, 200, 200));
+		}
+		public override void NumDust(int i, int j, bool fail, ref int num)
+		{
+			num = fail ? 1 : 3;
+		}
+		public override bool CanExplode(int i, int j) => false;
+	}
 
     public class MothlightWallBlock : ModItem
     {

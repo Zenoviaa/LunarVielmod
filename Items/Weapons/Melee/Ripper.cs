@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Magic;
+using Stellamod.Projectiles.Swords;
 using Stellamod.Projectiles.Swords.Ripper;
 using System.Collections.Generic;
 using Terraria;
@@ -16,7 +18,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Melee
 {
 
-    public class Ripper : ClassSwapItem
+	public class Ripper : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Throwing;
@@ -29,45 +31,45 @@ namespace Stellamod.Items.Weapons.Melee
 
 
         private int _attackStyle;
-        public override void SetDefaults()
+		public override void SetDefaults()
         {
-            Item.damage = 54;
-            Item.crit = 4;
-            Item.knockBack = 3f;
-            Item.width = 62;
-            Item.height = 54;
-            Item.useTime = 9;
-            Item.useAnimation = 9;
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.UseSound = SoundID.Item1;
-            Item.value = Item.buyPrice(0, 30, 0, 0);
-            Item.rare = ItemRarityID.LightPurple;
-            Item.DamageType = DamageClass.Melee;
-            Item.shoot = ModContent.ProjectileType<RipperSwordProj>();
-            Item.shootSpeed = 16;
-            Item.autoReuse = true;
-            Item.noUseGraphic = true;
-            Item.noMelee = true;
-        }
+			Item.damage = 54;
+			Item.crit = 4;
+			Item.knockBack = 3f;
+			Item.width = 62;
+			Item.height = 54;
+			Item.useTime = 9;
+			Item.useAnimation = 9;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.UseSound = SoundID.Item1;
+			Item.value = Item.buyPrice(0, 30, 0, 0);
+			Item.rare = ItemRarityID.LightPurple;
+			Item.DamageType = DamageClass.Melee;
+			Item.shoot = ModContent.ProjectileType<RipperSwordProj>();
+			Item.shootSpeed = 16;
+			Item.autoReuse = true;
+			Item.noUseGraphic = true;
+			Item.noMelee = true;
+		}
 
         public override bool AltFunctionUse(Player player)
-        {
-            return true;
-        }
+		{
+			return true;
+		}
 
-        private void ChangeForm(int newForm)
-        {
-            _attackStyle = newForm;
+		private void ChangeForm(int newForm)
+		{
+			_attackStyle = newForm;
             if (_attackStyle == 1)
             {
-                Item.damage = 36;
+				Item.damage = 36;
                 Item.DamageType = DamageClass.Magic;
                 Item.mana = 4;
                 Item.useTime = 5;
                 Item.useAnimation = 5;
                 Item.useStyle = ItemUseStyleID.Shoot;
-                Item.UseSound = SoundID.Item9;
-                Item.shootSpeed = 2;
+				Item.UseSound = SoundID.Item9;
+				Item.shootSpeed = 2;
             }
             else if (_attackStyle == 0)
             {
@@ -105,47 +107,47 @@ namespace Stellamod.Items.Weapons.Melee
         }
 
         public override bool CanUseItem(Player player)
-        {
-            if (player.altFunctionUse == 2 && player.GetModPlayer<SewingKitPlayer>().hasSewingKit)
+		{
+			if (player.altFunctionUse == 2 && player.GetModPlayer<SewingKitPlayer>().hasSewingKit)
             {
                 if (_attackStyle == 0)
                 {
-                    ChangeForm(1);
-                }
-                else
-                {
-                    ChangeForm(0);
-                }
+					ChangeForm(1);
+				}
+				else
+				{
+					ChangeForm(0);
+				}
 
                 int sound = Main.rand.Next(0, 3);
-                switch (sound)
-                {
-                    case 0:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia1"), player.position);
-                        break;
-                    case 1:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia2"), player.position);
-                        break;
-                    case 2:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia3"), player.position);
-                        break;
-                }
+				switch (sound)
+				{
+					case 0:
+						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia1"), player.position);
+						break;
+					case 1:
+						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia2"), player.position);
+						break;
+					case 2:
+						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia3"), player.position);
+						break;
+				}
                 return false;
             }
 
-            return base.CanUseItem(player);
+			return base.CanUseItem(player);
         }
 
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             DrawHelper.DrawGlowInInventory(Item, spriteBatch, position, Color.Purple);
             if (_attackStyle == 1)
-            {
+			{
                 Texture2D iconTexture = ModContent.Request<Texture2D>("Stellamod/Items/Weapons/Mage/SkyFractureMiracle").Value;
-                Vector2 size = new Vector2(60, 68);
-                Vector2 drawOrigin = size / 2;
+				Vector2 size = new Vector2(60, 68);
+				Vector2 drawOrigin = size / 2;
                 spriteBatch.Draw(iconTexture, position, null, drawColor, 0f, drawOrigin, scale, SpriteEffects.None, 0);
-                return false;
+				return false;
             }
 
             return true;
@@ -153,22 +155,22 @@ namespace Stellamod.Items.Weapons.Melee
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if (!player.GetModPlayer<SewingKitPlayer>().hasSewingKit && _attackStyle == 1)
-            {
-                ChangeForm(0);
-            }
+			if(!player.GetModPlayer<SewingKitPlayer>().hasSewingKit && _attackStyle == 1)
+			{
+				ChangeForm(0);
+			}
 
-            if (_attackStyle == 1)
-            {
-                for (int i = 0; i < 3; i++)
-                {
+			if(_attackStyle == 1)
+			{
+				for(int i = 0; i < 3; i++)
+				{
                     int randy = Main.rand.Next(-50, 50);
                     int randx = Main.rand.Next(-50, 50);
-                    Vector2 offset = new Vector2(randx, randy);
-                    Vector2 spawnPos = position + offset;
+					Vector2 offset = new Vector2(randx, randy);
+					Vector2 spawnPos = position + offset;
 
-                    Projectile.NewProjectile(player.GetSource_FromThis(), spawnPos, velocity,
-                        ModContent.ProjectileType<SkyFractureMiracleProj>(), damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(player.GetSource_FromThis(), spawnPos, velocity, 
+						ModContent.ProjectileType<SkyFractureMiracleProj>(), damage, knockback, player.whoAmI);
 
                     for (int j = 0; j < 4; j++)
                     {
@@ -178,8 +180,8 @@ namespace Stellamod.Items.Weapons.Melee
                     }
                 }
 
-                return false;
-            }
+				return false;
+			}
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
 

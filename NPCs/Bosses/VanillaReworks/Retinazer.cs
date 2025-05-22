@@ -116,7 +116,7 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                             if (_fireCounter >= 20)
                             {
                                 int spawnCount = Main.rand.Next(2, 6);
-
+                              
 
                                 for (int i = 0; i < 32; i++)
                                 {
@@ -148,11 +148,11 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
 
 
                         }
-
-
-
+                        
+                       
+                
                     case SpinDashState.Charging:
-                        {
+                    {
 
 
                             //Need to actually charge at the player now.
@@ -170,7 +170,7 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                             if (_fireCounter >= 20)
                             {
                                 int spawnCount = Main.rand.Next(2, 6);
-
+                               
 
                                 for (int i = 0; i < 32; i++)
                                 {
@@ -194,7 +194,7 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                             return false;
 
                         }
-
+                       
 
 
 
@@ -256,7 +256,7 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                             if (_fireCounter >= 20)
                             {
                                 int spawnCount = Main.rand.Next(2, 6);
-
+                                
 
                                 for (int i = 0; i < 32; i++)
                                 {

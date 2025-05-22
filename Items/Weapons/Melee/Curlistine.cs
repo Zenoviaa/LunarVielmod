@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using System.Collections.Generic;
 using Terraria;
@@ -71,7 +71,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.shoot = ModContent.ProjectileType<CurlistineProj>();
             Item.shootSpeed = 2f; // the speed of the projectile (measured in pixels per frame)
             Item.channel = true;
-
+         
             Item.autoReuse = true;
 
 

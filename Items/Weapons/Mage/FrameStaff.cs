@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.DataStructures;
@@ -45,7 +45,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override bool CanUseItem(Player player)
         {
-            if (player.altFunctionUse == 2)
+            if(player.altFunctionUse == 2)
             {
                 Item.shoot = ModContent.ProjectileType<FrameStaffNodeProj>();
             }
@@ -58,18 +58,18 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if (player.altFunctionUse == 2)
+            if(player.altFunctionUse == 2)
             {
                 if (player.ownedProjectileCounts[type] < 10)
                 {
                     Projectile.NewProjectile(player.GetSource_FromThis(), Main.MouseWorld, velocity, type, damage, knockback, player.whoAmI);
                 }
-
+        
                 return false;
             }
             //
 
-
+            
             position = Main.MouseWorld;
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }

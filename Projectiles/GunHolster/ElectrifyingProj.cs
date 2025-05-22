@@ -1,11 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using Stellamod.Trails;
-using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
 using Terraria.Utilities;
 
 namespace Stellamod.Projectiles.GunHolster
@@ -27,7 +27,7 @@ namespace Stellamod.Projectiles.GunHolster
             Projectile.hostile = false;
             Projectile.width = 16;
             Projectile.height = 16;
-
+         
             Projectile.penetrate = -1;
             Projectile.timeLeft = 360;
             Projectile.usesLocalNPCImmunity = true;
@@ -53,7 +53,7 @@ namespace Stellamod.Projectiles.GunHolster
 
             if (AI_Timer % 2 == 0)
             {
-                if (Main.myPlayer == Projectile.owner)
+                if(Main.myPlayer == Projectile.owner)
                 {
                     Distance = Main.rand.NextFloat(2, 8);
                     Seed = Main.rand.Next(0, int.MaxValue);
@@ -61,7 +61,7 @@ namespace Stellamod.Projectiles.GunHolster
                 }
             }
 
-            if (Distance != 0)
+            if(Distance != 0)
             {
                 //Randomly teleport to make the jagged effect
                 UnifiedRandom random = new UnifiedRandom((int)Seed);

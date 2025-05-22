@@ -1,6 +1,11 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+using Stellamod.Particles;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -93,7 +98,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
             for (int i = 0; i < 14; i++)
             {
-            }
+                            }
 
 
 

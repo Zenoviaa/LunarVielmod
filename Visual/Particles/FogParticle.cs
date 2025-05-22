@@ -29,7 +29,7 @@ namespace Stellamod.Visual.Particles
         public override void Update()
         {
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 startColor = color;
             }

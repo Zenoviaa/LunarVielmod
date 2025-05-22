@@ -2,6 +2,7 @@
 using Stellamod.Tiles;
 using Terraria;
 using Terraria.GameContent.Creative;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.TilesNew.IceTiles
@@ -27,7 +28,7 @@ namespace Stellamod.TilesNew.IceTiles
     {
         public override void SetStaticDefaults()
         {
-
+            
             base.SetStaticDefaults();
             StructureColor = Color.Gray;
             //If you need other static defaults it go here

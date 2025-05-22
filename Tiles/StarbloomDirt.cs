@@ -24,7 +24,7 @@ namespace Stellamod.Tiles
             AddMapEntry(new Color(100, 120, 150), name);
         }
 
-        public override void RandomUpdate(int i, int j)
+      public override void RandomUpdate(int i, int j)
         {
             Tile tile = Framing.GetTileSafely(i, j);
             Tile tileBelow = Framing.GetTileSafely(i, j + 1);
@@ -32,7 +32,7 @@ namespace Stellamod.Tiles
 
 
 
-
+          
 
             if (WorldGen.genRand.NextBool(2) && !tileBelow.HasTile && !(tileBelow.LiquidType == LiquidID.Lava))
             {
@@ -49,11 +49,11 @@ namespace Stellamod.Tiles
             }
 
             //try place foliage
-
+     
 
 
         }
-
+   
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
         {
             Tile tile = Framing.GetTileSafely(i, j);

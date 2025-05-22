@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Bases;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Players;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -62,8 +64,8 @@ namespace Stellamod.Items.Weapons.Melee.Swords
 
     public class CrystallineSwordSlash : BaseSwingProjectile
     {
-        public override string Texture => this.PathHere() + "/CrystallineSlasher";
-
+        public override string Texture => this.PathHere()+"/CrystallineSlasher";
+    
         public bool Hit;
 
         public override void SetStaticDefaults()
@@ -119,7 +121,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
                 swingYRadius = 64 / 1.5f,
                 swingRange = MathHelper.Pi + MathHelper.PiOver2 + MathHelper.PiOver4,
                 easingFunc = (float lerpValue) => Easing.InOutExpo(lerpValue, 10),
-                swingSound = swingSound2,
+                 swingSound = swingSound2,
                 swingSoundLerpValue = 0.5f
             });
 
@@ -246,8 +248,8 @@ namespace Stellamod.Items.Weapons.Melee.Swords
     }
     public class CrystallineSwordStaminaSlash : BaseSwingProjectile
     {
-        public override string Texture => this.PathHere() + "/CrystallineSlasher";
-
+        public override string Texture => this.PathHere()+"/CrystallineSlasher";
+    
         public bool Hit;
 
         public override void SetStaticDefaults()
@@ -282,7 +284,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             base.AI();
 
             Vector2 swingDirection = Projectile.velocity.SafeNormalize(Vector2.Zero);
-            if (_smoothedLerpValue > 0.5f)
+              if (_smoothedLerpValue > 0.5f)
             {
                 if (!_thrust)
                 {
@@ -290,7 +292,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
                     _thrust = true;
                 }
             }
-
+           
 
 
         }
@@ -312,7 +314,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
                 swingSound = swingSound1,
                 swingSoundLerpValue = 0.5f
 
-            });
+            }); 
 
             swings.Add(new OvalSwingStyle
             {
@@ -325,7 +327,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
                 swingSoundLerpValue = 0.5f
             });
 
-
+            
         }
 
 
@@ -340,13 +342,13 @@ namespace Stellamod.Items.Weapons.Melee.Swords
                 hitstopTimer = 4 * ExtraUpdateMult;
             }
 
-
-        }
+        
+         }
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             base.ModifyHitNPC(target, ref modifiers);
-
+          
             SoundStyle spearHit = SoundRegistry.CrystalHit1;
             spearHit.PitchVariance = 0.5f;
             SoundEngine.PlaySound(spearHit, Projectile.position);
@@ -357,7 +359,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
 
             modifiers.FinalDamage *= 3;
             modifiers.Knockback *= 4;
-
+            
         }
 
         public override void OnKill(int timeLeft)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
@@ -26,16 +27,15 @@ namespace Stellamod.Projectiles.Bow
         {
             base.AI();
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 Projectile.rotation = Main.rand.NextFloat(0f, 1f);
             }
 
-            if (Timer < 60)
+            if(Timer < 60)
             {
                 _drawScale = MathHelper.Lerp(_drawScale, 1f, 0.1f);
-            }
-            else if (Timer > 90)
+            } else if (Timer > 90)
             {
                 _drawScale = MathHelper.Lerp(_drawScale, 0f, 0.1f);
             }

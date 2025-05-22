@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+using Stellamod.Particles;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -51,7 +53,7 @@ namespace Stellamod.Projectiles.Slashers.Ixy
             int dir = (int)Projectile.ai[1];
             if (!ParticleSpawned)
             {
-                ParticleSpawned = true;
+                                                ParticleSpawned = true;
             }
 
             if (Main.rand.NextBool(2))

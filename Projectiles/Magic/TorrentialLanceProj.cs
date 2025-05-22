@@ -2,6 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories.Players;
+using Stellamod.Items.Accessories;
+using Stellamod.Particles;
 using Stellamod.Trails;
 using System;
 using Terraria;
@@ -96,12 +99,12 @@ namespace Stellamod.Projectiles.Magic
         {
 
             Timer++;
-            if (SpawnBubbles && Timer % 8 == 0)
+            if(SpawnBubbles && Timer % 8 == 0)
             {
                 SoundEngine.PlaySound(SoundID.Item85, Projectile.position);
                 Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
                 Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(4, 4);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity,
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity, 
                     ModContent.ProjectileType<TorrentialLanceBubbleProj>(), Projectile.damage / 2, Projectile.knockBack / 2, Projectile.owner);
             }
 
@@ -114,7 +117,7 @@ namespace Stellamod.Projectiles.Magic
                 _oldPos[0] = Owner.Center;
 
 
-
+ 
             AI_Immune();
             AI_AttachToPlayer();
             Visuals();

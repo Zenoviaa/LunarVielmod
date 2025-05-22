@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -108,7 +110,7 @@ namespace Stellamod.Projectiles.Magic
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                    ProjectileID.WandOfSparkingSpark, Projectile.damage, 0f, Projectile.owner);
+                    ProjectileID.WandOfSparkingSpark, Projectile.damage, 0f, Projectile.owner);     
             }
 
             for (int i = 0; i < Main.rand.Next(3, 7); i++)

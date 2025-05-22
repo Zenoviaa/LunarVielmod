@@ -2,10 +2,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Helpers;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
+using Terraria.ModLoader.UI.Elements;
 
 namespace Stellamod.UI.DialogueTowning
 {
@@ -16,7 +18,7 @@ namespace Stellamod.UI.DialogueTowning
         private UIText _text;
 
         internal int RelativeLeft => Main.screenWidth / 2;
-        internal int RelativeTop => Main.screenHeight - 300;
+        internal int RelativeTop => Main.screenHeight  - 300;
         internal Vector2 DrawPos => new Vector2(Left.Pixels, Top.Pixels);
 
 
@@ -66,7 +68,7 @@ namespace Stellamod.UI.DialogueTowning
                 {
                     string realText = LocalizedText.Substring(0, _textIndex);
                     //Set text to white space
-                    for (int i = 0; i < 128; i++)
+                    for(int i =0;i < 128; i++)
                     {
                         realText += " ";
                     }
@@ -80,7 +82,7 @@ namespace Stellamod.UI.DialogueTowning
         }
 
 
-
+     
 
         private void DrawBackground(SpriteBatch spriteBatch)
         {
@@ -120,7 +122,7 @@ namespace Stellamod.UI.DialogueTowning
 
         public void ResetText()
         {
-
+        
             _text.SetText(string.Empty);
             _textIndex = 0;
         }

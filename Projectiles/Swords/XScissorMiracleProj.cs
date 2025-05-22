@@ -6,6 +6,7 @@ using Stellamod.Items.Weapons.Summon;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -70,56 +71,56 @@ namespace Stellamod.Projectiles.Swords
                 Projectile.timeLeft = SwingTime + EndSwingTime;
             }
 
-            if (!player.active || player.dead || player.CCed || player.noItems)
-            {
-                return;
-            }
+                if (!player.active || player.dead || player.CCed || player.noItems)
+                {
+                    return;
+                }
 
-            Projectile.alpha = 0;
-            Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
-            float multiplier = 0.2f;
-            RGB *= multiplier;
+                Projectile.alpha = 0;
+                Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
+                float multiplier = 0.2f;
+                RGB *= multiplier;
 
-            Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+                Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
 
-            int dir = (int)Dir;
+                int dir = (int)Dir;
 
-            //Get the swing progress
-            float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
+                //Get the swing progress
+                float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
 
-            //Smooth it some more
-            float swingProgress = Easing.InOutExpo(lerpValue, 10f);
+                //Smooth it some more
+                float swingProgress = Easing.InOutExpo(lerpValue, 10f);
 
-            // the actual rotation it should have
-            float defRot = Projectile.velocity.ToRotation();
-            // starting rotation
+                // the actual rotation it should have
+                float defRot = Projectile.velocity.ToRotation();
+                // starting rotation
 
-            //How wide is the swing, in radians
-            float swingRange = SwingRangeOffset;
-            float start = defRot - swingRange;
+                //How wide is the swing, in radians
+                float swingRange = SwingRangeOffset;
+                float start = defRot - swingRange;
 
-            // ending rotation
-            float end = (defRot + swingRange);
+                // ending rotation
+                float end = (defRot + swingRange);
 
-            // current rotation obv
-            // angle lerp causes some weird things here, so just use a normal lerp
-            float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
+                // current rotation obv
+                // angle lerp causes some weird things here, so just use a normal lerp
+                float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
 
-            // offsetted cuz sword sprite
-            Vector2 position = player.RotatedRelativePoint(player.MountedCenter);
+                // offsetted cuz sword sprite
+                Vector2 position = player.RotatedRelativePoint(player.MountedCenter);
 
-            float hProgress = Speed / 3;
-            float hOffset = MathHelper.Lerp(holdOffset, 100 + holdOffset, hProgress);
-            position += rotation.ToRotationVector2() * hOffset;
-            Projectile.Center = position;
-            Projectile.rotation = (position - player.Center).ToRotation() + MathHelper.PiOver4;
+                float hProgress = Speed / 3;
+                float hOffset = MathHelper.Lerp(holdOffset, 100 + holdOffset, hProgress);
+                position += rotation.ToRotationVector2() * hOffset;
+                Projectile.Center = position;
+                Projectile.rotation = (position - player.Center).ToRotation() + MathHelper.PiOver4;
 
-            player.heldProj = Projectile.whoAmI;
-            player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
-            player.itemRotation = rotation * player.direction;
-            player.itemTime = 2;
-            player.itemAnimation = 2;
-
+                player.heldProj = Projectile.whoAmI;
+                player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
+                player.itemRotation = rotation * player.direction;
+                player.itemTime = 2;
+                player.itemAnimation = 2;
+            
         }
 
 
@@ -135,10 +136,10 @@ namespace Stellamod.Projectiles.Swords
                 Speed = 3;
             }
 
-
+       
             for (int i = 0; i < 2; i++)
             {
-                Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(),
+                Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), 
                     (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, ColorFunctions.MiracleVoid, 1f).noGravity = true;
             }
 
@@ -154,7 +155,7 @@ namespace Stellamod.Projectiles.Swords
             SoundEngine.PlaySound(soundStyle, Projectile.position);
 
             Vector2 velocity = Main.rand.NextVector2Circular(1, 1);
-            if (Speed >= 3)
+            if(Speed >= 3)
             {
                 if (Main.rand.NextBool(5))
                 {
@@ -166,15 +167,15 @@ namespace Stellamod.Projectiles.Swords
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, velocity, ModContent.ProjectileType<RipperSlashProjSmall>(),
        0, 0, Projectile.owner);
                 }
-
-
+         
+            
             }
             else
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, velocity, ModContent.ProjectileType<RipperSlashProjSmall>(),
             0, 0, Projectile.owner);
             }
-
+        
         }
 
         public TrailRenderer SwordSlash;
@@ -200,11 +201,11 @@ namespace Stellamod.Projectiles.Swords
 
             Color color = Color.Multiply(new(1.50f, 1.75f, 3.5f, 0), 200);
 
-
+   
             if (SwordSlash == null)
             {
-                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(4),
-                    (p) => new Color(ColorFunctions.MiracleVoid.R, ColorFunctions.MiracleVoid.G, ColorFunctions.MiracleVoid.B, 255)
+                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(4), 
+                    (p) => new Color(ColorFunctions.MiracleVoid.R, ColorFunctions.MiracleVoid.G, ColorFunctions.MiracleVoid.B, 255) 
                     * Easing.SpikeInOutCirc(p) * 0.4f * GetAlpha());
                 SwordSlash.drawOffset = Projectile.Size / 1.8f;
             }
@@ -237,8 +238,8 @@ namespace Stellamod.Projectiles.Swords
             SwordSlash3.Draw(Projectile.oldPos, rotation);
 
             SwordSlash.Draw(Projectile.oldPos, rotation);
-
-
+        
+          
             Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
             int frameHeight = texture.Height / Main.projFrames[Projectile.type];
             int startY = frameHeight * Projectile.frame;

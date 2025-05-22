@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Stellamod.Trails;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -35,7 +37,7 @@ namespace Stellamod.Projectiles.Gun
         public override void AI()
         {
             Timer++;
-            if (Timer == 1)
+            if(Timer ==1)
             {
                 DamageModifier = 1;
             }
@@ -64,7 +66,7 @@ namespace Stellamod.Projectiles.Gun
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                     float scale = Main.rand.NextFloat(0.3f, 0.5f);
-
+                                        
                     SoundStyle soundStyle = SoundID.NPCHit11;
                     soundStyle.Pitch = 0.5f;
                     soundStyle.PitchVariance = 0.15f;
@@ -149,7 +151,7 @@ namespace Stellamod.Projectiles.Gun
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                 float scale = Main.rand.NextFloat(0.3f, 0.5f);
-                if (Main.rand.NextBool(2))
+                                if (Main.rand.NextBool(2))
                 {
                     Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Snow);
                 }

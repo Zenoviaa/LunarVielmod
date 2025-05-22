@@ -215,7 +215,7 @@ namespace Stellamod.UI.DialogueTowning
 
         internal void CloseUI()
         {
-
+          
             if (_animation != Animation.Close)
             {
                 Main.CloseNPCChatOrSign();

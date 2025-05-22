@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
+using Stellamod.Projectiles.Spears;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

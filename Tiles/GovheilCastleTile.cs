@@ -24,7 +24,7 @@ namespace Stellamod.Tiles
             MinPick = 180;
 
         }
-
+   
 
 
         private List<Point> OpenAdjacents(int i, int j, int type)

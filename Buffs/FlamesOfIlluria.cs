@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+
+using Stellamod.Particles;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -23,11 +25,11 @@ namespace Stellamod.Buffs
             if (Main.rand.NextBool(4))
             {
                 //Snowflake particle
-            }
+                            }
             else
             {
                 //Star particle
-            }
+                            }
         }
 
         public override void Update(Player player, ref int buffIndex)
@@ -40,11 +42,11 @@ namespace Stellamod.Buffs
             if (Main.rand.NextBool(4))
             {
                 //Snowflake particle
-            }
+                            }
             else
             {
                 //Star particle
-            }
+                            }
         }
     }
 }

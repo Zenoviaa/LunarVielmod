@@ -2,6 +2,7 @@
 
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
+using Stellamod.Particles;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
@@ -25,7 +26,7 @@ namespace Stellamod.Items.Accessories
         }
 
         public override void SetDefaults()
-        {
+        {   
             Item.width = 32;
             Item.height = 36;
             Item.value = 2500;

@@ -35,7 +35,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity,
+            Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity, 
                 ModContent.ProjectileType<RibbonStaffStart>(), damage, knockback, player.whoAmI);
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }

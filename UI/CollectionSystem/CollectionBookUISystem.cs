@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.QuestSystem;
 using Stellamod.UI.CollectionSystem.Quests;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -21,7 +22,7 @@ namespace Stellamod.UI.CollectionSystem
 
         public CollectionBookUIState collectionBookUI;
         public CollectionBookIconUIState collectionBookIconUI;
-        public CollectionItemTabUIState collectionItemTabUI;
+        public CollectionItemTabUIState collectionItemTabUI; 
         public CollectionItemTabRecipeUIState collectionRecipeInfoUI;
 
 
@@ -79,13 +80,13 @@ namespace Stellamod.UI.CollectionSystem
             }
 
             _lastUpdateUiGameTime = gameTime;
-
-
+ 
+        
             if (_userInterface?.CurrentState != null)
             {
                 _userInterface.Update(gameTime);
             }
-
+    
             if (_hudUserInterface?.CurrentState != null)
             {
                 _hudUserInterface.Update(gameTime);
@@ -186,7 +187,7 @@ namespace Stellamod.UI.CollectionSystem
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/BookPageTurn");
             soundStyle.PitchVariance = 0.1f;
             SoundEngine.PlaySound(soundStyle);
-
+    
             activeQuestUIState.ui.Quest = quest;
             activeQuestUIState.ui.Glow = 1f;
             activeQuestUIState.Recalculate();

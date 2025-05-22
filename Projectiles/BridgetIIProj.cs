@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Buffs;
+using Stellamod.Particles;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -27,7 +29,7 @@ namespace Stellamod.Projectiles
             Projectile.localNPCHitCooldown = 5;
         }
 
-
+    
 
         public override void AI()
         {
@@ -65,7 +67,7 @@ namespace Stellamod.Projectiles
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-
+  
             var EntitySource = Projectile.GetSource_Death();
             if (Main.rand.NextBool(5))
             {
@@ -76,7 +78,7 @@ namespace Stellamod.Projectiles
                         Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-4, 5), ModContent.ProjectileType<LarveinScriputeProg2>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
                 }
             }
-
+            
 
 
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterStorm"), Projectile.position);

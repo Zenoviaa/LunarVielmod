@@ -34,7 +34,7 @@ namespace Stellamod.Projectiles.Magic
             Projectile.ai[1]++;
             if (Projectile.ai[1] <= 1)
             {
-
+      
             }
             Projectile.velocity /= 0.99f;
         }

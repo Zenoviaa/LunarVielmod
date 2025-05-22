@@ -38,7 +38,7 @@ namespace Stellamod.Projectiles.Gun
         public override void AI()
         {
             Timer++;
-            if (Timer == 1 && Main.rand.NextBool(8))
+            if(Timer == 1 && Main.rand.NextBool(8))
             {
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
                 SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, Projectile.position);

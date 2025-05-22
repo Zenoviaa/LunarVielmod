@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Crossbows.Lasers;
 using Terraria;
 using Terraria.DataStructures;

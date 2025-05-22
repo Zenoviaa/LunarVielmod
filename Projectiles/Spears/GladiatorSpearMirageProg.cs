@@ -35,7 +35,7 @@ namespace Stellamod.Projectiles.Spears
             {
                 Projectile.alpha -= 10;
             }
-
+       
             Projectile.ai[1]++;
             if (!Moved && Projectile.ai[1] >= 0)
             {
@@ -44,13 +44,13 @@ namespace Stellamod.Projectiles.Spears
             if (Projectile.ai[1] == 1)
             {
                 Projectile.alpha = 255;
-                if (Main.myPlayer == Projectile.owner)
+                if(Main.myPlayer == Projectile.owner)
                 {
                     Projectile.position.X = Main.rand.NextFloat(Projectile.position.X - 120, Projectile.position.X + 120);
                     Projectile.position.Y = Main.rand.NextFloat(Projectile.position.Y - 120, Projectile.position.Y + 120);
                     Projectile.netUpdate = true;
                 }
-
+           
             }
             if (Projectile.ai[1] == 2)
             {
@@ -75,7 +75,7 @@ namespace Stellamod.Projectiles.Spears
                 Projectile.velocity /= .90f;
 
             }
-
+     
 
 
 

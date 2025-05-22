@@ -58,7 +58,7 @@ namespace Stellamod.Projectiles.Visual
             float drawRotation = Projectile.rotation;
             float drawScale = 1f;
             SpriteBatch spriteBatch = Main.spriteBatch;
-
+    
             for (int i = 0; i < 4; i++)
             {
                 float progress = Timer / 10f;

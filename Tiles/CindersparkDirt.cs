@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Tiles
 {
@@ -26,13 +27,13 @@ namespace Stellamod.Tiles
             // name.SetDefault("Arnchar");
             RegisterItemDrop(ModContent.ItemType<Cinderscrap>());
         }
-
+   
         public override void RandomUpdate(int i, int j)
         {
             Tile tile = Framing.GetTileSafely(i, j);
             Tile tileBelow = Framing.GetTileSafely(i, j + 1);
             //Tile tileAbove = Framing.GetTileSafely(i, j - 1);
-
+            
             //Try place vine
             if (WorldGen.genRand.NextBool(3) && !tileBelow.HasTile)
             {

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -39,10 +40,10 @@ namespace Stellamod.Projectiles.Summons
             }
             Projectile.velocity *= 0.98f;
             Projectile.rotation += Projectile.velocity.Length() * 0.05f + 0.05f;
-            if (Projectile.velocity.Length() <= 0.25f)
+            if(Projectile.velocity.Length() <= 0.25f)
             {
                 Timer++;
-                if (Timer >= 60)
+                if(Timer >= 60)
                 {
                     Projectile.Kill();
                 }
@@ -73,7 +74,7 @@ namespace Stellamod.Projectiles.Summons
             glowColor.A = 0;
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, glowColor, Projectile.rotation, new Vector2(32, 32), 0.17f * (5 + 0.6f), SpriteEffects.None, 0f);
-
+      
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White.MultiplyRGB(lightColor), Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), Projectile.scale + ScaleProgress, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
@@ -89,7 +90,7 @@ namespace Stellamod.Projectiles.Summons
             Color glowColor = Color.Yellow;
             glowColor.A = 0;
             SpriteBatch spriteBatch = Main.spriteBatch;
-            for (int i = 0; i < 8; i++)
+            for(int i = 0; i < 8; i++)
             {
                 spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, glowColor * ScaleProgress, Projectile.rotation, new Vector2(32, 32), 0.17f * (5 + 0.6f) + ScaleProgress, SpriteEffects.None, 0f);
             }
@@ -97,7 +98,7 @@ namespace Stellamod.Projectiles.Summons
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
                 ModContent.ProjectileType<StarBoomer>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
         }
     }
@@ -122,16 +123,16 @@ namespace Stellamod.Projectiles.Summons
             Timer++;
             float progress = Timer / 120f;
             int divisor = (int)MathHelper.Lerp(20, 10, progress);
-            if (Timer % divisor == 0 || Timer == 1)
+            if(Timer % divisor == 0 || Timer == 1)
             {
-                if (Main.myPlayer == Projectile.owner)
+                if(Main.myPlayer == Projectile.owner)
                 {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + Main.rand.NextVector2Circular(24, 24), Vector2.Zero,
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + Main.rand.NextVector2Circular(24, 24), Vector2.Zero, 
                         ModContent.ProjectileType<StarBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
             }
 
-            if (Timer >= 120)
+            if(Timer >= 120)
             {
                 Projectile.Kill();
             }
@@ -158,7 +159,7 @@ namespace Stellamod.Projectiles.Summons
         {
             base.AI();
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
 
                 FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
@@ -214,7 +215,7 @@ namespace Stellamod.Projectiles.Summons
                     Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
                 }
 
-                if (Main.myPlayer == Projectile.owner)
+                if(Main.myPlayer == Projectile.owner)
                 {
                     float oofed = Main.rand.NextFloat(-1f, 1f);
                     for (float f = 0; f < 4; f++)

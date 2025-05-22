@@ -37,12 +37,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
         public override void AI()
         {
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
-
+      
             }
 
-            if (Timer == LifeTime / 2)
+            if(Timer == LifeTime / 2)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<SmallCircleExplosionProj>(), 0, 0, Projectile.owner);
@@ -63,7 +63,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                     Projectile.scale = 1f;
             }
 
-            if (Timer > LifeTime / 2)
+            if(Timer > LifeTime / 2)
             {
                 float progress = (Timer - LifeTime / 2) / LifeTime;
                 float easedProgress = Easing.OutExpo(progress);
@@ -124,7 +124,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            if (Timer < LifeTime / 2f)
+            if(Timer < LifeTime / 2f)
             {
                 float progress = Timer / (LifeTime / 2f);
                 Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_47").Value;

@@ -2,9 +2,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.Sylia;
+using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.GunHolster

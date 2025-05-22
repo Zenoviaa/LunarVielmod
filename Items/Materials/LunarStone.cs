@@ -1,6 +1,6 @@
-﻿using Terraria;
-using Terraria.ID;
+﻿using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
 
 namespace Stellamod.Items.Materials
 {

@@ -3,8 +3,20 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets.Biomes;
+using Stellamod.Buffs;
+using Stellamod.Helpers;
+using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Summon;
+using Stellamod.NPCs.Bosses.DreadMire;
+using Stellamod.NPCs.Bosses.DreadMire.Heart;
+using Stellamod.NPCs.Bosses.singularityFragment;
+using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
+using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.Projectiles;
 using System;
 using Terraria;
@@ -89,35 +101,35 @@ namespace Stellamod.NPCs.Cinderspark
                 float xDist = target.position.X - NPC.position.X;
                 xDist = Math.Abs(xDist);
 
-                bool canAttack = xDist < 256 && target.position.Y < NPC.position.Y;
-                if (ai_Counter < 120 && canAttack)
+                bool canAttack = xDist < 256 && target.position.Y < NPC.position.Y; 
+                if(ai_Counter < 120 && canAttack)
                 {
                     ai_Counter++;
                 }
-
-                if (ai_Counter == 120)
+         
+                if(ai_Counter == 120)
                 {
                     Dust.QuickDustLine(NPC.Center, NPC.Center + new Vector2(0, -700), 48, Color.OrangeRed);
                     ai_Counter++;
                 }
 
-                if (ai_Counter > 120 && ai_Counter < 240)
+                if(ai_Counter > 120 && ai_Counter < 240)
                 {
                     ai_Counter++;
                 }
 
-                if (ai_Counter == 240)
+                if(ai_Counter == 240)
                 {
                     //Shoot projectile
                     if (StellaMultiplayer.IsHost)
                     {
-                        for (int i = 0; i < Main.rand.Next(4, 8); i++)
+                        for(int i = 0; i < Main.rand.Next(4, 8); i++)
                         {
                             Vector2 velocity = new Vector2(Main.rand.NextFloat(-4f, 4f), -30);
                             velocity *= Main.rand.NextFloat(0.5f, 1f);
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
                                 ModContent.ProjectileType<CinderFireball>(), (int)(NPC.damage * 0.33f), 1, Main.myPlayer);
-
+                           
                             //Dust Particles
                             for (int k = 0; k < 4; k++)
                             {
@@ -164,7 +176,7 @@ namespace Stellamod.NPCs.Cinderspark
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), chanceDenominator: 4, minimumDropped: 2, maximumDropped: 5));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), chanceDenominator: 4, minimumDropped: 2,  maximumDropped: 5));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MoltenScrap>(), chanceDenominator: 2, minimumDropped: 1, maximumDropped: 3));
         }
     }

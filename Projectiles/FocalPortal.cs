@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
-using Stellamod.Projectiles.IgniterExplosions;
 using Terraria;
+using Terraria.ModLoader;
+using Stellamod.Helpers;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.ID;
-using Terraria.ModLoader;
+using Stellamod.Projectiles.IgniterExplosions;
 
 namespace Stellamod.Projectiles
 {
@@ -52,14 +52,14 @@ namespace Stellamod.Projectiles
             }
 
             _teleportTimer++;
-            _scale += 2 / 30f;
+            _scale += 2/30f;
             if (_scale >= 2f)
                 _scale = 2f;
 
             if (_teleportTimer < 30)
                 return;
 
-
+        
 
             Rectangle myRect = Projectile.getRect();
             for (int i = 0; i < Main.maxPlayers; i++)
@@ -67,9 +67,9 @@ namespace Stellamod.Projectiles
                 Player player = Main.player[i];
                 if (!player.active)
                     continue;
-
+       
                 Rectangle playerRect = player.getRect();
-                if (Projectile.Colliding(myRect, playerRect))
+                if(Projectile.Colliding(myRect, playerRect))
                 {
                     //Teleport
                     Teleport(player);

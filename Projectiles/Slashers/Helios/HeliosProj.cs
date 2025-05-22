@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+using Stellamod.Particles;
 using System;
 using Terraria;
 using Terraria.ModLoader;
@@ -73,7 +75,7 @@ namespace Stellamod.Projectiles.Slashers.Helios
 
             if (!ParticleSpawned)
             {
-                ParticleSpawned = true;
+                                ParticleSpawned = true;
             }
         }
 

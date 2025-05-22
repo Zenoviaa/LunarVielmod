@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
+using Stellamod.Particles;
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;
@@ -33,7 +36,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.knockBack = 6;
             Item.value = 10000;
             Item.rare = ItemRarityID.Lime;
-            //  Item.UseSound = SoundID.Item11;
+          //  Item.UseSound = SoundID.Item11;
             Item.autoReuse = true;
 
             Item.shoot = ModContent.ProjectileType<WaterGunNodeProj>();
@@ -51,7 +54,7 @@ namespace Stellamod.Items.Weapons.Ranged
             int connectorType = ModContent.ProjectileType<WaterGunConnectorProj>();
             foreach (var proj in Main.ActiveProjectiles)
             {
-                if (proj.type == connectorType)
+                if(proj.type == connectorType)
                 {
                     hasConnector = true;
                     break;

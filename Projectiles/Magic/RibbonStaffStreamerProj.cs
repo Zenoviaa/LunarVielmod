@@ -64,17 +64,17 @@ namespace Stellamod.Projectiles.Magic
             TrailRegistry.LaserShader.UseColor(Color.Red);
             TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.TwistingTrail);
 
-            if (TrailPos == null)
+            if(TrailPos == null)
             {
                 TrailPos = new Vector2[Projectile.oldPos.Length];
-
+        
                 for (int i = 0; i < TrailPos.Length; i++)
                 {
                     Projectile.oldPos[i] = Projectile.position;
                 }
             }
 
-            for (int i = 0; i < TrailPos.Length; i++)
+            for(int i = 0; i < TrailPos.Length; i++)
             {
                 TrailPos[i] = Projectile.oldPos[i];
                 TrailPos[i] += new Vector2(VectorHelper.Osc(0, 16, offset: i));

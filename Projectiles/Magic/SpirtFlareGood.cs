@@ -9,50 +9,50 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles.Magic
 {
     public class SpirtFlareGood : ModProjectile
-    {
-        public override void SetStaticDefaults()
+	{
+		public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Spirt Flare");
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
-        }
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+		}
 
-        public override void SetDefaults()
-        {
-            Projectile.width = 15;
-            Projectile.height = 10;
-            Projectile.friendly = true;
-            Projectile.hostile = false;
-            Projectile.penetrate = 10;
-            Projectile.timeLeft = 900;
-            Projectile.tileCollide = true;
-            Projectile.damage = 45;
+		public override void SetDefaults()
+		{
+			Projectile.width = 15;
+			Projectile.height = 10;
+			Projectile.friendly = true;
+			Projectile.hostile = false;
+			Projectile.penetrate = 10;
+			Projectile.timeLeft = 900;
+			Projectile.tileCollide = true;
+			Projectile.damage = 45;
             Projectile.aiStyle = -1;
-            Projectile.scale = 1.5f;
-        }
+			Projectile.scale = 1.5f;
+		}
 
-        public override bool PreAI()
-        {
-            Projectile.alpha -= 40;
-            if (Projectile.alpha < 0)
-                Projectile.alpha = 0;
+		public override bool PreAI()
+		{
+			Projectile.alpha -= 40;
+			if (Projectile.alpha < 0)
+				Projectile.alpha = 0;
 
-            Projectile.spriteDirection = Projectile.direction;
-            return true;
-        }
+			Projectile.spriteDirection = Projectile.direction;
+			return true;
+		}
 
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return Color.White;
-        }
+		public override Color? GetAlpha(Color lightColor)
+		{
+			return Color.White;
+		}
 
-        float alphaCounter;
-        public override void AI()
-        {
-            alphaCounter += 0.04f;
-            Projectile.velocity /= 0.99f;
-            Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
-            Projectile.localAI[0] += 1f;
+		float alphaCounter;
+		public override void AI()
+		{
+			alphaCounter += 0.04f;
+			Projectile.velocity /= 0.99f;
+			Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
+			Projectile.localAI[0] += 1f;
             if (Projectile.localAI[0] == 16f)
             {
                 Projectile.localAI[0] = 0f;
@@ -70,37 +70,37 @@ namespace Stellamod.Projectiles.Magic
                     Main.dust[num8].velocity = Vector2.Normalize(Projectile.Center - Projectile.velocity * 3f - Main.dust[num8].position) * 1.25f;
                 }
             }
-            int num1222 = 74;
-            for (int k = 0; k < 2; k++)
-            {
-                int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Electric, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-                Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * k;
-                Main.dust[index2].scale = .95f;
-                Main.dust[index2].velocity *= 0f;
-                Main.dust[index2].noGravity = true;
-                Main.dust[index2].noLight = false;
-            }
-        }
-        public override bool PreDraw(ref Color lightColor)
-        {
+			int num1222 = 74;
+			for (int k = 0; k < 2; k++)
+			{
+				int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Electric, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+				Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * k;
+				Main.dust[index2].scale = .95f;
+				Main.dust[index2].velocity *= 0f;
+				Main.dust[index2].noGravity = true;
+				Main.dust[index2].noLight = false;
+			}
+		}
+		public override bool PreDraw(ref Color lightColor)
+		{
 
-            Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
-            for (int k = 0; k < Projectile.oldPos.Length; k++)
-            {
-                Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-                Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
-            }
-            return false;
-        }
-        public override void OnKill(int timeLeft)
-        {
-            for (int i = 0; i < 15; i++)
-            {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Electric);
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Electric);
-            }
-            SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
-        }
-    }
+			Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
+			for (int k = 0; k < Projectile.oldPos.Length; k++)
+			{
+				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
+				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+				Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
+			}
+			return false;
+		}
+		public override void OnKill(int timeLeft)
+		{	
+			for (int i = 0; i < 15; i++)
+			{
+				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Electric);
+				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Electric);
+			}
+			SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
+		}
+	}
 }

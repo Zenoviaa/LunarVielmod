@@ -1,14 +1,26 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
-using Stellamod.Dusts;
-using Stellamod.Helpers;
-using Stellamod.Projectiles.Visual;
-using Stellamod.Trails;
+
+using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
+using System;
+using System.Collections.Generic;
 using Terraria.ModLoader;
+using System.IO;
+using Stellamod.Dusts;
+using Stellamod.Trails;
+using Stellamod.Utilis;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
+using Stellamod.Items.Accessories.Players;
+using Stellamod.Projectiles.IgniterExplosions.Stein;
+using Stellamod.Items.Weapons.Mage.Stein;
+using Stellamod.Helpers;
+using Stellamod.Projectiles.Visual;
+using Stellamod.NPCs.Bosses.Caeva;
+using Stellamod.Buffs;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 {
@@ -23,7 +35,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 35; // The length of old position to be recorded
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
-
+   
         public override void SetDefaults()
         {
             Projectile.width = 175;
@@ -37,7 +49,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             Projectile.usesLocalNPCImmunity = true;
         }
 
-
+     
 
         float trueFrame = 0;
         public void UpdateFrame(float speed, int minFrame, int maxFrame)
@@ -140,7 +152,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                     float scale = Main.rand.NextFloat(0.3f, 0.5f);
-
+                    
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { Pitch = Main.rand.NextFloat(-5f, 5f) }, Projectile.Center);
 
                     Vector2 directionToProjectile = Projectile.Center.DirectionTo(p.Center);
@@ -169,7 +181,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
                         //Get a random
                         float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                    }
+                                            }
                     var entitySource = Projectile.GetSource_FromThis();
                     if (StellaMultiplayer.IsHost)
                     {
@@ -205,7 +217,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
                 //Get a random
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-            }
+                            }
             var entitySource = Projectile.GetSource_FromThis();
             if (StellaMultiplayer.IsHost)
             {
@@ -312,7 +324,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                rectangle,
                 Color.White, drawRotation, origin, drawScale, SpriteEffects.None, 0f);
 
-
+         
 
 
             return false;

@@ -38,18 +38,18 @@ namespace Stellamod.Projectiles.Gun
             NPC target = Main.npc[targetNpc];
             if (target.active && !_setOffset)
             {
-                _offset = (target.position - Projectile.position) + new Vector2(0.001f, 0.001f);
+                _offset = (target.position - Projectile.position) + new Vector2(0.001f, 0.001f); 
                 _setOffset = true;
-            }
+            } 
             else if (!target.active)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity,
                     ModContent.ProjectileType<WigglerShot>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                 Projectile.Kill();
-            }
+            } 
             else
             {
-                Vector2 targetPos = target.position - _offset + new Vector2(0.001f, 0.001f);
+                Vector2 targetPos = target.position - _offset + new Vector2(0.001f, 0.001f); 
                 Vector2 directionToTarget = Projectile.position.DirectionTo(targetPos);
                 float dist = Vector2.Distance(Projectile.position, targetPos);
                 Projectile.velocity = (directionToTarget * dist) + new Vector2(0.001f, 0.001f);
@@ -60,13 +60,13 @@ namespace Stellamod.Projectiles.Gun
             {
                 ref float detonationTimer = ref Projectile.ai[1];
                 detonationTimer--;
-                if (detonationTimer == 10)
+                if(detonationTimer == 10)
                 {
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CombusterReady"), Projectile.position);
                     ExplodeEffects();
                 }
 
-                if (detonationTimer < 0)
+                if(detonationTimer < 0)
                 {
                     ShakeModSystem.Shake = 3;
                     SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"), Projectile.position);
@@ -107,7 +107,7 @@ namespace Stellamod.Projectiles.Gun
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
                     (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Blue, Main.rand.NextFloat(1f, 3f)).noGravity = true;
             }
-
+        
             for (float i = 0; i < 4; i++)
             {
                 float progress = i / 4f;
@@ -135,7 +135,7 @@ namespace Stellamod.Projectiles.Gun
             {
                 _lighting += 0.01f;
                 Lighting.AddLight(Main.screenPosition - Projectile.position, Color.White.ToVector3() * _lighting * Main.essScale); ;
-
+            
             }
         }
 

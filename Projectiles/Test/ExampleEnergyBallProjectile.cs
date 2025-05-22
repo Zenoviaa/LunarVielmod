@@ -34,7 +34,7 @@ namespace Stellamod.Projectiles.Test
         {
             base.AI();
             Timer++;
-            if (Timer % 8 == 0)
+            if(Timer % 8 == 0)
             {
                 int dustIndex = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<GlowDust>(), newColor: Color.Yellow);
                 Dust dust = Main.dust[dustIndex];
@@ -62,7 +62,7 @@ namespace Stellamod.Projectiles.Test
         private void DrawTrail()
         {
             Main.spriteBatch.RestartDefaults();
-            Vector2 drawOffset = -Main.screenPosition + Projectile.Size / 2f;
+            Vector2 drawOffset = -Main.screenPosition + Projectile.Size / 2f; 
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
             TrailDrawer.ColorFunc = ColorFunction;
             TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];

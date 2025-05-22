@@ -17,7 +17,6 @@ namespace Stellamod.UI.StructureSelector
         private readonly UIPanel _panel;
         internal const int width = 420;
         internal const int height = 28;
-
         public StructureSelectionButton(string structurePath)
         {
             _structurePath = structurePath.Replace(".str", "");
@@ -52,7 +51,7 @@ namespace Stellamod.UI.StructureSelector
             else
             {
                 Structurizer.SelectedStructure = _structurePath;
-
+       
                 Main.NewText($"Selected {Structurizer.SelectedStructure}");
             }
         }
@@ -69,7 +68,6 @@ namespace Stellamod.UI.StructureSelector
             if (IsMouseHovering)
             {
                 _panel.BackgroundColor = Color.Lerp(_panel.BackgroundColor, Color.Goldenrod * 0.5f, 0.1f);
-
             }
             else
             {
@@ -82,7 +80,7 @@ namespace Stellamod.UI.StructureSelector
                     _panel.BackgroundColor = Color.Lerp(_panel.BackgroundColor, Color.Transparent, 0.1f);
                 }
             }
-
+   
 
         }
     }

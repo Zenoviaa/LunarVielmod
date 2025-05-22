@@ -1,10 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Bow;
 using Stellamod.Trails;
+using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -176,7 +179,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             {
                 SummonHelper.SearchForTargets(player, Projectile,
                     out bool foundTarget,
-                    out float distanceFromTarget,
+                    out float distanceFromTarget, 
                     out Vector2 targetCenter);
                 if (foundTarget)
                 {
@@ -201,7 +204,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 {
                     SummonHelper.CalculateIdleValues(player, Projectile,
                         Leader.Center,
-
+                            
                            out Vector2 vectorToIdlePosition,
                            out float distanceToIdlePosition);
                     SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
@@ -229,7 +232,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterStorm"), Projectile.position);
                 Vector2 velocity = Main.rand.NextVector2Circular(2, 2);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, 
                     ModContent.ProjectileType<WinterboundArrowFlake>(), Projectile.damage / 2, 1, Projectile.owner);
             }
         }

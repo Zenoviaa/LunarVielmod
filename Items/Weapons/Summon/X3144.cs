@@ -21,34 +21,34 @@ namespace Stellamod.Items.Weapons.Summon
             Item.mana = 10;
         }
         public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Gelatal Slaff");
-            // Tooltip.SetDefault("Summons an Jelly boi to fight for you");
-            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
-            ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
-        }
+		{
+			// DisplayName.SetDefault("Gelatal Slaff");
+			// Tooltip.SetDefault("Summons an Jelly boi to fight for you");
+			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
+			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
+		}
 
-        public override void SetDefaults()
-        {
-            Item.damage = 51;
-            Item.knockBack = 3f;
-            Item.mana = 10;
-            Item.width = 32;
-            Item.height = 32;
-            Item.useTime = 18;
-            Item.useAnimation = 18;
-            Item.useStyle = ItemUseStyleID.Shoot;
-
+		public override void SetDefaults()
+		{
+			Item.damage = 51;
+			Item.knockBack = 3f;
+			Item.mana = 10;
+			Item.width = 32;
+			Item.height = 32;
+			Item.useTime = 18;
+			Item.useAnimation = 18;
+			Item.useStyle = ItemUseStyleID.Shoot;
+   
             Item.value = Item.sellPrice(0, 1, 33, 0);
             Item.rare = ItemRarityID.Pink;
 
-            // These below are needed for a minion weapon
-            Item.noMelee = true;
-            Item.DamageType = DamageClass.Summon;
-            Item.buffType = ModContent.BuffType<ProbeMinionBuff>();
-            // No buffTime because otherwise the item tooltip would say something like "1 minute duration"
-            Item.shoot = ModContent.ProjectileType<ProbeMinionProj>();
-        }
+			// These below are needed for a minion weapon
+			Item.noMelee = true;
+			Item.DamageType = DamageClass.Summon;
+			Item.buffType = ModContent.BuffType<ProbeMinionBuff>();
+			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
+			Item.shoot = ModContent.ProjectileType<ProbeMinionProj>();
+		}
 
         public override void AddRecipes()
         {
@@ -71,6 +71,6 @@ namespace Stellamod.Items.Weapons.Summon
 
             player.UpdateMaxTurrets();
             return false;
-        }
-    }
+		}
+	}
 }

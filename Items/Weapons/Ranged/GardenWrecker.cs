@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using System.Collections.Generic;
 using Terraria;
@@ -41,7 +41,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
             };
             tooltips.Add(line);
-
+ 
             line = new TooltipLine(Mod, "GardenWrecker", "(B) Great spread on bullets")
             {
                 OverrideColor = new Color(220, 87, 24)
@@ -51,12 +51,12 @@ namespace Stellamod.Items.Weapons.Ranged
 
 
 
+        
 
 
 
 
-
-        }
+    }
         public override void SetDefaults()
         {
             Item.damage = 8;

@@ -5,35 +5,37 @@ using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Projectiles.Swords
 {
     public class AcidBlast3 : ModProjectile
-    {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Acid Blast");
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
-        }
+	{
+		public override void SetStaticDefaults()
+		{
+			// DisplayName.SetDefault("Acid Blast");
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+		}
 
-        public override void SetDefaults()
-        {
-            Projectile.width = 44;
-            Projectile.height = 44;
-            Projectile.friendly = true;
-            Projectile.hostile = false;
-            Projectile.penetrate = 5;
-            Projectile.timeLeft = 1000;
+		public override void SetDefaults()
+		{
+			Projectile.width = 44;
+			Projectile.height = 44;
+			Projectile.friendly = true;
+			Projectile.hostile = false;
+			Projectile.penetrate = 5;
+			Projectile.timeLeft = 1000;
             Projectile.tileCollide = true;
-            Projectile.DamageType = DamageClass.Melee;
-            Projectile.aiStyle = 1;
-            AIType = ProjectileID.Bullet;
-        }
+			Projectile.DamageType = DamageClass.Melee;
+			Projectile.aiStyle = 1;
+			AIType = ProjectileID.Bullet;
+		}
 
-        int timer;
+		int timer;
 
         public override void AI()
         {
@@ -47,20 +49,20 @@ namespace Stellamod.Projectiles.Swords
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
-        {
-            int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.CursedTorch);
-            int dust1 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.CursedTorch);
+		{
+			int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.CursedTorch);
+			int dust1 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.CursedTorch);
 
-            //No need to set the velocity and then multiply by zero when you can just pass in 0 to the speed.
-            //Main.dust[dust].velocity *= 0f;
-            //Main.dust[dust1].velocity *= 0f;
-            Main.dust[dust].noGravity = true;
-            Main.dust[dust1].noGravity = true;
+			//No need to set the velocity and then multiply by zero when you can just pass in 0 to the speed.
+			//Main.dust[dust].velocity *= 0f;
+			//Main.dust[dust1].velocity *= 0f;
+			Main.dust[dust].noGravity = true;
+			Main.dust[dust1].noGravity = true;
 
-            //Returning true here kills the projectile, so no need to do it manually.
-            return true;
+			//Returning true here kills the projectile, so no need to do it manually.
+			return true;
 
-            /*	
+			/*	
 			Projectile.Kill();
 
 			// This code just straight up doesn't execute
@@ -79,15 +81,15 @@ namespace Stellamod.Projectiles.Swords
 
 			return false;
 			*/
-        }
+		}
 
-        public override void OnKill(int timeLeft)
-        {
-            for (int i = 0; i < 15; i++)
-            {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CursedTorch);
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch);
-            }
+		public override void OnKill(int timeLeft)
+		{
+			for (int i = 0; i < 15; i++)
+			{
+				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CursedTorch);
+				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch);
+			}
 
             var EntitySource = Projectile.GetSource_Death();
             for (int i = 0; i < 14; i++)
@@ -99,7 +101,7 @@ namespace Stellamod.Projectiles.Swords
 
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.ForestGreen, 1f).noGravity = true;
             }
-
+           
             for (int i = 0; i < 20; i++)
             {
                 int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.VenomStaff, 0f, -2f, 0, default(Color), .8f);
@@ -127,7 +129,7 @@ namespace Stellamod.Projectiles.Swords
 
 
             SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
-        }
+		}
 
 
 
@@ -150,7 +152,7 @@ namespace Stellamod.Projectiles.Swords
                 Color.OrangeRed.G,
                 Color.OrangeRed.B, 0);
         }
-
+      
         private float LifeTime = 300;
         private float MaxScale = 0.4f;
         public override bool PreDraw(ref Color lightColor)

@@ -2,8 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Bases;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -35,7 +35,7 @@ namespace Stellamod.Items.Accessories.Runes
 
             Projectile.Center = owner.Center;
             Timer++;
-            if (Timer % 32 == 0)
+            if(Timer % 32 == 0)
             {
                 Dust.NewDust(owner.position, owner.width, owner.height, DustID.Firework_Red, Scale: 0.2f);
             }
@@ -84,7 +84,7 @@ namespace Stellamod.Items.Accessories.Runes
             base.PostUpdateEquips();
             if (hasStealthRune)
             {
-                stealthRuneTimer++;
+                stealthRuneTimer++;  
             }
             else
             {

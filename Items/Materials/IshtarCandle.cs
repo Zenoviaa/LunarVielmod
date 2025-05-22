@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Tiles.Ishtar;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -17,7 +18,7 @@ namespace Stellamod.Items.Materials
             Item.accessory = true;
             Item.value = Item.sellPrice(silver: 25);
             Item.defense = 6;
-
+           
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
@@ -25,7 +26,7 @@ namespace Stellamod.Items.Materials
 
             Lighting.AddLight(player.Center, Color.Purple.ToVector3() * 10.75f * Main.essScale);
         }
-
+    
 
         public override void PostUpdate()
         {

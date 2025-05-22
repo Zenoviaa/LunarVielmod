@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
+using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

@@ -1,12 +1,17 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria.ID;
+using Terraria;
+using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Buffs;
+using Stellamod.Projectiles.Magic;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
-using Stellamod.Projectiles.Magic;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
@@ -53,7 +58,7 @@ namespace Stellamod.Items.Accessories
 
         private bool IsMatch(NPC npc)
         {
-            for (int t = 0; t < NpcTypes.Length; t++)
+            for(int t = 0; t < NpcTypes.Length; t++)
             {
                 if (npc.type == NpcTypes[t])
                     return true;
@@ -70,12 +75,12 @@ namespace Stellamod.Items.Accessories
                 Timer = 30;
                 float maxDetectRange = 1024;
                 NPC[] npcs = NPCHelper.FindNPCsInRange(Player.position, maxDetectRange, -1);
-                for (int n = 0; n < npcs.Length; n++)
+                for(int n = 0; n < npcs.Length; n++)
                 {
                     NPC npc = npcs[n];
-                    if (IsMatch(npc) && !npc.HasBuff(BuffType))
+                    if(IsMatch(npc) && !npc.HasBuff(BuffType))
                     {
-                        Projectile.NewProjectile(Player.GetSource_FromThis(), npc.Center, Main.rand.NextVector2Circular(1, 1),
+                        Projectile.NewProjectile(Player.GetSource_FromThis(), npc.Center, Main.rand.NextVector2Circular(1, 1), 
                             ModContent.ProjectileType<MoonFlameSlashProj>(), 1, 1, Player.whoAmI);
                     }
                 }

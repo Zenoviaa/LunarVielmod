@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Magic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -38,7 +41,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.rare = ItemRarityID.Green;
             Item.shootSpeed = 15;
             Item.autoReuse = true;
-
+     
             Item.DamageType = DamageClass.Magic;
             Item.shoot = ModContent.ProjectileType<TwilightDisc>();
             Item.shootSpeed = 10f;

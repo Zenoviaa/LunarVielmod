@@ -1,13 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
+using ReLogic.Content;
+using Stellamod.Trails;
+using Terraria.Graphics.Shaders;
+
+using Stellamod.Particles;
 
 namespace Stellamod.Projectiles.Magic
 {
@@ -18,7 +22,7 @@ namespace Stellamod.Projectiles.Magic
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shadow Hand");
-            // Main.projFrames[Projectile.type] = 30;
+           // Main.projFrames[Projectile.type] = 30;
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 35;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
@@ -63,7 +67,7 @@ namespace Stellamod.Projectiles.Magic
                 DrawOffset.Y = Projectile.Center.Y;
             }
 
-
+            
             SpriteEffects Effects = Projectile.spriteDirection != 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
             Vector2 scale = new(Projectile.scale, 1f);
@@ -73,7 +77,7 @@ namespace Stellamod.Projectiles.Magic
             for (int i = 0; i < 8; i++)
             {
                 Vector2 drawOffset = (MathHelper.TwoPi * i / 8f).ToRotationVector2() * 4f;
-                Main.EntitySpriteDraw(texture, Main.screenPosition + drawOffset, null, Color.Yellow with { A = 160 } * Projectile.Opacity, Projectile.rotation, texture.Size() * 0.5f, scale, Effects, 0);
+                Main.EntitySpriteDraw(texture,  Main.screenPosition + drawOffset, null, Color.Yellow with { A = 160 } * Projectile.Opacity, Projectile.rotation, texture.Size() * 0.5f, scale, Effects, 0);
             }
             for (int i = 0; i < 7; i++)
             {
@@ -139,7 +143,7 @@ namespace Stellamod.Projectiles.Magic
             return false;
         }
 
-
+       
 
         public override void AI()
         {
@@ -172,7 +176,7 @@ namespace Stellamod.Projectiles.Magic
                 Moved = true;
             }
 
-
+         
 
             Vector2 ParOffset;
             if (Projectile.ai[1] >= 40)
@@ -189,7 +193,7 @@ namespace Stellamod.Projectiles.Magic
             }
             if (Projectile.ai[1] >= 1)
             {
-
+               
                 alphaCounter -= 0.09f;
                 Projectile.tileCollide = true;
             }
@@ -199,7 +203,7 @@ namespace Stellamod.Projectiles.Magic
                 {
                     alphaCounter += 0.15f;
                 }
-
+               
             }
 
             Projectile.spriteDirection = Projectile.direction;
@@ -250,7 +254,7 @@ namespace Stellamod.Projectiles.Magic
         float alphaCounter = 0;
         Vector2 DrawOffset;
 
-
+       
 
 
         public override void PostDraw(Color lightColor)

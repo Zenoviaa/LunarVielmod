@@ -1,10 +1,17 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Helpers;
+﻿using Stellamod.Projectiles.Test;
+using System;
 using System.Collections.Generic;
-using Terraria;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
+using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 
 namespace Stellamod.Common.Bases
 {
@@ -29,7 +36,7 @@ namespace Stellamod.Common.Bases
             return true;
         }
 
-
+        
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
@@ -44,7 +51,7 @@ namespace Stellamod.Common.Bases
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if (player.altFunctionUse == 2)
+            if(player.altFunctionUse == 2)
             {
                 Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai1: 1);
                 return false;

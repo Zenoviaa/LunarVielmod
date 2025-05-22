@@ -3,6 +3,9 @@
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials.Molds;
+using Stellamod.NPCs.Catacombs.Fire;
+using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
+using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -59,6 +62,13 @@ namespace Stellamod.Items.Accessories.Catacombs
                     NPCID.SolarGoop,
                     NPCID.LunarTowerSolar,
                     NPCID.TorchGod,
+                    ModContent.NPCType<PandorasFlamebox>(),
+                    ModContent.NPCType<PandorasGuard>(),
+                    ModContent.NPCType<PandorasKnife>(),
+                    ModContent.NPCType<PandorasSeeker>(),
+                    ModContent.NPCType<BlazingSerpentHead>(),
+                    ModContent.NPCType<BlazingSerpentBody>(),
+                    ModContent.NPCType<BlazingSerpentTail>()
                 };
 
                 for (int i = 0; i < resistedNPCs.Length; i++)
@@ -94,7 +104,8 @@ namespace Stellamod.Items.Accessories.Catacombs
                     ProjectileID.GreekFire2,
                     ProjectileID.GreekFire3,
                     ProjectileID.InfernoHostileBlast,
-                    ProjectileID.InfernoHostileBolt
+                    ProjectileID.InfernoHostileBolt,
+                    ModContent.ProjectileType<HeatBeam>()
                 };
 
                 for (int i = 0; i < resistedProjectiles.Length; i++)
@@ -107,7 +118,7 @@ namespace Stellamod.Items.Accessories.Catacombs
                         break;
                     }
                 }
-            }
+            }   
         }
     }
 

@@ -1,8 +1,11 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+using Stellamod.Particles;
 using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 
@@ -80,7 +83,7 @@ namespace Stellamod.Items.Weapons.Summon
                 int dir = (int)Projectile.ai[1];
                 if (!ParticleSpawned)
                 {
-                    ParticleSpawned = true;
+                                        ParticleSpawned = true;
                 }
                 player.statDefense -= 10;
 

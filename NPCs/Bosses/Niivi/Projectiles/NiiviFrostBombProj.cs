@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -44,23 +46,23 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             Projectile.velocity *= 0.98f;
             Projectile.velocity.Y -= 0.05f;
             Projectile.rotation += Projectile.velocity.Length() * 0.04f;
-            if (Timer < 90)
+            if(Timer < 90)
             {
                 if (Main.rand.NextBool(4))
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
-                }
+                                    }
             }
             else
             {
                 if (Main.rand.NextBool(20))
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
-                }
+                                    }
             }
 
 
-            if (Timer == 150)
+            if(Timer == 150)
             {
                 Vector2 velocity = Vector2.Zero;
                 int type = ModContent.ProjectileType<NiiviFrostTelegraphProj>();

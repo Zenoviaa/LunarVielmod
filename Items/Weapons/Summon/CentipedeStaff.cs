@@ -1,13 +1,18 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs.Minions;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Molds;
+﻿using Stellamod.Buffs.Minions;
 using Stellamod.Projectiles.Summons.Minions;
-using Terraria;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
+using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Summon
 {

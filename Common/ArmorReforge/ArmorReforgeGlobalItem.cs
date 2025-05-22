@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -112,7 +113,7 @@ namespace Stellamod.Common.ArmorReforge
                 case ArmorReforgeType.Necromanced:
                     player.maxMinions += 1;
                     player.GetDamage(DamageClass.Summon) -= 0.1f;
-                    if (player.maxTurrets > 0)
+                    if(player.maxTurrets > 0)
                         player.maxTurrets -= 1;
                     break;
                 case ArmorReforgeType.RangedHolsting:
@@ -171,7 +172,7 @@ namespace Stellamod.Common.ArmorReforge
         {
             base.NetSend(item, writer);
             ArmorReforgeGlobalItem globalItem = item.GetGlobalItem<ArmorReforgeGlobalItem>();
-            writer.Write((int)globalItem.reforgeType);
+            writer.Write((int)globalItem.reforgeType); 
         }
 
         public override void NetReceive(Item item, BinaryReader reader)

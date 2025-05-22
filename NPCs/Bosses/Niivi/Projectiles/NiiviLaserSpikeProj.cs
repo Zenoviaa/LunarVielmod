@@ -37,7 +37,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         {
             Timer++;
             float easeInLength = 30;
-            if (Timer > HitboxTime - easeInLength)
+            if(Timer > HitboxTime - easeInLength)
             {
                 float progress2 = (Timer - HitboxTime) / easeInLength;
                 float easedProgress = Easing.InOutCubic(progress2);
@@ -54,7 +54,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             LaserSpikePos.Add(Projectile.Center);
 
             float numPoints = 24f;
-            for (int i = 0; i < numPoints; i++)
+            for(int i = 0; i < numPoints; i++)
             {
                 float progress = (float)i / numPoints;
                 progress *= Progress;
@@ -90,7 +90,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             {
                 mult = Projectile.timeLeft / (float)60;
             }
-            return Projectile.width * Projectile.scale * 1.3f * mult * LaserScale * (0.5f + (1f - completionRatio));
+            return Projectile.width * Projectile.scale * 1.3f * mult * LaserScale * (0.5f + (1f-completionRatio));
         }
 
         public Color ColorFunction(float completionRatio)

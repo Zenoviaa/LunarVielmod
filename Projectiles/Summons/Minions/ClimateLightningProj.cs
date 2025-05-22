@@ -44,7 +44,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         public override void AI()
         {
             if (Seed != 0)
-            {
+            {                
                 //Calculate
                 UnifiedRandom random = new UnifiedRandom(Seed);
                 List<Vector2> points = new List<Vector2>();

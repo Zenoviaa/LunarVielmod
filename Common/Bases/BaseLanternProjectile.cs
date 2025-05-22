@@ -71,7 +71,7 @@ namespace Stellamod.Common.Bases
                     break;
             }
 
-            if (Main.myPlayer == Projectile.owner)
+            if(Main.myPlayer == Projectile.owner)
             {
                 LightVelocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero);
             }
@@ -93,7 +93,7 @@ namespace Stellamod.Common.Bases
 
             Vector2 targetPos = Owner.Center + new Vector2(Owner.direction * 12, -32);
             Vector2 velocity = targetPos - Projectile.Center;
-            //    velocity = velocity.SafeNormalize(Vector2.Zero);
+        //    velocity = velocity.SafeNormalize(Vector2.Zero);
             Projectile.velocity = velocity * 0.2f;
             Projectile.rotation = Projectile.velocity.X / 60f;
         }

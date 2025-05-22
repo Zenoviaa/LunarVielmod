@@ -1415,7 +1415,6 @@ AssassinsArrow.DisplayName: Assassins Arrow
 ExampleMotionBlurProjectile.DisplayName: Example Motion Blur Projectile
 WigglerDetonator.DisplayName: Wiggler Detonator
 MagicalAxeBoomer.DisplayName: Magical Axe Boomer
-Magic.DisplayName: Magic
 CandleShotBoom.DisplayName: Candle Shot Boom
 ClockworkBoomer.DisplayName: Clockwork Boomer
 ProbeLaser.DisplayName: Probe Laser
@@ -1479,4 +1478,3 @@ VoidsGraspTome.DisplayName: Voids Grasp Tome
 WintersStomTome.DisplayName: Winters Stom Tome
 StructurePoint.DisplayName: Structure Point
 Save.DisplayName: Save
-TilePainterPreview.DisplayName: Tile Painter Preview

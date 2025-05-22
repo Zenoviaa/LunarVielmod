@@ -41,7 +41,7 @@ namespace Stellamod.Projectiles.Magic
         {
             float maxDetectDistance = 1500;
             NPC closestNpc = NPCHelper.FindClosestNPC(Projectile.position, maxDetectDistance);
-            if (closestNpc != null)
+            if(closestNpc != null)
             {
                 Vector2 targetVelocity = Projectile.Center.DirectionTo(closestNpc.Center) * 16;
                 Vector2 velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.08f);
@@ -132,7 +132,7 @@ namespace Stellamod.Projectiles.Magic
                 drawColor *= 1f - glowOsc;
                 Vector2 drawPosition = Projectile.position + drawOrigin + (num103 / (float)num108 * 6.28318548f + Projectile.rotation + num106)
                     .ToRotationVector2() * (4f * glowOsc + 2f) - Main.screenPosition;
-                Main.spriteBatch.Draw(GlowTexture, drawPosition, drawFrame,
+                Main.spriteBatch.Draw(GlowTexture, drawPosition, drawFrame, 
                     drawColor, Projectile.rotation, drawOrigin, Projectile.scale, spriteEffects, 0f);
             }
         }

@@ -20,7 +20,7 @@ namespace Stellamod.Brooches
             Projectile.penetrate = 10;
             AIType = ProjectileID.Bullet;
             Projectile.extraUpdates = 1;
-
+           
         }
 
         public override bool PreAI()

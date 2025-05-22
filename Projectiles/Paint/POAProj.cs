@@ -1,12 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+
 using Stellamod.Dusts;
-using Stellamod.Projectiles.Visual;
-using Stellamod.Trails;
+using Stellamod.Particles;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
+using Stellamod.Utilis;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
+using Terraria.ID;
+using Stellamod.Helpers;
+using Stellamod.Projectiles.Visual;
 
 
 namespace Stellamod.Projectiles.Paint
@@ -209,17 +216,17 @@ namespace Stellamod.Projectiles.Paint
             if (completionRatio < 0.2f)
             {
                 return Color.Red;
-                // return Color.Lerp(Color.Red, new Color(255, 145, 0), completionRatio / 0.25f);
+               // return Color.Lerp(Color.Red, new Color(255, 145, 0), completionRatio / 0.25f);
             }
             else if (completionRatio < 0.4f)
             {
                 return new Color(255, 145, 0);
-                // return Color.Lerp(new Color(255, 145, 0), new Color(1, 255, 149), (0.5f - completionRatio) / 0.25f);
+               // return Color.Lerp(new Color(255, 145, 0), new Color(1, 255, 149), (0.5f - completionRatio) / 0.25f);
             }
             else if (completionRatio < 0.6f)
             {
                 return new Color(1, 255, 149);
-                // return Color.Lerp(new Color(1, 255, 149), new Color(0, 239, 255), (0.75f - completionRatio) / 0.25f);
+               // return Color.Lerp(new Color(1, 255, 149), new Color(0, 239, 255), (0.75f - completionRatio) / 0.25f);
             }
             else if (completionRatio < 0.8f)
             {
@@ -239,7 +246,7 @@ namespace Stellamod.Projectiles.Paint
 
         public float WidthFunction(float completionRatio)
         {
-            if (completionRatio < 0.5f)
+            if(completionRatio < 0.5f)
             {
                 return MathHelper.Lerp(0f, 48, completionRatio / 0.5f);
             }
@@ -247,7 +254,7 @@ namespace Stellamod.Projectiles.Paint
             {
                 return MathHelper.Lerp(0f, 48, (1f - completionRatio) / 0.5f);
             }
-
+            
         }
 
         public float WidthFunction2(float completionRatio)

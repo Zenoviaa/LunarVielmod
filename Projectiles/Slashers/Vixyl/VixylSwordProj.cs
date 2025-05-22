@@ -146,7 +146,7 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
 
             if (SwordSlash == null)
             {
-                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(160) * (1f - p), (p) =>
+                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(160) * (1f - p), (p) => 
                 new Color(Color.White.R, Color.White.G, Color.White.B, 50) * (1f - p));
                 SwordSlash.drawOffset = Projectile.Size / 2f;
             }

@@ -2,8 +2,13 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
+using Stellamod.Items.Weapons.Melee;
+using Stellamod.Projectiles;
 using Stellamod.Projectiles.Magic;
+using Stellamod.Projectiles.Slashers;
 using Stellamod.Projectiles.Slashers.Ixy;
 using Terraria;
 using Terraria.Audio;

@@ -5,6 +5,7 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Graphics.Shaders;
@@ -122,7 +123,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         }
 
         private void InitSegments(int numSegments)
-        {
+        {          
             //Initialize Segments
             List<SerpentSegment> segments = new List<SerpentSegment>();
             //Set the textures
@@ -145,7 +146,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
                 segments.Add(segment);
             }
-
+    
             segment = new SerpentSegment(Projectile);
             segment.TexturePath = $"{Texture}_Tail";
             segment.Position = Projectile.position + new Vector2(1, 0);
@@ -166,7 +167,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             return IsMainSerpent;
         }
 
-
+        
 
         public override void AI()
         {
@@ -180,28 +181,28 @@ namespace Stellamod.Projectiles.Summons.Minions
                 return;
             }
 
-            if (_originalDamage == 0)
+            if(_originalDamage == 0)
             {
                 _originalDamage = Projectile.originalDamage;
             }
-
+  
             int ownedCounts = Owner.ownedProjectileCounts[Type];
             Projectile.originalDamage = _originalDamage + ownedCounts * 15;
             ExtraScale = 1f + ((float)ownedCounts * 0.05f);
 
             int numBodySegments = (int)(ownedCounts * 10) + 1;
-            if (SegmentCount != numBodySegments)
+            if(SegmentCount != numBodySegments)
             {
                 InitSegments(numBodySegments);
             }
 
             GlowWhite(1 / 60f);
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 _originalDamage = Projectile.originalDamage;
             }
-
+  
             SummonHelper.SearchForTargetsThroughTiles(Owner, Projectile,
                  out bool foundTarget,
                  out float distanceFromTarget,
@@ -399,7 +400,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             int inFrontIndex = index - 1;
             if (inFrontIndex < 0)
                 return;
-
+            
             ref var segment = ref Segments[index];
             ref var frontSegment = ref Segments[index - 1];
 
@@ -424,7 +425,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 fixer /= 1.75f;
             }
 
-
+     
             float dist = (length - segment.Size.X * SegmentStretch * fixer) / length;
 
             float posX = dirX * dist;

@@ -15,7 +15,7 @@ namespace Stellamod.TilesNew.SpringHills
             Main.tileMergeDirt[Type] = true;
             Main.tileBlockLight[Type] = true;
             RegisterItemDrop(ModContent.ItemType<SpringGrassBlock>());
-            // DustType = Main.rand.Next(110, 113);
+           // DustType = Main.rand.Next(110, 113);
 
             MineResist = 1f;
             MinPick = 50;

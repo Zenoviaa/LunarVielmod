@@ -364,7 +364,7 @@ namespace Stellamod.Items.Weapons.Melee.Longswords
     }
     public class VaikusSwordStaminaSlash : BaseSwingProjectile
     {
-        public override string Texture => this.PathHere() + "/Vaikus";
+        public override string Texture => this.PathHere()+"/Vaikus";
 
         public bool Hit;
 

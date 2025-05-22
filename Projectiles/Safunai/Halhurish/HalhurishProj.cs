@@ -1,30 +1,37 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Bases;
+using Stellamod.Common.Particles;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.UI.Systems;
+using Stellamod.Visual.Particles;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Safunai.Halhurish
 {
     public class HalhurishProj : BaseSafunaiProjectile
-    {
+	{
         protected override Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(Color.Transparent, Color.OrangeRed, completionRatio);
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
+		{
 
-            ShakeModSystem.Shake = 4;
-            SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowExp"), target.position);
-            float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
-            float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(-10, 11) * 0.2f;
-            if (Slam)
+			ShakeModSystem.Shake = 4;
+			SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowExp"), target.position);
+			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
+			float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(-10, 11) * 0.2f;
+            if (Slam) 
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.WandOfSparkingSpark, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 3, ProjectileID.WandOfSparkingSpark, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
@@ -54,9 +61,9 @@ namespace Stellamod.Projectiles.Safunai.Halhurish
             }
             else
             {
-                FXUtil.GlowCircleBoom(target.Center,
-                    innerColor: Color.White,
-                    glowColor: Color.Yellow,
+                FXUtil.GlowCircleBoom(target.Center, 
+                    innerColor: Color.White, 
+                    glowColor: Color.Yellow, 
                     outerGlowColor: Color.Red, duration: 25, baseSize: 0.12f);
 
                 // Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<GlowCircleBoom>(), 0, 0, Projectile.owner);
@@ -72,5 +79,5 @@ namespace Stellamod.Projectiles.Safunai.Halhurish
                 }
             }
         }
-    }
+	}
 }

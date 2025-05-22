@@ -1,8 +1,9 @@
 using Microsoft.Xna.Framework;
-
+ 
 using Stellamod.Projectiles.IgniterExplosions;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -51,8 +52,8 @@ namespace Stellamod.Projectiles.Magic
         public override void OnKill(int timeLeft)
         {
             var entitySource = Projectile.GetSource_Death();
-            Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0,
-                ModContent.ProjectileType<IrradiatedBoom>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+            Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, 
+                ModContent.ProjectileType<IrradiatedBoom>(), Projectile.damage, 1,Projectile.owner, 0, 0);
             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048f, 16f);
         }

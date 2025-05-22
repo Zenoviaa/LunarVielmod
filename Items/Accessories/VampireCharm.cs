@@ -22,7 +22,7 @@ namespace Stellamod.Items.Accessories
 
         public override void PostUpdateEquips()
         {
-            if (lifestealCooldown > 0)
+            if(lifestealCooldown > 0)
                 lifestealCooldown--;
         }
 

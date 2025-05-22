@@ -20,7 +20,7 @@ namespace Stellamod.Projectiles.Magic
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 15;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
-
+        
         public override void SetDefaults()
         {
             Projectile.width = 36;
@@ -104,7 +104,7 @@ namespace Stellamod.Projectiles.Magic
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
-            float baseWidth = Projectile.scale * Projectile.width;
+            float baseWidth = Projectile.scale * Projectile.width ;
             return MathHelper.SmoothStep(baseWidth, 3.5f, Easing.OutExpo(completionRatio, 4));
         }
         public Color ColorFunction(float completionRatio)
@@ -117,19 +117,19 @@ namespace Stellamod.Projectiles.Magic
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.RestartDefaults();
-
+           
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.BulbTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
             spriteBatch.Restart(blendState: BlendState.Additive);
-            for (int i = 0; i < 2; i++)
+            for(int i = 0; i < 2; i++)
             {
                 Color glowColor = Color.White.MultiplyRGB(lightColor);
                 spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null,
                     glowColor, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f,
                     Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             }
-
+          
             spriteBatch.RestartDefaults();
             return false;
         }

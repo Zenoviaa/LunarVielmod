@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.Slashers;
+using Stellamod.Projectiles.Slashers.ArchariliteRaysword;
 using Stellamod.Projectiles.Slashers.X3107;
 using Stellamod.Projectiles.Swords;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -63,7 +66,7 @@ namespace Stellamod.Items.Weapons.Melee
             if (player.GetModPlayer<MyPlayer>().SwordCombo >= 4)
             {
                 type = ModContent.ProjectileType<X3107Slash>();
-
+             
             }
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

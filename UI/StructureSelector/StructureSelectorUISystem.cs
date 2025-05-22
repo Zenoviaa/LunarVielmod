@@ -1,5 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.UI.ToolsSystem;
+using Stellamod.WorldG.StructureManager;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -16,7 +22,6 @@ namespace Stellamod.UI.StructureSelector
 
         public StructureSelectorUIState selectorUIState;
         public StructureSaveUIState saveUIState;
-        public MagicWandUIState magicWandUIState;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -24,14 +29,8 @@ namespace Stellamod.UI.StructureSelector
             _userInterface = new UserInterface();
             selectorUIState = new StructureSelectorUIState();
             selectorUIState.Activate();
-
             saveUIState = new StructureSaveUIState();
             saveUIState.Activate();
-
-            magicWandUIState = new MagicWandUIState();
-            magicWandUIState.Activate();
-
-
             _userInterface.SetState(null);
             _saveUserInterface.SetState(null);
         }
@@ -45,41 +44,35 @@ namespace Stellamod.UI.StructureSelector
                 _userInterface.Update(gameTime);
             }
 
-            if (_saveUserInterface?.CurrentState != null)
+
+            if(Main.LocalPlayer.HeldItem.type == ModContent.ItemType<ModelizingPlacer>())
             {
-                _saveUserInterface.Update(gameTime);
+                ToggleUI(true);
+            }
+            else
+            {
+                ToggleUI(false);
             }
         }
 
-        internal void ToggleUI()
+        internal void ToggleUI(bool isOn)
         {
-            if (_userInterface?.CurrentState != null)
+            if (_userInterface?.CurrentState != null && !isOn)
             {
                 CloseUI();
             }
-            else if (_userInterface?.CurrentState == null)
+            else if (_userInterface?.CurrentState == null && isOn)
             {
                 OpenUI();
             }
         }
 
-        internal void OpenMagicWandUI()
-        {
-            _saveUserInterface.SetState(magicWandUIState);
-        }
-        internal void CloseMagicWandUI()
-        {
-            _saveUserInterface.SetState(null);
-        }
-
         internal void OpenSaveUI()
         {
-
             _saveUserInterface.SetState(saveUIState);
         }
         internal void CloseSaveUI()
         {
-            saveUIState.ui.Textbox.Unfocus();
             _saveUserInterface.SetState(null);
         }
         internal void OpenUI()
@@ -113,7 +106,7 @@ namespace Stellamod.UI.StructureSelector
             if (mouseTextIndex != -1)
             {
                 layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
-                    "Stellamod: Structure Selector UI",
+                    "LunarVeil: Structure Selector UI",
                     delegate
                     {
                         if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)

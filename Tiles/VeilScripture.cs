@@ -1,10 +1,16 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+
+using Stellamod.Dusts;
+using Stellamod.Items.Weapons.PowdersItem;
+
+using Terraria.DataStructures;
+using Terraria.GameContent.ObjectInteractions;
+using Terraria.ID;
 
 
 

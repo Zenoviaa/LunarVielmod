@@ -8,7 +8,7 @@ using Terraria.ObjectData;
 namespace Stellamod.Tiles.Acid
 {
     public class AcidFoliage : ModTile
-    {
+	{
         public override void SetStaticDefaults()
         {
             Main.tileFrameImportant[Type] = true;
@@ -47,9 +47,9 @@ namespace Stellamod.Tiles.Acid
         }
 
         public override void NumDust(int i, int j, bool fail, ref int num)
-        {
-            num = 2;
-        }
+		{
+			num = 2;
+		}
 
 
         public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
@@ -66,10 +66,10 @@ namespace Stellamod.Tiles.Acid
         }
 
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
-        {
-            r = 0.2f;
-            g = 0.5f;
-            b = 0.2f;
-        }
-    }
+		{
+			r = 0.2f;
+			g = 0.5f;
+			b = 0.2f;
+		}
+	}
 }

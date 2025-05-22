@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-
+ 
     public class LaceratedNPC : GlobalNPC
     {
         public override void ModifyHitNPC(NPC npc, NPC target, ref NPC.HitModifiers modifiers)

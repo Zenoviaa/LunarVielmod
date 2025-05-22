@@ -51,6 +51,6 @@ namespace Stellamod.Brooches
             }
         }
 
-
+        
     }
 }

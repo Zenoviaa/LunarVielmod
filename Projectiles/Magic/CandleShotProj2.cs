@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+using Stellamod.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -43,7 +46,7 @@ namespace Stellamod.Projectiles.Magic
         public override void AI()
         {
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
                 for (int i = 0; i < 32; i++)
                 {
@@ -51,7 +54,7 @@ namespace Stellamod.Projectiles.Magic
                     Vector2 spawnPos = Projectile.Center + randOffset;
                     Vector2 velocity = spawnPos.DirectionTo(Projectile.Center) * 4;
                     Dust d = Dust.NewDustPerfect(spawnPos, DustID.Torch, velocity, Scale: 2);
-                    d.noGravity = true;
+                        d.noGravity = true;
                 }
             }
 
@@ -73,7 +76,7 @@ namespace Stellamod.Projectiles.Magic
             }
             else
             {
-                if (Main.myPlayer == Projectile.owner)
+                if(Main.myPlayer == Projectile.owner)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                         ModContent.ProjectileType<CandleShotBoom>(), Projectile.damage * 2, 1, Projectile.owner, 0, 0);
@@ -90,7 +93,7 @@ namespace Stellamod.Projectiles.Magic
         public override void PostDraw(Color lightColor)
         {
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-            for (int i = 0; i < 8; i++)
+            for(int i = 0; i < 8; i++)
             {
                 Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(35f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (alphaCounter + 0.6f), SpriteEffects.None, 0f);
             }

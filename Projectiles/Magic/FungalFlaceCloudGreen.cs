@@ -39,7 +39,7 @@ namespace Stellamod.Projectiles.Magic
             Lighting.AddLight(Projectile.Center, 0.3f * num, 0.2f * num, 0.1f * num);
             Projectile.rotation = Projectile.velocity.X / 2f;
             return true;
-
+         
         }
         float alphaCounter;
         public override Color? GetAlpha(Color lightColor)

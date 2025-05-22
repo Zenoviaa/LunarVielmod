@@ -28,7 +28,7 @@ namespace Stellamod.Projectiles.Magic
         {
             base.AI();
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
             {
 
                 FXUtil.ShakeCamera(Projectile.Center, 1024, 8);

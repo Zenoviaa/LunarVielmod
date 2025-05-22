@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Stellamod.Trails;
 using System.IO;
 using Terraria;
@@ -161,9 +162,9 @@ namespace Stellamod.Common.Bases
                     {
                         SuccessfulInput = true;
                     }
-                    if (BufferTimer >= 25 || SuccessfulInput)
+                    if(BufferTimer >= 25 || SuccessfulInput)
                     {
-
+ 
                         if (SuccessfulInput)
                         {
                             //Some Effects IDK
@@ -272,7 +273,7 @@ namespace Stellamod.Common.Bases
 
                 //Get a random
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-            }
+                            }
         }
 
         public PrimDrawer TrailDrawer { get; private set; } = null;

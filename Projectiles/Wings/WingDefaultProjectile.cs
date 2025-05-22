@@ -34,7 +34,7 @@ namespace Stellamod.Projectiles.Wings
                 return;
             }
 
-            if (Owner.direction >= 0)
+            if(Owner.direction >= 0)
             {
                 Projectile.Center = Owner.Center + WingOffset * (-Owner.direction);
             }
@@ -47,7 +47,7 @@ namespace Stellamod.Projectiles.Wings
             Projectile.spriteDirection = Owner.direction;
 
 
-            if (AlwaysAnimate || IsFlying())
+            if(AlwaysAnimate || IsFlying())
             {
                 Projectile.frameCounter++;
                 if (Projectile.frameCounter >= FrameSpeed)

@@ -1,10 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Terraria;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.ID;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
@@ -44,7 +49,7 @@ namespace Stellamod.Items.Accessories
                 InitialVelocity = Projectile.velocity;
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
             }
-            if (Timer % 12 == 0)
+            if(Timer % 12 == 0)
             {
                 Vector2 vel = Vector2.Zero;
                 Dust d = Dust.NewDustPerfect(Projectile.Center, DustID.Torch, vel, Scale: 1);
@@ -160,7 +165,7 @@ namespace Stellamod.Items.Accessories
                     Projectile.rotation, dimLightTexture.Size() / 2f, drawScale * VectorHelper.Osc(0.75f, 1f, speed: 32, offset: Projectile.whoAmI), SpriteEffects.None, 0f);
             }
 
-            //  Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 0.3f * Main.essScale);
+          //  Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 0.3f * Main.essScale);
         }
     }
 }

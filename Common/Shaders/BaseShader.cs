@@ -1,9 +1,10 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Terraria.Graphics.Shaders;
+using Terraria.ModLoader;
 
 namespace Stellamod.Common.Shaders
 {
-    public abstract class BaseShader
+    public abstract class BaseShader 
     {
         public virtual string EffectPath
         {

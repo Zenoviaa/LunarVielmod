@@ -26,5 +26,5 @@ namespace Stellamod.Items.Accessories
             player.GetCritChance(DamageClass.Melee) += 5f;
         }
     }
-}
+    }
 

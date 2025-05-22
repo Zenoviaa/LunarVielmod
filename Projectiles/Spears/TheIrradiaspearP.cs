@@ -71,7 +71,7 @@ namespace Stellamod.Projectiles.Spears
 
         public override void AI()
         {
-            FlashTimer -= 0.02f;
+            FlashTimer -=0.02f;
             if (FlashTimer <= 0)
                 FlashTimer = 0;
             switch (State)
@@ -112,7 +112,7 @@ namespace Stellamod.Projectiles.Spears
             {
                 holdOffset.Y *= -1;
             }
-
+           
             Vector2 swingStart = playerCenter + holdOffset.RotatedBy(holdRotation);
             Vector2 swingEnd = playerCenter + Projectile.velocity + holdOffset.RotatedBy(rotation);
             Vector2 swingCenter = Vector2.Lerp(swingEnd, swingStart, easedProgress);
@@ -136,18 +136,18 @@ namespace Stellamod.Projectiles.Spears
 
                 FlashTimer = 1;
                 //Idk some visual or sound here
-                for (int i = 0; i < 8; i++)
+                for(int i = 0; i < 8; i++)
                 {
                     Vector2 velocity = Main.rand.NextVector2CircularEdge(2, 2);
-                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), velocity,
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), velocity, 
                         newColor: ColorFunctions.AcidFlame);
                 }
             }
 
-            if (Timer >= ChargeTime && Timer % 8 == 0)
+            if(Timer >= ChargeTime && Timer % 8 == 0)
             {
                 Vector2 velocity = Main.rand.NextVector2CircularEdge(2, 2);
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), velocity,
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), velocity, 
                     newColor: Color.DarkGray);
             }
 
@@ -159,12 +159,11 @@ namespace Stellamod.Projectiles.Spears
                     Timer = 0;
                     State = ActionState.Out;
                 }
-                else if (Timer > ChargeTime / 2)
+                else  if (Timer > ChargeTime / 2)
                 {
                     Timer = 0;
                     State = ActionState.Out;
-                }
-                else
+                } else
                 {
                     Projectile.Kill();
                 }
@@ -176,7 +175,7 @@ namespace Stellamod.Projectiles.Spears
         {
             FlashTimer -= 0.1f;
             Timer++;
-            if (Timer == 1 && MaxCharge)
+            if(Timer == 1 && MaxCharge)
             {
                 //Throw Sound
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Egg_Shot");
@@ -184,7 +183,7 @@ namespace Stellamod.Projectiles.Spears
 
                 //Rocket Boost
                 Vector2 velocity = -Projectile.velocity.SafeNormalize(Vector2.Zero);
-                for (int i = 0; i < 16; i++)
+                for(int i = 0; i < 16; i++)
                 {
                     Vector2 dustVelocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 4);
                     dustVelocity = dustVelocity * Main.rand.NextFloat(2, 15f);
@@ -193,11 +192,11 @@ namespace Stellamod.Projectiles.Spears
                     Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), dustVelocity,
                         newColor: Color.DarkGray);
                 }
-
+       
             }
             float progress = Timer / SwingTime;
             float easedProgress = Easing.SpikeOutCirc(progress);
-
+             
             //
             Vector2 playerCenter = Owner.RotatedRelativePoint(Owner.MountedCenter, true);
 
@@ -298,7 +297,7 @@ namespace Stellamod.Projectiles.Spears
                 Projectile.netUpdate = true;
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(target.position, 1024, 24);
                 float num = 5;
-                for (int i = 0; i < num; i++)
+                for(int i = 0; i < num; i++)
                 {
                     float progress = (float)i / num;
                     float rot = MathHelper.TwoPi * progress;
@@ -308,7 +307,7 @@ namespace Stellamod.Projectiles.Spears
                     float explosionDelay = progress * 30;
 
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, velocity,
-                        ModContent.ProjectileType<TheIrradiaspearSparkProj>(),
+                        ModContent.ProjectileType<TheIrradiaspearSparkProj>(), 
                         Projectile.damage, Projectile.knockBack, Projectile.owner,
                         ai1: explosionDelay);
                 }

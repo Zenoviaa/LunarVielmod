@@ -1,12 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Dusts;
-using Stellamod.Helpers;
-using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Trails;
-using Terraria;
-using Terraria.Audio;
-using Terraria.ID;
+﻿using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
+using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
+using Stellamod.Trails;
+using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.Dusts;
+using Terraria.Audio;
 namespace Stellamod.Projectiles.Thrown
 {
     internal class OrionProj : ModProjectile
@@ -38,7 +38,7 @@ namespace Stellamod.Projectiles.Thrown
             Projectile.rotation = Projectile.velocity.ToRotation();
 
             Timer++;
-            if (Timer % 6 == 0)
+            if(Timer % 6 == 0)
             {
                 int xRand = Main.rand.Next(0, Projectile.width);
                 int yRand = Main.rand.Next(0, Projectile.height);
@@ -50,7 +50,7 @@ namespace Stellamod.Projectiles.Thrown
                    ModContent.ProjectileType<OrionStarProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
 
-            if (Timer % 2 == 0)
+            if(Timer % 2 == 0)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
                     ModContent.DustType<Sparkle>(), newColor: Color.White);

@@ -7,7 +7,7 @@ namespace Stellamod.Assets.Biomes
 {
     public class AurelusBiome : ModBiome
     {
-
+      
         public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/AurelusTemple");
         public override SceneEffectPriority Priority => SceneEffectPriority.BossLow;
         public override string BestiaryIcon => base.BestiaryIcon;

@@ -1,83 +1,88 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Dusts;
-using Stellamod.Helpers;
-using Stellamod.Trails;
+using Stellamod.Projectiles.IgniterExplosions;
+using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
+
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
-using Terraria.ID;
-using Terraria.ModLoader;
+
 using static Terraria.ModLoader.ModContent;
+using Stellamod.Helpers;
+using Stellamod.Dusts;
 
 
 namespace Stellamod.Projectiles.Magic
 {
-    public class SparkBallsP : ModProjectile
-    {
-        private ref float Timer => ref Projectile.ai[0];
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("MeatBall");
-            Main.projFrames[Projectile.type] = 1;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 30;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
-        }
-        public override void SetDefaults()
-        {
-            Projectile.damage = 12;
-            Projectile.width = 12;
-            Projectile.height = 12;
-            Projectile.light = 1.5f;
-            Projectile.friendly = true;
-            Projectile.ignoreWater = true;
-            Projectile.tileCollide = false;
-            Projectile.DamageType = DamageClass.Magic;
-            Projectile.ownerHitCheck = true;
-            Projectile.timeLeft = 360;
-            Projectile.tileCollide = false;
-            Projectile.penetrate = 1;
-        }
+	public class SparkBallsP : ModProjectile
+	{
+		private ref float Timer => ref Projectile.ai[0];
+		public override void SetStaticDefaults()
+		{
+			// DisplayName.SetDefault("MeatBall");
+			Main.projFrames[Projectile.type] = 1;
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 30;
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+		}
+		public override void SetDefaults()
+		{
+			Projectile.damage = 12;
+			Projectile.width = 12;
+			Projectile.height = 12;
+			Projectile.light = 1.5f;
+			Projectile.friendly = true;
+			Projectile.ignoreWater = true;
+			Projectile.tileCollide = false;
+			Projectile.DamageType = DamageClass.Magic;
+			Projectile.ownerHitCheck = true;
+			Projectile.timeLeft = 360;
+			Projectile.tileCollide = false;
+			Projectile.penetrate = 1;
+		}
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 1.3f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.LightPink, Color.Transparent, completionRatio) * 0.7f;
-        }
-        public override bool PreDraw(ref Color lightColor)
-        {
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.LoveTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-            return false;
-        }
+		public PrimDrawer TrailDrawer { get; private set; } = null;
+		public float WidthFunction(float completionRatio)
+		{
+			float baseWidth = Projectile.scale * Projectile.width * 1.3f;
+			return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
+		}
+		public Color ColorFunction(float completionRatio)
+		{
+			return Color.Lerp(Color.LightPink, Color.Transparent, completionRatio) * 0.7f;
+		}
+		public override bool PreDraw(ref Color lightColor)
+		{
+			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+			Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+			TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
+			GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.LoveTrail);
+			TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
+			return false;
+		}
 
-        public override void PostDraw(Color lightColor)
-        {
-            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-            Color glowColor = Color.LightPink;
-            glowColor.A = 0;
-            glowColor *= Timer / 30f;
-            for (int i = 0; i < 3; i++)
-            {
-                Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, glowColor, Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-            }
-        }
+		public override void PostDraw(Color lightColor)
+		{
+			Texture2D texture2D4 = Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
+			Color glowColor = Color.LightPink;
+			glowColor.A = 0;
+			glowColor *= Timer / 30f;
+			for (int i = 0; i < 3; i++)
+			{
+				Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, glowColor, Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
+			}
+		}
 
         public override void AI()
         {
             base.AI();
-            Timer++;
-            if (Timer % 6 == 0)
-            {
+			Timer++;
+			if(Timer % 6 == 0)
+			{
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.Pink, Main.rand.NextFloat(1f, 3f)).noGravity = true;
             }
             if (Main.rand.NextBool(10))
@@ -87,14 +92,14 @@ namespace Stellamod.Projectiles.Magic
                 Main.dust[dustnumber].noGravity = true;
             }
 
-            Projectile.velocity *= 1.02f;
+			Projectile.velocity *= 1.02f;
             NPC nearest = ProjectileHelper.FindNearestEnemy(Projectile.position, 1024);
-            if (nearest != null)
-            {
-                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearest.Center, 6);
-            }
+            if(nearest != null)
+			{
+				Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearest.Center, 6);
+			}
 
-            Lighting.AddLight(Projectile.Center, Color.LightPink.ToVector3() * 1.0f * Main.essScale);
+			Lighting.AddLight(Projectile.Center, Color.LightPink.ToVector3() * 1.0f * Main.essScale);
         }
 
         public override void OnKill(int timeLeft)
@@ -104,27 +109,27 @@ namespace Stellamod.Projectiles.Magic
         }
     }
 
-    public class StarringBoom : ModProjectile
-    {
-        private ref float Timer => ref Projectile.ai[0];
-        public override string Texture => TextureRegistry.EmptyTexture;
+	public class StarringBoom : ModProjectile
+	{
+		private ref float Timer => ref Projectile.ai[0];
+		public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 64;
-            Projectile.height = 64;
-            Projectile.penetrate = -1;
-            Projectile.timeLeft = 15;
-            Projectile.friendly = true;
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = -1;
+			Projectile.width = 64;
+			Projectile.height = 64;
+			Projectile.penetrate = -1;
+			Projectile.timeLeft = 15;
+			Projectile.friendly = true;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = -1;
         }
 
         public override void AI()
         {
             base.AI();
-            Timer++;
-            if (Timer == 1)
+			Timer++;
+			if(Timer == 1)
             {
                 for (float f = 0; f < 6; f++)
                 {

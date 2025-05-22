@@ -51,7 +51,7 @@ namespace Stellamod.Projectiles.Crossbows.Gemmed
             float speedX = Projectile.velocity.X;
             float speedY = Projectile.velocity.Y;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 0.5f, ProjectileID.SapphireBolt, (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.3f, speedY * 0, ProjectileID.SapphireBolt, Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.3f, speedY * 0, ProjectileID.SapphireBolt, Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f) ;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 1.5f, ProjectileID.SapphireBolt, (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f);
         }
 

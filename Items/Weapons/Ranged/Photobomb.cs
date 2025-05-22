@@ -1,5 +1,8 @@
-﻿using Stellamod.Items.Materials.Molds;
+﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
+using Stellamod.Projectiles.Crossbows.Lead;
 using Stellamod.Projectiles.Paint;
 using Terraria;
 using Terraria.GameContent.Creative;

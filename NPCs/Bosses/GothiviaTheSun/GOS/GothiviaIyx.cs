@@ -3,15 +3,29 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Accessories.Wings;
+using Stellamod.Items.Armors.Vanity.Gothivia;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
+using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Mage.Stein;
+using Stellamod.Items.Weapons.Ranged.GunSwapping;
+using Stellamod.Items.Weapons.Thrown;
+using Stellamod.NPCs.Bosses.DaedusRework;
+using Stellamod.NPCs.Bosses.Fenix.Projectiles;
+using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.REK;
+using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
+using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
+using Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles;
+using Stellamod.NPCs.Bosses.Verlia.Projectiles;
+using Stellamod.NPCs.Bosses.Zui.Projectiles;
 using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -19,6 +33,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.Effects;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -32,8 +47,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
         {
 
 
-
-
+        
+            
             CallHavoc,
             StartIrr,
             Blastout,
@@ -175,7 +190,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             drawModifiers.PortraitPositionYOverride = 0f;
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
-
+     
         private Vector2 FigureEightStartCenter;
         public override void SetDefaults()
         {
@@ -217,7 +232,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             NPC.lifeMax = (int)(NPC.lifeMax * balance);
         }
 
-
+  
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
@@ -265,7 +280,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 if (ChargeTrailOpacity >= 1)
                     ChargeTrailOpacity = 1;
             }
-
+           
             Color color = Color.Lerp(Color.Turquoise, Color.RoyalBlue, completionRatio);
 
             if (TrailedOrange)
@@ -384,7 +399,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             switch (State)
             {
-
+                
                 //------------------------ Gothivia
 
 
@@ -392,14 +407,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 case ActionState.ReallyStartGoth:
                     rect = new(0, 16 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 7, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter,  ref frameTick, 7, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
 
 
                 case ActionState.StartGoth:
                     rect = new(0, 16 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 7, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter,  ref frameTick, 7, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.Desperation:
@@ -459,12 +474,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 case ActionState.BoostBounce3:
                     rect = new(0, 38 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter,  ref frameTick, 5, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.Kick:
                     rect = new(0, 38 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 25, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter,  ref frameTick, 25, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.StandCuss:
@@ -512,7 +527,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             }
 
-
+           
 
 
 
@@ -526,16 +541,16 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
             NPC.spriteDirection = NPC.direction;
             NPC.TargetClosest();
-
-            if (!NPC.HasValidTarget)
-            {               // If the targeted player is dead, flee
-                NPC.velocity.Y += 3f;
-                NPC.noTileCollide = true;
-                NPC.noGravity = true;
-                // This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
-                NPC.EncourageDespawn(1);
-            }
-
+           
+                if (!NPC.HasValidTarget)
+                {               // If the targeted player is dead, flee
+                    NPC.velocity.Y += 3f;
+                    NPC.noTileCollide = true;
+                    NPC.noGravity = true;
+                    // This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
+                    NPC.EncourageDespawn(1);
+                }
+            
 
             FinishResetTimers();
             //Teleporting Code
@@ -728,7 +743,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     DrawChargeTrail = true;
                     NoWings = true;
                     NPC.noGravity = false;
-
+               
                     BonfireGreen();
                     NPC.aiStyle = -1;
                     break;
@@ -740,7 +755,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     FourQ = false;
                     DrawChargeTrail = true;
                     NoWings = true;
-
+                   
                     NPC.noGravity = false;
                     BonfireOrange();
                     NPC.aiStyle = -1;
@@ -777,7 +792,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             Player target = Main.player[NPC.target];
             if (timer == 1 && NPC.HasValidTarget)
             {
-
+               
                 Vector2 targetCenter = target.Center;
                 Vector2 targetHoverCenter = targetCenter + new Vector2(312, 0);
                 NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
@@ -843,17 +858,17 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
 
-
+             
             }
             if (timer < 80)
             {
                 NPC.damage = 0;
             }
-
+        
             if (timer < 80 && NPC.HasValidTarget)
             {
 
-
+               
                 Vector2 targetCenter = target.Center;
                 Vector2 targetHoverCenter = targetCenter + new Vector2(0, 256);
                 NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
@@ -892,7 +907,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 }
                 NPC.velocity = targetVelocity;
             }
-
+       
             if (timer == 540)
             {
                 NPC.velocity *= 0.2f;
@@ -935,7 +950,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 }
 
-
+            
                 if (StellaMultiplayer.IsHost)
                 {
                     int distanceY = Main.rand.Next(-900, -600);
@@ -946,9 +961,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 }
             }
             float speed = 20;
-
-
-
+          
+             
+          
 
             if (timer > 110)
             {
@@ -971,7 +986,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 ShakeModSystem.Shake = 3;
             }
-
+     
 
             if (timer > 110)
             {
@@ -1127,7 +1142,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GothCircleShrink>(), 24, 0f, Main.myPlayer, 0f, ai1);
                 }
             }
-
+          
             if (timer < 50 && NPC.HasValidTarget)
             {
                 Vector2 targetCenter = target.Center;
@@ -1166,7 +1181,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                             break;
                     }
                 }
-
+                
 
             }
 
@@ -1200,7 +1215,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             timer++;
             Player target = Main.player[NPC.target];
             float ai1 = NPC.whoAmI;
-
+           
             float speed = 1;
             if (NPC.life < NPC.lifeMax / 2)
             {
@@ -1373,7 +1388,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
         public int Wanger = 0;
         public int Wtimes = 0;
-
+        
         private void Wangler()
         {
             NPC.spriteDirection = NPC.direction;
@@ -1531,7 +1546,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 if (StellaMultiplayer.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<BlinkingStar>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
-
+                  
                 }
             }
 
@@ -1545,7 +1560,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                     if (StellaMultiplayer.IsHost)
                     {
-
+                      
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<WingRazor>(), 700, 0f, Main.myPlayer, 0f, ai1);
                     }
                 }
@@ -1565,10 +1580,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             }
 
 
-
-
-
-
+       
+           
+    
+            
 
             if (timer > 50 && timer < 56)
             {
@@ -1634,11 +1649,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                         ResetTimers();
                         State = ActionState.BoostBounce1;
                     }
-                }
+                 }
 
+               
 
-
-
+              
                 NPC.velocity *= 0.3f;
 
             }
@@ -1653,7 +1668,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             if (timer == 1)
             {
                 ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-
+                
 
                 if (StellaMultiplayer.IsHost)
                 {
@@ -1678,7 +1693,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
                 ShakeModSystem.Shake = 5;
 
-
+               
 
                 //SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
 
@@ -1747,7 +1762,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
         }
 
 
-
+  
         private void GreenSuns()
         {
             NPC.spriteDirection = NPC.direction;
@@ -1773,22 +1788,22 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     if (StellaMultiplayer.IsHost)
                     {
                         NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Sun2>());
-
+                      
                     }
 
                 }
 
-
+            
             }
-
+       
 
 
             if (timer < 560 && timer > 4)
             {
-
-                circleDistance = 415;
-                movementSpeed = 10;
-                circleSpeed = 2;
+                
+                    circleDistance = 415;
+                    movementSpeed = 10;
+                    circleSpeed = 2;
 
                 _circleDegrees += circleSpeed;
                 float circleRadians = MathHelper.ToRadians(_circleDegrees);
@@ -1801,7 +1816,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 NPC.velocity = VectorHelper.VelocitySlowdownTo(NPC.Center, circlePosition, movementSpeed);
 
             }
-
+      
 
 
             if (timer == 590)
@@ -1841,7 +1856,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     }
                 }
             }
-
+        
 
 
             if (timer < 560 && timer > 4)
@@ -1913,7 +1928,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DUAL2") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
 
                     Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-
+                   
                     float numberProjectiles = 3;
                     float rotation = MathHelper.ToRadians(20);
                     for (int i = 0; i < 1; i++)
@@ -1935,12 +1950,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
                 }
+              
+                        //SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
+                    
 
-                //SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
-
-
-
-
+                
+               
             }
 
 
@@ -1992,7 +2007,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             if (timer == 170)
             {
                 movementSpeed = 25;
-
+             
             }
 
             if (timer == 210)
@@ -2005,7 +2020,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
                 movementSpeed = 12;
                 circleSpeed = 2;
-
+                
             }
 
 
@@ -2073,7 +2088,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GothCircleShrink>(), 24, 0f, Main.myPlayer, 0f, ai1);
-
+                   
                 }
 
                 switch (Main.rand.Next(2))
@@ -2113,9 +2128,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             }
 
-            if (timer == 154)
-            {
-                ShakeModSystem.Shake = 5;
+                if (timer == 154)
+                {
+                    ShakeModSystem.Shake = 5;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothingBow") { Pitch = Main.rand.NextFloat(-1f, 1f) }, NPC.Center);
 
                 Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
@@ -2127,46 +2142,46 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 }
                 switch (Main.rand.Next(2))
-                {
-                    case 0:
-                        for (int i = 0; i < 1; i++)
-                        {
-                            if (StellaMultiplayer.IsHost)
+                    {
+                        case 0:
+                            for (int i = 0; i < 1; i++)
                             {
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothSunBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
+                                if (StellaMultiplayer.IsHost)
+                                {
+                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothSunBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
+
+                                }
 
                             }
+                            break;
 
-                        }
-                        break;
-
-                    case 1:
-                        for (int i = 0; i < 1; i++)
-                        {
-                            if (StellaMultiplayer.IsHost)
+                        case 1:
+                            for (int i = 0; i < 1; i++)
                             {
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothFireBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
+                                if (StellaMultiplayer.IsHost)
+                                {
+                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothFireBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
+
+                                }
+
 
                             }
-
-
-                        }
-                        break;
+                            break;
 
 
 
+
+
+
+
+                    }
+
+                    //SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
 
 
 
 
                 }
-
-                //SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
-
-
-
-
-            }
 
             if (timer == 248)
             {
@@ -2228,16 +2243,16 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
 
 
-                if (Arrows < 3)
+                if(Arrows < 3)
                 {
-                    Arrows += 1;
+                    Arrows+= 1;
                     timer = 0;
                 }
                 if (Arrows >= 3)
                 {
 
-
-
+                   
+                   
 
                     if (NPC.life > NPC.lifeMax / 2)
                     {
@@ -2315,7 +2330,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
             // ItemDropRule.MasterModeCommonDrop for the relic
+
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 13, 25));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedLove>(), 1, 1, 1));
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GothiviaIyxBag>()));
             // ItemDropRule.MasterModeDropOnAllPlayers for the pet
             //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
 
@@ -2326,7 +2344,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 ModContent.ItemType<Gothinstein>(),
                 ModContent.ItemType<GothinWings>(),
                 ModContent.ItemType<WeddingDay>()));
-
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
 
             // Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode

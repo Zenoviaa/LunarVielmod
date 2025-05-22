@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
@@ -16,7 +17,7 @@ namespace Stellamod.Buffs
         {
             if (Main.rand.NextBool(8))
             {
-
+        
             }
         }
     }

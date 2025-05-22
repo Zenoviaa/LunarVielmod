@@ -1,12 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs.Minions;
+
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Stellamod.Projectiles.Summons.VoidMonsters;
 using Stellamod.Projectiles.Swords;
-using Terraria;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
+using Stellamod.Buffs.Minions;
 
 namespace Stellamod.Projectiles.Summons.Sentries
 {

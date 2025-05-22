@@ -66,7 +66,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 return;
 
             SummonHelper.SearchForTargets(Owner, Projectile, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-
+        
             if (!foundTarget)
             {
                 SummonHelper.CalculateIdleValues(Owner, Projectile, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
@@ -97,7 +97,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
                 pos += vec * MathF.Sin(Main.GlobalTimeWrappedHourly * -12 + p * 24 + Projectile.whoAmI * 2);
                 pos += vec * MathF.Sin((Main.GlobalTimeWrappedHourly + 4) * -12 + p * 12 + Projectile.whoAmI * 2);
-
+    
                 StringPos[i] = pos;
             }
 

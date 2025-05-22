@@ -1,5 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
@@ -29,7 +34,7 @@ namespace Stellamod.Projectiles.Gun
         {
             base.AI();
             Timer++;
-            if (Timer < 30)
+            if(Timer < 30)
             {
                 Projectile.velocity.Y += 0.1f;
             }
@@ -37,7 +42,7 @@ namespace Stellamod.Projectiles.Gun
             {
                 Projectile.velocity *= 0.9f;
             }
-
+          
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)

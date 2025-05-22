@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.QuestSystem;
+using System;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
@@ -127,7 +128,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
                 _objectiveText.SetText(Quest.Objective);
             }
 
-
+    
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
@@ -137,10 +138,10 @@ namespace Stellamod.UI.CollectionSystem.Quests
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
-
+          
             float oldScale = Main.inventoryScale;
             Main.inventoryScale = _scale;
-
+             
             //This prevents player actions while hovering over the UI
             Rectangle rectangle = GetDimensions().ToRectangle();
             bool contains = ContainsPoint(Main.MouseScreen);
@@ -157,7 +158,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
             Texture2D backgroundTexture = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}QuestImageBackground").Value;
             Texture2D bigPictureTexture = ModContent.Request<Texture2D>(Quest.BigTexture).Value;
             Texture2D overlayTexture = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}QuestTop").Value;
-
+            
             //Draw the background thingy
             Vector2 backgroundDrawOffset = new Vector2(Width.Pixels / 2, 96);
             backgroundDrawOffset -= backgroundTexture.Size() / 2;
@@ -175,8 +176,8 @@ namespace Stellamod.UI.CollectionSystem.Quests
             //Draw the background texture for the rewards in the quest book
             Texture2D rewardTexture = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}QuestRewardBackground").Value;
             Vector2 rewardTextureDrawOffset = new Vector2(Width.Pixels / 2, 352);
-            rewardTextureDrawOffset.X -= rewardTexture.Size().X / 1.15f;
-            rewardTextureDrawOffset.Y += rewardTexture.Size().Y / 4;
+            rewardTextureDrawOffset.X -= rewardTexture.Size().X/1.15f;
+            rewardTextureDrawOffset.Y += rewardTexture.Size().Y/4;
             rewardTextureDrawOffset.Y += 30;
             spriteBatch.Draw(rewardTexture, rectangle.TopLeft() + rewardTextureDrawOffset, null, color2, 0f, default, _scale, SpriteEffects.None, 0f);
 

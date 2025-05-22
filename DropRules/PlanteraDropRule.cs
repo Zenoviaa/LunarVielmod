@@ -3,8 +3,8 @@ using Terraria.GameContent.ItemDropRules;
 
 namespace Stellamod.DropRules
 {
-    public class PlanteraDropRule :
-        IItemDropRuleCondition,
+    public class PlanteraDropRule : 
+        IItemDropRuleCondition, 
         IProvideItemConditionDescription
     {
         public bool CanDrop(DropAttemptInfo info) => NPC.downedBoss3;

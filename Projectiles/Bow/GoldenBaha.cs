@@ -1,13 +1,14 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Dusts;
 using Stellamod.Gores;
 using Stellamod.Trails;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.Dusts;
 
 namespace Stellamod.Projectiles.Bow
 {
@@ -36,9 +37,9 @@ namespace Stellamod.Projectiles.Bow
 
             for (int i = 0; i < 4; i++)
             {
-                Dust.NewDust(target.position, Projectile.width, Projectile.height,
+                Dust.NewDust(target.position, Projectile.width, Projectile.height, 
                     ModContent.DustType<GunFlash>(), Scale: 0.8f);
-                Dust.NewDustPerfect(target.Center,
+                Dust.NewDustPerfect(target.Center, 
                     ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 2)).RotatedByRandom(19.0), 0, Color.DarkGoldenrod, 1f).noGravity = true;
             }
 
@@ -68,7 +69,7 @@ namespace Stellamod.Projectiles.Bow
             Projectile.velocity *= 1.02f;
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(90);
         }
-
+      
         public override void OnKill(int timeLeft)
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 512f, 4);
@@ -102,7 +103,7 @@ namespace Stellamod.Projectiles.Bow
         {
 
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
+      
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);

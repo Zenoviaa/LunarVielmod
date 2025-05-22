@@ -2,12 +2,13 @@
 using Stellamod.Projectiles.Chains;
 
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
     internal class SupernovaChained : ModBuff
-    {
+    {  
         public override void SetStaticDefaults()
         {
             Main.debuff[Type] = true;
@@ -43,7 +44,7 @@ namespace Stellamod.Buffs
         {
             if (!npc.active)
                 return true;
-            for (int i = 0; i < Main.maxProjectiles; i++)
+            for(int i = 0; i < Main.maxProjectiles; i++)
             {
                 Projectile p = Main.projectile[i];
                 if (p.ai[0] != npc.whoAmI)
@@ -51,7 +52,7 @@ namespace Stellamod.Buffs
                 if (!p.active)
                     continue;
 
-                if (p.type == ModContent.ProjectileType<SupernovaChainBack>() ||
+                if(p.type == ModContent.ProjectileType<SupernovaChainBack>() || 
                     p.type == ModContent.ProjectileType<SupernovaChainFront>())
                 {
                     return true;

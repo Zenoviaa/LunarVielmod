@@ -1,6 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Terraria;
 
 namespace Stellamod.WorldG
 {
@@ -85,8 +86,8 @@ namespace Stellamod.WorldG
         /// </summary>
         /// <param name="a">The first point.</param>
         /// <param name="b">The second point.</param>
+        
 
-
-
+     
     }
 }

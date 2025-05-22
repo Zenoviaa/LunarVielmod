@@ -1,14 +1,21 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Helpers;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Molds;
-using Stellamod.Projectiles.Slashers.Chillrend;
+﻿using Stellamod.Helpers;
+using Stellamod.Projectiles.Slashers.DelgrimsHammer;
+using System;
 using System.Collections.Generic;
-using Terraria;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
+using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Slashers.Maelstrom;
+using Stellamod.Projectiles.Slashers.Chillrend;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 
 namespace Stellamod.Items.Weapons.Melee.Greatswords
 {
@@ -29,7 +36,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
 
-            line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Common("Greatsword"))
+            line = new TooltipLine(Mod, "Alcarishasd",  Helpers.LangText.Common("Greatsword"))
             {
                 OverrideColor = ColorFunctions.GreatswordWeaponType
             };

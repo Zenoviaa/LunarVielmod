@@ -1,9 +1,17 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
+using ReLogic.Content;
 using Stellamod.Helpers;
 using System;
-using Terraria;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI.Elements;
+using Terraria.ModLoader;
+using Terraria;
 
 namespace Stellamod.UI.DialogueTowning
 {
@@ -19,7 +27,7 @@ namespace Stellamod.UI.DialogueTowning
         public override void OnInitialize()
         {
             base.OnInitialize();
-            Width.Pixels = 428 * 3;
+            Width.Pixels = 428*3;
             Height.Pixels = 128;
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
@@ -61,7 +69,7 @@ namespace Stellamod.UI.DialogueTowning
         public override void Update(GameTime gameTime)
         {
             Width.Pixels = 214 * (_buttonsGrid.Count) + 32;
-
+        
             Height.Pixels = 100;
             base.Update(gameTime);
             //Constantly lock the UI in the position regardless of resolution changes

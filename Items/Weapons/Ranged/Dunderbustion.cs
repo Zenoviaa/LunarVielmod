@@ -1,11 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
+using Stellamod.Projectiles.Bow;
+using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -42,7 +47,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.consumeAmmoOnLastShotOnly = true;
             Item.noMelee = true;
         }
-
+   
 
         public override Vector2? HoldoutOffset()
         {
@@ -67,11 +72,11 @@ namespace Stellamod.Items.Weapons.Ranged
             int numProjectiles = Main.rand.Next(1, 6);
             for (int p = 0; p < numProjectiles; p++)
             {
-
+               
 
                 Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
                 Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
-
+          
 
 
                 // Rotate the velocity randomly by 30 degrees at max.
