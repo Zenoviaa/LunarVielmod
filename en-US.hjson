@@ -150,9 +150,17 @@ Mods: {
 				DisplayName: Void Ridden Staff
 				Tooltip: ""
 			}
+
+			CrystallineSlasher: {
+				DisplayName: Crystalline Slasher
+				Tooltip: ""
+			}
 		}
 
-		Projectiles.MagicProjectile.DisplayName: Magic Projectile
+		Projectiles: {
+			MagicProjectile.DisplayName: Magic Projectile
+			CrystallineSwordSlash.DisplayName: Crystalline Sword Slash
+		}
 	}
 
 	Tiles: {

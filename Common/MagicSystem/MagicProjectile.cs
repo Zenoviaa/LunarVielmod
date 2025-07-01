@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Common.Helpers;
+using Stellamod.Common.Helpers.Math;
 using Stellamod.Items.Forms;
 using System.Collections.Generic;
 using Terraria;
@@ -83,7 +84,7 @@ namespace Stellamod.Common.MagicSystem
         {
             base.AI();
             _easeInTimer++;
-            EaseInLerp = Easing.OutExpo(_easeInTimer / 80f);
+            EaseInLerp = EasingFunction.OutExpo(_easeInTimer / 80f);
 
             //By initializing this way, it guarantees that when netcoding everyone can see what's happening
             //Without even needing to do a big netsync
