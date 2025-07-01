@@ -16,7 +16,10 @@ namespace Stellamod.Common.SwingSystem
         public ref float Timer => ref Projectile.ai[0];
         public ref float SwingDirection => ref Projectile.ai[1];
         public int ComboIndex => (int)Projectile.ai[2];
+
         public Vector2[] TrailCache { get; private set; }
+
+        public int hitStopTime;
 
         public const int EXTRA_UPDATE_COUNT = 7;
 
@@ -38,6 +41,7 @@ namespace Stellamod.Common.SwingSystem
 
             //We're using extra updates to ensure the sword doesn't just pass through things
             Projectile.extraUpdates = EXTRA_UPDATE_COUNT - 1;
+            hitStopTime = 4;
             SetDefaults2();
         }
 
@@ -198,6 +202,8 @@ namespace Stellamod.Common.SwingSystem
         {
             base.OnHitNPC(target, hit, damageDone);
             //In here we'd spawn the hit effects
+            //Hit stop effect and minor screenshake I think
+            Timer -= hitStopTime;
         }
     }
 }
