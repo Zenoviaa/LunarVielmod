@@ -104,6 +104,55 @@ Mods: {
 		}
 
 		Keybinds.Dash.DisplayName: Dash
+
+		Items: {
+			NoElement: {
+				DisplayName: No Element
+				Tooltip: ""
+			}
+
+			NoStaff: {
+				DisplayName: No Staff
+				Tooltip: ""
+			}
+
+			Radiant: {
+				DisplayName: Radiant
+				Tooltip: ""
+			}
+
+			FirecrackerEnchantment: {
+				DisplayName: Firecracker Enchantment
+				Tooltip: ""
+			}
+
+			RevolvingLightsEnchantment: {
+				DisplayName: Revolving Lights Enchantment
+				Tooltip: ""
+			}
+
+			SparklingBoomEnchantment: {
+				DisplayName: Sparkling Boom Enchantment
+				Tooltip: ""
+			}
+
+			Hammer: {
+				DisplayName: Hammer
+				Tooltip: ""
+			}
+
+			CelestiaWand: {
+				DisplayName: Celestia Wand
+				Tooltip: ""
+			}
+
+			VoidRiddenStaff: {
+				DisplayName: Void Ridden Staff
+				Tooltip: ""
+			}
+		}
+
+		Projectiles.MagicProjectile.DisplayName: Magic Projectile
 	}
 
 	Tiles: {
