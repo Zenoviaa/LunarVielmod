@@ -17,8 +17,7 @@ namespace Stellamod.Common.SwingSystem
         public ref float SwingDirection => ref Projectile.ai[1];
         public int ComboIndex => (int)Projectile.ai[2];
 
-        public Vector2[] TrailCache { get; private set; }
-
+        public Vector2[] swingTrailCache;
         public int hitStopTime;
 
         public const int EXTRA_UPDATE_COUNT = 7;
@@ -69,7 +68,7 @@ namespace Stellamod.Common.SwingSystem
             if (!_hasInitialized)
             {
                 _swings = new List<ISwing>();
-                TrailCache = new Vector2[32];
+                swingTrailCache = new Vector2[32];
                 DefineCombo(_swings);
                 GetSwing().SetDirection((int)SwingDirection);
                 _hasInitialized = true;
@@ -143,6 +142,18 @@ namespace Stellamod.Common.SwingSystem
 
             //Set the position of the hand for the swing
             AI_OrientHand();
+
+            //Calculate the trailing
+            swing.CalculateTrailingPoints(interpolant, Projectile.velocity, ref swingTrailCache);
+
+            //Now we transform the points
+            //Calculating points locally and then translating it is a bit simpler.
+            for(int t = 0; t < swingTrailCache.Length; t++)
+            {
+                Matrix translationMatrix = Matrix.CreateTranslation(new 
+                    Vector3(Projectile.position.X, Projectile.position.Y, 0));
+                swingTrailCache[t] = Vector2.Transform(swingTrailCache[t], translationMatrix);
+            }
         }
 
         private void AI_OrientHand()
@@ -170,6 +181,7 @@ namespace Stellamod.Common.SwingSystem
         public override bool PreDraw(ref Color lightColor)
         {
             //Draw the texture, by 
+            DrawSwingTrail(ref lightColor, swingTrailCache);
             DrawSwordSprite(ref lightColor);
             return false;
         }
@@ -178,6 +190,13 @@ namespace Stellamod.Common.SwingSystem
         {
             Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Owner.HeldItem.ModItem.Texture);
             return texture;
+        }
+
+        public virtual void DrawSwingTrail(ref  Color lightColor, Vector2[] swingTrailCache)
+        {
+            //I think it makes the most sense to abstract our trails out to a trailer and shader cache,
+            //so we can just replace the trailer for different trails!
+            //So much simpler, and we can just make new trailers
         }
 
         public virtual void DrawSwordSprite(ref Color lightColor)
@@ -196,7 +215,6 @@ namespace Stellamod.Common.SwingSystem
                 Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
                 sourceRectangle, drawColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0); // drawing the sword itself
         }
-
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
