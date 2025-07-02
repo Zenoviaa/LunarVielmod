@@ -1,0 +1,19 @@
+SpringHillsInner: {
+	DisplayName: Spring Hills Inner
+	Description: This is placeholder text
+}
+
+SpringHillsOuter: {
+	DisplayName: Spring Hills Outer
+	Description: This is placeholder text
+}
+
+WarriorsDoor: {
+	DisplayName: Warrior's Door
+	Description: This is placeholder text
+}
+
+WitchTown: {
+	DisplayName: Witch Town
+	Description: This is placeholder text
+}

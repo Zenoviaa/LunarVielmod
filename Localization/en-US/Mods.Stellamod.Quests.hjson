@@ -1,0 +1,41 @@
+CauldronCrafting: {
+	DisplayName: Cooking I
+	Description: To kick off your enrollment at the academy, Zui has asked you to brew up something with the Mushrooms she gave you. See what you can make!
+	Objective: Open the cauldron, put the mushrooms in, and craft.
+}
+
+TalkToZui: {
+	DisplayName: Talk to Zui
+	Description: You've just found yourself in a new land! Find out what exactly is going on around here.
+	Objective: Talk to Zui in the Witch Town.
+}
+
+MysteriousPlacesI: {
+	DisplayName: Mysterious Places I
+	Description: Sirestias has noticed something quite interesting in the Desert, go check it out!
+	Objective: Visit a strange structure in the Desert.
+}
+
+MysteriousPlacesII: {
+	DisplayName: Mysterious Places II
+	Description: Sirestias has noticed something quite interesting deep underneath the Tundra, go check it out!
+	Objective: Visit a mysterious biome in the Underground Ice Biome.
+}
+
+MysteriousPlacesIII: {
+	DisplayName: Mysterious Places III
+	Description: Sirestias has noticed something quite interesting on the far right Ocean, go check it out!
+	Objective: Visit an interesting structure in the Ocean.
+}
+
+MysteriousPlacesIV: {
+	DisplayName: Mysterious Places IV
+	Description: Sirestias has noticed something quite interesting high in the sky somewhere, go check it out!
+	Objective: Visit a strange floating cathedral at night.
+}
+
+MysteriousPlacesV: {
+	DisplayName: Mysterious Places V
+	Description: Sirestias has noticed something quite interesting near the far right Ocean, go check it out!
+	Objective: Visit a large tree near the Ocean.
+}

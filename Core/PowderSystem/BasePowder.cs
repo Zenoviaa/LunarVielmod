@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.Helpers;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -38,14 +39,14 @@ namespace Stellamod.Core.PowderSystem
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
-            /*
+            
             TooltipLine line = new TooltipLine(Mod, "PowderDamageModifier", LangText.Common("PowderDamage", DamageModifier * 100));
             line.OverrideColor = new Color(80, 187, 124);
             tooltips.Add(line);
 
             line = new TooltipLine(Mod, "PowderEquip", LangText.Common("PowderEquip"));
             line.OverrideColor = Color.Lerp(new Color(80, 187, 124), Color.Black, 0.5f);
-            tooltips.Add(line);*/
+            tooltips.Add(line);
         }
     }
 }

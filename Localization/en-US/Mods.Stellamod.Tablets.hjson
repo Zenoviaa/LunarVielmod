@@ -1,0 +1,19 @@
+SpringTabletXixianFlask: {
+	Message: Your Xixian Flask is a very valuable reusable healing item! You can put an insource inside of it by right clicking on it in your inventory and dragging the insource inside. After you do that, try using your flask in the heat of battle!
+	Title: Xixian Flask
+}
+
+SpringTabletDash: {
+	Title: Dash!
+	Message: You can dash through obstacles and attacks by double-tapping a direction or pressing the dash keybind! Each dash uses a point and recharges over time, so be sure to use them carefully! Try dashing through the trap up ahead...
+}
+
+SpringTabletBoss: {
+	Title: Bosses...
+	Message: Bosses are extremely common throughout this world, you'll often find bosses in dungeons, corridors and even outside! The bosses are mostly melee centric, with our playstyles opting to not have contact damage, tread carefully!
+}
+
+SpringTabletStamina: {
+	Title: Stamina!
+	Message: Stamina appears in your bar at the top of your screen, this is a new stat for melee and ranger players to use specials alongside their regular attacks, they usually do much more damage and are not regenerative. You can refill it by dying or your stamina potion! You can use your special by right clicking on those types of weapons.
+}

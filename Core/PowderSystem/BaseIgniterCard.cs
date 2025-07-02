@@ -101,7 +101,7 @@ namespace Stellamod.Core.PowderSystem
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
-            /*
+            
             TooltipLine line = new TooltipLine(Mod, "IgniterCard", LangText.Common("IgniterCard"));
             line.OverrideColor = new Color(80, 187, 124);
             tooltips.Add(line);
@@ -120,7 +120,7 @@ namespace Stellamod.Core.PowderSystem
                     tooltips.Add(line);
                 }
             }     
-            */
+            
         }
 
         public override void NetSend(BinaryWriter writer)

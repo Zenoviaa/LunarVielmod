@@ -1,0 +1,849 @@
+VoidMinionBuff: {
+	Description: Mods.Urdveil.Buffs.VoidMinionBuff.Description
+	DisplayName: Void Minion Buff
+}
+
+TheBurningRodMinionBuff: {
+	Description: Mods.Urdveil.Buffs.TheBurningRodMinionBuff.Description
+	DisplayName: The Burning Rod Minion Buff
+}
+
+SwarmerMinionBuff: {
+	Description: Getting swarmed
+	DisplayName: Swarmer Minion Buff
+}
+
+SolMothMinionBuff: {
+	Description: Mods.Urdveil.Buffs.SolMothMinionBuff.Description
+	DisplayName: Sol Moth Minion Buff
+}
+
+ProbeMinionBuff: {
+	Description: Mods.Urdveil.Buffs.ProbeMinionBuff.Description
+	DisplayName: Probe Minion Buff
+}
+
+MushroomStaveMinionBuff: {
+	Description: Mods.Urdveil.Buffs.MushroomStaveMinionBuff.Description
+	DisplayName: Mushroom Stave Minion Buff
+}
+
+ManaWandMinionBuff: {
+	Description: Mods.Urdveil.Buffs.ManaWandMinionBuff.Description
+	DisplayName: Mana Wand Minion Buff
+}
+
+LifeWandMinionBuff: {
+	Description: Mods.Urdveil.Buffs.LifeWandMinionBuff.Description
+	DisplayName: Life Wand Minion Buff
+}
+
+JellyMinionBuff: {
+	Description: Mods.Urdveil.Buffs.JellyMinionBuff.Description
+	DisplayName: Jelly Minion Buff
+}
+
+IvyakenMinionBuff: {
+	Description: Mods.Urdveil.Buffs.IvyakenMinionBuff.Description
+	DisplayName: Ivyaken Minion Buff
+}
+
+IrradiatedCreeperMinionBuff: {
+	Description: Mods.Urdveil.Buffs.IrradiatedCreeperMinionBuff.Description
+	DisplayName: Irradiated Creeper Minion Buff
+}
+
+IceboundMinionBuff: {
+	Description: Mods.Urdveil.Buffs.IceboundMinionBuff.Description
+	DisplayName: Icebound Minion Buff
+}
+
+HMMinionBuff: {
+	Description: Mods.Urdveil.Buffs.HMMinionBuff.Description
+	DisplayName: H M Minion Buff
+}
+
+FCMinionBuff: {
+	Description: Mods.Urdveil.Buffs.FCMinionBuff.Description
+	DisplayName: F C Minion Buff
+}
+
+DripplerMinionBuff: {
+	Description: Mods.Urdveil.Buffs.DripplerMinionBuff.Description
+	DisplayName: Drippler Minion Buff
+}
+
+AuroranSeekerMinionBuff: {
+	Description: Mods.Urdveil.Buffs.AuroranSeekerMinionBuff.Description
+	DisplayName: Auroran Seeker Minion Buff
+}
+
+ArncharMinionBuff: {
+	Description: Mods.Urdveil.Buffs.ArncharMinionBuff.Description
+	DisplayName: Arnchar Minion Buff
+}
+
+Wounded: {
+	Description: Mods.Urdveil.Buffs.Wounded.Description
+	DisplayName: Wounded
+}
+
+Whipdeath: {
+	Description: Mods.Urdveil.Buffs.Whipdeath.Description
+	DisplayName: Whipdeath
+}
+
+MorrowWhipDebuff: {
+	Description: Morrowed whip
+	DisplayName: Debuffs you while whipping.
+}
+
+Morrow: {
+	Description: Mods.Urdveil.Buffs.Morrow.Description
+	DisplayName: Morrow
+}
+
+SnowFlame: {
+	Description: Mods.Urdveil.Buffs.SnowFlame.Description
+	DisplayName: Snow Flame
+}
+
+Rekin: {
+	Description: Mods.Urdveil.Buffs.Rekin.Description
+	DisplayName: Rekin
+}
+
+PocketSandBuff: {
+	Description: Sneaky sand
+	DisplayName: Pocket Sand Buff
+}
+
+Love: {
+	Description: Mods.Urdveil.Buffs.Love.Description
+	DisplayName: Love
+}
+
+Irradiation: {
+	Description: Mods.Urdveil.Buffs.Irradiation.Description
+	DisplayName: Irradiation
+}
+
+Harvester: {
+	Description: Mods.Urdveil.Buffs.Harvester.Description
+	DisplayName: Harvester
+}
+
+Gintzingwinds: {
+	Description: Mods.Urdveil.Buffs.Gintzingwinds.Description
+	DisplayName: Gintzingwinds
+}
+
+GintzeSeen: {
+	Description: Mods.Urdveil.Buffs.GintzeSeen.Description
+	DisplayName: Gintze Seen
+}
+
+GintzelSheildCD: {
+	Description: Mods.Urdveil.Buffs.GintzelSheildCD.Description
+	DisplayName: Gintzel Sheild C D
+}
+
+GintzelSheild: {
+	Description: Mods.Urdveil.Buffs.GintzelSheild.Description
+	DisplayName: Gintzel Sheild
+}
+
+Elegance: {
+	Description: Mods.Urdveil.Buffs.Elegance.Description
+	DisplayName: Elegance
+}
+
+VoiddDust: {
+	Description: Mods.Urdveil.Buffs.VoiddDust.Description
+	DisplayName: Voidd Dust
+}
+
+TrickDust: {
+	Description: Mods.Urdveil.Buffs.TrickDust.Description
+	DisplayName: Trick Dust
+}
+
+SongDust: {
+	Description: Mods.Urdveil.Buffs.SongDust.Description
+	DisplayName: Song Dust
+}
+
+ShadeDust: {
+	Description: Mods.Urdveil.Buffs.ShadeDust.Description
+	DisplayName: Shade Dust
+}
+
+KaevDust: {
+	Description: Mods.Urdveil.Buffs.KaevDust.Description
+	DisplayName: Kaev Dust
+}
+
+IceDust: {
+	Description: Mods.Urdveil.Buffs.IceDust.Description
+	DisplayName: Ice Dust
+}
+
+GrassBuff: {
+	Description: Mods.Urdveil.Buffs.GrassBuff.Description
+	DisplayName: Grass Buff
+}
+
+GovheilDust: {
+	Description: Mods.Urdveil.Buffs.GovheilDust.Description
+	DisplayName: Govheil Dust
+}
+
+FlowerBuff: {
+	Description: Mods.Urdveil.Buffs.FlowerBuff.Description
+	DisplayName: Flower Buff
+}
+
+FlameDust: {
+	Description: Mods.Urdveil.Buffs.FlameDust.Description
+	DisplayName: Flame Dust
+}
+
+EXPtime4: {
+	Description: Mods.Urdveil.Buffs.EXPtime4.Description
+	DisplayName: E X Ptime4
+}
+
+EXPtime3: {
+	Description: Mods.Urdveil.Buffs.EXPtime3.Description
+	DisplayName: E X Ptime3
+}
+
+EXPtime2: {
+	Description: Mods.Urdveil.Buffs.EXPtime2.Description
+	DisplayName: E X Ptime2
+}
+
+EXPtime: {
+	Description: Mods.Urdveil.Buffs.EXPtime.Description
+	DisplayName: E X Ptime
+}
+
+CrystalDust: {
+	Description: Mods.Urdveil.Buffs.CrystalDust.Description
+	DisplayName: Crystal Dust
+}
+
+CoalBuff: {
+	Description: Mods.Urdveil.Buffs.CoalBuff.Description
+	DisplayName: Coal Buff
+}
+
+AlcadDust: {
+	Description: Mods.Urdveil.Buffs.AlcadDust.Description
+	DisplayName: Alcad Dust
+}
+
+AivanDust: {
+	Description: Mods.Urdveil.Buffs.AivanDust.Description
+	DisplayName: Aivan Dust
+}
+
+Dusted: {
+	Description: Mods.Urdveil.Buffs.Dusted.Description
+	DisplayName: Dusted
+}
+
+DeathMultiplierBloodLamp: {
+	Description: Hit with blood lamp
+	DisplayName: Death Multiplier Blood Lamp
+}
+
+DeathMultiplier: {
+	Description: Mods.Urdveil.Buffs.DeathMultiplier.Description
+	DisplayName: Death Multiplier
+}
+
+DarkHold: {
+	Description: Something has a grasp on your eyes. Hurts at nighttime...
+	DisplayName: Dark Hold
+}
+
+VixedB: {
+	Description: Mods.Urdveil.Buffs.VixedB.Description
+	DisplayName: Vixed B
+}
+
+VerliaBroo: {
+	Description: Mods.Urdveil.Buffs.VerliaBroo.Description
+	DisplayName: Verlia Broo
+}
+
+StoneB: {
+	Description: Mods.Urdveil.Buffs.StoneB.Description
+	DisplayName: Stone B
+}
+
+Spragald: {
+	Description: Mods.Urdveil.Buffs.Spragald.Description
+	DisplayName: Spragald
+}
+
+Slimee: {
+	Description: Mods.Urdveil.Buffs.Slimee.Description
+	DisplayName: Slimee
+}
+
+MalB: {
+	Description: Mods.Urdveil.Buffs.MalB.Description
+	DisplayName: Mal B
+}
+
+IceBrooch: {
+	Description: Mods.Urdveil.Buffs.IceBrooch.Description
+	DisplayName: Ice Brooch
+}
+
+GovheilB: {
+	Description: Mods.Urdveil.Buffs.GovheilB.Description
+	DisplayName: Govheil B
+}
+
+Goldren: {
+	Description: Mods.Urdveil.Buffs.Goldren.Description
+	DisplayName: Goldren
+}
+
+GintBroo: {
+	Description: Mods.Urdveil.Buffs.GintBroo.Description
+	DisplayName: Gint Broo
+}
+
+Flyfish: {
+	Description: Mods.Urdveil.Buffs.Flyfish.Description
+	DisplayName: Flyfish
+}
+
+DreadB: {
+	Description: Mods.Urdveil.Buffs.DreadB.Description
+	DisplayName: Dread B
+}
+
+Diarii: {
+	Description: Mods.Urdveil.Buffs.Diarii.Description
+	DisplayName: Diarii
+}
+
+BurningGB: {
+	Description: Mods.Urdveil.Buffs.BurningGB.Description
+	DisplayName: Burning G B
+}
+
+BearB: {
+	Description: Mods.Urdveil.Buffs.BearB.Description
+	DisplayName: Bear B
+}
+
+AurelusB: {
+	Description: Mods.Urdveil.Buffs.AurelusB.Description
+	DisplayName: Aurelus B
+}
+
+AmethystBroo: {
+	Description: Mods.Urdveil.Buffs.AmethystBroo.Description
+	DisplayName: Amethyst Broo
+}
+
+AssassinsSlashBuff: {
+	Description: Mods.Urdveil.Buffs.AssassinsSlashBuff.Description
+	DisplayName: Assassins Slash Buff
+}
+
+ArcaneDust: {
+	Description: Mods.Urdveil.Buffs.ArcaneDust.Description
+	DisplayName: Arcane Dust
+}
+
+AcidFlame: {
+	Description: Mods.Urdveil.Buffs.AcidFlame.Description
+	DisplayName: Acid Flame
+}
+
+AbyssalFlame: {
+	Description: Mods.Urdveil.Buffs.AbyssalFlame.Description
+	DisplayName: Abyssal Flame
+}
+
+VehementMinionBuff: {
+	Description: Mods.Urdveil.Buffs.VehementMinionBuff.Description
+	DisplayName: Vehement Minion Buff
+}
+
+VampireTorchMinionBuff: {
+	Description: Mods.Urdveil.Buffs.VampireTorchMinionBuff.Description
+	DisplayName: Vampire Torch Minion Buff
+}
+
+ToxicHornetMinionBuff: {
+	Description: This minion is eager to miss.
+	DisplayName: Toxic Hornet Minion Buff
+}
+
+HallowWandMinionBuff: {
+	Description: Mods.Urdveil.Buffs.HallowWandMinionBuff.Description
+	DisplayName: Hallow Wand Minion Buff
+}
+
+FireflyMinionBuff: {
+	Description: Mods.Urdveil.Buffs.FireflyMinionBuff.Description
+	DisplayName: Firefly Minion Buff
+}
+
+CloudMinionBuff: {
+	Description: Mods.Urdveil.Buffs.CloudMinionBuff.Description
+	DisplayName: Cloud Minion Buff
+}
+
+ChromaCutterMinionBuff: {
+	Description: Mods.Urdveil.Buffs.ChromaCutterMinionBuff.Description
+	DisplayName: Chroma Cutter Minion Buff
+}
+
+AlcadWandMinionBuff: {
+	Description: Mods.Urdveil.Buffs.AlcadWandMinionBuff.Description
+	DisplayName: Alcad Wand Minion Buff
+}
+
+CameraMinBuff: {
+	Description: Mods.Urdveil.Buffs.CameraMinBuff.Description
+	DisplayName: Camera Min Buff
+}
+
+LaceratorDebuff: {
+	Description: Laced up
+	DisplayName: Lacerator Debuff
+}
+
+DarkWhipDebuff: {
+	Description: Darkwhipped. Truly the sentence of all time
+	DisplayName: Dark Whip Debuff
+}
+
+VialedUp: {
+	Description: Mods.Urdveil.Buffs.VialedUp.Description
+	DisplayName: Vialed Up
+}
+
+Starbombin: {
+	Description: Mods.Urdveil.Buffs.Starbombin.Description
+	DisplayName: Starbombin
+}
+
+ShadowBoost: {
+	Description: Mods.Urdveil.Buffs.ShadowBoost.Description
+	DisplayName: Shadow Boost
+}
+
+Sected: {
+	Description: Mods.Urdveil.Buffs.Sected.Description
+	DisplayName: Sected
+}
+
+MiracleBoost: {
+	Description: Mods.Urdveil.Buffs.MiracleBoost.Description
+	DisplayName: Miracle Boost
+}
+
+MasteryMagic: {
+	Description: Mods.Urdveil.Buffs.MasteryMagic.Description
+	DisplayName: Mastery Magic
+}
+
+Liberator: {
+	Description: Mods.Urdveil.Buffs.Liberator.Description
+	DisplayName: Liberator
+}
+
+Lacerated: {
+	Description: Mods.Urdveil.Buffs.Lacerated.Description
+	DisplayName: Lacerated
+}
+
+Genesis: {
+	Description: Mods.Urdveil.Buffs.Genesis.Description
+	DisplayName: Genesis
+}
+
+Friendzied: {
+	Description: Mods.Urdveil.Buffs.Friendzied.Description
+	DisplayName: Friendzied
+}
+
+Executor: {
+	Description: Mods.Urdveil.Buffs.Executor.Description
+	DisplayName: Executor
+}
+
+UseIgniter: {
+	Description: Hold and Use your igniter right now!
+	DisplayName: Use Igniter
+}
+
+SpiritDust: {
+	Description: Mods.Urdveil.Buffs.SpiritDust.Description
+	DisplayName: Spirit Dust
+}
+
+JungleDust: {
+	Description: Mods.Urdveil.Buffs.JungleDust.Description
+	DisplayName: Jungle Dust
+}
+
+EldritchDust: {
+	Description: Mods.Urdveil.Buffs.EldritchDust.Description
+	DisplayName: Eldritch Dust
+}
+
+AgreviDust: {
+	Description: Mods.Urdveil.Buffs.AgreviDust.Description
+	DisplayName: Agrevi Dust
+}
+
+SandyB: {
+	Description: Mods.Urdveil.Buffs.SandyB.Description
+	DisplayName: Sandy B
+}
+
+RoseB: {
+	Description: Mods.Urdveil.Buffs.RoseB.Description
+	DisplayName: Rose B
+}
+
+MagicalBroo: {
+	Description: Mods.Urdveil.Buffs.MagicalBroo.Description
+	DisplayName: Magical Broo
+}
+
+LuckyB: {
+	Description: Mods.Urdveil.Buffs.LuckyB.Description
+	DisplayName: Lucky B
+}
+
+JellyB: {
+	Description: Mods.Urdveil.Buffs.JellyB.Description
+	DisplayName: Jelly B
+}
+
+BonedB: {
+	Description: Mods.Urdveil.Buffs.BonedB.Description
+	DisplayName: Boned B
+}
+
+Chained: {
+	Description: Mods.Urdveil.Buffs.Chained.Description
+	DisplayName: Chained
+}
+
+CannotUseFlask: {
+	Description: Mods.Urdveil.Buffs.CannotUseFlask.Description
+	DisplayName: Cannot Use Flask
+}
+
+Alcadded: {
+	Description: Mods.Urdveil.Buffs.Alcadded.Description
+	DisplayName: Alcadded
+}
+
+BucketScrapperMinionBuff: {
+	Description: Mods.Urdveil.Buffs.BucketScrapperMinionBuff.Description
+	DisplayName: Bucket Scrapper Minion Buff
+}
+
+Zuid: {
+	Description: Mods.Urdveil.Buffs.Zuid.Description
+	DisplayName: Zuid
+}
+
+VillagersB: {
+	Description: Mods.Urdveil.Buffs.VillagersB.Description
+	DisplayName: Villagers B
+}
+
+AmberB: {
+	Description: Mods.Urdveil.Buffs.AmberB.Description
+	DisplayName: Amber B
+}
+
+SFBuff: {
+	Description: Mods.Urdveil.Buffs.SFBuff.Description
+	DisplayName: S F Buff
+}
+
+AuroreanStarballDebuff: {
+	Description: Mods.Urdveil.Buffs.AuroreanStarballDebuff.Description
+	DisplayName: Aurorean Starball Debuff
+}
+
+ReflectionSeekerBuff: {
+	DisplayName: Reflection Seeker Buff
+	Description: Mods.Urdveil.Buffs.ReflectionSeekerBuff.Description
+}
+
+TwinStarbombasDebuff: {
+	Description: Mods.Urdveil.Buffs.TwinStarbombasDebuff.Description
+	DisplayName: Twin Starbombas Debuff
+}
+
+SupernovaChained: {
+	Description: Mods.Urdveil.Buffs.SupernovaChained.Description
+	DisplayName: Supernova Chained
+}
+
+ThePollinatorDebuff: {
+	Description: Mods.Urdveil.Buffs.ThePollinatorDebuff.Description
+	DisplayName: The Pollinator Debuff
+}
+
+BlackballDebuff: {
+	Description: Mods.Urdveil.Buffs.BlackballDebuff.Description
+	DisplayName: Blackball Debuff
+}
+
+MiracleLiquid: {
+	Description: Mods.Urdveil.Buffs.MiracleLiquid.Description
+	DisplayName: Miracle Liquid
+}
+
+SplashAttackDebuff: {
+	DisplayName: Splash Attack Debuff
+	Description: Splashy
+}
+
+SineSireDebuff: {
+	Description: Mods.Urdveil.Buffs.SineSireDebuff.Description
+	DisplayName: Sine Sire Debuff
+}
+
+IllurianB: {
+	Description: Mods.Urdveil.Buffs.IllurianB.Description
+	DisplayName: Illurian B
+}
+
+FlowerPower: {
+	Description: Mods.Urdveil.Buffs.FlowerPower.Description
+	DisplayName: Flower Power
+}
+
+SigfriedsInsanity: {
+	Description: Mods.Urdveil.Buffs.SigfriedsInsanity.Description
+	DisplayName: Sigfrieds Insanity
+}
+
+ShadeWrath: {
+	Description: Mods.Urdveil.Buffs.ShadeWrath.Description
+	DisplayName: Shade Wrath
+}
+
+ShadeWrathCooldown: {
+	Description: Mods.Urdveil.Buffs.ShadeWrathCooldown.Description
+	DisplayName: Shade Wrath Cooldown
+}
+
+BabySwarmerMinionBuff: {
+	Description: Mods.Urdveil.Buffs.BabySwarmerMinionBuff.Description
+	DisplayName: Baby Swarmer Minion Buff
+}
+
+FlamesOfIlluria: {
+	Description: Mods.Urdveil.Buffs.FlamesOfIlluria.Description
+	DisplayName: Flames Of Illuria
+}
+
+ISHNYIREShow: {
+	Description: Mods.Urdveil.Buffs.ISHNYIREShow.Description
+	DisplayName: I S H N Y I R E Show
+}
+
+IshShow: {
+	Description: Mods.Urdveil.Buffs.IshShow.Description
+	DisplayName: Ish Show
+}
+
+VireShow: {
+	Description: Mods.Urdveil.Buffs.VireShow.Description
+	DisplayName: Vire Show
+}
+
+YireShow: {
+	Description: Mods.Urdveil.Buffs.YireShow.Description
+	DisplayName: Yire Show
+}
+
+ColdheartAnklebiterDebuff: {
+	DisplayName: Coldheart Anklebiter Debuff
+	Description: Gettin bitten
+}
+
+IlluBuff: {
+	DisplayName: Illu Buff
+	Description: Illusive
+}
+
+IshyBuff: {
+	DisplayName: Ishy Buff
+	Description: Mods.Urdveil.Buffs.IshyBuff.Description
+}
+
+MushyBuff: {
+	DisplayName: Mushy Buff
+	Description: Mods.Urdveil.Buffs.MushyBuff.Description
+}
+
+RibbonWrapped: {
+	Description: Mods.Urdveil.Buffs.RibbonWrapped.Description
+	DisplayName: Ribbon Wrapped
+}
+
+StarSuper: {
+	Description: Mods.Urdveil.Buffs.StarSuper.Description
+	DisplayName: Star Super
+}
+
+VixylDodgeBuff: {
+	Description: Mods.Urdveil.Buffs.VixylDodgeBuff.Description
+	DisplayName: Vixyl Dodge Buff
+}
+
+JacksonPollockMinionBuff: {
+	Description: Mods.Urdveil.Buffs.JacksonPollockMinionBuff.Description
+	DisplayName: Jackson Pollock Minion Buff
+}
+
+PotOfGreedMinionBuff: {
+	Description: Mods.Urdveil.Buffs.PotOfGreedMinionBuff.Description
+	DisplayName: Pot Of Greed Minion Buff
+}
+
+ReflectionSeekerMinionBuff: {
+	DisplayName: Reflection Seeker Minion Buff
+	Description: Why are you staring at yourself?
+}
+
+XScissorMinionBuff: {
+	Description: Mods.Urdveil.Buffs.XScissorMinionBuff.Description
+	DisplayName: X Scissor Minion Buff
+}
+
+SerpentMinionBuff: {
+	Description: Mods.Urdveil.Buffs.SerpentMinionBuff.Description
+	DisplayName: Serpent Minion Buff
+}
+
+IlluriasBlessing: {
+	Description: Mods.Urdveil.Buffs.IlluriasBlessing.Description
+	DisplayName: Illurias Blessing
+}
+
+PegasusMinionBuff: {
+	Description: Mods.Urdveil.Buffs.PegasusMinionBuff.Description
+	DisplayName: Pegasus Minion Buff
+}
+
+WoodyB: {
+	Description: Mods.Urdveil.Buffs.WoodyB.Description
+	DisplayName: Woody B
+}
+
+CentipedeMinionBuff: {
+	Description: Mods.Urdveil.Buffs.CentipedeMinionBuff.Description
+	DisplayName: Centipede Minion Buff
+}
+
+MoonFlame: {
+	Description: Mods.Urdveil.Buffs.MoonFlame.Description
+	DisplayName: Moon Flame
+}
+
+IridineNecklaceCDBuff: {
+	Description: Mods.Urdveil.Buffs.IridineNecklaceCDBuff.Description
+	DisplayName: Iridine Necklace C D Buff
+}
+
+MarksMan: {
+	Description: Mods.Urdveil.Buffs.MarksMan.Description
+	DisplayName: Marks Man
+}
+
+OrbMaster: {
+	Description: Mods.Urdveil.Buffs.OrbMaster.Description
+	DisplayName: Orb Master
+}
+
+Overheated: {
+	Description: Mods.Urdveil.Buffs.Overheated.Description
+	DisplayName: Overheated
+}
+
+GothivianFlames: {
+	Description: Mods.Urdveil.Buffs.GothivianFlames.Description
+	DisplayName: Gothivian Flames
+}
+
+HolyAnxiety: {
+	Description: Mods.Urdveil.Buffs.HolyAnxiety.Description
+	DisplayName: Holy Anxiety
+}
+
+WillOWispMinionBuff: {
+	Description: Mods.Urdveil.Buffs.WillOWispMinionBuff.Description
+	DisplayName: Will O Wisp Minion Buff
+}
+
+RadiatingLantern: {
+	Description: Mods.Urdveil.Buffs.RadiatingLantern.Description
+	DisplayName: Radiating Lantern
+}
+
+CrystalLuck: {
+	Description: Mods.Urdveil.Buffs.CrystalLuck.Description
+	DisplayName: Crystal Luck
+}
+
+RoyalPalaceScorpionMountBuff: {
+	Description: Mods.Urdveil.Buffs.RoyalPalaceScorpionMountBuff.Description
+	DisplayName: Royal Palace Scorpion Mount Buff
+}
+
+RoyalPalaceScorpionTagDebuff: {
+	Description: Mods.Urdveil.Buffs.RoyalPalaceScorpionTagDebuff.Description
+	DisplayName: Royal Palace Scorpion Tag Debuff
+}
+
+OreKingdomScorpionMountBuff: {
+	Description: Mods.Urdveil.Buffs.OreKingdomScorpionMountBuff.Description
+	DisplayName: Ore Kingdom Scorpion Mount Buff
+}
+
+CannotUseStaminaPotion: {
+	Description: Mods.Urdveil.Buffs.CannotUseStaminaPotion.Description
+	DisplayName: Cannot Use Stamina Potion
+}
+
+VampiricFlames: {
+	Description: Mods.Urdveil.Buffs.VampiricFlames.Description
+	DisplayName: Vampiric Flames
+}
+
+Clouded: {
+	Description: Mods.Urdveil.Buffs.Clouded.Description
+	DisplayName: Clouded
+}
+
+RevengenceMinionBuff: {
+	Description: Mods.Urdveil.Buffs.RevengenceMinionBuff.Description
+	DisplayName: Revengence Minion Buff
+}
+
+StringMinionBuff: {
+	Description: Mods.Urdveil.Buffs.StringMinionBuff.Description
+	DisplayName: String Minion Buff
+}

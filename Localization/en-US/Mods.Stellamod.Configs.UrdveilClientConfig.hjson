@@ -1,0 +1,92 @@
+DashMeterY: {
+	Tooltip: The Y position of your dash meter.
+	Label: Dash Meter Y
+}
+
+DashMeterX: {
+	Tooltip: The X position of your dash meter.
+	Label: Dash Meter X
+}
+
+StaminaMeterY: {
+	Tooltip: The Y position of your stamina meter.
+	Label: Stamina Meter Y
+}
+
+StaminaMeterX: {
+	Tooltip: The X position of your stamina meter.
+	Label: Stamina Meter X
+}
+
+EnchantMenuY: {
+	Tooltip: The Y position of the enchantment menu.
+	Label: Enchant Menu Y
+}
+
+EnchantMenuX: {
+	Tooltip: The X position of the enchantment menu.
+	Label: Enchant Menu X
+}
+
+Headers: {
+	UI: UI
+	Effects: Effects
+	Visual: Visual
+}
+
+LowDetailShadersToggle: {
+	Tooltip: Adjusts some shaders to be a bit less expensive to run, turn this on to reduce lag.
+	Label: Low Detail Shaders Toggle
+}
+
+CameraSmoothness: {
+	Tooltip: Makes the camera smoothly lerp to the player instead of snapping.
+	Label: Camera Smoothness
+}
+
+ShakeToggle: {
+	Tooltip: Toggles on and off screenshake.
+	Label: Shake Toggle
+}
+
+ParticlesToggle: {
+	Tooltip: Toggles on and off particles.
+	Label: Particles Toggle
+}
+
+SkiesToggle: {
+	Tooltip: Toggles on and off the new clouds in the background.
+	Label: Skies Toggle
+}
+
+LiquidsToggle: {
+	Tooltip: Toggles on and off the new water shaders.
+	Label: Liquids Toggle
+}
+
+RedDamageNumbersToggle: {
+	Tooltip: Toggles on and off the red damage numbers.
+	Label: Red Damage Numbers Toggle
+}
+
+VanillaBiomesPaletteShadersToggle: {
+	Tooltip: Toggles on and off palette shaders in vanilla biomes.
+	Label: Vanilla Biomes Palette Shaders Toggle
+}
+
+VanillaParticlesToggle: {
+	Tooltip: Toggles on and off extra particles in vanilla biomes.
+	Label: Vanilla Particles Toggle
+}
+
+VanillaUIRespritesToggle: {
+	Tooltip: Toggles on and off resprites of vanilla UI.
+	Label: Vanilla U I Resprites Toggle
+}
+
+VanillaTexturesToggle: {
+	Tooltip: Toggles on and off resprites of vanilla tiles.
+	Label: Vanilla Textures Toggle
+}
+
+DisplayName: Urdveil Client Config

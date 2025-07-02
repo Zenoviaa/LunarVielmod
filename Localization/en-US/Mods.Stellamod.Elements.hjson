@@ -1,0 +1,79 @@
+BasicElement: {
+	Tooltip: ""
+	DisplayName: Basic Element
+}
+
+DreadElement: {
+	Tooltip: ""
+	DisplayName: Dread Element
+}
+
+RoyalMagicElement: {
+	Tooltip: ""
+	DisplayName: Royal Magic Element
+}
+
+VeilElement: {
+	Tooltip: ""
+	DisplayName: Veil Element
+}
+
+WindElement: {
+	Tooltip: ""
+	DisplayName: Wind Element
+}
+
+NaturalElement: {
+	Tooltip: ""
+	DisplayName: Natural Element
+}
+
+MoonElement: {
+	Tooltip: ""
+	DisplayName: Moon Element
+}
+
+RadianceElement: {
+	Tooltip: ""
+	DisplayName: Radiance Element
+}
+
+IceElement: {
+	Tooltip: ""
+	DisplayName: Ice Element
+}
+
+PrismaticElement: {
+	Tooltip: ""
+	DisplayName: Prismatic Element
+}
+
+MothlightElement: {
+	Tooltip: ""
+	DisplayName: Mothlight Element
+}
+
+HolinessElement: {
+	DisplayName: Holiness Element
+	Tooltip: Transforms your spell with the power of the holy!
+}
+
+PrimeMagicElement: {
+	Tooltip: ""
+	DisplayName: Prime Magic Element
+}
+
+LightningElement: {
+	DisplayName: Lightning Element
+	Tooltip: Transforms your spell with the power of lightning!
+}
+
+AutomationElement: {
+	DisplayName: Automation Element
+	Tooltip: Transforms your spell with the power of automation!
+}
+
+CheckersElement: {
+	DisplayName: Checkers Element
+	Tooltip: Transforms your spell with the power of chess and checkers!
+}

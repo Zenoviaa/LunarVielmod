@@ -1,0 +1,5756 @@
+Common: {
+	SimpleBrooch: Simple Brooch!
+	RadiantBrooch: Radiant Brooch!
+	RadiantBackpack: You need an Radiant Brooches Backpack for this!
+	AdvancedBrooch: Advanced Brooch!
+	AdvancedBackpack: You need an Advanced Brooches Backpack for this!
+	NoStack: These do not stack!
+	Insource: Use this to put inside of your Xixian flask and when you drink it, the effects of this insource is used!
+	Stein: Stein Weapon Type
+	Greatsword: Greatsword Weapon Type
+	Safunai: Safunai Weapon Type
+	Orb: Orb Weapon Type
+	Juggler: Juggler Weapon Type
+	JugglerHelp:
+		'''
+		Throws out a projectile that bounces off the enemy
+		After it bounces, click it again midair to ricochet back again
+		Keep the combo going to gain a damage multiplier!
+		'''
+	CanSwapped: Can be changed to{0}!
+	TypeSwapped: Damage Type Swapped!
+	PowderDamage: Increases igniter card damage by {0}%!
+	PowderEquip: Equip this powder to a card!
+	IgniterCard: When it hits an enemy, it explodes with the effects of all the powders equipped to it!
+	IgniterCardHelp: Right click in your inventory to put powders on your card!,f
+	GenericDamage: " generic damage"
+	Lantern: Lantern Light Pet
+	LanternHelp: Put it in your light pet slot or right click it to use it for more range!
+	Disc: Music Disc
+	DiscHelp: Works like a music box, but you can also throw it with right click!
+	ScorpionSummonHelp:
+		'''
+		-1 Summon when equipped
+		-1 Summon for each gun equipped
+		'''
+	ScorpionSummonHolsterHelp:
+		'''
+		You can ride this as a mount to kill your enemies, and equip it with gun holster guns under summon damage
+		If your big gun hits a summon, it will increase their damage by 25% 
+		'''
+	ScorpionRightClickHelp: "Right click in inventory to open your gun slots "
+	Crossbow: Crossbow Weapon Type
+	CrossbowHelp:
+		'''
+		Use to load an arrow into the crossbow
+		Use again to fire a powerful sniper-like arrow!
+		'''
+	StyleSword: Sword Attack Style
+	BasicSlash: Basic Slash: {0}
+	StaminaSlash: Stamina Slash: {0}
+	WeaponTypeSword: Sword Weapon Type
+	WeaponTypeKnives: Knives Weapon Type
+}
+
+Medallion: {
+	Sporecrowe: Fast fall, jumping is higher and increased movement speed by 20%
+	RyaAshoti: When hitting enemies, flying objects will surround you and create a barrier, giving you invulnerability for each object, maximun is 3, takes 1.5 minutes each to regenerate
+	Gothivia: Strike enemies, gain bleeding strikes that can take out percentages of enemies AND bosses' health bars taking out 15% after hitting bosses multiple times (cooldown is 2 minutes)
+	Verlia: Have a moon follow the player and if an enemy attack hits it, it absorbs projectiles and attacks, once it dies it explodes causing the player to recieve health and deal a small explosion percentage damage to the area (10%) before having to recharge again
+	Gintzia: Gain a carpet that allows you to ride along the ground and skies for a prolonged period of time but is very slow and cannot gain vertical movement
+	Niivi: Prismatic balls surround the player and when attacking little orbs will orbit enemies and allow the player to do more damage to the targeted enemy or boss (10% with each orb)
+	Sanguimi: Attacks have chances to heal the player and increases defense with each hit up to 100, inflicts Dreaded Poison against enemies and bosses also. The more dread an enemy/boss has, the more damage it will take and deal out (up to 50% more damage dealt and 100% more damage at it's highest after 100 hits constantly). Not dealing damage and getting hit by enemies with dread gives the enemy/boss health back from however much they hit you with (you also get a cool crown)
+}
+
+VeilGenTester: {
+	Tooltip: ""
+	DisplayName: Veil Gen Tester
+}
+
+ModelizingSaver: {
+	Tooltip: ""
+	DisplayName: Modelizing Saver
+}
+
+ModelizingPlacer: {
+	Tooltip: ""
+	DisplayName: Modelizing Placer
+}
+
+TheSeededTreeItem: {
+	Tooltip: ""
+	DisplayName: The Seeded Tree Item
+}
+
+FuneralBedItem: {
+	Tooltip: ""
+	DisplayName: Funeral Bed Item
+}
+
+EreshkigalStatueItem: {
+	Tooltip: ""
+	DisplayName: Ereshkigal Statue Item
+}
+
+SetNPCSpawnTileItem: {
+	Tooltip: ""
+	DisplayName: Set N P C Spawn Tile Item
+}
+
+BossSpawnTileItem: {
+	Tooltip: ""
+	DisplayName: Boss Spawn Tile Item
+}
+
+SpringTabletXixianFlaskItem: {
+	Tooltip: ""
+	DisplayName: Spring Tablet Xixian Flask Item
+}
+
+SpringTabletStaminaItem: {
+	Tooltip: ""
+	DisplayName: Spring Tablet Stamina Item
+}
+
+SpringTabletItem: {
+	Tooltip: ""
+	DisplayName: Spring Tablet Item
+}
+
+SpringTabletDashItem: {
+	Tooltip: ""
+	DisplayName: Spring Tablet Dash Item
+}
+
+SpringTabletBossItem: {
+	Tooltip: ""
+	DisplayName: Spring Tablet Boss Item
+}
+
+StoneUnderBlock: {
+	Tooltip: ""
+	DisplayName: Stone Under Block
+}
+
+StoneTombBlock: {
+	Tooltip: ""
+	DisplayName: Stone Tomb Block
+}
+
+StoneObeliskBlock: {
+	Tooltip: ""
+	DisplayName: Stone Obelisk Block
+}
+
+SpringTrapRight: {
+	Tooltip: ""
+	DisplayName: Spring Trap Right
+}
+
+SpringTrap: {
+	Tooltip: ""
+	DisplayName: Spring Trap
+}
+
+SpringRockTinyItem: {
+	Tooltip: ""
+	DisplayName: Spring Rock Tiny Item
+}
+
+SpringRockPinkItem: {
+	Tooltip: ""
+	DisplayName: Spring Rock Pink Item
+}
+
+SpringRockMossyItem: {
+	Tooltip: ""
+	DisplayName: Spring Rock Mossy Item
+}
+
+SpringRockItem: {
+	Tooltip: ""
+	DisplayName: Spring Rock Item
+}
+
+SpringPotFlowerRedItem: {
+	Tooltip: ""
+	DisplayName: Spring Pot Flower Red Item
+}
+
+SpringPotFlowerPinkItem: {
+	Tooltip: ""
+	DisplayName: Spring Pot Flower Pink Item
+}
+
+SpringPotFlowerItem: {
+	Tooltip: ""
+	DisplayName: Spring Pot Flower Item
+}
+
+SpringPotFlowerBlueItem: {
+	Tooltip: ""
+	DisplayName: Spring Pot Flower Blue Item
+}
+
+SpringPatch3Item: {
+	Tooltip: ""
+	DisplayName: Spring Patch3 Item
+}
+
+SpringPatch2Item: {
+	Tooltip: ""
+	DisplayName: Spring Patch2 Item
+}
+
+SpringPatch1Item: {
+	Tooltip: ""
+	DisplayName: Spring Patch1 Item
+}
+
+SpringGrassBlock: {
+	Tooltip: ""
+	DisplayName: Spring Grass Block
+}
+
+SpringFlowerWhiteItem: {
+	Tooltip: ""
+	DisplayName: Spring Flower White Item
+}
+
+SpringFlowerWhiteBudSmallItem: {
+	Tooltip: ""
+	DisplayName: Spring Flower White Bud Small Item
+}
+
+SpringFlowerWhiteBudItem: {
+	Tooltip: ""
+	DisplayName: Spring Flower White Bud Item
+}
+
+SpringFlowerVineItem: {
+	Tooltip: ""
+	DisplayName: Spring Flower Vine Item
+}
+
+SpringFlowerRedBushItem: {
+	Tooltip: ""
+	DisplayName: Spring Flower Red Bush Item
+}
+
+SpringFlowerPurpleLeafItem: {
+	Tooltip: ""
+	DisplayName: Spring Flower Purple Leaf Item
+}
+
+SpringFlowerPurpleBushItem: {
+	Tooltip: ""
+	DisplayName: Spring Flower Purple Bush Item
+}
+
+SpringFlowerItem: {
+	Tooltip: ""
+	DisplayName: Spring Flower Item
+}
+
+SpringFlowerGrassSmallItem: {
+	Tooltip: ""
+	DisplayName: Spring Flower Grass Small Item
+}
+
+SpringFlowerGrassItem: {
+	Tooltip: ""
+	DisplayName: Spring Flower Grass Item
+}
+
+SpringFlowerDarkPurpleItem: {
+	Tooltip: ""
+	DisplayName: Spring Flower Dark Purple Item
+}
+
+SpringFlowerBlueBushItem: {
+	Tooltip: ""
+	DisplayName: Spring Flower Blue Bush Item
+}
+
+HangingSpringPotFlowerRedItem: {
+	Tooltip: ""
+	DisplayName: Hanging Spring Pot Flower Red Item
+}
+
+HangingSpringPotFlowerPinkItem: {
+	Tooltip: ""
+	DisplayName: Hanging Spring Pot Flower Pink Item
+}
+
+HangingSpringPotFlowerItem: {
+	Tooltip: ""
+	DisplayName: Hanging Spring Pot Flower Item
+}
+
+HangingSpringPotFlowerBlueItem: {
+	Tooltip: ""
+	DisplayName: Hanging Spring Pot Flower Blue Item
+}
+
+HangingBulbSmallItem: {
+	Tooltip: ""
+	DisplayName: Hanging Bulb Small Item
+}
+
+HangingBulbLongItem: {
+	Tooltip: ""
+	DisplayName: Hanging Bulb Long Item
+}
+
+HangingBulbLargeItem: {
+	Tooltip: ""
+	DisplayName: Hanging Bulb Large Item
+}
+
+BrokenCarraigeBlock: {
+	Tooltip: ""
+	DisplayName: Broken Carraige Block
+}
+
+RainforestTreeAcorn: {
+	Tooltip: ""
+	DisplayName: Rainforest Tree Acorn
+}
+
+RainforestGrassBlock: {
+	Tooltip: ""
+	DisplayName: Rainforest Grass Block
+}
+
+WindmillTopItem: {
+	Tooltip: ""
+	DisplayName: Windmill Top Item
+}
+
+MothlightSpawnerBrickBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Spawner Brick Block
+}
+
+MothlightMushroomBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Mushroom Block
+}
+
+MothlightWindowBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Window Block
+}
+
+MothlightWallBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Wall Block
+}
+
+MothlightTableBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Table Block
+}
+
+MothlightRightStairsBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Right Stairs Block
+}
+
+MothlightPalendineBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Palendine Block
+}
+
+MothlightLeftStairsBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Left Stairs Block
+}
+
+MothlightHighTableBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight High Table Block
+}
+
+MothlightHangerBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Hanger Block
+}
+
+MothlightFlowerbedBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Flowerbed Block
+}
+
+MothlightFloorBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Floor Block
+}
+
+MothlightDoorBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Door Block
+}
+
+MothlightClockBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Clock Block
+}
+
+MothlightChairRightBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Chair Right Block
+}
+
+MothlightChairLeftBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Chair Left Block
+}
+
+MothlightBowlBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Bowl Block
+}
+
+MothlightBookshelfBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Bookshelf Block
+}
+
+MothlightBannerSmallBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Banner Small Block
+}
+
+MothlightBannerHangerBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Banner Hanger Block
+}
+
+MothlightBannerBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Banner Block
+}
+
+MothlightGrassBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Grass Block
+}
+
+MothlightBrickBlock: {
+	Tooltip: ""
+	DisplayName: Mothlight Brick Block
+}
+
+MedCrystal2Item: {
+	Tooltip: ""
+	DisplayName: Med Crystal2 Item
+}
+
+MedCrystal1Item: {
+	Tooltip: ""
+	DisplayName: Med Crystal1 Item
+}
+
+GiantCrystal2Item: {
+	Tooltip: ""
+	DisplayName: Giant Crystal2 Item
+}
+
+GiantCrystal1Item: {
+	Tooltip: ""
+	DisplayName: Giant Crystal1 Item
+}
+
+DelgrimShopItem: {
+	Tooltip: ""
+	DisplayName: Delgrim Shop Item
+}
+
+SmallIceyStoneBlock: {
+	Tooltip: ""
+	DisplayName: Small Icey Stone Block
+}
+
+RunicIceBlock: {
+	Tooltip: ""
+	DisplayName: Runic Ice Block
+}
+
+MediumIceyStoneBlock: {
+	Tooltip: ""
+	DisplayName: Medium Icey Stone Block
+}
+
+LargeIceyStoneBlock: {
+	Tooltip: ""
+	DisplayName: Large Icey Stone Block
+}
+
+IceyAlterBlock: {
+	Tooltip: ""
+	DisplayName: Icey Alter Block
+}
+
+BorealReinforcementBlock: {
+	Tooltip: ""
+	DisplayName: Boreal Reinforcement Block
+}
+
+wall7Item: {
+	Tooltip: ""
+	DisplayName: wall7 Item
+}
+
+wall6Item: {
+	Tooltip: ""
+	DisplayName: wall6 Item
+}
+
+wall5Item: {
+	Tooltip: ""
+	DisplayName: wall5 Item
+}
+
+wall4Item: {
+	Tooltip: ""
+	DisplayName: wall4 Item
+}
+
+wall3Item: {
+	Tooltip: ""
+	DisplayName: wall3 Item
+}
+
+wall2Item: {
+	Tooltip: ""
+	DisplayName: wall2 Item
+}
+
+wall1Item: {
+	Tooltip: ""
+	DisplayName: wall1 Item
+}
+
+FableTableItem: {
+	Tooltip: ""
+	DisplayName: Fable Table Item
+}
+
+FableStonesItem: {
+	Tooltip: ""
+	DisplayName: Fable Stones Item
+}
+
+FableSpikesItem: {
+	Tooltip: ""
+	DisplayName: Fable Spikes Item
+}
+
+FableSmallMushroomItem: {
+	Tooltip: ""
+	DisplayName: Fable Small Mushroom Item
+}
+
+FablePikeItem: {
+	Tooltip: ""
+	DisplayName: Fable Pike Item
+}
+
+FablePikeBigItem: {
+	Tooltip: ""
+	DisplayName: Fable Pike Big Item
+}
+
+FableLogItem: {
+	Tooltip: ""
+	DisplayName: Fable Log Item
+}
+
+FableGrassMossBigItem: {
+	Tooltip: ""
+	DisplayName: Fable Grass Moss Big Item
+}
+
+FableGGrassMossItem: {
+	Tooltip: ""
+	DisplayName: Fable G Grass Moss Item
+}
+
+FableBookshelf3Item: {
+	Tooltip: ""
+	DisplayName: Fable Bookshelf3 Item
+}
+
+FableBookshelf2Item: {
+	Tooltip: ""
+	DisplayName: Fable Bookshelf2 Item
+}
+
+FableBookshelf1Item: {
+	Tooltip: ""
+	DisplayName: Fable Bookshelf1 Item
+}
+
+FableBigMushroomItem: {
+	Tooltip: ""
+	DisplayName: Fable Big Mushroom Item
+}
+
+FableBenchItem: {
+	Tooltip: ""
+	DisplayName: Fable Bench Item
+}
+
+FableBarItem: {
+	Tooltip: ""
+	DisplayName: Fable Bar Item
+}
+
+TheUrdveilDoorItem: {
+	Tooltip: ""
+	DisplayName: The Urdveil Door Item
+}
+
+StarrVeriplantBarrierBlockItem: {
+	Tooltip: ""
+	DisplayName: Starr Veriplant Barrier Block Item
+}
+
+SpectralEntranceItem: {
+	Tooltip: ""
+	DisplayName: Spectral Entrance Item
+}
+
+GodraySpawnerItem: {
+	Tooltip: ""
+	DisplayName: Godray Spawner Item
+}
+
+FogSpawnerWallItem: {
+	Tooltip: ""
+	DisplayName: Fog Spawner Wall Item
+}
+
+FogSpawnerBlock: {
+	Tooltip: ""
+	DisplayName: Fog Spawner Block
+}
+
+BossBarrierBlockItem: {
+	Tooltip: ""
+	DisplayName: Boss Barrier Block Item
+}
+
+GintzeSpectatorItem7: {
+	Tooltip: ""
+	DisplayName: Gintze Spectator Item7
+}
+
+GintzeSpectatorItem6: {
+	Tooltip: ""
+	DisplayName: Gintze Spectator Item6
+}
+
+GintzeSpectatorItem5: {
+	Tooltip: ""
+	DisplayName: Gintze Spectator Item5
+}
+
+GintzeSpectatorItem4: {
+	Tooltip: ""
+	DisplayName: Gintze Spectator Item4
+}
+
+GintzeSpectatorItem3: {
+	Tooltip: ""
+	DisplayName: Gintze Spectator Item3
+}
+
+GintzeSpectatorItem2: {
+	Tooltip: ""
+	DisplayName: Gintze Spectator Item2
+}
+
+GintzeSpectatorItem1: {
+	Tooltip: ""
+	DisplayName: Gintze Spectator Item1
+}
+
+XixianFlaskCollectibleItem: {
+	Tooltip: ""
+	DisplayName: Xixian Flask Collectible Item
+}
+
+XixianFlask: {
+	Tooltip: ""
+	DisplayName: Xixian Flask
+}
+
+StaminaFlaskCollectibleItem: {
+	Tooltip: ""
+	DisplayName: Stamina Flask Collectible Item
+}
+
+BloodHallItem: {
+	Tooltip: ""
+	DisplayName: Blood Hall Item
+}
+
+BloodFlower5Item: {
+	Tooltip: ""
+	DisplayName: Blood Flower5 Item
+}
+
+BloodFlower4Item: {
+	Tooltip: ""
+	DisplayName: Blood Flower4 Item
+}
+
+BloodFlower3Item: {
+	Tooltip: ""
+	DisplayName: Blood Flower3 Item
+}
+
+BloodFlower2Item: {
+	Tooltip: ""
+	DisplayName: Blood Flower2 Item
+}
+
+BloodFlower1Item: {
+	Tooltip: ""
+	DisplayName: Blood Flower1 Item
+}
+
+AnimatedBackgroundWallTestItem: {
+	Tooltip: ""
+	DisplayName: Animated Background Wall Test Item
+}
+
+ExampleDecorativeWallItem: {
+	Tooltip: ""
+	DisplayName: Example Decorative Wall Item
+}
+
+SnowWalkerItem: {
+	Tooltip: ""
+	DisplayName: Snow Walker Item
+}
+
+SandWalkerItem: {
+	Tooltip: ""
+	DisplayName: Sand Walker Item
+}
+
+ZenoviasPikpikGlove: {
+	Tooltip: ""
+	DisplayName: Zenovias Pikpik Glove
+}
+
+YourFired: {
+	Tooltip: ""
+	DisplayName: Your Fired
+}
+
+WindmillShuriken: {
+	Tooltip: ""
+	DisplayName: Windmill Shuriken
+}
+
+ThePenetrator: {
+	Tooltip: ""
+	DisplayName: The Penetrator
+}
+
+TheButcher: {
+	Tooltip: ""
+	DisplayName: The Butcher
+}
+
+SpiritCapsule: {
+	Tooltip: ""
+	DisplayName: Spirit Capsule
+}
+
+Scatterbombs: {
+	Tooltip: ""
+	DisplayName: Scatterbombs
+}
+
+RazorBragett: {
+	Tooltip: ""
+	DisplayName: Razor Bragett
+}
+
+PunkedUpChops: {
+	Tooltip: ""
+	DisplayName: Punked Up Chops
+}
+
+PumkinPopper: {
+	Tooltip: ""
+	DisplayName: Pumkin Popper
+}
+
+Plate: {
+	Tooltip: ""
+	DisplayName: Plate
+}
+
+Orion: {
+	Tooltip: ""
+	DisplayName: Orion
+}
+
+LifeSeekingVial: {
+	Tooltip: ""
+	DisplayName: Life Seeking Vial
+}
+
+LarvaedSpear: {
+	Tooltip: ""
+	DisplayName: Larvaed Spear
+}
+
+StickyCards: {
+	Tooltip: ""
+	DisplayName: Sticky Cards
+}
+
+SpikedLobber: {
+	Tooltip: ""
+	DisplayName: Spiked Lobber
+}
+
+LilStinger: {
+	Tooltip: ""
+	DisplayName: Lil Stinger
+}
+
+FlinchMachine: {
+	Tooltip: ""
+	DisplayName: Flinch Machine
+}
+
+DaggerDagger: {
+	Tooltip: ""
+	DisplayName: Dagger Dagger
+}
+
+CinderBomber: {
+	Tooltip: ""
+	DisplayName: Cinder Bomber
+}
+
+BasicBaseball: {
+	Tooltip: ""
+	DisplayName: Basic Baseball
+}
+
+IvythornShuriken: {
+	Tooltip: ""
+	DisplayName: Ivythorn Shuriken
+}
+
+Ivythorn: {
+	Tooltip: ""
+	DisplayName: Ivythorn
+}
+
+IgniterCardsMKII: {
+	Tooltip: ""
+	DisplayName: Igniter Cards M K I I
+}
+
+IgniterCards: {
+	Tooltip: ""
+	DisplayName: Igniter Cards
+}
+
+Hyua: {
+	Tooltip: ""
+	DisplayName: Hyua
+}
+
+Hookarama: {
+	Tooltip: ""
+	DisplayName: Hookarama
+}
+
+GintzlSpear: {
+	Tooltip: ""
+	DisplayName: Gintzl Spear
+}
+
+FableKnives: {
+	Tooltip: ""
+	DisplayName: Fable Knives
+}
+
+DogmaBalls: {
+	Tooltip: ""
+	DisplayName: Dogma Balls
+}
+
+DarkButcher: {
+	Tooltip: ""
+	DisplayName: Dark Butcher
+}
+
+ComicalTrident: {
+	Tooltip: ""
+	DisplayName: Comical Trident
+}
+
+CleanestCleaver: {
+	Tooltip: ""
+	DisplayName: Cleanest Cleaver
+}
+
+BurningFlask: {
+	Tooltip: ""
+	DisplayName: Burning Flask
+}
+
+AssassinsShuriken: {
+	Tooltip: ""
+	DisplayName: Assassins Shuriken
+}
+
+AssassinsKnife: {
+	Tooltip: ""
+	DisplayName: Assassins Knife
+}
+
+ArtistsHeart: {
+	Tooltip: ""
+	DisplayName: Artists Heart
+}
+
+XScissor: {
+	Tooltip: ""
+	DisplayName: X Scissor
+}
+
+X3144: {
+	Tooltip: ""
+	DisplayName: X3144
+}
+
+WillOWisp: {
+	Tooltip: ""
+	DisplayName: Will O Wisp
+}
+
+VoidStaff: {
+	Tooltip: ""
+	DisplayName: Void Staff
+}
+
+VehementRhapsody: {
+	Tooltip: ""
+	DisplayName: Vehement Rhapsody
+}
+
+VampireScepter: {
+	Tooltip: ""
+	DisplayName: Vampire Scepter
+}
+
+Valtotude: {
+	Tooltip: ""
+	DisplayName: Valtotude
+}
+
+Thunderstaff: {
+	Tooltip: ""
+	DisplayName: Thunderstaff
+}
+
+TheBurningRod: {
+	Tooltip: ""
+	DisplayName: The Burning Rod
+}
+
+SwordsOfRevengence: {
+	Tooltip: ""
+	DisplayName: Swords Of Revengence
+}
+
+StarCall: {
+	Tooltip: ""
+	DisplayName: Star Call
+}
+
+SolMothStaff: {
+	Tooltip: ""
+	DisplayName: Sol Moth Staff
+}
+
+SerpentStaff: {
+	Tooltip: ""
+	DisplayName: Serpent Staff
+}
+
+PotOfGreed: {
+	Tooltip: ""
+	DisplayName: Pot Of Greed
+}
+
+PotionOfManaWand: {
+	Tooltip: ""
+	DisplayName: Potion Of Mana Wand
+}
+
+PotionOfLifeWand: {
+	Tooltip: ""
+	DisplayName: Potion Of Life Wand
+}
+
+Pegasus: {
+	Tooltip: ""
+	DisplayName: Pegasus
+}
+
+TwinStarbombas: {
+	Tooltip: ""
+	DisplayName: Twin Starbombas
+}
+
+ThePollinator: {
+	Tooltip: ""
+	DisplayName: The Pollinator
+}
+
+TheActualMoon: {
+	Tooltip: ""
+	DisplayName: The Actual Moon
+}
+
+SineSire: {
+	Tooltip: ""
+	DisplayName: Sine Sire
+}
+
+BlackBall: {
+	Tooltip: ""
+	DisplayName: Black Ball
+}
+
+AuroreanStarball: {
+	Tooltip: ""
+	DisplayName: Aurorean Starball
+}
+
+MushroomStave: {
+	Tooltip: ""
+	DisplayName: Mushroom Stave
+}
+
+JellyStaff: {
+	Tooltip: ""
+	DisplayName: Jelly Staff
+}
+
+JacksonPollock: {
+	Tooltip: ""
+	DisplayName: Jackson Pollock
+}
+
+IvyakenStaff: {
+	Tooltip: ""
+	DisplayName: Ivyaken Staff
+}
+
+IrradiatedCreeperStaff: {
+	Tooltip: ""
+	DisplayName: Irradiated Creeper Staff
+}
+
+IceboundStaff: {
+	Tooltip: ""
+	DisplayName: Icebound Staff
+}
+
+FireflyStaff: {
+	Tooltip: ""
+	DisplayName: Firefly Staff
+}
+
+DripplerStaff: {
+	Tooltip: ""
+	DisplayName: Drippler Staff
+}
+
+ChromaCutter: {
+	Tooltip: ""
+	DisplayName: Chroma Cutter
+}
+
+CentipedeStaff: {
+	Tooltip: ""
+	DisplayName: Centipede Staff
+}
+
+CanOfLeaves: {
+	Tooltip: ""
+	DisplayName: Can Of Leaves
+}
+
+BucketScrapper: {
+	Tooltip: ""
+	DisplayName: Bucket Scrapper
+}
+
+BabySwarmerStaff: {
+	Tooltip: ""
+	DisplayName: Baby Swarmer Staff
+}
+
+AuroranSeeker: {
+	Tooltip: ""
+	DisplayName: Auroran Seeker
+}
+
+Auroran: {
+	Tooltip: ""
+	DisplayName: Auroran
+	StaminaSlash: Mods.Urdveil.Items.Auroran.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.Auroran.BasicSlash
+}
+
+ArncharRemote: {
+	Tooltip: ""
+	DisplayName: Arnchar Remote
+}
+
+AlcadizDagger: {
+	Tooltip: ""
+	DisplayName: Alcadiz Dagger
+}
+
+RoyalPalaceScorpion: {
+	Tooltip: ""
+	DisplayName: Royal Palace Scorpion
+}
+
+OreKingdomScorpion: {
+	Tooltip: ""
+	DisplayName: Ore Kingdom Scorpion
+}
+
+YuriFury: {
+	Tooltip: ""
+	DisplayName: Yuri Fury
+}
+
+XX4160: {
+	Tooltip: ""
+	DisplayName: X X4160
+}
+
+wowgun: {
+	Tooltip: ""
+	DisplayName: wowgun
+}
+
+WingedFury: {
+	Tooltip: ""
+	DisplayName: Winged Fury
+}
+
+WiggleDiggle: {
+	Tooltip: ""
+	DisplayName: Wiggle Diggle
+}
+
+WaterSong: {
+	Tooltip: ""
+	DisplayName: Water Song
+}
+
+WaterGun: {
+	Tooltip: ""
+	DisplayName: Water Gun
+}
+
+VoidBlaster: {
+	Tooltip: ""
+	DisplayName: Void Blaster
+}
+
+Violar: {
+	Tooltip: ""
+	DisplayName: Violar
+}
+
+Vhel: {
+	Tooltip: ""
+	DisplayName: Vhel
+}
+
+VeroshotBow: {
+	Tooltip: ""
+	DisplayName: Veroshot Bow
+}
+
+Venatici: {
+	Tooltip: ""
+	DisplayName: Venatici
+}
+
+VampiricVine: {
+	Tooltip: ""
+	DisplayName: Vampiric Vine
+}
+
+VacuumDrill: {
+	Tooltip: ""
+	DisplayName: Vacuum Drill
+}
+
+TheWiggler: {
+	Tooltip: ""
+	DisplayName: The Wiggler
+}
+
+TheTraumatizer: {
+	Tooltip: ""
+	DisplayName: The Traumatizer
+}
+
+TheTingler: {
+	Tooltip: ""
+	DisplayName: The Tingler
+}
+
+TheRedSkull: {
+	Tooltip: ""
+	DisplayName: The Red Skull
+}
+
+Test: {
+	Tooltip: ""
+	DisplayName: Test
+}
+
+Teraciz: {
+	Tooltip: ""
+	DisplayName: Teraciz
+}
+
+TecnoBlaster: {
+	Tooltip: ""
+	DisplayName: Tecno Blaster
+}
+
+Shredder: {
+	Tooltip: ""
+	DisplayName: Shredder
+}
+
+Rustvolver: {
+	Tooltip: ""
+	DisplayName: Rustvolver
+}
+
+RustlockPistol: {
+	Tooltip: ""
+	DisplayName: Rustlock Pistol
+}
+
+RustedSniper: {
+	Tooltip: ""
+	DisplayName: Rusted Sniper
+}
+
+RazzleDazzle: {
+	Tooltip: ""
+	DisplayName: Razzle Dazzle
+}
+
+Polaris: {
+	Tooltip: ""
+	DisplayName: Polaris
+}
+
+PoisonedAngel: {
+	Tooltip: ""
+	DisplayName: Poisoned Angel
+}
+
+Photobomb: {
+	Tooltip: ""
+	DisplayName: Photobomb
+}
+
+Pearlinator: {
+	Tooltip: ""
+	DisplayName: Pearlinator
+}
+
+MushroomGreatbow: {
+	Tooltip: ""
+	DisplayName: Mushroom Greatbow
+}
+
+MorrowSalface: {
+	Tooltip: ""
+	DisplayName: Morrow Salface
+}
+
+MiniPistol: {
+	Tooltip: ""
+	DisplayName: Mini Pistol
+}
+
+MahoganyStorm: {
+	Tooltip: ""
+	DisplayName: Mahogany Storm
+}
+
+MagnusMagnum: {
+	Tooltip: ""
+	DisplayName: Magnus Magnum
+}
+
+M61X: {
+	Tooltip: ""
+	DisplayName: M61 X
+}
+
+M38F30: {
+	Tooltip: ""
+	DisplayName: M38 F30
+}
+
+LarveinGreatbow: {
+	Tooltip: ""
+	DisplayName: Larvein Greatbow
+}
+
+JellyBow: {
+	Tooltip: ""
+	DisplayName: Jelly Bow
+}
+
+JackoShot: {
+	Tooltip: ""
+	DisplayName: Jacko Shot
+}
+
+IvynShot: {
+	Tooltip: ""
+	DisplayName: Ivyn Shot
+}
+
+IrradieagleWrath: {
+	Tooltip: ""
+	DisplayName: Irradieagle Wrath
+}
+
+Incinerator: {
+	Tooltip: ""
+	DisplayName: Incinerator
+}
+
+Ikaniye: {
+	Tooltip: ""
+	DisplayName: Ikaniye
+}
+
+IceWalker: {
+	Tooltip: ""
+	DisplayName: Ice Walker
+}
+
+IcelockLongbow: {
+	Tooltip: ""
+	DisplayName: Icelock Longbow
+}
+
+IceCubeMaker: {
+	Tooltip: ""
+	DisplayName: Ice Cube Maker
+}
+
+Hornet: {
+	Tooltip: ""
+	DisplayName: Hornet
+}
+
+Hitme: {
+	Tooltip: ""
+	DisplayName: Hitme
+}
+
+HeatGlider: {
+	Tooltip: ""
+	DisplayName: Heat Glider
+}
+
+HarmonicBlasphemy: {
+	Tooltip: ""
+	DisplayName: Harmonic Blasphemy
+}
+
+TheReaving: {
+	Tooltip: ""
+	DisplayName: The Reaving
+}
+
+STARBUST: {
+	Tooltip: ""
+	DisplayName: S T A R B U S T
+}
+
+SrTetanus: {
+	Tooltip: ""
+	DisplayName: Sr Tetanus
+}
+
+ShottyPitol: {
+	Tooltip: ""
+	DisplayName: Shotty Pitol
+}
+
+RocketLauncher: {
+	Tooltip: ""
+	DisplayName: Rocket Launcher
+}
+
+Rhino: {
+	Tooltip: ""
+	DisplayName: Rhino
+}
+
+RavestBlast: {
+	Tooltip: ""
+	DisplayName: Ravest Blast
+}
+
+Pulsing: {
+	Tooltip: ""
+	DisplayName: Pulsing
+}
+
+PoisonPistol: {
+	Tooltip: ""
+	DisplayName: Poison Pistol
+}
+
+Piranha: {
+	Tooltip: ""
+	DisplayName: Piranha
+}
+
+Piken: {
+	Tooltip: ""
+	DisplayName: Piken
+}
+
+Obel: {
+	Tooltip: ""
+	DisplayName: Obel
+}
+
+MsFreeze: {
+	Tooltip: ""
+	DisplayName: Ms Freeze
+}
+
+MintyBlast: {
+	Tooltip: ""
+	DisplayName: Minty Blast
+}
+
+MeredaX: {
+	Tooltip: ""
+	DisplayName: Mereda X
+}
+
+GunHolster: {
+	Tooltip: ""
+	DisplayName: Gun Holster
+}
+
+Gordon: {
+	Tooltip: ""
+	DisplayName: Gordon
+}
+
+Electrifying: {
+	Tooltip: ""
+	DisplayName: Electrifying
+}
+
+Eagle: {
+	Tooltip: ""
+	DisplayName: Eagle
+}
+
+Drygan: {
+	Tooltip: ""
+	DisplayName: Drygan
+}
+
+Devolver: {
+	Tooltip: ""
+	DisplayName: Devolver
+}
+
+CinderNeedle: {
+	Tooltip: ""
+	DisplayName: Cinder Needle
+}
+
+CarrotPatrol: {
+	Tooltip: ""
+	DisplayName: Carrot Patrol
+}
+
+BurnBlast: {
+	Tooltip: ""
+	DisplayName: Burn Blast
+}
+
+BubbleBussy: {
+	Tooltip: ""
+	DisplayName: Bubble Bussy
+}
+
+BasterParty: {
+	Tooltip: ""
+	DisplayName: Baster Party
+}
+
+AssassinsRecharge: {
+	Tooltip: ""
+	DisplayName: Assassins Recharge
+}
+
+GlocketRouncher: {
+	Tooltip: ""
+	DisplayName: Glocket Rouncher
+}
+
+GintzlsSteed: {
+	Tooltip: ""
+	DisplayName: Gintzls Steed
+}
+
+GearGutter: {
+	Tooltip: ""
+	DisplayName: Gear Gutter
+}
+
+GardenWrecker: {
+	Tooltip: ""
+	DisplayName: Garden Wrecker
+}
+
+Galvinie: {
+	Tooltip: ""
+	DisplayName: Galvinie
+}
+
+FlameBuster: {
+	Tooltip: ""
+	DisplayName: Flame Buster
+}
+
+FireflyCannon: {
+	Tooltip: ""
+	DisplayName: Firefly Cannon
+}
+
+EelInfinite: {
+	Tooltip: ""
+	DisplayName: Eel Infinite
+}
+
+EckasectSire: {
+	Tooltip: ""
+	DisplayName: Eckasect Sire
+}
+
+Ebistar: {
+	Tooltip: ""
+	DisplayName: Ebistar
+}
+
+Dunderbustion: {
+	Tooltip: ""
+	DisplayName: Dunderbustion
+}
+
+DeathShot: {
+	Tooltip: ""
+	DisplayName: Death Shot
+}
+
+Crysalizer: {
+	Tooltip: ""
+	DisplayName: Crysalizer
+}
+
+Cryal: {
+	Tooltip: ""
+	DisplayName: Cryal
+}
+
+WoodenCrossbow: {
+	Tooltip: ""
+	DisplayName: Wooden Crossbow
+}
+
+TON618Crossbow: {
+	Tooltip: ""
+	DisplayName: T O N618 Crossbow
+}
+
+SpiderillaCrossbow: {
+	Tooltip: ""
+	DisplayName: Spiderilla Crossbow
+}
+
+MorrowedCrossbow: {
+	Tooltip: ""
+	DisplayName: Morrowed Crossbow
+}
+
+MerchantCrossbow: {
+	Tooltip: ""
+	DisplayName: Merchant Crossbow
+}
+
+JadeJungleCrossbow: {
+	Tooltip: ""
+	DisplayName: Jade Jungle Crossbow
+}
+
+FrostyCrossbow: {
+	Tooltip: ""
+	DisplayName: Frosty Crossbow
+}
+
+DungeonCrossbow: {
+	Tooltip: ""
+	DisplayName: Dungeon Crossbow
+}
+
+DesertCrossbow: {
+	Tooltip: ""
+	DisplayName: Desert Crossbow
+}
+
+CoralCrossbow: {
+	Tooltip: ""
+	DisplayName: Coral Crossbow
+}
+
+CogBomber: {
+	Tooltip: ""
+	DisplayName: Cog Bomber
+}
+
+ClockworkCity: {
+	Tooltip: ""
+	DisplayName: Clockwork City
+}
+
+BurningAngel: {
+	Tooltip: ""
+	DisplayName: Burning Angel
+}
+
+BubbleBlasher: {
+	Tooltip: ""
+	DisplayName: Bubble Blasher
+}
+
+BrokenWrath: {
+	Tooltip: ""
+	DisplayName: Broken Wrath
+}
+
+BoneNail: {
+	Tooltip: ""
+	DisplayName: Bone Nail
+}
+
+IronBall: {
+	Tooltip: ""
+	DisplayName: Iron Ball
+}
+
+AssassinsDischarge: {
+	Tooltip: ""
+	DisplayName: Assassins Discharge
+}
+
+ArchariliteEnergyShot: {
+	Tooltip: ""
+	DisplayName: Archarilite Energy Shot
+}
+
+Verstidust: {
+	Tooltip: ""
+	DisplayName: Verstidust
+}
+
+TrickPowder: {
+	Tooltip: ""
+	DisplayName: Trick Powder
+}
+
+SpiritPowder: {
+	Tooltip: ""
+	DisplayName: Spirit Powder
+}
+
+PoisonedPowder: {
+	Tooltip: ""
+	DisplayName: Poisoned Powder
+}
+
+MushyPowder: {
+	Tooltip: ""
+	DisplayName: Mushy Powder
+}
+
+LenaSongPowder: {
+	Tooltip: ""
+	DisplayName: Lena Song Powder
+}
+
+IllusionistPowder: {
+	Tooltip: ""
+	DisplayName: Illusionist Powder
+}
+
+GrassDirtPowder: {
+	Tooltip: ""
+	DisplayName: Grass Dirt Powder
+}
+
+GovheilPowder: {
+	Tooltip: ""
+	DisplayName: Govheil Powder
+}
+
+FrostedPowder: {
+	Tooltip: ""
+	DisplayName: Frosted Powder
+}
+
+FlamePowder: {
+	Tooltip: ""
+	DisplayName: Flame Powder
+}
+
+EreshkinPowder: {
+	Tooltip: ""
+	DisplayName: Ereshkin Powder
+}
+
+CrystalPowder: {
+	Tooltip: ""
+	DisplayName: Crystal Powder
+}
+
+BloodPowder: {
+	Tooltip: ""
+	DisplayName: Blood Powder
+}
+
+ArtoriaIllurePowder: {
+	Tooltip: ""
+	DisplayName: Artoria Illure Powder
+}
+
+ArcanalPowder: {
+	Tooltip: ""
+	DisplayName: Arcanal Powder
+}
+
+AlcadizPowder: {
+	Tooltip: ""
+	DisplayName: Alcadiz Powder
+}
+
+AivanPowder: {
+	Tooltip: ""
+	DisplayName: Aivan Powder
+}
+
+AgreviPowder: {
+	Tooltip: ""
+	DisplayName: Agrevi Powder
+}
+
+AbyssalPowder: {
+	Tooltip: ""
+	DisplayName: Abyssal Powder
+}
+
+Yumiko: {
+	Tooltip: ""
+	DisplayName: Yumiko
+}
+
+VulcanBreaker: {
+	Tooltip: ""
+	DisplayName: Vulcan Breaker
+}
+
+Vixyl: {
+	Tooltip: ""
+	DisplayName: Vixyl
+}
+
+VerstiDance: {
+	Tooltip: ""
+	DisplayName: Versti Dance
+}
+
+Verstibloom: {
+	Tooltip: ""
+	DisplayName: Verstibloom
+}
+
+WarriorsGrace: {
+	Tooltip: ""
+	DisplayName: Warriors Grace
+	StaminaSlash: Mods.Urdveil.Items.WarriorsGrace.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.WarriorsGrace.BasicSlash
+}
+
+Vael: {
+	Tooltip: ""
+	DisplayName: Vael
+	StaminaSlash: Mods.Urdveil.Items.Vael.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.Vael.BasicSlash
+}
+
+ThornsBlade: {
+	Tooltip: ""
+	DisplayName: Thorns Blade
+	StaminaSlash: Mods.Urdveil.Items.ThornsBlade.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.ThornsBlade.BasicSlash
+}
+
+Starvast: {
+	Tooltip: ""
+	DisplayName: Starvast
+	StaminaSlash: Mods.Urdveil.Items.Starvast.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.Starvast.BasicSlash
+}
+
+Pavelspire: {
+	Tooltip: ""
+	DisplayName: Pavelspire
+	StaminaSlash: Test
+	BasicSlash: Test 2
+}
+
+LightSpand: {
+	Tooltip: ""
+	DisplayName: Light Spand
+	StaminaSlash: Test
+	BasicSlash: Test 2
+}
+
+CrystallineSlasher: {
+	Tooltip: ""
+	DisplayName: Crystalline Slasher
+	StaminaSlash: Mods.Urdveil.Items.CrystallineSlasher.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.CrystallineSlasher.BasicSlash
+}
+
+CinderBraker: {
+	Tooltip: ""
+	DisplayName: Cinder Braker
+	StaminaSlash: Mods.Urdveil.Items.CinderBraker.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.CinderBraker.BasicSlash
+}
+
+AssassinsSlash: {
+	Tooltip: ""
+	DisplayName: Assassins Slash
+	StaminaSlash: Mods.Urdveil.Items.AssassinsSlash.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.AssassinsSlash.BasicSlash
+}
+
+SwordOfTheJungleGoddess: {
+	Tooltip: ""
+	DisplayName: Sword Of The Jungle Goddess
+}
+
+StarKeeper: {
+	Tooltip: ""
+	DisplayName: Star Keeper
+}
+
+TheIrradiaspear: {
+	Tooltip: ""
+	DisplayName: The Irradiaspear
+}
+
+StalkersTallon: {
+	Tooltip: ""
+	DisplayName: Stalkers Tallon
+}
+
+Infernis: {
+	Tooltip: ""
+	DisplayName: Infernis
+}
+
+GladiatorSpear: {
+	Tooltip: ""
+	DisplayName: Gladiator Spear
+}
+
+Dinklespear: {
+	Tooltip: ""
+	DisplayName: Dinklespear
+	StaminaSlash: Mods.Urdveil.Items.Dinklespear.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.Dinklespear.BasicSlash
+}
+
+CrystalPointer: {
+	Tooltip: ""
+	DisplayName: Crystal Pointer
+	StaminaSlash: Mods.Urdveil.Items.CrystalPointer.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.CrystalPointer.BasicSlash
+}
+
+Sirius: {
+	Tooltip: ""
+	DisplayName: Sirius
+}
+
+WoodShield: {
+	Tooltip: ""
+	DisplayName: Wood Shield
+}
+
+SteamedNail: {
+	Tooltip: ""
+	DisplayName: Steamed Nail
+}
+
+GintzelShield: {
+	Tooltip: ""
+	DisplayName: Gintzel Shield
+}
+
+EnergizedNail: {
+	Tooltip: ""
+	DisplayName: Energized Nail
+}
+
+DaedussSiegShield: {
+	Tooltip: ""
+	DisplayName: Daeduss Sieg Shield
+}
+
+ScytheOfSouls: {
+	Tooltip: ""
+	DisplayName: Scythe Of Souls
+}
+
+ScarecrowSaber: {
+	Tooltip: ""
+	DisplayName: Scarecrow Saber
+}
+
+Vinger: {
+	Tooltip: ""
+	DisplayName: Vinger
+}
+
+Rinavine: {
+	Tooltip: ""
+	DisplayName: Rinavine
+}
+
+Parendine: {
+	Tooltip: ""
+	DisplayName: Parendine
+}
+
+Kaevine: {
+	Tooltip: ""
+	DisplayName: Kaevine
+}
+
+Halhurish: {
+	Tooltip: ""
+	DisplayName: Halhurish
+}
+
+Blackwhip: {
+	Tooltip: ""
+	DisplayName: Blackwhip
+}
+
+Alcarish: {
+	Tooltip: ""
+	DisplayName: Alcarish
+}
+
+Ripper: {
+	Tooltip: ""
+	DisplayName: Ripper
+}
+
+Reavestor: {
+	Tooltip: ""
+	DisplayName: Reavestor
+}
+
+PointedEdge: {
+	Tooltip: ""
+	DisplayName: Pointed Edge
+}
+
+NiceBusterr: {
+	Tooltip: ""
+	DisplayName: Nice Busterr
+}
+
+Nekomara: {
+	Tooltip: ""
+	DisplayName: Nekomara
+}
+
+Myocardia: {
+	Tooltip: ""
+	DisplayName: Myocardia
+}
+
+MorrowValswa: {
+	Tooltip: ""
+	DisplayName: Morrow Valswa
+}
+
+MorrowSword: {
+	Tooltip: ""
+	DisplayName: Morrow Sword
+}
+
+MorrowRapier: {
+	Tooltip: ""
+	DisplayName: Morrow Rapier
+}
+
+MooningSlicer: {
+	Tooltip: ""
+	DisplayName: Mooning Slicer
+}
+
+Vaikus: {
+	Tooltip: ""
+	DisplayName: Vaikus
+	StaminaSlash: Mods.Urdveil.Items.Vaikus.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.Vaikus.BasicSlash
+}
+
+Pearling: {
+	Tooltip: ""
+	DisplayName: Pearling
+	StaminaSlash: Mods.Urdveil.Items.Pearling.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.Pearling.BasicSlash
+}
+
+WoodenSaber: {
+	Tooltip: ""
+	DisplayName: Wooden Saber
+	StaminaSlash: Mods.Urdveil.Items.WoodenSaber.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.WoodenSaber.BasicSlash
+}
+
+LightKnives: {
+	Tooltip: ""
+	DisplayName: Light Knives
+	StaminaSlash: Mods.Urdveil.Items.LightKnives.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.LightKnives.BasicSlash
+}
+
+Kilvier: {
+	Tooltip: ""
+	DisplayName: Kilvier
+}
+
+IronHook: {
+	Tooltip: ""
+	DisplayName: Iron Hook
+}
+
+InkingSpire: {
+	Tooltip: ""
+	DisplayName: Inking Spire
+}
+
+HornedNail: {
+	Tooltip: ""
+	DisplayName: Horned Nail
+}
+
+HolmbergScythe: {
+	Tooltip: ""
+	DisplayName: Holmberg Scythe
+}
+
+Helios: {
+	Tooltip: ""
+	DisplayName: Helios
+}
+
+RuneSmasher: {
+	Tooltip: ""
+	DisplayName: Rune Smasher
+	StaminaSlash: Mods.Urdveil.Items.RuneSmasher.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.RuneSmasher.BasicSlash
+}
+
+Gutinier: {
+	Tooltip: ""
+	DisplayName: Gutinier
+}
+
+Zhielhander: {
+	Tooltip: ""
+	DisplayName: Zhielhander
+	StaminaSlash: Mods.Urdveil.Items.Zhielhander.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.Zhielhander.BasicSlash
+}
+
+Volcant: {
+	Tooltip: ""
+	DisplayName: Volcant
+}
+
+Tulahal: {
+	Tooltip: ""
+	DisplayName: Tulahal
+}
+
+TheFirstAurora: {
+	Tooltip: ""
+	DisplayName: The First Aurora
+}
+
+SingularDive: {
+	Tooltip: ""
+	DisplayName: Singular Dive
+}
+
+NoxianRider: {
+	Tooltip: ""
+	DisplayName: Noxian Rider
+	StaminaSlash: Mods.Urdveil.Items.NoxianRider.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.NoxianRider.BasicSlash
+}
+
+Maelstrom: {
+	Tooltip: ""
+	DisplayName: Maelstrom
+}
+
+IshNYire: {
+	Tooltip: ""
+	DisplayName: Ish N Yire
+}
+
+DelgrimsHammer: {
+	Tooltip: ""
+	DisplayName: Delgrims Hammer
+}
+
+Chillrend: {
+	Tooltip: ""
+	DisplayName: Chillrend
+}
+
+GraveShaper: {
+	Tooltip: ""
+	DisplayName: Grave Shaper
+}
+
+GrailAxe: {
+	Tooltip: ""
+	DisplayName: Grail Axe
+}
+
+Gintelze: {
+	Tooltip: ""
+	DisplayName: Gintelze
+}
+
+FrostSwing: {
+	Tooltip: ""
+	DisplayName: Frost Swing
+}
+
+FrostBringer: {
+	Tooltip: ""
+	DisplayName: Frost Bringer
+}
+
+EverneanSlicer: {
+	Tooltip: ""
+	DisplayName: Evernean Slicer
+}
+
+EventHorizon: {
+	Tooltip: ""
+	DisplayName: Event Horizon
+}
+
+DreadsVile: {
+	Tooltip: ""
+	DisplayName: Dreads Vile
+}
+
+DevilsPeak: {
+	Tooltip: ""
+	DisplayName: Devils Peak
+}
+
+Curlistine: {
+	Tooltip: ""
+	DisplayName: Curlistine
+}
+
+BridgetII: {
+	Tooltip: ""
+	DisplayName: Bridget I I
+}
+
+Bridget: {
+	Tooltip: ""
+	DisplayName: Bridget
+}
+
+ArchariliteRaysword: {
+	Tooltip: ""
+	DisplayName: Archarilite Raysword
+}
+
+Angelenthal: {
+	Tooltip: ""
+	DisplayName: Angelenthal
+}
+
+AltrideSlicer: {
+	Tooltip: ""
+	DisplayName: Altride Slicer
+}
+
+Voyager: {
+	Tooltip: ""
+	DisplayName: Voyager
+}
+
+TwilitTome: {
+	Tooltip: ""
+	DisplayName: Twilit Tome
+}
+
+TorrentialLance: {
+	Tooltip: ""
+	DisplayName: Torrential Lance
+}
+
+WintersStom: {
+	Tooltip: ""
+	DisplayName: Winters Stom
+}
+
+VoidsGrasp: {
+	Tooltip: ""
+	DisplayName: Voids Grasp
+}
+
+TheDeafen: {
+	Tooltip: ""
+	DisplayName: The Deafen
+}
+
+StormWelder: {
+	Tooltip: ""
+	DisplayName: Storm Welder
+}
+
+ShinobiTome: {
+	Tooltip: ""
+	DisplayName: Shinobi Tome
+}
+
+ShadeHandTome: {
+	Tooltip: ""
+	DisplayName: Shade Hand Tome
+}
+
+SandStorm: {
+	Tooltip: ""
+	DisplayName: Sand Storm
+}
+
+MothlightStar: {
+	Tooltip: ""
+	DisplayName: Mothlight Star
+}
+
+CocoSpark: {
+	Tooltip: ""
+	DisplayName: Coco Spark
+}
+
+Astalaiya: {
+	Tooltip: ""
+	DisplayName: Astalaiya
+}
+
+Aneuriliac: {
+	Tooltip: ""
+	DisplayName: Aneuriliac
+}
+
+TomeOfTheSingularity: {
+	Tooltip: ""
+	DisplayName: Tome Of The Singularity
+}
+
+TheShrieker: {
+	Tooltip: ""
+	DisplayName: The Shrieker
+}
+
+TheMarksman: {
+	Tooltip: ""
+	DisplayName: The Marksman
+}
+
+TheAurora: {
+	Tooltip: ""
+	DisplayName: The Aurora
+}
+
+Swingaling: {
+	Tooltip: ""
+	DisplayName: Swingaling
+}
+
+SwarmerStaff: {
+	Tooltip: ""
+	DisplayName: Swarmer Staff
+}
+
+SuperStaff: {
+	Tooltip: ""
+	DisplayName: Super Staff
+}
+
+SupernovaSitar: {
+	Tooltip: ""
+	DisplayName: Supernova Sitar
+}
+
+SunBlastStaff: {
+	Tooltip: ""
+	DisplayName: Sun Blast Staff
+}
+
+Voltenstein: {
+	Tooltip: ""
+	DisplayName: Voltenstein
+}
+
+Mardenstein: {
+	Tooltip: ""
+	DisplayName: Mardenstein
+}
+
+Iknoctstein: {
+	Tooltip: ""
+	DisplayName: Iknoctstein
+}
+
+Hultinstein: {
+	Tooltip: ""
+	DisplayName: Hultinstein
+}
+
+Gothinstein: {
+	Tooltip: ""
+	DisplayName: Gothinstein
+}
+
+Friedstein: {
+	Tooltip: ""
+	DisplayName: Friedstein
+}
+
+StarringBalls: {
+	Tooltip: ""
+	DisplayName: Starring Balls
+}
+
+StarFlowerStaff: {
+	Tooltip: ""
+	DisplayName: Star Flower Staff
+}
+
+StaffoftheIrradiaflare: {
+	Tooltip: ""
+	DisplayName: Staffofthe Irradiaflare
+}
+
+StaffOFlame: {
+	Tooltip: ""
+	DisplayName: Staff O Flame
+}
+
+Splitflame: {
+	Tooltip: ""
+	DisplayName: Splitflame
+}
+
+ShadegraveStaff: {
+	Tooltip: ""
+	DisplayName: Shadegrave Staff
+}
+
+RibbonStaff: {
+	Tooltip: ""
+	DisplayName: Ribbon Staff
+}
+
+Rhamenthal: {
+	Tooltip: ""
+	DisplayName: Rhamenthal
+}
+
+Relagis: {
+	Tooltip: ""
+	DisplayName: Relagis
+}
+
+Poya: {
+	Tooltip: ""
+	DisplayName: Poya
+}
+
+PieceOfArt: {
+	Tooltip: ""
+	DisplayName: Piece Of Art
+}
+
+Pericarditis: {
+	Tooltip: ""
+	DisplayName: Pericarditis
+}
+
+PerfectionStaff: {
+	Tooltip: ""
+	DisplayName: Perfection Staff
+}
+
+Mordred: {
+	Tooltip: ""
+	DisplayName: Mordred
+}
+
+MagicalAxe: {
+	Tooltip: ""
+	DisplayName: Magical Axe
+}
+
+LarveinScripute: {
+	Tooltip: ""
+	DisplayName: Larvein Scripute
+}
+
+LanternOfAFallen: {
+	Tooltip: ""
+	DisplayName: Lantern Of A Fallen
+}
+
+IyxTheInfamous: {
+	Tooltip: ""
+	DisplayName: Iyx The Infamous
+}
+
+ImperfectionStaff: {
+	Tooltip: ""
+	DisplayName: Imperfection Staff
+}
+
+IllurianBible: {
+	Tooltip: ""
+	DisplayName: Illurian Bible
+}
+
+GreekLantern: {
+	Tooltip: ""
+	DisplayName: Greek Lantern
+}
+
+GraftedWaxMelter: {
+	Tooltip: ""
+	DisplayName: Grafted Wax Melter
+}
+
+GildedStaff: {
+	Tooltip: ""
+	DisplayName: Gilded Staff
+}
+
+FurihaMKIII: {
+	Tooltip: ""
+	DisplayName: Furiha M K I I I
+}
+
+FungalFlace: {
+	Tooltip: ""
+	DisplayName: Fungal Flace
+}
+
+FrameStaff: {
+	Tooltip: ""
+	DisplayName: Frame Staff
+}
+
+Dulahaun: {
+	Tooltip: ""
+	DisplayName: Dulahaun
+}
+
+Combuster: {
+	Tooltip: ""
+	DisplayName: Combuster
+}
+
+CinderedLantern: {
+	Tooltip: ""
+	DisplayName: Cindered Lantern
+}
+
+BurnedCarianTome: {
+	Tooltip: ""
+	DisplayName: Burned Carian Tome
+}
+
+BookOfSkullsII: {
+	Tooltip: ""
+	DisplayName: Book Of Skulls I I
+}
+
+Bongos: {
+	Tooltip: ""
+	DisplayName: Bongos
+}
+
+BlossomingScissor: {
+	Tooltip: ""
+	DisplayName: Blossoming Scissor
+}
+
+BlackEye: {
+	Tooltip: ""
+	DisplayName: Black Eye
+}
+
+Bincle: {
+	Tooltip: ""
+	DisplayName: Bincle
+}
+
+AzuretoothNecklace: {
+	Tooltip: ""
+	DisplayName: Azuretooth Necklace
+}
+
+Aquarius: {
+	Tooltip: ""
+	DisplayName: Aquarius
+}
+
+Aquamare: {
+	Tooltip: ""
+	DisplayName: Aquamare
+}
+
+AlcadBomb: {
+	Tooltip: ""
+	DisplayName: Alcad Bomb
+}
+
+ZuiCard: {
+	Tooltip: ""
+	DisplayName: Zui Card
+}
+
+WCIgniter: {
+	Tooltip: ""
+	DisplayName: W C Igniter
+}
+
+TheSunAndMoonCard: {
+	Tooltip: ""
+	DisplayName: The Sun And Moon Card
+}
+
+StyngerCard: {
+	Tooltip: ""
+	DisplayName: Stynger Card
+}
+
+StarterCard: {
+	Tooltip: ""
+	DisplayName: Starter Card
+}
+
+StarrCard: {
+	Tooltip: ""
+	DisplayName: Starr Card
+}
+
+ScorcheCard: {
+	Tooltip: ""
+	DisplayName: Scorche Card
+}
+
+Neptune8Card: {
+	Tooltip: ""
+	DisplayName: Neptune8 Card
+}
+
+MushyCard: {
+	Tooltip: ""
+	DisplayName: Mushy Card
+}
+
+MetallianCard: {
+	Tooltip: ""
+	DisplayName: Metallian Card
+}
+
+LovestruckCard: {
+	Tooltip: ""
+	DisplayName: Lovestruck Card
+}
+
+LarvaedCard: {
+	Tooltip: ""
+	DisplayName: Larvaed Card
+}
+
+IshtarCard: {
+	Tooltip: ""
+	DisplayName: Ishtar Card
+}
+
+IllureCard: {
+	Tooltip: ""
+	DisplayName: Illure Card
+}
+
+GrailedCard: {
+	Tooltip: ""
+	DisplayName: Grailed Card
+}
+
+GintzeCard: {
+	Tooltip: ""
+	DisplayName: Gintze Card
+}
+
+FrostCard: {
+	Tooltip: ""
+	DisplayName: Frost Card
+}
+
+FloweredCard: {
+	Tooltip: ""
+	DisplayName: Flowered Card
+}
+
+FenixxCard: {
+	Tooltip: ""
+	DisplayName: Fenixx Card
+}
+
+EYIgniter: {
+	Tooltip: ""
+	DisplayName: E Y Igniter
+}
+
+DungeonedRockCard: {
+	Tooltip: ""
+	DisplayName: Dungeoned Rock Card
+}
+
+DaedCard: {
+	Tooltip: ""
+	DisplayName: Daed Card
+}
+
+CinderedCard: {
+	Tooltip: ""
+	DisplayName: Cindered Card
+}
+
+BurningCard: {
+	Tooltip: ""
+	DisplayName: Burning Card
+}
+
+BonePicklerCard: {
+	Tooltip: ""
+	DisplayName: Bone Pickler Card
+}
+
+BOMBERCard: {
+	Tooltip: ""
+	DisplayName: B O M B E R Card
+}
+
+AlcadzianCard: {
+	Tooltip: ""
+	DisplayName: Alcadzian Card
+}
+
+RadiantLantern: {
+	Tooltip: ""
+	DisplayName: Radiant Lantern
+}
+
+IlluriteDrill: {
+	Tooltip: ""
+	DisplayName: Illurite Drill
+}
+
+TreeGrower: {
+	Tooltip: ""
+	DisplayName: Tree Grower
+}
+
+ToolbarEnabler: {
+	Tooltip: ""
+	DisplayName: Toolbar Enabler
+}
+
+HavocSignaler: {
+	Tooltip: ""
+	DisplayName: Havoc Signaler
+}
+
+ExtraBlockRange: {
+	Tooltip: ""
+	DisplayName: Extra Block Range
+}
+
+ColosseumResetter: {
+	Tooltip: ""
+	DisplayName: Colosseum Resetter
+}
+
+BossSpawnWand: {
+	Tooltip: ""
+	DisplayName: Boss Spawn Wand
+}
+
+VeiledScriptureSigfried: {
+	Tooltip: ""
+	DisplayName: Veiled Scripture Sigfried
+	Content: Mods.Urdveil.Items.VeiledScriptureSigfried.Content
+}
+
+VeiledScriptureLumi: {
+	Tooltip: ""
+	DisplayName: Veiled Scripture Lumi
+	Content: Mods.Urdveil.Items.VeiledScriptureLumi.Content
+}
+
+VeiledScriptureGothivia: {
+	Tooltip: ""
+	DisplayName: Veiled Scripture Gothivia
+	Content: Mods.Urdveil.Items.VeiledScriptureGothivia.Content
+}
+
+VeiledScriptureCozmire: {
+	Tooltip: ""
+	DisplayName: Veiled Scripture Cozmire
+	Content: Mods.Urdveil.Items.VeiledScriptureCozmire.Content
+}
+
+VeiledScriptureAzurerin: {
+	Tooltip: ""
+	DisplayName: Veiled Scripture Azurerin
+	Content: Mods.Urdveil.Items.VeiledScriptureAzurerin.Content
+}
+
+SiresMail: {
+	Tooltip: ""
+	DisplayName: Sires Mail
+}
+
+VeiledScriptureMiner9: {
+	Tooltip: ""
+	DisplayName: Veiled Scripture Miner9
+}
+
+VeiledScriptureMiner8: {
+	Tooltip: ""
+	DisplayName: Veiled Scripture Miner8
+}
+
+VeiledScriptureMiner7: {
+	Tooltip: ""
+	DisplayName: Veiled Scripture Miner7
+}
+
+VeiledScriptureMiner6: {
+	Tooltip: ""
+	DisplayName: Veiled Scripture Miner6
+}
+
+VeiledScriptureMiner5: {
+	Tooltip: ""
+	DisplayName: Veiled Scripture Miner5
+}
+
+VeiledScriptureMiner4: {
+	Tooltip: ""
+	DisplayName: Veiled Scripture Miner4
+}
+
+VeiledScriptureMiner3: {
+	Tooltip: ""
+	DisplayName: Veiled Scripture Miner3
+}
+
+VeiledScriptureMiner2: {
+	Tooltip: ""
+	DisplayName: Veiled Scripture Miner2
+}
+
+VeiledScriptureMiner10: {
+	Tooltip: ""
+	DisplayName: Veiled Scripture Miner10
+}
+
+VeiledScriptureMiner1: {
+	Tooltip: ""
+	DisplayName: Veiled Scripture Miner1
+}
+
+ExampleScriptureItem: {
+	Tooltip: ""
+	DisplayName: Example Scripture Item
+	Content: Mods.Urdveil.Items.ExampleScriptureItem.Content
+}
+
+ExampleDialogueItem: {
+	Tooltip: ""
+	DisplayName: Example Dialogue Item
+}
+
+ShrineBridgetI: {
+	Tooltip: ""
+	DisplayName: Shrine Bridget I
+}
+
+ShrineSolMothI: {
+	Tooltip: ""
+	DisplayName: Shrine Sol Moth I
+}
+
+ShrineLightsI: {
+	Tooltip: ""
+	DisplayName: Shrine Lights I
+}
+
+ShrineLifeCI: {
+	Tooltip: ""
+	DisplayName: Shrine Life C I
+}
+
+ShrineHalhurishI: {
+	Tooltip: ""
+	DisplayName: Shrine Halhurish I
+}
+
+ShrineGardenWreckerI: {
+	Tooltip: ""
+	DisplayName: Shrine Garden Wrecker I
+}
+
+ShrineBUANI: {
+	Tooltip: ""
+	DisplayName: Shrine B U A N I
+}
+
+ShrineAI: {
+	Tooltip: ""
+	DisplayName: Shrine A I
+}
+
+StaminaPotion: {
+	Tooltip: ""
+	DisplayName: Stamina Potion
+}
+
+StaminaBrew: {
+	Tooltip: ""
+	DisplayName: Stamina Brew
+}
+
+ZuiBossRel: {
+	Tooltip: ""
+	DisplayName: Zui Boss Rel
+}
+
+WeddingDay: {
+	Tooltip: ""
+	DisplayName: Wedding Day
+}
+
+wallg: {
+	Tooltip: ""
+	DisplayName: wallg
+}
+
+wallf: {
+	Tooltip: ""
+	DisplayName: wallf
+}
+
+walle: {
+	Tooltip: ""
+	DisplayName: walle
+}
+
+walld: {
+	Tooltip: ""
+	DisplayName: walld
+}
+
+wallc: {
+	Tooltip: ""
+	DisplayName: wallc
+}
+
+wallb: {
+	Tooltip: ""
+	DisplayName: wallb
+}
+
+walla: {
+	Tooltip: ""
+	DisplayName: walla
+}
+
+VerliBossRel: {
+	Tooltip: ""
+	DisplayName: Verli Boss Rel
+}
+
+VeriBossRel: {
+	Tooltip: ""
+	DisplayName: Veri Boss Rel
+}
+
+VeilScriptureI: {
+	Tooltip: ""
+	DisplayName: Veil Scripture I
+}
+
+VeilPot: {
+	Tooltip: ""
+	DisplayName: Veil Pot
+}
+
+VeilBanneri: {
+	Tooltip: ""
+	DisplayName: Veil Banneri
+}
+
+VeilBanner2i: {
+	Tooltip: ""
+	DisplayName: Veil Banner2i
+}
+
+SmallVeilPottery: {
+	Tooltip: ""
+	DisplayName: Small Veil Pottery
+}
+
+SigfriedPaintingI: {
+	Tooltip: ""
+	DisplayName: Sigfried Painting I
+}
+
+LumiPaintingI: {
+	Tooltip: ""
+	DisplayName: Lumi Painting I
+}
+
+GothiviaPaintingI: {
+	Tooltip: ""
+	DisplayName: Gothivia Painting I
+}
+
+CozmirePaintingI: {
+	Tooltip: ""
+	DisplayName: Cozmire Painting I
+}
+
+AzurerinPaintingI: {
+	Tooltip: ""
+	DisplayName: Azurerin Painting I
+}
+
+SyliaBossRel: {
+	Tooltip: ""
+	DisplayName: Sylia Boss Rel
+}
+
+SupernovaBossRel: {
+	Tooltip: ""
+	DisplayName: Supernova Boss Rel
+}
+
+SunsBossRel: {
+	Tooltip: ""
+	DisplayName: Suns Boss Rel
+}
+
+StoneChesti: {
+	Tooltip: ""
+	DisplayName: Stone Chesti
+}
+
+STARBOMBERBossRel: {
+	Tooltip: ""
+	DisplayName: S T A R B O M B E R Boss Rel
+}
+
+StandN: {
+	Tooltip: ""
+	DisplayName: Stand N
+}
+
+SOMBossRel: {
+	Tooltip: ""
+	DisplayName: S O M Boss Rel
+}
+
+SmallShroom: {
+	Tooltip: ""
+	DisplayName: Small Shroom
+}
+
+RunicTablel: {
+	Tooltip: ""
+	DisplayName: Runic Tablel
+}
+
+RekBossRel: {
+	Tooltip: ""
+	DisplayName: Rek Boss Rel
+}
+
+RalladI: {
+	Tooltip: ""
+	DisplayName: Rallad I
+}
+
+NiiviBossRel: {
+	Tooltip: ""
+	DisplayName: Niivi Boss Rel
+}
+
+NestBossRel: {
+	Tooltip: ""
+	DisplayName: Nest Boss Rel
+}
+
+MushroomBig: {
+	Tooltip: ""
+	DisplayName: Mushroom Big
+}
+
+MorrowStone: {
+	Tooltip: ""
+	DisplayName: Morrow Stone
+}
+
+MorrowSpike: {
+	Tooltip: ""
+	DisplayName: Morrow Spike
+}
+
+MorrowDeath2: {
+	Tooltip: ""
+	DisplayName: Morrow Death2
+}
+
+MorrowDeath: {
+	Tooltip: ""
+	DisplayName: Morrow Death
+}
+
+MorrowChestKey: {
+	Tooltip: ""
+	DisplayName: Morrow Chest Key
+}
+
+MorrowChesti: {
+	Tooltip: ""
+	DisplayName: Morrow Chesti
+}
+
+MediumPot: {
+	Tooltip: ""
+	DisplayName: Medium Pot
+}
+
+MechanicI: {
+	Tooltip: ""
+	DisplayName: Mechanic I
+}
+
+DrakonicSileI: {
+	Tooltip: ""
+	DisplayName: Drakonic Sile I
+}
+
+DrakonicHallI: {
+	Tooltip: ""
+	DisplayName: Drakonic Hall I
+}
+
+DrakonicCageI: {
+	Tooltip: ""
+	DisplayName: Drakonic Cage I
+}
+
+MagicCauldron: {
+	Tooltip: ""
+	DisplayName: Magic Cauldron
+}
+
+Log: {
+	Tooltip: ""
+	DisplayName: Log
+}
+
+LabHall: {
+	Tooltip: ""
+	DisplayName: Lab Hall
+}
+
+JackBossRel: {
+	Tooltip: ""
+	DisplayName: Jack Boss Rel
+}
+
+Robi: {
+	Tooltip: ""
+	DisplayName: Robi
+}
+
+IshtarPainting: {
+	Tooltip: ""
+	DisplayName: Ishtar Painting
+}
+
+IshtarLockedChest: {
+	Tooltip: ""
+	DisplayName: Ishtar Locked Chest
+}
+
+BushyWebs: {
+	Tooltip: ""
+	DisplayName: Bushy Webs
+}
+
+BushySticksI: {
+	Tooltip: ""
+	DisplayName: Bushy Sticks I
+}
+
+BushyEyesI: {
+	Tooltip: ""
+	DisplayName: Bushy Eyes I
+}
+
+IrradiaBossRel: {
+	Tooltip: ""
+	DisplayName: Irradia Boss Rel
+}
+
+IlluriaTreeSmallI: {
+	Tooltip: ""
+	DisplayName: Illuria Tree Small I
+}
+
+IlluriaTreeMedI: {
+	Tooltip: ""
+	DisplayName: Illuria Tree Med I
+}
+
+IlluriaTreeBigI: {
+	Tooltip: ""
+	DisplayName: Illuria Tree Big I
+}
+
+IlluriaChesti: {
+	Tooltip: ""
+	DisplayName: Illuria Chesti
+}
+
+GustbeakBossRel: {
+	Tooltip: ""
+	DisplayName: Gustbeak Boss Rel
+}
+
+GrassMoss: {
+	Tooltip: ""
+	DisplayName: Grass Moss
+}
+
+GrassBig: {
+	Tooltip: ""
+	DisplayName: Grass Big
+}
+
+ZebiI: {
+	Tooltip: ""
+	DisplayName: Zebi I
+}
+
+WeiI: {
+	Tooltip: ""
+	DisplayName: Wei I
+}
+
+VheilCurtainRI: {
+	Tooltip: ""
+	DisplayName: Vheil Curtain R I
+}
+
+VheilCurtainLI: {
+	Tooltip: ""
+	DisplayName: Vheil Curtain L I
+}
+
+MasistRI: {
+	Tooltip: ""
+	DisplayName: Masist R I
+}
+
+MasistLI: {
+	Tooltip: ""
+	DisplayName: Masist L I
+}
+
+GovheilWallsI: {
+	Tooltip: ""
+	DisplayName: Govheil Walls I
+}
+
+GovheilHallI: {
+	Tooltip: ""
+	DisplayName: Govheil Hall I
+}
+
+GovheilBoreI: {
+	Tooltip: ""
+	DisplayName: Govheil Bore I
+}
+
+GothWall: {
+	Tooltip: ""
+	DisplayName: Goth Wall
+}
+
+CurtainRightI: {
+	Tooltip: ""
+	DisplayName: Curtain Right I
+}
+
+CurtainLeftI: {
+	Tooltip: ""
+	DisplayName: Curtain Left I
+}
+
+GothiviaBossRel: {
+	Tooltip: ""
+	DisplayName: Gothivia Boss Rel
+}
+
+GintzeBossRel: {
+	Tooltip: ""
+	DisplayName: Gintze Boss Rel
+}
+
+Flowersummon: {
+	Tooltip: ""
+	DisplayName: Flowersummon
+}
+
+FenixBossRel: {
+	Tooltip: ""
+	DisplayName: Fenix Boss Rel
+}
+
+DreadBossRel: {
+	Tooltip: ""
+	DisplayName: Dread Boss Rel
+}
+
+DaedusBossRel: {
+	Tooltip: ""
+	DisplayName: Daedus Boss Rel
+}
+
+CommanderGintziaBossRel: {
+	Tooltip: ""
+	DisplayName: Commander Gintzia Boss Rel
+}
+
+CinderChesti: {
+	Tooltip: ""
+	DisplayName: Cinder Chesti
+}
+
+ChiseledSandstone: {
+	Tooltip: ""
+	DisplayName: Chiseled Sandstone
+}
+
+ShrineI: {
+	Tooltip: ""
+	DisplayName: Shrine I
+}
+
+Orb1I: {
+	Tooltip: ""
+	DisplayName: Orb1 I
+}
+
+GovheilCastleBlock: {
+	Tooltip: ""
+	DisplayName: Govheil Castle Block
+}
+
+FlowerMultiI: {
+	Tooltip: ""
+	DisplayName: Flower Multi I
+}
+
+Crystal2I: {
+	Tooltip: ""
+	DisplayName: Crystal2 I
+}
+
+Crystal1I: {
+	Tooltip: ""
+	DisplayName: Crystal1 I
+}
+
+CathedralChestI: {
+	Tooltip: ""
+	DisplayName: Cathedral Chest I
+}
+
+CathediteWall: {
+	Tooltip: ""
+	DisplayName: Cathedite Wall
+}
+
+CathediteGrassWall: {
+	Tooltip: ""
+	DisplayName: Cathedite Grass Wall
+}
+
+CathediteGrassBlock: {
+	Tooltip: ""
+	DisplayName: Cathedite Grass Block
+}
+
+CathediteBlock: {
+	Tooltip: ""
+	DisplayName: Cathedite Block
+}
+
+AurelusTempleTile: {
+	Tooltip: ""
+	DisplayName: Aurelus Temple Tile
+}
+
+CatacombsDoor: {
+	Tooltip: ""
+	DisplayName: Catacombs Door
+}
+
+BroochesTableI: {
+	Tooltip: ""
+	DisplayName: Brooches Table I
+}
+
+Bench: {
+	Tooltip: ""
+	DisplayName: Bench
+}
+
+Bar: {
+	Tooltip: ""
+	DisplayName: Bar
+}
+
+AurelusSummoni: {
+	Tooltip: ""
+	DisplayName: Aurelus Summoni
+}
+
+AurelusPosti: {
+	Tooltip: ""
+	DisplayName: Aurelus Posti
+}
+
+AurelusDoor: {
+	Tooltip: ""
+	DisplayName: Aurelus Door
+}
+
+AurelusChesti: {
+	Tooltip: ""
+	DisplayName: Aurelus Chesti
+}
+
+AurelusBorderI: {
+	Tooltip: ""
+	DisplayName: Aurelus Border I
+}
+
+AurelusBanneri: {
+	Tooltip: ""
+	DisplayName: Aurelus Banneri
+}
+
+AurelusBanner2i: {
+	Tooltip: ""
+	DisplayName: Aurelus Banner2i
+}
+
+AlcaologyI: {
+	Tooltip: ""
+	DisplayName: Alcaology I
+}
+
+SkullpileI: {
+	Tooltip: ""
+	DisplayName: Skullpile I
+}
+
+RectiteI: {
+	Tooltip: ""
+	DisplayName: Rectite I
+}
+
+CurtainTopI: {
+	Tooltip: ""
+	DisplayName: Curtain Top I
+}
+
+CurtainRightRCI: {
+	Tooltip: ""
+	DisplayName: Curtain Right R C I
+}
+
+CurtainLeftRCI: {
+	Tooltip: ""
+	DisplayName: Curtain Left R C I
+}
+
+AowerTopI: {
+	Tooltip: ""
+	DisplayName: Aower Top I
+}
+
+AowerBottomI: {
+	Tooltip: ""
+	DisplayName: Aower Bottom I
+}
+
+AlciteI: {
+	Tooltip: ""
+	DisplayName: Alcite I
+}
+
+VerianOre: {
+	Tooltip: ""
+	DisplayName: Verian Ore
+}
+
+VerianBar: {
+	Tooltip: ""
+	DisplayName: Verian Bar
+}
+
+KaleidoscopicInk: {
+	Tooltip: ""
+	DisplayName: Kaleidoscopic Ink
+}
+
+GrailBar: {
+	Tooltip: ""
+	DisplayName: Grail Bar
+}
+
+GlisteningOre: {
+	Tooltip: ""
+	DisplayName: Glistening Ore
+}
+
+GlisteningBar: {
+	Tooltip: ""
+	DisplayName: Glistening Bar
+}
+
+GintzlMetal: {
+	Tooltip: ""
+	DisplayName: Gintzl Metal
+}
+
+FrileOre: {
+	Tooltip: ""
+	DisplayName: Frile Ore
+}
+
+FrileBar: {
+	Tooltip: ""
+	DisplayName: Frile Bar
+}
+
+WillowOfTheSouls: {
+	Tooltip: ""
+	DisplayName: Willow Of The Souls
+}
+
+TungstenWand: {
+	Tooltip: ""
+	DisplayName: Tungsten Wand
+}
+
+ThePingler: {
+	Tooltip: ""
+	DisplayName: The Pingler
+}
+
+Snowflake: {
+	Tooltip: ""
+	DisplayName: Snowflake
+}
+
+SilverWand: {
+	Tooltip: ""
+	DisplayName: Silver Wand
+}
+
+RewinderStaff: {
+	Tooltip: ""
+	DisplayName: Rewinder Staff
+}
+
+RainsyStaff: {
+	Tooltip: ""
+	DisplayName: Rainsy Staff
+}
+
+PlatinumWand: {
+	Tooltip: ""
+	DisplayName: Platinum Wand
+}
+
+MothwingStaff: {
+	Tooltip: ""
+	DisplayName: Mothwing Staff
+}
+
+MirrorStaff: {
+	Tooltip: ""
+	DisplayName: Mirror Staff
+}
+
+LeadWand: {
+	Tooltip: ""
+	DisplayName: Lead Wand
+}
+
+IronWand: {
+	Tooltip: ""
+	DisplayName: Iron Wand
+}
+
+HexxingStaff: {
+	Tooltip: ""
+	DisplayName: Hexxing Staff
+}
+
+GoldWand: {
+	Tooltip: ""
+	DisplayName: Gold Wand
+}
+
+Ghettingberg: {
+	Tooltip: ""
+	DisplayName: Ghettingberg
+}
+
+FoxNMagic: {
+	Tooltip: ""
+	DisplayName: Fox N Magic
+}
+
+CrowEggStaff: {
+	Tooltip: ""
+	DisplayName: Crow Egg Staff
+}
+
+CrescentStaff: {
+	Tooltip: ""
+	DisplayName: Crescent Staff
+}
+
+ChalicemanSepter: {
+	Tooltip: ""
+	DisplayName: Chaliceman Septer
+}
+
+CelestiaWand: {
+	Tooltip: ""
+	DisplayName: Celestia Wand
+}
+
+BloodletSepter: {
+	Tooltip: ""
+	DisplayName: Bloodlet Septer
+}
+
+SynergyTooltipItem: {
+	Tooltip: ""
+	DisplayName: Synergy Tooltip Item
+}
+
+WinterbornShard: {
+	Tooltip: ""
+	DisplayName: Winterborn Shard
+}
+
+VeriplantGrassWall: {
+	Tooltip: ""
+	DisplayName: Veriplant Grass Wall
+}
+
+VeriplantGrassBlock: {
+	Tooltip: ""
+	DisplayName: Veriplant Grass Block
+}
+
+VeriplantDirtBlock: {
+	Tooltip: ""
+	DisplayName: Veriplant Dirt Block
+}
+
+VerianWood: {
+	Tooltip: ""
+	DisplayName: Verian Wood
+}
+
+VerianRuneBlock: {
+	Tooltip: ""
+	DisplayName: Verian Rune Block
+}
+
+VeilBrick: {
+	Tooltip: ""
+	DisplayName: Veil Brick
+}
+
+TerrorFragments: {
+	Tooltip: ""
+	DisplayName: Terror Fragments
+}
+
+Stelleanbrick: {
+	Tooltip: ""
+	DisplayName: Stelleanbrick
+}
+
+StarbloomTempleBlock: {
+	Tooltip: ""
+	DisplayName: Starbloom Temple Block
+}
+
+StarbloomDirtBlock: {
+	Tooltip: ""
+	DisplayName: Starbloom Dirt Block
+}
+
+StarbloomBlock: {
+	Tooltip: ""
+	DisplayName: Starbloom Block
+}
+
+SeavathanBlock: {
+	Tooltip: ""
+	DisplayName: Seavathan Block
+}
+
+RobedSandstone: {
+	Tooltip: ""
+	DisplayName: Robed Sandstone
+}
+
+RobedCatastone: {
+	Tooltip: ""
+	DisplayName: Robed Catastone
+}
+
+RareLunarStone: {
+	Tooltip: ""
+	DisplayName: Rare Lunar Stone
+}
+
+OvermorrowWood: {
+	Tooltip: ""
+	DisplayName: Overmorrow Wood
+}
+
+OvermorrowWall: {
+	Tooltip: ""
+	DisplayName: Overmorrow Wall
+}
+
+OvermorrowdirtwallBlock: {
+	Tooltip: ""
+	DisplayName: Overmorrowdirtwall Block
+}
+
+OvermorrowDirt: {
+	Tooltip: ""
+	DisplayName: Overmorrow Dirt
+}
+
+NoxianWood: {
+	Tooltip: ""
+	DisplayName: Noxian Wood
+}
+
+MossyStones: {
+	Tooltip: ""
+	DisplayName: Mossy Stones
+}
+
+MoldTooltipItem: {
+	Tooltip: ""
+	DisplayName: Mold Tooltip Item
+}
+
+BlankSword: {
+	Tooltip: ""
+	DisplayName: Blank Sword
+}
+
+BlankStein: {
+	Tooltip: ""
+	DisplayName: Blank Stein
+}
+
+BlankStaff: {
+	Tooltip: ""
+	DisplayName: Blank Staff
+}
+
+BlankShield: {
+	Tooltip: ""
+	DisplayName: Blank Shield
+}
+
+BlankSafunai: {
+	Tooltip: ""
+	DisplayName: Blank Safunai
+}
+
+BlankRune: {
+	Tooltip: ""
+	DisplayName: Blank Rune
+}
+
+BlankOrb: {
+	Tooltip: ""
+	DisplayName: Blank Orb
+}
+
+BlankJuggler: {
+	Tooltip: ""
+	DisplayName: Blank Juggler
+}
+
+BlankGun: {
+	Tooltip: ""
+	DisplayName: Blank Gun
+}
+
+BlankCrossbow: {
+	Tooltip: ""
+	DisplayName: Blank Crossbow
+}
+
+BlankCard: {
+	Tooltip: ""
+	DisplayName: Blank Card
+}
+
+BlankBrooch: {
+	Tooltip: ""
+	DisplayName: Blank Brooch
+}
+
+BlankBow: {
+	Tooltip: ""
+	DisplayName: Blank Bow
+}
+
+BlankBag: {
+	Tooltip: ""
+	DisplayName: Blank Bag
+}
+
+BlankAccessory: {
+	Tooltip: ""
+	DisplayName: Blank Accessory
+}
+
+MiracleThread: {
+	Tooltip: ""
+	DisplayName: Miracle Thread
+}
+
+Medal: {
+	Tooltip: ""
+	DisplayName: Medal
+}
+
+LunarStone: {
+	Tooltip: ""
+	DisplayName: Lunar Stone
+}
+
+IshtarBlock: {
+	Tooltip: ""
+	DisplayName: Ishtar Block
+}
+
+IllurineScale: {
+	Tooltip: ""
+	DisplayName: Illurine Scale
+}
+
+IlluriaWoodBlock: {
+	Tooltip: ""
+	DisplayName: Illuria Wood Block
+}
+
+IlluriaRuneBlock: {
+	Tooltip: ""
+	DisplayName: Illuria Rune Block
+}
+
+IlluriaLeaves: {
+	Tooltip: ""
+	DisplayName: Illuria Leaves
+}
+
+IlluriaGrassBlock: {
+	Tooltip: ""
+	DisplayName: Illuria Grass Block
+}
+
+IlluriaDirtWallBlock: {
+	Tooltip: ""
+	DisplayName: Illuria Dirt Wall Block
+}
+
+IlluriaDirtBlock: {
+	Tooltip: ""
+	DisplayName: Illuria Dirt Block
+}
+
+HuntiacwallBlock: {
+	Tooltip: ""
+	DisplayName: Huntiacwall Block
+}
+
+HuntiacBlock: {
+	Tooltip: ""
+	DisplayName: Huntiac Block
+}
+
+GovheilPlatformBlock: {
+	Tooltip: ""
+	DisplayName: Govheil Platform Block
+}
+
+GovheilBlock: {
+	Tooltip: ""
+	DisplayName: Govheil Block
+}
+
+DrakonicBlock: {
+	Tooltip: ""
+	DisplayName: Drakonic Block
+}
+
+ConvulgingMater: {
+	Tooltip: ""
+	DisplayName: Convulging Mater
+}
+
+ChiseledStoneBlock: {
+	Tooltip: ""
+	DisplayName: Chiseled Stone Block
+}
+
+Catagrass: {
+	Tooltip: ""
+	DisplayName: Catagrass
+}
+
+CatacombTrapStoneBlock: {
+	Tooltip: ""
+	DisplayName: Catacomb Trap Stone Block
+}
+
+CatacombHeatStoneBlock: {
+	Tooltip: ""
+	DisplayName: Catacomb Heat Stone Block
+}
+
+CatacombAquaStoneBlock: {
+	Tooltip: ""
+	DisplayName: Catacomb Aqua Stone Block
+}
+
+CarianWoodWall: {
+	Tooltip: ""
+	DisplayName: Carian Wood Wall
+}
+
+CarianWood: {
+	Tooltip: ""
+	DisplayName: Carian Wood
+}
+
+BlackWallBlock: {
+	Tooltip: ""
+	DisplayName: Black Wall Block
+}
+
+AncientLunarStone: {
+	Tooltip: ""
+	DisplayName: Ancient Lunar Stone
+}
+
+AlcaricMush: {
+	Tooltip: ""
+	DisplayName: Alcaric Mush
+}
+
+AlcadzBlock: {
+	Tooltip: ""
+	DisplayName: Alcadz Block
+}
+
+AlcadizScrap: {
+	Tooltip: ""
+	DisplayName: Alcadiz Scrap
+}
+
+AcidicalDirtBlock: {
+	Tooltip: ""
+	DisplayName: Acidical Dirt Block
+}
+
+Cinderscrap: {
+	Tooltip: ""
+	DisplayName: Cinderscrap
+}
+
+VitalityInsource: {
+	Tooltip: ""
+	DisplayName: Vitality Insource
+}
+
+VialedInsource: {
+	Tooltip: ""
+	DisplayName: Vialed Insource
+}
+
+HealthyInsource: {
+	Tooltip: ""
+	DisplayName: Healthy Insource
+}
+
+FloweredInsource: {
+	Tooltip: ""
+	DisplayName: Flowered Insource
+}
+
+EpsidonInsource: {
+	Tooltip: ""
+	DisplayName: Epsidon Insource
+}
+
+STARBOMBERDisc: {
+	Tooltip: ""
+	DisplayName: S T A R B O M B E R Disc
+}
+
+PunkerSteamDisc: {
+	Tooltip: ""
+	DisplayName: Punker Steam Disc
+}
+
+IshtarDisc: {
+	Tooltip: ""
+	DisplayName: Ishtar Disc
+}
+
+GovheilCastleDisc: {
+	Tooltip: ""
+	DisplayName: Govheil Castle Disc
+}
+
+GothiviaDisc: {
+	Tooltip: ""
+	DisplayName: Gothivia Disc
+}
+
+GintzicaneDisc: {
+	Tooltip: ""
+	DisplayName: Gintzicane Disc
+}
+
+EreshkigalDisc: {
+	Tooltip: ""
+	DisplayName: Ereshkigal Disc
+}
+
+EndingDisc: {
+	Tooltip: ""
+	DisplayName: Ending Disc
+}
+
+DreadHeartDisc: {
+	Tooltip: ""
+	DisplayName: Dread Heart Disc
+}
+
+DaedusDisc: {
+	Tooltip: ""
+	DisplayName: Daedus Disc
+}
+
+CountingStarsDisc: {
+	Tooltip: ""
+	DisplayName: Counting Stars Disc
+}
+
+CindersparkDisc: {
+	Tooltip: ""
+	DisplayName: Cinderspark Disc
+}
+
+CatacombsDisc: {
+	Tooltip: ""
+	DisplayName: Catacombs Disc
+}
+
+BloodCathedralDisc: {
+	Tooltip: ""
+	DisplayName: Blood Cathedral Disc
+}
+
+AurelusTempleDisc: {
+	Tooltip: ""
+	DisplayName: Aurelus Temple Disc
+}
+
+AurelusBiomeDisc: {
+	Tooltip: ""
+	DisplayName: Aurelus Biome Disc
+}
+
+AshotiDisc: {
+	Tooltip: ""
+	DisplayName: Ashoti Disc
+}
+
+AlcaricFoxDisc: {
+	Tooltip: ""
+	DisplayName: Alcaric Fox Disc
+}
+
+AlcadizHurricaneDisc: {
+	Tooltip: ""
+	DisplayName: Alcadiz Hurricane Disc
+}
+
+ADemiseDisc: {
+	Tooltip: ""
+	DisplayName: A Demise Disc
+}
+
+StoneKey: {
+	Tooltip: ""
+	DisplayName: Stone Key
+}
+
+IllurineBrew: {
+	Tooltip: ""
+	DisplayName: Illurine Brew
+}
+
+GlisteningPearl: {
+	Tooltip: ""
+	DisplayName: Glistening Pearl
+}
+
+FocalCrystalWater: {
+	Tooltip: ""
+	DisplayName: Focal Crystal Water
+}
+
+FocalCrystalTrap: {
+	Tooltip: ""
+	DisplayName: Focal Crystal Trap
+}
+
+FocalCrystalFire: {
+	Tooltip: ""
+	DisplayName: Focal Crystal Fire
+}
+
+CrystalStar: {
+	Tooltip: ""
+	DisplayName: Crystal Star
+}
+
+XexterianLeggings: {
+	Tooltip: ""
+	DisplayName: Xexterian Leggings
+}
+
+XexterianHeatplate: {
+	Tooltip: ""
+	DisplayName: Xexterian Heatplate
+}
+
+XexterianHat: {
+	Tooltip: ""
+	DisplayName: Xexterian Hat
+}
+
+WitchenRobe: {
+	Tooltip: ""
+	DisplayName: Witchen Robe
+}
+
+WitchenPants: {
+	Tooltip: ""
+	DisplayName: Witchen Pants
+}
+
+WitchenHat: {
+	Tooltip: ""
+	DisplayName: Witchen Hat
+}
+
+WinterbornLegs: {
+	Tooltip: ""
+	DisplayName: Winterborn Legs
+}
+
+WinterbornHead: {
+	Tooltip: ""
+	DisplayName: Winterborn Head
+}
+
+WinterbornBody: {
+	Tooltip: ""
+	DisplayName: Winterborn Body
+}
+
+WindmillionRobe: {
+	Tooltip: ""
+	DisplayName: Windmillion Robe
+}
+
+WindmillionHat: {
+	Tooltip: ""
+	DisplayName: Windmillion Hat
+}
+
+WindmillionBoots: {
+	Tooltip: ""
+	DisplayName: Windmillion Boots
+}
+
+VextinRobe: {
+	Tooltip: ""
+	DisplayName: Vextin Robe
+}
+
+VextinMask: {
+	Tooltip: ""
+	DisplayName: Vextin Mask
+}
+
+VextinBoots: {
+	Tooltip: ""
+	DisplayName: Vextin Boots
+}
+
+VerlMask: {
+	Tooltip: ""
+	DisplayName: Verl Mask
+}
+
+VerlLeggings: {
+	Tooltip: ""
+	DisplayName: Verl Leggings
+}
+
+VerlHat: {
+	Tooltip: ""
+	DisplayName: Verl Hat
+}
+
+VerlBreastplate: {
+	Tooltip: ""
+	DisplayName: Verl Breastplate
+}
+
+VerliaHat: {
+	Tooltip: ""
+	DisplayName: Verlia Hat
+}
+
+MagiciansCodeHat: {
+	Tooltip: ""
+	DisplayName: Magicians Code Hat
+}
+
+SolarianPants: {
+	Tooltip: ""
+	DisplayName: Solarian Pants
+}
+
+SolarianHat: {
+	Tooltip: ""
+	DisplayName: Solarian Hat
+}
+
+SolarianChestplate: {
+	Tooltip: ""
+	DisplayName: Solarian Chestplate
+}
+
+NyxiaThighs: {
+	Tooltip: ""
+	DisplayName: Nyxia Thighs
+}
+
+NyxiaRobe: {
+	Tooltip: ""
+	DisplayName: Nyxia Robe
+}
+
+NyxiaHat: {
+	Tooltip: ""
+	DisplayName: Nyxia Hat
+}
+
+Twirlers: {
+	Tooltip: ""
+	DisplayName: Twirlers
+}
+
+GiaWig: {
+	Tooltip: ""
+	DisplayName: Gia Wig
+}
+
+GiaSuit: {
+	Tooltip: ""
+	DisplayName: Gia Suit
+}
+
+GiaPants: {
+	Tooltip: ""
+	DisplayName: Gia Pants
+}
+
+AzaleanLeggings: {
+	Tooltip: ""
+	DisplayName: Azalean Leggings
+}
+
+AzaleanHat: {
+	Tooltip: ""
+	DisplayName: Azalean Hat
+}
+
+AzaleanChestplate: {
+	Tooltip: ""
+	DisplayName: Azalean Chestplate
+}
+
+AstolfoSkirt: {
+	Tooltip: ""
+	DisplayName: Astolfo Skirt
+}
+
+AstolfoMask: {
+	Tooltip: ""
+	DisplayName: Astolfo Mask
+}
+
+AstolfoBody: {
+	Tooltip: ""
+	DisplayName: Astolfo Body
+}
+
+AimacraWig: {
+	Tooltip: ""
+	DisplayName: Aimacra Wig
+}
+
+UlvenHelmet: {
+	Tooltip: ""
+	DisplayName: Ulven Helmet
+}
+
+UlvenGreaves: {
+	Tooltip: ""
+	DisplayName: Ulven Greaves
+}
+
+UlvenChestplate: {
+	Tooltip: ""
+	DisplayName: Ulven Chestplate
+}
+
+TerricLegs: {
+	Tooltip: ""
+	DisplayName: Terric Legs
+}
+
+TerricHead: {
+	Tooltip: ""
+	DisplayName: Terric Head
+}
+
+TerricBody: {
+	Tooltip: ""
+	DisplayName: Terric Body
+}
+
+StoniaHat: {
+	Tooltip: ""
+	DisplayName: Stonia Hat
+}
+
+StoniaChestplate: {
+	Tooltip: ""
+	DisplayName: Stonia Chestplate
+}
+
+StoniaBoots: {
+	Tooltip: ""
+	DisplayName: Stonia Boots
+}
+
+ShadeWraithLegs: {
+	Tooltip: ""
+	DisplayName: Shade Wraith Legs
+}
+
+ShadeWraithHead: {
+	Tooltip: ""
+	DisplayName: Shade Wraith Head
+}
+
+ShadeWraithBody: {
+	Tooltip: ""
+	DisplayName: Shade Wraith Body
+}
+
+ScrappyLegs: {
+	Tooltip: ""
+	DisplayName: Scrappy Legs
+}
+
+ScrappyHead: {
+	Tooltip: ""
+	DisplayName: Scrappy Head
+}
+
+ScrappyBody: {
+	Tooltip: ""
+	DisplayName: Scrappy Body
+}
+
+ScissorianMask: {
+	Tooltip: ""
+	DisplayName: Scissorian Mask
+}
+
+ScissorianGreaves: {
+	Tooltip: ""
+	DisplayName: Scissorian Greaves
+}
+
+ScissorianChestplate: {
+	Tooltip: ""
+	DisplayName: Scissorian Chestplate
+}
+
+GintzeMask: {
+	Tooltip: ""
+	DisplayName: Gintze Mask
+}
+
+MiracleHead: {
+	Tooltip: ""
+	DisplayName: Miracle Head
+}
+
+MiracleBody: {
+	Tooltip: ""
+	DisplayName: Miracle Body
+}
+
+MardenthRobe: {
+	Tooltip: ""
+	DisplayName: Mardenth Robe
+}
+
+MardenthPants: {
+	Tooltip: ""
+	DisplayName: Mardenth Pants
+}
+
+MardenthMask: {
+	Tooltip: ""
+	DisplayName: Mardenth Mask
+}
+
+LunarianVoidLegs: {
+	Tooltip: ""
+	DisplayName: Lunarian Void Legs
+}
+
+LunarianVoidHead: {
+	Tooltip: ""
+	DisplayName: Lunarian Void Head
+}
+
+LunarianVoidBody: {
+	Tooltip: ""
+	DisplayName: Lunarian Void Body
+}
+
+LovestruckMask: {
+	Tooltip: ""
+	DisplayName: Lovestruck Mask
+}
+
+LovestruckLegs: {
+	Tooltip: ""
+	DisplayName: Lovestruck Legs
+}
+
+LovestruckBreastplate: {
+	Tooltip: ""
+	DisplayName: Lovestruck Breastplate
+}
+
+LeatherLegs: {
+	Tooltip: ""
+	DisplayName: Leather Legs
+}
+
+LeatherHead: {
+	Tooltip: ""
+	DisplayName: Leather Head
+}
+
+LeatherBody: {
+	Tooltip: ""
+	DisplayName: Leather Body
+}
+
+JianxinPants: {
+	Tooltip: ""
+	DisplayName: Jianxin Pants
+}
+
+JianxinMask: {
+	Tooltip: ""
+	DisplayName: Jianxin Mask
+}
+
+JianxinCoat: {
+	Tooltip: ""
+	DisplayName: Jianxin Coat
+}
+
+IllurianWarriorHelm: {
+	Tooltip: ""
+	DisplayName: Illurian Warrior Helm
+}
+
+IllurianWarriorGreaves: {
+	Tooltip: ""
+	DisplayName: Illurian Warrior Greaves
+}
+
+IllurianWarriorChestplate: {
+	Tooltip: ""
+	DisplayName: Illurian Warrior Chestplate
+}
+
+IllurianCrestplate: {
+	Tooltip: ""
+	DisplayName: Illurian Crestplate
+}
+
+IllurianCrestpants: {
+	Tooltip: ""
+	DisplayName: Illurian Crestpants
+}
+
+IllurianCrestmask: {
+	Tooltip: ""
+	DisplayName: Illurian Crestmask
+}
+
+HuntrianHelmet: {
+	Tooltip: ""
+	DisplayName: Huntrian Helmet
+}
+
+HuntrianChestplate: {
+	Tooltip: ""
+	DisplayName: Huntrian Chestplate
+}
+
+HuntrianBoots: {
+	Tooltip: ""
+	DisplayName: Huntrian Boots
+}
+
+HeavyMetalLegs: {
+	Tooltip: ""
+	DisplayName: Heavy Metal Legs
+}
+
+HeavyMetalHead: {
+	Tooltip: ""
+	DisplayName: Heavy Metal Head
+}
+
+HeavyMetalBody: {
+	Tooltip: ""
+	DisplayName: Heavy Metal Body
+}
+
+GovheilThighs: {
+	Tooltip: ""
+	DisplayName: Govheil Thighs
+}
+
+GovheilMask: {
+	Tooltip: ""
+	DisplayName: Govheil Mask
+}
+
+GovheilHelmet: {
+	Tooltip: ""
+	DisplayName: Govheil Helmet
+}
+
+GovheilChainplate: {
+	Tooltip: ""
+	DisplayName: Govheil Chainplate
+}
+
+GovheilBreastplate: {
+	Tooltip: ""
+	DisplayName: Govheil Breastplate
+}
+
+GarbagePants: {
+	Tooltip: ""
+	DisplayName: Garbage Pants
+}
+
+GarbageMask: {
+	Tooltip: ""
+	DisplayName: Garbage Mask
+}
+
+GarbageChestplate: {
+	Tooltip: ""
+	DisplayName: Garbage Chestplate
+}
+
+ForestCoreLegs: {
+	Tooltip: ""
+	DisplayName: Forest Core Legs
+}
+
+ForestCoreHead: {
+	Tooltip: ""
+	DisplayName: Forest Core Head
+}
+
+ForestCoreBody: {
+	Tooltip: ""
+	DisplayName: Forest Core Body
+}
+
+FlowerRobe: {
+	Tooltip: ""
+	DisplayName: Flower Robe
+}
+
+FlowerPants: {
+	Tooltip: ""
+	DisplayName: Flower Pants
+}
+
+FlowerHat: {
+	Tooltip: ""
+	DisplayName: Flower Hat
+}
+
+EldritchianLegs: {
+	Tooltip: ""
+	DisplayName: Eldritchian Legs
+}
+
+EldritchianHood: {
+	Tooltip: ""
+	DisplayName: Eldritchian Hood
+}
+
+EldritchianCloak: {
+	Tooltip: ""
+	DisplayName: Eldritchian Cloak
+}
+
+ElagentLegs: {
+	Tooltip: ""
+	DisplayName: Elagent Legs
+}
+
+ElagentHead: {
+	Tooltip: ""
+	DisplayName: Elagent Head
+}
+
+ElagentBody: {
+	Tooltip: ""
+	DisplayName: Elagent Body
+}
+
+DucanblitzThighs: {
+	Tooltip: ""
+	DisplayName: Ducanblitz Thighs
+}
+
+DucanblitzCap: {
+	Tooltip: ""
+	DisplayName: Ducanblitz Cap
+}
+
+DucanblitzBreastplate: {
+	Tooltip: ""
+	DisplayName: Ducanblitz Breastplate
+}
+
+DaediaThighs: {
+	Tooltip: ""
+	DisplayName: Daedia Thighs
+}
+
+DaediaMask: {
+	Tooltip: ""
+	DisplayName: Daedia Mask
+}
+
+DaediaBreastplate: {
+	Tooltip: ""
+	DisplayName: Daedia Breastplate
+}
+
+DaedenMask: {
+	Tooltip: ""
+	DisplayName: Daeden Mask
+}
+
+DaedenLegs: {
+	Tooltip: ""
+	DisplayName: Daeden Legs
+}
+
+DaedenChestplate: {
+	Tooltip: ""
+	DisplayName: Daeden Chestplate
+}
+
+CelestiaMoonMask: {
+	Tooltip: ""
+	DisplayName: Celestia Moon Mask
+}
+
+CelestiaMoonLegs: {
+	Tooltip: ""
+	DisplayName: Celestia Moon Legs
+}
+
+CelestiaMoonHelmet: {
+	Tooltip: ""
+	DisplayName: Celestia Moon Helmet
+}
+
+CelestiaMoonBreastplate: {
+	Tooltip: ""
+	DisplayName: Celestia Moon Breastplate
+}
+
+AstrasilkLegs: {
+	Tooltip: ""
+	DisplayName: Astrasilk Legs
+}
+
+AstrasilkHead: {
+	Tooltip: ""
+	DisplayName: Astrasilk Head
+}
+
+AstrasilkBody: {
+	Tooltip: ""
+	DisplayName: Astrasilk Body
+}
+
+ArtisanThighs: {
+	Tooltip: ""
+	DisplayName: Artisan Thighs
+}
+
+ArtisanMask: {
+	Tooltip: ""
+	DisplayName: Artisan Mask
+}
+
+ArtisanBreastplate: {
+	Tooltip: ""
+	DisplayName: Artisan Breastplate
+}
+
+AppretiencePants: {
+	Tooltip: ""
+	DisplayName: Appretience Pants
+}
+
+AppretienceHat: {
+	Tooltip: ""
+	DisplayName: Appretience Hat
+}
+
+AppretienceBreastplate: {
+	Tooltip: ""
+	DisplayName: Appretience Breastplate
+}
+
+AlsisMask: {
+	Tooltip: ""
+	DisplayName: Alsis Mask
+}
+
+AlsisGreaves: {
+	Tooltip: ""
+	DisplayName: Alsis Greaves
+}
+
+AlsisChestplate: {
+	Tooltip: ""
+	DisplayName: Alsis Chestplate
+}
+
+AlcaliteTrunks: {
+	Tooltip: ""
+	DisplayName: Alcalite Trunks
+}
+
+AlcaliteRobe: {
+	Tooltip: ""
+	DisplayName: Alcalite Robe
+}
+
+AlcaliteMask: {
+	Tooltip: ""
+	DisplayName: Alcalite Mask
+}
+
+VirulentLegs: {
+	Tooltip: ""
+	DisplayName: Virulent Legs
+}
+
+VirulentHelm: {
+	Tooltip: ""
+	DisplayName: Virulent Helm
+}
+
+VirulentArmor: {
+	Tooltip: ""
+	DisplayName: Virulent Armor
+}
+
+TitaniumBullet: {
+	Tooltip: ""
+	DisplayName: Titanium Bullet
+}
+
+SpacialDistortionBullet: {
+	Tooltip: ""
+	DisplayName: Spacial Distortion Bullet
+}
+
+RadiantArrow: {
+	Tooltip: ""
+	DisplayName: Radiant Arrow
+}
+
+LiliumArrow: {
+	Tooltip: ""
+	DisplayName: Lilium Arrow
+}
+
+IrradiatedArrow: {
+	Tooltip: ""
+	DisplayName: Irradiated Arrow
+}
+
+EldritchArrow: {
+	Tooltip: ""
+	DisplayName: Eldritch Arrow
+}
+
+DriveRound: {
+	Tooltip: ""
+	DisplayName: Drive Round
+}
+
+AdamantiteBullet: {
+	Tooltip: ""
+	DisplayName: Adamantite Bullet
+}
+
+PrimeRing: {
+	Tooltip: ""
+	DisplayName: Prime Ring
+}
+
+ZuiBomb: {
+	Tooltip: ""
+	DisplayName: Zui Bomb
+}
+
+ShadeWraithWings: {
+	Tooltip: ""
+	DisplayName: Shade Wraith Wings
+}
+
+SerpentWings: {
+	Tooltip: ""
+	DisplayName: Serpent Wings
+}
+
+RadianuiWings: {
+	Tooltip: ""
+	DisplayName: Radianui Wings
+}
+
+MiracleWings: {
+	Tooltip: ""
+	DisplayName: Miracle Wings
+}
+
+GothinWings: {
+	Tooltip: ""
+	DisplayName: Gothin Wings
+}
+
+DirtWings: {
+	Tooltip: ""
+	DisplayName: Dirt Wings
+}
+
+AntlionWings: {
+	Tooltip: ""
+	DisplayName: Antlion Wings
+}
+
+WindedQuiver: {
+	Tooltip: ""
+	DisplayName: Winded Quiver
+}
+
+VampireCharm: {
+	Tooltip: ""
+	DisplayName: Vampire Charm
+}
+
+TomeofRaining: {
+	Tooltip: ""
+	DisplayName: Tomeof Raining
+}
+
+ThornedBook: {
+	Tooltip: ""
+	DisplayName: Thorned Book
+}
+
+SunGlyph: {
+	Tooltip: ""
+	DisplayName: Sun Glyph
+}
+
+Steali: {
+	Tooltip: ""
+	DisplayName: Steali
+}
+
+StarflareBand: {
+	Tooltip: ""
+	DisplayName: Starflare Band
+}
+
+SpiritPendent: {
+	Tooltip: ""
+	DisplayName: Spirit Pendent
+}
+
+SoulStrideres: {
+	Tooltip: ""
+	DisplayName: Soul Strideres
+}
+
+SirestiasMask: {
+	Tooltip: ""
+	DisplayName: Sirestias Mask
+}
+
+ShellSheid: {
+	Tooltip: ""
+	DisplayName: Shell Sheid
+}
+
+ShadowCloak: {
+	Tooltip: ""
+	DisplayName: Shadow Cloak
+}
+
+ShadeScarf: {
+	Tooltip: ""
+	DisplayName: Shade Scarf
+}
+
+ShadeCharm: {
+	Tooltip: ""
+	DisplayName: Shade Charm
+}
+
+SewingKit: {
+	Tooltip: ""
+	DisplayName: Sewing Kit
+}
+
+SawtoothNecklace: {
+	Tooltip: ""
+	DisplayName: Sawtooth Necklace
+}
+
+SapContainer: {
+	Tooltip: ""
+	DisplayName: Sap Container
+}
+
+RuneOfWind: {
+	Tooltip: ""
+	DisplayName: Rune Of Wind
+}
+
+RuneOfStealth: {
+	Tooltip: ""
+	DisplayName: Rune Of Stealth
+}
+
+RuneOfShade: {
+	Tooltip: ""
+	DisplayName: Rune Of Shade
+}
+
+RuneOfReality: {
+	Tooltip: ""
+	DisplayName: Rune Of Reality
+}
+
+RuneOfDetonation: {
+	Tooltip: ""
+	DisplayName: Rune Of Detonation
+}
+
+RuneOfCorsage: {
+	Tooltip: ""
+	DisplayName: Rune Of Corsage
+}
+
+RadiantsparkBoots: {
+	Tooltip: ""
+	DisplayName: Radiantspark Boots
+}
+
+Radiant: {
+	DisplayName: Radiant
+	Tooltip: ""
+}
+
+PlantH: {
+	Tooltip: ""
+	DisplayName: Plant H
+}
+
+PicturePerfectIII: {
+	Tooltip: ""
+	DisplayName: Picture Perfect I I I
+}
+
+PicturePerfectII: {
+	Tooltip: ""
+	DisplayName: Picture Perfect I I
+}
+
+PicturePerfectI: {
+	Tooltip: ""
+	DisplayName: Picture Perfect I
+}
+
+PaperPaws: {
+	Tooltip: ""
+	DisplayName: Paper Paws
+}
+
+OnionOfUselessness: {
+	Tooltip: ""
+	DisplayName: Onion Of Uselessness
+}
+
+OnionOfStrength: {
+	Tooltip: ""
+	DisplayName: Onion Of Strength
+}
+
+OnionOfSight: {
+	Tooltip: ""
+	DisplayName: Onion Of Sight
+}
+
+OnionOfHeight: {
+	Tooltip: ""
+	DisplayName: Onion Of Height
+}
+
+OceansTrinket: {
+	Tooltip: ""
+	DisplayName: Oceans Trinket
+}
+
+OceanScroll: {
+	Tooltip: ""
+	DisplayName: Ocean Scroll
+}
+
+MOTT: {
+	Tooltip: ""
+	DisplayName: M O T T
+}
+
+LunarBand: {
+	Tooltip: ""
+	DisplayName: Lunar Band
+}
+
+LittleScissor: {
+	Tooltip: ""
+	DisplayName: Little Scissor
+}
+
+LeatherGlove: {
+	Tooltip: ""
+	DisplayName: Leather Glove
+}
+
+KnivedQuiver: {
+	Tooltip: ""
+	DisplayName: Knived Quiver
+}
+
+JellyfishTissue: {
+	Tooltip: ""
+	DisplayName: Jellyfish Tissue
+}
+
+IridineNecklace: {
+	Tooltip: ""
+	DisplayName: Iridine Necklace
+}
+
+IllusionistBook: {
+	Tooltip: ""
+	DisplayName: Illusionist Book
+}
+
+IllurineHoops: {
+	Tooltip: ""
+	DisplayName: Illurine Hoops
+}
+
+IllurianLoveLocket: {
+	Tooltip: ""
+	DisplayName: Illurian Love Locket
+}
+
+TomedDustingMagic: {
+	Tooltip: ""
+	DisplayName: Tomed Dusting Magic
+}
+
+TomedDustingFlames: {
+	Tooltip: ""
+	DisplayName: Tomed Dusting Flames
+}
+
+ReverieExtenderPowder: {
+	Tooltip: ""
+	DisplayName: Reverie Extender Powder
+}
+
+OceanicExtenderPowder: {
+	Tooltip: ""
+	DisplayName: Oceanic Extender Powder
+}
+
+MushyExtenderPowder: {
+	Tooltip: ""
+	DisplayName: Mushy Extender Powder
+}
+
+MidfortuneExtenderPowder: {
+	Tooltip: ""
+	DisplayName: Midfortune Extender Powder
+}
+
+GremoryExtenderPowder: {
+	Tooltip: ""
+	DisplayName: Gremory Extender Powder
+}
+
+GrailedExtenderPowder: {
+	Tooltip: ""
+	DisplayName: Grailed Extender Powder
+}
+
+BonedExtenderPowder: {
+	Tooltip: ""
+	DisplayName: Boned Extender Powder
+}
+
+IceClimbers: {
+	Tooltip: ""
+	DisplayName: Ice Climbers
+}
+
+HikersBackpack: {
+	Tooltip: ""
+	DisplayName: Hikers Backpack
+}
+
+Heatspot: {
+	Tooltip: ""
+	DisplayName: Heatspot
+}
+
+GovhenShield: {
+	Tooltip: ""
+	DisplayName: Govhen Shield
+}
+
+FoxMark: {
+	Tooltip: ""
+	DisplayName: Fox Mark
+}
+
+Bread: {
+	Tooltip: ""
+	DisplayName: Bread
+}
+
+BowledCream: {
+	Tooltip: ""
+	DisplayName: Bowled Cream
+}
+
+FiveAdvance: {
+	Tooltip: ""
+	DisplayName: Five Advance
+}
+
+ElectricCrystal: {
+	Tooltip: ""
+	DisplayName: Electric Crystal
+}
+
+CoralBand: {
+	Tooltip: ""
+	DisplayName: Coral Band
+}
+
+ClamsPearl: {
+	Tooltip: ""
+	DisplayName: Clams Pearl
+}
+
+CinderedQuiver: {
+	Tooltip: ""
+	DisplayName: Cindered Quiver
+}
+
+CharmofRot: {
+	Tooltip: ""
+	DisplayName: Charmof Rot
+}
+
+CelestiasWeddingRing: {
+	Tooltip: ""
+	DisplayName: Celestias Wedding Ring
+}
+
+WaterproofHeadphones: {
+	Tooltip: ""
+	DisplayName: Waterproof Headphones
+}
+
+TyphoonInABottle: {
+	Tooltip: ""
+	DisplayName: Typhoon In A Bottle
+}
+
+SpikedEmblem: {
+	Tooltip: ""
+	DisplayName: Spiked Emblem
+}
+
+Panacea: {
+	Tooltip: ""
+	DisplayName: Panacea
+}
+
+OceancrestShield: {
+	Tooltip: ""
+	DisplayName: Oceancrest Shield
+}
+
+IcarusFeather: {
+	Tooltip: ""
+	DisplayName: Icarus Feather
+}
+
+FlamecrestShield: {
+	Tooltip: ""
+	DisplayName: Flamecrest Shield
+}
+
+FireEmblem: {
+	Tooltip: ""
+	DisplayName: Fire Emblem
+}
+
+Cleats: {
+	Tooltip: ""
+	DisplayName: Cleats
+}
+
+Bonfire: {
+	Tooltip: ""
+	DisplayName: Bonfire
+}
+
+Barry: {
+	Tooltip: ""
+	DisplayName: Barry
+}
+
+AquaticEmblem: {
+	Tooltip: ""
+	DisplayName: Aquatic Emblem
+}
+
+BurningScarf: {
+	Tooltip: ""
+	DisplayName: Burning Scarf
+}
+
+WoodyBroochA: {
+	Tooltip: ""
+	DisplayName: Woody Brooch A
+}
+
+VixedBroochA: {
+	Tooltip: ""
+	DisplayName: Vixed Brooch A
+}
+
+VillagersBroochA: {
+	Tooltip: ""
+	DisplayName: Villagers Brooch A
+}
+
+VerliaBroochA: {
+	Tooltip: ""
+	DisplayName: Verlia Brooch A
+}
+
+StoningFlyBroochA: {
+	Tooltip: ""
+	DisplayName: Stoning Fly Brooch A
+}
+
+StoniaBroochA: {
+	Tooltip: ""
+	DisplayName: Stonia Brooch A
+}
+
+SpragaldBroochA: {
+	Tooltip: ""
+	DisplayName: Spragald Brooch A
+}
+
+SlimeBroochA: {
+	Tooltip: ""
+	DisplayName: Slime Brooch A
+}
+
+SandyBroochA: {
+	Tooltip: ""
+	DisplayName: Sandy Brooch A
+}
+
+SandyBearBroochA: {
+	Tooltip: ""
+	DisplayName: Sandy Bear Brooch A
+}
+
+RoseBroochA: {
+	Tooltip: ""
+	DisplayName: Rose Brooch A
+}
+
+RadiatedBroochesBackpack: {
+	Tooltip: ""
+	DisplayName: Radiated Brooches Backpack
+}
+
+MorrowedJelliesBroochA: {
+	Tooltip: ""
+	DisplayName: Morrowed Jellies Brooch A
+}
+
+MorrowedBroochA: {
+	Tooltip: ""
+	DisplayName: Morrowed Brooch A
+}
+
+MalShieldBroochA: {
+	Tooltip: ""
+	DisplayName: Mal Shield Brooch A
+}
+
+MagicalBroochA: {
+	Tooltip: ""
+	DisplayName: Magical Brooch A
+}
+
+LuckyWinnerBroochA: {
+	Tooltip: ""
+	DisplayName: Lucky Winner Brooch A
+}
+
+KilliaBroochA: {
+	Tooltip: ""
+	DisplayName: Killia Brooch A
+}
+
+IllurianBroochA: {
+	Tooltip: ""
+	DisplayName: Illurian Brooch A
+}
+
+HeatedVerliaBroochA: {
+	Tooltip: ""
+	DisplayName: Heated Verlia Brooch A
+}
+
+GovheilWarriorBroochA: {
+	Tooltip: ""
+	DisplayName: Govheil Warrior Brooch A
+}
+
+GovheilHolsterBroochA: {
+	Tooltip: ""
+	DisplayName: Govheil Holster Brooch A
+}
+
+GintzlBroochA: {
+	Tooltip: ""
+	DisplayName: Gintzl Brooch A
+}
+
+FrileBroochA: {
+	Tooltip: ""
+	DisplayName: Frile Brooch A
+}
+
+FlyingFishBroochA: {
+	Tooltip: ""
+	DisplayName: Flying Fish Brooch A
+}
+
+DreadBroochA: {
+	Tooltip: ""
+	DisplayName: Dread Brooch A
+}
+
+DiariBroochA: {
+	Tooltip: ""
+	DisplayName: Diari Brooch A
+}
+
+DefensiveGraditudeBroochA: {
+	Tooltip: ""
+	DisplayName: Defensive Graditude Brooch A
+}
+
+BurningGBroochA: {
+	Tooltip: ""
+	DisplayName: Burning G Brooch A
+}
+
+BonedThrowBroochA: {
+	Tooltip: ""
+	DisplayName: Boned Throw Brooch A
+}
+
+BearBroochA: {
+	Tooltip: ""
+	DisplayName: Bear Brooch A
+}
+
+AurockBroochA: {
+	Tooltip: ""
+	DisplayName: Aurock Brooch A
+}
+
+AurelusBlightBroochA: {
+	Tooltip: ""
+	DisplayName: Aurelus Blight Brooch A
+}
+
+AmethystBroochA: {
+	Tooltip: ""
+	DisplayName: Amethyst Brooch A
+}
+
+AmberBroochA: {
+	Tooltip: ""
+	DisplayName: Amber Brooch A
+}
+
+AdvancedBroochesBackpack: {
+	Tooltip: ""
+	DisplayName: Advanced Brooches Backpack
+}
+
+BottleOfGrail: {
+	Tooltip: ""
+	DisplayName: Bottle Of Grail
+}
+
+ArncharSuperCharger: {
+	Tooltip: ""
+	DisplayName: Arnchar Super Charger
+}
+
+AquaticHealingNecklace: {
+	Tooltip: ""
+	DisplayName: Aquatic Healing Necklace
+}
+
+AquaCrystal: {
+	Tooltip: ""
+	DisplayName: Aqua Crystal
+}
+
+Alcanine: {
+	Tooltip: ""
+	DisplayName: Alcanine
+}
+
+LittleWand: {
+	Tooltip: ""
+	DisplayName: Little Wand
+}
+
+BlackRose: {
+	Tooltip: ""
+	DisplayName: Black Rose
+}
+
+BlackManaRose: {
+	Tooltip: ""
+	DisplayName: Black Mana Rose
+}
+
+AlcaricQuiver: {
+	Tooltip: ""
+	DisplayName: Alcaric Quiver
+}
+
+AcidStaketers: {
+	Tooltip: ""
+	DisplayName: Acid Staketers
+}
+
+SaveItem: {
+	Tooltip: ""
+	DisplayName: Save Item
+}
+
+PlaceItem: {
+	Tooltip: ""
+	DisplayName: Place Item
+}
+
+QuestResetter: {
+	Tooltip: ""
+	DisplayName: Quest Resetter
+}
+
+AshotiMedallionFragment: {
+	Effect: When hitting enemies, flying objects will surround you and create a barrier, giving you invulnerability for each object, maximun is 3, takes 1.5 minutes each to regenerate
+	DisplayName: Ashoti Medallion Fragment
+	Tooltip: ""
+}
+
+GintziaMedallionFragment: {
+	Effect: Gain a carpet that allows you to ride along the ground and skies for a prolonged period of time but is very slow and cannot gain vertical movement
+	DisplayName: Gintzia Medallion Fragment
+	Tooltip: ""
+}
+
+GothiviaMedallionFragment: {
+	Effect: Strike enemies, gain bleeding strikes that can take out percentages of enemies AND bosses' health bars taking out 15% after hitting bosses multiple times. There is a 2 minute cooldown on this effect
+	DisplayName: Gothivia Medallion Fragment
+	Tooltip: ""
+}
+
+NiiviMedallionFragment: {
+	Effect: Prismatic balls surround the player and when attacking little orbs will orbit enemies and allow the player to do more damage to the targeted enemy or boss
+	DisplayName: Niivi Medallion Fragment
+	Tooltip: ""
+}
+
+SanguimiMedallionFragment: {
+	Effect: Attacks have chances to heal the player and increases defense with each hit up to 100, inflicts Dreaded Poison against enemies and bosses also. The more dread an enemy/boss has, the more damage it will take and deal out (up to 50% more damage dealt and 100% more damage at it's highest after 100 hits constantly). Not dealing damage and getting hit by enemies with dread gives the enemy/boss health back from however much they hit you with
+	DisplayName: Sanguimi Medallion Fragment
+	Tooltip: ""
+}
+
+SporecroweMedallionFragment: {
+	Effect: Fast fall, jumping is higher and increased movement speed by 20%
+	DisplayName: Sporecrowe Medallion Fragment
+	Tooltip: ""
+}
+
+VerliaMedallionFragment: {
+	Effect: Have a moon follow the player and if an enemy attack hits it, it absorbs projectiles and attacks, once it dies it explodes causing the player to recieve health and deal a small explosion percentage damage to the area (10%) before having to recharge again
+	DisplayName: Verlia Medallion Fragment
+	Tooltip: ""
+}
+
+Pyslocke: {
+	Tooltip: ""
+	DisplayName: Pyslocke
+	StaminaSlash: Mods.Urdveil.Items.Pyslocke.StaminaSlash
+	BasicSlash: Mods.Urdveil.Items.Pyslocke.BasicSlash
+}
+
+SpringHillsInnerMarkerItem: {
+	DisplayName: Spring Hills Inner Marker Item
+	Tooltip: ""
+}
+
+SpringHillsOuterMarkerItem: {
+	DisplayName: Spring Hills Outer Marker Item
+	Tooltip: ""
+}
+
+WarriorsDoorMarkerItem: {
+	DisplayName: Warriors Door Marker Item
+	Tooltip: ""
+}
+
+WitchTownMarkerItem: {
+	DisplayName: Witch Town Marker Item
+	Tooltip: ""
+}
+
+SpringHillsOuterPieceItem: {
+	Tooltip: ""
+	DisplayName: Spring Hills Outer Piece Item
+}
+
+SpringHillsInnerPieceItem: {
+	Tooltip: ""
+	DisplayName: Spring Hills Inner Piece Item
+}
+
+WarriorsDoorPieceItem: {
+	DisplayName: Warriors Door Piece Item
+	Tooltip: ""
+}
+
+WitchTownPieceItem: {
+	DisplayName: Witch Town Piece Item
+	Tooltip: ""
+}
+
+SpringHillsInnerMapCollectibleItem: {
+	DisplayName: Spring Hills Inner Map Collectible Item
+	Tooltip: ""
+}
+
+WarriorsDoorCollectibleItem: {
+	DisplayName: Warriors Door Collectible Item
+	Tooltip: ""
+}
+
+WitchTownMapCollectibleItem: {
+	DisplayName: Witch Town Map Collectible Item
+	Tooltip: ""
+}
+
+MapResetter: {
+	DisplayName: Map Resetter
+	Tooltip: ""
+}
+
+BlankOrbNChimes: {
+	DisplayName: Blank Orb N Chimes
+	Tooltip: ""
+}
+
+BlankPot: {
+	DisplayName: Blank Pot
+	Tooltip: ""
+}
+
+BlankScorpion: {
+	DisplayName: Blank Scorpion
+	Tooltip: ""
+}
+
+BlankScroll: {
+	DisplayName: Blank Scroll
+	Tooltip: ""
+}
+
+BlankShieldNStein: {
+	DisplayName: Blank Shield N Stein
+	Tooltip: ""
+}
+
+FirecrackerEnchantment: {
+	DisplayName: Firecracker Enchantment
+	Tooltip: ""
+}
+
+RevolvingLightsEnchantment: {
+	DisplayName: Revolving Lights Enchantment
+	Tooltip: ""
+}
+
+SparklingBoomEnchantment: {
+	DisplayName: Sparkling Boom Enchantment
+	Tooltip: ""
+}
+
+Hammer: {
+	DisplayName: Hammer
+	Tooltip: ""
+}
+
+VoidRiddenStaff: {
+	DisplayName: Void Ridden Staff
+	Tooltip: ""
+}
+
+TestItem: {
+	DisplayName: Test Item
+	Tooltip: ""
+}
+
+NoElement: {
+	DisplayName: No Element
+	Tooltip: ""
+}
+
+NoStaff: {
+	DisplayName: No Staff
+	Tooltip: ""
+}

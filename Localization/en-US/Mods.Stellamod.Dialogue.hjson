@@ -1,0 +1,234 @@
+ExampleDialogue1:
+	'''
+	Hello there young traveler!!! How do you do?!
+	This is some example dialogue to make sure that our system is working
+	I really hope this works because I don't want to have to do this more than once
+	'''
+ExampleDialogue2:
+	'''
+	So anyways, how was your day? My day was soooooo amazing!!!
+	I can't wait for tonight, I'm going to do so many cool things!
+	It's going to be crazy
+	'''
+ExampleDialogue3:
+	'''
+	So, uh, yeah, :P 
+	That's about it I guess
+	I hope this is good?!?!?!?!?!
+	'''
+VerliaDialogue1:
+	'''
+	I'm finally free!
+	This is so exciting thank youu!
+	'''
+VerliaDialogue2:
+	'''
+	Wait, what are you doing with that lantern?
+	You shouldn't have that-
+	'''
+VerliaDialogue3:
+	'''
+	You're definitely here to kill me aren't you?
+	Working under fenix I assume?
+	No matter I'll finish my business here and go find my sister.
+	You have my thanks but you will not be finishing me off.
+	'''
+SirestiasDialogue1:
+	'''
+	Hey love can you hear me?
+	I think this is getting to you right?
+	'''
+SirestiasDialogue2:
+	'''
+	Ok ok you can hear me. 
+	Let us restore balance to this world.
+	I've given you a bag for some stuff to start with, you'll need it to progress on.
+	'''
+SirestiasDialogue3:
+	'''
+	Aimacra joined us on our excursion as well so be sure to get a hold of her whenever you can. 
+	This world is corrupt with power and I'm sending you to purge it, I'm a bit too tired to do anything right now. I was playing my piano for too long.
+	'''
+SirestiasDialogue4:
+	'''
+	If you come to me on the map I'll tell you what things we need to do next but I'll give you some nice rewards if you can kill higher beings. 
+	This world seems to have already undergone some serious injury so I'll be able to purify it once everyone with power is gone so I'll leave it up to you to give them their executions.
+	'''
+SirestiasDialogue5: Remember if you ever need some help be sure to call me! Love ya and have fun!
+SirestiasTalk1:
+	'''
+	Hey I think you should descend and fight the old guardian! I think somewhere in that starter bag I gave you a rock that can help you get to him.
+	Doing so will allow you to fight him and shortly after an army will come raid you. Be sure to explore the world too, the fabled swamp is off to the right.
+	'''
+SirestiasTalk2:
+	'''
+	So you called? I see you're in the morrow. Interesting place to call me at, there should be plenty of breakables here to collect stuff from.
+	Theres some decently difficult enemies here so be wary.
+	'''
+SirestiasTalk3:
+	'''
+	Alternatively there is someone here important that we need to kill. Daedus, he may of collected dust but an extremely weak singularity is bound to him.
+	Singularities are this places' source of energy and power. You can bind them to souls and whatnot but they come with side effects.
+	'''
+SirestiasTalk4:
+	'''
+	You killed the army nice! I think you can try going to the fable, it should be just on the right of where you landed.
+	You could also do some quests for Zui, I think we have a similar line of thinking so we can count her as an ally.
+	'''
+SirestiasTalk5:
+	'''
+	Interestingly enough I went over to get some bread from the army and they seemed really calm. I mean it seems like they are just really lost warrior guys it seems.
+	Back to sleeping.
+	'''
+SirestiasTalk7:
+	'''
+	Sooo we need to kill Dreadmire, I think she is Cozmire but in a weaker state and this is like the perfect time to do it!
+	If a blood moon is happening please find a blood cyst and execute her. Ill give you rewards ;p
+	'''
+SirestiasTalk6:
+	'''
+	Ok with Daedus out of the way we should be free to go to the govheil castle. Gothivia may of binded him to the singularity and the castle for protection.
+	Since you purged him and his singularity it should give you access to that place, Daedus will remain forgotten.
+	'''
+SirestiasTalk8:
+	'''
+	With Daedus being gone there's a lot more to explore, Dreadmire, or Cozmire, needs to be purged pretty soon so be prepared for that but other than that we should head over to the Virulent.
+	Those fabled folks are old residents of the govheil castle which is in the virulent. Theres some pretty good stuff there.
+	'''
+SirestiasTalk9: The acidic green place that has taken over the jungle is called the Virulent according to Aimacra. It took over Gothivia's village and it caused some major issues. It seemed to root from a lab but I'm not sure if the old fabled folks knew that.
+SirestiasTalk10: Sweet you're there! I'm assuming you took care of Dreadmire for us? If you have come give me my idol after your excursion. I just want you to search for some loot and possibly get a void key sometime soon? We should start going for Verlia and her bindings.
+SirestiasTalk11:
+	'''
+	Oki dokie, you took care of the evil monster, although I dont think they posed a threat it was pretty necessary to get rid of them for our purification process.
+	Aimacra discovered a place near the underworld, the cinderspark. It's been charred to all hell from the increasing heat of the world.
+	'''
+SirestiasTalk12:
+	'''
+	We need to collect some materials to make this fake void key. Fenix binded Verlia's soul to this singularity as protection from her sister Gothivia.
+	To get to another one of those big fish we need to kill Verlia to anger Gothivia. We'll be able to brag in her face and she'll want to come for us, so get moving :)
+	'''
+SirestiasTalk13:
+	'''
+	This cinderspark place is extremely hot huh, It definitely was home to some dragons. I heard they went extinct a long time ago due to the heat.
+	Which is interesting because there's some other monsters here. We might need to collect some of these souls' skins for the key mold.
+	'''
+SirestiasTalk14:
+	'''
+	I think this place is burned from the singularity lurking here. I went and talked to Zui earlier and she told me about Sigfried. Apparently he's trapped somewhere down here.
+	His raw power is what we need to bring Lumi down for revenge, but we have other fish to fry first so we should get out of here and take out Verlia's singularity binding.
+	'''
+ZuiDialogue1:
+	'''
+	Oooo I see you beat Plantera!
+	Ok ok I know you're gonna hate me but I'm gonna need to talk to you about something.
+	'''
+ZuiDialogue2:
+	'''
+	So Sirestias asked me to train you and I think its the perfect time to do so,
+	I dont know if you noticed but you got a key mold from Plantera, Golem is under pretty heavy protection and Ereshkigal might have something to do with it.
+	'''
+ZuiDialogue3:
+	'''
+	Oh oh, I completely forgot to introduce myself, I'm Zui! I think we talked in the witch village, either that or you pass by a lot.
+	Either way, the thing is I don't want to get too involved with whatever you and Sirestias are doing, but she really scares me.
+	'''
+ZuiDialogue4:
+	'''
+	Anyway Sirestias asked me to train you since your next targets are quite difficult.
+	I guess while I'm at it I can help you find a way to talk to Ereshkigal in the Ishtar deep under the surface since she's holding you up from getting in that temple.
+	'''
+ZuiDialogue5:
+	'''
+	I know you're going after Sigfried and Azurin but you're definitely gonna have your ass handed to you. For starters you still need to take care of her Singularity to hurt her.
+	Nobody knows better how to deal with singularities than the person who trapped one being Ereshkigal. I'll help you if you prove you're strong enough, soo come fight me :)
+	'''
+ZuiDialogue6:
+	'''
+	Ok Ok fine we can stop, I have a headache.
+	I think you're ready :)
+	'''
+ZuiDialogue7: I might be a bit rusty since I haven't fought in a while but you seem to be pretty good at this! Anyway to the point, Ereshkigal I believe is the strongest sorceress I know? Although I don't think anyone knows her existence other than me and other higher beings.
+ZuiDialogue8: Ereshkigal you have to know is VERY attached to Sigfried, like she's actually crazy for that guy and for what? I don't really know. She was so crazy that she made a whole prison for him during his big outrage just to keep in a place to be with her. I mean I know a tsundere when I see one and she has GOT to fall in that category.
+ZuiDialogue9:
+	'''
+	You wanna know why the temple is locked?? Before Sigfried went crazy and was still the King of the Illuria, he decided to indulge in the Lihzahrd Temple's magic systems to gain power.
+	Ereshkigal's CRAZY ASS decided it would be a good idea to lock the place with a super special key so HE COULD PAY ATTENTION TO HER MORE. She really said that she'd win.
+	'''
+ZuiDialogue10: I used to be friends with her until she dropped me for that guy, she started to obsess really badly over him. Even in the state he is in now that temple is still locked.
+ZuiDialogue11: Anyway since I think you're ready, I'll give her a call and allow her to cast some magic on you or something, just don't get on her bad side, she can solo you. You can ask about your other targets there. I marked the location but you might need a key.
+IrradiaDialogue1: "What, what... -- That's Verlia's soul. What did you do to her. "
+IrradiaDialogue2: "No, no not like this, not from you of all people. I've spent my years sitting here to wait for them and you out of all things come to me with her soul in hand?? A damn monster you are. "
+IrradiaDialogue3:
+	'''
+	I will mangle your corpse and showcase it for everyone to see, Gothivia will return and you'll be the first one to hang. I'll show you what harming my friend does for you.
+	HAVOC. 
+	Engage...
+	'''
+GothiviaDialogue1: Of all the people who could have, it was you who tore down what I have built. All the people I care for- not ruined by the plague that lived upon us but you who decided to seek harm.
+GothiviaDialogue2: I see why my sister has fallen to you and if nobody stops you, at what point will your slaughter end? You could be helping all those with that power you're granted and use it poorly.
+GothiviaDialogue3: No matter, I will show what my love for those around me through vengence. I will not let them fall with their aspirations on deaf ears. Be well on the other side, you will not be forgiven by me.
+EreshTalk1: Woa woa woa, I let you in here to look at my beautiful husband here but what's this?? It even has my dear's signature, I know it when I see it! You also love him too don't you???
+EreshTalk2: I knew Zui contacted me because she is so nice to me. I didn't know they'd be sending someone to give me gifts! Thank you, this is very much appreciated and I will go through it very, very thoroughly...
+EreshTalk3: What's that? You want one of my doors for a singularity? Oh you're going after that harlet Azurerin aren't you? She hasn't done anything to me specifically but I can see why you want to meet her. She is a good looker.
+EreshTalk4: I can pull down her singularity if you want me to you know. Actually I have a door that should pull it down from it's space. Let me see....　ふじゅつ　すぱのら　フラグメント。 There, you should have it.
+SirestiasTalk15: It's time to kill one of our more challenging specimens. Take on Verlia at the top of the Cathedral, but before then make her lantern, you might need to explore a bit. Let me know how you do.
+SirestiasTalk16: "Wowie, goodness gracious. I think we're getting places! "
+SirestiasTalk17: Ok so um, I hate to say this but I don't really have any tasks for you to do for now. Feel free to explore and do some other things. I'll catch up with you when I'm done exploring the world. I have some old friends to talk to..
+SirestiasTalk18: Verlia is our first step to getting to Gothivia, and her influence keeps ruining everything. She doesn't seem too bad but her influence on the world is so negative that we have to kill her. I think you should go find the catacombs soon. Anyways I'll be back.
+SirestiasTalk19: You're getting pretty good at this you know. Take that manifestation to Ordin, he seemed pretty compliant, except her kind of wants everything gone. I think I have to start doing something at least.
+DreadTalk1:
+	'''
+	Who are you...
+	Whatever you're doing stop now. 
+	...
+	'''
+DreadTalk2:
+	'''
+	Why destroy something so important to me. 
+	Do you seek destruction?
+	...
+	'''
+DreadTalk3:
+	'''
+	So persistent..
+	Maybe I can put my powers to use.
+	...
+	'''
+DreadTalk4:
+	'''
+	Must you use your ignorance as a shield?
+	Stop...
+	I need to call Azurerin...
+	...
+	'''
+DreadTalk5: ...
+GothLoose1: No no no, not like this..
+GothLoose2: Why won't you just die???? I can't keep doing this..
+GothLoose3: I just want them back...
+SireLoose4: I mean you can have them back, I have their souls with me :)
+GothLoose5: What- who even are you...
+SireLoose6: The one who has your sister's soul currently. I may have snatched it but I have a proposal for you.
+GothLoose7: Is this punishment?? I haven't even done anything to you and this is how we're treated? Ok fine, what's the deal?
+SireLoose8: You can have your sister if you decide to work alongside us. I know you're not totally bad but your influnce is very negative and I can't have that stand.
+GothLoose9: So what are you saying?
+SireLoose10: Just be apart of the team and use your powers for good and we can try to help save your little sister Verlia here.
+GothLoose11: ... Fine
+GothLoose12: Just give me back my sister, I can forgive you partially but you still killed Irradia..
+SireLoose13: I apologize but some things must be done for my goals to be met.
+SireLoose14: Here. You can have your sister back and we'll call you when needbe, otherwise, no more magic or weapon usage from you anymore, if you do I'll send them to kill you for real :)
+GothLoose15: Whatever. Thanks I guess.
+SirestiasTalk20:
+	'''
+	*This is a message from Sirestias*
+	Please take this time to explore the world! I'm going to be out to find and talk to some people to help us on our expedition. Alternatively could you kill Irradia for us? It would set things in motion, thank you!
+	'''
+SirestiasTalk21: Sorry I've been quite busy as you've seen.. Ereshkigal you say?? That's a name I havent heard in a while. I'm suprised she's here. If she's attached to Sigfried like you suggest than maybe Ordin in the cinderspark has something for you.
+SirestiasTalk22: She can definitely help us getting things down from Azurerin since her power is to turn exponential space into a confined smaller space. She might be able to take the singularity really easily so go to Ordin.
+SirestiasTalk23: Woa nice! I'm so proud of you dear. I think we are definitely cleaning up this world for the purest of intentions. Soon enough we can move onto bigger goals and hunt the most powerful of beings.
+SirestiasTalk24: Although enough yip-yap, we are a step closer to killing all these ill-wounded beings, making Gothivia our next target. If you haven't killed Irradia yet, go ahead and do so. If you have I can move on to go get Verlia's soul.
+SirestiasTalk25: For now it'll be up to me to harvest her soul from her decayed explosion but we may be able to use it as leverage against Gothivia. I've learned information that she wasn't that bad of a person but caused bad things to happen. So maybe we can bargain.
+SirestiasTalk26: Woop woop we got the moonlord 2! And I got the moonlady Verlia's soul! You scattered her soul quite a bit I have to say but overall I finished that up so we're ready!
+SirestiasTalk27: This may sound crazy but I think we are ok to take down Rek and Gothivia now. Rek is her personal bodyguard and from what I've learned he's sort of a big deal to her as he's been around her since she was a child. He is a serpent so he's fast, beware.
+SirestiasTalk28: Gothivia isn't all too hostile and she didn't accept a singularity but used it for good so she isn't nearly that evil but Rek definitely is. He's the last living dragon serpent from what Ordin told me. We should kill him.
+SirestiasTalk29: Sun Serpent down. Operation kill beat Gothivia. I'll take it from there...
+SirestiasTalk30: For the time being, I have nothing for you. I'll schedule some future plans but in the meantime I think Aimacra would like to talk to you in Ekrose. Please go play Diari on steam, thank you :)
