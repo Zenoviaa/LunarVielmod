@@ -155,11 +155,32 @@ Mods: {
 				DisplayName: Crystalline Slasher
 				Tooltip: ""
 			}
+
+			AncientLunarStone: {
+				DisplayName: Ancient Lunar Stone
+				Tooltip: ""
+			}
+
+			LunarStone: {
+				DisplayName: Lunar Stone
+				Tooltip: ""
+			}
+
+			RareLunarStone: {
+				DisplayName: Rare Lunar Stone
+				Tooltip: ""
+			}
+
+			TestItem: {
+				DisplayName: Test Item
+				Tooltip: ""
+			}
 		}
 
 		Projectiles: {
 			MagicProjectile.DisplayName: Magic Projectile
 			CrystallineSwordSlash.DisplayName: Crystalline Sword Slash
+			WandProjectile.DisplayName: Wand Projectile
 		}
 	}
 

@@ -21,6 +21,58 @@ namespace Stellamod.Assets
         public static class Sounds
         {
             private static string Path => "Stellamod/Assets/Sounds/";
+            public static class Magic
+            {
+                public static SoundStyle AutomationCast1 = new SoundStyle($"{Path}Magic/AutomationCast1");
+                public static SoundStyle AutomationCast2 = new SoundStyle($"{Path}Magic/AutomationCast2");
+                public static SoundStyle AutomationHit1 = new SoundStyle($"{Path}Magic/AutomationHit1");
+                public static SoundStyle AutomationHit2 = new SoundStyle($"{Path}Magic/AutomationHit2");
+
+                public static SoundStyle BasicMagicHit1 = new SoundStyle($"{Path}Magic/BasicMagicHit1");
+                public static SoundStyle BasicMagicHit2 = new SoundStyle($"{Path}Magic/BasicMagicHit2");
+
+                public static SoundStyle BloodletCast1 = new SoundStyle($"{Path}Magic/BloodletCast1");
+                public static SoundStyle BloodletHit1 = new SoundStyle($"{Path}Magic/BloodletHit1");
+                public static SoundStyle BloodletHit2 = new SoundStyle($"{Path}Magic/BloodletHit2");
+
+                public static SoundStyle DeeyaCast1 = new SoundStyle($"{Path}Magic/DeeyaCast1");
+                public static SoundStyle DeeyaCast2 = new SoundStyle($"{Path}Magic/DeeyaCast2");
+                public static SoundStyle DeeyaHit1 = new SoundStyle($"{Path}Magic/DeeyaHit1");
+                public static SoundStyle DeeyaHit2 = new SoundStyle($"{Path}Magic/DeeyaHit2");
+
+                public static SoundStyle GuutCast1 = new SoundStyle($"{Path}Magic/GuutCast1");
+                public static SoundStyle GuutCast2 = new SoundStyle($"{Path}Magic/GuutCast2");
+                public static SoundStyle GuutHit1 = new SoundStyle($"{Path}Magic/GuutHit1");
+                public static SoundStyle GuutHit2 = new SoundStyle($"{Path}Magic/GuutHit2");
+
+                public static SoundStyle HolyCast1 = new SoundStyle($"{Path}Magic/HolyCast1");
+                public static SoundStyle HolyCast2 = new SoundStyle($"{Path}Magic/HolyCast2");
+                public static SoundStyle HolyHit1 = new SoundStyle($"{Path}Magic/HolyHit1");
+                public static SoundStyle HolyHit2 = new SoundStyle($"{Path}Magic/HolyHit2");
+
+                public static SoundStyle MothlightStarCast1 = new SoundStyle($"{Path}Magic/MothlightStarCast1");
+                public static SoundStyle MothlightStarCast2 = new SoundStyle($"{Path}Magic/MothlightStarCast2");
+                public static SoundStyle MothlightStarCast3 = new SoundStyle($"{Path}Magic/MothlightStarCast3");
+
+                public static SoundStyle NaturalCast1 = new SoundStyle($"{Path}Magic/NaturalCast1");
+                public static SoundStyle NaturalCast2 = new SoundStyle($"{Path}Magic/NaturalCast2");
+                public static SoundStyle NaturalHit1 = new SoundStyle($"{Path}Magic/NaturalHit1");
+                public static SoundStyle NaturalHit2 = new SoundStyle($"{Path}Magic/NaturalHit2");
+
+                public static SoundStyle PrimeMagicCast1 = new SoundStyle($"{Path}Magic/PrimeMagicCast1");
+                public static SoundStyle PrimeMagicCast2 = new SoundStyle($"{Path}Magic/PrimeMagicCast2");
+                public static SoundStyle PrimeMagicHit1 = new SoundStyle($"{Path}Magic/PrimeMagicHit1");
+                public static SoundStyle PrimeMagicHit2 = new SoundStyle($"{Path}Magic/PrimeMagicHit2");
+
+                public static SoundStyle RadiantCast1 = new SoundStyle($"{Path}Magic/RadiantCast1");
+                public static SoundStyle RadianceHit1 = new SoundStyle($"{Path}Magic/RadianceHit1");
+
+                public static SoundStyle WindCast1 = new SoundStyle($"{Path}Magic/WindCast1");
+                public static SoundStyle WindCast2 = new SoundStyle($"{Path}Magic/WindCast2");
+                public static SoundStyle WindHit1 = new SoundStyle($"{Path}Magic/WindHit1");
+                public static SoundStyle WindHit2 = new SoundStyle($"{Path}Magic/WindHit2");
+            }
+
             public static class Melee
             {
                 public static SoundStyle SpearHit1 = new SoundStyle($"{Path}Melee/SpearHit1");
