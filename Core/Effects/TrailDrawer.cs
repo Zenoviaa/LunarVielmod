@@ -61,7 +61,7 @@ namespace Stellamod.Core.Effects
 
         public virtual Color GetTrailColor(float t)
         {
-            return Color.Lerp(Color.White, Color.Transparent, t);
+            return Color.Lerp(Color.White, Color.White, t);
         }
 
         private void CalculateVerticesTris(Vector2[] trailingPoints, List<VertexPositionColorTexture> vertices)
@@ -136,6 +136,7 @@ namespace Stellamod.Core.Effects
         public void DrawTrail(Vector2[] trailCache)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
+            Shader.ApplyToEffect();
             var vertices = CalculateVertices(trailCache);
             DrawPrimsTriangles(vertices, Shader);
         }

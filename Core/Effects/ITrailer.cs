@@ -5,6 +5,6 @@ namespace Stellamod.Core.Effects
     internal interface ITrailer
     {
         void SetTrailingValues(float interpolant);
-        void DrawTrail(Vector2[] trailCache);
+        void DrawTrail( Vector2[] trailCache);
     }
 }

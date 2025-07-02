@@ -154,7 +154,7 @@ namespace Stellamod.Core.SwingSystem
             for(int t = 0; t < swingTrailCache.Length; t++)
             {
                 Matrix translationMatrix = Matrix.CreateTranslation(new 
-                    Vector3(Projectile.position.X, Projectile.position.Y, 0));
+                    Vector3(Owner.position.X, Owner.position.Y, 0));
                 swingTrailCache[t] = Vector2.Transform(swingTrailCache[t], translationMatrix);
             }
         }
