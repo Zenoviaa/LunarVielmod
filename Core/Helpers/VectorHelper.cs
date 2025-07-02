@@ -172,12 +172,6 @@ namespace Stellamod.Core.Helpers
             p.velocity += (vel - p.velocity) / smooth;
         }
 
-        public static Vector2 DirectionTo(this Vector2 origin, Vector2 target)
-        {
-            Vector2 diff = target - origin;
-            return diff.SafeNormalize(Vector2.Zero);
-        }
-
         public static Color ToColor(this Vector3 vec, float alpha = 1f)
         {
             return new Color(vec.X, vec.Y, vec.Z, alpha);
