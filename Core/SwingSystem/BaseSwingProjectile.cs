@@ -200,7 +200,8 @@ namespace Stellamod.Core.SwingSystem
             //I think it makes the most sense to abstract our trails out to a trailer and shader cache,
             //so we can just replace the trailer for different trails!
             //So much simpler, and we can just make new trailers
-            Trailer?.DrawTrail(swingTrailCache);
+           
+            Trailer?.DrawTrail(ref lightColor, swingTrailCache);
         }
 
         public virtual void DrawSwordSprite(ref Color lightColor)

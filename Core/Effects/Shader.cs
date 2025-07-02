@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Graphics.Shaders;
 
 namespace Stellamod.Core.Effects
@@ -7,7 +8,7 @@ namespace Stellamod.Core.Effects
     {
         public Shader()
         {
-
+            LightColor = Color.White;
         }
 
         public string EffectPath => GetType().Name;
@@ -16,6 +17,7 @@ namespace Stellamod.Core.Effects
         public BlendState BlendState { get; set; } = BlendState.AlphaBlend;
         public SamplerState SamplerState { get; set; } = SamplerState.LinearWrap;
 
+        public Color LightColor { get; set; }
         public virtual void ApplyToEffect()
         {
 

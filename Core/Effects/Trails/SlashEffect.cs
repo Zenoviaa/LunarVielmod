@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Effects.Trails
@@ -97,10 +98,22 @@ namespace Stellamod.Core.Effects.Trails
             RimHighlightTextureParam.SetValue(RimHighlightTexture);
             OffsetParam.SetValue(Offset);
             TilingParam.SetValue(Tiling);
-            BaseColorParam.SetValue(BaseColor.ToVector4());
-            HighlightColorParam.SetValue(HighlightColor.ToVector4());
-            RimHighlightColorParam.SetValue(RimHighlightColor.ToVector4());
-            WindColorParam.SetValue(WindColor.ToVector4());
+
+
+            Color baseColor = BaseColor;
+            Color highlightColor = HighlightColor;
+            Color rimHighlightColor = RimHighlightColor;
+            Color windColor = WindColor;
+
+            baseColor = baseColor.MultiplyRGB(LightColor);
+            highlightColor = highlightColor.MultiplyRGB(LightColor);
+            rimHighlightColor = rimHighlightColor.MultiplyRGB(LightColor);
+            windColor = windColor.MultiplyRGB(LightColor);
+
+            BaseColorParam.SetValue(baseColor.ToVector4());
+            HighlightColorParam.SetValue(highlightColor.ToVector4());
+            RimHighlightColorParam.SetValue(rimHighlightColor.ToVector4());
+            WindColorParam.SetValue(windColor.ToVector4());
         }
     }
 }

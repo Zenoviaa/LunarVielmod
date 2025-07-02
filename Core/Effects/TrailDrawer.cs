@@ -133,9 +133,10 @@ namespace Stellamod.Core.Effects
             graphicsDevice.SamplerStates[0] = originalSamplerState;
         }
 
-        public void DrawTrail(Vector2[] trailCache)
+        public void DrawTrail(ref Color lightColor, Vector2[] trailCache)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
+            Shader.LightColor = lightColor;
             Shader.ApplyToEffect();
             var vertices = CalculateVertices(trailCache);
             DrawPrimsTriangles(vertices, Shader);
