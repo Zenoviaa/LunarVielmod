@@ -101,6 +101,103 @@ Mods: {
 			}
 
 			LunarVeilServerConfig.DisplayName: Lunar Veil Server Config
+
+			StellamodClientConfig: {
+				DisplayName: Stellamod Client Config
+
+				Headers: {
+					Visual: Visual Header
+					Effects: Effects Header
+					UI: U I Header
+				}
+
+				VanillaTexturesToggle: {
+					Label: Vanilla Textures Toggle
+					Tooltip: ""
+				}
+
+				VanillaUIRespritesToggle: {
+					Label: Vanilla U I Resprites Toggle
+					Tooltip: ""
+				}
+
+				VanillaParticlesToggle: {
+					Label: Vanilla Particles Toggle
+					Tooltip: ""
+				}
+
+				VanillaBiomesPaletteShadersToggle: {
+					Label: Vanilla Biomes Palette Shaders Toggle
+					Tooltip: ""
+				}
+
+				RedDamageNumbersToggle: {
+					Label: Red Damage Numbers Toggle
+					Tooltip: ""
+				}
+
+				LiquidsToggle: {
+					Label: Liquids Toggle
+					Tooltip: ""
+				}
+
+				SkiesToggle: {
+					Label: Skies Toggle
+					Tooltip: ""
+				}
+
+				ParticlesToggle: {
+					Label: Particles Toggle
+					Tooltip: ""
+				}
+
+				ShakeToggle: {
+					Label: Shake Toggle
+					Tooltip: ""
+				}
+
+				CameraSmoothness: {
+					Label: Camera Smoothness
+					Tooltip: ""
+				}
+
+				LowDetailShadersToggle: {
+					Label: Low Detail Shaders Toggle
+					Tooltip: ""
+				}
+
+				EnchantMenuX: {
+					Label: Enchant Menu X
+					Tooltip: ""
+				}
+
+				EnchantMenuY: {
+					Label: Enchant Menu Y
+					Tooltip: ""
+				}
+
+				StaminaMeterX: {
+					Label: Stamina Meter X
+					Tooltip: ""
+				}
+
+				StaminaMeterY: {
+					Label: Stamina Meter Y
+					Tooltip: ""
+				}
+
+				DashMeterX: {
+					Label: Dash Meter X
+					Tooltip: ""
+				}
+
+				DashMeterY: {
+					Label: Dash Meter Y
+					Tooltip: ""
+				}
+			}
+
+			StellamodServerConfig.DisplayName: Stellamod Server Config
 		}
 
 		Keybinds.Dash.DisplayName: Dash
@@ -185,6 +282,16 @@ Mods: {
 				DisplayName: Vitality Insource
 				Tooltip: ""
 			}
+
+			StaminaBrew: {
+				DisplayName: Stamina Brew
+				Tooltip: ""
+			}
+
+			StaminaPotion: {
+				DisplayName: Stamina Potion
+				Tooltip: ""
+			}
 		}
 
 		Projectiles: {
@@ -198,6 +305,11 @@ Mods: {
 			CannotUseFlask: {
 				DisplayName: Cannot Use Flask
 				Description: Mods.Stellamod.Buffs.CannotUseFlask.Description
+			}
+
+			CannotUseStaminaPotion: {
+				DisplayName: Cannot Use Stamina Potion
+				Description: Mods.Stellamod.Buffs.CannotUseStaminaPotion.Description
 			}
 		}
 	}
