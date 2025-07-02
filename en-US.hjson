@@ -292,6 +292,106 @@ Mods: {
 				DisplayName: Stamina Potion
 				Tooltip: ""
 			}
+
+			AbyssalPowder: {
+				DisplayName: Abyssal Powder
+				Tooltip: ""
+			}
+
+			AgreviPowder: {
+				DisplayName: Agrevi Powder
+				Tooltip: ""
+			}
+
+			AivanPowder: {
+				DisplayName: Aivan Powder
+				Tooltip: ""
+			}
+
+			AlcadizPowder: {
+				DisplayName: Alcadiz Powder
+				Tooltip: ""
+			}
+
+			ArcanalPowder: {
+				DisplayName: Arcanal Powder
+				Tooltip: ""
+			}
+
+			ArtoriaIllurePowder: {
+				DisplayName: Artoria Illure Powder
+				Tooltip: ""
+			}
+
+			BloodPowder: {
+				DisplayName: Blood Powder
+				Tooltip: ""
+			}
+
+			CrystalPowder: {
+				DisplayName: Crystal Powder
+				Tooltip: ""
+			}
+
+			EreshkinPowder: {
+				DisplayName: Ereshkin Powder
+				Tooltip: ""
+			}
+
+			FlamePowder: {
+				DisplayName: Flame Powder
+				Tooltip: ""
+			}
+
+			GovheilPowder: {
+				DisplayName: Govheil Powder
+				Tooltip: ""
+			}
+
+			GrassDirtPowder: {
+				DisplayName: Grass Dirt Powder
+				Tooltip: ""
+			}
+
+			IllusionistPowder: {
+				DisplayName: Illusionist Powder
+				Tooltip: ""
+			}
+
+			LenaSongPowder: {
+				DisplayName: Lena Song Powder
+				Tooltip: ""
+			}
+
+			MushyPowder: {
+				DisplayName: Mushy Powder
+				Tooltip: ""
+			}
+
+			PoisonedPowder: {
+				DisplayName: Poisoned Powder
+				Tooltip: ""
+			}
+
+			SpiritPowder: {
+				DisplayName: Spirit Powder
+				Tooltip: ""
+			}
+
+			TrickPowder: {
+				DisplayName: Trick Powder
+				Tooltip: ""
+			}
+
+			Verstidust: {
+				DisplayName: Verstidust
+				Tooltip: ""
+			}
+
+			BOMBERCard: {
+				DisplayName: B O M B E R Card
+				Tooltip: ""
+			}
 		}
 
 		Projectiles: {
@@ -300,6 +400,53 @@ Mods: {
 			WandProjectile.DisplayName: Wand Projectile
 			InsourceDefaultProjectile.DisplayName: Insource Default Projectile
 			IgniterCardProjectile.DisplayName: Igniter Card Projectile
+			AgreviBoom.DisplayName: Agrevi Boom
+			AivanKaboom.DisplayName: Aivan Kaboom
+			BlossomBoom.DisplayName: Blossom Boom
+			Blue.DisplayName: Blue
+			BongoBoom.DisplayName: Bongo Boom
+			CinderBoom.DisplayName: Cinder Boom
+			CombustionBoom.DisplayName: Combustion Boom
+			CombustionBoomMini.DisplayName: Combustion Boom Mini
+			CrystalBloom.DisplayName: Crystal Bloom
+			EldritchBoom.DisplayName: Eldritch Boom
+			FableExSps.DisplayName: Fable Ex Sps
+			FireBoom.DisplayName: Fire Boom
+			FunBoom.DisplayName: Fun Boom
+			GenesisBoom1.DisplayName: Genesis Boom1
+			GenesisBoom2.DisplayName: Genesis Boom2
+			GenesisBoom3.DisplayName: Genesis Boom3
+			GovheilKaboom.DisplayName: Govheil Kaboom
+			GrassExSps.DisplayName: Grass Ex Sps
+			IlluredBoom.DisplayName: Illured Boom
+			IrradiatedBoom.DisplayName: Irradiated Boom
+			IshBoom.DisplayName: Ish Boom
+			JungleBoom.DisplayName: Jungle Boom
+			KaBoom.DisplayName: Ka Boom
+			KaBoomAlcadizz.DisplayName: Ka Boom Alcadizz
+			KaBoomFenix.DisplayName: Ka Boom Fenix
+			KaBoomKaev.DisplayName: Ka Boom Kaev
+			KaBoomMagic.DisplayName: Ka Boom Magic
+			KaBoomMagic2.DisplayName: Ka Boom Magic2
+			KaBoomSigil.DisplayName: Ka Boom Sigil
+			KaBoomSigil2.DisplayName: Ka Boom Sigil2
+			KaBoomSpirit.DisplayName: Ka Boom Spirit
+			KaBoomTrick.DisplayName: Ka Boom Trick
+			MalachoBoom.DisplayName: Malacho Boom
+			MushyBoom.DisplayName: Mushy Boom
+			OrionStarBoom.DisplayName: Orion Star Boom
+			PiranhaBoomMini.DisplayName: Piranha Boom Mini
+			ScatterBoom.DisplayName: Scatter Boom
+			SepsisExSps.DisplayName: Sepsis Ex Sps
+			SiriusBoom.DisplayName: Sirius Boom
+			Skullboom.DisplayName: Skullboom
+			SparklyBoom.DisplayName: Sparkly Boom
+			SpiritualBoom.DisplayName: Spiritual Boom
+			StarsBoom.DisplayName: Stars Boom
+			StarsBoom2.DisplayName: Stars Boom2
+			SuranBoom.DisplayName: Suran Boom
+			VerstiExSps.DisplayName: Versti Ex Sps
+			VoidKaboom.DisplayName: Void Kaboom
 		}
 
 		Buffs: {

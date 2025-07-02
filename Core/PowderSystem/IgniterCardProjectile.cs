@@ -149,10 +149,6 @@ namespace Stellamod.Core.PowderSystem
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-            SoundStyle ignitionSound = new SoundStyle("Urdveil/Assets/Sounds/clickk");
-            ignitionSound.PitchVariance = 0.15f;
-            SoundEngine.PlaySound(ignitionSound, Projectile.position);
-
             _explosionPos = target.Center;
             State = CardState.Exploding;
             Projectile.netUpdate = true;
@@ -199,50 +195,6 @@ namespace Stellamod.Core.PowderSystem
             }
 
             return false;
-        }
-
-        public override void PostDraw(Color lightColor)
-        {
-            base.PostDraw(lightColor);
-            /*
-            float heatingUp = 0;
-            NPC npc = SummonHelper.NearestChaseableNPC(Projectile.position);
-            if(npc != null)
-            {
-                float distanceToNPC = Vector2.Distance(Projectile.position, npc.position);
-
-                //16 is one tile sooo
-                //uhhh
-                //64?
-                float progress = distanceToNPC / 64;
-                progress = MathHelper.Clamp(progress, 0f, 1f);
-                heatingUp = MathHelper.Lerp(0f, 1f, progress);
-            }
-
-
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            
-            if (DrawCard)
-            {
-                string texturePath = CardItem.ModItem.Texture;
-                Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
-                for(float f = 0; f < 1f; f += 0.1f)
-                {
-                    Vector2 drawPos = Projectile.Center - Main.screenPosition;
-                    float rot = f * MathHelper.TwoPi;
-                    drawPos += rot.ToRotationVector2() * MathHelper.Lerp(0f, 16, heatingUp);
-                    Color drawColor = Color.White.MultiplyRGB(lightColor);
-                    drawColor *= MathHelper.Lerp(1f, 0.3f, heatingUp);
-                    float drawScale = MathHelper.Lerp(1f, 1f, heatingUp);
-                    spriteBatch.Draw(texture, drawPos, null, drawColor, Projectile.rotation, texture.Size() / 2f, drawScale, SpriteEffects.None, 0);
-                }
-            }
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            */
         }
 
         public override void OnKill(int timeLeft)

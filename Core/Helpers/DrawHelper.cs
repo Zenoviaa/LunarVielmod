@@ -56,6 +56,23 @@ namespace Stellamod.Core.Helpers
         {
             return TextureAssets.Projectile[projectile.type].Value.Frame(1, Main.projFrames[projectile.type], 0, projectile.frame);
         }
+        public static Rectangle GetFrame(this Texture2D texture, int frameNumber, int totalFrameCount)
+        {
+            int heightPerFrame = texture.Height / totalFrameCount;
+            int startY = frameNumber * heightPerFrame;
+            return new Rectangle(0, startY, texture.Width, heightPerFrame);
+        }
+        public static Rectangle AnimationFrame(this Texture2D texture, ref int frame, ref int frameTick, int frameTime, int frameCount, bool frameTickIncrease, int overrideHeight = 0)
+        {
+            if (frameTick >= frameTime)
+            {
+                frameTick = -1;
+                frame = frame == frameCount - 1 ? 0 : frame + 1;
+            }
+            if (frameTickIncrease)
+                frameTick++;
+            return new Rectangle(0, overrideHeight != 0 ? overrideHeight * frame : (texture.Height / frameCount) * frame, texture.Width, texture.Height / frameCount);
+        }
         public static Rectangle Frame(this Projectile projectile, Texture2D overrideTexture)
         {
             return overrideTexture.Frame(1, Main.projFrames[projectile.type], 0, projectile.frame);
