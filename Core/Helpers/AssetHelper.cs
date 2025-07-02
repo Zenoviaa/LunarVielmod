@@ -1,4 +1,5 @@
 ﻿using System;
+using Terraria.ModLoader;
 
 namespace Stellamod.Core.Helpers
 {
@@ -11,6 +12,13 @@ namespace Stellamod.Core.Helpers
             string Texture = (type.Namespace).Replace('.', '/');
             return Texture;
         }
+
+        public static string MyDirectory(this object obj)
+        {
+            string path = (obj.GetType().Namespace).Replace('.', '/');
+            return path;
+        }
+
         public static string PathHere(this Type type)
         {
             string Texture = (type.Namespace + "." + type.Name).Replace('.', '/');
