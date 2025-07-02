@@ -299,6 +299,7 @@ Mods: {
 			CrystallineSwordSlash.DisplayName: Crystalline Sword Slash
 			WandProjectile.DisplayName: Wand Projectile
 			InsourceDefaultProjectile.DisplayName: Insource Default Projectile
+			IgniterCardProjectile.DisplayName: Igniter Card Projectile
 		}
 
 		Buffs: {
