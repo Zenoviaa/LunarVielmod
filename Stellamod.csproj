@@ -6,11 +6,28 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-  </ItemGroup>
-  <ItemGroup>
     <Content Remove="C:\Users\green\.nuget\packages\accord\3.8.0\build\Accord.dll.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="C:\Users\green\.nuget\packages\accord\3.8.0\build\Accord.dll.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Assets\Effects\RippingSlashShader.fx" />
+    <None Remove="Assets\Effects\SharpExplosionShader.fx" />
+    <None Remove="Content\Items\Insources\VitalityInsource.png" />
+    <None Remove="Content\Items\Insources\VitalityInsourceProj.png" />
+    <None Remove="Content\Items\Materials\AncientLunarStone.png" />
+    <None Remove="Content\Items\Materials\LunarStone.png" />
+    <None Remove="Content\Items\Materials\RareLunarStone.png" />
+    <None Remove="Core\StaminaSystem\CannotUseStaminaPotion.png" />
+    <None Remove="Core\StaminaSystem\StaminaBrew.png" />
+    <None Remove="Core\StaminaSystem\StaminaPotion.png" />
+    <None Remove="Core\UI\FancyScrollbarInner.png" />
+    <None Remove="Core\UI\FancyScrollbarOuter.png" />
+    <None Remove="Core\XixianFlaskSystem\CannotUseFlask.png" />
+    <None Remove="Core\XixianFlaskSystem\XixianFlask.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\NewFolder\" />
   </ItemGroup>
 </Project>
