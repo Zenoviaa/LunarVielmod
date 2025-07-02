@@ -98,8 +98,8 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords
             swings.Add(new OvalSwing
             {
                 Duration = 40,
-                XSwingRadius = 80,
-                YSwingRadius = 100,
+                XSwingRadius = 100,
+                YSwingRadius = 40,
                 SwingDegrees = 540,
                 Easing = EasingFunction.InOutExpo7,
                 Sound = swingSound3

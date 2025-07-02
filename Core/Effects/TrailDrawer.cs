@@ -56,12 +56,12 @@ namespace Stellamod.Core.Effects
 
         public virtual float GetTrailWidth(float t)
         {
-            return EasingFunction.QuadraticBump(t) * 16;
+            return EasingFunction.QuadraticBump(t) * 12;
         }
 
         public virtual Color GetTrailColor(float t)
         {
-            return Color.Lerp(Color.White, Color.White, t);
+            return Color.Lerp(Color.White, Color.Transparent, t);
         }
 
         private void CalculateVerticesTris(Vector2[] trailingPoints, List<VertexPositionColorTexture> vertices)
