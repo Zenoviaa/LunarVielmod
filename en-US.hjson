@@ -180,6 +180,11 @@ Mods: {
 				DisplayName: Xixian Flask
 				Tooltip: ""
 			}
+
+			VitalityInsource: {
+				DisplayName: Vitality Insource
+				Tooltip: ""
+			}
 		}
 
 		Projectiles: {
