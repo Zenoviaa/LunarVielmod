@@ -50,10 +50,10 @@ namespace Stellamod.Core.Effects.Trails
 
             Offset = Vector2.Zero;
             Tiling = Vector2.One;
-            BaseColor = Color.Gray;
-            HighlightColor = Color.White;
+            BaseColor = Color.Lerp(Color.Cyan, Color.White, 0.5f);
+            HighlightColor = Color.LightCyan;
             RimHighlightColor = Color.White;
-            WindColor = Color.White * 0.5f;
+            WindColor = Color.Blue * 0.5f;
             TrailTexture = AssetRegistry.Textures.Trails.BasicSlash_Wide1.Value;
             HighlightTexture = AssetRegistry.Textures.Trails.BasicSlash_Wide2.Value;
             WindTexture = AssetRegistry.Textures.Trails.BasicSlash_Wide3.Value;

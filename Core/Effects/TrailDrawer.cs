@@ -56,7 +56,7 @@ namespace Stellamod.Core.Effects
 
         public virtual float GetTrailWidth(float t)
         {
-            return EasingFunction.QuadraticBump(t) * 32;
+            return EasingFunction.QuadraticBump(t) * 16;
         }
 
         public virtual Color GetTrailColor(float t)

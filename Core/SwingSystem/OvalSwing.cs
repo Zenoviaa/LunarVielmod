@@ -17,6 +17,7 @@ namespace Stellamod.Core.SwingSystem
             YSwingRadius = 24;
             SwingDegrees = 270;
             Easing = EasingFunction.InOutExpo;
+            TrailOffset = 1.5f;
         }
 
         public const float TRAIL_START_OFFSET = 0.2f;
@@ -28,6 +29,8 @@ namespace Stellamod.Core.SwingSystem
             get => MathHelper.ToDegrees(_swingRadians);
             set => _swingRadians = MathHelper.ToRadians(value);
         }
+
+        public float TrailOffset { get; set; }
         public Easer Easing { get; set; }
 
         public float GetDuration()
@@ -107,7 +110,7 @@ namespace Stellamod.Core.SwingSystem
                 float targetRotation = velocity.ToRotation();
 
                 //Set Offset, now we can take this and offset it more in the projectile
-                trailCache[t] = new Vector2(xOffset, yOffset).RotatedBy(targetRotation + MathHelper.Pi);
+                trailCache[t] = new Vector2(xOffset * TrailOffset, yOffset * TrailOffset).RotatedBy(targetRotation + MathHelper.Pi);
             }
         }
     }

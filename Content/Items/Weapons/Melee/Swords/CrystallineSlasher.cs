@@ -80,7 +80,7 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords
                 Duration = 40,
                 XSwingRadius = 80,
                 YSwingRadius = 100,
-                SwingDegrees = 360,
+                SwingDegrees = 540,
                 Easing = EasingFunction.InOutExpo7
             });
         }
