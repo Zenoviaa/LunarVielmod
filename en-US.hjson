@@ -175,12 +175,25 @@ Mods: {
 				DisplayName: Test Item
 				Tooltip: ""
 			}
+
+			XixianFlask: {
+				DisplayName: Xixian Flask
+				Tooltip: ""
+			}
 		}
 
 		Projectiles: {
 			MagicProjectile.DisplayName: Magic Projectile
 			CrystallineSwordSlash.DisplayName: Crystalline Sword Slash
 			WandProjectile.DisplayName: Wand Projectile
+			InsourceDefaultProjectile.DisplayName: Insource Default Projectile
+		}
+
+		Buffs: {
+			CannotUseFlask: {
+				DisplayName: Cannot Use Flask
+				Description: Mods.Stellamod.Buffs.CannotUseFlask.Description
+			}
 		}
 	}
 
