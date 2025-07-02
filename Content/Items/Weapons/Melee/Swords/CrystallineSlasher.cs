@@ -1,7 +1,10 @@
-﻿using Stellamod.Core.Effects.Trails;
+﻿using Stellamod.Assets;
+using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Helpers.Math;
 using Stellamod.Core.SwingSystem;
 using System.Collections.Generic;
+using Terraria;
+using Terraria.Audio;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Items.Weapons.Melee.Swords
@@ -30,13 +33,26 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords
             base.DefineCombo(swings);
             SlashTrailer = new();
             Trailer = SlashTrailer;
+
+            SoundStyle swingSound1 = AssetRegistry.Sounds.Melee.NormalSwordSlash1;
+            swingSound1.PitchVariance = 0.25f;
+
+            SoundStyle swingSound2 = AssetRegistry.Sounds.Melee.NormalSwordSlash2;
+            swingSound2.PitchVariance = 0.25f;
+
+            SoundStyle swingSound3 = AssetRegistry.Sounds.Melee.SwordSpin1;
+            swingSound3.PitchVariance = 0.5f;
+
+
+
             swings.Add(new OvalSwing
             {
                 Duration = 24,
                 XSwingRadius = 80,
                 YSwingRadius = 48,
                 SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo
+                Easing = EasingFunction.InOutExpo,
+                Sound = swingSound1,
             });
 
             swings.Add(new OvalSwing
@@ -45,7 +61,8 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords
                 XSwingRadius = 80,
                 YSwingRadius = 48,
                 SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo
+                Easing = EasingFunction.InOutExpo,
+                Sound = swingSound2
             });
 
             swings.Add(new OvalSwing
@@ -54,7 +71,8 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords
                 XSwingRadius = 80,
                 YSwingRadius = 48,
                 SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo
+                Easing = EasingFunction.InOutExpo,
+                Sound = swingSound1
             });
 
             swings.Add(new OvalSwing
@@ -63,7 +81,8 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords
                 XSwingRadius = 80,
                 YSwingRadius = 48,
                 SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo7
+                Easing = EasingFunction.InOutExpo7,
+                Sound  = swingSound2
             });
 
             swings.Add(new OvalSwing
@@ -72,7 +91,8 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords
                 XSwingRadius = 80,
                 YSwingRadius = 48,
                 SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo7
+                Easing = EasingFunction.InOutExpo7,
+                Sound = swingSound1
             });
 
             swings.Add(new OvalSwing
@@ -81,8 +101,17 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords
                 XSwingRadius = 80,
                 YSwingRadius = 100,
                 SwingDegrees = 540,
-                Easing = EasingFunction.InOutExpo7
+                Easing = EasingFunction.InOutExpo7,
+                Sound = swingSound3
             });
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPC(target, hit, damageDone);
+            SoundStyle spearHit = AssetRegistry.Sounds.Melee.SpearHit1;
+            spearHit.PitchVariance = 0.5f;
+            SoundEngine.PlaySound(spearHit, Projectile.position);
         }
     }
 }

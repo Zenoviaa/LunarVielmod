@@ -8,8 +8,6 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-  </ItemGroup>
-  <ItemGroup>
     <Content Remove="C:\Users\green\.nuget\packages\accord\3.8.0\build\Accord.dll.config" />
   </ItemGroup>
   <ItemGroup>

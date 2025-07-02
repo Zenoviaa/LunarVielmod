@@ -20,6 +20,8 @@ namespace Stellamod.Core.SwingSystem
         public ref float SwingDirection => ref Projectile.ai[1];
         public int ComboIndex => (int)Projectile.ai[2];
 
+        public float HitstopTimer;
+
         public Vector2[] swingTrailCache;
         public int hitStopTime;
 
@@ -43,7 +45,7 @@ namespace Stellamod.Core.SwingSystem
 
             //We're using extra updates to ensure the sword doesn't just pass through things
             Projectile.extraUpdates = EXTRA_UPDATE_COUNT - 1;
-            hitStopTime = 4;
+            hitStopTime = EXTRA_UPDATE_COUNT * 2;
             SetDefaults2();
         }
 
@@ -120,7 +122,10 @@ namespace Stellamod.Core.SwingSystem
             base.AI();
             //We want to initalize like this for better MP compatibility, using a timer might not always be seen on all clients
             AI_Initialize();
-            Timer++;
+            if (HitstopTimer <= 0)
+                Timer++;
+            else
+                HitstopTimer--;
             ISwing swing = GetSwing();
 
             //Now we need to calculate the time/interpolant for this swinging
@@ -139,7 +144,7 @@ namespace Stellamod.Core.SwingSystem
             }
 
             //We now have the offset so we can apply that to the weapon
-            swing.UpdateSwing(interpolant, Projectile.velocity, out Vector2 offset);
+            swing.UpdateSwing(interpolant, Projectile.position, Projectile.velocity, out Vector2 offset);
             Projectile.Center = Owner.Center + offset;
             Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
 
@@ -226,7 +231,7 @@ namespace Stellamod.Core.SwingSystem
             base.OnHitNPC(target, hit, damageDone);
             //In here we'd spawn the hit effects
             //Hit stop effect and minor screenshake I think
-            Timer -= hitStopTime;
+            HitstopTimer = hitStopTime;
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Stellamod.Core.Helpers.Math;
 using System;
 using Terraria;
+using Terraria.Audio;
 
 namespace Stellamod.Core.SwingSystem
 {
@@ -9,6 +11,7 @@ namespace Stellamod.Core.SwingSystem
     {
         private int _dir;
         private float _swingRadians;
+        private bool _hasPlayedSound;
         public OvalSwing()
         {
             //Set some default values
@@ -32,6 +35,7 @@ namespace Stellamod.Core.SwingSystem
 
         public float TrailOffset { get; set; }
         public Easer Easing { get; set; }
+        public SoundStyle Sound { get; set; }
 
         public float GetDuration()
         {
@@ -43,12 +47,16 @@ namespace Stellamod.Core.SwingSystem
             _dir = direction;
         }
 
-        public void UpdateSwing(float time, Vector2 velocity,
+        public void UpdateSwing(float time, Vector2 position, Vector2 velocity,
             out Vector2 offset)
         {
             //Calculate easing
             float easedInterpolant = Easing(time);
-
+            if (!_hasPlayedSound && easedInterpolant >= 0.35f)
+            {
+                SoundEngine.PlaySound(Sound, position);
+                _hasPlayedSound = true;
+            }
             //Calculate the offset at this time
             float xOffset;
             float yOffset;

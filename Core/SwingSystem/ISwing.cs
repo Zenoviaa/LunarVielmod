@@ -11,7 +11,7 @@ namespace Stellamod.Core.SwingSystem
         /// Update the 
         /// </summary>
         /// <param name="time"></param>
-        void UpdateSwing(float time, Vector2 velocity, out Vector2 offset);
+        void UpdateSwing(float time, Vector2 position, Vector2 velocity, out Vector2 offset);
         void CalculateTrailingPoints(float time, Vector2 velocity, ref Vector2[] trailCache);
     }
 }
