@@ -9,6 +9,11 @@ namespace Stellamod.Assets
     {
         public static class Textures
         {
+            public static class Noise
+            {
+                public static Asset<Texture2D> BasicGlow = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Noise/BasicGlow");
+               
+            }
             public static class Trails
             {
                 public static Asset<Texture2D> BasicSlash_Wide1 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Wide1");
