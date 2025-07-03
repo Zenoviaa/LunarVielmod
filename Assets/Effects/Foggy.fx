@@ -85,7 +85,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
 
 technique SpriteDrawing
 {
-    pass PixelPass
+    pass Pass0
     {
         PixelShader = compile ps_3_0 PixelShaderFunction();
     }

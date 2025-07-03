@@ -23,6 +23,7 @@ namespace Stellamod
             if (Main.netMode == NetmodeID.Server)
                 return;
             LoadShader(mod, "Assets/Effects/Trails/SlashEffect", "SlashEffect");
+            LoadShader(mod, "Assets/Effects/GlowCircle", "GlowCircleShader");
         }
     }
 }

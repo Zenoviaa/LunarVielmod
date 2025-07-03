@@ -69,17 +69,17 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     
     float2 offset = lerp(float2(0.0, 0.0), polarUV, noise);
     offset *= Distortion;
-    float2 coords = noisePolarUV + offset;
+    float2 c = noisePolarUV + offset;
     
     //Convert to a vector ot make it pulse outward
-    float4 color = SpriteTexture.Sample(TextureSampler, coords) * sampleColor;
+    float4 color = SpriteTexture.Sample(TextureSampler, c) * sampleColor;
    
     //Calculate main color
     float3 color2 = lerp(InnerColor, GlowColor, dist);
     color.rgb *= color2;
     
     //Calculate Undertone
-    float4 underTone = SpriteTexture.Sample(TextureSampler, coords - offset * 0.5) * sampleColor;
+    float4 underTone = SpriteTexture.Sample(TextureSampler, c - offset * 0.5) * sampleColor;
     underTone.rgb *= UnderToneColor;
       
     //Fade out the edges
