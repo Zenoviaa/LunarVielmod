@@ -5599,6 +5599,12 @@ GothiviaMedallionFragment: {
 	Tooltip: ""
 }
 
+GothiviaMedal: {
+	Effect: Mods.Stellamod.Items.GothiviaMedal.Effect
+	DisplayName: Gothivia Medal
+	Tooltip: ""
+}
+
 NiiviMedallionFragment: {
 	Effect: Prismatic balls surround the player and when attacking little orbs will orbit enemies and allow the player to do more damage to the targeted enemy or boss
 	DisplayName: Niivi Medallion Fragment
@@ -5752,5 +5758,29 @@ NoElement: {
 
 NoStaff: {
 	DisplayName: No Staff
+	Tooltip: ""
+}
+
+ApilithyMedal: {
+	Effect: Mods.Stellamod.Items.ApilithyMedal.Effect
+	DisplayName: Apilithy Medal
+	Tooltip: ""
+}
+
+DraekusMedal: {
+	Effect: Mods.Stellamod.Items.DraekusMedal.Effect
+	DisplayName: Draekus Medal
+	Tooltip: ""
+}
+
+KariMedal: {
+	Effect: Mods.Stellamod.Items.KariMedal.Effect
+	DisplayName: Kari Medal
+	Tooltip: ""
+}
+
+MakMedal: {
+	Effect: Mods.Stellamod.Items.MakMedal.Effect
+	DisplayName: Mak Medal
 	Tooltip: ""
 }

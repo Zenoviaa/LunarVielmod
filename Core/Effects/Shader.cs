@@ -4,7 +4,7 @@ using Terraria.Graphics.Shaders;
 
 namespace Stellamod.Core.Effects
 {
-    internal abstract class Shader
+    public abstract class Shader
     {
         public Shader()
         {

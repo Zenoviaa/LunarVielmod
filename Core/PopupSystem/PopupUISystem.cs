@@ -24,7 +24,7 @@ namespace Stellamod.Core.PopupSystem
         private AIState _state;
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
-        public static string RootTexturePath => "Stellamod/Core/PopupUISystem/";
+        public static string RootTexturePath => "Stellamod/Core/PopupSystem/";
 
         public PopupUIState popupUIState;
         public override void OnModLoad()

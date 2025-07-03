@@ -98,8 +98,6 @@ namespace Stellamod.Core.QuestSystem
         /// <param name="player"></param>
         public virtual void StartQuest(Player player)
         {
-            SoundStyle sound = new SoundStyle("Urdveil/Assets/Sounds/Bliss2");
-            SoundEngine.PlaySound(sound);
 
         }
 
@@ -111,8 +109,7 @@ namespace Stellamod.Core.QuestSystem
             {
                 player.QuickSpawnItem(player.GetSource_FromThis(), reward, reward.stack);
             }
-            SoundStyle questCompleteSound = new SoundStyle("Urdveil/Assets/Sounds/Bliss1");
-            SoundEngine.PlaySound(questCompleteSound);
+
             for (int i = 0; i < 32; i++)
             {
                 float f = i;
