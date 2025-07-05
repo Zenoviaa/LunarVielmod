@@ -65,20 +65,20 @@ namespace Stellamod.Core.CollectionSystem.Medallion
             BackgroundMiddle.Left.Pixels = -12;
 
             Fragments[0].Left.Pixels = centerLeftX - 180;
-            Fragments[0].Top.Pixels = centerTopX - 160;
+            Fragments[0].Top.Pixels = centerTopX - 150;
 
 
             Fragments[1].Left.Pixels = centerLeftX - 15;
             Fragments[1].Top.Pixels = centerTopX - 150;
 
-            Fragments[2].Left.Pixels = centerLeftX - 100;
-            Fragments[2].Top.Pixels = centerTopX - 110;
+            Fragments[2].Left.Pixels = centerLeftX - 5;
+            Fragments[2].Top.Pixels = centerTopX - 60;
 
-            Fragments[3].Left.Pixels = centerLeftX - 190;
-            Fragments[3].Top.Pixels = centerTopX - 50;
+            Fragments[3].Left.Pixels = centerLeftX - 100;
+            Fragments[3].Top.Pixels = centerTopX - 25;
 
-            Fragments[4].Left.Pixels = centerLeftX - 15;
-            Fragments[4].Top.Pixels = centerTopX - 45;
+            Fragments[4].Left.Pixels = centerLeftX - 90;
+            Fragments[4].Top.Pixels = centerTopX - 120;
         }
     }
 }

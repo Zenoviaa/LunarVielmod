@@ -11,10 +11,17 @@ namespace Stellamod.Core.QuestSystem
 {
     public class QuestSerializer : TagSerializer<Quest, TagCompound>
     {
-        public override TagCompound Serialize(Quest value) => new TagCompound
+        public override TagCompound Serialize(Quest value)
         {
-            ["type"] = value.Type,
-        };
+            if(value == null)
+            {
+                TagCompound nullCompound = new TagCompound();
+                return nullCompound;
+            }
+            TagCompound tagCompound = new TagCompound();
+            tagCompound["type"] = value.Type;
+            return tagCompound;
+        }
 
         public override Quest Deserialize(TagCompound tag)
         {
