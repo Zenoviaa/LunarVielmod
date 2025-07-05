@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Stellamod.Core.ArmorReforge;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -65,12 +66,12 @@ namespace Stellamod.Core.Helpers
         {
             return Language.GetTextValue($"Mods.Stellamod.ArmorShop.{item.Name}", arg0);
         }
-        /*
+        
         public static string ArmorReforge(ArmorReforgeType type, string Path, object arg0 = null)
         {
             return Language.GetTextValue($"Mods.Stellamod.ArmorReforge.{type.ToString()}." + Path, arg0);
         }
-        */
+        
         public static string Common(string Path, object arg0 = null)
         {
             return Language.GetTextValue("Mods.Stellamod.Items.Common." + Path, arg0);

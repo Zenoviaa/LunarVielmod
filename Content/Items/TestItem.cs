@@ -1,6 +1,5 @@
-﻿using Stellamod.Core.WeaponUpgrade.UI;
+﻿using Stellamod.Core.ArmorReforge.UI;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -22,7 +21,7 @@ namespace Stellamod.Content.Items
 
         public override bool? UseItem(Player player)
         {
-            var uiSystem = ModContent.GetInstance<WeaponUpgradeUISystem>();
+            var uiSystem = ModContent.GetInstance<ReforgeUISystem>();
             uiSystem.ToggleUI();
             Main.NewText("Use Ietm");
             return true;
