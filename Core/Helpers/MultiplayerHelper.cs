@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.ID;
 
 namespace Stellamod.Core.Helpers
 {
     public static class MultiplayerHelper
     {
+        public static bool IsHost => Main.netMode != NetmodeID.MultiplayerClient;
         public static void WriteItemList(this BinaryWriter writer, List<Item> arr)
         {
             writer.Write(arr.Count);

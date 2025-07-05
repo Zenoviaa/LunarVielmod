@@ -5784,3 +5784,13 @@ MakMedal: {
 	DisplayName: Mak Medal
 	Tooltip: ""
 }
+
+Modelizer: {
+	DisplayName: Modelizer
+	Tooltip: ""
+}
+
+WandSaver: {
+	DisplayName: Wand Saver
+	Tooltip: ""
+}

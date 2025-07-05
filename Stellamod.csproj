@@ -32,6 +32,7 @@
     <None Remove="Content\Items\Insources\VitalityInsource.png" />
     <None Remove="Content\Items\Insources\VitalityInsourceProj.png" />
     <None Remove="Content\Items\Materials\AncientLunarStone.png" />
+    <None Remove="Content\Items\Materials\GlisteningPearl.png" />
     <None Remove="Content\Items\Materials\LunarStone.png" />
     <None Remove="Content\Items\Materials\RareLunarStone.png" />
     <None Remove="Content\Items\Weapons\Magic\Cards\BOMBERCard.png" />
@@ -61,9 +62,18 @@
     <None Remove="Content\Items\Weapons\Magic\Powders\SpiritPowder.png" />
     <None Remove="Content\Items\Weapons\Magic\Powders\TrickPowder.png" />
     <None Remove="Content\Items\Weapons\Magic\Powders\Verstidust.png" />
+    <None Remove="Content\Tiles\ExampleDecorativeWallItem.png" />
+    <None Remove="Content\Tiles\InvisibleTile.png" />
+    <None Remove="Content\Tiles\InvisibleWall.png" />
     <None Remove="Core\CollectionSystem\CauldronIcon.png" />
     <None Remove="Core\CollectionSystem\KaleidoscopicInk.png" />
     <None Remove="Core\Effects\GlowCircleBoom.png" />
+    <None Remove="Core\Helpers\Magic.png" />
+    <None Remove="Core\Helpers\Modelizer.png" />
+    <None Remove="Core\Helpers\Save.png" />
+    <None Remove="Core\Helpers\StructureLine.png" />
+    <None Remove="Core\Helpers\StructurePoint.png" />
+    <None Remove="Core\Helpers\WandSaver.png" />
     <None Remove="Core\QuestSystem\Quests\CauldronCrafting.png" />
     <None Remove="Core\QuestSystem\Quests\CauldronCrafting_Big.png" />
     <None Remove="Core\StaminaSystem\CannotUseStaminaPotion.png" />
