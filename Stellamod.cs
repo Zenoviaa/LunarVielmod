@@ -12,6 +12,13 @@ namespace Stellamod
             base.Load();
             Instance = this;
             ShaderLoader.LoadShaders(this);
+            ReTexture.Load();
+        }
+
+        public override void Unload()
+        {
+            base.Unload();
+            ReTexture.Unload();
         }
     }
 }
