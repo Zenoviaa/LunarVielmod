@@ -9,8 +9,14 @@ namespace Stellamod.Core.Helpers
     {
         public override void SetDefaults()
         {
-            Item.CloneDefaults(ItemID.MagicConch);
-            Item.useTime = Item.useAnimation = 15;
+            base.SetDefaults();
+            Item.width = 16;
+            Item.height = 16;
+            Item.rare = ItemRarityID.Green;
+            Item.useTime = 2;
+            Item.useAnimation = 2;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.autoReuse = false;
         }
 
         public override void UpdateInventory(Player player)
