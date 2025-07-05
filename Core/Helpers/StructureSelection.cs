@@ -253,7 +253,7 @@ namespace Stellamod.Core.Helpers
             spriteBatch.Restart(samplerState: SamplerState.PointWrap);
 
             StructureSelection structureSelection = ModContent.GetInstance<StructureSelection>();
-            Texture2D line = ModContent.Request<Texture2D>(this.GetType().PathHere() + "/StructureLine").Value;
+            Texture2D line = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/StructureLine").Value;
 
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             int x = (int)drawPos.X;
