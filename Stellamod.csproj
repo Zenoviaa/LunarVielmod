@@ -12,9 +12,23 @@
     <Content Remove="C:\Users\green\.nuget\packages\accord\3.8.0\build\Accord.dll.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\Effects\Fog.fx" />
+    <None Remove="Assets\Effects\Fog2.fx" />
+    <None Remove="Assets\Effects\Foggy.fx" />
+    <None Remove="Assets\Effects\GlowCircle.fx" />
+    <None Remove="Assets\Effects\GlowPillar.fx" />
     <None Remove="Assets\Effects\RippingSlashShader.fx" />
     <None Remove="Assets\Effects\SharpExplosionShader.fx" />
     <None Remove="Assets\Textures\Noise\BasicGlow.png" />
+    <None Remove="Assets\Textures\Noise\Clouds3.png" />
+    <None Remove="Assets\Textures\Noise\SmallClouds.png" />
+    <None Remove="Content\Items\Fragments\AshotiMedallionFragment.png" />
+    <None Remove="Content\Items\Fragments\GintziaMedallionFragment.png" />
+    <None Remove="Content\Items\Fragments\GothiviaMedallionFragment.png" />
+    <None Remove="Content\Items\Fragments\NiiviMedallionFragment.png" />
+    <None Remove="Content\Items\Fragments\SanguimiMedallionFragment.png" />
+    <None Remove="Content\Items\Fragments\SporecroweMedallionFragment.png" />
+    <None Remove="Content\Items\Fragments\VerliaMedallionFragment.png" />
     <None Remove="Content\Items\Insources\VitalityInsource.png" />
     <None Remove="Content\Items\Insources\VitalityInsourceProj.png" />
     <None Remove="Content\Items\Materials\AncientLunarStone.png" />
@@ -47,6 +61,11 @@
     <None Remove="Content\Items\Weapons\Magic\Powders\SpiritPowder.png" />
     <None Remove="Content\Items\Weapons\Magic\Powders\TrickPowder.png" />
     <None Remove="Content\Items\Weapons\Magic\Powders\Verstidust.png" />
+    <None Remove="Core\CollectionSystem\CauldronIcon.png" />
+    <None Remove="Core\CollectionSystem\KaleidoscopicInk.png" />
+    <None Remove="Core\Effects\GlowCircleBoom.png" />
+    <None Remove="Core\QuestSystem\Quests\CauldronCrafting.png" />
+    <None Remove="Core\QuestSystem\Quests\CauldronCrafting_Big.png" />
     <None Remove="Core\StaminaSystem\CannotUseStaminaPotion.png" />
     <None Remove="Core\StaminaSystem\StaminaBrew.png" />
     <None Remove="Core\StaminaSystem\StaminaPotion.png" />
@@ -54,8 +73,5 @@
     <None Remove="Core\UI\FancyScrollbarOuter.png" />
     <None Remove="Core\XixianFlaskSystem\CannotUseFlask.png" />
     <None Remove="Core\XixianFlaskSystem\XixianFlask.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\NewFolder\" />
   </ItemGroup>
 </Project>

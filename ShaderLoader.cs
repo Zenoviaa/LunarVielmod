@@ -24,6 +24,7 @@ namespace Stellamod
                 return;
             LoadShader(mod, "Assets/Effects/Trails/SlashEffect", "SlashEffect");
             LoadShader(mod, "Assets/Effects/GlowCircle", "GlowCircleShader");
+            LoadShader(mod, "Assets/Effects/GlowCircle", "GlowCircleShader");
         }
     }
 }

@@ -79,13 +79,6 @@ namespace Stellamod.Core.CollectionSystem.Medallion
 
             Fragments[4].Left.Pixels = centerLeftX - 15;
             Fragments[4].Top.Pixels = centerTopX - 45;
-
-            Fragments[5].Left.Pixels = centerLeftX - 120;
-            Fragments[5].Top.Pixels = centerTopX + 30;
-
-            Fragments[6].Left.Pixels = centerLeftX - 25;
-            Fragments[6].Top.Pixels = centerTopX + 30;
-
         }
     }
 }

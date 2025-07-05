@@ -78,7 +78,7 @@ namespace Stellamod.Content.Items.Fragments
     }
     internal class DraekusMedal : BaseMedallionFragment
     {
-        public override int Number => 1;
+        public override int Number => 2;
         public override bool? UseItem(Player player)
         {
             FragmentPlayer fragmentPlayer = player.GetModPlayer<FragmentPlayer>();
@@ -92,7 +92,7 @@ namespace Stellamod.Content.Items.Fragments
     }
     internal class ApilithyMedal : BaseMedallionFragment
     {
-        public override int Number => 1;
+        public override int Number => 3;
         public override bool? UseItem(Player player)
         {
             FragmentPlayer fragmentPlayer = player.GetModPlayer<FragmentPlayer>();
@@ -106,7 +106,7 @@ namespace Stellamod.Content.Items.Fragments
     }
     internal class GothiviaMedal : BaseMedallionFragment
     {
-        public override int Number => 1;
+        public override int Number => 4;
         public override bool? UseItem(Player player)
         {
             FragmentPlayer fragmentPlayer = player.GetModPlayer<FragmentPlayer>();
@@ -120,7 +120,7 @@ namespace Stellamod.Content.Items.Fragments
     }
     internal class KariMedal : BaseMedallionFragment
     {
-        public override int Number => 1;
+        public override int Number => 5;
         public override bool? UseItem(Player player)
         {
             FragmentPlayer fragmentPlayer = player.GetModPlayer<FragmentPlayer>();
