@@ -1,13 +1,12 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.GameContent;
-using Terraria.ID;
-using Terraria.ModLoader;
+using System.Reflection;
 using Terraria;
+using Terraria.GameContent;
+using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
+using Terraria.IO;
+using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace Stellamod
 {
@@ -139,24 +138,13 @@ namespace Stellamod
                 TextureAssets.ScrollRightButton = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/ForwardButton");
             }
 
+
+            if (!Main.dedServ && Main.netMode != NetmodeID.Server)
+            {
+                On_UIWorldListItem.DrawSelf += DrawWorldSelect;
+            }
         }
 
-        private static void UnloadTile(int tileID)
-        {
-            TextureAssets.Tile[tileID] = ModContent.Request<Texture2D>($"Terraria/Images/Tiles_{tileID}");
-        }
-
-        private static void UnloadWall(int wallID)
-        {
-            TextureAssets.Wall[wallID] = ModContent.Request<Texture2D>($"Terraria/Images/Wall_{wallID}");
-        }
-
-        private static string InventoryBackPath(int tileID)
-        {
-            if (tileID == 0)
-                return $"Terraria/Images/Inventory_Back";
-            return $"Terraria/Images/Inventory_Back{tileID}";
-        }
 
         public static void Unload()
         {
@@ -220,6 +208,51 @@ namespace Stellamod
                 UnloadTile(TileID.Pearlsand);
                 UnloadTile(TileID.SnowCloud);
             }
+            if (!Main.dedServ && Main.netMode != NetmodeID.Server)
+            {
+                On_UIWorldListItem.DrawSelf -= DrawWorldSelect;
+            }
+        }
+
+        private static void UnloadTile(int tileID)
+        {
+            TextureAssets.Tile[tileID] = ModContent.Request<Texture2D>($"Terraria/Images/Tiles_{tileID}");
+        }
+
+        private static void UnloadWall(int wallID)
+        {
+            TextureAssets.Wall[wallID] = ModContent.Request<Texture2D>($"Terraria/Images/Wall_{wallID}");
+        }
+
+        private static string InventoryBackPath(int tileID)
+        {
+            if (tileID == 0)
+                return $"Terraria/Images/Inventory_Back";
+            return $"Terraria/Images/Inventory_Back{tileID}";
+        }
+
+        private static void DrawWorldSelect(On_UIWorldListItem.orig_DrawSelf orig, UIWorldListItem self, SpriteBatch spriteBatch)
+        {
+            orig(self, spriteBatch);
+            DrawWorldSelectItemOverlay(self, spriteBatch);
+        }
+
+        private static void DrawWorldSelectItemOverlay(UIWorldListItem uiItem, SpriteBatch spriteBatch)
+        {
+            //    bool data = uiItem.Data.TryGetHeaderData(ModContent.GetInstance<WorldLoadGen>(), out var _data);
+            UIElement WorldIcon = (UIElement)typeof(UIWorldListItem).GetField("_worldIcon", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiItem);
+            WorldFileData Data = (WorldFileData)typeof(AWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiItem);
+            WorldIcon.RemoveAllChildren();
+
+
+            UIElement worldIcon = WorldIcon;
+            UIImage element = new UIImage(ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Menu/LunarTree"))
+            {
+                Top = new StyleDimension(-10f, 0f),
+                Left = new StyleDimension(-6f, 0f),
+                IgnoresMouseInteraction = true
+            };
+            worldIcon.Append(element);
         }
     }
 }
