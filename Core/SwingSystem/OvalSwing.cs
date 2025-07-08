@@ -48,6 +48,23 @@ namespace Stellamod.Core.SwingSystem
             _dir = direction;
         }
 
+        private void CalculateXY(float interpolant, Vector2 velocity, out float xOffset, out float yOffset)
+        {
+            float range = _swingRadians;
+            float startRads = -range / 2;
+            float endRads = range / 2;
+
+            startRads *= _dir;
+            endRads *= _dir;
+
+            float rads = MathHelper.Lerp(startRads, endRads, interpolant);
+            rads += MathHelper.PiOver2;
+
+            // rads += targetRotation;
+            xOffset = XSwingRadius * MathF.Sin(rads);
+            yOffset = YSwingRadius * MathF.Cos(rads);
+        }
+
         public void UpdateSwing(float time, Vector2 position, Vector2 velocity,
             out Vector2 offset)
         {
@@ -62,18 +79,8 @@ namespace Stellamod.Core.SwingSystem
             float xOffset;
             float yOffset;
             float radOffset = _swingRadians;
-            if (_dir == -1)
-            {
-                xOffset = XSwingRadius * MathF.Sin(easedInterpolant * _swingRadians + RadOffset);
-                yOffset = YSwingRadius * MathF.Cos(easedInterpolant * _swingRadians + RadOffset);
-            }
-            else
-            {
-                xOffset = XSwingRadius * MathF.Sin((1f - easedInterpolant) * _swingRadians + RadOffset);
-                yOffset = YSwingRadius * MathF.Cos((1f - easedInterpolant) * _swingRadians + RadOffset);
-            }
-
             float targetRotation = velocity.ToRotation();
+            CalculateXY(easedInterpolant, velocity, out xOffset, out yOffset);
 
             //Set Offset
             offset = new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
@@ -108,19 +115,8 @@ namespace Stellamod.Core.SwingSystem
                 float yOffset;
 
                 float radOffset = _swingRadians / 2;
-                if (_dir == -1)
-                {
-                    xOffset = XSwingRadius * MathF.Sin(interpolant * _swingRadians + RadOffset);
-                    yOffset = YSwingRadius * MathF.Cos(interpolant * _swingRadians + RadOffset);
-                }
-                else
-                {
-                    xOffset = XSwingRadius * MathF.Sin((1f - interpolant) * _swingRadians + RadOffset);
-                    yOffset = YSwingRadius * MathF.Cos((1f - interpolant) * _swingRadians + RadOffset);
-                }
-
                 float targetRotation = velocity.ToRotation();
-
+                CalculateXY(interpolant, velocity, out xOffset, out yOffset);
                 //Set Offset, now we can take this and offset it more in the projectile
                 trailCache[t] = new Vector2(xOffset * TrailOffset, yOffset * TrailOffset).RotatedBy(targetRotation);
             }

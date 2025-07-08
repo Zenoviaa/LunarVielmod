@@ -85,7 +85,7 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords
                 Duration = 24,
                 XSwingRadius = 48,
                 YSwingRadius = 48,
-                SwingDegrees = 270,
+                SwingDegrees = 90,
                 Easing = EasingFunction.InOutExpo,
                 Sound = swingSound1,
             });
@@ -95,7 +95,7 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords
                 Duration = 24,
                 XSwingRadius = 64,
                 YSwingRadius = 32,
-                SwingDegrees = 270,
+                SwingDegrees = 180,
                 Easing = EasingFunction.InOutExpo,
                 Sound = swingSound2,
             });
@@ -115,7 +115,7 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords
                 Duration = 24,
                 XSwingRadius = 48,
                 YSwingRadius = 48,
-                SwingDegrees = 270,
+                SwingDegrees = 360,
                 Easing = EasingFunction.InOutExpo7,
                 Sound = swingSound1,
             });
