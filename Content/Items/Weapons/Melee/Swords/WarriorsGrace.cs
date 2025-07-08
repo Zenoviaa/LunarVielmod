@@ -52,7 +52,7 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords
         }
         private float GetTrailWidth(float interpolant)
         {
-            return EasingFunction.QuadraticBump(interpolant) * 6;
+            return EasingFunction.QuadraticBump(interpolant) * 12;
         }
         public override void DefineCombo(List<ISwing> swings)
         {
@@ -196,7 +196,7 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords
         public SlashTrailer SlashTrailer { get; set; }
         private float GetTrailWidth(float interpolant)
         {
-            return EasingFunction.QuadraticBump(interpolant) * 6;
+            return EasingFunction.QuadraticBump(interpolant) * 12;
         }
 
         public override void AI()
@@ -236,11 +236,11 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords
             SoundStyle swingSound1 = AssetRegistry.Sounds.Melee.HeavySwordSlash1;
             swingSound1.PitchVariance = 1f;
 
-            float deg = 270 / 4;
+            float deg = 135;
             swings.Add(new OvalSwing
             {
                 Duration = 18,
-                XSwingRadius = 100 / 1.5f,
+                XSwingRadius = 64 / 1.5f,
                 YSwingRadius = 40 / 1.5f,
                 SwingDegrees = deg,
                 Easing = EasingFunction.InOutExpo,
@@ -250,7 +250,7 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords
             swings.Add(new OvalSwing
             {
                 Duration = 18,
-                XSwingRadius = 100 / 1.5f,
+                XSwingRadius = 64 / 1.5f,
                 YSwingRadius = 40 / 1.5f,
                 SwingDegrees = deg,
                 Easing = EasingFunction.InOutExpo,
@@ -261,7 +261,7 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords
             swings.Add(new OvalSwing
             {
                 Duration = 18,
-                XSwingRadius = 100 / 1.5f,
+                XSwingRadius = 64 / 1.5f,
                 YSwingRadius = 40 / 1.5f,
                 SwingDegrees = deg,
                 Easing = EasingFunction.InOutExpo,
