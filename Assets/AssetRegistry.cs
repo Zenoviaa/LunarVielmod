@@ -98,6 +98,14 @@ namespace Stellamod.Assets
                 public static SoundStyle NormalSwordHit1 = new SoundStyle($"{Path}Melee/NormalSwordHit1");
                 public static SoundStyle NormalSwordSlash1 = new SoundStyle($"{Path}Melee/NormalSwordSlash1");
                 public static SoundStyle NormalSwordSlash2 = new SoundStyle($"{Path}Melee/NormalSwordSlash2");
+
+                public static SoundStyle Safunais1 = new SoundStyle($"{Path}Melee/Safunais");
+                public static SoundStyle Safunais2 = new SoundStyle($"{Path}Melee/Safunais2");
+                public static SoundStyle Safunais3 = new SoundStyle($"{Path}Melee/Safunais3");
+
+                public static SoundStyle Vinger = new SoundStyle($"{Path}Melee/Vinger");
+                public static SoundStyle Vinger2 = new SoundStyle($"{Path}Melee/Vinger2");
+                public static SoundStyle MorrowExp = new SoundStyle($"{Path}Melee/MorrowExp");
             }
         }
     }
