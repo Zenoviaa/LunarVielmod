@@ -33,7 +33,7 @@ namespace Stellamod.Content.Dusts
 
         public override bool Update(Dust dust)
         {
-            dust.velocity = dust.velocity.RotatedBy(MathHelper.PiOver4 / 16);
+            dust.velocity = dust.velocity.RotatedBy(MathHelper.PiOver4 / 32);
             dust.velocity *= 0.98f;
             dust.velocity.X *= 0.95f;
             dust.velocity.Y *= 0.97f;

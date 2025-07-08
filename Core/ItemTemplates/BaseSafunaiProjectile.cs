@@ -99,24 +99,31 @@ namespace Urdveil.Common.Bases
 
         private Vector2 GetSwingPosition(float progress)
         {
+            float distanceProgress;
             if (Slam)
             {
-                progress = EasingFunction.InOutCubic(progress);
-                progress = EasingFunction.InBack(progress);
+                distanceProgress = EasingFunction.QuadraticBump(progress);
             }
             else
             {
-                progress = EasingFunction.InOutCubic(progress);
-
+                distanceProgress = EasingFunction.QuadraticBump(progress);
             }
 
             //Starts at owner center, goes to peak range, then returns to owner center
-            float distance = MathHelper.Clamp(SwingDistance, ThrowRange * 0.1f, ThrowRange) * MathHelper.Lerp((float)Math.Sin(progress * MathHelper.Pi), 1, 0.04f);
-            distance = Math.Max(distance, 100); //Dont be too close to player
+            float startDistance = 0;
+            float endDistance = SwingDistance;
+            endDistance = Math.Min(SwingDistance, 252);
+            float throwDistance = MathHelper.Lerp(startDistance, endDistance, distanceProgress);
 
-            float angleMaxDeviation = MathHelper.Pi / 1.2f;
-            float angleOffset = Owner.direction * (Flip ? -1 : 1) * MathHelper.Lerp(-angleMaxDeviation, angleMaxDeviation, progress); //Moves clockwise if player is facing right, counterclockwise if facing left
-            return Projectile.velocity.RotatedBy(angleOffset) * distance;
+
+
+            Vector2 velocity = Projectile.velocity;
+            float rotEase = EasingFunction.InOutCubic(progress);
+            float range = MathHelper.ToRadians(210);
+            float rot = MathHelper.Lerp(-range / 2, range/ 2, rotEase);
+            rot *= Flip ? -1 : 1;
+            velocity = velocity.RotatedBy(rot);
+            return velocity * throwDistance;
         }
 
         public virtual void ThrowOutAI()

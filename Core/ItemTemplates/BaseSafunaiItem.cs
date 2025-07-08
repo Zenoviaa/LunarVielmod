@@ -49,7 +49,7 @@ namespace Stellamod.Core.ItemTemplates
 
             if (proj.ModProjectile is BaseSafunaiProjectile modProj)
             {
-                modProj.SwingTime = (int)(Item.useTime * UseTimeMultiplier(player) * (slam ? 1.75f : 1)) * 16;
+                modProj.SwingTime = (int)(Item.useTime * UseTimeMultiplier(player) * (slam ? 1.75f : 1)) * 25;
                 modProj.SwingDistance = player.Distance(Main.MouseWorld) * distanceMult;
                 modProj.Curvature = 0.33f * curvatureMult;
                 modProj.Flip = combo % 2 == 1;

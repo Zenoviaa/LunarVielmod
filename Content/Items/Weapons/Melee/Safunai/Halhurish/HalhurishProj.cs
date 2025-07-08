@@ -33,11 +33,12 @@ namespace Stellamod.Content.Items.Weapons.Melee.Safunai.Halhurish
                 hitSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(hitSound, target.position);
 
-                for (int i = 0; i < 14; i++)
+                for (int i = 0; i < 7; i++)
                 {
                     Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Yellow, 1f).noGravity = true;
                 }
-                for (int i = 0; i < 14; i++)
+
+                for (int i = 0; i < 7; i++)
                 {
                     Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Orange, 1f).noGravity = true;
                 }
@@ -58,7 +59,7 @@ namespace Stellamod.Content.Items.Weapons.Melee.Safunai.Halhurish
                 SoundStyle hitSound = AssetRegistry.Sounds.Melee.Vinger;
                 hitSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(hitSound, target.position);
-                for (int i = 0; i < 14; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Orange, 0.5f).noGravity = true;
                 }

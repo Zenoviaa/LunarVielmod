@@ -16,6 +16,7 @@
     <None Remove="Assets\Effects\Fog2.fx" />
     <None Remove="Assets\Effects\Foggy.fx" />
     <None Remove="Assets\Effects\GlowCircle.fx" />
+    <None Remove="Assets\Effects\GlowingDust.fx" />
     <None Remove="Assets\Effects\GlowPillar.fx" />
     <None Remove="Assets\Effects\RippingSlashShader.fx" />
     <None Remove="Assets\Effects\SharpExplosionShader.fx" />
@@ -62,6 +63,11 @@
     <None Remove="Content\Items\Weapons\Magic\Powders\SpiritPowder.png" />
     <None Remove="Content\Items\Weapons\Magic\Powders\TrickPowder.png" />
     <None Remove="Content\Items\Weapons\Magic\Powders\Verstidust.png" />
+    <None Remove="Content\Items\Weapons\Melee\Safunai\Halhurish.png" />
+    <None Remove="Content\Items\Weapons\Melee\Safunai\HalhurishProj.png" />
+    <None Remove="Content\Items\Weapons\Melee\Safunai\HalhurishProj_Chain.png" />
+    <None Remove="Content\Items\Weapons\Melee\Safunai\HalhurishProj_Glow.png" />
+    <None Remove="Content\Items\Weapons\Melee\Safunai\HalhurishProj_White.png" />
     <None Remove="Content\Tiles\ExampleDecorativeWallItem.png" />
     <None Remove="Content\Tiles\InvisibleTile.png" />
     <None Remove="Content\Tiles\InvisibleWall.png" />
