@@ -22,6 +22,11 @@ namespace Stellamod.Assets
                 public static Asset<Texture2D> BasicSlash_Wide2 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Wide2");
                 public static Asset<Texture2D> BasicSlash_Wide3 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Wide3");
                 public static Asset<Texture2D> BasicSlash_Wide4 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Wide4");
+
+                public static Asset<Texture2D> StringySlash1 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/StringySlash1");
+                public static Asset<Texture2D> StringySlash2 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/StringySlash2");
+                public static Asset<Texture2D> StringySlash3 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/StringySlash3");
+                public static Asset<Texture2D> StringySlash4 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/StringySlash4");
             }
         }
 
