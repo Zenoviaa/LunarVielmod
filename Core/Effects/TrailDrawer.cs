@@ -1,17 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.Graphics.Shaders;
-using Terraria;
 using Stellamod.Core.Helpers.Math;
+using System.Collections.Generic;
+using Terraria;
 
 namespace Stellamod.Core.Effects
 {
-    internal abstract class TrailDrawer : ITrailer
+    public abstract class TrailDrawer : ITrailer
     {
 
         public static Matrix WorldViewPoint
@@ -41,27 +36,20 @@ namespace Stellamod.Core.Effects
                 Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, -1, 1);
                 return world * view * projection;
             }
-        }   
-        
+        }
+
         /// <summary>
         /// Value that tells how much progress has been made on whatever is using this trail.
         /// Useful for it the trail is supposed to gradually change over time.
         /// </summary>
         public float Interpolant { get; set; }
         public Shader Shader { get; set; }
+        public ITrailer.GetTrailWidth TrailWidthFunction { get; set; }
+        public ITrailer.GetTrailColor TrailColorFunction { get; set; }
+
         public void SetTrailingValues(float interpolant)
         {
             Interpolant = interpolant;
-        }
-
-        public virtual float GetTrailWidth(float t)
-        {
-            return EasingFunction.QuadraticBump(t) * 12;
-        }
-
-        public virtual Color GetTrailColor(float t)
-        {
-            return Color.Lerp(Color.White, Color.Transparent, t);
         }
 
         private void CalculateVerticesTris(Vector2[] trailingPoints, List<VertexPositionColorTexture> vertices)
@@ -71,16 +59,16 @@ namespace Stellamod.Core.Effects
             {
                 float uv = i / (float)trailingPoints.Length;
                 float uv2 = (i + 1) / (float)trailingPoints.Length;
-                Vector2 width = GetTrailWidth(uv) * Vector2.One;
-                Vector2 width2 = GetTrailWidth(uv2) * Vector2.One;
+                Vector2 width = TrailWidthFunction(uv) * Vector2.One;
+                Vector2 width2 = TrailWidthFunction(uv2) * Vector2.One;
                 Vector2 pos1 = trailingPoints[i];
                 Vector2 pos2 = trailingPoints[i + 1];
 
                 Vector2 off1 = ExtraMath.GetRotation(trailingPoints, i) * width;
                 Vector2 off2 = ExtraMath.GetRotation(trailingPoints, i + 1) * width2;
 
-                Color col1 = GetTrailColor(uv);
-                Color col2 = GetTrailColor(uv2);
+                Color col1 = TrailColorFunction(uv);
+                Color col2 = TrailColorFunction(uv2);
                 float uvAdd = 0;
                 float uvMultiplier = 1;
                 float coord1 = 0;

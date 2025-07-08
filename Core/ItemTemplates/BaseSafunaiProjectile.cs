@@ -1,5 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoMod.Core.Utils;
+using Stellamod.Core.Effects;
+using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Helpers;
 using Stellamod.Core.Helpers.Math;
 using Stellamod.Core.ItemTemplates;
@@ -16,7 +19,7 @@ namespace Urdveil.Common.Bases
 {
     public abstract class BaseSafunaiProjectile : ModProjectile
     {
-        private Vector2[] _oldSwingPos;
+        private bool _initialized;
         private bool _synced;
         private OvalSwing _oval;
         protected ref float Timer => ref Projectile.ai[0];
@@ -27,7 +30,7 @@ namespace Urdveil.Common.Bases
                 return Owner.HeldItem.ModItem as BaseSafunaiItem;
             }
         }
-
+        public ITrailer Trailer { get; set; }
         private Player Owner => Main.player[Projectile.owner];
         public override void SetStaticDefaults()
         {
@@ -37,8 +40,6 @@ namespace Urdveil.Common.Bases
 
         public override void SetDefaults()
         {
-            _oldSwingPos = new Vector2[32];
-            _oval = new OvalSwing();
             Projectile.Size = new Vector2(85, 85);
             Projectile.friendly = true;
             Projectile.tileCollide = false;
@@ -61,10 +62,20 @@ namespace Urdveil.Common.Bases
 
         public Vector2 CurrentBase = Vector2.Zero;
 
+        public Vector2[] swingTrailCache;
         private int slamTimer = 0;
 
         public override void AI()
         {
+            if (!_initialized)
+            {
+                _oval = new OvalSwing();
+                swingTrailCache = new Vector2[32];
+                Trailer = new SlashTrailer();
+                OnInitialize();
+                _initialized = true;
+            }
+
             if (Projectile.timeLeft > 2) //Initialize chain control points on first tick, in case of projectile hooking in on first tick
             {
                 _chainMidA = Projectile.Center;
@@ -91,6 +102,10 @@ namespace Urdveil.Common.Bases
             Lighting.AddLight(CurrentBase, new Color(254, 204, 72).ToVector3());
         }
 
+        public virtual void OnInitialize()
+        {
+
+        }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
 
@@ -115,32 +130,6 @@ namespace Urdveil.Common.Bases
             _oval.YSwingRadius = distance / 2;
             _oval.UpdateSwing(progress, Projectile.position, velocity, out Vector2 offset);
             return offset;
-            /*
-            float distanceProgress;
-            if (Slam)
-            {
-                distanceProgress = EasingFunction.QuadraticBump(progress);
-            }
-            else
-            {
-                distanceProgress = EasingFunction.QuadraticBump(progress);
-            }
-
-            //Starts at owner center, goes to peak range, then returns to owner center
-            float startDistance = 0;
-            float endDistance = SwingDistance;
-            endDistance = Math.Min(SwingDistance, 252);
-            float throwDistance = MathHelper.Lerp(startDistance, endDistance, distanceProgress);
-
-
-
-            Vector2 velocity = Projectile.velocity;
-            float rotEase = EasingFunction.InOutCubic(progress);
-            float range = MathHelper.ToRadians(210);
-            float rot = MathHelper.Lerp(-range / 2, range/ 2, rotEase);
-            rot *= Flip ? -1 : 1;
-            velocity = velocity.RotatedBy(rot);
-            return velocity * throwDistance;*/
         }
 
         public virtual void ThrowOutAI()
@@ -148,37 +137,21 @@ namespace Urdveil.Common.Bases
             Projectile.rotation = Projectile.AngleFrom(Owner.Center);
             Vector2 position = Owner.MountedCenter;
             float progress = ++Timer / SwingTime; //How far the projectile is through its swing
-
-
             if (slamTimer == 5)
                 SoundEngine.PlaySound(SoundID.NPCDeath7, Projectile.Center);
 
-            Vector2[] swingPos = new Vector2[60];
-            for (int i = 0; i < swingPos.Length; i++)
-            {
-                float l = swingPos.Length;
-                //Lerp between the points
-                float progressOnTrail = i / l;
-
-                //Calculate starting lerp value
-                float startTrailLerpValue = MathHelper.Clamp(progress - 0.5f, 0, 1);
-                float startTrailProgress = startTrailLerpValue;
-                startTrailProgress = startTrailLerpValue;
-
-
-                //Calculate ending lerp value
-                float endTrailLerpValue = progress;
-                float endTrailProgress = endTrailLerpValue;
-                endTrailProgress = endTrailLerpValue;
-
-                //Lerp in between points
-                float smoothedTrailProgress = MathHelper.Lerp(startTrailProgress, endTrailProgress, progressOnTrail);
-                Vector2 centerPos = position + GetSwingPosition(smoothedTrailProgress);
-                swingPos[i] = centerPos;
-            }
-            _oldSwingPos = swingPos;
-
             Projectile.Center = position + GetSwingPosition(progress);
+            _oval.CalculateTrailingPoints(progress, Projectile.velocity, ref swingTrailCache);
+            _oval.TrailOffset = 1f;
+            //Now we transform the points
+            //Calculating points locally and then translating it is a bit simpler.
+            for (int t = 0; t < swingTrailCache.Length; t++)
+            {
+                Matrix translationMatrix = Matrix.CreateTranslation(new
+                    Vector3(Owner.Center.X, Owner.Center.Y, 0));
+                swingTrailCache[t] = Vector2.Transform(swingTrailCache[t], translationMatrix);
+            }
+
             Projectile.direction = Projectile.spriteDirection = -Owner.direction * (Flip ? -1 : 1);
 
             if (Timer >= SwingTime)
@@ -197,20 +170,9 @@ namespace Urdveil.Common.Bases
             return Color.Lerp(Color.Transparent, Color.Purple, completionRatio);
         }
 
-        protected virtual void DrawSlashTrail()
-        {
-            //Need a new trail system, can't use this one
-            /*
-            Vector2 drawOffset = -Main.screenPosition;
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.LightningTrail2);
-            TrailDrawer.DrawPrims(_oldSwingPos, drawOffset, 155);*/
-        }
-
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawSlashTrail();
+            Trailer?.DrawTrail(ref lightColor, swingTrailCache);
             Texture2D projTexture = TextureAssets.Projectile[Projectile.type].Value;
             Texture2D glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
 
@@ -297,6 +259,27 @@ namespace Urdveil.Common.Bases
                 Vector2 origin = new Vector2(chainTex.Width / 2, chainTex.Height); //Draw from center bottom of texture
                 spriteBatch.Draw(chainTex, position - Main.screenPosition, null, chainLightColor, rotation, origin, scale, SpriteEffects.None, 0);
             }
+
+            if (Slam)
+            {
+                spriteBatch.Restart(blendState: BlendState.Additive);
+                float glowProgress = EasingFunction.QuadraticBump(Timer / SwingTime);
+                int glowPoints = (int)MathHelper.Lerp(0, numPoints, glowProgress);
+                for (int i = 1; i < glowPoints; i++)
+                {
+                    Vector2 position = chainPositions[i];
+
+                    float rotation = (chainPositions[i] - chainPositions[i - 1]).ToRotation() - MathHelper.PiOver2; //Calculate rotation based on direction from last point
+                    float yScale = Vector2.Distance(chainPositions[i], chainPositions[i - 1]) / chainTex.Height; //Calculate how much to squash/stretch for smooth chain based on distance between points
+
+                    Vector2 scale = new Vector2(1, yScale); // Stretch/Squash chain segment
+                    Color chainLightColor = Lighting.GetColor((int)position.X / 16, (int)position.Y / 16); //Lighting of the position of the chain segment
+                    Vector2 origin = new Vector2(chainTex.Width / 2, chainTex.Height); //Draw from center bottom of texture
+                    spriteBatch.Draw(chainTex, position - Main.screenPosition, null, chainLightColor, rotation, origin, scale, SpriteEffects.None, 0);
+                    spriteBatch.Draw(chainTex, position - Main.screenPosition, null, chainLightColor, rotation, origin, scale, SpriteEffects.None, 0);
+                }
+                spriteBatch.RestartDefaults();
+            }
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -314,6 +297,14 @@ namespace Urdveil.Common.Bases
                     return true;
             }
             return base.Colliding(projHitbox, targetHitbox);
+        }
+        public virtual void DrawSwingTrail(ref Color lightColor, Vector2[] swingTrailCache)
+        {
+            //I think it makes the most sense to abstract our trails out to a trailer and shader cache,
+            //so we can just replace the trailer for different trails!
+            //So much simpler, and we can just make new trailers
+
+            Trailer?.DrawTrail(ref lightColor, swingTrailCache);
         }
 
         public override void SendExtraAI(BinaryWriter writer)

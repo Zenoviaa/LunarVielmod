@@ -1,19 +1,32 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Core.Helpers.Math;
 using Terraria;
 
 namespace Stellamod.Core.Effects.Trails
 {
-    internal class SlashTrailer : TrailDrawer
+    public class SlashTrailer : TrailDrawer
     {
         public SlashTrailer()
         {
             Shader = new SlashEffect();
+            TrailWidthFunction = DefaultWidthFunction;
+            TrailColorFunction = DefaultColorFunction;
+        }
+
+        private float DefaultWidthFunction(float interpolant)
+        {
+            return EasingFunction.QuadraticBump(interpolant) * 12;
+        }
+
+        private Color DefaultColorFunction(float interpolant)
+        {
+            return Color.Lerp(Color.White, Color.Transparent, interpolant);
         }
     }
 
-    internal class SlashEffect : Shader
+    public class SlashEffect : Shader
     {
         /*
          *  matrix transformMatrix;

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
 using Stellamod.Content.Dusts;
+using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Helpers;
+using Stellamod.Core.Helpers.Math;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -12,9 +14,31 @@ namespace Stellamod.Content.Items.Weapons.Melee.Safunai.Halhurish
 {
     public class HalhurishProj : BaseSafunaiProjectile
     {
-        protected override Color ColorFunction(float completionRatio)
+        public SlashEffect SlashEffect { get; set; }
+        public override void OnInitialize()
         {
-            return Color.Lerp(Color.Transparent, Color.OrangeRed, completionRatio);
+            base.OnInitialize();
+            //Define shader, set the shader
+            SlashEffect = new()
+            {
+                BaseColor = Color.Red,
+                WindColor = Color.OrangeRed,
+                LightColor = Color.Orange,
+                RimHighlightColor = Color.Yellow,
+                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive
+            };
+
+            Trailer.Shader = SlashEffect;
+            Trailer.TrailColorFunction = GetTrailColor;
+            Trailer.TrailWidthFunction = GetTrailWidth;
+        }
+        private float GetTrailWidth(float interpolant)
+        {
+            return EasingFunction.InOutCubic(interpolant) * 24;
+        }
+        private Color GetTrailColor(float interpolant)
+        {
+            return Color.Lerp(Color.White, Color.Transparent, interpolant) * 0.3f;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
