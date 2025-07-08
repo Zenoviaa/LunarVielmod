@@ -43,7 +43,7 @@ namespace Stellamod.Content.Dusts
             {
                 dust.scale *= 0.975f;
                 float px = 0.5f;
-                dust.scale = MathF.Round(dust.scale / px) * px;
+               // dust.scale = MathF.Round(dust.scale / px) * px;
                 dust.alpha += 2;
             }
             else
