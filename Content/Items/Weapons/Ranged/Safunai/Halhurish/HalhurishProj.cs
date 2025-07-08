@@ -10,7 +10,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Urdveil.Common.Bases;
 
-namespace Stellamod.Content.Items.Weapons.Melee.Safunai.Halhurish
+namespace Stellamod.Content.Items.Weapons.Ranged.Safunai.Halhurish
 {
     public class HalhurishProj : BaseSafunaiProjectile
     {

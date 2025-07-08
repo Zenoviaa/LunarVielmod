@@ -10,7 +10,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Urdveil.Common.Bases;
 
-namespace Stellamod.Content.Items.Weapons.Melee.Safunai.Alcarish
+namespace Stellamod.Content.Items.Weapons.Ranged.Safunai.Alcarish
 {
     public class AlcarishProj : BaseSafunaiProjectile
     {
@@ -48,11 +48,11 @@ namespace Stellamod.Content.Items.Weapons.Melee.Safunai.Alcarish
 
             if (Slam)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), 
-                    target.Center.X + speedX, 
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(),
+                    target.Center.X + speedX,
                     target.Center.Y + speedY, speedX, speedY, ProjectileID.ThrowingKnife, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), 
-                    target.Center.X + speedX, 
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(),
+                    target.Center.X + speedX,
                     target.Center.Y + speedY, speedX * 2, speedY, ProjectileID.ThrowingKnife, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 
                 SoundStyle explosionSound = AssetRegistry.Sounds.Melee.MorrowExp;

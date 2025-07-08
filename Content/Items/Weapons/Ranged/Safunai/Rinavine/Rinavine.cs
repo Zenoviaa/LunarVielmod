@@ -1,28 +1,27 @@
 ﻿using Microsoft.Xna.Framework;
-using Urdveil.Common.Bases;
+using Stellamod.Core.Helpers;
+using Stellamod.Core.ItemTemplates;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Core.ItemTemplates;
-using Stellamod.Core.Helpers;
 
-namespace Stellamod.Content.Items.Weapons.Melee.Safunai.Alcarish
+namespace Stellamod.Content.Items.Weapons.Ranged.Safunai.Rinavine
 {
-    public class Alcarish : BaseSafunaiItem
+    public class Rinavine : BaseSafunaiItem
     {
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Alcarish", LangText.Common("Safunai"))
+            line = new TooltipLine(Mod, "Parandinea", LangText.Common("Safunai"))
             {
                 OverrideColor = new Color(308, 71, 99)
 
             };
             tooltips.Add(line);
 
-            line = new TooltipLine(Mod, "Alcarish", "(C) Medium Damage Scaling wind shots On Hit!")
+            line = new TooltipLine(Mod, "Parendinea", "(B) Medium Damage Scaling (Grail shot) On Hit!")
             {
                 OverrideColor = new Color(220, 87, 24)
 
@@ -39,16 +38,15 @@ namespace Stellamod.Content.Items.Weapons.Melee.Safunai.Alcarish
             Item.shootSpeed = 1f;
             Item.knockBack = 4f;
             Item.UseSound = SoundID.Item116;
-            Item.shoot = ModContent.ProjectileType<AlcarishProj>();
-
+            Item.shoot = ModContent.ProjectileType<RinavineProj>();
+            Item.value = Item.sellPrice(gold: 10);
             Item.noMelee = true;
             Item.noUseGraphic = true;
             Item.channel = true;
             Item.autoReuse = true;
-            Item.DamageType = DamageClass.Melee;
-            Item.damage = 10;
-            Item.rare = ItemRarityID.Blue;
-            Item.value = 10000;
+            Item.DamageType = DamageClass.Ranged;
+            Item.damage = 76;
+            Item.rare = ItemRarityID.LightRed;
         }
     }
 }

@@ -10,11 +10,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Urdveil.Common.Bases;
 
-namespace Stellamod.Content.Items.Weapons.Melee.Safunai.Parendine
+namespace Stellamod.Content.Items.Weapons.Ranged.Safunai.Rinavine
 {
-    public class ParendineProj : BaseSafunaiProjectile
+    public class RinavineProj : BaseSafunaiProjectile
     {
-
         public SlashEffect SlashEffect { get; set; }
         public override void OnInitialize()
         {
@@ -22,10 +21,10 @@ namespace Stellamod.Content.Items.Weapons.Melee.Safunai.Parendine
             //Define shader, set the shader
             SlashEffect = new()
             {
-                BaseColor = Color.Cyan,
-                WindColor = Color.DarkBlue,
-                LightColor = Color.Blue,
-                RimHighlightColor = Color.LightCyan,
+                BaseColor = Color.LightGreen,
+                WindColor = Color.DarkTurquoise,
+                LightColor = Color.Turquoise,
+                RimHighlightColor = Color.White,
                 BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive
             };
 
@@ -33,10 +32,12 @@ namespace Stellamod.Content.Items.Weapons.Melee.Safunai.Parendine
             Trailer.TrailColorFunction = GetTrailColor;
             Trailer.TrailWidthFunction = GetTrailWidth;
         }
+
         private float GetTrailWidth(float interpolant)
         {
             return EasingFunction.InOutCubic(interpolant) * 24;
         }
+
         private Color GetTrailColor(float interpolant)
         {
             return Color.Lerp(Color.White, Color.Transparent, interpolant) * 0.3f;
@@ -55,18 +56,18 @@ namespace Stellamod.Content.Items.Weapons.Melee.Safunai.Parendine
 
                 for (int i = 0; i < 7; i++)
                 {
-                    Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DeepSkyBlue, 1f).noGravity = true;
+                    Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Turquoise, 1f).noGravity = true;
                 }
                 for (int i = 0; i < 7; i++)
                 {
-                    Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightSkyBlue, 1f).noGravity = true;
+                    Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.MediumTurquoise, 1f).noGravity = true;
                 }
                 FXUtil.ShakeCamera(target.Center, 1024, 32);
                 float boomSize = Main.rand.NextFloat(0.025f, 0.08f);
                 FXUtil.GlowCircleBoom(target.Center,
-                    innerColor: Color.White,
-                    glowColor: Color.LightBlue,
-                    outerGlowColor: Color.Blue, duration: 25, baseSize: boomSize);
+                    innerColor: Color.LightGreen,
+                    glowColor: Color.Turquoise,
+                    outerGlowColor: Color.DarkBlue, duration: 25, baseSize: boomSize);
 
 
                 for (float i = 0; i < 4; i++)
@@ -76,33 +77,29 @@ namespace Stellamod.Content.Items.Weapons.Melee.Safunai.Parendine
                     rot += Main.rand.NextFloat(-0.5f, 0.5f);
                     Vector2 offset = rot.ToRotationVector2() * 24;
                     var particle = FXUtil.GlowCircleLongBoom(target.Center,
-                        innerColor: Color.White,
-                        glowColor: Color.LightBlue,
+                        innerColor: Color.LightGreen,
+                        glowColor: Color.Turquoise,
                         outerGlowColor: Color.DarkBlue,
                         baseSize: Main.rand.NextFloat(0.1f, 0.2f),
                         duration: Main.rand.NextFloat(15, 25));
-                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                    particle.Rotation = rot + MathHelper.ToRadians(Main.rand.NextFloat(0, 360));
                 }
             }
             else
             {
                 float boomSize = Main.rand.NextFloat(0.08f, 0.12f);
                 FXUtil.GlowCircleBoom(target.Center,
-                    innerColor: Color.Cyan,
-                    glowColor: Color.LightBlue,
-                    outerGlowColor: Color.Blue, duration: 25, baseSize: boomSize);
+                    innerColor: Color.LightGreen,
+                    glowColor: Color.Turquoise,
+                    outerGlowColor: Color.DarkBlue, duration: 25, baseSize: boomSize);
 
                 SoundStyle parendineHitSound = AssetRegistry.Sounds.Melee.Parendine2;
                 parendineHitSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(parendineHitSound, target.Center);
                 for (int i = 0; i < 4; i++)
                 {
-                    Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 0, Color.DeepSkyBlue, 0.5f).noGravity = true;
+                    Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 0, Color.Turquoise, 0.5f).noGravity = true;
                 }
-            }
-            if (Main.rand.NextBool(3))
-            {
-                target.AddBuff(BuffID.Frostburn, 120);
             }
         }
     }

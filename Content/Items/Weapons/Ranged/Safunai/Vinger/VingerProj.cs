@@ -10,7 +10,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Urdveil.Common.Bases;
 
-namespace Stellamod.Content.Items.Weapons.Melee.Safunai.Vinger
+namespace Stellamod.Content.Items.Weapons.Ranged.Safunai.Vinger
 {
     public class VingerProj : BaseSafunaiProjectile
     {
@@ -50,7 +50,7 @@ namespace Stellamod.Content.Items.Weapons.Melee.Safunai.Vinger
             if (Slam)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, velocity, ProjectileID.SpikyBall, 
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, velocity, ProjectileID.SpikyBall,
                     (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 
                 SoundStyle hitSound = AssetRegistry.Sounds.Melee.Vinger2;
