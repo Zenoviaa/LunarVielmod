@@ -106,6 +106,9 @@ namespace Stellamod.Assets
                 public static SoundStyle Vinger = new SoundStyle($"{Path}Melee/Vinger");
                 public static SoundStyle Vinger2 = new SoundStyle($"{Path}Melee/Vinger2");
                 public static SoundStyle MorrowExp = new SoundStyle($"{Path}Melee/MorrowExp");
+
+                public static SoundStyle Parendine = new SoundStyle($"{Path}Melee/Parendine");
+                public static SoundStyle Parendine2 = new SoundStyle($"{Path}Melee/Parendine2");
             }
         }
     }
