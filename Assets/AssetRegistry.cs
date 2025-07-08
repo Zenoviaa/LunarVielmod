@@ -117,6 +117,9 @@ namespace Stellamod.Assets
 
 
                 public static SoundStyle CrystalHit1 = new SoundStyle($"{Path}Melee/CrystalHit1");
+
+                public static SoundStyle SpearSlash1 = new SoundStyle($"{Path}Melee/SpearSlash1");
+                public static SoundStyle SpearSlash2 = new SoundStyle($"{Path}Melee/SpearSlash2");
             }
         }
     }

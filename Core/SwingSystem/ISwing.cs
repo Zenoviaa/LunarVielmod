@@ -7,6 +7,8 @@ namespace Stellamod.Core.SwingSystem
         void SetDirection(int direction);
         float GetDuration();
 
+        int GetHitCount();
+
         /// <summary>
         /// Update the 
         /// </summary>

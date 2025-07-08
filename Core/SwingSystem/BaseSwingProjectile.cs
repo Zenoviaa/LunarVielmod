@@ -76,7 +76,15 @@ namespace Stellamod.Core.SwingSystem
                 _swings = new List<ISwing>();
                 swingTrailCache = new Vector2[32];
                 DefineCombo(_swings);
-                GetSwing().SetDirection((int)SwingDirection);
+                ISwing swing = GetSwing();
+                swing.SetDirection((int)SwingDirection);
+                float hitCount = swing.GetHitCount();
+                if(hitCount > 1)
+                {
+                    float duration = swing.GetDuration() / hitCount;
+                    duration *= EXTRA_UPDATE_COUNT - 1;
+                    Projectile.localNPCHitCooldown = (int)duration;
+                }
                 _hasInitialized = true;
             }
         }
@@ -135,7 +143,7 @@ namespace Stellamod.Core.SwingSystem
             Interpolant = Timer / swingTime;
             Interpolant = MathHelper.Clamp(Interpolant, 0f, 1f);
 
-            _canHurtThings = Interpolant > 0.2f && Interpolant <= 0.8f;
+            _canHurtThings = Interpolant > 0.1f && Interpolant <= 0.9f;
 
             //For the purposes of netcode,
             //Killing the projectile manually instead of trying to sync time left is better I think.

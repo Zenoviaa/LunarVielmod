@@ -21,10 +21,12 @@ namespace Stellamod.Core.SwingSystem
             SwingDegrees = 270;
             Easing = EasingFunction.InOutExpo;
             TrailOffset = 1.5f;
+            HitCount = 1;
         }
 
         public const float TRAIL_START_OFFSET = 0.2f;
         public float Duration { get; set; }
+        public int HitCount { get; set; }
         public float XSwingRadius { get; set; }
         public float YSwingRadius { get; set; }
         public float SwingDegrees
@@ -41,6 +43,11 @@ namespace Stellamod.Core.SwingSystem
         public float GetDuration()
         {
             return Duration;
+        }
+
+        public int GetHitCount()
+        {
+            return HitCount;
         }
 
         public void SetDirection(int direction)

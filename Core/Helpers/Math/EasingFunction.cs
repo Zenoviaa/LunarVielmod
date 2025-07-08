@@ -14,6 +14,11 @@ namespace Stellamod.Core.Helpers.Math
             return System.Math.Clamp(t, 0, 1);
         }
 
+        public static readonly Easer None = delegate (float t)
+        {
+            t = Clamp(t);
+            return t;
+        };
         public static readonly Easer InSine = delegate (float t)
         {
             t = Clamp(t);
