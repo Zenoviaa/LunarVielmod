@@ -37,7 +37,7 @@ namespace Stellamod.Core.SwingSystem
         public Easer Easing { get; set; }
         public SoundStyle? Sound { get; set; }
 
-        public float RadOffset => _swingRadians;
+        public float RadOffset => 0;
         public float GetDuration()
         {
             return Duration;

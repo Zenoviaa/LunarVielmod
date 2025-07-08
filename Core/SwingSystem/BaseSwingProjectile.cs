@@ -181,12 +181,7 @@ namespace Stellamod.Core.SwingSystem
             Owner.itemAnimation = 2;
 
             // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
-            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, rotation); // set arm position (90 degree offset since arm starts lowered)
-            Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, rotation - (float)Math.PI / 2); // get position of hand
-
-            armPosition.Y += Owner.gfxOffY;
-            
-            Owner.heldProj = Projectile.whoAmI;
+            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f));// set arm position (90 degree offset since arm starts lowered)
         }
 
         public override bool PreDraw(ref Color lightColor)
