@@ -5794,3 +5794,8 @@ WandSaver: {
 	DisplayName: Wand Saver
 	Tooltip: ""
 }
+
+SuperStaminaBrew: {
+	DisplayName: Super Stamina Brew
+	Tooltip: ""
+}

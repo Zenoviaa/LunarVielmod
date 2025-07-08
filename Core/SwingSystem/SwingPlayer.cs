@@ -12,6 +12,7 @@ namespace Stellamod.Core.SwingSystem
         public int Stamina;
         public int StaminaComboCounter;
         public int MaxStamina = 3;
+        public bool InfiniteStamina;
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -36,11 +37,15 @@ namespace Stellamod.Core.SwingSystem
 
         public bool CanUseStamina(int amountToUse)
         {
+            if (InfiniteStamina)
+                return true;
             return Stamina >= amountToUse;
         }
 
         public void ConsumeStamina(int amountToUse)
         {
+            if (InfiniteStamina)
+                return;
             Stamina -= amountToUse;
         }
 

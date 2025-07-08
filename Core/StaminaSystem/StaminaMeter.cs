@@ -118,6 +118,8 @@ namespace Stellamod.Core.StaminaSystem
             SwingPlayer comboPlayer = Main.LocalPlayer.GetModPlayer<SwingPlayer>();
             int filledAmount = comboPlayer.Stamina;
             int maxFillAmount = comboPlayer.MaxStamina;
+            if (comboPlayer.InfiniteStamina)
+                filledAmount = maxFillAmount;
 
 
 

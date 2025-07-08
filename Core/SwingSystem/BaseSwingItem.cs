@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.SwingSystem
 {
-    internal abstract class BaseSwingItem : ModItem
+    public abstract class BaseSwingItem : ModItem
     {
         public int comboResetTime = 60;
         public int staminaCost = 1;

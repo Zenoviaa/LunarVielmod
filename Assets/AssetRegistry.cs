@@ -114,6 +114,9 @@ namespace Stellamod.Assets
 
                 public static SoundStyle Parendine = new SoundStyle($"{Path}Melee/Parendine");
                 public static SoundStyle Parendine2 = new SoundStyle($"{Path}Melee/Parendine2");
+
+
+                public static SoundStyle CrystalHit1 = new SoundStyle($"{Path}Melee/CrystalHit1");
             }
         }
     }

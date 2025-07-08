@@ -2,7 +2,7 @@
 
 namespace Stellamod.Core.SwingSystem
 {
-    internal interface ISwing
+    public interface ISwing
     {
         void SetDirection(int direction);
         float GetDuration();

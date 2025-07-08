@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.SwingSystem
 {
-    internal abstract class BaseSwingProjectile : ScarletProjectile
+    public abstract class BaseSwingProjectile : ScarletProjectile
     {
         private bool _hasInitialized;
         private bool _canHurtThings;
@@ -22,6 +22,7 @@ namespace Stellamod.Core.SwingSystem
 
         public float HitstopTimer;
 
+        public float Interpolant { get; private set; }
         public Vector2[] swingTrailCache;
         public int hitStopTime;
 
@@ -131,10 +132,10 @@ namespace Stellamod.Core.SwingSystem
             //Now we need to calculate the time/interpolant for this swinging
             float duration = swing.GetDuration();
             float swingTime = GetSwingTime(duration);
-            float interpolant = Timer / swingTime;
-            interpolant = MathHelper.Clamp(interpolant, 0f, 1f);
+            Interpolant = Timer / swingTime;
+            Interpolant = MathHelper.Clamp(Interpolant, 0f, 1f);
 
-            _canHurtThings = interpolant > 0.2f && interpolant <= 0.8f;
+            _canHurtThings = Interpolant > 0.2f && Interpolant <= 0.8f;
 
             //For the purposes of netcode,
             //Killing the projectile manually instead of trying to sync time left is better I think.
@@ -144,7 +145,7 @@ namespace Stellamod.Core.SwingSystem
             }
 
             //We now have the offset so we can apply that to the weapon
-            swing.UpdateSwing(interpolant, Projectile.position, Projectile.velocity, out Vector2 offset);
+            swing.UpdateSwing(Interpolant, Projectile.position, Projectile.velocity, out Vector2 offset);
             Projectile.Center = Owner.Center + offset;
             Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
 
@@ -152,7 +153,7 @@ namespace Stellamod.Core.SwingSystem
             AI_OrientHand();
 
             //Calculate the trailing
-            swing.CalculateTrailingPoints(interpolant, Projectile.velocity, ref swingTrailCache);
+            swing.CalculateTrailingPoints(Interpolant, Projectile.velocity, ref swingTrailCache);
 
             //Now we transform the points
             //Calculating points locally and then translating it is a bit simpler.
@@ -166,6 +167,7 @@ namespace Stellamod.Core.SwingSystem
 
         private void AI_OrientHand()
         {
+
             float rotation = Projectile.rotation;
             Owner.ChangeDir(Projectile.direction);
             Projectile.spriteDirection = Owner.direction;
@@ -179,10 +181,11 @@ namespace Stellamod.Core.SwingSystem
             Owner.itemAnimation = 2;
 
             // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
-            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
+            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, rotation); // set arm position (90 degree offset since arm starts lowered)
             Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, rotation - (float)Math.PI / 2); // get position of hand
 
             armPosition.Y += Owner.gfxOffY;
+            
             Owner.heldProj = Projectile.whoAmI;
         }
 
