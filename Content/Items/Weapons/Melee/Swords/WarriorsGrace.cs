@@ -145,9 +145,15 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-            if (!Hit)
+            if (!Hit && ComboIndex == 5)
             {
                 FXUtil.ShakeCamera(target.Center, 1024, 4);
+                FXUtil.GlowCircleBoom(target.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.Black,
+                    outerGlowColor: Color.Black, duration: 12, baseSize: 0.24f);
+
+
                 Hit = true;
             }
 

@@ -24,7 +24,15 @@ namespace Stellamod.Core.DamageRework
             base.OnHitNPC(target, hit, damageDone);
             if (ModContent.GetInstance<StellamodClientConfig>().RedDamageNumbersToggle)
             {
-                CombatText.NewText(target.getRect(), Color.Lerp(Color.Red, Color.White, 0.25f), hit.Damage, dramatic: hit.Crit);
+                if (hit.Crit)
+                {
+                    CombatText.NewText(target.getRect(), Color.Lerp(Color.DarkRed, Color.White, 0.1f), hit.Damage, dramatic: hit.Crit);
+                }
+                else
+                {
+                    CombatText.NewText(target.getRect(), Color.Lerp(Color.Red, Color.White, 0.25f), hit.Damage, dramatic: hit.Crit);
+                }
+       
             }
         }
 
