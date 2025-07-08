@@ -35,7 +35,7 @@ namespace Stellamod.Content.Items.Weapons.Melee.Safunai.Halhurish
             Item.width = 16;
             Item.height = 16;
             Item.useStyle = ItemUseStyleID.Shoot;
-            Item.useTime = Item.useAnimation = 18;
+            Item.useTime = Item.useAnimation = 30;
             Item.shootSpeed = 1f;
             Item.knockBack = 4f;
             Item.UseSound = SoundID.Item116;

@@ -35,7 +35,7 @@ namespace Stellamod.Core.SwingSystem
 
         public float TrailOffset { get; set; }
         public Easer Easing { get; set; }
-        public SoundStyle Sound { get; set; }
+        public SoundStyle? Sound { get; set; }
 
         public float GetDuration()
         {
@@ -52,7 +52,7 @@ namespace Stellamod.Core.SwingSystem
         {
             //Calculate easing
             float easedInterpolant = Easing(time);
-            if (!_hasPlayedSound && easedInterpolant >= 0.35f)
+            if (!_hasPlayedSound && easedInterpolant >= 0.35f && Sound != null)
             {
                 SoundEngine.PlaySound(Sound, position);
                 _hasPlayedSound = true;

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Helpers;
 using Stellamod.Core.Helpers.Math;
 using Stellamod.Core.ItemTemplates;
+using Stellamod.Core.SwingSystem;
 using System;
 using System.IO;
 using Terraria;
@@ -17,6 +18,7 @@ namespace Urdveil.Common.Bases
     {
         private Vector2[] _oldSwingPos;
         private bool _synced;
+        private OvalSwing _oval;
         protected ref float Timer => ref Projectile.ai[0];
         protected BaseSafunaiItem Safunai
         {
@@ -36,6 +38,7 @@ namespace Urdveil.Common.Bases
         public override void SetDefaults()
         {
             _oldSwingPos = new Vector2[32];
+            _oval = new OvalSwing();
             Projectile.Size = new Vector2(85, 85);
             Projectile.friendly = true;
             Projectile.tileCollide = false;
@@ -75,20 +78,17 @@ namespace Urdveil.Common.Bases
             else if (!_synced)
                 return;
 
-            Lighting.AddLight(CurrentBase, new Color(254, 204, 72).ToVector3());
+
             Projectile.timeLeft = 2;
-
-            if (Slam)
-                Owner.itemTime = Owner.itemAnimation = 25;
-            else if (PreSlam)
-                Owner.itemTime = Owner.itemAnimation = 10;
-
+            Owner.itemTime = 2;
+            Owner.heldProj = Projectile.whoAmI;
             ThrowOutAI();
 
             if (!Slam)
                 Owner.itemRotation = MathHelper.WrapAngle(Owner.AngleTo(Projectile.Center) - (Owner.direction < 0 ? MathHelper.Pi : 0));
             else
                 Owner.itemRotation = MathHelper.WrapAngle(Owner.AngleTo(Main.MouseWorld) - (Owner.direction < 0 ? MathHelper.Pi : 0));
+            Lighting.AddLight(CurrentBase, new Color(254, 204, 72).ToVector3());
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -99,6 +99,23 @@ namespace Urdveil.Common.Bases
 
         private Vector2 GetSwingPosition(float progress)
         {
+            _oval.SetDirection(Flip ? 1 : -1);
+            Vector2 velocity = Projectile.velocity;
+            _oval.Easing = EasingFunction.InOutCirc;
+            if (Slam)
+            {
+                _oval.Easing = EasingFunction.InOutExpo;
+            }
+
+
+            float endDistance = Math.Min(SwingDistance, 252);
+            float distance = MathHelper.Lerp(0, endDistance, EasingFunction.OutExpo(progress));
+            distance = MathHelper.Lerp(distance, 0, EasingFunction.InExpo(progress));
+            _oval.XSwingRadius = distance;
+            _oval.YSwingRadius = distance / 2;
+            _oval.UpdateSwing(progress, Projectile.position, velocity, out Vector2 offset);
+            return offset;
+            /*
             float distanceProgress;
             if (Slam)
             {
@@ -123,7 +140,7 @@ namespace Urdveil.Common.Bases
             float rot = MathHelper.Lerp(-range / 2, range/ 2, rotEase);
             rot *= Flip ? -1 : 1;
             velocity = velocity.RotatedBy(rot);
-            return velocity * throwDistance;
+            return velocity * throwDistance;*/
         }
 
         public virtual void ThrowOutAI()
@@ -230,14 +247,15 @@ namespace Urdveil.Common.Bases
                 return false;
 
             Texture2D whiteTexture = ModContent.Request<Texture2D>(Texture + "_White").Value;
-            if (slamTimer < 20 && slamTimer > 5)
-            {
-                float progress = (slamTimer - 5) / 15f;
-                float transparency = (float)Math.Pow(1 - progress, 2);
-                float scale = 1 + progress;
-                Main.spriteBatch.Draw(whiteTexture, projBottom - Main.screenPosition, null, Color.White * transparency, newRotation, origin, Projectile.scale * scale, flip, 0);
-            }
+            float transparency = glowProgress * 0.5f;
+            float scale = 1 + glowProgress * 0.5f;
 
+            spriteBatch.Restart(blendState: BlendState.Additive);
+            spriteBatch.Draw(whiteTexture, projBottom - Main.screenPosition, null, Color.White * transparency, newRotation, origin, Projectile.scale * scale, flip, 0);
+            for(int i = 0; i < 2; i++)
+                spriteBatch.Draw(projTexture, projBottom - Main.screenPosition, null, lightColor, newRotation, origin, Projectile.scale * scaleMult, flip, 0);
+
+            spriteBatch.RestartDefaults();
             return false;
         }
 

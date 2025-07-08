@@ -43,10 +43,34 @@ namespace Stellamod.Content.Items.Weapons.Melee.Safunai.Halhurish
                     Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Orange, 1f).noGravity = true;
                 }
 
+                FXUtil.ShakeCamera(target.Center, 1024, 32);
                 FXUtil.GlowCircleBoom(target.Center,
                     innerColor: Color.White,
                     glowColor: Color.Yellow,
-                    outerGlowColor: Color.Red, duration: 25, baseSize: 0.24f);
+                    outerGlowColor: Color.Red, duration: 25, baseSize: 0.28f);
+
+                SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
+                for (float f = 0; f < 32; f++)
+                {
+                    Dust.NewDustPerfect(target.Center, DustID.Torch,
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.White, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                }
+
+
+                for (float i = 0; i < 8; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(target.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.Yellow,
+                        outerGlowColor: Color.Red,
+                        baseSize: Main.rand.NextFloat(0.1f, 0.2f),
+                        duration: Main.rand.NextFloat(15, 25));
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
             }
             else
             {
