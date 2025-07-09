@@ -92,7 +92,7 @@ namespace Stellamod.Generation
                 tasks.Insert(IceGen + 1, new PassLegacy("Ice Clump", IceClump));
                 tasks.Insert(IceGen + 2, new PassLegacy("Ice Caves Surface", IceyCaves));
                 tasks.Insert(IceGen + 3, new PassLegacy("Ice Bridges", RuneBridges));
-             //   tasks.Insert(IceGen + 4, new PassLegacy("Abysm Clumping", AbysmClump));
+                tasks.Insert(IceGen + 4, new PassLegacy("Abysm Clumping", AbysmClump));
                 tasks.Insert(IceGen + 4, new PassLegacy("Icy Waters", MakingIcyPonds));
                 tasks.Insert(IceGen + 5, new PassLegacy("Icy Surface Gremlins", SurfaceIceHouses));
                 tasks.Insert(IceGen + 6, new PassLegacy("The icy spook", MakingIcySnows));
