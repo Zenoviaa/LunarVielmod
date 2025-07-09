@@ -99,6 +99,7 @@ namespace Stellamod.Content.Items.Weapons.Melee.Spears
                 Duration = 12,
                 ThrowDistance = 90,
                 Easing = EasingFunction.QuadraticBump,
+                DrawTrail = false,
                 Sound = spearSlash2
             });
 
@@ -107,6 +108,7 @@ namespace Stellamod.Content.Items.Weapons.Melee.Spears
                 Duration = 12,
                 ThrowDistance = 90,
                 Easing = EasingFunction.QuadraticBump,
+                DrawTrail = false,
                 Sound = spearSlash2
             });
 
@@ -149,6 +151,7 @@ namespace Stellamod.Content.Items.Weapons.Melee.Spears
                 Duration = 30,
                 ThrowDistance = 128,
                 Easing = EasingFunction.QuadraticBump,
+                DrawTrail = false,
                 Sound = spearSlash2
             });
 
@@ -157,6 +160,7 @@ namespace Stellamod.Content.Items.Weapons.Melee.Spears
                 Duration = 60,
                 ThrowDistance = 200,
                 Easing = EasingFunction.QuadraticBump,
+                DrawTrail = false,
                 Sound = spearSlash2
             });
         }
@@ -205,6 +209,11 @@ namespace Stellamod.Content.Items.Weapons.Melee.Spears
             return EasingFunction.QuadraticBump(interpolant) * 32;
         }
 
+        public override void SetDefaults2()
+        {
+            base.SetDefaults2();
+            useAfterImage = true;
+        }
         public override void DefineCombo(List<ISwing> swings)
         {
             base.DefineCombo(swings);
@@ -246,6 +255,7 @@ namespace Stellamod.Content.Items.Weapons.Melee.Spears
                 Duration = 20,
                 ThrowDistance = 250,
                 Easing = EasingFunction.QuadraticBump,
+                DrawTrail=false,
                 Sound = spearSlash2
             });
 

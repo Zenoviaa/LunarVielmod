@@ -24,7 +24,7 @@ namespace Stellamod.Core.SwingSystem
             ThrowDistance = 64;
             Easing = EasingFunction.InOutExpo;
             TrailOffset = 1.5f;
- 
+            DrawTrail = true;
         }
         public const float TRAIL_START_OFFSET = 0.2f;
         public float Duration { get; set; }
@@ -32,6 +32,8 @@ namespace Stellamod.Core.SwingSystem
         public float ThrowDistance { get; set; }
         public float TrailOffset { get; set; }
         public float ThrustParticleOffset { get; set; }
+
+        public bool DrawTrail { get; set; }
         public Easer Easing { get; set; }
         public SoundStyle? Sound { get; set; }
         public float GetDuration()
@@ -68,9 +70,24 @@ namespace Stellamod.Core.SwingSystem
 
             CalculateOffset(time, velocity, out offset);
         }
+        public void CalculateAfterImagePoints(float time, Vector2 velocity, ref Vector2[] trailCache)
+        {
+            for (int t = 0; t < trailCache.Length; t++)
+            {
+                float l = trailCache.Length;
+                //Lerp between the points
+                float progressOnTrail = t / l;
+                CalculateOffset(progressOnTrail, velocity, out Vector2 offset);
+                //Set Offset, now we can take this and offset it more in the projectile
+                trailCache[t] = offset;
+            }
+        }
 
         public void CalculateTrailingPoints(float time, Vector2 velocity, ref Vector2[] trailCache)
         {
+            if (!DrawTrail)
+                return;
+
             for (int t = 0; t < trailCache.Length; t++)
             {
                 float l = trailCache.Length;

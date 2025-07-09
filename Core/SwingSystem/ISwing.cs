@@ -14,6 +14,7 @@ namespace Stellamod.Core.SwingSystem
         /// </summary>
         /// <param name="time"></param>
         void UpdateSwing(float time, Vector2 position, Vector2 velocity, out Vector2 offset);
+        void CalculateAfterImagePoints(float time, Vector2 velocity, ref Vector2[] trailCache);
         void CalculateTrailingPoints(float time, Vector2 velocity, ref Vector2[] trailCache);
     }
 }

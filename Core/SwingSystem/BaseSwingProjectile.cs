@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Effects;
 using Stellamod.Core.Helpers;
+using Stellamod.Core.Helpers.Math;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -24,9 +25,10 @@ namespace Stellamod.Core.SwingSystem
         public float HitstopTimer;
 
         public float Interpolant { get; private set; }
+        public Vector2[] afterImageCache;
         public Vector2[] swingTrailCache;
         public int hitStopTime;
-
+        public bool useAfterImage;
         public const int EXTRA_UPDATE_COUNT = 7;
 
         //Default to the item sprite of the texture, we can just predraw if we need to change it
@@ -61,6 +63,11 @@ namespace Stellamod.Core.SwingSystem
 
         }
 
+        public virtual Color GetAfterImageColor(float interpolant)
+        {
+            return Color.Lerp(Color.White, Color.Transparent, MathHelper.SmoothStep(0, 1, interpolant));
+        }
+
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
@@ -76,6 +83,7 @@ namespace Stellamod.Core.SwingSystem
             {
                 _swings = new List<ISwing>();
                 swingTrailCache = new Vector2[32];
+                afterImageCache = new Vector2[8];
                 DefineCombo(_swings);
                 ISwing swing = GetSwing();
                 swing.SetDirection((int)SwingDirection);
@@ -163,15 +171,20 @@ namespace Stellamod.Core.SwingSystem
 
             //Calculate the trailing
             swing.CalculateTrailingPoints(Interpolant, Projectile.velocity, ref swingTrailCache);
-
+            Matrix translationMatrix = Matrix.CreateTranslation(new Vector3(Owner.Center.X, Owner.Center.Y, 0));
             //Now we transform the points
             //Calculating points locally and then translating it is a bit simpler.
-            for(int t = 0; t < swingTrailCache.Length; t++)
+            for (int t = 0; t < swingTrailCache.Length; t++)
             {
-                Matrix translationMatrix = Matrix.CreateTranslation(new 
-                    Vector3(Owner.Center.X, Owner.Center.Y, 0));
                 swingTrailCache[t] = Vector2.Transform(swingTrailCache[t], translationMatrix);
             }
+
+            swing.CalculateAfterImagePoints(Interpolant, Projectile.velocity, ref afterImageCache);
+            for (int t = 0; t < afterImageCache.Length; t++)
+            {
+                afterImageCache[t] = Vector2.Transform(afterImageCache[t], translationMatrix);
+            }
+
         }
 
         private void AI_OrientHand()
@@ -196,6 +209,8 @@ namespace Stellamod.Core.SwingSystem
         public override bool PreDraw(ref Color lightColor)
         {
             //Draw the texture, by 
+            if(useAfterImage)
+                DrawAfterImage(ref lightColor, afterImageCache);
             DrawSwingTrail(ref lightColor, swingTrailCache);
             DrawSwordSprite(ref lightColor);
             return false;
@@ -205,6 +220,33 @@ namespace Stellamod.Core.SwingSystem
         {
             Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Owner.HeldItem.ModItem.Texture);
             return texture;
+        }
+
+        public virtual void DrawAfterImage(ref Color lightColor, Vector2[] afterImageCache)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Restart(blendState: BlendState.Additive);
+            for(int a = 0; a < afterImageCache.Length; a++)
+            {
+                float interpolant = a;
+                interpolant /= (float)afterImageCache.Length;
+                Texture2D texture = GetTexture();
+                int frameHeight = texture.Height / Main.projFrames[Projectile.type];
+                int startY = frameHeight * Projectile.frame;
+
+                Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
+                Vector2 origin = sourceRectangle.Size() / 2f;
+                Color drawColor = GetAfterImageColor(interpolant);
+                drawColor *= EasingFunction.QuadraticBump(interpolant);
+                float drawScale = 1f;
+                Vector2 position = afterImageCache[a];
+                float drawRotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
+
+                spriteBatch.Draw(texture,
+                  position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+                    sourceRectangle, drawColor, drawRotation, origin, drawScale, SpriteEffects.None, 0); // drawing the sword itself
+            }
+            spriteBatch.RestartDefaults();
         }
 
         public virtual void DrawSwingTrail(ref  Color lightColor, Vector2[] swingTrailCache)

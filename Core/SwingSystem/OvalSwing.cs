@@ -93,6 +93,26 @@ namespace Stellamod.Core.SwingSystem
             offset = new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
         }
 
+        public void CalculateAfterImagePoints(float time, Vector2 velocity, ref Vector2[] trailCache)
+        {
+            //Alright, calculating trail points
+            //The points will be offset by the position matrix
+            //So we just calculate the local points here
+            for (int t = 0; t < trailCache.Length; t++)
+            {
+                float l = trailCache.Length;
+                //Lerp between the points
+                float progressOnTrail = t / l;
+
+                float xOffset;
+                float yOffset;
+                float targetRotation = velocity.ToRotation();
+                float interpolant = MathHelper.SmoothStep(0, time, progressOnTrail);
+                CalculateXY(interpolant, velocity, out xOffset, out yOffset);
+                //Set Offset, now we can take this and offset it more in the projectile
+                trailCache[t] = new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
+            }
+        }
         public void CalculateTrailingPoints(float time, Vector2 velocity, ref Vector2[] trailCache)
         {
             //Alright, calculating trail points
