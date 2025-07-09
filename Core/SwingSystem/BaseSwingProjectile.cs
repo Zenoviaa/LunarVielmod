@@ -13,6 +13,7 @@ namespace Stellamod.Core.SwingSystem
     {
         private bool _hasInitialized;
         private bool _canHurtThings;
+        private bool _hasHitStop;
         private List<ISwing> _swings;
 
         public ITrailer Trailer { get; set; }
@@ -153,7 +154,7 @@ namespace Stellamod.Core.SwingSystem
             }
 
             //We now have the offset so we can apply that to the weapon
-            swing.UpdateSwing(Interpolant, Projectile.position, Projectile.velocity, out Vector2 offset);
+            swing.UpdateSwing(Interpolant, Projectile.Center, Projectile.velocity, out Vector2 offset);
             Projectile.Center = Owner.Center + offset;
             Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
 
@@ -237,7 +238,12 @@ namespace Stellamod.Core.SwingSystem
             base.OnHitNPC(target, hit, damageDone);
             //In here we'd spawn the hit effects
             //Hit stop effect and minor screenshake I think
-            HitstopTimer = hitStopTime;
+            if (!_hasHitStop)
+            {
+                HitstopTimer = hitStopTime;
+                _hasHitStop = true;
+            }
+
         }
     }
 }

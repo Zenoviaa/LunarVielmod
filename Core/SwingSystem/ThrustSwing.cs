@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.Helpers;
 using Stellamod.Core.Helpers.Math;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Stellamod.Core.SwingSystem
     internal class ThrustSwing : ISwing
     {
         private int _dir;
+        private bool _hasThrust;
         public ThrustSwing()
         {
             //Set some default values
@@ -22,12 +24,14 @@ namespace Stellamod.Core.SwingSystem
             ThrowDistance = 64;
             Easing = EasingFunction.InOutExpo;
             TrailOffset = 1.5f;
+ 
         }
         public const float TRAIL_START_OFFSET = 0.2f;
         public float Duration { get; set; }
         public int HitCount { get; set; }
         public float ThrowDistance { get; set; }
         public float TrailOffset { get; set; }
+        public float ThrustParticleOffset { get; set; }
         public Easer Easing { get; set; }
         public SoundStyle? Sound { get; set; }
         public float GetDuration()
@@ -46,6 +50,7 @@ namespace Stellamod.Core.SwingSystem
 
         private void CalculateOffset(float time, Vector2 velocity, out Vector2 offset)
         {
+            
             float start = 0;
             float end = ThrowDistance;
             float interpolant = Easing(time);
@@ -54,6 +59,13 @@ namespace Stellamod.Core.SwingSystem
         }
         public void UpdateSwing(float time, Vector2 position, Vector2 velocity, out Vector2 offset)
         {
+            if(!_hasThrust && time >= 0.1f)
+            {
+                ThrustParticleOffset = ThrowDistance / 2;
+                FXUtil.SimpleImpactEffect(position + ThrustParticleOffset * velocity.SafeNormalize(Vector2.Zero), velocity, Main.rand.Next(4, 8), Color.White, Color.LightGray, Color.Black);
+                _hasThrust = true;
+            }
+
             CalculateOffset(time, velocity, out offset);
         }
 

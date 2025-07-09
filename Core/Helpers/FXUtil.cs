@@ -158,5 +158,29 @@ namespace Stellamod.Core.Helpers
                 uniqueIdentity);
             Main.instance.CameraModifiers.Add(punchCameraModifier);
         }
+
+
+        public static void SimpleImpactEffect(Vector2 startPosition, Vector2 velocity, int numParticles, Color innerColor, Color glowColor, Color outerGlowColor)
+        {
+            Vector2 inverseVelocity = velocity.SafeNormalize(Vector2.Zero) * 2;
+            float spreadRange = MathHelper.ToRadians(80);
+            for(int n = 0; n < numParticles; n++)
+            {
+                Vector2 particleVelocity= inverseVelocity.RotateRandom(spreadRange);
+                Vector2 particlePosition = startPosition;
+                particlePosition += inverseVelocity * 8;
+                Vector2 centerPosition = particlePosition;
+
+                particlePosition += Main.rand.NextVector2Circular(32, 32);
+
+                Vector2 rotateRefPosition = startPosition + velocity * 64;
+                Vector2 impactVelocity = rotateRefPosition - particlePosition;
+                impactVelocity = impactVelocity.SafeNormalize(Vector2.Zero);
+
+                var particle = GlowCircleLongBoom(particlePosition, innerColor, glowColor, outerGlowColor, duration: 15, baseSize: Main.rand.NextFloat(0.06f, 0.12f));
+                particle.Velocity = impactVelocity;
+                particle.Rotation = particle.Velocity.ToRotation();
+            }
+        }
     }
 }

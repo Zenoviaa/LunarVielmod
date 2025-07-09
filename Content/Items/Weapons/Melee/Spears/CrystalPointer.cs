@@ -171,9 +171,7 @@ namespace Stellamod.Content.Items.Weapons.Melee.Spears
             base.OnHitNPC(target, hit, damageDone);
             if (!Hit)
             {
-                FXUtil.ShakeCamera(target.Center, 1024, 8f);
                 Particle.NewParticle<IceStrikeParticle>(target.Center, Vector2.Zero, Color.White);
-
                 Hit = true;
             }
         }
