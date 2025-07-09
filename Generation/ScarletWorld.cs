@@ -131,7 +131,7 @@ namespace Stellamod.Generation
             {
                 Point Loc7 = new Point(smx, smy);
                 Point Loc8 = new Point(smx, smy + 100);
-                WorldUtils.Gen(Loc8, new Shapes.Mound(450, 300), Actions.Chain(new GenAction[]
+                WorldUtils.Gen(Loc8, new Shapes.Mound(850, 150), Actions.Chain(new GenAction[]
                     {
                             new Actions.ClearWall(true),
                             new Actions.SetTile(TileID.SnowBlock),
