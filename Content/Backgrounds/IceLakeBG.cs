@@ -65,6 +65,7 @@ namespace Stellamod.Content.Backgrounds
             front2Layer.Parallax = 0.5f;
             front2Layer.DrawOffset = Vector2.Zero;
             AddLayer(front2Layer);
+     
         }
 
         public override bool IsActive()

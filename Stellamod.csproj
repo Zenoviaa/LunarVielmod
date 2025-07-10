@@ -18,6 +18,7 @@
     <None Remove="Assets\Effects\GlowCircle.fx" />
     <None Remove="Assets\Effects\GlowingDust.fx" />
     <None Remove="Assets\Effects\GlowPillar.fx" />
+    <None Remove="Assets\Effects\Mist.fx" />
     <None Remove="Assets\Effects\RippingSlashShader.fx" />
     <None Remove="Assets\Effects\SharpExplosionShader.fx" />
     <None Remove="Assets\Textures\Noise\BasicGlow.png" />

@@ -26,6 +26,8 @@ namespace Stellamod
             LoadShader(mod, "Assets/Effects/GlowCircle", "GlowCircleShader");
             LoadShader(mod, "Assets/Effects/Fog", "FogShader");
             LoadShader(mod, "Assets/Effects/Mist", "MistShader");
+            LoadShader(mod, "Assets/Effects/MoonIceTrail", "MoonIceTrail");
+            LoadShader(mod, "Assets/Effects/MoonSparkle", "MoonSparkleShader");
         }
     }
 }
