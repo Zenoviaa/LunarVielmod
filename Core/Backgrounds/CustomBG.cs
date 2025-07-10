@@ -6,17 +6,24 @@ namespace Stellamod.Core.Backgrounds
     public abstract class CustomBG : ModType
     {
         public int Type;
-        public CustomBGLayer[] Layers = new CustomBGLayer[0];
+        public List<CustomBGLayer> Layers = new List<CustomBGLayer>();
         public int Priority;
         public float Alpha;
+        public float DrawScale;
         public virtual bool IsActive()
         {
             return false;
         }
 
+        public void AddLayer(CustomBGLayer layer)
+        {
+            Layers.Add(layer);
+        }
+
         public sealed override void SetupContent()
         {
             base.SetupContent();
+            DrawScale = 1;
             SetStaticDefaults();
         }
 
