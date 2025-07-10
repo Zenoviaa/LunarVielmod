@@ -142,3 +142,8 @@ SpringHillsBiome: {
 	TownNPCDialogueName: the Spring Hills Biome
 	DisplayName: Spring Hills
 }
+
+RainforestBiome: {
+	DisplayName: Rainforest Biome
+	TownNPCDialogueName: the Rainforest Biome
+}

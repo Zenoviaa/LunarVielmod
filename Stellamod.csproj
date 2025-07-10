@@ -116,5 +116,9 @@
     <None Remove="Core\UI\FancyScrollbarOuter.png" />
     <None Remove="Core\XixianFlaskSystem\CannotUseFlask.png" />
     <None Remove="Core\XixianFlaskSystem\XixianFlask.png" />
+    <None Remove="Generation\VeilGenTester.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\Textures\Backgrounds\" />
   </ItemGroup>
 </Project>
