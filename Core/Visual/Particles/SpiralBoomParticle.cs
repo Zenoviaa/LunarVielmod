@@ -16,7 +16,7 @@ namespace Stellamod.Core.Visual.Particles
         {
             Rotation += Main.rand.NextFloat(-MathHelper.TwoPi, MathHelper.TwoPi);
             Frame = new Rectangle(0, 0, FrameWidth, FrameHeight);
-            Scale *= Main.rand.NextFloat(0.5f, 0.7f);
+            Scale *= Main.rand.NextFloat(0.35f, 0.7f);
         }
 
         public override void Update()

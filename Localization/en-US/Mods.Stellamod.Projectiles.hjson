@@ -1497,3 +1497,6 @@ PyslockeStaminaStab.DisplayName: Pyslocke Stamina Stab
 MagicProjectile.DisplayName: Magic Projectile
 WandProjectile.DisplayName: Wand Projectile
 TestProjectile.DisplayName: Test Projectile
+EventHorizonSlash.DisplayName: Event Horizon Slash
+EventHorizonStaminaSlash.DisplayName: Event Horizon Stamina Slash
+HorizonStar.DisplayName: Horizon Star

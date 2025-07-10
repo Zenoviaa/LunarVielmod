@@ -60,7 +60,7 @@ namespace Stellamod.Core.Effects.Trails
             HighlightColor = Color.LightGoldenrodYellow;
             InnerCoreColor = Color.Lerp(Color.DeepSkyBlue, Color.Black, 0.5f);
             InnerGlowColor = Color.Lerp(Color.LightBlue, Color.Black, 0.5f);
-            SparkleColor = Color.Yellow;
+            SparkleColor = Color.DarkBlue;
 
             TrailTexture = AssetRegistry.Textures.Trails.BulbyTrail.Value;
             NoiseTexture = AssetRegistry.Textures.Noise.Perlin.Value;

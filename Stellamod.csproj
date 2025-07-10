@@ -21,6 +21,7 @@
     <None Remove="Assets\Effects\Mist.fx" />
     <None Remove="Assets\Effects\RippingSlashShader.fx" />
     <None Remove="Assets\Effects\SharpExplosionShader.fx" />
+    <None Remove="Assets\Effects\Trails\MoonSparkle.fx" />
     <None Remove="Assets\Textures\Noise\BasicGlow.png" />
     <None Remove="Assets\Textures\Noise\Clouds3.png" />
     <None Remove="Assets\Textures\Noise\SmallClouds.png" />
@@ -115,6 +116,7 @@
     <None Remove="Core\StaminaSystem\SuperStaminaBrew.png" />
     <None Remove="Core\UI\FancyScrollbarInner.png" />
     <None Remove="Core\UI\FancyScrollbarOuter.png" />
+    <None Remove="Core\Visual\Particles\SpiralBoomParticle.png" />
     <None Remove="Core\XixianFlaskSystem\CannotUseFlask.png" />
     <None Remove="Core\XixianFlaskSystem\XixianFlask.png" />
     <None Remove="Generation\VeilGenTester.png" />
