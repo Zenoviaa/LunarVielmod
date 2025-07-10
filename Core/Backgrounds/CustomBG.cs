@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Backgrounds
@@ -10,6 +11,7 @@ namespace Stellamod.Core.Backgrounds
         public int Priority;
         public float Alpha;
         public float DrawScale;
+        public Vector2 DrawOffset;
         public virtual bool IsActive()
         {
             return false;
@@ -18,6 +20,11 @@ namespace Stellamod.Core.Backgrounds
         public void AddLayer(CustomBGLayer layer)
         {
             Layers.Add(layer);
+        }
+
+        public void AddFogLayer(Color startColor, Color endColor)
+        {
+
         }
 
         public sealed override void SetupContent()

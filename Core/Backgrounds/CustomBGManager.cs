@@ -101,6 +101,7 @@ namespace Stellamod.Core.Backgrounds
             if (drawPosition.Y <= minY)
                 drawPosition.Y = minY;
             drawPosition.Y -= 200;
+            drawPosition += bg.DrawOffset;
             float drawScale = 2 * bg.DrawScale * bgLayer.DrawScale;
         
             spriteBatch.Draw(
