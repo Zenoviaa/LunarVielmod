@@ -96,8 +96,6 @@ namespace Stellamod.Core.Backgrounds
             worldSurfaceY -= 1100;
             int diffY = (int)(worldSurfaceY - Main.screenPosition.Y);
             int parallaxY = (int)(diffY * -0.4f);
-            Console.WriteLine(diffY);
-
             Vector2 drawPosition = Vector2.Zero + bgLayer.DrawOffset + new Vector2(0, -parallaxY);
           
             int minY = -380;
