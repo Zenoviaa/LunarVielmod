@@ -65,6 +65,8 @@
     <None Remove="Content\Items\Weapons\Magic\Powders\SpiritPowder.png" />
     <None Remove="Content\Items\Weapons\Magic\Powders\TrickPowder.png" />
     <None Remove="Content\Items\Weapons\Magic\Powders\Verstidust.png" />
+    <None Remove="Content\Items\Weapons\Melee\Swords\EventHorizon.png" />
+    <None Remove="Content\Items\Weapons\Melee\Swords\HorizonStar.png" />
     <None Remove="Content\Items\Weapons\Melee\Swords\WarriorsGrace.png" />
     <None Remove="Content\Items\Weapons\Ranged\Safunai\Alcarish\Alcarish.png" />
     <None Remove="Content\Items\Weapons\Ranged\Safunai\Alcarish\AlcarishProj.png" />

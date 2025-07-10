@@ -92,16 +92,18 @@ namespace Stellamod.Core.Backgrounds
             int width = (int)bgLayer.Texture.Size().X;
             int height = (int)bgLayer.Texture.Size().Y;
 
-            int diffY = (int)((Main.worldSurface + 800) - Main.screenPosition.Y);
-            int parallaxY = (int)(diffY * -0.1);
+            int worldSurfaceY = (int)(Main.worldSurface * 16);
+            worldSurfaceY -= 1100;
+            int diffY = (int)(worldSurfaceY - Main.screenPosition.Y);
+            int parallaxY = (int)(diffY * -0.4f);
+            Console.WriteLine(diffY);
 
             Vector2 drawPosition = Vector2.Zero + bgLayer.DrawOffset + new Vector2(0, -parallaxY);
-            drawPosition.Y += height / 2;
+          
             int minY = -380;
             if (drawPosition.Y <= minY)
                 drawPosition.Y = minY;
-            drawPosition.Y -= 200;
-            drawPosition += bg.DrawOffset;
+            drawPosition.Y -= 500;
             float drawScale = 2 * bg.DrawScale * bgLayer.DrawScale;
         
             spriteBatch.Draw(
