@@ -12,6 +12,14 @@ namespace Stellamod.Content.Backgrounds
             base.SetStaticDefaults();
             DrawScale = 1.5f;
             DrawOffset = new Vector2(0, -8);
+
+            CustomBGLayer bleedLayer = new CustomBGLayer();
+            bleedLayer.SetTexture("Assets/Textures/Backgrounds/IceUnderground");
+            bleedLayer.Parallax = 0.2f;
+            bleedLayer.DrawOffset = new Vector2(0, bleedLayer.Texture.Size().Y * DrawScale * 2);
+            AddLayer(bleedLayer);
+
+
             CustomBGLayer backLayer = new CustomBGLayer();
             backLayer.SetTexture("Assets/Textures/Backgrounds/IceBack");
             backLayer.Parallax = 0.2f;

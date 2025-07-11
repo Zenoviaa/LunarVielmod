@@ -21,7 +21,7 @@ namespace Stellamod.Core.Backgrounds
         public Shader Shader;
         public void SetTexture(string texturePath)
         {
-            Texture = ModContent.Request<Texture2D>("Stellamod/" + texturePath);
+            Texture = ModContent.Request<Texture2D>("Stellamod/" + texturePath, AssetRequestMode.ImmediateLoad);
         }
     }
 }
