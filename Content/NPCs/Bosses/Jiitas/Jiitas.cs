@@ -38,7 +38,7 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
         public override void AI()
         {
             base.AI();
-            /*
+            
             NPC.TargetClosest();
             switch (State)
             {
@@ -71,7 +71,8 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
                     break;
                 case ActionState.Death:
                     AI_Death();
-                    break;*/
+                    break;
+            }
         }
     }
 }
