@@ -39,7 +39,7 @@ namespace Stellamod.Content.Backgrounds
             midFogLayer.DrawOffset = Vector2.Zero;
 
             MistShader midMistShader = new MistShader();
-            midMistShader.StartColor = Color.DarkGray * 0.5f;
+            midMistShader.StartColor = Color.DarkGray * 0.25f;
             midMistShader.EndColor = Color.Transparent;
             midFogLayer.Shader = midMistShader;
             AddLayer(midFogLayer);
@@ -68,7 +68,7 @@ namespace Stellamod.Content.Backgrounds
             //TODO:
             //Come back later to make it check for rainforest biome
             
-            return false;
+            return true;
         }
     }
 }
