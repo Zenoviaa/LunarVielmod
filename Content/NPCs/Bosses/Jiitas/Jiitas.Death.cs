@@ -8,6 +8,7 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
 {
     internal partial class Jiitas
     {
+
         private void AI_Death()
         {
 
