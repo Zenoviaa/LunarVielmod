@@ -21,7 +21,7 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
             {
                 if (Empowered)
                     return 35;
-                return 25;
+                return 26;
             }
         }
         public float NumSpinJumps
