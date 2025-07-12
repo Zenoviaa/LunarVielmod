@@ -145,7 +145,7 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
                         duration: Main.rand.NextFloat(15, 25));
                     particle.Rotation = rot + MathHelper.ToRadians(45);
                 }
-                NPC.velocity -= DirectionToTarget * 0.2f;
+                NPC.velocity -= DirectionToTarget * 0.1f;
                 AttackCounter++;
             }
 

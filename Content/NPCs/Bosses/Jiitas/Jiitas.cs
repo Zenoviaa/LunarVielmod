@@ -485,7 +485,7 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
             if (!HasSaidTitle)
             {
                 TitleCardUISystem uiSystem = ModContent.GetInstance<TitleCardUISystem>();
-                uiSystem.OpenUI("Jiitas the Jhastas", 240);
+                uiSystem.OpenUI("Jiitas the Jhastas", 5);
                 HasSaidTitle = true;
             }
  
