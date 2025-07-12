@@ -68,7 +68,7 @@ namespace Stellamod.Content.Backgrounds
             //TODO:
             //Come back later to make it check for rainforest biome
             
-            return true;
+            return false;
         }
     }
 }

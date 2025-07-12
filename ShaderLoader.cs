@@ -28,6 +28,7 @@ namespace Stellamod
             LoadShader(mod, "Assets/Effects/Mist", "MistShader");
             LoadShader(mod, "Assets/Effects/MoonIceTrail", "MoonIceTrail");
             LoadShader(mod, "Assets/Effects/MoonSparkle", "MoonSparkleShader");
+            LoadShader(mod, "Assets/Effects/Silhouette", "SilhouetteShader");
         }
     }
 }

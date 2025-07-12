@@ -36,6 +36,21 @@ namespace Stellamod.Assets
         public static class Sounds
         {
             private static string Path => "Stellamod/Assets/Sounds/";
+            public static class Jiitas
+            {
+                public static SoundStyle JiitasGunShot = new SoundStyle($"{Path}Jiitas/JiitasGunShot");
+                public static SoundStyle JiitasKnifeThrow = new SoundStyle($"{Path}Jiitas/JiitasKnifeThrow");
+                public static SoundStyle JiitasKnifeSlash = new SoundStyle($"{Path}Jiitas/JiitasKnifeSlash");
+                public static SoundStyle JiitasBombThrow = new SoundStyle($"{Path}Jiitas/JiitasBombThrow");
+                public static SoundStyle JiitasBombFuse = new SoundStyle($"{Path}Jiitas/JiitasBombFuse");
+                public static SoundStyle JiitasLaugh = new SoundStyle($"{Path}Jiitas/JiitasLaugh");
+                public static SoundStyle JiitasSit = new SoundStyle($"{Path}Jiitas/JiitasSit");
+                public static SoundStyle JiitasSummon = new SoundStyle($"{Path}Jiitas/JiitasSummon");
+                public static SoundStyle JiitasLightSpin = new SoundStyle($"{Path}Jiitas/JiitasLightSpin");
+                public static SoundStyle JiitasReload = new SoundStyle($"{Path}Jiitas/JiitasReload");
+                public static SoundStyle JiitasSadWah = new SoundStyle($"{Path}Jiitas/JiitasSadWah");
+            }
+
             public static class Magic
             {
                 public static SoundStyle AutomationCast1 = new SoundStyle($"{Path}Magic/AutomationCast1");

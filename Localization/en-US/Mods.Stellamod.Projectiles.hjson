@@ -1500,3 +1500,8 @@ TestProjectile.DisplayName: Test Projectile
 EventHorizonSlash.DisplayName: Event Horizon Slash
 EventHorizonStaminaSlash.DisplayName: Event Horizon Stamina Slash
 HorizonStar.DisplayName: Horizon Star
+JiitasGunShot.DisplayName: Jiitas Gun Shot
+JiitasKnife.DisplayName: Jiitas Knife
+JiitasBomb.DisplayName: Jiitas Bomb
+JiitasBoom.DisplayName: Jiitas Boom
+JiitasBombString.DisplayName: Jiitas Bomb String

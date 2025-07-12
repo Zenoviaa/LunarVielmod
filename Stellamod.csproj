@@ -21,6 +21,7 @@
     <None Remove="Assets\Effects\Mist.fx" />
     <None Remove="Assets\Effects\RippingSlashShader.fx" />
     <None Remove="Assets\Effects\SharpExplosionShader.fx" />
+    <None Remove="Assets\Effects\Silhouette.fx" />
     <None Remove="Assets\Effects\Trails\MoonSparkle.fx" />
     <None Remove="Assets\Textures\Noise\BasicGlow.png" />
     <None Remove="Assets\Textures\Noise\Clouds3.png" />
@@ -98,6 +99,9 @@
     <None Remove="Content\Items\Weapons\Ranged\Safunai\Vinger\VingerProj_Chain.png" />
     <None Remove="Content\Items\Weapons\Ranged\Safunai\Vinger\VingerProj_Glow.png" />
     <None Remove="Content\Items\Weapons\Ranged\Safunai\Vinger\VingerProj_White.png" />
+    <None Remove="Content\NPCs\Bosses\Jiitas\DancingPuppet_String.png" />
+    <None Remove="Content\NPCs\Bosses\Jiitas\Projectiles\JiitasBombString.png" />
+    <None Remove="Content\NPCs\Bosses\Jiitas\Projectiles\JiitasBombString_String.png" />
     <None Remove="Content\Tiles\ExampleDecorativeWallItem.png" />
     <None Remove="Content\Tiles\InvisibleTile.png" />
     <None Remove="Content\Tiles\InvisibleWall.png" />
