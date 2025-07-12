@@ -29,8 +29,12 @@ namespace Stellamod.Content.Items.Weapons.Melee.Swords.EventHorizon
             _starTimer++;
             if (_starTimer % 96 == 0)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity, 
-                    ModContent.ProjectileType<HorizonStar>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity,
+               ModContent.ProjectileType<HorizonStar>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
+                }
+           
             }
         }
         private float GetTrailWidth(float interpolant)

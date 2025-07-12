@@ -22,7 +22,6 @@ namespace Stellamod.Content.Items.Weapons.Ranged.Bows.IronBow
                     projToShoot,
                     (int)bowDamage, knockBack, Projectile.owner, ai0: projToShoot);
                 crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().CrossbowShot = true;
-                crossShot.netUpdate = true;
             }
 
 

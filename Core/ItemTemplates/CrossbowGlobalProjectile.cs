@@ -20,13 +20,15 @@ namespace Stellamod.Core.ItemTemplates
         public override void SendExtraAI(Projectile projectile, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             base.SendExtraAI(projectile, bitWriter, binaryWriter);
-            binaryWriter.Write(CrossbowShot);
+            CrossbowGlobalProjectile globalProj = projectile.GetGlobalProjectile<CrossbowGlobalProjectile>();
+            binaryWriter.Write(globalProj.CrossbowShot);
         }
 
         public override void ReceiveExtraAI(Projectile projectile, BitReader bitReader, BinaryReader binaryReader)
         {
             base.ReceiveExtraAI(projectile, bitReader, binaryReader);
-            CrossbowShot = binaryReader.ReadBoolean();
+            CrossbowGlobalProjectile globalProj = projectile.GetGlobalProjectile<CrossbowGlobalProjectile>();
+            globalProj.CrossbowShot = binaryReader.ReadBoolean();
         }
 
         public override void SetDefaults(Projectile entity)
@@ -50,6 +52,7 @@ namespace Stellamod.Core.ItemTemplates
 
                 projectile.extraUpdates += 4;
                 projectile.ArmorPenetration += 10;
+                projectile.netUpdate = true;
                 Initialized = true;
             }
 
