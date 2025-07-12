@@ -1,7 +1,5 @@
-﻿using Urdveil.Common.Bases;
-using Terraria;
+﻿using Stellamod.Core.ItemTemplates;
 using Terraria.ModLoader;
-using Stellamod.Core.ItemTemplates;
 
 namespace Stellamod.Content.Items.Weapons.Ranged.Bows.IronBow
 {
@@ -10,7 +8,9 @@ namespace Stellamod.Content.Items.Weapons.Ranged.Bows.IronBow
         public override void SetDefaults()
         {
             base.SetDefaults();
+            Item.damage = 2;
             CrossbowProjectileType = ModContent.ProjectileType<IronBowHold>();
+            staminaProjectileShoot = ModContent.ProjectileType<IronBowStaminaHold>();
         }
     }
 }

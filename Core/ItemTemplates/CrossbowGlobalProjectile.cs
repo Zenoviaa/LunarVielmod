@@ -46,7 +46,7 @@ namespace Stellamod.Core.ItemTemplates
 
             if (!Initialized)
             {
-                CrossbowOldPos = new Vector2[64];
+                CrossbowOldPos = new Vector2[32];
 
                 projectile.extraUpdates += 4;
                 projectile.ArmorPenetration += 10;
@@ -122,15 +122,16 @@ namespace Stellamod.Core.ItemTemplates
             particle.Rotation = projectile.velocity.RotatedByRandom(MathHelper.ToRadians(45)).ToRotation();
             FXUtil.ShakeCamera(target.Center, 1024f, 12f);
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 3; i++)
             {
-                Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.White, 1f).noGravity = true;
+                Dust.NewDustPerfect(projectile.Center, 
+                    ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 2)).RotatedByRandom(19.0), 0, Color.White, 1f).noGravity = true;
             }
 
-            FXUtil.GlowCircleBoom(target.Center,
+            FXUtil.GlowCircleBoom(projectile.Center,
                 innerColor: Color.White,
                 glowColor: Color.Black,
-                outerGlowColor: Color.Black, duration: 25, baseSize: 0.12f);
+                outerGlowColor: Color.Black, duration: 25, baseSize: 0.06f);
         }
     }
 }

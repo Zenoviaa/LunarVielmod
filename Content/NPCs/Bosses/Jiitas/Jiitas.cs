@@ -462,6 +462,11 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
             //NO CONTACT DAMAGE
             return ShouldDealContactDamage;
         }
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
+
         public override void AI()
         {
             base.AI();

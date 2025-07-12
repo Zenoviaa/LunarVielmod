@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.Items.Weapons.Ranged.Bows.IronBow;
+using Stellamod.Core.SwingSystem;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -10,7 +11,9 @@ namespace Stellamod.Core.ItemTemplates
 {
     internal abstract class BaseCrossbowItem : ModItem
     {
-        public int CrossbowProjectileType;
+        public int CrossbowProjectileType; 
+        public int staminaCost = 1;
+        public int staminaProjectileShoot;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -38,13 +41,33 @@ namespace Stellamod.Core.ItemTemplates
         {
             return player.ownedProjectileCounts[CrossbowProjectileType] == 0;
         }
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override bool AltFunctionUse(Player player)
         {
-            Projectile.NewProjectile(source, position, velocity, CrossbowProjectileType, damage, knockback, player.whoAmI);
-            return false;
+            return true;
         }
 
+        public virtual void ShootSwingStamina(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            SwingPlayer comboPlayer = player.GetModPlayer<SwingPlayer>();
+            comboPlayer.ConsumeStamina(staminaCost);
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback,
+                player.whoAmI);
+        }
+
+        public sealed override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            SwingPlayer comboPlayer = player.GetModPlayer<SwingPlayer>();
+            if (player.altFunctionUse == 2 && comboPlayer.CanUseStamina(staminaCost))
+            {
+                ShootSwingStamina(player, source, position, velocity, staminaProjectileShoot, damage, knockback);
+            }
+            else
+            {
+                Projectile.NewProjectile(source, position, velocity, CrossbowProjectileType, damage, knockback, player.whoAmI);
+            }
+
+            return false;
+        }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);

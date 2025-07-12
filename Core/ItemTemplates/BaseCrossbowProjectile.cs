@@ -35,6 +35,7 @@ namespace Urdveil.Common.Bases
         protected float AimProgress;
         protected float CrosshairProgress;
         protected float BurstCount;
+        protected float ChargeStrength;
         protected ref float Timer => ref Projectile.ai[0];
         protected AIState State
         {
@@ -148,10 +149,15 @@ namespace Urdveil.Common.Bases
                     particle.Rotation = rot + MathHelper.ToRadians(45);
                 }
             }
-
+            ChargeStrength = Timer / AimTime;
             if (Timer >= AimTime)
             {
                 SwitchState(AIState.Aim);
+            }
+      
+            if (Main.myPlayer == Projectile.owner && !Owner.controlUseItem && Timer >= 5 && !Main.mouseRight)
+            {
+                SwitchState(AIState.Fire);
             }
         }
 
@@ -164,7 +170,7 @@ namespace Urdveil.Common.Bases
                 Projectile.netUpdate = true;
             }
 
-            if (Main.myPlayer == Projectile.owner && Owner.controlUseItem)
+            if (Main.myPlayer == Projectile.owner && !Owner.controlUseItem && !Main.mouseRight)
             {
                 SwitchState(AIState.Fire);
             }
