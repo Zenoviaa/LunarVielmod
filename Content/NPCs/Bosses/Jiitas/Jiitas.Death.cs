@@ -42,6 +42,7 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
         private void AI_DeathPullup()
         {
             Timer++;
+            NPC.noGravity = true;
             NPC.velocity *= 0.9f;
             NPC.rotation *= 0.9f;
             PlayAnimation(AnimationState.Dragup);
@@ -62,6 +63,7 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
                 SoundEngine.PlaySound(jiitasSad, NPC.position);
             }
 
+            NPC.noGravity = true;
             NPC.rotation *= 0.9f;
             NPC.velocity.Y -= 0.3f;
             PlayAnimation(AnimationState.Death);

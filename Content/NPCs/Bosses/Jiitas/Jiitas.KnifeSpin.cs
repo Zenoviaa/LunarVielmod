@@ -89,11 +89,12 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
             Timer++;
             if(Timer == 1)
             {
+       
                 SoundStyle jiitasSit = AssetRegistry.Sounds.Jiitas.JiitasSit;
                 jiitasSit.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(jiitasSit, NPC.position);
             }
-
+            NPC.TargetClosest();
             NPC.noGravity = false;
             NPC.velocity.X *= 0.9f;
             NPC.rotation *= 0.9f;

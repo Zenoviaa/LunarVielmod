@@ -74,6 +74,7 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
                 jiitasSit.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(jiitasSit, NPC.position);
             }
+            NPC.TargetClosest();
             Warn();
             if (Timer <= 4)
             {

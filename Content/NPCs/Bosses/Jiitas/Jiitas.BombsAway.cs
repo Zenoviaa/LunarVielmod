@@ -82,6 +82,7 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
         private void AI_PutYourHandsUp()
         {
             Timer++;
+            NPC.TargetClosest();
             Warn();
             NPC.velocity.X *= 0.9f;
             NPC.velocity.Y -= MathHelper.Lerp(0.5f, 0.1f, Timer / BombsAwayHandsUpTime); NPC.rotation *= 0.9f;

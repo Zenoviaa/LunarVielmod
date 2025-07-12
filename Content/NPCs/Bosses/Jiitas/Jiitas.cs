@@ -489,7 +489,8 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
                 HasSaidTitle = true;
             }
  
-            NPC.TargetClosest();
+            if(!NPC.HasValidTarget)
+                NPC.TargetClosest();
             switch (State)
             {
                 case ActionState.Idle:

@@ -38,7 +38,8 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
                 SoundStyle laughSound = AssetRegistry.Sounds.Jiitas.JiitasLaugh;
                 laughSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(laughSound, NPC.position);
-            }
+            }            
+            NPC.TargetClosest();
             PlayAnimation(AnimationState.Laugh);
             Empowered = true;
             if(Timer >= EmpowerStartupTime)
