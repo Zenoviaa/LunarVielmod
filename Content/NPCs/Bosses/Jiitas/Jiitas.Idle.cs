@@ -61,6 +61,8 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
 
         private void ChooseAttack()
         {
+            if (!MultiplayerHelper.IsHost)
+                return;
 
             if (_attackCycle.Count == 0)
             {
@@ -85,6 +87,7 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
                             _attackCycle.Enqueue(ActionState.SpinJump);
                             _attackCycle.Enqueue(ActionState.MachineGunSurprise);
                             _attackCycle.Enqueue(ActionState.KnifeSpin);
+                            _attackCycle.Enqueue(ActionState.Fakeout);
                             break;
                         case 2:
                             _attackCycle.Enqueue(ActionState.BombsAway);

@@ -5804,3 +5804,8 @@ HeartPiece: {
 	DisplayName: Heart Piece
 	Tooltip: ""
 }
+
+IronBow: {
+	DisplayName: Iron Bow
+	Tooltip: ""
+}

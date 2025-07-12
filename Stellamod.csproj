@@ -114,6 +114,8 @@
     <None Remove="Core\Helpers\StructureLine.png" />
     <None Remove="Core\Helpers\StructurePoint.png" />
     <None Remove="Core\Helpers\WandSaver.png" />
+    <None Remove="Core\ItemTemplates\CrossbowCrosshair.png" />
+    <None Remove="Core\ItemTemplates\CrossbowCrosshairLineParticle.png" />
     <None Remove="Core\QuestSystem\Quests\CauldronCrafting.png" />
     <None Remove="Core\QuestSystem\Quests\CauldronCrafting_Big.png" />
     <None Remove="Core\StaminaSystem\CannotUseStaminaPotion.png" />

@@ -6,6 +6,7 @@ using Stellamod.Core.Effects;
 using Stellamod.Core.Helpers;
 using Stellamod.Core.Helpers.Math;
 using Stellamod.Core.TitleSystem;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -102,6 +103,19 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
 
         private bool HasSaidTitle;
         private Vector2[] OldCenterPos;
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(Empowered);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            Empowered = reader.ReadBoolean();
+        }
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -495,9 +509,6 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
             {
                 case ActionState.Idle:
                     AI_Idle();
-                    break;
-                case ActionState.Spawn:
-                    AI_Spawn();
                     break;
                 case ActionState.KnifeSpin:
                     AI_KnifeSpin();
