@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria.ModLoader;
 using Terraria;
+using System.IO;
+using static Stellamod.Stellamod;
 
 namespace Stellamod.Core.DashSystem
 {
@@ -38,7 +40,6 @@ namespace Stellamod.Core.DashSystem
         public int DashCount;
         public int MaxDashCount;
         public bool ShouldFlicker => DashCountTimer > MaxDashCountTimer / 2f;
-
         public override void ResetEffects()
         {
             MaxDashCountTimer = 120;
@@ -72,6 +73,40 @@ namespace Stellamod.Core.DashSystem
             }
         }
 
+        public override void CopyClientState(ModPlayer targetCopy)
+        {
+            base.CopyClientState(targetCopy);
+            DashPlayer clone = targetCopy as DashPlayer;
+            clone.DashDelay = DashDelay;
+            clone.DashTimer = DashTimer;    
+        }
+
+        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+        {
+            base.SyncPlayer(toWho, fromWho, newPlayer);
+            ModPacket packet = Mod.GetPacket();
+            packet.Write((byte)MessageType.DashPlayerSync);
+            packet.Write((byte)Player.whoAmI);
+            packet.Write(DashDelay);
+            packet.Write(DashTimer);
+            packet.Send(toWho, fromWho);
+        }
+
+        public override void SendClientChanges(ModPlayer clientPlayer)
+        {
+            base.SendClientChanges(clientPlayer);
+            DashPlayer clone = clientPlayer as DashPlayer;
+            if(DashDelay != clone.DashDelay || DashTimer != clone.DashTimer)
+            {
+                SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            }
+        }
+        public void ReceivePlayerSync(BinaryReader reader)
+        {
+            DashDelay = reader.ReadInt32();
+            DashTimer = reader.ReadInt32();
+        }
+
         // This is the perfect place to apply dash movement, it's after the vanilla movement code, and before the player's position is modified based on velocity.
         // If they double tapped this frame, they'll move fast this frame
         public override void PreUpdateMovement()
@@ -101,7 +136,6 @@ namespace Stellamod.Core.DashSystem
 
                 Player.SetImmuneTimeForAllTypes(DashDuration);
                 DashItem?.BeginDash(Player);
-            
                 DashDelay = DashCooldown;
                 DashTimer = DashDuration;
                 Player.velocity = newVelocity;
