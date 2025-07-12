@@ -100,6 +100,7 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
 
                 }
             }
+  
             if (InPhase2 && Main.rand.NextBool(2) && !Empowered)
             {
                 SwitchState(ActionState.Empower);
@@ -117,6 +118,7 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
             {
                 SwitchState(ActionState.Phase2Transition);
             }
+
         }
     }
 }
