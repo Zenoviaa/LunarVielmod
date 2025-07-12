@@ -58,20 +58,17 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
             if(Timer == 1)
             {
                 FXUtil.FocusCamera(NPC.Center, DeathWaitTime);
+                SoundStyle jiitasSad = AssetRegistry.Sounds.Jiitas.JiitasSadWah;
+                SoundEngine.PlaySound(jiitasSad, NPC.position);
             }
 
             NPC.rotation *= 0.9f;
-            NPC.velocity.Y -= 0.1f;
-            if(NPC.velocity.Length() > 5)
-            {
-                NPC.velocity *= 0.9f;
-            }
+            NPC.velocity.Y -= 0.3f;
             PlayAnimation(AnimationState.Death);
 
             if(Timer >= DeathWaitTime)
             {
-                SoundStyle jiitasSad = AssetRegistry.Sounds.Jiitas.JiitasSadWah;
-                SoundEngine.PlaySound(jiitasSad, NPC.position);
+               
                 NPC.Kill();
             }
         }
