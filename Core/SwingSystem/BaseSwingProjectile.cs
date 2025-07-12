@@ -36,6 +36,7 @@ namespace Stellamod.Core.SwingSystem
         public sealed override void SetDefaults()
         {
             base.SetDefaults();
+            TrailCacheLength = 8;
             Projectile.width = 32;
             Projectile.height = 32;
             Projectile.friendly = true;
@@ -179,12 +180,6 @@ namespace Stellamod.Core.SwingSystem
                 swingTrailCache[t] = Vector2.Transform(swingTrailCache[t], translationMatrix);
             }
 
-            swing.CalculateAfterImagePoints(Interpolant, Projectile.velocity, ref afterImageCache);
-            for (int t = 0; t < afterImageCache.Length; t++)
-            {
-                afterImageCache[t] = Vector2.Transform(afterImageCache[t], translationMatrix);
-            }
-
         }
 
         private void AI_OrientHand()
@@ -210,7 +205,7 @@ namespace Stellamod.Core.SwingSystem
         {
             //Draw the texture, by 
             if(useAfterImage)
-                DrawAfterImage(ref lightColor, afterImageCache);
+                DrawAfterImage(ref lightColor, OldCenterPos);
             DrawSwingTrail(ref lightColor, swingTrailCache);
             DrawSwordSprite(ref lightColor);
             return false;
@@ -224,6 +219,9 @@ namespace Stellamod.Core.SwingSystem
 
         public virtual void DrawAfterImage(ref Color lightColor, Vector2[] afterImageCache)
         {
+            if (afterImageCache == null)
+                return;
+
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Restart(blendState: BlendState.Additive);
             for(int a = 0; a < afterImageCache.Length; a++)
