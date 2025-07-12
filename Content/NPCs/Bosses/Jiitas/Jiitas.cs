@@ -103,17 +103,19 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
 
         private bool HasSaidTitle;
         private Vector2[] OldCenterPos;
-
+        private Vector2 TeleportPos;
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
             writer.Write(Empowered);
+            writer.WriteVector2(TeleportPos);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
             Empowered = reader.ReadBoolean();
+            TeleportPos = reader.ReadVector2();
         }
 
         public override void SetStaticDefaults()
@@ -482,6 +484,12 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
                 OldCenterPos[0] = NPC.Center;
 
             }
+
+            if(TeleportPos != Vector2.Zero)
+            {
+                NPC.Center = TeleportPos;
+                TeleportPos = Vector2.Zero;
+            }
             if (CloneDraw)
             {
                 CloneAlpha = MathHelper.SmoothStep(CloneAlpha, 1.0f, 0.1f);
@@ -500,12 +508,6 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
                     int y = (int)NPC.Center.Y - 256;
                     NPC.NewNPC(NPC.GetSource_FromThis(), x, y, ModContent.NPCType<DancingPuppet>());
                 }
-            }
-            if (!HasSaidTitle)
-            {
-                TitleCardUISystem uiSystem = ModContent.GetInstance<TitleCardUISystem>();
-                uiSystem.OpenUI("Jiitas the Jhastas", 5);
-                HasSaidTitle = true;
             }
  
             if(!NPC.HasValidTarget)
@@ -544,14 +546,11 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
                     break;
             }
         }
+       
 
-        public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
-        {
-            base.OnHitByProjectile(projectile, hit, damageDone);
-            HasBeenHit = true;
-        }
         public override void HitEffect(NPC.HitInfo hit)
         {
+            HasBeenHit = true;
             if (NPC.life <= 0)
             {
                 NPC.life = 1;

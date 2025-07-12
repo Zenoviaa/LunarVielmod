@@ -1,14 +1,10 @@
 ﻿using Stellamod.Core.HealthbarSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Stellamod.Core.Helpers;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core
 {
-    public  abstract class ScarletBoss : ModNPC
+    public abstract class ScarletBoss : ModNPC
     {
 
         public override void SetDefaults()
@@ -22,7 +18,8 @@ namespace Stellamod.Core
         public override void AI()
         {
             base.AI();
-            ModContent.GetInstance<BossHealthbarSystem>().Add(this);
+            if (!MultiplayerHelper.IsHost)
+                ModContent.GetInstance<BossHealthbarSystem>().Add(this);
         }
     }
 }

@@ -146,7 +146,7 @@ namespace Stellamod.Content.NPCs.Bosses.Jiitas
                     {
                         teleportSpot.X = Target.Center.X + 384;
                     }
-                    NPC.Center = teleportSpot;
+                    TeleportPos = teleportSpot;
                     NPC.netUpdate = true;
                 }
            

@@ -1,12 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.GunHolsterSystem.UI;
-using Stellamod.Core.ScorpionMountSystem;
 using Stellamod.Core.UI;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -40,7 +34,7 @@ namespace Stellamod.Core.HealthbarSystem
 
         public override void UpdateUI(GameTime gameTime)
         {
-            if(ActiveBosses.Count > 0)
+            if (ActiveBosses.Count > 0)
             {
                 uiState.ui.TrackingNpc = ActiveBosses[0];
             }
@@ -54,7 +48,8 @@ namespace Stellamod.Core.HealthbarSystem
             if (_userInterface.CurrentState != null && !uiState.ui.IsTracking())
             {
                 CloseUI();
-            } else if (uiState.ui.IsTracking())
+            }
+            else if (uiState.ui.IsTracking())
             {
                 OpenUI();
             }
