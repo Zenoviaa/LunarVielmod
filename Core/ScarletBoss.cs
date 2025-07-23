@@ -1,5 +1,7 @@
 ﻿using Stellamod.Core.HealthbarSystem;
 using Stellamod.Core.Helpers;
+using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core
@@ -18,8 +20,10 @@ namespace Stellamod.Core
         public override void AI()
         {
             base.AI();
-            if (!MultiplayerHelper.IsHost)
-                ModContent.GetInstance<BossHealthbarSystem>().Add(this);
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
+            ModContent.GetInstance<BossHealthbarSystem>().Add(this);
         }
     }
 }
