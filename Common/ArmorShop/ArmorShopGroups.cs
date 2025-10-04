@@ -50,16 +50,16 @@ namespace Stellamod.Common.ArmorShop
             //Heavy metal/gitnzl
             ArmorShopSet GintzeSet = new ArmorShopSet();
             GintzeSet.AddHead(ModContent.ItemType<HeavyMetalHead>());
-            GintzeSet.AddHead(ModContent.ItemType<HeavyMetalBody>());
-            GintzeSet.AddBody(ModContent.ItemType<HeavyMetalLegs>());
+            GintzeSet.AddBody(ModContent.ItemType<HeavyMetalBody>());
+            GintzeSet.AddLegs(ModContent.ItemType<HeavyMetalLegs>());
             GintzeSet.SetMaterial(ModContent.ItemType<GintzlMetal>());
             GintzeSet.Register();
 
             //Jianxin
             ArmorShopSet JianxinSet = new ArmorShopSet();
             JianxinSet.AddHead(ModContent.ItemType<JianxinMask>());
-            JianxinSet.AddHead(ModContent.ItemType<JianxinCoat>());
-            JianxinSet.AddBody(ModContent.ItemType<JianxinPants>());
+            JianxinSet.AddBody(ModContent.ItemType<JianxinCoat>());
+            JianxinSet.AddLegs(ModContent.ItemType<JianxinPants>());
             JianxinSet.SetMaterial(ItemID.LunarBar);
             JianxinSet.Register();
         }
