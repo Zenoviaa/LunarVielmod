@@ -27,13 +27,6 @@ namespace Stellamod.Items.Armors.Astrasilk
             player.GetCritChance(DamageClass.Magic) += 15f;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 14);
-            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 3);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+      
     }
 }

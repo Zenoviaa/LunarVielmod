@@ -54,13 +54,6 @@ namespace Stellamod.Items.Armors.LunarianVoid
             Main.LocalPlayer.GetModPlayer<MyPlayer>().Leather = true;
         }
 
-        public override void AddRecipes() 
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 8);
-            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 20);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+       
     }
 }

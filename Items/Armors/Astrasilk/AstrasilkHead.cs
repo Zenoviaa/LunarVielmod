@@ -154,13 +154,6 @@ namespace Stellamod.Items.Armors.Astrasilk
             player.GetModPlayer<AstrasilkPlayer>().hasSetBonus = true;
         }
 
-        public override void AddRecipes() 
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 8);
-            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 2);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+       
     }
 }

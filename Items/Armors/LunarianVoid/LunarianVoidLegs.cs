@@ -35,13 +35,6 @@ namespace Stellamod.Items.Armors.LunarianVoid
             player.GetDamage(DamageClass.Throwing) *= 1.05f;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 6);
-            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 20);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+      
     }
 }

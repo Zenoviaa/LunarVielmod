@@ -28,13 +28,6 @@ namespace Stellamod.Items.Armors.Astrasilk
             player.moveSpeed += 0.2f;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 6);
-            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 2);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+       
     }
 }

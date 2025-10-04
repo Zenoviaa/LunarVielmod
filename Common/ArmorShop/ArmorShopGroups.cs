@@ -1,6 +1,7 @@
 ﻿using Stellamod.Items.Armors;
 using Stellamod.Items.Armors.AcidArmour;
 using Stellamod.Items.Armors.Artisan;
+using Stellamod.Items.Armors.Astrasilk;
 using Stellamod.Items.Armors.Flower;
 using Stellamod.Items.Armors.ForestCore;
 using Stellamod.Items.Armors.Garbage;
@@ -9,6 +10,7 @@ using Stellamod.Items.Armors.Huntrian;
 using Stellamod.Items.Armors.Illurian;
 using Stellamod.Items.Armors.Jianxin;
 using Stellamod.Items.Armors.Leather;
+using Stellamod.Items.Armors.LunarianVoid;
 using Stellamod.Items.Armors.Scrappy;
 using Stellamod.Items.Armors.ShadeWraith;
 using Stellamod.Items.Armors.Stone;
@@ -84,6 +86,30 @@ namespace Stellamod.Common.ArmorShop
             SW.SetMaterial(ItemID.GraniteBlock);
             SW.Register();
 
+            //Scissorian
+            ArmorShopSet Ss = new ArmorShopSet();
+            Ss.AddHead(ModContent.ItemType<ScrappyHead>());
+            Ss.AddBody(ModContent.ItemType<ScrappyBody>());
+            Ss.AddLegs(ModContent.ItemType<ScrappyLegs>());
+            Ss.SetMaterial(ModContent.ItemType<AuroreanStarI>());
+            Ss.Register();
+
+            //lovestruck
+            ArmorShopSet los = new ArmorShopSet();
+            los.AddHead(ModContent.ItemType<HuntrianHelmet>());
+            los.AddBody(ModContent.ItemType<HuntrianChestplate>());
+            los.AddLegs(ModContent.ItemType<HuntrianBoots>());
+            los.SetMaterial(ModContent.ItemType<AuroreanStarI>());
+            los.Register();
+
+            //Astrasilk
+            ArmorShopSet astr = new ArmorShopSet();
+            astr.AddHead(ModContent.ItemType<AstrasilkHead>());
+            astr.AddBody(ModContent.ItemType<AstrasilkBody>());
+            astr.AddLegs(ModContent.ItemType<AstrasilkLegs>());
+            astr.SetMaterial(ModContent.ItemType<AuroreanStarI>());
+            astr.Register();
+
 
             //Heavy metal/gitnzl
             ArmorShopSet GintzeSet = new ArmorShopSet();
@@ -109,6 +135,15 @@ namespace Stellamod.Common.ArmorShop
             hunt.SetMaterial(ItemID.Stinger);
             hunt.Register();
 
+           
+
+            //LVoid armor
+            ArmorShopSet Luvo = new ArmorShopSet();
+            Luvo.AddHead(ModContent.ItemType<LunarianVoidHead>());
+            Luvo.AddBody(ModContent.ItemType<LunarianVoidBody>());
+            Luvo.AddLegs(ModContent.ItemType<LunarianVoidLegs>());
+            Luvo.SetMaterial(ModContent.ItemType<ConvulgingMater>());
+            Luvo.Register();
 
             //Verl
             ArmorShopSet Verl = new ArmorShopSet();
@@ -129,6 +164,7 @@ namespace Stellamod.Common.ArmorShop
             Vir.SetMaterial(ModContent.ItemType<VirulentPlating>());
             Vir.Register();
 
+
             //kaleido
             ArmorShopSet Paint = new ArmorShopSet();
             Paint.AddHead(ModContent.ItemType<ArtisanMask>());
@@ -136,6 +172,8 @@ namespace Stellamod.Common.ArmorShop
             Paint.AddLegs(ModContent.ItemType<ArtisanThighs>());
             Paint.SetMaterial(ModContent.ItemType<KaleidoscopicInk>());
             Paint.Register();
+
+           
 
             //Scarppy
             ArmorShopSet SCP = new ArmorShopSet();
