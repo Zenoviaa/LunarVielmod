@@ -78,13 +78,6 @@ namespace Stellamod.Items.Armors.ShadeWraith
             player.GetModPlayer<ShadeWraithPlayer>().hasSetBonus = true;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<DarkEssence>(), 8);
-            recipe.AddRecipeGroup(nameof(ItemID.DemoniteBar), 4);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
-        }
+       
     }
 }

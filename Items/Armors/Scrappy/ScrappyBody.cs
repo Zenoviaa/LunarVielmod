@@ -33,18 +33,6 @@ namespace Stellamod.Items.Armors.Scrappy
         }
 
         // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.AddIngredient(ModContent.ItemType<ArmorDrive>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<BrokenTech>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<UnknownCircuitry>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-            recipe.AddIngredient(ItemID.Ectoplasm, 5);
-            recipe.AddRecipeGroup(nameof(ItemID.IronBar), 10);
-
-            recipe.Register();
-        }
+       
     }
 }

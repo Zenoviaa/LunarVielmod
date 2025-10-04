@@ -8,6 +8,9 @@ using Stellamod.Items.Armors.HeavyMetal;
 using Stellamod.Items.Armors.Huntrian;
 using Stellamod.Items.Armors.Illurian;
 using Stellamod.Items.Armors.Jianxin;
+using Stellamod.Items.Armors.Leather;
+using Stellamod.Items.Armors.Scrappy;
+using Stellamod.Items.Armors.ShadeWraith;
 using Stellamod.Items.Armors.Stone;
 using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Armors.Vextin;
@@ -48,6 +51,14 @@ namespace Stellamod.Common.ArmorShop
             st.SetMaterial(ItemID.StoneBlock);
             st.Register();
 
+            //leather
+            ArmorShopSet leth = new ArmorShopSet();
+            leth.AddHead(ModContent.ItemType<LeatherHead>());
+            leth.AddBody(ModContent.ItemType<LeatherBody>());
+            leth.AddLegs(ModContent.ItemType<LeatherLegs>());
+            leth.SetMaterial(ItemID.Leather);
+            leth.Register();
+
             //Winterborn Set
             ArmorShopSet winterbornSet = new ArmorShopSet();
             winterbornSet.AddHead(ModContent.ItemType<WinterbornHead>());
@@ -64,6 +75,15 @@ namespace Stellamod.Common.ArmorShop
             celestiaMoonSet.AddLegs(ModContent.ItemType<CelestiaMoonLegs>());
             celestiaMoonSet.SetMaterial(ModContent.ItemType<GlisteningBar>());
             celestiaMoonSet.Register();
+
+            //Shadewrath
+            ArmorShopSet SW = new ArmorShopSet();
+            SW.AddHead(ModContent.ItemType<ShadeWraithHead>());
+            SW.AddBody(ModContent.ItemType<ShadeWraithBody>());
+            SW.AddLegs(ModContent.ItemType<ShadeWraithLegs>());
+            SW.SetMaterial(ItemID.GraniteBlock);
+            SW.Register();
+
 
             //Heavy metal/gitnzl
             ArmorShopSet GintzeSet = new ArmorShopSet();
@@ -116,6 +136,15 @@ namespace Stellamod.Common.ArmorShop
             Paint.AddLegs(ModContent.ItemType<ArtisanThighs>());
             Paint.SetMaterial(ModContent.ItemType<KaleidoscopicInk>());
             Paint.Register();
+
+            //Scarppy
+            ArmorShopSet SCP = new ArmorShopSet();
+            SCP.AddHead(ModContent.ItemType<ScrappyHead>());
+            SCP.AddBody(ModContent.ItemType<ScrappyBody>());
+            SCP.AddLegs(ModContent.ItemType<ScrappyLegs>());
+            SCP.SetMaterial(ItemID.HallowedBar);
+            SCP.Register();
+
 
             //Illurian1
             ArmorShopSet Ill = new ArmorShopSet();

@@ -29,13 +29,6 @@ namespace Stellamod.Items.Armors.ShadeWraith
             player.moveSpeed += 0.3f;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<DarkEssence>(), 5);
-            recipe.AddRecipeGroup(nameof(ItemID.DemoniteBar), 6);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
-        }
+       
     }
 }
