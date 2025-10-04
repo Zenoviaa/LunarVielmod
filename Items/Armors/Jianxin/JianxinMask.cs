@@ -77,18 +77,7 @@ namespace Stellamod.Items.Armors.Jianxin
             }
 
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<IshtarCandle>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<Superfragment>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 100);
-            recipe.AddIngredient(ItemID.SeashellHairpin, 1);
-            recipe.AddIngredient(ItemID.LunarBar, 5);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
-        }
+    
 
 
 
