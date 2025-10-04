@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.GameContent.UI.Elements;
 
 namespace Stellamod.UI.CauldronSystem
@@ -14,8 +15,8 @@ namespace Stellamod.UI.CauldronSystem
         internal const int width = 480;
         internal const int height = 155;
 
-        internal int RelativeLeft => 32;
-        internal int RelativeTop => 0 + 256;
+        internal int RelativeLeft => Main.screenWidth / 2 - (int)(Width.Pixels / 2);
+        internal int RelativeTop => Main.screenHeight / 2 - (int)(Height.Pixels / 2);
 
         public override void OnInitialize()
         {
