@@ -2,14 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Brooches;
-using Stellamod.Items.MoonlightMagic;
 using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -73,7 +69,7 @@ namespace Stellamod.NPCs.Special
 
             //Draw Trail or Glow or Somethin'
             spriteBatch.Restart(blendState: BlendState.Additive);
-            for(float f = 0f; f < 4f; f++)
+            for (float f = 0f; f < 4f; f++)
             {
                 float progress = f / 4f;
                 float rot = progress * MathHelper.TwoPi;
@@ -90,8 +86,8 @@ namespace Stellamod.NPCs.Special
         {
             base.AI();
             Timer++;
-             NPC.dontTakeDamage = Timer < 30;
-            if(Timer == 1)
+            NPC.dontTakeDamage = Timer < 30;
+            if (Timer == 1)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower3"), NPC.position);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MorrowExp"), NPC.position);
@@ -101,12 +97,12 @@ namespace Stellamod.NPCs.Special
                         (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, ChestColor, Main.rand.NextFloat(1f, 3f)).noGravity = true;
                 }
             }
-            if(Timer % 6 == 0)
+            if (Timer % 6 == 0)
             {
-                int d = Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<GlyphDust>(), 
-                    newColor: ChestColor, 
+                int d = Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<GlyphDust>(),
+                    newColor: ChestColor,
                     Scale: Main.rand.NextFloat(0.2f, 0.75f));
-               Main.dust[d].velocity *= 0.3f;
+                Main.dust[d].velocity *= 0.3f;
             }
 
             NPC.velocity.Y = MathF.Sin(Timer * 0.01f) * 0.5f;
@@ -132,7 +128,7 @@ namespace Stellamod.NPCs.Special
                 particle.VectorScale *= 0.5f;
             }
 
-            if(NPC.life <= 0)
+            if (NPC.life <= 0)
             {
                 FXUtil.ShakeCamera(NPC.position, 1024, 8);
                 for (float f = 0; f < num * 3; f++)
@@ -150,7 +146,7 @@ namespace Stellamod.NPCs.Special
                     particle.VectorScale *= 0.5f;
                 }
 
-                for(float f = 0; f < 32; f++)
+                for (float f = 0; f < 32; f++)
                 {
                     Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowSparkleDust>(),
                         (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, ChestColor, Main.rand.NextFloat(1f, 3f)).noGravity = true;

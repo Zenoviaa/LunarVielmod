@@ -13,7 +13,6 @@ namespace Stellamod.Items.Materials
 		{
 			// Some please convert this to lang files, I'm too lazy to do it
 			// Sorry Itorius, I feel you
-			// DisplayName.AddTranslation(GameCulture.Polish, "Przykładowy blok");
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(1, 60));
 
 			// Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation

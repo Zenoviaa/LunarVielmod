@@ -8825,3 +8825,8 @@ SpringGrassBlock: {
 	DisplayName: Spring Grass Block
 	Tooltip: ""
 }
+
+StoneUnderBlock: {
+	DisplayName: Stone Under Block
+	Tooltip: ""
+}
