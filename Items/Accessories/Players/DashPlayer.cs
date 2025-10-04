@@ -127,13 +127,13 @@ namespace Stellamod.Items.Accessories.Players
 
         public override void ResetEffects()
         {
-            MaxDashCountTimer = 120;
+            MaxDashCountTimer = 100;
             MaxDashCount = 3;
             DashItem = null;
             DashAugmentEquipped = false;
             DoubleTapped = false;
-            DashVelocity = 10f;
-            DashDuration = 30;
+            DashVelocity = 25;
+            DashDuration = 40;
             DashCooldown = 67;
             // ResetEffects is called not long after player.doubleTapCardinalTimer's values have been set
             // When a directional key is pressed and released, vanilla starts a 15 tick (1/4 second) timer during which a second press activates a dash
