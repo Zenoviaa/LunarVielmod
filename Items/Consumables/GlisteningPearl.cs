@@ -1,5 +1,6 @@
 ﻿
 using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -32,6 +33,13 @@ namespace Stellamod.Items.Consumables
             Item.consumable = false;
             Item.autoReuse = false;
             Item.UseSound = SoundID.Item43;
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<GlisteningOre>(), 25);
+            recipe.Register();
         }
 
     }
