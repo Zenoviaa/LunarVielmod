@@ -74,7 +74,7 @@ namespace Stellamod.NPCs.Town
             {
                 cauldronUISystem.OpenUI();
                 cauldronUISystem.CauldronPos = NPC.Center;
-                Main.CloseNPCChatOrSign();
+             
             }
         }
 
@@ -89,7 +89,7 @@ namespace Stellamod.NPCs.Town
             base.SetChatButtons(ref button, ref button2);
             Main.playerInventory = true;
             OpenCauldron();
-   
+            Main.CloseNPCChatOrSign();
         }
         public override List<string> SetNPCNameList()
         {
