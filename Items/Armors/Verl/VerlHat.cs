@@ -42,9 +42,9 @@ namespace Stellamod.Items.Armors.Verl
 
 			player.GetDamage(DamageClass.Magic) += 0.07f;
 			player.GetCritChance(DamageClass.Generic) += 5f;
-			player.statLifeMax2 += 40;
-			player.manaRegen += 20;
-			player.statManaMax2 += 100;
+			player.statLifeMax2 += 5;
+			player.manaRegen += 1;
+			player.statManaMax2 += 40;
 
 		}
 

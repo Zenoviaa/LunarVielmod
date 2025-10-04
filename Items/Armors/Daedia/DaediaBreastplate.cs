@@ -34,7 +34,7 @@ namespace Stellamod.Items.Armors.Daedia
 		public override void UpdateEquip(Player player)
 		{
 			player.maxMinions += 2 ; // Increase how many minions the player can have by one
-			player.statLifeMax2 += 60;
+			player.statLifeMax2 += 30;
 			
 		}
 

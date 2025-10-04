@@ -34,14 +34,13 @@ namespace Stellamod.Items.Armors.Vanity.Gothivia
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 10); // How many coins the item is worth
 			Item.rare = ItemRarityID.Green; // The rarity of the item
-			Item.defense = 11; // The amount of defense the item will give when equipped
+			Item.defense = 4; // The amount of defense the item will give when equipped
 		}
 		public override void UpdateEquip(Player player)
 		{
 			player.statLifeMax2 += 20;
-			player.GetDamage(DamageClass.Generic) *= 1.3f;
+			player.GetDamage(DamageClass.Ranged) *= 1.15f;
 			player.lifeRegen += 1;
-			player.manaCost *= 0.5f;
 
 
 		}

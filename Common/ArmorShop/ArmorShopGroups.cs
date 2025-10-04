@@ -156,7 +156,7 @@ namespace Stellamod.Common.ArmorShop
 
             //---------- Late Prehm
 
-            //LVoid armor
+            //LVoid armor done
             ArmorShopSet Luvo = new ArmorShopSet();
             Luvo.AddHead(ModContent.ItemType<LunarianVoidHead>());
             Luvo.AddBody(ModContent.ItemType<LunarianVoidBody>());
@@ -164,7 +164,7 @@ namespace Stellamod.Common.ArmorShop
             Luvo.SetMaterial(ModContent.ItemType<ConvulgingMater>());
             Luvo.Register();
 
-            //Verl
+            //Verl done
             ArmorShopSet Verl = new ArmorShopSet();
             Verl.AddHead(ModContent.ItemType<VerlHat>());
             Verl.AddHead(ModContent.ItemType<VerlMask>());
@@ -174,7 +174,7 @@ namespace Stellamod.Common.ArmorShop
             Verl.Register();
 
 
-            //Elegant
+            //Elegant done
             ArmorShopSet Ele = new ArmorShopSet();
             Ele.AddHead(ModContent.ItemType<ElagentHead>());
             Ele.AddBody(ModContent.ItemType<ElagentBody>());
@@ -182,7 +182,7 @@ namespace Stellamod.Common.ArmorShop
             Ele.SetMaterial(ItemID.Feather);
             Ele.Register();
 
-            //Daedia
+            //Daedia done
             ArmorShopSet Daedia = new ArmorShopSet();
             Daedia.AddHead(ModContent.ItemType<DaediaMask>());
             Daedia.AddBody(ModContent.ItemType<DaediaBreastplate>());
@@ -192,7 +192,7 @@ namespace Stellamod.Common.ArmorShop
 
             //---------- Hardmode
           
-            //Virulent Armor
+            //Virulent Armor done
             ArmorShopSet Vir = new ArmorShopSet();
             Vir.AddHead(ModContent.ItemType<VirulentHelm>());
             Vir.AddBody(ModContent.ItemType<VirulentArmor>());
@@ -201,7 +201,7 @@ namespace Stellamod.Common.ArmorShop
             Vir.Register();
 
 
-            //kaleido
+            //kaleido done
             ArmorShopSet Paint = new ArmorShopSet();
             Paint.AddHead(ModContent.ItemType<ArtisanMask>());
             Paint.AddBody(ModContent.ItemType<ArtisanBreastplate>());

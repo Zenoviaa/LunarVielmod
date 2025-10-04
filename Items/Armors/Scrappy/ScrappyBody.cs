@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Terraria.ID;
 using Terraria;
 using Terraria.ModLoader;
-using Stellamod.Items.Materials.Tech;
 
 namespace Stellamod.Items.Armors.Scrappy
 {
@@ -28,8 +27,8 @@ namespace Stellamod.Items.Armors.Scrappy
             player.lifeRegen += 3;
             player.endurance += 0.08f;
             player.maxMinions += 2;
-            player.GetDamage(DamageClass.Summon) += 0.12f;
-            player.GetDamage(DamageClass.Magic) += 0.12f;
+            player.GetDamage(DamageClass.Summon) += 0.10f;
+            player.GetDamage(DamageClass.Magic) += 0.10f;
         }
 
         // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

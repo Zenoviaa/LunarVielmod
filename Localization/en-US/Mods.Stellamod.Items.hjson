@@ -633,10 +633,10 @@ VerlBreastplate: {
 	Tooltip:
 		'''
 		Shines with a blooming moon
-		+10% Ranged and Magic Damage!
-		+12 Penetration 
-		+5 Critical Strike Chance!
-		+20 Max Life
+		+4% Ranged and Magic Damage!
+		+3 Penetration 
+		+3 Critical Strike Chance!
+		+5 Max Life
 		'''
 }
 
@@ -647,8 +647,8 @@ VerlHat: {
 		You feel prettier dont you?
 		+7% Magic Damage!
 		+Fast mana regeneration!
-		+100 Max Mana
-		+40 Max Life
+		+40 Max Mana
+		+5 Max Life
 		'''
 }
 
@@ -658,8 +658,7 @@ VerlLeggings: {
 		'''
 		Look at them thighs go!
 		+7% Magic and Ranged Damage!
-		+Increased Movement speed
-		+40 Max Life
+		+Increased Movement speed by 5%
 		'''
 }
 
@@ -1606,8 +1605,9 @@ VerliaHat: {
 	Tooltip:
 		'''
 		Great for style!
-		Increased life by 50!
-		Increased Mana by 100!
+		Increased life by 25!
+		Increased Mana by 50!
+		Magic damage increased by 10%
 		I know you wanna wear it...
 		'''
 	DisplayName: Verlias Hat
@@ -1763,7 +1763,7 @@ DaediaThighs: {
 DaediaMask: {
 	Tooltip:
 		'''
-		+65 Life!
+		+35 Life!
 		A little halo over a new spiritual goddess!
 		'''
 	DisplayName: Daedia Mask
@@ -1772,7 +1772,7 @@ DaediaMask: {
 DaediaBreastplate: {
 	Tooltip:
 		'''
-		+60 Life!
+		+30 Life!
 		+2 Summons
 		'''
 	DisplayName: Daedia Breastplate
@@ -2205,8 +2205,8 @@ AcidHelm: {
 	DisplayName: Virulent Helm
 	Tooltip:
 		'''
-		+5% melee damage
-		+1% melee critical strike chance
+		+12% damage
+		+8% critical strike chance
 		'''
 }
 
@@ -2219,7 +2219,7 @@ AcidMask: {
 	DisplayName: Virulent Mask
 	Tooltip:
 		'''
-		+5% ranged damage
+		+12% ranged damage
 		+8% ranged critical strike chance
 		'''
 }
@@ -3517,10 +3517,9 @@ Twirlers: {
 	Tooltip:
 		'''
 		Wanna get flashy? Parraffin would be dissappointed.
-		Halves mana cost
 		Increased life regeneration
 		+20 Health
-		+30% Damage
+		+15% Ranged Damage
 		'''
 }
 
@@ -5795,11 +5794,11 @@ MagiciansCodeHat: {
 	DisplayName: Magicians Code Hat
 	Tooltip:
 		'''
-		20% Increased Damage for Magicians and Summoners
-		+3 Max Minions
+		20% Increased Damage for Melee and Summoners
+		+2 Max Minions
 		You take 10% less damage!
 		Increased life regeneration.
-		+100 Life.
+		+25 Life.
 		'''
 }
 

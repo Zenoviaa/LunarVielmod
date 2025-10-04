@@ -21,7 +21,7 @@ namespace Stellamod.Items.Armors.AcidArmour
             Item.height = 22;
             Item.value = 80000;
             Item.rare = ItemRarityID.Blue;
-            Item.defense = 5;
+            Item.defense = 15;
         }
 
         public override void UpdateEquip(Player player)

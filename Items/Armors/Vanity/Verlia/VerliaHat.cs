@@ -38,11 +38,11 @@ namespace Stellamod.Items.Armors.Vanity.Verlia
 		}
 		public override void UpdateEquip(Player player)
 		{
-			player.statLifeMax2 += 50;
-			player.GetDamage(DamageClass.Generic) *= 1.20f;
+			player.statManaMax2 += 50;
+			player.GetDamage(DamageClass.Magic) *= 1.10f;
 			player.pickSpeed *= 0.80f;
 			player.lifeRegen += 1;
-			player.statLifeMax2 += 100;
+			player.statLifeMax2 += 25;
 
 
 		}

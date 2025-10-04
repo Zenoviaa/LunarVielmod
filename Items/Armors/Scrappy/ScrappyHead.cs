@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Materials;
 using Stellamod.Helpers;
 
@@ -33,7 +32,7 @@ namespace Stellamod.Items.Armors.Scrappy
 
         public override void UpdateEquip(Player player)
         {
-            player.lifeRegen += 3;
+            player.lifeRegen += 1;
             player.endurance += 0.04f;
             player.maxMinions += 1;
             player.nightVision = true;
@@ -61,7 +60,7 @@ namespace Stellamod.Items.Armors.Scrappy
             if (player.ownedProjectileCounts[ModContent.ProjectileType<ScrappyGunProj>()] == 0)
             {
                 Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
-                    ModContent.ProjectileType<ScrappyGunProj>(), 70, 4, player.whoAmI);
+                    ModContent.ProjectileType<ScrappyGunProj>(), 80, 4, player.whoAmI);
             }
         }
 

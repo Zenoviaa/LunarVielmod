@@ -41,7 +41,7 @@ namespace Stellamod.Items.Armors.Daedia
 
 		public override void UpdateEquip(Player player)
 		{
-			player.statLifeMax2 += 65;
+			player.statLifeMax2 += 35;
 			player.hasAngelHalo = true;
 		}
 

@@ -39,11 +39,11 @@ namespace Stellamod.Items.Armors.Verl
 		public override void UpdateEquip(Player player)
 		{
 
-			player.GetArmorPenetration(DamageClass.Generic) += 12f; ;
-			player.GetDamage(DamageClass.Ranged) += 0.1f;
-			player.GetDamage(DamageClass.Magic) += 0.1f;
-			player.GetCritChance(DamageClass.Generic) += 5f;
-			player.statLifeMax2 += 20;
+			player.GetArmorPenetration(DamageClass.Generic) += 3f; 
+			player.GetDamage(DamageClass.Ranged) += 0.04f;
+			player.GetDamage(DamageClass.Magic) += 0.04f;
+			player.GetCritChance(DamageClass.Generic) += 3f;
+			player.statLifeMax2 += 5;
 
 		}
 

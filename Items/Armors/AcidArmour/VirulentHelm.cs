@@ -63,12 +63,12 @@ standing still gives you an acid aura that stays where you were when you leave T
             Item.height = 30;
             Item.value = 10000;
             Item.rare = ItemRarityID.Blue;
-            Item.defense = 2;
+            Item.defense = 13;
         }
 
         public override void UpdateEquip(Player player)
         {
-            player.GetDamage(DamageClass.Generic) += 0.05F;
+            player.GetDamage(DamageClass.Generic) += 0.12f;
             player.GetCritChance(DamageClass.Generic) += 8;
         }
 
