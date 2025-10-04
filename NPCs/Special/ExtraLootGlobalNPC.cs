@@ -25,18 +25,7 @@ namespace Stellamod.NPCs.Special
                 var source = npc.GetSource_Death();
                 int x = (int)npc.Center.X;
                 int y = (int)npc.Center.Y;
-                if (num < 4)
-                {
-                    NPC.NewNPC(source, x, y, ModContent.NPCType<MythicalChest>());
-                }
-                else if (num < 24)
-                {
-                    NPC.NewNPC(source, x, y, ModContent.NPCType<RareChest>());
-                }
-                else
-                {
-                    NPC.NewNPC(source, x, y, ModContent.NPCType<CommonChest>());
-                }
+                NPC.NewNPC(source, x, y, ModContent.NPCType<CommonChest>());
             }
         }
     }
