@@ -220,7 +220,7 @@ namespace Stellamod.Common.ArmorShop
             SCP.SetMaterial(ItemID.HallowedBar);
             SCP.Register();
 
-            //Govheil
+            //Govheil done
             ArmorShopSet Gov1 = new ArmorShopSet();
             Gov1.AddHead(ModContent.ItemType<GovheilHelmet>());
             Gov1.AddBody(ModContent.ItemType<GovheilChainplate>());
@@ -229,7 +229,7 @@ namespace Stellamod.Common.ArmorShop
             Gov1.Register();
 
 
-            //Govheil 2
+            //Govheil 2 done
             ArmorShopSet Gov2 = new ArmorShopSet();
             Gov2.AddHead(ModContent.ItemType<GovheilMask>());
             Gov2.AddBody(ModContent.ItemType<GovheilBreastplate>());
@@ -311,7 +311,7 @@ namespace Stellamod.Common.ArmorShop
             eldritch.SetMaterial(ItemID.LunarBar);
             eldritch.Register();
 
-            //Ducanbltize
+            //Ducanbltize done 
             ArmorShopSet ducan = new ArmorShopSet();
             ducan.AddHead(ModContent.ItemType<DucanblitzCap>());
             ducan.AddBody(ModContent.ItemType<DucanblitzBreastplate>());

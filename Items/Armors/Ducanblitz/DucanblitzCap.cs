@@ -34,13 +34,13 @@ namespace Stellamod.Items.Armors.Ducanblitz
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 10); // How many coins the item is worth
 			Item.rare = ItemRarityID.LightRed; // The rarity of the item
-			Item.defense = 20; // The amount of defense the item will give when equipped
+			Item.defense = 25; // The amount of defense the item will give when equipped
 		}
 
 		public override void UpdateEquip(Player player)
 		{
 
-			player.GetDamage(DamageClass.Melee) *= 1.12f;
+			player.GetDamage(DamageClass.Melee) *= 1.24f;
 			player.GetCritChance(DamageClass.Generic) += 10f;
 			player.autoReuseGlove = true;
 

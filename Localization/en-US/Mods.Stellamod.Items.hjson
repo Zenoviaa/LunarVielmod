@@ -112,6 +112,8 @@ SetBonus: {
 		Blades of Cinder and Rhamenthal will fight alongside you
 		Every few seconds you'll gain a major increase to Melee Damage
 		An upgraded Govheil set essentially.
+		+24% increased Melee damage
+		+10% melee crit strike chance
 		'''
 	ElagentHead:
 		'''
@@ -5023,7 +5025,7 @@ DucanblitzCap: {
 	Tooltip:
 		'''
 		+10 Critical Strike Chance
-		+12% Melee Damage!
+		+24% Melee Damage!
 		'''
 }
 
@@ -5031,7 +5033,7 @@ DucanblitzThighs: {
 	DisplayName: Ducanblitz Thighs
 	Tooltip:
 		'''
-		A hell of a lot of movement speed!
+		A hell of a lot of movement speed and acceleration!
 		+10 Max Health
 		+15 Armor penetration
 		+2% Melee Damage!

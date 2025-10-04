@@ -36,8 +36,9 @@ namespace Stellamod.Items.Armors.Ducanblitz
 		public override void UpdateEquip(Player player)
 		{
 			player.moveSpeed += 0.4f;
-			player.maxRunSpeed += 0.4f; // Increase the movement speed of the player
-			player.statLifeMax2 += 10;
+			player.maxRunSpeed += 0.4f;
+			player.runAcceleration += 0.3f;// Increase the movement speed of the player
+			player.statLifeMax2 += 20;
 			player.GetArmorPenetration(DamageClass.Melee) += 15f;
 			player.GetDamage(DamageClass.Melee) *= 1.02f;
 		}
