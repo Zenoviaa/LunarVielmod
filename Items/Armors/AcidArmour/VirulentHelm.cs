@@ -89,12 +89,6 @@ standing still gives you an acid aura that stays where you were when you leave T
             player.GetModPlayer<AcidPlayer>().hasSetBonus = true;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<VirulentPlating>(), 5);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+      
     }
 }

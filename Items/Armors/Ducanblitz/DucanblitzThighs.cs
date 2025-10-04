@@ -42,18 +42,7 @@ namespace Stellamod.Items.Armors.Ducanblitz
 			player.GetDamage(DamageClass.Melee) *= 1.02f;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 50);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 3);
-			recipe.AddIngredient(ItemID.ChlorophyteBar, 10);
-			recipe.AddIngredient(ItemID.Ectoplasm, 10);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
+		
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 
 	}

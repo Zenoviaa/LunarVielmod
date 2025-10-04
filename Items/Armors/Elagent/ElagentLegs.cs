@@ -31,14 +31,7 @@ namespace Stellamod.Items.Armors.Elagent
             player.GetDamage(DamageClass.Summon) *= 1.1f;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<StarSilk>(), 9);
-            recipe.AddIngredient(ItemType<PearlescentScrap>(), 5);
-            recipe.AddIngredient(ItemID.Feather, 1);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+       
+       
     }
 }

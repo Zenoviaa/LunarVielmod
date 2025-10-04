@@ -29,13 +29,6 @@ namespace Stellamod.Items.Armors.Terric
             player.moveSpeed += 0.4f;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<TerrorFragments>(), 5);
-            recipe.AddIngredient(ItemType<DreadFoil>(), 8);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+       
     }
 }

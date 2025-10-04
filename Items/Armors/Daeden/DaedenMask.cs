@@ -57,17 +57,6 @@ namespace Stellamod.Items.Armors.Daeden
 
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.AddIngredient(ItemID.ChlorophyteBar, 12);
-			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 30);
-			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
-			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 9);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 10);
-			recipe.Register();
-		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 

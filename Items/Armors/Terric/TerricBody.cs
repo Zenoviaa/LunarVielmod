@@ -42,14 +42,6 @@ namespace Stellamod.Items.Armors.Terric
 
 
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 8);
-			recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 12);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-		}
 
 	}
 }

@@ -29,12 +29,6 @@ namespace Stellamod.Items.Armors.AcidArmour
             player.runAcceleration += 0.12f;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<VirulentPlating>(), 4);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+        
     }
 }

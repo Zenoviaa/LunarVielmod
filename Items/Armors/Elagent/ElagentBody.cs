@@ -34,15 +34,6 @@ namespace Stellamod.Items.Armors.Elagent
             player.maxMinions += 1;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<StarSilk>(), 9);
-            recipe.AddIngredient(ItemType<PearlescentScrap>(), 9);
-            recipe.AddIngredient(ItemID.Feather, 2);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-
-        }
+       
     }
 }

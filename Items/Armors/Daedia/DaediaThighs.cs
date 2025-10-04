@@ -37,20 +37,7 @@ namespace Stellamod.Items.Armors.Daedia
 			player.flowerBoots = true;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 2);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 10);
-			recipe.AddIngredient(ItemID.Silk, 10);
-			recipe.AddIngredient(ItemID.LifeCrystal, 10);
-			recipe.AddIngredient(ItemID.SoulofNight, 10);
-			recipe.AddIngredient(ItemID.PinkThread, 12);
-			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 20);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-		}
+		
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 
 	}

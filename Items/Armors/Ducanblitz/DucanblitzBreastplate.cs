@@ -43,17 +43,6 @@ namespace Stellamod.Items.Armors.Ducanblitz
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 40);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 20);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 3);
-			recipe.AddIngredient(ItemID.ChlorophyteBar, 10);
-			recipe.AddIngredient(ItemID.Ectoplasm, 10);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
+		
 	}
 }

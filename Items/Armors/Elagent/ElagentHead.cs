@@ -85,14 +85,6 @@ namespace Stellamod.Items.Armors.Elagent
             player.GetModPlayer<ElegantPlayer>().hasSetBonus = true;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 8);
-            recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 8);
-            recipe.AddIngredient(ItemID.Feather, 2);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+       
     }
 }

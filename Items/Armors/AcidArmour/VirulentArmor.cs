@@ -29,12 +29,7 @@ namespace Stellamod.Items.Armors.AcidArmour
             player.lifeRegen += 3;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<VirulentPlating>(), 10);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+       
+       
     }
 }
