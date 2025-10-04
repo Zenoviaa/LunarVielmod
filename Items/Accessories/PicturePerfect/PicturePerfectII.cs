@@ -30,20 +30,6 @@ namespace Stellamod.Items.Accessories.PicturePerfect
 
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<KaleidoscopicInk>(), 20);
-			recipe.AddIngredient(ModContent.ItemType<ArtisanBar>(), 2);
-			recipe.AddIngredient(ModContent.ItemType<RadianuiBar>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<PicturePerfectI>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 25);
-			recipe.AddIngredient(ItemID.Ectoplasm, 10);
-			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 350);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
-
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 

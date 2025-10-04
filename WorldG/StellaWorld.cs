@@ -4668,7 +4668,7 @@ namespace Stellamod.WorldG
                                 itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
                                 break;
                             case 3:
-                                itemsToAdd.Add((ModContent.ItemType<FloweredInsource>(), Main.rand.Next(1, 1)));
+                             //   itemsToAdd.Add((ModContent.ItemType<FloweredInsource>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
                                 itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
                                 itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
@@ -4840,7 +4840,7 @@ namespace Stellamod.WorldG
                                 itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
                                 break;
                             case 3:
-                                itemsToAdd.Add((ModContent.ItemType<FloweredInsource>(), Main.rand.Next(1, 1)));
+                            //    itemsToAdd.Add((ModContent.ItemType<FloweredInsource>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
                                 itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
                                 itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));

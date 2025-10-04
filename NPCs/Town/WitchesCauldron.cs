@@ -79,6 +79,18 @@ namespace Stellamod.NPCs.Town
         }
 
 
+        public override bool CanChat()
+        {
+            return true;
+        }
+
+        public override void SetChatButtons(ref string button, ref string button2)
+        {
+            base.SetChatButtons(ref button, ref button2);
+            Main.playerInventory = true;
+            OpenCauldron();
+   
+        }
         public override List<string> SetNPCNameList()
         {
             return new List<string>() {
@@ -149,7 +161,7 @@ namespace Stellamod.NPCs.Town
             float distanceToPlayer = Vector2.Distance(localPlayer.Center, NPC.Center);
             if(distanceToPlayer <= 160)
             {
-                OpenCauldron();
+             //   OpenCauldron();
             }
 
             AI_Animate();
