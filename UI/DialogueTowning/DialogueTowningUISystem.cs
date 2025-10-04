@@ -226,6 +226,18 @@ namespace Stellamod.UI.DialogueTowning
             }
 
         }
+        internal void OnlyCloseWindow()
+        {
+
+            if (_animation != Animation.Close)
+            {
+                ClearSlot();
+                SoundStyle soundStyle = SoundID.MenuClose;
+                SoundEngine.PlaySound(soundStyle);
+                SwitchState(Animation.Close);
+            }
+
+        }
 
         public override void PreSaveAndQuit()
         {

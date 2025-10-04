@@ -90,6 +90,8 @@ namespace Stellamod.Common
         public void OpenShop()
         {
             NPCHelper.OpenShop(NPC);
+            DialogueTowningUISystem uiSystem = ModContent.GetInstance<DialogueTowningUISystem>();
+            uiSystem.OnlyCloseWindow();
         }
 
         public void GiveQuest()

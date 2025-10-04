@@ -62,10 +62,10 @@ namespace Stellamod.UI.ArmorShopSystem
             Vector2 pos = rectangle.TopLeft();
             Vector2 centerPos = pos + rectangle.Size() / 2f;
 
-            ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos + new Vector2(0, 3), _scale, 32, Color.White);
+            ItemSlot.DrawItemIcon(Item, _context, spriteBatch, pos, _scale, 32, Color.White);
             if (Item.stack > 1 && !armorSet.HasPurchased())
                 ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, Item.stack.ToString(),
-                    centerPos + new Vector2(16f, -4) * _scale, Color.White, 0f, Vector2.Zero, new Vector2(_scale), -1f, _scale);
+                    pos + new Vector2(8, 0) * _scale, Color.White, 0f, Vector2.Zero, new Vector2(_scale), -1f, _scale);
             Main.inventoryScale = oldScale;
         }
     }
