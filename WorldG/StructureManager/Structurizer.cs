@@ -53,6 +53,7 @@ namespace Stellamod.WorldG.StructureManager
         {
             StructureMap structures = GenVars.structures;
             Rectangle rectangle = ReadRectangle(path);
+            location.Y -= rectangle.Height;
             rectangle.Location = location;
             structures.AddProtectedStructure(rectangle);
         }
