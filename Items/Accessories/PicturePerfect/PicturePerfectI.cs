@@ -30,18 +30,6 @@ namespace Stellamod.Items.Accessories.PicturePerfect
 
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<KaleidoscopicInk>(), 20);
-			recipe.AddIngredient(ModContent.ItemType<ArtisanBar>(), 2);
-			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 15);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{

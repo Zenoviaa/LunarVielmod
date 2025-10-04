@@ -1,12 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials.Tech;
-using Stellamod.Items.Ores;
-using Stellamod.NPCs.Catacombs.Trap.Cogwork;
-using Stellamod.WorldG;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -15,7 +11,6 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Underground
@@ -101,14 +96,14 @@ namespace Stellamod.NPCs.Underground
                 {
                     Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
                     direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
-
+                    /*
                     int projectile = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 3,
                         ModContent.ProjectileType<SpikeBall>(), 40, 0, Main.myPlayer);
                     Main.projectile[projectile].timeLeft = 300;
                     Projectile ichor = Main.projectile[projectile];
                     ichor.hostile = true;
                     ichor.friendly = false;
-
+                    */
 
                     attackCounter = 200;
                     NPC.netUpdate = true;

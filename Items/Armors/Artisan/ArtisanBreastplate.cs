@@ -46,19 +46,6 @@ namespace Stellamod.Items.Armors.Artisan
 
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<ArtisanBar>(), 7);
-			recipe.AddIngredient(ModContent.ItemType<KaleidoscopicInk>(), 30);
-			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 30);
-			recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 9);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-
-			recipe.Register();
-		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 
