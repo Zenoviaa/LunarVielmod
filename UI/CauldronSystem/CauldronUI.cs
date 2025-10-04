@@ -22,7 +22,7 @@ namespace Stellamod.UI.CauldronSystem
         {
             base.OnInitialize();
             Width.Pixels = 48 * 5f;
-            Height.Pixels = 48 * 16;
+            Height.Pixels = 48 * 4;
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
             BackgroundColor = Color.Transparent;
