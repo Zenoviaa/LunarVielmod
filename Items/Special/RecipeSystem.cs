@@ -1,9 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
+﻿using Stellamod.Items.Materials;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -19,24 +15,13 @@ namespace Stellamod.Items.Special
             for (int i = 0; i < Recipe.numRecipes; i++)
             {
                 Recipe recipe = Main.recipe[i];
-                if (recipe.TryGetResult(ItemID.MythrilAnvil, out Item result))
-                {
-                    recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
-                }
-
-                if (recipe.TryGetResult(ItemID.OrichalcumAnvil, out Item result2))
-                {
-                    recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
-                }
-
                 if (recipe.TryGetResult(ItemID.Zenith, out Item result3))
                 {
-                    recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 25);
                     recipe.AddIngredient(ModContent.ItemType<ManifestedLove>(), 1);
                 }
             }
         }
-      
+
 
     }
 }

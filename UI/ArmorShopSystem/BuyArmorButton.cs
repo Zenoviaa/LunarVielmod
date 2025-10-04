@@ -50,7 +50,9 @@ namespace Stellamod.UI.ArmorShopSystem
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             CalculatedStyle dimensions = GetDimensions();
+            Rectangle rectangle = GetDimensions().ToRectangle();
             Point point = new Point((int)dimensions.X, (int)dimensions.Y);
+            Vector2 pos = rectangle.TopLeft();
             Texture2D textureToDraw;
             if (IsMouseHovering)
             {
@@ -72,11 +74,11 @@ namespace Stellamod.UI.ArmorShopSystem
             if (!uiSystem.CanPurchase(armorSet))
                 drawColor = drawColor.MultiplyRGB(Color.Gray);
 
-            Rectangle rect = new Rectangle(point.X, point.Y, textureToDraw.Width, textureToDraw.Height);
             float rotation = 0;
 
 
-            spriteBatch.Draw(textureToDraw, rect, null, drawColor, rotation, Vector2.Zero, SpriteEffects.None, 0);
+            spriteBatch.Draw(textureToDraw, pos, null, drawColor, 0f, Vector2.Zero, _scale, SpriteEffects.None, 0f);
+
         }
     }
 }

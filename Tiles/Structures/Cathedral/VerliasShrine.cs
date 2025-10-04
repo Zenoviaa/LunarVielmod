@@ -93,6 +93,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 		public bool Checked = false;
 		public override bool RightClick(int i, int j)
 		{
+			/*
 			Player player = Main.LocalPlayer;
 			int key = ModContent.ItemType<MoonflameLantern>();
 			bool isNightime = !Main.dayTime;
@@ -122,7 +123,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 			{
 				Main.NewText(LangText.Misc("VerliasShrine.3"), Color.LightSkyBlue);
 			}
-
+			*/
 			return true;
 		}
 
@@ -134,6 +135,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 		public override bool CanExplode(int i, int j) => false;
 		public override void MouseOver(int i, int j)
 		{
+			/*
 			Player player = Main.LocalPlayer;
 			Tile tile = Main.tile[i, j];
 			int left = i;
@@ -159,7 +161,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 			}
 			else
 			{
-				string defaultName = TileLoader.DefaultContainerName(tile.TileType, tile.TileFrameX, tile.TileFrameY); /* tModPorter Note: new method takes in FrameX and FrameY */; // This gets the ContainerName text for the currently selected language
+				string defaultName = TileLoader.DefaultContainerName(tile.TileType, tile.TileFrameX, tile.TileFrameY);
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : defaultName;
 				if (player.cursorItemIconText == defaultName)
 				{
@@ -174,7 +176,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 			}
 
 			player.noThrow = 2;
-			player.cursorItemIconEnabled = true;
+			player.cursorItemIconEnabled = true;*/
 		}
 
 		public override void MouseOverFar(int i, int j)

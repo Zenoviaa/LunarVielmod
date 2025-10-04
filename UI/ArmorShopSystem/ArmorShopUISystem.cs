@@ -101,6 +101,7 @@ namespace Stellamod.UI.ArmorShopSystem
             //Set State
             TakeSlot();
             _worldPos = Main.LocalPlayer.position;
+            armorShopUIState.ui.Rebuild();
             _userInterface.SetState(armorShopUIState);
         }
 

@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials.Tech;
+
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -114,11 +114,7 @@ namespace Stellamod.NPCs.Underground
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-
-
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BrokenTech>(), 6, 1, 3));
             npcLoot.Add(ItemDropRule.Common(ItemID.IronOre, 1, 1, 5));
-
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)

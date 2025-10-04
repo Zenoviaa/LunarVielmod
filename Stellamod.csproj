@@ -579,11 +579,6 @@
     <None Remove="UI\StructureSelector\UndoSelected.png" />
     <None Remove="UI\ToolsSystem\Paper.png" />
     <None Remove="UI\ToolsSystem\PaperSelected.png" />
-    <None Remove="UI\WeaponUpgradeSystem\NoMaterial.png" />
-    <None Remove="UI\WeaponUpgradeSystem\Pearl.png" />
-    <None Remove="UI\WeaponUpgradeSystem\ReforgeButton.png" />
-    <None Remove="UI\WeaponUpgradeSystem\ReforgeButtonSelected.png" />
-    <None Remove="UI\WeaponUpgradeSystem\UpgradeSlot.png" />
     <None Remove="Visual\Particles\GlowCircleDetailedBoomParticle1.png" />
     <None Remove="Visual\Particles\GlowSpikeParticle.png" />
     <None Remove="Visual\Particles\GlowStretchParticle.png" />

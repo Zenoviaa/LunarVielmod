@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials.Tech;
+
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles.StringnNeedles.Alcadiz;
 using Stellamod.Projectiles.Summons.Minions;

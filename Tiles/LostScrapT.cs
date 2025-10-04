@@ -18,7 +18,7 @@ namespace Stellamod.Tiles
             Main.tileBlendAll[Type] = true;
             HitSound = SoundID.Tink;
             AddMapEntry(new Color(20, 20, 50));
-            RegisterItemDrop(ModContent.ItemType<LostScrap>());
+
             Main.tileMerge[TileID.Dirt][Type] = true;
             Main.tileMerge[TileID.Stone][Type] = true;
             Main.tileMerge[TileID.ClayBlock][Type] = true;

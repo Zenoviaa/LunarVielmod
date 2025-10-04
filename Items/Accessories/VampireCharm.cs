@@ -97,18 +97,5 @@ namespace Stellamod.Items.Accessories
             player.GetCritChance(DamageClass.Generic) += 4f;
             player.GetModPlayer<VampireCritPlayer>().hasVampireCharm = true;
         }
-
-        public override void AddRecipes()
-        {
-            base.AddRecipes();
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.SharkToothNecklace);
-            recipe.AddIngredient(ItemID.SoulofFright, 15);
-            recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 30);
-            recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 12);
-            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
-        }
     }
 }

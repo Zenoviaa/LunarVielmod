@@ -22,7 +22,7 @@ using Stellamod.Items.Armors.Vanity.Nyxia;
 using Stellamod.Items.Armors.Vanity.Solarian;
 using Stellamod.Items.Armors.Witchen;
 using Stellamod.Items.Consumables;
-using Stellamod.Items.Materials.Tech;
+
 using Stellamod.Items.Quest.Zui;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Mage;

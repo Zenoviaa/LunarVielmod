@@ -60,20 +60,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.noMelee = true;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.MythrilAnvil);
 
-			recipe.AddIngredient(ItemID.PiercingStarlight, 1);
-			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 50);
-			recipe.AddIngredient(ModContent.ItemType<AltrideSlicer>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 250);
-
-			recipe.Register();
-		}
 
 		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 		{

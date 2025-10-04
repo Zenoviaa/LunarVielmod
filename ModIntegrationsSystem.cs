@@ -154,7 +154,7 @@ namespace Stellamod
 			// Used for tracking checklist progress
 			Func<bool> downed3 = () => DownedBossSystem.downedDreadBoss;
 
-            int summonItem8 = ModContent.ItemType<DreadMedalion>();
+          //  int summonItem8 = ModContent.ItemType<DreadMedalion>();
 
 
             Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
@@ -187,7 +187,6 @@ namespace Stellamod
 				bossType3,
 				new Dictionary<string, object>()
 				{
-					["spawnItems"]= summonItem8,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -218,8 +217,6 @@ namespace Stellamod
 			};
 
 			// The item used to summon the boss with (if available)
-			int summonItem4 = ModContent.ItemType<Items.Consumables.WanderingEssence>();
-           
 			Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
                 Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/EliteCommander/EliteCommanderPreview").Value;
                 Vector2 centered = new Vector2(
@@ -424,7 +421,7 @@ namespace Stellamod
             };
 
             // The item used to summon the boss with (if available)
-            int summonItem7 = ModContent.ItemType<Items.Consumables.MoonflameLantern>();
+          //  int summonItem7 = ModContent.ItemType<Items.Consumables.MoonflameLantern>();
 
 			// The boss does not have a custom despawn message, so we omit it
 
@@ -440,7 +437,7 @@ namespace Stellamod
 				bossType7,
 				new Dictionary<string, object>()
 				{
-					["spawnItems"] = summonItem7,
+				//	["spawnItems"] = summonItem7,
                     ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
@@ -615,7 +612,7 @@ namespace Stellamod
 			// Used for tracking checklist progress
 			Func<bool> downed = () => DownedBossSystem.downedSTARBoss;
 
-			int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
+			//int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
 
             Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
                 Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/STARBOMBER/STARBOMBERPreview").Value;
@@ -656,7 +653,7 @@ namespace Stellamod
 			// Used for tracking checklist progress
 			Func<bool> downed = () => DownedBossSystem.downedFenixBoss;
 
-			int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
+		//	int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
 
 
             Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
@@ -744,7 +741,7 @@ namespace Stellamod
 
 
 
-			int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
+			//int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
 
 			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
 			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location

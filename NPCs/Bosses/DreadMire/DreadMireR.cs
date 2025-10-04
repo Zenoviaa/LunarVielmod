@@ -1016,7 +1016,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.DreadBossRel>()));
 
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DreadFoil>(), minimumDropped: 40, maximumDropped: 65));
+
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Aneuriliac>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TheRedSkull>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Pericarditis>(), chanceDenominator: 2));

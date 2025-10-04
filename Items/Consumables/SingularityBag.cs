@@ -48,7 +48,6 @@ namespace Stellamod.Items.Consumables
 
         public override void ModifyItemLoot(ItemLoot itemLoot)
         {
-            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<SpacialDistortionFragments>(), minimumDropped: 40, maximumDropped: 65));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<TomeOfTheSingularity>(), chanceDenominator: 2));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<VoidBlaster>(), chanceDenominator: 2));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<VoidStaff>(), chanceDenominator: 2));

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.ArmorShop;
+using Stellamod.Helpers;
 using Stellamod.UI.ArmorReforgeSystem;
 using System;
 using Terraria;
@@ -42,6 +43,7 @@ namespace Stellamod.UI.ArmorShopSystem
             Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();
             bool contains = ContainsPoint(Main.MouseScreen);
+
             if (contains && !PlayerInput.IgnoreMouseInterface)
             {
                 Main.LocalPlayer.mouseInterface = true;
@@ -54,11 +56,11 @@ namespace Stellamod.UI.ArmorShopSystem
             Vector2 pos = rectangle.TopLeft();
 
             Texture2D backingTexture = ModContent.Request<Texture2D>($"{ArmorShopUISystem.RootTexturePath}ArmorShopSlot").Value;
-            int offset = (int)(backingTexture.Size().Y / 2);
-            Vector2 centerPos = pos + rectangle.Size() / 2f;
-            spriteBatch.Draw(backingTexture, rectangle.TopLeft(), null, color2, 0f, default(Vector2), _scale, SpriteEffects.None, 0f);
+            Vector2 centerPos = pos + backingTexture.Size() / 2f;
+            spriteBatch.Draw(backingTexture, pos, null, color2, 0f, Vector2.Zero, _scale, SpriteEffects.None, 0f);
 
 
+            /*
             spriteBatch.End();
             spriteBatch.Begin(default, BlendState.Additive, default, default, default, default, Main.UIScaleMatrix);
             for(int i =0; i <4; i++)
@@ -71,7 +73,7 @@ namespace Stellamod.UI.ArmorShopSystem
            
             spriteBatch.End();
             spriteBatch.Begin(default, default, default, default, default, default, Main.UIScaleMatrix);
-
+            */
             ArmorShopPlayer shopPlayer = Main.LocalPlayer.GetModPlayer<ArmorShopPlayer>();
             if (shopPlayer.HasPurchased(Item.type))
             {

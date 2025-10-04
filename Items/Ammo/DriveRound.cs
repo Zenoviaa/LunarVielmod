@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Stellamod.Projectiles.Ammo;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
-using Stellamod.Projectiles.Ammo;
-using Stellamod.Items.Materials.Tech;
 
 namespace Stellamod.Items.Ammo
 {
@@ -35,13 +29,5 @@ namespace Stellamod.Items.Ammo
         }
 
         // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-        public override void AddRecipes()
-        {
-            CreateRecipe(100)
-                .AddIngredient(ItemID.MusketBall, 100)
-                .AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 2)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
-        }
     }
 }

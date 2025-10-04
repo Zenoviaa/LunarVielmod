@@ -65,48 +65,12 @@ namespace Stellamod.Tiles.Catacombs
             b = .355f * 3;
         }
 
-        public override bool RightClick(int i, int j)
-        {
-            Player player = Main.LocalPlayer;
-            int key = ModContent.ItemType<CursedShard>();
-
-            if (player.HasItem(key))
-            {
-                /*
-                player.RemoveItem(key);
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    int npcID = NPC.NewNPC(new EntitySource_TileBreak(i + 10, j), i * 16, j * 16, ModContent.NPCType<CatacombsBossSpawn>());
-                    Main.npc[npcID].netUpdate2 = true;
-                }
-                else
-                {
-                    if (Main.netMode == NetmodeID.SinglePlayer)
-                        return false;
-
-                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<CatacombsBossSpawn>(), i * 16, (j * 16) - 5);
-                }*/
-                return true;
-            }
-
-
-            return true;
-        }
-
-
 
         public override void NumDust(int i, int j, bool fail, ref int num)
         {
             num = 1;
         }
 
-        public override void MouseOver(int i, int j)
-        {
-            Player player = Main.LocalPlayer;
-            player.noThrow = 2;
-            player.cursorItemIconEnabled = true;
-            player.cursorItemIconID = ModContent.ItemType<CursedShard>();
-        }
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
 

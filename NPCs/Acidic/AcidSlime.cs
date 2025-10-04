@@ -127,7 +127,6 @@ namespace Stellamod.NPCs.Acidic
 
             if (Main.hardMode)
             {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GraftedSoul>(), 2, 1, 5));
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SrTetanus>(), 20, 1, 1));
             }
 

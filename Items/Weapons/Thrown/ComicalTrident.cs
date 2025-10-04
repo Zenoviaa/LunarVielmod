@@ -43,15 +43,5 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.consumable = false;
           
         }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<GintzlMetal>(), 100);
-            recipe.AddIngredient(ItemType<GraftedSoul>(), 100);
-            recipe.AddIngredient(ItemID.ChlorophyteBar, 10);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
-        }
     }
 }

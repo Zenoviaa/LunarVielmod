@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Minions;
 using Stellamod.Items.Materials.Molds;
-using Stellamod.Items.Materials.Tech;
+
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Summons.Minions;
 using Terraria;

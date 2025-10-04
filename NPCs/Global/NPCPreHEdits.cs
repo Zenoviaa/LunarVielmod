@@ -334,19 +334,6 @@ namespace Stellamod.NPCs.Global
 
             }
 
-
-
-
-
-
-
-            if (npc.type == ModContent.NPCType<AcidSlime>() || npc.type == ModContent.NPCType<AcidProbe>() || npc.type == ModContent.NPCType<AcidSpirit>() || npc.type == ModContent.NPCType<ToxicBoulder>())
-            {
-                LeadingConditionRule HardmodeDropRule = new LeadingConditionRule(new HardmodeDropRule());
-                HardmodeDropRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GraftedSoul>(), 1, 0, 5));
-                npcLoot.Add(HardmodeDropRule);
-            }
-
         }
     }
 }

@@ -40,16 +40,5 @@ namespace Stellamod.Items.Weapons.Thrown
 			Item.noMelee = true;
 			Item.noUseGraphic = true;
 		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.BeetleHusk, 5);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 25);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 25);
-			recipe.AddIngredient(ItemID.ThrowingKnife, 3);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
-		}
 	}
 }

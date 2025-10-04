@@ -39,16 +39,7 @@ namespace Stellamod.Items.Armors.Flower
 			player.flowerBoots = true;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<FlowerBatch>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<RadianuiBar>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 100);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
+
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 
 	}

@@ -250,7 +250,6 @@ namespace Stellamod.NPCs.Town
 		public override void AddShops()
 		{
 			var npcShop = new NPCShop(Type, ShopName)
-			.Add<EDR>(Condition.DownedMechBossAny)
 			.Add(new Item(ModContent.ItemType<GiaWig>()) { shopCustomPrice = Item.buyPrice(gold: 10) })
 			.Add(new Item(ModContent.ItemType<GiaSuit>()) { shopCustomPrice = Item.buyPrice(gold: 10) })
 			.Add(new Item(ModContent.ItemType<GiaPants>()) { shopCustomPrice = Item.buyPrice(gold: 10) })

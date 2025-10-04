@@ -1,20 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Stellamod.Projectiles;
-using Stellamod.Items.Materials.Tech;
-using Terraria.GameContent.ItemDropRules;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.ModLoader.Utilities;
-using Stellamod.Assets.Biomes;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Underground
 {
@@ -33,7 +24,7 @@ namespace Stellamod.NPCs.Underground
             NPC.width = 54;
 
             int height = 0;
-            for(int i = 0; i < Steeru_Gear_Count; i++)
+            for (int i = 0; i < Steeru_Gear_Count; i++)
             {
                 float f = (float)i;
                 float scale = MathHelper.Lerp(1f, 1 / 2f, f / Steeru_Gear_Count);
@@ -70,7 +61,7 @@ namespace Stellamod.NPCs.Underground
             {
                 NPC.velocity.X += accel;
             }
-            else if(NPC.velocity.X > -moveSpeed)
+            else if (NPC.velocity.X > -moveSpeed)
             {
                 NPC.velocity.X -= accel;
             }
@@ -95,12 +86,13 @@ namespace Stellamod.NPCs.Underground
             Player target = Main.player[NPC.target];
             if (NPC.HasValidTarget)
             {
-                AI_Movement(target.Center - new Vector2(0, NPC.height/2), 2, 0.02f);
-            } else
+                AI_Movement(target.Center - new Vector2(0, NPC.height / 2), 2, 0.02f);
+            }
+            else
             {
 
             }
-           
+
             Visuals();
         }
 
@@ -123,24 +115,24 @@ namespace Stellamod.NPCs.Underground
                 spriteEffects = SpriteEffects.FlipHorizontally;
 
             float offsetY = size.Y;
-            float hoverRange = offsetY/2;
-            float hoverOffset = offsetY/Steeru_Gear_Count;
+            float hoverRange = offsetY / 2;
+            float hoverOffset = offsetY / Steeru_Gear_Count;
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             for (int k = 0; k < NPC.oldPos.Length; k++)
             {
                 Vector2 trailDrawPos = NPC.oldPos[k] - Main.screenPosition + size / 2 + new Vector2(0f, NPC.gfxOffY);
                 Color color = NPC.GetAlpha(Color.Lerp(new Color(191, 165, 160), new Color(191, 59, 51), 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
-                for(int i = Steeru_Gear_Count - 1; i > -1; i--)
+                for (int i = Steeru_Gear_Count - 1; i > -1; i--)
                 {
                     float yHovering = VectorHelper.Osc(0, hoverRange, speed: 3, offset: i * hoverOffset);
-                    float xHovering = VectorHelper.Osc(-hoverRange/2, hoverRange/2, speed: 3, offset: i * hoverOffset);
+                    float xHovering = VectorHelper.Osc(-hoverRange / 2, hoverRange / 2, speed: 3, offset: i * hoverOffset);
 
                     float f = (float)i;
-                    float scale = MathHelper.Lerp(1, 1f/2f, f / Steeru_Gear_Count);
+                    float scale = MathHelper.Lerp(1, 1f / 2f, f / Steeru_Gear_Count);
                     Vector2 offset = new Vector2(xHovering, i * offsetY + yHovering);
                     offset.Y += offsetY;
-                    spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, trailDrawPos + offset*scale * 0.5f, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, NPC.frame.Size() / 2, scale, spriteEffects, 0f);
+                    spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, trailDrawPos + offset * scale * 0.5f, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, NPC.frame.Size() / 2, scale, spriteEffects, 0f);
                 }
             }
 
@@ -153,24 +145,24 @@ namespace Stellamod.NPCs.Underground
                 float scale = MathHelper.Lerp(1, 1f / 2f, f / Steeru_Gear_Count);
 
                 float yHovering = VectorHelper.Osc(0, hoverRange, speed: 3, offset: i * hoverOffset);
-                float xHovering = VectorHelper.Osc(-hoverRange/2, hoverRange/2, speed: 3, offset: i * hoverOffset);
+                float xHovering = VectorHelper.Osc(-hoverRange / 2, hoverRange / 2, speed: 3, offset: i * hoverOffset);
 
 
                 Vector2 offset = new Vector2(xHovering, i * offsetY + yHovering);
                 offset.Y += offsetY;
-                spriteBatch.Draw(texture, drawPos - screenPos + offset*scale*0.5f, NPC.frame, Color.White, NPC.rotation, drawOrigin, scale, spriteEffects, 0);
+                spriteBatch.Draw(texture, drawPos - screenPos + offset * scale * 0.5f, NPC.frame, Color.White, NPC.rotation, drawOrigin, scale, spriteEffects, 0);
             }
 
             //Draw Eye
             texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Underground/SteeruEye").Value;
             drawOrigin = texture.Size() / 2;
             float yHoveringEye = VectorHelper.Osc(0, hoverRange, speed: 3);
-            float xHoveringEye = VectorHelper.Osc(-hoverRange/2, hoverRange/2, speed: 3);
+            float xHoveringEye = VectorHelper.Osc(-hoverRange / 2, hoverRange / 2, speed: 3);
             Vector2 hoveringOffset = new Vector2(xHoveringEye, yHoveringEye);
-            
-            spriteBatch.Draw(texture, NPC.position - screenPos + hoveringOffset + new Vector2(29, 0), null, 
+
+            spriteBatch.Draw(texture, NPC.position - screenPos + hoveringOffset + new Vector2(29, 0), null,
                 Color.White, NPC.rotation, drawOrigin, 1, spriteEffects, 0);
-            
+
             return false;
         }
 
@@ -181,7 +173,6 @@ namespace Stellamod.NPCs.Underground
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BrokenTech>(), 2, 1, 3));
             npcLoot.Add(ItemDropRule.Common(ItemID.IronOre, 1, 1, 5));
         }
     }

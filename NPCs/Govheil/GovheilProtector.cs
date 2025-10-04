@@ -161,8 +161,6 @@ namespace Stellamod.NPCs.Govheil
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 3, 1, 5));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LostScrap>(), 1, 1, 7));
-            
 
 
         }

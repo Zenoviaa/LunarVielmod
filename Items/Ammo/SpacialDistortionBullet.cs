@@ -29,14 +29,5 @@ namespace Stellamod.Items.Ammo
             Item.ammo = AmmoID.Bullet; // The ammo class this ammo belongs to.
         }
 
-        // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-        public override void AddRecipes()
-        {
-            CreateRecipe(100)
-                .AddIngredient(ItemID.MusketBall, 100)
-                .AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 2)
-                .AddTile(TileID.Anvils)
-                .Register();
-        }
     }
 }

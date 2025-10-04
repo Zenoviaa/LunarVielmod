@@ -28,7 +28,7 @@ namespace Stellamod.Items.Harvesting
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<FrileOre>(), 1);
+		//	recipe.AddIngredient(ModContent.ItemType<FrileOre>(), 1);
 			recipe.AddRecipeGroup(nameof(ItemID.DemoniteBar), 1);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();

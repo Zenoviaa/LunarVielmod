@@ -14,10 +14,6 @@ namespace Stellamod.NPCs.Global
     {
         public override void ModifyItemLoot(Item item, ItemLoot itemLoot)
         {
-            if(item.type == ItemID.WallOfFleshBossBag)
-            {
-                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<CatacombsKey>()));
-            }
 
             if(item.type == ItemID.MoonLordBossBag)
             {
@@ -40,7 +36,6 @@ namespace Stellamod.NPCs.Global
                 LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
                 notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LilStinger>(), chanceDenominator: 4));
                 itemLoot.Add(notExpertRule);
-                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<TempleKeyMold>()));
             }
         }
     }

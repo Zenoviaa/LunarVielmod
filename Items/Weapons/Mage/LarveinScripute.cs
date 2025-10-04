@@ -42,15 +42,6 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.mana = 5;
 
 		}
-		public override void AddRecipes()
-		{
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.BorealWood, 6);
-			recipe.AddIngredient(ItemType<EldritchSoul>(), 15);
-            recipe.AddIngredient(ItemType<StarSilk>(), 4);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
 
 		public override Vector2? HoldoutOffset()
 		{

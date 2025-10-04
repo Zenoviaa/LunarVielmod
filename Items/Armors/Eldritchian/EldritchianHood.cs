@@ -120,17 +120,5 @@ namespace Stellamod.Items.Armors.Eldritchian
 		{
 			player.armorEffectDrawShadow = true;
 		}
-
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 15);
-			recipe.AddIngredient(ItemID.SoulofSight, 10);
-			recipe.AddIngredient(ItemID.ChlorophyteBar, 8);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 10);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
 	}
 }

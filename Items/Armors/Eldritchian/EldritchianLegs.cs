@@ -36,17 +36,5 @@ namespace Stellamod.Items.Armors.Eldritchian
 			player.GetDamage(DamageClass.Throwing) += 0.23f;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 15);
-			recipe.AddIngredient(ItemID.SoulofFlight, 10);
-			recipe.AddIngredient(ItemID.ChlorophyteBar, 8);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 10);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-
 	}
 }

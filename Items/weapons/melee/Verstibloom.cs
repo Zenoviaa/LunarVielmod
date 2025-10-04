@@ -61,14 +61,6 @@ namespace Stellamod.Items.Weapons.Melee
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<FrostSwing>(), 1);
-			recipe.AddIngredient(ItemID.JungleSpores, 12);
-			recipe.Register();
-		}
+
 	}
 }

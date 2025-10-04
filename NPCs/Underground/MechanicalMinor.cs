@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials.Tech;
+
 using Stellamod.Items.Quest.Merena;
 using Stellamod.Projectiles;
 using Terraria;
@@ -150,7 +150,6 @@ namespace Stellamod.NPCs.Underground
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {    
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BrokenTech>(), 2, 1, 2));
             npcLoot.Add(ItemDropRule.Common(ItemID.IronOre, 1, 1, 5));
             npcLoot.Add(ItemDropRule.Common(ItemID.SpelunkerGlowstick, minimumDropped: 1, maximumDropped: 3));
             npcLoot.Add(ItemDropRule.Common(ItemID.Coal, chanceDenominator: 20, minimumDropped: 1, maximumDropped: 3));

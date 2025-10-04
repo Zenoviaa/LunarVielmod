@@ -31,7 +31,7 @@ namespace Stellamod.Tiles
 			MineResist = 1f;
 			MinPick = 20;
 			// name.SetDefault("Arnchar");
-			RegisterItemDrop(ModContent.ItemType<ArncharChunk>());
+		//	RegisterItemDrop(ModContent.ItemType<ArncharChunk>());
         }
 
 

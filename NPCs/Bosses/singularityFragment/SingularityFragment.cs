@@ -130,11 +130,9 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.SOMBossRel>()));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VoidLantern>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<SingularityBag>()));
 
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SpacialDistortionFragments>(), minimumDropped: 40, maximumDropped: 65));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TomeOfTheSingularity>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<VoidBlaster>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<VoidStaff>(), chanceDenominator: 2));

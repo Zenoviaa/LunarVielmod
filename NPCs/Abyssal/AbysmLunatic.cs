@@ -87,13 +87,8 @@ namespace Stellamod.NPCs.Abyssal
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             base.ModifyNPCLoot(npcLoot);
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<EldritchSoul>(), minimumDropped: 0, maximumDropped: 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ConvulgingMater>(), minimumDropped: 1, maximumDropped: 4));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LunarBand>(), 30));
-
-            LeadingConditionRule hardmodeDropRule = new LeadingConditionRule(new HardmodeDropRule());
-            hardmodeDropRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<EldritchSoul>(), minimumDropped: 1, maximumDropped: 5));
-            npcLoot.Add(hardmodeDropRule);
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)

@@ -77,16 +77,6 @@ namespace Stellamod.Items.Armors.Flower
             player.GetModPlayer<FlowerPlayer>().hasQuiver = true;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<FlowerBatch>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<RadianuiBar>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 100);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
 
 
 		

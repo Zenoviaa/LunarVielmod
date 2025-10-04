@@ -746,7 +746,6 @@ namespace Stellamod.NPCs.Bosses.Jack
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<JackoBag>()));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WanderingFlame>(), minimumDropped: 20, maximumDropped: 50));
                 notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<JackoShot>(), chanceDenominator: 2));
                 notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StaffOFlame>(), chanceDenominator: 2));  
                 notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ScarecrowSaber>(), chanceDenominator: 2));

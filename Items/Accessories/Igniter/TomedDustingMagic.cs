@@ -40,20 +40,6 @@ namespace Stellamod.Items.Accessories.Igniter
 			Item.accessory = true;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<TomedDustingFlames>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 50);
-			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 5);
-            recipe.AddIngredient(ModContent.ItemType<Superfragment>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 15);
-			recipe.AddIngredient(ItemID.SoulofFright, 20);
-			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
-			recipe.Register();
-		}
-
-
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.GetModPlayer<MyPlayer>().MagicTomeDusts = true;

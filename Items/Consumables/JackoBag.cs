@@ -53,7 +53,7 @@ namespace Stellamod.Items.Consumables
         {
             itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<BurningScarf>()));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<PumkinPopper>(), chanceDenominator: 2, minimumDropped: 150, maximumDropped: 450));
-            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<WanderingFlame>(), minimumDropped: 20, maximumDropped: 50));
+          
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<WillOWisp>(), chanceDenominator: 2));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<JackoShot>(), chanceDenominator: 2));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<StaffOFlame>(), chanceDenominator: 2));

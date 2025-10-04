@@ -9,7 +9,7 @@ using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Vanity.Gia;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials.Molds;
-using Stellamod.Items.Materials.Tech;
+
 using Stellamod.Items.Ores;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Quest.BORDOC;

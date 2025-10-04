@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials.Tech;
+
 using Stellamod.Projectiles.Gun;
 using Stellamod.Projectiles.Swords;
 using Terraria;
@@ -78,15 +78,6 @@ namespace Stellamod.Items.Weapons.Ranged
             }
 
             return base.CanUseItem(player);
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
-            recipe.AddIngredient(ItemID.SoulofFright, 20);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
         }
 
         public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
