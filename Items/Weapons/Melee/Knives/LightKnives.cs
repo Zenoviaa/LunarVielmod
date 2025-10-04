@@ -34,7 +34,7 @@ namespace Stellamod.Items.Weapons.Melee.Knives
             Item.value = Item.buyPrice(silver: 1);
             Item.rare = ItemRarityID.Blue;
             Item.shootSpeed = 10;
-            Item.shoot = ModContent.ProjectileType<LightKnivesSwordSlash>();
+            Item.shoot = ModContent.ProjectileType<LightKnivesStaminaSlash>();
             Item.autoReuse = true;
 
             //Combo variables

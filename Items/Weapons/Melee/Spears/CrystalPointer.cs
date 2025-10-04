@@ -34,7 +34,7 @@ namespace Stellamod.Items.Weapons.Melee.Spears
             Item.value = Item.buyPrice(silver: 1);
             Item.rare = ItemRarityID.Blue;
             Item.shootSpeed = 10;
-            Item.shoot = ModContent.ProjectileType<CrystalPointerStab>();
+            Item.shoot = ModContent.ProjectileType<CrystalPointerStaminaStab>();
             Item.autoReuse = true;
 
             comboWaitTime = 70;

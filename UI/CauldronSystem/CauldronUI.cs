@@ -1,12 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Terraria;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader;
 
 namespace Stellamod.UI.CauldronSystem
 {
     internal class CauldronUI : UIPanel
     {
         private UIPanel _panel;
-
+        private UIImage _background;
         public CauldronMoldSlot moldSlot;
         public CauldronMaterialSlot materialSlot;
         public CauldronPot cauldronPot;
@@ -14,14 +18,20 @@ namespace Stellamod.UI.CauldronSystem
         internal const int width = 480;
         internal const int height = 155;
 
-        internal int RelativeLeft => 32;
-        internal int RelativeTop => 0 + 256;
+        internal int RelativeLeft => Main.screenWidth / 2 - (int)(Width.Pixels / 2);
+        internal int RelativeTop => Main.screenHeight / 2 - (int)(Height.Pixels / 2) - 32;
+
+        public CauldronUI()
+        {
+            Asset<Texture2D> backgroundTexture = ModContent.Request<Texture2D>("Stellamod/UI/CauldronSystem/CauldronBackground");
+            _background = new UIImage(backgroundTexture);
+        }
 
         public override void OnInitialize()
         {
             base.OnInitialize();
-            Width.Pixels = 48 * 5f;
-            Height.Pixels = 48 * 16;
+            Width.Pixels = 248;
+            Height.Pixels = 208;
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
             BackgroundColor = Color.Transparent;
@@ -33,6 +43,7 @@ namespace Stellamod.UI.CauldronSystem
             _panel.BackgroundColor = Color.Transparent;
             _panel.BorderColor = Color.Transparent;
             Append(_panel);
+            _panel.Append(_background);
 
             moldSlot = new CauldronMoldSlot();
             _panel.Append(moldSlot);
@@ -52,6 +63,8 @@ namespace Stellamod.UI.CauldronSystem
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
 
+            moldSlot.Left.Pixels = 22;
+            moldSlot.Top.Pixels = 16;
             materialSlot.Left.Pixels = moldSlot.Left.Pixels + 156;
             materialSlot.Top.Pixels = moldSlot.Top.Pixels;
 

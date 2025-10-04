@@ -44,19 +44,6 @@ namespace Stellamod.NPCs.Town
             spawner.structureToSpawnIn = "Struct/Overworld/WitchTown";
             spawner.spawnTileOffset = new Point(150, -19);
         }
-        public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
-        {
-            base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
-            //Set buttons
-            buttons.Add(new Tuple<string, Action>("Brew", OpenCauldron));
-
-            portrait = "QuestionMarkPortrait";
-            timeBetweenTexts = 0.015f;
-            talkingSound = SoundID.Item1;
-
-            //This pulls from the new Dialogue localization
-            text = "CauldronOpenDialogue";
-        }
 
         public override void SetDefaults()
         {
@@ -74,47 +61,29 @@ namespace Stellamod.NPCs.Town
             NPC.noGravity = true;
             NPC.friendly = true; // NPC Will not attack player
             SpawnAtPoint = true;
-            HasTownDialogue = true;
+            HasTownDialogue = false;
         }
+
 
         private void OpenCauldron()
         {
             CauldronUISystem cauldronUISystem = ModContent.GetInstance<CauldronUISystem>();
-            cauldronUISystem.OpenUI();
-            cauldronUISystem.CauldronPos = NPC.Center;
-            Main.CloseNPCChatOrSign();
-            Main.playerInventory = true;
+            if (cauldronUISystem.IsOpen())
+                return;
+            if (Main.playerInventory)
+            {
+                cauldronUISystem.OpenUI();
+                cauldronUISystem.CauldronPos = NPC.Center;
+                Main.CloseNPCChatOrSign();
+            }
         }
+
 
         public override List<string> SetNPCNameList()
         {
             return new List<string>() {
                 "Witch's Cauldron"
             };
-        }
-
-        public override bool CanChat()
-        {
-            return true;
-        }
-        
-        public override string GetChat()
-        {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-            // These are things that the NPC has a chance of telling you when you talk to it.
-            chat.Add(LangText.Chat(this, "Basic1"));
-            return chat; // chat is implicitly cast to a string.
-        }
-
-        public override void SetChatButtons(ref string button, ref string button2)
-        { // What the chat buttons are when you open up the chat UI
-
-            button = LangText.Chat(this, "Button");
-        }
-
-        public override void OnChatButtonClicked(bool firstButton, ref string shop)
-        {
-
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -174,6 +143,13 @@ namespace Stellamod.NPCs.Town
             if(cauldron.JustCrafted != null)
             {
                 BrewSomethingAnimation(cauldron.JustCrafted);
+            }
+
+            Player localPlayer = Main.LocalPlayer;
+            float distanceToPlayer = Vector2.Distance(localPlayer.Center, NPC.Center);
+            if(distanceToPlayer <= 160)
+            {
+                OpenCauldron();
             }
 
             AI_Animate();

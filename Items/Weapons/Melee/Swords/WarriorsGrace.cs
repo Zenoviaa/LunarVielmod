@@ -40,7 +40,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             Item.value = Item.buyPrice(silver: 1);
             Item.rare = ItemRarityID.Blue;
             Item.shootSpeed = 10;
-            Item.shoot = ModContent.ProjectileType<WarriorsSwordSlash>();
+            Item.shoot = ModContent.ProjectileType<WarriorsSwordStaminaSlash>();
             Item.autoReuse = true;
 
             //Combo variables

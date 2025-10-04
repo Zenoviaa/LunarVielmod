@@ -45,7 +45,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             Item.value = Item.buyPrice(silver: 1);
             Item.rare = ItemRarityID.Blue;
             Item.shootSpeed = 10;
-            Item.shoot = ModContent.ProjectileType<AuroranSlash>();
+            Item.shoot = ModContent.ProjectileType<AuroranStaminaSlash>();
             Item.autoReuse = true;
 
             //This only affects the tooltip :P
@@ -63,7 +63,6 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             //set staminacombo
             maxStaminaCombo = 2;
             //Set stamina projectile
-            staminaProjectileShoot = ModContent.ProjectileType<AuroranStaminaSlash>();
         }
         public override void AddRecipes()
         {

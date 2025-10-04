@@ -67,6 +67,11 @@ namespace Stellamod.UI.CauldronSystem
             }
         }
 
+        public bool IsOpen()
+        {
+            return _cauldronInterface.CurrentState != null;
+        }
+
         internal void OpenUI()
         {
             //Set State
