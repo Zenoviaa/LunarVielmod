@@ -46,7 +46,7 @@ namespace Stellamod.Common.ArmorShop
             Armors = new List<ArmorShopSet>();
 
 
-            //Ivythorn Set
+            //Ivythorn Set done
             ArmorShopSet ivythornSet = new ArmorShopSet();
             ivythornSet.AddHead(ModContent.ItemType<ForestCoreHead>());
             ivythornSet.AddBody(ModContent.ItemType<ForestCoreBody>());
@@ -54,7 +54,7 @@ namespace Stellamod.Common.ArmorShop
             ivythornSet.SetMaterial(ModContent.ItemType<Ivythorn>());
             ivythornSet.Register();
 
-            //Stonia
+            //Stonia done
             ArmorShopSet st = new ArmorShopSet();
             st.AddHead(ModContent.ItemType<StoniaHat>());
             st.AddBody(ModContent.ItemType<StoniaChestplate>());

@@ -203,14 +203,9 @@
     <None Remove="Items\Armors\Miracle\MiracleHead_Head.png" />
     <None Remove="Items\Armors\Terric\TericGramNPC2.png" />
     <None Remove="Items\Consumables\DreadmireBag.png" />
-    <None Remove="Items\Consumables\EDR.png" />
     <None Remove="Items\Consumables\JackoBag.png" />
-    <None Remove="Items\Consumables\NestBag.png" />
     <None Remove="Items\Consumables\SingularityBag.png" />
     <None Remove="Items\Consumables\SunClaw.png" />
-    <None Remove="Items\Consumables\SunStalkerBag.png" />
-    <None Remove="Items\Consumables\VoidLantern.png" />
-    <None Remove="Items\Consumables\WanderingEssence.png" />
     <None Remove="Items\Materials\AcidicalDirtBlock.png" />
     <None Remove="Items\Materials\RareLunarStone.png" />
     <None Remove="Items\Placeable\Alcadzia\AlciteI.png" />

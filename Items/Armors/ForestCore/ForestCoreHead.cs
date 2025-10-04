@@ -47,13 +47,6 @@ namespace Stellamod.Items.Armors.ForestCore
             Main.LocalPlayer.GetModPlayer<MyPlayer>().FCArmor = true;
         }
 
-        public override void AddRecipes() 
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Wood, 2);
-            recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 3);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
-        }
+       
     }
 }

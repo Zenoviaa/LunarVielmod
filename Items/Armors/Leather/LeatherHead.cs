@@ -40,14 +40,6 @@ namespace Stellamod.Items.Armors.Leather
             Main.LocalPlayer.GetModPlayer<MyPlayer>().Leather = true;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Leather, 1);
-            recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 4);
-            recipe.AddRecipeGroup(nameof(ItemID.IronBar), 3);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+      
     }
 }
