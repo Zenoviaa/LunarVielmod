@@ -212,7 +212,7 @@ namespace Stellamod.Common.ArmorShop
             //---------- Post mech
 
 
-            //Scarppy
+            //Scarppy done
             ArmorShopSet SCP = new ArmorShopSet();
             SCP.AddHead(ModContent.ItemType<ScrappyHead>());
             SCP.AddBody(ModContent.ItemType<ScrappyBody>());

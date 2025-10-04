@@ -35,22 +35,11 @@ namespace Stellamod.Items.Armors.Govheil
 		public override void UpdateEquip(Player player)
 		{
 			player.moveSpeed *= 1.07f; // Increase the movement speed of the player
-			player.statLifeMax2 += 10;
-			player.GetArmorPenetration(DamageClass.Generic) += 15f;
+			player.GetArmorPenetration(DamageClass.Generic) += 10f;
 			player.GetDamage(DamageClass.Generic) *= 1.05f;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 12);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 3);
-			recipe.AddIngredient(ItemID.SoulofLight, 10);
-			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
-			recipe.Register();
-		}
+		
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 
 	}
