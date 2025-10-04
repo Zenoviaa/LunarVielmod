@@ -33,19 +33,10 @@ namespace Stellamod.Items.Armors.Lovestruck
 		public override void UpdateEquip(Player player)
 		{
 			player.maxMinions++; // Increase how many minions the player can have by one
-			player.statLifeMax2 += 60;
+			player.statLifeMax2 += 20;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 12);
-			recipe.AddIngredient(ItemID.Silk, 5);
-			recipe.AddIngredient(ItemID.LifeCrystal, 3);
-			recipe.AddIngredient(ItemID.FallenStar, 3);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-		}
+	
 	}
 }

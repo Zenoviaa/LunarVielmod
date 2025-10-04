@@ -35,23 +35,12 @@ namespace Stellamod.Items.Armors
 
 		public override void UpdateEquip(Player player)
 		{
-			player.statManaMax2 += 60; // Increase how many mana points the player can have by 20
+			player.statManaMax2 += 20; // Increase how many mana points the player can have by 20
 			player.maxMinions++; // Increase how many minions the player can have by one
-			player.statLifeMax2 += 20;
 			
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 30);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 12);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 1);
-			recipe.AddIngredient(ItemID.Wood, 5);
-			recipe.AddIngredient(ItemID.FallenStar, 10);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-		}
+		
 	}
 }

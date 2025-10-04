@@ -53,24 +53,13 @@ namespace Stellamod.Items.Armors
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = LangText.SetBonus(this);//"Increases life regen by a great amount!" + "\nMove faster and gain the effects of magic cuffs!"); // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"Move faster and gain the effects of magic cuffs!"); // This is the setbonus tooltip
 			player.moveSpeed += 0.3f;
 			player.maxRunSpeed += 0.3f;
 			player.magicCuffs = true;
-			player.lifeRegen += 1;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 30);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 1);
-			recipe.AddIngredient(ItemID.Wood, 5);
-			recipe.AddIngredient(ItemID.FallenStar, 10);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-		}
+
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 	}
 }

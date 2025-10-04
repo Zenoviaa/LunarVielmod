@@ -36,13 +36,13 @@ namespace Stellamod.Items.Armors.Scissorian
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
 			Item.rare = ItemRarityID.Pink; // The rarity of the item
-			Item.defense = 11; // The amount of defense the item will give when equipped
+			Item.defense = 4; // The amount of defense the item will give when equipped
 		}
 
 		public override void UpdateEquip(Player player)
 		{
 			// Increase how many mana points the player can have by 20
-			player.GetDamage(DamageClass.Throwing) *= 1.2f; // Increase how many minions the player can have by one
+			player.GetDamage(DamageClass.Throwing) *= 1.12f; // Increase how many minions the player can have by one
 		}
 
 		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
@@ -54,11 +54,10 @@ namespace Stellamod.Items.Armors.Scissorian
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = LangText.SetBonus(this);//"Increases life regen by a great amount!" + "\nMove faster and have less aggro and less enemies spawn around you!"); // This is the setbonus tooltip
+			player.setBonus = LangText.SetBonus(this);//"Move faster and have less aggro and less enemies spawn around you!"); // This is the setbonus tooltip
 			player.moveSpeed += 0.5f;
 			player.maxRunSpeed += 0.5f;
 			player.ZoneWaterCandle = true;
-			player.lifeRegen += 1;
 		}
 
 		

@@ -461,8 +461,7 @@ CelestiaMoonBreastplate: {
 	Tooltip:
 		'''
 		Magical essence of an empress!
-		+60 max mana and +1 minion slot
-		+20 Health
+		+20 max mana and +1 minion slot
 		'''
 }
 
@@ -472,7 +471,7 @@ CelestiaMoonHelmet: {
 		'''
 		Magical essence of an Emperor
 		+2% increased ranged and melee damage
-		+35 Health
+		+15 Health
 		'''
 }
 
@@ -482,7 +481,6 @@ CelestiaMoonLegs: {
 		'''
 		Magical essence of an empress!
 		3% increased movement speed
-		+20 Health
 		'''
 }
 
@@ -532,7 +530,7 @@ LovestruckBreastplate: {
 	Tooltip:
 		'''
 		Feel the love!
-		+60 Health and +1 minion slot
+		+20 Health and +1 minion slot
 		'''
 }
 
@@ -542,7 +540,7 @@ LovestruckLegs: {
 		'''
 		Sexy!
 		10% increased movement speed
-		+60 Health
+		+20 Health
 		'''
 }
 
@@ -4585,7 +4583,7 @@ ScissorianChestplate: {
 		'''
 		+20 Throwing Critical Strike Chance!
 		+15 Health
-		+10% Throwing Damage
+		+2% Throwing Damage
 		'''
 }
 
@@ -4595,13 +4593,13 @@ ScissorianGreaves: {
 		'''
 		Increased movement speed
 		+20 Health
-		+15% Throwing Damage
+		+5% Throwing Damage
 		'''
 }
 
 ScissorianMask: {
 	DisplayName: Scissorian Mask
-	Tooltip: +20% Throwing Damage
+	Tooltip: +12% Throwing Damage
 }
 
 DarkButcher: {

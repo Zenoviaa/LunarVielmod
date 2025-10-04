@@ -41,7 +41,7 @@ namespace Stellamod.Items.Armors
 		}
 		public override void UpdateEquip(Player player)
 		{
-			player.statLifeMax2 += 35;
+			player.statLifeMax2 += 15;
 			player.GetDamage(DamageClass.Melee) += 0.02f;
 			player.GetDamage(DamageClass.Ranged) += 0.02f;
 			
@@ -55,24 +55,13 @@ namespace Stellamod.Items.Armors
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = LangText.SetBonus(this);//"Increases life regen by a great amount!" + "\nMove faster and enemies  that hit you take damage back!"); // This is the setbonus tooltip
-			player.moveSpeed += 0.3f;
-			player.maxRunSpeed += 0.3f;
-			player.lifeRegen += 1;
+			player.setBonus = LangText.SetBonus(this);//"Move faster and enemies  that hit you take damage back!"); // This is the setbonus tooltip
+			player.moveSpeed += 0.2f;
+			player.maxRunSpeed += 0.2f;
 			player.GetModPlayer<MyPlayer>().ThornedBook = true;
 		
 		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 30);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 1);
-			recipe.AddIngredient(ItemID.Wood, 5);
-			recipe.AddIngredient(ItemID.FallenStar, 5);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-		}
+		
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 	}
 }

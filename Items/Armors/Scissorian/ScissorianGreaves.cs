@@ -29,14 +29,14 @@ namespace Stellamod.Items.Armors.Scissorian
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
 			Item.rare = ItemRarityID.Pink; // The rarity of the item
-			Item.defense = 10; // The amount of defense the item will give when equipped
+			Item.defense = 4; // The amount of defense the item will give when equipped
 		}
 
 		public override void UpdateEquip(Player player)
 		{
 			player.moveSpeed += 0.07f; // Increase the movement speed of the player
 			player.statLifeMax2 += 20;
-			player.GetCritChance(DamageClass.Throwing) += 15f;
+			player.GetCritChance(DamageClass.Throwing) += 5f;
 		}
 
 		

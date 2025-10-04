@@ -17,7 +17,9 @@ using Stellamod.Items.Armors.Huntrian;
 using Stellamod.Items.Armors.Illurian;
 using Stellamod.Items.Armors.Jianxin;
 using Stellamod.Items.Armors.Leather;
+using Stellamod.Items.Armors.Lovestruck;
 using Stellamod.Items.Armors.LunarianVoid;
+using Stellamod.Items.Armors.Scissorian;
 using Stellamod.Items.Armors.Scrappy;
 using Stellamod.Items.Armors.ShadeWraith;
 using Stellamod.Items.Armors.Stone;
@@ -62,7 +64,7 @@ namespace Stellamod.Common.ArmorShop
             st.SetMaterial(ItemID.StoneBlock);
             st.Register();
 
-            //leather
+            //leather done
             ArmorShopSet leth = new ArmorShopSet();
             leth.AddHead(ModContent.ItemType<LeatherHead>());
             leth.AddBody(ModContent.ItemType<LeatherBody>());
@@ -70,7 +72,7 @@ namespace Stellamod.Common.ArmorShop
             leth.SetMaterial(ItemID.Leather);
             leth.Register();
 
-            //Winterborn Set
+            //Winterborn Set done
             ArmorShopSet winterbornSet = new ArmorShopSet();
             winterbornSet.AddHead(ModContent.ItemType<WinterbornHead>());
             winterbornSet.AddBody(ModContent.ItemType<WinterbornBody>());
@@ -78,7 +80,7 @@ namespace Stellamod.Common.ArmorShop
             winterbornSet.SetMaterial(ModContent.ItemType<WinterbornShard>());
             winterbornSet.Register();
 
-            //Celestial Moon Set
+            //Celestial Moon Set done
             ArmorShopSet celestiaMoonSet = new ArmorShopSet();
             celestiaMoonSet.AddHead(ModContent.ItemType<CelestiaMoonHelmet>());
             celestiaMoonSet.AddHead(ModContent.ItemType<CelestiaMoonMask>());
@@ -87,7 +89,7 @@ namespace Stellamod.Common.ArmorShop
             celestiaMoonSet.SetMaterial(ModContent.ItemType<GlisteningBar>());
             celestiaMoonSet.Register();
 
-            //Shadewrath
+            //Shadewrath done
             ArmorShopSet SW = new ArmorShopSet();
             SW.AddHead(ModContent.ItemType<ShadeWraithHead>());
             SW.AddBody(ModContent.ItemType<ShadeWraithBody>());
@@ -95,19 +97,19 @@ namespace Stellamod.Common.ArmorShop
             SW.SetMaterial(ItemID.GraniteBlock);
             SW.Register();
 
-            //Scissorian
+            //Scissorian done
             ArmorShopSet Ss = new ArmorShopSet();
-            Ss.AddHead(ModContent.ItemType<ScrappyHead>());
+            Ss.AddHead(ModContent.ItemType<ScissorianMask>());
             Ss.AddBody(ModContent.ItemType<ScrappyBody>());
-            Ss.AddLegs(ModContent.ItemType<ScrappyLegs>());
+            Ss.AddLegs(ModContent.ItemType<ScissorianGreaves>());
             Ss.SetMaterial(ModContent.ItemType<AuroreanStarI>());
             Ss.Register();
 
-            //lovestruck
+            //lovestruck done
             ArmorShopSet los = new ArmorShopSet();
-            los.AddHead(ModContent.ItemType<HuntrianHelmet>());
-            los.AddBody(ModContent.ItemType<HuntrianChestplate>());
-            los.AddLegs(ModContent.ItemType<HuntrianBoots>());
+            los.AddHead(ModContent.ItemType<LovestruckMask>());
+            los.AddBody(ModContent.ItemType<LovestruckBreastplate>());
+            los.AddLegs(ModContent.ItemType<LovestruckLegs>());
             los.SetMaterial(ModContent.ItemType<AuroreanStarI>());
             los.Register();
 

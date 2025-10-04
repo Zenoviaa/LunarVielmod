@@ -35,21 +35,10 @@ namespace Stellamod.Items.Armors
 		public override void UpdateEquip(Player player)
 		{
 			player.moveSpeed += 0.03f; // Increase the movement speed of the player
-			player.statLifeMax2 += 20;
 		
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 20);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 8);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 1);
-			recipe.AddIngredient(ItemID.Wood, 5);
-			recipe.AddIngredient(ItemID.FallenStar, 5);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-		}
+	
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 
 	}

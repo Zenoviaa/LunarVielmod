@@ -53,23 +53,14 @@ namespace Stellamod.Items.Armors.Lovestruck
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = LangText.SetBonus(this);//"Increases life regen by an enormous amount!" + "\nEnemies become lovestruck when you are hit, or when you hit them!" + "\nThis weakens, burns and confuses, slows and does exponential damage"); // This is the setbonus tooltip
-			player.lifeRegen += 4;
+			player.setBonus = LangText.SetBonus(this);//"Increases life regen by a good amount!" + "\nEnemies become lovestruck when you are hit, or when you hit them!" + "\nThis weakens, burns and confuses, slows and does exponential damage"); // This is the setbonus tooltip
+			player.lifeRegen += 1;
 			player.GetModPlayer<MyPlayer>().Lovestruck = true;
 			player.loveStruck = true;
 			player.GetModPlayer<MyPlayer>().LovestruckBCooldown--;
 
 		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 8);
-			recipe.AddIngredient(ItemID.Silk, 5);
-			recipe.AddIngredient(ItemID.LifeCrystal, 2);
-			recipe.AddIngredient(ItemID.FallenStar, 1);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-		}
+		
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 	}
 }
