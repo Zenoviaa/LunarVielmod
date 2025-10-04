@@ -2,7 +2,7 @@ PLEASE PLAY MASTERMODE or EXPERTMODE FOR THIS MOD!
 MULTIPLAYER COMPATIBLE!!!
 NOT PLAYABLE IN SMALL WORLDS!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The Lunar Veil Legacy is an old expansive mod for the world of Aimacra. As a crossover from a personal game Diari, 
+The Lunar Veil Legacy is an old expansive mod for the world of Crystal Moon. As this takes place before Crystal moon, our game, 
 Sirestias has sought to expand her skills in the world of terraria and she wants to eliminate all false gods and goddesses on the planet who cause harm to others.
 
 The ones that pose a threat to existence on the planet of terraria would be gods who own singularities. They cause inreversible damage and often corrupts the worlds and the minds within them.
@@ -73,18 +73,27 @@ As some issues arose in 1.6 due to complications of a member stealing a bunch of
 Stone golem has also gotten a much needed rework as well as a few new items and rebalancing! New visuals to many projectiles and bosses!
 If there are issues please let us know :)
 --------------------------
-Ereshkigal's Love: 2.0 The Final Content Update for Lunar veil! Moving onto Medallion of Urdveil!
-Yeah the mod changed, for once too many changes to list sorry :(
+Calm before the Storm: 1.8 has been released!
+This update is a semi-decent sized update to how Lunar veil is played. This will also be the final version of Lunar veil before it splits off into its full legacy version, as our new 
+overhaul of this mod, Sacred Veil, will replace this mod in the near future when we're ready, until then, we have heard a lot of your complaints and we are changing a decent amount!
 
-I'll give a small list though or major content changes and additions:
+Some stuff you will see in this update are stuff you can expect of the new mod, but we wanted to clean up the legacy version with lots of reworks, balancing and fixes before we say 
+goodbye to this version of Lunar veil, and I hope you all can respect that! 
 
-All weapons are now switchable for class swapping (modded)
-A New boss! Ereshkigal!
-All the structures have been redone as well as world generation to match the mod and make it feel more comfortable
-Deletion of a bunch of random and bloated systems and made one centralized systems for pretty much all of our items in the mod, the cauldron!
-Lore restructuring and remaking of the world entirely
-Remakes of a lot of weapons and making some more versatile
-Boss reworks for pretty much every boss in the mod
+A lot of items removed
+50+ weapons reworked
+Added Armor reforging, Cauldron crafting (our new main method of crafting), and our quest book! 
+Remade world generation for most of our biomes!
+New palette shaders and vanilla spice!
+
+New Scorpions, Reworked Card and dusts
+
+
+New town Npcs such as Manman (Armor merchant), Old Man whiley (Found at the doc)
+Added New Commander Ginztia boss! (Old commander gintzia is now Elite commander)
+New Gustbeak boss!
+Reworked Daedus
+Reworked Jack
 -----------------------------------
 
 
