@@ -47,7 +47,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             Item.value = Item.buyPrice(silver: 1);
             Item.rare = ItemRarityID.Blue;
             Item.shootSpeed = 10;
-            Item.shoot = ModContent.ProjectileType<AssassinsSlashSlash>();
+            Item.shoot = ModContent.ProjectileType<AssassinsSlashStaminaSlash>();
             Item.autoReuse = true;
 
             //This is only going to affect the tooltip :P

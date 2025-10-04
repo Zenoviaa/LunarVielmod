@@ -39,7 +39,7 @@ namespace Stellamod.Items.Weapons.Melee.Longswords
             Item.value = Item.buyPrice(silver: 1);
             Item.rare = ItemRarityID.Blue;
             Item.shootSpeed = 10;
-            Item.shoot = ModContent.ProjectileType<PearlingSwordSlash>();
+            Item.shoot = ModContent.ProjectileType<PearlingSwordStaminaSlash>();
             Item.autoReuse = true;
 
             //Combo variables

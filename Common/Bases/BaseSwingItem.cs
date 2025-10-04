@@ -26,17 +26,19 @@ namespace Stellamod.Common.Bases
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
-            TooltipLine line = new TooltipLine(Mod, "WeaponType", LangText.Common("WeaponType"+meleeWeaponType.ToString()));
-            line.OverrideColor = ColorFunctions.GreatswordWeaponType;
-            tooltips.Add(line);
+            /*
+     TooltipLine line = new TooltipLine(Mod, "WeaponType", LangText.Common("WeaponType"+meleeWeaponType.ToString()));
+     line.OverrideColor = ColorFunctions.GreatswordWeaponType;
+     tooltips.Add(line);
 
-            line = new TooltipLine(Mod, "BasicSlash", LangText.Common("BasicSlash", LangText.Item(this, "BasicSlash")));
-            line.OverrideColor = new Color(124, 187, 80);
-            tooltips.Add(line);
 
-            line = new TooltipLine(Mod, "StaminaSlash", LangText.Common("StaminaSlash", LangText.Item(this, "StaminaSlash")));
-            line.OverrideColor = new Color(187, 80, 124);
-            tooltips.Add(line);
+     line = new TooltipLine(Mod, "BasicSlash", LangText.Common("BasicSlash", LangText.Item(this, "BasicSlash")));
+     line.OverrideColor = new Color(124, 187, 80);
+     tooltips.Add(line);
+
+     line = new TooltipLine(Mod, "StaminaSlash", LangText.Common("StaminaSlash", LangText.Item(this, "StaminaSlash")));
+     line.OverrideColor = new Color(187, 80, 124);
+     tooltips.Add(line);*/
         }
         public virtual void ShootSwing(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {

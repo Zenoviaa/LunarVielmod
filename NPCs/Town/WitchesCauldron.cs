@@ -70,11 +70,12 @@ namespace Stellamod.NPCs.Town
             CauldronUISystem cauldronUISystem = ModContent.GetInstance<CauldronUISystem>();
             if (cauldronUISystem.IsOpen())
                 return;
-
-            cauldronUISystem.OpenUI();
-            cauldronUISystem.CauldronPos = NPC.Center;
-            Main.CloseNPCChatOrSign();
-            Main.playerInventory = true;
+            if (Main.playerInventory)
+            {
+                cauldronUISystem.OpenUI();
+                cauldronUISystem.CauldronPos = NPC.Center;
+                Main.CloseNPCChatOrSign();
+            }
         }
 
 

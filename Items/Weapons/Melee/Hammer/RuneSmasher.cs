@@ -42,7 +42,7 @@ namespace Stellamod.Items.Weapons.Melee.Hammer
             Item.value = Item.buyPrice(silver: 1);
             Item.rare = ItemRarityID.Blue;
             Item.shootSpeed = 10;
-            Item.shoot = ModContent.ProjectileType<RuneHammerSlash>();
+            Item.shoot = ModContent.ProjectileType<RuneHammerStaminaSlash>();
             Item.autoReuse = true;
 
             comboWaitTime = 121;
