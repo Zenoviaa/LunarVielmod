@@ -78,6 +78,8 @@ namespace Stellamod.UI.DialogueTowning
                         dialogueTowningUIState.dialogueTownButtonsUI.ClearButtons();
                         List<Tuple<string, Action>> buttons = new List<Tuple<string, Action>>();
                         veilTownNPC.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+                        if (veilTownNPC.OnlyInteract)
+                            return;
                         if (veilTownNPC.HasQuestAvailable())
                         {
                             buttons.Add(new Tuple<string, Action>("Quest", veilTownNPC.GiveQuest));

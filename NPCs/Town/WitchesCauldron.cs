@@ -61,7 +61,8 @@ namespace Stellamod.NPCs.Town
             NPC.noGravity = true;
             NPC.friendly = true; // NPC Will not attack player
             SpawnAtPoint = true;
-            HasTownDialogue = false;
+            HasTownDialogue = true;
+            OnlyInteract = true;
         }
 
 
@@ -84,13 +85,15 @@ namespace Stellamod.NPCs.Town
             return true;
         }
 
-        public override void SetChatButtons(ref string button, ref string button2)
+        public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
         {
-            base.SetChatButtons(ref button, ref button2);
+            base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
             Main.playerInventory = true;
             OpenCauldron();
             Main.CloseNPCChatOrSign();
         }
+
+
         public override List<string> SetNPCNameList()
         {
             return new List<string>() {
