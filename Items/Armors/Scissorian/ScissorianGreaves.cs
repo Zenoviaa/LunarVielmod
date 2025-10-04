@@ -39,16 +39,7 @@ namespace Stellamod.Items.Armors.Scissorian
 			player.GetCritChance(DamageClass.Throwing) += 15f;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 30);
-			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
-			recipe.AddIngredient(ModContent.ItemType<STARCORE>(), 1);
-			recipe.Register();
-		}
+		
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 
 	}
