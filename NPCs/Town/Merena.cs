@@ -223,7 +223,7 @@ namespace Stellamod.NPCs.Town
 
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ExploreMorrowedVillage>(), 1);
-			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(20));
+			//Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(20));
 			
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			MerenaQuestSystem.CompleteQuest(MerenaQuestSystem.QuestType.KillVerlia);
@@ -249,7 +249,7 @@ namespace Stellamod.NPCs.Town
 
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Give100DustBags>(), 1);
-			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(20));
+			//Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(20));
             //Setting all previous quests to be complete, so it's backwards compatible with the old version.
             MerenaQuestSystem.CompleteQuest(MerenaQuestSystem.QuestType.ExploreMorrowedVillage);
         }
@@ -274,7 +274,7 @@ namespace Stellamod.NPCs.Town
 
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeMagicPaper>(), 1);
-			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(20));
+			//Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(20));
             //Setting all previous quests to be complete, so it's backwards compatible with the old version.
             MerenaQuestSystem.CompleteQuest(MerenaQuestSystem.QuestType.Give100DustBags);
         }
@@ -299,7 +299,7 @@ namespace Stellamod.NPCs.Town
 
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeUltimateScroll>(), 1);
-			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(20));
+			//Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(20));
             //Setting all previous quests to be complete, so it's backwards compatible with the old version.
             MerenaQuestSystem.CompleteQuest(MerenaQuestSystem.QuestType.MagicPaper);
         }
@@ -322,7 +322,7 @@ namespace Stellamod.NPCs.Town
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 			Main.npcChatText = LangText.Chat(this, "Special6");
 			var entitySource = NPC.GetSource_GiftOrReward();
-			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(100));
+			//Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(100));
             //Setting all previous quests to be complete, so it's backwards compatible with the old version.
             MerenaQuestSystem.CompleteQuest(MerenaQuestSystem.QuestType.TomeOfInfiniteSorcery);
         }

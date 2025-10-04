@@ -92,7 +92,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 		public override bool CanExplode(int i, int j) => false;
 		public bool Checked = false;
 
-
+		/*
 		public override bool RightClick(int i, int j)
 		{
 
@@ -160,7 +160,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 		}
 
-
+		*/
 	/*	public override bool RightClick(int i, int j)
 		{
 			Player player = Main.LocalPlayer;
@@ -224,6 +224,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 		{
 			
 		}
+		/*
 		public override void MouseOver(int i, int j)
 		{
 			Player player = Main.LocalPlayer;
@@ -251,14 +252,14 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			}
 			else
 			{
-				string defaultName = TileLoader.DefaultContainerName(tile.TileType, tile.TileFrameX, tile.TileFrameY); /* tModPorter Note: new method takes in FrameX and FrameY */; // This gets the ContainerName text for the currently selected language
+				string defaultName = TileLoader.DefaultContainerName(tile.TileType, tile.TileFrameX, tile.TileFrameY); 
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : defaultName;
 				if (player.cursorItemIconText == defaultName)
 				{
 					player.cursorItemIconID = ModContent.ItemType<ShrineI>();
 					if (Main.tile[left, top].TileFrameX / 36 == 1)
 					{
-						player.cursorItemIconID = ModContent.ItemType<MoonflameLantern>();
+					//	player.cursorItemIconID = ModContent.ItemType<MoonflameLantern>();
 					}
 
 					player.cursorItemIconText = "";
@@ -268,7 +269,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			player.noThrow = 2;
 			player.cursorItemIconEnabled = true;
 		}
-
+*/
 		public override void MouseOverFar(int i, int j)
 		{
 			MouseOver(i, j);

@@ -48,7 +48,6 @@ namespace Stellamod.Items.Consumables
         public override void ModifyItemLoot(ItemLoot itemLoot)
         {
             itemLoot.Add(ItemDropRule.Common(ItemID.BloodMoonStarter));
-            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<DreadFoil>(), minimumDropped: 40, maximumDropped: 65));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Aneuriliac>(), chanceDenominator: 2));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<TheRedSkull>(), chanceDenominator: 2));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Pericarditis>(), chanceDenominator: 2));

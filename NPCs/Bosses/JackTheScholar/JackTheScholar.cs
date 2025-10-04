@@ -984,7 +984,6 @@ namespace Stellamod.NPCs.Bosses.JackTheScholar
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<JackoBag>()));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WanderingFlame>(), minimumDropped: 20, maximumDropped: 50));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<PumkinPopper>(), chanceDenominator: 2, minimumDropped: 150, maximumDropped: 300));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Summon.WillOWisp>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<JackoShot>(), chanceDenominator: 2));

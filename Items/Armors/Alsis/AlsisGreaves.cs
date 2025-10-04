@@ -40,20 +40,5 @@ namespace Stellamod.Items.Armors.Alsis
 			player.statLifeMax2 -= 10;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 30);
-			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
-			recipe.AddIngredient(ModContent.ItemType<AlcadizMetal>(), 9);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
-			recipe.Register();
-		}
-
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-
 	}
 }

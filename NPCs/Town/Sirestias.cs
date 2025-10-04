@@ -13,7 +13,7 @@ using Stellamod.Items.Armors.Vanity.Gia;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Tech;
+
 using Stellamod.Items.Ores;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Quest.BORDOC;
@@ -440,135 +440,7 @@ namespace Stellamod.NPCs.Town
 			if (firstButton)
 			{
 
-				Player player = Main.LocalPlayer;
-				WeightedRandom<string> chat = new WeightedRandom<string>();
 
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2"));
-
-
-
-				if (Main.LocalPlayer.HasItem(ModContent.ItemType<CompletionIdol>()) && DownedBossSystem.downedDreadBoss)
-				{
-
-					Main.npcChatText = LangText.Chat(this, "Special1");
-
-					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletionIdol>());
-					var entitySource = NPC.GetSource_GiftOrReward();
-
-					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-
-					CombatText.NewText(NPC.getRect(), Color.White, LangText.Chat(this, "Special2"), true, false);
-					Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1024f, 16f);
-					for (int i = 0; i < 4; i++)
-					{
-						Dust.NewDust(NPC.Center, NPC.width, NPC.height, DustID.SilverCoin);
-					}
-					for (int i = 0; i < 14; i++)
-					{
-
-						Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Silver, 1f).noGravity = true;
-					}
-
-					for (int i = 0; i < 14; i++)
-					{
-						Dust.NewDustPerfect(NPC.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Silver, 1f).noGravity = true;
-					}
-
-					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
-
-					if (DownedBossSystem.downedSupernovaFragmentBoss)
-					{
-
-						switch (Main.rand.Next(3))
-						{
-							case 0:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SineSire>(), 1);
-
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
-
-
-								break;
-
-							case 1:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RavestBlast>(), 1);
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
-								break;
-
-							case 2:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 30);
-								break;
-
-						}
-					}
-					else if (DownedBossSystem.downedIrradiaBoss)
-					{
-
-						switch (Main.rand.Next(3))
-						{
-							case 0:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<StickyCards>(), 1);
-								break;
-
-							case 1:
-					//			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mordred>(), 1);
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
-								break;
-
-							case 2:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasMask>(), 1);
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
-								break;
-
-						}
-					}
-					else if (DownedBossSystem.downedDreadBoss)
-					{
-
-						switch (Main.rand.Next(3))
-						{
-							case 0:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Maelstrom>(), 1);
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
-
-								break;
-
-							case 1:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ReflectionSeeker>(), 1);
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
-
-								break;
-
-							case 2:
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
-								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 15);
-								Main.npcChatText = LangText.Chat(this, "Special3");
-								break;
-
-						}
-
-
-					}
-
-
-
-
-
-
-
-
-
-
-
-
-					else
-					{
-
-
-						Main.npcChatText = LangText.Chat(this, "Special4");
-					}
-				}
 			}
 		}
 

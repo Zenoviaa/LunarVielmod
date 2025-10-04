@@ -41,18 +41,5 @@ namespace Stellamod.Items.Armors.Govheil
 			player.GetDamage(DamageClass.Magic) *= 1.06f;
 			player.GetDamage(DamageClass.Summon) *= 1.06f;
 		}
-
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 3);
-			recipe.AddIngredient(ItemID.SoulofLight, 10);
-			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
-			recipe.Register();
-		}
 	}
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials.Tech;
+
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;
@@ -59,25 +59,6 @@ namespace Stellamod.Items.Weapons.Ranged
             Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
             Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>());
-            recipe.AddIngredient(ModContent.ItemType<BrokenTech>(), 8);
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 2);
-            recipe.AddIngredient(ItemID.Musket, 1);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-
-            Recipe recipe2 = CreateRecipe();
-            recipe2.AddIngredient(ModContent.ItemType<BasicGunParts>());
-            recipe2.AddIngredient(ModContent.ItemType<BrokenTech>(), 8);
-            recipe2.AddIngredient(ModContent.ItemType<WeaponDrive>(), 2);
-            recipe2.AddIngredient(ItemID.TheUndertaker, 1);
-            recipe2.AddTile(TileID.Anvils);
-            recipe2.Register();
         }
     }
 }

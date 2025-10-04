@@ -51,22 +51,7 @@ namespace Stellamod.Items.Accessories.Brooches
 			Item.accessory = true;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<HikersBackpack>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 50);
-			recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 30);
-			recipe.AddIngredient(ItemID.Wood, 50);
-			recipe.AddIngredient(ItemID.HellstoneBar, 10);
-			recipe.AddIngredient(ItemID.JungleSpores, 10);
-			recipe.AddIngredient(ItemID.Vine, 20);
-			recipe.AddIngredient(ItemID.IceChest, 3);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 25);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 5);
-			recipe.AddTile(ModContent.TileType<BroochesTable>());
-			recipe.Register();
-		}
+
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{

@@ -51,9 +51,8 @@ namespace Stellamod.UI.ArmorShopSystem
             Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();
             bool contains = ContainsPoint(Main.MouseScreen);
-            if (contains && !PlayerInput.IgnoreMouseInterface)
+            if (contains)
             {
-                Main.LocalPlayer.mouseInterface = true;
                 Main.HoverItem = Item;
                 Main.hoverItemName = Item.Name;
             }
@@ -66,7 +65,7 @@ namespace Stellamod.UI.ArmorShopSystem
             ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos + new Vector2(0, 3), _scale, 32, Color.White);
             if (Item.stack > 1 && !armorSet.HasPurchased())
                 ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, Item.stack.ToString(),
-                    centerPos + new Vector2(10f, 26f) * _scale, Color.White, 0f, Vector2.Zero, new Vector2(_scale), -1f, _scale);
+                    centerPos + new Vector2(16f, -4) * _scale, Color.White, 0f, Vector2.Zero, new Vector2(_scale), -1f, _scale);
             Main.inventoryScale = oldScale;
         }
     }

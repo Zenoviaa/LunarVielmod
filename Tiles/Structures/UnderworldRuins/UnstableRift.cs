@@ -155,7 +155,7 @@ namespace Stellamod.Tiles.Structures.UnderworldRuins
 					player.cursorItemIconID = ModContent.ItemType<ShrineI>();
 					if (Main.tile[left, top].TileFrameX / 36 == 1)
 					{
-						player.cursorItemIconID = ModContent.ItemType<MoonflameLantern>();
+						//player.cursorItemIconID = ModContent.ItemType<MoonflameLantern>();
 					}
 
 					player.cursorItemIconText = "";

@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials.Tech;
+
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Projectiles;
 using System;
@@ -170,7 +170,6 @@ namespace Stellamod.NPCs.Underground
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BrokenTech>(), 6, 1, 5));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Electrifying>(), 7, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ItemID.IronOre, 1, 1, 5));
         }

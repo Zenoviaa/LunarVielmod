@@ -10,7 +10,7 @@ using Stellamod.Items.Armors.Vanity.Gia;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Tech;
+
 using Stellamod.Items.Ores;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Quest.BORDOC;

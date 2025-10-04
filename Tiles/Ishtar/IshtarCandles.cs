@@ -42,7 +42,7 @@ namespace Stellamod.Tiles.Ishtar
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
 			TileObjectData.addTile(Type);
 			LocalizedText name = CreateMapEntryName();
-			RegisterItemDrop(ModContent.ItemType<IshtarCandle>());
+		//	RegisterItemDrop(ModContent.ItemType<IshtarCandle>());
 			// name.SetDefault("Hunter's Curtains");
 			AddMapEntry(new Color(47, 49, 43), name);
 		}

@@ -110,7 +110,6 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
         {
             base.ModifyNPCLoot(npcLoot);
             npcLoot.Add(ItemDropRule.Common(ItemID.Gel, minimumDropped: 0, maximumDropped: 2));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), minimumDropped: 1, maximumDropped: 3));
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

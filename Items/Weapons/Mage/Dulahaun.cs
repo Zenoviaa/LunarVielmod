@@ -58,19 +58,5 @@ namespace Stellamod.Items.Weapons.Mage
 			return false;
 
 		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.ChlorophyteBar, 16);
-			recipe.AddIngredient(ItemID.HellstoneBar, 30);
-			recipe.AddIngredient(ItemID.Excalibur, 1);
-			recipe.AddIngredient(ItemID.TheHorsemansBlade, 1);
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 60);
-			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 60);
-			recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
 	}
 }

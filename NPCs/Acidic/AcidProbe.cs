@@ -159,7 +159,6 @@ namespace Stellamod.NPCs.Acidic
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             LeadingConditionRule hardmodeDropRule = new LeadingConditionRule(new HardmodeDropRule());
-            hardmodeDropRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GraftedSoul>(), 2, minimumDropped: 1, maximumDropped: 5));
             hardmodeDropRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SrTetanus>(), 20, minimumDropped: 1, maximumDropped: 1));
 
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VirulentPlating>(), minimumDropped: 1, maximumDropped: 4));

@@ -92,8 +92,10 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 		}
 
 		public override bool CanExplode(int i, int j) => false;
+		/*
 		public override bool RightClick(int i, int j)
 		{
+
 			Player player = Main.LocalPlayer;
 			Vector2[] altarPositions = null;
 
@@ -165,7 +167,8 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
             return true;
 		}
-
+		*/
+		/*
 		public override void MouseOver(int i, int j)
 		{
 			Player player = Main.LocalPlayer;
@@ -198,7 +201,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			}
 			else
 			{
-				string defaultName = TileLoader.DefaultContainerName(tile.TileType, tile.TileFrameX, tile.TileFrameY); /* tModPorter Note: new method takes in FrameX and FrameY */; // This gets the ContainerName text for the currently selected language
+				string defaultName = TileLoader.DefaultContainerName(tile.TileType, tile.TileFrameX, tile.TileFrameY); 
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : defaultName;
 				if (player.cursorItemIconText == defaultName)
 				{
@@ -215,7 +218,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			player.noThrow = 2;
 			player.cursorItemIconEnabled = true;
 		}
-
+*/
 		public override void MouseOverFar(int i, int j)
 		{
 			MouseOver(i, j);

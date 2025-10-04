@@ -12,7 +12,7 @@ using Stellamod.Items.Materials;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials.Tech;
+
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -90,15 +90,6 @@ namespace Stellamod.Items.Weapons.Ranged
             }
             
             return false;
-        }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 12);
-            recipe.AddIngredient(ItemID.LunarTabletFragment, 6);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
         }
     }
 }

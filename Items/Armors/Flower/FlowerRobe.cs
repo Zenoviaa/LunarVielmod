@@ -41,17 +41,5 @@ namespace Stellamod.Items.Armors.Flower
 			player.GetDamage(DamageClass.Ranged) += 0.18f;
 
 		}
-
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<FlowerBatch>(), 2);
-			recipe.AddIngredient(ModContent.ItemType<RadianuiBar>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 150);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
 	}
 }

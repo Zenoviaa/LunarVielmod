@@ -94,15 +94,5 @@ namespace Stellamod.Items.Weapons.Ranged
 
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Shotgun);
-            recipe.AddIngredient(ModContent.ItemType<Teraciz>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<IshtarCandle>(), 1);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
-        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials.Tech;
+
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.Audio;
@@ -112,18 +112,6 @@ namespace Stellamod.Items.Weapons.Ranged
             Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
             Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
-        }
-
-        public override void AddRecipes()
-        {
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-			recipe.AddIngredient(ItemID.HallowedBar, 12);
-			recipe.AddRecipeGroup(nameof(ItemID.GoldBar), 10);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 8);
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
-            recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
         }
     }
 }

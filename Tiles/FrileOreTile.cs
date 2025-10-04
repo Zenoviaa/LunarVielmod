@@ -27,7 +27,7 @@ namespace Stellamod.Tiles
 			DustType = 84;
 			DustType = DustID.Firework_Blue;
 			DustType = DustID.BlueCrystalShard;
-			RegisterItemDrop(ModContent.ItemType<Items.Ores.FrileOre>());
+			//RegisterItemDrop(ModContent.ItemType<Items.Ores.FrileOre>());
 			HitSound = SoundID.DD2_CrystalCartImpact;
 		 MineResist = 2f;
 		 MinPick = 20;

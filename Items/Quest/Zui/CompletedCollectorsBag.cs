@@ -29,22 +29,6 @@ namespace Stellamod.Items.Quest.Zui
 
 
 
-            Recipe recipe10 = CreateRecipe();
-            recipe10.AddTile(ModContent.TileType<AlcaologyTable>());
-            recipe10.AddIngredient(ModContent.ItemType<FlowerBatch>(), 1);
-            recipe10.AddIngredient(ModContent.ItemType<GraftedSoul>(), 10);
-            recipe10.AddIngredient(ModContent.ItemType<EmptyCollectorsBag>(), 1);
-            recipe10.AddIngredient(ItemID.JungleSpores, 20);
-            recipe10.Register();
-
-            Recipe recipe11 = CreateRecipe();
-            recipe11.AddTile(ModContent.TileType<AlcaologyTable>());
-            recipe11.AddIngredient(ModContent.ItemType<FlowerBatch>(), 1);
-            recipe11.AddIngredient(ModContent.ItemType<EldritchSoul>(), 10);
-            recipe11.AddIngredient(ModContent.ItemType<EmptyCollectorsBag>(), 1);
-            recipe11.AddIngredient(ItemID.JungleSpores, 20);
-            recipe11.Register();
-
             Recipe recipe12 = CreateRecipe();
             recipe12.AddTile(ModContent.TileType<AlcaologyTable>());
             recipe12.AddIngredient(ModContent.ItemType<FlowerBatch>(), 1);
@@ -58,15 +42,6 @@ namespace Stellamod.Items.Quest.Zui
             recipe13.AddIngredient(ModContent.ItemType<EmptyCollectorsBag>(), 1);
             recipe13.AddIngredient(ItemID.SoulofLight, 10);
             recipe13.Register();
-
-            Recipe recipe14 = CreateRecipe();
-            recipe14.AddTile(ModContent.TileType<AlcaologyTable>());
-            recipe14.AddIngredient(ModContent.ItemType<FlowerBatch>(), 3);
-            recipe14.AddIngredient(ModContent.ItemType<AlcaricMush>(), 10);
-            recipe14.AddIngredient(ModContent.ItemType<EmptyCollectorsBag>(), 1);
-            recipe14.AddIngredient(ItemID.Moonglow, 10);
-            recipe14.AddIngredient(ModContent.ItemType<STARCORE>(), 1);
-            recipe14.Register();
 
             Recipe recipe15 = CreateRecipe();
             recipe15.AddTile(ModContent.TileType<AlcaologyTable>());

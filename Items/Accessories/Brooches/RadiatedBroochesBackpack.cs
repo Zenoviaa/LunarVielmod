@@ -52,23 +52,6 @@ namespace Stellamod.Items.Accessories.Brooches
 			Item.accessory = true;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<AdvancedBroochesBackpack>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 30);
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 30);
-			recipe.AddIngredient(ItemID.Wood, 100);
-			recipe.AddIngredient(ItemID.ChlorophyteBar, 10);
-			recipe.AddIngredient(ItemID.Seashell, 10);
-			recipe.AddIngredient(ItemID.Feather, 5);
-			recipe.AddIngredient(ItemID.SoulofMight, 20);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 25);
-			recipe.AddIngredient(ModContent.ItemType<RadianuiBar>(), 20);
-			recipe.AddTile(ModContent.TileType<BroochesTable>());
-			recipe.Register();
-		}
-
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
             BroochSpawnerPlayer broochSpawnerPlayer = player.GetModPlayer<BroochSpawnerPlayer>();

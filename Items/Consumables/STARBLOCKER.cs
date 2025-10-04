@@ -50,14 +50,5 @@ namespace Stellamod.Items.Consumables
 
             return true;
         }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe(1)
-                .AddIngredient(ModContent.ItemType<STARCORE>(), 3)
-                .AddIngredient(ModContent.ItemType<AuroreanStarI>(), 600)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
-        }
     }
 }

@@ -48,14 +48,5 @@ namespace Stellamod.Items.Weapons.Melee
             Item.shootSpeed = 8f;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Bone, 15);
-            recipe.AddIngredient(ItemType<EldritchSoul>(), 8);
-            recipe.AddIngredient(ItemID.Sickle, 1);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
-        }
     }
 }

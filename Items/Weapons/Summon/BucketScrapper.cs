@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.Audio;
 using Stellamod.Projectiles;
-using Stellamod.Items.Materials.Tech;
+
 using Stellamod.Items.Materials;
 using Stellamod.Buffs.Minions;
 using Stellamod.Projectiles.Summons.Minions;

@@ -110,7 +110,6 @@ namespace Stellamod.NPCs.Desert
 		{
 			npcLoot.Add(ItemDropRule.Common(ItemID.Amber, 5, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ArncharChunk>(), 5, 1, 5));
 		}
 
 		public void Wait()

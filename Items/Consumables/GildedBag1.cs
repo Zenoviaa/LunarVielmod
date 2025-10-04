@@ -125,11 +125,6 @@ namespace Stellamod.Items.Consumables
 				{
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<KaleidoscopicInk>(), Main.rand.Next(10, 30));
 				}
-
-                if (Main.rand.NextBool(10))
-                {
-                    player.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(1, 3));
-                }
             }
 		}
 
