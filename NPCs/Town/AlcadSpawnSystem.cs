@@ -342,12 +342,6 @@ namespace Stellamod.NPCs.Town
                         ModContent.NPCType<Veldris>());
                 }
 
-                else if (!NPC.AnyNPCs(ModContent.NPCType<Bordoc>()) && Main.hardMode)
-                {
-                    NPC.NewNPC(player.GetSource_FromThis(),
-                        (int)BORDOCSpawnWorld.X, (int)BORDOCSpawnWorld.Y,
-                        ModContent.NPCType<Bordoc>());
-                }
                 /*
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Sirestias>()))
                 {
