@@ -4,6 +4,7 @@ using Stellamod.Assets.Biomes;
 using Stellamod.Common;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
+using Stellamod.Items.Armors.Alsis;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Quest.Merena;
@@ -472,16 +473,13 @@ namespace Stellamod.NPCs.Town
             .Add(new Item(ItemID.FallenStar) { shopCustomPrice = Item.buyPrice(silver: 75) })
             .Add(new Item(ItemID.AbigailsFlower) { shopCustomPrice = Item.buyPrice(gold: 1) })
 			.Add(new Item(ModContent.ItemType<BurnedCarianTome>()))
-			.Add<WickofSorcery>(MerenaQuestSystem.ShopConditionTome)
-			.Add<WickofSorcery>(Condition.PlayerCarriesItem(ModContent.ItemType<SewingKit>()))//{ shopCustomPrice = Item.buyPrice(platinum: 1) })
-			.Add<PearlescentScrap>(MerenaQuestSystem.ShopConditionKillVerlia)
-			.Add<LostScrap>(MerenaQuestSystem.ShopConditionKillVerlia)// { shopCustomPrice = Item.buyPrice(silver: 50) })
-            .Add<AlcadBomb>(MerenaQuestSystem.ShopConditionExploreMorrowedVillage)
-            .Add<Hyua>(MerenaQuestSystem.ShopConditionExploreMorrowedVillage) //{ shopCustomPrice = Item.buyPrice(silver: 10) })
-			.Add<BlossomingScissor>(MerenaQuestSystem.ShopConditionGive100DustBags)
-			.Add<Bagitem>(MerenaQuestSystem.ShopConditionGive100DustBags)//{ shopCustomPrice = Item.buyPrice(platinum: 1) })
-			.Add<AlcadThrowingCards>(MerenaQuestSystem.ShopConditionMakeMagicPaper)//{ shopCustomPrice = Item.buyPrice(silver: 10) })
-			.Add<AlcaricMush>(MerenaQuestSystem.ShopConditionTome); //{ shopCustomPrice = Item.buyPrice(gold: 2) })
+            .Add<AlcadBomb>(MerenaQuestSystem.ShopConditionKillVerlia) //{ shopCustomPrice = Item.buyPrice(silver: 10) })//{ shopCustomPrice = Item.buyPrice(platinum: 1) })
+            .Add<AlcadThrowingCards>(MerenaQuestSystem.ShopConditionKillVerlia)
+            .Add<PearlescentScrap>(MerenaQuestSystem.ShopConditionKillVerlia)
+            .Add<AlsisMask>(MerenaQuestSystem.ShopConditionTome)
+            .Add<AlsisChestplate>(MerenaQuestSystem.ShopConditionTome)
+            .Add<AlsisMask>(MerenaQuestSystem.ShopConditionTome)//{ shopCustomPrice = Item.buyPrice(platinum: 1) })//{ shopCustomPrice = Item.buyPrice(silver: 10) })
+            .Add<AlcaricMush>(MerenaQuestSystem.ShopConditionTome); //{ shopCustomPrice = Item.buyPrice(gold: 2) })
 			npcShop.Register(); // Name of this shop tab		
 		}
 
