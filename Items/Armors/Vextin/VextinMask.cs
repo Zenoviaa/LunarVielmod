@@ -63,15 +63,7 @@ namespace Stellamod.Items.Armors.Vextin
 			
 		
 		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Wood, 5);
-			recipe.AddIngredient(ItemID.SandBlock, 50);
-			recipe.AddIngredient(ItemID.AntlionMandible, 5);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-		}
+	
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 	}
 }

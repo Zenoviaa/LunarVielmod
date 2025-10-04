@@ -65,20 +65,6 @@ namespace Stellamod.Items.Armors.Verl
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<AlcadizMetal>(), 8);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 3);
-			recipe.AddIngredient(ItemID.FallenStar, 10);
-			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
-			recipe.Register();
-
-
-
-
-		}
+	
 	}
 }

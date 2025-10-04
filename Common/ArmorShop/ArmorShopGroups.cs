@@ -5,8 +5,11 @@ using Stellamod.Items.Armors.Flower;
 using Stellamod.Items.Armors.ForestCore;
 using Stellamod.Items.Armors.Garbage;
 using Stellamod.Items.Armors.HeavyMetal;
+using Stellamod.Items.Armors.Huntrian;
 using Stellamod.Items.Armors.Illurian;
 using Stellamod.Items.Armors.Jianxin;
+using Stellamod.Items.Armors.Stone;
+using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Armors.Vextin;
 using Stellamod.Items.Armors.Winterborn;
 using Stellamod.Items.Materials;
@@ -36,6 +39,14 @@ namespace Stellamod.Common.ArmorShop
             ivythornSet.AddLegs(ModContent.ItemType<ForestCoreLegs>());
             ivythornSet.SetMaterial(ModContent.ItemType<Ivythorn>());
             ivythornSet.Register();
+
+            //Stonia
+            ArmorShopSet st = new ArmorShopSet();
+            st.AddHead(ModContent.ItemType<StoniaHat>());
+            st.AddBody(ModContent.ItemType<StoniaChestplate>());
+            st.AddLegs(ModContent.ItemType<StoniaBoots>());
+            st.SetMaterial(ItemID.StoneBlock);
+            st.Register();
 
             //Winterborn Set
             ArmorShopSet winterbornSet = new ArmorShopSet();
@@ -70,6 +81,23 @@ namespace Stellamod.Common.ArmorShop
             Vext.SetMaterial(ItemID.AntlionMandible);
             Vext.Register();
 
+            //huntrian
+            ArmorShopSet hunt = new ArmorShopSet();
+            hunt.AddHead(ModContent.ItemType<HuntrianHelmet>());
+            hunt.AddBody(ModContent.ItemType<HuntrianChestplate>());
+            hunt.AddLegs(ModContent.ItemType<HuntrianBoots>());
+            hunt.SetMaterial(ItemID.Stinger);
+            hunt.Register();
+
+
+            //Verl
+            ArmorShopSet Verl = new ArmorShopSet();
+            Verl.AddHead(ModContent.ItemType<VerlHat>());
+            Verl.AddHead(ModContent.ItemType<VerlMask>());
+            Verl.AddBody(ModContent.ItemType<VerlBreastplate>());
+            Verl.AddLegs(ModContent.ItemType<VerlLeggings>());
+            Verl.SetMaterial(ModContent.ItemType<PearlescentScrap>());
+            Verl.Register();
 
 
 
