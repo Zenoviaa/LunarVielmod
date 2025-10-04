@@ -113,7 +113,7 @@ namespace Stellamod.Common.ArmorShop
             los.SetMaterial(ModContent.ItemType<AuroreanStarI>());
             los.Register();
 
-            //Astrasilk
+            //Astrasilk done
             ArmorShopSet astr = new ArmorShopSet();
             astr.AddHead(ModContent.ItemType<AstrasilkHead>());
             astr.AddBody(ModContent.ItemType<AstrasilkBody>());
@@ -122,7 +122,7 @@ namespace Stellamod.Common.ArmorShop
             astr.Register();
 
 
-            //Heavy metal/gitnzl
+            //Heavy metal/gitnzl done
             ArmorShopSet GintzeSet = new ArmorShopSet();
             GintzeSet.AddHead(ModContent.ItemType<HeavyMetalHead>());
             GintzeSet.AddBody(ModContent.ItemType<HeavyMetalBody>());
@@ -130,7 +130,7 @@ namespace Stellamod.Common.ArmorShop
             GintzeSet.SetMaterial(ModContent.ItemType<GintzlMetal>());
             GintzeSet.Register();
 
-            //dread/teric
+            //dread/teric done
             ArmorShopSet terr = new ArmorShopSet();
             terr.AddHead(ModContent.ItemType<TerricHead>());
             terr.AddBody(ModContent.ItemType<TerricBody>());
@@ -138,7 +138,7 @@ namespace Stellamod.Common.ArmorShop
             terr.SetMaterial(ModContent.ItemType<TerrorFragments>());
             terr.Register();
 
-            //vextin
+            //vextin done
             ArmorShopSet Vext = new ArmorShopSet();
             Vext.AddHead(ModContent.ItemType<VextinMask>());
             Vext.AddBody(ModContent.ItemType<VextinRobe>());
@@ -146,7 +146,7 @@ namespace Stellamod.Common.ArmorShop
             Vext.SetMaterial(ItemID.AntlionMandible);
             Vext.Register();
 
-            //huntrian
+            //huntrian done
             ArmorShopSet hunt = new ArmorShopSet();
             hunt.AddHead(ModContent.ItemType<HuntrianHelmet>());
             hunt.AddBody(ModContent.ItemType<HuntrianChestplate>());
