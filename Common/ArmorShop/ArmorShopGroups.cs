@@ -86,7 +86,7 @@ namespace Stellamod.Common.ArmorShop
             celestiaMoonSet.AddHead(ModContent.ItemType<CelestiaMoonMask>());
             celestiaMoonSet.AddBody(ModContent.ItemType<CelestiaMoonBreastplate>());
             celestiaMoonSet.AddLegs(ModContent.ItemType<CelestiaMoonLegs>());
-            celestiaMoonSet.SetMaterial(ModContent.ItemType<GlisteningBar>());
+            celestiaMoonSet.SetMaterial(ModContent.ItemType<GlisteningOre>());
             celestiaMoonSet.Register();
 
             //Shadewrath done
