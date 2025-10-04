@@ -24,7 +24,6 @@ namespace Stellamod.Items.Armors.Scrappy
 
         public override void UpdateEquip(Player player)
         {
-            player.lifeRegen += 3;
             player.endurance += 0.08f;
             player.maxMinions += 2;
             player.GetDamage(DamageClass.Summon) += 0.10f;
