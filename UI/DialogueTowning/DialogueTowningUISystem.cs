@@ -78,6 +78,8 @@ namespace Stellamod.UI.DialogueTowning
                         dialogueTowningUIState.dialogueTownButtonsUI.ClearButtons();
                         List<Tuple<string, Action>> buttons = new List<Tuple<string, Action>>();
                         veilTownNPC.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+                        if (veilTownNPC.OnlyInteract)
+                            return;
                         if (veilTownNPC.HasQuestAvailable())
                         {
                             buttons.Add(new Tuple<string, Action>("Quest", veilTownNPC.GiveQuest));
@@ -219,6 +221,18 @@ namespace Stellamod.UI.DialogueTowning
             if (_animation != Animation.Close)
             {
                 Main.CloseNPCChatOrSign();
+                ClearSlot();
+                SoundStyle soundStyle = SoundID.MenuClose;
+                SoundEngine.PlaySound(soundStyle);
+                SwitchState(Animation.Close);
+            }
+
+        }
+        internal void OnlyCloseWindow()
+        {
+
+            if (_animation != Animation.Close)
+            {
                 ClearSlot();
                 SoundStyle soundStyle = SoundID.MenuClose;
                 SoundEngine.PlaySound(soundStyle);

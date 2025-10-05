@@ -1,23 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.ArmorShop;
+using Stellamod.Items.Shrines.GovheilNAlca;
+using System;
 using System.Text.RegularExpressions;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI.Elements;
+using Terraria.UI;
 
 namespace Stellamod.UI.ArmorShopSystem
 {
-    public class ArmorShopOption : UIPanel
+    public class ArmorShopOption : UIElement
     {
         private readonly ArmorShopSet _set;
+        private int _index;
         private ArmorShopCost _cost;
         private ArmorShopSlot _lSlot;
         private ArmorShopSlot _bSlot;
         private ArmorShopSlot _hSlot;
         private BuyArmorButton _buyArmorButton;
-        public ArmorShopOption(ArmorShopSet set)
+        public ArmorShopOption(ArmorShopSet set, int index)
         {
+            _index = index;
             _set = set;
             _cost = new ArmorShopCost();
             _cost.Item = set.material;
@@ -39,10 +44,9 @@ namespace Stellamod.UI.ArmorShopSystem
         public override void OnInitialize()
         {
             base.OnInitialize();
-            Width.Pixels = 384;
+            Width.Pixels = 512;
             Height.Pixels = 32;
-            BackgroundColor = Color.Transparent;
-            BorderColor = Color.Transparent;
+
             Append(_cost);
             Append(_lSlot);
             Append(_bSlot);
@@ -53,13 +57,26 @@ namespace Stellamod.UI.ArmorShopSystem
         {
             base.Update(gameTime);
 
-            const float spacing = 68;
+            const float spacing = 48;
 
-            const float item_spacing = 56;
+            const float item_spacing = 60;
+
+            _cost.Left.Pixels = 16;
+            _cost.Top.Pixels = 24;
             _lSlot.Left.Pixels = _cost.Left.Pixels + spacing;
             _bSlot.Left.Pixels = _lSlot.Left.Pixels + item_spacing; 
             _hSlot.Left.Pixels = _bSlot.Left.Pixels + item_spacing;
-            _buyArmorButton.Left.Pixels = _hSlot.Left.Pixels + spacing;
+            _buyArmorButton.Left.Pixels = _hSlot.Left.Pixels + item_spacing;
+            _buyArmorButton.Top.Pixels = 9;
+        }
+
+        public override int CompareTo(object obj)
+        {
+            if(obj is ArmorShopOption ui)
+            {
+                return _index.CompareTo(ui._index);
+            }
+            return base.CompareTo(obj);
         }
     }
     internal class ArmorShopUI : UIPanel
@@ -72,14 +89,14 @@ namespace Stellamod.UI.ArmorShopSystem
         internal const int width = 480;
         internal const int height = 155;
 
-        internal int RelativeLeft => Main.screenWidth / 2 - (int)(Width.Pixels / 2);
+        internal int RelativeLeft => Main.screenWidth / 2 - (int)(Width.Pixels / 2) - 200;
         internal int RelativeTop => Main.screenHeight / 2 - (int)(Height.Pixels / 2);
         public float Glow { get; set; }
         public override void OnInitialize()
         {
             base.OnInitialize();
             Width.Pixels = 48 * 8;
-            Height.Pixels = 256;
+            Height.Pixels = 384;
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
             BackgroundColor = Color.Transparent;
@@ -121,11 +138,13 @@ namespace Stellamod.UI.ArmorShopSystem
         {
             ArmorShopGroups groups = ModContent.GetInstance<ArmorShopGroups>();
             _slotGrid.Clear();
+            int index = 0;
             foreach (var set in groups.Armors)
             {
-                ArmorShopOption option = new ArmorShopOption(set);
+                ArmorShopOption option = new ArmorShopOption(set, index);
              //   option.Activate();
                 _slotGrid.Add(option);
+                index++;
 
             }
 
@@ -138,13 +157,11 @@ namespace Stellamod.UI.ArmorShopSystem
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
 
-            _slotGrid.ListPadding = 32;
-            _panel.Height.Pixels = _slotGrid.GetTotalHeight();
-
+            _panel.Height.Pixels = _slotGrid.GetTotalHeight() + 32;
             float progress = _panel.Height.Pixels / Height.Pixels;
             progress = MathHelper.Clamp(progress, 0f, 1f);
             _scrollbar.Height.Set(Height.Pixels * progress, 0);
-            IgnoresMouseInteraction = false;
+            _slotGrid.ListPadding = 20;
 
             //Hacky way to get invisible scrollbar when there's no need for it
             if (_panel.Height.Pixels < Height.Pixels)
@@ -155,9 +172,6 @@ namespace Stellamod.UI.ArmorShopSystem
             {
                 _scrollbar.Top.Set(0, 0f);
             }
-            //Constantly lock the UI in the position regardless of resolution changes
-            Left.Pixels = RelativeLeft;
-            Top.Pixels = RelativeTop;
             Glow *= 0.985f;
         }
     }

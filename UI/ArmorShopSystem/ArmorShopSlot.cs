@@ -44,6 +44,7 @@ namespace Stellamod.UI.ArmorShopSystem
             Rectangle rectangle = GetDimensions().ToRectangle();
             bool contains = ContainsPoint(Main.MouseScreen);
 
+
             if (contains && !PlayerInput.IgnoreMouseInterface)
             {
                 Main.LocalPlayer.mouseInterface = true;
@@ -60,7 +61,7 @@ namespace Stellamod.UI.ArmorShopSystem
             spriteBatch.Draw(backingTexture, pos, null, color2, 0f, Vector2.Zero, _scale, SpriteEffects.None, 0f);
 
 
-            /*
+            
             spriteBatch.End();
             spriteBatch.Begin(default, BlendState.Additive, default, default, default, default, Main.UIScaleMatrix);
             for(int i =0; i <4; i++)
@@ -73,7 +74,7 @@ namespace Stellamod.UI.ArmorShopSystem
            
             spriteBatch.End();
             spriteBatch.Begin(default, default, default, default, default, default, Main.UIScaleMatrix);
-            */
+            
             ArmorShopPlayer shopPlayer = Main.LocalPlayer.GetModPlayer<ArmorShopPlayer>();
             if (shopPlayer.HasPurchased(Item.type))
             {

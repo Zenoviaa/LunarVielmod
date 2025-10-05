@@ -1,41 +1,125 @@
-CauldronCrafting: {
-	DisplayName: Cooking I
-	Description: To kick off your enrollment at the academy, Zui has asked you to brew up something with the Mushrooms she gave you. See what you can make!
-	Objective: Open the cauldron, put the mushrooms in, and craft.
-}
-
 TalkToZui: {
 	DisplayName: Talk to Zui
 	Description: You've just found yourself in a new land! Find out what exactly is going on around here.
 	Objective: Talk to Zui in the Witch Town.
+	IntroText: ""
+}
+
+CraftAtCauldron: {
+	DisplayName: Let's get Cooking!
+	Description: To kick off your enrollment at the academy, Zui has asked you to brew up something with the Ivythorn she gave you. See what you can make!
+	Objective: Open the cauldron, put the 10 ivythorn in, and craft.
+	IntroText: ""
+}
+
+GoTrainI: {
+	DisplayName: Go Train I
+	Description: Objective: Defeat Jack in battle!
+	Objective: ""
+	IntroText: ""
+}
+
+GoTrainII: {
+	DisplayName: Go Train II
+	Description: Objective: Open the cauldron, put the 10 ivythorn in, and craft.
+	Objective: ""
+	IntroText: ""
 }
 
 MysteriousPlacesI: {
 	DisplayName: Mysterious Places I
 	Description: Sirestias has noticed something quite interesting in the Desert, go check it out!
 	Objective: Visit a strange structure in the Desert.
+	IntroText: ""
 }
 
 MysteriousPlacesII: {
 	DisplayName: Mysterious Places II
 	Description: Sirestias has noticed something quite interesting deep underneath the Tundra, go check it out!
 	Objective: Visit a mysterious biome in the Underground Ice Biome.
+	IntroText: ""
 }
 
 MysteriousPlacesIII: {
 	DisplayName: Mysterious Places III
 	Description: Sirestias has noticed something quite interesting on the far right Ocean, go check it out!
 	Objective: Visit an interesting structure in the Ocean.
+	IntroText: ""
 }
 
 MysteriousPlacesIV: {
 	DisplayName: Mysterious Places IV
 	Description: Sirestias has noticed something quite interesting high in the sky somewhere, go check it out!
 	Objective: Visit a strange floating cathedral at night.
+	IntroText: ""
 }
 
 MysteriousPlacesV: {
 	DisplayName: Mysterious Places V
 	Description: Sirestias has noticed something quite interesting near the far right Ocean, go check it out!
 	Objective: Visit a large tree near the Ocean.
+	IntroText: ""
+}
+
+DestroySingularity: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+DestroySingularityII: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+DestroySingularityIII: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+GetVoidalPassageway: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+GoTrainIII: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+KillEreshkigal: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+KillPlantera: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+KillWallofFlesh: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+ReadyUp: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
 }

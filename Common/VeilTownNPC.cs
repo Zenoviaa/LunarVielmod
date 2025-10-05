@@ -17,6 +17,7 @@ namespace Stellamod.Common
       
         public bool HasTownDialogue { get; set; }
         public bool SpawnAtPoint { get; set; }
+        public bool OnlyInteract { get; set; }
         public virtual string QuestMarkTexture => "Stellamod/Common/QuestSystem/QuestMark";
         public virtual void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
         {
@@ -90,6 +91,8 @@ namespace Stellamod.Common
         public void OpenShop()
         {
             NPCHelper.OpenShop(NPC);
+            DialogueTowningUISystem uiSystem = ModContent.GetInstance<DialogueTowningUISystem>();
+            uiSystem.OnlyCloseWindow();
         }
 
         public void GiveQuest()

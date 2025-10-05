@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common;
 using Stellamod.Common.QuestSystem;
 using Stellamod.Common.QuestSystem.Quests;
+using Stellamod.Common.QuestSystem.Quests.ZuiQuest;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Ammo;
@@ -501,7 +502,7 @@ namespace Stellamod.NPCs.Town
         public override void SetQuestLine(List<int> quests)
         {
             base.SetQuestLine(quests);
-            quests.Add(QuestLoader.QuestType<CauldronCrafting>());
+            quests.Add(QuestLoader.QuestType<CraftAtCauldron>());
         }
 
         public override void AddShops()

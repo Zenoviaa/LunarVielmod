@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.QuestSystem.Quests;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
@@ -23,7 +24,8 @@ namespace Stellamod.Common.QuestSystem
         }
     }
 
-    public abstract class Quest : ModType
+    public abstract class Quest : ModType,
+        ILocalizedModType
     {
         private List<Item> _rewards;
         public string DisplayName
@@ -49,8 +51,17 @@ namespace Stellamod.Common.QuestSystem
                 return LangText.Quest(this, "Objective");
             }
         }
+        public string IntroText
+        {
+            get
+            {
+                return LangText.Quest(this, "Intro");
+            }
+        }
         public virtual string IconTexture => (GetType().Namespace + "." + Name).Replace('.', '/');
         public virtual string BigTexture => IconTexture + "_Big";
+
+       
         public int Type { get; internal set; }
         public bool IsSideQuest { get; set; }
         public bool IsAutoQuest { get; set; }
@@ -63,6 +74,7 @@ namespace Stellamod.Common.QuestSystem
             }
         }
 
+        public string LocalizationCategory => "Quests";
         protected sealed override void Register()
         {
             ModTypeLookup<Quest>.Register(this);
@@ -72,6 +84,10 @@ namespace Stellamod.Common.QuestSystem
         {
             base.SetupContent();
             SetStaticDefaults();
+            this.GetLocalization(nameof(DisplayName), () => "");
+            this.GetLocalization(nameof(Description), () => "");
+            this.GetLocalization(nameof(Objective), () => "");
+            this.GetLocalization(nameof(IntroText), () => "");
         }
 
         public void AddReward(int itemId, int stack)
@@ -137,7 +153,13 @@ namespace Stellamod.Common.QuestSystem
 
         public virtual void QuestIntroDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
         {
+            text = IntroText;
+        }
 
+        public bool HasCompletedQuest<T>(Player player) where T : Quest
+        {
+            QuestPlayer questPlayer = player.GetModPlayer<QuestPlayer>();
+            return questPlayer.HasFinishedQuest(QuestLoader.GetInstance<T>());
         }
     }
 }
