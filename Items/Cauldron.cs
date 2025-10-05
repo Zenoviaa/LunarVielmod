@@ -2,6 +2,7 @@
 using Stellamod.Buffs;
 using Stellamod.Common.QuestSystem;
 using Stellamod.Common.QuestSystem.Quests;
+using Stellamod.Common.QuestSystem.Quests.ZuiQuest;
 using Stellamod.Items.Ores;
 using System;
 using System.Collections.Generic;
@@ -317,7 +318,7 @@ namespace Stellamod.Items
 
             //Crafting Quest
             QuestPlayer questPlayer = Main.LocalPlayer.GetModPlayer<QuestPlayer>();
-            var starterQuest = QuestLoader.GetInstance<CauldronCrafting>();
+            var starterQuest = QuestLoader.GetInstance<CraftAtCauldron>();
             questPlayer.CompleteQuest(starterQuest);
 
             JustCrafted = result;
