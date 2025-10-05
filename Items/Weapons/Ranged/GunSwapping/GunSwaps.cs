@@ -143,7 +143,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
-    internal class Pulsing : MiniGun
+    internal class Pulsing : MiniGun//
     {
         //Damage of this gun holster
 
@@ -196,7 +196,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
-    internal class Eagle : MiniGun
+    internal class Eagle : MiniGun//
     {
         public override void SetDefaults()
         {
@@ -259,7 +259,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
-    internal class BurnBlast : MiniGun
+    internal class BurnBlast : MiniGun//
     {
         public override void SetDefaults()
         {
@@ -302,7 +302,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
-    internal class PoisonPistol : MiniGun
+    internal class PoisonPistol : MiniGun//
     {
         public override void SetDefaults()
         {
@@ -340,7 +340,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
-    internal class RocketLauncher : MiniGun
+    internal class RocketLauncher : MiniGun//
     {
         public override void SetDefaults()
         {
@@ -380,7 +380,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
-    internal class MintyBlast : MiniGun
+    internal class MintyBlast : MiniGun//
     {
         public override void SetDefaults()
         {
@@ -434,7 +434,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
-    internal class MsFreeze : MiniGun
+    internal class MsFreeze : MiniGun//
     {
         public override void SetDefaults()
         {
@@ -489,7 +489,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
     }
 
 
-    internal class Piken : MiniGun
+    internal class Piken : MiniGun//
     {
         private int _comboCounter;
         public override void SetDefaults()
@@ -581,7 +581,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
-    internal class Electrifying : MiniGun
+    internal class Electrifying : MiniGun//
     {
         public override void SetDefaults()
         {
@@ -643,7 +643,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
-    internal class RavestBlast : MiniGun
+    internal class RavestBlast : MiniGun//
     {
         public override void SetDefaults()
         {
@@ -693,7 +693,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
-    internal class STARBUST : MiniGun
+    internal class STARBUST : MiniGun//
     {
         public override void SetDefaults()
         {
@@ -744,7 +744,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
     }
 
 
-    internal class Devolver : MiniGun
+    internal class Devolver : MiniGun//
     {
         //Damage of this gun
         public override void SetDefaults()
@@ -792,7 +792,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
     }
 
 
-    internal class CinderNeedle : MiniGun
+    internal class CinderNeedle : MiniGun//
     {
         public override void SetDefaults()
         {
@@ -841,7 +841,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
-    internal class Drygan : MiniGun
+    internal class Drygan : MiniGun//
     {
         public override void SetDefaults()
         {
@@ -896,7 +896,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
     }
 
 
-    internal class Obel : MiniGun
+    internal class Obel : MiniGun//
     {
         public override void SetDefaults()
         {
@@ -950,7 +950,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 
     }
 
-    internal class Piranha : MiniGun
+    internal class Piranha : MiniGun//
     {
         public override void SetDefaults()
         {
@@ -1000,7 +1000,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
-    internal class ShottyPitol : MiniGun
+    internal class ShottyPitol : MiniGun//
     {
         public override void SetDefaults()
         {
@@ -1047,7 +1047,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
-    internal class BubbleBussy : MiniGun
+    internal class BubbleBussy : MiniGun //
     {
         public override void SetDefaults()
         {
@@ -1329,7 +1329,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             }
         }
 
-        internal class Gordon : MiniGun
+        internal class Gordon : MiniGun//
         {
             public override void SetDefaults()
             {
@@ -1383,7 +1383,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
-        internal class Rhino : MiniGun
+        internal class Rhino : MiniGun//
         {
             public override void SetDefaults()
             {
@@ -1444,7 +1444,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
-        internal class SrTetanus : MiniGun
+        internal class SrTetanus : MiniGun//
         {
             public override void SetDefaults()
             {
