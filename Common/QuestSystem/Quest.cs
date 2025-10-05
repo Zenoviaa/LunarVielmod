@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.QuestSystem.Quests;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
@@ -47,6 +48,13 @@ namespace Stellamod.Common.QuestSystem
             get
             {
                 return LangText.Quest(this, "Objective");
+            }
+        }
+        public string IntroText
+        {
+            get
+            {
+                return LangText.Quest(this, "Intro");
             }
         }
         public virtual string IconTexture => (GetType().Namespace + "." + Name).Replace('.', '/');
@@ -137,7 +145,13 @@ namespace Stellamod.Common.QuestSystem
 
         public virtual void QuestIntroDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
         {
+            text = IntroText;
+        }
 
+        public bool HasCompletedQuest<T>(Player player) where T : Quest
+        {
+            QuestPlayer questPlayer = player.GetModPlayer<QuestPlayer>();
+            return questPlayer.HasFinishedQuest(QuestLoader.GetInstance<T>());
         }
     }
 }
