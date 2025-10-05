@@ -24,7 +24,8 @@ namespace Stellamod.Common.QuestSystem
         }
     }
 
-    public abstract class Quest : ModType
+    public abstract class Quest : ModType,
+        ILocalizedModType
     {
         private List<Item> _rewards;
         public string DisplayName
@@ -59,6 +60,8 @@ namespace Stellamod.Common.QuestSystem
         }
         public virtual string IconTexture => (GetType().Namespace + "." + Name).Replace('.', '/');
         public virtual string BigTexture => IconTexture + "_Big";
+
+       
         public int Type { get; internal set; }
         public bool IsSideQuest { get; set; }
         public bool IsAutoQuest { get; set; }
@@ -71,6 +74,7 @@ namespace Stellamod.Common.QuestSystem
             }
         }
 
+        public string LocalizationCategory => "Quests";
         protected sealed override void Register()
         {
             ModTypeLookup<Quest>.Register(this);
@@ -80,6 +84,10 @@ namespace Stellamod.Common.QuestSystem
         {
             base.SetupContent();
             SetStaticDefaults();
+            this.GetLocalization(nameof(DisplayName), () => "");
+            this.GetLocalization(nameof(Description), () => "");
+            this.GetLocalization(nameof(Objective), () => "");
+            this.GetLocalization(nameof(IntroText), () => "");
         }
 
         public void AddReward(int itemId, int stack)
