@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets.Biomes;
 using Stellamod.Common;
+using Stellamod.Common.QuestSystem.Quests.DelgrimQuest;
+using Stellamod.Common.QuestSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
@@ -285,7 +287,12 @@ namespace Stellamod.NPCs.Town
 			CellConverterUISystem uiSystem = ModContent.GetInstance<CellConverterUISystem>();
             uiSystem.CellConverterPos = NPC.Center;
             uiSystem.OpenUI();
-   
+
+        }
+        public override void SetQuestLine(List<int> quests)
+        {
+            base.SetQuestLine(quests);
+            quests.Add(QuestLoader.QuestType<MysteriousPlacesI>());
         }
     }
 }

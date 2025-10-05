@@ -1,11 +1,13 @@
 ﻿using Mono.Cecil;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace Stellamod.Common.ArmorShop
 {
-    public class ArmorShopSet
+    public class ArmorShopSet : ILocalizedModType
     {
         public ArmorShopSet()
         {
@@ -18,6 +20,16 @@ namespace Stellamod.Common.ArmorShop
         public List<Item> heads;
         public List<Item> bodies;
         public List<Item> legs;
+
+        public string LocalizationCategory => "ArmorShop";
+        public Mod Mod => Stellamod.Instance;
+
+        public virtual string Name => GetType().Name;
+
+        /// <summary>
+        /// The internal name of this, including the mod it is from.
+        /// </summary>
+        public string FullName => $"{Mod?.Name ?? "Terraria"}/{Name}";
 
         public void SetMaterial(int itemType)
         {
@@ -121,6 +133,8 @@ namespace Stellamod.Common.ArmorShop
         public void Register()
         {
             ModContent.GetInstance<ArmorShopGroups>().AddSet(this);
+          //  Language.GetOrRegister($"{LocalizationCategory}.{heads[0].Name}", () => "");
+
         }
     }
 }

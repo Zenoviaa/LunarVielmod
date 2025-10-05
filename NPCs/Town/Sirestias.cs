@@ -468,14 +468,5 @@ namespace Stellamod.NPCs.Town
             text = "ZuiIdleChat1";
         }
 
-        public override void SetQuestLine(List<int> quests)
-        {
-            base.SetQuestLine(quests);
-            quests.Add(QuestLoader.QuestType<MysteriousPlacesI>());
-            quests.Add(QuestLoader.QuestType<MysteriousPlacesII>());
-            quests.Add(QuestLoader.QuestType<MysteriousPlacesIII>());
-            quests.Add(QuestLoader.QuestType<MysteriousPlacesIV>());
-            quests.Add(QuestLoader.QuestType<MysteriousPlacesV>());
-        }
     }
 }

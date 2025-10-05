@@ -137,3 +137,8 @@ Colosseum: {
 	TownNPCDialogueName: the Colosseum
 	DisplayName: Colosseum
 }
+
+MothlightBiome: {
+	DisplayName: Mothlight Biome
+	TownNPCDialogueName: the Mothlight Biome
+}

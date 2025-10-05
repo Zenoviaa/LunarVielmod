@@ -12,6 +12,8 @@ using Stellamod.Tiles.Ishtar;
 using Stellamod.Items.Placeable;
 using Terraria.ID;
 using Terraria;
+using Stellamod.TilesNew.MothlightTiles.MothlightManor;
+using Stellamod.TilesNew.MothlightTiles;
 
 namespace Stellamod
 {
@@ -95,6 +97,8 @@ namespace Stellamod
 
         public int MineshaftTileCount;
         public static bool InMineshaft => ModContent.GetInstance<BiomeTileCounts>().MineshaftTileCount > 5;
+        public int MothlightCount;
+        public static bool InMothlight => ModContent.GetInstance<BiomeTileCounts>().MothlightCount > 5;
 
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
@@ -123,6 +127,7 @@ namespace Stellamod
             AshotiTempleCount = tileCounts[TileID.LihzahrdBrick];
             MineshaftTileCount = tileCounts[ModContent.TileType<RobedCatastoneBlock>()];
             ColosseumCount = tileCounts[ModContent.TileType<ChiseledSandstoneT>()];
+            MothlightCount = tileCounts[ModContent.TileType<MothlightBrick>()];
         }
     }
 }

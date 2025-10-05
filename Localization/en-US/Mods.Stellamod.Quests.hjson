@@ -60,6 +60,26 @@ MysteriousPlacesV: {
 	Objective: Visit a large tree near the Ocean.
 	IntroText: ""
 }
+MysteriousPlacesVI: {
+	DisplayName: Mysterious Places VI
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+MysteriousPlacesVII: {
+	DisplayName: Mysterious Places VII
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+MysteriousPlacesVIII: {
+	DisplayName: Mysterious Places VIII
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
 
 DestroySingularity: {
 	DisplayName: ""
@@ -123,3 +143,4 @@ ReadyUp: {
 	Objective: ""
 	IntroText: ""
 }
+

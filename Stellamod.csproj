@@ -64,6 +64,13 @@
     <None Remove="Common\Bases\BaseHitEffect.png" />
     <None Remove="Common\Foggy\Fog.png" />
     <None Remove="Common\QuestSystem\QuestResetter.png" />
+    <None Remove="Common\QuestSystem\Quests\DelgrimQuest\MysteriousPlacesI.png" />
+    <None Remove="Common\QuestSystem\Quests\DelgrimQuest\MysteriousPlacesII.png" />
+    <None Remove="Common\QuestSystem\Quests\DelgrimQuest\MysteriousPlacesIII.png" />
+    <None Remove="Common\QuestSystem\Quests\DelgrimQuest\MysteriousPlacesIII_Big.png" />
+    <None Remove="Common\QuestSystem\Quests\DelgrimQuest\MysteriousPlacesIIV.png" />
+    <None Remove="Common\QuestSystem\Quests\DelgrimQuest\MysteriousPlacesII_Big.png" />
+    <None Remove="Common\QuestSystem\Quests\DelgrimQuest\MysteriousPlacesI_Big.png" />
     <None Remove="Common\QuestSystem\Quests\ZuiQuest\DestroySingularity.png" />
     <None Remove="Common\QuestSystem\Quests\ZuiQuest\DestroySingularityII.png" />
     <None Remove="Common\QuestSystem\Quests\ZuiQuest\DestroySingularityIII.png" />
