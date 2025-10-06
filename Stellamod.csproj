@@ -71,6 +71,9 @@
     <None Remove="Common\QuestSystem\Quests\DelgrimQuest\MysteriousPlacesIIV.png" />
     <None Remove="Common\QuestSystem\Quests\DelgrimQuest\MysteriousPlacesII_Big.png" />
     <None Remove="Common\QuestSystem\Quests\DelgrimQuest\MysteriousPlacesI_Big.png" />
+    <None Remove="Common\QuestSystem\Quests\VeiizalQuest\HuntI.png" />
+    <None Remove="Common\QuestSystem\Quests\VeiizalQuest\HuntII.png" />
+    <None Remove="Common\QuestSystem\Quests\VeiizalQuest\HuntIII.png" />
     <None Remove="Common\QuestSystem\Quests\ZuiQuest\DestroySingularity.png" />
     <None Remove="Common\QuestSystem\Quests\ZuiQuest\DestroySingularityII.png" />
     <None Remove="Common\QuestSystem\Quests\ZuiQuest\DestroySingularityIII.png" />

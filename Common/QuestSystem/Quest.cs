@@ -156,7 +156,7 @@ namespace Stellamod.Common.QuestSystem
             text = IntroText;
         }
 
-        public bool HasCompletedQuest<T>(Player player) where T : Quest
+        public static bool HasCompletedQuest<T>(Player player) where T : Quest
         {
             QuestPlayer questPlayer = player.GetModPlayer<QuestPlayer>();
             return questPlayer.HasFinishedQuest(QuestLoader.GetInstance<T>());
