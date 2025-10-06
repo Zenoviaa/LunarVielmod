@@ -92,7 +92,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
 
                 if(questPlayer.RewardQuests.Count >= 0)
                 {
-                    IndexedUIText rewardSeparator = new IndexedUIText(index, "Collect Rewards Quests");
+                    IndexedUIText rewardSeparator = new IndexedUIText(index, "Collect Quest Rewards");
                     rewardSeparator.Height.Pixels = 24;
                     rewardSeparator.Width.Pixels = 48 * 6f;
                     rewardSeparator.Top.Pixels = 4;
