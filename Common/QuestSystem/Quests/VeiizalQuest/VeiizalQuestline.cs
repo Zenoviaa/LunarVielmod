@@ -41,7 +41,8 @@ namespace Stellamod.Common.QuestSystem.Quests.VeiizalQuest
         public override bool CheckCompletion(Player player)
         {
             int npcType = ModContent.NPCType<Steeru>();
-            return NPC.killCount[npcType] >= 10;
+            int killCount = Main.BestiaryTracker.Kills.GetKillCount(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[npcType]);
+            return killCount >= 10;
         }
     }
 
@@ -62,7 +63,8 @@ namespace Stellamod.Common.QuestSystem.Quests.VeiizalQuest
         public override bool CheckCompletion(Player player)
         {
             int npcType = NPCID.Bunny;
-            return NPC.killCount[npcType] >= 10;
+            int killCount = Main.BestiaryTracker.Kills.GetKillCount(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[npcType]);
+            return killCount >= 10;
         }
     }
 
@@ -83,7 +85,8 @@ namespace Stellamod.Common.QuestSystem.Quests.VeiizalQuest
         public override bool CheckCompletion(Player player)
         {
             int npcType = NPCID.Shark;
-            return NPC.killCount[npcType] >= 1;
+            int killCount = Main.BestiaryTracker.Kills.GetKillCount(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[npcType]);
+            return killCount >= 1;
         }
     }
 
@@ -104,7 +107,8 @@ namespace Stellamod.Common.QuestSystem.Quests.VeiizalQuest
         public override bool CheckCompletion(Player player)
         {
             int npcType = NPCID.EyeofCthulhu;
-            return NPC.killCount[npcType] >= 1;
+            int killCount = Main.BestiaryTracker.Kills.GetKillCount(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[npcType]);
+            return killCount >= 1;
         }
     }
     public class HuntV : Quest
@@ -124,7 +128,8 @@ namespace Stellamod.Common.QuestSystem.Quests.VeiizalQuest
         public override bool CheckCompletion(Player player)
         {
             int npcType = NPCID.Piranha;
-            return NPC.killCount[npcType] >= 25;
+            int killCount = Main.BestiaryTracker.Kills.GetKillCount(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[npcType]);
+            return killCount >= 25;
         }
     }
     public class HuntVI : Quest
@@ -144,7 +149,8 @@ namespace Stellamod.Common.QuestSystem.Quests.VeiizalQuest
         public override bool CheckCompletion(Player player)
         {
             int npcType = NPCID.Deerclops;
-            return NPC.killCount[npcType] >= 1;
+            int killCount = Main.BestiaryTracker.Kills.GetKillCount(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[npcType]);
+            return killCount >= 1;
         }
     }
     public class HuntVII : Quest
@@ -164,7 +170,8 @@ namespace Stellamod.Common.QuestSystem.Quests.VeiizalQuest
         public override bool CheckCompletion(Player player)
         {
             int npcType = ModContent.NPCType<GovheilProtector>();
-            return NPC.killCount[npcType] >= 3;
+            int killCount = Main.BestiaryTracker.Kills.GetKillCount(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[npcType]);
+            return killCount >= 3;
         }
     }
     public class HuntVIII : Quest
@@ -184,7 +191,8 @@ namespace Stellamod.Common.QuestSystem.Quests.VeiizalQuest
         public override bool CheckCompletion(Player player)
         {
             int npcType = NPCID.Demon;
-            return NPC.killCount[npcType] >= 10;
+            int killCount = Main.BestiaryTracker.Kills.GetKillCount(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[npcType]);
+            return killCount >= 10;
         }
     }
     public class HuntIX : Quest
