@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.Bases;
+using Stellamod.Core.Bases;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Discs

@@ -50,6 +50,9 @@ Common: {
 	StaminaSlash: Stamina Slash: {0}
 	WeaponTypeSword: Sword Weapon Type
 	WeaponTypeKnives: Knives Weapon Type
+	InsourceTime: "{0} seconds added to your flask cooldown"
+	XixianFlaskLock: This item is LOCKED, continue exploring and you may find it.
+	StaminaFlaskLock: This item is LOCKED, continue exploring and you may find it.
 }
 
 SetBonus: {
@@ -708,7 +711,7 @@ Gambit: {
 	DisplayName: Gambit
 	Tooltip:
 		'''
-		{$CommonItemTooltip.RightClickToOpen}
+		{$CoreItemTooltip.RightClickToOpen}
 		Gamble away your soul after battle for great rewards!
 		'''
 }
@@ -720,7 +723,7 @@ GambitToken: {
 
 GildedBag1: {
 	DisplayName: Gilded Bag
-	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+	Tooltip: "{$CoreItemTooltip.RightClickToOpen}"
 }
 
 MoonflameLantern: {
@@ -734,12 +737,12 @@ MoonflameLantern: {
 
 SirestiasStarterBag: {
 	DisplayName: Sirestias Starter Bag
-	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+	Tooltip: "{$CoreItemTooltip.RightClickToOpen}"
 }
 
 VeribossBag: {
 	DisplayName: Veriboss Bag
-	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+	Tooltip: "{$CoreItemTooltip.RightClickToOpen}"
 }
 
 AlcadizMetal: {
@@ -1600,7 +1603,7 @@ AlcadizPowder: {
 
 VerliaBossBag: {
 	DisplayName: Treasure Bag (Verlia)
-	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+	Tooltip: "{$CoreItemTooltip.RightClickToOpen}"
 }
 
 VerliaHat: {
@@ -2378,7 +2381,7 @@ WinterbornLegs: {
 
 DreadmireBag: {
 	DisplayName: Treasure Bag (Dreadmire)
-	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+	Tooltip: "{$CoreItemTooltip.RightClickToOpen}"
 }
 
 EDR: {
@@ -2388,17 +2391,17 @@ EDR: {
 
 JackoBag: {
 	DisplayName: Treasure Bag (Jack)
-	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+	Tooltip: "{$CoreItemTooltip.RightClickToOpen}"
 }
 
 NestBag: {
 	DisplayName: Treasure Bag (Irradiated Nest)
-	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+	Tooltip: "{$CoreItemTooltip.RightClickToOpen}"
 }
 
 SingularityBag: {
 	DisplayName: Treasure Bag (Singularity)
-	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+	Tooltip: "{$CoreItemTooltip.RightClickToOpen}"
 }
 
 SunClaw: {
@@ -2408,7 +2411,7 @@ SunClaw: {
 
 SunStalkerBag: {
 	DisplayName: Treasure Bag (Sun Stalker)
-	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+	Tooltip: "{$CoreItemTooltip.RightClickToOpen}"
 }
 
 VoidLantern: {
@@ -3173,7 +3176,7 @@ GintziaBossBag: {
 	DisplayName: Treasure Bag (Gintzia)
 	Tooltip:
 		'''
-		{$CommonItemTooltip.RightClickToOpen}
+		{$CoreItemTooltip.RightClickToOpen}
 		Special little secret inside
 		'''
 }
@@ -3407,7 +3410,7 @@ DaedenMask: {
 
 DaedusBag: {
 	DisplayName: Treasure Bag (Daedus)
-	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+	Tooltip: "{$CoreItemTooltip.RightClickToOpen}"
 }
 
 Plate: {
@@ -3526,7 +3529,7 @@ Twirlers: {
 
 GothiviaBag: {
 	DisplayName: Treasure Bag (Irradia and Havoc)
-	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+	Tooltip: "{$CoreItemTooltip.RightClickToOpen}"
 }
 
 WeddingDay: {
@@ -3799,7 +3802,7 @@ BagOfCards: {
 	DisplayName: Bag Of Cards
 	Tooltip:
 		'''
-		{$CommonItemTooltip.RightClickToOpen}
+		{$CoreItemTooltip.RightClickToOpen}
 		Open for some cards! Gives more cards in Hardmode!
 		'''
 }
@@ -4305,8 +4308,8 @@ Lacerator: {
 	DisplayName: Lacerator
 	Tooltip:
 		'''
-		{$CommonItemTooltip.SummonTagDamage}
-		{$CommonItemTooltip.Whips}
+		{$CoreItemTooltip.SummonTagDamage}
+		{$CoreItemTooltip.Whips}
 		Hit enemies will split in two, leaving them with half of their original HP and reduced defense
 		Slice n' dice!
 		'''
@@ -4343,7 +4346,7 @@ LittleScissor: {
 
 SyliaBag: {
 	DisplayName: Treasure Bag (Sylia)
-	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+	Tooltip: "{$CoreItemTooltip.RightClickToOpen}"
 }
 
 SyliaBossRel: {
@@ -4827,7 +4830,7 @@ TreasureBoxFire: {
 	DisplayName: Smoldering Treasure Box
 	Tooltip:
 		'''
-		{$CommonItemTooltip.RightClickToOpen}
+		{$CoreItemTooltip.RightClickToOpen}
 		I bet ya burned yourself half to death to get this one!
 		'''
 }
@@ -4836,7 +4839,7 @@ TreasureBoxTrap: {
 	DisplayName: Trapped Treasure Box
 	Tooltip:
 		'''
-		{$CommonItemTooltip.RightClickToOpen}
+		{$CoreItemTooltip.RightClickToOpen}
 		Ummm- it's totally not trapped ;)
 		'''
 }
@@ -4845,7 +4848,7 @@ TreasureBoxWater: {
 	DisplayName: Drowned Treasure Box
 	Tooltip:
 		'''
-		{$CommonItemTooltip.RightClickToOpen}
+		{$CoreItemTooltip.RightClickToOpen}
 		There's... just too much water...
 		'''
 }
@@ -6126,8 +6129,8 @@ AuroreanStarball: {
 	DisplayName: Aurorean Starball
 	Tooltip:
 		'''
-		{$CommonItemTooltip.SummonTagDamage}
-		{$CommonItemTooltip.Whips}
+		{$CoreItemTooltip.SummonTagDamage}
+		{$CoreItemTooltip.Whips}
 		Special attack does a starry explosion upon impact!
 		We ballin'
 		'''
@@ -6155,8 +6158,8 @@ TheActualMoon: {
 	DisplayName: The Actual Moon
 	Tooltip:
 		'''
-		{$CommonItemTooltip.SummonTagDamage}
-		{$CommonItemTooltip.Whips}
+		{$CoreItemTooltip.SummonTagDamage}
+		{$CoreItemTooltip.Whips}
 		A heavier orb with a much stronger impact explosion!
 		I'm already Verlia
 		'''
@@ -6171,8 +6174,8 @@ TwinStarbombas: {
 	DisplayName: Twin Starbombas
 	Tooltip:
 		'''
-		{$CommonItemTooltip.SummonTagDamage}
-		{$CommonItemTooltip.Whips}
+		{$CoreItemTooltip.SummonTagDamage}
+		{$CoreItemTooltip.Whips}
 		Wield two orbs at the same time! They attack by orbiting around you
 		So basically just STARBOMBER's balls
 		'''
@@ -6227,8 +6230,8 @@ ThePollinator: {
 	DisplayName: The Pollinator
 	Tooltip:
 		'''
-		{$CommonItemTooltip.SummonTagDamage}
-		{$CommonItemTooltip.Whips}
+		{$CoreItemTooltip.SummonTagDamage}
+		{$CoreItemTooltip.Whips}
 		Pollinates enemies, which slows them down greatly
 		Radiating with the power of Zui's flowers
 		'''
@@ -6238,8 +6241,8 @@ BlackBall: {
 	DisplayName: Black Ball
 	Tooltip:
 		'''
-		{$CommonItemTooltip.SummonTagDamage}
-		{$CommonItemTooltip.Whips}
+		{$CoreItemTooltip.SummonTagDamage}
+		{$CoreItemTooltip.Whips}
 		A lighter orb that attacks faster
 		Empowered by the Alcad!
 		'''
@@ -6559,8 +6562,8 @@ SplashAttack: {
 	DisplayName: Splash Attack
 	Tooltip:
 		'''
-		{$CommonItemTooltip.SummonTagDamage}
-		{$CommonItemTooltip.Whips}
+		{$CoreItemTooltip.SummonTagDamage}
+		{$CoreItemTooltip.Whips}
 		Slappin' you up with all my paints
 		'''
 }
@@ -6579,8 +6582,8 @@ SineSire: {
 	DisplayName: Sire Wave
 	Tooltip:
 		'''
-		{$CommonItemTooltip.SummonTagDamage}
-		{$CommonItemTooltip.Whips}
+		{$CoreItemTooltip.SummonTagDamage}
+		{$CoreItemTooltip.Whips}
 		A watery orb that moves in wave-like patterns!
 		'''
 }
@@ -7139,8 +7142,8 @@ ColdheartAnklebiter: {
 	DisplayName: Coldheart Anklebiter
 	Tooltip:
 		'''
-		{$CommonItemTooltip.SummonTagDamage}
-		{$CommonItemTooltip.Whips}
+		{$CoreItemTooltip.SummonTagDamage}
+		{$CoreItemTooltip.Whips}
 		Strike enemies to chill them!
 		Enemies hit by summons explode with icicles
 		'''
@@ -8827,4 +8830,39 @@ SpringGrassBlock: {
 StoneUnderBlock: {
 	DisplayName: Stone Under Block
 	Tooltip: ""
+}
+
+WoodyInsource: {
+	Tooltip: ""
+	DisplayName: Woody Insource
+}
+
+HiveheartInsource: {
+	Tooltip: ""
+	DisplayName: Hiveheart Insource
+}
+
+HealthInsource: {
+	Tooltip: ""
+	DisplayName: Health Insource
+}
+
+InsourceUnlocker: {
+	Tooltip: ""
+	DisplayName: Insource Unlocker
+}
+
+ThornsBlade: {
+	Tooltip: ""
+	DisplayName: Thorns Blade
+}
+
+Pavelspire: {
+	Tooltip: ""
+	DisplayName: Pavelspire
+}
+
+Pyslocke: {
+	Tooltip: ""
+	DisplayName: Pyslocke
 }

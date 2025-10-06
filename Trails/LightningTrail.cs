@@ -7,9 +7,9 @@ using Terraria.Graphics.Shaders;
 
 namespace Stellamod.Trails
 {
-    internal class CommonLightning
+    internal class CoreLightning
     {
-        public CommonLightning()
+        public CoreLightning()
         {
             Trails = new LightningTrail[4];
             for(int t = 0; t < Trails.Length; t++)

@@ -25,7 +25,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 
         private ref float Timer => ref NPC.ai[0];
         private ref float AttackTimer => ref NPC.ai[1];
-        public CommonLightning Lightning { get; set; } = new CommonLightning();
+        public CoreLightning Lightning { get; set; } = new CoreLightning();
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();

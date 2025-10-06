@@ -1,5 +1,5 @@
-using Stellamod.Common.ArmorReforge;
-using Stellamod.Common.QuestSystem;
+using Stellamod.Core.ArmorReforge;
+using Stellamod.Core.QuestSystem;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;

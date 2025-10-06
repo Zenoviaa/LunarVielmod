@@ -43,6 +43,10 @@ namespace Stellamod.UI.CollectionSystem
             Height.Set(rect.Size().Y * scale * 1.75f, 0f);
         }
 
+        public bool IsOpen()
+        {
+            return _open;
+        }
         public Vector2 Offset;
         public override void Update(GameTime gameTime)
         {

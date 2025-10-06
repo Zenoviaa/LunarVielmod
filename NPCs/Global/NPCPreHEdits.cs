@@ -1,15 +1,11 @@
-﻿using Stellamod.DropRules;
-using Stellamod.Items.Accessories;
+﻿using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Special.MinerLogs;
 using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee.Safunais;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Summon;
-using Stellamod.NPCs.Acidic;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -262,13 +258,6 @@ namespace Stellamod.NPCs.Global
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BonedThrowBroochA>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
             }
 
-
-            if (npc.type == NPCID.GoblinSorcerer)
-            {
-
-
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Vinger>(), 15, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-            }
 
             //--------------------------------------------------------------------- Desert
 

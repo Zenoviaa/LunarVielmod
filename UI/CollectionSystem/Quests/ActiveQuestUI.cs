@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.QuestSystem;
+using Stellamod.Core.QuestSystem;
 using System;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
@@ -157,6 +157,8 @@ namespace Stellamod.UI.CollectionSystem.Quests
             Vector2 centerPos = pos + rectangle.Size() / 2f;
             Texture2D backgroundTexture = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}QuestImageBackground").Value;
             Texture2D bigPictureTexture = ModContent.Request<Texture2D>(Quest.BigTexture).Value;
+            if(bigPictureTexture == null)
+                bigPictureTexture = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}MissingBigImage").Value;
             Texture2D overlayTexture = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}QuestTop").Value;
             
             //Draw the background thingy

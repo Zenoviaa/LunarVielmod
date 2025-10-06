@@ -9,7 +9,7 @@ using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria;
-using Stellamod.Common.QuestSystem;
+using Stellamod.Core.QuestSystem;
 
 namespace Stellamod.UI.CollectionSystem.Quests
 {

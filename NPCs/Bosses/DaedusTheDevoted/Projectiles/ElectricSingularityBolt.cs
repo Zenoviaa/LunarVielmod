@@ -11,14 +11,14 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 { 
     internal class ElectricSingularityBolt : ModProjectile
     {
-        private CommonLightning _lightning;
+        private CoreLightning _lightning;
         private ref float Timer => ref Projectile.ai[0];
-        public CommonLightning Lightning
+        public CoreLightning Lightning
         {
             get
             {
                 //Lazy Loading for a small optimization
-                _lightning ??= new CommonLightning();
+                _lightning ??= new CoreLightning();
                 return _lightning;
             }
         }

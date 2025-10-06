@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.QuestSystem;
+using Stellamod.Core.QuestSystem;
 using Stellamod.UI.CollectionSystem.Quests;
 using System;
 using System.Collections.Generic;
@@ -64,6 +64,15 @@ namespace Stellamod.UI.CollectionSystem
 
         public override void UpdateUI(GameTime gameTime)
         {
+ 
+            if (LunarVeilKeybinds.QuestKeybind.JustPressed)
+            {
+                if (!Main.playerInventory)
+                {
+                    Main.playerInventory = true;
+                }
+                ToggleUI();
+            }
             //Close if inventory isn't open lol
             if (!Main.playerInventory && _userInterface.CurrentState != null)
             {
@@ -78,6 +87,7 @@ namespace Stellamod.UI.CollectionSystem
             {
                 OpenHudUI();
             }
+
 
             _lastUpdateUiGameTime = gameTime;
  
@@ -110,7 +120,7 @@ namespace Stellamod.UI.CollectionSystem
 
         internal void ToggleUI()
         {
-            if (_userInterface.CurrentState != null)
+            if (collectionBookUI.bookUI.book.IsOpen())
             {
                 CloseBookUI();
             }

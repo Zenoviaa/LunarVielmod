@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-using Stellamod.Common.Bases;
+using Stellamod.Core.Bases;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Particles;
 using Terraria;

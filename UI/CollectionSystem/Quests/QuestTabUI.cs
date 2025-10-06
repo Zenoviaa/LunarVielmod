@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.QuestSystem;
-using System;
+using Stellamod.Core.QuestSystem;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI.Elements;
@@ -40,7 +39,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
             _slotGrid = new UIGrid();
             _slotGrid.Width.Set(0, 1f);
             _slotGrid.Height.Set(0, 1f);
-            _slotGrid.ListPadding = 2f;
+            _slotGrid.ListPadding = 6f;
 
             _panel.Append(_slotGrid);
 
@@ -77,43 +76,63 @@ namespace Stellamod.UI.CollectionSystem.Quests
             {
                 questPlayer.RecalculateUI = false;
                 _slotGrid.Clear();
+                int index = 0;
+                QuestComparer comparer = new QuestComparer();
+                questPlayer.ActiveQuests.Sort(comparer);
+                questPlayer.RewardQuests.Sort(comparer);
+                questPlayer.CompletedQuests.Sort(comparer);
                 foreach (var quest in questPlayer.ActiveQuests)
                 {
-                    QuestTabSlot slot = new QuestTabSlot();
+                    QuestTabSlot slot = new QuestTabSlot(index);
                     slot.Quest = quest;
                     slot.Activate();
                     _slotGrid.Add(slot);
+                    index++;
                 }
 
-                UIText separatorText = new UIText("Completed Quests");
-                separatorText.Height.Pixels = 24;
-                separatorText.Width.Pixels = 48 * 6f;
-                separatorText.Top.Pixels = 4;
-                separatorText.IsWrapped = false;
-                _slotGrid.Add(separatorText);
-
-                foreach (var quest in questPlayer.RewardQuests)
+                if(questPlayer.RewardQuests.Count >= 1)
                 {
-                    QuestTabSlot slot = new QuestTabSlot();
-                    slot.Quest = quest;
-                    slot.RewardQuest = true;
-                    slot.Activate();
-                    _slotGrid.Add(slot);
-                }
+                    IndexedUIText rewardSeparator = new IndexedUIText(index, "Collect Quest Rewards");
+                    rewardSeparator.Height.Pixels = 24;
+                    rewardSeparator.Width.Pixels = 48 * 6f;
+                    rewardSeparator.Top.Pixels = 4;
+                    rewardSeparator.IsWrapped = false;
+                    _slotGrid.Add(rewardSeparator);
+                    index++;
+                    foreach (var quest in questPlayer.RewardQuests)
+                    {
+                        QuestTabSlot slot = new QuestTabSlot(index);
+                        slot.Quest = quest;
+                        slot.RewardQuest = true;
+                        slot.Activate();
+                        _slotGrid.Add(slot);
+                        index++;
+                    }
 
-                foreach (var quest in questPlayer.CompletedQuests)
-                {
-                    QuestTabSlot slot = new QuestTabSlot();
-                    slot.Quest = quest;
-                    slot.CompletedQuest = true;
-                    slot.Activate();
-                    _slotGrid.Add(slot);
                 }
-   
+                if (questPlayer.CompletedQuests.Count >= 1)
+                {
+                    IndexedUIText separatorText = new IndexedUIText(index, "Completed Quests");
+                    separatorText.Height.Pixels = 24;
+                    separatorText.Width.Pixels = 48 * 6f;
+                    separatorText.Top.Pixels = 4;
+                    separatorText.IsWrapped = false;
+                    _slotGrid.Add(separatorText);
+                    index++;
+                    foreach (var quest in questPlayer.CompletedQuests)
+                    {
+                        QuestTabSlot slot = new QuestTabSlot(index);
+                        slot.Quest = quest;
+                        slot.CompletedQuest = true;
+                        slot.Activate();
+                        _slotGrid.Add(slot);
+                        index++;
+                    }
+                }
                 _slotGrid.Recalculate();
             }
-      
-   
+
+
             //We just need to get the number of unique materials since that's how we're sorting things
             base.Recalculate();
         }

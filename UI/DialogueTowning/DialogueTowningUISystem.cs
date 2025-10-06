@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common;
-using Stellamod.Common.QuestSystem;
+using Stellamod.Core;
+using Stellamod.Core.QuestSystem;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;

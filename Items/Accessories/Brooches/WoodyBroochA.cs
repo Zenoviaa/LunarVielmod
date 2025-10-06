@@ -12,7 +12,7 @@ using Terraria;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.Common.Bases;
+using Stellamod.Core.Bases;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials;
 

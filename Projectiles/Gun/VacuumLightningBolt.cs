@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Shaders;
+using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Particles;
@@ -23,7 +23,7 @@ namespace Stellamod.Projectiles.Gun
 
         private Vector2 TargetPosition;
         private Player Owner => Main.player[Projectile.owner];
-        public CommonLightning Lightning { get; set; } = new CommonLightning();
+        public CoreLightning Lightning { get; set; } = new CoreLightning();
         public override void SetStaticDefaults()
         {
             // Sets the amount of frames this minion has on its spritesheet

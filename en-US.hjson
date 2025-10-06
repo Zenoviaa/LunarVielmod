@@ -103,7 +103,11 @@ Mods: {
 			LunarVeilServerConfig.DisplayName: Lunar Veil Server Config
 		}
 
-		Keybinds.Dash.DisplayName: Dash
+		Keybinds: {
+			Dash.DisplayName: Dash
+			"Open Questbook.DisplayName": Open  Questbook
+			"Use Xixian Flask.DisplayName": Use  Xixian  Flask
+		}
 	}
 
 	Tiles: {

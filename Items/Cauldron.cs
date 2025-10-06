@@ -1,8 +1,8 @@
 ﻿
 using Stellamod.Buffs;
-using Stellamod.Common.QuestSystem;
-using Stellamod.Common.QuestSystem.Quests;
-using Stellamod.Common.QuestSystem.Quests.ZuiQuest;
+using Stellamod.Core.QuestSystem;
+using Stellamod.Core.QuestSystem.Quests;
+using Stellamod.Core.QuestSystem.Quests.ZuiQuest;
 using Stellamod.Items.Ores;
 using System;
 using System.Collections.Generic;

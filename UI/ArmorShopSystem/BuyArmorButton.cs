@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria;
 using Microsoft.Xna.Framework;
-using Stellamod.Common.ArmorShop;
+using Stellamod.Core.ArmorShop;
 
 namespace Stellamod.UI.ArmorShopSystem
 {

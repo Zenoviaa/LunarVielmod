@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.Camera;
-using Stellamod.Common.Particles;
+using Stellamod.Core.Camera;
+using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Graphics.CameraModifiers;
@@ -9,6 +9,28 @@ namespace Stellamod.Helpers
 {
     internal static class FXUtil
     {
+        public static void SimpleImpactEffect(Vector2 startPosition, Vector2 velocity, int numParticles, Color innerColor, Color glowColor, Color outerGlowColor)
+        {
+            Vector2 inverseVelocity = velocity.SafeNormalize(Vector2.Zero) * 2;
+            float spreadRange = MathHelper.ToRadians(80);
+            for (int n = 0; n < numParticles; n++)
+            {
+                Vector2 particleVelocity = inverseVelocity.RotateRandom(spreadRange);
+                Vector2 particlePosition = startPosition;
+                particlePosition += inverseVelocity * 8;
+                Vector2 centerPosition = particlePosition;
+
+                particlePosition += Main.rand.NextVector2Circular(32, 32);
+
+                Vector2 rotateRefPosition = startPosition + velocity * 64;
+                Vector2 impactVelocity = rotateRefPosition - particlePosition;
+                impactVelocity = impactVelocity.SafeNormalize(Vector2.Zero);
+
+                var particle = GlowCircleLongBoom(particlePosition, innerColor, glowColor, outerGlowColor, duration: 15, baseSize: Main.rand.NextFloat(0.06f, 0.12f));
+                particle.Velocity = impactVelocity;
+                particle.Rotation = particle.Velocity.ToRotation();
+            }
+        }
         public static FogParticle Fog(Vector2 position, Vector2 velocity)
         {
             FogParticle particle = Particle.NewParticle<FogParticle>(position, Vector2.Zero);

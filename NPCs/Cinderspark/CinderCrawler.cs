@@ -67,11 +67,11 @@ namespace Stellamod.NPCs.Cinderspark
             MinSegmentLength = 24;
             MaxSegmentLength = 36;
 
-            CommonWormInit(this);
+            CoreWormInit(this);
         }
 
         // This method is invoked from ExampleWormHead, ExampleWormBody and ExampleWormTail
-        internal static void CommonWormInit(Worm worm)
+        internal static void CoreWormInit(Worm worm)
         {
             // These two properties handle the movement of the worm
             worm.MoveSpeed = 13f;
@@ -227,7 +227,7 @@ namespace Stellamod.NPCs.Cinderspark
 
         public override void Init()
         {
-            CinderCrawlerHead.CommonWormInit(this);
+            CinderCrawlerHead.CoreWormInit(this);
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -276,7 +276,7 @@ namespace Stellamod.NPCs.Cinderspark
 
         public override void Init()
         {
-            CinderCrawlerHead.CommonWormInit(this);
+            CinderCrawlerHead.CoreWormInit(this);
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

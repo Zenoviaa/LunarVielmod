@@ -471,8 +471,8 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
                 return _robeSegment;
             }
         }
-        public CommonLightning Lightning { get; set; } = new CommonLightning();
-        public CommonLightning BlackLightning { get; set; } = new CommonLightning();
+        public CoreLightning Lightning { get; set; } = new CoreLightning();
+        public CoreLightning BlackLightning { get; set; } = new CoreLightning();
         public float LightningBallTimer { get; set; }
 
         public Vector2 ArenaCenter { get; set; }

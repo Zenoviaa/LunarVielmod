@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.QuestSystem;
+using Stellamod.Core.QuestSystem;
 using System;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
@@ -11,16 +11,18 @@ using Terraria.UI;
 
 namespace Stellamod.UI.CollectionSystem.Quests
 {
-    internal class QuestTabSlot : UIElement
+    internal class QuestTabSlot : UIElement,
+        IIndexedUI
     {
         private UIText _text;
-
+        private int _index;
         internal Quest Quest;
 
         private readonly int _context;
         private readonly float _scale;
-        internal QuestTabSlot(float scale = 1f)
+        internal QuestTabSlot(int index, float scale = 1f)
         {
+            _index = index;
             _scale = scale;
             var value = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}CollectionTabSlot",
                 ReLogic.Content.AssetRequestMode.ImmediateLoad);
@@ -111,8 +113,22 @@ namespace Stellamod.UI.CollectionSystem.Quests
 
             spriteBatch.Draw(questBackgroundTexture, rectangle.TopLeft(), null, color2, 0f, default, _scale, SpriteEffects.None, 0f);
             spriteBatch.Draw(slotTexture, rectangle.TopLeft(), null, color2, 0f, default, _scale, SpriteEffects.None, 0f);
-            spriteBatch.Draw(questIconTexture, rectangle.TopLeft() + questIconTexture.Size() / 4, null, Color.White, 0f, default, _scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(questIconTexture, rectangle.TopLeft(), null, Color.White, 0f, default, _scale, SpriteEffects.None, 0f);
             Main.inventoryScale = oldScale;
+        }
+
+        public override int CompareTo(object obj)
+        {
+            if (obj is IIndexedUI otherSlot)
+            {
+                return this.IndexCompareTo(otherSlot);
+            }
+            return base.CompareTo(obj);
+        }
+
+        public int GetIndex()
+        {
+            return _index;
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.Bases;
+using Stellamod.Core.Bases;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;

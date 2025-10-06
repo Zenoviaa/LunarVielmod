@@ -19,7 +19,7 @@ namespace Stellamod.NPCs.Special
                 //1/5 for rare - 20%
                 //Another 1/25 for mythical - 4%
                 //So uhh
-                //I guess that means 1/70 for common
+                //I guess that means 1/70 for Core
                 int num = Main.rand.Next(0, 100);
 
                 var source = npc.GetSource_Death();

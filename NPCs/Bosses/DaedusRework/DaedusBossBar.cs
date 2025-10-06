@@ -13,7 +13,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
     // To use this, in an NPCs SetDefaults, write:
     //  NPC.BossBar = ModContent.GetInstance<ExampleBossBar>();
 
-    // Keep in mind that if the NPC has a boss head icon, it will automatically have the common boss health bar from vanilla. A ModBossBar is not mandatory for a boss.
+    // Keep in mind that if the NPC has a boss head icon, it will automatically have the Core boss health bar from vanilla. A ModBossBar is not mandatory for a boss.
 
     // You can make it so your NPC never shows a boss bar, such as Dungeon Guardian or Lunatic Cultist Clone:
     //  NPC.BossBar = Main.BigBossProgressBar.NeverValid;
@@ -52,7 +52,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 	// To use this, in an NPCs SetDefaults, write:
 	//  NPC.BossBar = ModContent.GetInstance<ExampleBossBar>();
 
-	// Keep in mind that if the NPC has a boss head icon, it will automatically have the common boss health bar from vanilla. A ModBossBar is not mandatory for a boss.
+	// Keep in mind that if the NPC has a boss head icon, it will automatically have the Core boss health bar from vanilla. A ModBossBar is not mandatory for a boss.
 
 	// You can make it so your NPC never shows a boss bar, such as Dungeon Guardian or Lunatic Cultist Clone:
 	//  NPC.BossBar = Main.BigBossProgressBar.NeverValid;

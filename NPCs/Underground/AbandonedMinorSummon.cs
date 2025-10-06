@@ -49,7 +49,7 @@ namespace Stellamod.NPCs.Underground
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            //5x less common than normal mechanical enemies
+            //5x less Core than normal mechanical enemies
             return SpawnRates.GetMechanicalEnemySpawnChance(spawnInfo) * 0.2f;
         }
     }

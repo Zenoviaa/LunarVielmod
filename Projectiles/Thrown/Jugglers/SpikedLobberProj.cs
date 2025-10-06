@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.Bases;
+using Stellamod.Core.Bases;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Terraria;

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Common;
+using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.WorldG.StructureManager;
 using System;

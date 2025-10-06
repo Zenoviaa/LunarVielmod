@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Common.LoadingSystems;
-using Stellamod.Common.Skies;
+using Stellamod.Core.LoadingSystems;
+using Stellamod.Core.Skies;
 using Stellamod.Skies;
 using System;
 using System.Collections.Generic;

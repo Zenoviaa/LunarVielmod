@@ -1,4 +1,4 @@
-﻿using Stellamod.Common.Particles;
+﻿using Stellamod.Core.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;

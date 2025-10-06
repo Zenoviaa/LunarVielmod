@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common;
+using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.JackTheScholar;
 using System.Collections.Generic;

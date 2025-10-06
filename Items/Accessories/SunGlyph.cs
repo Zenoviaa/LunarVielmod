@@ -1,7 +1,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Lights;
+using Stellamod.Core.Lights;
 using Stellamod.Items.Accessories.Runes;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;

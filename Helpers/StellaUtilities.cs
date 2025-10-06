@@ -1,34 +1,39 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Diagnostics;
-using Terraria.ID;
+using System;
 
 namespace Stellamod.Helpers
 {
     public static class StellaUtilities
-	{
-		// Drawing
-		public static Rectangle AnimationFrame(this Texture2D texture, ref int frame, ref int frameTick, int frameTime, int frameCount, Rectangle area, bool frameTickIncrease = true)
-		{
-			if (frameTick >= frameTime)
-			{
-				frameTick = -1;
-				frame = frame == frameCount - 1 ? 0 : frame + 1;
-			}
-			if (frameTickIncrease)
-				frameTick++;
+    {
+        public static string DirectoryHere(this Type type)
+        {
+            string Texture = (type.Namespace).Replace('.', '/');
+            return Texture;
+        }
 
-			int height = texture.Height;
-			if (area != Rectangle.Empty)
-				height = area.Height;
+        // Drawing
+        public static Rectangle AnimationFrame(this Texture2D texture, ref int frame, ref int frameTick, int frameTime, int frameCount, Rectangle area, bool frameTickIncrease = true)
+        {
+            if (frameTick >= frameTime)
+            {
+                frameTick = -1;
+                frame = frame == frameCount - 1 ? 0 : frame + 1;
+            }
+            if (frameTickIncrease)
+                frameTick++;
 
-			return new Rectangle(0, area.Y + ((height / frameCount) * frame), texture.Width, height / frameCount);
-		}
+            int height = texture.Height;
+            if (area != Rectangle.Empty)
+                height = area.Height;
+
+            return new Rectangle(0, area.Y + ((height / frameCount) * frame), texture.Width, height / frameCount);
+        }
 
         public static Rectangle AnimationFrame(this Texture2D texture,
-			ref int frame, 
-			ref int frameTick, 
-			int frameTime, int startFrame, int frameCount, int totalFrameCount, bool frameTickIncrease = true)
+            ref int frame,
+            ref int frameTick,
+            int frameTime, int startFrame, int frameCount, int totalFrameCount, bool frameTickIncrease = true)
         {
             if (frameTick >= frameTime)
             {
@@ -39,13 +44,13 @@ namespace Stellamod.Helpers
                 frameTick++;
 
             int height = texture.Height / frameCount;
-			int heightPerFrame = texture.Height / totalFrameCount;
-			int startY = startFrame * heightPerFrame;
+            int heightPerFrame = texture.Height / totalFrameCount;
+            int startY = startFrame * heightPerFrame;
             return new Rectangle(0, startY + ((height / frameCount) * frame), texture.Width, heightPerFrame);
         }
 
         public static Rectangle GetFrame(this Texture2D texture, int frameNumber, int totalFrameCount)
-        {    
+        {
             int heightPerFrame = texture.Height / totalFrameCount;
             int startY = frameNumber * heightPerFrame;
             return new Rectangle(0, startY, texture.Width, heightPerFrame);

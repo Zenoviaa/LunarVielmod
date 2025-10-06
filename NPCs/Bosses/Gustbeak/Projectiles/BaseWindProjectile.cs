@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.DrawEffects;
+using Stellamod.Core.DrawEffects;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
@@ -12,13 +12,13 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
 {
     public abstract class BaseWindProjectile : ModProjectile
     {
-        private CommonWind _wind;
+        private CoreWind _wind;
 
-        protected CommonWind Wind
+        protected CoreWind Wind
         {
             get
             {
-                _wind ??= new CommonWind();
+                _wind ??= new CoreWind();
                 return _wind;
             }
         }

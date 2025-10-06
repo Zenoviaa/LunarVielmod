@@ -1,5 +1,5 @@
 ﻿using Stellamod.Buffs.Scorpion;
-using Stellamod.Common.ScorpionMountSystem;
+using Stellamod.Core.ScorpionMountSystem;
 using Stellamod.Items.Weapons.Scorpions.OreKingdom;
 using Stellamod.Items.Weapons.Scorpions.RoyalPalace;
 using Terraria;
