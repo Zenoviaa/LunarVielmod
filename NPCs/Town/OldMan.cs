@@ -83,7 +83,7 @@ namespace Stellamod.NPCs.Town
         public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
         {
             spawner.structureToSpawnIn = "Struct/Overworld/TheDock";
-            spawner.spawnTileOffset = new Point(40, -15);
+            spawner.spawnTileOffset = new Point(125, -15);
         }
 
         public override void FindFrame(int frameHeight)
