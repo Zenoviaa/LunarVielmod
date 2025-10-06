@@ -13,6 +13,7 @@ namespace Stellamod
             DashKeybind = KeybindLoader.RegisterKeybind(Mod, "Dash", "F");
             QuestKeybind = KeybindLoader.RegisterKeybind(Mod, "Open Questbook", "Q");
             FlaskKeybind = KeybindLoader.RegisterKeybind(Mod, "Use Xixian Flask", "G");
+           
         }
     }
 }
