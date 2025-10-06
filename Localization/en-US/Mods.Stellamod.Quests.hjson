@@ -83,63 +83,63 @@ MysteriousPlacesVIII: {
 }
 
 DestroySingularity: {
-	DisplayName: ""
+	DisplayName: Destroy Singularity
 	Description: ""
 	Objective: ""
 	IntroText: ""
 }
 
 DestroySingularityII: {
-	DisplayName: ""
+	DisplayName: Destroy Singularity II
 	Description: ""
 	Objective: ""
 	IntroText: ""
 }
 
 DestroySingularityIII: {
-	DisplayName: ""
+	DisplayName: Destroy Singularity III
 	Description: ""
 	Objective: ""
 	IntroText: ""
 }
 
 GetVoidalPassageway: {
-	DisplayName: ""
+	DisplayName: Get Voidal Passageway
 	Description: ""
 	Objective: ""
 	IntroText: ""
 }
 
 GoTrainIII: {
-	DisplayName: ""
+	DisplayName: Go Train III
 	Description: ""
 	Objective: ""
 	IntroText: ""
 }
 
 KillEreshkigal: {
-	DisplayName: ""
+	DisplayName: Kill Ereshkigal
 	Description: ""
 	Objective: ""
 	IntroText: ""
 }
 
 KillPlantera: {
-	DisplayName: ""
+	DisplayName: Kill Plantera
 	Description: ""
 	Objective: ""
 	IntroText: ""
 }
 
 KillWallofFlesh: {
-	DisplayName: ""
+	DisplayName: Kill Wall of Flesh
 	Description: ""
 	Objective: ""
 	IntroText: ""
 }
 
 ReadyUp: {
-	DisplayName: ""
+	DisplayName: Ready Up
 	Description: ""
 	Objective: ""
 	IntroText: ""
@@ -148,7 +148,7 @@ ReadyUp: {
 HuntIII: {
 	Objective: ""
 	Description: ""
-	DisplayName: ""
+	DisplayName: Hunt III
 	IntroText: ""
 }
 
@@ -156,74 +156,74 @@ HuntII: {
 	IntroText: ""
 	Objective: ""
 	Description: ""
-	DisplayName: ""
+	DisplayName: Hunt II
 }
 
 HuntI: {
 	IntroText: ""
 	Objective: ""
 	Description: ""
-	DisplayName: ""
+	DisplayName: Hunt I
 }
 
 HuntIV: {
-	DisplayName: ""
+	DisplayName: Hunt IV
 	Description: ""
 	Objective: ""
 	IntroText: ""
 }
 
 HuntIX: {
-	DisplayName: ""
+	DisplayName: Hunt IX
 	Description: ""
 	Objective: ""
 	IntroText: ""
 }
 
 HuntV: {
-	DisplayName: ""
+	DisplayName: Hunt V
 	Description: ""
 	Objective: ""
 	IntroText: ""
 }
 
 HuntVI: {
-	DisplayName: ""
+	DisplayName: Hunt VI
 	Description: ""
 	Objective: ""
 	IntroText: ""
 }
 
 HuntVII: {
-	DisplayName: ""
+	DisplayName: Hunt VII
 	Description: ""
 	Objective: ""
 	IntroText: ""
 }
 
 HuntVIII: {
-	DisplayName: ""
+	DisplayName: Hunt VIII
 	Description: ""
 	Objective: ""
 	IntroText: ""
 }
 
 HuntX: {
-	DisplayName: ""
+	DisplayName: Hunt X
 	Description: ""
 	Objective: ""
 	IntroText: ""
 }
 
 HuntXI: {
-	DisplayName: ""
+	DisplayName: Hunt XI
 	Description: ""
 	Objective: ""
 	IntroText: ""
 }
 
 HuntXII: {
-	DisplayName: ""
+	DisplayName: Hunt XII
 	Description: ""
 	Objective: ""
 	IntroText: ""
@@ -231,7 +231,7 @@ HuntXII: {
 
 CollectFlowersIII: {
 	Description: ""
-	DisplayName: ""
+	DisplayName: Collect Flowers III
 	Objective: ""
 	IntroText: ""
 }
@@ -240,18 +240,18 @@ CollectFlowersII: {
 	IntroText: ""
 	Objective: ""
 	Description: ""
-	DisplayName: ""
+	DisplayName: Collect Flowers II
 }
 
 CollectFlowersI: {
 	IntroText: ""
 	Objective: ""
 	Description: ""
-	DisplayName: ""
+	DisplayName: Collect Flowers I
 }
 
 CollectFlowersIV: {
-	DisplayName: ""
+	DisplayName: Collect Flowers IV
 	Description: ""
 	Objective: ""
 	IntroText: ""
