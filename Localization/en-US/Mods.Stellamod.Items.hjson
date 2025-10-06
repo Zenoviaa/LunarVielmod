@@ -50,6 +50,9 @@ Core: {
 	StaminaSlash: Stamina Slash: {0}
 	WeaponTypeSword: Sword Weapon Type
 	WeaponTypeKnives: Knives Weapon Type
+	InsourceTime: "{0} seconds added to your flask cooldown"
+	XixianFlaskLock: This item is LOCKED, continue exploring and you may find it.
+	StaminaFlaskLock: This item is LOCKED, continue exploring and you may find it.
 }
 
 SetBonus: {
