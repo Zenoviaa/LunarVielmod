@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.ScorpionMountSystem;
+using Stellamod.Core.ScorpionMountSystem;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using System;
 using Terraria;

@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
-using Stellamod.Common.Bases;
-using Stellamod.Common.Players;
+using Stellamod.Core.Bases;
+using Stellamod.Core.Players;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials;

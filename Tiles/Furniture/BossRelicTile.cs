@@ -12,7 +12,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles.Furniture
 {
-    // Common code for a Master Mode boss relic
+    // Core code for a Master Mode boss relic
     // Contains comments for optional Item.placeStyle handling if you wish to add more relics but use the same tile type (then it would be wise to name this class something more generic like BossRelic)
     // And in case of wanting to add more relics but not wanting to go the optional way, scroll down to the bottom of the file
     public abstract class BossRelicTile : ModTile

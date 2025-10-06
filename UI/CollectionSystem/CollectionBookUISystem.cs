@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.QuestSystem;
+using Stellamod.Core.QuestSystem;
 using Stellamod.UI.CollectionSystem.Quests;
 using System;
 using System.Collections.Generic;

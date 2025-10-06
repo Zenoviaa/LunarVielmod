@@ -40,7 +40,7 @@ namespace Stellamod.Items.Tools
             // To match Titanium Drill, we should set this to -1, but we'll set it to 10 blocks of extra range for the sake of an example.
             Item.tileBoost = 10;
 
-            Item.pick = 200; // How strong the drill is, see https://terraria.wiki.gg/wiki/Pickaxe_power for a list of common values
+            Item.pick = 200; // How strong the drill is, see https://terraria.wiki.gg/wiki/Pickaxe_power for a list of Core values
         }
     }
 }

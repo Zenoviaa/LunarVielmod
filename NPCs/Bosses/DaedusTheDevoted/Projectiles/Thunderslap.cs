@@ -20,7 +20,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];
 
-        public CommonLightning Lightning { get; set; } = new CommonLightning();
+        public CoreLightning Lightning { get; set; } = new CoreLightning();
         public override void SetDefaults()
         {
             base.SetDefaults();

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.Bases;
+using Stellamod.Core.Bases;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
@@ -31,7 +31,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 
 			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
 			var line = new TooltipLine(Mod, "", "");
-			line = new TooltipLine(Mod, "Parandine",  Helpers.LangText.Common("Safunai"))
+			line = new TooltipLine(Mod, "Parandine",  Helpers.LangText.Core("Safunai"))
 			{
 				OverrideColor = new Color(308, 71, 99)
 

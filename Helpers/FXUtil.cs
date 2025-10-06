@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.Camera;
-using Stellamod.Common.Particles;
+using Stellamod.Core.Camera;
+using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Graphics.CameraModifiers;

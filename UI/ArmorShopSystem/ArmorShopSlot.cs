@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.ArmorShop;
+using Stellamod.Core.ArmorShop;
 using Stellamod.Helpers;
 using Stellamod.UI.ArmorReforgeSystem;
 using System;

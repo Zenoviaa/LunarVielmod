@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Stellamod.Common.Shaders;
+using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -26,7 +26,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         private Vector2 TargetPosition;
         
         private Player Owner => Main.player[Projectile.owner];
-        public CommonLightning Lightning { get; set; } = new CommonLightning();
+        public CoreLightning Lightning { get; set; } = new CoreLightning();
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetStaticDefaults()
         {

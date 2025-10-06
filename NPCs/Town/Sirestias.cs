@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets.Biomes;
-using Stellamod.Common;
-using Stellamod.Common.QuestSystem.Quests;
-using Stellamod.Common.QuestSystem;
+using Stellamod.Core;
+using Stellamod.Core.QuestSystem.Quests;
+using Stellamod.Core.QuestSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;

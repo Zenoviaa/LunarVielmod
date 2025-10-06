@@ -585,10 +585,10 @@ namespace Stellamod.NPCs
 
 		internal override void BodyTailAI()
 		{
-			CommonAI_BodyTail(this);
+			CoreAI_BodyTail(this);
 		}
 
-		internal static void CommonAI_BodyTail(Worm worm)
+		internal static void CoreAI_BodyTail(Worm worm)
 		{
 			if (!worm.NPC.HasValidTarget)
 				worm.NPC.TargetClosest(true);
@@ -641,7 +641,7 @@ namespace Stellamod.NPCs
 
 		internal override void BodyTailAI()
 		{
-			WormBody.CommonAI_BodyTail(this);
+			WormBody.CoreAI_BodyTail(this);
 		}
 	}
 }

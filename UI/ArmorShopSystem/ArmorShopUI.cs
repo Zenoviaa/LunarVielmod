@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.ArmorShop;
+using Stellamod.Core.ArmorShop;
 using Stellamod.Items.Shrines.GovheilNAlca;
 using System;
 using System.Text.RegularExpressions;

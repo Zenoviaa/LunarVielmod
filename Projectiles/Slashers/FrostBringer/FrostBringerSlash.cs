@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
-using Stellamod.Common.Bases;
+using Stellamod.Core.Bases;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Slashers.Swords;
 using Stellamod.Trails;

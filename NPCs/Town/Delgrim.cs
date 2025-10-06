@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets.Biomes;
-using Stellamod.Common;
-using Stellamod.Common.QuestSystem.Quests.DelgrimQuest;
-using Stellamod.Common.QuestSystem;
+using Stellamod.Core;
+using Stellamod.Core.QuestSystem.Quests.DelgrimQuest;
+using Stellamod.Core.QuestSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;

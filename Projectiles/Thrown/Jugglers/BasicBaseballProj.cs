@@ -1,4 +1,4 @@
-﻿using Stellamod.Common.Bases;
+﻿using Stellamod.Core.Bases;
 
 namespace Stellamod.Projectiles.Thrown.Jugglers
 {

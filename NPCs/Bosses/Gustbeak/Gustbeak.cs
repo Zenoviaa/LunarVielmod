@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.DrawEffects;
-using Stellamod.Common.Lights;
+using Stellamod.Core.DrawEffects;
+using Stellamod.Core.Lights;
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Items.Placeable;
@@ -212,12 +212,12 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             }
         }
 
-        private CommonWind _wind;
-        private CommonWind Wind
+        private CoreWind _wind;
+        private CoreWind Wind
         {
             get
             {
-                _wind ??= new CommonWind();
+                _wind ??= new CoreWind();
                 return _wind;
             }
         }

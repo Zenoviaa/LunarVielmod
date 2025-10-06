@@ -1,4 +1,4 @@
-﻿using Stellamod.Common.Bases;
+﻿using Stellamod.Core.Bases;
 using System;
 using System.Collections.Generic;
 using System.Linq;

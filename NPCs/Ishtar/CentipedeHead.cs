@@ -61,11 +61,11 @@ namespace Stellamod.NPCs.Ishtar
             MinSegmentLength = 36;
             MaxSegmentLength = 42;
 
-            CommonWormInit(this);
+            CoreWormInit(this);
         }
 
         // This method is invoked from ExampleWormHead, ExampleWormBody and ExampleWormTail
-        internal static void CommonWormInit(Worm worm)
+        internal static void CoreWormInit(Worm worm)
         {
             // These two properties handle the movement of the worm
             worm.MoveSpeed = 13f;
@@ -207,7 +207,7 @@ namespace Stellamod.NPCs.Ishtar
 
         public override void Init()
         {
-            CentipedeHead.CommonWormInit(this);
+            CentipedeHead.CoreWormInit(this);
             NPC.frameCounter += _last;
             _last++;
         }
@@ -258,7 +258,7 @@ namespace Stellamod.NPCs.Ishtar
 
         public override void Init()
         {
-            CentipedeHead.CommonWormInit(this);
+            CentipedeHead.CoreWormInit(this);
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

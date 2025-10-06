@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Bases;
-using Stellamod.Common.Particles;
+using Stellamod.Core.Bases;
+using Stellamod.Core.Particles;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.UI.Systems;

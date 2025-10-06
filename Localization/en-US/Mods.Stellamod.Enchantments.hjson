@@ -1,12 +1,12 @@
-EnchantmentCommonTooltip: Enchantment
-EnchantmentCommonHelp: Insert into a staff to enchant your spell
-EnchantmentCommonTimed: This effect activates after {0} ticks
-EnchantmentCommonMana: "{0}% increased mana cost"
-EnchantmentCommonStaff: Staff Weapon Type
-EnchantmentCommonStaffHelp: Right click to open the enchanting menu
-EnchantmentCommonSynergy: Synergy! {0}% increased damage!
-EnchantmentCommonNoSynergy: No Synergy...
-EnchantmentCommonFailSynergy: Anti Synergy! {0}% decreased damage!
+EnchantmentCoreTooltip: Enchantment
+EnchantmentCoreHelp: Insert into a staff to enchant your spell
+EnchantmentCoreTimed: This effect activates after {0} ticks
+EnchantmentCoreMana: "{0}% increased mana cost"
+EnchantmentCoreStaff: Staff Weapon Type
+EnchantmentCoreStaffHelp: Right click to open the enchanting menu
+EnchantmentCoreSynergy: Synergy! {0}% increased damage!
+EnchantmentCoreNoSynergy: No Synergy...
+EnchantmentCoreFailSynergy: Anti Synergy! {0}% decreased damage!
 
 FlameLashEnchantment: {
 	DisplayName: Flame Lash Enchantment

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.ScorpionMountSystem;
+using Stellamod.Core.ScorpionMountSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;

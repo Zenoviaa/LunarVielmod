@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.MaskingShaderSystem;
+using Stellamod.Core.MaskingShaderSystem;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;

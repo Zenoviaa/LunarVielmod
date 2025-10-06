@@ -20,7 +20,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 
         private ref float Parent => ref Projectile.ai[2];
 
-        public CommonLightning Lightning { get; set; } = new CommonLightning();
+        public CoreLightning Lightning { get; set; } = new CoreLightning();
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();

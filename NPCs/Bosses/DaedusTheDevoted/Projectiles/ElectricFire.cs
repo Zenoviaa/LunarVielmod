@@ -18,7 +18,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
         private Vector2 TargetVelocity;
         private Player _target;
         private float _scale;
-        public CommonLightning Lightning { get; set; } = new CommonLightning();
+        public CoreLightning Lightning { get; set; } = new CoreLightning();
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();

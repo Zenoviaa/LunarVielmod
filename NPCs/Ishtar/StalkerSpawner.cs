@@ -43,7 +43,7 @@ namespace Stellamod.NPCs.Ishtar
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            //5x less common than normal mechanical enemies
+            //5x less Core than normal mechanical enemies
             return SpawnRates.GetIshtarEnemySpawnChance(spawnInfo);
         }
     }

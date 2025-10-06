@@ -1,5 +1,5 @@
-﻿using Stellamod.Common.QuestSystem;
-using Stellamod.Common.QuestSystem.Quests.OldManQuest;
+﻿using Stellamod.Core.QuestSystem;
+using Stellamod.Core.QuestSystem.Quests.OldManQuest;
 using System;
 using System.Collections.Generic;
 using System.Linq;

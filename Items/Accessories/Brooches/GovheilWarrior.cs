@@ -1,4 +1,4 @@
-﻿using Stellamod.Common.Bases;
+﻿using Stellamod.Core.Bases;
 using Stellamod.Items.Ores;
 using Stellamod.Tiles;
 using Terraria;

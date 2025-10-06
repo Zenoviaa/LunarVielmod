@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Foggy;
+using Stellamod.Core.Foggy;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.GameContent.Creative;

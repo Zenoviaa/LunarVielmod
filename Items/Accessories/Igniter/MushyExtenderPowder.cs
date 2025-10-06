@@ -30,7 +30,7 @@ namespace Stellamod.Items.Accessories.Igniter
 		{
 			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
 			var line = new TooltipLine(Mod, "", "");
-			line = new TooltipLine(Mod, "ADBPaadu",  Helpers.LangText.Common("NoStack"))
+			line = new TooltipLine(Mod, "ADBPaadu",  Helpers.LangText.Core("NoStack"))
 			{
 				OverrideColor = new Color(110, 187, 24)
 

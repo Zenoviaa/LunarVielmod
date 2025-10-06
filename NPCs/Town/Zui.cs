@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common;
-using Stellamod.Common.QuestSystem;
-using Stellamod.Common.QuestSystem.Quests;
-using Stellamod.Common.QuestSystem.Quests.ZuiQuest;
+using Stellamod.Core;
+using Stellamod.Core.QuestSystem;
+using Stellamod.Core.QuestSystem.Quests;
+using Stellamod.Core.QuestSystem.Quests.ZuiQuest;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Ammo;

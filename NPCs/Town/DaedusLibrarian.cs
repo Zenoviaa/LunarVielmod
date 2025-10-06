@@ -15,7 +15,7 @@ using Stellamod.NPCs.Bosses.DaedusTheDevoted;
 using Microsoft.Xna.Framework;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Terraria.Audio;
-using Stellamod.Common;
+using Stellamod.Core;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Armors.Vanity.Azalean;
 using Stellamod.Items.Armors.Vanity.Nyxia;

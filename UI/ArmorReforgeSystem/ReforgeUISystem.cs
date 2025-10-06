@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.ArmorReforge;
+using Stellamod.Core.ArmorReforge;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using System.Collections.Generic;

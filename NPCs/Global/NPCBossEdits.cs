@@ -108,8 +108,8 @@ namespace Stellamod.NPCs.Global
                 for (int i = 0; i < rules.Count; i++)
                 {
                     IItemDropRule rule = rules[i];
-                    if (rule is CommonDrop commonDrop
-						&& commonDrop.itemId == ItemID.TempleKey)
+                    if (rule is CommonDrop CommonDrop
+						&& CommonDrop.itemId == ItemID.TempleKey)
                     {
                         npcLoot.Remove(rule);
                     }

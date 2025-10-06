@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.Bases;
-using Stellamod.Common.Lights;
+using Stellamod.Core.Bases;
+using Stellamod.Core.Lights;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Swords;

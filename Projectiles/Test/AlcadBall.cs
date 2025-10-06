@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Stellamod.Common.MaskingShaderSystem;
+using Stellamod.Core.MaskingShaderSystem;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;

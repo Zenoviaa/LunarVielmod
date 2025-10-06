@@ -21,7 +21,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 return Main.player[(int)Projectile.ai[1]];
             }
         }
-        public CommonLightning Lightning { get; set; } = new CommonLightning();
+        public CoreLightning Lightning { get; set; } = new CoreLightning();
         public override void SetDefaults()
         {
             base.SetDefaults();

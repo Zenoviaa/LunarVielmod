@@ -46,7 +46,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
 
-            line = new TooltipLine(Mod, "Alcarishasd",  Helpers.LangText.Common("Greatsword"))
+            line = new TooltipLine(Mod, "Alcarishasd",  Helpers.LangText.Core("Greatsword"))
             {
                 OverrideColor = ColorFunctions.GreatswordWeaponType
             };

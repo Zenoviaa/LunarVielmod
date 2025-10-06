@@ -267,7 +267,7 @@ namespace Stellamod.Trails
         public void Draw(IEnumerable<Vector2> originalPositions, Vector2 generalOffset, int totalTrailPoints, float? directionOverride = null) => DrawPrims(originalPositions, generalOffset, totalTrailPoints, false, directionOverride);
 
         /// <summary>
-        /// Call this to draw primitives to the pixelated RenderTarget. Should only be called in <see cref="InfernumMode.Common.Graphics.IPixelPrimitiveDrawer.DrawPixelPrimitives(SpriteBatch)"/>
+        /// Call this to draw primitives to the pixelated RenderTarget. Should only be called in <see cref="InfernumMode.Core.Graphics.IPixelPrimitiveDrawer.DrawPixelPrimitives(SpriteBatch)"/>
         /// </summary>
         /// <param name="originalPositions"></param>
         /// <param name="generalOffset"></param>

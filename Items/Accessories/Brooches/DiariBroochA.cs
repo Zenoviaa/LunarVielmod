@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Buffs.Charms;
-using Stellamod.Common.Bases;
+using Stellamod.Core.Bases;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Creative;

@@ -1,5 +1,5 @@
 ﻿using Stellamod.Buffs;
-using Stellamod.Common.Bases;
+using Stellamod.Core.Bases;
 using Stellamod.Projectiles.Lanterns;
 using Terraria.ModLoader;
 

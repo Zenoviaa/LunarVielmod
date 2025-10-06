@@ -1,4 +1,4 @@
-﻿using Stellamod.Common.QuestSystem;
+﻿using Stellamod.Core.QuestSystem;
 using System.Collections.Generic;
 
 namespace Stellamod.UI.CollectionSystem.Quests
