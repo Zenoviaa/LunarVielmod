@@ -199,7 +199,7 @@ namespace Stellamod.NPCs.Town
             buttons.Add(new Tuple<string, Action>("Talk", Talk));
             buttons.Add(new Tuple<string, Action>("Shop", OpenShop));
 
-            portrait = "VeiizalPortrait";
+            portrait = "VeizalPortrait";
             timeBetweenTexts = 0.015f;
             talkingSound = SoundID.Item1;
 
@@ -210,7 +210,7 @@ namespace Stellamod.NPCs.Town
         public override void IdleChat(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
         {
             base.IdleChat(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
-            portrait = "VeiizalPortrait";
+            portrait = "VeizalPortrait";
             timeBetweenTexts = 0.015f;
             talkingSound = SoundID.Item1;
 

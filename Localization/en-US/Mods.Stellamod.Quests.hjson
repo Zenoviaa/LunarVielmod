@@ -60,6 +60,7 @@ MysteriousPlacesV: {
 	Objective: Visit a large tree near the Ocean.
 	IntroText: ""
 }
+
 MysteriousPlacesVI: {
 	DisplayName: Mysterious Places VI
 	Description: ""
@@ -144,3 +145,86 @@ ReadyUp: {
 	IntroText: ""
 }
 
+HuntIII: {
+	Objective: ""
+	Description: ""
+	DisplayName: ""
+	IntroText: ""
+}
+
+HuntII: {
+	IntroText: ""
+	Objective: ""
+	Description: ""
+	DisplayName: ""
+}
+
+HuntI: {
+	IntroText: ""
+	Objective: ""
+	Description: ""
+	DisplayName: ""
+}
+
+HuntIV: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+HuntIX: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+HuntV: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+HuntVI: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+HuntVII: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+HuntVIII: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+HuntX: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+HuntXI: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
+
+HuntXII: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}
