@@ -30,7 +30,7 @@ namespace Stellamod.Items.Weapons.Melee
 		}
 		public override void SetDefaults()
 		{
-			// Common Properties
+			// Core Properties
 			Item.value = Item.sellPrice(silver: 10); // The number and type of coins item can be sold for to an NPC
 
 			// Use Properties
