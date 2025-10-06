@@ -64,6 +64,15 @@ namespace Stellamod.UI.CollectionSystem
 
         public override void UpdateUI(GameTime gameTime)
         {
+ 
+            if (LunarVeilKeybinds.QuestKeybind.JustPressed)
+            {
+                if (!Main.playerInventory)
+                {
+                    Main.playerInventory = true;
+                }
+                ToggleUI();
+            }
             //Close if inventory isn't open lol
             if (!Main.playerInventory && _userInterface.CurrentState != null)
             {
@@ -79,10 +88,7 @@ namespace Stellamod.UI.CollectionSystem
                 OpenHudUI();
             }
 
-            if (LunarVeilKeybinds.QuestKeybind.JustPressed)
-            {
-                ToggleUI();
-            }
+
             _lastUpdateUiGameTime = gameTime;
  
         
