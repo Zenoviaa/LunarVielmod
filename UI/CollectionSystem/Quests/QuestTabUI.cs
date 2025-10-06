@@ -90,7 +90,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
                     index++;
                 }
 
-                if(questPlayer.RewardQuests.Count >= 0)
+                if(questPlayer.RewardQuests.Count >= 1)
                 {
                     IndexedUIText rewardSeparator = new IndexedUIText(index, "Collect Quest Rewards");
                     rewardSeparator.Height.Pixels = 24;
@@ -110,7 +110,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
                     }
 
                 }
-                if (questPlayer.CompletedQuests.Count >= 0)
+                if (questPlayer.CompletedQuests.Count >= 1)
                 {
                     IndexedUIText separatorText = new IndexedUIText(index, "Completed Quests");
                     separatorText.Height.Pixels = 24;
