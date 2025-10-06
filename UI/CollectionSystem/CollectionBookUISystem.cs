@@ -120,7 +120,7 @@ namespace Stellamod.UI.CollectionSystem
 
         internal void ToggleUI()
         {
-            if (_userInterface.CurrentState != null)
+            if (collectionBookUI.bookUI.book.IsOpen())
             {
                 CloseBookUI();
             }
