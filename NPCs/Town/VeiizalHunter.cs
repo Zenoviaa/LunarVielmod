@@ -22,7 +22,7 @@ namespace Stellamod.NPCs.Town
 {
     // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
 
-    public class Veiizal : VeilTownNPC
+    public class VeiizalHunter : VeilTownNPC
     {
         public int NumberOfTimesTalkedTo = 0;
         public const string ShopName = "Shop";
