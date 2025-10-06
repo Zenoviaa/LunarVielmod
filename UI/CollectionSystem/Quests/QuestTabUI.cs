@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.QuestSystem;
-using System;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI.Elements;
@@ -78,6 +77,10 @@ namespace Stellamod.UI.CollectionSystem.Quests
                 questPlayer.RecalculateUI = false;
                 _slotGrid.Clear();
                 int index = 0;
+                QuestComparer comparer = new QuestComparer();
+                questPlayer.ActiveQuests.Sort(comparer);
+                questPlayer.RewardQuests.Sort(comparer);
+                questPlayer.CompletedQuests.Sort(comparer);
                 foreach (var quest in questPlayer.ActiveQuests)
                 {
                     QuestTabSlot slot = new QuestTabSlot(index);
@@ -113,11 +116,11 @@ namespace Stellamod.UI.CollectionSystem.Quests
                     _slotGrid.Add(slot);
                     index++;
                 }
-   
+
                 _slotGrid.Recalculate();
             }
-      
-   
+
+
             //We just need to get the number of unique materials since that's how we're sorting things
             base.Recalculate();
         }

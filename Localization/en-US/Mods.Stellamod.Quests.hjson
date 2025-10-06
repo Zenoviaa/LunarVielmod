@@ -228,3 +228,31 @@ HuntXII: {
 	Objective: ""
 	IntroText: ""
 }
+
+CollectFlowersIII: {
+	Description: ""
+	DisplayName: ""
+	Objective: ""
+	IntroText: ""
+}
+
+CollectFlowersII: {
+	IntroText: ""
+	Objective: ""
+	Description: ""
+	DisplayName: ""
+}
+
+CollectFlowersI: {
+	IntroText: ""
+	Objective: ""
+	Description: ""
+	DisplayName: ""
+}
+
+CollectFlowersIV: {
+	DisplayName: ""
+	Description: ""
+	Objective: ""
+	IntroText: ""
+}

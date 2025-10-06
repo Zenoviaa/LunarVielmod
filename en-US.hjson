@@ -103,7 +103,10 @@ Mods: {
 			LunarVeilServerConfig.DisplayName: Lunar Veil Server Config
 		}
 
-		Keybinds.Dash.DisplayName: Dash
+		Keybinds: {
+			Dash.DisplayName: Dash
+			"Open Questbook.DisplayName": Open  Questbook
+		}
 	}
 
 	Tiles: {
