@@ -79,6 +79,10 @@ namespace Stellamod.UI.CollectionSystem
                 OpenHudUI();
             }
 
+            if (LunarVeilKeybinds.QuestKeybind.JustPressed)
+            {
+                ToggleUI();
+            }
             _lastUpdateUiGameTime = gameTime;
  
         
