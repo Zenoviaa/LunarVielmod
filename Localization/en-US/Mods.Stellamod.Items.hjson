@@ -8851,3 +8851,13 @@ InsourceUnlocker: {
 	Tooltip: ""
 	DisplayName: Insource Unlocker
 }
+
+ThornsBlade: {
+	Tooltip: ""
+	DisplayName: Thorns Blade
+}
+
+Pavelspire: {
+	Tooltip: ""
+	DisplayName: Pavelspire
+}

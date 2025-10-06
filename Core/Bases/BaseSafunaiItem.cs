@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Assets;
 using Stellamod.Items;
 using Terraria;
 using Terraria.Audio;
@@ -7,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
 {
-    public abstract class BaseSafunaiItem : ClassSwapItem
+    public abstract class BaseSafunaiItem : ModItem
     {
         public int combo;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -15,28 +16,28 @@ namespace Stellamod.Core.Bases
             combo++;
             if (combo == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Safunais"), position);
+                SoundEngine.PlaySound(AssetRegistry.Sounds.Melee.Safunais1, position);
 
             }
             if (combo == 2)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Safunais2"), position);
+                SoundEngine.PlaySound(AssetRegistry.Sounds.Melee.Safunais2, position);
 
             }
             if (combo == 3)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Safunais"), position);
+                SoundEngine.PlaySound(AssetRegistry.Sounds.Melee.Safunais1, position);
 
             }
             if (combo == 4)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Safunais2"), position);
+                SoundEngine.PlaySound(AssetRegistry.Sounds.Melee.Safunais2, position);
 
             }
             if (combo == 5)
             {
                 combo = 0;
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Safunais3"), position);
+                SoundEngine.PlaySound(AssetRegistry.Sounds.Melee.Safunais3, position);
             }
 
             float distanceMult = Main.rand.NextFloat(0.8f, 1.2f);
@@ -48,7 +49,7 @@ namespace Stellamod.Core.Bases
 
             if (proj.ModProjectile is BaseSafunaiProjectile modProj)
             {
-                modProj.SwingTime = (int)(Item.useTime * UseTimeMultiplier(player) * (slam ? 1.75f : 1)) * 16;
+                modProj.SwingTime = (int)(Item.useTime * UseTimeMultiplier(player) * (slam ? 1.75f : 1)) * 22;
                 modProj.SwingDistance = player.Distance(Main.MouseWorld) * distanceMult;
                 modProj.Curvature = 0.33f * curvatureMult;
                 modProj.Flip = combo % 2 == 1;

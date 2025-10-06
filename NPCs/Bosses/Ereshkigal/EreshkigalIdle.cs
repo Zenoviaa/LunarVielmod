@@ -1,54 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Stellamod.Assets.Biomes;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Accessories.Brooches;
-using Stellamod.Items.Armors.Vanity.Gia;
 using Stellamod.Items.Consumables;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-
-using Stellamod.Items.Ores;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Quest.BORDOC;
-using Stellamod.Items.Quest.Merena;
-using Stellamod.Items.Weapons.Igniters;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Mage.Stein;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Melee.Greatswords;
-using Stellamod.Items.Weapons.Melee.Greatswords.INY;
-using Stellamod.Items.Weapons.Melee.Safunais;
-using Stellamod.Items.Weapons.PowdersItem;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Ranged.GunSwapping;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.Items.Weapons.Summon.Orbs;
-using Stellamod.Items.Weapons.Thrown;
-using Stellamod.Items.Weapons.Thrown.Jugglers;
 
 using Stellamod.UI.Dialogue;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.Personalities;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Bosses.Ereshkigal
 {
     // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
     //[AutoloadHead]
-  
+
     public class EreshkigalIdle : ModNPC
     {
         public int NumberOfTimesTalkedTo = 0;
@@ -114,7 +83,7 @@ namespace Stellamod.NPCs.Bosses.Ereshkigal
             NPC.DeathSound = SoundID.NPCDeath1;
             NPC.knockBackResist = 0.5f;
             NPC.dontTakeDamage = true;
-       
+
         }
 
 
@@ -134,7 +103,7 @@ namespace Stellamod.NPCs.Bosses.Ereshkigal
 
 
 
-       
+
 
         public override bool CanChat()
         {
@@ -246,7 +215,7 @@ namespace Stellamod.NPCs.Bosses.Ereshkigal
 
                     Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 
-                   // CombatText.NewText(NPC.getRect(), Color.White, "God Hunted!", true, false);
+                    // CombatText.NewText(NPC.getRect(), Color.White, "God Hunted!", true, false);
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1024f, 16f);
                     for (int i = 0; i < 4; i++)
                     {
@@ -287,8 +256,8 @@ namespace Stellamod.NPCs.Bosses.Ereshkigal
 
 
 
-            
-        }
+
+            }
 
             if (firstButton)
             {
@@ -336,9 +305,9 @@ namespace Stellamod.NPCs.Bosses.Ereshkigal
 
                         break;
 
-                
 
-                   
+
+
                 }
 
                 // Reforge/Anvil sound
@@ -372,7 +341,7 @@ namespace Stellamod.NPCs.Bosses.Ereshkigal
 
 
 
-        
+
 
 
 

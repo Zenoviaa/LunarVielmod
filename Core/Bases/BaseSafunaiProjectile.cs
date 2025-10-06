@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Effects.Trails;
+using Stellamod.Core.Effects;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -11,13 +13,15 @@ using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.Core.SwingSystem;
 
 namespace Stellamod.Core.Bases
 {
     public abstract class BaseSafunaiProjectile : ModProjectile
     {
-        private Vector2[] _oldSwingPos;
+        private bool _initialized;
         private bool _synced;
+        private OvalSwing _oval;
         protected ref float Timer => ref Projectile.ai[0];
         protected BaseSafunaiItem Safunai
         {
@@ -26,7 +30,7 @@ namespace Stellamod.Core.Bases
                 return Owner.HeldItem.ModItem as BaseSafunaiItem;
             }
         }
-
+        public ITrailer Trailer { get; set; }
         private Player Owner => Main.player[Projectile.owner];
         public override void SetStaticDefaults()
         {
@@ -36,7 +40,6 @@ namespace Stellamod.Core.Bases
 
         public override void SetDefaults()
         {
-            _oldSwingPos = new Vector2[32];
             Projectile.Size = new Vector2(85, 85);
             Projectile.friendly = true;
             Projectile.tileCollide = false;
@@ -59,10 +62,20 @@ namespace Stellamod.Core.Bases
 
         public Vector2 CurrentBase = Vector2.Zero;
 
+        public Vector2[] swingTrailCache;
         private int slamTimer = 0;
 
         public override void AI()
         {
+            if (!_initialized)
+            {
+                _oval = new OvalSwing();
+                swingTrailCache = new Vector2[32];
+                Trailer = new SlashTrailer();
+                OnInitialize();
+                _initialized = true;
+            }
+
             if (Projectile.timeLeft > 2) //Initialize chain control points on first tick, in case of projectile hooking in on first tick
             {
                 _chainMidA = Projectile.Center;
@@ -76,22 +89,23 @@ namespace Stellamod.Core.Bases
             else if (!_synced)
                 return;
 
-            Lighting.AddLight(CurrentBase, new Color(254, 204, 72).ToVector3());
+
             Projectile.timeLeft = 2;
-
-            if (Slam)
-                Owner.itemTime = Owner.itemAnimation = 25;
-            else if (PreSlam)
-                Owner.itemTime = Owner.itemAnimation = 10;
-
+            Owner.itemTime = 2;
+            Owner.heldProj = Projectile.whoAmI;
             ThrowOutAI();
 
             if (!Slam)
                 Owner.itemRotation = MathHelper.WrapAngle(Owner.AngleTo(Projectile.Center) - (Owner.direction < 0 ? MathHelper.Pi : 0));
             else
                 Owner.itemRotation = MathHelper.WrapAngle(Owner.AngleTo(Main.MouseWorld) - (Owner.direction < 0 ? MathHelper.Pi : 0));
+            Lighting.AddLight(CurrentBase, new Color(254, 204, 72).ToVector3());
         }
 
+        public virtual void OnInitialize()
+        {
+
+        }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
 
@@ -100,24 +114,22 @@ namespace Stellamod.Core.Bases
 
         private Vector2 GetSwingPosition(float progress)
         {
+            _oval.SetDirection(Flip ? 1 : -1);
+            Vector2 velocity = Projectile.velocity;
+            _oval.Easing = EasingFunction.InOutCirc;
             if (Slam)
             {
-                progress = Easing.InOutCubic(progress);
-                progress = Easing.InBack(progress);
+                _oval.Easing = EasingFunction.InOutExpo;
             }
-            else
-            {
-                progress = Easing.InOutCubic(progress);
 
-            }
-         
-            //Starts at owner center, goes to peak range, then returns to owner center
-            float distance = MathHelper.Clamp(SwingDistance, ThrowRange * 0.1f, ThrowRange) * MathHelper.Lerp((float)Math.Sin(progress * MathHelper.Pi), 1, 0.04f);
-            distance = Math.Max(distance, 100); //Dont be too close to player
 
-            float angleMaxDeviation = MathHelper.Pi / 1.2f;
-            float angleOffset = Owner.direction * (Flip ? -1 : 1) * MathHelper.Lerp(-angleMaxDeviation, angleMaxDeviation, progress); //Moves clockwise if player is facing right, counterclockwise if facing left
-            return Projectile.velocity.RotatedBy(angleOffset) * distance;
+            float endDistance = Math.Min(SwingDistance, 252);
+            float distance = MathHelper.Lerp(0, endDistance, EasingFunction.OutExpo(progress));
+            distance = MathHelper.Lerp(distance, 0, EasingFunction.InExpo(progress));
+            _oval.XSwingRadius = distance;
+            _oval.YSwingRadius = distance / 2;
+            _oval.UpdateSwing(progress, Projectile.position, velocity, out Vector2 offset);
+            return offset;
         }
 
         public virtual void ThrowOutAI()
@@ -125,37 +137,21 @@ namespace Stellamod.Core.Bases
             Projectile.rotation = Projectile.AngleFrom(Owner.Center);
             Vector2 position = Owner.MountedCenter;
             float progress = ++Timer / SwingTime; //How far the projectile is through its swing
-
-
             if (slamTimer == 5)
                 SoundEngine.PlaySound(SoundID.NPCDeath7, Projectile.Center);
 
-            Vector2[] swingPos = new Vector2[60];
-            for(int i = 0; i < swingPos.Length; i++)
-            {
-                float l = swingPos.Length;
-                //Lerp between the points
-                float progressOnTrail = i / l;
-
-                //Calculate starting lerp value
-                float startTrailLerpValue = MathHelper.Clamp(progress - 0.5f, 0, 1);
-                float startTrailProgress = startTrailLerpValue;
-                startTrailProgress = startTrailLerpValue;
-
-
-                //Calculate ending lerp value
-                float endTrailLerpValue = progress;
-                float endTrailProgress = endTrailLerpValue;
-                endTrailProgress = endTrailLerpValue;
-
-                //Lerp in between points
-                float smoothedTrailProgress = MathHelper.Lerp(startTrailProgress, endTrailProgress, progressOnTrail);
-                Vector2 centerPos = position + GetSwingPosition(smoothedTrailProgress);
-                swingPos[i] = centerPos;
-            }
-            _oldSwingPos = swingPos;
-
             Projectile.Center = position + GetSwingPosition(progress);
+            _oval.CalculateTrailingPoints(progress, Projectile.velocity, ref swingTrailCache);
+            _oval.TrailOffset = 1f;
+            //Now we transform the points
+            //Calculating points locally and then translating it is a bit simpler.
+            for (int t = 0; t < swingTrailCache.Length; t++)
+            {
+                Matrix translationMatrix = Matrix.CreateTranslation(new
+                    Vector3(Owner.Center.X, Owner.Center.Y, 0));
+                swingTrailCache[t] = Vector2.Transform(swingTrailCache[t], translationMatrix);
+            }
+
             Projectile.direction = Projectile.spriteDirection = -Owner.direction * (Flip ? -1 : 1);
 
             if (Timer >= SwingTime)
@@ -171,22 +167,12 @@ namespace Stellamod.Core.Bases
 
         protected virtual Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Transparent,Color.Purple,completionRatio);
-        }
-
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        protected virtual void DrawSlashTrail()
-        {
-            Vector2 drawOffset = -Main.screenPosition;
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.LightningTrail2);
-            TrailDrawer.DrawPrims(_oldSwingPos, drawOffset, 155);
+            return Color.Lerp(Color.Transparent, Color.Purple, completionRatio);
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawSlashTrail();
+            Trailer?.DrawTrail(ref lightColor, swingTrailCache);
             Texture2D projTexture = TextureAssets.Projectile[Projectile.type].Value;
             Texture2D glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
 
@@ -199,20 +185,20 @@ namespace Stellamod.Core.Bases
 
             //Draw from bottom center of texture
             Vector2 origin = new Vector2(projTexture.Width / 2, projTexture.Height);
-            SpriteEffects flip = (Projectile.spriteDirection < 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            SpriteEffects flip = Projectile.spriteDirection < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
             lightColor = Lighting.GetColor((int)(Projectile.Center.X / 16f), (int)(Projectile.Center.Y / 16f));
 
 
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-            float scaleMult = Easing.SpikeOutCirc(Timer / SwingTime);
+            float scaleMult = EasingFunction.QuadraticBump(Timer / SwingTime);
             scaleMult = scaleMult * 1.25f;
             spriteBatch.Draw(projTexture, projBottom - Main.screenPosition, null, lightColor, newRotation, origin, Projectile.scale * scaleMult, flip, 0);
 
             spriteBatch.Restart(blendState: BlendState.Additive);
-            float glowProgress = Easing.SpikeOutCirc(Timer / SwingTime);
-            for(int i = 0; i < 1; i++)
+            float glowProgress = EasingFunction.QuadraticBump(Timer / SwingTime);
+            for (int i = 0; i < 1; i++)
             {
                 spriteBatch.Draw(glowTexture, projBottom - Main.screenPosition, null, Color.White * glowProgress, newRotation, origin, Projectile.scale * scaleMult, flip, 0);
             }
@@ -223,14 +209,15 @@ namespace Stellamod.Core.Bases
                 return false;
 
             Texture2D whiteTexture = ModContent.Request<Texture2D>(Texture + "_White").Value;
-            if (slamTimer < 20 && slamTimer > 5)
-            {
-                float progress = (slamTimer - 5) / 15f;
-                float transparency = (float)Math.Pow(1 - progress, 2);
-                float scale = 1 + progress;
-                Main.spriteBatch.Draw(whiteTexture, projBottom - Main.screenPosition, null, Color.White * transparency, newRotation, origin, Projectile.scale * scale, flip, 0);
-            }
+            float transparency = glowProgress * 0.5f;
+            float scale = 1 + glowProgress * 0.5f;
 
+            spriteBatch.Restart(blendState: BlendState.Additive);
+            spriteBatch.Draw(whiteTexture, projBottom - Main.screenPosition, null, Color.White * transparency, newRotation, origin, Projectile.scale * scale, flip, 0);
+            for (int i = 0; i < 2; i++)
+                spriteBatch.Draw(projTexture, projBottom - Main.screenPosition, null, lightColor, newRotation, origin, Projectile.scale * scaleMult, flip, 0);
+
+            spriteBatch.RestartDefaults();
             return false;
         }
 
@@ -244,9 +231,9 @@ namespace Stellamod.Core.Bases
             float progress = Timer / SwingTime;
 
             if (Slam)
-                progress = EaseFunction.EaseCubicInOut.Ease(progress);
+                progress = EasingFunction.InOutCubic(progress);
             else
-                progress = EaseFunction.EaseQuadOut.Ease(progress);
+                progress = EasingFunction.OutQuad(progress);
 
             float angleMaxDeviation = MathHelper.Pi * 0.85f;
             float angleOffset = Owner.direction * (Flip ? -1 : 1) * MathHelper.Lerp(angleMaxDeviation, -angleMaxDeviation / 4, progress);
@@ -272,6 +259,27 @@ namespace Stellamod.Core.Bases
                 Vector2 origin = new Vector2(chainTex.Width / 2, chainTex.Height); //Draw from center bottom of texture
                 spriteBatch.Draw(chainTex, position - Main.screenPosition, null, chainLightColor, rotation, origin, scale, SpriteEffects.None, 0);
             }
+
+            if (Slam)
+            {
+                spriteBatch.Restart(blendState: BlendState.Additive);
+                float glowProgress = EasingFunction.QuadraticBump(Timer / SwingTime);
+                int glowPoints = (int)MathHelper.Lerp(0, numPoints, glowProgress);
+                for (int i = 1; i < glowPoints; i++)
+                {
+                    Vector2 position = chainPositions[i];
+
+                    float rotation = (chainPositions[i] - chainPositions[i - 1]).ToRotation() - MathHelper.PiOver2; //Calculate rotation based on direction from last point
+                    float yScale = Vector2.Distance(chainPositions[i], chainPositions[i - 1]) / chainTex.Height; //Calculate how much to squash/stretch for smooth chain based on distance between points
+
+                    Vector2 scale = new Vector2(1, yScale); // Stretch/Squash chain segment
+                    Color chainLightColor = Lighting.GetColor((int)position.X / 16, (int)position.Y / 16); //Lighting of the position of the chain segment
+                    Vector2 origin = new Vector2(chainTex.Width / 2, chainTex.Height); //Draw from center bottom of texture
+                    spriteBatch.Draw(chainTex, position - Main.screenPosition, null, chainLightColor, rotation, origin, scale, SpriteEffects.None, 0);
+                    spriteBatch.Draw(chainTex, position - Main.screenPosition, null, chainLightColor, rotation, origin, scale, SpriteEffects.None, 0);
+                }
+                spriteBatch.RestartDefaults();
+            }
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -289,6 +297,14 @@ namespace Stellamod.Core.Bases
                     return true;
             }
             return base.Colliding(projHitbox, targetHitbox);
+        }
+        public virtual void DrawSwingTrail(ref Color lightColor, Vector2[] swingTrailCache)
+        {
+            //I think it makes the most sense to abstract our trails out to a trailer and shader cache,
+            //so we can just replace the trailer for different trails!
+            //So much simpler, and we can just make new trailers
+
+            Trailer?.DrawTrail(ref lightColor, swingTrailCache);
         }
 
         public override void SendExtraAI(BinaryWriter writer)

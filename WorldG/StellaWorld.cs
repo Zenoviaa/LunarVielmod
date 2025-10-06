@@ -99,7 +99,7 @@ namespace Stellamod.WorldG
                 //  tasks.Insert(caveGen + 2, new PassLegacy("Granite Caves", WorldGenMarbleCaves));
 
                 tasks.Insert(caveGen + 1, new PassLegacy("Caves 1", WorldGenCaves));
-                tasks.Insert(caveGen + 2, new PassLegacy("Marble Caves", WorldGenGraniteCaves));
+                tasks.Insert(caveGen + 2, new PassLegacy("Marble Caves", WorldGenDarkspace));
 
             }
 
@@ -175,6 +175,36 @@ namespace Stellamod.WorldG
         }
 
 
+        private void WorldGenDarkspace(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Creating a Dark Place.";
+            var genRand = WorldGen.genRand;
+            for (int x = 0; x < Main.maxTilesX; x++)
+            {
+                int yMax = (Main.UnderworldLayer - (Main.maxTilesY / 20));
+                int yMin = yMax - 50;
+                int y = genRand.Next(yMin, yMax);
+                // We go down until we hit a solid tile or go under the world's surface
+                while (!WorldGen.SolidTile(x, y) && y <= Main.UnderworldLayer)
+                {
+                    y++;
+                }
+
+                // If we went under the world's surface, try again
+                if (y > Main.UnderworldLayer)
+                {
+                    continue;
+                }
+
+                Point tileRunPoint = new Point(x, y);
+                if (x % 24 == 0)
+                {
+                    WorldGen.TileRunner(tileRunPoint.X, tileRunPoint.Y,
+                        genRand.Next(150, 150),
+                        genRand.Next(500, 500), TileID.Granite);
+                }
+            }
+        }
         #region Cave Formation
         private void WorldGenColosseum(GenerationProgress progress, GameConfiguration configuration)
         {

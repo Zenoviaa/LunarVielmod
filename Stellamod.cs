@@ -106,6 +106,7 @@ namespace Stellamod
 
             if (Main.netMode != NetmodeID.Server)
             {
+                ShaderLoader.LoadShaders(this);
                 ShaderRegistry.LoadShaders();
                 CrystalShaderRegistry.LoadShaders();
                 MedalCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<Medal>(), 999L, "Ruin medals"));
