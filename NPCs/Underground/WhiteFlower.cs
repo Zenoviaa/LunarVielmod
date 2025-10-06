@@ -9,7 +9,6 @@ using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Underground
@@ -39,14 +38,6 @@ namespace Stellamod.NPCs.Underground
         public override void AI()
         {
             NPC.ai[1]++;
-            if (NPC.ai[1] >= 40)
-            {
-                if (Main.rand.NextBool(9))
-                {
-                    var entitySource = NPC.GetSource_FromThis();
-                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FloweredWhiteLight>());
-                }
-            }
             NPC.damage = 0;
 
             NPC.ai[0]++;
