@@ -113,7 +113,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
 
             spriteBatch.Draw(questBackgroundTexture, rectangle.TopLeft(), null, color2, 0f, default, _scale, SpriteEffects.None, 0f);
             spriteBatch.Draw(slotTexture, rectangle.TopLeft(), null, color2, 0f, default, _scale, SpriteEffects.None, 0f);
-            spriteBatch.Draw(questIconTexture, rectangle.TopLeft() + questIconTexture.Size() / 4, null, Color.White, 0f, default, _scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(questIconTexture, rectangle.TopLeft(), null, Color.White, 0f, default, _scale, SpriteEffects.None, 0f);
             Main.inventoryScale = oldScale;
         }
 
