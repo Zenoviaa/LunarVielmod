@@ -236,7 +236,7 @@ namespace Stellamod.Core.Bases
             switch (BroochType)
             {
                 case BroochType.Simple:
-                    line = new TooltipLine(Mod, "Brooch of Ame", LangText.Core("SimpleBrooch"))
+                    line = new TooltipLine(Mod, "Brooch of Ame", LangText.Common("SimpleBrooch"))
                     {
                         OverrideColor = new Color(198, 124, 225)
 
@@ -245,14 +245,14 @@ namespace Stellamod.Core.Bases
                     break;
                 case BroochType.Advanced:
                     line = new TooltipLine(Mod, "", "");
-                    line = new TooltipLine(Mod, "Brooch of the TaGo", LangText.Core("AdvancedBrooch"))
+                    line = new TooltipLine(Mod, "Brooch of the TaGo", LangText.Common("AdvancedBrooch"))
                     {
                         OverrideColor = new Color(254, 128, 10)
 
                     };
                     tooltips.Add(line);
 
-                    line = new TooltipLine(Mod, "Brooch of the TaGo", LangText.Core("AdvancedBackpack"))
+                    line = new TooltipLine(Mod, "Brooch of the TaGo", LangText.Common("AdvancedBackpack"))
                     {
                         OverrideColor = new Color(198, 124, 225)
 
@@ -261,13 +261,13 @@ namespace Stellamod.Core.Bases
                     break;
                 case BroochType.Radiant:
                     line = new TooltipLine(Mod, "", "");
-                    line = new TooltipLine(Mod, "Brooch of the HV", LangText.Core("RadiantBrooch"))
+                    line = new TooltipLine(Mod, "Brooch of the HV", LangText.Common("RadiantBrooch"))
                     {
                         OverrideColor = new Color(220, 252, 255)
                     };
 
                     tooltips.Add(line);
-                    line = new TooltipLine(Mod, "Brooch of the Radiant", LangText.Core("RadiantBackpack"))
+                    line = new TooltipLine(Mod, "Brooch of the Radiant", LangText.Common("RadiantBackpack"))
                     {
                         OverrideColor = new Color(177, 255, 117)
 

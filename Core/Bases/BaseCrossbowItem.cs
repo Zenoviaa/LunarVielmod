@@ -62,13 +62,13 @@ namespace Stellamod.Core.Bases
         {
             base.ModifyTooltips(tooltips);
             var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Crossbow", Helpers.LangText.Core("Crossbow"))
+            line = new TooltipLine(Mod, "Crossbow", Helpers.LangText.Common("Crossbow"))
             {
                 OverrideColor = Color.OrangeRed
             };
             tooltips.Add(line);
 
-            line = new TooltipLine(Mod, "CrossbowHelp", Helpers.LangText.Core("CrossbowHelp"))
+            line = new TooltipLine(Mod, "CrossbowHelp", Helpers.LangText.Common("CrossbowHelp"))
             {
                 OverrideColor = Color.LightGray
             };

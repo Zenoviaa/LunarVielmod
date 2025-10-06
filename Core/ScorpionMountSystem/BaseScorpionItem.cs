@@ -110,15 +110,15 @@ namespace Stellamod.Core.ScorpionMountSystem
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
-            TooltipLine line = new TooltipLine(Mod, "ScorpionSummonHelp", LangText.Core("ScorpionSummonHelp"));
+            TooltipLine line = new TooltipLine(Mod, "ScorpionSummonHelp", LangText.Common("ScorpionSummonHelp"));
             line.OverrideColor = Color.IndianRed;
             tooltips.Add(line);
 
-            line = new TooltipLine(Mod, "ScorpionSummonHolsterHelp", LangText.Core("ScorpionSummonHolsterHelp"));
+            line = new TooltipLine(Mod, "ScorpionSummonHolsterHelp", LangText.Common("ScorpionSummonHolsterHelp"));
             line.OverrideColor = Color.Gray;
             tooltips.Add(line);
 
-            line = new TooltipLine(Mod, "ScorpionRightClickHelp", LangText.Core("ScorpionRightClickHelp"));
+            line = new TooltipLine(Mod, "ScorpionRightClickHelp", LangText.Common("ScorpionRightClickHelp"));
             line.OverrideColor = Color.Yellow;
             tooltips.Add(line);
         }

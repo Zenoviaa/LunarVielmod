@@ -847,3 +847,8 @@ StringMinionBuff: {
 	DisplayName: Stringy Friends
 	Description: Wiggle Wiggle~
 }
+
+WoodyInsourceBuff: {
+	Description: Mods.Stellamod.Buffs.WoodyInsourceBuff.Description
+	DisplayName: Woody Insource Buff
+}

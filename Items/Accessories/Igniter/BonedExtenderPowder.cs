@@ -30,7 +30,7 @@ namespace Stellamod.Items.Accessories.Igniter
 			var line = new TooltipLine(Mod, "", "");
 
 
-			line = new TooltipLine(Mod, "ADBPaadu",  Helpers.LangText.Core("NoStack"))
+			line = new TooltipLine(Mod, "ADBPaadu",  Helpers.LangText.Common("NoStack"))
 			{
 				OverrideColor = new Color(110, 187, 24)
 

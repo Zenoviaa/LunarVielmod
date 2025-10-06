@@ -22,14 +22,14 @@ namespace Stellamod.Items
                 string displayName = AlternateClass.DisplayName.Value;
                 if(AlternateClass == DamageClass.Generic)
                 {
-                    displayName = LangText.Core("GenericDamage");
+                    displayName = LangText.Common("GenericDamage");
                 }
-                var line = new TooltipLine(Mod, "SirestiasTokenSwap", Helpers.LangText.Core("CanSwapped", displayName));
+                var line = new TooltipLine(Mod, "SirestiasTokenSwap", Helpers.LangText.Common("CanSwapped", displayName));
                 tooltips.Add(line);
             }
             else
             {
-                var line = new TooltipLine(Mod, "SirestiasTokenSwitched", Helpers.LangText.Core("TypeSwapped"));
+                var line = new TooltipLine(Mod, "SirestiasTokenSwitched", Helpers.LangText.Common("TypeSwapped"));
                 tooltips.Add(line);
             }
         }

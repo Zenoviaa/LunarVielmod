@@ -40,13 +40,13 @@ namespace Stellamod.Core.Bases
         {
             base.ModifyTooltips(tooltips);
             var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Core("Juggler"))
+            line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Common("Juggler"))
             {
                 OverrideColor = ColorFunctions.JugglerWeaponType
             };
             tooltips.Add(line);
 
-            line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Core("JugglerHelp"))
+            line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Common("JugglerHelp"))
             {
                 OverrideColor = Color.LightGray
             };

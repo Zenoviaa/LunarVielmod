@@ -8828,3 +8828,23 @@ StoneUnderBlock: {
 	DisplayName: Stone Under Block
 	Tooltip: ""
 }
+
+WoodyInsource: {
+	Tooltip: ""
+	DisplayName: Woody Insource
+}
+
+HiveheartInsource: {
+	Tooltip: ""
+	DisplayName: Hiveheart Insource
+}
+
+HealthInsource: {
+	Tooltip: ""
+	DisplayName: Health Insource
+}
+
+InsourceUnlocker: {
+	Tooltip: ""
+	DisplayName: Insource Unlocker
+}

@@ -109,11 +109,11 @@ namespace Stellamod.Items.Weapons.Igniters
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
-            TooltipLine line = new TooltipLine(Mod, "IgniterCard", LangText.Core("IgniterCard"));
+            TooltipLine line = new TooltipLine(Mod, "IgniterCard", LangText.Common("IgniterCard"));
             line.OverrideColor = new Color(80, 187, 124);
             tooltips.Add(line);
 
-            line = new TooltipLine(Mod, "IgniterCardHelp", LangText.Core("IgniterCardHelp"));
+            line = new TooltipLine(Mod, "IgniterCardHelp", LangText.Common("IgniterCardHelp"));
             line.OverrideColor = Color.Lerp(new Color(80, 187, 124), Color.Black, 0.5f);
             tooltips.Add(line);
 

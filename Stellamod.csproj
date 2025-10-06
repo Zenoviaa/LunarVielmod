@@ -620,7 +620,6 @@
   <ItemGroup>
     <Folder Include="Assets\Textures\Menu\" />
     <Folder Include="Items\Accessories\Shields\" />
-    <Folder Include="Items\Potions\" />
     <Folder Include="NPCs\Event\Gintzearmy\BossGintze\" />
     <Folder Include="Projectiles\Hostile\" />
     <Folder Include="Projectiles\FX\" />

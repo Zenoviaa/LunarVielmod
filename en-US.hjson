@@ -106,6 +106,7 @@ Mods: {
 		Keybinds: {
 			Dash.DisplayName: Dash
 			"Open Questbook.DisplayName": Open  Questbook
+			"Use Xixian Flask.DisplayName": Use  Xixian  Flask
 		}
 	}
 

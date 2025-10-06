@@ -52,7 +52,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 
             var line = new TooltipLine(Mod, "", "");
 
-            line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Core("Greatsword"))
+            line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Common("Greatsword"))
             {
                 OverrideColor = ColorFunctions.GreatswordWeaponType
             };
