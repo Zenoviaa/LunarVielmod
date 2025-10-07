@@ -71,6 +71,7 @@ namespace Stellamod.Backgrounds
             int yMax = (Main.UnderworldLayer - (Main.maxTilesY / 6));
             int yMin = yMax - 12;
             int yMid = (yMin + yMax) / 2;
+
             return (int)(yMid * 16);
         }
 

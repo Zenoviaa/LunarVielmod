@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoMod.Cil;
+using Stellamod.Core.Particles;
+using Stellamod.Visual.Particles;
 using System;
 using Terraria;
 using Terraria.Graphics.Capture;
@@ -21,6 +23,21 @@ namespace Stellamod.Assets.Biomes
         {
             base.Unload();
             On_Player.CanSeeShimmerEffects -= RemoveShimmer;
+        }
+
+
+        public override void PostUpdateMiscEffects()
+        {
+            base.PostUpdateMiscEffects();
+            if (Main.LocalPlayer == null)
+                return;
+
+            if (Main.rand.NextBool(5) && Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneWonder)
+            {
+                float xRand = Main.rand.NextFloat(-1000, 1000);
+                float yRand = Main.rand.NextFloat(-1000, 1000);
+                Particle.NewParticle<StarParticle>(Main.LocalPlayer.Center + new Vector2(xRand, yRand), Vector2.Zero);
+            }
         }
         private bool RemoveShimmer(On_Player.orig_CanSeeShimmerEffects orig, Player self)
         {

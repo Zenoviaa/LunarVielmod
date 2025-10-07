@@ -183,7 +183,7 @@ namespace Stellamod.WorldG
             progress.Message = "Creating a Dark Place.";
             var genRand = WorldGen.genRand;
             int yMax = (Main.UnderworldLayer - (Main.maxTilesY / 6));
-            yMax -= 33;
+       
             int yMin = yMax - 12;
             int yMid = (yMin + yMax) / 2;
             int[] wallTypes = new int[]

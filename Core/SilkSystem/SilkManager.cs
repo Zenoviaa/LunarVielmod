@@ -167,6 +167,12 @@ namespace Stellamod.Core.SilkSystem
             On_Main.DrawDust -= DrawStrings;
         }
 
+        public override void ClearWorld()
+        {
+            base.ClearWorld();
+            _silkStrings.Clear();
+        }
+
         public override void NetSend(BinaryWriter writer)
         {
             base.NetSend(writer);
