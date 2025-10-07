@@ -1,12 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.TilesNew.Darkspace;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
@@ -38,6 +40,15 @@ namespace Stellamod.Core.SilkSystem
             float midWidth = width * 16;
             float ease = EasingFunction.QuadraticBump(completionRatio);
             return MathHelper.Lerp(startWidth, midWidth, ease);
+        }
+        public void Update()
+        {
+            if (Main.rand.NextBool(50))
+            {
+                Vector2[] positions = GetWorldPoints();
+                Vector2 spawnPoint = positions[Main.rand.Next(0, positions.Length)];
+                Particle.NewParticle<SilkParticle>(spawnPoint, Vector2.Zero, Color.White * 0.85f);
+            }
         }
 
         private void InitTrailCache()
@@ -138,6 +149,26 @@ namespace Stellamod.Core.SilkSystem
         {
             base.OnModUnload();
             On_Main.DrawDust -= DrawStrings;
+        }
+
+        public override void PostUpdateDusts()
+        {
+            base.PostUpdateDusts();
+            Player localPlayer = Main.LocalPlayer;
+            MyPlayer myPlayer = localPlayer.GetModPlayer<MyPlayer>();
+            if (!myPlayer.ZoneWonder)
+            {
+                return;
+            }
+
+            for (int i = 0; i < _silkStrings.Count; i++)
+            {
+                SilkString silkString = _silkStrings[i];
+                if (silkString.ShouldRender())
+                {
+                    silkString.Update();
+                }
+            }
         }
 
         private void DrawStrings(On_Main.orig_DrawDust orig, Main self)
