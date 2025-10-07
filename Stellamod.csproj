@@ -8,15 +8,23 @@
   <ItemGroup>
     <AdditionalFiles Remove="Items\Banners\**" />
     <AdditionalFiles Remove="Items\Blocks\**" />
+    <AdditionalFiles Remove="Projectiles\FX\**" />
+    <AdditionalFiles Remove="Projectiles\Hostile\**" />
     <Compile Remove="FX\**" />
     <Compile Remove="Items\Banners\**" />
     <Compile Remove="Items\Blocks\**" />
+    <Compile Remove="Projectiles\FX\**" />
+    <Compile Remove="Projectiles\Hostile\**" />
     <EmbeddedResource Remove="FX\**" />
     <EmbeddedResource Remove="Items\Banners\**" />
     <EmbeddedResource Remove="Items\Blocks\**" />
+    <EmbeddedResource Remove="Projectiles\FX\**" />
+    <EmbeddedResource Remove="Projectiles\Hostile\**" />
     <None Remove="FX\**" />
     <None Remove="Items\Banners\**" />
     <None Remove="Items\Blocks\**" />
+    <None Remove="Projectiles\FX\**" />
+    <None Remove="Projectiles\Hostile\**" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\Biomes\BlankBG.png" />
@@ -592,6 +600,7 @@
     <None Remove="Projectiles\WataBoom2.png" />
     <None Remove="Projectiles\ZuiRay.png" />
     <None Remove="TilesNew\AnimatedBackgroundWallTest_S.png" />
+    <None Remove="TilesNew\Darkspace\SilkTileBlock.png" />
     <None Remove="TilesNew\EffectTiles\FogSpawnerBlock.png" />
     <None Remove="TilesNew\EffectTiles\FogSpawnerWallItem.png" />
     <None Remove="TilesNew\Fable\FableBar_S.png" />
@@ -642,8 +651,6 @@
     <Folder Include="Assets\Textures\Menu\" />
     <Folder Include="Items\Accessories\Shields\" />
     <Folder Include="NPCs\Event\Gintzearmy\BossGintze\" />
-    <Folder Include="Projectiles\Hostile\" />
-    <Folder Include="Projectiles\FX\" />
     <Folder Include="Projectiles\Slashers\NewFolder\" />
     <Folder Include="Projectiles\Swords\Slashes\" />
     <Folder Include="Structures\Catacombs\" />

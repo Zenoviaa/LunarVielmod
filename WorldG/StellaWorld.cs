@@ -29,6 +29,7 @@ using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
 using Stellamod.Tiles.Illuria;
 using Stellamod.Tiles.Veil;
+using Stellamod.TilesNew.Darkspace;
 using Stellamod.WorldG.StructureManager;
 using System;
 using System.Collections.Generic;
@@ -81,7 +82,7 @@ namespace Stellamod.WorldG
             DisableGenTask(tasks, "Dunes");
             DisableGenTask(tasks, "Marble");
             DisableGenTask(tasks, "Granite");
-
+        //    DisableGenTask(tasks, "Ocean Sand");
             int terrainIndex = tasks.FindIndex(x => x.Name.Equals("Terrain"));
             if (terrainIndex != -1)
             {
@@ -101,7 +102,7 @@ namespace Stellamod.WorldG
                 //  tasks.Insert(caveGen + 2, new PassLegacy("Granite Caves", WorldGenMarbleCaves));
          
                 tasks.Insert(caveGen + 1, new PassLegacy("Caves 1", WorldGenCaves));
-                tasks.Insert(caveGen + 2, new PassLegacy("Marble Caves", WorldGenDarkspace));
+                tasks.Insert(caveGen + 2, new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
 
             }
 
@@ -296,10 +297,20 @@ namespace Stellamod.WorldG
                     bool hasBottom = (y - 1 > 0) && !WorldGen.SolidOrSlopedTile(x, y - 1);
                     bool hasAny = hasRight || hasLeft || hasTop || hasBottom;
 
-                    if(!hasTop && tile.TileType == TileID.Granite)
+                    if(WorldGen.TileIsExposedToAir(x, y) && tile.TileType == TileID.Granite)
                     {
-                        if (genRand.NextBool(64))
+
+                        if (genRand.NextBool(50))
                         {
+                            float strength = genRand.Next(7, 11);
+                            int steps = genRand.Next(12, 20);
+                            ushort tileType = (ushort)ModContent.TileType<SilkTile>();
+
+                            TileID.Sets.CanBeClearedDuringOreRunner[TileID.Granite] = true;
+                            WorldGen.OreRunner(x, y,
+                               strength,
+                                steps, tileType);
+                            TileID.Sets.CanBeClearedDuringOreRunner[TileID.Granite] = false;
                             SilkManager.GrowSilk(x, y, genRand);
                         }
                     }
@@ -385,22 +396,27 @@ namespace Stellamod.WorldG
             {
                 //Place beams
                 int beamY = structureRectangle.Location.Y;
-                Tile tile = Main.tile[beamX, beamY];
-                if (tile.TileType != TileID.Sunplate)
-                    continue;
-                int solidCount = 0;
-                while (solidCount < 5)
+                if(beamX < Main.maxTilesX && beamY < Main.maxTilesY)
                 {
-                    if (!WorldGen.SolidTile(beamX, beamY))
+
+                    Tile tile = Main.tile[beamX, beamY];
+                    if (tile.TileType != TileID.Sunplate)
+                        continue;
+                    int solidCount = 0;
+                    while (solidCount < 5)
                     {
-                        WorldGen.PlaceTile(beamX, beamY, TileID.WoodenBeam);
+                        if (!WorldGen.SolidTile(beamX, beamY))
+                        {
+                            WorldGen.PlaceTile(beamX, beamY, TileID.WoodenBeam);
+                        }
+                        else
+                        {
+                            solidCount++;
+                        }
+                        beamY++;
                     }
-                    else
-                    {
-                        solidCount++;
-                    }
-                    beamY++;
                 }
+
             }
         }
 

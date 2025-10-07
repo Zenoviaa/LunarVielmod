@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Systems.MiscellaneousMath;
+using Stellamod.TilesNew.Darkspace;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
@@ -111,7 +113,7 @@ namespace Stellamod.Core.SilkSystem
         public override void RandomUpdate(int i, int j, int type)
         {
             base.RandomUpdate(i, j, type);
-            if (type == TileID.GraniteBlock)
+            if (type == ModContent.TileType<SilkTile>())
             {
                 if (Main.rand.NextBool(16))
                 {
@@ -147,7 +149,12 @@ namespace Stellamod.Core.SilkSystem
             {
                 return;
             }
-
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Begin(SpriteSortMode.Deferred,
+                BlendState.Additive,
+                SamplerState.PointWrap,
+                DepthStencilState.None,
+                RasterizerState.CullCounterClockwise);
             for (int i = 0; i < _silkStrings.Count; i++)
             {
                 SilkString silkString = _silkStrings[i];
@@ -156,6 +163,7 @@ namespace Stellamod.Core.SilkSystem
                     DrawSilkString(silkString);
                 }
             }
+            spriteBatch.End();
         }
 
         public override void SaveWorldData(TagCompound tag)
@@ -219,6 +227,24 @@ namespace Stellamod.Core.SilkSystem
             trailShader.PrimaryColor = rgbColor;
             trailShader.SecondaryColor = rgbColor * 0.5f;
             TrailDrawer.Draw(spriteBatch, silkString.GetWorldPoints(), silkString.GetWorldRot(), silkString.GetColor, silkString.GetWidth, trailShader);
+
+            Asset<Texture2D> silkEnd = TrailRegistry.SilkEnd;
+            Vector2 startPoint = silkString.tile1.ToWorldCoordinates();
+            Vector2 endPoint = silkString.tile2.ToWorldCoordinates();
+
+            float drawRotation = (endPoint - startPoint).ToRotation();
+            Vector2 drawPoint = startPoint - Main.screenPosition;
+            Color drawColor = Color.White.MultiplyRGB(lightColor) * 0.75f;
+            Vector2 origin = silkEnd.Size() / 2f;
+            Vector2 drawScale = Vector2.One;
+
+
+            spriteBatch.Draw(silkEnd.Value, drawPoint, null, drawColor, drawRotation, origin, drawScale, SpriteEffects.None, 0);
+
+            Vector2 drawPoint2 = endPoint - Main.screenPosition;
+            drawPoint2 += (startPoint - endPoint).SafeNormalize(Vector2.Zero) * 32;
+            float drawRotation2 = (startPoint - endPoint).ToRotation();
+            spriteBatch.Draw(silkEnd.Value, drawPoint2, null, drawColor, drawRotation2, origin, drawScale, SpriteEffects.None, 0);
         }
     }
 }
