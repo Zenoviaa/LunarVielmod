@@ -97,7 +97,7 @@ namespace Stellamod.WorldG
             {
 
                 //  tasks.Insert(caveGen + 2, new PassLegacy("Granite Caves", WorldGenMarbleCaves));
-
+         
                 tasks.Insert(caveGen + 1, new PassLegacy("Caves 1", WorldGenCaves));
                 tasks.Insert(caveGen + 2, new PassLegacy("Marble Caves", WorldGenDarkspace));
 
@@ -179,31 +179,144 @@ namespace Stellamod.WorldG
         {
             progress.Message = "Creating a Dark Place.";
             var genRand = WorldGen.genRand;
+            int yMax = (Main.UnderworldLayer - (Main.maxTilesY / 6));
+            int yMin = yMax - 12;
+            int yMid = (yMin + yMax) / 2;
+            int[] wallTypes = new int[]
+            {
+                WallID.GraniteUnsafe,
+                WallID.GraniteBlock,
+                WallID.Granite
+            };
+
             for (int x = 0; x < Main.maxTilesX; x++)
             {
-                int yMax = (Main.UnderworldLayer - (Main.maxTilesY / 20));
-                int yMin = yMax - 50;
-                int y = genRand.Next(yMin, yMax);
-                // We go down until we hit a solid tile or go under the world's surface
-                while (!WorldGen.SolidTile(x, y) && y <= Main.UnderworldLayer)
-                {
-                    y++;
-                }
-
-                // If we went under the world's surface, try again
-                if (y > Main.UnderworldLayer)
-                {
-                    continue;
-                }
-
-                Point tileRunPoint = new Point(x, y);
                 if (x % 24 == 0)
                 {
-                    WorldGen.TileRunner(tileRunPoint.X, tileRunPoint.Y,
-                        genRand.Next(150, 150),
-                        genRand.Next(500, 500), TileID.Granite);
+                    void PlaceGranite(int px, int py)
+                    {
+                        Point point = new Point(px, py);
+                        int size = genRand.Next(60, 90);
+                        if (x > size && x < Main.maxTilesX - size)
+                        {
+                            WorldUtils.Gen(point, new Shapes.Circle(size, size), Actions.Chain(
+                                new GenAction[] {
+                                new Actions.SetTile(TileID.Granite)}));
+                        }
+
+                        WorldGen.OreRunner(point.X, point.Y,
+                            genRand.Next(50, 50),
+                            genRand.Next(50, 50), TileID.Granite);
+                    }
+                    PlaceGranite(x, yMin);
+                    PlaceGranite(x, yMax);
                 }
             }
+
+            //Generate Long Chasm
+            int caveX = 30;
+            int caveY = yMid;
+            Vector2 caveVelocity = Vector2.UnitX;
+
+            int caveWidth = 11;
+            Vector2 cavePosition = new Vector2(caveX, caveY);
+            Vector2 caveStrength = new Vector2(50, 70);
+            Vector2 pullVelocity = Vector2.Zero;
+            Vector2 startVelocity = Vector2.UnitX;
+
+            int ignoreTile = ModContent.TileType<AbyssalDirt>();
+            for (int s = 0; s < 1500; s++)
+            {
+                float length = caveVelocity.Length();
+                Vector2 newVelocity = caveVelocity * length;
+                caveVelocity = newVelocity;
+
+                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                {
+                    WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
+                        genRand.NextFloat(caveStrength.X, caveStrength.Y),
+                        genRand.Next(7, 15), -1, ignoreTileType: ignoreTile);
+                    WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
+                        genRand.NextFloat(caveStrength.X, caveStrength.Y),
+                        genRand.Next(7, 15), -1, ignoreTileType: ignoreTile);
+                    if (genRand.NextBool(18))
+                    {
+                        int x = (int)cavePosition.X;
+                        int y = (int)cavePosition.Y;
+                        Point point = new Point(x, y);
+
+                        int size = genRand.Next(25, 35);
+                        WorldUtils.Gen(point + new Point(0, 35),
+                            new Shapes.Circle(size, size / 2), Actions.Chain(
+                            new Actions.ClearTile(),
+                            new Actions.ClearWall()));
+
+                        WorldUtils.Gen(point, new Shapes.Circle(size / 2, size / 2), 
+                            new Actions.SetLiquid(LiquidID.Shimmer));
+
+
+                    }
+                    if (genRand.NextBool(18))
+                    {
+                        int x = (int)cavePosition.X;
+                        int y = (int)cavePosition.Y;
+                        Point point = new Point(x, y);
+
+                        int size = genRand.Next(12, 25);
+                        WorldUtils.Gen(point + new Point(0, 35),
+                            new Shapes.Circle(size, size / 2), new Actions.ClearTile());
+
+                        WorldUtils.Gen(point, new Shapes.Circle(size / 2, size / 2),
+                            new Actions.SetLiquid(LiquidID.Shimmer));
+
+
+                    }
+                }
+
+         
+
+                // Update the cave position.
+                cavePosition += caveVelocity * caveWidth * 0.5f;
+            }
+
+
+            for (int x = 0; x < Main.maxTilesX; x++)
+            {
+                for (int y = yMin - 100; y < yMax + 100; y++)
+                {
+                    Tile tile = Main.tile[x, y];
+                    if (!tile.HasTile)
+                        continue;
+
+                    bool hasRight = (x + 1 < Main.maxTilesX) && !WorldGen.SolidOrSlopedTile(x + 1, y);
+                    bool hasLeft = (x - 1 > 0) && !WorldGen.SolidOrSlopedTile(x - 1, y);
+                    bool hasTop = (y + 1 < Main.maxTilesY) && !WorldGen.SolidOrSlopedTile(x, y + 1);
+                    bool hasBottom = (y - 1 > 0) && !WorldGen.SolidOrSlopedTile(x, y - 1);
+                    bool hasAny = hasRight || hasLeft || hasTop || hasBottom;
+
+                    if (hasAny && (tile.TileType == TileID.Granite))
+                    {
+                        //WorldGen.PlaceTile(x, y, TileID.Grass, forced: true);
+                        Point point = new Point(x, y);
+                        int steps = genRand.Next(1, 4);
+                        Vector2 baseDirection = -Vector2.UnitY;
+                        int wallCaveWidth = 3;
+
+                        for (int s = 0; s < steps; s++)
+                        {
+                            if (point.X - wallCaveWidth > 0 && point.X + wallCaveWidth < Main.maxTilesX 
+                                && point.Y + wallCaveWidth < Main.maxTilesY && point.Y - wallCaveWidth > 0)
+                            {
+                                WorldUtils.Gen(point, new Shapes.Circle(wallCaveWidth, wallCaveWidth),
+                                    new Actions.PlaceWall(WallID.GraniteUnsafe));
+                            }
+
+                            point += (baseDirection * wallCaveWidth).RotatedByRandom(MathHelper.ToRadians(30)).ToPoint();
+                        }
+                    }
+                }
+            }
+
         }
         #region Cave Formation
         private void WorldGenColosseum(GenerationProgress progress, GameConfiguration configuration)

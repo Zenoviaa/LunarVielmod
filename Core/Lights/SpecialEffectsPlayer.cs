@@ -90,8 +90,8 @@ namespace Stellamod.Core.Lights
             hasSpiritPendant = false;
             hasSunGlyph = false;
             darkness = 0;
-            darknessCurve = 0.79f;
-           // blurStrength = 0;
+            darknessCurve = 0.5f;
+            // blurStrength = 0;
 
 
             //Curve based
@@ -190,7 +190,7 @@ namespace Stellamod.Core.Lights
             screenShaderData.UseProgress(hellPaletteProgress);
             TogglePaletteShader("LunarVeil:PaletteHell", hellPaletteProgress != 0);
 
-            bool royalCapitalPaletteActive = MyPlayer.ZoneAlcadzia;
+            bool royalCapitalPaletteActive = MyPlayer.ZoneAlcadzia;// || MyPlayer.ZoneWonder;
             if (royalCapitalPaletteActive)
             {
                 royalPaletteProgress += speed;

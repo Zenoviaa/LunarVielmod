@@ -17,7 +17,7 @@ namespace Stellamod.Core.Waters
                 if (!clientConfig.LiquidsToggle)
                     return false;
 
-                if (!Main.LocalPlayer.ZoneShimmer)
+                if (!Main.LocalPlayer.ZoneShimmer && !Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneWonder)
                     return false;
 
                 return true;

@@ -252,6 +252,7 @@ namespace Stellamod
         public bool ZoneMineshaft;
         public bool ZoneColloseum;
         public bool ZoneMothlight;
+        public bool ZoneWonder;
 
         public float AssassinsSlashes;
         public float AssassinsTime;
@@ -417,30 +418,8 @@ namespace Stellamod
                 shouldFocus = true;
             }
         }
-        public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
-        {
-            Dead = true;
-            HMArmor = false;
-            Cameraaa = false;
-            if (damageSource.SourceOtherIndex == 8)
-                CustomDeath(ref damageSource);
-            return true;
-        }
-        private void CustomDeath(ref PlayerDeathReason reason)
-        {
-            if (Player.FindBuffIndex(ModContent.BuffType<AbyssalFlame>()) >= 0)
-            {
-                reason = PlayerDeathReason.ByCustomReason(Player.name + " was consumed by the abyss.");
-            }
-            if (Player.FindBuffIndex(ModContent.BuffType<Irradiation>()) >= 0)
-            {
-                reason = PlayerDeathReason.ByCustomReason(Player.name + " was contaminated");
-            }
-            if (Player.FindBuffIndex(ModContent.BuffType<SFBuff>()) >= 0)
-            {
-                reason = PlayerDeathReason.ByCustomReason("You touched a black hole... WHAT DID YOU THINK WOULD HAPPEN?");
-            }
-        }
+
+
         public override void OnHitAnything(float x, float y, Entity victim)
         {
             if (GHE)
@@ -738,12 +717,12 @@ namespace Stellamod
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Daedussss", NPC.AnyNPCs(ModContent.NPCType<DaedusR>()));
 
 
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Jellyfish1", NPC.AnyNPCs(ModContent.NPCType<GoliathJellyfish>()));
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Jellyfish2", NPC.AnyNPCs(ModContent.NPCType<GoliathCryogenicJellyfish>()));
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Govheil", ZoneGovheil);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Mechanics", ZoneMechanics);
+
         }
+      
 
         public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
         {
@@ -763,7 +742,7 @@ namespace Stellamod
         }
         public override void PostUpdate()
         {
- 
+
 
             if (Main.netMode != NetmodeID.Server)
             {
@@ -946,7 +925,6 @@ namespace Stellamod
                 SingularityFragment = false;
             }
 
-
             if (SingularityFragment || NiiviFight)
             {
                 if (Main.shimmerAlpha <= 1)
@@ -1001,6 +979,7 @@ namespace Stellamod
                     Main.shimmerDarken = 0f;
                 }
             }
+
 
             if (AssassinsSlash)
             {
