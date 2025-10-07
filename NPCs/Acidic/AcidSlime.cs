@@ -132,7 +132,6 @@ namespace Stellamod.NPCs.Acidic
 
             npcLoot.Add(ItemDropRule.Common(ItemID.Gel, minimumDropped: 1, maximumDropped: 2));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VirulentPlating>(), minimumDropped: 1, maximumDropped: 4));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AcidStaketers>(), chanceDenominator: 70));
         }
 
         public override void AI()

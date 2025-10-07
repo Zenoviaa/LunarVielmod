@@ -910,7 +910,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Aneuriliac>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TheRedSkull>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Pericarditis>(), chanceDenominator: 2));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Myocardia>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DreadBroochA>()));
             npcLoot.Add(notExpertRule);
         }

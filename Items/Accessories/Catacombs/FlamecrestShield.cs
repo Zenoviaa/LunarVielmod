@@ -135,7 +135,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankShield>(), material: ModContent.ItemType<Cinderscrap>());
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<Cinderscrap>());
         }
     }
 }

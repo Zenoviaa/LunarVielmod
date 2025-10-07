@@ -70,13 +70,6 @@ namespace Stellamod.Items.Consumables
                 player.QuickSpawnItem(entitySource, ItemID.SeashellHairpin);
             }
 
-            if (NPC.downedBoss2)
-            {
-                if (Main.rand.NextBool(10))
-				{
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<BoneNail>());
-				}
-			}
 
 			if (DownedBossSystem.downedZuiBoss)
 			{
@@ -86,10 +79,6 @@ namespace Stellamod.Items.Consumables
 				{
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<MeredaX>());
 				}
-			}
-			if (Main.rand.NextBool(40))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<VerstiDance>());
 			}
 
 			if (Main.rand.NextBool(4))

@@ -162,7 +162,6 @@ namespace Stellamod.NPCs.Acidic
             hardmodeDropRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SrTetanus>(), 20, minimumDropped: 1, maximumDropped: 1));
 
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VirulentPlating>(), minimumDropped: 1, maximumDropped: 4));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AcidStaketers>(), chanceDenominator: 30));
         }
 
         public override void AI()

@@ -416,11 +416,7 @@ namespace Stellamod.NPCs.Town
 
 
 					.Add<Items.Weapons.PowdersItem.Verstidust>(Condition.DownedQueenBee)
-				
-
 			
-
-					.Add<Items.Weapons.Summon.BloodLamp>(Condition.BloodMoon)
 				;
 				
 				

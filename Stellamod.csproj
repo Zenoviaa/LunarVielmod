@@ -6,21 +6,25 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Remove="Items\Accessories\Shields\**" />
     <AdditionalFiles Remove="Items\Banners\**" />
     <AdditionalFiles Remove="Items\Blocks\**" />
     <AdditionalFiles Remove="Projectiles\FX\**" />
     <AdditionalFiles Remove="Projectiles\Hostile\**" />
     <Compile Remove="FX\**" />
+    <Compile Remove="Items\Accessories\Shields\**" />
     <Compile Remove="Items\Banners\**" />
     <Compile Remove="Items\Blocks\**" />
     <Compile Remove="Projectiles\FX\**" />
     <Compile Remove="Projectiles\Hostile\**" />
     <EmbeddedResource Remove="FX\**" />
+    <EmbeddedResource Remove="Items\Accessories\Shields\**" />
     <EmbeddedResource Remove="Items\Banners\**" />
     <EmbeddedResource Remove="Items\Blocks\**" />
     <EmbeddedResource Remove="Projectiles\FX\**" />
     <EmbeddedResource Remove="Projectiles\Hostile\**" />
     <None Remove="FX\**" />
+    <None Remove="Items\Accessories\Shields\**" />
     <None Remove="Items\Banners\**" />
     <None Remove="Items\Blocks\**" />
     <None Remove="Projectiles\FX\**" />
@@ -217,32 +221,23 @@
     <None Remove="Gores\SunStalker5.png" />
     <None Remove="Gores\SunStalker6.png" />
     <None Remove="Gores\SunStalker7.png" />
-    <None Remove="Items\Accessories\AcidStaketers.png" />
     <None Remove="Items\Accessories\AquaCrystal.png" />
-    <None Remove="Items\Accessories\AquaticHealingNecklace.png" />
     <None Remove="Items\Accessories\ArncharMagazine.png" />
     <None Remove="Items\Accessories\ArncharMagazine_Glow.png" />
     <None Remove="Items\Accessories\BurningScarfFlame.png" />
     <None Remove="Items\Accessories\ClamsPearl.png" />
     <None Remove="Items\Accessories\CloudSkaters.png" />
-    <None Remove="Items\Accessories\CoralBand.png" />
     <None Remove="Items\Accessories\GhostExcalibur.png" />
     <None Remove="Items\Accessories\GiftOfLife.png" />
     <None Remove="Items\Accessories\IllurineHoops.png" />
     <None Remove="Items\Accessories\LeatherGlove.png" />
     <None Remove="Items\Accessories\LunarBand.png" />
     <None Remove="Items\Accessories\OceanScroll.png" />
-    <None Remove="Items\Accessories\OceansTrinket.png" />
-    <None Remove="Items\Accessories\SawtoothNecklace.png" />
     <None Remove="Items\Accessories\ShadeCharm.png" />
     <None Remove="Items\Accessories\ShadeScarf.png" />
     <None Remove="Items\Accessories\ShadeScarf_Glow.png" />
     <None Remove="Items\Accessories\ShadeScarf_Waist.png" />
     <None Remove="Items\Accessories\ShadowCloak.png" />
-    <None Remove="Items\Accessories\ShellSheid.png" />
-    <None Remove="Items\Accessories\SoulStrideres.png" />
-    <None Remove="Items\Accessories\SpiritPendent.png" />
-    <None Remove="Items\Accessories\StarflareBand.png" />
     <None Remove="Items\Accessories\SunGlyph.png" />
     <None Remove="Items\Accessories\VampireCharm.png" />
     <None Remove="Items\Accessories\Wings\MiracleWings.png" />
@@ -551,10 +546,6 @@
     <None Remove="Projectiles\Slashers\IshNYire\YireBoomer.png" />
     <None Remove="Projectiles\Slashers\NiceBuster\NotNiceBuster.png" />
     <None Remove="Projectiles\Slashers\NiceBuster\NotNiceBuster_Glow.png" />
-    <None Remove="Projectiles\Slashers\Voyager\InkBullet1.png" />
-    <None Remove="Projectiles\Slashers\Voyager\VoyaBullet.png" />
-    <None Remove="Projectiles\Slashers\Voyager\VoyagerProjThrow.png" />
-    <None Remove="Projectiles\Slashers\Voyager\VoyagerShotProj.png" />
     <None Remove="Projectiles\Steins\FriedFist.png" />
     <None Remove="Projectiles\Steins\GothFist.png" />
     <None Remove="Projectiles\Steins\HultFist.png" />
@@ -649,8 +640,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Textures\Menu\" />
-    <Folder Include="Items\Accessories\Shields\" />
     <Folder Include="NPCs\Event\Gintzearmy\BossGintze\" />
+    <Folder Include="NPCs\Minibosses\" />
     <Folder Include="Projectiles\Slashers\NewFolder\" />
     <Folder Include="Projectiles\Swords\Slashes\" />
     <Folder Include="Structures\Catacombs\" />

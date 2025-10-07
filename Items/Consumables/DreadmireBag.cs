@@ -51,7 +51,6 @@ namespace Stellamod.Items.Consumables
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Aneuriliac>(), chanceDenominator: 2));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<TheRedSkull>(), chanceDenominator: 2));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Pericarditis>(), chanceDenominator: 2));
-            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Myocardia>(), chanceDenominator: 2));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<DreadBroochA>()));
             itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<DreadMire>()));
         }

@@ -134,7 +134,6 @@ namespace Stellamod.NPCs.Acidic
 
             }
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VirulentPlating>(), minimumDropped: 1, maximumDropped: 4));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AcidStaketers>(), chanceDenominator: 30));
         }
 
         public virtual string GlowTexturePath => Texture + "_Glow";

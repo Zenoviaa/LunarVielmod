@@ -26,16 +26,12 @@ using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Bosses.SupernovaFragment;
 using Stellamod.NPCs.Bosses.Verlia;
-using Stellamod.NPCs.Minibosses;
-using Stellamod.Particles;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Ambient;
 using Stellamod.Projectiles.Paint;
 using Stellamod.Projectiles.Summons.Minions;
 using Stellamod.Projectiles.Swords;
 using Stellamod.UI.Dialogue;
-using Stellamod.WorldG;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -43,7 +39,6 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.WorldBuilding;
 
 namespace Stellamod
 {
@@ -324,57 +319,7 @@ namespace Stellamod
         }
 
 
-        public override void CatchFish(FishingAttempt attempt,
-            ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
-        {
-            int chance = 35;
-            string jellyfishWarning = "You feel threatened...";
-            if (Player.ZoneBeach && Main.rand.NextBool(chance))
-            {
-                int npc = ModContent.NPCType<GoliathJellyfish>();
-                if (!NPC.AnyNPCs(npc))
-                {
-                    // Make sure itemDrop = -1 when summoning an NPC, as otherwise terraria will only spawn the item
-                    npcSpawn = npc;
-                    itemDrop = -1;
-
-                    // Also, to make it cooler, we will make a special sonar message for when it shows up
-                    sonar.Text = jellyfishWarning;
-                    sonar.Color = Color.LimeGreen;
-                    sonar.Velocity = Vector2.Zero;
-                    sonar.DurationInFrames = 300;
-
-                    // And that text shows up on the player's head, not on the bobber location.
-                    sonarPosition = new Vector2(Player.position.X, Player.position.Y - 64);
-
-                    return; // This is important so your code after this that rolls items will not run
-                }
-            }
-
-
-            if (Player.ZoneSnow && Main.rand.NextBool(chance))
-            {
-                int npc = ModContent.NPCType<GoliathCryogenicJellyfish>();
-                if (!NPC.AnyNPCs(npc))
-                {
-                    // Make sure itemDrop = -1 when summoning an NPC, as otherwise terraria will only spawn the item
-                    npcSpawn = npc;
-                    itemDrop = -1;
-
-                    // Also, to make it cooler, we will make a special sonar message for when it shows up
-                    sonar.Text = jellyfishWarning;
-                    sonar.Color = Color.LimeGreen;
-                    sonar.Velocity = Vector2.Zero;
-                    sonar.DurationInFrames = 300;
-
-                    // And that text shows up on the player's head, not on the bobber location.
-                    sonarPosition = new Vector2(Player.position.X, Player.position.Y - 64);
-
-                    return; // This is important so your code after this that rolls items will not run
-                }
-            }
-        }
-
+   
         public override void ModifyScreenPosition()
         {
             if (shouldFocus)
@@ -701,19 +646,19 @@ namespace Stellamod
             Player.ManageSpecialBiomeVisuals("Stellamod:VeilSky", ZoneVeil);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
 
-       //     base.Player.ManageSpecialBiomeVisuals("Stellamod:GreenSunSky", EventWorld.GreenSun && ZoneAcid);
+            //     base.Player.ManageSpecialBiomeVisuals("Stellamod:GreenSunSky", EventWorld.GreenSun && ZoneAcid);
 
-           // base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosD", EventWorld.ChaosD && Player.ZoneBeach);
+            // base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosD", EventWorld.ChaosD && Player.ZoneBeach);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Veil", ZoneVeil);
 
             //base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean && (Player.ZoneOverworldHeight || Player.ZoneSkyHeight));
             //base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Illuria", ZoneIlluria);
-        //    base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
+            //    base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Lab", ZoneLab);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Ishtar", ZoneIshtar);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Veriplant", ZoneVeri);
-         //   base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
+            //   base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Daedussss", NPC.AnyNPCs(ModContent.NPCType<DaedusR>()));
 
 
@@ -722,7 +667,7 @@ namespace Stellamod
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Mechanics", ZoneMechanics);
 
         }
-      
+
 
         public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
         {
@@ -908,7 +853,7 @@ namespace Stellamod
                 heart = false;
                 heartDead = 0;
             }
-           
+
             if (NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<ALCADHOLE>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<SupernovaFragment>()) ||
@@ -1331,7 +1276,7 @@ namespace Stellamod
                         RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
 
                         Vector2 speed = new Vector2(4, 0);
-                                            }
+                    }
                 }
 
 
@@ -1373,7 +1318,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    
+
 
                 }
 
@@ -1391,7 +1336,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                        
+
                         GoldenRingCooldown = 0;
                     }
                 }
@@ -1406,7 +1351,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                        
+
                         GoldenSparkleCooldown = 0;
                     }
                 }
@@ -1437,7 +1382,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    
+
 
                 }
 
@@ -1460,7 +1405,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
             }
 
 
@@ -1481,7 +1426,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
             }
 
 
@@ -1697,7 +1642,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
                 for (int j = 0; j < 2; j++)
                 {
@@ -1707,7 +1652,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
             }
 
@@ -1788,7 +1733,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    
+
 
                 }
 
@@ -1801,7 +1746,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    
+
 
                 }
 
@@ -1813,7 +1758,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                    
+
 
                 }
                 if (GoldenRingCooldown > 2)
@@ -1826,7 +1771,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                        
+
                         GoldenRingCooldown = 0;
                     }
                 }
@@ -1841,7 +1786,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                        
+
                         GoldenSparkleCooldown = 0;
                     }
                 }
@@ -1865,7 +1810,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -1875,7 +1820,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
                 for (int j = 0; j < 3; j++)
                 {
@@ -1885,7 +1830,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -1895,7 +1840,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -1905,7 +1850,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -1915,7 +1860,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
                 if (GoldenRingCooldown > 2)
                 {
@@ -1927,7 +1872,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                        
+
                         GoldenRingCooldown = 0;
                     }
                 }
@@ -1942,7 +1887,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                                GoldenSparkleCooldown = 0;
+                        GoldenSparkleCooldown = 0;
                     }
                 }
 
@@ -1957,7 +1902,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
             }
 
 
@@ -1983,7 +1928,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -1993,7 +1938,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -2003,7 +1948,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -2013,7 +1958,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
 
 
@@ -2025,7 +1970,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
 
 
@@ -2040,7 +1985,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                        
+
                         GoldenRingCooldown = 0;
                     }
                 }
@@ -2055,7 +2000,7 @@ namespace Stellamod
 
                         Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                         Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                                GoldenSparkleCooldown = 0;
+                        GoldenSparkleCooldown = 0;
                     }
                 }
 
@@ -2070,7 +2015,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
                 GoldenRingCooldown++;
                 GoldenSparkleCooldown++;
@@ -2098,7 +2043,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
 
 
@@ -2110,7 +2055,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -2120,7 +2065,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -2130,7 +2075,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
             }
 
 
@@ -2161,7 +2106,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
 
 
@@ -2173,7 +2118,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -2183,7 +2128,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
 
                 for (int j = 0; j < 1; j++)
                 {
@@ -2193,7 +2138,7 @@ namespace Stellamod
 
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-                                    }
+                }
             }
 
             if (Dice)

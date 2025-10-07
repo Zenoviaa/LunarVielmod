@@ -69,8 +69,7 @@ namespace Stellamod.Items.Consumables
 						break;
 					case 2:
 
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<IronHook>());
-
+		
 						break;
 					case 3:
 

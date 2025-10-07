@@ -217,7 +217,6 @@ namespace Stellamod.NPCs.Town
             .Add<BlankStein>()
             .Add<BlankSafunai>()
             .Add<BlankRune>()
-            .Add<BlankShield>()
             .Add<BlankBrooch>()
             .Add<BlankOrb>()
             .Add<GunHolster>()

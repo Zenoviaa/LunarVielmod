@@ -1363,7 +1363,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
 			notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
 				ModContent.ItemType<BurningGBroochA>(),
-				ModContent.ItemType<GothiviasCard>(),
                 ModContent.ItemType<BurnBlast>()));
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));

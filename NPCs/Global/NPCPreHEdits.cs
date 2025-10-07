@@ -274,7 +274,7 @@ namespace Stellamod.NPCs.Global
             {
 
 
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Heatspot>(), 20, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.// In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+           
 
             }
 
@@ -311,16 +311,6 @@ namespace Stellamod.NPCs.Global
 
                 // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BloodLamp>(), 200, 1, 1));
-            }
-
-            if (npc.type == NPCID.Drippler)
-            {
-
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BloodLamp>(), 300, 1, 1));
-                // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-
-
             }
 
         }
