@@ -19,6 +19,7 @@
     <None Remove="Items\Blocks\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\Biomes\BlankBG.png" />
     <None Remove="Assets\Biomes\StarbloomWaterfallStyle.png" />
     <None Remove="Assets\Biomes\StarbloomWaterStyle.png" />
     <None Remove="Assets\Biomes\StarbloomWaterStyle_Block.png" />
@@ -37,6 +38,19 @@
     <None Remove="Assets\Effects\SharpExplosionShader.fx" />
     <None Remove="Assets\Effects\Silhouette.fx" />
     <None Remove="Assets\Textures\AshedRE.png" />
+    <None Remove="Assets\Textures\Backgrounds\IceBack.png" />
+    <None Remove="Assets\Textures\Backgrounds\IceBack2.png" />
+    <None Remove="Assets\Textures\Backgrounds\IceFront.png" />
+    <None Remove="Assets\Textures\Backgrounds\IceFront2.png" />
+    <None Remove="Assets\Textures\Backgrounds\IceGradient.png" />
+    <None Remove="Assets\Textures\Backgrounds\IceMiddle.png" />
+    <None Remove="Assets\Textures\Backgrounds\IceUnderground.png" />
+    <None Remove="Assets\Textures\Backgrounds\RainforestBack.png" />
+    <None Remove="Assets\Textures\Backgrounds\RainforestBackGradient.png" />
+    <None Remove="Assets\Textures\Backgrounds\RainforestFront.png" />
+    <None Remove="Assets\Textures\Backgrounds\RainforestFrontGradient.png" />
+    <None Remove="Assets\Textures\Backgrounds\RainforestMiddle.png" />
+    <None Remove="Assets\Textures\Backgrounds\RainforestMiddleGradient.png" />
     <None Remove="Buffs\AbyssalFlame - Copy.png" />
     <None Remove="Buffs\AbyssalFlame.png" />
     <None Remove="Buffs\AcidFlame.png" />

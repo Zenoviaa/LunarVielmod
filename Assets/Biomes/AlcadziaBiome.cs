@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Assets.Biomes
 {
+
     // Shows setting up two basic biomes. For a more complicated example, please request.
     public class AlcadziaBiome : ModBiome
 	{

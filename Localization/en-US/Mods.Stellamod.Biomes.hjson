@@ -142,3 +142,8 @@ MothlightBiome: {
 	DisplayName: Mothlight Biome
 	TownNPCDialogueName: the Mothlight Biome
 }
+
+WonderousDarkspaceBiome: {
+	DisplayName: Wonderous Darkspace Biome
+	TownNPCDialogueName: the Wonderous Darkspace Biome
+}

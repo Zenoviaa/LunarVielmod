@@ -81,9 +81,6 @@ namespace Stellamod.Helpers
             {
                 Filters.Scene["Stellamod:VeilSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
                 SkyManager.Instance["Stellamod:VeilSky"] = new AuroranSky();
-
-                Filters.Scene["Stellamod:GreenSunSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.VeryHigh);
-                SkyManager.Instance["Stellamod:GreenSunSky"] = new GreenSunSky();
             }
 
             Ref<Effect> BasicTrailRef = new(Assets.Request<Effect>("Effects/Primitives/BasicTrailShader", AssetRequestMode.ImmediateLoad).Value);
@@ -161,6 +158,8 @@ namespace Stellamod.Helpers
             Ref<Effect> starsRef = new(Assets.Request<Effect>("Effects/RoyalCapitalStars", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc["LunarVeil:RoyalCapitalStars"] = new MiscShaderData(starsRef, "ScreenPass");
 
+
+
             //White Flame Pixel Shader
             RegisterMiscShader(FireWhitePixelShaderName, "Effects/WhiteflamePixelShader", "TrailPass");
 
@@ -184,6 +183,11 @@ namespace Stellamod.Helpers
 
             SkyManager.Instance["LunarVeil:RoyalCapitalSky"] = new RoyalCapitalSky();
             SkyManager.Instance["LunarVeil:RoyalCapitalSky"].Load();
+
+
+            SkyManager.Instance["LunarVeil:DarkspaceSky"] = new RoyalCapitalSky();
+            SkyManager.Instance["LunarVeil:DarkspaceSky"].Load();
+
 
             SkyManager.Instance["Stellamod:NaxtrinSky"] = new NaxtrinSky();
             SkyManager.Instance["Stellamod:NaxtrinSky"].Load();

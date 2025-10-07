@@ -100,6 +100,8 @@ namespace Stellamod
         public int MothlightCount;
         public static bool InMothlight => ModContent.GetInstance<BiomeTileCounts>().MothlightCount > 5;
 
+        public int DarkspaceCount;
+        public static bool InDarkspace => ModContent.GetInstance<BiomeTileCounts>().DarkspaceCount > 10;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
             AcidCount = tileCounts[ModContent.TileType<AcidialDirt>()];
@@ -128,6 +130,7 @@ namespace Stellamod
             MineshaftTileCount = tileCounts[ModContent.TileType<RobedCatastoneBlock>()];
             ColosseumCount = tileCounts[ModContent.TileType<ChiseledSandstoneT>()];
             MothlightCount = tileCounts[ModContent.TileType<MothlightBrick>()];
+            DarkspaceCount = tileCounts[TileID.Granite];
         }
     }
 }
