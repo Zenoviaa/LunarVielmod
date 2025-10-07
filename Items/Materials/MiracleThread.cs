@@ -17,9 +17,6 @@ namespace Stellamod.Items.Materials
     {
         public override void SetStaticDefaults()
         {
-            Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 4));
-            ItemID.Sets.AnimatesAsSoul[Item.type] = true; // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
-			ItemID.Sets.ItemNoGravity[Item.type] = true;
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100; // How many items are needed in order to research duplication of this item in Journey mode. See https://terraria.gamepedia.com/Journey_Mode/Research_list for a list of Corely used research amounts depending on item type.
         }
 
@@ -40,7 +37,7 @@ namespace Stellamod.Items.Materials
 
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-			DrawHelper.DrawGlowInInventory(Item, spriteBatch, position, Color.Purple);
+			DrawHelper.DrawGlowInInventory(Item, spriteBatch, position, Color.Blue);
 			return true;
 		}
 

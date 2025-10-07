@@ -9,6 +9,7 @@ using Terraria;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
+using Stellamod.Core.SilkSystem;
 
 namespace Stellamod.TilesNew.Darkspace
 {
@@ -33,6 +34,12 @@ namespace Stellamod.TilesNew.Darkspace
         public override void NumDust(int i, int j, bool fail, ref int num)
         {
             num = fail ? 1 : 3;
+        }
+        public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
+        {
+            base.KillTile(i, j, ref fail, ref effectOnly, ref noItem);
+            if(!fail)
+                SilkManager.DestroySilk(i, j);
         }
     }
     public class SilkTileBlock : ModItem

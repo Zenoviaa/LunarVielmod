@@ -5,6 +5,7 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.TilesNew.Darkspace;
 using Stellamod.Trails;
@@ -12,7 +13,9 @@ using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
+using System.IO;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -45,12 +48,17 @@ namespace Stellamod.Core.SilkSystem
         {
             if (Main.rand.NextBool(50))
             {
-                Vector2[] positions = GetWorldPoints();
-                Vector2 spawnPoint = positions[Main.rand.Next(0, positions.Length)];
-                Particle.NewParticle<SilkParticle>(spawnPoint, Vector2.Zero, Color.White * 0.85f);
+                Vector2 spawnPoint = GetRandomPoint();
+                Particle.NewParticle<SilkParticle>(spawnPoint, Vector2.Zero, Color.Transparent);
             }
         }
 
+        public Vector2 GetRandomPoint()
+        {
+            Vector2[] positions = GetWorldPoints();
+            Vector2 spawnPoint = positions[Main.rand.Next(0, positions.Length)];
+            return spawnPoint;
+        }
         private void InitTrailCache()
         {
             Vector2 drawPos1 = tile1.ToWorldCoordinates();
@@ -79,6 +87,10 @@ namespace Stellamod.Core.SilkSystem
             }
             return worldRot;
         }
+        public bool IsConnectedToTile(int i, int j)
+        {
+            return (tile1.X == i && tile1.Y == j) || (tile2.X == i && tile2.Y == j);
+        }
         public Color GetColor(float completionRatio)
         {
             return Color.White;
@@ -96,6 +108,10 @@ namespace Stellamod.Core.SilkSystem
             if (minDistance <= 1000)
                 return true;
             return false;
+        }
+        public void NetSend(BinaryWriter writer)
+        {
+
         }
     }
 
@@ -151,6 +167,36 @@ namespace Stellamod.Core.SilkSystem
             On_Main.DrawDust -= DrawStrings;
         }
 
+        public override void NetSend(BinaryWriter writer)
+        {
+            base.NetSend(writer);
+            writer.Write(_silkStrings.Count);
+            for(int i = 0; i < _silkStrings.Count; i++)
+            {
+                var str = _silkStrings[i];
+                writer.Write(str.tile1.X);
+                writer.Write(str.tile1.Y);
+                writer.Write(str.tile2.X);
+                writer.Write(str.tile2.Y);
+                writer.Write(str.width);
+            }
+        }
+        public override void NetReceive(BinaryReader reader)
+        {
+            base.NetReceive(reader);
+            int silkStringCount = reader.ReadInt32();
+            _silkStrings.Clear();
+            for(int s = 0; s < silkStringCount; s++)
+            {
+                int x1 = reader.ReadInt32();
+                int y1 = reader.ReadInt32();
+                int x2 = reader.ReadInt32();
+                int y2 = reader.ReadInt32();
+                float width = reader.ReadSingle();
+                SilkString str = new SilkString(new Point(x1, y1), new Point(x2, y2), width);
+                _silkStrings.Add(str);
+            }
+        }
         public override void PostUpdateDusts()
         {
             base.PostUpdateDusts();
@@ -169,6 +215,40 @@ namespace Stellamod.Core.SilkSystem
                     silkString.Update();
                 }
             }
+        }
+        public static void DestroySilk(int i, int j)
+        {
+
+       
+            if (StellaMultiplayer.IsHost || Main.netMode == NetmodeID.SinglePlayer)
+            {
+
+                SilkString connectedString = _silkStrings.Find(x => x.IsConnectedToTile(i, j));
+                if (connectedString == null)
+                    return;
+                _silkStrings.Remove(connectedString);
+                int numThreads = Main.rand.Next(3, 8);
+                for (int n = 0; n < numThreads; n++)
+                {
+
+                    Vector2 point = connectedString.GetRandomPoint();
+                    int itemIndex = Item.NewItem(new EntitySource_TileBreak(i, j), point,
+                              ModContent.ItemType<MiracleThread>(), 1);
+                    NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
+
+                    for(int s = 0; s < 15; s++)
+                    {
+                        Vector2 spawnPoint = point + Main.rand.NextVector2Circular(32, 32);
+                        Particle.NewParticle<SilkParticle>(spawnPoint, Vector2.Zero, Color.Transparent);
+                    }
+                }
+                NetMessage.SendData(MessageID.WorldData);
+            }
+            else if (!StellaMultiplayer.IsHost)
+            {
+                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.BreakString, i, j).Send(-1);
+            }
+
         }
 
         private void DrawStrings(On_Main.orig_DrawDust orig, Main self)
