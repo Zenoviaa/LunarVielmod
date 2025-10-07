@@ -5,11 +5,10 @@ NOT PLAYABLE IN SMALL WORLDS!
 The Lunar Veil Legacy is an old expansive mod for the world of Crystal Moon. As this takes place before Crystal moon, our game, 
 Sirestias has sought to expand her skills in the world of terraria and she wants to eliminate all false gods and goddesses on the planet who cause harm to others.
 
-The ones that pose a threat to existence on the planet of terraria would be gods who own singularities. They cause inreversible damage and often corrupts the worlds and the minds within them.
-People go out to worship these gods and protect them, and nobody dare stand up to the ones who rule their domains.
-
+The one that poses a threat to existence on the planet of terraria would be the god who owns the singularities, Ereshkigal, entrapping others in forever banishment, changing and ruining
+the world because she wants her dear Siegfried back. Can you stop her before it's too late?
 What new evils have befallen this world? Who knows :P
-But your job is to eliminate all of them 
+But your job is to eliminate all of them and restore order to peace.
 
 This is a content/quality of life mod which includes:
 - Many new enemies and npcs
@@ -21,16 +20,16 @@ This is a content/quality of life mod which includes:
 - 100+ Accessories that will indefinetly help you with battles
 - Many fleshed out biomes and structures around the world to keep you searching and exploring
 - Castles, Dungeons and a very open and treasure filled world that makes it feel like a metroidvania!
-- Many new bosses around both prehardmode and hardmode now!
+- Many new bosses around both prehardmode and hardmode now, and even post moonlord!
 - Many main armors to flesh out prehardmode's lack of class armors
-- A fully immersive soundtrack from both me and Azza (Go check out my Diari Soundtrack, please lol)
-- Pretty much made by three people, Me, Azzalea and Scolon!
+- A fully immersive soundtrack from meee (Go check out my Diari Soundtrack, please lol)
+- Pretty much made by two people, Me and Scolon!
 - Over 1000 new items!
 - Many new quality of life addons to make the terraria experience better :)
 
-Keep in mind this mod is still in progress!
+Keep in mind this mod is FINISHED!!!! Small updates maybe here and there...
 (WARNING: THIS MOD ENCOURAGES YOU TO WORK ON EVASION)
-Playable until Post-ML
+Playable even Post-ML
 
 --------------------------------------------------------
 The Eternal Moon Update: 1.3 has been released finishng prehardmode and all of its glory!
@@ -40,6 +39,9 @@ Go out and fight the new bosses accompanied with a higher being Verlia, the one 
 1.3.2 - Rebalancing of items
 1.3.3 - Enemy spawn reduction and loot changes
 1.3.4 - Boss Checklist compatibility
+
+
+
 ----------------------------------
 Stars and Bloom update: 1.4 has been released, adding a bunch of QOL content, fixes and many more exploration!
 The Royal Capital, Catacombs, Veriplant biomes. Fenix, Sylia, Stone Golem and many minibosses were added. 90+ new weapons, over 40 new accessories and fixes!
@@ -49,6 +51,9 @@ This update focuses on improving curent mechanics and adding an overall better v
 1.4.2 - Texture configuration added, also adds some multiplayer support to make bosses actually spawn, not fully multiplayer yet though! Fenix and Sunstalker do not work in multiplayer!
 1.4.2.1 - Fixed Dreadmire's phases breaking
 1.4.2.2 - Fixed a lot of bugs and some item issues!
+
+
+
 -----
 Prismatic love Update: 1.5 has been released!
 See the new improvements across the mod containing 2 new bosses, MULTIPLAYER COMPATIBILITY and a bunch of new edits to make this mod feel super special! World generation differences and 
@@ -57,6 +62,9 @@ small little parts, quests and remakes to make everything up to standard! Much b
 ----
 1.5.1 - Some multiplayer fixes
 1.5.2.5 - A lot of bug fixes and config option fixes 
+
+
+
 -----
 Green Sun Update: 1.6 Has been released!
 Introducing many new systems like weapon swapping, Dialogue, Pages, reworked undergrounds and environments and quests! 4 New Post plant - Post ML bosses! Gothivia, Rek, Supernova fragment and Niivi!
@@ -67,33 +75,71 @@ polish.
 --------------
 1.6.1 - Many boss buffs and nerfs, new weapons, 70+ More switchable weapons and balancing to accessories!
 1.6.2 - Gave credit to some code for where it was due. Bug fixes and it's official name of Legacy added.
+
+
 -----------------
 Remirror Update: 1.7 has been released!
 As some issues arose in 1.6 due to complications of a member stealing a bunch of assets on merge, we split off and decided to resprite/redo many systems to keep the mod in tact.
 Stone golem has also gotten a much needed rework as well as a few new items and rebalancing! New visuals to many projectiles and bosses!
 If there are issues please let us know :)
---------------------------
-Calm before the Storm: 1.8 has been released!
-This update is a semi-decent sized update to how Lunar veil is played. This will also be the final version of Lunar veil before it splits off into its full legacy version, as our new 
-overhaul of this mod, Sacred Veil, will replace this mod in the near future when we're ready, until then, we have heard a lot of your complaints and we are changing a decent amount!
 
+
+
+
+--------------------------
+The Legacy of the Lunar Veil: 2.0 has been released!
+This update is a very nicely sized update to how Lunar veil is played. This will also be the final version of Lunar veil, we have heard a lot of your complaints and we changed a lot!
+Pretty much an overhaul to how it was played before, and if you didn't like it before and voiced your complaints, well go and try it again!
+
+
+-- BOSSES!!!! NEW BOSSES!! 14 new bosses.
+
+Lunar veil has recieved it's final bosss...... drummrolllllll
+
+- It's Ereshkigal! 
+
+- Added New Commander Ginztia boss! (Old commander gintzia is now Elite commander)
+- New Gustbeak, a colosseum boss!
+- Alcaric Fox, an old fiance who is part dragon?? (Fenix)
+- Jiitas? I dont know she's weird.
+- Woodland Ravager
+- Sanguimi
+- Astral Singularity
+- Skullruner
+- Ashoti
+- Styr
+- Prime Punker
+- Descending Twins
+- Steamroller
+
+
+
+
+-- New additions
+50+ weapons reworked
+30+ New weapons added!
+
+
+- New biomes Wonderous Darkspace, Mothlight Manor, Fallen Illuria
+- Xixian Flask system
+- New dialogues for our npcs with custom portraits for some extra life.
+- Integrated Dodge??? No more steali for you...
+- Added Armor reforging, Cauldron crafting (our new main method of crafting), and our quest book! 
+- Remade world generation for most of our biomes!
+- Vanilla biome spice, texture and visual wise, jungle, underworld, granite becoming the wonderous darkspace and marble mixing with the old illuria!
+- New palette shaders and vanilla spice!
+- New Scorpions, Reworked Card and dusts
+- New town Npcs such as Manman (Armor merchant), Old Man whiley (Found at the doc)
+- LOTS of rebalancing :)
+- Did a much needed bloat removal
+- Rewrote lore and dialogue
+
+
+A lot of items removed...
+Reworked Daedus, Jack, Sylia, Stone Golem and Irradia once more for the final time!
+Removed Old Fenix, Nest and Irradieagle, Dreadmire, Sunstalker... 
 Some stuff you will see in this update are stuff you can expect of the new mod, but we wanted to clean up the legacy version with lots of reworks, balancing and fixes before we say 
 goodbye to this version of Lunar veil, and I hope you all can respect that! 
-
-A lot of items removed
-50+ weapons reworked
-Added Armor reforging, Cauldron crafting (our new main method of crafting), and our quest book! 
-Remade world generation for most of our biomes!
-New palette shaders and vanilla spice!
-
-New Scorpions, Reworked Card and dusts
-
-
-New town Npcs such as Manman (Armor merchant), Old Man whiley (Found at the doc)
-Added New Commander Ginztia boss! (Old commander gintzia is now Elite commander)
-New Gustbeak boss!
-Reworked Daedus
-Reworked Jack
 -----------------------------------
 
 
