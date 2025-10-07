@@ -14,7 +14,8 @@
 		CreatePortal,
 		StartBossFromDialogue,
 		StartDialogue,
-		STARBLOCK
+		STARBLOCK,
+		BreakString
 	}
 
 	public enum DialogueType : byte

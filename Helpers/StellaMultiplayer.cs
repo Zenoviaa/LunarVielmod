@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.SilkSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
@@ -202,6 +203,15 @@ namespace Stellamod
                         ChatHelper.BroadcastChatMessage(auroeanStarfallEnded, new Color(234, 96, 114));
                     }
                    
+                    break;
+
+				case MessageType.BreakString:
+					if (Main.netMode == NetmodeID.Server)
+					{
+						int x = reader.ReadInt32();
+						int y = reader.ReadInt32();
+						SilkManager.DestroySilk(x, y);
+					}
                     break;
 			}
 		}
