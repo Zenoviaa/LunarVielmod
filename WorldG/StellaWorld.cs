@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.SilkSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.AlcadChests;
@@ -32,6 +33,7 @@ using Stellamod.WorldG.StructureManager;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Enums;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.IO;
@@ -231,7 +233,7 @@ namespace Stellamod.WorldG
                 Vector2 newVelocity = caveVelocity * length;
                 caveVelocity = newVelocity;
 
-                if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                if (cavePosition.X < Main.maxTilesX - 35 && cavePosition.X >= 35)
                 {
                     WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
                         genRand.NextFloat(caveStrength.X, caveStrength.Y),
@@ -256,7 +258,7 @@ namespace Stellamod.WorldG
 
 
                     }
-                    if (genRand.NextBool(18))
+                    if (genRand.NextBool(10))
                     {
                         int x = (int)cavePosition.X;
                         int y = (int)cavePosition.Y;
@@ -294,6 +296,13 @@ namespace Stellamod.WorldG
                     bool hasBottom = (y - 1 > 0) && !WorldGen.SolidOrSlopedTile(x, y - 1);
                     bool hasAny = hasRight || hasLeft || hasTop || hasBottom;
 
+                    if(!hasTop && tile.TileType == TileID.Granite)
+                    {
+                        if (genRand.NextBool(64))
+                        {
+                            SilkManager.GrowSilk(x, y, genRand);
+                        }
+                    }
                     if (hasAny && (tile.TileType == TileID.Granite))
                     {
                         //WorldGen.PlaceTile(x, y, TileID.Grass, forced: true);
