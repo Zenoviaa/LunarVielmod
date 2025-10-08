@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -116,16 +118,31 @@ namespace Stellamod.Items
                 texture = ModContent.Request<Texture2D>(textureName).Value;
 
                 textPosition = new(line.X, line.Y);
-                drawPos = textPosition + new Vector2(0, texture.Size().Y / 3.5f) + new Vector2(145, 6);
 
-
-                int type = item.type;
                 Rectangle? frame = null;
-                if (Main.itemAnimationsRegistered.Contains(type))
+                Vector2 size = texture.Size() * 0.5f;
+                int startItemIndex = textureName.LastIndexOf("/");
+                startItemIndex += 1;
+                string itemName = textureName.Substring(startItemIndex, textureName.Length - startItemIndex);
+
+                ModItem materialItem = ModContent.Find<ModItem>(Stellamod.Instance.Name, itemName);
+                if (materialItem != null)
                 {
-                    frame = Main.itemAnimations[type].GetFrame(texture);
+
+                    if (Main.itemAnimationsRegistered.Contains(materialItem.Item.type))
+                    {
+                        frame = Main.itemAnimations[materialItem.Item.type].GetFrame(texture);
+                        size = frame.Value.Size() * 0.5f;
+                    }
                 }
-                spriteBatch.Draw(texture, drawPos, frame, Color.White, 0f, texture.Size() * 0.5f, 0.8f, SpriteEffects.None, 0f);
+
+                drawPos = textPosition + new Vector2(0, size.Y / 3.5f) + new Vector2(145, 6);
+
+
+                
+
+        
+                spriteBatch.Draw(texture, drawPos, frame, Color.White, 0f, size, 0.8f, SpriteEffects.None, 0f);
             }
         }
     }
