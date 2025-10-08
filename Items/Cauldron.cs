@@ -81,6 +81,13 @@ namespace Stellamod.Items
     }
     internal static class BrewExtension
     {
+        public static CauldronBrew RegisterBrew<Material, Mold>(this ModItem result, float weight = 1.0f, int yield = 1)
+            where Material : ModItem
+            where Mold : ModItem
+        {
+            Cauldron cauldron = ModContent.GetInstance<Cauldron>();
+            return cauldron.AddBrew(result.Item.type, ModContent.ItemType<Mold>(), ModContent.ItemType<Material>(), 10, weight, yield);
+        }
         public static CauldronBrew RegisterBrew(this ModItem result, int mold, int material, float weight = 1.0f, int yield = 1)
         {
             Cauldron cauldron = ModContent.GetInstance<Cauldron>();

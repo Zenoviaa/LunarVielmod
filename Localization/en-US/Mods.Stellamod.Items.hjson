@@ -8833,17 +8833,17 @@ StoneUnderBlock: {
 }
 
 WoodyInsource: {
-	Tooltip: ""
+	Tooltip: Increases your defense by 10 for 15 seconds
 	DisplayName: Woody Insource
 }
 
 HiveheartInsource: {
-	Tooltip: ""
+	Tooltip: Grants honey for 10 seconds
 	DisplayName: Hiveheart Insource
 }
 
 HealthInsource: {
-	Tooltip: ""
+	Tooltip: Heals 50 points of health
 	DisplayName: Health Insource
 }
 
@@ -8875,4 +8875,9 @@ SilkTileBlock: {
 HypnotizedSoul: {
 	Tooltip: ""
 	DisplayName: Hypnotized Soul
+}
+
+WondrousShieldInsource: {
+	Tooltip: Grants a shield that tanks the next hit of incoming damage!
+	DisplayName: Wondrous Shield Insource
 }
