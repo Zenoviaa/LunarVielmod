@@ -58,7 +58,7 @@ namespace Stellamod.Items.Weapons.Melee.Knives
 
 
             //Set stamina to use
-            staminaToUse = 1;
+            
 
             //set staminacombo
             maxStaminaCombo = 3;

@@ -53,7 +53,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
 
 
             //Set stamina to use
-            staminaToUse = 1;
+            
             //set staminacombo
             maxStaminaCombo = 4;
             //Set stamina projectile

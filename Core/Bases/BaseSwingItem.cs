@@ -2,6 +2,7 @@
 using Stellamod.Core.Players;
 using Stellamod.Helpers;
 using Stellamod.Items;
+using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Explosions;
 using System.Collections.Generic;
 using Terraria;
@@ -17,28 +18,33 @@ namespace Stellamod.Core.Bases
     }
     public abstract class BaseSwingItem : ClassSwapItem
     {
+        public const int Special_Move_Cost = 2;
         public int comboWaitTime = 60;
         public int maxCombo;
         public int maxStaminaCombo;
         public int staminaProjectileShoot;
-        public int staminaToUse;
         public MeleeWeaponType meleeWeaponType;
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
-            /*
-     TooltipLine line = new TooltipLine(Mod, "WeaponType", LangText.Core("WeaponType"+meleeWeaponType.ToString()));
-     line.OverrideColor = ColorFunctions.GreatswordWeaponType;
-     tooltips.Add(line);
+
+            TooltipLine line = new TooltipLine(Mod, "WeaponType", LangText.Common("WeaponType" + meleeWeaponType.ToString()));
+            line.OverrideColor = ColorFunctions.GreatswordWeaponType;
+            tooltips.Add(line);
 
 
-     line = new TooltipLine(Mod, "BasicSlash", LangText.Core("BasicSlash", LangText.Item(this, "BasicSlash")));
-     line.OverrideColor = new Color(124, 187, 80);
-     tooltips.Add(line);
+            line = new TooltipLine(Mod, "BasicSlash", LangText.Common("BasicSlash", LangText.Item(this, "BasicSlash")));
+            line.OverrideColor = new Color(124, 187, 80);
+            tooltips.Add(line);
 
-     line = new TooltipLine(Mod, "StaminaSlash", LangText.Core("StaminaSlash", LangText.Item(this, "StaminaSlash")));
-     line.OverrideColor = new Color(187, 80, 124);
-     tooltips.Add(line);*/
+            line = new TooltipLine(Mod, "StaminaSlash", LangText.Common("StaminaSlash", LangText.Item(this, "StaminaSlash")));
+            line.OverrideColor = new Color(187, 80, 124);
+            tooltips.Add(line);
+        }
+
+        public virtual void ModifySwing(ref MeleeWeaponType weaponType, ref int comboWaitTime, ref int maxCombo, ref int maxStaminaCombo, ref int staminaProjectileType)
+        {
+
         }
         public virtual void ShootSwing(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
@@ -55,8 +61,9 @@ namespace Stellamod.Core.Bases
         public virtual void ShootSwingStamina(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             ComboPlayer comboPlayer = player.GetModPlayer<ComboPlayer>();
+            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
             comboPlayer.ComboWaitTime = comboWaitTime;
-            comboPlayer.ConsumeStamina(staminaToUse);
+            dashPlayer.Consume(Special_Move_Cost);
 
             int combo = comboPlayer.StaminaComboCounter;
             if (combo >= maxStaminaCombo)
@@ -81,8 +88,10 @@ namespace Stellamod.Core.Bases
 
         public sealed override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            ModifySwing(ref meleeWeaponType, ref comboWaitTime, ref maxCombo, ref maxStaminaCombo, ref staminaProjectileShoot);
             ComboPlayer comboPlayer = player.GetModPlayer<ComboPlayer>();
-            if (player.altFunctionUse == 2 && comboPlayer.CanUseStamina(staminaToUse))
+            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+            if (player.altFunctionUse == 2 && dashPlayer.CanConsume(Special_Move_Cost))
             {
                 ShootSwingStamina(player, source, position, velocity, staminaProjectileShoot, damage, knockback);
             }

@@ -223,9 +223,18 @@ namespace Stellamod.Items.Accessories.Players
             }
         }
 
-        private bool CanUseDash()
+        public bool CanUseDash()
         {
             return !Player.setSolar && !Player.mount.Active; // player isn't mounted, since dashes on a mount look weird
+        }
+
+        public bool CanConsume(int amount)
+        {
+            return DashCount >= amount;
+        }
+        public void Consume(int amount)
+        {
+            DashCount -= amount;
         }
 
         public override bool CanUseItem(Item item)

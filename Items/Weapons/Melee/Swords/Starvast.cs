@@ -19,9 +19,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
 {
     public class Starvast : BaseSwingItem
     {
-        public int dir;
         public override DamageClass AlternateClass => DamageClass.Magic;
-
         public override void SetClassSwappedDefaults()
         {
             Item.damage = 11;
@@ -43,28 +41,24 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             Item.value = Item.buyPrice(silver: 1);
             Item.rare = ItemRarityID.Blue;
             Item.shootSpeed = 10;
-            Item.shoot = ModContent.ProjectileType<StarvastStaminaSlash>();
+            Item.shoot = ModContent.ProjectileType<StarvastSlash>();
             Item.autoReuse = true;
-            meleeWeaponType = MeleeWeaponType.Sword;
-
-            //Combo variables
-            //Set combo wait time
-            comboWaitTime = 60;
-            //Set max combo
-            maxCombo = 5;
-
-
-            //Set stamina to use
-            staminaToUse = 1;
-            //set staminacombo
-            maxStaminaCombo = 2;
-            //Set stamina projectile
-            staminaProjectileShoot = ModContent.ProjectileType<StarvastStaminaSlash>();
         }
+        
+        public override void ModifySwing(ref MeleeWeaponType weaponType, ref int comboWaitTime, ref int maxCombo, ref int maxStaminaCombo, ref int staminaProjectileType)
+        {
+            base.ModifySwing(ref weaponType, ref comboWaitTime, ref maxCombo, ref maxStaminaCombo, ref staminaProjectileType);
+            weaponType = MeleeWeaponType.Sword;
+            comboWaitTime = 60;
+            maxCombo = 5;
+            maxStaminaCombo = 2;
+            staminaProjectileType = ModContent.ProjectileType<StarvastStaminaSlash>();
+        }
+
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<AuroreanStarI>());
+            this.RegisterBrew<HypnotizedSoul, BlankSword>();
         }
     }
 
