@@ -1,4 +1,6 @@
 ﻿using Stellamod.Core.XixianFlaskSystem;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.ID;
 
@@ -30,6 +32,11 @@ namespace Stellamod.Items.Insources
             };
 
             player.AddBuff(buffPool[Main.rand.Next(0, buffPool.Length)], 60 * 15);
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<HypnotizedSoul, BlankBrooch>();
         }
     }
 }
