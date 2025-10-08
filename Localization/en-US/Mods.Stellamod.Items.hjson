@@ -8896,3 +8896,8 @@ BerserkingInsource: {
 	Tooltip: 200% increased attack speed for 5 seconds!
 	DisplayName: Berserking Insource
 }
+
+MysteryInsource: {
+	Tooltip: Grants a random positive vanilla buff from a small selection of effects!
+	DisplayName: Mystery Insource
+}
