@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Bases;
 using Stellamod.Core.Effects;
 using Stellamod.Helpers;
 using System.Collections.Generic;
@@ -8,7 +9,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.SwingSystem
 {
-    public abstract class BaseSwingProjectileV2 : ScarletProjectile
+    public abstract class BaseSwingProjectileV2 : ScarletProjectile,
+        ISwingProjectile
     {
         private bool _hasInitialized;
         private bool _canHurtThings;
@@ -57,7 +59,7 @@ namespace Stellamod.Core.SwingSystem
 
         }
 
-        public virtual void DefineCombo(List<ISwing> swings)
+        public virtual void DefineCombo()
         {
 
         }
@@ -81,9 +83,9 @@ namespace Stellamod.Core.SwingSystem
             if (!_hasInitialized)
             {
                 _swings = new List<ISwing>();
-                swingTrailCache = new Vector2[32];
+                swingTrailCache = new Vector2[100];
                 afterImageCache = new Vector2[8];
-                DefineCombo(_swings);
+                DefineCombo();
                 ISwing swing = GetSwing();
                 swing.SetDirection((int)SwingDirection);
                 float hitCount = swing.GetHitCount();
@@ -127,6 +129,7 @@ namespace Stellamod.Core.SwingSystem
             //Check if the sword is colliding, this does a line check instead of terraria default box.
             Texture2D texture = GetTexture();
             float length = texture.Width / 2 + texture.Height / 2;
+            length *= 1.5f;
 
             Vector2 start = Projectile.Center - Projectile.rotation.ToRotationVector2() * length;
             Vector2 end = Projectile.Center + Projectile.rotation.ToRotationVector2() * length;
@@ -278,10 +281,19 @@ namespace Stellamod.Core.SwingSystem
             //Hit stop effect and minor screenshake I think
             if (!_hasHitStop)
             {
+                float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
+                float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center.X, target.Center.Y, speedXa * 0, speedYa * 0, ModContent.ProjectileType<BaseHitEffect>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
+
                 HitstopTimer = hitStopTime;
                 _hasHitStop = true;
             }
 
+        }
+
+        public void Add(ISwing swing)
+        {
+            _swings.Add(swing);
         }
     }
 }

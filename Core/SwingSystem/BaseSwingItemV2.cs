@@ -1,4 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.Bases;
+using Stellamod.Helpers;
+using Stellamod.Items.Accessories.Players;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -9,8 +13,27 @@ namespace Stellamod.Core.SwingSystem
     public abstract class BaseSwingItemV2 : ModItem
     {
         public int comboResetTime = 60;
-        public int staminaCost = 1;
         public int staminaProjectileShoot;
+
+        public MeleeWeaponType meleeWeaponType;
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            base.ModifyTooltips(tooltips);
+
+            TooltipLine line = new TooltipLine(Mod, "WeaponType", LangText.Common("WeaponType" + meleeWeaponType.ToString()));
+            line.OverrideColor = ColorFunctions.GreatswordWeaponType;
+            tooltips.Add(line);
+
+
+            line = new TooltipLine(Mod, "BasicSlash", LangText.Common("BasicSlash", LangText.Item(this, "BasicSlash")));
+            line.OverrideColor = new Color(124, 187, 80);
+            tooltips.Add(line);
+
+            line = new TooltipLine(Mod, "StaminaSlash", LangText.Common("StaminaSlash", LangText.Item(this, "StaminaSlash")));
+            line.OverrideColor = new Color(187, 80, 124);
+            tooltips.Add(line);
+        }
+
         //Sealing the set defaults that are common across all things so we don't accidentally override
         public sealed override void SetDefaults()
         {
@@ -48,9 +71,10 @@ namespace Stellamod.Core.SwingSystem
 
         public virtual void ShootSwingStamina(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
             SwingPlayerV2 comboPlayer = player.GetModPlayer<SwingPlayerV2>();
             comboPlayer.ComboWaitTime = comboResetTime;
-            comboPlayer.ConsumeStamina(staminaCost);
+            dashPlayer.Consume(2);
 
             int combo = comboPlayer.StaminaComboCounter;
             int dir = comboPlayer.ComboDirection;
@@ -66,8 +90,9 @@ namespace Stellamod.Core.SwingSystem
 
         public sealed override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
             SwingPlayerV2 comboPlayer = player.GetModPlayer<SwingPlayerV2>();
-            if (player.altFunctionUse == 2 && comboPlayer.CanUseStamina(staminaCost))
+            if (player.altFunctionUse == 2 && dashPlayer.CanConsume(2))
             {
                 ShootSwingStamina(player, source, position, velocity, staminaProjectileShoot, damage, knockback);
             }

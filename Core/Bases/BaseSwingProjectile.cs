@@ -137,6 +137,10 @@ namespace Stellamod.Core.Bases
         {
 
         }
+        public void Add(BaseSwingStyle swing)
+        {
+            _swingStyles.Add(swing);
+        }
 
         public override void AI()
         {
@@ -260,5 +264,7 @@ namespace Stellamod.Core.Bases
             
             _hashit = true;
         }
+
+
     }
 }

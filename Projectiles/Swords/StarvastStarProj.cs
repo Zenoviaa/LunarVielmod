@@ -35,7 +35,7 @@ namespace Stellamod.Projectiles.Swords
             Projectile.hostile = false;
             Projectile.aiStyle = -1;
             Projectile.penetrate = 2;
-            Projectile.timeLeft = 180;
+            Projectile.timeLeft = 200;
             Projectile.tileCollide = false;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 30;
@@ -78,7 +78,7 @@ namespace Stellamod.Projectiles.Swords
             if (npc != null)
             {
                 foundTarget = true;
-                AI_Movement(npc.Center, 15);
+                AI_Movement(npc.Center, 4, 0.3f);
             }
             else
             {
@@ -97,13 +97,13 @@ namespace Stellamod.Projectiles.Swords
 
             for (int i = 0; i < 2; i++)
             {
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Yellow, 1f).noGravity = true;
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Yellow, 0.4f).noGravity = true;
             }
 
             FXUtil.GlowCircleBoom(Projectile.Center,
                 innerColor: Color.White,
                 glowColor: Color.Yellow,
-                outerGlowColor: Color.Blue, duration: 25, baseSize: 0.06f);
+                outerGlowColor: Color.Blue, duration: 25, baseSize: 0.03f);
         }
 
 
@@ -123,17 +123,7 @@ namespace Stellamod.Projectiles.Swords
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.RestartDefaults();
-            Vector2 drawOffset = -Main.screenPosition + Projectile.Size / 2f;
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.LightningTrail2);
-            TrailDrawer.DrawPrims(Projectile.oldPos, drawOffset, 252);
 
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, drawOffset, 155);
-
-            spriteBatch.RestartDefaults();
             DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(44, 84, 94), Color.Transparent, ref lightColor);
  
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
@@ -148,21 +138,6 @@ namespace Stellamod.Projectiles.Swords
 
         private void Visuals()
         {
-            if (ai_Counter == 0)
-            {
-                //Charged Sound thingy
-
-            }
-
-            if (foundTarget)
-            {
-                if (ai_Counter % 8 == 0)
-                {
-
-                }
-            }
-
-
 
             // So it will lean slightly towards the direction it's moving
             float rotation = MathHelper.ToRadians(ai_Counter * 5);
