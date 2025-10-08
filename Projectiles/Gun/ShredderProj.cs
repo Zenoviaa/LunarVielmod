@@ -10,6 +10,9 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria;
 using Terraria.DataStructures;
+using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Core.Shaders;
+using Stellamod.Helpers;
 
 namespace Stellamod.Projectiles.Gun
 {
@@ -42,13 +45,19 @@ namespace Stellamod.Projectiles.Gun
             Projectile.penetrate = -1;
             Projectile.usesIDStaticNPCImmunity = true;
             Projectile.idStaticNPCHitCooldown = 12;
+         
         }
 
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            Projectile.velocity = -Projectile.velocity;
+            return false;
+        }
         public override void AI()
         {
             float rotationDirection = Projectile.ai[0];
             Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(_rotationSpeed * rotationDirection));
-            _rotationSpeed+=0.2f;
+            _rotationSpeed+=0.15f;
 
             //Dunno if this is needed but whatever
             Projectile.rotation = Projectile.velocity.ToRotation();
@@ -56,14 +65,14 @@ namespace Stellamod.Projectiles.Gun
 
         public float WidthFunction(float completionRatio)
         {
-            float baseWidth = Projectile.scale * 8;
+            float baseWidth = Projectile.scale * 4;
             return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
         }
 
         public Color ColorFunction(float completionRatio)
         {
-            Color startColor = Color.White;
-            Color endColor = Color.Transparent;
+            Color startColor = Color.Lerp(Color.Black, Color.Black, ExtraMath.Osc(0f, 1f, speed: 12));
+            Color endColor = Color.Lerp(Color.Cyan, Color.Purple, ExtraMath.Osc(0f, 1f, speed: 12, offset: 4));
             return Color.Lerp(startColor, endColor, completionRatio);
         }
 
@@ -85,13 +94,15 @@ namespace Stellamod.Projectiles.Gun
         internal PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.Black);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
-
-            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
+            var shader = MagicNormalShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.SilkTrail;
+            shader.NoiseTexture = TrailRegistry.CausticTrail;
+            shader.BlendState = BlendState.Additive;
+            shader.SamplerState = SamplerState.PointWrap;
+            shader.Speed = 0.5f;
+            shader.Repeats = 1f;
+            //This just applis the shader changes
+            TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
         }
     }
 }
