@@ -8871,3 +8871,8 @@ SilkTileBlock: {
 	DisplayName: Silk Tile Block
 	Tooltip: ""
 }
+
+HypnotizedSoul: {
+	Tooltip: ""
+	DisplayName: Hypnotized Soul
+}
