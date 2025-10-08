@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Runes
 {
-    internal class RuneOfShadePlayer : ModPlayer
+    internal class GlyphOfShadePlayer : ModPlayer
     {
         public bool hasShadeRune;
         public bool hideShadeRuneVisual;
@@ -47,7 +47,7 @@ namespace Stellamod.Items.Accessories.Runes
         }
     }
 
-    internal class RuneOfShade : BaseRune
+    internal class GlyphOfShade : BaseRune
     {
         public override void SetDefaults()
         {
@@ -65,14 +65,14 @@ namespace Stellamod.Items.Accessories.Runes
             player.jumpSpeedBoost += 0.05f;
             player.aggro -= 300;
 
-            RuneOfShadePlayer shadePlayer = player.GetModPlayer<RuneOfShadePlayer>();
+            GlyphOfShadePlayer shadePlayer = player.GetModPlayer<GlyphOfShadePlayer>();
             shadePlayer.hasShadeRune = true;
             shadePlayer.hideShadeRuneVisual = hideVisual;
         }
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankRune>(), material: ModContent.ItemType<MiracleThread>());
+            this.RegisterBrew<HypnotizedSoul, BlankRune>();
         }
     }
 }

@@ -8901,3 +8901,13 @@ MysteryInsource: {
 	Tooltip: Grants a random positive vanilla buff from a small selection of effects!
 	DisplayName: Mystery Insource
 }
+
+GlyphOfShade: {
+	Tooltip: Great for mobility!
+	Effect:
+		'''
+		Enemies are much less likely to target you
+		5% increased movement speed and jump speed
+		'''
+	DisplayName: Glyph Of Shade
+}

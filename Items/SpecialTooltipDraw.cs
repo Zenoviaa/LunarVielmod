@@ -117,7 +117,15 @@ namespace Stellamod.Items
 
                 textPosition = new(line.X, line.Y);
                 drawPos = textPosition + new Vector2(0, texture.Size().Y / 3.5f) + new Vector2(145, 6);
-                spriteBatch.Draw(texture, drawPos, null, Color.White, 0f, texture.Size() * 0.5f, 0.8f, SpriteEffects.None, 0f);
+
+
+                int type = item.type;
+                Rectangle? frame = null;
+                if (Main.itemAnimationsRegistered.Contains(type))
+                {
+                    frame = Main.itemAnimations[type].GetFrame(texture);
+                }
+                spriteBatch.Draw(texture, drawPos, frame, Color.White, 0f, texture.Size() * 0.5f, 0.8f, SpriteEffects.None, 0f);
             }
         }
     }
