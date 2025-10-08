@@ -53,7 +53,7 @@ namespace Stellamod.Items.Insources
         public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
             base.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
-            if (stacks > 0)
+            if (stacks > 0 && drawInfo.shadow == 0f)
             {
                 string path = this.GetType().DirectoryHere() + "/WondrousShieldBubble";
                 BubbleTextureAsset ??= ModContent.Request<Texture2D>(path);
