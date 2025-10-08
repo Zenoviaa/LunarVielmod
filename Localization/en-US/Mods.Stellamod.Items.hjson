@@ -8881,3 +8881,18 @@ WondrousShieldInsource: {
 	Tooltip: Grants a shield that tanks the next hit of incoming damage!
 	DisplayName: Wondrous Shield Insource
 }
+
+StrengthInsource: {
+	Tooltip: Increases your damage by 25% for as long as you don't get hit!
+	DisplayName: Strength Insource
+}
+
+ManaRegeneratingInsource: {
+	Tooltip: Greatly increased mana regeneration for 5 seconds!
+	DisplayName: Mana Regenerating Insource
+}
+
+BerserkingInsource: {
+	Tooltip: 200% increased attack speed for 5 seconds!
+	DisplayName: Berserking Insource
+}

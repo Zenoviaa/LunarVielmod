@@ -857,3 +857,18 @@ WondrousShieldInsourceBuff: {
 	Description: Mods.Stellamod.Buffs.WondrousShieldInsourceBuff.Description
 	DisplayName: Wondrous Shield Insource Buff
 }
+
+BerserkingInsourceBuff: {
+	DisplayName: Berserking Insource Buff
+	Description: Mods.Stellamod.Buffs.BerserkingInsourceBuff.Description
+}
+
+ManaRegeneratingInsourceBuff: {
+	DisplayName: Mana Regenerating Insource Buff
+	Description: Mods.Stellamod.Buffs.ManaRegeneratingInsourceBuff.Description
+}
+
+StrengthInsourceBuff: {
+	DisplayName: Strength Insource Buff
+	Description: Mods.Stellamod.Buffs.StrengthInsourceBuff.Description
+}
