@@ -173,7 +173,7 @@ namespace Stellamod.Projectiles.Paint
 
 			if (Timer < 3 && Main.myPlayer == Projectile.owner)
 			{
-				player.velocity = Projectile.DirectionTo(oldMouseWorld) * 20f;
+				player.velocity = Projectile.DirectionTo(oldMouseWorld) * 13;
 			}
 
 			int dir = (int)Projectile.ai[1];
