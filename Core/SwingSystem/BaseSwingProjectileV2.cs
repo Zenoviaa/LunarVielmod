@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects;
 using Stellamod.Helpers;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -46,6 +47,7 @@ namespace Stellamod.Core.SwingSystem
             Projectile.ignoreWater = true;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
+            Projectile.DamageType = DamageClass.Melee;
 
 
             //We're using extra updates to ensure the sword doesn't just pass through things
@@ -91,8 +93,9 @@ namespace Stellamod.Core.SwingSystem
                 float hitCount = swing.GetHitCount();
                 if (hitCount > 1)
                 {
-                    float duration = swing.GetDuration() / hitCount;
+                    float duration = swing.GetDuration(1f / Owner.GetTotalAttackSpeed(Projectile.DamageType)) / hitCount;
                     duration *= EXTRA_UPDATE_COUNT - 1;
+
                     Projectile.localNPCHitCooldown = (int)duration;
                 }
                 _hasInitialized = true;
@@ -111,7 +114,7 @@ namespace Stellamod.Core.SwingSystem
         public float GetSwingTime(float baseSwingTime)
         {
             float swingTime = baseSwingTime * EXTRA_UPDATE_COUNT;
-            return (int)(swingTime / Owner.GetAttackSpeed(Projectile.DamageType));
+            return (int)(swingTime);
         }
 
         public override bool? CanDamage()
@@ -149,7 +152,8 @@ namespace Stellamod.Core.SwingSystem
             ISwing swing = GetSwing();
 
             //Now we need to calculate the time/interpolant for this swinging
-            float duration = swing.GetDuration();
+            float duration = swing.GetDuration(1f / Owner.GetTotalAttackSpeed(Projectile.DamageType));
+
             float swingTime = GetSwingTime(duration);
             Interpolant = Timer / swingTime;
             Interpolant = MathHelper.Clamp(Interpolant, 0f, 1f);

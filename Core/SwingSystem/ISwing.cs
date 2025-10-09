@@ -5,7 +5,7 @@ namespace Stellamod.Core.SwingSystem
     public interface ISwing
     {
         void SetDirection(int direction);
-        float GetDuration();
+        float GetDuration(float attackSpeedMultiplier);
 
         int GetHitCount();
 

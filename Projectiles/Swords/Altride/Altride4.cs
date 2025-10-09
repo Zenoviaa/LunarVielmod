@@ -33,7 +33,7 @@ namespace Stellamod.Projectiles.Swords.Altride
         {
             Projectile.width = 40;
             Projectile.height = 40;
-            Projectile.penetrate = 10;
+
             Projectile.knockBack = 12.9f;
             Projectile.aiStyle = 1;
             AIType = ProjectileID.Bullet;
@@ -98,6 +98,22 @@ namespace Stellamod.Projectiles.Swords.Altride
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Projectile.position);
             FXUtil.ShakeCamera(Projectile.Center, 1024, 0.5f);
+
+            for (float i = 0; i < 2f; i++)
+            {
+                float progress = i / 4f;
+                float rot = progress * MathHelper.ToRadians(360);
+                rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                Vector2 offset = rot.ToRotationVector2() * 24;
+                var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                    innerColor: Color.LightCyan,
+                    glowColor: Color.LightCyan,
+                    outerGlowColor: Color.Cyan,
+                    baseSize: Main.rand.NextFloat(0.05f, 0.1f),
+                    duration: Main.rand.NextFloat(15, 25));
+                particle.Rotation = rot + MathHelper.ToRadians(45);
+            }
+
         }
 
         public override bool PreDraw(ref Color lightColor)

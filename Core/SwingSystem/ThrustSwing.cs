@@ -29,9 +29,9 @@ namespace Stellamod.Core.SwingSystem
         public bool DrawTrail { get; set; }
         public Easer Easing { get; set; }
         public SoundStyle? Sound { get; set; }
-        public float GetDuration()
+        public float GetDuration(float attackSpeedMultiplier)
         {
-            return Duration;
+            return Duration * attackSpeedMultiplier;
         }
         public int GetHitCount()
         {

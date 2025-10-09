@@ -39,9 +39,9 @@ namespace Stellamod.Core.SwingSystem
         public SoundStyle? Sound { get; set; }
 
         public float RadOffset => 0;
-        public float GetDuration()
+        public float GetDuration(float attackSpeedMultiplier)
         {
-            return Duration;
+            return Duration * attackSpeedMultiplier;
         }
 
         public int GetHitCount()

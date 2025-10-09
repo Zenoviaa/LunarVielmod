@@ -79,6 +79,29 @@ namespace Stellamod.Trailing
                 return Color.Lerp(Color.Transparent, lerp1, EasingFunction.QuadraticBump(interpolant)) * (1f - interpolant);
             }
 
+        }; 
+        
+        public static SlashTrailer MooningSlicer => new SlashTrailer
+        {
+            Shader = new SlashEffect()
+            {
+                BaseColor = Color.LightBlue,
+                HighlightColor = Color.White,
+                RimHighlightColor = Color.LightCyan,
+                WindColor = Color.Blue,
+                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive,
+                WindTexture = TrailRegistry.StarTrail.Value
+            },
+            TrailWidthFunction = (float interpolant) =>
+            {
+                return EasingFunction.QuadraticBump(interpolant) * 16;
+            },
+            TrailColorFunction = (float interpolant) =>
+            {
+                Color lerp1 = Color.Lerp(Color.LightCyan, Color.Cyan, interpolant);
+                return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+            }
+
         };
     }
 }

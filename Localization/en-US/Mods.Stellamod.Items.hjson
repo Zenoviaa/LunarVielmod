@@ -4069,6 +4069,8 @@ AltrideSlicer: {
 MooningSlicer: {
 	Tooltip: Celestia would be proud
 	DisplayName: Mooning Slicer
+	BasicSlash: No special effect
+	StaminaSlash: Summons a barrage of frozen magical swords!
 }
 
 EverneanSlicer: {
