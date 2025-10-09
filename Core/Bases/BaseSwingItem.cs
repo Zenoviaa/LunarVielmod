@@ -14,7 +14,8 @@ namespace Stellamod.Core.Bases
     public enum MeleeWeaponType
     {
         Sword,
-        Knives
+        Knives,
+        Spear
     }
     public abstract class BaseSwingItem : ClassSwapItem
     {

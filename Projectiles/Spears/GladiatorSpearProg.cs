@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -55,7 +56,11 @@ namespace Stellamod.Projectiles.Spears
                 var EntitySource = Projectile.GetSource_FromThis();
                 if (Main.rand.NextBool(8))
                 {
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<GladiatorSpearMirageProgRed>(), Projectile.damage * 2, 1, Projectile.owner, 0, 0);
+                    if(Main.myPlayer == Projectile.owner)
+                    {
+                        Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<GladiatorSpearMirageProgRed>(), Projectile.damage * 2, 1, Projectile.owner, 0, 0);
+                    }
+              
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GladiatorMirageRed"), Projectile.position);
                 }
                 else
@@ -69,7 +74,10 @@ namespace Stellamod.Projectiles.Spears
                     {
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GladiatorMirage2"), Projectile.position);
                     }
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<GladiatorSpearMirageProg>(), Projectile.damage, 1,Projectile.owner, 0, 0);
+                    if (Main.myPlayer == Projectile.owner)
+                    {
+                        Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<GladiatorSpearMirageProg>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                    }
                 }
             }
             if (Projectile.ai[1] >= 0 && Projectile.ai[1] <= 20)
@@ -97,6 +105,26 @@ namespace Stellamod.Projectiles.Spears
         }
         public override void OnKill(int timeLeft)
         {
+            FXUtil.GlowCircleBoom(Projectile.Center,
+                innerColor: Color.White,
+                glowColor: Color.Yellow,
+                outerGlowColor: Color.Red, duration: 25, baseSize: 0.06f);
+
+            for (float i = 0; i < 2; i++)
+            {
+                float progress = i / 4f;
+                float rot = progress * MathHelper.ToRadians(360);
+                rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                Vector2 offset = rot.ToRotationVector2() * 24;
+                var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.Yellow,
+                    outerGlowColor: Color.Red,
+                    baseSize: Main.rand.NextFloat(0.05f, 0.1f),
+                    duration: Main.rand.NextFloat(15, 25));
+                particle.Rotation = rot + MathHelper.ToRadians(45);
+            }
+
             for (int i = 0; i < 20; i++)
             {
                 int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Gold, 0f, -2f, 0, default(Color), .8f);

@@ -1,56 +1,33 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.Bases;
+using Stellamod.Core.SwingSystem;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Spears;
+using Stellamod.Trailing;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Creative;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Spears
 {
-    internal class GladiatorSpear : ClassSwapItem
+    internal class GladiatorSpear : BaseSwingItemV2
     {
-        //Alternate class you want it to change to
-        public override DamageClass AlternateClass => DamageClass.Throwing;
-
-        //Defaults for the other class
-        public override void SetClassSwappedDefaults()
-        {
-            //Do if(IsSwapped) if you want to check for the alternate class
-            //Stats to have when in the other class
-            Item.damage = 6;
-            Item.knockBack = 5;
-        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Gladiator Spear");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            Item.damage = 13;
-            Item.width = 50;
-            Item.height = 50;
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.noMelee = true;
-            Item.noUseGraphic = true;
-            Item.knockBack = 8;
-            Item.value = Item.sellPrice(0, 1, 1, 29);
-            Item.rare = ItemRarityID.Green;
-            Item.shootSpeed = 15;
-            Item.autoReuse = true;
-            Item.useTurn = true;
-            Item.DamageType = DamageClass.Melee;
-            Item.shoot = ModContent.ProjectileType<GladiatorSpearProg>();
-            Item.shootSpeed = 10f;
-            Item.mana = 5;
-            Item.useAnimation = 20;
-            Item.useTime = 45;
-            Item.consumeAmmoOnLastShotOnly = true;
+            base.SetDefaults2();
+            Item.shoot = ModContent.ProjectileType<GladiatorSpearSlash>();
+            staminaProjectileShoot = ModContent.ProjectileType<GladiatorSpearStaminaSlash>();
+            meleeWeaponType = MeleeWeaponType.Spear;
         }
-
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-3f, -2f);
@@ -59,6 +36,81 @@ namespace Stellamod.Items.Weapons.Melee.Spears
         {
             base.AddRecipes();
             this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<GintzlMetal>());
+        }
+    }
+
+    public class GladiatorSpearSlash : BaseSwingProjectileV2
+    {
+        public override void DefineCombo()
+        {
+            base.DefineCombo();
+            SwingV2Helper.AddSpearSwingStyle(this);
+            Trailer = TrailPresets.GladiatorSpear;
+            useAfterImage = true;
+        }
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitNPC(target, ref modifiers);
+            SoundStyle spearHit = SoundRegistry.SpearHit1;
+            spearHit.PitchVariance = 0.5f;
+            SoundEngine.PlaySound(spearHit, Projectile.position);
+            if (ComboIndex == 5)
+            {
+                modifiers.FinalDamage *= 2;
+            }
+        }
+    }
+
+    public class GladiatorSpearStaminaSlash : BaseSwingProjectileV2
+    {
+        private bool _fire;
+        public override void DefineCombo()
+        {
+            base.DefineCombo();
+            SoundStyle swingSound1 = SoundRegistry.HeavySwordSlash1;
+            swingSound1.PitchVariance = 0.5f;
+
+            Trailer = TrailPresets.LightSpand;
+            Add(new OvalSwing
+            {
+                Duration = 44,
+                XSwingRadius = 160 / 1.5f,
+                YSwingRadius = 80 / 1.5f,
+                SwingDegrees = 270,
+                Easing = (lerpValue) => Easing.InOutExpo(lerpValue, 10),
+                Sound = swingSound1
+            });
+        }
+
+        public override void AI()
+        {
+            base.AI();
+
+            Vector2 swingDirection = Projectile.velocity.SafeNormalize(Vector2.Zero);
+            if (Interpolant > 0.5f && !_fire)
+            {
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Vector2 shootVelocity = Projectile.velocity;
+
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center + new Vector2(0, -4), Projectile.velocity,
+                        ModContent.ProjectileType<GladiatorSpearProg>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
+                }
+                _fire = true;
+            }
+        }
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitNPC(target, ref modifiers);
+            SoundStyle spearHit = SoundRegistry.SpearHit1;
+            spearHit.PitchVariance = 0.5f;
+            SoundEngine.PlaySound(spearHit, Projectile.position);
+            if (ComboIndex == 5)
+            {
+                modifiers.FinalDamage *= 2;
+            }
         }
     }
 }

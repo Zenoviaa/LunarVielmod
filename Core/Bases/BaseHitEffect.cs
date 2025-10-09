@@ -44,7 +44,7 @@ namespace Stellamod.Core.Bases
                 for (int i = 0; i < 3; i++)
                 {
                     Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(8, 8);
-                    Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
+                    Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
                     Particle.NewParticle<GlowParticle>(spawnPoint, velocity, Color.White);
 
 

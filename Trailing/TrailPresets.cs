@@ -170,6 +170,29 @@ namespace Stellamod.Trailing
                 return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
             }
 
+        }; 
+        
+        public static SlashTrailer GladiatorSpear => new SlashTrailer
+        {
+            Shader = new SlashEffect()
+            {
+                BaseColor = Color.Orange,
+                HighlightColor = Color.White,
+                RimHighlightColor = Color.DarkRed,
+                WindColor = Color.DarkGray,
+                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive,
+                WindTexture = TrailRegistry.LightningTrail2.Value
+            },
+            TrailWidthFunction = (float interpolant) =>
+            {
+                return EasingFunction.QuadraticBump(interpolant) * 5;
+            },
+            TrailColorFunction = (float interpolant) =>
+            {
+                Color lerp1 = Color.Lerp(Color.White, Color.Orange, interpolant);
+                return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+            }
+
         };
     }
 }

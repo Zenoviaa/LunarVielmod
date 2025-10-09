@@ -82,7 +82,9 @@ namespace Stellamod.Core.Bases
             {
                 Duration = 60,
                 SwingDegrees=360*4,
-                HitCount=4,
+                XSwingRadius=64,
+                YSwingRadius=64,
+                HitCount =8,
                 Easing = (float lerpValue) => lerpValue,
                 Sound = nSpin
             });
