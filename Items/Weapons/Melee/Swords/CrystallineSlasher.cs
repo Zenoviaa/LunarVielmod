@@ -365,6 +365,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
+            return;
             ComboPlayer comboPlayer = Owner.GetModPlayer<ComboPlayer>();
             int combo = (int)(ComboIndex + 1);
             int dir = comboPlayer.ComboDirection;
