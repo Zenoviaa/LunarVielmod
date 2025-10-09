@@ -8,6 +8,7 @@ using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.WondrousDarkspace.NPCs
@@ -118,6 +119,8 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCs
             NPC.noTileCollide = true;
             NPC.noGravity = true;
             NPC.knockBackResist = 0f;
+            NPC.HitSound = SoundID.DD2_WitherBeastCrystalImpact;
+           
         }
 
         public override void AI()

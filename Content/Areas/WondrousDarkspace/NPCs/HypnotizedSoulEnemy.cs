@@ -92,7 +92,8 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCs
             NPC.damage = 20;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
-
+            NPC.HitSound = SoundID.NPCHit36;
+            NPC.DeathSound = SoundID.NPCDeath39;
         }
 
         public override void FindFrame(int frameHeight)
@@ -209,7 +210,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCs
             NPC.spriteDirection = -NPC.direction;
 
             NPC.TargetClosest();
-            if (NPC.HasValidTarget && Vector2.Distance(NPC.Center, Main.player[NPC.target].Center) < 128)
+            if (NPC.HasValidTarget && Vector2.Distance(NPC.Center, Main.player[NPC.target].Center) < 180)
             {
                 SwitchState(AIState.Chase);
             }
@@ -301,6 +302,15 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCs
             Vector2 drawPos = NPC.position - screenPos + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
             spriteBatch.Draw(texture, drawPos, NPC.frame, Color.White.MultiplyRGB(drawColor), NPC.rotation, drawOrigin, _scale, spriteEffects, 0);
             return false;
+        }
+
+        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            base.PostDraw(spriteBatch, screenPos, drawColor);
+
+            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
+            Main.spriteBatch.Draw(texture2D4, NPC.Center - Main.screenPosition, null, new Color(255, 128, 125, 0), NPC.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
+            Lighting.AddLight(NPC.Center, Color.White.ToVector3() * 1.0f * Main.essScale);
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
