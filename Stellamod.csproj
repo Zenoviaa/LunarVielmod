@@ -67,7 +67,6 @@
     <None Remove="Buffs\AbyssalFlame.png" />
     <None Remove="Buffs\AcidFlame.png" />
     <None Remove="Buffs\Alcadded.png" />
-    <None Remove="Buffs\AssassinsSlashBuff.png" />
     <None Remove="Buffs\FlowerPower.png" />
     <None Remove="Buffs\Gintzingwinds.png" />
     <None Remove="Buffs\HolyAnxiety.png" />

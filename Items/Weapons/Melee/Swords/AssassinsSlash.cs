@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Lights;
+using Stellamod.Core.SwingSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Trails;
 using System.Collections.Generic;
@@ -12,185 +15,35 @@ using Terraria.GameContent.Creative;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.Core.Effects;
+using Stellamod.Trailing;
 
 namespace Stellamod.Items.Weapons.Melee.Swords
 {
-    public class AssassinsSlash : BaseSwingItem
+    public class AssassinsSlash : BaseSwingItemV2
     {
-        public override DamageClass AlternateClass => DamageClass.Magic;
-
-        public override void SetClassSwappedDefaults()
+        public override void SetDefaults2()
         {
-            Item.damage = 7;
-            Item.mana = 6;
-        }
-
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Ivyen Saber");
-            // Tooltip.SetDefault("Has a chance to poison enemies.");
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        }
-
-        public override void SetDefaults()
-        {
-            Item.damage = 16;
-            Item.DamageType = DamageClass.Melee;
-            Item.width = 40;
-            Item.height = 40;
-            Item.noUseGraphic = true;
-            Item.noMelee = true;
-            Item.useTime = 126;
-            Item.useAnimation = 126;
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.knockBack = 6;
-            Item.value = Item.buyPrice(silver: 1);
-            Item.rare = ItemRarityID.Blue;
-            Item.shootSpeed = 10;
-            Item.shoot = ModContent.ProjectileType<AssassinsSlashStaminaSlash>();
-            Item.autoReuse = true;
-
-            //This is only going to affect the tooltip :P
-            meleeWeaponType = MeleeWeaponType.Sword;
-
-            //Combo variables
-            //Set combo wait time
-            comboWaitTime = 60;
-            //Set max combo
-            maxCombo = 5;
-
-
-            //Set stamina to use
-            
-            //set staminacombo
-            maxStaminaCombo = 1;
-            //Set stamina projectile
+            base.SetDefaults2();
+            Item.shoot = ModContent.ProjectileType<AssassinsSlashSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<AssassinsSlashStaminaSlash>();
+            meleeWeaponType = MeleeWeaponType.Sword;
         }
     }
 
-    public class AssassinsSlashSlash : BaseSwingProjectile
+    public class AssassinsSlashSlash : BaseSwingProjectileV2
     {
-        public override string Texture => this.PathHere() + "/AssassinsSlash";
-        public bool Hit;
-        public override void SetStaticDefaults()
+        public override void DefineCombo()
         {
-            ProjectileID.Sets.TrailCacheLength[Type] = 64;
-            ProjectileID.Sets.TrailingMode[Type] = 2;
-        }
-
-        public override void SetDefaults()
-        {
-            holdOffset = 40;
-            trailStartOffset = 0.2f;
-            Projectile.penetrate = -1;
-            Projectile.ignoreWater = true;
-            Projectile.tileCollide = false;
-            Projectile.DamageType = DamageClass.Melee;
-            Projectile.height = 38;
-            Projectile.width = 38;
-            Projectile.friendly = true;
-            Projectile.scale = 1f;
-
-            Projectile.extraUpdates = ExtraUpdateMult - 1;
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 10000;
-        }
-
-        public override void SetComboDefaults(List<BaseSwingStyle> swings)
-        {
-            base.SetComboDefaults(swings);
-            SoundStyle swingSound1 = SoundRegistry.NSwordSlash1;
-            swingSound1.PitchVariance = 0.5f;
-
-            SoundStyle swingSound2 = SoundRegistry.NSwordSlash2;
-            swingSound2.PitchVariance = 0.5f;
-
-            SoundStyle swingSound3 = SoundRegistry.NSwordSpin1;
-            swingSound3.PitchVariance = 0.5f;
-
-            swings.Add(new OvalSwingStyle
-            {
-                swingTime = 16,
-                swingXRadius = 100,
-                swingYRadius = 48,
-                swingRange = MathHelper.ToRadians(315),
-                easingFunc = (lerpValue) => Easing.InOutExpo(lerpValue, 10),
-                swingSound = swingSound2,
-                swingSoundLerpValue = 0.5f
-            });
-
-            swings.Add(new OvalSwingStyle
-            {
-                swingTime = 16,
-                swingXRadius = 100,
-                swingYRadius = 48,
-                swingRange = MathHelper.ToRadians(315),
-                easingFunc = (lerpValue) => Easing.InOutExpo(lerpValue, 10),
-                swingSound = swingSound2,
-                swingSoundLerpValue = 0.5f
-            });
-
-
-            swings.Add(new OvalSwingStyle
-            {
-                swingTime = 16,
-                swingXRadius = 100,
-                swingYRadius = 64,
-                swingRange = MathHelper.ToRadians(315),
-                easingFunc = (lerpValue) => Easing.InOutExpo(lerpValue, 10),
-                swingSound = swingSound2,
-                swingSoundLerpValue = 0.5f
-            });
-
-            swings.Add(new OvalSwingStyle
-            {
-                swingTime = 16,
-                swingXRadius = 100,
-                swingYRadius = 64,
-                swingRange = MathHelper.ToRadians(315),
-                easingFunc = (lerpValue) => Easing.InOutExpo(lerpValue, 10),
-                swingSound = swingSound2,
-                swingSoundLerpValue = 0.5f
-            });
-
-            float circleRange = MathHelper.PiOver2 + MathHelper.PiOver4 + MathHelper.TwoPi;
-            swings.Add(new CircleSwingStyle
-            {
-                swingTime = 32,
-                startSwingRotOffset = -circleRange,
-                endSwingRotOffset = circleRange,
-                easingFunc = (lerpValue) => Easing.InOutExpo(lerpValue, 10),
-                swingDistance=16,
-                swingSound = swingSound3
-            });
-        }
-
-
-        protected override void InitSwingAI()
-        {
-            base.InitSwingAI();
-            if (ComboIndex == 5)
-            {
-                Projectile.localNPCHitCooldown = 2 * ExtraUpdateMult;
-            }
-        }
-
-        public override void AI()
-        {
-            base.AI();
-
+            base.DefineCombo();
+            useAfterImage = true;
+            SwingV2Helper.AddSwordSwingStyle(this);
+            Trailer = TrailPresets.Assassin;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-            if (!Hit)
-            {
-                FXUtil.ShakeCamera(target.Center, 1024, 8f);
-                Hit = true;
-                hitstopTimer = 4 * ExtraUpdateMult;
-            }
         }
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
@@ -199,102 +52,31 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             SoundStyle spearHit = SoundRegistry.SpearHit1;
             spearHit.PitchVariance = 0.5f;
             SoundEngine.PlaySound(spearHit, Projectile.position);
-
-
             if (ComboIndex == 5)
             {
                 modifiers.FinalDamage *= 2;
             }
         }
-
-        //TRAIL VISUALS
-        public float WidthFunction(float completionRatio)
-        {
-            float t = Timer / 60f;
-            t = MathHelper.Clamp(t, 0f, 1f);
-            return MathHelper.Lerp(0f, 32, Easing.InExpo(completionRatio) * t) * Easing.SpikeOutCirc(uneasedLerpValue);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.Transparent, Color.Lerp(Color.White, Color.Red, completionRatio), completionRatio);
-        }
-
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        protected override void DrawSlashTrail(Vector2[] trailPoints, Vector2 drawOffset)
-        {
-            base.DrawSlashTrail(trailPoints, drawOffset);
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.LightningTrail2);
-            TrailDrawer.DrawPrims(trailPoints, drawOffset, 252);
-        }
     }
 
-    public class AssassinsSlashStaminaSlash : BaseSwingProjectile
+    public class AssassinsSlashStaminaSlash : BaseSwingProjectileV2
     {
-        public override string Texture => this.PathHere() + "/AssassinsSlash";
-
-        public bool Hit;
-        public override void SetStaticDefaults()
+        private bool _hit;
+        public override void DefineCombo()
         {
-            ProjectileID.Sets.TrailCacheLength[Type] = 64;
-            ProjectileID.Sets.TrailingMode[Type] = 2;
-        }
-
-        public override void SetDefaults()
-        {
-            holdOffset = 40;
-            trailStartOffset = 0.2f;
-            Projectile.penetrate = -1;
-            Projectile.ignoreWater = true;
-            Projectile.tileCollide = false;
-            Projectile.DamageType = DamageClass.Melee;
-            Projectile.height = 38;
-            Projectile.width = 38;
-            Projectile.friendly = true;
-            Projectile.scale = 1.3f;
-
-            Projectile.extraUpdates = ExtraUpdateMult - 1;
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 10000;
-        }
-
-        private bool _thrust;
-        public float thrustSpeed = 8;
-        public float stabRange;
-        public override void AI()
-        {
-            base.AI();
-
-            if (_smoothedLerpValue > 0.1f)
-            {
-                if (!_thrust)
-                {
-                    Vector2 swingDirection = Projectile.velocity.SafeNormalize(Vector2.Zero);
-                    Owner.velocity += swingDirection * thrustSpeed;
-                    _thrust = true;
-                }
-            }
-        }
-
-        public override void SetComboDefaults(List<BaseSwingStyle> swings)
-        {
+            base.DefineCombo();
             SoundStyle swingSound1 = SoundRegistry.HeavySwordSlash1;
             swingSound1.PitchVariance = 0.5f;
+            Trailer = TrailPresets.Assassin;
 
-
-            base.SetComboDefaults(swings);
-            swings.Add(new OvalSwingStyle
+            Add(new OvalSwing
             {
-                swingTime = 48,
-                swingXRadius = 160 / 1.5f,
-                swingYRadius = 24,
-                swingRange = MathHelper.ToRadians(315),
-                easingFunc = (lerpValue) => Easing.InOutExpo(lerpValue, 10),
-                swingSound = swingSound1,
-                swingSoundLerpValue = 0.5f
-
+                Duration = 48,
+                XSwingRadius = 160 / 1.5f,
+                YSwingRadius = 24,
+                SwingDegrees = 315,
+                Easing = (lerpValue) => Easing.InOutExpo(lerpValue, 10),
+                Sound = swingSound1,
             });
         }
 
@@ -302,13 +84,12 @@ namespace Stellamod.Items.Weapons.Melee.Swords
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-            if (!Hit)
+            if (!_hit)
             {
                 Vector2 swingDirection = Projectile.velocity.SafeNormalize(Vector2.Zero);
-                Owner.velocity -= swingDirection * thrustSpeed * 2;
+                Owner.velocity -= swingDirection * 2;
                 FXUtil.ShakeCamera(target.Center, 1024, 8f);
-                Hit = true;
-                hitstopTimer = 4 * ExtraUpdateMult;
+                _hit = true;
             }
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
                 ModContent.ProjectileType<Assassinate>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: target.whoAmI);
@@ -325,30 +106,6 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             modifiers.FinalDamage *= 3;
             modifiers.Knockback *= 4;
 
-        }
-
-        //TRAIL VISUALS
-        //TRAIL VISUALS
-        public float WidthFunction(float completionRatio)
-        {
-            float t = Timer / 60f;
-            t = MathHelper.Clamp(t, 0f, 1f);
-            return MathHelper.Lerp(0f, 32, completionRatio * t);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.Transparent, Color.Lerp(Color.Red, Color.Black, completionRatio), Easing.SpikeOutCirc(completionRatio) * Timer / 60f);
-        }
-
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        protected override void DrawSlashTrail(Vector2[] trailPoints, Vector2 drawOffset)
-        {
-            base.DrawSlashTrail(trailPoints, drawOffset);
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.LightningTrail2);
-            TrailDrawer.DrawPrims(trailPoints, drawOffset, 155);
         }
     }
 
