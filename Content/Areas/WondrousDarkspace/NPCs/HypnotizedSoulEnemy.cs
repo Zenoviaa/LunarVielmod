@@ -308,6 +308,12 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCs
             base.ModifyNPCLoot(npcLoot);
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HypnotizedSoul>(), minimumDropped: 2, maximumDropped: 4));
         }
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            if (!spawnInfo.Player.GetModPlayer<MyPlayer>().ZoneWonder)
+                return 0;
+            return 2;
+        }
 
         public override void OnKill()
         {

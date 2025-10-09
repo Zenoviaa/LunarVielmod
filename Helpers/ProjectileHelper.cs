@@ -70,6 +70,7 @@ namespace Stellamod.Helpers
             averageLengthSample /= numSamplePoints;
             return averageLengthSample;
         }
+
         public static bool IsValidTarget(NPC target, Vector2 currentPosition)
         {
             // This method checks that the NPC is:

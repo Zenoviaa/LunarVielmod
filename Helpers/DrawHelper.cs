@@ -13,6 +13,64 @@ namespace Stellamod.Helpers
 {
     public static class DrawHelper
     {
+        public static void DrawOutline(this ModNPC modNpc, Color outlineColor, float yOffset, Vector2 scale, string textureOverride, Rectangle? frameOverride)
+        {
+            if (outlineColor == Color.Transparent || outlineColor.A <= 0.01f)
+                return;
+
+            NPC NPC = modNpc.NPC;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D texture = ModContent.Request<Texture2D>(textureOverride).Value;
+
+            Vector2 drawPos = NPC.position - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
+            drawPos.Y -= yOffset;
+            float outlineOffset = 2;
+            Vector2 left = Vector2.UnitX * -outlineOffset;
+            Vector2 right = Vector2.UnitX * outlineOffset;
+            Vector2 up = Vector2.UnitY * -outlineOffset;
+            Vector2 down = Vector2.UnitY * outlineOffset;
+            SpriteEffects spriteEffects = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
+
+            Vector2 drawOrigin = texture.Size() / 2;
+            spriteBatch.Restart(effect: whiteShader.Effect);
+
+            spriteBatch.Draw(texture, drawPos + left, frameOverride, outlineColor, NPC.rotation, drawOrigin, scale, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + right, frameOverride, outlineColor, NPC.rotation, drawOrigin, scale, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + up, frameOverride, outlineColor, NPC.rotation, drawOrigin, scale, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + down, frameOverride, outlineColor, NPC.rotation, drawOrigin, scale, spriteEffects, 0);
+
+            spriteBatch.RestartDefaults();
+        }
+        public static void DrawOutline(this ModNPC modNpc, Color outlineColor, float yOffset, Vector2 scale, string textureOverride)
+        {
+            if (outlineColor == Color.Transparent || outlineColor.A <= 0.01f)
+                return;
+
+            NPC NPC = modNpc.NPC;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D texture = ModContent.Request<Texture2D>(textureOverride).Value;
+ 
+            Vector2 drawPos = NPC.position - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
+            drawPos.Y -= yOffset;
+            float outlineOffset = 2;
+            Vector2 left = Vector2.UnitX * -outlineOffset;
+            Vector2 right = Vector2.UnitX * outlineOffset;
+            Vector2 up = Vector2.UnitY * -outlineOffset;
+            Vector2 down = Vector2.UnitY * outlineOffset;
+            SpriteEffects spriteEffects = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
+
+            Vector2 drawOrigin = texture.Size() / 2;
+            spriteBatch.Restart(effect: whiteShader.Effect);
+
+            spriteBatch.Draw(texture, drawPos + left, NPC.frame, outlineColor, NPC.rotation, drawOrigin, scale, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + right, NPC.frame, outlineColor, NPC.rotation, drawOrigin, scale, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + up, NPC.frame, outlineColor, NPC.rotation, drawOrigin, scale, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + down, NPC.frame, outlineColor, NPC.rotation, drawOrigin, scale, spriteEffects, 0);
+
+            spriteBatch.RestartDefaults();
+        }
         public static void DrawOutline(this ModNPC modNpc, Color outlineColor, float yOffset, Vector2 scale)
         {
             if (outlineColor == Color.Transparent || outlineColor.A <= 0.01f)
