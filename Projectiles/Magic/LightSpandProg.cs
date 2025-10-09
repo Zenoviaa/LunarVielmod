@@ -32,6 +32,7 @@ namespace Stellamod.Projectiles.Magic
             Projectile.hostile = false;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
+            Projectile.penetrate = 3;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -45,7 +46,7 @@ namespace Stellamod.Projectiles.Magic
         private float alphaCounter = 0;
         public override void AI()
         {
-            Projectile.velocity *= 0.99f;
+            Projectile.velocity *= 1.02f;
             Projectile.ai[1]++;
             if (!Moved && Projectile.ai[1] >= 0)
             {
