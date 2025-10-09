@@ -19,6 +19,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.shoot = ModContent.ProjectileType<InkingSpireSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<InkingSProj>();
             meleeWeaponType = MeleeWeaponType.Sword;
+            staminaCost = 1;
         }
 
         public override void AddRecipes()

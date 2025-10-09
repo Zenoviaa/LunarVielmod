@@ -14,6 +14,7 @@ namespace Stellamod.Core.SwingSystem
     {
         public int comboResetTime = 60;
         public int staminaProjectileShoot;
+        public int staminaCost = 2;
 
         public MeleeWeaponType meleeWeaponType;
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -30,7 +31,11 @@ namespace Stellamod.Core.SwingSystem
             tooltips.Add(line);
 
             line = new TooltipLine(Mod, "StaminaSlash", LangText.Common("StaminaSlash", LangText.Item(this, "StaminaSlash")));
-            line.OverrideColor = new Color(187, 80, 124);
+            line.OverrideColor = Color.Goldenrod;
+            tooltips.Add(line);
+
+            line = new TooltipLine(Mod, "StaminaCost", LangText.Common("StaminaCost", staminaCost.ToString()));
+            line.OverrideColor = Color.Goldenrod;
             tooltips.Add(line);
         }
 
@@ -74,7 +79,7 @@ namespace Stellamod.Core.SwingSystem
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
             SwingPlayerV2 comboPlayer = player.GetModPlayer<SwingPlayerV2>();
             comboPlayer.ComboWaitTime = comboResetTime;
-            dashPlayer.Consume(2);
+            dashPlayer.Consume(staminaCost);
 
             int combo = comboPlayer.StaminaComboCounter;
             int dir = comboPlayer.ComboDirection;
@@ -92,7 +97,7 @@ namespace Stellamod.Core.SwingSystem
         {
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
             SwingPlayerV2 comboPlayer = player.GetModPlayer<SwingPlayerV2>();
-            if (player.altFunctionUse == 2 && dashPlayer.CanConsume(2))
+            if (player.altFunctionUse == 2 && dashPlayer.CanConsume(staminaCost))
             {
                 ShootSwingStamina(player, source, position, velocity, staminaProjectileShoot, damage, knockback);
             }

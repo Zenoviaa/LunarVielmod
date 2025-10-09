@@ -53,6 +53,7 @@ Common: {
 	InsourceTime: "{0} seconds added to your flask cooldown"
 	XixianFlaskLock: This item is LOCKED, continue exploring and you may find it.
 	StaminaFlaskLock: This item is LOCKED, continue exploring and you may find it.
+	StaminaCost: Costs {0} stamina to use
 }
 
 SetBonus: {
@@ -4173,7 +4174,9 @@ ArtistsHeart: {
 
 InkingSpire: {
 	DisplayName: Inking Spire
-	Tooltip: Dash through your enemies with invulnerability! Right click for antaciz combat!
+	Tooltip: A painter's blade
+	BasicSlash: Increased range
+	StaminaSlash: Dash through your enemies with invulnerability!
 }
 
 PieceOfArt: {
