@@ -125,6 +125,7 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
             Timer++;
             if (Timer == 1)
             {
+                SwingDirection = 1;
                 //Thrust the player
                 scarecrowSaberPlayer.DashVelocity = Projectile.velocity;
                 int explosion = ModContent.ProjectileType<DaedusBombExplosion>();

@@ -1,6 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.Bases;
+using Stellamod.Core.SwingSystem;
+using Stellamod.Helpers;
+using Stellamod.Items.Weapons.Melee.Swords;
 using Stellamod.Projectiles.Slashers.ScarecrowSaber;
+using Stellamod.Trailing;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -8,56 +14,26 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class ScarecrowSaber : ClassSwapItem
+    public class ScarecrowSaber : BaseSwingItemV2
     {
-
-        public override DamageClass AlternateClass => DamageClass.Ranged;
-
-        public override void SetClassSwappedDefaults()
-        {
-            Item.damage = 7;
-            Item.mana = 0;
-        }
         private float _swingDir = 1;
         public override void SetStaticDefaults()
         {
-
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            Item.damage = 13;
-            Item.useTime = 30;
-            Item.useAnimation = 30;
-            Item.width = 50;
-            Item.height = 50;
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.knockBack = 4;
-            Item.value = Item.sellPrice(0, 0, 16, 0);
-            Item.rare = ItemRarityID.Green;
-            Item.UseSound = SoundID.Item1;
-            Item.autoReuse = true;
-            Item.useTurn = true;
-            Item.noMelee = true;
-            Item.noUseGraphic = true;
-            Item.shoot = ModContent.ProjectileType<ScarecrowSaberSlash>();
-            Item.shootSpeed = 22;
-            Item.DamageType = DamageClass.Melee;
+            base.SetDefaults2();
+            Item.shoot = ModContent.ProjectileType<ScarecrowSaberBasicSlash>();
+            staminaProjectileShoot = ModContent.ProjectileType<ScarecrowSaberSlash>();
+            meleeWeaponType = MeleeWeaponType.Sword;
         }
-
         public override bool CanUseItem(Player player)
         {
             return player.GetModPlayer<ScarecrowSaberPlayer>().CooldownTimer <= 0;
         }
 
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            _swingDir = position.X + velocity.X > player.position.X ? 1 : -1;
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai1: _swingDir);
-           
-            return false;
-        }
 
         public override void MeleeEffects(Player player, Rectangle hitbox)
         {
@@ -93,4 +69,28 @@ namespace Stellamod.Items.Weapons.Melee
             }
         }
     }
+    public class ScarecrowSaberBasicSlash : BaseSwingProjectileV2
+    {
+        public override void DefineCombo()
+        {
+            base.DefineCombo();
+            SwingV2Helper.AddSpearSwingStyle(this);
+            Trailer = TrailPresets.LightSpand;
+            useAfterImage = true;
+        }
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitNPC(target, ref modifiers);
+            SoundStyle spearHit = SoundRegistry.SpearHit1;
+            spearHit.PitchVariance = 0.5f;
+            SoundEngine.PlaySound(spearHit, Projectile.position);
+            target.AddBuff(BuffID.OnFire, 120);
+            if (ComboIndex == 5)
+            {
+                modifiers.FinalDamage *= 2;
+            }
+        }
+    }
+
 }
