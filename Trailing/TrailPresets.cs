@@ -2,6 +2,7 @@
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using Terraria;
 
 namespace Stellamod.Trailing
 {
@@ -190,6 +191,29 @@ namespace Stellamod.Trailing
             TrailColorFunction = (float interpolant) =>
             {
                 Color lerp1 = Color.Lerp(Color.White, Color.Orange, interpolant);
+                return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+            }
+
+        }; 
+        
+        public static SlashTrailer InkingSpire => new SlashTrailer
+        {
+            Shader = new SlashEffect()
+            {
+                BaseColor = Color.Yellow,
+                HighlightColor = Color.Red,
+                RimHighlightColor = Color.Orange,
+                WindColor = Color.Blue,
+                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive,
+                WindTexture = TrailRegistry.CrystalTrail.Value
+            },
+            TrailWidthFunction = (float interpolant) =>
+            {
+                return EasingFunction.QuadraticBump(interpolant) * 16;
+            },
+            TrailColorFunction = (float interpolant) =>
+            {
+                Color lerp1 = Color.Lerp(Main.DiscoColor, Main.DiscoColor, interpolant);
                 return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
             }
 
