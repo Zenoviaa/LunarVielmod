@@ -102,8 +102,30 @@ namespace Stellamod.Trailing
                 return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
             }
 
-        }; 
-        
+        };
+        public static SlashTrailer Auroran => new SlashTrailer
+        {
+            Shader = new SlashEffect()
+            {
+                BaseColor = Color.LightBlue,
+                HighlightColor = Color.White,
+                RimHighlightColor = Color.Purple,
+                WindColor = Color.Blue,
+                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive,
+                WindTexture = TrailRegistry.CrystalTrail.Value
+            },
+            TrailWidthFunction = (float interpolant) =>
+            {
+                return EasingFunction.QuadraticBump(interpolant) * 16;
+            },
+            TrailColorFunction = (float interpolant) =>
+            {
+                Color lerp1 = Color.Lerp(Color.LightCyan, Color.Purple, interpolant);
+                return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+            }
+
+        };
+
         public static SlashTrailer LightSpand => new SlashTrailer
         {
             Shader = new SlashEffect()

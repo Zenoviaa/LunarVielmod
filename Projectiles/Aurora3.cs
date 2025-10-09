@@ -19,7 +19,7 @@ namespace Stellamod.Projectiles
 			Projectile.width = 45;
 			Projectile.height = 45;
 			Projectile.penetrate = -1;
-			Projectile.timeLeft = 18;
+			Projectile.timeLeft = 54;
 			Projectile.scale = 1.5f;
 			
 		}
@@ -30,8 +30,9 @@ namespace Stellamod.Projectiles
 		}
         public override void AI()
         {
-
-			Vector3 RGB = new(1.95f, 0.9f, 2.55f);
+            Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.ToRadians(90);
+            Projectile.velocity *= 0.98f;
+            Vector3 RGB = new(1.95f, 0.9f, 2.55f);
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
 		
@@ -40,7 +41,7 @@ namespace Stellamod.Projectiles
 		public override bool PreAI()
 		{
 			Projectile.tileCollide = false;
-			if (++Projectile.frameCounter >= 1)
+			if (++Projectile.frameCounter >= 3)
 			{
 				Projectile.frameCounter = 0;
 				if (++Projectile.frame >= 18)
