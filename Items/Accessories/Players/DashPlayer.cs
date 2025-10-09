@@ -127,7 +127,7 @@ namespace Stellamod.Items.Accessories.Players
 
         public override void ResetEffects()
         {
-            MaxDashCountTimer = 100;
+            MaxDashCountTimer = 140;
             MaxDashCount = 3;
             DashItem = null;
             DashAugmentEquipped = false;

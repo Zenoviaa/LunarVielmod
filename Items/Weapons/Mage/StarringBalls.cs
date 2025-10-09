@@ -6,7 +6,7 @@ using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
+
 
 namespace Stellamod.Items.Weapons.Mage
 {
@@ -36,21 +36,15 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.rare = ItemRarityID.LightPurple;
 			Item.UseSound = SoundID.DD2_DarkMageAttack;
 			Item.autoReuse = true;
-			Item.shoot = ProjectileType<SparkBallsP>();
+			Item.shoot = ModContent.ProjectileType<SparkBallsP>();
 			Item.shootSpeed = 8f;
 			Item.mana = 6;
-
-
 		}
 
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankOrb>(), material: ModContent.ItemType<MiracleThread>());
+			this.RegisterBrew<HypnotizedSoul, BlankOrb>();
         }
-        public override Vector2? HoldoutOffset()
-		{
-			return new Vector2(-2, 0);
-		}
 	}
 }
