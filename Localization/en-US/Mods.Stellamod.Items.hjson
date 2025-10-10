@@ -9136,3 +9136,8 @@ Hypnotizer: {
 	BasicSlash: No effect!
 	StaminaSlash: Shoots a volley of arrows that explode!
 }
+
+TwilightTome: {
+	DisplayName: Twilight Tome
+	Tooltip: Casts two spinning colorful discs around you!
+}

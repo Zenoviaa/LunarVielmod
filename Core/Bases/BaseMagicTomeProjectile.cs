@@ -201,7 +201,7 @@ namespace Stellamod.Core.Bases
 
         protected virtual void DrawTomeSprite(ref Color lightColor)
         {
-            Texture2D closeYourTomeTyrant = ModContent.Request<Texture2D>(Texture).Value;
+            Texture2D closeYourTomeTyrant = ModContent.Request<Texture2D>(Owner.HeldItem.ModItem.Texture).Value;
             SpriteBatch spriteBatch = Main.spriteBatch;
 
             //Calculate Drawing Vars
@@ -220,8 +220,7 @@ namespace Stellamod.Core.Bases
 
             //Draw Glow Effects
             //Let's do some additive glow
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive);
+            spriteBatch.Restart(blendState: BlendState.Additive);
             for (float f = 0; f < 1; f += 0.2f)
             {
                 float rotation = (f * MathHelper.TwoPi) + Timer * GlowRotationSpeed;
@@ -231,10 +230,7 @@ namespace Stellamod.Core.Bases
                 Vector2 glowDrawPos = drawPos + velocityRot;
                 spriteBatch.Draw(closeYourTomeTyrant, glowDrawPos, null, drawColor, drawRotation, drawOrigin, drawScale, drawEffects, layerDepth);
             }
-            spriteBatch.End();
-            spriteBatch.Begin();
-
-
+            spriteBatch.RestartDefaults();
             //Actually draw it
             spriteBatch.Draw(closeYourTomeTyrant, drawPos, null, drawColor, drawRotation, drawOrigin, drawScale, drawEffects, layerDepth);
         }

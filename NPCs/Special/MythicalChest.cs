@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Items.MoonlightMagic;
 using Terraria.Audio;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Special
@@ -23,8 +25,8 @@ namespace Stellamod.NPCs.Special
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             base.ModifyNPCLoot(npcLoot);
-            //Ok we gotta add uhh
-            //EVERY ENCHANTMENT LOL
+            int[] enchantmentTypes = BaseEnchantment.GetNonSpecialTypes();
+            npcLoot.Add(ItemDropRule.FewFromOptions(amount: 3, chanceDenominator: 1, enchantmentTypes));
 
         }
     }

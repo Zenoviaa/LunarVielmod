@@ -1,19 +1,82 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Bases;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Magic
+namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
 {
+    public class TwilightTome : BaseMagicTomeItem
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.shoot = ModContent.ProjectileType<TwilightTomeTome>();
+            Item.shootSpeed = 4f;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<HypnotizedSoul>());
+        }
+    }
+
+    public class TwilightTomeTome : BaseMagicTomeProjectile
+    {
+        private float _dustTimer;
+        private bool _fired;
+        public override string Texture => this.PathHere() + "/TwilightTome";
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            //How often it shoots
+            AttackRate = 42;
+
+            //How fast it drains mana, better to change the mana use in the item instead of this tho
+            ManaConsumptionRate = 4;
+
+            //How far the tome is held from the player
+            HoldDistance = 36;
+
+            //The glow effect around it
+            GlowDistanceOffset = 4;
+            GlowRotationSpeed = 0.05f;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            _dustTimer++;
+            if (_dustTimer % 16 == 0)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.LightPink, Main.rand.NextFloat(1f, 1.5f));
+            }
+        }
+        protected override void Shoot(Player player, IEntitySource source, Vector2 position, Vector2 velocity, int damage, float knockback)
+        {
+            base.Shoot(player, source, position, velocity, damage, knockback);
+            if (Main.myPlayer == Projectile.owner && !_fired)
+            {
+                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<TwilightDisc>(), damage, knockback, player.whoAmI, ai0: 0, ai1: 1, ai2: 15);
+                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<TwilightDisc>(), damage, knockback, player.whoAmI);
+                _fired = true;
+            }
+        }
+    }
+
     public class TwilightDisc : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
@@ -50,29 +113,16 @@ namespace Stellamod.Projectiles.Magic
             Projectile.localNPCHitCooldown = 15;
             Projectile.tileCollide = false;
         }
-        private bool ShouldConsumeMana()
-        {
-            // Should mana be consumed this frame?
-            bool consume = Timer % 18 == 0;
-            return consume && Style == 0;
-        }
 
         public override void AI()
         {
             base.AI();
-            if (Style == 0)
-            {
-                Player player = Main.player[Projectile.owner];
-                Vector2 rrp = player.RotatedRelativePoint(player.MountedCenter, true);
-                UpdatePlayerVisuals(player, rrp);
-            }
-
 
 
             if (Main.myPlayer == Projectile.owner)
             {
 
-                bool manaIsAvailable = !ShouldConsumeMana() || Owner.CheckMana(Owner.HeldItem.mana, true, false);
+                bool manaIsAvailable = Owner.CheckMana(Owner.HeldItem.mana, false, false);
 
                 // The Prism immediately stops functioning if the player is Cursed (player.noItems) or "Crowd Controlled", e.g. the Frozen debuff.
                 // player.channel indicates whether the player is still holding down the mouse button to use the item.
@@ -86,7 +136,6 @@ namespace Stellamod.Projectiles.Magic
                     Projectile.Kill();
                 }
             }
-
             Timer++;
             if (Timer % 15 == 0)
             {
@@ -105,7 +154,7 @@ namespace Stellamod.Projectiles.Magic
             float swingRange = MathHelper.TwoPi;
             float swingXRadius = 256;
             float swingYRadius = 32;
-            float swingProgress = (SpinTimer / 30f);
+            float swingProgress = SpinTimer / 30f;
 
             float chargeUpProgress = MathHelper.Clamp(Timer / 120f, 0f, 1f);
 
@@ -114,18 +163,6 @@ namespace Stellamod.Projectiles.Magic
             Vector2 offset = new Vector2(xOffset, yOffset);
             Vector2 targetCenter = Owner.Center + offset * chargeUpProgress;
             Projectile.velocity = (targetCenter - Projectile.Center) * 0.5f;
-        }
-        private void UpdatePlayerVisuals(Player player, Vector2 playerHandPos)
-        {
-            // The Prism is a holdout Projectile, so change the player's variables to reflect that.
-            // Constantly resetting player.itemTime and player.itemAnimation prevents the player from switching items or doing anything else.
-            player.ChangeDir(Projectile.direction);
-            player.heldProj = Projectile.whoAmI;
-            player.itemTime = 2;
-            player.itemAnimation = 2;
-
-            // If you do not multiply by Projectile.direction, the player's hand will point the wrong direction while facing left.
-            player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
         }
 
         public PrimDrawer TrailDrawer { get; private set; } = null;
@@ -193,18 +230,6 @@ namespace Stellamod.Projectiles.Magic
                 particle.BaseSize = Main.rand.NextFloat(0.09f, 0.18f);
                 particle.VectorScale *= 0.5f;
 
-            }
-        }
-
-        public override void PostDraw(Color lightColor)
-        {
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-            Color glowColor = MainColor;
-            glowColor.A = 0;
-            glowColor *= 0.5f;
-            for (int i = 0; i < 2; i++)
-            {
-                //   Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, glowColor, Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f) * 2f, SpriteEffects.None, 0f);
             }
         }
 

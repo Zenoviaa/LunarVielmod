@@ -19,13 +19,24 @@ namespace Stellamod.NPCs.Special
                 //1/5 for rare - 20%
                 //Another 1/25 for mythical - 4%
                 //So uhh
-                //I guess that means 1/70 for Core
+                //I guess that means 1/70 for common
                 int num = Main.rand.Next(0, 100);
 
                 var source = npc.GetSource_Death();
                 int x = (int)npc.Center.X;
                 int y = (int)npc.Center.Y;
-                NPC.NewNPC(source, x, y, ModContent.NPCType<CommonChest>());
+                if (num < 4)
+                {
+                    NPC.NewNPC(source, x, y, ModContent.NPCType<MythicalChest>());
+                }
+                else if (num < 24)
+                {
+                    NPC.NewNPC(source, x, y, ModContent.NPCType<RareChest>());
+                }
+                else
+                {
+                    NPC.NewNPC(source, x, y, ModContent.NPCType<CommonChest>());
+                }
             }
         }
     }
