@@ -305,7 +305,7 @@ namespace Stellamod.Core.SilkSystem
                 int i2 = i;
                 int j2 = neededAir;
                 Tile currentTile = Main.tile[i2, j2];
-                while (!currentTile.HasTile && j2 > 0)
+                while ((!currentTile.HasTile && j2 > 0) || (currentTile.TileType == TileID.MinecartTrack))
                 {
                     i2 += rand.Next(-1, 2);
                     j2--;

@@ -120,7 +120,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             NPC.noGravity = true;
             NPC.knockBackResist = 0f;
             NPC.HitSound = SoundID.DD2_WitherBeastCrystalImpact;
-
+            NPC.damage = 12;
         }
 
         public override void AI()
@@ -206,6 +206,12 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             {
                 if (StellaMultiplayer.IsHost)
                 {
+                    float targetBeamLength = ProjectileHelper.PerformBeamHitscan(NPC.Center, -Vector2.UnitY, 1200);
+                    NPC.Center = NPC.Center - Vector2.UnitY * targetBeamLength;
+
+                    HangingDistance = Main.rand.NextFloat(300, 650);
+                    NPC.Center += Vector2.UnitY * HangingDistance;
+          
                     if (Main.rand.NextBool(3))
                     {
                         IsSmall = true;
@@ -213,10 +219,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
                     }
                 }
 
-                HangingDistance = Main.rand.NextFloat(0, 1500);
-                float targetBeamLength = ProjectileHelper.PerformBeamHitscan(NPC.Center, -Vector2.UnitY, 1200);
-                NPC.Center = NPC.Center - Vector2.UnitY * targetBeamLength;
-                NPC.Center += Vector2.UnitY * HangingDistance;
+       
             }
 
             NPC.TargetClosest();
