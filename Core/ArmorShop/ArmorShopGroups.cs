@@ -137,6 +137,14 @@ namespace Stellamod.Core.ArmorShop
             terr.SetMaterial(ModContent.ItemType<TerrorFragments>());
             terr.Register();
 
+            //Daedia done
+            ArmorShopSet Daedia = new ArmorShopSet();
+            Daedia.AddHead(ModContent.ItemType<DaediaMask>());
+            Daedia.AddBody(ModContent.ItemType<DaediaBreastplate>());
+            Daedia.AddLegs(ModContent.ItemType<DaediaThighs>());
+            Daedia.SetMaterial(ModContent.ItemType<HypnotizedSoul>());
+            Daedia.Register();
+
             //vextin done
             ArmorShopSet Vext = new ArmorShopSet();
             Vext.AddHead(ModContent.ItemType<VextinMask>());
@@ -181,13 +189,7 @@ namespace Stellamod.Core.ArmorShop
             Ele.SetMaterial(ItemID.Feather);
             Ele.Register();
 
-            //Daedia done
-            ArmorShopSet Daedia = new ArmorShopSet();
-            Daedia.AddHead(ModContent.ItemType<DaediaMask>());
-            Daedia.AddBody(ModContent.ItemType<DaediaBreastplate>());
-            Daedia.AddLegs(ModContent.ItemType<DaediaThighs>());
-            Daedia.SetMaterial(ItemID.LifeCrystal);
-            Daedia.Register();
+      
 
             //---------- Hardmode
 

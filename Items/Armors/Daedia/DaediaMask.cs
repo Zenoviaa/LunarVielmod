@@ -34,7 +34,7 @@ namespace Stellamod.Items.Armors.Daedia
             Item.height = 18; // Height of the item
             Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
             Item.rare = ItemRarityID.LightRed; // The rarity of the item
-            Item.defense = 3; // The amount of defense the item will give when equipped
+            Item.defense = 1; // The amount of defense the item will give when equipped
         }
 
         public override void UpdateEquip(Player player)
@@ -52,14 +52,8 @@ namespace Stellamod.Items.Armors.Daedia
         // UpdateArmorSet allows you to give set bonuses to the armor.
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = LangText.SetBonus(this);//"Increases life regen by decent amount!" + "\nEnemies become lovestruck when you are hit, or when you hit them!" + "\nThis weakens, burns and confuses, slows and does exponential damage " + "\nSpirit balls come from a portal on your armor and attack enemies " + "\nNo fall Damage " + "\nPick up hearts from afar!"); // This is the setbonus tooltip
-            player.lifeRegen += 1;
-            player.GetModPlayer<MyPlayer>().Lovestruck = true;
-            player.GetModPlayer<MyPlayer>().Daedstruck = true;
-            player.lifeMagnet = true;
-            player.noFallDmg = true;
-            player.GetModPlayer<MyPlayer>().LovestruckBCooldown--;
-            player.GetModPlayer<MyPlayer>().DaedstruckBCooldown--;
+            player.setBonus = LangText.SetBonus(this);
+            player.maxMinions += 1;
 
         }
 
