@@ -657,10 +657,6 @@ namespace Stellamod
             //    base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Lab", ZoneLab);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Ishtar", ZoneIshtar);
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Veriplant", ZoneVeri);
-            //   base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Daedussss", NPC.AnyNPCs(ModContent.NPCType<DaedusR>()));
-
 
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Govheil", ZoneGovheil);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));

@@ -8936,3 +8936,178 @@ IronBow: {
 	DisplayName: Iron Bow
 	Tooltip: ""
 }
+
+HangingSpringPotFlowerItem: {
+	DisplayName: Hanging Spring Pot Flower Item
+	Tooltip: ""
+}
+
+HangingSpringPotFlowerBlueItem: {
+	Tooltip: ""
+	DisplayName: Hanging Spring Pot Flower Blue Item
+}
+
+HangingBulbSmallItem: {
+	Tooltip: ""
+	DisplayName: Hanging Bulb Small Item
+}
+
+HangingBulbLongItem: {
+	Tooltip: ""
+	DisplayName: Hanging Bulb Long Item
+}
+
+HangingBulbLargeItem: {
+	Tooltip: ""
+	DisplayName: Hanging Bulb Large Item
+}
+
+BrokenCarraigeBlock: {
+	Tooltip: ""
+	DisplayName: Broken Carraige Block
+}
+
+HangingSpringPotFlowerPinkItem: {
+	DisplayName: Hanging Spring Pot Flower Pink Item
+	Tooltip: ""
+}
+
+HangingSpringPotFlowerRedItem: {
+	DisplayName: Hanging Spring Pot Flower Red Item
+	Tooltip: ""
+}
+
+SpringFlowerBlueBushItem: {
+	DisplayName: Spring Flower Blue Bush Item
+	Tooltip: ""
+}
+
+SpringFlowerDarkPurpleItem: {
+	DisplayName: Spring Flower Dark Purple Item
+	Tooltip: ""
+}
+
+SpringFlowerGrassItem: {
+	DisplayName: Spring Flower Grass Item
+	Tooltip: ""
+}
+
+SpringFlowerGrassSmallItem: {
+	DisplayName: Spring Flower Grass Small Item
+	Tooltip: ""
+}
+
+SpringFlowerItem: {
+	DisplayName: Spring Flower Item
+	Tooltip: ""
+}
+
+SpringFlowerPurpleBushItem: {
+	DisplayName: Spring Flower Purple Bush Item
+	Tooltip: ""
+}
+
+SpringFlowerPurpleLeafItem: {
+	DisplayName: Spring Flower Purple Leaf Item
+	Tooltip: ""
+}
+
+SpringFlowerRedBushItem: {
+	DisplayName: Spring Flower Red Bush Item
+	Tooltip: ""
+}
+
+SpringFlowerVineItem: {
+	DisplayName: Spring Flower Vine Item
+	Tooltip: ""
+}
+
+SpringFlowerWhiteBudItem: {
+	DisplayName: Spring Flower White Bud Item
+	Tooltip: ""
+}
+
+SpringFlowerWhiteBudSmallItem: {
+	DisplayName: Spring Flower White Bud Small Item
+	Tooltip: ""
+}
+
+SpringFlowerWhiteItem: {
+	DisplayName: Spring Flower White Item
+	Tooltip: ""
+}
+
+SpringPatch1Item: {
+	DisplayName: Spring Patch1 Item
+	Tooltip: ""
+}
+
+SpringPatch2Item: {
+	DisplayName: Spring Patch2 Item
+	Tooltip: ""
+}
+
+SpringPatch3Item: {
+	DisplayName: Spring Patch3 Item
+	Tooltip: ""
+}
+
+SpringPotFlowerBlueItem: {
+	DisplayName: Spring Pot Flower Blue Item
+	Tooltip: ""
+}
+
+SpringPotFlowerItem: {
+	DisplayName: Spring Pot Flower Item
+	Tooltip: ""
+}
+
+SpringPotFlowerPinkItem: {
+	DisplayName: Spring Pot Flower Pink Item
+	Tooltip: ""
+}
+
+SpringPotFlowerRedItem: {
+	DisplayName: Spring Pot Flower Red Item
+	Tooltip: ""
+}
+
+SpringRockItem: {
+	DisplayName: Spring Rock Item
+	Tooltip: ""
+}
+
+SpringRockMossyItem: {
+	DisplayName: Spring Rock Mossy Item
+	Tooltip: ""
+}
+
+SpringRockPinkItem: {
+	DisplayName: Spring Rock Pink Item
+	Tooltip: ""
+}
+
+SpringRockTinyItem: {
+	DisplayName: Spring Rock Tiny Item
+	Tooltip: ""
+}
+
+SpringTrap: {
+	DisplayName: Spring Trap
+	Tooltip: ""
+}
+
+SpringTrapRight: {
+	DisplayName: Spring Trap Right
+	Tooltip: ""
+}
+
+StoneObeliskBlock: {
+	DisplayName: Stone Obelisk Block
+	Tooltip: ""
+}
+
+StoneTombBlock: {
+	DisplayName: Stone Tomb Block
+	Tooltip: ""
+}
