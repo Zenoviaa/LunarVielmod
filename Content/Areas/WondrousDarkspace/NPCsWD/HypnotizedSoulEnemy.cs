@@ -12,7 +12,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Areas.WondrousDarkspace.NPCs
+namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
 {
     public class HypnotizedSoulModPlayer : ModPlayer
     {

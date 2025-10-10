@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Helpers;
+using Stellamod.Core.Helpers;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
+namespace Stellamod.Content.NPCs.Bosses.StarrVeriplant.Projectiles
 {
-    internal class StompShockwave : ModProjectile
+    public class StompShockwave : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         private Vector2 _targetVelocity;
@@ -32,7 +32,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 _targetVelocity = Projectile.velocity;
                 Projectile.velocity = _targetVelocity.SafeNormalize(Vector2.Zero);
@@ -40,7 +40,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 
             Projectile.velocity = Vector2.Lerp(Projectile.velocity, _targetVelocity, 0.1f);
             DrawHelper.AnimateTopToBottom(Projectile, 2);
-            if(Timer > 50)
+            if (Timer > 50)
             {
                 Projectile.hostile = false;
             }
