@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-    internal class OrbMaster : ModBuff
+    public class OrbMaster : ModBuff
     {
         public override void SetStaticDefaults()
         {

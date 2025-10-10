@@ -8,7 +8,7 @@ using Terraria.UI;
 namespace Stellamod.UI.PowderSystem
 {
     [Autoload(Side = ModSide.Client)]
-    internal class PowderUISystem : BaseUISystem
+    public class PowderUISystem : BaseUISystem
     {
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
@@ -45,7 +45,7 @@ namespace Stellamod.UI.PowderSystem
             CloseUI();
         }
 
-        internal void ToggleUI()
+        public void ToggleUI()
         {
             if (_userInterface.CurrentState != null)
             {
@@ -57,7 +57,7 @@ namespace Stellamod.UI.PowderSystem
             }
         }
 
-        internal void OpenUI()
+        public void OpenUI()
         {
             //Set State
             TakeSlot();
@@ -65,7 +65,7 @@ namespace Stellamod.UI.PowderSystem
             _userInterface.SetState(powderUIState);
         }
 
-        internal void CloseUI()
+        public void CloseUI()
         {
             ClearSlot();
             _userInterface.SetState(null);

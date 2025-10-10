@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 namespace Stellamod.NPCs.Bosses.DreadMire.Heart
 {
 
-    internal class DreadMiresHeartVomit1 : ModProjectile
+    public class DreadMiresHeartVomit1 : ModProjectile
     {
         public override void SetStaticDefaults()
         {

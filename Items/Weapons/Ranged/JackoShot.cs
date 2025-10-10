@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class JackoShot : ClassSwapItem
+    public class JackoShot : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Summon;

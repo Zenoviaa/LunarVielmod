@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 using Stellamod.Helpers;
 namespace Stellamod.Items.Special
 {
-    internal class VeiledScriptureCozmire : ModItem
+    public class VeiledScriptureCozmire : ModItem
     {
         public static LocalizedText ContentText { get; private set; }
 

@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class WinterStormFragProg : ModProjectile
+    public class WinterStormFragProg : ModProjectile
     {
         public override void SetStaticDefaults()
         {

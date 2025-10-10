@@ -6,7 +6,7 @@ using Terraria;
 
 namespace Stellamod.Core.Shaders.MagicTrails
 {
-    internal class MagicRoyalMagicShader : BaseShader
+    public class MagicRoyalMagicShader : BaseShader
     {
         private static MagicRoyalMagicShader _instance;
         public static MagicRoyalMagicShader Instance

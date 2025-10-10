@@ -13,12 +13,12 @@ using Terraria.UI;
 
 namespace Stellamod.UI.CollectionSystem
 {
-    internal class CollectionItemTabCraft : UIElement
+    public class CollectionItemTabCraft : UIElement
     {
-        internal Item Item;
+        public Item Item;
         private readonly float _scale;
         private readonly int _context;
-        internal CollectionItemTabCraft(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
+        public CollectionItemTabCraft(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
         {
             _scale = scale;
             _context = context;
@@ -102,12 +102,12 @@ namespace Stellamod.UI.CollectionSystem
             Main.inventoryScale = oldScale;
         }
     }
-    internal class CollectionItemTabSlot : UIElement
+    public class CollectionItemTabSlot : UIElement
     {
-        internal Item Item;
+        public Item Item;
         private readonly int _context;
         private readonly float _scale;
-        internal CollectionItemTabSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
+        public CollectionItemTabSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
         {
             _context = context;
             _scale = scale;
@@ -191,18 +191,18 @@ namespace Stellamod.UI.CollectionSystem
             Main.inventoryScale = oldScale;
         }
     }
-    internal class CollectionItemRecipesUI : UIPanel
+    public class CollectionItemRecipesUI : UIPanel
     {
         private UIList _uiList;
         private UIPanel _panel;
         private UIGrid _slotGrid;
         private FancyScrollbar _scrollbar;
 
-        internal const int width = 480;
-        internal const int height = 155;
+        public const int width = 480;
+        public const int height = 155;
 
-        internal int RelativeLeft => Main.screenWidth / 2 - width / 2 + 280;
-        internal int RelativeTop => Main.screenHeight / 2 - height / 2 - 196;
+        public int RelativeLeft => Main.screenWidth / 2 - width / 2 + 280;
+        public int RelativeTop => Main.screenHeight / 2 - height / 2 - 196;
 
         public CollectionItemRecipesUI() : base()
         {
@@ -307,18 +307,18 @@ namespace Stellamod.UI.CollectionSystem
             }
         }
     }
-    internal class CollectionItemTabUI : UIPanel
+    public class CollectionItemTabUI : UIPanel
     {
         private UIList _uiList;
         private UIPanel _panel;
         private UIGrid _slotGrid;
         private FancyScrollbar _scrollbar;
 
-        internal const int width = 480;
-        internal const int height = 155;
+        public const int width = 480;
+        public const int height = 155;
 
-        internal int RelativeLeft => Main.screenWidth / 2 - width / 2 - 64;
-        internal int RelativeTop => Main.screenHeight / 2 - height / 2 - 196;
+        public int RelativeLeft => Main.screenWidth / 2 - width / 2 - 64;
+        public int RelativeTop => Main.screenHeight / 2 - height / 2 - 196;
         public float Glow { get; set; }
         public override void OnInitialize()
         {

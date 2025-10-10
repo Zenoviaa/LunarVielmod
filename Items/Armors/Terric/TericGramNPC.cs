@@ -7,7 +7,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.Terric
 {
-    internal class TericGramNPC : ModNPC
+    public class TericGramNPC : ModNPC
     {
         public bool Down;
         public float Rot;

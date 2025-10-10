@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.IgniterExplosions
 {
-    internal class RibbonBoom : ModProjectile
+    public class RibbonBoom : ModProjectile
     {
         private float _scale;
         private int _frameCounter;

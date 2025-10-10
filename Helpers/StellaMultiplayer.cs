@@ -31,30 +31,6 @@ namespace Stellamod
 		private static List<Wait> _waits = new List<Wait>();
 
 		public static bool IsHost => Main.netMode != NetmodeID.MultiplayerClient;
-        public static void Load() => Main.OnTickForInternalCodeOnly += OnTick;
-
-		public static void Unload()
-		{
-			Main.OnTickForInternalCodeOnly -= OnTick;
-			_waits = null;
-		}
-
-		public static void OnTick()
-		{
-			if (_waits == null) return;
-
-			for (int i = 0; i < _waits.Count; i++)
-			{
-				Wait wait = _waits[i];
-				if (wait.Condition.Invoke())
-				{
-					wait.Result?.Invoke();
-					_waits.RemoveAt(i--);
-				}
-			}
-		}
-
-		public static void WaitUntil(Func<bool> condition, Action whenTrue) => _waits.Add(new Wait() { Condition = condition, Result = whenTrue });
         public static void WriteItemList(this BinaryWriter writer, List<Item> arr)
         {
             writer.Write(arr.Count);

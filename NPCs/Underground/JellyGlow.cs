@@ -20,7 +20,7 @@ using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Underground
 {
-    internal class JellyGlow : ModNPC
+    public class JellyGlow : ModNPC
     {
         private enum ActionState
         {

@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Ammo
 {
-    internal class DriveRoundProj : ModProjectile,
+    public class DriveRoundProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         public override void SetStaticDefaults()
@@ -78,7 +78,7 @@ namespace Stellamod.Projectiles.Ammo
                 ModContent.ProjectileType<FireBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
         }
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);

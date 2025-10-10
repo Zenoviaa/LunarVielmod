@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Scorpions.OreKingdom
 {
-    internal class OreKingdomScorpion : BaseScorpionItem
+    public class OreKingdomScorpion : BaseScorpionItem
     {
         public override void SetDefaults()
         {

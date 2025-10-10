@@ -8916,3 +8916,23 @@ GlyphOfShade: {
 		'''
 	DisplayName: Glyph Of Shade
 }
+
+IvynNecklace: {
+	DisplayName: Ivyn Necklace
+	Tooltip: ""
+}
+
+IvynthornChoker: {
+	DisplayName: Ivynthorn Choker
+	Tooltip: ""
+}
+
+KindCompass: {
+	DisplayName: Kind Compass
+	Tooltip: ""
+}
+
+IronBow: {
+	DisplayName: Iron Bow
+	Tooltip: ""
+}

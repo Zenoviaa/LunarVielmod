@@ -15,7 +15,7 @@ using Stellamod.Dusts;
 namespace Stellamod.Projectiles.Magic
 {
 
-    internal class LampShot : ModProjectile
+    public class LampShot : ModProjectile
     {
         int Spin = 0;
         public override void SetStaticDefaults()

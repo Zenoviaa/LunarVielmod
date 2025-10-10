@@ -15,7 +15,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 {
     public class NovaBlast : ModProjectile
     {
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         private float SoulRotation;
         private float SoulOffset = 96;
         public override void SetStaticDefaults()

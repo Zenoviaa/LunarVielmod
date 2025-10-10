@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class IllurianBible : ClassSwapItem
+    public class IllurianBible : ClassSwapItem
     {
         public override DamageClass AlternateClass => DamageClass.Summon;
 

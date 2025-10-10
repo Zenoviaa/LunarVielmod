@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class FungalFlaceCloud : ModProjectile
+    public class FungalFlaceCloud : ModProjectile
     {
         public override void SetStaticDefaults()
         {

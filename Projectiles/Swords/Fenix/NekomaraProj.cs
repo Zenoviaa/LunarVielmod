@@ -13,7 +13,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Swords.Fenix
 {
-    internal class NekomaraProj : ModProjectile
+    public class NekomaraProj : ModProjectile
     {
         bool Moved;
 

@@ -2,7 +2,7 @@
 
 namespace Stellamod.Helpers
 {
-    internal static class SoundRegistry
+    public static class SoundRegistry
     {
         private static string Path => "Stellamod/Assets/Sounds/";
         public static SoundStyle CrystalHit1 => new SoundStyle($"{Path}CrystalHit1");

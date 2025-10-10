@@ -16,7 +16,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
-    internal class LightningStrike : ModProjectile
+    public class LightningStrike : ModProjectile
     {
         public float BeamLength;
         public Vector2[] BeamPoints;

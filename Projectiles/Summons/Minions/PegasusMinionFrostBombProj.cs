@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    internal class PegasusMinionFrostBombProj : ModProjectile
+    public class PegasusMinionFrostBombProj : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override string Texture => TextureRegistry.EmptyGlowParticle;

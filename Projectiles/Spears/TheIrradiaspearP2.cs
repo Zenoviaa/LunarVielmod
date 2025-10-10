@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles.Spears
 {
 
-    internal class TheIrradiaspearP2 : ModProjectile
+    public class TheIrradiaspearP2 : ModProjectile
     {
         bool Moved;
 

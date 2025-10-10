@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class WingedFury : ClassSwapItem
+    public class WingedFury : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;

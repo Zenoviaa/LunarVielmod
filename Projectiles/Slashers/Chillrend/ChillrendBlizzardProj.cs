@@ -14,7 +14,7 @@ using Terraria.ID;
 
 namespace Stellamod.Projectiles.Slashers.Chillrend
 {
-    internal class ChillrendBlizzardProj : ModProjectile
+    public class ChillrendBlizzardProj : ModProjectile
     {
         public override string Texture => TextureRegistry.VoxTexture3;
         private float Timer

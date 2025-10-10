@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class SuperStaffConjureLightning : ModProjectile
+    public class SuperStaffConjureLightning : ModProjectile
     {
         private float _scale;
         private float _width;

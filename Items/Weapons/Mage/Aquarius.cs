@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class Aquarius : ClassSwapItem
+    public class Aquarius : ClassSwapItem
     {
         public override DamageClass AlternateClass => DamageClass.Melee;
 

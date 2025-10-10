@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Stellamod.Visual.Particles
 {
-    internal class SnowflakeParticle : Particle
+    public class SnowflakeParticle : Particle
     {
         public int FrameWidth = 195;
         public int FrameHeight = 231;

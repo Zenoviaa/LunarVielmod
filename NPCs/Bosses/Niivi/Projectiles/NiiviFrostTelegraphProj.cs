@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviFrostTelegraphProj : ModProjectile
+    public class NiiviFrostTelegraphProj : ModProjectile
     {
         public override string Texture => TextureRegistry.CircleOutline;
 

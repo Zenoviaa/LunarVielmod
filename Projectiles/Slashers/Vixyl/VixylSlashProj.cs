@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Slashers.Vixyl
 {
-    internal class VixylSlashProj : ModProjectile
+    public class VixylSlashProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

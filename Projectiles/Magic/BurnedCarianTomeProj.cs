@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class BurnedCarianTomeProj : ModProjectile
+    public class BurnedCarianTomeProj : ModProjectile
     {
         private ref float ai_Counter => ref Projectile.ai[0];
         public override void SetStaticDefaults()

@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-    internal class IlluriasBlessing : ModBuff
+    public class IlluriasBlessing : ModBuff
     {
         public override void SetStaticDefaults()
         {

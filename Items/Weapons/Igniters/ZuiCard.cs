@@ -2,7 +2,7 @@
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class ZuiCard : BaseIgniterCard
+    public class ZuiCard : BaseIgniterCard
     {
         public override void SetClassSwappedDefaults()
         {

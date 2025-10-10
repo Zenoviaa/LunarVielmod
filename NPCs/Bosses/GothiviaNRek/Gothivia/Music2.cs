@@ -11,7 +11,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 {
-    internal class Music2 : ModProjectile
+    public class Music2 : ModProjectile
     {
         public override void SetStaticDefaults()
         {

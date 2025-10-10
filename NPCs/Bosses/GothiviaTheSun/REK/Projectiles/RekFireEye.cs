@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
-    internal class RekFireEye : ModNPC
+    public class RekFireEye : ModNPC
     {
         public PrimDrawer TrailDrawer { get; private set; } = null;
         private ref float Timer => ref NPC.ai[0];

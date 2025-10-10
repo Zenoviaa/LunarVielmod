@@ -1,7 +1,7 @@
 ﻿using Terraria;
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class DaedCard : BaseIgniterCard
+    public class DaedCard : BaseIgniterCard
     {
         public override void SetClassSwappedDefaults()
         {

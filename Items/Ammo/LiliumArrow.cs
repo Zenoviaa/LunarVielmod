@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Ammo
 {
-    internal class LiliumArrow : ModItem
+    public class LiliumArrow : ModItem
     {
         public override void SetStaticDefaults()
         {

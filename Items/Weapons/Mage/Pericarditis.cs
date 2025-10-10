@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class Pericarditis : ClassSwapItem
+    public class Pericarditis : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Ranged;

@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class GearSniper : ModProjectile
+    public class GearSniper : ModProjectile
     {
         public override void SetStaticDefaults()
         {

@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class VoidHandSpawn : ModProjectile
+    public class VoidHandSpawn : ModProjectile
     {
         private Vector2 OldVelocity;
         private ref float Timer => ref Projectile.ai[0];

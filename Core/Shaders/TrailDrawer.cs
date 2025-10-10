@@ -11,7 +11,7 @@ using Terraria.Graphics.Shaders;
 
 namespace Stellamod.Core.Shaders
 {
-    internal class TrailDrawer
+    public class TrailDrawer
     {
         public static Matrix WorldViewPoint
         {

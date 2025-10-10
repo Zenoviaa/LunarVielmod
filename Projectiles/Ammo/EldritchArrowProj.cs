@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Ammo
 {
-    internal class EldritchArrowProj : ModProjectile
+    public class EldritchArrowProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

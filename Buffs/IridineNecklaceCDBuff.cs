@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-    internal class IridineNecklaceCDBuff : ModBuff
+    public class IridineNecklaceCDBuff : ModBuff
     {
         public override void SetStaticDefaults()
         {

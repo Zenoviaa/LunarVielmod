@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Tools
 {
-    internal class RadiantLantern : BaseLanternItem
+    public class RadiantLantern : BaseLanternItem
     {
         public override void SetDefaults()
         {

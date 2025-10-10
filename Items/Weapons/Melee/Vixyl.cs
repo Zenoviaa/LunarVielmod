@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    internal class VixylPlayer : ModPlayer
+    public class VixylPlayer : ModPlayer
     {
         public int parryCooldown;
         public int parryTimer;
@@ -106,7 +106,7 @@ namespace Stellamod.Items.Weapons.Melee
         }
     }
 
-    internal class Vixyl : ClassSwapItem
+    public class Vixyl : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;

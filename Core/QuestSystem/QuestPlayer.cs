@@ -7,7 +7,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.Core.QuestSystem
 {
-    internal class QuestPlayer : ModPlayer
+    public class QuestPlayer : ModPlayer
     {
         private List<Quest> _activeQuests;
         private List<Quest> _completedQuests;

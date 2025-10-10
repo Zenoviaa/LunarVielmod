@@ -9,7 +9,7 @@ using Terraria;
 
 namespace Stellamod.Visual.Particles
 {
-    internal class FireHeatParticle : Particle
+    public class FireHeatParticle : Particle
     {
         public int FrameWidth = 80;
         public int FrameHeight = 82;

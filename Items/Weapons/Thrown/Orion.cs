@@ -10,7 +10,7 @@ using Stellamod.Projectiles.Thrown;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    internal class Orion : ClassSwapItem
+    public class Orion : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Ranged;

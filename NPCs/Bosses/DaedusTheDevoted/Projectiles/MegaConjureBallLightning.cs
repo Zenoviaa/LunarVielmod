@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
-    internal class MegaConjureBallLightning : ModProjectile
+    public class MegaConjureBallLightning : ModProjectile
     {
         private float _scale;
         private float _width;

@@ -5,7 +5,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.Helpers
 {
-    internal static class ColorFunctions
+    public static class ColorFunctions
     {
         public static Color AcidFlame => new Color(24, 142, 61);
         public static Color MiracleVoid => new Color(60, 0 , 118);

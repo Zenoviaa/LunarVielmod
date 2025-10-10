@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-    internal class MoonFlame : ModBuff
+    public class MoonFlame : ModBuff
     {
         public override void SetStaticDefaults()
         {

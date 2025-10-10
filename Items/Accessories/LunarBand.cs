@@ -10,7 +10,7 @@ using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Accessories
 {
-    internal class LunarBand : ModItem
+    public class LunarBand : ModItem
     { 
         public override void SetDefaults()
         {

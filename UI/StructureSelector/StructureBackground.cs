@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.UI.StructureSelector
 {
-    internal class StructureBackground : UIPanel
+    public class StructureBackground : UIPanel
     {
         public StructureBackground() : base()
         {

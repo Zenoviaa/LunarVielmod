@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    internal class PumkinPopper : ModItem
+    public class PumkinPopper : ModItem
     {
         public override void SetDefaults()
         {

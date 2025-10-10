@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class WiggleDiggle : ClassSwapItem
+    public class WiggleDiggle : ClassSwapItem
     {
         public override DamageClass AlternateClass => DamageClass.Magic;
         public override void SetClassSwappedDefaults()

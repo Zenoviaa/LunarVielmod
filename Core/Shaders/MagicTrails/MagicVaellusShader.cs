@@ -6,7 +6,7 @@ using Terraria;
 
 namespace Stellamod.Core.Shaders.MagicTrails
 {
-    internal class MagicVaellusShader : BaseShader
+    public class MagicVaellusShader : BaseShader
     {
         private static MagicVaellusShader _instance;
         public static MagicVaellusShader Instance
@@ -62,7 +62,7 @@ namespace Stellamod.Core.Shaders.MagicTrails
         }
     }
 
-    internal class PixelMagicVaellusShader : BaseShader
+    public class PixelMagicVaellusShader : BaseShader
     {
         private static PixelMagicVaellusShader _instance;
         public static PixelMagicVaellusShader Instance

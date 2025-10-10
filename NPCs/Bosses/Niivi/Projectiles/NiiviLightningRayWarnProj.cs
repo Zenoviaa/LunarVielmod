@@ -12,7 +12,7 @@ using Terraria;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviLightningRayWarnProj : ModProjectile
+    public class NiiviLightningRayWarnProj : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
 

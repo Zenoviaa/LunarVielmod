@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    internal class IllurianLoveLocketStarProj : ModProjectile
+    public class IllurianLoveLocketStarProj : ModProjectile
     {
         float Timer;
         public override void SetStaticDefaults()

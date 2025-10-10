@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Underground
 {
-    internal class Steeru : ModNPC
+    public class Steeru : ModNPC
     {
         public const int Steeru_Gear_Count = 7;
         public override void SetStaticDefaults()

@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.SunStalker
 {
-    internal class SunRock : ModProjectile
+    public class SunRock : ModProjectile
     {
         public override void SetStaticDefaults()
         {

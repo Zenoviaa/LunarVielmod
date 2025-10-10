@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 {
-    internal class STARROCKET : ModProjectile
+    public class STARROCKET : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         private Vector2 InitialVelocity;

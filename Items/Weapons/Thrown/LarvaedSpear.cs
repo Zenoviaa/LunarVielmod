@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-	internal class LarvaedSpear : ClassSwapItem
+	public class LarvaedSpear : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Ranged;

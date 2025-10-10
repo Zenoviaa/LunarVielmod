@@ -10,17 +10,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.MaskingShaderSystem
 {
-    internal interface IPreDrawMaskShader
+    public interface IPreDrawMaskShader
     {
         void PreDrawMask(SpriteBatch spriteBatch);
     }
-    internal interface IDrawMaskShader
+    public interface IDrawMaskShader
     {
         MiscShaderData GetMaskDrawShader();
         void DrawMask(SpriteBatch spriteBatch);
     }
 
-    internal class MaskShaderDrawSystem : ModSystem
+    public class MaskShaderDrawSystem : ModSystem
     {
         private List<IDrawMaskShader> _draws;
         private RenderTarget2D _preMaskDrawRenderTarget;

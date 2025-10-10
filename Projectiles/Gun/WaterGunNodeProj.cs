@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class WaterGunNodeProj : ModProjectile
+    public class WaterGunNodeProj : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         private float Index

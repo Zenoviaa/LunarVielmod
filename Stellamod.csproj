@@ -633,6 +633,7 @@
     <None Remove="Visual\Particles\GlowCircleDetailedBoomParticle1.png" />
     <None Remove="Visual\Particles\GlowSpikeParticle.png" />
     <None Remove="Visual\Particles\GlowStretchParticle.png" />
+    <None Remove="Visual\Particles\ShockParticle.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Accord.Fuzzy" Version="3.8.0" />

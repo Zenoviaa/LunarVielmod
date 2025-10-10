@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    internal class ClimateIceProjExplosion : ModProjectile
+    public class ClimateIceProjExplosion : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon.Orbs
 {
-    internal class OrbPlayer : ModPlayer
+    public class OrbPlayer : ModPlayer
     {
         public int ItemType = -1;
         public int ItemType2 = -1;

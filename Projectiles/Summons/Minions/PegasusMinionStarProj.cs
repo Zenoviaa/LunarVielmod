@@ -12,7 +12,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    internal class PegasusMinionStarProj : ModProjectile
+    public class PegasusMinionStarProj : ModProjectile
     {
         public override string Texture => TextureRegistry.ZuiEffect;
         public PrimDrawer TrailDrawer { get; private set; } = null;

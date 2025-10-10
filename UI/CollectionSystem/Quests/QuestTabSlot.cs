@@ -11,16 +11,16 @@ using Terraria.UI;
 
 namespace Stellamod.UI.CollectionSystem.Quests
 {
-    internal class QuestTabSlot : UIElement,
+    public class QuestTabSlot : UIElement,
         IIndexedUI
     {
         private UIText _text;
         private int _index;
-        internal Quest Quest;
+        public Quest Quest;
 
         private readonly int _context;
         private readonly float _scale;
-        internal QuestTabSlot(int index, float scale = 1f)
+        public QuestTabSlot(int index, float scale = 1f)
         {
             _index = index;
             _scale = scale;

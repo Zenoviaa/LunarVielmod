@@ -12,7 +12,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.singularityFragment.Phase1
 {
-    internal class SingularitySparkProj : ModProjectile
+    public class SingularitySparkProj : ModProjectile
     {
         private bool Moved;
         public override void SetStaticDefaults()

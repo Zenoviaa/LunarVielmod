@@ -522,7 +522,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
 
 
 
-    internal class ZhielhanderProj : ModProjectile
+    public class ZhielhanderProj : ModProjectile
     {
         bool Moved;
 

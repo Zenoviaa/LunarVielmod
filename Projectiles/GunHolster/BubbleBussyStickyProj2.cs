@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class BubbleBussyStickyProj2 : ModProjectile
+    public class BubbleBussyStickyProj2 : ModProjectile
     {
         public override void SetStaticDefaults()
         {

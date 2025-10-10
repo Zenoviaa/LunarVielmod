@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.IgniterExplosions
 {
-    internal class SiriusBoom : ModProjectile
+    public class SiriusBoom : ModProjectile
     {
         private int _frameCounter;
         private int _frameTick;

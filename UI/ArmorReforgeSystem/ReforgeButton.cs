@@ -9,11 +9,11 @@ using Terraria.UI;
 
 namespace Stellamod.UI.ArmorReforgeSystem
 {
-    internal class ReforgeButton : UIPanel
+    public class ReforgeButton : UIPanel
     {
-        internal event Action<int> OnEmptyMouseover;
+        public event Action<int> OnEmptyMouseover;
         private readonly float _scale = 1f;
-        internal ReforgeButton()
+        public ReforgeButton()
         {
             float scale = 1f;
             var asset = ModContent.Request<Texture2D>(

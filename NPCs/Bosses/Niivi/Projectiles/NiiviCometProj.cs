@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviCometProj : ModProjectile
+    public class NiiviCometProj : ModProjectile
     {
         public override string Texture => TextureRegistry.ZuiEffect;
         public PrimDrawer TrailDrawer { get; private set; } = null;

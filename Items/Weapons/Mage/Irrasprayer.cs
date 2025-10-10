@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class Irrasprayer : ClassSwapItem
+    public class Irrasprayer : ClassSwapItem
     {
         public override DamageClass AlternateClass => DamageClass.Ranged;
         public override void SetClassSwappedDefaults()

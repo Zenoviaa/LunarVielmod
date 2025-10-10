@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    internal class RevengenceMinion : ModProjectile
+    public class RevengenceMinion : ModProjectile
     {
         private Player Owner => Main.player[Projectile.owner];
         private ref float Timer => ref Projectile.ai[0];

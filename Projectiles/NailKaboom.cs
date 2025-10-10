@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    internal class NailKaboom : ModProjectile
+    public class NailKaboom : ModProjectile
     {
 		public override void SetStaticDefaults()
 		{

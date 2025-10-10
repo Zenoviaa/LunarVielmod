@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class RustedSnipe : ModProjectile, IPixelPrimitiveDrawer
+    public class RustedSnipe : ModProjectile, IPixelPrimitiveDrawer
     {
         public override void SetStaticDefaults()
         {
@@ -75,7 +75,7 @@ namespace Stellamod.Projectiles.Gun
             return Color.Lerp(startColor, endColor, completionRatio);
         }
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);

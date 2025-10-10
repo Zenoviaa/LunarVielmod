@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-    internal class GlisteningPearl : ModItem
+    public class GlisteningPearl : ModItem
     {
 
         public override void SetStaticDefaults()

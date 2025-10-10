@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords
 {
-    internal class HeatBomb : ModProjectile
+    public class HeatBomb : ModProjectile
     {
         public bool Dead;
         public override void SetStaticDefaults()

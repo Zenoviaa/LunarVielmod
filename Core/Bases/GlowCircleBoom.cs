@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
 {
-    internal class GlowCircleBoom : ModProjectile
+    public class GlowCircleBoom : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         private float Progress => Timer / 15;

@@ -6,7 +6,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.UI.Dialogue
 {
-    internal class SirestiasBeginDialogue : Dialogue
+    public class SirestiasBeginDialogue : Dialogue
     {
         //The number of steps in this dialogue
         public override int Length => 5;

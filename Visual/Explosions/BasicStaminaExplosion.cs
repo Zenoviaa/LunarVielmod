@@ -9,7 +9,7 @@ using Terraria;
 
 namespace Stellamod.Visual.Explosions
 {
-    internal class BasicStaminaExplosion : BaseExplosionProjectile
+    public class BasicStaminaExplosion : BaseExplosionProjectile
     {
         int trailMode;
         int rStart = 4;

@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 
 namespace Stellamod.Projectiles.Summons.Orbs
 {
-    internal static class OrbHelper
+    public static class OrbHelper
     {
         public static void PlaySummonSound(Vector2 position, float pitchOffset = 0)
         {

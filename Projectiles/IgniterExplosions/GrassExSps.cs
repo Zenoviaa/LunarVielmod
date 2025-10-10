@@ -5,7 +5,7 @@ using Terraria;
 
 namespace Stellamod.Projectiles.IgniterExplosions
 {
-    internal class GrassExSps : BaseIgniterExplosion
+    public class GrassExSps : BaseIgniterExplosion
     {
         public override int FrameCount => 30;
 

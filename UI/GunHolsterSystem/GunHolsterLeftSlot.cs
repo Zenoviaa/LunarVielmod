@@ -10,7 +10,7 @@ using Terraria.UI;
 
 namespace Stellamod.UI.GunHolsterSystem
 {
-    internal class GunHolsterLeftSlot : UIElement
+    public class GunHolsterLeftSlot : UIElement
     {
         private GunHolster _gunHolster;
         private BaseScorpionItem _scorpionItem;
@@ -18,9 +18,9 @@ namespace Stellamod.UI.GunHolsterSystem
         private readonly int _context;
         private readonly float _scale;
 
-        internal Item Item;
+        public Item Item;
 
-        internal GunHolsterLeftSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
+        public GunHolsterLeftSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
         {
             _context = context;
             _scale = scale;
@@ -38,7 +38,7 @@ namespace Stellamod.UI.GunHolsterSystem
         /// <summary>
         /// Returns true if this item can be placed into the slot (either empty or a pet item)
         /// </summary>
-        internal bool Valid(Item item)
+        public bool Valid(Item item)
         {
             if (item.ModItem is MiniGun miniGun)
             {
@@ -51,7 +51,7 @@ namespace Stellamod.UI.GunHolsterSystem
         }
 
 
-        internal void HandleMouseItem()
+        public void HandleMouseItem()
         {
             if (Valid(Main.mouseItem))
             {

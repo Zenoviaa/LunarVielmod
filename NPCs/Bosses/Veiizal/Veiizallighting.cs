@@ -15,7 +15,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.Veiizal
 {
-    internal class Veiizallighting : ModProjectile
+    public class Veiizallighting : ModProjectile
     {
         bool Moved;
         int VelAddd;

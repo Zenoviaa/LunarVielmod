@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class DeafenProj : ModProjectile
+    public class DeafenProj : ModProjectile
     {
         private Vector2[] _soundWavePos;
         private Vector2[] _soundWavePos2;

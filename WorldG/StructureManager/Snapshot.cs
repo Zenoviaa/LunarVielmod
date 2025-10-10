@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.WorldG.StructureManager
 {
-    internal class SnapshotSystem : ModSystem
+    public class SnapshotSystem : ModSystem
     {
         public Stack<Snapshot> Snapshots = new Stack<Snapshot>();
         public void Save(Point bottomLeft, Point topRight)
@@ -28,7 +28,7 @@ namespace Stellamod.WorldG.StructureManager
         } 
     }
 
-    internal class Snapshot
+    public class Snapshot
     {
         public readonly record struct TileData(
             TileTypeData TileTypeData, 

@@ -11,7 +11,7 @@ using Terraria.ID;
 
 namespace Stellamod.NPCs
 {
-    internal class TestLaserNPC : ModNPC
+    public class TestLaserNPC : ModNPC
     {
         private int _timer = 600;
         private float _circleDegrees;

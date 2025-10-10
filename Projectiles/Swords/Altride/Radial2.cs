@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords.Altride
 {
-    internal class Radial2 : Radial
+    public class Radial2 : Radial
     {
 
     }

@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
 {
-    internal class WindBlast : BaseWindProjectile
+    public class WindBlast : BaseWindProjectile
     {
         public override void SetStaticDefaults()
         {

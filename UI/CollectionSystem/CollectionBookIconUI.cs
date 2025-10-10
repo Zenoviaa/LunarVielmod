@@ -4,17 +4,17 @@ using Terraria.GameContent.UI.Elements;
 
 namespace Stellamod.UI.CollectionSystem
 {
-    internal class CollectionBookIconUI : UIPanel
+    public class CollectionBookIconUI : UIPanel
     {
         private UIPanel _panel;
         public BookIcon bookIcon;
 
 
-        internal const int width = 432;
-        internal const int height = 280;
+        public const int width = 432;
+        public const int height = 280;
 
-        internal int RelativeLeft => 444;
-        internal int RelativeTop => 312;
+        public int RelativeLeft => 444;
+        public int RelativeTop => 312;
 
         public override void OnInitialize()
         {

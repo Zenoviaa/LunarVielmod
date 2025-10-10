@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
 {
-    internal static class TextureRegistry
+    public static class TextureRegistry
     {
         public static string PathHere(this ModType t)
         {

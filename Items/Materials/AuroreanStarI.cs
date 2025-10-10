@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-    internal class AuroreanStarI : ModItem
+    public class AuroreanStarI : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviCosmicBombAbsorbProj : ModProjectile,
+    public class NiiviCosmicBombAbsorbProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture

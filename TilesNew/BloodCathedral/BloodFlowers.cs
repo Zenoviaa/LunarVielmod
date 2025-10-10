@@ -33,7 +33,7 @@ namespace Stellamod.TilesNew.BloodCathedral
 
     }
 
-    internal class BloodFlower1 : DecorativeWall
+    public class BloodFlower1 : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -71,7 +71,7 @@ namespace Stellamod.TilesNew.BloodCathedral
 
     }
 
-    internal class BloodFlower2 : DecorativeWall
+    public class BloodFlower2 : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -108,7 +108,7 @@ namespace Stellamod.TilesNew.BloodCathedral
 
     }
 
-    internal class BloodFlower3 : DecorativeWall
+    public class BloodFlower3 : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -145,7 +145,7 @@ namespace Stellamod.TilesNew.BloodCathedral
 
     }
 
-    internal class BloodFlower4 : DecorativeWall
+    public class BloodFlower4 : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -182,7 +182,7 @@ namespace Stellamod.TilesNew.BloodCathedral
 
     }
 
-    internal class BloodFlower5 : DecorativeWall
+    public class BloodFlower5 : DecorativeWall
     {
         public override void SetStaticDefaults()
         {

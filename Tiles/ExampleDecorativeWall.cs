@@ -33,7 +33,7 @@ namespace Stellamod.Tiles
 
     }
 
-    internal class ExampleDecorativeWall : DecorativeWall
+    public class ExampleDecorativeWall : DecorativeWall
     {
         public override void SetStaticDefaults()
         {

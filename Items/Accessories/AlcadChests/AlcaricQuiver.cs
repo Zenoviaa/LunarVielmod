@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.AlcadChests
 {
-    internal class AlcaricQuiverPlayer : ModPlayer
+    public class AlcaricQuiverPlayer : ModPlayer
     {
         public bool hasQuiver;
         public override void ResetEffects()
@@ -28,7 +28,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
         }
     }
 
-    internal class AlcaricQuiver : ModItem
+    public class AlcaricQuiver : ModItem
     {
         public override void SetDefaults()
         {

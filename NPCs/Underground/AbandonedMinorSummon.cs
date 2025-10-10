@@ -7,7 +7,7 @@ using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Underground
 {
-    internal class AbandonedMinorSummon : ModNPC
+    public class AbandonedMinorSummon : ModNPC
     {
         private bool _spawn;
         public override void SetStaticDefaults()

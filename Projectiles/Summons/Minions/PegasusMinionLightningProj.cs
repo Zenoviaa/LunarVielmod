@@ -11,7 +11,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    internal class PegasusMinionLightningProj : ModProjectile, IPixelPrimitiveDrawer
+    public class PegasusMinionLightningProj : ModProjectile, IPixelPrimitiveDrawer
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];
@@ -24,7 +24,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         private float Lifetime => 48;
         private Vector2[] LightningPos;
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
 
         public override void SetDefaults()
         {

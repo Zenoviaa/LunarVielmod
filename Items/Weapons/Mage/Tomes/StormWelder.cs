@@ -18,7 +18,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage.Tomes
 {
-    internal class StormWelder : BaseMagicTomeItem
+    public class StormWelder : BaseMagicTomeItem
     {
         public override void SetDefaults()
         {
@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
         }
     }
 
-    internal class StormWelderTome : BaseMagicTomeProjectile
+    public class StormWelderTome : BaseMagicTomeProjectile
     {
         private float _dustTimer;
         public override string Texture => this.PathHere()+"/StormWelder";
@@ -72,7 +72,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
         }
     }
 
-    internal class StormWelderBeam
+    public class StormWelderBeam
     {
         public StormWelderBeam(Vector2[] pos)
         {
@@ -98,7 +98,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
         }
     }
 
-    internal class StormWelderLightning : ModProjectile
+    public class StormWelderLightning : ModProjectile
     {
 
         private float _trailWidth;

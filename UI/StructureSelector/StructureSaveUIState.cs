@@ -2,7 +2,7 @@
 
 namespace Stellamod.UI.StructureSelector
 {
-    internal class StructureSaveUIState : UIState
+    public class StructureSaveUIState : UIState
     {
         public SaveStructureUI ui;
         public StructureSaveUIState() : base()

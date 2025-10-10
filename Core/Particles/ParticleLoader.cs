@@ -7,8 +7,8 @@ namespace Stellamod.Core.Particles
     /// </summary>
     public class ParticleLoader
     {
-        internal static IList<Particle> Particles;
-        internal static int ParticleCount { get; private set; } = 0;
+        public static IList<Particle> Particles;
+        public static int ParticleCount { get; private set; } = 0;
 
         /// <summary>
         /// 根据类型获取粒子
@@ -24,7 +24,7 @@ namespace Stellamod.Core.Particles
         /// <returns></returns>
         public static int ReserveParticleID() => ParticleCount++;
 
-        internal static void Unload()
+        public static void Unload()
         {
             foreach (var item in Particles)
             {

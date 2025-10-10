@@ -13,7 +13,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 {
-    internal class NekoNeko : ModProjectile
+    public class NekoNeko : ModProjectile
     {
         bool Moved;
 

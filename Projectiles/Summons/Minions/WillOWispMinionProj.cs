@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    internal class WillOWispMinionProj : ModProjectile
+    public class WillOWispMinionProj : ModProjectile
     {
         private float _scale;
         private Vector2[] _oldPlayerPos;

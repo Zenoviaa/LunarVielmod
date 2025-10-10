@@ -7,7 +7,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.NPCs.Town
 {
-    internal class MerenaQuestSystem : ModSystem
+    public class MerenaQuestSystem : ModSystem
     {
         public enum QuestType
         {

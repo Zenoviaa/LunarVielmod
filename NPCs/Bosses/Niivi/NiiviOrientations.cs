@@ -5,7 +5,7 @@ using Terraria;
 
 namespace Stellamod.NPCs.Bosses.Niivi
 {
-    internal partial class Niivi
+    public partial class Niivi
     {
         public float LookTimer;
         public float LookDirection = -1;

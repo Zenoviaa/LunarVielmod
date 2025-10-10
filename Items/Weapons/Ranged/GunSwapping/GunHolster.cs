@@ -13,7 +13,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 {
-    internal class GunPlayer : ModPlayer
+    public class GunPlayer : ModPlayer
     {
 
 
@@ -81,7 +81,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
-    internal class GunHolster : ClassSwapItem
+    public class GunHolster : ClassSwapItem
     {
         public override DamageClass AlternateClass => DamageClass.Magic;
         private Item _leftHand;

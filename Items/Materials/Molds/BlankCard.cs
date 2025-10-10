@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials.Molds
 {
-    internal class BlankCard : ModItem
+    public class BlankCard : ModItem
     {
 
         public override void SetStaticDefaults()

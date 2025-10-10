@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Charms
 {
-    internal class WoodyB : ModBuff
+    public class WoodyB : ModBuff
     {
         public override void SetStaticDefaults()
         {

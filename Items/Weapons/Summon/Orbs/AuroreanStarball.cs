@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon.Orbs
 {
-    internal class AuroreanStarball : ClassSwapItem
+    public class AuroreanStarball : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Throwing;

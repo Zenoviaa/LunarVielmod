@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal abstract class IlluriaStarProj : ModProjectile
+    public abstract class IlluriaStarProj : ModProjectile
     {
         const float Lifetime = 180;
         public virtual Color StarColor { get; }
@@ -165,19 +165,19 @@ namespace Stellamod.Projectiles.Magic
         }
     }
 
-    internal class IlluriaStarProjBlue : IlluriaStarProj
+    public class IlluriaStarProjBlue : IlluriaStarProj
     {
         public override Color StarColor => ColorFunctions.Niivin;
     }
 
 
-    internal class IlluriaStarProjYellow : IlluriaStarProj
+    public class IlluriaStarProjYellow : IlluriaStarProj
     {
         public override Color StarColor => Color.Yellow;
     }
 
 
-    internal class IlluriaStarProjCyan : IlluriaStarProj
+    public class IlluriaStarProjCyan : IlluriaStarProj
     {
         public override Color StarColor => Color.LightCyan;
     }

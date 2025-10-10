@@ -14,7 +14,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class LarveinGreatbowR : ModProjectile
+    public class LarveinGreatbowR : ModProjectile
     {
         bool Moved;
 

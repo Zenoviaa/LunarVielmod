@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class CinderNeedleProj : ModProjectile
+    public class CinderNeedleProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

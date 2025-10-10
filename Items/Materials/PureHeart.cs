@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-    internal class PureHeart : ModItem
+    public class PureHeart : ModItem
     {
         public override void SetStaticDefaults()
         {

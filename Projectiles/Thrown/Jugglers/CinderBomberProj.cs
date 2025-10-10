@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown.Jugglers
 {
-    internal class CinderBomberProj : BaseJugglerProjectile
+    public class CinderBomberProj : BaseJugglerProjectile
     {
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {

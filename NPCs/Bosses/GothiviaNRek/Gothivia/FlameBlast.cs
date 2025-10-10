@@ -7,7 +7,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 {
-    internal class FlameBlast : ModProjectile
+    public class FlameBlast : ModProjectile
     {
         public override void SetStaticDefaults()
         {

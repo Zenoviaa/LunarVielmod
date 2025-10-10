@@ -2,7 +2,7 @@
 
 namespace Stellamod.UI.CollectionSystem
 {
-    internal class CollectionBookIconUIState : UIState
+    public class CollectionBookIconUIState : UIState
     {
         public CollectionBookIconUI bookIconUI;
         public CollectionBookIconUIState() : base()

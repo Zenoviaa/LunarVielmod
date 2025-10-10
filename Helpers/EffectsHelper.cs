@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
 {
-    internal static class EffectsHelper
+    public static class EffectsHelper
     {
         public static IgniterExplosionCircle SimpleExplosionCircle( Projectile baseProjectile, Color explosionColor, float startRadius = 4, float endRadius = 64, float width = 24)
         {

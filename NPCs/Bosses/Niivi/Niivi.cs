@@ -21,7 +21,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi
 {
-    internal class NiiviPlayer : ModPlayer
+    public class NiiviPlayer : ModPlayer
     {
         public override void PostUpdateMiscEffects()
         {
@@ -64,7 +64,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
     }
 
     [AutoloadBossHead]
-    internal partial class Niivi : ModNPC
+    public partial class Niivi : ModNPC
     {
         public enum ActionState
         {

@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Test
 {
-    internal class ExampleSilhouetteProjectile : ModProjectile
+    public class ExampleSilhouetteProjectile : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override void SetDefaults()

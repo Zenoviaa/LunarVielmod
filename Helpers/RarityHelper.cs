@@ -9,7 +9,7 @@ using Terraria.UI.Chat;
 
 namespace Stellamod.Helpers
 {
-    internal class RarityHelper
+    public class RarityHelper
     {
         public static void DrawBaseTooltipTextAndGlow(DrawableTooltipLine tooltipLine, Color glowColor, Color textOuterColor, Color? textInnerColor = null, Texture2D glowTexture = null, Vector2? glowScaleOffset = null)
         {

@@ -20,7 +20,7 @@ using Terraria.ModLoader;
 namespace Stellamod.NPCs.Bosses.CommanderGintzia
 {
     [AutoloadBossHead]
-    internal class CommanderGintzia : BaseColosseumNPC
+    public class CommanderGintzia : BaseColosseumNPC
     {
         private int _frame;
         private int _comeHereIndex;

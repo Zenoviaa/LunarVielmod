@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Waters
 {
-    internal class LavaAddon : WaterAddon
+    public class LavaAddon : WaterAddon
     {
         public static bool ShouldShow
         {

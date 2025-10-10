@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Runes
 {
-    internal class DetonationBomb : ModProjectile
+    public class DetonationBomb : ModProjectile
     {
         public override void SetStaticDefaults()
         {

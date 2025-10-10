@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.SunStalker
 {
-    internal class SunDeath : ModProjectile
+    public class SunDeath : ModProjectile
     {
         public override void SetStaticDefaults()
         {

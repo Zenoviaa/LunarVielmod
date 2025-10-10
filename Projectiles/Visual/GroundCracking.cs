@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Visual
 {
-    internal class GroundCracking : ModProjectile
+    public class GroundCracking : ModProjectile
     {
 
         private ref float Timer => ref Projectile.ai[0];

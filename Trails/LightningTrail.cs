@@ -7,7 +7,7 @@ using Terraria.Graphics.Shaders;
 
 namespace Stellamod.Trails
 {
-    internal class CoreLightning
+    public class CoreLightning
     {
         public CoreLightning()
         {
@@ -109,7 +109,7 @@ namespace Stellamod.Trails
         }
     }
 
-    internal class LightningTrail
+    public class LightningTrail
     {
         private Vector2[] _offsets;
         public LightningTrail()

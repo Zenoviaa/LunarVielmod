@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class RazzleDazzleProj : ModProjectile
+    public class RazzleDazzleProj : ModProjectile
     {
         public PrimDrawer TrailDrawer { get; private set; } = null;
         private float Timer

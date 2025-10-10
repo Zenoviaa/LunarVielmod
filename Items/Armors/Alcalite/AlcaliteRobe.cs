@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Armors.Alcalite
 {
     [AutoloadEquip(EquipType.Body)]
-    internal class AlcaliteRobe : ModItem
+    public class AlcaliteRobe : ModItem
     {
         public override void SetDefaults()
         {

@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords.Altride
 {
-    internal class Altride5 : ModProjectile
+    public class Altride5 : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[1];
         public override void SetStaticDefaults()

@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials.Molds
 {
-    internal class BlankSafunai : ModItem
+    public class BlankSafunai : ModItem
     {
 
         public override void SetStaticDefaults()

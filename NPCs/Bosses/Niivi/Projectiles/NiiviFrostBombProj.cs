@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviFrostBombProj : ModProjectile
+    public class NiiviFrostBombProj : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         private float Timer

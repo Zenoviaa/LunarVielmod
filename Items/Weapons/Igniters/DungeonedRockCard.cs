@@ -2,7 +2,7 @@
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class DungeonedRockCard : BaseIgniterCard
+    public class DungeonedRockCard : BaseIgniterCard
     {
         public override void SetClassSwappedDefaults()
         {

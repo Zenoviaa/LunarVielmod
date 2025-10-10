@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Test
 {
-    internal class FigureEightTestProj : ModProjectile
+    public class FigureEightTestProj : ModProjectile
     {
         private float Timer;
         private Vector2 FigureEightStartCenter;

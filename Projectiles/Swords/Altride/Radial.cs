@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords.Altride
 {
-    internal class Radial : ModProjectile
+    public class Radial : ModProjectile
     {
         public override void SetStaticDefaults()
         {

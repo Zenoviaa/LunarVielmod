@@ -7,7 +7,7 @@ using Terraria.Graphics.Shaders;
 
 namespace Stellamod.Core.Shaders
 {
-    internal class CrystalShaderRegistry
+    public class CrystalShaderRegistry
     {
         public static AssetRepository Assets => Stellamod.Instance.Assets;
         public static void RegisterMiscShader(string name, string pass)

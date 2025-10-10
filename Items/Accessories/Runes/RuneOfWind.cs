@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Runes
 {
-    internal class RuneOfWindBlowNPC : GlobalNPC
+    public class RuneOfWindBlowNPC : GlobalNPC
     {
         public override bool InstancePerEntity => true;
         public Vector2 BlowVelocity;
@@ -23,7 +23,7 @@ namespace Stellamod.Items.Accessories.Runes
       
     }
 
-    internal class RuneOfWindShield : ModProjectile
+    public class RuneOfWindShield : ModProjectile
     {
         private Vector2[] _windPos;
         public override string Texture => TextureRegistry.EmptyTexture;
@@ -102,7 +102,7 @@ namespace Stellamod.Items.Accessories.Runes
         }
     }
 
-    internal class RuneOfWindPlayer : ModPlayer
+    public class RuneOfWindPlayer : ModPlayer
     {
         public bool hasRuneOfWind;
         public float blowingStrength;
@@ -147,7 +147,7 @@ namespace Stellamod.Items.Accessories.Runes
         }
     }
 
-    internal class RuneOfWind : BaseRune
+    public class RuneOfWind : BaseRune
     {
         public override void SetDefaults()
         {

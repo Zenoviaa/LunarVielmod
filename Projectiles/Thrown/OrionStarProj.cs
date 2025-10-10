@@ -9,7 +9,7 @@ using Terraria.Audio;
 
 namespace Stellamod.Projectiles.Thrown
 {
-    internal class OrionStarProj : ModProjectile
+    public class OrionStarProj : ModProjectile
     {
         private float _sparkleSize = 0.5f;
         private float Timer

@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
 {
-    internal class LaughingBomb : ModProjectile
+    public class LaughingBomb : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         private float _scale;

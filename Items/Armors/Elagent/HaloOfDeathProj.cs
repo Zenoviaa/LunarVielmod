@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Elagent
 {
-    internal class HaloOfDeathProj : ModProjectile,
+    public class HaloOfDeathProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Gonna do some fancy drawing, so we don't need a texture
@@ -52,7 +52,7 @@ namespace Stellamod.Items.Armors.Elagent
 
         private Vector2[] HaloPos;
         private float Duration = 60;
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
 
         public override void SetDefaults()
         {

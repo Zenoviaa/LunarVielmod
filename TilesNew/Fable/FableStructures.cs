@@ -34,7 +34,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class FableBar : BehindDecorativeWall
+    public class FableBar : BehindDecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -72,7 +72,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class FableBigMushroom : BehindDecorativeWall
+    public class FableBigMushroom : BehindDecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -110,7 +110,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class FableSmallMushroom : BehindDecorativeWall
+    public class FableSmallMushroom : BehindDecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -148,7 +148,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class FableLog : BehindDecorativeWall
+    public class FableLog : BehindDecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -186,7 +186,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class FableBench : BehindDecorativeWall
+    public class FableBench : BehindDecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -225,7 +225,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class FableGrassMoss : DecorativeWall
+    public class FableGrassMoss : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -263,7 +263,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class FableGrassMossBig : DecorativeWall
+    public class FableGrassMossBig : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -301,7 +301,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class FablePike : DecorativeWall
+    public class FablePike : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -339,7 +339,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class FablePikeBig : DecorativeWall
+    public class FablePikeBig : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -377,7 +377,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class FableSpikes : DecorativeWall
+    public class FableSpikes : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -415,7 +415,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class FableStones : DecorativeWall
+    public class FableStones : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -453,7 +453,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class FableTable : DecorativeWall
+    public class FableTable : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -491,7 +491,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class wall1 : BehindDecorativeWall
+    public class wall1 : BehindDecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -529,7 +529,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class wall2 : BehindDecorativeWall
+    public class wall2 : BehindDecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -567,7 +567,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class wall3 : BehindDecorativeWall
+    public class wall3 : BehindDecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -605,7 +605,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class wall4 : BehindDecorativeWall
+    public class wall4 : BehindDecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -643,7 +643,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class wall5 : BehindDecorativeWall
+    public class wall5 : BehindDecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -681,7 +681,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class wall6 : BehindDecorativeWall
+    public class wall6 : BehindDecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -719,7 +719,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class wall7 : BehindDecorativeWall
+    public class wall7 : BehindDecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -757,7 +757,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class FableBookshelf1 : DecorativeWall
+    public class FableBookshelf1 : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -795,7 +795,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class FableBookshelf2 : DecorativeWall
+    public class FableBookshelf2 : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -833,7 +833,7 @@ namespace Stellamod.TilesNew.Fable
 
     }
 
-    internal class FableBookshelf3 : DecorativeWall
+    public class FableBookshelf3 : DecorativeWall
     {
         public override void SetStaticDefaults()
         {

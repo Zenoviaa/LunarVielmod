@@ -18,9 +18,9 @@ namespace Stellamod.UI.DialogueTowning
     public class DialogueTowningButtonGroupUI : UIPanel
     {
         private UIGrid _buttonsGrid;
-        internal int RelativeLeft => Main.screenWidth / 2;
-        internal int RelativeTop => Main.screenHeight - 380;
-        internal Vector2 DrawPos => new Vector2(Left.Pixels, Top.Pixels);
+        public int RelativeLeft => Main.screenWidth / 2;
+        public int RelativeTop => Main.screenHeight - 380;
+        public Vector2 DrawPos => new Vector2(Left.Pixels, Top.Pixels);
 
         public Vector2 Offset { get; set; }
 

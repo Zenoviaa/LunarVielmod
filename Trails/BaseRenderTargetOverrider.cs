@@ -56,7 +56,7 @@ public sealed class BaseRenderTargetOverrider
 		return new SpecificOverride(value, valueToOverride);
 	}
 
-	internal static void Patch()
+	public static void Patch()
 	{
 		Type[] type = new Type[] { typeof(RenderTarget2D) };
 		var setRenderTargetsMethodInfo = typeof(GraphicsDevice).GetMethod(nameof(GraphicsDevice.SetRenderTarget), BindingFlags.Instance | BindingFlags.Public, type);

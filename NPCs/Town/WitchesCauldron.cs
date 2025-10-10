@@ -17,7 +17,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Town
 {
-    internal class WitchesCauldron : VeilTownNPC
+    public class WitchesCauldron : VeilTownNPC
     {
         private int _frame;
         private float _frameCounter;

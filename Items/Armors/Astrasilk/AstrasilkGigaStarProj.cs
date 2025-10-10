@@ -15,7 +15,7 @@ using Stellamod.Trails;
 
 namespace Stellamod.Items.Armors.Astrasilk
 {
-    internal class AstrasilkGigaStarProj : ModProjectile
+    public class AstrasilkGigaStarProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

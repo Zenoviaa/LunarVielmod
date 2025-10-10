@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon.Orbs
 {
-    internal class TheActualMoon : ClassSwapItem
+    public class TheActualMoon : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Throwing;

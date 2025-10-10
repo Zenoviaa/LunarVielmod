@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-    internal class AlcadizScrap : ModItem
+    public class AlcadizScrap : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

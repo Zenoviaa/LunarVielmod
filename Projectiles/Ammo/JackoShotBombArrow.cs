@@ -17,7 +17,7 @@ using Stellamod.Trails;
 
 namespace Stellamod.Projectiles.Ammo
 {
-    internal class JackoShotBombArrow : ModProjectile
+    public class JackoShotBombArrow : ModProjectile
     {
         public override void SetStaticDefaults()
         {

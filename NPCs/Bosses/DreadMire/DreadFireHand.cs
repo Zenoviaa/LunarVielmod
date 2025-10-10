@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
-    internal class DreadFireHand : ModProjectile
+    public class DreadFireHand : ModProjectile
     {
         private float Timer
         {

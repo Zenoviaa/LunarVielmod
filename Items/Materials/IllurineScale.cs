@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-    internal class IllurineScale : ModItem
+    public class IllurineScale : ModItem
     {
         public override void SetDefaults()
         {

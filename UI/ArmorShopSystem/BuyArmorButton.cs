@@ -15,11 +15,11 @@ using Stellamod.Core.ArmorShop;
 
 namespace Stellamod.UI.ArmorShopSystem
 {
-    internal class BuyArmorButton : UIPanel
+    public class BuyArmorButton : UIPanel
     {
-        internal event Action<int> OnEmptyMouseover;
+        public event Action<int> OnEmptyMouseover;
         private readonly float _scale = 1f;
-        internal BuyArmorButton()
+        public BuyArmorButton()
         {
             float scale = 1f;
             var asset = ModContent.Request<Texture2D>(

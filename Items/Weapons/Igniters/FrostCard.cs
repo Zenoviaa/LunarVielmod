@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class FrostCard : BaseIgniterCard
+    public class FrostCard : BaseIgniterCard
     {
         public override void SetClassSwappedDefaults()
         {

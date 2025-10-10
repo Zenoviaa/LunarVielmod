@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown.Jugglers
 {
-    internal class BungeeGumSlashProj : ModProjectile
+    public class BungeeGumSlashProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

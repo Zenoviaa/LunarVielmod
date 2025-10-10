@@ -11,7 +11,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class IcingIc : ModProjectile
+    public class IcingIc : ModProjectile
     {
         bool Moved;
         public override void SetStaticDefaults()

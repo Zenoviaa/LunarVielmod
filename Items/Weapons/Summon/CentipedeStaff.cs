@@ -16,7 +16,7 @@ using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    internal class CentipedeStaff : ClassSwapItem
+    public class CentipedeStaff : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;

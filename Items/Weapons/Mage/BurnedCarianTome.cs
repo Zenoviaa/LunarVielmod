@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class BurnedCarianTome : ClassSwapItem
+    public class BurnedCarianTome : ClassSwapItem
     {
         public int dir;
         public override DamageClass AlternateClass => DamageClass.Summon;

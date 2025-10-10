@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    internal class DogmaBalls : ClassSwapItem
+    public class DogmaBalls : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Melee;

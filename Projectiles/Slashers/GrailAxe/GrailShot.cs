@@ -12,7 +12,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Slashers.GrailAxe
 {
-    internal class GrailShot : ModProjectile
+    public class GrailShot : ModProjectile
     {
         private bool Moved;
         public override void SetStaticDefaults()

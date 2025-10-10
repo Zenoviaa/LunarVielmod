@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
-    internal class FlinchMachine : BaseJugglerItem
+    public class FlinchMachine : BaseJugglerItem
     {
         public override DamageClass AlternateClass => DamageClass.Ranged;
         public override void SetClassSwappedDefaults()

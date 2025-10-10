@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Pikmin
 {
-    internal class RedPikminThrow : ModProjectile
+    public class RedPikminThrow : ModProjectile
     {
         public override void SetStaticDefaults()
         {

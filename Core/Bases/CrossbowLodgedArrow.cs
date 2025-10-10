@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
 {
-    internal class CrossbowLodgedArrow : ModProjectile
+    public class CrossbowLodgedArrow : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         private Vector2 LodgeOffset;

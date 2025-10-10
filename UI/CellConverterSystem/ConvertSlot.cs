@@ -11,20 +11,20 @@ using Terraria.UI.Chat;
 
 namespace Stellamod.UI.CellConverterSystem
 {
-    internal class ConvertSlot : UIElement
+    public class ConvertSlot : UIElement
     {
         private Item _prevItem;
         private readonly int _context;
         private readonly float _scale;
 
-        internal Item Item;
-        internal Func<Item, bool> ValidItemFunc;
+        public Item Item;
+        public Func<Item, bool> ValidItemFunc;
 
-        internal event Action<int> OnEmptyMouseover;
+        public event Action<int> OnEmptyMouseover;
 
         private int timer = 0;
 
-        internal ConvertSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
+        public ConvertSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
         {
             _context = context;
             _scale = scale;
@@ -41,12 +41,12 @@ namespace Stellamod.UI.CellConverterSystem
         /// <summary>
         /// Returns true if this item can be placed into the slot (either empty or a pet item)
         /// </summary>
-        internal bool Valid(Item item)
+        public bool Valid(Item item)
         {
             return item.ModItem is ClassSwapItem || item.IsAir;
         }
 
-        internal void HandleMouseItem()
+        public void HandleMouseItem()
         {
             if (Valid(Main.mouseItem))
             {

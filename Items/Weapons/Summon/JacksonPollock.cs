@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    internal class JacksonPollock : ClassSwapItem
+    public class JacksonPollock : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;

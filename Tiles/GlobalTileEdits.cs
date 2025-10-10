@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Tiles
 {
-    internal class GlobalTileEdits : GlobalTile
+    public class GlobalTileEdits : GlobalTile
     {
         public override void RandomUpdate(int i, int j, int type)
         {

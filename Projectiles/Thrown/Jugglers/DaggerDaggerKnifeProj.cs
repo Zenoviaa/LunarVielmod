@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown.Jugglers
 {
-    internal class DaggerDaggerKnifeProj : ModProjectile
+    public class DaggerDaggerKnifeProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

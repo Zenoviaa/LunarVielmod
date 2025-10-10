@@ -16,7 +16,7 @@ using Stellamod.Items.Harvesting;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class Lihh : ClassSwapItem
+    public class Lihh : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Generic;

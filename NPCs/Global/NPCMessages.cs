@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Global
 {
-    internal class NPCMessages : GlobalNPC
+    public class NPCMessages : GlobalNPC
     {
         public override void OnKill(NPC npc)
         {

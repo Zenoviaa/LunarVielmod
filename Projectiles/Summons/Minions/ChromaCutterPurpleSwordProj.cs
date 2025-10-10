@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    internal class ChromaCutterPurpleSwordProj : ModProjectile
+    public class ChromaCutterPurpleSwordProj : ModProjectile
     {
         private Vector2 _targetCenter;
         private Vector2 _velocity;

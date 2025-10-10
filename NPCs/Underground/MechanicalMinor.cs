@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Underground
 {
-    internal class MechanicalMinor : ModNPC
+    public class MechanicalMinor : ModNPC
     {
         private int _lastDirection;
         private float _waitTimer;

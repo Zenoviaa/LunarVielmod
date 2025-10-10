@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    internal class WillOWisp : ClassSwapItem
+    public class WillOWisp : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;

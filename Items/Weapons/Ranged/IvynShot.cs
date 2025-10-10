@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class IvynShot : ClassSwapItem
+    public class IvynShot : ClassSwapItem
     {
         public override DamageClass AlternateClass => DamageClass.Throwing;
         public int combo;

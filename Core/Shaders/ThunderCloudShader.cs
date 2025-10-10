@@ -12,7 +12,7 @@ using Terraria;
 
 namespace Stellamod.Core.Shaders
 {
-    internal class ThunderCloudShader : BaseShader
+    public class ThunderCloudShader : BaseShader
     {
         private static ThunderCloudShader _instance;
         public static ThunderCloudShader Instance

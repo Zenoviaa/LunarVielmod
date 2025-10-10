@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-    internal class ManifestedAnxiety : ModItem
+    public class ManifestedAnxiety : ModItem
     {
         public override void SetDefaults()
         {

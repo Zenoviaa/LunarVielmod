@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class TheWiggler : ClassSwapItem
+    public class TheWiggler : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Summon;

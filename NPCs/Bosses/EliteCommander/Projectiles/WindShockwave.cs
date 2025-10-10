@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
 {
-    internal class WindShockwave : ModProjectile
+    public class WindShockwave : ModProjectile
     {
         private Vector2[] _shockwavePos;
         private ref float Timer => ref Projectile.ai[0];

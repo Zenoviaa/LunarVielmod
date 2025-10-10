@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.Helpers;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.NPCs.Bosses.StarrVeriplant.Projectiles
+namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant.Projectiles
 {
     public class StompShockwave : ModProjectile
     {

@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class VampiricArrowProj : ModProjectile
+    public class VampiricArrowProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

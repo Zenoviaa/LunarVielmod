@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Special
 {
-    internal class ExtraLootGlobalNPC : GlobalNPC
+    public class ExtraLootGlobalNPC : GlobalNPC
     {
         public override void OnKill(NPC npc)
         {

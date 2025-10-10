@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.CommanderGintzia
 {
-    internal class CommanderGintziaTaunting : ModNPC
+    public class CommanderGintziaTaunting : ModNPC
     {
         private Vector2 FollowCenter;
 

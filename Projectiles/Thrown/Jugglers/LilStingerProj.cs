@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown.Jugglers
 {
-    internal class LilStingerProj : ModProjectile
+    public class LilStingerProj : ModProjectile
     {
         private enum ActionState
         {

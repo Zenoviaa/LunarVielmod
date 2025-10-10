@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Runes
 {
-    internal class RuneOfCorsagePlayer : ModPlayer
+    public class RuneOfCorsagePlayer : ModPlayer
     {
         public bool hasRuneOfCorsage;
         public override void ResetEffects()
@@ -32,7 +32,7 @@ namespace Stellamod.Items.Accessories.Runes
         }
     }
 
-    internal class RuneOfCorsage : BaseRune
+    public class RuneOfCorsage : BaseRune
     {
         private float _dustTimer;
         public override void SetDefaults()

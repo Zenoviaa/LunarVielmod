@@ -11,7 +11,7 @@ using Stellamod.Items.Ores;
 
 namespace Stellamod.Items.Ammo
 {
-    internal class RadiantArrow : ModItem
+    public class RadiantArrow : ModItem
     {
         public override void SetStaticDefaults()
         {

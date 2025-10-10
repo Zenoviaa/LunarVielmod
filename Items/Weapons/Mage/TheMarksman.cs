@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class TheMarksman : ClassSwapItem
+    public class TheMarksman : ClassSwapItem
     {
         public int dir;
         public override DamageClass AlternateClass => DamageClass.Summon;

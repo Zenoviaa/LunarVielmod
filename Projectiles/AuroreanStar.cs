@@ -10,7 +10,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles
 {
-    internal class AuroreanStar : ModProjectile
+    public class AuroreanStar : ModProjectile
     {
         bool Moved;
 

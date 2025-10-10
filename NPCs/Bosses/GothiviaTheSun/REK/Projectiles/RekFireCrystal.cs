@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
-    internal class RekFireCrystal : ModNPC
+    public class RekFireCrystal : ModNPC
     {
         private ref float Timer => ref NPC.ai[0];
         private Vector2 LaserDirection

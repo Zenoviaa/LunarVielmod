@@ -12,7 +12,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal abstract class BaseIgniterCard : ClassSwapItem
+    public abstract class BaseIgniterCard : ClassSwapItem
     {
         private List<Item> _powders;
         public List<Item> Powders

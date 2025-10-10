@@ -16,7 +16,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-    internal class GothivianPlayer : ModPlayer
+    public class GothivianPlayer : ModPlayer
     {
         private int _timer;
         private int _maxHealthLoss;
@@ -46,7 +46,7 @@ namespace Stellamod.Buffs
         }
     }
 
-    internal class GothivianFlames : ModBuff
+    public class GothivianFlames : ModBuff
     {
         public override void SetStaticDefaults()
         {

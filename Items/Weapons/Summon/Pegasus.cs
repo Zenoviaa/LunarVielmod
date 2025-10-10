@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    internal class Pegasus : ClassSwapItem
+    public class Pegasus : ClassSwapItem
     {
         public override void SetStaticDefaults()
         {

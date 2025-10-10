@@ -8,12 +8,12 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviLaserSpikeProj : ModProjectile,
+    public class NiiviLaserSpikeProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Visuals
         public override string Texture => TextureRegistry.EmptyTexture;
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         private List<Vector2> LaserSpikePos;
 
         //AI

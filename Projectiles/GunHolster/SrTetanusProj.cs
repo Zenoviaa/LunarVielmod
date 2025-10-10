@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class SrTetanusProj : ModProjectile
+    public class SrTetanusProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

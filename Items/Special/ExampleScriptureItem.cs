@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Special
 {
-    internal class ExampleScriptureItem : ModItem
+    public class ExampleScriptureItem : ModItem
     {
         public static LocalizedText ContentText { get; private set; }
 

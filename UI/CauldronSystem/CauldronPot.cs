@@ -9,11 +9,11 @@ using Terraria.UI;
 
 namespace Stellamod.UI.CauldronSystem
 {
-    internal class CauldronPot : UIPanel
+    public class CauldronPot : UIPanel
     {
-        internal event Action<int> OnEmptyMouseover;
+        public event Action<int> OnEmptyMouseover;
         private readonly float _scale = 1f;
-        internal CauldronPot()
+        public CauldronPot()
         {
             float scale = 1f;
             var asset = ModContent.Request<Texture2D>(

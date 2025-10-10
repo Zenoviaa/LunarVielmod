@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.ArmorShop
 {
-    internal class ArmorShopGlobalItem : GlobalItem
+    public class ArmorShopGlobalItem : GlobalItem
     {
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {

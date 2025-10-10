@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords.Altride
 {
-    internal class MooningProj : ModProjectile
+    public class MooningProj : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         bool Moved;

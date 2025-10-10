@@ -14,7 +14,7 @@ using Stellamod.Items.Materials.Molds;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    internal class IvythornShuriken : ModItem
+    public class IvythornShuriken : ModItem
     {
         public override void SetStaticDefaults()
         {

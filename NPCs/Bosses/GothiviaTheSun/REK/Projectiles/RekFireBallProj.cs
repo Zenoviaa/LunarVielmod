@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
-    internal class RekFireBallProj : ModProjectile
+    public class RekFireBallProj : ModProjectile
     {
         private PrimitiveTrail BeamDrawer;
         private ref float Timer => ref Projectile.ai[0];

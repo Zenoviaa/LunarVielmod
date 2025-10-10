@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.TilesNew
 {
-    internal class AnimatedBackgroundWallTestItem : DecorativeWallItem
+    public class AnimatedBackgroundWallTestItem : DecorativeWallItem
     {
         public override void SetDefaults()
         {
@@ -12,7 +12,7 @@ namespace Stellamod.TilesNew
         }
     }
 
-    internal class AnimatedBackgroundWallTest : DecorativeWall
+    public class AnimatedBackgroundWallTest : DecorativeWall
     {
         public override void SetStaticDefaults()
         {

@@ -7,8 +7,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Gores
 {
-    internal abstract class FanGore : ModGore { }
-    internal class Fan1 : FanGore { }
-    internal class Fan2 : FanGore { }
-    internal class Fan3 : FanGore { }
+    public abstract class FanGore : ModGore { }
+    public class Fan1 : FanGore { }
+    public class Fan2 : FanGore { }
+    public class Fan3 : FanGore { }
 }

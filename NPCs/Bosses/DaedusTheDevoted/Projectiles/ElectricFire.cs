@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
-    internal class ElectricFire : ModProjectile
+    public class ElectricFire : ModProjectile
     {
         private Vector2[] _lightningZaps;
         private ref float Timer => ref Projectile.ai[0];

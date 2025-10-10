@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
-    internal class GrassDirtPowder : BasePowder
+    public class GrassDirtPowder : BasePowder
     {
         public override void SetDefaults()
         {

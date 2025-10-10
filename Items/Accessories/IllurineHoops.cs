@@ -15,7 +15,7 @@ using Stellamod.Items.Materials.Molds;
 
 namespace Stellamod.Items.Accessories
 {
-    internal class LunarPlayer : ModPlayer
+    public class LunarPlayer : ModPlayer
     {
         private int[] NpcTypes = new int[]
         {
@@ -88,7 +88,7 @@ namespace Stellamod.Items.Accessories
         }
     }
 
-    internal class IllurineHoops : ModItem
+    public class IllurineHoops : ModItem
     {
         public override void SetDefaults()
         {

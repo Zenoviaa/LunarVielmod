@@ -6,7 +6,7 @@ using Terraria.ID;
 
 namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
 {
-    internal class WindBoom : BaseWindProjectile
+    public class WindBoom : BaseWindProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()

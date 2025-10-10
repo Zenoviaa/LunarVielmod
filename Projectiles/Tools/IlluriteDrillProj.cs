@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Tools
 {
-    internal class IlluriteDrillProj : ModProjectile
+    public class IlluriteDrillProj : ModProjectile
     {
         const float Exploding_Time = 120;
         float ExplodingTimer;

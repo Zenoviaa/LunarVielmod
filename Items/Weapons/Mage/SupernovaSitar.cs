@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class SupernovaSitar : ClassSwapItem
+    public class SupernovaSitar : ClassSwapItem
 	{
 		//Alternate class you want it to change to
 		public override DamageClass AlternateClass => DamageClass.Ranged;

@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class ArchariliteEnergyShot : ClassSwapItem
+    public class ArchariliteEnergyShot : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;

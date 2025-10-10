@@ -624,7 +624,7 @@ namespace Stellamod.Items.Weapons.Melee.Longswords
 
 
 
-    internal class VaikusProj : ModProjectile
+    public class VaikusProj : ModProjectile
     {
         bool Moved;
         public override void SetStaticDefaults()

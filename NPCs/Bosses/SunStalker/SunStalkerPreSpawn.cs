@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.SunStalker
 {
-    internal class SunStalkerPreSpawn : ModNPC
+    public class SunStalkerPreSpawn : ModNPC
     {
         public override void SetStaticDefaults()
         {

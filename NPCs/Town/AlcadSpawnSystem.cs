@@ -22,7 +22,7 @@ using Stellamod.NPCs.Bosses.Ereshkigal;
 
 namespace Stellamod.NPCs.Town
 {
-    internal class AlcadSpawnSystem : ModSystem
+    public class AlcadSpawnSystem : ModSystem
     {
         public static int SpawnDelay = 10;
         public static Point AlcadTile;

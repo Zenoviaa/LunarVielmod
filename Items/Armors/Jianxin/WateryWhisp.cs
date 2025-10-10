@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Jianxin
 {
-    internal class WateryWhisp : ModProjectile
+    public class WateryWhisp : ModProjectile
     {
         public override void SetStaticDefaults()
         {

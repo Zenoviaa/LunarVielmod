@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons
 {
-    internal class JellyStaffLightningProj : ModProjectile, IPixelPrimitiveDrawer
+    public class JellyStaffLightningProj : ModProjectile, IPixelPrimitiveDrawer
     {
         public override void SetStaticDefaults()
         {
@@ -105,7 +105,7 @@ namespace Stellamod.Projectiles.Summons
             return base.Colliding(projHitbox, targetHitbox);
         }
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);

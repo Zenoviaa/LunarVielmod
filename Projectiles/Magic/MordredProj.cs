@@ -16,7 +16,7 @@ using Stellamod.Particles;
 namespace Stellamod.Projectiles.Magic
 {
 
-    internal class MordredProj : ModProjectile
+    public class MordredProj : ModProjectile
     {
         bool Moved;
         public override void SetStaticDefaults()

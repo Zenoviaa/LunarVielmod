@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
-    internal class ConjureBallExplosionBig : ModProjectile
+    public class ConjureBallExplosionBig : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];

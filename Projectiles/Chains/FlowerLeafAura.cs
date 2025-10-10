@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Chains
 {
-    internal class FlowerLeafAura : ModProjectile
+    public class FlowerLeafAura : ModProjectile
     {
         public Vector2[] ChainPos;
         public int FrameCounter;

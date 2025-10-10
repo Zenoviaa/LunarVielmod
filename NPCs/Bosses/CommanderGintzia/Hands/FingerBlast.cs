@@ -9,7 +9,7 @@ using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
 
 namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 {
-    internal class FingerBlast : BaseWindProjectile
+    public class FingerBlast : BaseWindProjectile
     {
         public override void SetStaticDefaults()
         {

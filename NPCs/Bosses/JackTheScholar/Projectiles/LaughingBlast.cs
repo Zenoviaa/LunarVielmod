@@ -12,7 +12,7 @@ using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
 {
-    internal class LaughingBlast : ModProjectile
+    public class LaughingBlast : ModProjectile
     {
         bool Moved;
         public PrimDrawer TrailDrawer { get; private set; } = null;

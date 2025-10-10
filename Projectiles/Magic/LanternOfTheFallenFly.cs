@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class LanternOfTheFallenFly : ModProjectile,
+    public class LanternOfTheFallenFly : ModProjectile,
         IPixelPrimitiveDrawer
     {
         private ref float Timer => ref Projectile.ai[0];

@@ -5,7 +5,7 @@ using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs
 {
-    internal static class SpawnRates
+    public static class SpawnRates
     {
         public const float Mechanical_Enemy_Spawn_Chance = 0.07f;
         public const float Flower_Spawn_Chance = 0.02f;

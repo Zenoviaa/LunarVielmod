@@ -62,7 +62,7 @@ namespace Stellamod.Tiles
             return false;
         }
     }
-    internal abstract class BehindDecorativeWall : ModWall
+    public abstract class BehindDecorativeWall : ModWall
     {
         public enum DrawOrigin
         {
@@ -161,7 +161,7 @@ namespace Stellamod.Tiles
         }
     }
 
-    internal abstract class DecorativeWall : ModWall
+    public abstract class DecorativeWall : ModWall
     {
         public static Vector2 TileAdj => (Lighting.Mode == Terraria.Graphics.Light.LightMode.Retro || Lighting.Mode == Terraria.Graphics.Light.LightMode.Trippy) ? Vector2.Zero : Vector2.One * 12;
 

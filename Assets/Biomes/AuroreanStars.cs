@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Assets.Biomes
 {
-    internal class AuroreanStars : ModSceneEffect
+    public class AuroreanStars : ModSceneEffect
     {
         public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/CountingStars");
         public override SceneEffectPriority Priority => SceneEffectPriority.Event;

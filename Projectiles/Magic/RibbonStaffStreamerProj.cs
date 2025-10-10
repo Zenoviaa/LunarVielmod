@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class RibbonStaffStreamerProj : ModProjectile,
+    public class RibbonStaffStreamerProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         public override string Texture => TextureRegistry.EmptyTexture;
@@ -55,8 +55,8 @@ namespace Stellamod.Projectiles.Magic
             }
         }
 
-        internal PrimitiveTrail BeamDrawer;
-        internal Vector2[] TrailPos;
+        public PrimitiveTrail BeamDrawer;
+        public Vector2[] TrailPos;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);

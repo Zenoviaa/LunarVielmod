@@ -339,8 +339,6 @@ namespace Stellamod
 
         public override void Unload()
         {
-            StellaMultiplayer.Unload();
-
             if (!Main.dedServ)
             {
                 string backButton = "Terraria/Images/UI/Bestiary/Button_Back";

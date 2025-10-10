@@ -12,13 +12,13 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords
 {
-    internal class StarvastStarProj : ModProjectile,
+    public class StarvastStarProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         private ref float ai_Counter => ref Projectile.ai[0];
         ref float Timer => ref Projectile.ai[1];
         bool foundTarget;
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Spragald");

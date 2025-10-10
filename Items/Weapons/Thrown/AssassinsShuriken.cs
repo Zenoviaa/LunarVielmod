@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    internal class AssassinsShuriken : ClassSwapItem
+    public class AssassinsShuriken : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Ranged;

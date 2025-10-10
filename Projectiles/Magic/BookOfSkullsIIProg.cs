@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class BookOfSkullsIIProg : ModProjectile
+    public class BookOfSkullsIIProg : ModProjectile
     {
         private PrimDrawer TrailDrawer = null;
         private ref float Timer => ref Projectile.ai[0];

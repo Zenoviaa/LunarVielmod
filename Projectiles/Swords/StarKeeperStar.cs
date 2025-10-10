@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords
 {
-    internal class StarKeeperStar : ModProjectile
+    public class StarKeeperStar : ModProjectile
     {
         public override void SetStaticDefaults()
         {

@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
 {
-    internal class IrradiaElectricBoxNode : ModNPC
+    public class IrradiaElectricBoxNode : ModNPC
     {
         private float Timer
         {

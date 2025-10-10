@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class DreadSkullProg : ModProjectile
+    public class DreadSkullProg : ModProjectile
     {
         public override void SetStaticDefaults()
         {

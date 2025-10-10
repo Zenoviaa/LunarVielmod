@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class LanternOfAFallen : ClassSwapItem
+    public class LanternOfAFallen : ClassSwapItem
 	{
 		//Alternate class you want it to change to
 		public override DamageClass AlternateClass => DamageClass.Ranged;

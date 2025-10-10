@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-    internal class HypnotizedSoul : ModItem
+    public class HypnotizedSoul : ModItem
     {
         public override void SetStaticDefaults()
         {

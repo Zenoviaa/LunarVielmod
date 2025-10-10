@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class WinterboundArrow : ModProjectile
+    public class WinterboundArrow : ModProjectile
     {
         public override void SetStaticDefaults()
         {

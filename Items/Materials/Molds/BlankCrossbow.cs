@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials.Molds
 {
-    internal class BlankCrossbow : ModItem
+    public class BlankCrossbow : ModItem
     {
 
         public override void SetStaticDefaults()

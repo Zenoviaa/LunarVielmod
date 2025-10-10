@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class PiranhaProj : ModProjectile
+    public class PiranhaProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

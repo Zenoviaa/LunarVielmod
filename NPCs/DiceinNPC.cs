@@ -13,7 +13,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs
 {
-    internal class DiceinNPC : ModNPC
+    public class DiceinNPC : ModNPC
     {
         private float Frame = 0.15f;
         public override void SetStaticDefaults()

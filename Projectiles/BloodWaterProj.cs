@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    internal class BloodWaterProj : ModProjectile
+    public class BloodWaterProj : ModProjectile
     {
         public override void SetDefaults()
         {

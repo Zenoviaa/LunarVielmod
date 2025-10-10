@@ -12,7 +12,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.ShadeWraith
 {
-    internal class ShadeWraithPlayer : ModPlayer
+    public class ShadeWraithPlayer : ModPlayer
     {
         public bool hasSetBonus;
         public override void ResetEffects()

@@ -25,14 +25,14 @@ namespace Stellamod.Helpers
         }
 
         public Vector2 position = new Vector2(0, 0);
-        internal Vector2 drawPosition = new Vector2();
+        public Vector2 drawPosition = new Vector2();
         public Vector2 velocity = new Vector2(0, 0);
         public float scale = 1f;
         public Rectangle source = new Rectangle();
         public Color drawColor = Color.White;
         public float rotation = 0f;
 
-        internal bool drawLighted = true;
+        public bool drawLighted = true;
 
         public bool killMe = false; //love this
 

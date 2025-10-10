@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class HeatArrow : ModProjectile
+    public class HeatArrow : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()

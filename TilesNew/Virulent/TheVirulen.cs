@@ -33,7 +33,7 @@ namespace Stellamod.TilesNew.Virulent
 
     }
 
-    internal class TheSeededTree : DecorativeWall
+    public class TheSeededTree : DecorativeWall
     {
         public override void SetStaticDefaults()
         {

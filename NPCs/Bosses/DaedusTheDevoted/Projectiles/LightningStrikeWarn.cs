@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
-    internal class LightningStrikeWarn : ModProjectile
+    public class LightningStrikeWarn : ModProjectile
     {
         public Vector2[] BeamPoints;
         public override string Texture => TextureRegistry.EmptyTexture;

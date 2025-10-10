@@ -10,7 +10,7 @@ using Terraria.ModLoader.UI.Elements;
 
 namespace Stellamod.UI.CollectionSystem.Quests
 {
-    internal class ActiveQuestUI : UIPanel
+    public class ActiveQuestUI : UIPanel
     {
         private float _scale;
         private UIGrid _slotGrid;
@@ -19,11 +19,11 @@ namespace Stellamod.UI.CollectionSystem.Quests
         private UIText _rewardText;
         private QuestRewardButton _rewardButton;
 
-        internal const int width = 480;
-        internal const int height = 155;
+        public const int width = 480;
+        public const int height = 155;
 
-        internal int RelativeLeft => Main.screenWidth / 2 - width / 2 + 280;
-        internal int RelativeTop => Main.screenHeight / 2 - height / 2 - 196;
+        public int RelativeLeft => Main.screenWidth / 2 - width / 2 + 280;
+        public int RelativeTop => Main.screenHeight / 2 - height / 2 - 196;
 
         public ActiveQuestUI(float scale = 1f) : base()
         {

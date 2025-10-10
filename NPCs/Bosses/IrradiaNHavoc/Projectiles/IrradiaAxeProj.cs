@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
 {
-    internal class IrradiaAxeProj : ModProjectile
+    public class IrradiaAxeProj : ModProjectile
     {
         public PrimDrawer TrailDrawer { get; private set; } = null;
         private ref float Timer => ref Projectile.ai[0];

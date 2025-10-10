@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class ShadegraveStaff : ClassSwapItem
+    public class ShadegraveStaff : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Summon;

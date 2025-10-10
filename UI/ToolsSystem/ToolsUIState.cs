@@ -2,7 +2,7 @@
 
 namespace Stellamod.UI.ToolsSystem
 {
-    internal class ToolsUIState : UIState
+    public class ToolsUIState : UIState
     {
         public ToolsUI ui;
         public ToolsUIState() : base()

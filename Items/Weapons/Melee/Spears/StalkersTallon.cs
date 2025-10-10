@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Spears
 {
-    internal class StalkersTallon : ClassSwapItem
+    public class StalkersTallon : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Ranged;

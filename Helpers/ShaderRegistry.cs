@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
 {
-    internal static class ShaderRegistry
+    public static class ShaderRegistry
     {
         private static List<IOrderedLoadable> _loadCache;
         public static string VampKnives_Basic_Trail => "VampKnives:BasicTrail";

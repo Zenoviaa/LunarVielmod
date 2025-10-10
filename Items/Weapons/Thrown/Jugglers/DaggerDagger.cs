@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
-    internal class DaggerDagger : BaseJugglerItem
+    public class DaggerDagger : BaseJugglerItem
     {
         public override DamageClass AlternateClass => DamageClass.Ranged;
 

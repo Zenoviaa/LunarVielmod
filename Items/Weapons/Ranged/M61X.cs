@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class M61X : ClassSwapItem
+    public class M61X : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Ranged;

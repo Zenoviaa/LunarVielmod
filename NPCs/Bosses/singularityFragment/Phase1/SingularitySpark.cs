@@ -8,7 +8,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.singularityFragment.Phase1
 {
-    internal class SingularitySpark : ModNPC
+    public class SingularitySpark : ModNPC
     {
         public bool Down;
         public override void SetStaticDefaults()

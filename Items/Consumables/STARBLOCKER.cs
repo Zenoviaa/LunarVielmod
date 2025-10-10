@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-    internal class STARBLOCKER : ModItem
+    public class STARBLOCKER : ModItem
     {
         public override void SetDefaults()
         {

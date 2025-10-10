@@ -17,7 +17,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class IllurianBibleProj : ModProjectile
+    public class IllurianBibleProj : ModProjectile
     {
         public override string Texture => TextureRegistry.ZuiEffect;
         public PrimDrawer TrailDrawer { get; private set; } = null;

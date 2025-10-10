@@ -15,7 +15,7 @@ using Stellamod.Dusts;
 
 namespace Stellamod.Projectiles.Slashers.Dula
 {
-    internal class DulaSwirl : ModProjectile
+    public class DulaSwirl : ModProjectile
     {
         public override string Texture => TextureRegistry.VoxTexture4;
         private float Timer

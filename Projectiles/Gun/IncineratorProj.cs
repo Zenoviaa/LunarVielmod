@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class IncineratorProj : ModProjectile
+    public class IncineratorProj : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
 

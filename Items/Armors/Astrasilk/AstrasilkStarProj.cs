@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Astrasilk
 {
-    internal class AstrasilkStarProj : ModProjectile
+    public class AstrasilkStarProj : ModProjectile
     {
         private static float _orbitingOffset;
         private Player Owner => Main.player[Projectile.owner];

@@ -101,7 +101,7 @@ namespace Stellamod.Projectiles.Gun
 
 
     }
-    internal class ClockworkBomb : ModProjectile
+    public class ClockworkBomb : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         private ref float Speed => ref Projectile.ai[1];

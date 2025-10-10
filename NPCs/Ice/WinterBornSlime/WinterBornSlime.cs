@@ -9,7 +9,7 @@ using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Ice.WinterBornSlime
 {
-    internal class WinterBornSlime : ModNPC
+    public class WinterBornSlime : ModNPC
     {
         public override void SetStaticDefaults()
         {

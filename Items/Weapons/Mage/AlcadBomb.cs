@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class AlcadBomb : ClassSwapItem
+    public class AlcadBomb : ClassSwapItem
     {
    
         public override DamageClass AlternateClass => DamageClass.Summon;

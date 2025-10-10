@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown.Jugglers
 {
-    internal class DaggerDaggerProj2 : ModProjectile
+    public class DaggerDaggerProj2 : ModProjectile
     {
 
         private float Timer

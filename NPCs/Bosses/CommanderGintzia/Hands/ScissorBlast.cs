@@ -14,7 +14,7 @@ using System.IO;
 
 namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 {
-    internal class ScissorBlast : BaseWindProjectile
+    public class ScissorBlast : BaseWindProjectile
     {
         private Vector2 BoomerangVelocity;
         public override void SendExtraAI(BinaryWriter writer)

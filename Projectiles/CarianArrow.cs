@@ -8,7 +8,7 @@ using Terraria.ID;
 
 namespace Stellamod.Projectiles
 {
-    internal class CarianArrow : ModProjectile
+    public class CarianArrow : ModProjectile
     {
         public override void SetStaticDefaults()
         {

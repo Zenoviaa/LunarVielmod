@@ -6,7 +6,7 @@ using Stellamod.Systems.MiscellaneousMath;
 
 namespace Stellamod.Core.Foggy
 {
-    internal class Fog
+    public class Fog
     {
         public Asset<Texture2D> texture;
         public Point tilePosition;

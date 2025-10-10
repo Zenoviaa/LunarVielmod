@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class TwilightDisc : ModProjectile
+    public class TwilightDisc : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         private ref float Style => ref Projectile.ai[1];

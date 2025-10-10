@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
-    internal class GovheilPowder : BasePowder
+    public class GovheilPowder : BasePowder
     {
         public override void SetDefaults()
         {

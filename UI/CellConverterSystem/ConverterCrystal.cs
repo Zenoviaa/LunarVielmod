@@ -9,11 +9,11 @@ using Terraria.UI;
 
 namespace Stellamod.UI.CellConverterSystem
 {
-    internal class ConverterCrystal : UIPanel
+    public class ConverterCrystal : UIPanel
     {
-        internal event Action<int> OnEmptyMouseover;
+        public event Action<int> OnEmptyMouseover;
         private readonly float _scale = 1f;
-        internal ConverterCrystal()
+        public ConverterCrystal()
         {
             float scale = 1f;
             var asset = ModContent.Request<Texture2D>(

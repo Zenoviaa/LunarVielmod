@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class CogBomb : ModProjectile
+    public class CogBomb : ModProjectile
     {
         private float _rotation;
         public override void SetStaticDefaults()

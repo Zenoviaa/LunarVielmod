@@ -10,18 +10,18 @@ using Terraria.UI;
 
 namespace Stellamod.UI.TitleSystem
 {
-    internal class TitleCardUI : UIPanel
+    public class TitleCardUI : UIPanel
     {
         private UIPanel _panel;
         private UIText _text;
         private UIImage _image;
         private float _timer;
         private float _duration;
-        internal const int width = 480;
-        internal const int height = 155;
+        public const int width = 480;
+        public const int height = 155;
 
-        internal int RelativeLeft => Main.screenWidth / 2;
-        internal int RelativeTop => 0 + 32;
+        public int RelativeLeft => Main.screenWidth / 2;
+        public int RelativeTop => 0 + 32;
 
         public bool IsFinished => _timer >= _duration;
 

@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
-    internal class FireRiseWarn : ModProjectile
+    public class FireRiseWarn : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override void SetDefaults()

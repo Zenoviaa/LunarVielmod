@@ -12,7 +12,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.singularityFragment
 {
-    internal class PulsarBeam : ModProjectile
+    public class PulsarBeam : ModProjectile
     {
         private bool Moved;
 

@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class BriskflyProg : ModProjectile
+    public class BriskflyProg : ModProjectile
     {
         public override void SetStaticDefaults()
         {

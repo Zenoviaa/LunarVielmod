@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Zui.Projectiles
 {
-    internal class ZuiCageNode : ModProjectile
+    public class ZuiCageNode : ModProjectile
     {
         public Projectile targetProjectile;
         public Vector2 targetCenter;

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
-    internal class DreadMirePentagramV2 : ModNPC
+    public class DreadMirePentagramV2 : ModNPC
     {
         private ref float Timer => ref NPC.ai[0];
         public override void SetStaticDefaults()

@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Spears
 {
-    internal class HolmbergScytheMirageProjBlue: ModProjectile
+    public class HolmbergScytheMirageProjBlue: ModProjectile
     {
         bool Moved;
 

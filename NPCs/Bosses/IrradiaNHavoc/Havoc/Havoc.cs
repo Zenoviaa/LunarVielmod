@@ -18,7 +18,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
 {
-    internal class HavocSegment
+    public class HavocSegment
     {
         public string TexturePath;
         public Texture2D Texture => ModContent.Request<Texture2D>(TexturePath).Value;
@@ -30,7 +30,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
         public float Rotation;
     }
 
-    internal class Havoc : ModNPC
+    public class Havoc : ModNPC
     {
         //Damage Values
         private int ChargeDamage => 300;
@@ -735,7 +735,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
         }
 
         public PrimDrawer TrailDrawer { get; private set; } = null;
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         Vector2 HitboxFixer = new Vector2(90, 90) / 2;
         int warningFrameCounter;
         int warningFrameTick;

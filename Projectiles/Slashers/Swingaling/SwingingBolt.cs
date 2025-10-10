@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Slashers.Swingaling
 {
-    internal class SwingingBolt : ModProjectile, IPixelPrimitiveDrawer
+    public class SwingingBolt : ModProjectile, IPixelPrimitiveDrawer
     {
         public override void SetStaticDefaults()
         {
@@ -89,7 +89,7 @@ namespace Stellamod.Projectiles.Slashers.Swingaling
             return base.Colliding(projHitbox, targetHitbox);
         }
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);

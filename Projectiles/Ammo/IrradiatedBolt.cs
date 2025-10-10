@@ -16,7 +16,7 @@ using Stellamod.Buffs;
 
 namespace Stellamod.Projectiles.Ammo
 {
-    internal class IrradiatedBolt : ModProjectile,
+    public class IrradiatedBolt : ModProjectile,
         IPixelPrimitiveDrawer
     {
         public override void SetStaticDefaults()
@@ -70,7 +70,7 @@ namespace Stellamod.Projectiles.Ammo
             target.AddBuff(ModContent.BuffType<AcidFlame>(), 180);
         }
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);

@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-    internal class WindedQuiverPlayer : ModPlayer
+    public class WindedQuiverPlayer : ModPlayer
     {
         public bool hasQuiver;
         public override void ResetEffects()
@@ -28,7 +28,7 @@ namespace Stellamod.Items.Accessories
         }
     }
 
-    internal class WindedQuiver : ModItem
+    public class WindedQuiver : ModItem
     {
         public override void SetDefaults()
         {

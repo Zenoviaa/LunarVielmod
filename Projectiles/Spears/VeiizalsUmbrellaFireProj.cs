@@ -13,7 +13,7 @@ using static Terraria.ModLoader.ModContent;
 namespace Stellamod.Projectiles.Spears
 {
 
-    internal class VeiizalsUmbrellaFireProj : ModProjectile
+    public class VeiizalsUmbrellaFireProj : ModProjectile
     {
         bool Moved;
 

@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
 {
-    internal class EliteCommanderHand : ModProjectile
+    public class EliteCommanderHand : ModProjectile
     {
         private int _frame = -1;
         private ref float Timer => ref Projectile.ai[0];

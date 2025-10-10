@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Winterborn
 {
-    internal class WinterbornPlayer : ModPlayer
+    public class WinterbornPlayer : ModPlayer
     {
         private int _timer;
         public bool hasSetBonus;

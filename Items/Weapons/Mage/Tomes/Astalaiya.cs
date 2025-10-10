@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage.Tomes
 {
-    internal class Astalaiya : BaseMagicTomeItem
+    public class Astalaiya : BaseMagicTomeItem
     {
         public override void SetDefaults()
         {
@@ -20,7 +20,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
         }
     }
 
-    internal class AstalaiyaTome : BaseMagicTomeProjectile
+    public class AstalaiyaTome : BaseMagicTomeProjectile
     {
         private int Star;
         private float _dustTimer;

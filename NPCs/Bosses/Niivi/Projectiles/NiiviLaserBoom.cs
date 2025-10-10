@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviLaserBoom : ModProjectile
+    public class NiiviLaserBoom : ModProjectile
     {
         private int _frameCounter;
         private int _frameTick;

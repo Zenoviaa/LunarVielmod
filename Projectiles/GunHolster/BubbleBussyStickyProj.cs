@@ -16,7 +16,7 @@ using Stellamod.Particles;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class BubbleBussyStickyProj : ModProjectile
+    public class BubbleBussyStickyProj : ModProjectile
     {
         private bool _setOffset;
         private Vector2 _offset;

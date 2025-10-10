@@ -6,7 +6,7 @@ using Terraria;
 
 namespace Stellamod.Core.Shaders.MagicTrails
 {
-    internal class LightningBolt2Shader : BaseShader
+    public class LightningBolt2Shader : BaseShader
     {
         private static LightningBolt2Shader _instance;
         public static LightningBolt2Shader Instance

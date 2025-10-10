@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Special.MinerLogs
 {
-    internal abstract class VeiledScriptureMiner : ModItem
+    public abstract class VeiledScriptureMiner : ModItem
     {
         public override string Texture => "Stellamod/Items/Special/MinerLogs/VeiledScriptureMiner1";
         public override void SetDefaults()
@@ -40,23 +40,23 @@ namespace Stellamod.Items.Special.MinerLogs
     }
 
     //These are the actual items, text is automatically grabbed from the localization
-    internal class VeiledScriptureMiner1 : VeiledScriptureMiner { }
+    public class VeiledScriptureMiner1 : VeiledScriptureMiner { }
 
-    internal class VeiledScriptureMiner2 : VeiledScriptureMiner { }
+    public class VeiledScriptureMiner2 : VeiledScriptureMiner { }
 
-    internal class VeiledScriptureMiner3 : VeiledScriptureMiner { }
+    public class VeiledScriptureMiner3 : VeiledScriptureMiner { }
 
-    internal class VeiledScriptureMiner4 : VeiledScriptureMiner { }
+    public class VeiledScriptureMiner4 : VeiledScriptureMiner { }
 
-    internal class VeiledScriptureMiner5 : VeiledScriptureMiner { }
+    public class VeiledScriptureMiner5 : VeiledScriptureMiner { }
 
-    internal class VeiledScriptureMiner6 : VeiledScriptureMiner { }
+    public class VeiledScriptureMiner6 : VeiledScriptureMiner { }
 
-    internal class VeiledScriptureMiner7 : VeiledScriptureMiner { }
+    public class VeiledScriptureMiner7 : VeiledScriptureMiner { }
 
-    internal class VeiledScriptureMiner8 : VeiledScriptureMiner { }
+    public class VeiledScriptureMiner8 : VeiledScriptureMiner { }
 
-    internal class VeiledScriptureMiner9 : VeiledScriptureMiner { }
+    public class VeiledScriptureMiner9 : VeiledScriptureMiner { }
 
-    internal class VeiledScriptureMiner10 : VeiledScriptureMiner { }
+    public class VeiledScriptureMiner10 : VeiledScriptureMiner { }
 }

@@ -13,7 +13,7 @@ using Terraria.Graphics.Shaders;
 
 namespace CosmicVoid.Npcs.CloudSpirit
 {
-    internal class Cloudlighting : ModProjectile
+    public class Cloudlighting : ModProjectile
     {
         bool Moved;
         int VelAddd;

@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class SuperStaffHold : ModProjectile
+    public class SuperStaffHold : ModProjectile
     {
         enum ActionState
         {

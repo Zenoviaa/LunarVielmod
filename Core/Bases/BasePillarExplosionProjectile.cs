@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Bases
 {
-    internal abstract class BasePillarExplosionProjectile : ModProjectile
+    public abstract class BasePillarExplosionProjectile : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         private Vector2[] _primPos = new Vector2[32];

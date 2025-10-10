@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-    internal class CinderedQuiverPlayer : ModPlayer
+    public class CinderedQuiverPlayer : ModPlayer
     {
         public bool hasQuiver;
         public override void ResetEffects()
@@ -30,7 +30,7 @@ namespace Stellamod.Items.Accessories
         }
     }
 
-    internal class CinderedQuiver : ModItem
+    public class CinderedQuiver : ModItem
     {
         public override void SetDefaults()
         {

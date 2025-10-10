@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 {
-    internal class KickboomBurn : ModProjectile
+    public class KickboomBurn : ModProjectile
     {
         public override void SetStaticDefaults()
         {

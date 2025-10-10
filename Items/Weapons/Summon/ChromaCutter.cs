@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    internal class ChromaCutter : ClassSwapItem
+    public class ChromaCutter : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Melee;

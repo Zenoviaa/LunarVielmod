@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
 {
-    internal class TulacroweFireball : ModProjectile
+    public class TulacroweFireball : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
 

@@ -15,7 +15,7 @@ using Terraria.ID;
 
 namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 {
-    internal class OkHand : BaseHand
+    public class OkHand : BaseHand
     {
         private int GrabbedPlayer=-1;
         private bool HasDoneGrab;

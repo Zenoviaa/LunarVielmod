@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles.Spears
 {
 
-    internal class VoidLanceWave : ModProjectile
+    public class VoidLanceWave : ModProjectile
     {
         bool Moved;
 

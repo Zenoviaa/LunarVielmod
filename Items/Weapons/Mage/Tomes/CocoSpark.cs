@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage.Tomes
 {
-    internal class CocoSpark : BaseMagicTomeItem
+    public class CocoSpark : BaseMagicTomeItem
     {
         public override void SetDefaults()
         {
@@ -19,7 +19,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
         }
     }
 
-    internal class CocoSparkTome : BaseMagicTomeProjectile
+    public class CocoSparkTome : BaseMagicTomeProjectile
     {
         private float _dustTimer;
         public override string Texture => this.PathHere() + "/CocoSpark";

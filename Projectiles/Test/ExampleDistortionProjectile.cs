@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 
 namespace Stellamod.Projectiles.Test
 {
-    internal class ExampleDistortionProjectile : ModProjectile
+    public class ExampleDistortionProjectile : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override void SetDefaults()

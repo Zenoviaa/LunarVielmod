@@ -15,7 +15,7 @@ using Stellamod.Dusts;
 
 namespace Stellamod.Core.Bases
 {
-    internal abstract class BaseFlyingSlashProjectile : ModProjectile
+    public abstract class BaseFlyingSlashProjectile : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override string Texture => TextureRegistry.FlyingSlashTexture;

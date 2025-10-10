@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class PolarisLaserProj : ModProjectile,
+    public class PolarisLaserProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Don't change the sample points, 3 is good enough
@@ -24,7 +24,7 @@ namespace Stellamod.Projectiles.Gun
 
         public float BeamLength;
         public List<Vector2> BeamPoints;
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
 
         //No texture for this
         public override string Texture => TextureRegistry.EmptyTexture;

@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class GrailedCard : BaseIgniterCard
+    public class GrailedCard : BaseIgniterCard
     {
         public override void SetClassSwappedDefaults()
         {

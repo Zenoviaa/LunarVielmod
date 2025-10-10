@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class RhamenthalShot : ModProjectile
+    public class RhamenthalShot : ModProjectile
     {
         bool Moved;
 

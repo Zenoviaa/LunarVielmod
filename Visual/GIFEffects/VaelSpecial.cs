@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Visual.GIFEffects
 {
-    internal class VaelSpecial : ModProjectile
+    public class VaelSpecial : ModProjectile
     {
         private ref float Parent => ref Projectile.ai[1];
         public override void SetStaticDefaults()

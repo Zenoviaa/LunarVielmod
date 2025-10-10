@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
-    internal class AlcadizPowder : BasePowder
+    public class AlcadizPowder : BasePowder
     {
         public override void SetDefaults()
         {

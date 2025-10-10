@@ -4,7 +4,7 @@ using Terraria;
 
 namespace Stellamod.Visual.Particles
 {
-    internal class WhiteFlowerParticle : Particle
+    public class WhiteFlowerParticle : Particle
     {
         public int FrameWidth = 252;
         public int FrameHeight = 234;

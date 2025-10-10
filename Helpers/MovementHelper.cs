@@ -3,7 +3,7 @@ using Terraria;
 
 namespace Stellamod.Helpers
 {
-    internal class MovementHelper
+    public class MovementHelper
     {
         public static Vector2 OrbitAround(Vector2 center, Vector2 startDirection, float distance, float radians)
         {

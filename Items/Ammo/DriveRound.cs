@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Ammo
 {
-    internal class DriveRound : ModItem
+    public class DriveRound : ModItem
     {
         public override void SetStaticDefaults()
         {

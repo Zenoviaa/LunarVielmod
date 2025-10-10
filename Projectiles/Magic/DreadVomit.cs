@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles.Magic
 {
 
-    internal class DreadVomit : ModProjectile
+    public class DreadVomit : ModProjectile
     {
         int Spin = 0;
         public override void SetStaticDefaults()

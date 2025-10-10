@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Special
 {
-    internal class ExampleDialogueItem : ModItem
+    public class ExampleDialogueItem : ModItem
     {
         public override void SetDefaults()
         {

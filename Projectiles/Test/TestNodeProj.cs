@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Test
 {
-    internal class TestNodeProj : ModProjectile
+    public class TestNodeProj : ModProjectile
     {
         public override void SetDefaults()
         {

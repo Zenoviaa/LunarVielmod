@@ -15,7 +15,7 @@ using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Underground
 {
-    internal class InfusedSlime : ModNPC
+    public class InfusedSlime : ModNPC
     {
         public override void SetStaticDefaults()
         {

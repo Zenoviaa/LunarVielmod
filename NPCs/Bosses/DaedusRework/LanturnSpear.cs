@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusRework
 {
-    internal class LanturnSpear : ModProjectile
+    public class LanturnSpear : ModProjectile
     {
         bool Moved;
         int Timer = 0;

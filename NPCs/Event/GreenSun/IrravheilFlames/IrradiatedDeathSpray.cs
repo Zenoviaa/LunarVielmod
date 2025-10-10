@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Event.GreenSun.IrravheilFlames
 {
-    internal class IrradiatedDeathSpray : ModProjectile
+    public class IrradiatedDeathSpray : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
 

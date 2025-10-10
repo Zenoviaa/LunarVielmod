@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class PoyaProj : ModProjectile
+    public class PoyaProj : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         private Vector2 StartVelocity;

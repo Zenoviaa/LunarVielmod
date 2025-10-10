@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class Shredder : ClassSwapItem
+    public class Shredder : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;

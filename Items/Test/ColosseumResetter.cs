@@ -14,7 +14,7 @@ using Stellamod.NPCs.Colosseum.Common;
 
 namespace Stellamod.Items.Test
 {
-    internal class ColosseumResetter : ModItem
+    public class ColosseumResetter : ModItem
     {
         private int _useIndex;
         public override void SetStaticDefaults()

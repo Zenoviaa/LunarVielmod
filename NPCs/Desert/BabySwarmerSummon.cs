@@ -6,7 +6,7 @@ using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Desert
 {
-    internal class BabySwarmerSummon : ModNPC
+    public class BabySwarmerSummon : ModNPC
     {
         private bool _spawn;
         public override string Texture => TextureRegistry.EmptyTexture;

@@ -10,12 +10,12 @@ using Terraria.UI;
 
 namespace Stellamod.UI.ArmorReforgeSystem
 {
-    internal class ReforgePearl : UIPanel
+    public class ReforgePearl : UIPanel
     {
         private UIText _text;
-        internal event Action<int> OnEmptyMouseover;
+        public event Action<int> OnEmptyMouseover;
         private readonly float _scale = 1f;
-        internal ReforgePearl()
+        public ReforgePearl()
         {
             float scale = 1f;
             var asset = ModContent.Request<Texture2D>(

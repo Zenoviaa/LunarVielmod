@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-    internal class RibbonWrapped : ModBuff
+    public class RibbonWrapped : ModBuff
     {
         public override void SetStaticDefaults()
         {

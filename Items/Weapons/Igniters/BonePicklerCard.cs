@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class BonePicklerCard : BaseIgniterCard
+    public class BonePicklerCard : BaseIgniterCard
     {
         public override void SetClassSwappedDefaults()
         {

@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Special
 {
-    internal abstract class BaseChest : ModNPC
+    public abstract class BaseChest : ModNPC
     {
         protected int _frame;
         protected ref float Timer => ref NPC.ai[0];

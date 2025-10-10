@@ -9,11 +9,11 @@ using Terraria.UI;
 
 namespace Stellamod.UI.CollectionSystem
 {
-    internal abstract class BaseBookMark : UIElement
+    public abstract class BaseBookMark : UIElement
     {
         private readonly float _scale = 1f;
         public virtual string TextureAsset { get; }
-        internal BaseBookMark()
+        public BaseBookMark()
         {
             float scale = 1f;
             var asset = ModContent.Request<Texture2D>(
@@ -74,7 +74,7 @@ namespace Stellamod.UI.CollectionSystem
 
 
     //Doing it this way to save copy and pasting
-    internal class CollectionTab : BaseBookMark
+    public class CollectionTab : BaseBookMark
     {
         public CollectionTab() : base() { }
         public override string TextureAsset => "CollectionTab";
@@ -85,7 +85,7 @@ namespace Stellamod.UI.CollectionSystem
     }
 
 
-    internal class LoreTab : BaseBookMark
+    public class LoreTab : BaseBookMark
     {
         public LoreTab() : base() { }
         public override string TextureAsset => "LoreTab";
@@ -96,7 +96,7 @@ namespace Stellamod.UI.CollectionSystem
     }
 
 
-    internal class QuestTab : BaseBookMark
+    public class QuestTab : BaseBookMark
     {
         public QuestTab() : base() { }
         public override string TextureAsset => "QuestTab";

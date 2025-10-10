@@ -25,7 +25,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightBanner : DecorativeWall
+    public class MothlightBanner : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -55,7 +55,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightBannerHanger : DecorativeWall
+    public class MothlightBannerHanger : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -85,7 +85,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightBannerSmall : DecorativeWall
+    public class MothlightBannerSmall : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -115,7 +115,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightBookshelf : DecorativeWall
+    public class MothlightBookshelf : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -145,7 +145,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightBowl : DecorativeWall
+    public class MothlightBowl : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -175,7 +175,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightChairLeft : DecorativeWall
+    public class MothlightChairLeft : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -205,7 +205,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightChairRight : DecorativeWall
+    public class MothlightChairRight : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -235,7 +235,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightClock : DecorativeWall
+    public class MothlightClock : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -265,7 +265,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightDoor : DecorativeWall
+    public class MothlightDoor : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -295,7 +295,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightFloor : DecorativeWall
+    public class MothlightFloor : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -325,7 +325,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightFlowerbed : DecorativeWall
+    public class MothlightFlowerbed : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -355,7 +355,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightHanger : DecorativeWall
+    public class MothlightHanger : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -385,7 +385,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightLeftStairs : DecorativeWall
+    public class MothlightLeftStairs : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -415,7 +415,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightRightStairs : DecorativeWall
+    public class MothlightRightStairs : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -445,7 +445,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightTable : DecorativeWall
+    public class MothlightTable : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -475,7 +475,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightWindow : DecorativeWall
+    public class MothlightWindow : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -507,7 +507,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightHighTable : DecorativeWall
+    public class MothlightHighTable : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -537,7 +537,7 @@ namespace Stellamod.TilesNew.MothlightTiles.MothlightManor
         }
     }
 
-    internal class MothlightPalendine : DecorativeWall
+    public class MothlightPalendine : DecorativeWall
     {
         public override void SetStaticDefaults()
         {

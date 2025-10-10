@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable
 {
-    internal class RunicTablel : ModItem
+    public class RunicTablel : ModItem
     {
         public override void SetStaticDefaults()
         {

@@ -10,7 +10,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.Helpers
 {
-    internal class IllurianGuardSpawnSystem : ModSystem
+    public class IllurianGuardSpawnSystem : ModSystem
     {
         public static Point WorshipingTower1TileOffset => new Point(31, -54);
         public static Point WorshipingTower2TileOffset => new Point(24, -58);

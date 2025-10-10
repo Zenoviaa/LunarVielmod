@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Spears
 {
-    internal class TheIrradiaspear : ClassSwapItem
+    public class TheIrradiaspear : ClassSwapItem
     {
         public int dir;
         public override DamageClass AlternateClass => DamageClass.Throwing;

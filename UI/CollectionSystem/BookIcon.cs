@@ -8,11 +8,11 @@ using Terraria.UI;
 
 namespace Stellamod.UI.CollectionSystem
 {
-    internal class BookIcon : UIElement
+    public class BookIcon : UIElement
     {
-        internal event Action<int> OnEmptyMouseover;
+        public event Action<int> OnEmptyMouseover;
         private readonly float _scale = 1f;
-        internal BookIcon()
+        public BookIcon()
         {
             float scale = 1f;
             var asset = ModContent.Request<Texture2D>(

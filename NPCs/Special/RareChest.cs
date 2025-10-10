@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Special
 {
-    internal class RareChest : BaseChest
+    public class RareChest : BaseChest
     {
         public override void SetDefaults()
         {

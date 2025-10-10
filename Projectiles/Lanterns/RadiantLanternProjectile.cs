@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Stellamod.Projectiles.Lanterns
 {
-    internal class RadiantLanternProjectile : BaseLanternProjectile
+    public class RadiantLanternProjectile : BaseLanternProjectile
     {
     }
 }

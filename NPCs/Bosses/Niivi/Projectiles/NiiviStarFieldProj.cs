@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviStarFieldProj : ModProjectile
+    public class NiiviStarFieldProj : ModProjectile
     {
         public override string Texture => TextureRegistry.FlowerTexture;
 

@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-    internal class ShadowCloak : ModItem
+    public class ShadowCloak : ModItem
     {
         public override void SetStaticDefaults()
         {

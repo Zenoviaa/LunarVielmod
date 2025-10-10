@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class WinterboundFlare : ModProjectile
+    public class WinterboundFlare : ModProjectile
     {
         bool Moved;
 

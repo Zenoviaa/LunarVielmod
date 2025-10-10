@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Core.Camera
 {
     [Autoload(Side = ModSide.Client)]
-    internal class CameraSystem : ModSystem
+    public class CameraSystem : ModSystem
     {
         public override void Load()
         {

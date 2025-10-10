@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Catacombs
 {
-    internal class BarryPlayer : ModPlayer
+    public class BarryPlayer : ModPlayer
     {
         public bool hasBarry;
         public float regenTimer;
@@ -38,7 +38,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         }
     }
 
-    internal class Barry : ModItem
+    public class Barry : ModItem
     {
         public override void SetDefaults()
         {

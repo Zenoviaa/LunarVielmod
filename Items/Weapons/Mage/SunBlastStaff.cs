@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class SunBlastStaff : ClassSwapItem
+    public class SunBlastStaff : ClassSwapItem
     {
         public int dir;
         public override DamageClass AlternateClass => DamageClass.Summon;

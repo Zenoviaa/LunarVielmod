@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-    internal class FlowerPower : ModBuff
+    public class FlowerPower : ModBuff
     {
         public override void SetStaticDefaults()
         {

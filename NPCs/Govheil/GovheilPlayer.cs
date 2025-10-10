@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 namespace Stellamod.NPCs.Govheil
 {
     /// <summary>Used to check if a player is currently in the starjinx event, and if so, set up visual effects.</summary>
-    internal class GovheilPlayer : ModPlayer
+    public class GovheilPlayer : ModPlayer
     {
         public bool zoneGovheil = false;
         public bool oldzoneGovheil = false;

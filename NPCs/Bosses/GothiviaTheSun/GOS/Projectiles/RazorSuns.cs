@@ -24,7 +24,7 @@ using Stellamod.Buffs;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 {
-    internal class RazorSuns : ModProjectile
+    public class RazorSuns : ModProjectile
     {
 
         private ref float ai_Counter => ref Projectile.ai[0];

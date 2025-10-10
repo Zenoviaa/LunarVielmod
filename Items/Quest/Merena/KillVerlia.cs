@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Quest.Merena
 {
-    internal class KillVerlia : ModItem
+    public class KillVerlia : ModItem
     {
         public override void SetDefaults()
         {

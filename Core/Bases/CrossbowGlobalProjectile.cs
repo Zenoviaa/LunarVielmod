@@ -11,7 +11,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.Core.Bases
 {
-    internal class CrossbowGlobalProjectile : GlobalProjectile
+    public class CrossbowGlobalProjectile : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
         public bool Initialized;

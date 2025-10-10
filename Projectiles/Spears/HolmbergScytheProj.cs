@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Spears
 {
-    internal class HolmbergScytheProj : ModProjectile
+    public class HolmbergScytheProj : ModProjectile
     {
         bool Moved;
         Vector2 StartVelocity;

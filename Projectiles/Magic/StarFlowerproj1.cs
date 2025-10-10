@@ -11,7 +11,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class StarFlowerproj1 : ModProjectile
+    public class StarFlowerproj1 : ModProjectile
     {
         private bool Moved;
         public override void SetStaticDefaults()

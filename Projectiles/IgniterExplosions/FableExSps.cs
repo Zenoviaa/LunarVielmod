@@ -6,7 +6,7 @@ using Terraria.ID;
 
 namespace Stellamod.Projectiles.IgniterExplosions
 {
-    internal class FableExSps : BaseIgniterExplosion
+    public class FableExSps : BaseIgniterExplosion
     {
         public override int FrameCount => 29;
 

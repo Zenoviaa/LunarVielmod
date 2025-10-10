@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
 
-    internal class DreadMireDash : ModProjectile
+    public class DreadMireDash : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()

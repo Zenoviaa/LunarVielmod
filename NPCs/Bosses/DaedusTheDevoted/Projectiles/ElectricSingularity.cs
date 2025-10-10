@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
-    internal class ElectricSingularity : ModNPC
+    public class ElectricSingularity : ModNPC
     {
         private float _scale;
         private Vector2[] _zaps;

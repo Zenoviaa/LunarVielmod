@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class StarFlowerproj3 : ModProjectile
+    public class StarFlowerproj3 : ModProjectile
     {
         public override void SetStaticDefaults()
         {

@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Slashers.Vixyl
 {
-    internal class VixylSwordProj : ModProjectile
+    public class VixylSwordProj : ModProjectile
     {
         private bool _init;
         public override string Texture => "Stellamod/Items/Weapons/Melee/Vixyl";

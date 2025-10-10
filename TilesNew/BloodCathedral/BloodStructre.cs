@@ -34,7 +34,7 @@ namespace Stellamod.TilesNew.BloodCathedral
 
     }
 
-    internal class BloodHall : BehindDecorativeWall
+    public class BloodHall : BehindDecorativeWall
     {
         public override void SetStaticDefaults()
         {

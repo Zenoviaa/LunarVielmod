@@ -12,7 +12,7 @@ namespace Stellamod.Core.Shaders
         float3 glowColor;
         float3 outerGlowColor;
      * */
-    internal class GlowCircleShader : BaseShader
+    public class GlowCircleShader : BaseShader
     {
         private static GlowCircleShader _instance;
         public static GlowCircleShader Instance

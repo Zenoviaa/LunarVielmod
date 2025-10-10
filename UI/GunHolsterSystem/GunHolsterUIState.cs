@@ -2,7 +2,7 @@
 
 namespace Stellamod.UI.GunHolsterSystem
 {
-    internal class GunHolsterUIState : UIState
+    public class GunHolsterUIState : UIState
     {
         public GunHolsterUI gunHolsterUI;
         public GunHolsterUIState() : base()

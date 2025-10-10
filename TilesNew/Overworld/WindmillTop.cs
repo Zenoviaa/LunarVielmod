@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.TilesNew.Overworld
 {
-    internal class WindmillTopItem : DecorativeWallItem
+    public class WindmillTopItem : DecorativeWallItem
     {
         public override void SetDefaults()
         {
@@ -13,7 +13,7 @@ namespace Stellamod.TilesNew.Overworld
         }
     }
 
-    internal class WindmillTop : DecorativeWall
+    public class WindmillTop : DecorativeWall
     {
         public override void SetStaticDefaults()
         {

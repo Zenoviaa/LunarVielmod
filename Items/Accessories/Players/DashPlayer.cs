@@ -96,7 +96,7 @@ namespace Stellamod.Items.Accessories.Players
         }
     }
 
-    internal class DashPlayer : ModPlayer
+    public class DashPlayer : ModPlayer
     {
         private bool _isImmune;
         // These indicate what direction is what in the timer arrays used

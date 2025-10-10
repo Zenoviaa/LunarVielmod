@@ -83,7 +83,7 @@ namespace Stellamod.Items.Armors.Flower
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 	}
 
-	internal class FlowerPlayer : ModPlayer
+	public class FlowerPlayer : ModPlayer
 	{
 		public bool hasQuiver;
 		public override void ResetEffects()

@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Arrows
 {
-    internal class FlowerArrow : ModProjectile
+    public class FlowerArrow : ModProjectile
     {
         private int _particleTimer;
         public override void SetStaticDefaults()

@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
-    internal class SpikedLobber : BaseJugglerItem
+    public class SpikedLobber : BaseJugglerItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Ranged;

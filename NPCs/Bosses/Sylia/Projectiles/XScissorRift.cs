@@ -16,7 +16,7 @@ using Stellamod.Projectiles.Swords;
 
 namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 {
-    internal class XScissorRift : ModProjectile
+    public class XScissorRift : ModProjectile
     {
         ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()

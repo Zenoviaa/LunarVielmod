@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class Cryal : ClassSwapItem
+    public class Cryal : ClassSwapItem
     {
         public int dir;
         public override DamageClass AlternateClass => DamageClass.Magic;

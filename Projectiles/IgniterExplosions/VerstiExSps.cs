@@ -6,7 +6,7 @@ using Terraria.ID;
 
 namespace Stellamod.Projectiles.IgniterExplosions
 {
-    internal class VerstiExSps : BaseIgniterExplosion
+    public class VerstiExSps : BaseIgniterExplosion
     {
         public override int FrameCount => 15;
 

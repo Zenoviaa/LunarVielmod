@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    internal class RustedPickaxe : ModProjectile
+    public class RustedPickaxe : ModProjectile
     {
         public override void SetStaticDefaults()
         {

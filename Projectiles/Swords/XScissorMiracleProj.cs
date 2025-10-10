@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords
 {
-    internal class XScissorMiracleProj : ModProjectile
+    public class XScissorMiracleProj : ModProjectile
     {
         private bool _init;
         public override string Texture => "Stellamod/Items/Weapons/Melee/XScissorMiracle";

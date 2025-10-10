@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Quest.Merena
 {
-    internal class StolenMagicTome : ModItem
+    public class StolenMagicTome : ModItem
     {
         public override void SetDefaults()
         {

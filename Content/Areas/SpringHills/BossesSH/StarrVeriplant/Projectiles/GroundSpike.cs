@@ -2,7 +2,7 @@
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.NPCs.Bosses.StarrVeriplant.Projectiles
+namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant.Projectiles
 {
     public class GroundSpike : ModProjectile
     {

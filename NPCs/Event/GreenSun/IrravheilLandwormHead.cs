@@ -16,7 +16,7 @@ using Terraria.ModLoader;
 namespace Stellamod.NPCs.Event.GreenSun
 {
     // These three class showcase usage of the WormHead, WormBody and WormTail classes from Worm.cs
-    internal class IrravheilLandwormHead : WormHead
+    public class IrravheilLandwormHead : WormHead
     {
         private ref float Timer => ref NPC.ai[0];
         private ref float CollideTimer => ref NPC.ai[1];
@@ -65,7 +65,7 @@ namespace Stellamod.NPCs.Event.GreenSun
         }
 
         // This method is invoked from ExampleWormHead, ExampleWormBody and ExampleWormTail
-        internal static void CoreWormInit(Worm worm)
+        public static void CoreWormInit(Worm worm)
         {
             // These two properties handle the movement of the worm
             worm.MoveSpeed = 13f;
@@ -176,7 +176,7 @@ namespace Stellamod.NPCs.Event.GreenSun
         }
     }
 
-    internal class IrravheilLandwormBody : WormBody
+    public class IrravheilLandwormBody : WormBody
     {
         private static float _last;
         public override void SetStaticDefaults()
@@ -230,7 +230,7 @@ namespace Stellamod.NPCs.Event.GreenSun
         }
     }
 
-    internal class IrravheilLandwormTail : WormTail
+    public class IrravheilLandwormTail : WormTail
     {
         public override void SetStaticDefaults()
         {

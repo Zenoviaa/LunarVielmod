@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
 {
-    internal class TulacBombProj : ModProjectile
+    public class TulacBombProj : ModProjectile
     {
         private enum ActionState
         {

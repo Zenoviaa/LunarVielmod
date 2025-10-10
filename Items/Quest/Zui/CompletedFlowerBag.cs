@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Quest.Zui
 {
-    internal class CompletedFlowerBag : ModItem
+    public class CompletedFlowerBag : ModItem
     {
         public override void SetDefaults()
         {

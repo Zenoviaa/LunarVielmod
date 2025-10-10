@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-	internal class SpiritCapsule : ClassSwapItem
+	public class SpiritCapsule : ClassSwapItem
     {
         public int dir;
         public override DamageClass AlternateClass => DamageClass.Ranged;

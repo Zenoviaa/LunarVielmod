@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Scorpions.RoyalPalace
 {
-    internal class RoyalPalaceScorpionPlayer : ModPlayer
+    public class RoyalPalaceScorpionPlayer : ModPlayer
     {
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.Scorpions.RoyalPalace
             }
         }
     }
-    internal class RoyalPalaceScorpionGun : BaseScorpionGun
+    public class RoyalPalaceScorpionGun : BaseScorpionGun
     {
         protected override void Shoot()
         {

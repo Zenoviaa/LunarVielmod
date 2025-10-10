@@ -2,7 +2,7 @@
 
 namespace Stellamod.UI.CollectionSystem.Quests
 {
-    internal class QuestTabUIState : UIState
+    public class QuestTabUIState : UIState
     {
         public QuestTabUI ui;
         public QuestTabUIState() : base()

@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Colosseum
 {
-    internal class GoldChain : ModProjectile
+    public class GoldChain : ModProjectile
     {
         private Vector2 OriginalCenter;
         private ref float Timer => ref Projectile.ai[0];

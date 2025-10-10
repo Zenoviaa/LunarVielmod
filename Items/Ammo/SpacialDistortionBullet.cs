@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Ammo
 {
-    internal class SpacialDistortionBullet : ModItem
+    public class SpacialDistortionBullet : ModItem
     {
         public override void SetStaticDefaults()
         {

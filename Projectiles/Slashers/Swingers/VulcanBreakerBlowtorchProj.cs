@@ -10,9 +10,9 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Slashers.Swingers
 {
-    internal class VulcanBreakerBlowtorchProj : ModProjectile
+    public class VulcanBreakerBlowtorchProj : ModProjectile
     {
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public override string Texture => TextureRegistry.EmptyTexture;
         //Ai
         private ref float Timer => ref Projectile.ai[0];

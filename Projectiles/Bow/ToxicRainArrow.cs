@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class ToxicRainArrow : ModProjectile
+    public class ToxicRainArrow : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()

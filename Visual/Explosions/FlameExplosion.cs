@@ -10,7 +10,7 @@ using Terraria.ID;
 
 namespace Stellamod.Visual.Explosions
 {
-    internal class FlameExplosion : BaseExplosionProjectile
+    public class FlameExplosion : BaseExplosionProjectile
     {
         int trailMode;
         int rStart = 4;

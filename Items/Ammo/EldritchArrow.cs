@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Ammo
 {
-    internal class EldritchArrow : ModItem
+    public class EldritchArrow : ModItem
     {
         public override void SetStaticDefaults()
         {

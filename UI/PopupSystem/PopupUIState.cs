@@ -2,7 +2,7 @@
 
 namespace Stellamod.UI.PopupSystem
 {
-    internal class PopupUIState : UIState
+    public class PopupUIState : UIState
     {
         public PopupUI popupUI;
         public PopupUIState() : base()

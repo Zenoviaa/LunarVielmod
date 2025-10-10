@@ -11,7 +11,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 {
-    internal class FlameArrow : ModProjectile
+    public class FlameArrow : ModProjectile
     {
         bool Moved;
         public override void SetStaticDefaults()

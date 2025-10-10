@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Spears
 {
-    internal class SiriusProj : ModProjectile
+    public class SiriusProj : ModProjectile
     {
         const float Exploding_Time = 90;
         enum ActionState

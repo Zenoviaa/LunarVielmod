@@ -6,7 +6,7 @@ using Terraria;
 namespace Stellamod.Core.Shaders
 {
 
-    internal class MotionBlurShader : BaseShader
+    public class MotionBlurShader : BaseShader
     {
         private static MotionBlurShader _instance;
         public static MotionBlurShader Instance

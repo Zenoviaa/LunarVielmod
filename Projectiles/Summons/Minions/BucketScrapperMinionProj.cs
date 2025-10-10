@@ -10,7 +10,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 {
 
 
-        internal class BucketScrapperMinionProj : ModProjectile
+        public class BucketScrapperMinionProj : ModProjectile
         {
             private static float _orbitingOffset;
             public override void SetStaticDefaults()

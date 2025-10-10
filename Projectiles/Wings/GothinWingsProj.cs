@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Wings
 {
-    internal class GothinWingsProj : WingDefaultProjectile
+    public class GothinWingsProj : WingDefaultProjectile
     {
         public override void SetStaticDefaults()
         {

@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Ishtar
 {
-    internal class Stalker : ModNPC
+    public class Stalker : ModNPC
     {
         public override void SetStaticDefaults()
         {

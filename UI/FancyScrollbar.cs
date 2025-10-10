@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.UI
 {
-    internal class FancyScrollbar : UIScrollbar
+    public class FancyScrollbar : UIScrollbar
     {
      
         public FancyScrollbar() : base()

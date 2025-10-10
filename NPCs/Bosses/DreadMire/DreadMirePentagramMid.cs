@@ -9,7 +9,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
-    internal class DreadMirePentagramMid : ModNPC
+    public class DreadMirePentagramMid : ModNPC
     {
         public bool Down;
         public float Rot;

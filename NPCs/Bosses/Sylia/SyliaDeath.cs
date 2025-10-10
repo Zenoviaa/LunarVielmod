@@ -17,7 +17,7 @@ using ReLogic.Utilities;
 
 namespace Stellamod.NPCs.Bosses.Sylia
 {
-    internal class SyliaDeath : ModNPC
+    public class SyliaDeath : ModNPC
     {        
         //Animation Stuffs
         private int _frameCounter;

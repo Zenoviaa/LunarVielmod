@@ -6,7 +6,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.UI.Dialogue
 {
-    internal class CallDialogue7 : Dialogue
+    public class CallDialogue7 : Dialogue
     {
         //The number of steps in this dialogue
         public override int Length => 2;

@@ -11,7 +11,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.Zui.Projectiles
 {
-    internal class GoldBeamWarn : ModNPC
+    public class GoldBeamWarn : ModNPC
     {
         public bool Down;
         public bool Lightning;

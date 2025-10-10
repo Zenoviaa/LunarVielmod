@@ -6,7 +6,7 @@ using Terraria;
 
 namespace Stellamod.Core.Shaders.MagicTrails
 {
-    internal class MagicRadianceOutlineShader : BaseShader
+    public class MagicRadianceOutlineShader : BaseShader
     {
         private static MagicRadianceOutlineShader _instance;
         public static MagicRadianceOutlineShader Instance

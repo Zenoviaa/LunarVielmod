@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.AlcadChests
 {
-    internal class BlackRose : ModItem
+    public class BlackRose : ModItem
     {
         public override void SetDefaults()
         {
@@ -30,7 +30,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
         }
     }
 
-    internal class BlackManaRose : ModItem
+    public class BlackManaRose : ModItem
     {
         public override void SetDefaults()
         {

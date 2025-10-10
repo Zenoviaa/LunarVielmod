@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class MushyCard : BaseIgniterCard
+    public class MushyCard : BaseIgniterCard
     {
         public override void SetClassSwappedDefaults()
         {

@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-    internal class ShadeWrathCooldown : ModBuff
+    public class ShadeWrathCooldown : ModBuff
     {
         public override void SetStaticDefaults()
         {

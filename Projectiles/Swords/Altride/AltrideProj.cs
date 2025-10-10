@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords.Altride
 {
-    internal class AltrideProj : ModProjectile
+    public class AltrideProj : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         bool Moved;

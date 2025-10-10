@@ -24,7 +24,7 @@ namespace Stellamod.TilesNew.IceTiles
         }
     }
 
-    internal class LargeIceyStone : DecorativeWall
+    public class LargeIceyStone : DecorativeWall
     {
         public override void SetStaticDefaults()
         {

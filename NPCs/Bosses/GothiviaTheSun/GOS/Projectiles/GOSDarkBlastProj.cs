@@ -11,9 +11,9 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 {
-    internal class GothDarkBlastProj : ModProjectile
+    public class GothDarkBlastProj : ModProjectile
     {
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public override string Texture => TextureRegistry.EmptyBigTexture;
         //Ai
         private ref float Timer => ref Projectile.ai[0];

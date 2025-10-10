@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 {
-    internal class ComeHere : BaseHand
+    public class ComeHere : BaseHand
     {
         private float DirectionToShootFrom;
         private float ChargeProgress = 0;

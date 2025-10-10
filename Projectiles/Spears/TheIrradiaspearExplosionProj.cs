@@ -15,7 +15,7 @@ using Terraria;
 
 namespace Stellamod.Projectiles.Spears
 {
-    internal class TheIrradiaspearExplosionProj : ModProjectile,
+    public class TheIrradiaspearExplosionProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture

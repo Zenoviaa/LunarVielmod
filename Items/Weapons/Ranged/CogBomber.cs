@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class CogBomber : ClassSwapItem
+    public class CogBomber : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Melee;

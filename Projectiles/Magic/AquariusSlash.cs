@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class AquariusSlash : ModProjectile
+    public class AquariusSlash : ModProjectile
     {
         private int _frameCounter;
         private int _frameTick;

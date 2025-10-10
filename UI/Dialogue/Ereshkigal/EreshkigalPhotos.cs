@@ -6,7 +6,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.UI.Dialogue
 {
-    internal class EreshkigalPhotos : Dialogue
+    public class EreshkigalPhotos : Dialogue
     {
         //The number of steps in this dialogue
         public override int Length => 4;

@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.SunStalker
 {
-    internal class SunStalkerLighting : ModNPC
+    public class SunStalkerLighting : ModNPC
     {
         public bool Lightning;
         public override void SetStaticDefaults()

@@ -4,7 +4,7 @@ using Terraria.DataStructures;
 using Stellamod.Helpers;
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles
 {
-    internal class HavocSignal : ModNPC
+    public class HavocSignal : ModNPC
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()

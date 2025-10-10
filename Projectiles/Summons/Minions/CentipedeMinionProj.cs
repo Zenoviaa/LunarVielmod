@@ -18,7 +18,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 {
 
 
-    internal class CentipedeMinionProj : ModProjectile
+    public class CentipedeMinionProj : ModProjectile
     {
 
         public PrimDrawer TrailDrawer { get; private set; } = null;

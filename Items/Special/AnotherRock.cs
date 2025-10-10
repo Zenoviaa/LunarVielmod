@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Special
 {
-    internal class AnotherRock : ModItem
+    public class AnotherRock : ModItem
     {
         public override void SetDefaults()
         {

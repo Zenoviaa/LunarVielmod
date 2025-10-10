@@ -27,7 +27,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 {
-    internal class RekSegment
+    public class RekSegment
     {
         public string TexturePath;
         public Texture2D Texture => ModContent.Request<Texture2D>(TexturePath).Value;
@@ -53,7 +53,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
     }
 
     [AutoloadBossHead]
-    internal class RekSnake : ModNPC
+    public class RekSnake : ModNPC
     {
         //Draw Code
         private string BaseTexturePath => "Stellamod/NPCs/Bosses/GothiviaTheSun/REK/";

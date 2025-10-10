@@ -24,7 +24,7 @@ namespace Stellamod.TilesNew.SpringHills
         }
     }
 
-    internal class StoneUnder : DecorativeWall
+    public class StoneUnder : DecorativeWall
     {
         public override void SetStaticDefaults()
         {

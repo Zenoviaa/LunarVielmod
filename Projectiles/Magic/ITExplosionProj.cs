@@ -19,7 +19,7 @@ using Stellamod.Buffs;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class ITExplosionProj : ModProjectile,
+    public class ITExplosionProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture

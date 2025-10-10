@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class CarrotPatrolProj : ModProjectile
+    public class CarrotPatrolProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

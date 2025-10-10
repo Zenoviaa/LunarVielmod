@@ -10,7 +10,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles.Abyss
 {
-    internal class BlueFlower2 : ModTile
+    public class BlueFlower2 : ModTile
     {
         public override void SetStaticDefaults()
         {

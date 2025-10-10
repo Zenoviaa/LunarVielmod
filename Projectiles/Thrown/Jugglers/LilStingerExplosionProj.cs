@@ -15,7 +15,7 @@ using Terraria;
 
 namespace Stellamod.Projectiles.Thrown.Jugglers
 {
-    internal class LilStingerExplosionProj : ModProjectile,
+    public class LilStingerExplosionProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture

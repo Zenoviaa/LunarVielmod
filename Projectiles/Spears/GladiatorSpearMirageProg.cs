@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Spears
 {
-    internal class GladiatorSpearMirageProg : ModProjectile
+    public class GladiatorSpearMirageProg : ModProjectile
     {
         bool Moved;
 

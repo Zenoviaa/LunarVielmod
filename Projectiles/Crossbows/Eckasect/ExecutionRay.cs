@@ -14,9 +14,9 @@ using Stellamod.Buffs;
 
 namespace Stellamod.Projectiles.Crossbows.Eckasect
 {
-    internal class ExecutionRay : ModProjectile, IPixelPrimitiveDrawer
+    public class ExecutionRay : ModProjectile, IPixelPrimitiveDrawer
     {
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         private ref float Timer => ref Projectile.ai[0];
         private ref float SwordRotation => ref Projectile.ai[1];
         public const float LaserLength = 2400f;

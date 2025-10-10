@@ -12,7 +12,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class SingularitySparkProjG : ModProjectile
+    public class SingularitySparkProjG : ModProjectile
     {
         private bool Moved;
         public override void SetStaticDefaults()

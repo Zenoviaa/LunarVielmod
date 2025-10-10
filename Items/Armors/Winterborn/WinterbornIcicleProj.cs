@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Winterborn
 {
-    internal class WinterbornIcicleProj : ModProjectile
+    public class WinterbornIcicleProj : ModProjectile
     {
         private float _dustTimer;
         private float Health

@@ -8,15 +8,15 @@ using Terraria.ModLoader;
 
 namespace Stellamod.UI.PopupSystem
 {
-    internal class PopupUI : UIPanel
+    public class PopupUI : UIPanel
     {
         private float _scale;
         private UIText _text;
-        internal const int width = 432;
-        internal const int height = 280;
+        public const int width = 432;
+        public const int height = 280;
 
-        internal int RelativeLeft => Main.screenWidth / 2;
-        internal int RelativeTop => 0 + 32;
+        public int RelativeLeft => Main.screenWidth / 2;
+        public int RelativeTop => 0 + 32;
 
 
         public Vector2 Offset;

@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class PrismaticBalls : ClassSwapItem
+    public class PrismaticBalls : ClassSwapItem
     {
         public int dir;
         public override DamageClass AlternateClass => DamageClass.Throwing;

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Assets.Biomes
 {
-    internal class AshotiTemple : ModBiome
+    public class AshotiTemple : ModBiome
     {
         public override int Music => MusicID.Temple;
         public override SceneEffectPriority Priority => SceneEffectPriority.BossLow;
@@ -19,7 +19,7 @@ namespace Stellamod.Assets.Biomes
         public override void OnLeave(Player player) => player.GetModPlayer<MyPlayer>().ZoneAshotiTemple = false;
     }
 
-    internal class AshotiTempleNPC : GlobalNPC
+    public class AshotiTempleNPC : GlobalNPC
     {
         public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
         {

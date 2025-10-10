@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Quest.Merena
 {
-    internal class ExploreMorrowedVillage : ModItem
+    public class ExploreMorrowedVillage : ModItem
     {
         public override void SetDefaults()
         {

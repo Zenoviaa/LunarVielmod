@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
 {
-    internal abstract class BaseRune : ModItem
+    public abstract class BaseRune : ModItem
     {
         public override void SetStaticDefaults()
         {

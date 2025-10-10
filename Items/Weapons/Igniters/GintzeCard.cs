@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class GintzeCard : BaseIgniterCard
+    public class GintzeCard : BaseIgniterCard
     {
         public override void SetClassSwappedDefaults()
         {

@@ -17,7 +17,7 @@ using Terraria;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    internal class TempestLightningBolt : ModProjectile
+    public class TempestLightningBolt : ModProjectile
     {
         private Vector2[] _lightningArcPos = new Vector2[1];
         public const int Trail_Width = 24;

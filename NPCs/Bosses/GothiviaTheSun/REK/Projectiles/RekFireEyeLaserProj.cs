@@ -19,10 +19,10 @@ using Stellamod.Buffs;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
-    internal class RekFireEyeLaserProj : ModProjectile
+    public class RekFireEyeLaserProj : ModProjectile
     {
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];
         public ref float Direction => ref Projectile.ai[2];

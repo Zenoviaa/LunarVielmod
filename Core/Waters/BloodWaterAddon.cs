@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Waters
 {
-    internal class BloodWaterAddon : WaterAddon
+    public class BloodWaterAddon : WaterAddon
     {
         public static bool ShouldShow
         {

@@ -7,13 +7,13 @@ using Terraria.ModLoader;
 
 namespace Stellamod.TilesNew
 {
-    internal interface IDrawBehindWall
+    public interface IDrawBehindWall
     {
         void DrawBehindWall(int i, int j, SpriteBatch spriteBatch);
     }
 
 
-    internal class BehindWallLayerDrawSystem : ModSystem
+    public class BehindWallLayerDrawSystem : ModSystem
     {
         public static Vector2 TileAdj => (Lighting.Mode == Terraria.Graphics.Light.LightMode.Retro || Lighting.Mode == Terraria.Graphics.Light.LightMode.Trippy) ? Vector2.Zero : Vector2.One * 12;
 

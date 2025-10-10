@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Catacombs
 {
-    internal class WaterproofHeadphones : ModItem
+    public class WaterproofHeadphones : ModItem
     {
         public override void SetDefaults()
         {

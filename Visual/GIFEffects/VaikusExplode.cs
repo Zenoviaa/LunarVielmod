@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Visual.GIFEffects
 {
-    internal class VaikusExplode : ModProjectile
+    public class VaikusExplode : ModProjectile
     {
         private ref float Parent => ref Projectile.ai[1];
         public override void SetStaticDefaults()

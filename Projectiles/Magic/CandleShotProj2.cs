@@ -10,7 +10,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class CandleShotProj2 : ModProjectile
+    public class CandleShotProj2 : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()

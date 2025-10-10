@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Stellamod.Projectiles.Summons
 {
-    internal class ScrappyGunProj  : ModProjectile
+    public class ScrappyGunProj  : ModProjectile
     {
         private bool _flip;
         public override void SetStaticDefaults()

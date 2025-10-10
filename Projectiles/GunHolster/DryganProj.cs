@@ -22,7 +22,7 @@ using Stellamod.Projectiles.IgniterExplosions;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class DryganProj : ModProjectile
+    public class DryganProj : ModProjectile
     {
         NPC target;
         int afterImgCancelDrawCount = 0;

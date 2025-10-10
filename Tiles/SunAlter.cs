@@ -12,7 +12,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles
 {
-    internal class SunAlter : ModTile
+    public class SunAlter : ModTile
     {
         public override void SetStaticDefaults()
         {

@@ -11,20 +11,20 @@ using Terraria.UI.Chat;
 
 namespace Stellamod.UI.ArmorReforgeSystem
 {
-    internal class ReforgeSlot : UIElement
+    public class ReforgeSlot : UIElement
     {
         private Item _prevItem;
         private readonly int _context;
         private readonly float _scale;
 
-        internal Item Item;
-        internal Func<Item, bool> ValidItemFunc;
+        public Item Item;
+        public Func<Item, bool> ValidItemFunc;
 
-        internal event Action<int> OnEmptyMouseover;
+        public event Action<int> OnEmptyMouseover;
 
         private int timer = 0;
 
-        internal ReforgeSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
+        public ReforgeSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
         {
             _context = context;
             _scale = scale;
@@ -41,14 +41,14 @@ namespace Stellamod.UI.ArmorReforgeSystem
         /// <summary>
         /// Returns true if this item can be placed into the slot (either empty or a pet item)
         /// </summary>
-        internal bool Valid(Item item)
+        public bool Valid(Item item)
         {
             bool isArmor = item.headSlot >= 0 || item.bodySlot >= 0 || item.legSlot >= 0;
          
             return isArmor || item.IsAir;
         }
 
-        internal void HandleMouseItem()
+        public void HandleMouseItem()
         {
             if (Valid(Main.mouseItem))
             {

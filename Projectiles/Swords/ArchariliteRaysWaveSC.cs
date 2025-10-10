@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords
 {
-    internal class ArchariliteRaysWaveSC : ModProjectile
+    public class ArchariliteRaysWaveSC : ModProjectile
     {
         bool Moved;
 

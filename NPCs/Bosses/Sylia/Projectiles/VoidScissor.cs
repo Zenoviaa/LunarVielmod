@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 {
-    internal class VoidScissor : ModProjectile
+    public class VoidScissor : ModProjectile
     {
         public Vector2 TargetVelocity;
         ref float Timer => ref Projectile.ai[0];

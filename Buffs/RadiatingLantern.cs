@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-    internal class RadiatingLantern : ModBuff
+    public class RadiatingLantern : ModBuff
     {
         public override void SetStaticDefaults()
         {

@@ -20,7 +20,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class AlcadBombSuckDraw
+    public class AlcadBombSuckDraw
     {
         public AlcadBombSuckDraw()
         {
@@ -54,7 +54,7 @@ namespace Stellamod.Projectiles.Magic
         }
     }
 
-    internal class AlcadBombProj : ModProjectile,
+    public class AlcadBombProj : ModProjectile,
           IPreDrawMaskShader,
           IDrawMaskShader
     {

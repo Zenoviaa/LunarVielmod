@@ -11,7 +11,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.Core.ArmorReforge
 {
-    internal class VampiricArmorPlayer : ModPlayer
+    public class VampiricArmorPlayer : ModPlayer
     {
         public float lifeSteal;
         public float cooldownTimer;
@@ -40,7 +40,7 @@ namespace Stellamod.Core.ArmorReforge
         }
     }
 
-    internal class ArmorReforgeGlobalItem : GlobalItem
+    public class ArmorReforgeGlobalItem : GlobalItem
     {
         public ArmorReforgeType reforgeType;
         public override bool InstancePerEntity => true;

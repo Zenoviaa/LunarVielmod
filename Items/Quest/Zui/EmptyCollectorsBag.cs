@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Quest.Zui
 {
-    internal class EmptyCollectorsBag : ModItem
+    public class EmptyCollectorsBag : ModItem
     {
         public override void SetDefaults()
         {

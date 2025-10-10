@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Global
 {
-    internal class NPCBagEdits : GlobalItem
+    public class NPCBagEdits : GlobalItem
     {
         public override void ModifyItemLoot(Item item, ItemLoot itemLoot)
         {

@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class IlluriaStarGlow : ModProjectile
+    public class IlluriaStarGlow : ModProjectile
     {
         public override void SetDefaults()
         {

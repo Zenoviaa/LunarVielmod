@@ -2,7 +2,7 @@
 
 namespace Stellamod.UI.CellConverterSystem
 {
-    internal class ConverterUIState : UIState
+    public class ConverterUIState : UIState
     {
         public ConverterUI converterUI;
         public ConverterUIState() : base()

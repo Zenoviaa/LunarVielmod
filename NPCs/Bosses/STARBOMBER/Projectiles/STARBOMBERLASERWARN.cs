@@ -10,7 +10,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 {
-    internal class STARBOMBERLASERWARN : ModNPC
+    public class STARBOMBERLASERWARN : ModNPC
     {
         public bool Down;
         public bool Lightning;

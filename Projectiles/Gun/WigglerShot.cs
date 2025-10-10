@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class WigglerShot : ModProjectile
+    public class WigglerShot : ModProjectile
     {
         public override void SetStaticDefaults()
         {

@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-    internal class MarksMan : ModBuff
+    public class MarksMan : ModBuff
     {
         public override void SetStaticDefaults()
         {

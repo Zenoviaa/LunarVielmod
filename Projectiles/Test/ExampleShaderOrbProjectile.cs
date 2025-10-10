@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Test
 {
-    internal class ExampleShaderOrbProjectile : ModProjectile
+    public class ExampleShaderOrbProjectile : ModProjectile
     {
         public override string Texture => TextureRegistry.ZuiEffect;
         private ref float Timer => ref Projectile.ai[0];

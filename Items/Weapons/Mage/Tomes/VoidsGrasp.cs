@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage.Tomes
 {
-    internal class VoidsGrasp : BaseMagicTomeItem
+    public class VoidsGrasp : BaseMagicTomeItem
     {
         public override void SetDefaults()
         {
@@ -19,7 +19,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
         }
     }
 
-    internal class VoidsGraspTome : BaseMagicTomeProjectile
+    public class VoidsGraspTome : BaseMagicTomeProjectile
     {
         private float _dustTimer;
         public override string Texture => this.PathHere() + "/VoidsGrasp";

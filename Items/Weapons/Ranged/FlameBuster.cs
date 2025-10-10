@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class FlameBuster : ClassSwapItem
+    public class FlameBuster : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;

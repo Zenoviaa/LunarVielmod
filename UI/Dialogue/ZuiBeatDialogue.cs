@@ -7,7 +7,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.UI.Dialogue
 {
-    internal class ZuiBeatDialogue : Dialogue
+    public class ZuiBeatDialogue : Dialogue
     {
         //The number of steps in this dialogue
         public override int Length => 6;

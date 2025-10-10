@@ -13,9 +13,9 @@ using static tModPorter.ProgressUpdate;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviLaserContinuousProj : ModProjectile
+    public class NiiviLaserContinuousProj : ModProjectile
     {
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
 
         public override string Texture => TextureRegistry.EmptyTexture;
 

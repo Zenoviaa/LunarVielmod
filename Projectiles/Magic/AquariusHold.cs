@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class AquariusHold : ModProjectile
+    public class AquariusHold : ModProjectile
     {
         private float MagicCircleRotation;
         private float MagicCircleScale;

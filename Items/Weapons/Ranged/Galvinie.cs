@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class Galvinie : ClassSwapItem
+    public class Galvinie : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;

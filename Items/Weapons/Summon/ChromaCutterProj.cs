@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    internal class ChromaCutterProj : ModProjectile
+    public class ChromaCutterProj : ModProjectile
     {
         public static bool swung = false;
         public int SwingTime = 15;

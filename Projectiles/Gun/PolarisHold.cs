@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class PolarisHold : ModProjectile
+    public class PolarisHold : ModProjectile
     {
         enum ActionState
         {

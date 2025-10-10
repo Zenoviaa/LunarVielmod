@@ -33,7 +33,7 @@ namespace Stellamod.TilesNew.Veil
 
     }
 
-    internal class FuneralBed : DecorativeWall
+    public class FuneralBed : DecorativeWall
     {
         public override void SetStaticDefaults()
         {

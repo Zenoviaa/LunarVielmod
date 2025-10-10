@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class CinderedLantern : ClassSwapItem
+    public class CinderedLantern : ClassSwapItem
     {
         public int dir;
         public override DamageClass AlternateClass => DamageClass.Ranged;

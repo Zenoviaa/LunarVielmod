@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Scorpion
 {
-    internal class RoyalPalaceScorpionMountBuff : ModBuff
+    public class RoyalPalaceScorpionMountBuff : ModBuff
     {
         public override void SetStaticDefaults()
         {

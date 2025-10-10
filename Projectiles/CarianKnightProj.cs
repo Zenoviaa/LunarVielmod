@@ -10,7 +10,7 @@ using static Terraria.ModLoader.ModContent;
 namespace Stellamod.Projectiles
 {
 
-    internal class CarianKnightProj : ModProjectile
+    public class CarianKnightProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

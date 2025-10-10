@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Test
 {
-    internal class ExampleSinSwingProj : ModProjectile
+    public class ExampleSinSwingProj : ModProjectile
     {
         //DrawCode
         private TrailRenderer SwordSlash;

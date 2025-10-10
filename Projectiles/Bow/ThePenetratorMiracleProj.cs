@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class ThePenetratorMiracleProj : ModProjectile
+    public class ThePenetratorMiracleProj : ModProjectile
     {
         public override string Texture => "Stellamod/Items/Weapons/Ranged/PenetratorMiracle";
         Vector2 HoldOffset;

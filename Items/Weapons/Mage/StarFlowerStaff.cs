@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class StarFlowerStaff : ClassSwapItem
+    public class StarFlowerStaff : ClassSwapItem
     {
         public int dir;
         public override DamageClass AlternateClass => DamageClass.Summon;

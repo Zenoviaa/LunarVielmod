@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class VacuumDrillHold : ModProjectile
+    public class VacuumDrillHold : ModProjectile
     {
         public override void SetStaticDefaults()
         {

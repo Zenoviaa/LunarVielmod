@@ -11,7 +11,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class LightSpandProg : ModProjectile
+    public class LightSpandProg : ModProjectile
     {
         private bool Moved;
         public override void SetStaticDefaults()

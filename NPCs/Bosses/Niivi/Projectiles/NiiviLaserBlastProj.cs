@@ -10,13 +10,13 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviLaserBlastProj : ModProjectile,
+    public class NiiviLaserBlastProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         public override string Texture => TextureRegistry.EmptyTexture;
 
         public List<Vector2> BeamPoints;
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
 
         ref float Size => ref Projectile.ai[0];
         ref float BeamLength => ref Projectile.ai[1];

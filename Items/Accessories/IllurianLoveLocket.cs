@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-    internal class IllurianLoveLocket : ModItem
+    public class IllurianLoveLocket : ModItem
     {
         private float _starTimer;
         public override void SetDefaults()

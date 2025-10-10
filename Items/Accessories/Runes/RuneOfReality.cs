@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Runes
 {
-    internal class RealityGlobalProjectile : GlobalProjectile
+    public class RealityGlobalProjectile : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
         public Vector2 PushVelocity;
@@ -20,7 +20,7 @@ namespace Stellamod.Items.Accessories.Runes
         }
     }
 
-    internal class RuneOfRealityField : ModProjectile
+    public class RuneOfRealityField : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
 
@@ -110,7 +110,7 @@ namespace Stellamod.Items.Accessories.Runes
         }
     }
 
-    internal class RuneOfRealityPlayer : ModPlayer
+    public class RuneOfRealityPlayer : ModPlayer
     {
         public bool hasRuneOfReality;
         public float manaPercent;
@@ -151,7 +151,7 @@ namespace Stellamod.Items.Accessories.Runes
         }
     }
 
-    internal class RuneOfReality : BaseRune
+    public class RuneOfReality : BaseRune
     {
         public override void SetDefaults()
         {

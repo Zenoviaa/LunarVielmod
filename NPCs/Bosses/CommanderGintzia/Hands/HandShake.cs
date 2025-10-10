@@ -13,7 +13,7 @@ using Terraria.Audio;
 
 namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 {
-    internal class HandShake : BaseHand
+    public class HandShake : BaseHand
     {
         private float ChargeProgress;
         private float StartOffset;

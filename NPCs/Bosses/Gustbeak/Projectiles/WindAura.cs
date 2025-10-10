@@ -5,7 +5,7 @@ using Terraria;
 
 namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
 {
-    internal class WindAura : BaseWindProjectile
+    public class WindAura : BaseWindProjectile
     {
         private int ParentIndex
         {

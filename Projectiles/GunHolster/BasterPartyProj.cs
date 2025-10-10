@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class BasterPartyProj : ModProjectile,
+    public class BasterPartyProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         private int _color;
@@ -93,8 +93,8 @@ namespace Stellamod.Projectiles.GunHolster
             }
         }
 
-        internal PrimitiveTrail BeamDrawer;
-        internal Vector2[] TrailPos;
+        public PrimitiveTrail BeamDrawer;
+        public Vector2[] TrailPos;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);

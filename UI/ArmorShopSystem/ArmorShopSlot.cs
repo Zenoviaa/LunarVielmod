@@ -12,20 +12,20 @@ using Terraria.UI;
 
 namespace Stellamod.UI.ArmorShopSystem
 {
-    internal class ArmorShopSlot : UIElement
+    public class ArmorShopSlot : UIElement
     {
         private Item _prevItem;
         private readonly int _context;
         private readonly float _scale;
 
-        internal Item Item;
-        internal Func<Item, bool> ValidItemFunc;
+        public Item Item;
+        public Func<Item, bool> ValidItemFunc;
 
-        internal event Action<int> OnEmptyMouseover;
+        public event Action<int> OnEmptyMouseover;
 
         private int timer = 0;
 
-        internal ArmorShopSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
+        public ArmorShopSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
         {
             _context = context;
             _scale = scale;

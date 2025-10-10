@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviIcicleProj : ModProjectile
+    public class NiiviIcicleProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

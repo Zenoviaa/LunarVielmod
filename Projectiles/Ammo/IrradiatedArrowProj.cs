@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Ammo
 {
-    internal class IrradiatedArrowProj : ModProjectile
+    public class IrradiatedArrowProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

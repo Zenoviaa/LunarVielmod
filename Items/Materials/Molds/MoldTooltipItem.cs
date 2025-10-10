@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials.Molds
 {
-    internal class MoldTooltipItem : ModItem
+    public class MoldTooltipItem : ModItem
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         public Item MoldNeeded;

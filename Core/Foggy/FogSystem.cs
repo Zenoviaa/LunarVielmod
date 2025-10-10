@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Foggy
 {
-    internal class FogSystem : ModSystem
+    public class FogSystem : ModSystem
     {
         private readonly Dictionary<Point, Fog> _fogIndex = new();
         private readonly List<Fog> _fogsToRemove = new();

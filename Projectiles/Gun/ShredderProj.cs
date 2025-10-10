@@ -16,7 +16,7 @@ using Stellamod.Helpers;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class ShredderProj : ModProjectile, 
+    public class ShredderProj : ModProjectile, 
         IPixelPrimitiveDrawer
     {
         private float _rotationSpeed;
@@ -91,7 +91,7 @@ namespace Stellamod.Projectiles.Gun
             return base.Colliding(projHitbox, targetHitbox);
         }
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             var shader = MagicNormalShader.Instance;

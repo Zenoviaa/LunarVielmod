@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Jack
 {
-    internal class JackFire2 : ModProjectile
+    public class JackFire2 : ModProjectile
     {
         bool Moved;
 

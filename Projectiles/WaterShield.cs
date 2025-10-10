@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    internal class WaterShield : ModProjectile
+    public class WaterShield : ModProjectile
     {
         public override void SetDefaults()
         {

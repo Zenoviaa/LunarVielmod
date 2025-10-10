@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.ScorpionMountSystem
 {
-    internal class ScorpionPlayer : ModPlayer
+    public class ScorpionPlayer : ModPlayer
     {
         public Vector2 gunMountPosition;
         public Vector2[] holsterPositions;

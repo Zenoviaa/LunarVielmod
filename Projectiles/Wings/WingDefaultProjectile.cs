@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Wings
 {
-    internal abstract class WingDefaultProjectile : ModProjectile
+    public abstract class WingDefaultProjectile : ModProjectile
     {
         private Player Owner => Main.player[Projectile.owner];
 

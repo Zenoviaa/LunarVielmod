@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Spears
 {
-    internal class StarSheithStar : ModProjectile
+    public class StarSheithStar : ModProjectile
     {
         public override void SetStaticDefaults()
         {

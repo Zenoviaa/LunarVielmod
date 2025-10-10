@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords
 {
-    internal class HeatBombLighting : ModNPC
+    public class HeatBombLighting : ModNPC
     {
         public bool Lightning;
         public override void SetStaticDefaults()

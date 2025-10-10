@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class ShadeHand : ModProjectile
+    public class ShadeHand : ModProjectile
     {
         bool Moved;
 

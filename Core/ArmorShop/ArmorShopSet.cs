@@ -27,7 +27,7 @@ namespace Stellamod.Core.ArmorShop
         public virtual string Name => GetType().Name;
 
         /// <summary>
-        /// The internal name of this, including the mod it is from.
+        /// The public name of this, including the mod it is from.
         /// </summary>
         public string FullName => $"{Mod?.Name ?? "Terraria"}/{Name}";
 

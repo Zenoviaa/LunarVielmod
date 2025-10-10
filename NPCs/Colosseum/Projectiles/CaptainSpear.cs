@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Colosseum.Projectiles
 {
-    internal class CaptainSpear : ModProjectile
+    public class CaptainSpear : ModProjectile
     {
         private Vector2 InitialVelocity;
         private ref float Timer => ref Projectile.ai[0];

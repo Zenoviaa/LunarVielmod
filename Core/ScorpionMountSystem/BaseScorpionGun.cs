@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.ScorpionMountSystem
 {
-    internal abstract class BaseScorpionGun : ModProjectile
+    public abstract class BaseScorpionGun : ModProjectile
     {
         public enum AIState
         {

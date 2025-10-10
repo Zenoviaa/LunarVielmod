@@ -12,7 +12,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles.Catacombs
 {
-    internal class CatacombsSummon : ModTile
+    public class CatacombsSummon : ModTile
     {
         public override LocalizedText DefaultContainerName(int frameX, int frameY)
         {

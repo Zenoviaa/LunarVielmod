@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Scorpions.OreKingdom
 {
-    internal class OreKingdomScorpionMount : BaseScorpionMount
+    public class OreKingdomScorpionMount : BaseScorpionMount
     {
         public override void SetStaticDefaults()
         {
@@ -18,7 +18,7 @@ namespace Stellamod.Items.Weapons.Scorpions.OreKingdom
     }
 
     
-        internal class OreKingdomScorpionMountBuff : ModBuff
+        public class OreKingdomScorpionMountBuff : ModBuff
         {
             public override void SetStaticDefaults()
             {

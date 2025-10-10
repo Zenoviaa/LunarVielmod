@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Crossbows.Eckasect
 {
-    internal class Alvial : ModProjectile
+    public class Alvial : ModProjectile
     {
         public override void SetStaticDefaults()
         {

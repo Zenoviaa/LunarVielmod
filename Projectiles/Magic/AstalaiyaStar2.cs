@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class AstalaiyaStar2 : ModProjectile
+    public class AstalaiyaStar2 : ModProjectile
     {
         public override void SetStaticDefaults()
         {

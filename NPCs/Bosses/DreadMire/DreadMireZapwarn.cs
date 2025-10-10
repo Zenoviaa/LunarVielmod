@@ -10,7 +10,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
-    internal class DreadMireZapwarn : ModNPC
+    public class DreadMireZapwarn : ModNPC
     {
         public bool Down;
         public bool Lightning;

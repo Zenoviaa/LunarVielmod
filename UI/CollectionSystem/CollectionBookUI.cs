@@ -4,19 +4,19 @@ using Terraria.GameContent.UI.Elements;
 
 namespace Stellamod.UI.CollectionSystem
 {
-    internal class CollectionBookUI : UIPanel
+    public class CollectionBookUI : UIPanel
     {
         public Book book;
  
-        internal const int width = 432;
-        internal const int height = 800;
+        public const int width = 432;
+        public const int height = 800;
 
         public QuestTab questTab;
         public LoreTab loreTab;
         public CollectionTab collectionTab;
 
-        internal int RelativeLeft => Main.screenWidth / 2 - width / 2;
-        internal int RelativeTop => Main.screenHeight / 2 - height / 2 + 128;
+        public int RelativeLeft => Main.screenWidth / 2 - width / 2;
+        public int RelativeTop => Main.screenHeight / 2 - height / 2 + 128;
 
         public override void OnInitialize()
         {

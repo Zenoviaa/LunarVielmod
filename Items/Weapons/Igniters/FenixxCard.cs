@@ -2,7 +2,7 @@
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class FenixxCard : BaseIgniterCard
+    public class FenixxCard : BaseIgniterCard
     {
         public override void SetClassSwappedDefaults()
         {

@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
 {
-    internal class WindStorm : BaseWindProjectile
+    public class WindStorm : BaseWindProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetStaticDefaults()

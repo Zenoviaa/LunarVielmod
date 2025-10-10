@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 {
-    internal class VoidVortex : ModProjectile
+    public class VoidVortex : ModProjectile
     {
 		private static Asset<Texture2D> VorTexture;
 		public override string Texture => TextureRegistry.EmptyTexture;

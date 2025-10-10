@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Spears
 {
-    internal class GladiatorSpear : BaseSwingItemV2
+    public class GladiatorSpear : BaseSwingItemV2
     {
         public override void SetStaticDefaults()
         {

@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown
 {
-    internal class YourFiredProj : ModProjectile
+    public class YourFiredProj : ModProjectile
     {
         private PrimitiveTrail TrailDrawer;
         private ref float Timer => ref Projectile.ai[0];

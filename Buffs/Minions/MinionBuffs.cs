@@ -9,7 +9,7 @@ using Stellamod.Helpers;
 
 namespace Stellamod.Buffs.Minions
 {
-    internal abstract class MinionBuff<T> : ModBuff where T : ModProjectile
+    public abstract class MinionBuff<T> : ModBuff where T : ModProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -30,24 +30,24 @@ namespace Stellamod.Buffs.Minions
             }
         }
     }
-    internal class RevengenceMinionBuff : MinionBuff<RevengenceMinion> { }
-    internal class StringMinionBuff : MinionBuff<StringMinion> { }
-    internal class WillOWispMinionBuff : MinionBuff<WillOWispMinionProj> { }
-    internal class ArncharMinionBuff : MinionBuff<ArncharMinionProj> { }
+    public class RevengenceMinionBuff : MinionBuff<RevengenceMinion> { }
+    public class StringMinionBuff : MinionBuff<StringMinion> { }
+    public class WillOWispMinionBuff : MinionBuff<WillOWispMinionProj> { }
+    public class ArncharMinionBuff : MinionBuff<ArncharMinionProj> { }
 
-    internal class BucketScrapperMinionBuff : MinionBuff<BucketScrapperMinionProj> { }
+    public class BucketScrapperMinionBuff : MinionBuff<BucketScrapperMinionProj> { }
 
-    internal class AuroranSeekerMinionBuff : MinionBuff<AuroranSeekerMinionProj> { }
+    public class AuroranSeekerMinionBuff : MinionBuff<AuroranSeekerMinionProj> { }
 
-    internal class BabySwarmerMinionBuff : MinionBuff<BabySwarmerMinionProj> { }
+    public class BabySwarmerMinionBuff : MinionBuff<BabySwarmerMinionProj> { }
 
-    internal class ChromaCutterMinionBuff : MinionBuff<ChromaCutterMinionProj> { }
+    public class ChromaCutterMinionBuff : MinionBuff<ChromaCutterMinionProj> { }
 
-    internal class CloudMinionBuff : MinionBuff<CloudMinionProj> { }
+    public class CloudMinionBuff : MinionBuff<CloudMinionProj> { }
 
-    internal class DripplerMinionBuff : MinionBuff<DripplerMinionProj> { }
+    public class DripplerMinionBuff : MinionBuff<DripplerMinionProj> { }
 
-    internal class FireflyMinionBuff : MinionBuff<LilFly>
+    public class FireflyMinionBuff : MinionBuff<LilFly>
     {
         public override void SetStaticDefaults()
         {
@@ -94,35 +94,35 @@ namespace Stellamod.Buffs.Minions
         }
     }
 
-    internal class FCMinionBuff : MinionBuff<FCMinionProj> { }
+    public class FCMinionBuff : MinionBuff<FCMinionProj> { }
 
-    internal class HallowWandMinionBuff : MinionBuff<HallowWandMinionProj> { }
+    public class HallowWandMinionBuff : MinionBuff<HallowWandMinionProj> { }
 
-    internal class HMMinionBuff : MinionBuff<HMArncharMinionLeftProj> { }
+    public class HMMinionBuff : MinionBuff<HMArncharMinionLeftProj> { }
 
-    internal class IceboundMinionBuff : MinionBuff<IceboundMinionProj> { }
+    public class IceboundMinionBuff : MinionBuff<IceboundMinionProj> { }
 
-    internal class IrradiatedCreeperMinionBuff : MinionBuff<IrradiatedCreeperMinionProj> { }
+    public class IrradiatedCreeperMinionBuff : MinionBuff<IrradiatedCreeperMinionProj> { }
 
-    internal class IvyakenMinionBuff : MinionBuff<IvyakenMinionProj> { }
+    public class IvyakenMinionBuff : MinionBuff<IvyakenMinionProj> { }
 
-    internal class JellyMinionBuff : MinionBuff<JellyMinionProj> { }
+    public class JellyMinionBuff : MinionBuff<JellyMinionProj> { }
 
-    internal class LifeWandMinionBuff : MinionBuff<LifeWandMinionProj> { }
+    public class LifeWandMinionBuff : MinionBuff<LifeWandMinionProj> { }
 
-    internal class ManaWandMinionBuff : MinionBuff<ManaWandMinionProj> { }
+    public class ManaWandMinionBuff : MinionBuff<ManaWandMinionProj> { }
 
-    internal class MushroomStaveMinionBuff : MinionBuff<MushroomStaveMinionProj> { }
+    public class MushroomStaveMinionBuff : MinionBuff<MushroomStaveMinionProj> { }
 
-    internal class ReflectionSeekerMinionBuff : MinionBuff<ReflectionSeekerMinionProj> { }
+    public class ReflectionSeekerMinionBuff : MinionBuff<ReflectionSeekerMinionProj> { }
 
-    internal class SolMothMinionBuff : MinionBuff<SolMothMinionProj> { }
+    public class SolMothMinionBuff : MinionBuff<SolMothMinionProj> { }
 
-    internal class TheBurningRodMinionBuff : MinionBuff<TheBurningRodMinionProj> { }
+    public class TheBurningRodMinionBuff : MinionBuff<TheBurningRodMinionProj> { }
 
-  //  internal class ToxicHornetMinionBuff : MinionBuff<ToxicHornetMinionProj> { }
+  //  public class ToxicHornetMinionBuff : MinionBuff<ToxicHornetMinionProj> { }
 
-    internal class VampireTorchMinionBuff : MinionBuff<VampireTorchMinionProj>
+    public class VampireTorchMinionBuff : MinionBuff<VampireTorchMinionProj>
     {
         private int _vampiricTimer;
         public override void SetStaticDefaults()
@@ -191,23 +191,23 @@ namespace Stellamod.Buffs.Minions
         }
     }
 
-    internal class VehementMinionBuff : MinionBuff<VehementMinionProj> { }
+    public class VehementMinionBuff : MinionBuff<VehementMinionProj> { }
 
-    internal class VoidMinionBuff : MinionBuff<VoidMinionProj> { }
+    public class VoidMinionBuff : MinionBuff<VoidMinionProj> { }
 
-    internal class ProbeMinionBuff : MinionBuff<ProbeMinionProj> { }
+    public class ProbeMinionBuff : MinionBuff<ProbeMinionProj> { }
 
-    internal class PotOfGreedMinionBuff : MinionBuff<PotOfGreedMinionProj> { }
+    public class PotOfGreedMinionBuff : MinionBuff<PotOfGreedMinionProj> { }
 
-    internal class AlcadWandMinionBuff : MinionBuff<AlcadWandMinionProj> { }
+    public class AlcadWandMinionBuff : MinionBuff<AlcadWandMinionProj> { }
 
-    internal class JacksonPollockMinionBuff : MinionBuff<JacksonPollockMinionProj> { }
+    public class JacksonPollockMinionBuff : MinionBuff<JacksonPollockMinionProj> { }
 
-    internal class XScissorMinionBuff : MinionBuff<XScissorMinionProj> { }
+    public class XScissorMinionBuff : MinionBuff<XScissorMinionProj> { }
 
-    internal class SerpentMinionBuff : MinionBuff<SerpentMinionProj> { }
+    public class SerpentMinionBuff : MinionBuff<SerpentMinionProj> { }
 
-    internal class PegasusMinionBuff : MinionBuff<PegasusMinionProj> { }
+    public class PegasusMinionBuff : MinionBuff<PegasusMinionProj> { }
 
-    internal class CentipedeMinionBuff : MinionBuff<CentipedeMinionProj> { }
+    public class CentipedeMinionBuff : MinionBuff<CentipedeMinionProj> { }
 }

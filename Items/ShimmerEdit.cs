@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items
 {
-    internal class ShimmerEdit : ModSystem
+    public class ShimmerEdit : ModSystem
     {
         public override void Load()
         {

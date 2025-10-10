@@ -8,7 +8,7 @@ using Stellamod.Trails;
 
 namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
 {
-    internal class WingAirblast : BaseWindProjectile
+    public class WingAirblast : BaseWindProjectile
     {
         public override void SetStaticDefaults()
         {

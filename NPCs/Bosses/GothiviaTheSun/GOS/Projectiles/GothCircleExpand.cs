@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 {
-    internal class GothCircleExpand : ModProjectile,
+    public class GothCircleExpand : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture

@@ -6,7 +6,7 @@ using Terraria;
 
 namespace Stellamod.Core.Shaders
 {
-    internal class FirePixelShader : BaseShader
+    public class FirePixelShader : BaseShader
     {
         private static FirePixelShader _instance;
         public static FirePixelShader Instance

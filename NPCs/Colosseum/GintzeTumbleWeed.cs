@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Colosseum
 {
-    internal class GintzeTumbleWeed : BaseColosseumNPC
+    public class GintzeTumbleWeed : BaseColosseumNPC
     {
         private int _frame;
         private enum AIState

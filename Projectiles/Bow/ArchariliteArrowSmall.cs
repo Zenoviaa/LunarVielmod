@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class ArchariliteArrowSmall : ModProjectile
+    public class ArchariliteArrowSmall : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[1];
         public override void SetStaticDefaults()

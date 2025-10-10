@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Runes
 {
-    internal class RuneOfStealthGlow : ModProjectile
+    public class RuneOfStealthGlow : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];
@@ -68,7 +68,7 @@ namespace Stellamod.Items.Accessories.Runes
         }
     }
 
-    internal class RuneOfStealthPlayer : ModPlayer
+    public class RuneOfStealthPlayer : ModPlayer
     {
         public bool hasStealthRune;
         public float stealthRuneTimer;
@@ -123,7 +123,7 @@ namespace Stellamod.Items.Accessories.Runes
         }
     }
 
-    internal class RuneOfStealth : BaseRune
+    public class RuneOfStealth : BaseRune
     {
         public override void SetDefaults()
         {

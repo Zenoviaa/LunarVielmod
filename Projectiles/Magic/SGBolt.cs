@@ -14,7 +14,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class SGBolt : ModProjectile
+    public class SGBolt : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         bool Moved;

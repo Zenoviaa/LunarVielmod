@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles.Spears
 {
 
-    internal class ScarecrowSaberProg : ModProjectile
+    public class ScarecrowSaberProg : ModProjectile
     {
         bool Moved;
 

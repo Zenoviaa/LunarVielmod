@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Quest.Merena
 {
-    internal class Give100DustBagsC : ModItem
+    public class Give100DustBagsC : ModItem
     {
         public override void SetDefaults()
         {

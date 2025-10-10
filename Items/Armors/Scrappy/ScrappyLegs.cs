@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Armors.Scrappy
 {
     [AutoloadEquip(EquipType.Legs)]
-    internal class ScrappyLegs : ModItem
+    public class ScrappyLegs : ModItem
     {
         public override void SetDefaults()
         {

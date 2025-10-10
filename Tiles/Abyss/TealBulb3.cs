@@ -10,7 +10,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles.Abyss
 {
-    internal class TealBulb3 : ModTile
+    public class TealBulb3 : ModTile
     {
         public override void SetStaticDefaults()
         {

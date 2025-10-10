@@ -14,7 +14,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles
 {
-    internal class CauldronTile : ModTile
+    public class CauldronTile : ModTile
     {
         private float _lastTime;
         private int _frameCounter;

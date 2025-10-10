@@ -12,7 +12,7 @@ using Stellamod.Helpers;
 
 namespace Stellamod.Items.Consumables
 {
-    internal class IllurineBrew : ModItem
+    public class IllurineBrew : ModItem
     {
         public override void SetStaticDefaults()
         {

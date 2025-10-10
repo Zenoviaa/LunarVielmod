@@ -19,7 +19,7 @@ using Stellamod.Items.Ores;
 
 namespace Stellamod.Items.Weapons.Melee.Greatswords
 {
-    internal class Chillrend : ClassSwapItem
+    public class Chillrend : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Generic;

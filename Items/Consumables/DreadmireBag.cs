@@ -16,7 +16,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-    internal class DreadmireBag : ModItem
+    public class DreadmireBag : ModItem
     {
         public override void SetStaticDefaults()
         {

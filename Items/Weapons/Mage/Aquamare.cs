@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class Aquamare : ClassSwapItem
+    public class Aquamare : ClassSwapItem
     {
         public int dir;
         public override DamageClass AlternateClass => DamageClass.Ranged;

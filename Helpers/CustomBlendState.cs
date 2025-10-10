@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Stellamod.Helpers
 {
-    internal static class CustomBlendState
+    public static class CustomBlendState
     {
         private static BlendState _multiply;
         public static BlendState Multiply

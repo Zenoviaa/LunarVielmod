@@ -11,14 +11,14 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviLightningProj : ModProjectile, IPixelPrimitiveDrawer
+    public class NiiviLightningProj : ModProjectile, IPixelPrimitiveDrawer
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];
         private float Lifetime => 24;
         private Vector2[] LightningPos; 
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
 
         public override void SetDefaults()
         {

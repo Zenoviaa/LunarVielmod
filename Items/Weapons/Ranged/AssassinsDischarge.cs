@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class AssassinsDischarge : ClassSwapItem
+    public class AssassinsDischarge : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;

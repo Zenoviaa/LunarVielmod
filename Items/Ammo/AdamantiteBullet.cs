@@ -10,7 +10,7 @@ using Stellamod.Projectiles.Ammo;
 
 namespace Stellamod.Items.Ammo
 {
-    internal class AdamantiteBullet : ModItem
+    public class AdamantiteBullet : ModItem
     {
         public override void SetStaticDefaults()
         {

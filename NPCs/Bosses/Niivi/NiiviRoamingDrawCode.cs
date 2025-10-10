@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi
 {
-    internal partial class NiiviRoaming
+    public partial class NiiviRoaming
     {
         private int _segmentIndex;
         public const string BaseTexturePath = "Stellamod/NPCs/Bosses/Niivi/";

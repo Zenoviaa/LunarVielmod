@@ -12,7 +12,7 @@ using Stellamod.Core.ScorpionMountSystem;
 namespace Stellamod.UI.GunHolsterSystem
 {
     [Autoload(Side = ModSide.Client)]
-    internal class ScorpionHolsterUISystem : BaseUISystem
+    public class ScorpionHolsterUISystem : BaseUISystem
     {
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
@@ -51,7 +51,7 @@ namespace Stellamod.UI.GunHolsterSystem
             CloseUI();
         }
 
-        internal void ToggleUI()
+        public void ToggleUI()
         {
             if (_userInterface.CurrentState != null)
             {
@@ -63,7 +63,7 @@ namespace Stellamod.UI.GunHolsterSystem
             }
         }
 
-        internal void OpenUI()
+        public void OpenUI()
         {
             //Set State
             TakeSlot();
@@ -71,7 +71,7 @@ namespace Stellamod.UI.GunHolsterSystem
             _userInterface.SetState(scorpionHolsterUIState);
         }
 
-        internal void CloseUI()
+        public void CloseUI()
         {
             ClearSlot();
             _userInterface.SetState(null);

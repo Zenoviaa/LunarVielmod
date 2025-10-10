@@ -4,7 +4,7 @@ using Terraria;
 
 namespace Stellamod.Core.Shaders
 {
-    internal class GlowPillarShader : BaseShader
+    public class GlowPillarShader : BaseShader
     {
         private static GlowPillarShader _instance;
         public static GlowPillarShader Instance

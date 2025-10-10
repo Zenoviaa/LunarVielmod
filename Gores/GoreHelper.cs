@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Gores
 {
-    internal class GoreHelper
+    public class GoreHelper
     {
         public static int TypeFallingLeafWhite => ModContent.GoreType<FallingLeafWhite>();
         public static int TypeFallingLeafRed => ModContent.GoreType<FallingLeafRed>();

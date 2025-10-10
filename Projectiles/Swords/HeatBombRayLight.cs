@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords
 {
-    internal class HeatBombRayLight : ModNPC
+    public class HeatBombRayLight : ModNPC
     {
         public bool Down;
         public float Rot;

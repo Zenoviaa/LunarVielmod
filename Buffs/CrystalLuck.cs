@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-    internal class CrystalLuck : ModBuff
+    public class CrystalLuck : ModBuff
     {
         public override void SetStaticDefaults()
         {

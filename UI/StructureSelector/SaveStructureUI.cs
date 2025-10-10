@@ -4,16 +4,16 @@ using Terraria.GameContent.UI.Elements;
 
 namespace Stellamod.UI.StructureSelector
 {
-    internal class SaveStructureUI : UIPanel
+    public class SaveStructureUI : UIPanel
     {
         private SaveStructureButton _saveStructureButton;
         private UIInputTextField _textBox;
 
-        internal const int width = 480;
-        internal const int height = 155;
+        public const int width = 480;
+        public const int height = 155;
 
-        internal int RelativeLeft => Main.screenWidth / 2 - width / 2;
-        internal int RelativeTop => Main.screenHeight / 2 - height / 2;
+        public int RelativeLeft => Main.screenWidth / 2 - width / 2;
+        public int RelativeTop => Main.screenHeight / 2 - height / 2;
         public string FileName => _textBox.Text;
         public UIInputTextField Textbox => _textBox;
         public SaveStructureUI() : base()

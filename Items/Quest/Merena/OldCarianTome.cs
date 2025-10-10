@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Quest.Merena
 {
-    internal class OldCarianTome : ModItem
+    public class OldCarianTome : ModItem
     {
         public override void SetDefaults()
         {

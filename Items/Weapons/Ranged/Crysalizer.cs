@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class Crysalizer : ClassSwapItem
+    public class Crysalizer : ClassSwapItem
     {
         public int WinterboundArrow;
 

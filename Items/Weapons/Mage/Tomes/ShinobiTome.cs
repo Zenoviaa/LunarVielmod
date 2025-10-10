@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage.Tomes
 {
-    internal class ShinobiTome : BaseMagicTomeItem
+    public class ShinobiTome : BaseMagicTomeItem
     {
         public override void SetDefaults()
         {
@@ -19,7 +19,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
         }
     }
 
-    internal class ShinobiTomeTome : BaseMagicTomeProjectile
+    public class ShinobiTomeTome : BaseMagicTomeProjectile
     {
         private float _dustTimer;
         public override string Texture => this.PathHere() + "/ShinobiTome";

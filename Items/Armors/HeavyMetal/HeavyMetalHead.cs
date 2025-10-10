@@ -11,7 +11,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.HeavyMetal
 {
-    internal class HeavyMetalPlayer : ModPlayer
+    public class HeavyMetalPlayer : ModPlayer
     {
         public bool hasSetBonus;
         public override void ResetEffects()

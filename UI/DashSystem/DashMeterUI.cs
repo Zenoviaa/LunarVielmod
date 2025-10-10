@@ -12,7 +12,7 @@ namespace Stellamod.UI.DashSystem
 {
     /*
     [Autoload(Side = ModSide.Client)]
-    internal class DashMeter : ModSystem
+    public class DashMeter : ModSystem
     {
         private UserInterface _interface;
         private DashMeterUI _dashMeterUI;
@@ -67,7 +67,7 @@ namespace Stellamod.UI.DashSystem
         }
     }
 
-    internal class DashMeterUI : UIState
+    public class DashMeterUI : UIState
     {
         private float _prevDashCount;
         private float _flashStrength;

@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    internal class PegasusMinionProj : ModProjectile
+    public class PegasusMinionProj : ModProjectile
     {
         private enum ActionState
         {

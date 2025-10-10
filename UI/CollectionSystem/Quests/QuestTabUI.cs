@@ -6,18 +6,18 @@ using Terraria.ModLoader.UI.Elements;
 
 namespace Stellamod.UI.CollectionSystem.Quests
 {
-    internal class QuestTabUI : UIPanel
+    public class QuestTabUI : UIPanel
     {
         private UIList _uiList;
         private UIPanel _panel;
         private UIGrid _slotGrid;
         private FancyScrollbar _scrollbar;
 
-        internal const int width = 480;
-        internal const int height = 155;
+        public const int width = 480;
+        public const int height = 155;
 
-        internal int RelativeLeft => Main.screenWidth / 2 - width / 2 - 64;
-        internal int RelativeTop => Main.screenHeight / 2 - height / 2 - 196;
+        public int RelativeLeft => Main.screenWidth / 2 - width / 2 - 64;
+        public int RelativeTop => Main.screenHeight / 2 - height / 2 - 196;
         public float Glow { get; set; }
         public override void OnInitialize()
         {

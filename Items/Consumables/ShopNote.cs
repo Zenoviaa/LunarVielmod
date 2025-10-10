@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-    internal class ShopNote : ModItem
+    public class ShopNote : ModItem
     {
         public override void SetDefaults()
         {

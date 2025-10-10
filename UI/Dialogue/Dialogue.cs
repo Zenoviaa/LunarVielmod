@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.UI.Dialogue
 {
-    internal abstract class Dialogue
+    public abstract class Dialogue
     {
         public DialogueSystem DialogueSystem => ModContent.GetInstance<DialogueSystem>();
         public string GetLocalizedText(string title)

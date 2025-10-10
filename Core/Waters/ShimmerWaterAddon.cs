@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Waters
 {
-    internal class ShimmerWaterAddon : WaterAddon
+    public class ShimmerWaterAddon : WaterAddon
     {
         public static bool ShouldShow
         {

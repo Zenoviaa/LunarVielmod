@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown
 {
-    internal abstract class DogmaSentenceProj : ModProjectile
+    public abstract class DogmaSentenceProj : ModProjectile
     {
         private float Timer
         {
@@ -57,7 +57,7 @@ namespace Stellamod.Projectiles.Thrown
         }
     }
 
-    internal class DogmaSentence1 : DogmaSentenceProj { }
-    internal class DogmaSentence2 : DogmaSentenceProj { }
-    internal class DogmaSentence3 : DogmaSentenceProj { }
+    public class DogmaSentence1 : DogmaSentenceProj { }
+    public class DogmaSentence2 : DogmaSentenceProj { }
+    public class DogmaSentence3 : DogmaSentenceProj { }
 }

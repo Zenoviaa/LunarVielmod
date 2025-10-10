@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Camera
 {
-    internal class SmoothCameraModifier : ICameraModifier
+    public class SmoothCameraModifier : ICameraModifier
     {
         private Vector2? _oldCameraPosition;
         public string UniqueIdentity => "crystalmoon_camerasmooth";

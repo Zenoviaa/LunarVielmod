@@ -9,7 +9,7 @@ using Terraria.UI;
 namespace Stellamod.UI.ToolsSystem
 {
     [Autoload(Side = ModSide.Client)]
-    internal class ToolsUISystem : ModSystem
+    public class ToolsUISystem : ModSystem
     {
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
@@ -35,7 +35,7 @@ namespace Stellamod.UI.ToolsSystem
             }
         }
 
-        internal void ToggleUI()
+        public void ToggleUI()
         {
             if (_userInterface?.CurrentState != null)
             {
@@ -47,7 +47,7 @@ namespace Stellamod.UI.ToolsSystem
             }
         }
 
-        internal void OpenUI()
+        public void OpenUI()
         {  
             _userInterface.SetState(toolsUIState);
         }

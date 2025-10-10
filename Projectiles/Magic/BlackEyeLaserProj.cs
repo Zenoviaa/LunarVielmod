@@ -10,9 +10,9 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class BlackEyeLaserProj  : ModProjectile
+    public class BlackEyeLaserProj  : ModProjectile
     {
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
 
         public override string Texture => TextureRegistry.EmptyTexture;

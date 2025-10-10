@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Discs
 {
-    internal class AcidicNightmaresDisc : BaseDiscItem
+    public class AcidicNightmaresDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/Acidic_Nightmares";
         public override void SetDiscDefaults()
@@ -16,12 +16,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class AcidicNightmaresDiscTile : BaseRecordTile
+    public class AcidicNightmaresDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class AurelusTempleDisc : BaseDiscItem
+    public class AurelusTempleDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/AurelusTemple";
         public override void SetDiscDefaults()
@@ -33,12 +33,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class AurelusTempleDiscTile : BaseRecordTile
+    public class AurelusTempleDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class AcidicTerrorsDisc : BaseDiscItem
+    public class AcidicTerrorsDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/Acidic_Terors";
         public override void SetDiscDefaults()
@@ -50,12 +50,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class AcidicTerrorsDiscTile : BaseRecordTile
+    public class AcidicTerrorsDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class ADemiseDisc : BaseDiscItem
+    public class ADemiseDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/ADemise";
         public override void SetDiscDefaults()
@@ -67,13 +67,13 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class ADemiseDiscTile : BaseRecordTile
+    public class ADemiseDiscTile : BaseRecordTile
     {
 
     }
 
 
-    internal class AlcadizHurricaneDisc : BaseDiscItem
+    public class AlcadizHurricaneDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/AlcadizHurricane";
         public override void SetDiscDefaults()
@@ -85,12 +85,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class AlcadizHurricaneDiscTile : BaseRecordTile
+    public class AlcadizHurricaneDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class AlcaricFoxDisc : BaseDiscItem
+    public class AlcaricFoxDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/AlcaricFox";
         public override void SetDiscDefaults()
@@ -102,12 +102,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class AlcaricFoxDiscTile : BaseRecordTile
+    public class AlcaricFoxDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class AshotiDisc : BaseDiscItem
+    public class AshotiDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/Ashoti";
         public override void SetDiscDefaults()
@@ -119,12 +119,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class AshotiDiscTile : BaseRecordTile
+    public class AshotiDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class BloodCathedralDisc : BaseDiscItem
+    public class BloodCathedralDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/BloodCathedral";
         public override void SetDiscDefaults()
@@ -136,12 +136,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class BloodCathedralDiscTile : BaseRecordTile
+    public class BloodCathedralDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class Boss6Disc : BaseDiscItem
+    public class Boss6Disc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/Boss6";
         public override void SetDiscDefaults()
@@ -153,12 +153,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class Boss6DiscTile : BaseRecordTile
+    public class Boss6DiscTile : BaseRecordTile
     {
 
     }
 
-    internal class CatacombsDisc : BaseDiscItem
+    public class CatacombsDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/Catacombs";
         public override void SetDiscDefaults()
@@ -170,12 +170,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class CatacombsDiscTile : BaseRecordTile
+    public class CatacombsDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class CindersparkDisc : BaseDiscItem
+    public class CindersparkDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/Cinderspark";
         public override void SetDiscDefaults()
@@ -187,12 +187,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class CindersparkDiscTile : BaseRecordTile
+    public class CindersparkDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class CountingStarsDisc : BaseDiscItem
+    public class CountingStarsDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/CountingStars";
         public override void SetDiscDefaults()
@@ -204,12 +204,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class CountingStarsDiscTile : BaseRecordTile
+    public class CountingStarsDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class DaedusDisc : BaseDiscItem
+    public class DaedusDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/Daedus";
         public override void SetDiscDefaults()
@@ -221,12 +221,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class DaedusDiscTile : BaseRecordTile
+    public class DaedusDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class DreadHeartDisc : BaseDiscItem
+    public class DreadHeartDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/DreadHeart";
         public override void SetDiscDefaults()
@@ -238,12 +238,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class DreadHeartDiscTile : BaseRecordTile
+    public class DreadHeartDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class EndingDisc : BaseDiscItem
+    public class EndingDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/Ending";
         public override void SetDiscDefaults()
@@ -255,12 +255,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class EndingDiscTile : BaseRecordTile
+    public class EndingDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class EreshkigalDisc : BaseDiscItem
+    public class EreshkigalDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/Ereshkigal";
         public override void SetDiscDefaults()
@@ -272,12 +272,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class EreshkigalDiscTile : BaseRecordTile
+    public class EreshkigalDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class GintzicaneDisc : BaseDiscItem
+    public class GintzicaneDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/Gintzicane";
         public override void SetDiscDefaults()
@@ -289,13 +289,13 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class GintzicaneDiscTile : BaseRecordTile
+    public class GintzicaneDiscTile : BaseRecordTile
     {
 
     }
 
 
-    internal class GothiviaDisc : BaseDiscItem
+    public class GothiviaDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/Gothivia";
         public override void SetDiscDefaults()
@@ -307,12 +307,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class GothiviaDiscTile : BaseRecordTile
+    public class GothiviaDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class GovheilCastleDisc : BaseDiscItem
+    public class GovheilCastleDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/GovheilCastle";
         public override void SetDiscDefaults()
@@ -324,12 +324,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class GovheilCastleDiscTile : BaseRecordTile
+    public class GovheilCastleDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class HidingInTheShadowsDisc : BaseDiscItem
+    public class HidingInTheShadowsDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/Hidding_In_The_Shadows";
         public override void SetDiscDefaults()
@@ -341,12 +341,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class HidingInTheShadowsDiscTile : BaseRecordTile
+    public class HidingInTheShadowsDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class IrradiaDisc : BaseDiscItem
+    public class IrradiaDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/Irradia";
         public override void SetDiscDefaults()
@@ -358,12 +358,12 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class IrradiaDiscTile : BaseRecordTile
+    public class IrradiaDiscTile : BaseRecordTile
     {
 
     }
 
-    internal class IshtarDisc : BaseDiscItem
+    public class IshtarDisc : BaseDiscItem
     {
         public override string MusicPath => "Assets/Music/Ishtar";
         public override void SetDiscDefaults()
@@ -375,7 +375,7 @@ namespace Stellamod.Items.Discs
         }
     }
 
-    internal class IshtarDiscTile : BaseRecordTile
+    public class IshtarDiscTile : BaseRecordTile
     {
 
     }

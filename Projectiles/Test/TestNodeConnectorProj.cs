@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Test
 {
-    internal class TestNodeConnectorProj : ModProjectile
+    public class TestNodeConnectorProj : ModProjectile
     {
         Vector2[] ConnectorPos;
         int FrameTick;

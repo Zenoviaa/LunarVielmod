@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles
 {
-    internal class HavocLaserWarnProj : ModProjectile
+    public class HavocLaserWarnProj : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
 

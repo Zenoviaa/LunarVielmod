@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    internal class BonfireProj : ModProjectile
+    public class BonfireProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

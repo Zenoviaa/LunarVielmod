@@ -16,7 +16,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.TilesNew.RainforestTiles
 {
-    internal class RainforestTreeSapling : ModTile
+    public class RainforestTreeSapling : ModTile
     {
 
         public override void SetStaticDefaults()
@@ -117,7 +117,7 @@ namespace Stellamod.TilesNew.RainforestTiles
         }
     }
 
-    internal class RainForestTreeTopSystem : ModSystem
+    public class RainForestTreeTopSystem : ModSystem
     {
         private List<Point> _treeTopsToNotDraw;
         public override void ClearWorld()
@@ -163,7 +163,7 @@ namespace Stellamod.TilesNew.RainforestTiles
         }
     }
 
-    internal class RainforestTree : ModTile
+    public class RainforestTree : ModTile
     {
 
         private UnifiedRandom _random;

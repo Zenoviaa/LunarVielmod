@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Quest.Merena
 {
-    internal class MakeUltimateScroll : ModItem
+    public class MakeUltimateScroll : ModItem
     {
         public override void SetDefaults()
         {

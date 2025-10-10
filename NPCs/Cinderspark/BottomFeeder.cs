@@ -28,7 +28,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Cinderspark
 {
-    internal class BottomFeeder : ModNPC
+    public class BottomFeeder : ModNPC
     {
         private ref float ai_Counter => ref NPC.ai[0];
         public override void SetStaticDefaults()

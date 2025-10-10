@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
-    internal class LilStinger : ClassSwapItem
+    public class LilStinger : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Ranged;

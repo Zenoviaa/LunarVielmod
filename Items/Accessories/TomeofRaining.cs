@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-    internal class TomeofRaining : ModItem
+    public class TomeofRaining : ModItem
     {
         public override void SetDefaults()
         {

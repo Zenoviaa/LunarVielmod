@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Cinderspark
 {
-    internal class CharredSkulls : ModNPC
+    public class CharredSkulls : ModNPC
     {
         public override void SetStaticDefaults()
         {

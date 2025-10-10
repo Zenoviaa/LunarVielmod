@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    internal class ClimateTornadoProj : ModProjectile
+    public class ClimateTornadoProj : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[1];
         private float Scale = 0f;

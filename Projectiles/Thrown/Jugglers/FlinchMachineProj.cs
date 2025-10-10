@@ -17,7 +17,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown.Jugglers
 {
-    internal class FlinchMachineProj : BaseJugglerProjectile
+    public class FlinchMachineProj : BaseJugglerProjectile
     {
         private ref float HitCount => ref Projectile.ai[2];
         public override void SetStaticDefaults()

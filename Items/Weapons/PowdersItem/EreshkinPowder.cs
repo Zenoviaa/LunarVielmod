@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
-    internal class EreshkinPowder : BasePowder
+    public class EreshkinPowder : BasePowder
     {
         public override void SetDefaults()
         {

@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    internal class StarTestProj : ModProjectile
+    public class StarTestProj : ModProjectile
     {
         ref float Timer => ref Projectile.ai[0];
         public override void SetDefaults()

@@ -11,7 +11,7 @@ using Terraria.UI;
 namespace Stellamod.UI.CollectionSystem
 {
     [Autoload(Side = ModSide.Client)]
-    internal class CollectionBookUISystem : BaseUISystem
+    public class CollectionBookUISystem : BaseUISystem
     {
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
@@ -118,7 +118,7 @@ namespace Stellamod.UI.CollectionSystem
             CloseBookUI();
         }
 
-        internal void ToggleUI()
+        public void ToggleUI()
         {
             if (collectionBookUI.bookUI.book.IsOpen())
             {
@@ -130,7 +130,7 @@ namespace Stellamod.UI.CollectionSystem
             }
         }
 
-        internal void OpenBookUI()
+        public void OpenBookUI()
         {
             //Set State
             TakeSlot();
@@ -138,7 +138,7 @@ namespace Stellamod.UI.CollectionSystem
             collectionBookUI.bookUI.book.Open();
         }
 
-        internal void CloseBookUI()
+        public void CloseBookUI()
         {
             ClearSlot();
             collectionBookUI.bookUI.book.Close();
@@ -147,31 +147,31 @@ namespace Stellamod.UI.CollectionSystem
         }
 
 
-        internal void ReallyCloseBookUI()
+        public void ReallyCloseBookUI()
         {
             _userInterface.SetState(null);
             _tabsUserInterface.SetState(null);
             _rightInfoUserInterface.SetState(null);
         }
 
-        internal void OpenHudUI()
+        public void OpenHudUI()
         {
             _hudUserInterface.SetState(collectionBookIconUI);
         }
 
-        internal void CloseHudUI()
+        public void CloseHudUI()
         {
             _hudUserInterface.SetState(null);
         }
 
-        internal void OpenCollectionTabUI()
+        public void OpenCollectionTabUI()
         {
             collectionItemTabUI.ui.Glow = 1f;
             _tabsUserInterface.SetState(collectionItemTabUI);
             _rightInfoUserInterface.SetState(null);
         }
 
-        internal void OpenRecipesInfoUI(Item item)
+        public void OpenRecipesInfoUI(Item item)
         {
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/BookPageTurn");
             soundStyle.PitchVariance = 0.1f;
@@ -182,7 +182,7 @@ namespace Stellamod.UI.CollectionSystem
             _rightInfoUserInterface.SetState(collectionRecipeInfoUI);
         }
 
-        internal void OpenQuestsTabUI()
+        public void OpenQuestsTabUI()
         {
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/BookPageTurn");
             soundStyle.PitchVariance = 0.1f;
@@ -192,7 +192,7 @@ namespace Stellamod.UI.CollectionSystem
             _rightInfoUserInterface.SetState(null);
         }
 
-        internal void OpenQuestInfoUI(Quest quest)
+        public void OpenQuestInfoUI(Quest quest)
         {
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/BookPageTurn");
             soundStyle.PitchVariance = 0.1f;
@@ -204,17 +204,17 @@ namespace Stellamod.UI.CollectionSystem
             _rightInfoUserInterface.SetState(activeQuestUIState);
         }
 
-        internal void OpenLoreTabUI()
+        public void OpenLoreTabUI()
         {
 
         }
 
-        internal void CloseTabUI()
+        public void CloseTabUI()
         {
             _tabsUserInterface.SetState(null);
         }
 
-        internal void CloseRightUI()
+        public void CloseRightUI()
         {
             _rightInfoUserInterface.SetState(null);
         }

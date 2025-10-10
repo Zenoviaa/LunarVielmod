@@ -11,7 +11,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.Zui.Projectiles
 {
-    internal class ZuiLASERWARN : ModNPC
+    public class ZuiLASERWARN : ModNPC
     {
         public bool Down;
         public bool Lightning;

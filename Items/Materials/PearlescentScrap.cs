@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-    internal class PearlescentScrap : ModItem
+    public class PearlescentScrap : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

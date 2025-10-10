@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage.Tomes
 {
-    internal class SandStorm : BaseMagicTomeItem
+    public class SandStorm : BaseMagicTomeItem
     {
         public override void SetDefaults()
         {
@@ -18,7 +18,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
             Item.shootSpeed = 10f;
         }
     }
-    internal class SandStormTome : BaseMagicTomeProjectile
+    public class SandStormTome : BaseMagicTomeProjectile
     {
         private float _dustTimer;
         public override string Texture => this.PathHere() + "/SandStorm";

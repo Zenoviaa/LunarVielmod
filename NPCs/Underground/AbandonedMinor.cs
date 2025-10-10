@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Underground
 {
-    internal class AbandonedMinor : ModNPC
+    public class AbandonedMinor : ModNPC
     {
         private int _lastDirection;
         private float _waitTimer;

@@ -11,7 +11,7 @@ using Stellamod.Buffs;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class MoonFlameSlashProj : ModProjectile
+    public class MoonFlameSlashProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

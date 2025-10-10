@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-    internal class RadianceStone : ModItem
+    public class RadianceStone : ModItem
     {
         public override void SetStaticDefaults()
         {

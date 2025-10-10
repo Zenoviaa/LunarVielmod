@@ -2,7 +2,7 @@
 
 namespace Stellamod.UI.ArmorShopSystem
 {
-    internal class ArmorShopUIState : UIState
+    public class ArmorShopUIState : UIState
     {
         public ArmorShopUI ui;
         public ArmorShopUIState() : base()

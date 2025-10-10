@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviThundercloudProj : ModProjectile
+    public class NiiviThundercloudProj : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
 

@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviFrostCircleProj: ModProjectile,
+    public class NiiviFrostCircleProj: ModProjectile,
         IPixelPrimitiveDrawer
     {
         public override string Texture => TextureRegistry.EmptyTexture;
@@ -65,7 +65,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             return Color.LightCyan * Alpha;
         }
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, 

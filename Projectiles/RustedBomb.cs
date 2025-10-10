@@ -6,7 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 namespace Stellamod.Projectiles
 {
-    internal class RustedBomb : ModProjectile
+    public class RustedBomb : ModProjectile
     {
         public override void SetStaticDefaults()
         {

@@ -14,7 +14,7 @@ using Terraria;
 
 namespace Stellamod.Projectiles.Thrown
 {
-    internal class PumkinBolt :  ModProjectile
+    public class PumkinBolt :  ModProjectile
     {
         bool Moved;
         public PrimDrawer TrailDrawer { get; private set; } = null;

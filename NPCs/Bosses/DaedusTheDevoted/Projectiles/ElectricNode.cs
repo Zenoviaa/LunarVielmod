@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
-    internal class ElectricNode : ModProjectile
+    public class ElectricNode : ModProjectile
     {
         private float _scale;
         private float _width;

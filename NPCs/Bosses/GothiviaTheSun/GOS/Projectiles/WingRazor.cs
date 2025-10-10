@@ -16,7 +16,7 @@ using Stellamod.Trails;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 {
-    internal class WingRazor : ModProjectile
+    public class WingRazor : ModProjectile
     {
 
         private ref float ai_Counter => ref Projectile.ai[0];

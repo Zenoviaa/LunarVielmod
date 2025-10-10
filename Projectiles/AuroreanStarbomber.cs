@@ -17,7 +17,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles
 {
-    internal class AuroreanStarbomber : ModProjectile
+    public class AuroreanStarbomber : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         bool Moved;

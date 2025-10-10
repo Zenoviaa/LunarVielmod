@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Wings
 {
-    internal class AntlionWingsProj : WingDefaultProjectile
+    public class AntlionWingsProj : WingDefaultProjectile
     {
         public override void SetStaticDefaults()
         {

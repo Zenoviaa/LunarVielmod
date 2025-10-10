@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class FungalFlaceBall : ModProjectile
+    public class FungalFlaceBall : ModProjectile
     {
 
 

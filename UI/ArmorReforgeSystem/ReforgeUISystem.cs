@@ -11,7 +11,7 @@ using Terraria.UI;
 namespace Stellamod.UI.ArmorReforgeSystem
 {
     [Autoload(Side = ModSide.Client)]
-    internal class ReforgeUISystem : BaseUISystem
+    public class ReforgeUISystem : BaseUISystem
     {
         private Vector2 _worldPos;
         private GameTime _lastUpdateUiGameTime;
@@ -49,7 +49,7 @@ namespace Stellamod.UI.ArmorReforgeSystem
             }
         }
 
-        internal void ToggleUI()
+        public void ToggleUI()
         {
             if (_userInterface.CurrentState != null)
             {
@@ -96,14 +96,14 @@ namespace Stellamod.UI.ArmorReforgeSystem
             numText.lifeTime = 60;
         }
 
-        internal void OpenUI()
+        public void OpenUI()
         {
             //Set State
             _worldPos = Main.LocalPlayer.position;
             _userInterface.SetState(reforgeUIState);
         }
 
-        internal void CloseUI()
+        public void CloseUI()
         {
             _userInterface.SetState(null);
         }

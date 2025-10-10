@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Special.Sirestias
 {
-    internal class SiresMail : ModItem
+    public class SiresMail : ModItem
     {
         public override void SetDefaults()
         {
@@ -466,7 +466,7 @@ namespace Stellamod.Items.Special.Sirestias
 
 
 
-    internal class CallDialogue9 : Dialogue
+    public class CallDialogue9 : Dialogue
     {
         //The number of steps in this dialogue
         public override int Length => 1;
@@ -522,7 +522,7 @@ namespace Stellamod.Items.Special.Sirestias
 
 
 
-    internal class CallDialogue10 : Dialogue
+    public class CallDialogue10 : Dialogue
     {
         //The number of steps in this dialogue
         public override int Length => 3;
@@ -597,7 +597,7 @@ namespace Stellamod.Items.Special.Sirestias
 
 
 
-    internal class CallDialogue11 : Dialogue
+    public class CallDialogue11 : Dialogue
     {
         //The number of steps in this dialogue
         public override int Length => 3;
@@ -673,7 +673,7 @@ namespace Stellamod.Items.Special.Sirestias
 
 
 
-    internal class CallDialogue12 : Dialogue
+    public class CallDialogue12 : Dialogue
     {
         //The number of steps in this dialogue
         public override int Length => 1;
@@ -724,7 +724,7 @@ namespace Stellamod.Items.Special.Sirestias
 
 
 
-    internal class CallDialogue13 : Dialogue
+    public class CallDialogue13 : Dialogue
     {
         //The number of steps in this dialogue
         public override int Length => 2;
@@ -778,7 +778,7 @@ namespace Stellamod.Items.Special.Sirestias
 
     }
 
-    internal class CallDialogue14 : Dialogue
+    public class CallDialogue14 : Dialogue
     {
         //The number of steps in this dialogue
         public override int Length => 3;
@@ -843,7 +843,7 @@ namespace Stellamod.Items.Special.Sirestias
 
 
 
-    internal class CallDialogue15 : Dialogue
+    public class CallDialogue15 : Dialogue
     {
         //The number of steps in this dialogue
         public override int Length => 3;
@@ -905,7 +905,7 @@ namespace Stellamod.Items.Special.Sirestias
 
 
 
-    internal class CallDialogue16 : Dialogue
+    public class CallDialogue16 : Dialogue
     {
         //The number of steps in this dialogue
         public override int Length => 1;
@@ -952,7 +952,7 @@ namespace Stellamod.Items.Special.Sirestias
     }
 
 
-    internal class CallDialogue17 : Dialogue
+    public class CallDialogue17 : Dialogue
     {
         //The number of steps in this dialogue
         public override int Length => 1;

@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    internal class CinderFireball2 : ModProjectile
+    public class CinderFireball2 : ModProjectile
     {
         private ref float ai_Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()

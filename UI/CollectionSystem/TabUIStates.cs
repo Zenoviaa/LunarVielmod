@@ -8,7 +8,7 @@ namespace Stellamod.UI.CollectionSystem
 
 
 
-    internal class CollectionItemTabRecipeUIState : UIState
+    public class CollectionItemTabRecipeUIState : UIState
     {
         public CollectionItemRecipesUI ui;
         public CollectionItemTabRecipeUIState() : base()
@@ -23,7 +23,7 @@ namespace Stellamod.UI.CollectionSystem
         }
     }
 
-    internal class CollectionItemTabUIState : UIState
+    public class CollectionItemTabUIState : UIState
     {
         public CollectionItemTabUI ui;
         public CollectionItemTabUIState() : base()

@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged.Balls
 {
-    internal class IronBall : BaseChainedBallItem
+    public class IronBall : BaseChainedBallItem
     {
         public override void SetDefaults()
         {
@@ -17,7 +17,7 @@ namespace Stellamod.Items.Weapons.Ranged.Balls
         }
     }
 
-    internal class IronBallProj : BaseChainedBallProjectile
+    public class IronBallProj : BaseChainedBallProjectile
     {
         private bool _hit;
         public override void SetDefaults()

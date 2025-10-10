@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-    internal class GlobalBuffEdits : GlobalBuff
+    public class GlobalBuffEdits : GlobalBuff
     {
         public override void Update(int type, Player player, ref int buffIndex)
         {

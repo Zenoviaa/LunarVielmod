@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Catacombs
 {
-    internal class FlamecrestPlayer : ModPlayer
+    public class FlamecrestPlayer : ModPlayer
     {
         public bool hasFlamecrestShield;
         public override void ResetEffects()
@@ -111,7 +111,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         }
     }
 
-    internal class FlamecrestShield : ModItem
+    public class FlamecrestShield : ModItem
     {
         public override void SetDefaults()
         {

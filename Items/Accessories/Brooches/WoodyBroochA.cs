@@ -18,7 +18,7 @@ using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Accessories.Brooches
 {
-    internal class WoodyBroochA : BaseBrooch
+    public class WoodyBroochA : BaseBrooch
     {
 
         public override void SetDefaults()

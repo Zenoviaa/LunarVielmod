@@ -7,7 +7,7 @@ using Terraria.ID;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class PericarditisBoom : BaseIgniterExplosion
+    public class PericarditisBoom : BaseIgniterExplosion
     {
         public override int FrameCount => 30;
         public override void Start()

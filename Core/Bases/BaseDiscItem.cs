@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
 {
-    internal abstract class BaseDiscItem : ClassSwapItem
+    public abstract class BaseDiscItem : ClassSwapItem
     {
         public int Penetrate = 2;
         public int Music;

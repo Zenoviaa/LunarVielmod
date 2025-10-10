@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown
 {
-    internal class AssassinsKnifeProg : ModProjectile
+    public class AssassinsKnifeProg : ModProjectile
     {
         private bool Moved;
         public override void SetStaticDefaults()

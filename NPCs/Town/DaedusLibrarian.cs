@@ -33,7 +33,7 @@ using Stellamod.Items.Weapons.Mage.Tomes;
 
 namespace Stellamod.NPCs.Town
 {
-    internal class DaedusLibrarian : VeilTownNPC
+    public class DaedusLibrarian : VeilTownNPC
     {
         private int _frame;
         public int NumberOfTimesTalkedTo = 0;

@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials.Molds
 {
-    internal class BlankRune : ModItem
+    public class BlankRune : ModItem
     {
 
         public override void SetStaticDefaults()

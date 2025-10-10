@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
-    internal class StickyCards : BaseJugglerItem
+    public class StickyCards : BaseJugglerItem
     {
         public override DamageClass AlternateClass => DamageClass.Ranged;
 

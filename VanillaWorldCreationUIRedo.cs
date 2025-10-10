@@ -15,7 +15,7 @@ using Terraria.UI;
 namespace Stellamod
 {
     [Autoload(Side = ModSide.Client)]
-    internal class VanillaWorldCreationUIRedo : ModSystem
+    public class VanillaWorldCreationUIRedo : ModSystem
     {
         private Asset<Texture2D> _BorderTexture;
         private Asset<Texture2D> _BackgroundExpertTexture;

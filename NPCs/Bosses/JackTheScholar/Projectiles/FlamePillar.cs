@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
 {
-    internal class FlamePillar : ModProjectile
+    public class FlamePillar : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         private float _scale;

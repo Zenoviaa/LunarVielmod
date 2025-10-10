@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
 {
-    internal class AverageWindBall : BaseWindProjectile
+    public class AverageWindBall : BaseWindProjectile
     {
         public override void SetStaticDefaults()
         {

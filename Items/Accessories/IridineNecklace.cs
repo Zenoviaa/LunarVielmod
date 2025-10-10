@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-    internal class IridinePlayer : ModPlayer
+    public class IridinePlayer : ModPlayer
     {
         public bool hasIridineNecklace;
         public override void ResetEffects()
@@ -50,7 +50,7 @@ namespace Stellamod.Items.Accessories
         }
     }
 
-    internal class IridineNecklace : ModItem
+    public class IridineNecklace : ModItem
     {
         public override void SetStaticDefaults()
         {

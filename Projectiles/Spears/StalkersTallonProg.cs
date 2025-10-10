@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles.Spears
 {
 
-    internal class StalkersTallonProg : ModProjectile
+    public class StalkersTallonProg : ModProjectile
     {
         bool Moved;
 

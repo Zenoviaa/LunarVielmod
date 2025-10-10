@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Visual
 {
-    internal class SunsBoomProj : ModProjectile,
+    public class SunsBoomProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture

@@ -15,13 +15,13 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Crossbows.Lasers
 {
-    internal class TraumatizingRay : ModProjectile, IPixelPrimitiveDrawer
+    public class TraumatizingRay : ModProjectile, IPixelPrimitiveDrawer
     {
         private bool _setRotation;
         private float _radians;
         private float _targetRadians;
         private float BeamLength;
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
         private ref float Dir => ref Projectile.ai[1];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];

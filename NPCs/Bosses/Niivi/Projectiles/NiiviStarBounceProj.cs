@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviStarBounceProj : ModProjectile
+    public class NiiviStarBounceProj : ModProjectile
     {
         private Vector2 OldVelocity;
         private PrimitiveTrail TrailDrawer;

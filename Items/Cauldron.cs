@@ -14,7 +14,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.Items
 {
-    internal class CauldronPlayer : ModPlayer
+    public class CauldronPlayer : ModPlayer
     {
         public float NothingFailChance;
         public float InkFailChance;
@@ -70,7 +70,7 @@ namespace Stellamod.Items
         }
     }
 
-    internal class CauldronBrew
+    public class CauldronBrew
     {
         public int result;
         public int mold;
@@ -79,7 +79,7 @@ namespace Stellamod.Items
         public float weight = 1.0f;
         public int yield = 1;
     }
-    internal static class BrewExtension
+    public static class BrewExtension
     {
         public static CauldronBrew RegisterBrew<Material, Mold>(this ModItem result, float weight = 1.0f, int yield = 1)
             where Material : ModItem
@@ -94,7 +94,7 @@ namespace Stellamod.Items
             return cauldron.AddBrew(result.Item.type, mold, material, 10, weight, yield);
         }
     }
-    internal class Cauldron : ModSystem
+    public class Cauldron : ModSystem
     {
         private List<CauldronBrew> _brews = new List<CauldronBrew>()
         {

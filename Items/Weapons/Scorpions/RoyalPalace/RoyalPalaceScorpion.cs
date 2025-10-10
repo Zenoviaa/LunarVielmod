@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Scorpions.RoyalPalace
 {
-    internal class RoyalPalaceScorpion : BaseScorpionItem
+    public class RoyalPalaceScorpion : BaseScorpionItem
     {
         public override void SetDefaults()
         {

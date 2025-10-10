@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown
 {
-    internal class WindmillShurikenProj : ModProjectile
+    public class WindmillShurikenProj : ModProjectile
     {
         bool Moved;
         float Timer;

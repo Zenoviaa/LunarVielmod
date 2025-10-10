@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class VoidHand : ModProjectile
+    public class VoidHand : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public PrimDrawer Trail { get; set; }

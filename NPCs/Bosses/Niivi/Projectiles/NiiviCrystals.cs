@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal abstract class NiiviCrystal : ModNPC
+    public abstract class NiiviCrystal : ModNPC
     {
         public virtual Color AfterImageStartColor => Color.White;
         public virtual Color AfterImageEndColor => Color.Transparent;
@@ -168,7 +168,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         }
     }
 
-    internal class NiiviCrystalFrost : NiiviCrystal
+    public class NiiviCrystalFrost : NiiviCrystal
     {
         //Damage Values
         private int Damage_FrostBreath => 102;
@@ -279,7 +279,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         }
     }
 
-    internal class NiiviCrystalLightning : NiiviCrystal
+    public class NiiviCrystalLightning : NiiviCrystal
     {
         private int Damage_Lightning_Small => 120;
         private int Damage_Lightning_Big => 150;
@@ -339,7 +339,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         }
     }
 
-    internal class NiiviCrystalStars : NiiviCrystal
+    public class NiiviCrystalStars : NiiviCrystal
     {
         //Damage Values
         private int Damage_Comet => 72;

@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage.Tomes
 {
-    internal class TheDeafen : BaseMagicTomeItem
+    public class TheDeafen : BaseMagicTomeItem
     {
         public override void SetDefaults()
         {
@@ -19,7 +19,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
         }
     }
 
-    internal class TheDeafenTome : BaseMagicTomeProjectile
+    public class TheDeafenTome : BaseMagicTomeProjectile
     {
         private float _dustTimer;
         public override string Texture => this.PathHere() + "/TheDeafen";

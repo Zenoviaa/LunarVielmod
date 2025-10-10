@@ -22,7 +22,7 @@ using Terraria.ModLoader;
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
     [AutoloadBossHead]
-    internal class DreadMireR : ModNPC
+    public class DreadMireR : ModNPC
     {
         private float _teleportX;
         private float _teleportY;

@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviFrostBreathProj : ModProjectile
+    public class NiiviFrostBreathProj : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
 

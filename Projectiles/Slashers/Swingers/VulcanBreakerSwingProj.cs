@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Slashers.Swingers
 {
-    internal class VulcanBreakerSwingProj : ModProjectile
+    public class VulcanBreakerSwingProj : ModProjectile
     {
         public override string Texture => "Stellamod/Items/Weapons/Melee/VulcanBreaker";
         //DrawCode

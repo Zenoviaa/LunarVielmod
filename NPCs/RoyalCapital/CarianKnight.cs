@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.RoyalCapital
 {
-    internal class CarianKnight : ModNPC
+    public class CarianKnight : ModNPC
     {
         private float ai_Counter;
         public override void SetStaticDefaults()

@@ -12,7 +12,7 @@ using Stellamod.Dusts;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class GoldenBaha : ModProjectile
+    public class GoldenBaha : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()

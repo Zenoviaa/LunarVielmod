@@ -4,7 +4,7 @@ using Terraria;
 
 namespace Stellamod.Visual.Particles
 {
-    internal class GlowParticle : Particle
+    public class GlowParticle : Particle
     {
         public int FrameWidth = 64;
         public int FrameHeight = 64;

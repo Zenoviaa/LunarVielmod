@@ -9,7 +9,7 @@ using Stellamod.Projectiles.IgniterExplosions;
 
 namespace Stellamod.Projectiles
 {
-    internal class FocalPortal : ModProjectile
+    public class FocalPortal : ModProjectile
     {
         private int _frameCounter;
         private int _frameTick;

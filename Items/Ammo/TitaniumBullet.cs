@@ -10,7 +10,7 @@ using Stellamod.Projectiles.Ammo;
 
 namespace Stellamod.Items.Ammo
 {
-    internal class TitaniumBullet : ModItem
+    public class TitaniumBullet : ModItem
     {
         public override void SetStaticDefaults()
         {

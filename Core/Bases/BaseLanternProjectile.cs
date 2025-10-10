@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
 {
-    internal abstract class BaseLanternProjectile : ModProjectile,
+    public abstract class BaseLanternProjectile : ModProjectile,
            IDrawLightCast
     {
         private enum AIState

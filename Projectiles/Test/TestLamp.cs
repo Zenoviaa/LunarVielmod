@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Test
 {
-    internal class TestLamp : ModProjectile,
+    public class TestLamp : ModProjectile,
         IDrawLightCast
     {
         private ref float Timer => ref Projectile.ai[0];

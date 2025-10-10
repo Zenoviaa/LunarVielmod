@@ -6,7 +6,7 @@ using Terraria;
 
 namespace Stellamod.Core.Shaders
 {
-    internal class FoggyShader : BaseShader
+    public class FoggyShader : BaseShader
     {
         private static FoggyShader _instance;
         public static FoggyShader Instance

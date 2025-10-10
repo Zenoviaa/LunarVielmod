@@ -96,7 +96,7 @@ namespace Stellamod.Items.Weapons.Ranged
     }
 
 
-    internal class IkaniyeGLUX : ModProjectile,
+    public class IkaniyeGLUX : ModProjectile,
            IPixelPrimitiveDrawer
     {
         //Don't change the sample points, 3 is good enough
@@ -106,7 +106,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public float BeamLength;
         public List<Vector2> BeamPoints;
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
 
         //No texture for this
         public override string Texture => TextureRegistry.EmptyTexture;
@@ -277,7 +277,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
 
 
-    internal class IkaniyeGLUX2 : ModProjectile,
+    public class IkaniyeGLUX2 : ModProjectile,
           IPixelPrimitiveDrawer
     {
         //Don't change the sample points, 3 is good enough
@@ -287,7 +287,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public float BeamLength;
         public List<Vector2> BeamPoints;
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
 
         //No texture for this
         public override string Texture => TextureRegistry.EmptyTexture;

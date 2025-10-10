@@ -33,7 +33,7 @@ namespace Stellamod.TilesNew.Mechanical
 
     }
 
-    internal class DelgrimShop : DecorativeWall
+    public class DelgrimShop : DecorativeWall
     {
         public override void SetStaticDefaults()
         {

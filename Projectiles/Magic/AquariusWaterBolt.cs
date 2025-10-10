@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class AquariusWaterBolt : ModProjectile
+    public class AquariusWaterBolt : ModProjectile
     {
         private float Timer
         {

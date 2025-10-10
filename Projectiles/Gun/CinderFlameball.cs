@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class CinderFlameball : ModProjectile
+    public class CinderFlameball : ModProjectile
     {
         public override void SetStaticDefaults()
         {

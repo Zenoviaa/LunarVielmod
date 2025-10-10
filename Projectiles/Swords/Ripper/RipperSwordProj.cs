@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords.Ripper
 {
-    internal class RipperSwordProj : ModProjectile
+    public class RipperSwordProj : ModProjectile
     {
         private Vector2 _targetCenter;
         private Vector2 _velocity;

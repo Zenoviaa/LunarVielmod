@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items
 {
-    internal class GlobalItemEdits : GlobalItem
+    public class GlobalItemEdits : GlobalItem
     {
         public override void SetDefaults(Item entity)
         {

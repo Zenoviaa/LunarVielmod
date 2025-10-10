@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
 {
-    internal class JugglePlayer : ModPlayer
+    public class JugglePlayer : ModPlayer
     {
         public float combo;
         public void ResetCombo()
@@ -22,7 +22,7 @@ namespace Stellamod.Core.Bases
         }
     }
 
-    internal abstract class BaseJugglerProjectile : ModProjectile
+    public abstract class BaseJugglerProjectile : ModProjectile
     {
         protected enum AIState
         {

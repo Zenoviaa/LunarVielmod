@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable
 {
-    internal class MagicCauldron : ModItem
+    public class MagicCauldron : ModItem
     {
         public override void SetStaticDefaults()
         {

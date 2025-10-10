@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class AzuretoothNecklaceHold : ModProjectile
+    public class AzuretoothNecklaceHold : ModProjectile
     {
         private float Timer
         {

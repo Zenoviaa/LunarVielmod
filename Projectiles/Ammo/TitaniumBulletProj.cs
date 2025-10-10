@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Ammo
 {
-    internal class TitaniumBulletProj : ModProjectile,
+    public class TitaniumBulletProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         public override void SetStaticDefaults()
@@ -67,7 +67,7 @@ namespace Stellamod.Projectiles.Ammo
             SoundEngine.PlaySound(SoundID.Item10, Projectile.position);
                     }
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);

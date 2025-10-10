@@ -2,7 +2,7 @@
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class IshtarCard : BaseIgniterCard
+    public class IshtarCard : BaseIgniterCard
     {
         public override void SetClassSwappedDefaults()
         {

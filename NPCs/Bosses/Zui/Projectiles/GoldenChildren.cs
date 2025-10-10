@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Zui.Projectiles
 {
-    internal class GoldenChildren : ModProjectile, IPixelPrimitiveDrawer
+    public class GoldenChildren : ModProjectile, IPixelPrimitiveDrawer
     {
         public override void SetStaticDefaults()
         {
@@ -99,7 +99,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
             return base.Colliding(projHitbox, targetHitbox);
         }
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);

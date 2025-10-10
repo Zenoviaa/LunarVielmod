@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Spears
 {
-    internal class VeiizalsUmbrellaProj : ModProjectile
+    public class VeiizalsUmbrellaProj : ModProjectile
     {
         protected virtual float HoldoutRangeMin => 24f;
         protected virtual float HoldoutRangeMax => 96f;

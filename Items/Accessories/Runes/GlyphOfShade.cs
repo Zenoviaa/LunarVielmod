@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Runes
 {
-    internal class GlyphOfShadePlayer : ModPlayer
+    public class GlyphOfShadePlayer : ModPlayer
     {
         public bool hasShadeRune;
         public bool hideShadeRuneVisual;
@@ -47,7 +47,7 @@ namespace Stellamod.Items.Accessories.Runes
         }
     }
 
-    internal class GlyphOfShade : BaseRune
+    public class GlyphOfShade : BaseRune
     {
         public override void SetDefaults()
         {

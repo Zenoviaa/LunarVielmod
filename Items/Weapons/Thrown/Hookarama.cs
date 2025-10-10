@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    internal class Hookarama : ClassSwapItem
+    public class Hookarama : ClassSwapItem
     {
         public override DamageClass AlternateClass => DamageClass.Throwing;
 

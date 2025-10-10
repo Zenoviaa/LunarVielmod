@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Slashers.SingularDive
 {
-    internal class SingularOrb : ModProjectile
+    public class SingularOrb : ModProjectile
     {
         public override void SetStaticDefaults()
         {

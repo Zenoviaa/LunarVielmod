@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.Orbs
 {
-    internal class AuroreanStarballProj : OrbProjectile
+    public class AuroreanStarballProj : OrbProjectile
     {
         public enum ActionState
         {

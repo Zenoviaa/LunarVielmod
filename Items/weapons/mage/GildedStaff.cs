@@ -18,7 +18,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class GildedStaff : ClassSwapItem
+    public class GildedStaff : ClassSwapItem
     {
         public int dir;
         public override DamageClass AlternateClass => DamageClass.Ranged;

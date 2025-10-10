@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Ishtar
 {
-    internal class StalkerSpawner : ModNPC
+    public class StalkerSpawner : ModNPC
     {
         private bool _spawn;
         public override string Texture => TextureRegistry.EmptyTexture;

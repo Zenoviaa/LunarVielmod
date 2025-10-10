@@ -9,7 +9,7 @@ using Terraria.UI;
 namespace Stellamod.UI.Dialogue
 {
     [Autoload(Side = ModSide.Client)]
-    internal class DialogueSystem : ModSystem
+    public class DialogueSystem : ModSystem
     {
         private UserInterface _panel;
         private string _text;

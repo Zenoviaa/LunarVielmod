@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    internal class Scatterbombs : ModItem
+    public class Scatterbombs : ModItem
     {
         public override void SetStaticDefaults()
         {

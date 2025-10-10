@@ -9,7 +9,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.AcidArmour
 {
-    internal class AcidPlayer : ModPlayer
+    public class AcidPlayer : ModPlayer
     {
         /*
          * Immunity to acid water contamination, 

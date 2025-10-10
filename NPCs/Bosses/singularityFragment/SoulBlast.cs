@@ -14,7 +14,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 {
     public class SoulBlast : ModProjectile
     {
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         private float SoulRotation;
         private float SoulOffset = 96;
         public override void SetStaticDefaults()

@@ -11,7 +11,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
 {
-    internal class IrradiaAxeFlameArrow : ModProjectile
+    public class IrradiaAxeFlameArrow : ModProjectile
     {
         bool Moved;
         public override void SetStaticDefaults()

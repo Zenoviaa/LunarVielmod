@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 {
-    internal abstract class BaseHand : ModNPC
+    public abstract class BaseHand : ModNPC
     {
         protected enum AIState
         {

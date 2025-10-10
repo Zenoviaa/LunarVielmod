@@ -15,7 +15,7 @@ using Stellamod.Helpers;
 
 namespace Stellamod.NPCs.Critters
 {
-    internal class SandWalker
+    public class SandWalker
     {   /// <summary>
         /// This file shows off a critter npc. The unique thing about critters is how you can catch them with a bug net.
         /// The important bits are: Main.npcCatchable, NPC.catchItem, and Item.makeNPC.

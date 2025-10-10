@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Desert
 {
-    internal class BabySwarmer : ModNPC
+    public class BabySwarmer : ModNPC
     {
         private float Speed
         {

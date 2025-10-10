@@ -12,7 +12,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.DaedusRework
 {
-    internal class DLantern : ModProjectile
+    public class DLantern : ModProjectile
     {
         private bool Moved;
         public override void SetStaticDefaults()

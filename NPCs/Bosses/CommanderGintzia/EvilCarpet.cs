@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.CommanderGintzia
 {
-    internal class EvilCarpet : ModNPC
+    public class EvilCarpet : ModNPC
     {
         private int _frame;
         protected enum AIState

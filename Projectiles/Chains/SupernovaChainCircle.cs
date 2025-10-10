@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Chains
 {
-    internal class SupernovaChainCircle : ModProjectile
+    public class SupernovaChainCircle : ModProjectile
     {
         public const float Circle_Radius = 900;
         public const float Outer_Circle_Radius = 2700;
@@ -21,7 +21,7 @@ namespace Stellamod.Projectiles.Chains
         public int FrameCounter;
         public int FrameTick;
         ref float NPCToFollow => ref Projectile.ai[0];
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public override void SetDefaults()
         {
             Projectile.width = 16;

@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class Mordred : ClassSwapItem
+    public class Mordred : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Throwing;

@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    internal class RoseShield : ModProjectile
+    public class RoseShield : ModProjectile
     {
         private float _counter;
         public override void SetDefaults()

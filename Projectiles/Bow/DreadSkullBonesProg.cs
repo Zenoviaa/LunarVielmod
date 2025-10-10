@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles.Bow
 {
 
-    internal class DreadSkullBonesProg : ModProjectile
+    public class DreadSkullBonesProg : ModProjectile
     {
         bool Moved;
 

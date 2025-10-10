@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Test
 {
-    internal class ExampleVoidProjectile : ModProjectile
+    public class ExampleVoidProjectile : ModProjectile
     {
             public override string Texture => TextureRegistry.FlowerTexture;
 

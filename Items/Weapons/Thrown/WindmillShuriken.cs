@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    internal class WindmillShuriken : ClassSwapItem
+    public class WindmillShuriken : ClassSwapItem
     {
         public int dir;
         public override DamageClass AlternateClass => DamageClass.Ranged;

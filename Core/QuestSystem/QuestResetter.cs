@@ -12,7 +12,7 @@ using Terraria;
 
 namespace Stellamod.Core.QuestSystem
 {
-    internal class QuestResetter : ModItem
+    public class QuestResetter : ModItem
     {
         private int _useIndex;
         public override void SetStaticDefaults()

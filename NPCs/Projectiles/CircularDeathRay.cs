@@ -13,7 +13,7 @@ namespace Stellamod.NPCs.Projectiles
 {
     public class CircularDeathRay : ModProjectile, IPixelPrimitiveDrawer
     {
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
 
         public float LaserLength
         {

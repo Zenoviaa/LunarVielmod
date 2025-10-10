@@ -12,7 +12,7 @@ using Stellamod.Helpers;
 
 namespace Stellamod.Projectiles.Test
 {
-    internal class CircleTestProj : ModProjectile, 
+    public class CircleTestProj : ModProjectile, 
         IPixelPrimitiveDrawer
     {
         public enum ActionState
@@ -162,7 +162,7 @@ namespace Stellamod.Projectiles.Test
             return false;
         }
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);

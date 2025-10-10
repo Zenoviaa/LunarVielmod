@@ -9,7 +9,7 @@ using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Ice.WinterbornBat
 {
-    internal class WinterbornBat : ModNPC
+    public class WinterbornBat : ModNPC
     {
         public override void SetStaticDefaults()
         {

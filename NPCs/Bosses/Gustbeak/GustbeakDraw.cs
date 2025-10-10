@@ -10,9 +10,9 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Gustbeak
 {
-    internal partial class Gustbeak
+    public partial class Gustbeak
     {
-        internal abstract class BaseGustbeakSegment
+        public abstract class BaseGustbeakSegment
         {
             public Vector2 position;
             public float rotation;
@@ -68,7 +68,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             }
         }
 
-        internal abstract class BaseGustbeakBodySegment : BaseGustbeakSegment
+        public abstract class BaseGustbeakBodySegment : BaseGustbeakSegment
         {
             public virtual string Texture { get; }
             public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -107,10 +107,10 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                 spriteBatch.RestartDefaults();
             }
         }
-        internal abstract class BaseGustbeakWingSegment : BaseGustbeakSegment
+        public abstract class BaseGustbeakWingSegment : BaseGustbeakSegment
         {
             public virtual string Texture { get; }
-            internal enum AnimationState
+            public enum AnimationState
             {
                 Flap,
                 Hold_Up,
@@ -239,7 +239,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
         }
 
 
-        internal class GustbeakBodyFront : BaseGustbeakBodySegment
+        public class GustbeakBodyFront : BaseGustbeakBodySegment
         {
             public override string Texture => "BodyFront";
             public override void AI()
@@ -248,7 +248,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             }
         }
 
-        internal class GustbeakBodyMiddle : BaseGustbeakBodySegment
+        public class GustbeakBodyMiddle : BaseGustbeakBodySegment
         {
             public override string Texture => "BodyMiddle";
             public override void AI()
@@ -257,7 +257,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             }
         }
 
-        internal class GustbeakBodyBack : BaseGustbeakBodySegment
+        public class GustbeakBodyBack : BaseGustbeakBodySegment
         {
             public override string Texture => "BodyBack";
             public override void AI()
@@ -266,7 +266,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             }
         }
 
-        internal class GustbeakFrontLegFront : BaseGustbeakBodySegment
+        public class GustbeakFrontLegFront : BaseGustbeakBodySegment
         {
             public override string Texture => "FrontLegFront";
             public override void AI()
@@ -277,7 +277,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             }
         }
 
-        internal class GustbeakFrontLegBack : BaseGustbeakBodySegment
+        public class GustbeakFrontLegBack : BaseGustbeakBodySegment
         {
             public override string Texture => "FrontLegBack";
             public override void AI()
@@ -288,7 +288,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             }
         }
 
-        internal class GustbeakBackLegFront : BaseGustbeakBodySegment
+        public class GustbeakBackLegFront : BaseGustbeakBodySegment
         {
             public override string Texture => "BackLegFront";
             public override void AI()
@@ -299,7 +299,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             }
         }
 
-        internal class GustbeakBackLegBack : BaseGustbeakBodySegment
+        public class GustbeakBackLegBack : BaseGustbeakBodySegment
         {
             public override string Texture => "BackLegBack";
             public override void AI()
@@ -310,7 +310,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             }
         }
 
-        internal class GustbeakTail : BaseGustbeakBodySegment
+        public class GustbeakTail : BaseGustbeakBodySegment
         {
             public override string Texture => "Tail";
             public override void AI()
@@ -321,7 +321,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
         }
 
 
-        internal class GustbeakWingFront : BaseGustbeakWingSegment
+        public class GustbeakWingFront : BaseGustbeakWingSegment
         {
             public override string Texture => "WingsFront";
             public override void AI()
@@ -331,7 +331,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             }
         }
 
-        internal class GustbeakWingBack : BaseGustbeakWingSegment
+        public class GustbeakWingBack : BaseGustbeakWingSegment
         {
             public override string Texture => "WingsBack";
             public override void AI()
@@ -341,9 +341,9 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             }
         }
 
-        internal class GustbeakHead : BaseGustbeakSegment
+        public class GustbeakHead : BaseGustbeakSegment
         {
-            internal enum AnimationState
+            public enum AnimationState
             {
                 Idle,
                 Open_Mouth,

@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Visual
 {
-    internal class IgniterExplosionCircle : ModProjectile,
+    public class IgniterExplosionCircle : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture

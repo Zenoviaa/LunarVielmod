@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi
 {
-    internal class NiiviCrystalDraw
+    public class NiiviCrystalDraw
     {
         public NiiviCrystalDraw(NPC npc, Texture2D texture)
         {
@@ -44,7 +44,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         public NPC Npc;
     }
 
-    internal partial class Niivi 
+    public partial class Niivi 
     {
         private int _segmentIndex;
         public const string BaseTexturePath = "Stellamod/NPCs/Bosses/Niivi/";

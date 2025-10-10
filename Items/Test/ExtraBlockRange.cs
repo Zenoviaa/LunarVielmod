@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Test
 {
-    internal class ExtraBlockRange : ModItem
+    public class ExtraBlockRange : ModItem
     {
         public override void SetDefaults()
         {

@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class RibbonStaffHold : ModProjectile
+    public class RibbonStaffHold : ModProjectile
     {
         private Vector2[] BungeeGumPos = new Vector2[4];
         private PrimDrawer TrailDrawer { get; set; } = null;

@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-    internal class Overheated : ModBuff
+    public class Overheated : ModBuff
     {
         public override void SetStaticDefaults()
         {

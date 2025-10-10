@@ -9,7 +9,7 @@ using Terraria;
 
 namespace Stellamod.Items.Materials.Molds
 {
-    internal class BlankStaff : BaseMold
+    public class BlankStaff : BaseMold
     {
         public override void SetStaticDefaults()
         {

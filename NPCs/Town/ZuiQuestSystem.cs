@@ -7,7 +7,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.NPCs.Town
 {
-    internal class ZuiQuestSystem : ModSystem
+    public class ZuiQuestSystem : ModSystem
     {
         /*
         public static bool ThreeQuestsCompleted;

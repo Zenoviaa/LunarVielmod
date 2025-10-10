@@ -24,7 +24,7 @@ namespace Stellamod.TilesNew.IceTiles
         }
     }
 
-    internal class BorealReinforcement : DecorativeWall
+    public class BorealReinforcement : DecorativeWall
     {
         public override void SetStaticDefaults()
         {

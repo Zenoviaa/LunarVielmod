@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
-    internal class ElectricField : ModProjectile
+    public class ElectricField : ModProjectile
     {
         private float _lightningRotOffset;
         private Vector2[] _lightningZaps;

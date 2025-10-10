@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-    internal class GothiviasSeal : ModItem
+    public class GothiviasSeal : ModItem
     {
 
         public override void SetStaticDefaults()

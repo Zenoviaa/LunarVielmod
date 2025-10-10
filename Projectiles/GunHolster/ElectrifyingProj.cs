@@ -10,7 +10,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class ElectrifyingProj : ModProjectile, IPixelPrimitiveDrawer
+    public class ElectrifyingProj : ModProjectile, IPixelPrimitiveDrawer
     {
         float Timer;
         bool FadeOut;
@@ -133,7 +133,7 @@ namespace Stellamod.Projectiles.GunHolster
             return base.Colliding(projHitbox, targetHitbox);
         }
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);

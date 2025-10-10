@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class M38F30Rocks2 : ModProjectile
+    public class M38F30Rocks2 : ModProjectile
     {
         public override void SetStaticDefaults()
         {

@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.AlcadChests
 {
-    internal class LittleWand : ModItem
+    public class LittleWand : ModItem
     {
         public override void SetDefaults()
         {

@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Spears
 {
-    internal class TheIrradiaspearSparkProj : ModProjectile
+    public class TheIrradiaspearSparkProj : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         public PrimDrawer TrailDrawer { get; private set; } = null;

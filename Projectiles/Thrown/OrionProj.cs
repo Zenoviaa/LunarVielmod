@@ -9,7 +9,7 @@ using Stellamod.Dusts;
 using Terraria.Audio;
 namespace Stellamod.Projectiles.Thrown
 {
-    internal class OrionProj : ModProjectile
+    public class OrionProj : ModProjectile
     {
         private float Timer
         {

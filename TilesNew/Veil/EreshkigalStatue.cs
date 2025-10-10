@@ -33,7 +33,7 @@ namespace Stellamod.TilesNew.Veil
 
     }
 
-    internal class EreshkigalStatue : DecorativeWall
+    public class EreshkigalStatue : DecorativeWall
     {
         public override void SetStaticDefaults()
         {

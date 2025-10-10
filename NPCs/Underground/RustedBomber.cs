@@ -14,7 +14,7 @@ using Terraria.GameContent.ItemDropRules;
 
 namespace Stellamod.NPCs.Underground
 {
-    internal class RustedBomber : ModNPC
+    public class RustedBomber : ModNPC
     {
         private bool _attack;
         public override void SetStaticDefaults()

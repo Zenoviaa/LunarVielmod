@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-    internal class SyliaBag : ModItem
+    public class SyliaBag : ModItem
     {
         public override void SetStaticDefaults()
         {

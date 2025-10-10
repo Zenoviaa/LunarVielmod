@@ -5,7 +5,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.Core.ArmorShop
 {
-    internal class ArmorShopPlayer : ModPlayer
+    public class ArmorShopPlayer : ModPlayer
     {
         private List<Item> _purchasedArmors;
         public List<Item> PurchasedArmors

@@ -16,7 +16,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    internal class ChromaCutterMinionProj : ModProjectile
+    public class ChromaCutterMinionProj : ModProjectile
     {
         private Vector2 _prepareCenter;
         private Vector2 _targetCenter;

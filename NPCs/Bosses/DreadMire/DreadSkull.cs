@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
-    internal class DreadSkull : ModProjectile
+    public class DreadSkull : ModProjectile
     {
         public override void SetStaticDefaults()
         {

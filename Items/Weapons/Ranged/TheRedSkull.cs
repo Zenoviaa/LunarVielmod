@@ -94,7 +94,7 @@ namespace Stellamod.Items.Weapons.Ranged
             }
         }
     }
-    internal class TheRedSkull : ClassSwapItem
+    public class TheRedSkull : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;

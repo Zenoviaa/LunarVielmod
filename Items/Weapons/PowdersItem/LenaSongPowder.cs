@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
-    internal class LenaSongPowder : BasePowder
+    public class LenaSongPowder : BasePowder
     {
         public override void SetDefaults()
         {

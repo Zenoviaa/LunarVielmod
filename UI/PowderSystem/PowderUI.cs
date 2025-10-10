@@ -8,17 +8,17 @@ using Terraria.ModLoader.UI.Elements;
 
 namespace Stellamod.UI.PowderSystem
 {
-    internal class PowderUI : UIPanel
+    public class PowderUI : UIPanel
     {
         private UIGrid _grid;
 
-        internal const int width = 480;
-        internal const int height = 155;
+        public const int width = 480;
+        public const int height = 155;
 
-        internal int RelativeLeft => 32;
-        internal int RelativeTop => 0 + 256;
+        public int RelativeLeft => 32;
+        public int RelativeTop => 0 + 256;
 
-        internal PowderUI() : base()
+        public PowderUI() : base()
         {
             _grid = new UIGrid();
         }

@@ -6,16 +6,16 @@ using Terraria.ModLoader.UI.Elements;
 
 namespace Stellamod.UI.ToolsSystem
 {
-    internal class ToolsUI : UIPanel
+    public class ToolsUI : UIPanel
     {
         private float _scale;
         private UIGrid _grid;
 
-        internal const int width = 432;
-        internal const int height = 280;
+        public const int width = 432;
+        public const int height = 280;
 
-        internal int RelativeLeft => Main.screenWidth / 2;
-        internal int RelativeTop => Main.screenHeight - 164;
+        public int RelativeLeft => Main.screenWidth / 2;
+        public int RelativeTop => Main.screenHeight - 164;
 
 
         public Vector2 Offset;

@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.SunStalker
 {
-    internal class SunStalkerRayLightBig : ModNPC
+    public class SunStalkerRayLightBig : ModNPC
     {
         public bool Down;
         public float Rot;

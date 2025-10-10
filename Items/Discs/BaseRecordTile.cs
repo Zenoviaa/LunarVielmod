@@ -11,7 +11,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Items.Discs
 {
-    internal abstract class BaseRecordTile : ModTile
+    public abstract class BaseRecordTile : ModTile
     {
         public override string Texture => (GetType().Namespace + "." + "TileRecordPlayer").Replace('.', '/');
         public string DiscTexture => (GetType().Namespace + "." + Name).Replace('.', '/').Replace("Tile", "");

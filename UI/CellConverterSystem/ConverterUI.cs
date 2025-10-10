@@ -10,18 +10,18 @@ using Terraria.GameContent.UI.Elements;
 
 namespace Stellamod.UI.CellConverterSystem
 {
-    internal class ConverterUI : UIPanel
+    public class ConverterUI : UIPanel
     {
         private UIPanel _panel;
 
         public ConvertSlot convertSlot;
         public ConverterCrystal convertCrystal;
 
-        internal const int width = 480;
-        internal const int height = 155;
+        public const int width = 480;
+        public const int height = 155;
 
-        internal int RelativeLeft => 32;
-        internal int RelativeTop => 0 + 256;
+        public int RelativeLeft => 32;
+        public int RelativeTop => 0 + 256;
 
         public override void OnInitialize()
         {

@@ -9,7 +9,7 @@ using Terraria.UI;
 
 namespace Stellamod.UI.CollectionSystem
 {
-    internal class Book : UIElement
+    public class Book : UIElement
     {
         private readonly int _context;
         private readonly float _scale;
@@ -30,7 +30,7 @@ namespace Stellamod.UI.CollectionSystem
 
         private State _state;
 
-        internal Book(float scale = 1f)
+        public Book(float scale = 1f)
         {
             _scale = scale;
             _state = State.Closed;

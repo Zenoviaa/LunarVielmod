@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Spears
 {
-    internal class GladiatorSpearProg : ModProjectile
+    public class GladiatorSpearProg : ModProjectile
     {
         bool Moved;
         Vector2 StartVelocity;

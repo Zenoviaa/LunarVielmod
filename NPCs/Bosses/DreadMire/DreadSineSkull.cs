@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
-    internal class DreadSineSkull : ModProjectile
+    public class DreadSineSkull : ModProjectile
     {
         private Vector2 initialSpeed;
         private float Timer

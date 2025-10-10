@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-    internal class SupernovaChained : ModBuff
+    public class SupernovaChained : ModBuff
     {  
         public override void SetStaticDefaults()
         {

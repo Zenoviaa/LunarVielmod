@@ -16,7 +16,7 @@ using Stellamod.Helpers;
 namespace Stellamod.Projectiles.Magic
 {
 
-    internal class BrincShot : ModProjectile
+    public class BrincShot : ModProjectile
     {
         int Spin = 0;
         public override void SetStaticDefaults()

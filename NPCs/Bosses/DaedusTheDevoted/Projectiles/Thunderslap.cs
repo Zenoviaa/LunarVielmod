@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
-    internal class ThunderSlap : ModProjectile
+    public class ThunderSlap : ModProjectile
     {
         public float BeamLength;
         public Vector2[] BeamPoints;

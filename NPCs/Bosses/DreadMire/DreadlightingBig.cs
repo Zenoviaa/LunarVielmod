@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
-    internal class DreadlightingBig : ModProjectile
+    public class DreadlightingBig : ModProjectile
     {
         bool Moved;
         public override void SetStaticDefaults()

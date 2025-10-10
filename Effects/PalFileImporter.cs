@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Effects
 {
-    internal static class PalFileImporter
+    public static class PalFileImporter
     {
         static Mod Mod = ModContent.GetInstance<Stellamod>();
         public static Color[] ReadPalette(string path)

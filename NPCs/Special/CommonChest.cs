@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Special
 {
-    internal class CommonChest : BaseChest
+    public class CommonChest : BaseChest
     {
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {

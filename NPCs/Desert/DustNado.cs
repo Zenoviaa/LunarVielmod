@@ -13,7 +13,7 @@ using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Desert
 {
-    internal class DustNadoSpawner : ModNPC
+    public class DustNadoSpawner : ModNPC
     {
         private ref float Timer => ref NPC.ai[0];
         public override string Texture => TextureRegistry.EmptyTexture;

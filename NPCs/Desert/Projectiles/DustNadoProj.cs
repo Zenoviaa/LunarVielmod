@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Desert.Projectiles
 {
-    internal class DustNadoProj : ModProjectile
+    public class DustNadoProj : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
 

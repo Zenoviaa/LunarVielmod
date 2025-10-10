@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles.Magic
 {
 
-    internal class ITProj : ModProjectile
+    public class ITProj : ModProjectile
     {
         float WhiteTimerProg;
         bool Moved;

@@ -7,7 +7,7 @@ using Terraria.Graphics.CameraModifiers;
 
 namespace Stellamod.Helpers
 {
-    internal static class FXUtil
+    public static class FXUtil
     {
         public static void SimpleImpactEffect(Vector2 startPosition, Vector2 velocity, int numParticles, Color innerColor, Color glowColor, Color outerGlowColor)
         {

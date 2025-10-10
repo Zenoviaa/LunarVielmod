@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Chains
 {
-    internal class SupernovaChainFront : ModProjectile
+    public class SupernovaChainFront : ModProjectile
     {
         public Vector2[] ChainPos;
         public int FrameCounter;

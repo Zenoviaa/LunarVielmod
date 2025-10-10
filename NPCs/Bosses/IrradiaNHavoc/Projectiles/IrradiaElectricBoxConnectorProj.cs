@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
 {
-    internal class IrradiaElectricBoxConnectorProj : ModProjectile
+    public class IrradiaElectricBoxConnectorProj : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         bool ConnectToStart => true;
@@ -25,7 +25,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
         int FrameCounter;
 
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public override void SetDefaults()
         {
             Projectile.width = 16;

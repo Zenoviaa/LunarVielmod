@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    internal class YourFired : ClassSwapItem
+    public class YourFired : ClassSwapItem
     {
         public override DamageClass AlternateClass => DamageClass.Ranged;
 

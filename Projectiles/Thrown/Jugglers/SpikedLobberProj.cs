@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown.Jugglers
 {
-    internal class SpikedLobberProj : BaseJugglerProjectile
+    public class SpikedLobberProj : BaseJugglerProjectile
     {
         public override void AI()
         {

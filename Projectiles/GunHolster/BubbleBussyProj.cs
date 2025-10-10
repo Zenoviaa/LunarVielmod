@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class BubbleBussyProj : ModProjectile
+    public class BubbleBussyProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

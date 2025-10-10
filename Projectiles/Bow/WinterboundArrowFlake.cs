@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class WinterboundArrowFlake : ModProjectile
+    public class WinterboundArrowFlake : ModProjectile
     {
         private float _drawScale;
         private ref float Timer => ref Projectile.ai[0];

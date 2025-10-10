@@ -8,7 +8,7 @@ using Terraria.UI;
 namespace Stellamod.UI.PopupSystem
 {
     [Autoload(Side = ModSide.Client)]
-    internal class PopupUISystem : ModSystem
+    public class PopupUISystem : ModSystem
     {
         private enum AIState
         {
@@ -81,7 +81,7 @@ namespace Stellamod.UI.PopupSystem
         {
             _state = state;
         }
-        internal void OpenUI(string text)
+        public void OpenUI(string text)
         {
             _idleTimer = 0f;
             popupUIState.popupUI.SetText(text);

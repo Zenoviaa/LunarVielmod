@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Slashers.FrostBringer
 {
-    internal class FrostBringerSlash : BaseSwingProjectile
+    public class FrostBringerSlash : BaseSwingProjectile
     {
         private bool _hasFired;
         public override string Texture => "Stellamod/Items/Weapons/Melee/FrostBringer";

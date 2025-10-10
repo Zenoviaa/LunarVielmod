@@ -17,7 +17,7 @@ using Terraria.WorldBuilding;
 
 namespace Stellamod.WorldG
 {
-    internal class VeilGenTester : ModItem
+    public class VeilGenTester : ModItem
     {
         public override void SetDefaults()
         {
@@ -766,7 +766,7 @@ namespace Stellamod.WorldG
         }
     }
 
-    internal static class VeilGen
+    public static class VeilGen
     {
         public static Vector2 TileAdj => (Lighting.Mode == Terraria.Graphics.Light.LightMode.Retro || Lighting.Mode == Terraria.Graphics.Light.LightMode.Trippy) ? Vector2.Zero : Vector2.One * 12;
         public static bool IsAir(int x, int y, int w)

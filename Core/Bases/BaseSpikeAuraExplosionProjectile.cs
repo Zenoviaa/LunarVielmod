@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
 {
-    internal abstract class BaseSpikeAuraExplosionProjectile : ModProjectile
+    public abstract class BaseSpikeAuraExplosionProjectile : ModProjectile
     {
         private float _duration;
         protected Vector2[] _primPos = new Vector2[32];

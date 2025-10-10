@@ -11,7 +11,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.SupernovaFragment
 {
-    internal class SupernovaZapwarnFinal : ModNPC
+    public class SupernovaZapwarnFinal : ModNPC
     {
         public float RotSpeed = 10.4f;
         public bool Down;

@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
-    internal class RekFireEyeLaserMiniProj : ModProjectile,
+    public class RekFireEyeLaserMiniProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         private ref float Timer => ref Projectile.ai[0];

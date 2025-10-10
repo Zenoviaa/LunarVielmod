@@ -31,7 +31,7 @@ namespace Stellamod.TilesNew.EffectTiles
         }
     }
 
-    internal class FogSpawnerWall : ModWall
+    public class FogSpawnerWall : ModWall
     {
         public override void SetStaticDefaults()
         {

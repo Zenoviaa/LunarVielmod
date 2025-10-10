@@ -24,7 +24,7 @@ namespace Stellamod.TilesNew.IceTiles
         }
     }
 
-    internal class IceyAlter : DecorativeWall
+    public class IceyAlter : DecorativeWall
     {
         public override void SetStaticDefaults()
         {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.NPCs.Bosses.StarrVeriplant.Projectiles;
+using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant.Projectiles;
 using Stellamod.Helpers;
 using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.EliteCommander.Projectiles;
@@ -16,7 +16,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.StarrVeriplant
+namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
 {
     [AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
     public class StarrVeriplant : ModNPC

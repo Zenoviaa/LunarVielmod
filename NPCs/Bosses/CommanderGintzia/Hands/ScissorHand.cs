@@ -14,7 +14,7 @@ using Terraria;
 
 namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 {
-    internal class ScissorHand : BaseHand
+    public class ScissorHand : BaseHand
     {
         private float DirectionToShootFrom;
         private float ChargeProgress = 0;

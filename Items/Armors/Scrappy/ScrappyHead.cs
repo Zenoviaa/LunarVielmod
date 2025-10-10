@@ -9,7 +9,7 @@ using Stellamod.Helpers;
 
 namespace Stellamod.Items.Armors.Scrappy
 {
-    internal class ScrappyPlayer : ModPlayer
+    public class ScrappyPlayer : ModPlayer
     {
         public bool hasSetBonus;
         public override void ResetEffects()
@@ -19,7 +19,7 @@ namespace Stellamod.Items.Armors.Scrappy
     }
 
     [AutoloadEquip(EquipType.Head)]
-    internal class ScrappyHead : ModItem
+    public class ScrappyHead : ModItem
     {
         public override void SetDefaults()
         {

@@ -15,7 +15,7 @@ using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
 
 namespace Stellamod.Items.Test
 {
-    internal class HavocSignaler : ModItem
+    public class HavocSignaler : ModItem
     {
         private int _useIndex;
         public override void SetStaticDefaults()

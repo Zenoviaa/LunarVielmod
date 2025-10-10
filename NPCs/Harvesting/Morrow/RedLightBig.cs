@@ -8,7 +8,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Harvesting.Morrow
 {
-    internal class RedLightBig : ModNPC
+    public class RedLightBig : ModNPC
     {
         public bool Down;
         public float Rot;

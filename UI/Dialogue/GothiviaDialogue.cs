@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.UI.Dialogue
 {
-    internal class GothiviaDialogue : Dialogue
+    public class GothiviaDialogue : Dialogue
     {
         //The number of steps in this dialogue
         public override int Length => 3;

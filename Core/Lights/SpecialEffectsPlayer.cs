@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Lights
 {
-    internal class SpecialEffectsPlayer : ModPlayer
+    public class SpecialEffectsPlayer : ModPlayer
     {
         private bool _init;
         private float _vignetteOpacity;

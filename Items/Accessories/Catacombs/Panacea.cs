@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Catacombs
 {
-    internal class SpikeResistPlayer : ModPlayer
+    public class SpikeResistPlayer : ModPlayer
     {
         public bool hasPanacea;
         public override void ResetEffects()
@@ -13,7 +13,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         }
     }
 
-    internal class Panacea : ModItem
+    public class Panacea : ModItem
     {
         public override void SetDefaults()
         {

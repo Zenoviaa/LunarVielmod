@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Cinderspark
 {
-    internal class CharredSoul : ModNPC
+    public class CharredSoul : ModNPC
     {
         private ref float ai_Counter => ref NPC.ai[0];
         public override void SetStaticDefaults()

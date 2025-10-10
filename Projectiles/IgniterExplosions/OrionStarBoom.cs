@@ -11,7 +11,7 @@ using Stellamod.Helpers;
 
 namespace Stellamod.Projectiles.IgniterExplosions
 {
-    internal class OrionStarBoom : ModProjectile
+    public class OrionStarBoom : ModProjectile
     {
         private int _frameCounter;
         private int _frameTick;

@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Catacombs
 {
-    internal class IcarusFeather : ModItem
+    public class IcarusFeather : ModItem
     {
         private int _counter;
         public override void SetDefaults()

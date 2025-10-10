@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Ammo
 {
-    internal class EldritchPlanetoid : ModProjectile
+    public class EldritchPlanetoid : ModProjectile
     {
         public override void SetStaticDefaults()
         {

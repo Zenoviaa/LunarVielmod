@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 {
-    internal class GreenSunsSuckingProj : ModProjectile,
+    public class GreenSunsSuckingProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture

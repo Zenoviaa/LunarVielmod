@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.Orbs
 {
-    internal abstract class OrbProjectile : ModProjectile
+    public abstract class OrbProjectile : ModProjectile
     {
         public virtual float MaxThrowDistance { get; }
 

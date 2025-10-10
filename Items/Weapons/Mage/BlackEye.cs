@@ -16,7 +16,7 @@ using Terraria.Audio;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class BlackEye : ClassSwapItem
+    public class BlackEye : ClassSwapItem
     {
         public override DamageClass AlternateClass => DamageClass.Summon;
 

@@ -11,10 +11,10 @@ using Terraria.UI;
 
 namespace Stellamod.UI.StructureSelector
 {
-    internal class UndoButton : UIPanel
+    public class UndoButton : UIPanel
     {
-        internal const int width = 42;
-        internal const int height = 56;
+        public const int width = 42;
+        public const int height = 56;
 
         public override void OnInitialize()
         {

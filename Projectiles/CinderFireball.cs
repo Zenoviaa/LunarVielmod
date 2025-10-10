@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    internal class CinderFireball : ModProjectile
+    public class CinderFireball : ModProjectile
     {
         private ref float ai_Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()

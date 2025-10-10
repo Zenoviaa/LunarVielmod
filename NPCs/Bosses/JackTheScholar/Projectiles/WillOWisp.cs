@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
 {
-    internal class WillOWisp : ModProjectile
+    public class WillOWisp : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
 

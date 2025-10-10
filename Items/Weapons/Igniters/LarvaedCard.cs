@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class LarvaedCard : BaseIgniterCard
+    public class LarvaedCard : BaseIgniterCard
     {
         public override void SetClassSwappedDefaults()
         {

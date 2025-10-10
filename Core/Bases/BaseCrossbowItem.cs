@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Helpers;
 using Stellamod.Items;
+using Stellamod.Items.Accessories.Players;
 using Stellamod.Projectiles.Crossbows;
 using System;
 using System.Collections.Generic;
@@ -14,20 +16,15 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
 {
-    internal abstract class BaseCrossbowItem : ClassSwapItem
+    public abstract class BaseCrossbowItem : ModItem
     {
         public int CrossbowProjectileType;
-        public override DamageClass AlternateClass => DamageClass.Magic;
-        public override void SetClassSwappedDefaults()
-        {
-            base.SetClassSwappedDefaults();
-            Item.mana = 25;
-        }
-
+        public int staminaCost = 1;
+        public int staminaProjectileShoot;
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 25;
+            Item.damage = 12;
             Item.DamageType = DamageClass.Ranged;
             Item.useTime = 32;
             Item.crit = 16;
@@ -44,20 +41,40 @@ namespace Stellamod.Core.Bases
             Item.noUseGraphic = true;
             Item.noMelee = true;
             Item.consumable = false;
-            CrossbowProjectileType = ModContent.ProjectileType<WoodenCrossbowHold>();
+            CrossbowProjectileType = ModContent.ProjectileType<IronBowHold>();
         }
 
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[CrossbowProjectileType] == 0;
         }
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override bool AltFunctionUse(Player player)
         {
-            Projectile.NewProjectile(source, position, velocity, CrossbowProjectileType, damage, knockback, player.whoAmI);
-            return false;
+            return true;
         }
 
+        public virtual void ShootSwingStamina(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            DashPlayer comboPlayer = player.GetModPlayer<DashPlayer>();
+            comboPlayer.Consume(staminaCost);
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback,
+                player.whoAmI);
+        }
+
+        public sealed override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            DashPlayer comboPlayer = player.GetModPlayer<DashPlayer>();
+            if (player.altFunctionUse == 2 && comboPlayer.CanConsume(staminaCost))
+            {
+                ShootSwingStamina(player, source, position, velocity, staminaProjectileShoot, damage, knockback);
+            }
+            else
+            {
+                Projectile.NewProjectile(source, position, velocity, CrossbowProjectileType, damage, knockback, player.whoAmI);
+            }
+
+            return false;
+        }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);

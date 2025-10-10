@@ -19,7 +19,7 @@ using Stellamod.Items.Materials.Molds;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    internal class BucketScrapper : ClassSwapItem
+    public class BucketScrapper : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;

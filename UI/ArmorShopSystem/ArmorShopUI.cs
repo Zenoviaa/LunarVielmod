@@ -79,18 +79,18 @@ namespace Stellamod.UI.ArmorShopSystem
             return base.CompareTo(obj);
         }
     }
-    internal class ArmorShopUI : UIPanel
+    public class ArmorShopUI : UIPanel
     {
         private UIList _uiList;
         private UIPanel _panel;
         private UIGrid _slotGrid;
         private FancyScrollbar _scrollbar;
 
-        internal const int width = 480;
-        internal const int height = 155;
+        public const int width = 480;
+        public const int height = 155;
 
-        internal int RelativeLeft => Main.screenWidth / 2 - (int)(Width.Pixels / 2) - 200;
-        internal int RelativeTop => Main.screenHeight / 2 - (int)(Height.Pixels / 2);
+        public int RelativeLeft => Main.screenWidth / 2 - (int)(Width.Pixels / 2) - 200;
+        public int RelativeTop => Main.screenHeight / 2 - (int)(Height.Pixels / 2);
         public float Glow { get; set; }
         public override void OnInitialize()
         {

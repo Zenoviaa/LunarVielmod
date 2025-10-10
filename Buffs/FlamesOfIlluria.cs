@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-    internal class FlamesOfIlluria : ModBuff
+    public class FlamesOfIlluria : ModBuff
     {
         public override void SetStaticDefaults()
         {

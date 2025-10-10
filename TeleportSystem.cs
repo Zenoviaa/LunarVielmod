@@ -15,7 +15,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod
 {
-    internal class TeleportSystem : ModSystem
+    public class TeleportSystem : ModSystem
     {
         private static bool _findTeleportTiles;
         private static bool _refreshPortals;

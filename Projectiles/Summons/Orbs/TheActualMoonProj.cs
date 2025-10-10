@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.Orbs
 {
-    internal class TheActualMoonProj : OrbProjectile
+    public class TheActualMoonProj : OrbProjectile
     {
         public enum ActionState
         {

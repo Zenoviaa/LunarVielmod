@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-    internal class SirestiasPlayer : ModPlayer
+    public class SirestiasPlayer : ModPlayer
     {
         public bool HasSirestiasMask;
         public override void ResetEffects()
@@ -38,7 +38,7 @@ namespace Stellamod.Items.Accessories
         }
     }
 
-    internal class SirestiasMask : ModItem
+    public class SirestiasMask : ModItem
     {
         public override void SetDefaults()
         {

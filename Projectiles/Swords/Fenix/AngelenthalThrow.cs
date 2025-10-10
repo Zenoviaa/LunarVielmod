@@ -16,7 +16,7 @@ using Stellamod.Particles;
 namespace Stellamod.Projectiles.Swords.Fenix
 {
 
-    internal class AngelenthalThrow : ModProjectile
+    public class AngelenthalThrow : ModProjectile
     {
         bool Moved;
         public override void SetStaticDefaults()

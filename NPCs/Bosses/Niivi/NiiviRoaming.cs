@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi
 {
-    internal partial class NiiviRoaming : ModNPC
+    public partial class NiiviRoaming : ModNPC
     {
         public enum ActionState
         {

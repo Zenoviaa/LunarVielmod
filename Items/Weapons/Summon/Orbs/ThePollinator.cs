@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon.Orbs
 {
-    internal class ThePollinator : ClassSwapItem
+    public class ThePollinator : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Throwing;

@@ -11,7 +11,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class HuntrianArrow : ModProjectile
+    public class HuntrianArrow : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()

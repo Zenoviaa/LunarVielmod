@@ -11,7 +11,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles
 {
-    internal class BrackettThrough : ModProjectile
+    public class BrackettThrough : ModProjectile
     {
         public override void SetStaticDefaults()
         {

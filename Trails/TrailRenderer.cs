@@ -106,7 +106,7 @@ namespace Stellamod.Trails
             return valid.ToArray();
         }
 
-        protected virtual bool InternalPrepare(Vector2[] arr, float[] rotationArr, float uvAdd = 0f, float uvMultiplier = 1f)
+        protected virtual bool publicPrepare(Vector2[] arr, float[] rotationArr, float uvAdd = 0f, float uvMultiplier = 1f)
         {
             if (WorldTrail)
             {
@@ -192,7 +192,7 @@ namespace Stellamod.Trails
         }
         public void Draw(Vector2[] arr, float[] rotation, float uvAdd = 0f, float uvMultiplier = 1f)
         {
-            if (!InternalPrepare(arr, rotation, uvAdd, uvMultiplier))
+            if (!publicPrepare(arr, rotation, uvAdd, uvMultiplier))
             {
                 return;
             }
@@ -235,7 +235,7 @@ namespace Stellamod.Trails
         {
         }
 
-        protected override bool InternalPrepare(Vector2[] arr, float[] rotationArr, float uvAdd = 0f, float uvMultiplier = 1f)
+        protected override bool publicPrepare(Vector2[] arr, float[] rotationArr, float uvAdd = 0f, float uvMultiplier = 1f)
         {
             if (WorldTrail)
             {

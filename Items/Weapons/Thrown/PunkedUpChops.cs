@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-	internal class PunkedUpChops : ModItem
+	public class PunkedUpChops : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

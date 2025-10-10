@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Catacombs
 {
-    internal class Cleats : ModItem
+    public class Cleats : ModItem
     {
         public override void SetDefaults()
         {

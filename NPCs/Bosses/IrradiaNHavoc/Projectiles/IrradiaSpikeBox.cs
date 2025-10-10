@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
 {
-    internal class IrradiaSpikeBox : ModNPC
+    public class IrradiaSpikeBox : ModNPC
     {
         public override void SetDefaults()
         {

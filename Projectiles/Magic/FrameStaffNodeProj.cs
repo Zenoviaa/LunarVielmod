@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class FrameStaffNodeProj : ModProjectile
+    public class FrameStaffNodeProj : ModProjectile
     {
         private const float Whiten_Time = 60;
         private float Timer

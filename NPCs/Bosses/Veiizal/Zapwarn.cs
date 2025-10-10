@@ -17,7 +17,7 @@ using Stellamod.NPCs.Bosses.DreadMire;
 
 namespace Stellamod.NPCs.Bosses.Veiizal
 {
-    internal class Zapwarn : ModNPC
+    public class Zapwarn : ModNPC
     {
         public bool Down;
         public float Rot;

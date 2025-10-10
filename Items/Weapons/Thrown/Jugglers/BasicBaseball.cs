@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
-    internal class BasicBaseball : BaseJugglerItem
+    public class BasicBaseball : BaseJugglerItem
     {
         public override DamageClass AlternateClass => DamageClass.Ranged;
         public override void SetClassSwappedDefaults()

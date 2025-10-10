@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown
 {
-    internal class BurningKnife : ModProjectile
+    public class BurningKnife : ModProjectile
     {
         bool Moved;
 

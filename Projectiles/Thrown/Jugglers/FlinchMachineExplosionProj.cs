@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown.Jugglers
 {
-    internal class FlinchMachineExplosionProj : ModProjectile
+    public class FlinchMachineExplosionProj : ModProjectile
     {
         public override string Texture => TextureRegistry.ZuiEffect;
         private ref float Timer => ref Projectile.ai[0];

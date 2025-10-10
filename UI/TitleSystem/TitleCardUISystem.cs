@@ -9,7 +9,7 @@ using Terraria.UI;
 namespace Stellamod.UI.TitleSystem
 {
     [Autoload(Side = ModSide.Client)]
-    internal class TitleCardUISystem : ModSystem
+    public class TitleCardUISystem : ModSystem
     {
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
@@ -42,14 +42,14 @@ namespace Stellamod.UI.TitleSystem
             }
         }
 
-        internal void OpenUI(string text, float duration)
+        public void OpenUI(string text, float duration)
         {
             //Set State
             titleUIState.titleCardUI.ShowWave(text, duration);
             _userInterface.SetState(titleUIState);
         }
 
-        internal void CloseUI()
+        public void CloseUI()
         {
             _userInterface.SetState(null);
         }

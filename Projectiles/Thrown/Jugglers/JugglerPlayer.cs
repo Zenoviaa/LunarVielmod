@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown.Jugglers
 {
-    internal class JugglerPlayer : ModPlayer
+    public class JugglerPlayer : ModPlayer
     {
         private int[] _legalProjectiles = new int[]
         {

@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class GalvinieArrow1 : ModProjectile
+    public class GalvinieArrow1 : ModProjectile
     {
         public override void SetStaticDefaults()
         {

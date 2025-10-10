@@ -15,7 +15,7 @@ using System;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class WaterGunConnectorProj : ModProjectile,
+    public class WaterGunConnectorProj : ModProjectile,
          IPixelPrimitiveDrawer
     {
         private Vector2[] TrailPoints = new Vector2[1];

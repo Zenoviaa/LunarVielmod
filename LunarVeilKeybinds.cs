@@ -2,7 +2,7 @@
 
 namespace Stellamod
 {
-    internal class LunarVeilKeybinds : ModSystem
+    public class LunarVeilKeybinds : ModSystem
     {
         public static ModKeybind FlaskKeybind { get; private set; }
         public static ModKeybind DashKeybind { get; private set; }

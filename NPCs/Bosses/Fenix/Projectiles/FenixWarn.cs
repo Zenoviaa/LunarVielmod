@@ -8,7 +8,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 {
-    internal class FenixWarn : ModNPC
+    public class FenixWarn : ModNPC
     {
         public bool Down;
         public override void SetStaticDefaults()

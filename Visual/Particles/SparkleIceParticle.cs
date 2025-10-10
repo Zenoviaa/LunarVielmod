@@ -4,7 +4,7 @@ using Terraria;
 
 namespace Stellamod.Visual.Particles
 {
-    internal class SparkleIceParticle : Particle
+    public class SparkleIceParticle : Particle
     {
         public int FrameWidth = 110;
         public int FrameHeight = 464;

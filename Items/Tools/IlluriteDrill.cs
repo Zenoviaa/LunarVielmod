@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Tools
 {
-    internal class IlluriteDrill : ModItem
+    public class IlluriteDrill : ModItem
     {
 
         public override void SetStaticDefaults()

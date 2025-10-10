@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Catacombs
 {
-    internal class OceanShieldPlayer : ModPlayer
+    public class OceanShieldPlayer : ModPlayer
     {
         private Projectile _waterShieldProj;
         private int _cooldown;
@@ -70,7 +70,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         }
     }
 
-    internal class OceancrestShield : ModItem
+    public class OceancrestShield : ModItem
     {
         public override void SetDefaults()
         {

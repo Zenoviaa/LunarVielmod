@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 { 
-    internal class ElectricSingularityBolt : ModProjectile
+    public class ElectricSingularityBolt : ModProjectile
     {
         private CoreLightning _lightning;
         private ref float Timer => ref Projectile.ai[0];

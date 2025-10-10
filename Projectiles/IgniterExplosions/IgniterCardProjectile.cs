@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.IgniterExplosions
 {
-    internal class IgniterCardProjectile : ModProjectile
+    public class IgniterCardProjectile : ModProjectile
     {
         private enum CardState
         {

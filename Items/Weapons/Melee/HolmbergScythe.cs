@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    internal class HolmbergScythe : ClassSwapItem
+    public class HolmbergScythe : ClassSwapItem
     {
         //Alternate class you want it to change to
         public override DamageClass AlternateClass => DamageClass.Throwing;

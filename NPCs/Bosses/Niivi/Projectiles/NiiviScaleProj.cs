@@ -10,7 +10,7 @@ using Stellamod.Trails;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviScaleProj : ModProjectile
+    public class NiiviScaleProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

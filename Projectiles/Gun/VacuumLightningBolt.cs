@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class VacuumLightningBolt : ModProjectile
+    public class VacuumLightningBolt : ModProjectile
     {
         private Vector2[] _lightningArcPos = new Vector2[1]; 
         public const int Trail_Width = 24;

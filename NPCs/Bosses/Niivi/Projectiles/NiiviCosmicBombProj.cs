@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviCosmicBombProj : ModProjectile
+    public class NiiviCosmicBombProj : ModProjectile
     {
         private enum ActionState
         {

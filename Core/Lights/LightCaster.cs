@@ -8,12 +8,12 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Lights
 {
-    internal interface IDrawLightCast
+    public interface IDrawLightCast
     {
         void DrawLightCast(SpriteBatch spriteBatch);
     }
 
-    internal class LightCaster : ModSystem
+    public class LightCaster : ModSystem
     {
         private List<IDrawLightCast> _draws;
         private RenderTarget2D _lightingRenderTarget;

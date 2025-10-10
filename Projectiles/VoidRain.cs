@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    internal class VoidRain : ModProjectile
+    public class VoidRain : ModProjectile
     {
         private const int Dust_Rate = 6;
         private const int Particle_Rate = 2;

@@ -5,7 +5,7 @@ using Terraria;
 
 namespace Stellamod.Systems.MiscellaneousMath
 {
-    internal static class MathUtil
+    public static class MathUtil
     {
         public static Vector2 GetRotation(Vector2[] oldPos, int index)
         {

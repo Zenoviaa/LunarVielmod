@@ -2,7 +2,7 @@
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class WCIgniter : BaseIgniterCard
+    public class WCIgniter : BaseIgniterCard
     {
         public override void SetClassSwappedDefaults()
         {

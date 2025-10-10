@@ -12,7 +12,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Summons
 {
-    internal class VoidMinionSparkProj : ModProjectile
+    public class VoidMinionSparkProj : ModProjectile
     {
         private bool Moved;
         public override void SetStaticDefaults()

@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown
 {
-    internal class IvythornShurikenProj : ModProjectile
+    public class IvythornShurikenProj : ModProjectile
     {
         bool Moved;
         float Timer;

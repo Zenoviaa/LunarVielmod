@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Assets.Biomes
 {
-    internal class Colosseum : ModBiome
+    public class Colosseum : ModBiome
     {
 
         public override int Music

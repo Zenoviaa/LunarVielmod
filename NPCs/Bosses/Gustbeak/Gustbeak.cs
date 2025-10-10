@@ -22,7 +22,7 @@ using Terraria.ModLoader;
 namespace Stellamod.NPCs.Bosses.Gustbeak
 {
     [AutoloadBossHead]
-    internal partial class Gustbeak : BaseColosseumNPC
+    public partial class Gustbeak : BaseColosseumNPC
     {
 
         private enum AIState

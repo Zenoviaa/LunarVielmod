@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class WigglerStick : ModProjectile
+    public class WigglerStick : ModProjectile
     {
         private float _lighting;
         private bool _setOffset;

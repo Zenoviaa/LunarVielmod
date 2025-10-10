@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Slashers.Swords
 {
-    internal class FrostWave : BaseFlyingSlashProjectile
+    public class FrostWave : BaseFlyingSlashProjectile
     {
         public override void SetDefaults()
         {

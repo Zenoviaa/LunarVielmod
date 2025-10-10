@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class FrameStaffConnectorProj : ModProjectile
+    public class FrameStaffConnectorProj : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         Vector2[] ConnectorPos;

@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 {
-    internal class STARLINGPRESPAWN : ModProjectile
+    public class STARLINGPRESPAWN : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override string Texture => TextureRegistry.EmptyTexture;

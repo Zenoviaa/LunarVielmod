@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
-    internal class CinderBomber : BaseJugglerItem
+    public class CinderBomber : BaseJugglerItem
     {
         public override DamageClass AlternateClass => DamageClass.Ranged;
         public override void SetClassSwappedDefaults()

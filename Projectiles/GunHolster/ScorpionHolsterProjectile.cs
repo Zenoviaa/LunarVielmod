@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class ScorpionHolsterProjectile : ModProjectile
+    public class ScorpionHolsterProjectile : ModProjectile
     {
         private enum ActionState
         {

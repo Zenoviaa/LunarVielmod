@@ -8,7 +8,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.Skies
 {
-    internal class NiiviSky : CustomSky
+    public class NiiviSky : CustomSky
     {
         private struct LightPillar
         {

@@ -4,7 +4,7 @@ using ReLogic.Content;
 
 namespace Stellamod.Core.Shaders.MagicTrails
 {
-    internal class SimpleGradientTrailShader : BaseShader
+    public class SimpleGradientTrailShader : BaseShader
     {
         private static SimpleGradientTrailShader _instance;
         public static SimpleGradientTrailShader Instance

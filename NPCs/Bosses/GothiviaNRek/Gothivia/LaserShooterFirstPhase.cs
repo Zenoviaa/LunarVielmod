@@ -11,7 +11,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 {
-    internal class LaserShooterFirstPhase : ModProjectile
+    public class LaserShooterFirstPhase : ModProjectile
     {
         float Timer;
 

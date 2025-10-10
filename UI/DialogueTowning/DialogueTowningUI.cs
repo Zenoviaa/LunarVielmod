@@ -17,9 +17,9 @@ namespace Stellamod.UI.DialogueTowning
         private int _textIndex;
         private UIText _text;
 
-        internal int RelativeLeft => Main.screenWidth / 2;
-        internal int RelativeTop => Main.screenHeight  - 300;
-        internal Vector2 DrawPos => new Vector2(Left.Pixels, Top.Pixels);
+        public int RelativeLeft => Main.screenWidth / 2;
+        public int RelativeTop => Main.screenHeight  - 300;
+        public Vector2 DrawPos => new Vector2(Left.Pixels, Top.Pixels);
 
 
         public float TimeBetweenTexts { get; set; } = 0.015f;

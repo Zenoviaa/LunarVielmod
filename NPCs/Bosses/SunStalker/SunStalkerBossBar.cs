@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.SunStalker
 {
-    internal class SunStalkerBossBar : ModBossBar
+    public class SunStalkerBossBar : ModBossBar
     {
         private int VerlibossHeadIndex = -1;
         public override Asset<Texture2D> GetIconTexture(ref Rectangle? iconFrame)

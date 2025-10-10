@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 
 namespace Stellamod.Projectiles.IgniterExplosions
 {
-    internal class CinderBoom : ModProjectile
+    public class CinderBoom : ModProjectile
     {
         public override void SetStaticDefaults()
         {

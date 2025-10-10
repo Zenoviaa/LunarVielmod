@@ -10,7 +10,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class ScytheOfSoulsProj : ModProjectile
+    public class ScytheOfSoulsProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Runes
 {
-    internal class RuneOfDetonationBomb : ModProjectile
+    public class RuneOfDetonationBomb : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override string Texture => TextureRegistry.EmptyTexture;
@@ -52,7 +52,7 @@ namespace Stellamod.Items.Accessories.Runes
         }
     }
 
-    internal class RuneOfDetonationPlayer : ModPlayer
+    public class RuneOfDetonationPlayer : ModPlayer
     {
         private int _lastTargetIndex;
         private int _hitCount;
@@ -101,7 +101,7 @@ namespace Stellamod.Items.Accessories.Runes
         }
     }
 
-    internal class RuneOfDetonation : BaseRune
+    public class RuneOfDetonation : BaseRune
     {
         public override void SetDefaults()
         {

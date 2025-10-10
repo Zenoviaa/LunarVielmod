@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class CombusterSparkProj3 : ModProjectile
+    public class CombusterSparkProj3 : ModProjectile
     {
         private ref float ai_Timer => ref Projectile.ai[0];
         private ref float ai_RotationTimer => ref Projectile.ai[1];

@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal abstract class BasePowder : ModItem
+    public abstract class BasePowder : ModItem
     {
         public int ExplosionType;
         public float ExplosionScreenshakeAmt;

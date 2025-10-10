@@ -14,7 +14,7 @@ using Terraria.Graphics.Shaders;
 
 namespace Stellamod.Projectiles.Test
 {
-    internal class AlcadBall : ModProjectile,
+    public class AlcadBall : ModProjectile,
           IPreDrawMaskShader,
           IDrawMaskShader
     {

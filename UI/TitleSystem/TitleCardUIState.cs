@@ -3,7 +3,7 @@
 
 namespace Stellamod.UI.TitleSystem
 {
-    internal class TitleCardUIState : UIState
+    public class TitleCardUIState : UIState
     {
         public TitleCardUI titleCardUI;
         public TitleCardUIState() : base()

@@ -8,7 +8,7 @@ using Terraria;
 
 namespace Stellamod.Helpers
 {
-    internal static class ProjectileHelper
+    public static class ProjectileHelper
     {
         public static bool? OldPosColliding(Vector2[] positions, Rectangle projHitbox, Rectangle targetHitbox, float lineWidth = 6)
         {

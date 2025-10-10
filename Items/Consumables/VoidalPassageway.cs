@@ -14,7 +14,7 @@ using Stellamod.Projectiles;
 
 namespace Stellamod.Items.Consumables
 {
-    internal class VoidalPassageway : ModItem
+    public class VoidalPassageway : ModItem
     {
 
         public override void SetStaticDefaults()

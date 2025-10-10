@@ -16,7 +16,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.Orbs
 {
-    internal class SineSireProj : OrbProjectile
+    public class SineSireProj : OrbProjectile
     {
         public enum ActionState
         {

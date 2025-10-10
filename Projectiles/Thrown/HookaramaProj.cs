@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown
 {
-    internal class HookaramaProj : ModProjectile
+    public class HookaramaProj : ModProjectile
     {
         Vector2 StartCenter;
         Vector2 ReturnCenter;

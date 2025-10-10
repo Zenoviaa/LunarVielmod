@@ -16,7 +16,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Underground
 {
-    internal class BabyJellyGlow : ModNPC
+    public class BabyJellyGlow : ModNPC
     {
         const float Movement_Osc_Time = 90;
 

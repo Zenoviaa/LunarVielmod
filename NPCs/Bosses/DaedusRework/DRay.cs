@@ -10,7 +10,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.DaedusRework
 {
-    internal class DRay : ModNPC
+    public class DRay : ModNPC
     {
         public bool Down;
         public override void SetStaticDefaults()

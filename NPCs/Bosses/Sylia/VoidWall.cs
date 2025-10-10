@@ -16,10 +16,10 @@ using Terraria.Graphics.Effects;
 
 namespace Stellamod.NPCs.Bosses.Sylia
 {
-    internal class VoidWall : ModNPC,
+    public class VoidWall : ModNPC,
         IPixelPrimitiveDrawer
     {
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
 
         private int _tooFarCounter = 0;
         private float _projSpeed = 3.5f;

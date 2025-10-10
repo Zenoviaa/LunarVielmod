@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
 {
-    internal abstract class BaseMagicTomeItem : ModItem
+    public abstract class BaseMagicTomeItem : ModItem
     {
         // You can use a vanilla texture for your item by using the format: "Terraria/Item_<Item ID>".
         public static Color OverrideColor = new(122, 173, 255);

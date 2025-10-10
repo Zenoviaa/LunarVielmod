@@ -6,7 +6,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.UI.Dialogue
 {
-    internal class DreadDialogue1 : Dialogue
+    public class DreadDialogue1 : Dialogue
     {
         //The number of steps in this dialogue
         public override int Length => 2;
@@ -77,7 +77,7 @@ namespace Stellamod.UI.Dialogue
 
 
 
-    internal class DreadDialogue2 : Dialogue
+    public class DreadDialogue2 : Dialogue
     {
         //The number of steps in this dialogue
         public override int Length => 2;
@@ -141,7 +141,7 @@ namespace Stellamod.UI.Dialogue
 
 
 
-    internal class DreadDialogue3 : Dialogue
+    public class DreadDialogue3 : Dialogue
     {
         //The number of steps in this dialogue
         public override int Length => 1;

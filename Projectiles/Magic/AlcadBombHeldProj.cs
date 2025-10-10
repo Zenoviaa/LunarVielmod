@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class AlcadBombHeldProj : ModProjectile
+    public class AlcadBombHeldProj : ModProjectile
     {
         public override string Texture => "Stellamod/Items/Weapons/Mage/AlcadBomb";
         private ref float Timer => ref Projectile.ai[0];

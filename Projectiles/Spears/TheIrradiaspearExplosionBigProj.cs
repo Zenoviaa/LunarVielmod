@@ -16,7 +16,7 @@ using Terraria.Audio;
 
 namespace Stellamod.Projectiles.Spears
 {
-    internal class TheIrradiaspearExplosionBigProj : ModProjectile,
+    public class TheIrradiaspearExplosionBigProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture

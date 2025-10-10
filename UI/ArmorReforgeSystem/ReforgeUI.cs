@@ -10,7 +10,7 @@ using Terraria.GameContent.UI.Elements;
 
 namespace Stellamod.UI.ArmorReforgeSystem
 {
-    internal class ReforgeUI : UIPanel
+    public class ReforgeUI : UIPanel
     {
         private UIPanel _panel;
 
@@ -18,11 +18,11 @@ namespace Stellamod.UI.ArmorReforgeSystem
         public ReforgeButton reforgeButton;
         public ReforgePearl pearl;
 
-        internal const int width = 480;
-        internal const int height = 155;
+        public const int width = 480;
+        public const int height = 155;
 
-        internal int RelativeLeft => 48;
-        internal int RelativeTop => 0 + 256;
+        public int RelativeLeft => 48;
+        public int RelativeTop => 0 + 256;
 
         public override void OnInitialize()
         {

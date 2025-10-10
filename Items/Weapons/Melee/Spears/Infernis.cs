@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Spears
 {
-    internal class Infernis : ClassSwapItem
+    public class Infernis : ClassSwapItem
     {
         //Alternate class you want it to change to
         public override DamageClass AlternateClass => DamageClass.Magic;

@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class BBBubble : ModProjectile
+    public class BBBubble : ModProjectile
     {
         bool Moved;
         NPC Target;

@@ -25,7 +25,7 @@ using Gambit = Stellamod.Items.Consumables.Gambit;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
 {
-    internal class BaseDaedusSegment
+    public class BaseDaedusSegment
     {
         public BaseDaedusSegment(NPC npc)
         {
@@ -40,7 +40,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
         public virtual void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) { }
     }
 
-    internal class DaedusTopSegment : BaseDaedusSegment
+    public class DaedusTopSegment : BaseDaedusSegment
     {
         public DaedusTopSegment(NPC npc) : base(npc)
         {
@@ -73,7 +73,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
         }
     }
 
-    internal class DaedusFaceSegment : BaseDaedusSegment
+    public class DaedusFaceSegment : BaseDaedusSegment
     {
         public enum AnimationState
         {
@@ -180,7 +180,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
         }
     }
 
-    internal class DaedusArmSegment : BaseDaedusSegment
+    public class DaedusArmSegment : BaseDaedusSegment
     {
         private AnimationState _animationState;
         public enum AnimationState
@@ -289,7 +289,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
         }
     }
 
-    internal class DaedusBackSegment : BaseDaedusSegment
+    public class DaedusBackSegment : BaseDaedusSegment
     {
         public DaedusBackSegment(NPC npc) : base(npc)
         {
@@ -335,7 +335,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
         }
     }
 
-    internal class DaedusRobeSegment : BaseDaedusSegment
+    public class DaedusRobeSegment : BaseDaedusSegment
     {
         public DaedusRobeSegment(NPC npc) : base(npc)
         {
@@ -375,7 +375,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted
     }
 
     [AutoloadBossHead]
-    internal class DaedusTheDevoted : ModNPC
+    public class DaedusTheDevoted : ModNPC
     {
         private enum AIState
         {

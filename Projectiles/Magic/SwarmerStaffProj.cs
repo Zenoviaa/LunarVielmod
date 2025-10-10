@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class SwarmerStaffProj : ModProjectile
+    public class SwarmerStaffProj : ModProjectile
     {
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public override void SetStaticDefaults()

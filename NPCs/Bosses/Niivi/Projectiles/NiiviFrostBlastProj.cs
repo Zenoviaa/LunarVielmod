@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviFrostBlastProj : ModProjectile
+    public class NiiviFrostBlastProj : ModProjectile
     {
         private int _frameCounter;
         private int _frameTick;

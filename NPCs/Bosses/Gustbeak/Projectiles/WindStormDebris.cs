@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
 {
-    internal class WindStormDebris : ModProjectile
+    public class WindStormDebris : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         private ref float FallDownTime => ref Projectile.ai[1];

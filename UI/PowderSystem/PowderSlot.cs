@@ -8,15 +8,15 @@ using Terraria.UI;
 
 namespace Stellamod.UI.PowderSystem
 {
-    internal class PowderSlot : UIElement
+    public class PowderSlot : UIElement
     {
         private readonly BaseIgniterCard _card;
         private readonly int _context;
         private readonly int _index;
         private readonly float _scale;
 
-        internal Item Item;
-        internal PowderSlot(BaseIgniterCard card, int index, int context = ItemSlot.Context.BankItem, float scale = 1f)
+        public Item Item;
+        public PowderSlot(BaseIgniterCard card, int index, int context = ItemSlot.Context.BankItem, float scale = 1f)
         {
             _context = context;
             _scale = scale;
@@ -35,7 +35,7 @@ namespace Stellamod.UI.PowderSystem
         /// <summary>
         /// Returns true if this item can be placed into the slot (either empty or a pet item)
         /// </summary>
-        internal bool Valid(Item item)
+        public bool Valid(Item item)
         {
             if (item.ModItem is BasePowder powder)
             {
@@ -49,7 +49,7 @@ namespace Stellamod.UI.PowderSystem
             return false;
         }
 
-        internal void HandleMouseItem()
+        public void HandleMouseItem()
         {
             if (Valid(Main.mouseItem))
             {

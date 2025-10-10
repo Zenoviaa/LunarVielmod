@@ -12,7 +12,7 @@ using static tModPorter.ProgressUpdate;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviStarFieldBombProj : ModProjectile
+    public class NiiviStarFieldBombProj : ModProjectile
     {
         public override string Texture => TextureRegistry.FlowerTexture;
 

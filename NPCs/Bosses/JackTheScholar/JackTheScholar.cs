@@ -20,7 +20,7 @@ using Terraria.ModLoader;
 namespace Stellamod.NPCs.Bosses.JackTheScholar
 {
     [AutoloadBossHead]
-    internal class JackTheScholar : ModNPC
+    public class JackTheScholar : ModNPC
     {
         private enum AIState
         {

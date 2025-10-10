@@ -9,7 +9,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles.Abyss.Aurelus
 {
-    internal class AurelusPost : ModTile
+    public class AurelusPost : ModTile
     {
         public override void SetStaticDefaults()
         {

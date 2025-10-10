@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class IgniterTooltipDrop : GlobalItem
+    public class IgniterTooltipDrop : GlobalItem
     {
         public override bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
         {

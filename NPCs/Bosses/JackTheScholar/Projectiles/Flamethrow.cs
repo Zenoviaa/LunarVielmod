@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.JackTheScholar.Projectiles
 {
-    internal class Flamethrow : ModProjectile
+    public class Flamethrow : ModProjectile
     {
         private float _scale;
         private float _targetScale;

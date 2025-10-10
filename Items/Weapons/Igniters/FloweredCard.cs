@@ -2,7 +2,7 @@
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class FloweredCard : BaseIgniterCard
+    public class FloweredCard : BaseIgniterCard
     {
         public override void SetClassSwappedDefaults()
         {

@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Visual.Explosions
 {
-    internal class SimpleOrangeExplosion : BaseExplosionProjectile
+    public class SimpleOrangeExplosion : BaseExplosionProjectile
     {
         int trailMode;
         int rStart = 4;

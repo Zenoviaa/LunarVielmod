@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-    internal class CrystalStar : ModItem
+    public class CrystalStar : ModItem
     {
         public override void SetDefaults()
         {

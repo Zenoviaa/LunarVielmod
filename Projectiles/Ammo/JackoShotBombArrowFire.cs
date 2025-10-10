@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Ammo
 {
-    internal class JackoShotBombArrowFire : ModProjectile
+    public class JackoShotBombArrowFire : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
 

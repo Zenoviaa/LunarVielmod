@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Special
 {
-    internal class MythicalChest : BaseChest
+    public class MythicalChest : BaseChest
     {
         public override void SetDefaults()
         {

@@ -17,7 +17,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 {
-    internal class RekSnakeIdle : ModNPC
+    public class RekSnakeIdle : ModNPC
     {
         //Draw Code
         private string BaseTexturePath => "Stellamod/NPCs/Bosses/GothiviaTheSun/REK/";

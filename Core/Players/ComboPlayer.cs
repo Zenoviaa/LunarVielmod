@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Players
 {
-    internal class ComboPlayer : ModPlayer
+    public class ComboPlayer : ModPlayer
     {
         private int _comboWaitTimer;
         public int ComboCounter;

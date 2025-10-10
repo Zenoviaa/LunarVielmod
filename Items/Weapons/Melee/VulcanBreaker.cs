@@ -16,7 +16,7 @@ using Stellamod.Helpers;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    internal class VulcanBreaker : ClassSwapItem
+    public class VulcanBreaker : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Throwing;

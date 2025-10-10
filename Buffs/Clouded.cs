@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-    internal class Clouded : ModBuff
+    public class Clouded : ModBuff
     {
         public override void SetStaticDefaults()
         {

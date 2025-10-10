@@ -15,7 +15,7 @@ using Stellamod.Projectiles.Gun;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class Polaris : ClassSwapItem
+    public class Polaris : ClassSwapItem
     {
         public override DamageClass AlternateClass => DamageClass.Magic;
         public override void SetStaticDefaults()

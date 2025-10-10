@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
 {
-    internal class ScarecrowSaberPlayer : ModPlayer
+    public class ScarecrowSaberPlayer : ModPlayer
     {
         public Vector2? DashVelocity { get; set; } = null;
         public float SlowdownTimer { get; set; }
@@ -82,7 +82,7 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
 
     }
 
-    internal class ScarecrowSaberSlash : ModProjectile
+    public class ScarecrowSaberSlash : ModProjectile
     {
         private bool _stoppedMoving;
         private bool _recoiled;

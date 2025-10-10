@@ -18,7 +18,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles.Abyss.Aurelus
 {
-    internal class AurelusSummon : ModTile
+    public class AurelusSummon : ModTile
     {
 		public override LocalizedText DefaultContainerName(int frameX, int frameY)
 		{

@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Spears
 {
-    internal class StarSheithProg : ModProjectile
+    public class StarSheithProg : ModProjectile
     {
         protected virtual float HoldoutRangeMin => 24f;
         protected virtual float HoldoutRangeMax => 96f;

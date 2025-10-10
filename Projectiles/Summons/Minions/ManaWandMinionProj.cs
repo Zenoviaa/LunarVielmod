@@ -128,7 +128,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             return Color.Lerp(Color.White, Color.Blue, progress);
         }
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true);

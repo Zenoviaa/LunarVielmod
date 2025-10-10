@@ -12,9 +12,9 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Test
 {
-    internal class TornadoTestProj : ModProjectile, IPixelPrimitiveDrawer
+    public class TornadoTestProj : ModProjectile, IPixelPrimitiveDrawer
     {
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public const float LaserLength = 2400f;
 
 

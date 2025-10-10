@@ -8,9 +8,9 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
 {
-    internal class IrradiaLaserBoxProj : ModProjectile
+    public class IrradiaLaserBoxProj : ModProjectile
     {
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
 
         public const float LaserLength = 2400f;
         private float LifeTime => 1080;

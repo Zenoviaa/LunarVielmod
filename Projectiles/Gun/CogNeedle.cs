@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class CogNeedle : ModProjectile
+    public class CogNeedle : ModProjectile
     {
         private int _targetNpc = -1;
         private Vector2 _targetOffset;

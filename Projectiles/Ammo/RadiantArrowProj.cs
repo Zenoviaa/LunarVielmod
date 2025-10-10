@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Ammo
 {
-    internal class RadiantArrowProj : ModProjectile, IPixelPrimitiveDrawer
+    public class RadiantArrowProj : ModProjectile, IPixelPrimitiveDrawer
     {
         private Vector2 _originalVelocity;
         public override void SetStaticDefaults()
@@ -212,7 +212,7 @@ namespace Stellamod.Projectiles.Ammo
             }
         }
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             if (Homing_Timer < 45)

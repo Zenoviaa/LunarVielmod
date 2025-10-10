@@ -10,7 +10,7 @@ using Terraria.UI.Chat;
 
 namespace Stellamod.Items
 {
-    internal class SpecialTooltipDraw : GlobalItem
+    public class SpecialTooltipDraw : GlobalItem
     {
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {

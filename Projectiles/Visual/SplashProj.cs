@@ -8,10 +8,10 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Visual
 {
-    internal class SplashProj : ModProjectile,
+    public class SplashProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public Color SplashColor;
         ref float Timer => ref Projectile.ai[0];
         ref float Color => ref Projectile.ai[2];

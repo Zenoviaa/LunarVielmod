@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Visual.Particles
 {
-    internal class SparkleWindParticle : Particle
+    public class SparkleWindParticle : Particle
     {
         public int FrameWidth = 488;
         public int FrameHeight = 422;

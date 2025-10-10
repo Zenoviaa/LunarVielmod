@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Spears
 {
-    internal class TheIrradiaspearP : ModProjectile
+    public class TheIrradiaspearP : ModProjectile
     {
         private enum ActionState
         {

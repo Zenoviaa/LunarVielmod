@@ -3,7 +3,7 @@ using Terraria;
 
 namespace Stellamod.Helpers
 {
-    internal static class PlayerHelper
+    public static class PlayerHelper
     {
         public static bool RemoveItem(this Player player, int reqItem, int count = 1)
         {

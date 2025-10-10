@@ -2,7 +2,7 @@
 
 namespace Stellamod.UI.PowderSystem
 {
-    internal class PowderUIState : UIState
+    public class PowderUIState : UIState
     {
         public PowderUI powderUI;
         public PowderUIState() : base()

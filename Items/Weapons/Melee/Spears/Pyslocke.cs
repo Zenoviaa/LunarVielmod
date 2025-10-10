@@ -725,7 +725,7 @@ namespace Stellamod.Items.Weapons.Melee.Spears
 
 
 
-    internal class PyslockeSlam : ModProjectile
+    public class PyslockeSlam : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()

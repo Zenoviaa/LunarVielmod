@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Arrows
 {
-    internal class VoidArrow : ModProjectile
+    public class VoidArrow : ModProjectile
     {
         private int _particleTimer;
         public override void SetStaticDefaults()

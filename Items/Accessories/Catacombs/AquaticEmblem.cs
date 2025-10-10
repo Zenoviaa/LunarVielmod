@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Catacombs
 {
-    internal class AquaticEmblemPlayer : ModPlayer
+    public class AquaticEmblemPlayer : ModPlayer
     {
         public bool hasAquaticEmblem;
         public override void ResetEffects()
@@ -49,7 +49,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         }
     }
 
-    internal class AquaticEmblem : ModItem
+    public class AquaticEmblem : ModItem
     {
         public override void SetDefaults()
         {

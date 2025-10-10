@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusRework
 {
-    internal class DaedusDeath : ModProjectile
+    public class DaedusDeath : ModProjectile
     {
         private int _frameCounter;
         private int _frameTick;

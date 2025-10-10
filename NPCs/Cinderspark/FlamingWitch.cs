@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Cinderspark
 {
-    internal class FlamingWitch : ModNPC
+    public class FlamingWitch : ModNPC
     {
         private Vector2 _dir;
         private ref float ai_Timer => ref NPC.ai[0];

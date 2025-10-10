@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials.Molds
 {
-    internal class BlankBrooch : ModItem
+    public class BlankBrooch : ModItem
     {
 
         public override void SetStaticDefaults()

@@ -6,7 +6,7 @@ using Terraria;
 
 namespace Stellamod.Core.Shaders
 {
-    internal class PixelMagicSparkleWaterShader : BaseShader
+    public class PixelMagicSparkleWaterShader : BaseShader
     {
         private static PixelMagicSparkleWaterShader _instance;
         public static PixelMagicSparkleWaterShader Instance

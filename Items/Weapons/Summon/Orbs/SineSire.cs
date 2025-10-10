@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework;
 
 namespace Stellamod.Items.Weapons.Summon.Orbs
 {
-    internal class SineSire : ClassSwapItem
+    public class SineSire : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Throwing;

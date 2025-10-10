@@ -2,12 +2,12 @@
 
 namespace Stellamod.Gores
 {
-    internal abstract class NiiviGore : ModGore { }
-    internal class Niivi1 : NiiviGore { }
-    internal class Niivi2 : NiiviGore { }
-    internal class Niivi3 : NiiviGore { }
-    internal class Niivi4 : NiiviGore { }
-    internal class Niivi5 : NiiviGore { }
-    internal class Niivi6 : NiiviGore { }
-    internal class Niivi7 : NiiviGore { }
+    public abstract class NiiviGore : ModGore { }
+    public class Niivi1 : NiiviGore { }
+    public class Niivi2 : NiiviGore { }
+    public class Niivi3 : NiiviGore { }
+    public class Niivi4 : NiiviGore { }
+    public class Niivi5 : NiiviGore { }
+    public class Niivi6 : NiiviGore { }
+    public class Niivi7 : NiiviGore { }
 }

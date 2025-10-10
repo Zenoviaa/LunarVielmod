@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown.Jugglers
 {
-    internal class SpikedLobberSpikeProj : ModProjectile
+    public class SpikedLobberSpikeProj : ModProjectile
     {
         public override void SetDefaults()
         {

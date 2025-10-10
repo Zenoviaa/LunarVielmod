@@ -13,7 +13,7 @@ using Terraria.UI;
 namespace Stellamod.UI.StructureSelector
 {
     [Autoload(Side = ModSide.Client)]
-    internal class StructureSelectorUISystem : ModSystem
+    public class StructureSelectorUISystem : ModSystem
     {
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
@@ -55,7 +55,7 @@ namespace Stellamod.UI.StructureSelector
             }
         }
 
-        internal void ToggleUI(bool isOn)
+        public void ToggleUI(bool isOn)
         {
             if (_userInterface?.CurrentState != null && !isOn)
             {
@@ -67,15 +67,15 @@ namespace Stellamod.UI.StructureSelector
             }
         }
 
-        internal void OpenSaveUI()
+        public void OpenSaveUI()
         {
             _saveUserInterface.SetState(saveUIState);
         }
-        internal void CloseSaveUI()
+        public void CloseSaveUI()
         {
             _saveUserInterface.SetState(null);
         }
-        internal void OpenUI()
+        public void OpenUI()
         {
             selectorUIState.ui.Refresh();
             _userInterface.SetState(selectorUIState);

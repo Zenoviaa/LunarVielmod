@@ -1,6 +1,5 @@
 ﻿using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.DaedusRework;
-using Stellamod.NPCs.Bosses.StarrVeriplant;
 using Stellamod.NPCs.Bosses.Sylia;
 using System;
 using Stellamod.NPCs.Bosses.Jack;
@@ -21,6 +20,7 @@ using Stellamod.NPCs.Bosses.Gustbeak;
 using Stellamod.NPCs.Bosses.CommanderGintzia;
 using Stellamod.NPCs.Bosses.DaedusTheDevoted;
 using Stellamod.NPCs.Bosses.JackTheScholar;
+using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant;
 
 namespace Stellamod
 {
@@ -49,7 +49,7 @@ namespace Stellamod
 		{          
 			// The "LogBoss" method requires many parameters, defined separately below:
 			// The name used for the title of the page
-			string internalName = "Jack the Scholar";
+			string publicName = "Jack the Scholar";
 
 			// The NPC type of the boss
 			int bossType = ModContent.NPCType<JackTheScholar>();
@@ -82,7 +82,7 @@ namespace Stellamod
 			bossChecklistMod.Call(
                 "LogMiniBoss",
 				Mod,
-				internalName,
+				publicName,
 				weight,
 				downed,
 				bossType,
@@ -96,7 +96,7 @@ namespace Stellamod
 
 		private void DoDaedusIntegration()
         {
-			string internalName2 = "DaedustheDevoted";
+			string publicName2 = "DaedustheDevoted";
 
 			// The NPC type of the boss
 			int bossType2 = ModContent.NPCType<DaedusTheDevoted>();
@@ -129,7 +129,7 @@ namespace Stellamod
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
-				internalName2,
+				publicName2,
 				weight2,
 				downed2,
 				bossType2,
@@ -143,7 +143,7 @@ namespace Stellamod
 
 		private void DoDreadmireIntegration()
         {
-			string internalName3 = "BloodGoddessDreadmire";
+			string publicName3 = "BloodGoddessDreadmire";
 
 			// The NPC type of the boss
 			int bossType3 = ModContent.NPCType<NPCs.Bosses.DreadMire.DreadMireR>();
@@ -181,7 +181,7 @@ namespace Stellamod
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
-				internalName3,
+				publicName3,
 				weight3,
 				downed3,
 				bossType3,
@@ -195,7 +195,7 @@ namespace Stellamod
 
 		private void DoEliteCommanderIntegration()
         {
-			string internalName4 = "EliteCommander";
+			string publicName4 = "EliteCommander";
 
 			// The NPC type of the boss
 			int bossType4 = ModContent.NPCType<EliteCommander>();
@@ -228,7 +228,7 @@ namespace Stellamod
 			bossChecklistMod.Call(
                 "LogMiniBoss",
 				Mod,
-				internalName4,
+				publicName4,
 				weight4,
 				downed4,
 				bossType4,
@@ -242,7 +242,7 @@ namespace Stellamod
 
 		private void DoGustbeakIntegration()
         {
-			string internalName5 = "Gustbeak";
+			string publicName5 = "Gustbeak";
 
 			// The NPC type of the boss
 			int bossType5 = ModContent.NPCType<Gustbeak>();
@@ -280,7 +280,7 @@ namespace Stellamod
 			bossChecklistMod.Call(
                 "LogMiniBoss",
 				Mod,
-				internalName5,
+				publicName5,
 				weight5,
 				downed5,
 				bossType5,
@@ -294,7 +294,7 @@ namespace Stellamod
 
         private void DoGintziaIntegration()
         {
-			string internalName5 = nameof(CommanderGintzia);
+			string publicName5 = nameof(CommanderGintzia);
 
             // The NPC type of the boss
             int bossType5 = ModContent.NPCType<CommanderGintzia>();
@@ -325,7 +325,7 @@ namespace Stellamod
             bossChecklistMod.Call(
                 "LogBoss",
                 Mod,
-                internalName5,
+                publicName5,
                 weight5,
                 downed5,
                 bossType5,
@@ -339,7 +339,7 @@ namespace Stellamod
 
         private void DoSingularityFragmentIntegration()
         {
-			string internalName6 = "LumarSingularity";
+			string publicName6 = "LumarSingularity";
 
             // The NPC type of the boss
             int bossType6 = ModContent.NPCType<NPCs.Bosses.singularityFragment.SingularityFragment>();
@@ -375,7 +375,7 @@ namespace Stellamod
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
-				internalName6,
+				publicName6,
 				weight6,
 				downed6,
 				bossType6,
@@ -391,7 +391,7 @@ namespace Stellamod
 
 		private void DoVerliaIntegration()
         {
-			string internalName7 = "VerliaoftheMoon";
+			string publicName7 = "VerliaoftheMoon";
 
 			// The NPC type of the boss
 			int bossType7 = ModContent.NPCType<NPCs.Bosses.Verlia.VerliaB>();
@@ -431,7 +431,7 @@ namespace Stellamod
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
-				internalName7,
+				publicName7,
 				weight7,
 				downed7,
 				bossType7,
@@ -447,7 +447,7 @@ namespace Stellamod
 		private void DoGothiviaIntegration()
         {
 
-			string internalName8 = "GothiviatheSunGoddess";
+			string publicName8 = "GothiviatheSunGoddess";
 
 			// The NPC type of the boss
 			int bossType8 = ModContent.NPCType<NPCs.Bosses.GothiviaTheSun.GOS.GothiviaIyx>();
@@ -486,7 +486,7 @@ namespace Stellamod
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
-				internalName8,
+				publicName8,
 				weight8,
 				downed8,
 				bossType8,
@@ -503,7 +503,7 @@ namespace Stellamod
         private void DoIrradiaIntegration()
         {
 
-            string internalName8 = "IrradiaNHavoc";
+            string publicName8 = "IrradiaNHavoc";
 
             // The NPC type of the boss
             int bossType8 = ModContent.NPCType<NPCs.Bosses.IrradiaNHavoc.Irradia.Irradia>();
@@ -544,7 +544,7 @@ namespace Stellamod
             bossChecklistMod.Call(
                 "LogBoss",
                 Mod,
-                internalName8,
+                publicName8,
                 weight8,
                 downed8,
                 bossType8,
@@ -562,7 +562,7 @@ namespace Stellamod
         private void DoSyliaIntegration()
 		{
 
-			string internalName = nameof(Sylia);
+			string publicName = nameof(Sylia);
 
 			// The NPC type of the boss
 			int bossType = ModContent.NPCType<Sylia>();
@@ -586,7 +586,7 @@ namespace Stellamod
 			bossChecklistMod.Call(
 				"LogMiniBoss",
 				Mod,
-				internalName,
+				publicName,
 				weight,
 				downed,
 				bossType,
@@ -601,7 +601,7 @@ namespace Stellamod
 		private void DoSTARIntegration()
 		{
 
-			string internalName = nameof(STARBOMBER);
+			string publicName = nameof(STARBOMBER);
 
 			// The NPC type of the boss
 			int bossType = ModContent.NPCType<STARBOMBER>();
@@ -627,7 +627,7 @@ namespace Stellamod
 			bossChecklistMod.Call(
 				"LogMiniBoss",
 				Mod,
-				internalName,
+				publicName,
 				weight,
 				downed,
 				bossType,
@@ -642,7 +642,7 @@ namespace Stellamod
 		private void DoFenixIntegration()
 		{
 
-			string internalName = nameof(Fenix);
+			string publicName = nameof(Fenix);
 
 			// The NPC type of the boss
 			int bossType = ModContent.NPCType<Fenix>();
@@ -669,7 +669,7 @@ namespace Stellamod
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
-				internalName,
+				publicName,
 				weight,
 				downed,
 				bossType,
@@ -686,7 +686,7 @@ namespace Stellamod
 		private void DoZuiIntegration()
 		{
 
-			string internalName = nameof(ZuiTheTraveller);
+			string publicName = nameof(ZuiTheTraveller);
 
 			// The NPC type of the boss
 			int bossType = ModContent.NPCType<ZuiTheTraveller>();
@@ -714,7 +714,7 @@ namespace Stellamod
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
-				internalName,
+				publicName,
 				weight,
 				downed,
 				bossType,
@@ -728,7 +728,7 @@ namespace Stellamod
 		}
 		private void DoStoneGolemIntegration()
         {
-			string internalName = nameof(StarrVeriplant);
+			string publicName = nameof(StarrVeriplant);
 
 			// The NPC type of the boss
 			int bossType = ModContent.NPCType<StarrVeriplant>();
@@ -748,7 +748,7 @@ namespace Stellamod
 			bossChecklistMod.Call(
                 "LogMiniBoss",
 				Mod,
-				internalName,
+				publicName,
 				weight,
 				downed,
 				bossType,
@@ -763,7 +763,7 @@ namespace Stellamod
 
 		private void DoNiiviIntegration()
 		{
-            string internalName = nameof(Niivi);
+            string publicName = nameof(Niivi);
 
             // The NPC type of the boss
             int bossType = ModContent.NPCType<Niivi>();
@@ -789,7 +789,7 @@ namespace Stellamod
             bossChecklistMod.Call(
                 "LogBoss",
                 Mod,
-                internalName,
+                publicName,
                 weight,
                 downed,
                 bossType,
@@ -803,7 +803,7 @@ namespace Stellamod
 
 		private void DoRekIntegration()
 		{
-            string internalName = nameof(RekSnake);
+            string publicName = nameof(RekSnake);
 
             // The NPC type of the boss
             int bossType = ModContent.NPCType<RekSnake>();
@@ -829,7 +829,7 @@ namespace Stellamod
             bossChecklistMod.Call(
                 "LogMiniBoss",
                 Mod,
-                internalName,
+                publicName,
                 weight,
                 downed,
                 bossType,
@@ -843,7 +843,7 @@ namespace Stellamod
 
 		private void DoSupernovaFragmentIntegration()
 		{
-            string internalName = nameof(SupernovaFragment);
+            string publicName = nameof(SupernovaFragment);
 
             // The NPC type of the boss
             int bossType = ModContent.NPCType<SupernovaFragment>();
@@ -871,7 +871,7 @@ namespace Stellamod
             bossChecklistMod.Call(
                 "LogBoss",
                 Mod,
-                internalName,
+                publicName,
                 weight,
                 downed,
                 bossType,

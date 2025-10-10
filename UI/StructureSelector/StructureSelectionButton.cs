@@ -9,14 +9,14 @@ using Terraria.UI;
 
 namespace Stellamod.UI.StructureSelector
 {
-    internal class StructureSelectionButton : UIElement
+    public class StructureSelectionButton : UIElement
     {
         private bool IsSelected => Structurizer.SelectedStructure == _structurePath;
         private readonly string _structurePath;
         private readonly UIText _text;
         private readonly UIPanel _panel;
-        internal const int width = 420;
-        internal const int height = 28;
+        public const int width = 420;
+        public const int height = 28;
         public StructureSelectionButton(string structurePath)
         {
             _structurePath = structurePath.Replace(".str", "");

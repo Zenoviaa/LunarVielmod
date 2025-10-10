@@ -12,7 +12,7 @@ namespace Stellamod.Helpers
     {
         public override Color RarityColor => Color.Cyan;
 
-        internal static List<RaritySparkle> SparkleList = new();
+        public static List<RaritySparkle> SparkleList = new();
 
         public static void DrawCustomTooltipLine(DrawableTooltipLine tooltipLine)
         {
@@ -28,7 +28,7 @@ namespace Stellamod.Helpers
     {
         public override Color RarityColor => Color.White;
 
-        internal static List<RaritySparkle> SparkleList = new();
+        public static List<RaritySparkle> SparkleList = new();
 
         public static void DrawCustomTooltipLine(DrawableTooltipLine tooltipLine)
         {
@@ -44,7 +44,7 @@ namespace Stellamod.Helpers
     {
         public override Color RarityColor => Color.White;
 
-        internal static List<RaritySparkle> SparkleList = new();
+        public static List<RaritySparkle> SparkleList = new();
 
         public static void DrawCustomTooltipLine(DrawableTooltipLine tooltipLine)
         {
@@ -62,7 +62,7 @@ namespace Stellamod.Helpers
     {
         public override Color RarityColor => Color.White;
 
-        internal static List<RaritySparkle> SparkleList = new();
+        public static List<RaritySparkle> SparkleList = new();
 
         public static void DrawCustomTooltipLine(DrawableTooltipLine tooltipLine)
         {
@@ -80,7 +80,7 @@ namespace Stellamod.Helpers
     {
         public override Color RarityColor => Color.White;
 
-        internal static List<RaritySparkle> SparkleList = new();
+        public static List<RaritySparkle> SparkleList = new();
 
         public static void DrawCustomTooltipLine(DrawableTooltipLine tooltipLine)
         {
@@ -98,7 +98,7 @@ namespace Stellamod.Helpers
     {
         public override Color RarityColor => Color.White;
 
-        internal static List<RaritySparkle> SparkleList = new();
+        public static List<RaritySparkle> SparkleList = new();
 
         public static void DrawCustomTooltipLine(DrawableTooltipLine tooltipLine)
         {

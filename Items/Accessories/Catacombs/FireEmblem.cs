@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Catacombs
 {
-    internal class FireEmblemPlayer : ModPlayer
+    public class FireEmblemPlayer : ModPlayer
     {
         public bool hasFireEmblem;
         public int fireEmblemCooldown;
@@ -65,7 +65,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         }
     }
 
-    internal class FireEmblem : ModItem
+    public class FireEmblem : ModItem
     {
         public override void SetDefaults()
         {

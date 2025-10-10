@@ -9,10 +9,10 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 {
-    internal class VoidLine : ModProjectile,
+    public class VoidLine : ModProjectile,
         IPixelPrimitiveDrawer
     {
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
 
         //No texture for this
         public override string Texture => TextureRegistry.EmptyTexture;

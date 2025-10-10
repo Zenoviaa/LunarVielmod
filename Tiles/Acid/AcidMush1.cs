@@ -8,7 +8,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles.Acid
 {
-    internal class AcidMush1 : ModTile
+    public class AcidMush1 : ModTile
     {
         public override void SetStaticDefaults()
         {

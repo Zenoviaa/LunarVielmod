@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
-    internal class ElectricTentacle : ModProjectile
+    public class ElectricTentacle : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public CoreLightning Lightning { get; set; } = new CoreLightning();

@@ -11,12 +11,13 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ModLoader;
+using Stellamod.Assets;
 
 namespace Stellamod.Core.Bases
 {
-    internal abstract class BaseCrossbowProjectile : ModProjectile
+    public abstract class BaseCrossbowProjectile : ModProjectile
     {
-        internal enum AIState
+        public enum AIState
         {
             Take_Aim,
             Aim,
@@ -35,6 +36,7 @@ namespace Stellamod.Core.Bases
         protected float AimProgress;
         protected float CrosshairProgress;
         protected float BurstCount;
+        protected float ChargeStrength;
         protected ref float Timer => ref Projectile.ai[0];
         protected AIState State
         {
@@ -100,7 +102,7 @@ namespace Stellamod.Core.Bases
 
 
             GlowProgress *= 0.97f;
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
+            Projectile.rotation = Projectile.velocity.ToRotation();
             SetHeldPosition();
         }
 
@@ -116,7 +118,7 @@ namespace Stellamod.Core.Bases
             Timer++;
             if (Timer == 1)
             {
-                SoundStyle crossbowPull = new SoundStyle("Stellamod/Assets/Sounds/CrossbowPull");
+                SoundStyle crossbowPull = AssetRegistry.Sounds.Bow.CrossbowPull;
                 crossbowPull.PitchVariance = 0.1f;
                 SoundEngine.PlaySound(crossbowPull, Projectile.position);
             }
@@ -129,7 +131,7 @@ namespace Stellamod.Core.Bases
 
             AimProgress = Timer / AimTime;
             CrosshairProgress = AimProgress;
-            float easedScaleInProgress = Easing.InOutCubic(AimProgress);
+            float easedScaleInProgress = EasingFunction.InOutCubic(AimProgress);
             DrawScale = Vector2.Lerp(Vector2.One, AimedDrawScale, easedScaleInProgress);
             ArrowOffset = Vector2.Lerp(new Vector2(24, 0), Vector2.Zero, easedScaleInProgress);
             if (Timer == AimTime)
@@ -148,10 +150,15 @@ namespace Stellamod.Core.Bases
                     particle.Rotation = rot + MathHelper.ToRadians(45);
                 }
             }
-
+            ChargeStrength = Timer / AimTime;
             if (Timer >= AimTime)
             {
                 SwitchState(AIState.Aim);
+            }
+
+            if (Main.myPlayer == Projectile.owner && !Owner.controlUseItem && Timer >= 5 && !Main.mouseRight)
+            {
+                SwitchState(AIState.Fire);
             }
         }
 
@@ -164,7 +171,7 @@ namespace Stellamod.Core.Bases
                 Projectile.netUpdate = true;
             }
 
-            if (Main.myPlayer == Projectile.owner && Owner.controlUseItem)
+            if (Main.myPlayer == Projectile.owner && !Owner.controlUseItem && !Main.mouseRight)
             {
                 SwitchState(AIState.Fire);
             }
@@ -175,21 +182,23 @@ namespace Stellamod.Core.Bases
             Timer++;
             if (Timer == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"), Projectile.position);
-            
+                SoundStyle aimSound = AssetRegistry.Sounds.Bow.Aim;
+                aimSound.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(aimSound, Projectile.position);
+
             }
 
-            if(BurstCount > 1)
+            if (BurstCount > 1)
             {
                 int fireDivisor = (int)(FireTime / BurstCount);
-                if(Timer % fireDivisor == 0)
+                if (Timer % fireDivisor == 0)
                 {
                     Shoot(Owner.Center, Projectile.velocity);
                 }
             }
             else
             {
-                if(Timer == 1)
+                if (Timer == 1)
                 {
                     Shoot(Owner.Center, Projectile.velocity);
                 }
@@ -197,10 +206,10 @@ namespace Stellamod.Core.Bases
 
 
             float scaleOutProgress = Timer / FireTime;
-            float easedScaleOutProgress = Easing.OutExpo(scaleOutProgress);
+            float easedScaleOutProgress = EasingFunction.OutExpo(scaleOutProgress);
             DrawScale = Vector2.Lerp(AimedDrawScale, Vector2.One, easedScaleOutProgress);
 
-            float originEasedProgress = Easing.SpikeOutBounce(scaleOutProgress);
+            float originEasedProgress = EasingFunction.QuadraticBump(scaleOutProgress);
             DrawOriginOffset = Vector2.Lerp(Vector2.Zero, new Vector2(-8, 0), originEasedProgress).RotatedBy(Projectile.velocity.ToRotation());
             CrosshairProgress = 1f - scaleOutProgress;
             if (Timer >= FireTime * 1.5f)
@@ -237,23 +246,26 @@ namespace Stellamod.Core.Bases
             Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
 
             armPosition.Y += Owner.gfxOffY;
-            Projectile.Center = armPosition; // Set projectile to arm position
-
+            Projectile.Center = Owner.MountedCenter;
+            Projectile.Center += Projectile.velocity * 16;
+            /*
             float or = Projectile.spriteDirection == -1 ? MathHelper.ToRadians(90) : MathHelper.ToRadians(-90);
             Projectile.Center += HeldOffset.RotatedBy(Projectile.rotation + or);
-
+            */
             Owner.heldProj = Projectile.whoAmI;
         }
 
+        private Core.Effects.GlowCircleShader _shader;
         public void DrawAimingLines(ref Color lightColor)
         {
             Item heldItem = Owner.HeldItem;
             if (heldItem.ModItem == null)
                 return;
-            Asset<Texture2D> heldTexture = ModContent.Request<Texture2D>("Stellamod/Core/Bases/CrossbowCrosshairLineParticle");
+            Asset<Texture2D> heldTexture = ModContent.Request<Texture2D>("Stellamod/Core/ItemTemplates/CrossbowCrosshairLineParticle");
             SpriteBatch spriteBatch = Main.spriteBatch;
             Vector2 centerPos = Owner.Center - Main.screenPosition;
-            GlowCircleShader shader = GlowCircleShader.Instance;
+            _shader ??= new();
+            var shader = _shader;
             shader.Speed = 5;
 
             float bp = 0.5f;
@@ -279,32 +291,16 @@ namespace Stellamod.Core.Bases
             shader.OuterGlowColor = Color.Lerp(shader.OuterGlowColor, Color.Black, AimProgress);
             shader.Pixelation = 0.0005f;
 
-            shader.Apply();
+            shader.ApplyToEffect();
 
             spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
 
             Vector2 aimLineOrigin = new Vector2(0, heldTexture.Size().Y / 2);
-            for (int i = 0; i < 3; i++)
-            {
-                float off = 64;
-                float rot = Projectile.velocity.ToRotation();
-                rot += MathHelper.ToRadians(45 * Projectile.spriteDirection);
+            Vector2 scale = Vector2.Lerp(new Vector2(0, 1), Vector2.One, AimProgress);
+            float rotation = Projectile.velocity.ToRotation();
+            spriteBatch.Draw(heldTexture.Value, Projectile.Center - Main.screenPosition, null, Color.White, rotation,
+               aimLineOrigin, scale, SpriteEffects.None, 0);
 
-                float aimlineRot = MathHelper.Lerp(Projectile.rotation, Projectile.velocity.ToRotation(), AimProgress);
-                Vector2 upPos = centerPos + rot.ToRotationVector2() * off * (1f - AimProgress);
-                upPos = Vector2.Lerp(upPos, centerPos, AimProgress);
-                upPos += Projectile.velocity * -off;
-                spriteBatch.Draw(heldTexture.Value, upPos, null, Color.White, aimlineRot,
-                   aimLineOrigin, 1f, SpriteEffects.None, 0);
-
-
-                float aimlineRot2 = MathHelper.Lerp(Projectile.rotation - MathHelper.ToRadians(90 * Projectile.spriteDirection), Projectile.velocity.ToRotation(), AimProgress);
-                upPos = centerPos + (rot - MathHelper.ToRadians(90 * Projectile.spriteDirection)).ToRotationVector2() * off * (1f - AimProgress);
-                upPos = Vector2.Lerp(upPos, centerPos, AimProgress);
-                upPos += Projectile.velocity * -off;
-                spriteBatch.Draw(heldTexture.Value, upPos, null, Color.White, aimlineRot2,
-      aimLineOrigin, 1f, SpriteEffects.None, 0);
-            }
 
             spriteBatch.RestartDefaults();
 
@@ -316,10 +312,10 @@ namespace Stellamod.Core.Bases
                 return;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-            Asset<Texture2D> tex = ModContent.Request<Texture2D>("Stellamod/Core/Bases/CrossbowCrosshair");
+            Asset<Texture2D> tex = ModContent.Request<Texture2D>("Stellamod/Core/ItemTemplates/CrossbowCrosshair");
             Vector2 drawPos = Main.MouseWorld - Main.screenPosition;
             Vector2 drawOrigin = tex.Size() / 2f;
-            float drawScale = 1f * CrosshairProgress * MathUtil.Osc(0.95f, 1f, speed: 12);
+            float drawScale = 1f * CrosshairProgress * ExtraMath.Osc(0.95f, 1f, speed: 12);
             float drawRotation = Main.GlobalTimeWrappedHourly;
             Color drawColor = Color.Red * CrosshairProgress;
 
@@ -342,8 +338,12 @@ namespace Stellamod.Core.Bases
             Asset<Texture2D> heldTexture = ModContent.Request<Texture2D>(heldItem.ModItem.Texture);
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             Vector2 drawOrigin = heldTexture.Size() / 2f;
-            drawPos += DrawOriginOffset;
-            SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
+            //  drawPos += DrawOriginOffset;
+            SpriteEffects spriteEffects = SpriteEffects.None;
+            float drawRotation = Projectile.rotation;
+            if (Projectile.spriteDirection == -1)
+                drawRotation += MathHelper.ToRadians(90);
+            /*
             if (spriteEffects.HasFlag(SpriteEffects.FlipVertically))
             {
                 drawOrigin.Y = heldTexture.Size().Y - drawOrigin.Y;
@@ -351,8 +351,9 @@ namespace Stellamod.Core.Bases
             if (spriteEffects.HasFlag(SpriteEffects.FlipHorizontally))
             {
                 drawOrigin.X = heldTexture.Size().X - drawOrigin.X;
-            }
-            float drawRotation = Projectile.rotation;
+                drawRotation -= MathHelper.ToRadians(90);
+            }*/
+
             Color drawColor = Color.White.MultiplyRGB(lightColor);
             Vector2 drawScale = DrawScale;
 
@@ -360,7 +361,7 @@ namespace Stellamod.Core.Bases
         }
 
         public void DrawArrow(ref Color lightColor)
-        { 
+        {
             SpriteBatch spriteBatch = Main.spriteBatch;
             Owner.PickAmmo(Owner.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int useAmmoItemId, dontConsume: true);
             Main.instance.LoadProjectile(projToShoot);
@@ -370,23 +371,11 @@ namespace Stellamod.Core.Bases
             drawPos += DrawOriginOffset;
 
             SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
-            float drawRotation = Projectile.rotation + MathHelper.ToRadians(45);
-            if (spriteEffects.HasFlag(SpriteEffects.FlipVertically))
+            float drawRotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(90);
+            if (Projectile.spriteDirection == -1)
             {
-                drawOrigin.Y = arrowTexture.Size().Y - drawOrigin.Y;
-                drawRotation -= MathHelper.ToRadians(90);
-                drawPos += ArrowOffset.RotatedBy(Projectile.rotation + MathHelper.ToRadians(45));
+                drawRotation += MathHelper.ToRadians(180);
             }
-            else
-            {
-                drawPos += ArrowOffset.RotatedBy(Projectile.rotation - MathHelper.ToRadians(45));
-            }
-            if (spriteEffects.HasFlag(SpriteEffects.FlipHorizontally))
-            {
-                drawOrigin.X = arrowTexture.Size().X - drawOrigin.X;
-
-            }
-
             Color drawColor = Color.White.MultiplyRGB(lightColor);
             Vector2 drawScale = DrawScale;
             spriteBatch.Draw(arrowTexture.Value, drawPos, null, drawColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
@@ -407,10 +396,13 @@ namespace Stellamod.Core.Bases
             Vector2 drawOrigin = heldTexture.Size() / 2f;
             drawPos += DrawOriginOffset;
 
-            float drawRotation = Projectile.rotation;
             Color drawColor = Color.White.MultiplyRGB(lightColor);
             Vector2 drawScale = DrawScale;
-            SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
+            SpriteEffects spriteEffects = SpriteEffects.None;
+            float drawRotation = Projectile.rotation;
+            if (Projectile.spriteDirection == -1)
+                drawRotation += MathHelper.ToRadians(90);
+            /*
             if (spriteEffects.HasFlag(SpriteEffects.FlipVertically))
             {
                 drawOrigin.Y = heldTexture.Size().Y - drawOrigin.Y;
@@ -418,7 +410,8 @@ namespace Stellamod.Core.Bases
             if (spriteEffects.HasFlag(SpriteEffects.FlipHorizontally))
             {
                 drawOrigin.X = heldTexture.Size().X - drawOrigin.X;
-            }
+                drawRotation -= MathHelper.ToRadians(90);
+            }*/
             spriteBatch.Restart(blendState: BlendState.Additive);
             for (int i = 0; i < 3; i++)
             {

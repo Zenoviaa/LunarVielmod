@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class SuperStaff : ClassSwapItem
+    public class SuperStaff : ClassSwapItem
     {
         public override DamageClass AlternateClass => DamageClass.Summon;
         public override void SetStaticDefaults()

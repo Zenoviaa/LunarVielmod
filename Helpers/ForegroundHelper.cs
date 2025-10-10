@@ -113,7 +113,7 @@ public class ForegroundHelper : ModSystem
     /// <param name="name">Name of the requested texture.</param>
     public static Texture2D GetTexture(string name) => Stellamod.Instance.Assets.Request<Texture2D>("Gores/Foreground/" + name).Value;
 
-    internal static void Save(TagCompound compound)
+    public static void Save(TagCompound compound)
     {
         TagCompound compounds = new()
         {
@@ -161,7 +161,7 @@ public class ForegroundHelper : ModSystem
         compound.Add("Stellamod:PlayerLayerForeground", playerLayerCompounds);
     }
 
-    internal static void Load(TagCompound compound)
+    public static void Load(TagCompound compound)
     {
         if (compound.ContainsKey("Stellamod:Foreground"))
         {

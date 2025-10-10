@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Camera
 {
-    internal class ScreenshakeCameraModifier : ICameraModifier
+    public class ScreenshakeCameraModifier : ICameraModifier
     {
         private float _shakeAmt;
 

@@ -13,7 +13,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Town
 {
-    internal class JackReading : VeilTownNPC
+    public class JackReading : VeilTownNPC
     {
         private int _frame;
         public int NumberOfTimesTalkedTo = 0;

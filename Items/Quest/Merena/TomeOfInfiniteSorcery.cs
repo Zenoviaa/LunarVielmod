@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Quest.Merena
 {
-    internal class TomeOfInfiniteSorcery : ModItem
+    public class TomeOfInfiniteSorcery : ModItem
     {
         public override void SetDefaults()
         {

@@ -6,7 +6,7 @@ using Terraria;
 
 namespace Stellamod.Core.Shaders.MagicTrails
 {
-    internal class MagicSparkleWaterShader : BaseShader
+    public class MagicSparkleWaterShader : BaseShader
     {
         private static MagicSparkleWaterShader _instance;
         public static MagicSparkleWaterShader Instance

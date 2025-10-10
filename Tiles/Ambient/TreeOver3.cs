@@ -6,7 +6,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles.Ambient
 {
-    internal class TreeOver3 : ModTile
+    public class TreeOver3 : ModTile
     {
         public override void SetStaticDefaults()
         {

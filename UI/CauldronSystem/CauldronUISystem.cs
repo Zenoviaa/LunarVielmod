@@ -13,7 +13,7 @@ using Terraria.UI;
 namespace Stellamod.UI.CauldronSystem
 {
     [Autoload(Side = ModSide.Client)]
-    internal class CauldronUISystem : BaseUISystem
+    public class CauldronUISystem : BaseUISystem
     {
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _cauldronInterface;
@@ -55,7 +55,7 @@ namespace Stellamod.UI.CauldronSystem
             CloseUI();
         }
 
-        internal void ToggleUI()
+        public void ToggleUI()
         {
             if (_cauldronInterface.CurrentState != null)
             {
@@ -72,14 +72,14 @@ namespace Stellamod.UI.CauldronSystem
             return _cauldronInterface.CurrentState != null;
         }
 
-        internal void OpenUI()
+        public void OpenUI()
         {
             //Set State
             TakeSlot();
             _cauldronInterface.SetState(cauldronUIState);
         }
 
-        internal void CloseUI()
+        public void CloseUI()
         {
             ClearSlot();
             _cauldronInterface.SetState(null);

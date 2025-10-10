@@ -8,7 +8,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles.Ishtar
 {
-    internal class IshtarWeb3 : ModTile
+    public class IshtarWeb3 : ModTile
     {
         public override void SetStaticDefaults()
         {

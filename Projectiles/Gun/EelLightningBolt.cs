@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class EelLightningBolt : ModProjectile
+    public class EelLightningBolt : ModProjectile
     {
         public float BeamLength;
         public float BeamWidthMultiplier;

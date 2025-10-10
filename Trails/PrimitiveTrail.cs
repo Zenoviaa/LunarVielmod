@@ -33,7 +33,7 @@ namespace Stellamod.Trails
             }
         }
 
-        internal Matrix? PerspectiveMatrixOverride = null;
+        public Matrix? PerspectiveMatrixOverride = null;
 
         public delegate float VertexWidthFunction(float completionRatio);
 
@@ -298,7 +298,7 @@ namespace Stellamod.Trails
             DrawPrimsFromVertexData(GetVerticesFromTrailPoints(trailPoints, directionOverride), GetIndicesFromTrailPoints(trailPoints.Count), pixelated);
         }
 
-        internal void DrawPrimsFromVertexData(List<VertexPosition2DColor> vertices, List<short> triangleIndices, bool pixelated)
+        public void DrawPrimsFromVertexData(List<VertexPosition2DColor> vertices, List<short> triangleIndices, bool pixelated)
         {
             if (triangleIndices.Count % 6 != 0 || vertices.Count <= 3)
                 return;

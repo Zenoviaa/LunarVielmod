@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Catacombs
 {
-    internal class SpikedEmblemPlayer : ModPlayer
+    public class SpikedEmblemPlayer : ModPlayer
     {
         public bool hasSpikedEmblem;
         public override void ResetEffects()
@@ -36,7 +36,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         }
     }
 
-    internal class SpikedEmblem : ModItem
+    public class SpikedEmblem : ModItem
     {
         public override void SetDefaults()
         {

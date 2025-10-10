@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-    internal class BurningScarf : BaseDashItem
+    public class BurningScarf : BaseDashItem
     {
         private float Timer;
         public override void SetDefaults()

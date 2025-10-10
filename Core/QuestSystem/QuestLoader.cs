@@ -3,12 +3,12 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.QuestSystem
 {
-    internal class QuestLoader : ModSystem
+    public class QuestLoader : ModSystem
     {
-        internal static readonly IDictionary<int, Quest> quests = new Dictionary<int, Quest>();
+        public static readonly IDictionary<int, Quest> quests = new Dictionary<int, Quest>();
         public static int QuestCount { get; private set; }
 
-        internal static void RegisterQuest(Quest quest)
+        public static void RegisterQuest(Quest quest)
         {
             int id = QuestCount++;
             quest.Type = id;
@@ -22,7 +22,7 @@ namespace Stellamod.Core.QuestSystem
             QuestCount = 0;
         }
 
-        internal static Quest GetQuest(int type)
+        public static Quest GetQuest(int type)
         {
             quests.TryGetValue(type, out var quest);
             return quest;

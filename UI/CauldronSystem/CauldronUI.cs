@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.UI.CauldronSystem
 {
-    internal class CauldronUI : UIPanel
+    public class CauldronUI : UIPanel
     {
         private UIPanel _panel;
         private UIImage _background;
@@ -15,11 +15,11 @@ namespace Stellamod.UI.CauldronSystem
         public CauldronMaterialSlot materialSlot;
         public CauldronPot cauldronPot;
 
-        internal const int width = 480;
-        internal const int height = 155;
+        public const int width = 480;
+        public const int height = 155;
 
-        internal int RelativeLeft => Main.screenWidth / 2 - (int)(Width.Pixels / 2);
-        internal int RelativeTop => Main.screenHeight / 2 - (int)(Height.Pixels / 2) - 32;
+        public int RelativeLeft => Main.screenWidth / 2 - (int)(Width.Pixels / 2);
+        public int RelativeTop => Main.screenHeight / 2 - (int)(Height.Pixels / 2) - 32;
 
         public CauldronUI()
         {

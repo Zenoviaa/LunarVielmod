@@ -7,7 +7,7 @@ using Terraria.UI;
 
 namespace Stellamod.UI.Dialogue
 {
-    internal class DialoguePanel : UIState
+    public class DialoguePanel : UIState
     {
         public UIPanel UIPanel { get; private set; }
         public UIImage Portrait { get; private set; }

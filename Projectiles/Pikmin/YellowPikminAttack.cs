@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Pikmin
 {
-    internal class YellowPikminAttack : ModProjectile
+    public class YellowPikminAttack : ModProjectile
     {
         private float _lighting;
         public override void SetStaticDefaults()

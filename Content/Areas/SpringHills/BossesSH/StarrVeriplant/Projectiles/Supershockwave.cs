@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Core.Helpers;
-using Stellamod.Core.Helpers.Math;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
@@ -10,7 +8,7 @@ using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.NPCs.Bosses.StarrVeriplant.Projectiles
+namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant.Projectiles
 {
     public class SuperShockwave : ModProjectile
     {

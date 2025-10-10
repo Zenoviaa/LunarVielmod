@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
-    internal class FireRise : ModProjectile
+    public class FireRise : ModProjectile
     {
         bool Moved;
         public PrimDrawer TrailDrawer { get; private set; } = null;

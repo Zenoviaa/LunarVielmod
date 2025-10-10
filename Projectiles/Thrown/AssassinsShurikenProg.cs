@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown
 {
-    internal class AssassinsShurikenProg : ModProjectile
+    public class AssassinsShurikenProg : ModProjectile
     {
         bool Moved;
         float Timer;

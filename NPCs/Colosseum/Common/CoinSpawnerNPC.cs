@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Colosseum.Common
 {
-    internal class CoinSpawnerNPC : ModNPC
+    public class CoinSpawnerNPC : ModNPC
     {
         private ref float Timer => ref NPC.ai[0];
         private ref float CoinsToSpawn => ref NPC.ai[1];

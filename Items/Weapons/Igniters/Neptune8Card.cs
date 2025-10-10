@@ -2,7 +2,7 @@
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class Neptune8Card : BaseIgniterCard
+    public class Neptune8Card : BaseIgniterCard
     {
         public override void SetClassSwappedDefaults()
         {

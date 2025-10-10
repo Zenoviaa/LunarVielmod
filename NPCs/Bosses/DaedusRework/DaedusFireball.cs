@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusRework
 {
-    internal class DaedusFireball : ModProjectile
+    public class DaedusFireball : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
 

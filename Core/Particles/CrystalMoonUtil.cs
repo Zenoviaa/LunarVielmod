@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Particles
 {
-    internal static class ParticleUtils
+    public static class ParticleUtils
     {
 
 

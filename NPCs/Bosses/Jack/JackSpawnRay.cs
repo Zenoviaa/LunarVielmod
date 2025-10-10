@@ -12,7 +12,7 @@ namespace Stellamod.NPCs.Bosses.Jack
 {
     public class JackSpawnRay : ModProjectile, IPixelPrimitiveDrawer
     {
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];
         public const float LaserLength = 3400f;

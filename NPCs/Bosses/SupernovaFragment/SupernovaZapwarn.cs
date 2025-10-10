@@ -10,7 +10,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.SupernovaFragment
 {
-    internal class SupernovaZapwarn : ModProjectile
+    public class SupernovaZapwarn : ModProjectile
     {
         private ref float _timer => ref Projectile.ai[0];
         private float _alphaCounter = 0;

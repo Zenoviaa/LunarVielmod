@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
-    internal class RekFireShockWave : ModProjectile,
+    public class RekFireShockWave : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture

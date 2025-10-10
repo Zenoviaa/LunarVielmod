@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Quest.Merena
 {
-    internal class OrbOfTheMorrow : ModItem
+    public class OrbOfTheMorrow : ModItem
     {
 
         public override void SetDefaults()

@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Verlia
 {
-    internal class VerliaSpawn : ModNPC
+    public class VerliaSpawn : ModNPC
     {
         private int _bossType = -1;
         private float _centerSparkleSize = 0.8f;

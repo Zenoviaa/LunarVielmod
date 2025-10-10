@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-    internal class SingularityBag : ModItem
+    public class SingularityBag : ModItem
     {
 
         public override void SetStaticDefaults()

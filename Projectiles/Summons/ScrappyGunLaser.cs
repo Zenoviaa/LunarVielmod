@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons
 {
-    internal class ScrappyGunLaser : ModProjectile, IPixelPrimitiveDrawer
+    public class ScrappyGunLaser : ModProjectile, IPixelPrimitiveDrawer
     {
         private Vector2[] _lightningArcPos = new Vector2[1];
         public const int Trail_Width = 12;
@@ -145,7 +145,7 @@ namespace Stellamod.Projectiles.Summons
             return base.Colliding(projHitbox, targetHitbox);
         }
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
 
         public float alphaCounter = 1;
         public override bool PreDraw(ref Color lightColor)

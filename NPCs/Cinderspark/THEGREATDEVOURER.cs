@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Cinderspark
 {
-    internal class THEGREATDEVOURER : ModNPC
+    public class THEGREATDEVOURER : ModNPC
     {
         private ref float ai_Counter => ref NPC.ai[0];
         public override void SetStaticDefaults()

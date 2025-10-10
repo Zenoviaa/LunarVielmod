@@ -14,7 +14,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.SupernovaFragment
 {
-    internal class NovaBomb : ModProjectile
+    public class NovaBomb : ModProjectile
     {
         private bool Moved;
         public override void SetStaticDefaults()

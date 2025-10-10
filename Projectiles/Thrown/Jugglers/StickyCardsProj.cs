@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown.Jugglers
 {
-    internal class StickyCardsProj : BaseJugglerProjectile
+    public class StickyCardsProj : BaseJugglerProjectile
     {
         private Vector2[] BungeeGumPos;
         private Vector2[] BungeeGumAuraPos;

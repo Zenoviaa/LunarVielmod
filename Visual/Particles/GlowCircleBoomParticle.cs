@@ -1,12 +1,12 @@
 ﻿namespace Stellamod.Visual.Particles
 {
-    internal class GlowCircleLongBoomParticle : GlowCircleBoomParticle
+    public class GlowCircleLongBoomParticle : GlowCircleBoomParticle
     {
 
 
     }
 
-    internal class GlowCircleDetailedBoomParticle1 : GlowCircleBoomParticle
+    public class GlowCircleDetailedBoomParticle1 : GlowCircleBoomParticle
     {
 
 

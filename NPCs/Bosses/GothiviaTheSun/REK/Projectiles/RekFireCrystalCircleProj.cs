@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
-    internal class RekFireCrystalCircleProj : ModProjectile,
+    public class RekFireCrystalCircleProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture

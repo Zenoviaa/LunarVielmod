@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown.Jugglers
 {
-    internal class DaggerDaggerProj : BaseJugglerProjectile
+    public class DaggerDaggerProj : BaseJugglerProjectile
     {
         private Vector2[] BungeeGumPos;
         private Vector2[] BungeeGumAuraPos;

@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class IceCubeMakerProj : ModProjectile
+    public class IceCubeMakerProj : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         private ref float DamageModifier => ref Projectile.ai[1];

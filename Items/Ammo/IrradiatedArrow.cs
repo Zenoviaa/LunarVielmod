@@ -12,7 +12,7 @@ using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Ammo
 {
-    internal class IrradiatedArrow : ModItem
+    public class IrradiatedArrow : ModItem
     {
         public override void SetStaticDefaults()
         {

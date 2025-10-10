@@ -14,7 +14,7 @@ using Stellamod.Projectiles.Gun;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class Incinerator : ClassSwapItem
+    public class Incinerator : ClassSwapItem
     {
         public override DamageClass AlternateClass => DamageClass.Melee;
         public override void SetClassSwappedDefaults()

@@ -19,7 +19,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-    internal class JackoBag : ModItem
+    public class JackoBag : ModItem
     {
 
         public override void SetStaticDefaults()

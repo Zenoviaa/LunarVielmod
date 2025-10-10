@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.WorldG.StructureManager
 {
-    internal class Save : ModProjectile
+    public class Save : ModProjectile
     {
         private bool _pressed;
         private Rectangle Rectangle
@@ -100,7 +100,7 @@ namespace Stellamod.WorldG.StructureManager
         }
     }
 
-    internal class StructurePoint : ModProjectile
+    public class StructurePoint : ModProjectile
     {
         private static bool _capturedMouse;
         private bool _isDragging;
@@ -262,7 +262,7 @@ namespace Stellamod.WorldG.StructureManager
         }
     }
 
-    internal class StructureSelection : ModSystem
+    public class StructureSelection : ModSystem
     {
         public bool SpawnSelection;
         public Point BottomLeft;

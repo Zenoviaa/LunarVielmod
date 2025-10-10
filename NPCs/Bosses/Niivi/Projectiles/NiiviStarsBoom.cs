@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviStarsBoom : ModProjectile
+    public class NiiviStarsBoom : ModProjectile
     {
         public override void SetStaticDefaults()
         {

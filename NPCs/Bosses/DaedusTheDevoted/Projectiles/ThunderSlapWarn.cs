@@ -16,7 +16,7 @@ using Stellamod.Projectiles.Visual;
 
 namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 {
-    internal class ThunderSlapWarn : ModProjectile
+    public class ThunderSlapWarn : ModProjectile
     {
         public float BeamLength;
         public Vector2[] BeamPoints;

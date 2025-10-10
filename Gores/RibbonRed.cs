@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Gores
 {
-    internal abstract class RibbonGore : ModGore
+    public abstract class RibbonGore : ModGore
     {
         public override void OnSpawn(Gore gore, IEntitySource source)
         {
@@ -22,13 +22,13 @@ namespace Stellamod.Gores
         }
     }
 
-    internal class RibbonRed : RibbonGore { }
+    public class RibbonRed : RibbonGore { }
 
-    internal class RibbonYellow : RibbonGore { }
+    public class RibbonYellow : RibbonGore { }
 
-    internal class RibbonBlue : RibbonGore { }
+    public class RibbonBlue : RibbonGore { }
 
-    internal class RibbonWhite : RibbonGore { }
+    public class RibbonWhite : RibbonGore { }
 
-    internal class RibbonPink : RibbonGore { }
+    public class RibbonPink : RibbonGore { }
 }

@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Slashers.Vixyl
 {
-    internal class VixylParryProj : ModProjectile
+    public class VixylParryProj : ModProjectile
     {
         public float Timer
         {

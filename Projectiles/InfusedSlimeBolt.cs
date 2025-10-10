@@ -10,7 +10,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.Projectiles
 {
-    internal class InfusedSlimeBolt : ModProjectile, IPixelPrimitiveDrawer
+    public class InfusedSlimeBolt : ModProjectile, IPixelPrimitiveDrawer
     {
         private ref float AI_Timer => ref Projectile.ai[0];
         private ref float Seed => ref Projectile.ai[1];
@@ -112,7 +112,7 @@ namespace Stellamod.Projectiles
             return base.Colliding(projHitbox, targetHitbox);
         }
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);

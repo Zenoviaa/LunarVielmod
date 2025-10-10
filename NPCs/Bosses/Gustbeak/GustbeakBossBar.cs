@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Gustbeak
 {
-    internal class GustbeakBossBar : ModBossBar
+    public class GustbeakBossBar : ModBossBar
     {
         private int VerlibossHeadIndex = -1;
         public override Asset<Texture2D> GetIconTexture(ref Rectangle? iconFrame)

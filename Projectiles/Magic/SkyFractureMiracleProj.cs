@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class SkyFractureMiracleProj : ModProjectile
+    public class SkyFractureMiracleProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

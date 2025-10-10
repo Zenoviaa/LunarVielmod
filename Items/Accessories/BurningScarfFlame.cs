@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-    internal class BurningScarfFlame : ModProjectile
+    public class BurningScarfFlame : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
 

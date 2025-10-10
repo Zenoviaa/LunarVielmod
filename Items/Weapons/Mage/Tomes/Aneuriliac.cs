@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage.Tomes
 {
-    internal class Aneuriliac : BaseMagicTomeItem
+    public class Aneuriliac : BaseMagicTomeItem
     {
         public override void SetDefaults()
         {
@@ -18,7 +18,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
             Item.shootSpeed = 10f;
         }
     }
-    internal class AneuriliacTome : BaseMagicTomeProjectile
+    public class AneuriliacTome : BaseMagicTomeProjectile
     {
         private float _dustTimer;
         public override string Texture => this.PathHere() + "/Aneuriliac";

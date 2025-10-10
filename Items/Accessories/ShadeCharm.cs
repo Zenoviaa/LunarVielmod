@@ -5,7 +5,7 @@ using Terraria.ID;
 
 namespace Stellamod.Items.Accessories
 {
-    internal class ShadeCharm : ModItem
+    public class ShadeCharm : ModItem
     {
         public override void SetStaticDefaults()
         {

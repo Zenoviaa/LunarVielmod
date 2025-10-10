@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    internal class Sirius : ClassSwapItem
+    public class Sirius : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Throwing;

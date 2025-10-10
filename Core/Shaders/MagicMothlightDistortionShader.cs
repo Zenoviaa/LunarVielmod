@@ -7,7 +7,7 @@ using Terraria.Graphics.Shaders;
 
 namespace Stellamod.Core.Shaders
 {
-    internal class MagicMothlightDistortionShaderArmorShaderData : ArmorShaderData
+    public class MagicMothlightDistortionShaderArmorShaderData : ArmorShaderData
     {
         public MagicMothlightDistortionShaderArmorShaderData(Ref<Effect> shader, string passName)
         : base(shader, passName)
@@ -28,7 +28,7 @@ namespace Stellamod.Core.Shaders
         }
     }
 
-    internal class MagicMothlightDistortionShader : BaseShader
+    public class MagicMothlightDistortionShader : BaseShader
     {
         private static MagicMothlightDistortionShader _instance;
         public static MagicMothlightDistortionShader Instance

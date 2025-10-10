@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class IllureCard : BaseIgniterCard
+    public class IllureCard : BaseIgniterCard
     {
         public override void SetClassSwappedDefaults()
         {

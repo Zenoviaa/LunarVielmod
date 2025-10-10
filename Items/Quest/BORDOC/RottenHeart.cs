@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Quest.BORDOC
 {
-    internal class RottenHeart : ModItem
+    public class RottenHeart : ModItem
     {
         public override void SetDefaults()
         {

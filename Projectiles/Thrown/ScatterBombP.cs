@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown
 {
-    internal class ScatterbombP : ModProjectile
+    public class ScatterbombP : ModProjectile
     {
         private float _rotation;
         public override void SetStaticDefaults()

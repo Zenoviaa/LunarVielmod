@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials.Molds
 {
-    internal class BlankOrb : BaseMold
+    public class BlankOrb : BaseMold
     {
         public override void SetStaticDefaults()
         {

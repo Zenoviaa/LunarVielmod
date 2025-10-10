@@ -18,7 +18,7 @@ using Stellamod.UI.Systems;
 
 namespace Stellamod.Projectiles.Thrown
 {
-    internal class YourFiredExplosionProj : ModProjectile,
+    public class YourFiredExplosionProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture

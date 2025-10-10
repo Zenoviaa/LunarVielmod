@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Catacombs
 {
-    internal class BonfirePlayer : ModPlayer
+    public class BonfirePlayer : ModPlayer
     {
         public bool hasBonfire;
         public override void ResetEffects()
@@ -30,7 +30,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         }
     }
 
-    internal class Bonfire : ModItem
+    public class Bonfire : ModItem
     {
         public override void SetDefaults()
         {

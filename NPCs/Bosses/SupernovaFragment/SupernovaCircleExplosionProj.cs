@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.SupernovaFragment
 {
-    internal class SupernovaExplosionCircleProj : ModProjectile,
+    public class SupernovaExplosionCircleProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture

@@ -65,7 +65,7 @@ namespace Stellamod.Projectiles.Magic
 
         }
     }
-    internal class TorrentialLanceProj : ModProjectile
+    public class TorrentialLanceProj : ModProjectile
     {
         private Vector2[] _oldPos;
         private ref float Timer => ref Projectile.ai[0];

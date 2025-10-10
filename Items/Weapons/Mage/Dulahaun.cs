@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-	internal class Dulahaun : ClassSwapItem
+	public class Dulahaun : ClassSwapItem
 	{
 		//Alternate class you want it to change to
 		public override DamageClass AlternateClass => DamageClass.Magic;

@@ -9,7 +9,7 @@ using Terraria.ModLoader.UI.Elements;
 
 namespace Stellamod.UI.StructureSelector
 {
-    internal class StructureSelectorUI : UIPanel
+    public class StructureSelectorUI : UIPanel
     {
         private StructureBackground _background;
         private UIList _uiList;
@@ -17,11 +17,11 @@ namespace Stellamod.UI.StructureSelector
         private UIGrid _grid;
         private UIScrollbar _scrollbar;
 
-        internal const int width = 480;
-        internal const int height = 155;
+        public const int width = 480;
+        public const int height = 155;
 
-        internal int RelativeLeft => 470 + 108;
-        internal int RelativeTop => 0 + 12;
+        public int RelativeLeft => 470 + 108;
+        public int RelativeTop => 0 + 12;
 
         public StructureSelectorUI() : base()
         {

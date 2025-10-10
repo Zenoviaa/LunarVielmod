@@ -10,12 +10,12 @@ using Terraria.UI;
 
 namespace Stellamod.UI.CollectionSystem.Quests
 {
-    internal class QuestRewardButton : UIPanel
+    public class QuestRewardButton : UIPanel
     {
         private UIText _text;
-        internal event Action<int> OnEmptyMouseover;
+        public event Action<int> OnEmptyMouseover;
         private readonly float _scale = 1f;
-        internal QuestRewardButton()
+        public QuestRewardButton()
         {
             float scale = 1f;
             var asset = ModContent.Request<Texture2D>(

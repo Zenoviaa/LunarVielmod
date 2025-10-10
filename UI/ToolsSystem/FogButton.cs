@@ -10,13 +10,13 @@ using Terraria.UI;
 
 namespace Stellamod.UI.ToolsSystem
 {
-    internal class FogButton : UIPanel
+    public class FogButton : UIPanel
     {
 
         private UIPanel _button;
 
-        internal const int width = 42;
-        internal const int height = 56;
+        public const int width = 42;
+        public const int height = 56;
 
         public override void OnInitialize()
         {

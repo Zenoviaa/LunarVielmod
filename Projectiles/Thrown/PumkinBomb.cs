@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown
 {
-    internal class PumkinBomb : ModProjectile
+    public class PumkinBomb : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         private float _scale;

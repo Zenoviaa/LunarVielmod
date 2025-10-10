@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    internal class SerpentMinionFireBreathProj : ModProjectile
+    public class SerpentMinionFireBreathProj : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
 

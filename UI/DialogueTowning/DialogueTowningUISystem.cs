@@ -197,7 +197,7 @@ namespace Stellamod.UI.DialogueTowning
             dialogueTowningUIState.dialogueTownButtonsUI.Offset = dialogueTowningUIState.dialogueTownUI.Offset;
         }
 
-        internal void OpenUI()
+        public void OpenUI()
         {
             if (_animation != Animation.Open)
             {
@@ -215,7 +215,7 @@ namespace Stellamod.UI.DialogueTowning
 
         }
 
-        internal void CloseUI()
+        public void CloseUI()
         {
           
             if (_animation != Animation.Close)
@@ -228,7 +228,7 @@ namespace Stellamod.UI.DialogueTowning
             }
 
         }
-        internal void OnlyCloseWindow()
+        public void OnlyCloseWindow()
         {
 
             if (_animation != Animation.Close)

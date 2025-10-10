@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    internal class IrrasprayProj : ModProjectile
+    public class IrrasprayProj : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
 

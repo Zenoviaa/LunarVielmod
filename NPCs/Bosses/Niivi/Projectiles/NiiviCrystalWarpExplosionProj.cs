@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviCrystalWarpExplosionProj : ModProjectile,
+    public class NiiviCrystalWarpExplosionProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture

@@ -2,7 +2,7 @@
 
 namespace Stellamod.UI.CauldronSystem
 {
-    internal class CauldronUIState : UIState
+    public class CauldronUIState : UIState
     {
         public CauldronUI cauldronUI;
         public CauldronUIState() : base()

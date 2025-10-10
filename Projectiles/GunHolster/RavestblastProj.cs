@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class RavestblastProj : ModProjectile
+    public class RavestblastProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

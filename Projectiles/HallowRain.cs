@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    internal class HallowRain : ModProjectile
+    public class HallowRain : ModProjectile
     {
         private const int Dust_Rate = 6;
         private const int Particle_Rate = 3;

@@ -17,7 +17,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage.Tomes
 {
-    internal class MothlightStar : BaseMagicTomeItem
+    public class MothlightStar : BaseMagicTomeItem
     {
         public override void SetDefaults()
         {
@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
         }
     }
 
-    internal class MothlightStarTome : BaseMagicTomeProjectile
+    public class MothlightStarTome : BaseMagicTomeProjectile
     {
         private float _dustTimer;
         public override string Texture => this.PathHere() + "/MothlightStar";
@@ -73,7 +73,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
         }
     }
 
-    internal class MothlightStarBall : ModProjectile,
+    public class MothlightStarBall : ModProjectile,
         IPreDrawMaskShader,
         IDrawMaskShader
     {

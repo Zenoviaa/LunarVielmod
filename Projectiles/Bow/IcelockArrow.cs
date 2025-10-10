@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class IcelockArrow : ModProjectile
+    public class IcelockArrow : ModProjectile
     {
         public override string Texture => TextureRegistry.ZuiEffect;
         public PrimDrawer TrailDrawer { get; private set; } = null;

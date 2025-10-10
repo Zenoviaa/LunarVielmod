@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-    internal class SewingKitPlayer : ModPlayer
+    public class SewingKitPlayer : ModPlayer
     {
         public bool hasSewingKit;
         public override void ResetEffects()
@@ -15,7 +15,7 @@ namespace Stellamod.Items.Accessories
             hasSewingKit = false;
         }
     }
-    internal class SewingKit : ModItem
+    public class SewingKit : ModItem
     {
         public override void SetDefaults()
         {

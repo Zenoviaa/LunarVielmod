@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 {
-    internal class RazorRingFire : ModProjectile
+    public class RazorRingFire : ModProjectile
     {
         public override void SetStaticDefaults()
         {

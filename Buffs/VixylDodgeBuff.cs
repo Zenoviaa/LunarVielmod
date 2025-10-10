@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-    internal class VixylDodgeBuff : ModBuff
+    public class VixylDodgeBuff : ModBuff
     {
         public override void SetStaticDefaults()
         {

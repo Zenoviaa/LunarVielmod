@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Quest.Zui
 {
-    internal class TornCarianPage : ModItem
+    public class TornCarianPage : ModItem
     {
         public override void SetStaticDefaults()
         {

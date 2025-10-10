@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod
 {
-    internal class CustomConditions
+    public class CustomConditions
     {
         public static readonly Condition PostFenix = new Condition("Defeated Fenix", () => DownedBossSystem.downedFenixBoss);
         public static readonly Condition PostSingularity = new Condition("Killed Singularity Fragment", () => DownedBossSystem.downedSOMBoss);

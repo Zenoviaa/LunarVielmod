@@ -12,7 +12,7 @@ namespace Stellamod.Core.ScreenSystems
 {
     public partial class ScreenTarget
     {
-        internal class ScreenTargetHandler : ModSystem, IOrderedLoadable
+        public class ScreenTargetHandler : ModSystem, IOrderedLoadable
         {
             public static List<ScreenTarget> targets = new();
             public static Semaphore targetSem = new(1, 1);

@@ -267,8 +267,8 @@ namespace Stellamod.Projectiles.Paint
         }
 
 
-        internal PrimitiveTrail BeamDrawer;
-        internal PrimitiveTrail OutlineBeamDrawer;
+        public PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail OutlineBeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true);

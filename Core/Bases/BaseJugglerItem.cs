@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
 {
-    internal abstract class BaseJugglerItem : ClassSwapItem
+    public abstract class BaseJugglerItem : ClassSwapItem
     {
         public override void SetDefaults()
         {

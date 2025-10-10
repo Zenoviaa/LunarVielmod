@@ -13,7 +13,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class MarksmanLightningProj : ModProjectile
+    public class MarksmanLightningProj : ModProjectile
     {
         public float BeamLength;
         public Vector2[] BeamPoints;

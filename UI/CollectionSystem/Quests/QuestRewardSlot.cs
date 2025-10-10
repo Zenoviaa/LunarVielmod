@@ -13,12 +13,12 @@ using Stellamod.Core.QuestSystem;
 
 namespace Stellamod.UI.CollectionSystem.Quests
 {
-    internal class QuestRewardSlot : UIElement
+    public class QuestRewardSlot : UIElement
     {
-        internal Item Item;
+        public Item Item;
         private readonly int _context;
         private readonly float _scale;
-        internal QuestRewardSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
+        public QuestRewardSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
         {
             _context = context;
             _scale = scale;

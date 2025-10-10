@@ -12,7 +12,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class CandleShotProj1 : ModProjectile
+    public class CandleShotProj1 : ModProjectile
     {
         private bool Moved;
         private bool SpawnedProj;

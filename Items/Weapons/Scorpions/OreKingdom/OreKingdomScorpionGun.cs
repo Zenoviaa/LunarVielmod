@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Scorpions.OreKingdom
 {
-    internal class OreKingdomScorpionPlayer : ModPlayer
+    public class OreKingdomScorpionPlayer : ModPlayer
     {
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -30,7 +30,7 @@ namespace Stellamod.Items.Weapons.Scorpions.OreKingdom
             }
         }
     }
-    internal class OreKingdomScorpionGun : BaseScorpionGun
+    public class OreKingdomScorpionGun : BaseScorpionGun
     {
 
         public override void SetDefaults()
@@ -75,7 +75,7 @@ namespace Stellamod.Items.Weapons.Scorpions.OreKingdom
     }
 
 
-     internal class GLUX : ModProjectile,
+     public class GLUX : ModProjectile,
             IPixelPrimitiveDrawer
      {
             //Don't change the sample points, 3 is good enough
@@ -85,7 +85,7 @@ namespace Stellamod.Items.Weapons.Scorpions.OreKingdom
 
             public float BeamLength;
             public List<Vector2> BeamPoints;
-            internal PrimitiveTrail BeamDrawer;
+            public PrimitiveTrail BeamDrawer;
 
             //No texture for this
             public override string Texture => TextureRegistry.EmptyTexture;

@@ -33,7 +33,7 @@ namespace Stellamod.TilesNew.MoonCathedral
 
     }
 
-    internal class GiantCrystal1 : DecorativeWall
+    public class GiantCrystal1 : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -71,7 +71,7 @@ namespace Stellamod.TilesNew.MoonCathedral
 
     }
 
-    internal class GiantCrystal2 : DecorativeWall
+    public class GiantCrystal2 : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -108,7 +108,7 @@ namespace Stellamod.TilesNew.MoonCathedral
 
     }
 
-    internal class MedCrystal1 : DecorativeWall
+    public class MedCrystal1 : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -145,7 +145,7 @@ namespace Stellamod.TilesNew.MoonCathedral
 
     }
 
-    internal class MedCrystal2 : DecorativeWall
+    public class MedCrystal2 : DecorativeWall
     {
         public override void SetStaticDefaults()
         {

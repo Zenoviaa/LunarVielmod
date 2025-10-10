@@ -17,7 +17,7 @@ using Terraria.Audio;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class AssassinsRechargeShot : ModProjectile
+    public class AssassinsRechargeShot : ModProjectile
     {
         bool Moved;
         public override void SetStaticDefaults()

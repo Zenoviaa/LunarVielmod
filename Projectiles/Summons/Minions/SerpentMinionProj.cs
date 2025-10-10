@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    internal class SerpentSegment
+    public class SerpentSegment
     {
         public string TexturePath;
         public Texture2D Texture => ModContent.Request<Texture2D>(TexturePath).Value;
@@ -41,7 +41,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         }
     }
 
-    internal class SerpentMinionProj : ModProjectile
+    public class SerpentMinionProj : ModProjectile
     {
 
         public PrimDrawer TrailDrawer { get; private set; } = null;

@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    internal class CanOfLeaves : ClassSwapItem
+    public class CanOfLeaves : ClassSwapItem
 	{
 		public override DamageClass AlternateClass => DamageClass.Magic;
 

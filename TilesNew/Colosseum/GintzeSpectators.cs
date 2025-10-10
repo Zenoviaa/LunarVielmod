@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.TilesNew.Colosseum
 {
-    internal class GintzeSpectatorItem1 : DecorativeWallItem
+    public class GintzeSpectatorItem1 : DecorativeWallItem
     {
         public override void SetDefaults()
         {
@@ -15,7 +15,7 @@ namespace Stellamod.TilesNew.Colosseum
         }
     }
 
-    internal class GintzeSpectatorItem2 : DecorativeWallItem
+    public class GintzeSpectatorItem2 : DecorativeWallItem
     {
         public override void SetDefaults()
         {
@@ -24,7 +24,7 @@ namespace Stellamod.TilesNew.Colosseum
         }
     }
 
-    internal class GintzeSpectatorItem3 : DecorativeWallItem
+    public class GintzeSpectatorItem3 : DecorativeWallItem
     {
         public override void SetDefaults()
         {
@@ -33,7 +33,7 @@ namespace Stellamod.TilesNew.Colosseum
         }
     }
 
-    internal class GintzeSpectatorItem4 : DecorativeWallItem
+    public class GintzeSpectatorItem4 : DecorativeWallItem
     {
         public override void SetDefaults()
         {
@@ -42,7 +42,7 @@ namespace Stellamod.TilesNew.Colosseum
         }
     }
 
-    internal class GintzeSpectatorItem5 : DecorativeWallItem
+    public class GintzeSpectatorItem5 : DecorativeWallItem
     {
         public override void SetDefaults()
         {
@@ -51,7 +51,7 @@ namespace Stellamod.TilesNew.Colosseum
         }
     }
 
-    internal class GintzeSpectatorItem6 : DecorativeWallItem
+    public class GintzeSpectatorItem6 : DecorativeWallItem
     {
         public override void SetDefaults()
         {
@@ -60,7 +60,7 @@ namespace Stellamod.TilesNew.Colosseum
         }
     }
 
-    internal class GintzeSpectatorItem7 : DecorativeWallItem
+    public class GintzeSpectatorItem7 : DecorativeWallItem
     {
         public override void SetDefaults()
         {
@@ -69,7 +69,7 @@ namespace Stellamod.TilesNew.Colosseum
         }
     }
 
-    internal abstract class BaseGintzeSpectator : DecorativeWall
+    public abstract class BaseGintzeSpectator : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
@@ -89,7 +89,7 @@ namespace Stellamod.TilesNew.Colosseum
         }
     }
 
-    internal class GintzeSpectator1 : BaseGintzeSpectator
+    public class GintzeSpectator1 : BaseGintzeSpectator
     {
         public override void SetStaticDefaults()
         {
@@ -105,7 +105,7 @@ namespace Stellamod.TilesNew.Colosseum
         }
     }
 
-    internal class GintzeSpectator2 : BaseGintzeSpectator
+    public class GintzeSpectator2 : BaseGintzeSpectator
     {
         public override void SetStaticDefaults()
         {
@@ -121,7 +121,7 @@ namespace Stellamod.TilesNew.Colosseum
         }
     }
 
-    internal class GintzeSpectator3 : BaseGintzeSpectator
+    public class GintzeSpectator3 : BaseGintzeSpectator
     {
         public override void SetStaticDefaults()
         {
@@ -137,7 +137,7 @@ namespace Stellamod.TilesNew.Colosseum
         }
     }
 
-    internal class GintzeSpectator4 : BaseGintzeSpectator
+    public class GintzeSpectator4 : BaseGintzeSpectator
     {
         public override void SetStaticDefaults()
         {
@@ -153,7 +153,7 @@ namespace Stellamod.TilesNew.Colosseum
         }
     }
 
-    internal class GintzeSpectator5 : BaseGintzeSpectator
+    public class GintzeSpectator5 : BaseGintzeSpectator
     {
         public override void SetStaticDefaults()
         {
@@ -169,7 +169,7 @@ namespace Stellamod.TilesNew.Colosseum
         }
     }
 
-    internal class GintzeSpectator6 : BaseGintzeSpectator
+    public class GintzeSpectator6 : BaseGintzeSpectator
     {
         public override void SetStaticDefaults()
         {
@@ -184,7 +184,7 @@ namespace Stellamod.TilesNew.Colosseum
             DesyncAnimations = true;
         }
     }
-    internal class GintzeSpectator7 : BaseGintzeSpectator
+    public class GintzeSpectator7 : BaseGintzeSpectator
     {
         public override void SetStaticDefaults()
         {

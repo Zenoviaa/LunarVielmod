@@ -117,9 +117,9 @@ namespace Stellamod.NPCs
 		}
 
 		// Not visible to public API, but is used to indicate what AI to run
-		internal virtual void HeadAI() { }
+		public virtual void HeadAI() { }
 
-		internal virtual void BodyTailAI() { }
+		public virtual void BodyTailAI() { }
 
 		public abstract void Init();
 	}
@@ -211,7 +211,7 @@ namespace Stellamod.NPCs
 			return latestNPC;
 		}
 
-		internal sealed override void HeadAI()
+		public sealed override void HeadAI()
 		{
 			HeadAI_SpawnSegments();
 
@@ -583,12 +583,12 @@ namespace Stellamod.NPCs
 	{
 		public sealed override WormSegmentType SegmentType => WormSegmentType.Body;
 
-		internal override void BodyTailAI()
+		public override void BodyTailAI()
 		{
 			CoreAI_BodyTail(this);
 		}
 
-		internal static void CoreAI_BodyTail(Worm worm)
+		public static void CoreAI_BodyTail(Worm worm)
 		{
 			if (!worm.NPC.HasValidTarget)
 				worm.NPC.TargetClosest(true);
@@ -639,7 +639,7 @@ namespace Stellamod.NPCs
 	{
 		public sealed override WormSegmentType SegmentType => WormSegmentType.Tail;
 
-		internal override void BodyTailAI()
+		public override void BodyTailAI()
 		{
 			WormBody.CoreAI_BodyTail(this);
 		}

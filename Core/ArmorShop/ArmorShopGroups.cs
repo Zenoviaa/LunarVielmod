@@ -38,7 +38,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Stellamod.Core.ArmorShop
 {
-    internal class ArmorShopGroups : ModSystem
+    public class ArmorShopGroups : ModSystem
     {
         public List<ArmorShopSet> Armors;
 

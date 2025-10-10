@@ -9,7 +9,7 @@ using Terraria;
 
 namespace Stellamod.Items.Materials.Molds
 {
-    internal class BlankJuggler : BaseMold
+    public class BlankJuggler : BaseMold
     {
         public override void SetStaticDefaults()
         {

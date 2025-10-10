@@ -10,7 +10,7 @@ using static Terraria.ModLoader.ModContent;
 namespace Stellamod.Projectiles.Spears
 {
 
-    internal class InfernisBomb : ModProjectile
+    public class InfernisBomb : ModProjectile
     {
         public override void SetStaticDefaults()
         {

@@ -11,7 +11,7 @@ using Terraria.UI;
 
 namespace Stellamod.UI.DialogueTowning
 {
-    internal class DialogueTowningButtonUI : UIPanel
+    public class DialogueTowningButtonUI : UIPanel
     {
         private Color _targetColor;
         private float _timer;

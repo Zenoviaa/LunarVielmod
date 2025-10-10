@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
 {
-    internal class ArchariliteArrow : ModProjectile
+    public class ArchariliteArrow : ModProjectile
     {
         public override void SetStaticDefaults()
         {

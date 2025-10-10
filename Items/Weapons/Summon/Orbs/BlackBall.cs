@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon.Orbs
 {
-    internal class BlackBall : ClassSwapItem
+    public class BlackBall : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Throwing;

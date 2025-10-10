@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords
 {
-    internal class X3107Skull : ModProjectile
+    public class X3107Skull : ModProjectile
     {
         public override void SetStaticDefaults()
         {

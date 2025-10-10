@@ -13,7 +13,7 @@ using Stellamod.Particles;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class AquariusSlashMini : ModProjectile
+    public class AquariusSlashMini : ModProjectile
     {
         private int _frameCounter;
         private int _frameTick;

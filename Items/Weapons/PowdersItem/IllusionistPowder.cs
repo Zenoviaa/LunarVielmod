@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
-    internal class IllusionistPowder : BasePowder
+    public class IllusionistPowder : BasePowder
     {
         public override void SetDefaults()
         {

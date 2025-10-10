@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Test
 {
-    internal class ToolbarEnabler : ModItem
+    public class ToolbarEnabler : ModItem
     {
         public override void SetStaticDefaults()
         {

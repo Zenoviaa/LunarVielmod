@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    internal class MagicDoor : ModProjectile
+    public class MagicDoor : ModProjectile
     {
         private bool _hasSpawned;
         private ref float Timer => ref Projectile.ai[0];

@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class YuriFury : ClassSwapItem
+    public class YuriFury : ClassSwapItem
     {
 
         public override DamageClass AlternateClass => DamageClass.Magic;

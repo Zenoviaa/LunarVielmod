@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-    internal class SunGlyphCrown : ModProjectile
+    public class SunGlyphCrown : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         private Player Owner => Main.player[Projectile.owner];
@@ -64,7 +64,7 @@ namespace Stellamod.Items.Accessories
         }
     }
 
-    internal class SunGlyphPlayer : ModPlayer
+    public class SunGlyphPlayer : ModPlayer
     {
         public bool hasSunGlyph;
         public bool hideSunGlyphVisual;

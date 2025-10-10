@@ -10,9 +10,9 @@ using Terraria.UI;
 
 namespace Stellamod.UI
 {
-    internal class UIInputTextField : UITextPanel<string>
+    public class UIInputTextField : UITextPanel<string>
     {
-        internal bool focused = false;
+        public bool focused = false;
         private int _cursor;
         private int _frameCount;
         private int _maxLength = 60;

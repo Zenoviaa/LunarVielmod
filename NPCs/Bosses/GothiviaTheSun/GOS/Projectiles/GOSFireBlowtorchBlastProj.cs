@@ -12,10 +12,10 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 {
-    internal class GothFireBlowtorchBlastProj : ModProjectile,
+    public class GothFireBlowtorchBlastProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public override string Texture => TextureRegistry.EmptyBigTexture;
         //Ai
         private ref float Timer => ref Projectile.ai[0];

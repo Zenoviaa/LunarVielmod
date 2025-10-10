@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown
 {
-    internal class DogmaBallsProj : ModProjectile
+    public class DogmaBallsProj : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         private ref float BounceCount => ref Projectile.ai[1];

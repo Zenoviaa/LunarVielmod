@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class RibbonStaffTieProj : ModProjectile
+    public class RibbonStaffTieProj : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         private ref float TargetNPC => ref Projectile.ai[1];

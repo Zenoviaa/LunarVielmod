@@ -11,7 +11,7 @@ using Terraria.ID;
 
 namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 {
-    internal class Fist : BaseHand
+    public class Fist : BaseHand
     {
         private float ChargeProgress;
         private float StartOffset;

@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.CommanderGintzia
 {
-    internal class CommanderGintziaBossBar : ModBossBar
+    public class CommanderGintziaBossBar : ModBossBar
     {
         private int VerlibossHeadIndex = -1;
         public override Asset<Texture2D> GetIconTexture(ref Rectangle? iconFrame)

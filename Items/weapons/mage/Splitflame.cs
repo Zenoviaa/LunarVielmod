@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class Splitflame : ClassSwapItem
+    public class Splitflame : ClassSwapItem
     {
         public override DamageClass AlternateClass => DamageClass.Throwing;
 

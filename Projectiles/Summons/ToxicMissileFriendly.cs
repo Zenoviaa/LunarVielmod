@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons
 {
-    internal class ToxicMissileFriendly : ModProjectile
+    public class ToxicMissileFriendly : ModProjectile
     {
         public override void SetStaticDefaults()
         {

@@ -5,7 +5,7 @@ using Terraria;
 
 namespace Stellamod.Core.Shaders.MagicTrails
 {
-    internal class LightningTrail
+    public class LightningTrail
     {
         private Vector2[] _offsets;
         public LightningTrail()

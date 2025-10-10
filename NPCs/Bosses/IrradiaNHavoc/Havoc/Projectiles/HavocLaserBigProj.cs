@@ -10,10 +10,10 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles
 {
-    internal class HavocLaserBigProj : ModProjectile,
+    public class HavocLaserBigProj : ModProjectile,
         IPixelPrimitiveDrawer
     {       
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];
         public override string Texture => TextureRegistry.EmptyTexture;

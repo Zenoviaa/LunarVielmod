@@ -2,7 +2,7 @@
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class BurningCard : BaseIgniterCard
+    public class BurningCard : BaseIgniterCard
     {
         public override void SetClassSwappedDefaults()
         {

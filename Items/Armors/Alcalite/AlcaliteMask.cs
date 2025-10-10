@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Armors.Alcalite
 {
     [AutoloadEquip(EquipType.Head)]
-    internal class AlcaliteMask : ModItem
+    public class AlcaliteMask : ModItem
     {
         private int _starTimer;
         public override void SetDefaults()

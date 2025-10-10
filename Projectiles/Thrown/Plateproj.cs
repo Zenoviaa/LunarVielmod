@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown
 {
-    internal class Plateproj : ModProjectile
+    public class Plateproj : ModProjectile
     {
         private float _plateRotation;
         private ref float Timer => ref Projectile.ai[0];

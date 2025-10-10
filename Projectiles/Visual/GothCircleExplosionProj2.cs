@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Visual
 {
-    internal class GothCircleExplosionProj2 : ModProjectile,
+    public class GothCircleExplosionProj2 : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture

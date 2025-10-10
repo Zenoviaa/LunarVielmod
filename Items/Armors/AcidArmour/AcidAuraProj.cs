@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.AcidArmour
 {
-    internal class AcidAuraProj : ModProjectile
+    public class AcidAuraProj : ModProjectile
     {
         private enum ActionState
         {

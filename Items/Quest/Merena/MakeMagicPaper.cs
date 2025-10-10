@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Quest.Merena
 {
-    internal class MakeMagicPaper : ModItem
+    public class MakeMagicPaper : ModItem
     {
         public override void SetDefaults()
         {

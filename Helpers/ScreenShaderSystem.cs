@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
 {
-    internal class ScreenShaderSystem : ModSystem
+    public class ScreenShaderSystem : ModSystem
     {
         //Vignette Shader
         private bool _useVignette;

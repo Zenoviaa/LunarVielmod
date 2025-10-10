@@ -7,7 +7,7 @@ using Terraria;
 
 namespace Stellamod.Visual.Particles
 {
-    internal class FogParticle : Particle
+    public class FogParticle : Particle
     {
         public float Timer;
         public float Duration;

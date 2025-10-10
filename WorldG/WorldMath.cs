@@ -8,7 +8,7 @@ namespace Stellamod.WorldG
     public static class WorldMath
     {
 
-        internal static readonly List<Vector2> Directions = new List<Vector2>()
+        public static readonly List<Vector2> Directions = new List<Vector2>()
         {
             new Vector2(-1f, -1f),
             new Vector2(1f, -1f),

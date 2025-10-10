@@ -13,7 +13,7 @@ using static Terraria.ModLoader.ModContent;
 namespace Stellamod.NPCs.Bosses.Veiizal
 {
 
-    internal class VeiizalBeam : ModProjectile
+    public class VeiizalBeam : ModProjectile
     {
         bool Moved;
 

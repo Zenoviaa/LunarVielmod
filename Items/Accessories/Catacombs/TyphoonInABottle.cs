@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Catacombs
 {
-    internal class TyphoonJump : ExtraJump
+    public class TyphoonJump : ExtraJump
     {
         public override Position GetDefaultPosition() => new After(BlizzardInABottle);
         public override float GetDurationMultiplier(Player player)
@@ -89,7 +89,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         }
     }
 
-    internal class TyphoonInABottle : ModItem
+    public class TyphoonInABottle : ModItem
     {
         public override void SetDefaults()
         {

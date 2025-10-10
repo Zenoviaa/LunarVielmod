@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviFrostFlowerProj : ModProjectile
+    public class NiiviFrostFlowerProj : ModProjectile
     {
         private float Timer
         {

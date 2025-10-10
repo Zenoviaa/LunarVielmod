@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    internal class RainbowRodMiracleProj : ModProjectile, IPixelPrimitiveDrawer
+    public class RainbowRodMiracleProj : ModProjectile, IPixelPrimitiveDrawer
     {
         public override void OnSpawn(IEntitySource source)
         {
@@ -110,7 +110,7 @@ namespace Stellamod.Projectiles.Magic
             return base.Colliding(projHitbox, targetHitbox);
         }
 
-        internal PrimitiveTrail BeamDrawer;
+        public PrimitiveTrail BeamDrawer;
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);

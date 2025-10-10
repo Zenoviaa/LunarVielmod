@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class MagicalAxe : ClassSwapItem
+    public class MagicalAxe : ClassSwapItem
     {
         public override DamageClass AlternateClass => DamageClass.Summon;
 

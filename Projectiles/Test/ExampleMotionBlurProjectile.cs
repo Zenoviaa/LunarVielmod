@@ -12,7 +12,7 @@ using static Stellamod.Helpers.DrawHelper;
 
 namespace Stellamod.Projectiles.Test
 {
-    internal class ExampleMotionBlurProjectile : ModProjectile
+    public class ExampleMotionBlurProjectile : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override void SetDefaults()
