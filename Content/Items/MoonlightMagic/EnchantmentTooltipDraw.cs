@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
 using Stellamod.Helpers;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -118,6 +119,34 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 Vector2 textPosition = new(line.X, line.Y);
                 Vector2 drawPos = textPosition + new Vector2(0, texture.Size().Y / 3.5f) - new Vector2(15, 6);
                 spriteBatch.Draw(texture, drawPos, null, Color.White, 0f, texture.Size() * 0.5f, 0.75f, SpriteEffects.None, 0f);
+
+            }
+            if (line.Mod == "Stellamod" && line.Name.Contains("MoonPreferences_"))
+            {
+
+                string str = line.Name;
+                str = str.Replace("MoonPreferences_", String.Empty);
+                string[] textures = str.Split("_");
+                for(int i = 0; i < textures.Length; i++)
+                {
+       
+                    string texturePath = textures[i];
+                    if (string.IsNullOrEmpty(texturePath))
+                        continue;
+     
+                    texturePath = texturePath.Replace("_", "");
+
+                    if(ModContent.RequestIfExists<Texture2D>(texturePath, out var texture))
+                    {
+                        SpriteBatch spriteBatch = Main.spriteBatch;
+                        Vector2 textPosition = new(line.X, line.Y);
+                        Vector2 drawPos = textPosition + new Vector2(0, texture.Size().Y / 3.5f) - new Vector2(15, 6);
+                        drawPos += new Vector2(36 * i, 0);
+                        drawPos += new Vector2(128, 0);
+                        spriteBatch.Draw(texture.Value, drawPos, null, Color.White, 0f, texture.Size() * 0.5f, 0.6f, SpriteEffects.None, 0f);
+                    }
+                }
+
 
             }
         }

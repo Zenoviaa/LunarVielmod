@@ -9141,3 +9141,8 @@ TwilightTome: {
 	DisplayName: Twilight Tome
 	Tooltip: Casts two spinning colorful discs around you!
 }
+
+StaffOfHypnolight: {
+	DisplayName: Staff Of Hypnolight
+	Tooltip: ""
+}

@@ -94,6 +94,10 @@ namespace Stellamod.Content.Items.MoonlightMagic
             TrailLength = Random.Next(16, 32);
         }
 
+        public virtual void ModifyElementPreferences(List<int> elements)
+        {
+
+        }
         public override void NetSend(BinaryWriter writer)
         {
             base.NetSend(writer);
@@ -121,14 +125,14 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
         {
             base.ModifyWeaponDamage(player, ref damage);
-
-            /*
             float damageModifier = 1f;
             for (int i = 0; i < equippedEnchantments.Length; i++)
             {
                 Item item = equippedEnchantments[i];
                 if (item.ModItem is BaseEnchantment enchantment)
                 {
+                    //base 5% damage buff per element
+                    damageModifier += 0.05f;
                     if (primaryElement.ModItem is BaseElement element)
                     {
                         ElementMatch match = element.GetMatch(enchantment);
@@ -146,7 +150,6 @@ namespace Stellamod.Content.Items.MoonlightMagic
             }
 
             damage *= damageModifier;
-            */
         }
 
 
@@ -199,6 +202,24 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 Language.GetTextValue("Mods.Stellamod.Enchantments.EnchantmentCommonStaffHelp"));
             tooltipLine.OverrideColor = Color.Gray;
             tooltips.Add(tooltipLine);
+
+            List<int> preferences = new List<int>();
+            ModifyElementPreferences(preferences);
+
+            string preferenceString = "MoonPreferences_";
+            if(preferences.Count > 0)
+            {
+                for (int p = 0; p < preferences.Count; p++)
+                {
+                    int preferenceType = preferences[p];
+                    ModItem element = ModContent.GetModItem(preferenceType);
+                    preferenceString += $"{element.Texture}_";
+
+                }
+                tooltipLine = new TooltipLine(Mod, preferenceString, "Preferences");
+                tooltips.Add(tooltipLine);
+            }
+
 
             for (int i = 0; i < equippedEnchantments.Length; i++)
             {
