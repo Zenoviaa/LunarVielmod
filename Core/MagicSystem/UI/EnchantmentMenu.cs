@@ -129,7 +129,7 @@ namespace Stellamod.Core.MagicSystem.UI
             Append(_staffSlot);
 
             _elementSlot.HAlign = 0.19f;
-            _elementSlot.VAlign = 0.23f;
+            _elementSlot.VAlign = 0.19f;
             Append(_elementSlot);
 
             _inventoryMenu.HAlign = 0.9f;
