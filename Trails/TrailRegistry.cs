@@ -9,7 +9,7 @@ namespace Stellamod.Trails
     {
         private static string BasePath => "Stellamod/Assets/NoiseTextures/";
         public static MiscShaderData LaserShader => GameShaders.Misc["Stellamod:LaserShader"];
-
+        public static Asset<Texture2D> CheckerTrail => ModContent.Request<Texture2D>(BasePath + "CheckerTrail");
         public static Asset<Texture2D> SilkEnd =>
 ModContent.Request<Texture2D>($"{BasePath}SilkEnd");
         public static Asset<Texture2D> SilkTrail =>
