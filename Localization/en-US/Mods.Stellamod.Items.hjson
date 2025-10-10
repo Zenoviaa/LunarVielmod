@@ -9132,5 +9132,7 @@ HypnoFlamePowder: {
 Hypnotizer: {
 	
 	DisplayName: Hypnotizer
-	Tooltip: ""
+	Tooltip: It's so pretty I'm almost hypnotized. Maybe that's not a bad thing...
+	BasicSlash: No effect!
+	StaminaSlash: Shoots a volley of arrows that explode!
 }
