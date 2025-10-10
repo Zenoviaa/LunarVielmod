@@ -1,10 +1,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Stellamod.DropRules;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.NPCs.Event.GreenSun.IrravheilFlames;
@@ -17,7 +14,6 @@ using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Acidic
 {
@@ -104,7 +100,7 @@ namespace Stellamod.NPCs.Acidic
 
             Vector2 frameOrigin = NPC.frame.Size() / 2;
             Vector2 sizeOrigin = NPC.Size / 2;
-            Vector2 DrawPos = NPC.position - screenPos + sizeOrigin; 
+            Vector2 DrawPos = NPC.position - screenPos + sizeOrigin;
 
             float time = Main.GlobalTimeWrappedHourly;
             float timer = Main.GlobalTimeWrappedHourly / 2f + time * 0.04f;
@@ -132,7 +128,7 @@ namespace Stellamod.NPCs.Acidic
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-          
+
             for (int k = 0; k < NPC.oldPos.Length; k++)
             {
                 Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + sizeOrigin + new Vector2(0f, NPC.gfxOffY);
@@ -158,8 +154,8 @@ namespace Stellamod.NPCs.Acidic
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            LeadingConditionRule hardmodeDropRule = new LeadingConditionRule(new HardmodeDropRule());
-            hardmodeDropRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SrTetanus>(), 20, minimumDropped: 1, maximumDropped: 1));
+
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SrTetanus>(), 20, minimumDropped: 1, maximumDropped: 1));
 
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VirulentPlating>(), minimumDropped: 1, maximumDropped: 4));
         }
@@ -191,8 +187,8 @@ namespace Stellamod.NPCs.Acidic
                 {
                     float rot = NPC.velocity.ToRotation();
                     float spread = 0.4f;
-                         
-        
+
+
                     Vector2 position = NPC.position;
                     Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
                     Vector2 offset = new Vector2(1.5f, 0).RotatedBy(direction.ToRotation());
@@ -208,14 +204,14 @@ namespace Stellamod.NPCs.Acidic
                     Dust.NewDustPerfect(NPC.Center, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, ColorFunctions.AcidFlame * 0.5f, Main.rand.NextFloat(0.5f, 1));
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AcidProbe3"), NPC.position);
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 4f);
-        
+
                     SoundEngine.PlaySound(SoundID.Item8, NPC.position);
                     SoundEngine.PlaySound(SoundID.Zombie53, NPC.position);
                     float offsetX = Main.rand.Next(-350, 350) * 0.01f;
                     float offsetY = Main.rand.Next(-350, 350) * 0.01f;
 
                     if (StellaMultiplayer.IsHost)
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, 
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY,
                             ModContent.ProjectileType<IrradiatedDeathSpray>(), 12, 1, Main.myPlayer, 0, 0);
                 }
             }
@@ -303,7 +299,7 @@ namespace Stellamod.NPCs.Acidic
                 velLimitX = (float)((NPC.direction * velMax) / 2.0);
                 velLimitY = (float)((-velMax) / 2.0);
             }
-            
+
             if (NPC.velocity.X < velLimitX)
                 NPC.velocity.X = NPC.velocity.X + acceleration;
             else if (NPC.velocity.X > velLimitX)

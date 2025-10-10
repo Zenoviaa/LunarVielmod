@@ -24,19 +24,5 @@ namespace Stellamod.Items.Harvesting
 			Item.value = Item.sellPrice(silver: 20);
 			Item.rare = ItemRarityID.Blue;
 		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-		//	recipe.AddIngredient(ModContent.ItemType<FrileOre>(), 1);
-			recipe.AddRecipeGroup(nameof(ItemID.DemoniteBar), 1);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-
-			Recipe recipe2 = CreateRecipe();
-			recipe2.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 3);
-			recipe2.AddTile(TileID.Furnaces);
-			recipe2.Register();
-		}
 	}
 }

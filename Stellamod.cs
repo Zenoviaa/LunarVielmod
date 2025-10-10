@@ -77,14 +77,6 @@ namespace Stellamod
         public override void HandlePacket(BinaryReader reader, int whoAmI) => StellaMultiplayer.HandlePacket(reader, whoAmI);
 
 
-        public static Player PlayerExists(int whoAmI)
-        {
-            return whoAmI > -1 && whoAmI < Main.maxPlayers && Main.player[whoAmI].active && !Main.player[whoAmI].dead && !Main.player[whoAmI].ghost ? Main.player[whoAmI] : null;
-        }
-
-
-       
-
 
         public static Stellamod Instance;
         public static int MedalCurrencyID;
@@ -137,17 +129,15 @@ namespace Stellamod
                 Filters.Scene["Stellamod:Verlia"] = new Filter(new VerliaScreenShaderData("FilterMiniTower").UseColor(0.3f, 0.0f, 1f).UseOpacity(0.375f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Acid"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Lab"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
-                Filters.Scene["Stellamod:Veriplant"] = new Filter(new VeriplantScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
+          //      Filters.Scene["Stellamod:Veriplant"] = new Filter(new VeriplantScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Starbloom"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(1f, 0.3f, 0.8f).UseOpacity(0.375f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Govheil"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(1f, 0.7f, 0f).UseOpacity(0.275f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:AuroreanStars"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(1.3f, 0.2f, 0.2f).UseOpacity(0.275f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Gintzing"] = new Filter(new GintzeScreenShaderData("FilterMiniTower").UseColor(0.4f, 0.4f, 0.6f).UseOpacity(0.275f), EffectPriority.Medium);
-                Filters.Scene["Stellamod:Caeva"] = new Filter(new CaevaScreenShaderData("FilterMiniTower").UseColor(0.1f, 0.6f, 0.65f).UseOpacity(0.375f), EffectPriority.Medium);
+                
                 Filters.Scene["Stellamod:Illuria"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.4f, -0.3f, 1.3f).UseOpacity(0.275f), EffectPriority.Medium);
 
        
-                Filters.Scene["Stellamod:Veil"] = new Filter(new ChaosPScreenShaderData("FilterMiniTower").UseColor(0.7f, 0.1f, 0.2f).UseOpacity(0.275f), EffectPriority.VeryHigh);
-
                 Ref<Effect> screenRef = new Ref<Effect>(ModContent.Request<Effect>("Stellamod/Effects/Shockwave", AssetRequestMode.ImmediateLoad).Value); // The path to the compiled shader file.
                 Filters.Scene["Shockwave"] = new Filter(new ScreenShaderData(screenRef, "Shockwave"), EffectPriority.VeryHigh);
                 Filters.Scene["Shockwave"].Load();

@@ -42,18 +42,5 @@ namespace Stellamod.Items.Armors.Huntrian
 
 		}
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 30);
-			recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 20);
-			recipe.AddIngredient(ItemID.Silk, 5);
-			recipe.AddIngredient(ModContent.ItemType<GintzlMetal>(), 15);
-			recipe.AddRecipeGroup(nameof(ItemID.DemoniteBar), 10);
-
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-		}
 	}
 }

@@ -649,7 +649,7 @@ namespace Stellamod
             //     base.Player.ManageSpecialBiomeVisuals("Stellamod:GreenSunSky", EventWorld.GreenSun && ZoneAcid);
 
             // base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosD", EventWorld.ChaosD && Player.ZoneBeach);
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Veil", ZoneVeil);
+       //     base.Player.ManageSpecialBiomeVisuals("Stellamod:Veil", ZoneVeil);
 
             //base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean && (Player.ZoneOverworldHeight || Player.ZoneSkyHeight));
             //base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);

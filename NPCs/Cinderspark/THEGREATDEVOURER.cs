@@ -1,10 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets.Biomes;
-using Stellamod.DropRules;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Thrown.Jugglers;
 using Terraria;
 using Terraria.Audio;
@@ -63,7 +61,7 @@ namespace Stellamod.NPCs.Cinderspark
                 int chaseTicks = 300;
                 int attackTicks = 600;
                 Vector2 direction = NPC.Center.DirectionTo(target.Center);
-                if(ai_Counter == chaseTicks)
+                if (ai_Counter == chaseTicks)
                 {
                     SoundEngine.PlaySound(SoundID.Item20, NPC.position);
                 }
@@ -91,10 +89,11 @@ namespace Stellamod.NPCs.Cinderspark
                     float speed = ai_Counter > chaseTicks ? 2 : 4;
                     float accel = 0.2f;
                     float distanceToTarget = Vector2.Distance(NPC.Center, target.Center);
-                    if(distanceToTarget < 300)
+                    if (distanceToTarget < 300)
                     {
                         speed = 0.5f;
-                    } else if (distanceToTarget > 700)
+                    }
+                    else if (distanceToTarget > 700)
                     {
                         speed = 5;
                     }
@@ -103,7 +102,7 @@ namespace Stellamod.NPCs.Cinderspark
                     Vector2 diffVelocity = NPC.velocity.DirectionTo(targetVelocity);
 
                     float dist = Vector2.Distance(NPC.velocity, targetVelocity);
-                
+
                     if (dist > 0.1f)
                     {
                         NPC.velocity += diffVelocity * accel;
@@ -189,10 +188,8 @@ namespace Stellamod.NPCs.Cinderspark
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), chanceDenominator: 4, minimumDropped: 2, maximumDropped: 5));
 
-            LeadingConditionRule hardmodeDropRule = new LeadingConditionRule(new HardmodeDropRule());
-            hardmodeDropRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CinderBomber>(), 
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CinderBomber>(),
                 chanceDenominator: 3));
-            npcLoot.Add(hardmodeDropRule);
         }
     }
 }

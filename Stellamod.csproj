@@ -332,7 +332,6 @@
     <None Remove="Items\Weapons\Melee\Swords\ThornsBlade.png" />
     <None Remove="Items\Weapons\Melee\Swords\Vael.png" />
     <None Remove="Items\Weapons\Melee\Swords\VaelProj.png" />
-    <None Remove="Items\Weapons\Melee\Swords\WarriorsGrace.png" />
     <None Remove="Items\Weapons\Scorpions\OreKingdom\OreKingdomScorpionMountBuff.png" />
     <None Remove="Items\Weapons\Scorpions\RoyalPalace\RoyalPalaceScorpionMount_Back.png" />
     <None Remove="Items\Weapons\Scorpions\RoyalPalace\RoyalPalaceScorpionMount_Front.png" />
@@ -634,6 +633,7 @@
     <None Remove="Visual\Particles\GlowSpikeParticle.png" />
     <None Remove="Visual\Particles\GlowStretchParticle.png" />
     <None Remove="Visual\Particles\ShockParticle.png" />
+    <None Remove="Visual\Particles\SleepParticle.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Accord.Fuzzy" Version="3.8.0" />

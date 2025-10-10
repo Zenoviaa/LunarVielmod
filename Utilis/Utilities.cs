@@ -10,7 +10,7 @@ namespace Stellamod.Utilis
 {
     public static class Utilities
     {
-        public static MyPlayer GetVoidPlayer(this Player player) => player.GetModPlayer<MyPlayer>();
+
 
         public static int NewProjectileBetter(float spawnX, float spawnY, float velocityX, float velocityY, int type, int damage, float knockback, int owner = -1, float ai0 = 0f, float ai1 = 0f)
         {

@@ -1,7 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.DropRules;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
 using Stellamod.Utilis;
@@ -11,7 +10,6 @@ using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Abyssal
 {

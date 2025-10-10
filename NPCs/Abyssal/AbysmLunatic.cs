@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.DropRules;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
