@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Trails;
-using System.Security.Cryptography.Pkcs;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -39,29 +38,29 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
             Timer++;
             float distanceToClosestPlayer = float.MaxValue;
             Player closestPlayer = null;
-            for(int i = 0; i < Main.maxPlayers; i++)
+            for (int i = 0; i < Main.maxPlayers; i++)
             {
                 Player player = Main.player[i];
                 if (!player.active)
                     continue;
 
                 float dist = Vector2.Distance(Projectile.Center, player.Center);
-                if(dist <= distanceToClosestPlayer)
+                if (dist <= distanceToClosestPlayer)
                 {
                     closestPlayer = player;
                     distanceToClosestPlayer = dist;
                 }
-            } 
+            }
 
-            if(closestPlayer != null)
+            if (closestPlayer != null)
             {
                 Vector2 directionToPlayer = Projectile.Center.DirectionTo(closestPlayer.Center);
                 Projectile.velocity += directionToPlayer * 0.2f;
             }
 
-            if(Timer % 60 == 0)
+            if (Timer % 60 == 0)
             {
-                if(Timer2 == 0)
+                if (Timer2 == 0)
                 {
                     Vector2 velocity = Vector2.UnitX;
                     Vector2 velocityRotated = velocity.RotatedBy(MathHelper.PiOver2);
@@ -72,7 +71,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Axing") { Pitch = Main.rand.NextFloat(-1f, 1f) });
                     Timer2 = 1;
                     AlphaTimer = 0;
-                } else
+                }
+                else
                 {
                     Vector2 velocity = new Vector2(1, 1);
                     Vector2 velocityRotated = velocity.RotatedBy(MathHelper.PiOver2);
@@ -142,7 +142,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
             Vector2 velocity;
             Vector2 velocityRotated;
 
-            if(Timer2 == 0)
+            if (Timer2 == 0)
             {
                 velocity = Vector2.UnitX;
                 velocityRotated = velocity.RotatedBy(MathHelper.PiOver2);

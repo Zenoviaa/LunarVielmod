@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects;
 using Stellamod.Helpers;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;

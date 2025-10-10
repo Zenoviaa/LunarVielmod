@@ -1,15 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
-using Stellamod.Content.Items.MoonlightMagic.Forms;
-using Stellamod.Helpers;
-using Stellamod.Core.Helpers.Math;
-using Stellamod.Core.ItemTemplates;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -17,7 +11,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Hex
 {
     public class HexSwitcherEnchantment : BaseEnchantment
     {
-        
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -40,7 +34,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Hex
                     Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
                     Particle.NewParticle<GlowParticle>(spawnPoint, velocity, Color.HotPink);
                 }
-               
+
                 MagicProj.PrimaryElement = new HexElement();
 
             }
@@ -59,7 +53,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Hex
 
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-           // Projectile.velocity += (Projectile.velocity.SafeNormalize(Vector2.Zero) * 4).RotatedBy(MathHelper.ToRadians(15 * MathF.Sin(Countertimer)));
+            // Projectile.velocity += (Projectile.velocity.SafeNormalize(Vector2.Zero) * 4).RotatedBy(MathHelper.ToRadians(15 * MathF.Sin(Countertimer)));
             return true;
         }
 

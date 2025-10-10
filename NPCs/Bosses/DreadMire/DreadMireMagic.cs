@@ -23,7 +23,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Projectile.damage = 0;
             Projectile.timeLeft = 72;
         }
-        
+
         public override bool PreAI()
         {
             Projectile.tileCollide = false;

@@ -81,10 +81,10 @@ namespace Stellamod.Core.Bases
             swings.Add(new OvalSwing
             {
                 Duration = 60,
-                SwingDegrees=360*4,
-                XSwingRadius=64,
-                YSwingRadius=64,
-                HitCount =8,
+                SwingDegrees = 360 * 4,
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                HitCount = 8,
                 Easing = (float lerpValue) => lerpValue,
                 Sound = nSpin
             });

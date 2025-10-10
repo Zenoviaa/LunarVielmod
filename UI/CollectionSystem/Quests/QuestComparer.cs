@@ -7,7 +7,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
     {
         public int Compare(Quest x, Quest y)
         {
-         return x.DisplayName.CompareTo(y.DisplayName);
+            return x.DisplayName.CompareTo(y.DisplayName);
         }
     }
 }

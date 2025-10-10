@@ -65,7 +65,7 @@ namespace Stellamod.Projectiles.Magic
                         Projectile.NewProjectile(EntitySource, Projectile.Center, StartVelocity,
                             ModContent.ProjectileType<Poyashot2>(), Projectile.damage * 4, 1, Projectile.owner, 0, 0);
                     }
-               
+
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/bloodlamp"), Projectile.position);
                 }
                 else

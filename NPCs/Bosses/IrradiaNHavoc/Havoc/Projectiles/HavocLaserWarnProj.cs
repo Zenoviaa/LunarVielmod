@@ -1,14 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent.Animations;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles
@@ -53,10 +47,10 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles
             drawColor *= alpha;
 
             Vector2 drawOrigin = texture.Size() / 2;
-         
+
             float drawScale = Projectile.scale;
             float rotation = Projectile.rotation + MathHelper.PiOver2;
-            Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0); 
+            Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
             return false;
         }
 

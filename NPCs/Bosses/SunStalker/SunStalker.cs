@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
-using Stellamod.Items.Consumables;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee.Spears;
 using Stellamod.Items.Weapons.Ranged;
@@ -138,7 +137,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SunStalker");
             }
-     
+
         }
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
         {
@@ -178,8 +177,8 @@ namespace Stellamod.NPCs.Bosses.SunStalker
 
                 NPC.spriteDirection = -NPC.direction;
                 NPC.ai[0]++;
-           
-                if(NPC.ai[1] == 1)
+
+                if (NPC.ai[1] == 1)
                 {
                     NPC.position.X = player.position.X - 00;
                     NPC.position.Y = player.position.Y - 300;
@@ -367,14 +366,14 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                             {
                                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Rock2"), NPC.position);
                             }
-                 
+
                             if (StellaMultiplayer.IsHost)
                             {
                                 Vector2 RockPos;
                                 RockPos.Y = NPC.Center.Y;
                                 RockPos.X = Main.rand.NextFloat(player.Center.X + 600, player.Center.X - 600 + 1);
                                 int damage = Main.expertMode ? 16 : 20;
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), RockPos, Vector2.Zero, 
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), RockPos, Vector2.Zero,
                                     ModContent.ProjectileType<SunRock>(), damage, 0, Owner: Main.myPlayer);
                             }
                         }
@@ -386,7 +385,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                 NPC.ai[3] = Main.rand.Next(1, Attacks);
                                 NPC.netUpdate = true;
                             }
-                
+
                             NPC.ai[0] = 0;
                         }
                         break;
@@ -429,7 +428,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                         {
                             NPC.alpha += 30;
                             Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
- 
+
 
                             int Sound = Main.rand.Next(1, 3);
                             if (Sound == 1)
@@ -460,7 +459,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                     int damage = Main.expertMode ? 16 : 22;
                                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY,
                                        ModContent.ProjectileType<SunFeather>(), damage, 1, Owner: Main.myPlayer);
-                                }              
+                                }
                             }
                         }
                         if (NPC.ai[0] == 280)
@@ -800,7 +799,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                 _invincible = false;
                                 NPC.netUpdate = true;
                             }
-    
+
                             Glow = true;
                             NPC.alpha = 0;
                             PrevAttack = 4;
@@ -813,11 +812,11 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                         {
                             if (Main.rand.NextBool(6) && NPC.ai[0] <= 240)
                             {
-                                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, 
+                                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                                     ModContent.NPCType<SunStalkerRayLightBig>());
                             }
                         }
-        
+
                         if (NPC.ai[0] <= 240)
                         {
                             NPC.rotation = NPC.velocity.X * 0.07f;
@@ -839,7 +838,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                 _invincible = true;
                                 NPC.netUpdate = true;
                             }
-                      
+
                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Sun_Start"), NPC.position);
                         }
                         if (NPC.ai[0] == 250)
@@ -912,7 +911,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                         {
                             if (Main.rand.NextBool(2))
                             {
-                                if(TPChance)
+                                if (TPChance)
                                 {
                                     NPC.ai[0] = 0;
                                     Attack = 5;
@@ -921,7 +920,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                 {
                                     NPC.ai[0] = 0;
                                 }
-             
+
                             }
                             else
                             {

@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.TilesNew;
-using Stellamod.UI.ToolsSystem;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -16,7 +14,7 @@ namespace Stellamod.Tiles
         {
             base.KillTile(i, j, type, ref fail, ref effectOnly, ref noItem);
             Tile tile = Main.tile[i, j];
-            if(tile.WallType != 0)
+            if (tile.WallType != 0)
             {
                 DecorativeWall decorativeWall = ModContent.GetModWall(tile.WallType) as DecorativeWall;
                 if (decorativeWall == null)
@@ -52,11 +50,11 @@ namespace Stellamod.Tiles
                 behindDecorativeWall.DrawItem(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
                 return true;
             }
-           
-         
+
+
 
             DecorativeWall decorativeWall = ModContent.GetModWall(Item.createWall) as DecorativeWall;
-            if(decorativeWall != null)
+            if (decorativeWall != null)
             {
                 decorativeWall.DrawItem(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
                 return true;

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
 using Stellamod.Core.Bases;
-using Stellamod.Core.Effects;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;

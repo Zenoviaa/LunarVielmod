@@ -60,7 +60,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPC.width = 30;
             NPC.height = 75;
             NPC.damage = 32;
-            NPC.defense = 6;         
+            NPC.defense = 6;
             NPC.lifeMax = 1100;
             NPC.HitSound = SoundID.NPCHit16;
             NPC.value = Item.buyPrice(silver: 50);
@@ -99,7 +99,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                     frame = 5;
                 }
             }
-            else if(Chucking)
+            else if (Chucking)
             {
                 if (NPC.frameCounter >= 12)
                 {
@@ -380,7 +380,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                         float offsetX = Main.rand.Next(-200, 200) * 0.01f;
                                         float offsetY = Main.rand.Next(-200, 200) * 0.01f;
                                         int damage = Main.expertMode ? 10 : 13;
-                                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, 
+                                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY,
                                             ModContent.ProjectileType<JackFire2>(), damage, 1, Owner: Main.myPlayer);
                                     }
                                 }
@@ -398,7 +398,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                         float offsetX = Main.rand.Next(-200, 200) * 0.01f;
                                         float offsetY = Main.rand.Next(-200, 200) * 0.01f;
                                         int damage = Main.expertMode ? 9 : 12;
-                                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, 
+                                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY,
                                             ModContent.ProjectileType<JackFire2>(), damage, 1, Owner: Main.myPlayer);
                                     }
                                 }
@@ -422,7 +422,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                     JackFirerand = Main.rand.Next(25, 40 + 1);
                                     NPC.netUpdate = true;
                                 }
-                          
+
                                 NPC.noGravity = true;
                                 NPC.noTileCollide = true;
                                 NPC.velocity.Y -= 15;
@@ -445,9 +445,9 @@ namespace Stellamod.NPCs.Bosses.Jack
                                         Vector2 NukePos;
                                         NukePos.X = NPC.Center.X + OffSet;
                                         NukePos.Y = NPC.Center.Y;
-                                        Projectile.NewProjectile(entitySource, NukePos, new Vector2(0, 0), 
+                                        Projectile.NewProjectile(entitySource, NukePos, new Vector2(0, 0),
                                             Mod.Find<ModProjectile>("JackSpawnEffect").Type, 0, 0, Owner: Main.myPlayer);
-                                        Projectile.NewProjectile(entitySource, NukePos, new Vector2(0, 0), 
+                                        Projectile.NewProjectile(entitySource, NukePos, new Vector2(0, 0),
                                             Mod.Find<ModProjectile>("JackFire").Type, NPC.damage / 4, 0, Owner: Main.myPlayer);
                                     }
                                 }
@@ -593,7 +593,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                     float offsetX = Main.rand.Next(-200, 200) * 0.01f;
                                     float offsetY = Main.rand.Next(-200, 200) * 0.01f;
                                     int damage = Main.expertMode ? 8 : 11;
-                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY - 8, 
+                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY - 8,
                                         ModContent.ProjectileType<JackoBall>(), damage, 1, Owner: Main.myPlayer);
                                 }
                             }
@@ -637,7 +637,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                     float offsetX = Main.rand.Next(-200, 200) * 0.01f;
                                     float offsetY = Main.rand.Next(-200, 200) * 0.01f;
                                     int damage = Main.expertMode ? 4 : 6;
-                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY - 5, 
+                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY - 5,
                                         ModContent.ProjectileType<MossBall>(), damage, 1, Owner: Main.myPlayer);
                                 }
                             }
@@ -746,12 +746,12 @@ namespace Stellamod.NPCs.Bosses.Jack
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<JackoBag>()));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<JackoShot>(), chanceDenominator: 2));
-                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StaffOFlame>(), chanceDenominator: 2));  
-                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ScarecrowSaber>(), chanceDenominator: 2));
-                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), minimumDropped: 7, maximumDropped: 50));
-                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 7, maximumDropped: 50));
-                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TomedDustingFlames>(), chanceDenominator: 1));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<JackoShot>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StaffOFlame>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ScarecrowSaber>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), minimumDropped: 7, maximumDropped: 50));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 7, maximumDropped: 50));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TomedDustingFlames>(), chanceDenominator: 1));
 
             //Dunno if she should drop verlia brooch in classic mode or not
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.JackBossRel>()));

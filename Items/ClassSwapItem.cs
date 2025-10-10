@@ -9,7 +9,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.Items
 {
-    public abstract class ClassSwapItem :ModItem
+    public abstract class ClassSwapItem : ModItem
     {
         private static bool _preReforgeSwapped;
         public bool IsSwapped { get; set; }
@@ -20,7 +20,7 @@ namespace Stellamod.Items
             if (!IsSwapped)
             {
                 string displayName = AlternateClass.DisplayName.Value;
-                if(AlternateClass == DamageClass.Generic)
+                if (AlternateClass == DamageClass.Generic)
                 {
                     displayName = LangText.Common("GenericDamage");
                 }
@@ -44,41 +44,42 @@ namespace Stellamod.Items
             return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
         }
 
-       
+
         public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-            Texture2D iconTexture=null;
-            Vector2 drawOrigin=Vector2.Zero;
+            Texture2D iconTexture = null;
+            Vector2 drawOrigin = Vector2.Zero;
             if (IsSwapped)
             {
                 iconTexture = ModContent.Request<Texture2D>("Stellamod/Items/Weapons/Transformer/Token").Value;
                 drawOrigin = new Vector2(20, 20);
             }
-            else if(AlternateClass == DamageClass.Magic)
+            else if (AlternateClass == DamageClass.Magic)
             {
                 iconTexture = ModContent.Request<Texture2D>("Stellamod/Items/Weapons/Transformer/Magic").Value;
                 drawOrigin = new Vector2(18, 18);
-            } 
-            else if(AlternateClass == DamageClass.Melee)
+            }
+            else if (AlternateClass == DamageClass.Melee)
             {
                 iconTexture = ModContent.Request<Texture2D>("Stellamod/Items/Weapons/Transformer/Melee").Value;
                 drawOrigin = new Vector2(16, 20);
-            } 
+            }
             else if (AlternateClass == DamageClass.Ranged)
             {
                 iconTexture = ModContent.Request<Texture2D>("Stellamod/Items/Weapons/Transformer/Ranger").Value;
                 drawOrigin = new Vector2(18, 20);
-            } 
+            }
             else if (AlternateClass == DamageClass.Summon)
             {
                 iconTexture = ModContent.Request<Texture2D>("Stellamod/Items/Weapons/Transformer/Summoner").Value;
                 drawOrigin = new Vector2(8, 12);
-            } 
+            }
             else if (AlternateClass == DamageClass.Throwing)
             {
                 iconTexture = ModContent.Request<Texture2D>("Stellamod/Items/Weapons/Transformer/Throwing").Value;
                 drawOrigin = new Vector2(20, 20);
-            } else if (AlternateClass == DamageClass.Generic)
+            }
+            else if (AlternateClass == DamageClass.Generic)
             {
                 iconTexture = ModContent.Request<Texture2D>("Stellamod/Items/Weapons/Transformer/Generic").Value;
                 drawOrigin = new Vector2(18, 18);
@@ -117,7 +118,7 @@ namespace Stellamod.Items
                 {
                     Item.DamageType = AlternateClass;
                     SetClassSwappedDefaults();
-                }  
+                }
             }
         }
 

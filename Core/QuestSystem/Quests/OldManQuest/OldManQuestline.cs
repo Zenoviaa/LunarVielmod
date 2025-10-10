@@ -60,8 +60,8 @@ namespace Stellamod.Core.QuestSystem.Quests.OldManQuest
 
         public override bool CheckCompletion(Player player)
         {
-            return player.HasItem(ItemID.StrangePlant1) || 
-                player.HasItem(ItemID.StrangePlant2) || 
+            return player.HasItem(ItemID.StrangePlant1) ||
+                player.HasItem(ItemID.StrangePlant2) ||
                 player.HasItem(ItemID.StrangePlant3) ||
                 player.HasItem(ItemID.StrangePlant4);
         }

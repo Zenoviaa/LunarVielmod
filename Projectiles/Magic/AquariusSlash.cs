@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -53,10 +52,10 @@ namespace Stellamod.Projectiles.Magic
             Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
 
             Timer++;
-            if(Timer == 6)
+            if (Timer == 6)
             {
 
-                for(int i = 0; i < Main.rand.Next(4, 9); i++)
+                for (int i = 0; i < Main.rand.Next(4, 9); i++)
                 {
                     Vector2 velocity = Projectile.velocity.RotateRandom(MathHelper.PiOver4 / 1.2f) * Main.rand.NextFloat(0.3f, 1f);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + velocity.SafeNormalize(Vector2.Zero) * 80, velocity,

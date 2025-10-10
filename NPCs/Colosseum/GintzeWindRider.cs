@@ -2,7 +2,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Items.Accessories.Foods;
-using Stellamod.Items.Ores;
 using Stellamod.NPCs.Colosseum.Common;
 using System;
 using System.IO;

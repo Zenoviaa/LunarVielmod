@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-
-using Stellamod.Items.Quest.Merena;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.Audio;
@@ -41,7 +39,7 @@ namespace Stellamod.NPCs.Underground
         public override void AI()
         {
             Player target = Main.player[NPC.target];
-            if (NPC.HasValidTarget && 
+            if (NPC.HasValidTarget &&
                 Collision.CanHitLine(NPC.position, NPC.width, NPC.height, target.position, target.width, target.height))
             {
                 _attackTimer++;
@@ -51,7 +49,7 @@ namespace Stellamod.NPCs.Underground
                 }
                 else if (_attackTimer > 60 && _attackTimer < 120)
                 {
-                    if(_attackTimer % 2 == 0)
+                    if (_attackTimer % 2 == 0)
                     {
                         Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.Electric);
                         dust.velocity *= -1f;
@@ -75,7 +73,7 @@ namespace Stellamod.NPCs.Underground
                 {
                     if (StellaMultiplayer.IsHost)
                     {
-            
+
                         Vector2 velocity = NPC.DirectionTo(target.Center) * 10;
                         velocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
 
@@ -102,7 +100,7 @@ namespace Stellamod.NPCs.Underground
                 _lastDirection = NPC.spriteDirection;
             }
 
-            if(_waitTimer >= 400)
+            if (_waitTimer >= 400)
             {
                 _waitTimer = 0;
             }
@@ -111,7 +109,7 @@ namespace Stellamod.NPCs.Underground
 
         public override void FindFrame(int frameHeight)
         {
-            if(_waitTimer < 120)
+            if (_waitTimer < 120)
             {
                 //Idle
                 NPC.frameCounter += 0.2f;
@@ -149,7 +147,7 @@ namespace Stellamod.NPCs.Underground
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
-        {    
+        {
             npcLoot.Add(ItemDropRule.Common(ItemID.IronOre, 1, 1, 5));
             npcLoot.Add(ItemDropRule.Common(ItemID.SpelunkerGlowstick, minimumDropped: 1, maximumDropped: 3));
             npcLoot.Add(ItemDropRule.Common(ItemID.Coal, chanceDenominator: 20, minimumDropped: 1, maximumDropped: 3));

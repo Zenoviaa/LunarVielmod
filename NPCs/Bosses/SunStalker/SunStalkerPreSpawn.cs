@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.DaedusRework;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -53,7 +51,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                     if (Main.netMode == NetmodeID.SinglePlayer)
                         return;
 
-                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, 
+                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
                         ModContent.NPCType<SunStalker>(), (int)(NPC.position.X), (int)(NPC.position.Y));
                 }
             }
@@ -65,7 +63,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             {
                 if (StellaMultiplayer.IsHost)
                 {
-                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, 
+                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y,
                         ModContent.NPCType<SunStalkerRayLightBig>());
                 }
             }

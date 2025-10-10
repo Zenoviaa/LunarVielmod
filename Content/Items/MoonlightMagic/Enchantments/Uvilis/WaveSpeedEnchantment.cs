@@ -1,16 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
-using Stellamod.Content.Items.MoonlightMagic.Forms;
 using Stellamod.Content.Items.MoonlightMagic.Movements;
-using Stellamod.Helpers;
-using Stellamod.Core.Helpers.Math;
-using Stellamod.Core.ItemTemplates;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -18,7 +12,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Uvilis
 {
     public class WaveSpeedEnchantment : BaseEnchantment
     {
-        
+
         public override void SetDefaults()
         {
             base.SetDefaults();

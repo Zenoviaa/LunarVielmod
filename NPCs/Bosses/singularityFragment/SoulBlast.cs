@@ -2,7 +2,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Dusts;
-using Stellamod.Effects;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
@@ -71,7 +70,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         }
         public float WidthFunction(float completionRatio)
         {
-            return Projectile.width * Projectile.scale * (1f-completionRatio);
+            return Projectile.width * Projectile.scale * (1f - completionRatio);
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -96,7 +95,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
-            for (float f =0f; f < 1.0f; f += 0.1f)
+            for (float f = 0f; f < 1.0f; f += 0.1f)
             {
                 float range = Main.rand.NextFloat(-MathHelper.PiOver4, MathHelper.PiOver4) / 2f;
                 float rot = (f * MathHelper.TwoPi) + range + SoulRotation;

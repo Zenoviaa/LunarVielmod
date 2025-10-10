@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.Items.MoonlightMagic;
-using Stellamod.Core.UI;
+using Stellamod.UI;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.UI.Elements;

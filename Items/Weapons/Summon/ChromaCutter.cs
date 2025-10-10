@@ -112,7 +112,7 @@ namespace Stellamod.Items.Weapons.Summon
             if (player.altFunctionUse != 2)
             {
                 bool doSummonMinions = player.ownedProjectileCounts[ModContent.ProjectileType<ChromaCutterMinionProj>()] == 0;
-      
+
                 if (doSummonMinions)
                 {
                     player.AddBuff(Item.buffType, 2);
@@ -126,7 +126,7 @@ namespace Stellamod.Items.Weapons.Summon
                     {
                         var projectile = Projectile.NewProjectileDirect(source, position, velocity,
                             ModContent.ProjectileType<ChromaCutterMinionProj>(), damage, knockback, player.whoAmI, ai0: i);
-                        if(i == 0)
+                        if (i == 0)
                         {
                             projectile.minionSlots = remainingSlots;
                         }
@@ -155,7 +155,7 @@ namespace Stellamod.Items.Weapons.Summon
                     for (int i = 0; i < Main.maxProjectiles; i++)
                     {
                         Projectile proj = Main.projectile[i];
-                        if (proj.owner == player.whoAmI && 
+                        if (proj.owner == player.whoAmI &&
                             proj.type == ModContent.ProjectileType<ChromaCutterMinionProj>())
                         {
                             if (_chromaCounter == chromaCount)

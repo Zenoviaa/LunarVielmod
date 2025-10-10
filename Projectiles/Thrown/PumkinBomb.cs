@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.JackTheScholar.Projectiles;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -27,7 +26,7 @@ namespace Stellamod.Projectiles.Thrown
             Projectile.width = 16;
             Projectile.height = 16;
             Projectile.timeLeft = 60;
-       
+
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.tileCollide = true;

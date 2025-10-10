@@ -3,13 +3,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.Trails;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.GameContent.Bestiary;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -39,7 +36,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             Texture2D texture = Request<Texture2D>(Texture).Value;
 
-            Vector2 frameOrigin = NPC.frame.Size() /2f;
+            Vector2 frameOrigin = NPC.frame.Size() / 2f;
             Vector2 drawPos = NPC.Center - screenPos;
 
             float time = Main.GlobalTimeWrappedHourly;
@@ -114,11 +111,11 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             Texture2D texture = TextureAssets.Npc[NPC.type].Value;
-            for(int i = 0; i  < 8; i++)
+            for (int i = 0; i < 8; i++)
             {
                 spriteBatch.Draw(texture, NPC.Center - screenPos, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), drawColor, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, SpriteEffects.None, 0f);
             }
-          
+
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
@@ -178,7 +175,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             }
 
             NPC.Center = Main.npc[parent].Center + NPC.ai[2] * NPC.ai[1].ToRotationVector2();
-            for(int i = 0; i < _chainPos.Length; i++)
+            for (int i = 0; i < _chainPos.Length; i++)
             {
                 float f = i;
                 float l = _chainPos.Length;

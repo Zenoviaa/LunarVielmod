@@ -3,19 +3,19 @@ using Terraria.ModLoader.Config;
 
 namespace Stellamod
 {
-	public class LunarVeilServerConfig : ModConfig
-	{
-		// ConfigScope.ClientSide should be used for client side, usually visual or audio tweaks.
-		// ConfigScope.ServerSide should be used for basically everything else, including disabling items or changing NPC behaviors
-		public override ConfigScope Mode => ConfigScope.ServerSide;
+    public class LunarVeilServerConfig : ModConfig
+    {
+        // ConfigScope.ClientSide should be used for client side, usually visual or audio tweaks.
+        // ConfigScope.ServerSide should be used for basically everything else, including disabling items or changing NPC behaviors
+        public override ConfigScope Mode => ConfigScope.ServerSide;
 
-		// The things in brackets are known as "Attributes".
-
-
+        // The things in brackets are known as "Attributes".
 
 
 
-	}
+
+
+    }
 
     public class LunarVeilClientConfig : ModConfig
     {
@@ -29,7 +29,7 @@ namespace Stellamod
         [DefaultValue(true)] // This sets the configs default value.// Marking it with [ReloadRequired] makes tModLoader force a mod reload if the option is changed. It should be used for things like item toggles, which only take effect during mod loading
         [ReloadRequired]
         public bool VanillaUIRespritesToggle;
-        
+
         // To see the implementation of this option, see ExampleWings.cs
 
         [DefaultValue(true)] // This sets the configs default value. // Marking it with [ReloadRequired] makes tModLoader force a mod reload if the option is changed. It should be used for things like item toggles, which only take effect during mod loading

@@ -8,11 +8,11 @@ namespace Stellamod.Items.Armors.Winterborn
     [AutoloadEquip(EquipType.Legs)]
     public class WinterbornLegs : ModItem
     {
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Winterborn Legs");
-			// Tooltip.SetDefault("Increases movement speed by 10%");
-		}
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Winterborn Legs");
+            // Tooltip.SetDefault("Increases movement speed by 10%");
+        }
 
         public override void SetDefaults()
         {

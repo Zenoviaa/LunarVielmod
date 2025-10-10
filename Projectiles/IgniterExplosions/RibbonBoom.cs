@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Gores;
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.Audio;
@@ -43,14 +42,14 @@ namespace Stellamod.Projectiles.IgniterExplosions
         public override void AI()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 _scale = 2f + Main.rand.NextFloat(0.75f, 1f);
                 SoundEngine.PlaySound(SoundID.DD2_KoboldExplosion, Projectile.position);
                 for (int i = 0; i < 16; i++)
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(90, 90);
-                    Gore.NewGore(Projectile.GetSource_FromThis(), Projectile.Center, velocity, 
+                    Gore.NewGore(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
                         ModContent.GoreType<RibbonRed>());
                 }
 
@@ -70,7 +69,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
 
                     //Get a random
                     float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                                    }
+                }
             }
 
             Vector3 RGB = new(0.89f, 2.53f, 2.55f);

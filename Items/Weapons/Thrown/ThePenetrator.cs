@@ -4,9 +4,7 @@ using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
-using Stellamod.Items.Weapons.Summon;
 using Stellamod.Projectiles.Bow;
-using Stellamod.Projectiles.Swords;
 using Stellamod.Projectiles.Thrown;
 using System.Collections.Generic;
 using Terraria;
@@ -41,7 +39,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.channel = true;
             Item.autoReuse = false;
             Item.UseSound = SoundID.Item1;
-    
+
             Item.shoot = ModContent.ProjectileType<ThePenetratorProj>();
             Item.shootSpeed = 1f;
             Item.noUseGraphic = true;

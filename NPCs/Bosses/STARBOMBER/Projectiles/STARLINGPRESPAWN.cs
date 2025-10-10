@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
@@ -36,7 +34,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
                 {
                     Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(168, 168);
                     Vector2 vel = (Projectile.Center - pos).SafeNormalize(Vector2.Zero) * 4;
-                                    }
+                }
             }
         }
 

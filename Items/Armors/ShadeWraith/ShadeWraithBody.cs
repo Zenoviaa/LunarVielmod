@@ -1,4 +1,3 @@
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -40,6 +39,6 @@ namespace Stellamod.Items.Armors.ShadeWraith
 
         // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
     }
-    }
-    
+}
+
 

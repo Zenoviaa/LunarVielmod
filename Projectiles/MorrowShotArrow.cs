@@ -4,7 +4,6 @@ using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -13,47 +12,47 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles
 {
     public class MorrowShotArrow : ModProjectile
-	{
-		private ref float Timer => ref Projectile.ai[0];
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("morrowshotarrow");
-			Main.projFrames[Projectile.type] = 1;
-			ProjectileID.Sets.TrailCacheLength[Type] = 8;
-			ProjectileID.Sets.TrailingMode[Type] = 2;
-		}
-		public override void SetDefaults()
-		{
-			Projectile.width = 24;
-			Projectile.height = 24;
-			Projectile.light = 1.5f;
-			Projectile.friendly = true;
-			Projectile.ignoreWater = true;
-			Projectile.tileCollide = true;
-			Projectile.maxPenetrate = 1;
-		}
+    {
+        private ref float Timer => ref Projectile.ai[0];
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("morrowshotarrow");
+            Main.projFrames[Projectile.type] = 1;
+            ProjectileID.Sets.TrailCacheLength[Type] = 8;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
+        }
+        public override void SetDefaults()
+        {
+            Projectile.width = 24;
+            Projectile.height = 24;
+            Projectile.light = 1.5f;
+            Projectile.friendly = true;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = true;
+            Projectile.maxPenetrate = 1;
+        }
 
         public override void AI()
         {
             base.AI();
-			Timer++;
-			if(Timer % 6 == 0)
-			{
-				if(Main.rand.NextBool(2))
-					Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<SalfaceDust>(), Vector2.Zero, newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
-				else
+            Timer++;
+            if (Timer % 6 == 0)
+            {
+                if (Main.rand.NextBool(2))
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<SalfaceDust>(), Vector2.Zero, newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                else
                     Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Vector2.Zero, newColor: Color.CadetBlue, Scale: Main.rand.NextFloat(0.5f, 1f));
             }
 
-			float maxDetectDistance = 196;
-			NPC closest = ProjectileHelper.FindNearestEnemy(Projectile.position, maxDetectDistance);
-			if(closest != null)
-			{
-				Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, closest.Center, 3);
-			}
+            float maxDetectDistance = 196;
+            NPC closest = ProjectileHelper.FindNearestEnemy(Projectile.position, maxDetectDistance);
+            if (closest != null)
+            {
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, closest.Center, 3);
+            }
 
-			Projectile.velocity *= 1.01f;
-			Projectile.rotation = Projectile.velocity.ToRotation();
+            Projectile.velocity *= 1.01f;
+            Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
         public PrimDrawer TrailDrawer { get; private set; } = null;

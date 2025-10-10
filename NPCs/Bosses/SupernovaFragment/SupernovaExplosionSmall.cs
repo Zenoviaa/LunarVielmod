@@ -1,6 +1,5 @@
 
 using Microsoft.Xna.Framework;
-using Stellamod.Effects;
 using Stellamod.Trails;
 using Stellamod.Utilis;
 using System;

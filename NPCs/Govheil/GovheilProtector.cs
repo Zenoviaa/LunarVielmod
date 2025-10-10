@@ -2,13 +2,11 @@
 using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Govheil
 {
@@ -35,7 +33,7 @@ namespace Stellamod.NPCs.Govheil
                 new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "The last protectors of the govheil, and they are pretty formidable..."))
             });
         }
-      
+
         public override void SetDefaults()
         {
             NPC.width = 98;
@@ -57,7 +55,7 @@ namespace Stellamod.NPCs.Govheil
         int games = 0;
         public override void AI()
         {
-            games++; 
+            games++;
             if (games <= 760)
             {
                 NPC.velocity *= 0.99f;

@@ -1,5 +1,3 @@
-
-using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Thrown;
@@ -9,7 +7,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Thrown
 {
     public class GreyBricks : ModItem
-	{
+    {
         public override void SetDefaults()
         {
             Item.damage = 12;

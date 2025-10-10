@@ -611,9 +611,6 @@ namespace Stellamod.WorldG
 
             //How much the tile runner is gonna carve out
             Vector2 caveStrength = new Vector2(12, 14);
-
-            //Chance to open up
-            int splitDenominator = 4;
             VeilGen.GenerateSquiggleCave(cavePosition, baseCaveDirection, caveStrength, caveWidth, caveSteps);
         }
         private void GenerateTreeCaves()
@@ -1304,8 +1301,6 @@ namespace Stellamod.WorldG
 
             Vector2 startVelocity = caveVelocity;
             Vector2 pullVelocity = pullDirection;
-
-            float sharpness = 1;
             float counter = 0;
             ushort t = (ushort)tileToPlace;
             for (int j = 0; j < caveSteps; j++)
@@ -1337,8 +1332,6 @@ namespace Stellamod.WorldG
 
             Vector2 startVelocity = caveVelocity;
             Vector2 pullVelocity = pullDirection;
-
-            float sharpness = 1;
             float counter = 0;
             ushort t = (ushort)tileToPlace;
             for (int j = 0; j < caveSteps; j++)
@@ -1379,8 +1372,6 @@ namespace Stellamod.WorldG
 
             Vector2 startVelocity = caveVelocity;
             Vector2 pullVelocity = pullDirection;
-
-            float sharpness = 1;
             float counter = 0;
             ushort t = (ushort)tileToPlace;
             for (int j = 0; j < caveSteps; j++)
@@ -1460,8 +1451,6 @@ namespace Stellamod.WorldG
 
             Vector2 startVelocity = caveVelocity;
             Vector2 pullVelocity = pullDirection;
-
-            float sharpness = 1;
             float counter = 0;
             bool shouldBreak = false;
             for (int j = 0; j < caveSteps; j++)
@@ -1505,8 +1494,6 @@ namespace Stellamod.WorldG
 
             Vector2 startVelocity = caveVelocity;
             Vector2 pullVelocity = pullDirection;
-
-            float sharpness = 1;
             float counter = 0;
             bool shouldBreak = false;
             for (int j = 0; j < caveSteps; j++)
@@ -1554,8 +1541,6 @@ namespace Stellamod.WorldG
 
             Vector2 startVelocity = caveVelocity;
             Vector2 pullVelocity = pullDirection;
-
-            float sharpness = 1;
             float counter = 0;
             bool shouldBreak = false;
             for (int j = 0; j < caveSteps; j++)
@@ -1757,7 +1742,6 @@ namespace Stellamod.WorldG
             float i = cavePosition.X;
             for (int j = 0; j < caveSteps; j++)
             {
-                float divisor = 1f;
 
                 //1. Have Position
 
@@ -2149,7 +2133,6 @@ namespace Stellamod.WorldG
             float sharpness = 9;
             for (int j = 0; j < caveSteps; j++)
             {
-                float divisor = 1f;
 
                 //1. Have Position
                 //  caveDirection = Vector2.Lerp(caveDirection, pullDirection, 0.05f);
@@ -2501,8 +2484,6 @@ namespace Stellamod.WorldG
             }
             PlaceAir(tilePoint + new Point(48, 100));
             PlaceAir(tilePoint + new Point(50, 100));
-            //Layer 1
-            int rightSideOffset = 61;
             int upOffset = 18;
             PlaceBigStructure(tilePoint);
             PlaceBigStructure(tilePoint + new Point(24, 0));

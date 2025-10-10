@@ -20,7 +20,7 @@ namespace Stellamod.NPCs
         {
             // DisplayName.SetDefault("Cinder Bat");
         }
-       
+
 
         public override void FindFrame(int frameHeight)
         {
@@ -81,7 +81,7 @@ namespace Stellamod.NPCs
                     case 0:
                         CombatText.NewText(NPC.getRect(), Color.YellowGreen, LangText.Misc("DiceinNPC.1"), true, false);
                         itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 1));
-                        if(Main.netMode == NetmodeID.MultiplayerClient)
+                        if (Main.netMode == NetmodeID.MultiplayerClient)
                             NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
                         break;
                     case 1:

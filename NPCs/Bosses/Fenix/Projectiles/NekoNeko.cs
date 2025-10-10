@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using Terraria;
@@ -40,8 +39,8 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
             Projectile.Kill();
 
 
-         
-           
+
+
 
             return false;
         }
@@ -53,7 +52,7 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
             Projectile.ai[1]++;
             if (!Moved && Projectile.ai[1] >= 0)
             {
-             
+
                 Projectile.spriteDirection = Projectile.direction;
                 Projectile.alpha = 255;
                 Moved = true;
@@ -81,7 +80,7 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
         }
         public override void OnKill(int timeLeft)
         {
-         
+
 
             float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
             float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;

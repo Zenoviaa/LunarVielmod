@@ -4,19 +4,11 @@ using Stellamod.Core.Lights;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials.Molds;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Swords;
-using Stellamod.Trails;
-using System.Collections.Generic;
+using Stellamod.Trailing;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent.Creative;
-using Terraria.Graphics.Shaders;
-using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Core.Effects;
-using Stellamod.Trailing;
 
 namespace Stellamod.Items.Weapons.Melee.Swords
 {
@@ -135,18 +127,18 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             }
 
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), myNpc.Center, Vector2.Zero,
       ModContent.ProjectileType<AssassinsSpawnEffect>(), Projectile.damage * 2, 1, Projectile.owner, 0, 0);
             }
-            if(Timer <= 10)
+            if (Timer <= 10)
             {
                 SpecialEffectsPlayer player = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
                 player.blackWhiteStrength = 0.66f;
                 player.blackWhiteThreshold = 0.5f;
             }
-            if(Timer >= 20)
+            if (Timer >= 20)
             {
                 SpecialEffectsPlayer player = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
                 player.blackWhiteStrength = 1f;

@@ -1,12 +1,26 @@
-EnchantmentCoreTooltip: Enchantment
-EnchantmentCoreHelp: Insert into a staff to enchant your spell
-EnchantmentCoreTimed: This effect activates after {0} ticks
-EnchantmentCoreMana: "{0}% increased mana cost"
-EnchantmentCoreStaff: Staff Weapon Type
-EnchantmentCoreStaffHelp: Right click to open the enchanting menu
-EnchantmentCoreSynergy: Synergy! {0}% increased damage!
-EnchantmentCoreNoSynergy: No Synergy...
-EnchantmentCoreFailSynergy: Anti Synergy! {0}% decreased damage!
+EnchantmentCommonTooltip: Enchantment
+EnchantmentCommonHelp: Insert into a staff to enchant your spell
+EnchantmentCommonTimed: This effect activates after {0} ticks
+EnchantmentCommonMana: "{0}% increased mana cost"
+EnchantmentCommonStaff: Staff Weapon Type
+EnchantmentCommonStaffHelp: Right click to open the enchanting menu
+EnchantmentCommonSynergy: Synergy! {0}% increased damage!
+EnchantmentCommonNoSynergy: No Synergy...
+EnchantmentCommonFailSynergy: Anti Synergy! {0}% decreased damage!
+EnchantmentCommonTimedHelp: I am a timed enchantment, put me into a timer slot!
+EnchantmentTimerSlotHelp: I am a timer slot, I only accept timed enchantments!
+EnchantmentNormalSlotHelp: I am a regular slot, I only accept normal enchantments!
+EnchantmentLockedHelp: This enchantment is LOCKED! Keep exploring and you may find it.
+
+ChaosChaosEnchantment: {
+	DisplayName: Chaos Chaos Enchantment
+	Tooltip: Grants the effects of 10 random enchantments!
+}
+
+SuperEnchantment: {
+	DisplayName: Super Enchantment
+	Tooltip: Grants the effects of every single other enchantment at the same time!
+}
 
 FlameLashEnchantment: {
 	DisplayName: Flame Lash Enchantment
@@ -18,9 +32,9 @@ PuppetMasterEnchantment: {
 	Tooltip: Your spell will exponentially home into nearby enemies!
 }
 
-WindCloudEnchantment: {
-	DisplayName: Wind Cloud Enchantment
-	Tooltip: When your spell hits an enemy or tile, it explodes into Wind!
+HexCloudEnchantment: {
+	DisplayName: Hex Cloud Enchantment
+	Tooltip: When your spell hits an enemy or tile, it explodes into hex!
 }
 
 MoonFinderEnchantment: {
@@ -255,7 +269,7 @@ ExplosiveMordorEnchantment: {
 
 MEGAEnchantment: {
 	DisplayName: M E G A Enchantment
-	Tooltip: Your Spell casts a giant MEGA RoyalMagic ball on startup and sucks in enemies as they hurt them!
+	Tooltip: Your Spell casts a giant MEGA Deeya ball on startup and sucks in enemies as they hurt them!
 }
 
 BloodVesselEnchantment: {
@@ -268,24 +282,24 @@ HeatSeakerEnchantment: {
 	Tooltip: Spells with speed up exponentially as well as get bigger while homing in onto enemies!
 }
 
-DreadSwitcherEnchantment: {
-	DisplayName: Dread Switcher Enchantment
-	Tooltip: Spells switch their element to Dread!
+BloodletSwitcherEnchantment: {
+	DisplayName: Bloodlet Switcher Enchantment
+	Tooltip: Spells switch their element to Bloodlet!
 }
 
-RoyalMagicSwitcherEnchantment: {
-	DisplayName: RoyalMagic Switcher Enchantment
-	Tooltip: Spells switch their element to RoyalMagic!
+DeeyaSwitcherEnchantment: {
+	DisplayName: Deeya Switcher Enchantment
+	Tooltip: Spells switch their element to Deeya!
 }
 
-VeilSwitcherEnchantment: {
-	DisplayName: Veil Switcher Enchantment
-	Tooltip: Spells switch their element to Veil!
+GuutsSwitcherEnchantment: {
+	DisplayName: Guuts Switcher Enchantment
+	Tooltip: Spells switch their element to Guuts!
 }
 
-WindSwitcherEnchantment: {
-	DisplayName: Wind Switcher Enchantment
-	Tooltip: Spells switch their element to Wind!
+HexSwitcherEnchantment: {
+	DisplayName: Hex Switcher Enchantment
+	Tooltip: Spells switch their element to Hex!
 }
 
 NaturalSwitcherEnchantment: {
@@ -293,9 +307,9 @@ NaturalSwitcherEnchantment: {
 	Tooltip: Spells switch their element to Nature!
 }
 
-MoonSwitcherEnchantment: {
-	DisplayName: Moon Switcher Enchantment
-	Tooltip: Spells switch their element to Moon!
+PhantasmalSwitcherEnchantment: {
+	DisplayName: Phantasmal Switcher Enchantment
+	Tooltip: Spells switch their element to Phantasmal!
 }
 
 RadianceSwitcherEnchantment: {
@@ -303,9 +317,9 @@ RadianceSwitcherEnchantment: {
 	Tooltip: Spells switch their element to Radiance!
 }
 
-IceSwitcherEnchantment: {
-	DisplayName: Ice Switcher Enchantment
-	Tooltip: Spells switch their element to Ice!
+UvilisSwitcherEnchantment: {
+	DisplayName: Uvilis Switcher Enchantment
+	Tooltip: Spells switch their element to Uvilis!
 }
 
 SlothEnchantment: {
@@ -368,23 +382,23 @@ SharpTurnEnchantment: {
 	Tooltip: Your spell will instantly turn 90 degrees after a short time
 }
 
-ReverserOfVeilEnchantment: {
-	DisplayName: Reverser Of Veil Enchantment
+ReverserOfGuutsEnchantment: {
+	DisplayName: Reverser Of Guuts Enchantment
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 
-ReverserOfDreadEnchantment: {
-	DisplayName: Reverser Of Dread Enchantment
+ReverserOfBloodletEnchantment: {
+	DisplayName: Reverser Of Bloodlet Enchantment
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 
-ReverserOfRoyalMagicEnchantment: {
-	DisplayName: Reverser Of RoyalMagic Enchantment
+ReverserOfDeeyaEnchantment: {
+	DisplayName: Reverser Of Deeya Enchantment
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 
-ReverserOfWindEnchantment: {
-	DisplayName: Reverser Of Wind Enchantment
+ReverserOfHexEnchantment: {
+	DisplayName: Reverser Of Hex Enchantment
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 
@@ -398,13 +412,13 @@ ReverserOfRadianceEnchantment: {
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 
-ReverserOfMoonEnchantment: {
-	DisplayName: Reverser Of Moon Enchantment
+ReverserOfPhantasmalEnchantment: {
+	DisplayName: Reverser Of Phantasmal Enchantment
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 
-ReverserOfIceEnchantment: {
-	DisplayName: Reverser Of Ice Enchantment
+ReverserOfUvilisEnchantment: {
+	DisplayName: Reverser Of Uvilis Enchantment
 	Tooltip: Takes the timer for your spells and resets it back to 0!
 }
 
@@ -413,8 +427,8 @@ RechargingShadowsEnchantment: {
 	Tooltip: Makes timers for your timed spells move 2x as fast!
 }
 
-AdditorVeilEnchantment: {
-	DisplayName: Additor Veil Enchantment
+AdditorGuutsEnchantment: {
+	DisplayName: Additor Guuts Enchantment
 	Tooltip: Makes every timed enchantment active 15 ticks later!
 }
 
@@ -470,7 +484,7 @@ SwirlerBwirlerEnchantment: {
 
 ShriekerEnchantment: {
 	DisplayName: Shrieker Enchantment
-	Tooltip: When your spell hits an enemy or tile, it bursts into Moon energy and knocks enemies upward!
+	Tooltip: When your spell hits an enemy or tile, it bursts into phantasmal energy and knocks enemies upward!
 }
 
 FlameWheelEnchantment: {
@@ -506,4 +520,74 @@ SparksSplitEnchantment: {
 ShitgunEnchantment: {
 	DisplayName: Shitgun Enchantment
 	Tooltip: Turns your spells into shotgun blasts with half of your original spell damage!
+}
+
+ReverserOfDreadEnchantment: {
+	DisplayName: Reverser Of Dread Enchantment
+	Tooltip: ""
+}
+
+DreadSwitcherEnchantment: {
+	Tooltip: ""
+	DisplayName: Dread Switcher Enchantment
+}
+
+IceSwitcherEnchantment: {
+	DisplayName: Ice Switcher Enchantment
+	Tooltip: ""
+}
+
+ReverserOfIceEnchantment: {
+	DisplayName: Reverser Of Ice Enchantment
+	Tooltip: ""
+}
+
+MoonSwitcherEnchantment: {
+	DisplayName: Moon Switcher Enchantment
+	Tooltip: ""
+}
+
+ReverserOfMoonEnchantment: {
+	DisplayName: Reverser Of Moon Enchantment
+	Tooltip: ""
+}
+
+ReverserOfRoyalMagicEnchantment: {
+	DisplayName: Reverser Of Royal Magic Enchantment
+	Tooltip: ""
+}
+
+RoyalMagicSwitcherEnchantment: {
+	DisplayName: Royal Magic Switcher Enchantment
+	Tooltip: ""
+}
+
+AdditorVeilEnchantment: {
+	DisplayName: Additor Veil Enchantment
+	Tooltip: ""
+}
+
+ReverserOfVeilEnchantment: {
+	DisplayName: Reverser Of Veil Enchantment
+	Tooltip: ""
+}
+
+VeilSwitcherEnchantment: {
+	DisplayName: Veil Switcher Enchantment
+	Tooltip: ""
+}
+
+ReverserOfWindEnchantment: {
+	DisplayName: Reverser Of Wind Enchantment
+	Tooltip: ""
+}
+
+WindCloudEnchantment: {
+	DisplayName: Wind Cloud Enchantment
+	Tooltip: ""
+}
+
+WindSwitcherEnchantment: {
+	DisplayName: Wind Switcher Enchantment
+	Tooltip: ""
 }

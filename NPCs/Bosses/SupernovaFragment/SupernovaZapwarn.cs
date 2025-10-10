@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Stellamod.Helpers;
-using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;

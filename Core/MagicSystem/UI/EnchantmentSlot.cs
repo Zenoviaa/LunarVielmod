@@ -92,9 +92,9 @@ namespace Stellamod.Core.MagicSystem.UI
 
                 //Save Item 
                 if (Main.mouseLeftRelease && Main.mouseLeft)
-                { 
+                {
                     _ctx.SetEnchantment(Item, _index);
-               
+
                 }
             }
         }
@@ -136,24 +136,25 @@ namespace Stellamod.Core.MagicSystem.UI
             Vector2 iconCenterPos = rectangle.TopLeft() + cardTexture.Size() / 2;
             spriteBatch.Draw(slotTexture, iconCenterPos, null, color2, 0f, drawOrigin, _scale, SpriteEffects.None, 0f);
             ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale * 2, 32, Color.White);
-            spriteBatch.Restart(blendState: BlendState.Additive);
+           // spriteBatch.Restart(blendState: BlendState.Additive);
 
             if (!Item.IsAir)
             {
                 Color colorOsc = Color.Lerp(Color.Black, Color.White, VectorHelper.Osc(0f, 1f));
-                for(float f = 0; f < MathHelper.TwoPi; f += MathHelper.PiOver2)
+                for (float f = 0; f < MathHelper.TwoPi; f += MathHelper.PiOver2)
                 {
                     Vector2 drawPos = centerPos;
                     drawPos += f.ToRotationVector2() * VectorHelper.Osc(0f, 1f) * 10;
-                    ItemSlot.DrawItemIcon(Item, _context, spriteBatch, drawPos, _scale * 2, 32, colorOsc * 0.3f);
+                    ItemSlot.DrawItemIcon(Item, _context, spriteBatch, drawPos, _scale * 2, 32, colorOsc * 0.03f);
                 }
-              
+
 
             }
 
-           
-            spriteBatch.RestartDefaults();
+            
+            //spriteBatch.RestartDefaults();
 
+       
             if (IsMouseHovering && Item.IsAir)
             {
 

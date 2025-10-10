@@ -81,7 +81,7 @@ namespace Stellamod.Projectiles
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            for(float f = 0; f < 3; f++)
+            for (float f = 0; f < 3; f++)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowSparkleDust>(), Velocity: Projectile.oldVelocity.RotatedByRandom(MathHelper.ToRadians(30)) * Main.rand.NextFloat(0.3f, 0.6f), newColor: Color.White, Scale: Main.rand.NextFloat(0.25f, 0.5f));
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Velocity: Projectile.oldVelocity.RotatedByRandom(MathHelper.ToRadians(30)) * Main.rand.NextFloat(0.3f, 0.6f), newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));

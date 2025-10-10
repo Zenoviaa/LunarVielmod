@@ -34,8 +34,8 @@ namespace Stellamod.Items.Insources
         public override void OnHurt(Player.HurtInfo info)
         {
             base.OnHurt(info);
-            
-            stacks=0;
+
+            stacks = 0;
         }
         public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
@@ -56,7 +56,7 @@ namespace Stellamod.Items.Insources
                 spriteBatch.Draw(BubbleTextureAsset.Value, drawPosition, null, drawColor, 0, drawOrigin, drawScale, SpriteEffects.None, 0);
                 spriteBatch.Draw(BubbleTextureAsset.Value, drawPosition, null, drawColor, 0, drawOrigin, drawScale * 0.6f, SpriteEffects.None, 0);
                 spriteBatch.RestartDefaults();
-             
+
             }
         }
     }

@@ -56,7 +56,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 return;
             }
 
-            if(Timer >= 90 && StellaMultiplayer.IsHost)
+            if (Timer >= 90 && StellaMultiplayer.IsHost)
             {
                 //Determine attack
                 switch (AttackCycle)
@@ -74,7 +74,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                         {
                             SwitchState(ActionState.QuickSlash_V2);
                         }
-        
+
                         break;
                     case 2:
                         if (Main.rand.NextBool(2))
@@ -110,7 +110,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
                 AttackCycle++;
                 int maxAttacks = 5;
-                if(AttackCycle >= maxAttacks)
+                if (AttackCycle >= maxAttacks)
                 {
                     AttackCycle = 0;
                 }
@@ -126,8 +126,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
             //Determine where the x scissors go
             Vector2 topLeft = ArenaCenter + new Vector2(-ArenaRadius, -height);
             Vector2 topRight = ArenaCenter + new Vector2(ArenaRadius, -height);
-            
-            if(Timer % 16 == 0 && StellaMultiplayer.IsHost)
+
+            if (Timer % 16 == 0 && StellaMultiplayer.IsHost)
             {
                 float rand = Main.rand.NextFloat(0.00f, 1.00f);
                 Vector2 randPos = Vector2.Lerp(topLeft, topRight, rand);
@@ -145,7 +145,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 TelegraphTimer++;
             }
 
-            if(TelegraphTimer >= 5)
+            if (TelegraphTimer >= 5)
             {
                 SwitchState(ActionState.Idle);
             }
@@ -163,7 +163,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 int randDir = Main.rand.NextBool(2) ? -1 : 1;
                 float range = 128;
                 Vector2 randPos;
-                if(randDir == -1)
+                if (randDir == -1)
                 {
                     randPos = left + new Vector2(0, Main.rand.NextFloat(-range, range));
                 }
@@ -190,20 +190,20 @@ namespace Stellamod.NPCs.Bosses.Sylia
         private void QuickSlashV2P1()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.velocity = Vector2.Zero;
             }
 
-            if(Timer == 1 && StellaMultiplayer.IsHost)
+            if (Timer == 1 && StellaMultiplayer.IsHost)
             {
-             
+
                 //Get random start target
                 float range = 256;
                 if (Main.rand.NextBool(2))
                 {
-                    QuickSlashV2Start = ArenaCenter + new Vector2(-ArenaRadius, Main.rand.NextFloat(-range, range));    
-                
+                    QuickSlashV2Start = ArenaCenter + new Vector2(-ArenaRadius, Main.rand.NextFloat(-range, range));
+
                 }
                 else
                 {
@@ -216,18 +216,18 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 NPC.netUpdate = true;
             }
 
-            if(Timer == 59)
-            {  
+            if (Timer == 59)
+            {
                 //Teleport to it
                 DrawMagicCircle = false;
                 Teleport(QuickSlashV2Start.X, QuickSlashV2Start.Y);
             }
 
-            if(Timer > 60 && Timer < 120)
+            if (Timer > 60 && Timer < 120)
             {
                 //Move along it
                 NPC.velocity = QuickSlashV2Velocity;
-                if(Timer % 4 == 0 && StellaMultiplayer.IsHost)
+                if (Timer % 4 == 0 && StellaMultiplayer.IsHost)
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(1, 1);
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
@@ -243,13 +243,13 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 Teleport(ArenaCenter.X, ArenaCenter.Y);
             }
 
-            if(Timer == 120)
+            if (Timer == 120)
             {
                 Timer = 0;
-                TelegraphTimer++;   
+                TelegraphTimer++;
             }
 
-            if(TelegraphTimer >= 3)
+            if (TelegraphTimer >= 3)
             {
                 DrawMagicCircle = true;
                 NPC.velocity = Vector2.Zero;
@@ -261,7 +261,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
         {
             Timer++;
             IdleHover();
-            if(Timer % 20 == 0)
+            if (Timer % 20 == 0)
             {
                 if (StellaMultiplayer.IsHost)
                 {
@@ -274,7 +274,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             }
 
 
-            if(TelegraphTimer >= 3)
+            if (TelegraphTimer >= 3)
             {
                 SwitchState(ActionState.Idle);
             }
@@ -303,18 +303,18 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 SoundEngine.PlaySound(soundStyle, NPC.position);
                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + velocity.SafeNormalize(Vector2.Zero) * 32, velocity,
                       ModContent.ProjectileType<VoidScissor>(), NPC.ScaleFromContactDamage(1f), 1, Main.myPlayer);
-               
+
                 TelegraphTimer++;
             }
 
-            if(Timer % 40 == 0 && StellaMultiplayer.IsHost)
+            if (Timer % 40 == 0 && StellaMultiplayer.IsHost)
             {
                 Vector2 velocity = Vector2.UnitX.RotatedByRandom(MathHelper.TwoPi);
                 Projectile.NewProjectile(NPC.GetSource_FromThis(), Target.Center, velocity,
                     ModContent.ProjectileType<XScissorRift>(), NPC.ScaleFromContactDamage(1f), 1, Main.myPlayer);
             }
 
-            if(TelegraphTimer >= 21)
+            if (TelegraphTimer >= 21)
             {
                 SwitchState(ActionState.Idle);
             }

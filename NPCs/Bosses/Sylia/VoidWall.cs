@@ -1,18 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Trails;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Sylia.Projectiles;
-using Stellamod.Particles;
+using Stellamod.Trails;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Shaders;
-using System;
-using Terraria.Graphics.Effects;
 
 namespace Stellamod.NPCs.Bosses.Sylia
 {
@@ -64,9 +61,9 @@ namespace Stellamod.NPCs.Bosses.Sylia
             NPC.knockBackResist = 0f;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
-  
+
             NPC.scale = 1f;
-  
+
             // Take up open spawn slots, preventing random NPCs from spawning during the fight
             NPC.npcSlots = 10f;
 
@@ -116,7 +113,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             Vector2 targetCenter = target.Center;
             AttackState attackState = (AttackState)ai_State;
             Vector2 homingVelocity = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * _projSpeed;
-            if(attackState == AttackState.Void_Suck)
+            if (attackState == AttackState.Void_Suck)
             {
                 homingVelocity = new Vector2(homingVelocity.X * 0.4f, homingVelocity.Y);
             }
@@ -180,7 +177,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
 
             _blackProgress += 0.01f;
-            if(Main.netMode != NetmodeID.Server)
+            if (Main.netMode != NetmodeID.Server)
             {
                 FilterManager filterManager = Terraria.Graphics.Effects.Filters.Scene;
                 if (_blackProgress >= 1 && filterManager[ShaderRegistry.Screen_Black].IsActive())
@@ -213,23 +210,25 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     if (ai_Counter >= Idle_Time)
                     {
                         //Do thingy
-                        if(ai_Cycle == 0)
+                        if (ai_Cycle == 0)
                         {
                             SwitchState(AttackState.Void_Vomit_Telegraph);
-                        } else if (ai_Cycle == 1)
+                        }
+                        else if (ai_Cycle == 1)
                         {
                             SwitchState(AttackState.Void_Blast_Telegraph);
                         }
                         else if (ai_Cycle == 2)
                         {
                             SwitchState(AttackState.Void_Vomit_Telegraph);
-                        } else if (ai_Cycle == 3)
+                        }
+                        else if (ai_Cycle == 3)
                         {
                             SwitchState(AttackState.Void_Suck_Telegraph);
                         }
 
                         ai_Cycle++;
-                        if(ai_Cycle > 3)
+                        if (ai_Cycle > 3)
                         {
                             ai_Cycle = 0;
                         }
@@ -242,7 +241,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     SuckVisuals();
 
                     ai_Counter++;
-                    if(ai_Counter >= 60)
+                    if (ai_Counter >= 60)
                     {
                         SoundEngine.PlaySound(SoundID.NPCDeath13, NPC.position);
                         SwitchState(AttackState.Void_Vomit);
@@ -258,7 +257,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                             ModContent.ProjectileType<VoidBall>(), 20, 1, Owner: Main.myPlayer);
                         Main.projectile[p].timeLeft *= 2;
                     }
-    
+
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 512f, 32f);
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RipperSlash1"), NPC.Center);
                     SwitchState(AttackState.Idle);
@@ -277,7 +276,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
                 case AttackState.Void_Blast:
                     ai_Counter++;
-                    if(ai_Counter % 30 == 0)
+                    if (ai_Counter % 30 == 0)
                     {
                         Vector2 voidBlastVelocity = (targetCenter - NPC.Center).SafeNormalize(Vector2.Zero) * 9.5f;
                         if (StellaMultiplayer.IsHost)
@@ -297,11 +296,11 @@ namespace Stellamod.NPCs.Bosses.Sylia
                         SoundEngine.PlaySound(SoundID.NPCDeath12, NPC.position);
                     }
 
-                    if(ai_Counter >= 150)
+                    if (ai_Counter >= 150)
                     {
                         SwitchState(AttackState.Idle);
                     }
-              
+
                     break;
 
                 case AttackState.Void_Laser_Telegraph:
@@ -335,9 +334,9 @@ namespace Stellamod.NPCs.Bosses.Sylia
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                             ModContent.ProjectileType<VoidVortex>(), 0, 0, Owner: Main.myPlayer, NPC.whoAmI);
                     }
-                
+
                     ai_Counter++;
-                    if(ai_Counter >= 240)
+                    if (ai_Counter >= 240)
                     {
                         SwitchState(AttackState.Idle);
                     }
@@ -358,7 +357,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
         public Color ColorFunction(float completionRatio)
         {
-            if(completionRatio < 0.1f)
+            if (completionRatio < 0.1f)
             {
                 return ColorFunctions.MiracleVoid * ((1f - completionRatio) / 0.1f);
             }

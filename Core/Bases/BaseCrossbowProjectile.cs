@@ -1,9 +1,7 @@
-﻿using Stellamod.Systems.MiscellaneousMath;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil;
 using ReLogic.Content;
-using Stellamod.Core.Shaders;
+using Stellamod.Assets;
 using Stellamod.Helpers;
 using System;
 using System.IO;
@@ -11,7 +9,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ModLoader;
-using Stellamod.Assets;
 
 namespace Stellamod.Core.Bases
 {

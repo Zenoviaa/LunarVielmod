@@ -1,14 +1,9 @@
-using Microsoft.Xna.Framework;
-
 using Stellamod.Buffs;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
-using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.ShadeWraith
 {
@@ -30,7 +25,7 @@ namespace Stellamod.Items.Armors.ShadeWraith
 
 
             float percentOfLife = (float)Player.statLife / (float)Player.statLifeMax;
-            if(percentOfLife <= 0.4f)
+            if (percentOfLife <= 0.4f)
             {
                 //Trigger the buff
                 int time = 300;
@@ -78,6 +73,6 @@ namespace Stellamod.Items.Armors.ShadeWraith
             player.GetModPlayer<ShadeWraithPlayer>().hasSetBonus = true;
         }
 
-       
+
     }
 }

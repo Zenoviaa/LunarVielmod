@@ -36,7 +36,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.useTime = 32;
             Item.useAnimation = 32;
             Item.useStyle = ItemUseStyleID.Swing;
-   
+
             Item.knockBack = 6;
             Item.value = Item.sellPrice(0, 20, 0, 0);
             Item.noUseGraphic = true;

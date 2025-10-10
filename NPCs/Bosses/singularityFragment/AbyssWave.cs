@@ -13,46 +13,46 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("AbyssWave");
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
-		}
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+        }
 
-		public override void SetDefaults()
-		{
-			Projectile.width = 50;
-			Projectile.height = 30;
-			Projectile.friendly = false;
-			Projectile.hostile = true;
-			Projectile.timeLeft = 1000;
-			Projectile.tileCollide = false;
-			Projectile.penetrate = 1;
-			Projectile.damage = 60;
-			AIType = ProjectileID.Bullet;
+        public override void SetDefaults()
+        {
+            Projectile.width = 50;
+            Projectile.height = 30;
+            Projectile.friendly = false;
+            Projectile.hostile = true;
+            Projectile.timeLeft = 1000;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = 1;
+            Projectile.damage = 60;
+            AIType = ProjectileID.Bullet;
         }
 
         public override Color? GetAlpha(Color lightColor) => Color.White;
         int timer;
-		int colortimer;
-		public override bool PreAI()
-		{
-			timer++;
-			if (timer <= 50)
-			{
-				colortimer++;
-			}
-			if (timer > 50)
-			{
-				colortimer--;
-			}
-			if (timer >= 100)
-			{
-				timer = 0;
-			}
-			return true;
-		}
+        int colortimer;
+        public override bool PreAI()
+        {
+            timer++;
+            if (timer <= 50)
+            {
+                colortimer++;
+            }
+            if (timer > 50)
+            {
+                colortimer--;
+            }
+            if (timer >= 100)
+            {
+                timer = 0;
+            }
+            return true;
+        }
 
-		public override bool PreDraw(ref Color lightColor)
-		{
+        public override bool PreDraw(ref Color lightColor)
+        {
             Main.instance.LoadProjectile(Projectile.type);
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Main.spriteBatch.End();
@@ -68,8 +68,8 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
-		}
-        
+        }
+
         public override void AI()
         {
 
@@ -115,24 +115,24 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         }
 
         public override void OnKill(int timeLeft)
-		{
-			for (int i = 0; i < 20; i++)
-			{
-				int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.DungeonWater, 0f, -2f, 0, default(Color), .8f);
-				Main.dust[num1].noGravity = true;
-				Main.dust[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-				Main.dust[num1].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
-				if (Main.dust[num1].position != Projectile.Center)
-					Main.dust[num1].velocity = Projectile.DirectionTo(Main.dust[num1].position) * 6f;
-				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.DungeonWater, 0f, -2f, 0, default(Color), .8f);
-				Main.dust[num].noGravity = true;
-				Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-				Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
-				if (Main.dust[num].position != Projectile.Center)
-					Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
-				SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
-			}
-		}
-	}
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.DungeonWater, 0f, -2f, 0, default(Color), .8f);
+                Main.dust[num1].noGravity = true;
+                Main.dust[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                Main.dust[num1].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                if (Main.dust[num1].position != Projectile.Center)
+                    Main.dust[num1].velocity = Projectile.DirectionTo(Main.dust[num1].position) * 6f;
+                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.DungeonWater, 0f, -2f, 0, default(Color), .8f);
+                Main.dust[num].noGravity = true;
+                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                if (Main.dust[num].position != Projectile.Center)
+                    Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
+                SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
+            }
+        }
+    }
 
 }

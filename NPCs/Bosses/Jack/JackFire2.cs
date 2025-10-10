@@ -104,7 +104,7 @@ namespace Stellamod.NPCs.Bosses.Jack
         {
             return Color.White;
         }
-        
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
 
         public float WidthFunction(float completionRatio)
@@ -133,7 +133,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                 Vector2 drawOffset = (MathHelper.TwoPi * i / 8f).ToRotationVector2() * 4f;
                 Main.EntitySpriteDraw(texture, drawPosition + drawOffset, null, Color.Yellow with { A = 160 } * Projectile.Opacity, Projectile.rotation, texture.Size() * 0.5f, scale, 0, 0);
             }
-            
+
             for (int i = 0; i < 7; i++)
             {
                 float scaleFactor = 1f - i / 6f;

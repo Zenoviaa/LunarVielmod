@@ -70,7 +70,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
                 soundStyle.Volume = 0.3f;
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
             }
-          
+
             return false;
         }
 

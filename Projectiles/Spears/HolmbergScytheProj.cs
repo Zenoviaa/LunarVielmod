@@ -35,7 +35,7 @@ namespace Stellamod.Projectiles.Spears
         {
             Player player = Main.player[Projectile.owner];
             float rotation = Projectile.rotation;
-      
+
 
             player.RotatedRelativePoint(Projectile.Center);
             Projectile.rotation -= 0.2f;
@@ -57,7 +57,7 @@ namespace Stellamod.Projectiles.Spears
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
                 Projectile.velocity = -Projectile.velocity;
             }
-            if (Projectile.ai[1] == 5  || Projectile.ai[1] == 10)
+            if (Projectile.ai[1] == 5 || Projectile.ai[1] == 10)
             {
                 var EntitySource = Projectile.GetSource_FromThis();
                 if (Main.rand.NextBool(8))

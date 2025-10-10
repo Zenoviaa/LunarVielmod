@@ -23,7 +23,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
                 int combatText = CombatText.NewText(player.getRect(), Color.Red, "10", true);
                 CombatText numText = Main.combatText[combatText];
                 numText.lifeTime = 60;
-             
+
                 player.ClearBuff(BuffID.ManaSickness);
                 player.statLife -= 10;
             }

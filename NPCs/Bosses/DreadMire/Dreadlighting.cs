@@ -50,7 +50,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 Projectile.ai[1] = 0;
 
             }
-   
+
             Projectile.spriteDirection = Projectile.direction;
             Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
         }

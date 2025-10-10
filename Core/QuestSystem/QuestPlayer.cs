@@ -1,5 +1,4 @@
-﻿using Stellamod.Core.QuestSystem.Quests;
-using Stellamod.Core.QuestSystem.Quests.ZuiQuest;
+﻿using Stellamod.Core.QuestSystem.Quests.ZuiQuest;
 using Stellamod.UI.PopupSystem;
 using System.Collections.Generic;
 using Terraria.ModLoader;
@@ -110,7 +109,7 @@ namespace Stellamod.Core.QuestSystem
 
             ActiveQuests.Remove(quest);
             RewardQuests.Add(quest);
- 
+
             PopupUISystem popupUISystem = ModContent.GetInstance<PopupUISystem>();
             popupUISystem.OpenUI("CompleteQuest");
             RecalculateUI = true;
@@ -122,7 +121,7 @@ namespace Stellamod.Core.QuestSystem
                 return;
             if (CompletedQuests.Contains(quest))
                 return;
-     
+
             CompletedQuests.Add(quest);
             RewardQuests.Remove(quest);
             quest.Reward(Player);
@@ -137,14 +136,14 @@ namespace Stellamod.Core.QuestSystem
             {
                 GiveQuest(QuestLoader.GetInstance<TalkToZui>());
             }
-            foreach(var questKvp in QuestLoader.quests)
+            foreach (var questKvp in QuestLoader.quests)
             {
                 var quest = questKvp.Value;
                 if (quest.IsAutoQuest && !HasFinishedQuest(quest) && quest.CanGiveQuest(Player))
                     GiveQuest(quest);
             }
             List<Quest> questsToComplete = ActiveQuests.FindAll(x => x.CheckCompletion(Player));
-            foreach(var quest in questsToComplete)
+            foreach (var quest in questsToComplete)
             {
                 CompleteQuest(quest);
             }

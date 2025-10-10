@@ -49,7 +49,7 @@ namespace Stellamod.Items.Armors.AcidArmour
                     AI_Kill();
                     break;
             }
-  
+
             Projectile.rotation += MathHelper.PiOver4 / 32;
         }
 
@@ -69,7 +69,7 @@ namespace Stellamod.Items.Armors.AcidArmour
         {
             _fade -= 0.01f;
             _fade = MathHelper.Clamp(_fade, 0, 1);
-            if(_fade <= 0)
+            if (_fade <= 0)
             {
                 Projectile.Kill();
             }

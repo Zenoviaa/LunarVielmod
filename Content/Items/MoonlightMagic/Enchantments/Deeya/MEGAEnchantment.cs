@@ -1,22 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
-using Stellamod.Content.Items.MoonlightMagic.Forms;
-using Stellamod.Helpers;
-using Stellamod.Core.Helpers.Math;
-using Stellamod.Core.ItemTemplates;
+using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
-using Stellamod.Visual.Particles;
+using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using Terraria;
-using Terraria.ModLoader;
 using Terraria.Audio;
-using Stellamod.Assets;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Deeya
 {
@@ -27,7 +22,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Deeya
             return 2f;
         }
 
-        
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -41,7 +36,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Deeya
             //Count up
             Countertimer++;
 
-            if(Countertimer == 1)
+            if (Countertimer == 1)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ModContent.ProjectileType<MEGAEnchantmentExplosion>(),
                 Projectile.damage, Projectile.knockBack, ai1: Projectile.whoAmI);
@@ -56,7 +51,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Deeya
                     Particle.NewParticle<SparkleWindParticle>(spawnPoint, velocity, Color.White);
 
                 }
-                
+
             }
         }
         public override int GetElementType()
@@ -77,7 +72,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Deeya
             DrawHelper.DrawGlowInInventory(item, spriteBatch, position, Color.LightPink);
         }
 
-      
+
     }
 
     public class MEGAEnchantmentExplosion : BaseExplosionProjectile
@@ -98,7 +93,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Deeya
             rStart = Main.rand.Next(4, 4);
             rEnd = Main.rand.Next(120, 120);
         }
-       
+
         public override void AI()
         {
             base.AI();
@@ -195,7 +190,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Deeya
             int projectileID = (int)Projectile.ai[1];
             Projectile projectile = Main.projectile[projectileID];
             var magicProj = projectile.ModProjectile as AdvancedMagicProjectile;
-            
+
             //How large the circle is going to be
             return MathHelper.Lerp(rStart, rEnd, EasingFunction.InQuint(p) * magicProj.ScaleMultiplier);
         }
@@ -269,13 +264,13 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Deeya
             DrawMainShader();
             DrawOutlineShader();
             // DrawOutlineShader();
-            return false ;
+            return false;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-          //  target.AddBuff(BuffID.OnFire, 90);
+            //  target.AddBuff(BuffID.OnFire, 90);
         }
     }
 }

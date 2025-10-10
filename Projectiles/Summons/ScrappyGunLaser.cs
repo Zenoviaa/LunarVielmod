@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Particles;
 using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;

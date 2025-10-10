@@ -32,7 +32,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPC.width = 30;
             NPC.height = 75;
             NPC.damage = 10;
-            NPC.defense = 6;         
+            NPC.defense = 6;
             NPC.lifeMax = 1150;
             NPC.HitSound = SoundID.NPCHit16;
             NPC.value = 60f;

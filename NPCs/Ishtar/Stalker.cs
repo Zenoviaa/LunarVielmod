@@ -1,5 +1,4 @@
 ﻿using Stellamod.Assets.Biomes;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Thrown.Jugglers;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;

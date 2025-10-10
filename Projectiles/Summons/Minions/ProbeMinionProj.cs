@@ -3,15 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -73,7 +70,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 for (float f = 0; f < 8; f++)
                 {
@@ -98,12 +95,12 @@ namespace Stellamod.Projectiles.Summons.Minions
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.Red, Main.rand.NextFloat(0.5f, 1.5f)).noGravity = true;
             }
 
-            if(Timer % 10 == 0)
+            if (Timer % 10 == 0)
             {
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     NPC nearest = ProjectileHelper.FindNearestEnemyUnderneath(Projectile.position, 1024, 256);
-                    if(nearest != null)
+                    if (nearest != null)
                     {
                         Vector2 velocity = (nearest.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
                         ShootRotation = velocity.ToRotation() - MathHelper.ToRadians(90);

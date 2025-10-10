@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Dusts;
-using Stellamod.Particles;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -50,11 +49,11 @@ namespace Stellamod.Projectiles.Slashers.Gutinier
             float multiplier = 1;
             RGB *= multiplier;
             Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-   
+
             int dir = (int)Projectile.ai[1];
             if (!ParticleSpawned)
             {
-                                ParticleSpawned = true;
+                ParticleSpawned = true;
             }
 
             for (int i = 0; i < 1; i++)

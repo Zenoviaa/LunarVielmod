@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Effects;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
@@ -27,7 +26,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             Projectile.penetrate = -1;
             Projectile.timeLeft = 50;
             Projectile.alpha = 255;
-     ;
+            ;
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
 

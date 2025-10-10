@@ -1,7 +1,4 @@
-﻿using Stellamod.Items.Consumables;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Thrown.Jugglers;
-using System;
+﻿using Stellamod.Items.Weapons.Thrown.Jugglers;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
@@ -15,13 +12,13 @@ namespace Stellamod.NPCs.Global
         public override void ModifyItemLoot(Item item, ItemLoot itemLoot)
         {
 
-            if(item.type == ItemID.MoonLordBossBag)
+            if (item.type == ItemID.MoonLordBossBag)
             {
                 itemLoot.Add(ItemDropRule.Common(ItemID.LunarOre, 1, 80, 120));
             }
 
             //This code checks for and removes a specific item
-            if(item.type == ItemID.PlanteraBossBag)
+            if (item.type == ItemID.PlanteraBossBag)
             {
                 List<IItemDropRule> rules = itemLoot.Get();
                 for (int i = 0; i < rules.Count; i++)

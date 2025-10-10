@@ -3,12 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 
 using Stellamod.NPCs.Bosses.SupernovaFragment;
-using Stellamod.NPCs.Bosses.Zui;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -53,7 +47,7 @@ namespace Stellamod.Projectiles
             float progress = Timer / 144f;
             float easedProgress = Easing.SpikeInOutCirc(progress);
             Projectile.scale = easedProgress;
-            if(easedProgress >= 0.5f && !_hasSpawned && Main.myPlayer == Projectile.owner)
+            if (easedProgress >= 0.5f && !_hasSpawned && Main.myPlayer == Projectile.owner)
             {
                 if (StellaMultiplayer.IsHost)
                 {
@@ -64,10 +58,10 @@ namespace Stellamod.Projectiles
                     StellaMultiplayer.SpawnBossFromClient((byte)Projectile.owner,
                         ModContent.NPCType<SupernovaFragment>(), (int)Projectile.Center.X, (int)Projectile.Center.Y);
                 }
-       
+
                 _hasSpawned = true;
             }
-            if(Timer >= 144)
+            if (Timer >= 144)
             {
                 Projectile.Kill();
             }

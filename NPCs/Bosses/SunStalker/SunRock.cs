@@ -81,7 +81,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
 
             Projectile.ai[0]++;
 
-            if(Projectile.ai[0] <= 60)
+            if (Projectile.ai[0] <= 60)
             {
                 Projectile.alpha -= 10;
                 Projectile.velocity.Y = 0f;
@@ -89,7 +89,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             }
             else
             {
-                if(Projectile.velocity.Y <= 15)
+                if (Projectile.velocity.Y <= 15)
                 {
                     Projectile.velocity.Y += 0.5f;
                 }

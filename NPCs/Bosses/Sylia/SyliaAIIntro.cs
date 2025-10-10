@@ -2,7 +2,6 @@
 
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Sylia.Projectiles;
-using Stellamod.Particles;
 using Stellamod.Projectiles.Swords;
 using Terraria;
 using Terraria.Audio;
@@ -17,12 +16,12 @@ namespace Stellamod.NPCs.Bosses.Sylia
         {
             var npcSource = NPC.GetSource_FromThis();
             NPC.TargetClosest();
-            
+
             //Ok so,
             //Her spawn animation
             //A bunch of ripping particles appear around the rift
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 ArenaCenter = NPC.Center;
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(NPC.Center, 9f);
@@ -34,7 +33,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             float minParticleSpawnSpeed = 8;
             float maxParticleSpawnSpeed = 3;
             int particleSpawnSpeed = (int)MathHelper.Lerp(minParticleSpawnSpeed, maxParticleSpawnSpeed, progress);
-            if(Timer < 120 && Timer % particleSpawnSpeed == 0)
+            if (Timer < 120 && Timer % particleSpawnSpeed == 0)
             {
                 //Spawn a particle at sthe center of the arena
                 if (StellaMultiplayer.IsHost)
@@ -45,7 +44,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 }
             }
 
-            if(Timer == 120)
+            if (Timer == 120)
             {
                 //Time to emerge
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RipperSlashTelegraph"));
@@ -68,13 +67,13 @@ namespace Stellamod.NPCs.Bosses.Sylia
             }
 
             //Then she flies down to the center, summons her hands and magic circle
-            if(Timer == 180)
+            if (Timer == 180)
             {
                 DrawMagicCircle = true;
             }
 
             //Then she summons the void barriers
-            if(Timer == 240)
+            if (Timer == 240)
             {
                 float voidBarrierRadius = ArenaRadius;
                 Vector2 leftBarrierPos = ArenaCenter + voidBarrierRadius * Vector2.UnitX;
@@ -97,7 +96,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 SoundEngine.PlaySound(soundStyle, NPC.position);
             }
 
-            if(Timer == 300)
+            if (Timer == 300)
             {
                 Phase = ActionPhase.Phase_1;
                 Timer = 0;

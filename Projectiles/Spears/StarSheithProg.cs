@@ -13,7 +13,7 @@ namespace Stellamod.Projectiles.Spears
         protected virtual float HoldoutRangeMax => 96f;
 
 
-        bool Sounded = false; 
+        bool Sounded = false;
 
         public override void SetStaticDefaults()
         {
@@ -47,8 +47,8 @@ namespace Stellamod.Projectiles.Spears
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarSheith"));
                 Sounded = true;
             }
- 
-    
+
+
             Player player = Main.player[Projectile.owner]; // Since we access the owner player instance so much, it's useful to create a helper local variable for this
             int duration = player.itemAnimationMax; // Define the duration the projectile will exist in frames
 

@@ -71,7 +71,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             Projectile.velocity.Y += 0.01f;
             if (Projectile.ai[1] >= 60)
             {
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     VEL = Main.rand.NextFloat(-0.06f, 0.06f);
                     Projectile.ai[1] = 0;

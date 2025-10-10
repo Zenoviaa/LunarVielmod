@@ -21,7 +21,7 @@ namespace Stellamod.Items.Armors.Winterborn
             if (!hasSetBonus)
                 return;
             _timer--;
-            if(_timer <= 0 && Player.ownedProjectileCounts[ModContent.ProjectileType<WinterbornIcicleProj>()] < 3)
+            if (_timer <= 0 && Player.ownedProjectileCounts[ModContent.ProjectileType<WinterbornIcicleProj>()] < 3)
             {
                 //Spawn one
                 int damage = 15;
@@ -39,7 +39,7 @@ namespace Stellamod.Items.Armors.Winterborn
     {
         public bool Spetalite = false;
         public override void SetStaticDefaults()
-		{
+        {
             // DisplayName.SetDefault("Winterborn Head");
             // Tooltip.SetDefault("Increases Mana Regen by 4%");
 
@@ -79,7 +79,7 @@ namespace Stellamod.Items.Armors.Winterborn
             player.GetModPlayer<WinterbornPlayer>().hasSetBonus = true;
         }
 
-        public override void AddRecipes() 
+        public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.BorealWood, 8);

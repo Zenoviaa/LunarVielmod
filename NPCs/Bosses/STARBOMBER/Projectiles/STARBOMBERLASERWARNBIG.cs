@@ -4,7 +4,6 @@ using ReLogic.Content;
 using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
-using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
@@ -71,7 +70,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
             Main.spriteBatch.Draw(texture2D4, NPC.Center - Main.screenPosition, null, new Color((int)(30f * alphaCounter), (int)(15f * alphaCounter), (int)(55f * alphaCounter), 0), 0, new Vector2(30 / 2, 1028 / 2), 0.2f * (counter + 0.3f), SpriteEffects.None, 0f);
             return true;
         }
-        
+
         public override void AI()
         {
             if (!Down)
@@ -106,7 +105,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 32f);
                     LightPos.X = NPC.position.X;
                     LightPos.Y = NPC.position.Y - 500;
-                    var EntitySource = NPC.GetSource_FromThis(); 
+                    var EntitySource = NPC.GetSource_FromThis();
                     if (StellaMultiplayer.IsHost)
                     {
                         Utilities.NewProjectileBetter(LightPos.X, LightPos.Y - 150, 0, 10,

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.Audio;
@@ -46,8 +45,8 @@ namespace Stellamod.Items.Weapons.Mage
             Item.useTime = 30;
             Item.consumeAmmoOnLastShotOnly = true;
         }
-       
-      
+
+
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             Star += 1;

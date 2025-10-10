@@ -22,22 +22,22 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             // DisplayName.SetDefault("Abyssal Charge");
         }
 
-		public override void SetDefaults()
+        public override void SetDefaults()
         {
             Projectile.tileCollide = false;
             Projectile.friendly = false;
-			Projectile.hostile = true;
-			Projectile.DamageType = DamageClass.Magic;
-			Projectile.penetrate = 1;
-			Projectile.timeLeft = 350;
-			Projectile.height = 32;
-			Projectile.width = 32;
-			AIType = ProjectileID.Bullet;
-			Projectile.extraUpdates = 1;
-		}
+            Projectile.hostile = true;
+            Projectile.DamageType = DamageClass.Magic;
+            Projectile.penetrate = 1;
+            Projectile.timeLeft = 350;
+            Projectile.height = 32;
+            Projectile.width = 32;
+            AIType = ProjectileID.Bullet;
+            Projectile.extraUpdates = 1;
+        }
 
-		int counter = 6;
-		float alphaCounter = 4;
+        int counter = 6;
+        float alphaCounter = 4;
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
@@ -70,15 +70,15 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         public override void AI()
         {
             Projectile.rotation += 0.09f;
-			Projectile.velocity *= 0.99f;
+            Projectile.velocity *= 0.99f;
             if (counter >= 1440)
             {
                 counter = -1440;
             }
 
-            if(Projectile.timeLeft == 100)
+            if (Projectile.timeLeft == 100)
             {
-                Utilities.NewProjectileBetter(Projectile.Center.X, Projectile.Center.Y - 900, 0, 10, 
+                Utilities.NewProjectileBetter(Projectile.Center.X, Projectile.Center.Y - 900, 0, 10,
                     ModContent.ProjectileType<SoulBeam>(), 100, 0f, -1, 0, Projectile.whoAmI);
             }
         }
@@ -86,19 +86,19 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
-			for (int i = 0; i < 10; i++)
-			{
-				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BlueCrystalShard, 0f, -2f, 0, default(Color), 1.1f);
-				Main.dust[num].noGravity = true;
-				Dust expr_62_cp_0 = Main.dust[num];
-				expr_62_cp_0.position.X = expr_62_cp_0.position.X + (Main.rand.Next(-30, 31) / 20 - 1.5f);
-				Dust expr_92_cp_0 = Main.dust[num];
-				expr_92_cp_0.position.Y = expr_92_cp_0.position.Y + (Main.rand.Next(-30, 31) / 20 - 1.5f);
-				if (Main.dust[num].position != Projectile.Center)
-				{
-					Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
-				}
-			}
-		}
-	}
+            for (int i = 0; i < 10; i++)
+            {
+                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BlueCrystalShard, 0f, -2f, 0, default(Color), 1.1f);
+                Main.dust[num].noGravity = true;
+                Dust expr_62_cp_0 = Main.dust[num];
+                expr_62_cp_0.position.X = expr_62_cp_0.position.X + (Main.rand.Next(-30, 31) / 20 - 1.5f);
+                Dust expr_92_cp_0 = Main.dust[num];
+                expr_92_cp_0.position.Y = expr_92_cp_0.position.Y + (Main.rand.Next(-30, 31) / 20 - 1.5f);
+                if (Main.dust[num].position != Projectile.Center)
+                {
+                    Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
+                }
+            }
+        }
+    }
 }

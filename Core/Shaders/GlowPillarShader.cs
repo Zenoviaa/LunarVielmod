@@ -33,7 +33,7 @@ namespace Stellamod.Core.Shaders
             Speed = 5;
             BasePower = 3.0f;
             Size = 0.5f;
-       
+
             InnerColor = Color.White;
             GlowColor = Color.Yellow;
             OuterGlowColor = Color.Red;

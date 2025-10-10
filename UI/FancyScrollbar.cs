@@ -7,7 +7,7 @@ namespace Stellamod.UI
 {
     public class FancyScrollbar : UIScrollbar
     {
-     
+
         public FancyScrollbar() : base()
         {
             typeof(UIScrollbar).GetField("_texture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(this,

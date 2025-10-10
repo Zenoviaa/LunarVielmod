@@ -1,15 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
-using Stellamod.Content.Items.MoonlightMagic.Forms;
-using Stellamod.Helpers;
-using Stellamod.Core.Helpers.Math;
-using Stellamod.Core.ItemTemplates;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -17,7 +11,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Nature
 {
     public class SlothEnchantment : BaseEnchantment
     {
-        
+
         private Vector2 _spawnPos;
         public override void SetDefaults()
         {
@@ -42,7 +36,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Nature
             //If greater than time then start homing, we'll just swap the movement type of the projectile
             if (Countertimer < time)
             {
-       
+
 
                 Projectile.Center = _spawnPos;
             }

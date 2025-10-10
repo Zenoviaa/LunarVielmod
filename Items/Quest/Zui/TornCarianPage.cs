@@ -12,7 +12,7 @@ namespace Stellamod.Items.Quest.Zui
     {
         public override void SetStaticDefaults()
         {
-            ItemID.Sets.ItemNoGravity[Item.type] = true;  
+            ItemID.Sets.ItemNoGravity[Item.type] = true;
         }
 
         public override void SetDefaults()

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.ModLoader;
 namespace Stellamod.Dusts
@@ -31,7 +30,7 @@ namespace Stellamod.Dusts
 
             Vector2 currentCenter = dust.position + Vector2.One.RotatedBy(dust.rotation) * 32 * dust.scale;
             dust.scale *= 1.05f;
-            Vector2 nextCenter = dust.position + Vector2.One.RotatedBy(dust.rotation ) * 32 * dust.scale;
+            Vector2 nextCenter = dust.position + Vector2.One.RotatedBy(dust.rotation) * 32 * dust.scale;
 
             dust.rotation += 0f;
             dust.position += currentCenter - nextCenter;

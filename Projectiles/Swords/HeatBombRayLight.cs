@@ -90,9 +90,9 @@ namespace Stellamod.Projectiles.Swords
             }
             counter -= 0.05f;
             if (!Down)
-            { 
+            {
                 alphaCounter += 0.4f;
-                if(alphaCounter >= 5)
+                if (alphaCounter >= 5)
                 {
                     Down = true;
 

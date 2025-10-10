@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.Audio;
@@ -49,7 +48,7 @@ namespace Stellamod.NPCs.Cinderspark
             int frame = (int)NPC.frameCounter;
             if (CanMove())
                 NPC.frameCounter += 0.5f;
-            else if(frame < 12 && !CanMove())
+            else if (frame < 12 && !CanMove())
                 NPC.frameCounter += 0.5f;
             NPC.frameCounter %= Main.npcFrameCount[NPC.type];
             frame = (int)NPC.frameCounter;
@@ -72,16 +71,16 @@ namespace Stellamod.NPCs.Cinderspark
 
                 Vector2 randVector = new Vector2(Main.rand.Next(-80, 81), Main.rand.Next(-80, 81));
                 randVector.Normalize();
-                
+
                 Vector2 randVector2 = randVector * (Main.rand.Next(50, 100) * 0.04f);
                 dust.velocity = randVector2;
                 randVector2.Normalize();
-                
+
                 Vector2 vector2_3 = randVector2 * 34f;
                 dust.position = NPC.Center - vector2_3;
             }
 
-            if(ai_Timer == 240)
+            if (ai_Timer == 240)
             {
                 if (StellaMultiplayer.IsHost)
                 {
@@ -119,17 +118,18 @@ namespace Stellamod.NPCs.Cinderspark
                 if (NPC.collideX)
                 {
                     _dir = -_dir;
-                } 
+                }
             }
 
             if (NPC.frameCounter >= 7)
             {
-                float xSpeed = 3.5f;  
+                float xSpeed = 3.5f;
                 float xAcceleration = 1f;
-                if(_dir.X < 0 && NPC.velocity.X > -xSpeed)
+                if (_dir.X < 0 && NPC.velocity.X > -xSpeed)
                 {
                     NPC.velocity.X -= xAcceleration;
-                } else if(_dir.X > 0 && NPC.velocity.X < xSpeed)
+                }
+                else if (_dir.X > 0 && NPC.velocity.X < xSpeed)
                 {
                     NPC.velocity.X += xAcceleration;
                 }

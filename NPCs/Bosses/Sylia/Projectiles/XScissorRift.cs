@@ -1,18 +1,11 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Stellamod.Projectiles.Swords;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ModLoader;
-
-using Stellamod.Particles;
-using Terraria.Audio;
-using Stellamod.Projectiles.Swords;
 
 namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 {
@@ -42,7 +35,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            if(Timer < 58)
+            if (Timer < 58)
             {
                 return false;
             }
@@ -101,7 +94,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         public override void AI()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 //Spawn Telegraph Particle
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/RipperSlashTelegraph");
@@ -109,9 +102,9 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
             }
 
-            if(Timer == 58)
+            if (Timer == 58)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, 
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center,
                     Projectile.velocity, ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0, Projectile.owner);
             }
 

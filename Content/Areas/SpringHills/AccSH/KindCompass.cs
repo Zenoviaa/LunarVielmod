@@ -20,7 +20,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
         {
             base.UpdateAccessory(player, hideVisual);
             FlaskPlayer flaskPlayer = player.GetModPlayer<FlaskPlayer>();
-            flaskPlayer.maxInsourceCount+=1;
+            flaskPlayer.maxInsourceCount += 1;
         }
     }
 }

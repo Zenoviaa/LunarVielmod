@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.MagicSystem.UI;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;

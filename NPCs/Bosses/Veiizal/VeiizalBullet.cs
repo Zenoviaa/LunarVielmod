@@ -1,24 +1,20 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Core.Utils;
-using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using System;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 
 namespace Stellamod.NPCs.Bosses.Veiizal
 {
     public class VeiizalBullet : ModProjectile
     {
-   
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Red Skull");
@@ -97,7 +93,7 @@ namespace Stellamod.NPCs.Bosses.Veiizal
             if (Timer == 1)
             {
 
-                SpeedADD  = Main.rand.NextFloat(0.5f, 0.9f);;
+                SpeedADD = Main.rand.NextFloat(0.5f, 0.9f); ;
 
             }
 

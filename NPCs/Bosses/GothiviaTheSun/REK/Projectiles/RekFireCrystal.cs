@@ -1,13 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.GameContent.Animations;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -45,15 +43,15 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             NPC.noGravity = true;
             NPC.HitSound = SoundID.DD2_WitherBeastCrystalImpact;
             NPC.DeathSound = SoundID.DD2_WitherBeastDeath;
-           
+
         }
 
         public override void AI()
         {
             NPC.TargetClosest();
- 
+
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekSummon"), NPC.position);
             }
@@ -61,7 +59,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             float frequency = 0.2f;
             float amplitude = 1;
             NPC.velocity = new Vector2(0, MathF.Sin(Timer * frequency) * amplitude);
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 for (int i = 0; i < 8; i++)
                 {
@@ -77,7 +75,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                 }
             }
 
-            if(Timer == 540)
+            if (Timer == 540)
             {
                 int damage = 150;
                 int knockback = 2;
@@ -88,15 +86,15 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                 }
             }
 
-            if(Main.rand.NextBool(30))
+            if (Main.rand.NextBool(30))
             {
                 int dustType = ModContent.DustType<TSmokeDust>();
                 Vector2 velocity = -Vector2.UnitX * 3;
                 Dust.NewDustPerfect(
-                    NPC.Center + Main.rand.NextVector2Circular(64, 64), 
-                    dustType, 
-                    velocity, 
-                    Alpha: 0, 
+                    NPC.Center + Main.rand.NextVector2Circular(64, 64),
+                    dustType,
+                    velocity,
+                    Alpha: 0,
                     newColor: Color.OrangeRed);
             }
 
@@ -137,7 +135,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
 
-            if(Timer < 540)
+            if (Timer < 540)
             {
                 float progress = Timer / 540f;
                 Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_47").Value;
@@ -180,25 +178,25 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             Color whiteDrawColor = Color.White * easedProgress;
             Texture2D whiteTexture = ModContent.Request<Texture2D>(Texture + "_White").Value;
             spriteBatch.Draw(
-                whiteTexture, 
+                whiteTexture,
                 drawPosition,
                 null,
-                whiteDrawColor, 
-                drawRotation, 
-                drawOrigin, 
+                whiteDrawColor,
+                drawRotation,
+                drawOrigin,
                 drawScale, SpriteEffects.None, 0);
         }
 
         public override void HitEffect(NPC.HitInfo hit)
         {
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 int dustType = ModContent.DustType<GlowDust>();
                 Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
                 Dust.NewDustPerfect(NPC.Center, dustType, velocity, Alpha: 0, newColor: Color.OrangeRed);
             }
 
-            if(NPC.lifeMax <= 0)
+            if (NPC.lifeMax <= 0)
             {
                 //Death explosion thing
             }

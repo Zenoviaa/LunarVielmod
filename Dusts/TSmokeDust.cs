@@ -5,8 +5,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Dusts
 {
-	public class TSmokeDust : ModDust
-	{
+    public class TSmokeDust : ModDust
+    {
         public override void OnSpawn(Dust dust)
         {
             dust.noGravity = true;

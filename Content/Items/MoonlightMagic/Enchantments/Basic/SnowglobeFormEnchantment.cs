@@ -36,7 +36,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Basic
 
         public override void SetMagicDefaults()
         {
-            
+
             MagicProj.Form = FormRegistry.Snowglobe.Value;
             MagicProj.Size *= 1.5f;
 
@@ -44,8 +44,8 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Basic
 
 
 
-   
+
     }
 
-    
+
 }

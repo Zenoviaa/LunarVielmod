@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 {
     public class RekGreek1 : ModProjectile
-    {  
+    {
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Cactius2");
@@ -48,7 +48,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
             if (Timer == 100)
             {
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     float speedXb = Projectile.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -58,7 +58,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXb * 0, speedYb * 0,
                         ModContent.ProjectileType<SummonSpawnEffect>(), 0, 0f, Owner: Projectile.owner);
                 }
-                
+
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Jack_Throw"));
                 Timer = 0;
             }
@@ -66,26 +66,26 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
             for (int k = 0; k < Main.maxNPCs; k++)
             {
-                    NPC player = Main.npc[k];
-                    if (!player.active && player.type == ModContent.NPCType<Rek>())
+                NPC player = Main.npc[k];
+                if (!player.active && player.type == ModContent.NPCType<Rek>())
+                {
+                    if (!player.active)
                     {
-                        if (!player.active)
-                        {
-                            Projectile.Kill();
-                        }
+                        Projectile.Kill();
                     }
-                    // Check if NPC able to be targeted. It means that NPC is
-                    if (player.active && player.type == ModContent.NPCType<Rek>())
-                    {    
-                        if (!player.active)
-                        {
-                            Projectile.Kill();
-                        }
+                }
+                // Check if NPC able to be targeted. It means that NPC is
+                if (player.active && player.type == ModContent.NPCType<Rek>())
+                {
+                    if (!player.active)
+                    {
+                        Projectile.Kill();
+                    }
 
                     Vector2 idlePosition;
                     idlePosition.X = player.Center.X - 200;
                     idlePosition.Y = player.Center.Y + 10;
-                 // Go up 48 coordinates (three tiles from the center of the player)
+                    // Go up 48 coordinates (three tiles from the center of the player)
 
                     // If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
                     // The index is projectile.minionPos
@@ -122,7 +122,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
 
                     // Starting search distance
-             
+
                     Vector2 targetCenter = Projectile.position;
                     bool foundTarget = false;
 
@@ -133,7 +133,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                     // friendly needs to be set to false so it doesn't damage things like target dummies while idling
                     // Both things depend on if it has a target or not, so it's just one assignment here
                     // You don't need this assignment if your minion is shooting things instead of dealing contact damage
-                
+
 
 
 
@@ -171,7 +171,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                         {
                             // If there is a case where it's not moving at all, give it a little "poke"
                             Projectile.velocity.X = -0.15f;
-                        
+
                         }
                     }
                     else

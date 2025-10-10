@@ -1,14 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Stellamod.Items.Accessories.Players;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.UI;
-
-
-namespace Stellamod.UI.DashSystem
+﻿namespace Stellamod.UI.DashSystem
 {
     /*
     [Autoload(Side = ModSide.Client)]

@@ -2,7 +2,6 @@
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
@@ -89,7 +88,7 @@ namespace Stellamod.Tiles.ShrineBreakers.Govheil
 
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
-        //    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 48, ModContent.ItemType<Halhurish>(), 1);
+            //    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 48, ModContent.ItemType<Halhurish>(), 1);
         }
         public override void MouseOver(int i, int j)
         {

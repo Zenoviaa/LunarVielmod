@@ -29,7 +29,7 @@ namespace Stellamod.Projectiles.Magic
         public override void AI()
         {
             base.AI();
-            Projectile.alpha-=8;
+            Projectile.alpha -= 8;
             Projectile.velocity *= 1.1f;
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
@@ -50,7 +50,7 @@ namespace Stellamod.Projectiles.Magic
         {
             DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.VortexTrail);
             DrawHelper.DrawAdditiveAfterImage(Projectile, ColorFunctions.MiracleVoid, Color.Black, ref lightColor);
-      
+
             return base.PreDraw(ref lightColor);
         }
 

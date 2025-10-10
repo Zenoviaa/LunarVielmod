@@ -1,13 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using Mono.Cecil;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
-
-using Stellamod.Projectiles.Bow;
 using Stellamod.Projectiles.Swords;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;

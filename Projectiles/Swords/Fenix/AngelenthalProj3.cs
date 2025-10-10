@@ -17,7 +17,7 @@ namespace Stellamod.Projectiles.Swords.Fenix
         }
 
         private Player Owner => Main.player[Projectile.owner];
-        private int SwingTime => (int) (30 / Owner.GetAttackSpeed(DamageClass.Melee));
+        private int SwingTime => (int)(30 / Owner.GetAttackSpeed(DamageClass.Melee));
 
         public override void SetDefaults()
         {

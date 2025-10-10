@@ -66,7 +66,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
             return false;
         }
-        
+
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
@@ -74,14 +74,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
         public override void AI()
         {
             Timer++;
-            if(Timer >= 5)
+            if (Timer >= 5)
             {
                 Timer = 0;
                 var entitySource = Projectile.GetSource_FromThis();
                 Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(0, -100), Mod.Find<ModProjectile>("FlameArrow").Type, 26, 0);
                 Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(0, 100), Mod.Find<ModProjectile>("FlameArrow").Type, 26, 0);
                 //AssassinsKnifeHit
-                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
             }
 
 

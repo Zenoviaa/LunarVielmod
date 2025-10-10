@@ -1,19 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.NPCs.Bosses.DaedusRework;
+using Stellamod.NPCs.Bosses.singularityFragment;
+using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
+using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
-using Terraria.ID;
-using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Trails;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
-using Stellamod.NPCs.Bosses.singularityFragment;
-using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 {
@@ -147,7 +144,7 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 
         float alphaCounter = 1;
         Vector2 DrawOffset;
-        
+
 
         public override void PostDraw(Color lightColor)
         {

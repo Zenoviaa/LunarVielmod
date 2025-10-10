@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
@@ -27,15 +26,16 @@ namespace Stellamod.Projectiles.Bow
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 Projectile.rotation = Main.rand.NextFloat(0f, 1f);
             }
 
-            if(Timer < 60)
+            if (Timer < 60)
             {
                 _drawScale = MathHelper.Lerp(_drawScale, 1f, 0.1f);
-            } else if (Timer > 90)
+            }
+            else if (Timer > 90)
             {
                 _drawScale = MathHelper.Lerp(_drawScale, 0f, 0.1f);
             }
@@ -53,7 +53,6 @@ namespace Stellamod.Projectiles.Bow
             SpriteBatch spriteBatch = Main.spriteBatch;
             Color drawColor = Color.White;
             drawColor.A = 0;
-            float drawScale = 1f;
             for (float f = 0f; f < 1f; f += 0.2f)
             {
                 float rot = f * MathHelper.TwoPi;
@@ -72,7 +71,6 @@ namespace Stellamod.Projectiles.Bow
         {
             base.PostDraw(lightColor);
             Texture2D dimLightTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-            float drawScale = 1f;
             SpriteBatch spriteBatch = Main.spriteBatch;
             for (int i = 0; i < 2; i++)
             {

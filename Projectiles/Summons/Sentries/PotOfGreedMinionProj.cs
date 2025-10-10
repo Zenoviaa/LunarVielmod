@@ -1,17 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-
+using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
-using Stellamod.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
-using Stellamod.Buffs.Minions;
 
 namespace Stellamod.Projectiles.Summons.Sentries
 {
@@ -294,7 +287,6 @@ namespace Stellamod.Projectiles.Summons.Sentries
 
             //Visuals
             _rotation += 0.05f;
-            int count = 4;
 
             //This is the flame coming out of the pot
             _particleCounter++;

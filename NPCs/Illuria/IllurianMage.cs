@@ -4,7 +4,6 @@ using Stellamod.Helpers;
 using Stellamod.Items.Armors.Illurian;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
-using Stellamod.WorldG;
 using System;
 using Terraria;
 using Terraria.Audio;

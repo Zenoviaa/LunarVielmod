@@ -54,7 +54,7 @@ namespace Stellamod.Backgrounds
             front2Layer.Parallax = 0.5f;
             front2Layer.DrawOffset = Vector2.Zero;
             //  AddLayer(front2Layer);
-    
+
             CustomBGLayer frontFogLayer = new CustomBGLayer();
             frontFogLayer.SetTexture("Assets/Textures/Backgrounds/RainforestFrontGradient");
             frontFogLayer.Parallax = 0.5f;
@@ -77,7 +77,7 @@ namespace Stellamod.Backgrounds
 
         public override bool IsActive()
         {
-       
+
             if (Main.myPlayer == -1)
                 return false;
             if (!Main.PlayerLoaded)

@@ -1,10 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -49,7 +46,7 @@ namespace Stellamod.Projectiles.Magic
 
             if (Timer <= 1)
             {
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     float offsetX = Main.rand.Next(-200, 200) * 0.01f;
                     float offsetY = Main.rand.Next(-200, 200) * 0.01f;
@@ -57,7 +54,7 @@ namespace Stellamod.Projectiles.Magic
                     Projectile.velocity.Y += offsetY;
                     Projectile.netUpdate = true;
                 }
-     
+
                 float A = Main.rand.Next(0, 2);
 
                 if (A == 0)
@@ -70,7 +67,7 @@ namespace Stellamod.Projectiles.Magic
                 }
 
                 Projectile.scale = 1.5f;
-                
+
             }
             if (Main.rand.NextBool(3))
             {

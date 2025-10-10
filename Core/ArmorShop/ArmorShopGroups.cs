@@ -34,7 +34,6 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Stellamod.Core.ArmorShop
 {
@@ -191,7 +190,7 @@ namespace Stellamod.Core.ArmorShop
             Daedia.Register();
 
             //---------- Hardmode
-          
+
             //Virulent Armor done
             ArmorShopSet Vir = new ArmorShopSet();
             Vir.AddHead(ModContent.ItemType<VirulentHelm>());
@@ -330,7 +329,7 @@ namespace Stellamod.Core.ArmorShop
 
         public ArmorShopSet FindSet(Item item)
         {
-            foreach(var armor in Armors)
+            foreach (var armor in Armors)
             {
                 if (armor.IsInSet(item))
                     return armor;

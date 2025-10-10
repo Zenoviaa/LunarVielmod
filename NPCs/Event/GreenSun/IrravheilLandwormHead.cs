@@ -1,12 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets.Biomes;
-using Stellamod.Helpers;
-using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Summon;
-using Stellamod.Utilis;
-using Stellamod.WorldG;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
@@ -92,7 +87,7 @@ namespace Stellamod.NPCs.Event.GreenSun
             {
                 float xDir = 0;
                 float yDir = 0;
-                if(Target.position.X < NPC.position.X)
+                if (Target.position.X < NPC.position.X)
                 {
                     xDir = -1;
                 }
@@ -128,9 +123,9 @@ namespace Stellamod.NPCs.Event.GreenSun
 
                 float moveSpeed = 2f;
                 float distanceToTarget = Vector2.Distance(NPC.Center, Target.Center);
-  
+
                 Vector2 velocity = new Vector2(xDir * moveSpeed, NPC.velocity.Y + yDir);
-                if(distanceToTarget <= 32f)
+                if (distanceToTarget <= 32f)
                 {
                     velocity.X *= (distanceToTarget / 32f);
                 }
@@ -139,8 +134,9 @@ namespace Stellamod.NPCs.Event.GreenSun
 
                 NPC.velocity.X = velocity.X;
                 NPC.velocity.Y = velocity.Y;
-              //  NPC.rotation = NPC.velocity.ToRotation();
-            } else
+                //  NPC.rotation = NPC.velocity.ToRotation();
+            }
+            else
             {
                 NPC.velocity.X *= 0.99f;
             }
@@ -273,7 +269,7 @@ namespace Stellamod.NPCs.Event.GreenSun
             {
                 NPC.spriteDirection = -1;
             }
-       
+
             Lighting.AddLight(screenPos, Color.Green.ToVector3() * 0.66f * Main.essScale);
             return base.PreDraw(spriteBatch, screenPos, drawColor);
         }

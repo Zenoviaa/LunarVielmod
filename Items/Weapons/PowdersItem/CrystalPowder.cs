@@ -1,6 +1,5 @@
 ﻿using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Projectiles;
-using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
 

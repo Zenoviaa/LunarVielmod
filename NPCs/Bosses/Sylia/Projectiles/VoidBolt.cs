@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -63,7 +62,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
             }
 
-            if(Timer % 16 == 0)
+            if (Timer % 16 == 0)
             {
                 Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
                 Dust dust = Dust.NewDustPerfect(position, DustID.GemAmethyst, Scale: Main.rand.NextFloat(0.5f, 3f));

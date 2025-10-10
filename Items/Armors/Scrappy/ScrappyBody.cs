@@ -1,11 +1,5 @@
-﻿using Stellamod.Items.Materials;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Terraria;
 using Terraria.ID;
-using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Scrappy
@@ -31,6 +25,6 @@ namespace Stellamod.Items.Armors.Scrappy
         }
 
         // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-       
+
     }
 }

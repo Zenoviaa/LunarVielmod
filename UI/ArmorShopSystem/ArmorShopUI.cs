@@ -1,8 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core.ArmorShop;
-using Stellamod.Items.Shrines.GovheilNAlca;
-using System;
-using System.Text.RegularExpressions;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
@@ -64,7 +61,7 @@ namespace Stellamod.UI.ArmorShopSystem
             _cost.Left.Pixels = 16;
             _cost.Top.Pixels = 24;
             _lSlot.Left.Pixels = _cost.Left.Pixels + spacing;
-            _bSlot.Left.Pixels = _lSlot.Left.Pixels + item_spacing; 
+            _bSlot.Left.Pixels = _lSlot.Left.Pixels + item_spacing;
             _hSlot.Left.Pixels = _bSlot.Left.Pixels + item_spacing;
             _buyArmorButton.Left.Pixels = _hSlot.Left.Pixels + item_spacing;
             _buyArmorButton.Top.Pixels = 9;
@@ -72,7 +69,7 @@ namespace Stellamod.UI.ArmorShopSystem
 
         public override int CompareTo(object obj)
         {
-            if(obj is ArmorShopOption ui)
+            if (obj is ArmorShopOption ui)
             {
                 return _index.CompareTo(ui._index);
             }
@@ -142,7 +139,7 @@ namespace Stellamod.UI.ArmorShopSystem
             foreach (var set in groups.Armors)
             {
                 ArmorShopOption option = new ArmorShopOption(set, index);
-             //   option.Activate();
+                //   option.Activate();
                 _slotGrid.Add(option);
                 index++;
 

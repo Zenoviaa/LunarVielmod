@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using Terraria;
@@ -31,9 +30,9 @@ namespace Stellamod.Projectiles.Arrows
         public override void AI()
         {
             _particleTimer++;
-            if(_particleTimer % 4 == 0)
+            if (_particleTimer % 4 == 0)
             {
-                            }
+            }
         }
 
         //Trails
@@ -58,7 +57,7 @@ namespace Stellamod.Projectiles.Arrows
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item89, Projectile.position);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<AlcaricMushBoom>(), Projectile.damage, 0f, Projectile.owner);
         }
     }

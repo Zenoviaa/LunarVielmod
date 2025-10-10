@@ -1,6 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using System;
 using Terraria;
@@ -22,7 +20,7 @@ namespace Stellamod.Items.Accessories
 
         public override void PostUpdateEquips()
         {
-            if(lifestealCooldown > 0)
+            if (lifestealCooldown > 0)
                 lifestealCooldown--;
         }
 

@@ -15,7 +15,7 @@ namespace Stellamod.TilesNew.RainforestTiles
             Main.tileMergeDirt[Type] = true;
             Main.tileBlockLight[Type] = true;
             RegisterItemDrop(ModContent.ItemType<RainforestGrassBlock>());
-           // DustType = Main.rand.Next(110, 113);
+            // DustType = Main.rand.Next(110, 113);
 
             MineResist = 1f;
             MinPick = 25;

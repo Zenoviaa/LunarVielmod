@@ -9,19 +9,19 @@ using static Terraria.ModLoader.ModContent;
 namespace Stellamod.NPCs.Bosses.singularityFragment
 {
     public class RuneSpawnEffect2 : ModProjectile
-	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Rune Spawn Effect");
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 7;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
-		}
+    {
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Rune Spawn Effect");
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 7;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+        }
 
         public override void SetDefaults()
-		{
-			base.Projectile.aiStyle = 0;
-			Projectile.alpha = 255;
-			Projectile.friendly = false;
+        {
+            base.Projectile.aiStyle = 0;
+            Projectile.alpha = 255;
+            Projectile.friendly = false;
             Projectile.hostile = true;
             Projectile.penetrate = 1;
             Projectile.timeLeft = 400;
@@ -30,8 +30,8 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             Projectile.extraUpdates = 1;
         }
 
-		float alphaCounter = 5;
-		public override void AI()
+        float alphaCounter = 5;
+        public override void AI()
         {
             Projectile.ai[0]++;
             alphaCounter -= 0.09f;

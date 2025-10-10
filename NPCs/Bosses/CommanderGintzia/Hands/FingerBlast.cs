@@ -1,11 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
-using Stellamod.Helpers;
-using Stellamod.Trails;
-using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
 
 namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 {
@@ -50,7 +48,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 
             Projectile.velocity *= 1.015f;
             Wind.ExpandMultiplier = 0.25f;
-            if(Timer > 60)
+            if (Timer > 60)
             {
                 Projectile.tileCollide = true;
             }

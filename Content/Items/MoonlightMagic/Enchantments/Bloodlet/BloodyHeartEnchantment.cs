@@ -1,10 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
-using Stellamod.Content.Items.MoonlightMagic.Forms;
 using Stellamod.Helpers;
-using Stellamod.Core.Particles;
-using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -14,7 +11,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Bloodlet
 {
     public class BloodyHeartEnchantment : BaseEnchantment
     {
-       
+
         public override float GetStaffManaModifier()
         {
             return 0.8f;
@@ -63,9 +60,9 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Bloodlet
 
         }
 
-       
+
 
     }
 
-    
+
 }

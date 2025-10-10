@@ -1,12 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.QuestSystem;
-using System;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ModLoader;
-using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
 
 namespace Stellamod.UI.CollectionSystem.Quests
@@ -75,7 +73,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
                 if (RewardQuest)
                 {
                     _text.TextColor = Color.Green;
-                } 
+                }
                 else if (CompletedQuest)
                 {
                     _text.TextColor = Color.Goldenrod;

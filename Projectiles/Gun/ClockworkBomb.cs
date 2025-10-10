@@ -29,7 +29,7 @@ namespace Stellamod.Projectiles.Gun
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 FXUtil.ShakeCamera(Projectile.Center, 1024, 2);
                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
@@ -69,7 +69,7 @@ namespace Stellamod.Projectiles.Gun
                 }
             }
 
-            if(Timer == 10)
+            if (Timer == 10)
             {
                 for (int i = 0; i < 14; i++)
                 {
@@ -122,7 +122,7 @@ namespace Stellamod.Projectiles.Gun
         {
             //Projectile.spriteDirection = Projectile.velocity.X < 0 ? -1 : 1; 
             Timer++;
-            if(Timer % 6 == 0)
+            if (Timer % 6 == 0)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.Teal, Main.rand.NextFloat(1f, 1.5f));
                 if (Main.rand.NextBool(3))
@@ -131,14 +131,14 @@ namespace Stellamod.Projectiles.Gun
                 }
             }
 
-            if(Timer <= 2 && Main.myPlayer == Projectile.owner)
+            if (Timer <= 2 && Main.myPlayer == Projectile.owner)
             {
                 Speed = Main.rand.NextFloat(0.92f, 0.98f);
                 Projectile.netUpdate = true;
             }
             Projectile.velocity *= Speed;
             Projectile.rotation = Projectile.velocity.ToRotation();
-            if(Projectile.velocity.Length() <= 0.1f && Projectile.active)
+            if (Projectile.velocity.Length() <= 0.1f && Projectile.active)
             {
                 Projectile.Kill();
             }

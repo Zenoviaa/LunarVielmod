@@ -39,14 +39,14 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Basic
         {
             Projectile.penetrate += 1;
             MagicProj.Form = FormRegistry.SmallKnife.Value;
-            
-            
+
+
         }
 
 
 
-   
+
     }
 
-    
+
 }

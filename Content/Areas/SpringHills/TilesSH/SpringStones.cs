@@ -108,7 +108,7 @@ namespace Stellamod.Content.Areas.SpringHills.TilesSH
     {
         public override void SetStaticDefaults()
         {
-            
+
             base.SetStaticDefaults();
             StructureColor = Color.Gray;
             //If you need other static defaults it go here

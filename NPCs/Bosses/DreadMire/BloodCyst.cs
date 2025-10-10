@@ -4,8 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 using ReLogic.Content;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.DreadMire.Heart;
-using Stellamod.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -52,12 +50,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             float radius = Immune_Distance;
             int count = 8;
             _radiusCounter++;
-            if(_radiusCounter > 3)
+            if (_radiusCounter > 3)
             {
                 for (int i = 0; i < count; i++)
                 {
                     Vector2 position = NPC.Center + new Vector2(radius, 0).RotatedBy(((i * MathHelper.PiOver2 / count)) * 4);
-                                    }
+                }
                 _radiusCounter = 0;
             }
         }
@@ -81,7 +79,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 }
 
             }
-            else if(!Main.bloodMoon)
+            else if (!Main.bloodMoon)
             {
                 if (NPC.ai[0] == 2)
                 {
@@ -135,11 +133,11 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             return 0f;
-           /* return Main.bloodMoon && !Main.dayTime && 
-                !NPC.AnyNPCs(ModContent.NPCType<BloodCyst>()) &&
-                !NPC.AnyNPCs(ModContent.NPCType<BloodCystDead>()) &&
-                !NPC.AnyNPCs(ModContent.NPCType<DreadMire>()) && 
-                !NPC.AnyNPCs(ModContent.NPCType<DreadMiresHeart>()) ? 1.013f : 0f;*/
+            /* return Main.bloodMoon && !Main.dayTime && 
+                 !NPC.AnyNPCs(ModContent.NPCType<BloodCyst>()) &&
+                 !NPC.AnyNPCs(ModContent.NPCType<BloodCystDead>()) &&
+                 !NPC.AnyNPCs(ModContent.NPCType<DreadMire>()) && 
+                 !NPC.AnyNPCs(ModContent.NPCType<DreadMiresHeart>()) ? 1.013f : 0f;*/
         }
 
 
@@ -157,7 +155,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.value = 60f;
             NPC.knockBackResist = 0f;
             NPC.aiStyle = -1;
-            NPC.noGravity = true;  
+            NPC.noGravity = true;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -167,7 +165,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A crystal which holds the power of summoning one of the three deities")),
             });
         }
-        
+
         public override void HitEffect(NPC.HitInfo hit)
         {
             if (NPC.life <= 0)

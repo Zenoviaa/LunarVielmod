@@ -1,24 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
-
-using Stellamod.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ID;
-using Terraria;
-using Terraria.ModLoader;
-using Stellamod.Projectiles.IgniterExplosions;
-using Terraria.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
 using ReLogic.Utilities;
+using Stellamod.Helpers;
+using Stellamod.Projectiles.IgniterExplosions;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Sylia
 {
     public class SyliaDeath : ModNPC
-    {        
+    {
         //Animation Stuffs
         private int _frameCounter;
         private int _frameTick;
@@ -54,7 +47,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 {
                     Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(168, 168);
                     Vector2 vel = (NPC.Center - pos).SafeNormalize(Vector2.Zero) * 4;
-                                        if (i % 2 == 0)
+                    if (i % 2 == 0)
                     {
                         Dust d = Dust.NewDustPerfect(pos, DustID.GemAmethyst, vel);
                         d.noGravity = true;
@@ -87,7 +80,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
         public override void AI()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/RisingSummon");
                 soundStyle.Pitch = -0.75f;
@@ -96,7 +89,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             }
             ChargeVisuals(Timer, 120);
 
-            if(Timer == 180)
+            if (Timer == 180)
             {
                 //EXPLODE
                 //DEATH

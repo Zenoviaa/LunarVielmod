@@ -30,10 +30,10 @@ namespace Stellamod.NPCs.Bosses.Jack
             Projectile.friendly = false;
             Projectile.hostile = true;
         }
-        
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if(Main.myPlayer == Projectile.owner)
+            if (Main.myPlayer == Projectile.owner)
             {
                 if (Main.rand.NextBool(2))
                     target.AddBuff(BuffID.OnFire, 180);
@@ -52,7 +52,7 @@ namespace Stellamod.NPCs.Bosses.Jack
 
             Projectile.ai[0]++;
 
-            if(Projectile.ai[0] >= 30)
+            if (Projectile.ai[0] >= 30)
             {
                 if (Projectile.ai[0] == 70)
                 {
@@ -68,7 +68,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                     double offsetAngle;
                     for (int i = 0; i < 4; i++)
                     {
-                        if(Main.myPlayer == Projectile.owner)
+                        if (Main.myPlayer == Projectile.owner)
                         {
                             offsetAngle = (startAngle + deltaAngle * (i + i * i) / 2f) + 32f * i + offsetRandom;
                             Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, (float)(Math.Sin(offsetAngle) * 9f), (float)(Math.Cos(offsetAngle) * 9f),
@@ -81,7 +81,7 @@ namespace Stellamod.NPCs.Bosses.Jack
 
                 if (Projectile.ai[0] <= 60)
                 {
-                    if (Projectile.ai[0] % 5 == 0  && Main.myPlayer == Projectile.owner)
+                    if (Projectile.ai[0] % 5 == 0 && Main.myPlayer == Projectile.owner)
                     {
                         Projectile.velocity.Y = Main.rand.NextFloat(-ShakeVelY, ShakeVelY);
                         Projectile.velocity.X = Main.rand.NextFloat(-ShakeVel, ShakeVel);
@@ -103,7 +103,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             {
                 Projectile.velocity.Y += 0.4f;
             }
-            if(alphaCounter >= 5)
+            if (alphaCounter >= 5)
             {
                 Projectile.Kill();
             }

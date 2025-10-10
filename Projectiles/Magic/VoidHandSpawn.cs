@@ -5,7 +5,6 @@ using Stellamod.Trails;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -52,12 +51,12 @@ namespace Stellamod.Projectiles.Magic
         public override void AI()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/VoidHand"), Projectile.position);
                 OldVelocity = Projectile.velocity;
             }
-            if(Timer == 20)
+            if (Timer == 20)
             {
                 SoundEngine.PlaySound(SoundID.DD2_SkeletonSummoned, Projectile.position);
             }
@@ -79,15 +78,15 @@ namespace Stellamod.Projectiles.Magic
                 }
             }
 
-            if(Timer == 40)
+            if (Timer == 40)
             {
                 var EntitySource = Projectile.GetSource_FromThis();
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, OldVelocity.X, OldVelocity.Y,
-                          ModContent.ProjectileType<VoidHand>(), Projectile.damage, Projectile.knockBack, Projectile.owner);           
+                          ModContent.ProjectileType<VoidHand>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
-  
+
                 int Sound = Main.rand.Next(1, 3);
                 if (Sound == 1)
                 {

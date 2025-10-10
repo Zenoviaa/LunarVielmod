@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-
-namespace Stellamod.Core.Shaders
+﻿namespace Stellamod.Core.Shaders
 {
     public class SpriteWhiteShader : BaseShader
     {
@@ -19,7 +17,7 @@ namespace Stellamod.Core.Shaders
         public override void SetDefaults()
         {
             base.SetDefaults();
-     
+
         }
 
         public override void Apply()

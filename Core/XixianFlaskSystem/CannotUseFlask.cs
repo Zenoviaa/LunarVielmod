@@ -16,7 +16,7 @@ namespace Stellamod.Core.XixianFlaskSystem
         public override void Update(Player player, ref int buffIndex)
         {
             FlaskPlayer FlaskPlayer = player.GetModPlayer<FlaskPlayer>();
-         //   FlaskPlayer.hasTime = true;
+            //   FlaskPlayer.hasTime = true;
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
@@ -68,7 +67,7 @@ namespace Stellamod.Projectiles
             if (Main.rand.NextBool(32))
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(3, 3);
-                            }
+            }
         }
 
         public float WidthFunction(float completionRatio)
@@ -91,7 +90,7 @@ namespace Stellamod.Projectiles
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
-            if(Timer >= 120)
+            if (Timer >= 120)
             {
                 behindNPCsAndTiles.Add(index);
             }

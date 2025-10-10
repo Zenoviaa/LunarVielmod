@@ -2,7 +2,6 @@ using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Summons.Minions;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -23,19 +22,19 @@ namespace Stellamod.Items.Armors.HeavyMetal
         public override void PostUpdate()
         {
             base.PostUpdate();
-            if(hasSetBonus && Player.ownedProjectileCounts[ModContent.ProjectileType<HMArncharMinionLeftProj>()] == 0)
+            if (hasSetBonus && Player.ownedProjectileCounts[ModContent.ProjectileType<HMArncharMinionLeftProj>()] == 0)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone3"), Player.position);
                 var EntitySource = Player.GetSource_FromThis();
 
                 int damage = 9;
-                Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, 
+                Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0,
                     ModContent.ProjectileType<HMArncharMinionRightProj>(), damage, 1, Player.whoAmI, 0, 0);
-                Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, 
+                Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0,
                     ModContent.ProjectileType<HMArncharMinionLeftProj>(), damage, 1, Player.whoAmI, 0, 0);
                 Player.AddBuff(ModContent.BuffType<HMMinionBuff>(), 99999);
             }
-            else if(!hasSetBonus)
+            else if (!hasSetBonus)
             {
                 Player.ClearBuff(ModContent.BuffType<HMMinionBuff>());
             }
@@ -46,10 +45,10 @@ namespace Stellamod.Items.Armors.HeavyMetal
     {
         public bool Spetalite = false;
         public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Heavy Metal Hat");
-			// Tooltip.SetDefault("Increases throwing critical strike chance by 4%");
-		}
+        {
+            // DisplayName.SetDefault("Heavy Metal Hat");
+            // Tooltip.SetDefault("Increases throwing critical strike chance by 4%");
+        }
 
         public override void SetDefaults()
         {
@@ -60,7 +59,7 @@ namespace Stellamod.Items.Armors.HeavyMetal
             Item.defense = 3;
         }
 
-    
+
 
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {

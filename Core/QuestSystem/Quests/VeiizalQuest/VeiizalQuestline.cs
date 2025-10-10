@@ -1,13 +1,10 @@
-﻿using Stellamod.Items.Materials;
-using Stellamod.NPCs.Town;
-using Stellamod.UI.DialogueTowning;
-using Terraria.ModLoader;
-using Terraria;
+﻿using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
-using Stellamod.NPCs.Underground;
-using Terraria.ID;
 using Stellamod.NPCs.Govheil;
-using Stellamod.Helpers;
+using Stellamod.NPCs.Underground;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Core.QuestSystem.Quests.VeiizalQuest
 {

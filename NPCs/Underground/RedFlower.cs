@@ -9,7 +9,6 @@ using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Underground
@@ -28,7 +27,7 @@ namespace Stellamod.NPCs.Underground
         public override void HitEffect(NPC.HitInfo hit)
         {
             Hit = true;
-            if(NPC.life <= 0)
+            if (NPC.life <= 0)
             {
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 16f);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Harv1"));
@@ -133,7 +132,7 @@ namespace Stellamod.NPCs.Underground
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FlowerBatch>(), 1, 1, 3));
         }
 
-        Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0 + new Vector2(0,-30);
+        Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0 + new Vector2(0, -30);
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
         public Texture2D GlowTexture => (_glowTexture ??= (RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;

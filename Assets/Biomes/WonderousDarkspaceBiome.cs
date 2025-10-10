@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoMod.Cil;
 using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
-using System;
 using Terraria;
 using Terraria.Graphics.Capture;
 using Terraria.Graphics.Effects;
@@ -56,7 +54,7 @@ namespace Stellamod.Assets.Biomes
         // Select all the scenery
         public override ModWaterStyle WaterStyle => ModContent.GetInstance<StarbloomWaterStyle>(); // Sets a water style for when inside this biome
         public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.Find<ModSurfaceBackgroundStyle>("Stellamod/AlcadziaBackgroundStyle");
-      //  public override ModUndergroundBackgroundStyle UndergroundBackgroundStyle => ModContent.GetInstance<BlankUndergroundBackgroundStyle>();
+        //  public override ModUndergroundBackgroundStyle UndergroundBackgroundStyle => ModContent.GetInstance<BlankUndergroundBackgroundStyle>();
         public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Normal;
 
         // Select Music

@@ -12,7 +12,7 @@ namespace Stellamod.Projectiles.Slashers.Helios
     public class HeliosP : ModProjectile
     {
         public override void SetDefaults()
-        {           
+        {
             Projectile.penetrate = 1;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
@@ -23,7 +23,7 @@ namespace Stellamod.Projectiles.Slashers.Helios
             Projectile.scale = 1f;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 5;
-            Projectile.timeLeft = 100;   
+            Projectile.timeLeft = 100;
         }
 
         public override void SetStaticDefaults()
@@ -46,7 +46,7 @@ namespace Stellamod.Projectiles.Slashers.Helios
             Timer++;
 
             player.RotatedRelativePoint(Projectile.Center);
-            Projectile.rotation  -= 0.5f;
+            Projectile.rotation -= 0.5f;
             Projectile.velocity *= 0.97f;
 
             if (Timer == 1)

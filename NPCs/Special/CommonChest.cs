@@ -10,7 +10,7 @@ namespace Stellamod.NPCs.Special
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             base.ModifyNPCLoot(npcLoot);
-          
+
             npcLoot.Add(ItemDropRule.Coins(Item.silver * 50, true));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Medal>(), minimumDropped: 3, maximumDropped: 6));
         }

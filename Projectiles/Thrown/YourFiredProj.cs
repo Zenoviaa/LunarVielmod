@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
@@ -32,7 +31,7 @@ namespace Stellamod.Projectiles.Thrown
         public override void AI()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 //Effects
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
@@ -110,7 +109,7 @@ namespace Stellamod.Projectiles.Thrown
             spriteBatch.End();
             spriteBatch.Begin();
 
-   
+
 
             return false;
         }

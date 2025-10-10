@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 {
     public class STARTELEPORTBOOM : ModProjectile
-	{
+    {
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 10;

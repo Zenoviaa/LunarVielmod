@@ -1,8 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
+﻿using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
-using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -46,13 +43,13 @@ namespace Stellamod.UI.Dialogue
 
         public override void Complete()
         {
-          
+
             //Do something when the dialogue is completely finished
-          
+
             if (Main.netMode != NetmodeID.SinglePlayer)
             {
                 Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(),
-                    (byte)MessageType.StartBossFromDialogue, 
+                    (byte)MessageType.StartBossFromDialogue,
                     (int)DialogueType.Start_Goth).Send(-1);
             }
             else

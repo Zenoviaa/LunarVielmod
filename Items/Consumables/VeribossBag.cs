@@ -59,7 +59,7 @@ namespace Stellamod.Items.Consumables
                         break;
                     case 1:
 
- 
+
 
                         break;
                     case 2:

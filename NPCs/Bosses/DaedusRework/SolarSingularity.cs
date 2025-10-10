@@ -199,18 +199,18 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             }
             if (NPC.ai[2] == 0)
             {
-   
+
                 NPC.ai[2] = 1;
             }
             p2 = NPC.life < NPC.lifeMax * 0.5f;
 
-           
+
             if (NPC.ai[2] == 1)
             {
                 switch (NPC.ai[1])
                 {
                     case 0:
- 
+
                         NPC.ai[0]++;
                         if (NPC.ai[0] > 20)
                         {
@@ -230,7 +230,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     case 1:
                         NPC.ai[0]++;
                         if (NPC.ai[0] >= 100)
-                        {      
+                        {
                             NPC.ai[1] = 2;
                         }
 

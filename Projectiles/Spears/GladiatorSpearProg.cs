@@ -51,16 +51,16 @@ namespace Stellamod.Projectiles.Spears
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
                 Projectile.velocity = -Projectile.velocity;
             }
-            if (Projectile.ai[1] == 5  || Projectile.ai[1] == 10 || Projectile.ai[1] == 15 || Projectile.ai[1] == 20)
+            if (Projectile.ai[1] == 5 || Projectile.ai[1] == 10 || Projectile.ai[1] == 15 || Projectile.ai[1] == 20)
             {
                 var EntitySource = Projectile.GetSource_FromThis();
                 if (Main.rand.NextBool(8))
                 {
-                    if(Main.myPlayer == Projectile.owner)
+                    if (Main.myPlayer == Projectile.owner)
                     {
                         Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<GladiatorSpearMirageProgRed>(), Projectile.damage * 2, 1, Projectile.owner, 0, 0);
                     }
-              
+
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GladiatorMirageRed"), Projectile.position);
                 }
                 else

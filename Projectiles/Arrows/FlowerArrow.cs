@@ -2,8 +2,6 @@
 
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Particles;
-using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Projectiles.Steins;
 using Stellamod.Trails;
 using Terraria;
@@ -30,7 +28,7 @@ namespace Stellamod.Projectiles.Arrows
             Projectile.aiStyle = ProjAIStyleID.Arrow;
         }
 
-      
+
 
         //Trails
         public float WidthFunction(float completionRatio)
@@ -65,7 +63,7 @@ namespace Stellamod.Projectiles.Arrows
                 float speedYa = -Projectile.velocity.Y * Main.rand.NextFloat(-2.5f, 2.5f);
 
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 0.5f, speedYa * 0.5f, ModContent.ProjectileType<VoltingShot>(), (int)(Projectile.damage * 0.3f), 0f, Projectile.owner, 0f, 0f);
-              
+
             }
 
             base.OnHitNPC(target, hit, damageDone);

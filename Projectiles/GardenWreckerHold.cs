@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Particles;
 using Stellamod.UI.Systems;
 using System;
 using Terraria;
@@ -20,27 +18,27 @@ namespace Stellamod.Projectiles
             set => Projectile.ai[0] = value;
         }
 
-		private ref float SwordRotation => ref Projectile.ai[1];
+        private ref float SwordRotation => ref Projectile.ai[1];
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 1;//number of frames the animation has
         }
 
 
-		public override void SetDefaults()
+        public override void SetDefaults()
         {
-			Projectile.damage = 0;
-			Projectile.width = 1;
-			Projectile.height = 1;
-			Projectile.aiStyle = 595;
-			Projectile.friendly = true;
-			Projectile.DamageType = DamageClass.Ranged;
-			Projectile.ignoreWater = true;
-			Projectile.tileCollide = false;
-			Projectile.penetrate = -1;
-			Projectile.ownerHitCheck = true;
-			Projectile.timeLeft = 55;
-		}
+            Projectile.damage = 0;
+            Projectile.width = 1;
+            Projectile.height = 1;
+            Projectile.aiStyle = 595;
+            Projectile.friendly = true;
+            Projectile.DamageType = DamageClass.Ranged;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
+            Projectile.ownerHitCheck = true;
+            Projectile.timeLeft = 55;
+        }
 
         public override bool? CanDamage()
         {
@@ -49,85 +47,85 @@ namespace Stellamod.Projectiles
 
         public override void AI()
         {
-			Timer++;
-			if (Timer > 155)
-			{
-				// Our timer has finished, do something here:
-				// Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"));
-				Timer = 0;
-			}
+            Timer++;
+            if (Timer > 155)
+            {
+                // Our timer has finished, do something here:
+                // Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"));
+                Timer = 0;
+            }
 
-			Player player = Main.player[Projectile.owner];
-			if (player.noItems || player.CCed || player.dead || !player.active)
-				Projectile.Kill();
-			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-			if (Main.myPlayer == Projectile.owner)
-			{
-				player.ChangeDir(Projectile.direction);
-				SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
-				Projectile.netUpdate = true;
-				if (!player.channel)
-					Projectile.Kill();
-			}
-			Projectile.velocity = SwordRotation.ToRotationVector2();
+            Player player = Main.player[Projectile.owner];
+            if (player.noItems || player.CCed || player.dead || !player.active)
+                Projectile.Kill();
+            Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
+            if (Main.myPlayer == Projectile.owner)
+            {
+                player.ChangeDir(Projectile.direction);
+                SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+                Projectile.netUpdate = true;
+                if (!player.channel)
+                    Projectile.Kill();
+            }
+            Projectile.velocity = SwordRotation.ToRotationVector2();
 
-			Projectile.spriteDirection = player.direction;
-			if (Projectile.spriteDirection == 1)
-				Projectile.rotation = Projectile.velocity.ToRotation();
-			else
-				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
-
-
-			if (Timer == 1)
-			{
-				float speedX = Projectile.velocity.X * 10;
-				float speedY = Projectile.velocity.Y * 7;
-
-				SoundEngine.PlaySound(SoundID.DD2_KoboldIgnite, Projectile.position);
-			}
-
-			if (Timer == 50)
-			{
-				float speedX = Projectile.velocity.X * 10;
-				float speedY = Projectile.velocity.Y * 7;
-
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0.9f, speedY * 2, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.5f, speedY, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2f , speedY * 0.5f, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.1f, speedY * 1.2f, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
-				SoundEngine.PlaySound(SoundID.DD2_GoblinBomb, Projectile.position);
-				ShakeModSystem.Shake = 4;
+            Projectile.spriteDirection = player.direction;
+            if (Projectile.spriteDirection == 1)
+                Projectile.rotation = Projectile.velocity.ToRotation();
+            else
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
 
 
+            if (Timer == 1)
+            {
+                float speedX = Projectile.velocity.X * 10;
+                float speedY = Projectile.velocity.Y * 7;
 
-				for (int j = 0; j < 40; j++)
-				{
-					Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-									}
-				}
+                SoundEngine.PlaySound(SoundID.DD2_KoboldIgnite, Projectile.position);
+            }
 
-			
+            if (Timer == 50)
+            {
+                float speedX = Projectile.velocity.X * 10;
+                float speedY = Projectile.velocity.Y * 7;
+
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0.9f, speedY * 2, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.5f, speedY, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2f, speedY * 0.5f, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.1f, speedY * 1.2f, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                SoundEngine.PlaySound(SoundID.DD2_GoblinBomb, Projectile.position);
+                ShakeModSystem.Shake = 4;
 
 
-			Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position
 
-			player.heldProj = Projectile.whoAmI;
-			player.itemTime = 2;
-			player.itemAnimation = 2;
-			player.itemRotation = (float)Math.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
+                for (int j = 0; j < 40; j++)
+                {
+                    Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
+                }
+            }
 
-			if (++Projectile.frameCounter >= 1)
-			{
-				Projectile.frameCounter = 0;
-				if (++Projectile.frame >= 1)
-				{
-					Projectile.frame = 0;
-				}
-			}
 
-			
-		}
+
+
+            Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position
+
+            player.heldProj = Projectile.whoAmI;
+            player.itemTime = 2;
+            player.itemAnimation = 2;
+            player.itemRotation = (float)Math.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
+
+            if (++Projectile.frameCounter >= 1)
+            {
+                Projectile.frameCounter = 0;
+                if (++Projectile.frame >= 1)
+                {
+                    Projectile.frame = 0;
+                }
+            }
+
+
+        }
         private void UpdatePlayerVisuals(Player player, Vector2 playerhandpos)
         {
             Projectile.Center = playerhandpos;
@@ -161,12 +159,12 @@ namespace Stellamod.Projectiles
 
             return false;
 
-       
-           
+
+
         }
 
-       
-        
+
+
 
     }
 }

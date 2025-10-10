@@ -1,15 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
-using Stellamod.Projectiles.Thrown;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -70,7 +62,7 @@ namespace Stellamod.Projectiles.Magic
                     Projectile.Kill();
             }
 
-            if(Timer % 45 == 0)
+            if (Timer % 45 == 0)
             {
                 int manaChannelCost = player.HeldItem.mana;
                 if (!player.CheckMana(manaChannelCost, true))
@@ -84,14 +76,14 @@ namespace Stellamod.Projectiles.Magic
                     SoundEngine.PlaySound(SoundID.Item21);
                     float maxSlashDistance = 1;
                     float slashDistance = Math.Min(maxSlashDistance, Vector2.Distance(player.Center, Main.MouseWorld));
-    
+
                     Vector2 slashPosition = player.Center + player.Center.DirectionTo(Main.MouseWorld) * slashDistance;
                     Vector2 velocity = player.Center.DirectionTo(slashPosition) * 4;
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), slashPosition, velocity,
                         ModContent.ProjectileType<AquariusSlash>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
             }
-            if(Timer % 8 == 0)
+            if (Timer % 8 == 0)
             {
                 int manaChannelCost = player.HeldItem.mana / 8;
                 if (!player.CheckMana(manaChannelCost, true))
@@ -103,7 +95,7 @@ namespace Stellamod.Projectiles.Magic
                     //Make a slash
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 2);
                     SoundEngine.PlaySound(SoundID.Item21);
-  
+
                     Vector2 slashPosition = player.Center + Main.rand.NextVector2Circular(80, 80);
                     Vector2 velocity = player.Center.DirectionTo(slashPosition) * 8;
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), slashPosition, velocity,

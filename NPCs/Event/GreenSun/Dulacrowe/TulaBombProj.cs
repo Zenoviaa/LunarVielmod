@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -106,11 +105,11 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
         {
             ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
-           //     SoundStyle soundStyle = SoundRegistry.Niivi_BigCharge;
-            //    soundStyle.Volume = 0.7f;
-           //     SoundEngine.PlaySound(soundStyle, Projectile.position);
+                //     SoundStyle soundStyle = SoundRegistry.Niivi_BigCharge;
+                //    soundStyle.Volume = 0.7f;
+                //     SoundEngine.PlaySound(soundStyle, Projectile.position);
             }
 
 
@@ -120,7 +119,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             }
             if (Timer == 120)
             {
-              //  SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow1, Projectile.position);
+                //  SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow1, Projectile.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
 
                 screenShaderSystem.TintScreen(Color.White, 0.3f, timer: 15);
@@ -136,11 +135,11 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                         ModContent.ProjectileType<TulacroweFireball>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
                 }
             }
-            if(Timer > 120 && Timer < 240)
+            if (Timer > 120 && Timer < 240)
             {
                 Scale = MathHelper.Lerp(Scale, 2f, 0.1f);
             }
-            if(Timer == 240)
+            if (Timer == 240)
             {
                 //   SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow1, Projectile.position);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower1") { Pitch = Main.rand.NextFloat(-10f, 10f) }, Projectile.Center);
@@ -188,9 +187,9 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             {
                 Scale = MathHelper.Lerp(Scale, 6, 0.1f);
             }
-            if(Timer >= 480)
+            if (Timer >= 480)
             {
-       
+
                 State = ActionState.Homing;
                 Timer = 0;
             }
@@ -206,14 +205,14 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             float maxDetectDistance = 3000;
             float maxSpeed = 4;
             Player player = PlayerHelper.FindClosestPlayer(Projectile.position, maxDetectDistance);
-            if(player != null)
+            if (player != null)
             {
                 AI_MoveToward(player.Center, maxSpeed);
             }
 
 
 
-            if(Timer % 20 == 0)
+            if (Timer % 20 == 0)
             {
                 if (player != null)
                 {
@@ -230,21 +229,21 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                     Projectile.position += diffVelocity;
                 }
             }
-            
-            if(Timer == 300)
+
+            if (Timer == 300)
             {
                 SoundEngine.PlaySound(SoundRegistry.Niivi_Starence, Projectile.position);
             }
 
 
 
-            if(Timer >= 575)
+            if (Timer >= 575)
             {
                 CondenseColor = true;
                 Scale = MathHelper.Lerp(Scale, VectorHelper.Osc(0f, 8f, speed: 16f), 0.3f);
             }
 
-            if(Timer >= 600)
+            if (Timer >= 600)
             {
                 //KABOOM
                 screenShaderSystem.UnTintScreen();
@@ -283,7 +282,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             {
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
             }
-         
+
 
             // Retrieve reference to shader
             var shader = ShaderRegistry.MiscFireWhitePixelShader;
@@ -334,13 +333,13 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekShockwave") { Pitch = Main.rand.NextFloat(-10f, 10f) }, Projectile.Center);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 4000, 80);
             float num = 16;
-            for(float i = 0; i < num; i++)
+            for (float i = 0; i < num; i++)
             {
                 float progress = i / num;
                 float rot = MathHelper.TwoPi * progress;
                 Vector2 direction = Vector2.UnitY.RotatedBy(rot);
                 Vector2 velocity = direction * 33;
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, 
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
                     ModContent.ProjectileType<TulacroweFireball>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
             }
 

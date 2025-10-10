@@ -41,7 +41,7 @@ namespace Stellamod.Items.Weapons.Melee.Spears
             maxCombo = 9;
 
             //Set stamina to use
-            
+
             //set staminacombo
             maxStaminaCombo = 2;
             //Set stamina projectile

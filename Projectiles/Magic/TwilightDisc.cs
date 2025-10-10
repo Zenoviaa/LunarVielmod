@@ -88,7 +88,7 @@ namespace Stellamod.Projectiles.Magic
             }
 
             Timer++;
-            if(Timer % 15 == 0)
+            if (Timer % 15 == 0)
             {
                 SoundStyle soundStyle = SoundRegistry.WindCast;
                 soundStyle.Pitch = MathHelper.Lerp(0f, 1f, Timer / 120f);
@@ -102,8 +102,6 @@ namespace Stellamod.Projectiles.Magic
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0,
                     MainColor, Main.rand.NextFloat(0.75f, 1.5f)).noGravity = true;
             }
-
-            float speed = 2;
             float swingRange = MathHelper.TwoPi;
             float swingXRadius = 256;
             float swingYRadius = 32;

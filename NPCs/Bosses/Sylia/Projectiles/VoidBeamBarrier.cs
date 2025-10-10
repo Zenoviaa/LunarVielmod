@@ -67,7 +67,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         }
 
         private float PerformBeamHitscan()
-        {   
+        {
             // By default, the hitscan interpolation starts at the Projectile's center.
             // If the host Prism is fully charged, the interpolation starts at the Prism's center instead.
             Vector2 samplingPoint = Projectile.Center;

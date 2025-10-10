@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -18,15 +17,15 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
         private bool CheckSize;
 
         int chargetimer = 0;
-        private float AlphaTimer=1f;
+        private float AlphaTimer = 1f;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shiffting Skull");
             NPCID.Sets.TrailCacheLength[NPC.type] = 12;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
         }
-       
-        
+
+
         public override void SetDefaults()
         {
             NPC.width = 44;
@@ -91,7 +90,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             else
             {
                 AlphaTimer += .02f;
-                if(AlphaTimer >= 1)
+                if (AlphaTimer >= 1)
                 {
                     AlphaTimer = 1;
                 }
@@ -99,18 +98,18 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
             //BREAK TIME IS OVER
             //Reset
-            if(shootbreak > 120)
+            if (shootbreak > 120)
             {
                 shootbreak = 0;
-            }      
-          
+            }
+
             NPC.rotation = NPC.DirectionTo(player.Center).ToRotation() - MathHelper.PiOver2;
             if (Shooter > 530)
             {
                 for (int j = 0; j < 50; j++)
                 {
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 3f);
-                                    }
+                }
 
                 NPC.Kill();
             }
@@ -122,7 +121,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
             if (npc.HasValidTarget)
             {
-                Player player = Main.player[NPC.target];  
+                Player player = Main.player[NPC.target];
                 // First, calculate a Vector pointing towards what you want to look at
                 Vector2 vectorFromNpcToPlayer = player.Center - npc.Center;
                 // Second, use the ToRotation method to turn that Vector2 into a float representing a rotation in radians.
@@ -155,7 +154,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
             float drawScale = NPC.scale;
             float rot = NPC.rotation;
-            Main.spriteBatch.Draw(lineTexture, NPC.Center - Main.screenPosition, null, 
+            Main.spriteBatch.Draw(lineTexture, NPC.Center - Main.screenPosition, null,
                 lineDrawColor, rot, Vector2.Zero, drawScale, SpriteEffects.None, 0);
             return base.PreDraw(spriteBatch, screenPos, drawColor);
         }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
 using Stellamod.Core;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -13,7 +12,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Town
 {
@@ -75,7 +73,7 @@ namespace Stellamod.NPCs.Town
             {
                 cauldronUISystem.OpenUI();
                 cauldronUISystem.CauldronPos = NPC.Center;
-             
+
             }
         }
 
@@ -105,7 +103,7 @@ namespace Stellamod.NPCs.Town
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             int totalFrameCount = 30;
-            if(Animation == AnimationState.Brew)
+            if (Animation == AnimationState.Brew)
             {
                 texture = ModContent.Request<Texture2D>(Texture + "_Brew").Value;
                 totalFrameCount = 25;
@@ -140,31 +138,31 @@ namespace Stellamod.NPCs.Town
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            
+
             //Draw Frame
             spriteBatch.Draw(texture, drawPos, frame, drawColor, NPC.rotation, frame.Size() / 2, NPC.scale, effects, 0f);
-            
+
             //We predrawing up in here
             return false;
         }
 
-   
+
         public override void AI()
         {
             base.AI();
 
             //This feels kinda dumb but maybe it'll work
             Cauldron cauldron = ModContent.GetInstance<Cauldron>();
-            if(cauldron.JustCrafted != null)
+            if (cauldron.JustCrafted != null)
             {
                 BrewSomethingAnimation(cauldron.JustCrafted);
             }
 
             Player localPlayer = Main.LocalPlayer;
             float distanceToPlayer = Vector2.Distance(localPlayer.Center, NPC.Center);
-            if(distanceToPlayer <= 160)
+            if (distanceToPlayer <= 160)
             {
-             //   OpenCauldron();
+                //   OpenCauldron();
             }
 
             AI_Animate();
@@ -173,7 +171,7 @@ namespace Stellamod.NPCs.Town
             NPC.position += new Vector2(0, yOffset);
             Lighting.AddLight(NPC.position, 1, 1, 1);
 
-            if(Timer % 32 == 0)
+            if (Timer % 32 == 0)
             {
                 Dust.NewDustPerfect(NPC.Center + new Vector2(Main.rand.NextFloat(0, 16), Main.rand.NextFloat(-32, -16)),
                     ModContent.DustType<Sparkle>(), new Vector2(Main.rand.NextFloat(-0.02f, 0.4f), -Main.rand.NextFloat(0.1f, 2f)), 0, new Color(0.05f, 0.08f, 0.2f, 0f), Main.rand.NextFloat(0.25f, 2f));
@@ -211,13 +209,13 @@ namespace Stellamod.NPCs.Town
         {
             _frame = 0;
             Animation = AnimationState.Brew;
-            if(brew.result != -1)
+            if (brew.result != -1)
             {
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/CauldronCraft");
                 soundStyle.PitchVariance = 0.15f;
                 SoundEngine.PlaySound(soundStyle, NPC.position);
             }
-            if(brew.result == -1)
+            if (brew.result == -1)
             {
                 //Womp Womp Basically
                 int combatText = CombatText.NewText(NPC.getRect(), Color.Gray, "There's nothing inside!", true);
@@ -229,7 +227,7 @@ namespace Stellamod.NPCs.Town
                 soundStyle.Pitch = -1f;
                 SoundEngine.PlaySound(soundStyle, NPC.position);
             }
-            if(brew.result == ModContent.ItemType<KaleidoscopicInk>())
+            if (brew.result == ModContent.ItemType<KaleidoscopicInk>())
             {
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/CauldronCraft");
                 soundStyle.PitchVariance = 0.15f;

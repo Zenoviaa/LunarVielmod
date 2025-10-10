@@ -59,7 +59,7 @@ namespace Stellamod.Projectiles.Magic
         }
         public override void AI()
         {
-      
+
             Projectile.ai[1]++;
             Projectile.spriteDirection = Projectile.direction;
             if (Projectile.ai[1] == 1)

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -39,16 +38,16 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
             Wind.ColorFunc = WindColorFunction;
             Wind.TrailTexture = TrailRegistry.Dashtrail;
             ShadowScale = 0f;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle windStorm = new SoundStyle("Stellamod/Assets/Sounds/WindStorm");
                 SoundEngine.PlaySound(windStorm);
             }
 
 
-            if(Timer % 30 == 0)
+            if (Timer % 30 == 0)
             {
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     Vector2 debrisPos = Vector2.Lerp(Projectile.Bottom, Projectile.Top, Main.rand.NextFloat(0f, 1f));
                     float offset = Main.rand.NextBool(2) ? -1 : 1;
@@ -58,7 +57,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
                     velocity = velocity.SafeNormalize(Vector2.Zero);
                     velocity.Y = 0;
                     velocity.X *= 11;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), debrisPos, velocity, 
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), debrisPos, velocity,
                         ModContent.ProjectileType<WindStormDebris>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
             }
@@ -66,7 +65,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
             if (Timer % 6 == 0)
             {
                 //Spawn new slashes on our little wind orb
-                for(int i = 0; i < 8; i++)
+                for (int i = 0; i < 8; i++)
                 {
                     float progress = (float)i / 8f;
                     Vector2 offset = Vector2.Lerp(Vector2.Zero, -Vector2.UnitY * 256, progress);
@@ -81,7 +80,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
                 }
             }
 
-            if(Timer % 4 == 0)
+            if (Timer % 4 == 0)
             {
                 float dir = Main.rand.NextFloat(-1f, 1f);
                 Vector2 vel = Vector2.UnitX * dir;
@@ -98,10 +97,10 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
             pos.Y += length;
             Projectile.Bottom = pos;
             */
-            foreach(var player in Main.ActivePlayers)
+            foreach (var player in Main.ActivePlayers)
             {
                 float distanceToPlayer = Vector2.Distance(Projectile.Center, player.Center);
-                if(distanceToPlayer < 1024)
+                if (distanceToPlayer < 1024)
                 {
                     Vector2 suckVelocity = Projectile.Center - player.Center;
                     Vector2 vel = suckVelocity;
@@ -122,7 +121,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
             Color color = Color.White * 0.5f;
             float outProgress = progress + Main.GlobalTimeWrappedHourly;
             color = Color.Lerp(color, Color.Transparent, MathF.Sin(progress * 2f));
-            if(Timer > 240)
+            if (Timer > 240)
             {
                 color = Color.Lerp(color, Color.Transparent, (Timer - 240) / 60f);
             }

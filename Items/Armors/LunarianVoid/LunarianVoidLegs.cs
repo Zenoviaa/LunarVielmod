@@ -1,25 +1,17 @@
 using Terraria;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
 using Terraria.ID;
-using static Terraria.ModLoader.ModContent;
-using Stellamod.Items.Materials;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.LunarianVoid
 {
     [AutoloadEquip(EquipType.Legs)]
     public class LunarianVoidLegs : ModItem
     {
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Astrasilk Boots");
-			// Tooltip.SetDefault("Increases movement speed by 20%");
-		}
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Astrasilk Boots");
+            // Tooltip.SetDefault("Increases movement speed by 20%");
+        }
         public override void SetDefaults()
         {
             Item.width = 28;
@@ -35,6 +27,6 @@ namespace Stellamod.Items.Armors.LunarianVoid
             player.GetDamage(DamageClass.Throwing) *= 1.05f;
         }
 
-      
+
     }
 }

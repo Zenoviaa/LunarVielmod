@@ -1,11 +1,9 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.AcidArmour
 {
@@ -89,6 +87,6 @@ standing still gives you an acid aura that stays where you were when you leave T
             player.GetModPlayer<AcidPlayer>().hasSetBonus = true;
         }
 
-      
+
     }
 }

@@ -1,8 +1,5 @@
-﻿using Mono.Cecil;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.ArmorShop
@@ -109,20 +106,20 @@ namespace Stellamod.Core.ArmorShop
         {
             var source = player.GetSource_FromThis();
             ArmorShopPlayer armorShopPlayer = player.GetModPlayer<ArmorShopPlayer>();
-            for(int i = 0; i < heads.Count; i++)
+            for (int i = 0; i < heads.Count; i++)
             {
                 Item head = heads[i];
                 player.QuickSpawnItem(source, head.type);
                 armorShopPlayer.PurchasedArmors.Add(head);
             }
 
-            for(int i = 0; i < bodies.Count; i++)
+            for (int i = 0; i < bodies.Count; i++)
             {
                 Item body = bodies[i];
                 player.QuickSpawnItem(source, body.type);
                 armorShopPlayer.PurchasedArmors.Add(body);
             }
-            for(int i = 0; i < legs.Count; i++)
+            for (int i = 0; i < legs.Count; i++)
             {
                 Item leg = legs[i];
                 player.QuickSpawnItem(source, legs[i].type);
@@ -133,7 +130,7 @@ namespace Stellamod.Core.ArmorShop
         public void Register()
         {
             ModContent.GetInstance<ArmorShopGroups>().AddSet(this);
-          //  Language.GetOrRegister($"{LocalizationCategory}.{heads[0].Name}", () => "");
+            //  Language.GetOrRegister($"{LocalizationCategory}.{heads[0].Name}", () => "");
 
         }
     }

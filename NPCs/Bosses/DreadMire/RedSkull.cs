@@ -6,12 +6,12 @@ using Terraria.ModLoader;
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
     public class RedSkull : ModProjectile
-	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Red Skull");
-			Main.projFrames[Projectile.type] = 4;
-		}
+    {
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Red Skull");
+            Main.projFrames[Projectile.type] = 4;
+        }
         public override void SetDefaults()
         {
             Projectile.width = 34;

@@ -1,6 +1,5 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Stellamod.Projectiles;
 using Stellamod.Projectiles.Magic;
 using System.Collections.Generic;
 using Terraria;

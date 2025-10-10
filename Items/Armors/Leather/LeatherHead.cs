@@ -1,9 +1,6 @@
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.Leather
 {
@@ -40,6 +37,6 @@ namespace Stellamod.Items.Armors.Leather
             Main.LocalPlayer.GetModPlayer<MyPlayer>().Leather = true;
         }
 
-      
+
     }
 }

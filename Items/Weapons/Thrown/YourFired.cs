@@ -44,7 +44,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.useTime = 36;
             Item.consumable = false;
         }
-  
+
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-3f, -2f);

@@ -97,7 +97,7 @@ namespace Stellamod.Projectiles.Gun
                         particle.BaseSize = Main.rand.NextFloat(0.09f, 0.18f);
                         particle.VectorScale *= 0.35f;
                     }
-   
+
                 }
             }
         }

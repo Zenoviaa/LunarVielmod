@@ -51,7 +51,7 @@ namespace Stellamod.Projectiles.Test
         public override void AI()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 for (int i = 0; i < Projectile.oldPos.Length; i++)
                 {
@@ -101,7 +101,7 @@ namespace Stellamod.Projectiles.Test
         }
 
         public override bool PreDraw(ref Color lightColor)
-        {           
+        {
             //Tip Trail
             Vector2[] oldPos = new Vector2[Projectile.oldPos.Length];
             for (int i = 0; i < oldPos.Length; i++)
@@ -113,7 +113,7 @@ namespace Stellamod.Projectiles.Test
             Texture2D tipSlashTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/TerraTrail").Value;
             if (SwordSlash == null)
             {
-                SwordSlash = new TrailRenderer(tipSlashTexture, TrailRenderer.DefaultPass, 
+                SwordSlash = new TrailRenderer(tipSlashTexture, TrailRenderer.DefaultPass,
                     (p) => new Vector2(75f),
                     (p) => Color.White * (1f - p));
                 SwordSlash.drawOffset = Projectile.Size / 2f;

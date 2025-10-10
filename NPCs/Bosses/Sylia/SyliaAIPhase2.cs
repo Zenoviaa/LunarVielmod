@@ -2,11 +2,9 @@
 
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Sylia.Projectiles;
-using Stellamod.Particles;
 using Stellamod.Projectiles.Swords;
 using Terraria;
 using Terraria.Audio;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Sylia
@@ -96,7 +94,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
         {
             P2MoveRight();
             Timer++;
-            if(Timer >= 240 && StellaMultiplayer.IsHost)
+            if (Timer >= 240 && StellaMultiplayer.IsHost)
             {
                 switch (AttackCycle)
                 {
@@ -127,7 +125,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
         {
             P2MoveRight();
             Timer++;
-            if(Timer % 30 == 0 && StellaMultiplayer.IsHost)
+            if (Timer % 30 == 0 && StellaMultiplayer.IsHost)
             {
                 Vector2 velocity = Vector2.UnitX.RotatedBy(-MathHelper.PiOver4);
                 Vector2 offset = Target.velocity.SafeNormalize(Vector2.Zero) * 768;
@@ -141,7 +139,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 TelegraphTimer++;
             }
 
-            if(TelegraphTimer > 7)
+            if (TelegraphTimer > 7)
             {
                 SwitchState(ActionState.Idle);
                 TelegraphTimer = 0;
@@ -152,7 +150,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
         {
             P2MoveRight();
             Timer++;
-            if(Timer == 30)
+            if (Timer == 30)
             {
                 Teleport(Target.Center.X, Target.Center.Y - 48);
             }
@@ -217,7 +215,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     TelegraphTimer++;
                 }
 
-                if(TelegraphTimer == 15)
+                if (TelegraphTimer == 15)
                 {
                     SwitchState(ActionState.Idle);
                 }

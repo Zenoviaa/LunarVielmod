@@ -1,7 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Effects;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
         public ref float Time => ref Projectile.ai[0];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];
         public const float LaserLength = 1200f;
-       
+
 
         public override void SetDefaults()
         {

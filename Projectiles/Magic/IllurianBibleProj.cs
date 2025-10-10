@@ -1,18 +1,11 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria;
 using Terraria.Audio;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
-using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
@@ -111,16 +104,16 @@ namespace Stellamod.Projectiles.Magic
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
             }
 
-            if(Timer < 30 || ReturnTimer > 0)
+            if (Timer < 30 || ReturnTimer > 0)
             {
                 ReturnTimer--;
-                if(ReturnTimer == 0 && Main.myPlayer == Projectile.owner)
+                if (ReturnTimer == 0 && Main.myPlayer == Projectile.owner)
                 {
                     Projectile.velocity = Projectile.Center.DirectionTo(Main.MouseWorld) * OriginalVelocity.Length();
                     Projectile.netUpdate = true;
                 }
-   
-                if(ReturnTimer > 0)
+
+                if (ReturnTimer > 0)
                 {
                     Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.Pi / 30);
                 }
@@ -129,14 +122,14 @@ namespace Stellamod.Projectiles.Magic
                     AI_MoveToward(OriginalPosition, 8);
 
                 }
-            } 
+            }
 
-            if(Timer > 30 && Timer < 45)
+            if (Timer > 30 && Timer < 45)
             {
                 Projectile.velocity *= 0.99f;
             }
 
-            if(Timer == 45 && Main.myPlayer == Projectile.owner)
+            if (Timer == 45 && Main.myPlayer == Projectile.owner)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2"), Projectile.position);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, 0, 0,
@@ -145,11 +138,11 @@ namespace Stellamod.Projectiles.Magic
                 Projectile.netUpdate = true;
             }
 
-            if(Timer > 45 && ReturnTimer <= 0)
+            if (Timer > 45 && ReturnTimer <= 0)
             {
                 float maxDetectDistance = 256;
                 NPC closestNpc = NPCHelper.FindClosestNPC(Projectile.position, maxDetectDistance);
-                if(closestNpc != null)
+                if (closestNpc != null)
                 {
                     AI_MoveToward(closestNpc.Center, 8);
                 }
@@ -161,7 +154,7 @@ namespace Stellamod.Projectiles.Magic
                 Color[] colors = new Color[] { Color.LightCyan, Color.Cyan, Color.Blue, Color.White };
                 Color color = colors[Main.rand.Next(0, colors.Length)];
                 float scale = Main.rand.NextFloat(0.5f, 0.8f);
-                            }
+            }
 
             Projectile.rotation += 0.05f;
             Lighting.AddLight(Projectile.position, Color.White.ToVector3() * 0.78f);
@@ -238,7 +231,7 @@ namespace Stellamod.Projectiles.Magic
             {
                 Vector2 velocity = Main.rand.NextVector2CircularEdge(4, 4);
                 float scale = Main.rand.NextFloat(0.3f, 0.5f);
-                            }
+            }
         }
     }
 }

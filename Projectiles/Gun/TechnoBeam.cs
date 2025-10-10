@@ -85,17 +85,17 @@ namespace Stellamod.Projectiles.Gun
             UpdatePlayerVisuals(Owner, rrp);
 
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 Projectile.Center = Owner.Center;
             }
             PulseTimer--;
-            if(PulseTimer <= 0)
+            if (PulseTimer <= 0)
             {
                 PulseTimer = 0;
             }
 
-            if(Timer % 24 == 0)
+            if (Timer % 24 == 0)
             {
                 PulseTimer = 15;
                 int Sound = Main.rand.Next(1, 3);

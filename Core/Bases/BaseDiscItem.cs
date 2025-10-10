@@ -84,7 +84,7 @@ namespace Stellamod.Core.Bases
             }
             else
             {
-  
+
                 Item.createTile = TileToPlace;
                 Item.consumable = true;
                 Item.shoot = ProjectileID.None;

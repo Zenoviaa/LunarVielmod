@@ -1,15 +1,8 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-
-using Stellamod.Particles;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
@@ -58,7 +51,7 @@ namespace Stellamod.Projectiles.Magic
             // The multiplication here wasn't doing anything
             Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 _scale = new Vector2(
                     Main.rand.NextFloat(0.5f, 0.8f),
@@ -98,7 +91,7 @@ namespace Stellamod.Projectiles.Magic
             int frameSpeed = 1;
             int frameCount = 24;
             SpriteBatch spriteBatch = Main.spriteBatch;
- 
+
             spriteBatch.Draw(texture, drawPosition,
                 texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
                 (Color)GetAlpha(lightColor), rotation, origin, _scale, SpriteEffects.None, 0f);

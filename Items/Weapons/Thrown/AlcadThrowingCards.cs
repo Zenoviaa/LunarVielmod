@@ -15,8 +15,8 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.damage = 25;
             Item.mana = 0;
         }
-        public override void SetStaticDefaults() 
-		{
+        public override void SetStaticDefaults()
+        {
             // DisplayName.SetDefault("GreyBricks"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
         }
 
@@ -42,6 +42,6 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.maxStack = 1;
             Item.buyPrice(0, 10, 0, 0);
         }
-      
+
     }
 }

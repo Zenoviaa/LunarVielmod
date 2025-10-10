@@ -123,7 +123,7 @@ namespace Stellamod.Core.XixianFlaskSystem.UI
         {
             base.Update(gameTime);
             List<string> keys = LunarVeilKeybinds.FlaskKeybind.GetAssignedKeys();
-            if(keys.Count > 0)
+            if (keys.Count > 0)
             {
                 _keybindText.SetText(keys[0]);
             }
@@ -133,7 +133,7 @@ namespace Stellamod.Core.XixianFlaskSystem.UI
             }
             _keybindText.Left.Set(0, 0.75f);
             _keybindText.Top.Set(0, 0.75f);
-                Player player = Main.LocalPlayer;
+            Player player = Main.LocalPlayer;
             int flaskBuffType = ModContent.BuffType<CannotUseFlask>();
             int buffIndex = player.FindBuffIndex(flaskBuffType);
             if (buffIndex == -1)

@@ -1,9 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.NPCs.Colosseum.Common;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.GameContent.Biomes;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Assets.Biomes
@@ -31,7 +28,8 @@ namespace Stellamod.Assets.Biomes
 
 
         public override bool IsBiomeActive(Player player) => BiomeTileCounts.InColosseum;
-        public override void OnEnter(Player player){
+        public override void OnEnter(Player player)
+        {
             player.GetModPlayer<MyPlayer>().ZoneColloseum = true;
             player.ZoneDesert = true;
         }

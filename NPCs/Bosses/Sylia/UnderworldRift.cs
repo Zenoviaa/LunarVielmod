@@ -2,14 +2,12 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 
@@ -21,48 +19,48 @@ namespace Stellamod.NPCs.Bosses.Sylia
         private int _portalFrameTick;
 
         public override void SetStaticDefaults()
-		{
-			Main.npcFrameCount[Type] = 1;
-			NPCID.Sets.ActsLikeTownNPC[Type] = true;
-			NPCID.Sets.SpawnsWithCustomName[Type] = true;
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
-			{
-				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
-				Direction = 1 // -1 is left and 1 is right. NPCs are drawn facing the left by default but ExamplePerson will be drawn facing the right
-			};
+        {
+            Main.npcFrameCount[Type] = 1;
+            NPCID.Sets.ActsLikeTownNPC[Type] = true;
+            NPCID.Sets.SpawnsWithCustomName[Type] = true;
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+            {
+                Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
+                Direction = 1 // -1 is left and 1 is right. NPCs are drawn facing the left by default but ExamplePerson will be drawn facing the right
+            };
 
-			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
             NPCID.Sets.TrailCacheLength[NPC.type] = 10;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
-			NPCID.Sets.NoTownNPCHappiness[NPC.type] = true;
+            NPCID.Sets.NoTownNPCHappiness[NPC.type] = true;
         }
 
-		// AI counter
-		public int counter;
-		public override void SetDefaults()
-		{
-			// Sets NPC to be a Town NPC
-			NPC.friendly = true; // NPC Will not attack player
-			NPC.width = 212;
-			NPC.height = 136;
-			NPC.aiStyle = -1;
-			NPC.damage = 90;
-			NPC.defense = 42;
-			NPC.lifeMax = 9000;
-			NPC.knockBackResist = 0.5f;
-			NPC.npcSlots = 0;
+        // AI counter
+        public int counter;
+        public override void SetDefaults()
+        {
+            // Sets NPC to be a Town NPC
+            NPC.friendly = true; // NPC Will not attack player
+            NPC.width = 212;
+            NPC.height = 136;
+            NPC.aiStyle = -1;
+            NPC.damage = 90;
+            NPC.defense = 42;
+            NPC.lifeMax = 9000;
+            NPC.knockBackResist = 0.5f;
+            NPC.npcSlots = 0;
             NPC.noGravity = true;
             NPC.dontTakeDamageFromHostiles = true;
-			NPC.dontTakeDamage = true;
-			NPC.noTileCollide = true;
-		}
+            NPC.dontTakeDamage = true;
+            NPC.noTileCollide = true;
+        }
 
-		public override void FindFrame(int frameHeight)
-		{
-			NPC.frameCounter += 1f;
-			NPC.frameCounter %= Main.npcFrameCount[NPC.type];
-			int frame = (int)NPC.frameCounter;
-			NPC.frame.Y = frame * frameHeight;
+        public override void FindFrame(int frameHeight)
+        {
+            NPC.frameCounter += 1f;
+            NPC.frameCounter %= Main.npcFrameCount[NPC.type];
+            int frame = (int)NPC.frameCounter;
+            NPC.frame.Y = frame * frameHeight;
         }
         public override bool CheckActive()
         {
@@ -70,25 +68,25 @@ namespace Stellamod.NPCs.Bosses.Sylia
         }
 
         public override bool CanChat()
-		{
-			return true;
-		}
+        {
+            return true;
+        }
 
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-		{
-			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
 				// Sets the preferred biomes of this town NPC listed in the bestiary.
 				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
 
 				// Sets your NPC's flavor text in the bestiary.
 				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A strange rift to void, disturbing it may yield catastrophic results...")),
-			});
-		}
+            });
+        }
 
-		private void PreDrawTrail(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-		{
+        private void PreDrawTrail(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
             SpriteEffects Effects = ((base.NPC.spriteDirection != -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
@@ -134,8 +132,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
 
-		private void PreDrawGlow(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-		{
+        private void PreDrawGlow(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
             Texture2D texture = TextureAssets.Projectile[NPC.type].Value;
             int frames = Main.npcFrameCount[NPC.type];
             int frameHeight = texture.Height / frames;
@@ -169,32 +167,32 @@ namespace Stellamod.NPCs.Bosses.Sylia
             for (float i = 0f; i < 1f; i += 0.25f)
             {
                 float radians = (i + timer) * MathHelper.TwoPi;
-                Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, frame, new Color(90, 70, 255, 50), 
+                Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, frame, new Color(90, 70, 255, 50),
                     NPC.rotation, frameOrigin, NPC.scale, SpriteEffects.None, 0);
             }
 
             for (float i = 0f; i < 1f; i += 0.34f)
             {
                 float radians = (i + timer) * MathHelper.TwoPi;
-                Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(140, 120, 255, 77), 
+                Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(140, 120, 255, 77),
                     NPC.rotation, frameOrigin, NPC.scale, SpriteEffects.None, 0);
             }
         }
 
-		// The PreDraw hook is useful for drawing things before our sprite is drawn or running code before the sprite is drawn
-		// Returning false will allow you to manually draw your NPC
-		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-		{
-			// This code slowly rotates the NPC in the bestiary
-			// (simply checking NPC.IsABestiaryIconDummy and incrementing NPC.Rotation won't work here as it gets overridden by drawModifiers.Rotation each tick)
-			if (NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(Type, out NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers))
-			{
-				drawModifiers.Rotation += 0.001f;
+        // The PreDraw hook is useful for drawing things before our sprite is drawn or running code before the sprite is drawn
+        // Returning false will allow you to manually draw your NPC
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            // This code slowly rotates the NPC in the bestiary
+            // (simply checking NPC.IsABestiaryIconDummy and incrementing NPC.Rotation won't work here as it gets overridden by drawModifiers.Rotation each tick)
+            if (NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(Type, out NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers))
+            {
+                drawModifiers.Rotation += 0.001f;
 
-				// Replace the existing NPCBestiaryDrawModifiers with our new one with an adjusted rotation
-				NPCID.Sets.NPCBestiaryDrawOffset.Remove(Type);
-				NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
-			}
+                // Replace the existing NPCBestiaryDrawModifiers with our new one with an adjusted rotation
+                NPCID.Sets.NPCBestiaryDrawOffset.Remove(Type);
+                NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+            }
 
             PreDrawTrail(spriteBatch, screenPos, drawColor);
             PreDrawGlow(spriteBatch, screenPos, drawColor);
@@ -210,17 +208,17 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 tex.AnimationFrame(ref _portalFrameCounter, ref _portalFrameTick, frameSpeed, frameCount, true),
                 drawColor, 0f, origin, 2f, SpriteEffects.None, 0f);
             return true;
-		}
+        }
 
-		public override string GetChat()
-		{
-			WeightedRandom<string> chat = new WeightedRandom<string>();
-			chat.Add("...");
-			return chat; // chat is implicitly cast to a string.
-		}
+        public override string GetChat()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
+            chat.Add("...");
+            return chat; // chat is implicitly cast to a string.
+        }
 
-		private void AI_FadeIn()
-		{
+        private void AI_FadeIn()
+        {
             ref float invisTimer = ref NPC.ai[0];
             if (invisTimer == 0)
             {
@@ -230,14 +228,14 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
 
                 invisTimer++;
-            }  
-          
+            }
+
             if (NPC.alpha > 0)
                 NPC.alpha--;
         }
 
-		private void AI_Hover()
-		{
+        private void AI_Hover()
+        {
             float range = 0.25f;
             float hover = VectorHelper.Osc(-range, range);
             Vector2 targetCenter = NPC.Center + new Vector2(0, hover);
@@ -245,13 +243,10 @@ namespace Stellamod.NPCs.Bosses.Sylia
             NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
         }
 
-		private void Visuals()
-		{
+        private void Visuals()
+        {
             if (Main.rand.NextBool(8))
             {
-                int bodyParticleCount = 2;
-                float bodyRadius = 32;
-
             }
         }
 
@@ -263,41 +258,41 @@ namespace Stellamod.NPCs.Bosses.Sylia
             }
             NPC.TargetClosest();
             AI_FadeIn();
-			AI_Hover();
-			Visuals();
+            AI_Hover();
+            Visuals();
         }
 
-		public override List<string> SetNPCNameList()
-		{
-			return new List<string>() {
-				NPC.FullName,
-				NPC.FullName
-			};
-		}
+        public override List<string> SetNPCNameList()
+        {
+            return new List<string>() {
+                NPC.FullName,
+                NPC.FullName
+            };
+        }
 
-		public override void SetChatButtons(ref string button, ref string button2)
-		{
-			button = LangText.Chat(this, "Button");
-		}
+        public override void SetChatButtons(ref string button, ref string button2)
+        {
+            button = LangText.Chat(this, "Button");
+        }
 
-		public override void OnChatButtonClicked(bool firstButton, ref string shop)
-		{
-			if (firstButton && !NPC.AnyNPCs(ModContent.NPCType<Sylia>()))
-			{
-				if (Main.netMode != NetmodeID.MultiplayerClient)
-				{
-                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y - 5, 
-						ModContent.NPCType<Sylia>());
+        public override void OnChatButtonClicked(bool firstButton, ref string shop)
+        {
+            if (firstButton && !NPC.AnyNPCs(ModContent.NPCType<Sylia>()))
+            {
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                {
+                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y - 5,
+                        ModContent.NPCType<Sylia>());
                 }
-				else
+                else
                 {
                     if (Main.netMode == NetmodeID.SinglePlayer)
                         return;
 
                     StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
-						ModContent.NPCType<Sylia>(), (int)NPC.Center.X, (int)NPC.Center.Y - 5);
+                        ModContent.NPCType<Sylia>(), (int)NPC.Center.X, (int)NPC.Center.Y - 5);
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 }

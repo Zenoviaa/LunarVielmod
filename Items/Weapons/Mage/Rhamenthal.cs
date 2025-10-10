@@ -1,10 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
-using Stellamod.Items.Ores;
-using Stellamod.Items.Weapons.Melee;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.GameContent;

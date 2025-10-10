@@ -64,7 +64,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             int frameCount = 60;
 
             SpriteEffects flip = SpriteEffects.None;
-            if(ai_Direction == 1)
+            if (ai_Direction == 1)
             {
                 flip = SpriteEffects.FlipHorizontally;
             }

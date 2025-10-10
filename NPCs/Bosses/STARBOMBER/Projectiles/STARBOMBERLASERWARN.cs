@@ -112,13 +112,13 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
                     var EntitySource = NPC.GetSource_FromThis();
                     if (StellaMultiplayer.IsHost)
                     {
-                        Utilities.NewProjectileBetter(LightPos.X, LightPos.Y - 150, 0, 10, 
+                        Utilities.NewProjectileBetter(LightPos.X, LightPos.Y - 150, 0, 10,
                             ModContent.ProjectileType<STARBEAM>(), 300, 0f, owner: Main.myPlayer);
-                        Projectile.NewProjectile(EntitySource, LightPos.X, LightPos.Y, 0, 0, 
+                        Projectile.NewProjectile(EntitySource, LightPos.X, LightPos.Y, 0, 0,
                             ModContent.ProjectileType<STARSPAWNEFFECT>(), 0, 1, Owner: Main.myPlayer, 0, 0);
                     }
                 }
-                  
+
                 if (NPC.ai[0] >= 10)
                 {
                     if (alphaCounter <= 0)

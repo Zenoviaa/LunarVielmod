@@ -1,7 +1,6 @@
 ﻿
 using Stellamod.Buffs;
 using Stellamod.Core.QuestSystem;
-using Stellamod.Core.QuestSystem.Quests;
 using Stellamod.Core.QuestSystem.Quests.ZuiQuest;
 using Stellamod.Items.Ores;
 using System;

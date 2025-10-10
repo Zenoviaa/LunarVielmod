@@ -1,5 +1,5 @@
-﻿using Stellamod.Core.Particles;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.Particles;
 using Terraria;
 
 namespace Stellamod.Visual.Particles

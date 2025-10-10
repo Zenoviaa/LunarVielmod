@@ -1,16 +1,11 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ID;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 
 namespace Stellamod.Projectiles.GunHolster
 {
@@ -111,7 +106,6 @@ namespace Stellamod.Projectiles.GunHolster
 
             for (int i = 0; i < TrailPos.Length; i++)
             {
-                float distance = 32;
                 TrailPos[i] = Projectile.oldPos[i];
                 TrailPos[i] += new Vector2(VectorHelper.Osc(0, 16, offset: i));
             }

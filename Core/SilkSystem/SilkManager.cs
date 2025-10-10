@@ -12,7 +12,6 @@ using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
@@ -72,7 +71,7 @@ namespace Stellamod.Core.SilkSystem
         }
         public Vector2[] GetWorldPoints()
         {
-            if(worldPoints == null)
+            if (worldPoints == null)
             {
                 InitTrailCache();
 
@@ -81,7 +80,7 @@ namespace Stellamod.Core.SilkSystem
         }
         public float[] GetWorldRot()
         {
-            if(worldRot == null)
+            if (worldRot == null)
             {
                 InitTrailCache();
             }
@@ -177,7 +176,7 @@ namespace Stellamod.Core.SilkSystem
         {
             base.NetSend(writer);
             writer.Write(_silkStrings.Count);
-            for(int i = 0; i < _silkStrings.Count; i++)
+            for (int i = 0; i < _silkStrings.Count; i++)
             {
                 var str = _silkStrings[i];
                 writer.Write(str.tile1.X);
@@ -192,7 +191,7 @@ namespace Stellamod.Core.SilkSystem
             base.NetReceive(reader);
             int silkStringCount = reader.ReadInt32();
             _silkStrings.Clear();
-            for(int s = 0; s < silkStringCount; s++)
+            for (int s = 0; s < silkStringCount; s++)
             {
                 int x1 = reader.ReadInt32();
                 int y1 = reader.ReadInt32();
@@ -225,7 +224,7 @@ namespace Stellamod.Core.SilkSystem
         public static void DestroySilk(int i, int j)
         {
 
-       
+
             if (StellaMultiplayer.IsHost || Main.netMode == NetmodeID.SinglePlayer)
             {
 
@@ -242,7 +241,7 @@ namespace Stellamod.Core.SilkSystem
                               ModContent.ItemType<MiracleThread>(), 1);
                     NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
 
-                    for(int s = 0; s < 15; s++)
+                    for (int s = 0; s < 15; s++)
                     {
                         Vector2 spawnPoint = point + Main.rand.NextVector2Circular(32, 32);
                         Particle.NewParticle<SilkParticle>(spawnPoint, Vector2.Zero, Color.Transparent);
@@ -313,7 +312,7 @@ namespace Stellamod.Core.SilkSystem
                     currentTile = Main.tile[i2, j2];
                 }
 
-            
+
                 Point bottomTile = new Point(i, j);
                 Point topTile = new Point(i2, j2);
                 float width = rand.NextFloat(0.5f, 1f);

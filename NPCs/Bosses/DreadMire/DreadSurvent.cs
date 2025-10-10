@@ -144,12 +144,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             if (NPC.ai[2] == 1 && !Spawn)
             {
                 Spawn = true;
-  
+
                 if (StellaMultiplayer.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagramSmall>());
-                }    
+                }
             }
             if (NPC.alpha > 0)
             {

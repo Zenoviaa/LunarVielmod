@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
@@ -13,10 +12,10 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             if (!spawnInfo.Player.GetModPlayer<MyPlayer>().ZoneWonder)
                 return;
 
-         //   pool[NPCID.Shimmerfly] *= 0.5f;
-        //    pool[NPCID.ShimmerSlime] *= 0.5f;
-        //    pool[NPCID.GraniteFlyer] *= 0.5f;
-        //    pool[NPCID.GraniteGolem] *= 0.5f;
+            //   pool[NPCID.Shimmerfly] *= 0.5f;
+            //    pool[NPCID.ShimmerSlime] *= 0.5f;
+            //    pool[NPCID.GraniteFlyer] *= 0.5f;
+            //    pool[NPCID.GraniteGolem] *= 0.5f;
         }
 
 

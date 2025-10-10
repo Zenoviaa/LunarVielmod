@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Stellamod.Projectiles;
-
+using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Underground
 {
@@ -48,29 +42,29 @@ namespace Stellamod.NPCs.Underground
             //NPC.velocity.X *= 0.98f;
             //Syncing the attack to the animation
             int frame = (int)NPC.frameCounter;
-            if(frame == 0)
+            if (frame == 0)
             {
                 _attack = true;
             }
 
-            if(frame == 7 && _attack)
+            if (frame == 7 && _attack)
             {
                 _attack = false;
                 Vector2 fireCenter = NPC.Center + new Vector2(0, -NPC.height / 2);
                 if (StellaMultiplayer.IsHost)
                 {
-          
-                    for(int i = 0; i < Main.rand.Next(2, 4); i++)
+
+                    for (int i = 0; i < Main.rand.Next(2, 4); i++)
                     {
                         Vector2 velocity = new Vector2(0, -10);
                         velocity = velocity.RotatedByRandom(MathHelper.ToRadians(45));
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), fireCenter, velocity,
                             ModContent.ProjectileType<RustedBomb>(), 10, 4, Main.myPlayer);
                     }
-             
+
                 }
 
-                for(int i = 0; i < 16; i++)
+                for (int i = 0; i < 16; i++)
                 {
                     Vector2 velocity = new Vector2(0, -10);
                     velocity = velocity.RotatedByRandom(MathHelper.ToRadians(45));

@@ -48,11 +48,11 @@ namespace Stellamod.Visual.GIFEffects
         public override void AI()
         {
             Projectile.Center = Main.projectile[(int)Parent].Center;
-            Projectile.Center += (Projectile.rotation + MathHelper.ToRadians(90)).ToRotationVector2() * 18; 
-          //  Player owner = Main.player[Projectile.owner];
-        //    Projectile.Center = owner.Center;
-          //  owner.immune = true;
-           // owner.SetImmuneTimeForAllTypes(3);
+            Projectile.Center += (Projectile.rotation + MathHelper.ToRadians(90)).ToRotationVector2() * 18;
+            //  Player owner = Main.player[Projectile.owner];
+            //    Projectile.Center = owner.Center;
+            //  owner.immune = true;
+            // owner.SetImmuneTimeForAllTypes(3);
 
             //Lighting
             Vector3 RGB = new(0.89f, 2.53f, 2.55f);

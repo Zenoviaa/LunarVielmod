@@ -4,11 +4,7 @@ using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -45,7 +41,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 Player targetPlayer = PlayerHelper.FindClosestPlayer(Projectile.position, 1680);
                 float offset = ProjectileHelper.PerformBeamHitscan(targetPlayer.Bottom - Vector2.UnitY, -Vector2.UnitY, 2400);
@@ -100,14 +96,14 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                         ModContent.GoreType<FableRock4>());
                 }
 
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), lightningHitPos + new Vector2(0, 24), Vector2.Zero,
                         ModContent.ProjectileType<GroundCracking>(), 0, 0, Projectile.owner);
-                }     
+                }
             }
 
-            for(int i = 0; i < Lightning.Trails.Length; i++)
+            for (int i = 0; i < Lightning.Trails.Length; i++)
             {
                 float progress = (float)i / (float)Lightning.Trails.Length;
                 var trail = Lightning.Trails[i];
@@ -116,7 +112,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 trail.PrimaryColor = Color.Lerp(Color.White, Color.Yellow, progress);
                 trail.NoiseColor = Color.Lerp(Color.White, Color.Yellow, progress);
             }
-  
+
             //Setup lightning stuff
             //Should make it scale in/out
             float lightningProgress = Timer / 30f;
@@ -157,7 +153,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             Vector2 end = start + direction * (BeamLength);
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, width, ref _);
         }
-    
+
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;

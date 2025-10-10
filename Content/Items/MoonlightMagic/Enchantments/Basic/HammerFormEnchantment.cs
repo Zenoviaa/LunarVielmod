@@ -40,14 +40,14 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Basic
             damage *= 1.1f;
             Projectile.damage = (int)damage;
             MagicProj.Form = FormRegistry.Hammer.Value;
-            
-            
+
+
         }
 
 
 
-   
+
     }
 
-    
+
 }

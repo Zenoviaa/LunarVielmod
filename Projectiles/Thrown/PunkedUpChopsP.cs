@@ -3,9 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Buffs;
-using Stellamod.Particles;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -45,7 +43,7 @@ namespace Stellamod.Projectiles.Thrown
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin);
                 Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                            }
+            }
 
             return true;
         }
@@ -74,9 +72,9 @@ namespace Stellamod.Projectiles.Thrown
             for (int i = 0; i < 15; i++)
             {
 
-                    Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin);
-                    Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                                    
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin);
+                Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
+
 
             }
         }

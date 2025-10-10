@@ -180,7 +180,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                             ModContent.ProjectileType<ArchariliteArrowSmall>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 0, 0);
                     }
 
-                    if(Main.myPlayer == Projectile.owner)
+                    if (Main.myPlayer == Projectile.owner)
                     {
                         Projectile.velocity = Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(35));
                         Projectile.netUpdate = true;

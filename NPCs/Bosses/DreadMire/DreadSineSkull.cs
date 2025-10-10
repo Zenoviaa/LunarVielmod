@@ -34,7 +34,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         public override void AI()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 initialSpeed = Projectile.velocity;
             }

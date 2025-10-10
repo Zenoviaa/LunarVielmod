@@ -18,20 +18,20 @@ namespace Stellamod.Projectiles.Crossbows.Sniper
             Main.projFrames[Projectile.type] = 1;//number of frames the animation has
         }
 
-		public override void SetDefaults()
+        public override void SetDefaults()
         {
-			Projectile.damage = 0;
-			Projectile.width = 1;
-			Projectile.height = 1;
-			Projectile.aiStyle = 595;
-			Projectile.friendly = true;
-			Projectile.DamageType = DamageClass.Ranged;
-			Projectile.ignoreWater = true;
-			Projectile.tileCollide = false;
-			Projectile.penetrate = -1;
-			Projectile.ownerHitCheck = true;
-			Projectile.timeLeft = 105;
-		}
+            Projectile.damage = 0;
+            Projectile.width = 1;
+            Projectile.height = 1;
+            Projectile.aiStyle = 595;
+            Projectile.friendly = true;
+            Projectile.DamageType = DamageClass.Ranged;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
+            Projectile.ownerHitCheck = true;
+            Projectile.timeLeft = 105;
+        }
 
         public override bool? CanDamage()
         {
@@ -40,80 +40,80 @@ namespace Stellamod.Projectiles.Crossbows.Sniper
 
         public override void AI()
         {
-			Timer++;
-			if (Timer > 155)
-			{
-				// Our timer has finished, do something here:
-				// Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.		
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"), Projectile.position);
-				Timer = 0;
-			}
-
-			Player player = Main.player[Projectile.owner];
-			if (player.noItems || player.CCed || player.dead || !player.active)
-				Projectile.Kill();
-			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-			if (Main.myPlayer == Projectile.owner)
-			{
-				player.ChangeDir(Projectile.direction);
-				SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
-				Projectile.netUpdate = true;
-				if (!player.channel)
-					Projectile.Kill();
-			}
-
-			Projectile.velocity = SwordRotation.ToRotationVector2();
-			Projectile.spriteDirection = player.direction;
-			if (Projectile.spriteDirection == 1)
-				Projectile.rotation = Projectile.velocity.ToRotation();
-			else
-				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
-
-
-			if (Timer == 1)
-			{
-				float speedX = Projectile.velocity.X * 10;
-				float speedY = Projectile.velocity.Y * 7;
-
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CrossbowPull"), Projectile.position);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<DelfaCircle>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
-			}
-
-			
-
-			
-			if (Timer == 100)
-			{
-				ShakeModSystem.Shake = 8; 
-
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"), Projectile.position);
-		
-			}
-
-			if (Timer >= 100)
+            Timer++;
+            if (Timer > 155)
             {
-				float speedX = Projectile.velocity.X * 10;
-				float speedY = Projectile.velocity.Y * 7;
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 2, speedY, ModContent.ProjectileType<MorrowedCrossbowBolt>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
-			}
+                // Our timer has finished, do something here:
+                // Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.		
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"), Projectile.position);
+                Timer = 0;
+            }
+
+            Player player = Main.player[Projectile.owner];
+            if (player.noItems || player.CCed || player.dead || !player.active)
+                Projectile.Kill();
+            Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
+            if (Main.myPlayer == Projectile.owner)
+            {
+                player.ChangeDir(Projectile.direction);
+                SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+                Projectile.netUpdate = true;
+                if (!player.channel)
+                    Projectile.Kill();
+            }
+
+            Projectile.velocity = SwordRotation.ToRotationVector2();
+            Projectile.spriteDirection = player.direction;
+            if (Projectile.spriteDirection == 1)
+                Projectile.rotation = Projectile.velocity.ToRotation();
+            else
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
 
 
-			Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position
+            if (Timer == 1)
+            {
+                float speedX = Projectile.velocity.X * 10;
+                float speedY = Projectile.velocity.Y * 7;
 
-			player.heldProj = Projectile.whoAmI;
-			player.itemTime = 2;
-			player.itemAnimation = 2;
-			player.itemRotation = (float)Math.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CrossbowPull"), Projectile.position);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<DelfaCircle>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+            }
 
-			if (++Projectile.frameCounter >= 1)
-			{
-				Projectile.frameCounter = 0;
-				if (++Projectile.frame >= 1)
-				{
-					Projectile.frame = 0;
-				}
-			}		
-		}
+
+
+
+            if (Timer == 100)
+            {
+                ShakeModSystem.Shake = 8;
+
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"), Projectile.position);
+
+            }
+
+            if (Timer >= 100)
+            {
+                float speedX = Projectile.velocity.X * 10;
+                float speedY = Projectile.velocity.Y * 7;
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 2, speedY, ModContent.ProjectileType<MorrowedCrossbowBolt>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
+            }
+
+
+            Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position
+
+            player.heldProj = Projectile.whoAmI;
+            player.itemTime = 2;
+            player.itemAnimation = 2;
+            player.itemRotation = (float)Math.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
+
+            if (++Projectile.frameCounter >= 1)
+            {
+                Projectile.frameCounter = 0;
+                if (++Projectile.frame >= 1)
+                {
+                    Projectile.frame = 0;
+                }
+            }
+        }
 
         private void UpdatePlayerVisuals(Player player, Vector2 playerhandpos)
         {
@@ -144,6 +144,6 @@ namespace Stellamod.Projectiles.Crossbows.Sniper
             Color drawColor = Projectile.GetAlpha(lightColor);
             Main.EntitySpriteDraw((Texture2D)TextureAssets.Projectile[Projectile.type], Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, spriteEffects, 0);
             return false;
-        } 
+        }
     }
 }

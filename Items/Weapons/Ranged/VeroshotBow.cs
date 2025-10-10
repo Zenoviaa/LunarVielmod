@@ -1,8 +1,5 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Bow;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -60,18 +57,18 @@ namespace Stellamod.Items.Weapons.Ranged
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArchariliteEnergyShot2"));
             }
 
-           
 
 
-                float numberProjectiles = 4;
-                float rotation = MathHelper.ToRadians(15);
-                position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 25f;
-                for (int i = 0; i < numberProjectiles; i++)
-                {
-                    Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f; // This defines the projectile roatation and speed. .4f == projectile speed
-                    Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, ProjectileID.HellfireArrow, damage, knockback, player.whoAmI);
-                }
-            
+
+            float numberProjectiles = 4;
+            float rotation = MathHelper.ToRadians(15);
+            position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 25f;
+            for (int i = 0; i < numberProjectiles; i++)
+            {
+                Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f; // This defines the projectile roatation and speed. .4f == projectile speed
+                Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, ProjectileID.HellfireArrow, damage, knockback, player.whoAmI);
+            }
+
 
             return false;
         }

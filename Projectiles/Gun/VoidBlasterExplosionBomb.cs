@@ -1,17 +1,10 @@
 
 using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
-using Stellamod.Effects;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Stellamod.UI.Systems;
-using Stellamod.Utilis;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
@@ -34,7 +27,7 @@ namespace Stellamod.Projectiles.Gun
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 ShakeModSystem.Shake = 4;
                 SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowExp"), Projectile.position);

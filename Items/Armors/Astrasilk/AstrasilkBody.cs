@@ -1,4 +1,3 @@
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -27,6 +26,6 @@ namespace Stellamod.Items.Armors.Astrasilk
             player.GetCritChance(DamageClass.Magic) += 15f;
         }
 
-      
+
     }
 }

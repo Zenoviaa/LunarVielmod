@@ -75,7 +75,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_BoneSpawn2"), Projectile.position);
             }
-            
+
             for (int i = 0; i < 14; i++)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<RuneDust>(), (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
@@ -90,7 +90,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Projectile.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 2048f, 64f);
             var entitySource = Projectile.GetSource_FromThis();
-            if(Main.myPlayer == Projectile.owner)
+            if (Main.myPlayer == Projectile.owner)
             {
                 NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<DreadFireBomb>());
             }
@@ -115,7 +115,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Projectile.ai[0]++;
             if (Projectile.ai[0] == 1)
             {
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     Time = Main.rand.Next(30, 120);
                     Set = Main.rand.NextFloat(0.97f, 0.99f);
@@ -160,7 +160,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             }
             if (Main.rand.NextBool(29))
             {
-                int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 
+                int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height,
                     ModContent.DustType<RuneDust>(), Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].scale = 1.5f;
@@ -168,7 +168,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
             if (Main.rand.NextBool(29))
             {
-                int dust3 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 
+                int dust3 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height,
                     ModContent.DustType<RuneDust>(), Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
                 Main.dust[dust3].noGravity = true;
                 Main.dust[dust3].scale = 1.5f;

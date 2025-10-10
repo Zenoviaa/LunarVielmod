@@ -3,10 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Trails;
 using Terraria;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -87,7 +85,7 @@ namespace Stellamod.Projectiles.Swords
                 Vector2 orbitCenter = MovementHelper.OrbitAround(owner.Center, Vector2.UnitY, 64, Timer);
                 Vector2 targetVel = (orbitCenter - Projectile.Center);
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVel, 0.02f);
-          //      Projectile.Center = Vector2.Lerp(Projectile.Center, orbitCenter, 0.8f);
+                //      Projectile.Center = Vector2.Lerp(Projectile.Center, orbitCenter, 0.8f);
             }
         }
 
@@ -125,7 +123,7 @@ namespace Stellamod.Projectiles.Swords
             SpriteBatch spriteBatch = Main.spriteBatch;
 
             DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(44, 84, 94), Color.Transparent, ref lightColor);
- 
+
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             Color drawColor = Color.White.MultiplyRGB(lightColor);

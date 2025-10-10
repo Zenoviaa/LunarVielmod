@@ -6,7 +6,6 @@ using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Skies;
-using Stellamod.WorldG;
 using System.IO;
 using System.Reflection;
 using Terraria;
@@ -20,7 +19,6 @@ using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.UI;
-using tModPorter;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace Stellamod
@@ -42,14 +40,14 @@ namespace Stellamod
             Instance = this;
 
         }
-      
+
         public ModPacket GetPacket(MessageType type, int capacity)
         {
             ModPacket packet = GetPacket(capacity + 1);
             packet.Write((byte)type);
             return packet;
         }
-        
+
         // this is alright, and i'll expand it so it can still be used, but really this shouldn't be used
         public static ModPacket WriteToPacket(ModPacket packet, byte msg, params object[] param)
         {
@@ -80,9 +78,9 @@ namespace Stellamod
 
         public static Stellamod Instance;
         public static int MedalCurrencyID;
- 
-      
-        
+
+
+
         public static int MOKCurrencyID;
         public static int MOPCurrencyID;
 
@@ -93,7 +91,7 @@ namespace Stellamod
         public static int MOLCurrencyID;
         public override void Load()
         {
-           
+
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
             if (Main.netMode != NetmodeID.Server)
@@ -129,15 +127,15 @@ namespace Stellamod
                 Filters.Scene["Stellamod:Verlia"] = new Filter(new VerliaScreenShaderData("FilterMiniTower").UseColor(0.3f, 0.0f, 1f).UseOpacity(0.375f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Acid"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Lab"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
-          //      Filters.Scene["Stellamod:Veriplant"] = new Filter(new VeriplantScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
+                //      Filters.Scene["Stellamod:Veriplant"] = new Filter(new VeriplantScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Starbloom"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(1f, 0.3f, 0.8f).UseOpacity(0.375f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Govheil"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(1f, 0.7f, 0f).UseOpacity(0.275f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:AuroreanStars"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(1.3f, 0.2f, 0.2f).UseOpacity(0.275f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Gintzing"] = new Filter(new GintzeScreenShaderData("FilterMiniTower").UseColor(0.4f, 0.4f, 0.6f).UseOpacity(0.275f), EffectPriority.Medium);
-                
+
                 Filters.Scene["Stellamod:Illuria"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.4f, -0.3f, 1.3f).UseOpacity(0.275f), EffectPriority.Medium);
 
-       
+
                 Ref<Effect> screenRef = new Ref<Effect>(ModContent.Request<Effect>("Stellamod/Effects/Shockwave", AssetRequestMode.ImmediateLoad).Value); // The path to the compiled shader file.
                 Filters.Scene["Shockwave"] = new Filter(new ScreenShaderData(screenRef, "Shockwave"), EffectPriority.VeryHigh);
                 Filters.Scene["Shockwave"].Load();
@@ -264,7 +262,7 @@ namespace Stellamod
                 Main.instance.LoadTiles(TileID.SnowCloud);
                 TextureAssets.Tile[TileID.SnowCloud] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/SnowCloudRE");
             }
-           
+
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
 
             if (!Main.dedServ && Main.netMode != NetmodeID.Server && config.VanillaUIRespritesToggle)
@@ -304,7 +302,7 @@ namespace Stellamod
                 orig(self, spriteBatch);
                 DrawWorldSelectItemOverlay(self, spriteBatch);
             };
-            
+
 
             Instance = this;
         }
@@ -387,7 +385,7 @@ namespace Stellamod
                 UnloadTile(TileID.ObsidianBrick);
                 UnloadTile(TileID.Cloud);
                 UnloadTile(TileID.Pearlsand);
-                UnloadTile(TileID.SnowCloud);   
+                UnloadTile(TileID.SnowCloud);
             }
         }
 
@@ -433,7 +431,7 @@ namespace Stellamod
         public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Menutheme");
 
         public override ModSurfaceBackgroundStyle MenuBackgroundStyle => ModContent.GetInstance<StarbloomBackgroundStyle>();
-       
+
         public override string DisplayName => "Lunar Veil";
         public override void OnSelected()
         {

@@ -11,7 +11,7 @@ namespace Stellamod.Buffs
             base.Update(type, player, ref buffIndex);
 
             //NERFS
-            if(type == BuffID.NebulaUpDmg1)
+            if (type == BuffID.NebulaUpDmg1)
             {
                 player.GetDamage(DamageClass.Magic) -= 0.075f;
             }

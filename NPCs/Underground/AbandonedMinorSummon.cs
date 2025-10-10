@@ -1,9 +1,7 @@
-﻿using Stellamod.Assets.Biomes;
-using Stellamod.Helpers;
+﻿using Stellamod.Helpers;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Underground
 {
@@ -34,13 +32,13 @@ namespace Stellamod.NPCs.Underground
         {
             if (!_spawn && StellaMultiplayer.IsHost)
             {
-                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 30, (int)NPC.Center.Y, 
+                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 30, (int)NPC.Center.Y,
                     ModContent.NPCType<AbandonedMinor>());
 
-                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 30, (int)NPC.Center.Y, 
+                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 30, (int)NPC.Center.Y,
                     ModContent.NPCType<AbandonedMinor>());
 
-                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 45, (int)NPC.Center.Y, 
+                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 45, (int)NPC.Center.Y,
                     ModContent.NPCType<AbandonedMinor>());
                 _spawn = true;
                 NPC.Kill();

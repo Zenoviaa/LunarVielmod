@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -24,8 +23,8 @@ namespace Stellamod.Items.Armors.Terric
             Item.defense = 6;
 
         }
-      
-     
+
+
         public override void UpdateEquip(Player player)
         {
             player.GetDamage(DamageClass.Magic) += 0.13f;

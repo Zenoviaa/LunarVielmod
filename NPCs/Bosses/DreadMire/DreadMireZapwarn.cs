@@ -4,7 +4,6 @@ using ReLogic.Content;
 using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
-using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
@@ -128,7 +127,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             if (!Lightning)
             {
                 Lightning = true;
- 
+
             }
         }
     }

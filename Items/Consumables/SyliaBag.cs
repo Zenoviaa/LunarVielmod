@@ -7,7 +7,6 @@ using Stellamod.Items.Armors.Miracle;
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.GameContent.Creative;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -44,7 +43,7 @@ namespace Stellamod.Items.Consumables
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<MiracleThread>(), minimumDropped: 30, maximumDropped: 40));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<SewingKit>(), chanceDenominator: 4));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<MiracleWings>(), chanceDenominator: 4));
-            
+
             IItemDropRule armorRule = ItemDropRule.Common(ModContent.ItemType<MiracleHead>(), chanceDenominator: 4);
             armorRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MiracleBody>(), 1));
             itemLoot.Add(armorRule);

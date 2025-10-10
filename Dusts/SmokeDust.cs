@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Dusts
 {
     public class SmokeDust : ModDust
-	{
+    {
         public override void OnSpawn(Dust dust)
         {
 
@@ -18,19 +18,20 @@ namespace Stellamod.Dusts
         }
 
         public override bool Update(Dust dust)
-		{
-			dust.position += dust.velocity;
-			dust.velocity *= 0.95f;
+        {
+            dust.position += dust.velocity;
+            dust.velocity *= 0.95f;
             Lighting.AddLight(dust.position, Color.DarkRed.ToVector3() * 1f * Main.essScale);
             dust.fadeIn++;
             float alpha = (dust.fadeIn / 45f) - ((float)Math.Pow(dust.fadeIn, 2) / 3600f);
             dust.color = new Color(255, 8, 55) * 0.4f * alpha;
 
             dust.scale *= 0.98f;
-			if (dust.scale < 0.2f) {
-				dust.active = false;
-			}
-			return false;
-		}
-	}
+            if (dust.scale < 0.2f)
+            {
+                dust.active = false;
+            }
+            return false;
+        }
+    }
 }

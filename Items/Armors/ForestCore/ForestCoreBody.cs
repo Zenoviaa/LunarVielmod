@@ -1,4 +1,3 @@
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -28,7 +27,7 @@ namespace Stellamod.Items.Armors.ForestCore
             player.GetCritChance(DamageClass.Generic) += 2f;
         }
 
-      
+
 
     }
 }

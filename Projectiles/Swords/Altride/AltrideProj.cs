@@ -1,8 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -60,7 +57,7 @@ namespace Stellamod.Projectiles.Swords.Altride
                 }
                 else
                 {
-                    if(Main.myPlayer == Projectile.owner)
+                    if (Main.myPlayer == Projectile.owner)
                         Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-50, 50), Projectile.Center.Y + Main.rand.Next(-50, 50), StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<Altride1>(), Projectile.damage, 1, Projectile.owner, 0, 0);
                 }
             }
@@ -100,7 +97,7 @@ namespace Stellamod.Projectiles.Swords.Altride
             return false;
         }
         public override void PostDraw(Color lightColor)
-        { 
+        {
         }
     }
 }

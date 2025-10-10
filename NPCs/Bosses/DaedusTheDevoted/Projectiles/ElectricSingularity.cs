@@ -101,7 +101,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 NPC.frameCounter = 0f;
 
             }
-            if(_frame >= 4)
+            if (_frame >= 4)
             {
                 _frame = 0;
             }
@@ -125,15 +125,15 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 d.noGravity = true;
             }
 
- 
+
             if (AttackTimer >= 60)
             {
-      
-                if(target.active)
+
+                if (target.active)
                 {
                     Vector2 velToPlayer = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
                     velToPlayer *= 9;
-                    if(StellaMultiplayer.IsHost)
+                    if (StellaMultiplayer.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velToPlayer,
                             ModContent.ProjectileType<ConjureBallLightningMini>(), 21, 1, Owner: Main.myPlayer);
@@ -144,12 +144,12 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             }
 
             //Some interesting movement code for the singularity
-            if(target != null)
+            if (target != null)
             {
                 float diffX = target.Center.X - NPC.Center.X;
                 NPC.velocity.X = diffX * 0.03f;
             }
-       
+
             NPC.velocity.Y = MathF.Sin(Timer * 0.05f) * 2;
 
             Timer++;
@@ -160,7 +160,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 SoundEngine.PlaySound(soundStyle, NPC.position);
 
                 //Spawn Dust Circle
-                for(int i = 0; i < 32; i++)
+                for (int i = 0; i < 32; i++)
                 {
                     float progress = (float)i / 32f;
                     float rot = progress * MathHelper.TwoPi;
@@ -201,12 +201,12 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 _scale = MathHelper.Lerp(0f, Main.rand.NextFloat(1f, 1.4f), Easing.InCubic(Timer / 15f));
             }
 
-            if(Timer > 400)
+            if (Timer > 400)
             {
                 _scale *= 0.98f;
             }
 
-            if(Timer >= 440)
+            if (Timer >= 440)
             {
                 NPC.Kill();
             }

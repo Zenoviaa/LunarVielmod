@@ -1,7 +1,4 @@
-﻿using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
-using Stellamod.Projectiles.Thrown;
+﻿using Stellamod.Projectiles.Thrown;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,25 +17,25 @@ namespace Stellamod.Items.Weapons.Thrown
         }
 
         public override void SetDefaults()
-		{
-			Item.damage = 98;
-			Item.width = 20;
-			Item.height = 20;
-			Item.useTime = 40;
-			Item.useAnimation = 40;
-			Item.useStyle = ItemUseStyleID.Rapier;
-			Item.knockBack = 0f;
-			Item.DamageType = DamageClass.Throwing;
-			Item.value = 1200;
-			Item.rare = ItemRarityID.Blue;
-			Item.UseSound = SoundID.DD2_MonkStaffSwing;
-			Item.autoReuse = true;
-			Item.shoot = ModContent.ProjectileType<RockerP>();
-			Item.shootSpeed = 10f;
-			Item.autoReuse = true;
-			Item.crit = 15;
-			Item.noMelee = true;
-			Item.noUseGraphic = true;
-		}
-	}
+        {
+            Item.damage = 98;
+            Item.width = 20;
+            Item.height = 20;
+            Item.useTime = 40;
+            Item.useAnimation = 40;
+            Item.useStyle = ItemUseStyleID.Rapier;
+            Item.knockBack = 0f;
+            Item.DamageType = DamageClass.Throwing;
+            Item.value = 1200;
+            Item.rare = ItemRarityID.Blue;
+            Item.UseSound = SoundID.DD2_MonkStaffSwing;
+            Item.autoReuse = true;
+            Item.shoot = ModContent.ProjectileType<RockerP>();
+            Item.shootSpeed = 10f;
+            Item.autoReuse = true;
+            Item.crit = 15;
+            Item.noMelee = true;
+            Item.noUseGraphic = true;
+        }
+    }
 }

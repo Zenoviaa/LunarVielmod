@@ -193,7 +193,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
 
                             if (NPC.Center.X <= player.Center.X && moveSpeed <= Main.rand.Next(40, 60))
                             {
-          
+
                                 moveSpeed++;
                                 NPC.netUpdate = true;
                             }
@@ -206,12 +206,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                             }
 
                             if (NPC.Center.Y <= player.Center.Y - HomeY && moveSpeedY <= Main.rand.Next(30, 40))
-                            {                 
+                            {
                                 moveSpeedY++;
                                 NPC.netUpdate = true;
                             }
                         }
-              
+
 
                         NPC.velocity.X = moveSpeed * 0.13f;
                         NPC.velocity.Y = moveSpeedY * 0.1f;
@@ -276,7 +276,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                         {
                             NPC.alpha -= 1;
                         }
-  
+
                         if (NPC.ai[0] <= 1)
                         {
                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DMHeart__PreDash"), NPC.position);
@@ -288,7 +288,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                                 var entitySource = NPC.GetSource_FromThis();
                                 NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagramSmall>());
                             }
-    
+
                             Barf = true;
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 32f);
                             int Sound = Main.rand.Next(1, 3);
@@ -312,7 +312,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                                 NPC.velocity.Y = direction.Y;
                                 NPC.netUpdate = true;
                             }
- 
+
                             for (int i = 0; i < 20; i++)
                             {
                                 int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.DungeonSpirit, 0f, -2f, 0, default, .8f);
@@ -375,7 +375,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                             {
                                 NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagramSmall>());
                             }
-                
+
                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DMHeart__Open"), NPC.position);
                             Barf = true;
                         }
@@ -410,7 +410,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                                     float offsetX = Main.rand.Next(-200, 200) * 0.01f;
                                     float offsetY = Main.rand.Next(-200, 200) * 0.01f;
                                     int damage = Main.expertMode ? 14 : 20;
-                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, 
+                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY,
                                         ModContent.ProjectileType<DreadMiresHeartVomit1>(), damage, 1, Owner: Main.myPlayer);
                                 }
                             }

@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Trails;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -45,7 +44,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             }
 
 
-            if(Timer % 6 == 0 && Main.myPlayer == Projectile.owner)
+            if (Timer % 6 == 0 && Main.myPlayer == Projectile.owner)
             {
                 Vector2 velocity;
                 if (Main.rand.NextBool(2))

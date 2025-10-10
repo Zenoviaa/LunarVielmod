@@ -39,14 +39,14 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Basic
         {
             Projectile.knockBack *= 3f;
             MagicProj.Form = FormRegistry.Skull.Value;
-            
-            
+
+
         }
 
 
 
-   
+
     }
 
-    
+
 }

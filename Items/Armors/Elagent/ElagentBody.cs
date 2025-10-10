@@ -1,9 +1,7 @@
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.Elagent
 {
@@ -34,6 +32,6 @@ namespace Stellamod.Items.Armors.Elagent
             player.maxMinions += 1;
         }
 
-       
+
     }
 }

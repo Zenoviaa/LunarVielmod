@@ -1,16 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
-using Stellamod.Content.Items.MoonlightMagic.Forms;
-using Stellamod.Content.NPCs.Bosses.EliteCommander.Projectiles;
-using Stellamod.Helpers;
-using Stellamod.Core.Helpers.Math;
-using Stellamod.Core.ItemTemplates;
+using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
-using Stellamod.Visual.Particles;
+using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -24,7 +21,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Hex
             return 1f;
         }
 
-        
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -49,7 +46,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Hex
 
                 }
 
-               
+
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity / 2, ModContent.ProjectileType<HallowPurpleEnchantmentExplosion>(),
                 Projectile.damage, Projectile.knockBack, Projectile.owner);
 
@@ -74,7 +71,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Hex
             DrawHelper.DrawGlowInInventory(item, spriteBatch, position, Color.LightPink);
         }
 
-      
+
     }
 
     public class HallowPurpleEnchantmentExplosion : BaseExplosionProjectile
@@ -95,7 +92,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Hex
             rStart = Main.rand.Next(60, 64);
             rEnd = Main.rand.Next(120, 120);
         }
-       
+
         public override void AI()
         {
             base.AI();
@@ -224,19 +221,19 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Hex
             TrailDrawer.Draw(Main.spriteBatch, _circlePos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
         }
 
-       
+
 
         public override bool PreDraw(ref Color lightColor)
         {
             DrawMainShader();
             // DrawOutlineShader();
-            return false ;
+            return false;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-          //  target.AddBuff(BuffID.OnFire, 90);
+            //  target.AddBuff(BuffID.OnFire, 90);
         }
     }
 }

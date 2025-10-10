@@ -43,7 +43,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
                     outerGlowColor: Color.Blue, duration: 25, baseSize: boomSize);
 
                 FXUtil.ShakeCamera(Projectile.position, 1024, 32);
-                
+
                 SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/ExplosionCrystalShard");
                 explosionSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(explosionSound, Projectile.position);
@@ -89,7 +89,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             set => NPC.ai[1] = (float)value;
         }
 
-        private ref float HangingDistance => ref NPC.ai[2]; 
+        private ref float HangingDistance => ref NPC.ai[2];
         private bool IsSmall
         {
             get => NPC.ai[3] == 1;
@@ -120,7 +120,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             NPC.noGravity = true;
             NPC.knockBackResist = 0f;
             NPC.HitSound = SoundID.DD2_WitherBeastCrystalImpact;
-           
+
         }
 
         public override void AI()
@@ -150,18 +150,18 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             Texture2D chainTexture = ModContent.Request<Texture2D>(Texture + "_Chain").Value;
             float length = HangingDistance;
             int index = 0;
-            while(length > 0f)
+            while (length > 0f)
             {
                 Vector2 chainDrawOrigin = chainTexture.Size() / 2;
                 Vector2 offset = -Vector2.UnitY * chainTexture.Height * index;
-                Vector2 vel = (NPC.rotation+MathHelper.PiOver2).ToRotationVector2();
-                spriteBatch.Draw(chainTexture, drawPos + offset - vel * NPC.frame.Height / 2, null, Color.White.MultiplyRGB(drawColor), 
+                Vector2 vel = (NPC.rotation + MathHelper.PiOver2).ToRotationVector2();
+                spriteBatch.Draw(chainTexture, drawPos + offset - vel * NPC.frame.Height / 2, null, Color.White.MultiplyRGB(drawColor),
                     NPC.rotation, chainDrawOrigin, _scale, SpriteEffects.None, 0);
 
                 length -= chainTexture.Height;
                 index++;
             }
-   
+
             Vector2 drawOrigin = NPC.frame.Size() / 2;
 
             SpriteEffects spriteEffects = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
@@ -196,13 +196,13 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             if (Timer % 10 == 0)
             {
                 _mothFrame++;
-                if(_mothFrame >= 4f)
+                if (_mothFrame >= 4f)
                 {
                     _mothFrame = 0;
                 }
             }
 
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 if (StellaMultiplayer.IsHost)
                 {
@@ -212,7 +212,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
                         NPC.netUpdate = true;
                     }
                 }
-             
+
                 HangingDistance = Main.rand.NextFloat(0, 1500);
                 float targetBeamLength = ProjectileHelper.PerformBeamHitscan(NPC.Center, -Vector2.UnitY, 1200);
                 NPC.Center = NPC.Center - Vector2.UnitY * targetBeamLength;
@@ -234,7 +234,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
         private void AI_Exploding()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
 
                 SoundStyle windUpSound = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_WaveCharge");

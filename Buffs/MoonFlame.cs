@@ -1,10 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -21,7 +16,7 @@ namespace Stellamod.Buffs
 
         public override void Update(NPC npc, ref int buffIndex)
         {
-            if(npc.life > npc.lifeMax / 2)
+            if (npc.life > npc.lifeMax / 2)
             {
                 npc.life = npc.lifeMax / 2;
             }

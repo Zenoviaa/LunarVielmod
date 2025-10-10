@@ -1,7 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Stellamod.Helpers.Separate;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,6 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace Stellamod.Skies
 
@@ -17,21 +15,21 @@ namespace Stellamod.Skies
 
 
     public class GovheilSkyScene : ModSceneEffect
-	{
-		public override bool IsSceneEffectActive(Player player)
-		{
-			return player.GetModPlayer<GovheilSkyPlayer>().VisualsActive;
-		}
+    {
+        public override bool IsSceneEffectActive(Player player)
+        {
+            return player.GetModPlayer<GovheilSkyPlayer>().VisualsActive;
+        }
 
-		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
+        public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
 
-		public override void SpecialVisuals(Player player, bool isActive)
-		{
-			player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", isActive);
-			if (isActive)
-				SkyManager.Instance["Stellamod:GovheilSky"].Update(new());
-		}
-	}
+        public override void SpecialVisuals(Player player, bool isActive)
+        {
+            player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", isActive);
+            if (isActive)
+                SkyManager.Instance["Stellamod:GovheilSky"].Update(new());
+        }
+    }
 
     public class GovheilSky : CustomSky
     {
@@ -97,7 +95,7 @@ namespace Stellamod.Skies
 
         private readonly List<Godray> Rays = new();
         private readonly List<Cinder> Cinders = new();
-        
+
         private float intensity;
         private bool isActive;
 
@@ -248,8 +246,8 @@ namespace Stellamod.Skies
             return new Vector2(xPos, yPos + Main.moonModY) + sceneArea.SceneLocalScreenPositionOffset;
         }
 
-       
-        
+
+
 
         private void DrawCinders(SpriteBatch spriteBatch, float minDepth, float maxDepth)
         {

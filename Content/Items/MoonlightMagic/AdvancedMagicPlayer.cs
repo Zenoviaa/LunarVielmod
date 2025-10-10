@@ -5,7 +5,6 @@ using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.ModLoader.UI.Elements;
 
 namespace Stellamod.Content.Items.MoonlightMagic
 {

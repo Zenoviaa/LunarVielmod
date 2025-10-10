@@ -37,7 +37,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         public override void AI()
         {
             Timer++;
-            if(Timer == LifeTime / 2)
+            if (Timer == LifeTime / 2)
             {
                 if (StellaMultiplayer.IsHost)
                 {
@@ -62,7 +62,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                     Projectile.scale = 1f;
             }
 
-            if(Timer > LifeTime / 2)
+            if (Timer > LifeTime / 2)
             {
                 float progress = (Timer - LifeTime / 2) / LifeTime;
                 float easedProgress = Easing.OutExpo(progress);

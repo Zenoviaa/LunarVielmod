@@ -112,7 +112,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, TargetVelocity, 0.02f);
             }
 
-            if(Timer > 130)
+            if (Timer > 130)
             {
                 Projectile.tileCollide = true;
             }
@@ -165,7 +165,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-       //     Lightning.Draw(spriteBatch, _lightningZaps, Projectile.oldRot);
+            //     Lightning.Draw(spriteBatch, _lightningZaps, Projectile.oldRot);
             return false;
         }
 

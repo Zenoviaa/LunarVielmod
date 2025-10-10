@@ -1,11 +1,4 @@
-﻿using Stellamod.NPCs.Colosseum.Common;
-using Stellamod.UI.PopupSystem;
-using Stellamod.UI.ToolsSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Stellamod.UI.ToolsSystem;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;

@@ -1,16 +1,10 @@
-﻿using Stellamod.Projectiles.Bow;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ID;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Bow;
 using Terraria;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -59,7 +53,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             _combo++;
-            if(_combo == 3)
+            if (_combo == 3)
             {
                 SoundEngine.PlaySound(SoundID.Item78, position);
                 type = ModContent.ProjectileType<RazzleDazzleProj>();

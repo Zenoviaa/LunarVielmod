@@ -2,11 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.DaedusRework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -58,7 +53,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 Dust.NewDust(Projectile.Center, 0, 0, DustID.InfernoFork, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
             }
 
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, 
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity,
                 ModContent.ProjectileType<FireRise>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             SoundEngine.PlaySound(SoundID.Item73, Projectile.position);
         }
@@ -74,7 +69,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
             Vector2 drawScale = new Vector2(1f, 1f);
             Vector2 drawOrigin = new Vector2(texture.Width / 2f, texture.Height);
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
-         
+
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture, drawPos, null, drawColor,
                             Projectile.rotation, drawOrigin, drawScale, SpriteEffects.None, 0f);

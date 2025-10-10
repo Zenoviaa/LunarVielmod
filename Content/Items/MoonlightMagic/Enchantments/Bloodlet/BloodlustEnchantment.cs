@@ -1,8 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
-using Stellamod.Content.Items.MoonlightMagic.Forms;
-using Stellamod.Helpers;
 using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
 using Terraria;
@@ -12,7 +9,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Bloodlet
 {
     public class BloodlustEnchantment : BaseEnchantment
     {
-        
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -23,7 +20,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Bloodlet
         {
             base.AI();
             Countertimer++;
-            if(Countertimer == time)
+            if (Countertimer == time)
             {
                 for (int i = 0; i < 6; i++)
                 {

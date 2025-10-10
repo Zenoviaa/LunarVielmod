@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -14,7 +12,7 @@ namespace Stellamod.Projectiles.Test
         Vector2[] ConnectorPos;
         int FrameTick;
         int FrameCounter;
-        
+
         public override void SetDefaults()
         {
             Projectile.hostile = true;
@@ -29,7 +27,7 @@ namespace Stellamod.Projectiles.Test
         {
             //Get the points to connect
             List<Vector2> points = new List<Vector2>();
-            for(int i = 0; i < Main.maxProjectiles; i++)
+            for (int i = 0; i < Main.maxProjectiles; i++)
             {
                 if (!Main.projectile[i].active)
                     continue;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.Bases;
 using Stellamod.Core.SwingSystem;
 using Terraria;
 using Terraria.DataStructures;
@@ -11,7 +12,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public static void NewMagicProjectile(BaseStaff item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             //
-            SwingPlayer comboPlayer = player.GetModPlayer<SwingPlayer>();
+            SwingPlayerV2 comboPlayer = player.GetModPlayer<SwingPlayerV2>();
             comboPlayer.ComboWaitTime = 0;
 
             int combo = comboPlayer.ComboCounter;

@@ -1,10 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
-using Stellamod.Content.Items.MoonlightMagic.Forms;
 using Stellamod.Helpers;
-using Stellamod.Core.Particles;
-using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -12,12 +9,12 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Bloodlet
 {
     public class BloodVesselEnchantment : BaseEnchantment
     {
-        
+
         public Vector2 FindBottomTile(Vector2 position)
         {
             int i = (int)(position.X / 16f);
             int upSide = (int)(position.Y / 16f);
-            for(int j = upSide; j < Main.maxTilesY; j++)
+            for (int j = upSide; j < Main.maxTilesY; j++)
             {
                 if (WorldGen.SolidTile(i, j))
                 {

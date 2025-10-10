@@ -72,7 +72,7 @@ namespace Stellamod.Projectiles.Magic
                 }
                 mySound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(mySound, Projectile.position);
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     MaxDegreesRotate = Main.rand.NextFloat(0.5f, 4f);
                     Projectile.position += Main.rand.NextVector2Circular(32, 32);
@@ -83,7 +83,7 @@ namespace Stellamod.Projectiles.Magic
 
             float maxDetectDistance = 1024;
             NPC npc = ProjectileHelper.FindNearestEnemy(Projectile.position, maxDetectDistance);
-            if(npc != null)
+            if (npc != null)
             {
                 Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, npc.Center, degreesToRotate: MaxDegreesRotate);
             }

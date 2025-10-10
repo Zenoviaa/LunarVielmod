@@ -9,19 +9,19 @@ using static Terraria.ModLoader.ModContent;
 namespace Stellamod.NPCs.Bosses.singularityFragment
 {
     public class RuneSpawnEffect : ModProjectile
-	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Rune Spawn Effect");
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 7;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
-		}
+    {
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Rune Spawn Effect");
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 7;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+        }
 
         public override void SetDefaults()
-		{
-			Projectile.aiStyle = 0;
-			Projectile.alpha = 255;
-			Projectile.friendly = false;
+        {
+            Projectile.aiStyle = 0;
+            Projectile.alpha = 255;
+            Projectile.friendly = false;
             Projectile.hostile = true;
             Projectile.penetrate = 1;
             Projectile.timeLeft = 400;
@@ -30,11 +30,11 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             Projectile.extraUpdates = 1;
         }
 
-		float alphaCounter = 5;
-		public override void AI()
-		{
-			alphaCounter -= 0.18f;
-		}
+        float alphaCounter = 5;
+        public override void AI()
+        {
+            alphaCounter -= 0.18f;
+        }
 
         public override bool PreDraw(ref Color lightColor)
         {

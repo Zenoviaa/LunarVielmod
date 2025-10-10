@@ -37,17 +37,17 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Basic
 
         public override void SetMagicDefaults()
         {
-           
+
             MagicProj.Form = FormRegistry.Octopus.Value;
             MagicProj.Size *= 1.5f;
-            
+
 
         }
 
 
 
-   
+
     }
 
-    
+
 }

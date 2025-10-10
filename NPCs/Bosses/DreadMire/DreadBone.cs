@@ -47,12 +47,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Projectile.ai[0]++;
             if (Projectile.ai[0] == 2)
             {
-                if(Projectile.owner == Main.myPlayer)
+                if (Projectile.owner == Main.myPlayer)
                 {
                     Spin = Main.rand.Next(0, 2);
                     Projectile.netUpdate = true;
                 }
-          
+
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
             }
 

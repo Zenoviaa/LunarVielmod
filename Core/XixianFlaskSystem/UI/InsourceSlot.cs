@@ -53,7 +53,7 @@ namespace Stellamod.Core.XixianFlaskSystem.UI
             {
                 _prevItem = Item;
                 ItemSlot.Handle(ref Item, _context);
-                if(Main.mouseLeft && Main.mouseLeftRelease)
+                if (Main.mouseLeft && Main.mouseLeftRelease)
                 {
                     FlaskPlayer flaskPlayer = Main.LocalPlayer.GetModPlayer<FlaskPlayer>();
                     flaskPlayer.SetInsourceAtIndex(Item.Clone(), _slot);

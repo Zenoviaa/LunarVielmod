@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.QuestSystem.Quests;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
@@ -61,7 +60,7 @@ namespace Stellamod.Core.QuestSystem
         public virtual string IconTexture => (GetType().Namespace + "." + Name).Replace('.', '/');
         public virtual string BigTexture => IconTexture + "_Big";
 
-       
+
         public int Type { get; internal set; }
         public bool IsSideQuest { get; set; }
         public bool IsAutoQuest { get; set; }
@@ -100,7 +99,7 @@ namespace Stellamod.Core.QuestSystem
         public bool IsQuestAvailable(Player player)
         {
             QuestPlayer questPlayer = player.GetModPlayer<QuestPlayer>();
-            if(questPlayer.HasActiveQuest(this) || questPlayer.HasCompletedQuest(this) || questPlayer.HasRewardQuest(this))
+            if (questPlayer.HasActiveQuest(this) || questPlayer.HasCompletedQuest(this) || questPlayer.HasRewardQuest(this))
             {
                 return false;
             }
@@ -126,7 +125,7 @@ namespace Stellamod.Core.QuestSystem
         {
             SoundStyle sound = new SoundStyle("Stellamod/Assets/Sounds/Bliss2");
             SoundEngine.PlaySound(sound);
-           
+
         }
 
         public virtual bool CheckCompletion(Player player) { return true; }
@@ -139,7 +138,7 @@ namespace Stellamod.Core.QuestSystem
             }
             SoundStyle questCompleteSound = new SoundStyle("Stellamod/Assets/Sounds/Bliss1");
             SoundEngine.PlaySound(questCompleteSound);
-            for(int i =0; i < 32; i++)
+            for (int i = 0; i < 32; i++)
             {
                 float f = i;
                 float num = 32;
@@ -148,7 +147,7 @@ namespace Stellamod.Core.QuestSystem
                 Vector2 vel = rot.ToRotationVector2() * 3;
                 Dust.NewDustPerfect(player.Center, DustID.GoldCoin, vel);
             }
-         
+
         }
 
         public virtual void QuestIntroDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)

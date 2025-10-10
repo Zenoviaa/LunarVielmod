@@ -7,7 +7,6 @@ using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -58,13 +57,13 @@ namespace Stellamod.Projectiles.Crossbows.Lasers
                 if (!player.channel)
                     Projectile.Kill();
 
-    
+
                 Projectile.velocity = swordRotation.ToRotationVector2();
-         
+
                 Projectile.netUpdate = true;
             }
 
-        
+
             Projectile.spriteDirection = player.direction;
 
             if (!_setRotation)
@@ -100,7 +99,7 @@ namespace Stellamod.Projectiles.Crossbows.Lasers
             if (Projectile.scale > 1f)
                 Projectile.scale = 1f;
 
-            if(Projectile.timeLeft < 50)
+            if (Projectile.timeLeft < 50)
             {
                 Projectile.scale = (float)Projectile.timeLeft / (float)50;
             }

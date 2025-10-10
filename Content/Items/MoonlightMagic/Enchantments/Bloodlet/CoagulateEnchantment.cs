@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
-using Stellamod.Core.Helpers.Math;
-using Stellamod.Core.ItemTemplates;
+using Stellamod.Core.Bases;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.ModLoader;

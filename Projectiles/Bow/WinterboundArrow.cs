@@ -15,7 +15,7 @@ namespace Stellamod.Projectiles.Bow
         {
             // DisplayName.SetDefault("Winterbound Arrow");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 2; 
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
         public override void SetDefaults()
         {
@@ -30,7 +30,7 @@ namespace Stellamod.Projectiles.Bow
         }
         public override void OnKill(int timeLeft)
         {
-     
+
             for (int i = 0; i < 50; i++)
             {
                 int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.DungeonSpirit, 0f, -2f, 0, default(Color), 1.5f);

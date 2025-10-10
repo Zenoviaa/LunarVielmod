@@ -1,10 +1,8 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-
 using Terraria;
-using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
-using SteelSeries.GameSense;
 
 namespace Stellamod.Particles.Sparkles
 {

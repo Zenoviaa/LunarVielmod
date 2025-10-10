@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -45,8 +44,8 @@ namespace Stellamod.Projectiles.IgniterExplosions
             {
                 //Randomize Size
                 _sizeMultiplier = Main.rand.NextFloat(0.2f, 0.5f);
-              //  Projectile.width = (int)((float)Projectile.width * _sizeMultiplier);
-             //   Projectile.height = (int)((float)Projectile.height * _sizeMultiplier);
+                //  Projectile.width = (int)((float)Projectile.width * _sizeMultiplier);
+                //   Projectile.height = (int)((float)Projectile.height * _sizeMultiplier);
             }
 
             if (++_frameTick >= 2)
@@ -54,7 +53,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
                 _frameTick = 0;
                 if (++_frameCounter >= 15)
                 {
-           
+
                 }
             }
             return true;

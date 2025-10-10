@@ -100,7 +100,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_Laugh"));
                 NPC.active = false;
                 if (StellaMultiplayer.IsHost)
-                { 
+                {
                     var entitySource = NPC.GetSource_FromThis();
                     NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMire>());
                 }

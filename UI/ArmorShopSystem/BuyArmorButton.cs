@@ -1,17 +1,12 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Stellamod.UI.ArmorReforgeSystem;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.ArmorShop;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
-using Terraria;
-using Microsoft.Xna.Framework;
-using Stellamod.Core.ArmorShop;
 
 namespace Stellamod.UI.ArmorShopSystem
 {
@@ -73,8 +68,6 @@ namespace Stellamod.UI.ArmorShopSystem
             //Grey out when crafting won't make anything
             if (!uiSystem.CanPurchase(armorSet))
                 drawColor = drawColor.MultiplyRGB(Color.Gray);
-
-            float rotation = 0;
 
 
             spriteBatch.Draw(textureToDraw, pos, null, drawColor, 0f, Vector2.Zero, _scale, SpriteEffects.None, 0f);

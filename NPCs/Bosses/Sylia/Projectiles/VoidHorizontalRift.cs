@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -95,7 +94,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             Projectile.rotation = Projectile.velocity.ToRotation();
             if (Main.rand.NextBool(50))
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<VoidDrip>(), 30, 1, Projectile.owner);
             }
 
@@ -112,12 +111,11 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             _particleCounter++;
             if (_particleCounter > Body_Particle_Rate)
             {
-                float radius = 64;
                 _particleCounter = 0;
             }
 
             float scaleOut = 20;
-            if(Projectile.timeLeft < scaleOut)
+            if (Projectile.timeLeft < scaleOut)
             {
                 Projectile.scale = MathHelper.Lerp(0f, 1f, Projectile.timeLeft / scaleOut);
             }

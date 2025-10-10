@@ -1,15 +1,5 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
-using Stellamod.Content.Items.MoonlightMagic.Forms;
-using Stellamod.Helpers;
-using Stellamod.Core.Helpers.Math;
-using Stellamod.Core.ItemTemplates;
-using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
-using Stellamod.Visual.Particles;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -29,7 +19,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Radiance
 
             Player player = Main.player[Projectile.owner];
             _spawnOffset = Projectile.Center - player.Center;
-            Vector2 directionToProj =_spawnOffset.SafeNormalize(Vector2.Zero);
+            Vector2 directionToProj = _spawnOffset.SafeNormalize(Vector2.Zero);
             float rotToProj = directionToProj.ToRotation();
             float progress = rotToProj / MathHelper.TwoPi;
             _shootWaitTime = MathHelper.Lerp(minWaitTime, maxWaitTime, progress);
@@ -48,12 +38,12 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Radiance
         public override void AI()
         {
             base.AI();
-            if(!_summonedCircle && !MagicProj.IsClone)
+            if (!_summonedCircle && !MagicProj.IsClone)
             {
                 float count = 8;
                 float spawnRadius = 64;
                 Player player = Main.player[Projectile.owner];
-                for(float f = 0; f < count; f++)
+                for (float f = 0; f < count; f++)
                 {
                     float progress = f / count;
                     float rot = progress * MathHelper.TwoPi;
@@ -66,17 +56,17 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Radiance
                     AdvancedMagicUtil.CloneMagicProjectile(MagicProj, spawnPos, Projectile.velocity, finalDamage, Projectile.knockBack / count,
                         MagicProj.TrailLength, MagicProj.Size / count);
                 }
-        
+
 
                 Projectile.Kill();
-                _summonedCircle=true;
-            } 
+                _summonedCircle = true;
+            }
             //If you are a clone then you already fired lmao
             else if (MagicProj.IsClone)
             {
                 _shootDelay++;
-                if(_shootDelay < _shootWaitTime)
-                {         
+                if (_shootDelay < _shootWaitTime)
+                {
                     Player player = Main.player[Projectile.owner];
                     Projectile.Center = player.Center + _spawnOffset;
                 }

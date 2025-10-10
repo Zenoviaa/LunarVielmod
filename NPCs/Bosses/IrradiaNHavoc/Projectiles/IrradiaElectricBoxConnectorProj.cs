@@ -43,7 +43,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
         {
             Ty++;
 
-           if (Ty == 2)
+            if (Ty == 2)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ElectricShuffle"), Projectile.position);
             }
@@ -64,7 +64,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
                 Connections = new List<Point>();
                 var nodes = new List<NPC>();
 
-                for(int i = 0; i < Main.maxNPCs; i++)
+                for (int i = 0; i < Main.maxNPCs; i++)
                 {
                     NPC npc = Main.npc[i];
                     if (!npc.active)
@@ -79,12 +79,12 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
                     npc.ai[1] = 1;
                 }
 
-                if(nodes.Count == 0)
+                if (nodes.Count == 0)
                 {
                     Projectile.Kill();
                     return;
                 }
-       
+
                 Nodes = nodes.ToArray();
                 NodesThatDied = new bool[Nodes.Length];
                 for (int i = 0; i < Nodes.Length - 1; i++)
@@ -99,7 +99,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
             }
 
             //Check active
-            if(Nodes.Length > 0)
+            if (Nodes.Length > 0)
             {
                 for (int i = 0; i < Nodes.Length; i++)
                 {
@@ -111,20 +111,20 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
                 }
             }
 
-            foreach(Point connection in Connections)
+            foreach (Point connection in Connections)
             {
                 if (NodesThatDied[connection.X] || NodesThatDied[connection.Y])
                     ConnectionsToRemove.Add(connection);
             }
 
-            foreach(Point removeConnection in ConnectionsToRemove)
+            foreach (Point removeConnection in ConnectionsToRemove)
             {
                 Connections.Remove(removeConnection);
             }
             ConnectionsToRemove.Clear();
 
 
-            if(Timer % 3 == 0)
+            if (Timer % 3 == 0)
             {
                 LightningPos.Clear();
                 for (int i = 0; i < Connections.Count; i++)
@@ -204,7 +204,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
             TrailRegistry.LaserShader.UseColor(Color.Orange);
             TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.VortexTrail);
 
-            for(int i = 0; i < LightningPos.Count; i++)
+            for (int i = 0; i < LightningPos.Count; i++)
             {
                 BeamDrawer.DrawPixelated(LightningPos[i], -Main.screenPosition, LightningPos[i].Length);
             }

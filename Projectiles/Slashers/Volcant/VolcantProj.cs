@@ -62,7 +62,7 @@ namespace Stellamod.Projectiles.Slashers.Volcant
             float multiplier = 0.2f;
             RGB *= multiplier;
             Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-              
+
             float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true));
             // the actual rotation it should have
             float defRot = Projectile.velocity.ToRotation();
@@ -74,7 +74,7 @@ namespace Stellamod.Projectiles.Slashers.Volcant
             float end = (defRot + endSet);
             // current rotation obv
             float rotation = SwingDirection == 1 ? start.AngleLerp(end, swingProgress) : start.AngleLerp(end, 1f - swingProgress);
-            
+
             // offsetted cuz sword sprite
             Vector2 position = Owner.RotatedRelativePoint(Owner.MountedCenter);
             position += rotation.ToRotationVector2() * holdOffset;
@@ -216,7 +216,7 @@ namespace Stellamod.Projectiles.Slashers.Volcant
 
             int frameHeight = texture.Height / Main.projFrames[Projectile.type];
             int startY = frameHeight * Projectile.frame;
-           
+
             float mult = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft));
             float alpha = (float)Math.Sin(mult * Math.PI);
             Vector2 pos = player.Center + Projectile.velocity * (mult);

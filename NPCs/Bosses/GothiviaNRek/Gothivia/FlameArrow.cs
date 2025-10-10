@@ -23,7 +23,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if(Main.myPlayer == Projectile.owner)
+            if (Main.myPlayer == Projectile.owner)
             {
                 if (Main.rand.NextBool(2))
                     target.AddBuff(BuffID.OnFire, 180);

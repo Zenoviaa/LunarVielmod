@@ -1,18 +1,14 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs.Minions;
+using Stellamod.Helpers;
+using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
 using Terraria;
-using Microsoft.Xna.Framework;
-using Stellamod.Trails;
-using Terraria.ID;
-using Stellamod.Helpers;
-using Terraria.Audio;
 using Terraria.Graphics.Shaders;
-using Stellamod.Buffs.Minions;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
@@ -167,7 +163,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 InitSegments(numBodySegments);
             }
 
-            if(TargetNpc != -1)
+            if (TargetNpc != -1)
             {
                 NPC npc = Main.npc[TargetNpc];
                 if (!npc.active)
@@ -181,10 +177,10 @@ namespace Stellamod.Projectiles.Summons.Minions
                 }
             }
 
-            for(int i = 0; i < Segments.Length; i++)
+            for (int i = 0; i < Segments.Length; i++)
             {
                 var segment = Segments[i];
-                if(segment.TexturePath == $"{Texture}_Body")
+                if (segment.TexturePath == $"{Texture}_Body")
                 {
                     int frameTime = 4;
                     int frameCount = 8;
@@ -209,7 +205,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             if (foundTarget && distanceFromTarget <= 1500)
             {
                 DrawChargeTrail = true;
-         
+
                 if (TargetNpc != -1)
                 {
                     Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.TwoPi / 60f);
@@ -218,7 +214,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 {
                     AI_MoveToward(targetCenter, 16, 1);
                 }
-                    
+
                 StartSegmentGlow(Color.White);
                 Vector2 directionToTarget = Projectile.Center.DirectionTo(targetCenter);
                 Projectile.rotation = MathHelper.Lerp(Projectile.rotation, directionToTarget.ToRotation(), 0.1f);
@@ -238,7 +234,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-            if(TargetNpc == -1 && !target.boss && Vector2.Distance(Projectile.Center, target.Center) <= 32)
+            if (TargetNpc == -1 && !target.boss && Vector2.Distance(Projectile.Center, target.Center) <= 32)
             {
                 TargetNpc = target.whoAmI;
             }
@@ -484,7 +480,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 Vector2 drawPosition = segment.Position - Main.screenPosition + HitboxFixer;
                 float drawRotation = segment.Rotation;
                 Vector2 drawOrigin = segment.Size / 2;
-                if(segment.Frame != null)
+                if (segment.Frame != null)
                 {
                     drawOrigin = segment.Frame.Value.Size() / 2;
                 }

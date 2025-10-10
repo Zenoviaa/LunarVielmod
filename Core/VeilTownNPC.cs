@@ -14,7 +14,7 @@ namespace Stellamod.Core
 {
     public abstract class VeilTownNPC : ModNPC
     {
-      
+
         public bool HasTownDialogue { get; set; }
         public bool SpawnAtPoint { get; set; }
         public bool OnlyInteract { get; set; }
@@ -25,10 +25,10 @@ namespace Stellamod.Core
         }
 
         public virtual void OpenTownDialogue(
-            ref string text, 
-            ref string portrait, 
-            ref float timeBetweenTexts, 
-            ref SoundStyle? talkingSound, 
+            ref string text,
+            ref string portrait,
+            ref float timeBetweenTexts,
+            ref SoundStyle? talkingSound,
             List<Tuple<string, Action>> buttons)
         {
 
@@ -40,7 +40,7 @@ namespace Stellamod.Core
         }
         public virtual void IdleChat(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
         {
-           
+
         }
 
         public void Talk()
@@ -136,7 +136,7 @@ namespace Stellamod.Core
 
                 spriteBatch.Restart(blendState: BlendState.Additive);
 
-                for(float f = 0f; f < 1f; f += 0.2f)
+                for (float f = 0f; f < 1f; f += 0.2f)
                 {
                     float rot = f * MathHelper.TwoPi;
                     rot += Main.GlobalTimeWrappedHourly;
@@ -144,7 +144,7 @@ namespace Stellamod.Core
                     spriteBatch.Draw(questMark, drawPos - Main.screenPosition + offset, null, drawColor * 0.8f, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
                 }
                 spriteBatch.RestartDefaults();
-        
+
                 Lighting.AddLight(drawPos, Color.White.ToVector3() * 0.78f);
             }
         }

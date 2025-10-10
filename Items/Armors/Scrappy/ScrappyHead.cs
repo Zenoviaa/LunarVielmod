@@ -1,11 +1,9 @@
-﻿using Stellamod.Items.Armors.Miracle;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Projectiles.Summons;
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Items.Materials;
-using Stellamod.Helpers;
 
 namespace Stellamod.Items.Armors.Scrappy
 {
@@ -65,6 +63,6 @@ namespace Stellamod.Items.Armors.Scrappy
         }
 
         // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-    
+
     }
 }

@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Helpers;
-using Stellamod.WorldG;
 using System;
 using Terraria;
 using Terraria.GameContent.Bestiary;
@@ -16,12 +15,12 @@ namespace Stellamod.NPCs.Overworld.RoyalSlime
 {
 
     public class RoyalSlime : ModNPC
-	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Royal Slime");
-			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.BlueSlime];
-		}
+    {
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Royal Slime");
+            Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.BlueSlime];
+        }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
@@ -31,23 +30,23 @@ namespace Stellamod.NPCs.Overworld.RoyalSlime
         }
 
         public override void SetDefaults()
-		{
-			NPC.width = 32;
-			NPC.height = 24;
-			NPC.damage = 8;
-			NPC.defense = 4;
-			NPC.lifeMax = 500;
-			NPC.HitSound = SoundID.NPCHit1;
-			NPC.DeathSound = SoundID.NPCDeath1;
-			NPC.value = 30f;
-			NPC.buffImmune[BuffID.Poisoned] = true;
-			NPC.buffImmune[BuffID.Venom] = true;
-			NPC.alpha = 60;
-			NPC.knockBackResist = .75f;
-			NPC.aiStyle = 1;
-			AIType = NPCID.BlueSlime;
-			AnimationType = NPCID.BlueSlime;
-		}
+        {
+            NPC.width = 32;
+            NPC.height = 24;
+            NPC.damage = 8;
+            NPC.defense = 4;
+            NPC.lifeMax = 500;
+            NPC.HitSound = SoundID.NPCHit1;
+            NPC.DeathSound = SoundID.NPCDeath1;
+            NPC.value = 30f;
+            NPC.buffImmune[BuffID.Poisoned] = true;
+            NPC.buffImmune[BuffID.Venom] = true;
+            NPC.alpha = 60;
+            NPC.knockBackResist = .75f;
+            NPC.aiStyle = 1;
+            AIType = NPCID.BlueSlime;
+            AnimationType = NPCID.BlueSlime;
+        }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
@@ -62,7 +61,7 @@ namespace Stellamod.NPCs.Overworld.RoyalSlime
         }
 
         public override void AI()
-		{
+        {
             NPC.spriteDirection = NPC.direction;
         }
 
@@ -88,7 +87,7 @@ namespace Stellamod.NPCs.Overworld.RoyalSlime
                 effects,
                 0
             );
-            
+
             SpriteEffects spriteEffects3 = (NPC.spriteDirection == 1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             //Vector2 vector33 = new Vector2(NPC.Center.X, NPC.Center.Y) - Main.screenPosition + Drawoffset - NPC.velocity;
             Color color29 = new Color(127 - NPC.alpha, 127 - NPC.alpha, 127 - NPC.alpha, 0).MultiplyRGBA(Color.LightBlue);

@@ -59,13 +59,13 @@ namespace Stellamod.Items.Accessories.AlcadChests
 
         private void CastMagic(Player player)
         {
-            switch(Main.rand.Next(0, 5))
+            switch (Main.rand.Next(0, 5))
             {
                 case 0:
                     for (int i = 0; i < Main.rand.Next(4, 7); i++)
                     {
                         Vector2 velocity = new Vector2(Main.rand.Next(-5, 5), Main.rand.Next(-5, 5));
-                        int p = Projectile.NewProjectile(player.GetSource_FromThis(), player.position, velocity, 
+                        int p = Projectile.NewProjectile(player.GetSource_FromThis(), player.position, velocity,
                             ProjectileID.Typhoon, 200, 1, player.whoAmI);
                         Main.projectile[p].timeLeft = 600;
                     }
@@ -75,7 +75,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
                     for (int i = 0; i < Main.rand.Next(4, 7); i++)
                     {
                         Vector2 velocity = new Vector2(Main.rand.Next(-10, 10), Main.rand.Next(-10, 10));
-                        int p = Projectile.NewProjectile(player.GetSource_FromThis(), player.position, velocity, 
+                        int p = Projectile.NewProjectile(player.GetSource_FromThis(), player.position, velocity,
                             ProjectileID.InfernoFriendlyBolt, 200, 1, player.whoAmI);
                         Main.projectile[p].timeLeft = 600;
                     }
@@ -85,7 +85,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
                     for (int i = 0; i < Main.rand.Next(4, 7); i++)
                     {
                         Vector2 velocity = new Vector2(Main.rand.Next(-10, 10), Main.rand.Next(-10, 10));
-                        int p = Projectile.NewProjectile(player.GetSource_FromThis(), player.position, velocity, 
+                        int p = Projectile.NewProjectile(player.GetSource_FromThis(), player.position, velocity,
                             ProjectileID.LostSoulFriendly, 200, 1, player.whoAmI);
                         Main.projectile[p].timeLeft = 600;
                     }
@@ -95,7 +95,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
                     for (int i = 0; i < Main.rand.Next(4, 7); i++)
                     {
                         Vector2 velocity = new Vector2(Main.rand.Next(-10, 10), Main.rand.Next(-10, 10));
-                        int p = Projectile.NewProjectile(player.GetSource_FromThis(), player.position, velocity, 
+                        int p = Projectile.NewProjectile(player.GetSource_FromThis(), player.position, velocity,
                             ProjectileID.FairyQueenMagicItemShot,
                             200, 1, player.whoAmI);
                         Main.projectile[p].timeLeft = 600;
@@ -129,7 +129,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
                         NPCID.Gastropod
                     };
 
-                    for(int i = 0; i < 10; i++)
+                    for (int i = 0; i < 10; i++)
                     {
                         Vector2 spawn = new Vector2((int)player.Center.X, (int)player.Center.Y);
                         spawn += new Vector2(Main.rand.NextFloat(-64, 64), -128);
@@ -160,7 +160,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
                         player.statLife = 1;
                         SoundEngine.PlaySound(SoundID.PlayerKilled, player.position);
                     }
-          
+
                     break;
             }
         }

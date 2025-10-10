@@ -3,14 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
-using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.STARBOMBER;
-using Stellamod.Particles;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -107,13 +103,13 @@ namespace Stellamod.Projectiles
 
             for (int i = 0; i < 14; i++)
             {
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), 
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(),
                     (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Pink, 1f).noGravity = true;
             }
 
             for (int i = 0; i < 80; i++)
             {
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), 
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(),
                     (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
             }
 
@@ -124,15 +120,15 @@ namespace Stellamod.Projectiles
 
                 //Get a random
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                            }
+            }
         }
 
         private void SpawnStarBomber()
         {
-            if(Main.myPlayer == Projectile.owner)
+            if (Main.myPlayer == Projectile.owner)
             {
                 Main.NewText(LangText.Misc("AuroreanStarbomber"), Color.Pink);
-                int npcID = NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y, 
+                int npcID = NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y,
                     ModContent.NPCType<STARBOMBER>());
                 NetMessage.SendData(MessageID.SyncNPC);
             }

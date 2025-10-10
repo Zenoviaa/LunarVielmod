@@ -31,7 +31,7 @@ namespace Stellamod.Core.MagicSystem.UI
             // Don't run this on the server
             if (Main.dedServ)
                 return;
-            string texturePath = AssetHelper.DirectoryHere(typeof(EnchantmentMenu)) + "/EnchantingMenu";
+            string texturePath = typeof(EnchantmentMenu).DirectoryHere() + "/EnchantingMenu";
             BackgroundSquareTexture = ModContent.Request<Texture2D>(texturePath);
         }
 
@@ -159,7 +159,7 @@ namespace Stellamod.Core.MagicSystem.UI
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-    
+
             //Constantly lock the UI in the position regardless of resolution changes
             SetPos();
 

@@ -68,22 +68,22 @@ namespace Stellamod.Projectiles.Magic
                 }
             }
 
-            if(Timer % 4 == 0)
+            if (Timer % 4 == 0)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.DemonTorch);
             }
 
 
 
-            float swingXRadius = 32 * Easing.OutCirc(Timer /60f);
+            float swingXRadius = 32 * Easing.OutCirc(Timer / 60f);
             float swingYRadius = 64 * Easing.OutCirc(Timer / 60f);
             float swingRange = MathHelper.ToRadians(360);
-            for(int i = 0; i < _soundWavePos.Length; i++)
+            for (int i = 0; i < _soundWavePos.Length; i++)
             {
                 float progress = (float)i / (float)_soundWavePos.Length;
-                float xRadius = swingXRadius * 
+                float xRadius = swingXRadius *
                     VectorHelper.Osc(0.85f, 1f, speed: 6);
-                float yRadius = swingYRadius * 
+                float yRadius = swingYRadius *
                     VectorHelper.Osc(0.85f, 1f, speed: 6);
 
 
@@ -93,7 +93,7 @@ namespace Stellamod.Projectiles.Magic
                 float yOffset = (yRadius)
                     * MathF.Cos(progress * swingRange + swingRange);
                 Vector2 offset = new Vector2(xOffset, yOffset).RotatedBy(Projectile.rotation);
-             
+
                 Vector2 pos = Projectile.Center + offset;
                 _soundWavePos[i] = pos;
 
@@ -121,7 +121,7 @@ namespace Stellamod.Projectiles.Magic
                 }
             }
             else
-            {           
+            {
                 Projectile.velocity *= 1.01f;
                 Projectile.rotation = Projectile.velocity.ToRotation();
 
@@ -172,7 +172,7 @@ namespace Stellamod.Projectiles.Magic
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            if (!Slowdown )
+            if (!Slowdown)
             {
                 Slowdown = true;
                 Projectile.tileCollide = false;

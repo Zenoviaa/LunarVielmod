@@ -26,7 +26,8 @@ namespace Stellamod.Utilis
             }
 
             return index;
-        }        public static bool CircularCollision(Vector2 checkPosition, Rectangle hitbox, float radius)
+        }
+        public static bool CircularCollision(Vector2 checkPosition, Rectangle hitbox, float radius)
         {
             float dist1 = Vector2.Distance(checkPosition, hitbox.TopLeft());
             float dist2 = Vector2.Distance(checkPosition, hitbox.TopRight());

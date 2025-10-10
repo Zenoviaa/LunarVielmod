@@ -5,7 +5,6 @@ using ReLogic.Content;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.NPCs.Bosses.Jack;
@@ -47,7 +46,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
         private ref float AITimer => ref NPC.ai[0];
         private ref float AIState => ref NPC.ai[1];
-        private Player TargetPlayer => Main.player[NPC.target]; 
+        private Player TargetPlayer => Main.player[NPC.target];
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 60;
@@ -131,12 +130,12 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 5, 13));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<SupernovaBag>()));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.SupernovaBossRel>()));
-            
+
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Iknoctstein>(), 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Dulahaun>()));
             npcLoot.Add(notExpertRule);
-        }   
+        }
 
         public void CasuallyApproachChild()
         {
@@ -293,7 +292,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                         break;
 
                     case 6:
-                        AITimer++; 
+                        AITimer++;
                         break;
 
                     case 7:
@@ -930,7 +929,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         public Texture2D GlowTexture => (_glowTexture ??= (RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
 
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        { 
+        {
             DrawIncresionDiskTop(spriteBatch, screenPos, drawColor);
         }
 
@@ -952,7 +951,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             float drawRotation = NPC.rotation;
             spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
         }
-       
+
         private void DrawIncresionDiskTop(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             //Draw Incresion Disk
@@ -967,9 +966,9 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             Vector2 drawOrigin = incresionDiskRect.Size() / 2;
             drawPos += new Vector2(4, -28);
 
-            float drawScale = NPC.scale  * 1.5f;
+            float drawScale = NPC.scale * 1.5f;
             float drawRotation = NPC.rotation;
- 
+
             spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
         }
 
@@ -978,11 +977,11 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             if (!Dead)
             {
                 int buffIndex = NPC.FindBuffIndex(ModContent.BuffType<SupernovaChained>());
-                if(buffIndex != -1)
+                if (buffIndex != -1)
                 {
                     NPC.DelBuff(buffIndex);
                 }
-            
+
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPOut"), NPC.position);
                 Dead = true;
             }

@@ -2,10 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Brooches;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Summon;
 using System;
 using System.IO;
 using Terraria;
@@ -130,7 +126,7 @@ namespace Stellamod.NPCs.Underground
         private void Panic()
         {
             PanicTimer++;
-            if(PanicTimer >= PanicLength && StellaMultiplayer.IsHost)
+            if (PanicTimer >= PanicLength && StellaMultiplayer.IsHost)
             {
                 PanicLength = Main.rand.Next(30, 210);
                 PanicDirection = Main.rand.NextVector2Circular(1, 1);
@@ -152,7 +148,7 @@ namespace Stellamod.NPCs.Underground
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ItemID.Gel, 1, minimumDropped: 2, maximumDropped: 4));
-        
+
         }
 
 

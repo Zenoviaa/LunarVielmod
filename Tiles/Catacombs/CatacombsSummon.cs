@@ -1,8 +1,5 @@
 ﻿using Stellamod.Dusts;
-using Stellamod.Helpers;
-using Stellamod.Items.Consumables;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;

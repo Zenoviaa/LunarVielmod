@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
-using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -78,7 +77,7 @@ namespace Stellamod.Projectiles.Paint
 
             if (Main.rand.NextBool(3))
             {
-          
+
                 Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                 Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<PaintBlob5>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
 
@@ -87,8 +86,8 @@ namespace Stellamod.Projectiles.Paint
             if (Main.rand.NextBool(3))
             {
                 Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-                 Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<PaintBlob4>(), (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
-                
+                Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<PaintBlob4>(), (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
+
             }
             return true;
         }
@@ -133,7 +132,7 @@ namespace Stellamod.Projectiles.Paint
         {
             Player player = Main.player[Projectile.owner];
             SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.Center);
-            for(int i = 0; i < Main.rand.Next(2, 6); i++)
+            for (int i = 0; i < Main.rand.Next(2, 6); i++)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, ModContent.ProjectileType<SplashProj>(), 0, 0, Projectile.owner);
@@ -142,7 +141,7 @@ namespace Stellamod.Projectiles.Paint
             for (int i = 0; i < 15; i++)
             {
                 Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-               
+
                 Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<PaintBlob1>(), (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
             }
 
@@ -150,7 +149,7 @@ namespace Stellamod.Projectiles.Paint
             if (Main.rand.NextBool(2))
             {
                 float speedXa = Main.rand.NextFloat(-80f, 80f);
-                float speedYa =  Main.rand.Next(-80, 80);
+                float speedYa = Main.rand.Next(-80, 80);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + speedXa, Projectile.Center.Y + speedYa, 0, 0, ModContent.ProjectileType<PaintBomb1>(), (Projectile.damage * 2) + player.GetModPlayer<MyPlayer>().PPPaintDMG2, 1, Projectile.owner, 0, 0);
                 Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<PaintBlob3>(), (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
             }

@@ -1,10 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
-using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

@@ -2,13 +2,9 @@
 
 using Stellamod.NPCs.Bosses.Niivi.Projectiles;
 using Stellamod.NPCs.Town;
-using Stellamod.Particles;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -94,7 +90,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             NPC.damage = 240;
             NPC.width = 178;
             NPC.height = 108;
-          
+
             //It won't be considered a boss or take up slots until the fight actually starts
             //So the values are like this for now
             NPC.npcSlots = 0.1f;
@@ -141,7 +137,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                         ModContent.ProjectileType<NiiviScaleProj>(), 0, 1, Main.myPlayer);
                 }
                 ScaleDamageCounter = 0;
-            }   
+            }
 
             if (AggroDamageCounter >= lifeToGiveIllurineScale * 15)
             {
@@ -170,7 +166,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         {
             OnlyTakeDamageWhenClose();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.velocity = Vector2.UnitX;
             }
@@ -230,7 +226,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 SleepingTimer++;
                 if (SleepingTimer > 60 && SleepingTimer % 60 == 0)
                 {
-                                    }
+                }
             }
 
 

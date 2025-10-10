@@ -12,11 +12,11 @@ namespace Stellamod.Items.Insources
         public override void Update(Player player, ref int buffIndex)
         {
             base.Update(player, ref buffIndex);
-            if(player.statMana < player.statManaMax2)
+            if (player.statMana < player.statManaMax2)
             {
                 player.statMana += 1;
             }
-  
+
             if (Main.rand.NextBool(10))
             {
                 Vector2 position = player.Center + Main.rand.NextVector2CircularEdge(64, 64);

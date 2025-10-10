@@ -1,17 +1,10 @@
-﻿using MonoMod.Cil;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Stellamod.Helpers;
+using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
-using Terraria.ModLoader.Utilities;
 using Terraria.ModLoader;
-using Terraria;
-using Microsoft.Xna.Framework;
-using Stellamod.Helpers;
+using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Critters
 {
@@ -63,7 +56,7 @@ namespace Stellamod.NPCs.Critters
 
             public override void FindFrame(int frameHeight)
             {
-                if(NPC.velocity.X == 0)
+                if (NPC.velocity.X == 0)
                 {
                     //Don't animate while still, they don't have idle animation
                     NPC.frame.Y = 0;
@@ -105,8 +98,8 @@ namespace Stellamod.NPCs.Critters
                             dust.scale = 0.7f * NPC.scale;
                         }
                     }
-                 //   Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore_Head").Type, NPC.scale);
-                  //  Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore_Leg").Type, NPC.scale);
+                    //   Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore_Head").Type, NPC.scale);
+                    //  Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore_Leg").Type, NPC.scale);
                 }
             }
 

@@ -1,17 +1,13 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Core.Utils;
-using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.Veiizal
 {
@@ -56,7 +52,7 @@ namespace Stellamod.NPCs.Bosses.Veiizal
                 Projectile.ai[1] = 0;
 
             }
-   
+
 
             Projectile.spriteDirection = Projectile.direction;
             Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;

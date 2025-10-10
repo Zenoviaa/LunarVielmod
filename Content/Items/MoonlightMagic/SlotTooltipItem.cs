@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Assets;
+using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -31,7 +31,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 tooltips.Add(tooltipLine);
             }
 
-        
+
         }
 
         private void AddNoSynergyText(List<TooltipLine> tooltips)

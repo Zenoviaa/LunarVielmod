@@ -3,12 +3,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Projectiles;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -45,7 +43,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         {
             Timer++;
             VelTimer++;
-            if(VelTimer == 1)
+            if (VelTimer == 1)
             {
                 OldVelocity = Projectile.velocity;
                 SoundStyle soundStyle = SoundRegistry.Niivi_StarSummon2;
@@ -59,7 +57,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 Color[] colors = new Color[] { Color.LightCyan, Color.Cyan, Color.Blue, Color.White };
                 Color color = colors[Main.rand.Next(0, colors.Length)];
                 float scale = Main.rand.NextFloat(0.5f, 0.8f);
-                            }
+            }
 
 
             Projectile.velocity *= 0.99f;
@@ -67,12 +65,12 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             float maxDetectDistance = 9000;
             Player closestPlayer = PlayerHelper.FindClosestPlayer(Projectile.position, maxDetectDistance);
             Vector2 directionToPlayer = Projectile.Center.DirectionTo(closestPlayer.Center);
-            if(Timer == 66)
+            if (Timer == 66)
             {
                 Projectile.velocity = Vector2.Zero;
             }
 
-            if(Timer >= 70)
+            if (Timer >= 70)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2"), Projectile.position);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, 0, 0,
@@ -113,7 +111,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
 
-  
+
 
             // Retrieve reference to shader
             var shader = ShaderRegistry.MiscFireWhitePixelShader;
@@ -162,7 +160,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                 float scale = Main.rand.NextFloat(0.3f, 0.5f);
-                            }
+            }
         }
     }
 }

@@ -8,12 +8,12 @@ namespace Stellamod.Core.MagicSystem.UI
         public int Compare(BaseEnchantment x, BaseEnchantment y)
         {
             int compareElement = x.GetElementType().CompareTo(y.GetElementType());
-            if(compareElement == 0)
+            if (compareElement == 0)
             {
                 return x.DisplayName.Value.CompareTo(y.DisplayName.Value);
             }
             return compareElement;
-      
+
         }
     }
 }

@@ -2,7 +2,6 @@
 
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Catacombs;
-using Stellamod.Particles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -68,8 +67,8 @@ namespace Stellamod.Projectiles
                 if (ai_Size <= 0)
                     ai_Size = 0;
             }
-         
-     
+
+
             float targetScale = 1.25f;
             float targetLightSize = 7;
             float lightSize = aiSizeMult * targetLightSize;

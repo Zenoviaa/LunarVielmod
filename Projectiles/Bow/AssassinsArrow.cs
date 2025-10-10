@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Projectiles.Swords;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;

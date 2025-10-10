@@ -16,13 +16,13 @@ namespace Stellamod.Tiles.Furniture
     // Contains comments for optional Item.placeStyle handling if you wish to add more relics but use the same tile type (then it would be wise to name this class something more generic like BossRelic)
     // And in case of wanting to add more relics but not wanting to go the optional way, scroll down to the bottom of the file
     public abstract class BossRelicTile : ModTile
-	{
-		public const int FrameWidth = 18 * 3;
-		public const int FrameHeight = 18 * 4;
-		public const int HorizontalFrames = 1;
-		public const int VerticalFrames = 1; // Optional: Increase this number to match the amount of relics you have on your extra sheet, if you choose to go the Item.placeStyle way
+    {
+        public const int FrameWidth = 18 * 3;
+        public const int FrameHeight = 18 * 4;
+        public const int HorizontalFrames = 1;
+        public const int VerticalFrames = 1; // Optional: Increase this number to match the amount of relics you have on your extra sheet, if you choose to go the Item.placeStyle way
 
-		public Asset<Texture2D> RelicTexture;
+        public Asset<Texture2D> RelicTexture;
         public virtual string RelicTextureName => "Stellamod/Tiles/Furniture/DaedusBossRelic";
 
         public override void Load()

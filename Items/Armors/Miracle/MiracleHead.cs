@@ -2,8 +2,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Summons.MiracleSoul;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -16,7 +14,7 @@ namespace Stellamod.Items.Armors.Miracle
     {
         public bool Spetalite = false;
         public override void SetStaticDefaults()
-		{
+        {
             ItemID.Sets.ItemNoGravity[Item.type] = true;
 
             ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;

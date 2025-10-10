@@ -4,7 +4,6 @@ using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;

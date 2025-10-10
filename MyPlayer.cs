@@ -18,7 +18,6 @@ using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Special.Sirestias;
 using Stellamod.Items.Weapons.Melee;
-using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.NPCs.Bosses.Fenix;
@@ -35,7 +34,6 @@ using Stellamod.UI.Dialogue;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -319,7 +317,7 @@ namespace Stellamod
         }
 
 
-   
+
         public override void ModifyScreenPosition()
         {
             if (shouldFocus)
@@ -649,7 +647,7 @@ namespace Stellamod
             //     base.Player.ManageSpecialBiomeVisuals("Stellamod:GreenSunSky", EventWorld.GreenSun && ZoneAcid);
 
             // base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosD", EventWorld.ChaosD && Player.ZoneBeach);
-       //     base.Player.ManageSpecialBiomeVisuals("Stellamod:Veil", ZoneVeil);
+            //     base.Player.ManageSpecialBiomeVisuals("Stellamod:Veil", ZoneVeil);
 
             //base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean && (Player.ZoneOverworldHeight || Player.ZoneSkyHeight));
             //base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);

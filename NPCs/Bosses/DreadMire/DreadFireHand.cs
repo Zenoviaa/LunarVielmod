@@ -33,7 +33,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         public override void AI()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 int Sound = Main.rand.Next(1, 3);
                 if (Sound == 1)
@@ -47,7 +47,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             }
 
 
-            if(Projectile.velocity.Length() <= 25)
+            if (Projectile.velocity.Length() <= 25)
             {
                 Projectile.velocity *= 1.03f;
             }

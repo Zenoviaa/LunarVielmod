@@ -1,80 +1,56 @@
 BasicElement: {
-	DisplayName: Basic Element
 	Tooltip: ""
+	DisplayName: Basic Element
 }
 
 DreadElement: {
+	Tooltip: ""
 	DisplayName: Dread Element
-	Tooltip:
-		'''
-		Transforms your spell into an ancient type of magic!
-		Dread magic can life steal
-		'''
 }
 
 RoyalMagicElement: {
-	DisplayName: RoyalMagic Element
-	Tooltip:
-		'''
-		Transforms your spell into the ultimate magic! 
-		RoyalMagic magic may lower the target's defense
-		'''
+	Tooltip: ""
+	DisplayName: Royal Magic Element
 }
 
 VeilElement: {
+	Tooltip: ""
 	DisplayName: Veil Element
-	Tooltip:
-		'''
-		Transforms your spell with metallic properties!
-		Veil magic adds strike damage to your spells
-		'''
 }
 
 WindElement: {
+	Tooltip: ""
 	DisplayName: Wind Element
-	Tooltip: Transforms your spell with the power of wind!
 }
 
 NaturalElement: {
+	Tooltip: ""
 	DisplayName: Natural Element
-	Tooltip:
-		'''
-		Transforms your spell with the essence of the earth! 
-		Nature magic can slow enemies
-		'''
 }
 
 MoonElement: {
+	Tooltip: ""
 	DisplayName: Moon Element
-	Tooltip:
-		'''
-		Transforms your spell with the magic of the moon! 
-		Moon magic can weaken enemies
-		'''
 }
 
 RadianceElement: {
-	DisplayName: Sun Element
-	Tooltip: "Transforms your spell with the power of the golden sun! "
+	Tooltip: ""
+	DisplayName: Radiance Element
 }
 
 IceElement: {
+	Tooltip: ""
 	DisplayName: Ice Element
-	Tooltip:
-		'''
-		Transforms your spell with the power of water and stars! 
-		Ice magic can cause splash damage
-		'''
 }
 
 PrismaticElement: {
+	Tooltip: ""
 	DisplayName: Prismatic Element
-	Tooltip: Transforms your spell with the power of prisma!
 }
 
 MothlightElement: {
+	Tooltip: ""
 	DisplayName: Mothlight Element
-	Tooltip: Transforms your spell with the power of mothlight!
 }
 
 HolinessElement: {
@@ -83,8 +59,8 @@ HolinessElement: {
 }
 
 PrimeMagicElement: {
+	Tooltip: ""
 	DisplayName: Prime Magic Element
-	Tooltip: Transforms your spell with the power of super efficient magic!
 }
 
 LightningElement: {
@@ -100,4 +76,34 @@ AutomationElement: {
 CheckersElement: {
 	DisplayName: Checkers Element
 	Tooltip: Transforms your spell with the power of chess and checkers!
+}
+
+BloodletElement: {
+	DisplayName: Bloodlet Element
+	Tooltip: ""
+}
+
+DeeyaElement: {
+	DisplayName: Deeya Element
+	Tooltip: ""
+}
+
+GuutElement: {
+	DisplayName: Guut Element
+	Tooltip: ""
+}
+
+HexElement: {
+	DisplayName: Hex Element
+	Tooltip: ""
+}
+
+PhantasmalElement: {
+	DisplayName: Phantasmal Element
+	Tooltip: ""
+}
+
+UvilisElement: {
+	DisplayName: Uvilis Element
+	Tooltip: ""
 }

@@ -1,9 +1,6 @@
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 
 
@@ -34,6 +31,6 @@ namespace Stellamod.Items.Armors.Leather
             player.GetCritChance(DamageClass.Ranged) += 4;
         }
 
-       
+
     }
 }

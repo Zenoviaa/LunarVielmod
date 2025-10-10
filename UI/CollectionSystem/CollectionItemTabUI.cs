@@ -2,9 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items;
 using Stellamod.Items.Materials.Molds;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ModLoader;
@@ -63,12 +61,12 @@ namespace Stellamod.UI.CollectionSystem
                 if (contains)
                 {
                     MoldTooltipItem t = ModContent.GetModItem(ModContent.ItemType<MoldTooltipItem>()) as MoldTooltipItem;
-                    if(t.MoldNeeded == null)
+                    if (t.MoldNeeded == null)
                     {
                         t.MoldNeeded ??= new Item();
                         t.MoldNeeded.SetDefaults(0);
                     }
-                
+
                     t.MoldNeeded = cauldron.FindMold(Item);
                     Main.hoverItemName = "Testing Testing 123";
                     Main.HoverItem = t.Item;
@@ -166,7 +164,7 @@ namespace Stellamod.UI.CollectionSystem
             spriteBatch.Draw(value, rectangle.TopLeft(), null, color2, 0f, default(Vector2), _scale, SpriteEffects.None, 0f);
             ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale, 32, Color.White);
 
-    
+
             if (contains)
             {
                 Main.hoverItemName = Item.Name;
@@ -285,7 +283,7 @@ namespace Stellamod.UI.CollectionSystem
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-          
+
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
@@ -341,7 +339,7 @@ namespace Stellamod.UI.CollectionSystem
             _slotGrid.Width.Set(0, 1f);
             _slotGrid.Height.Set(0, 1f);
             _slotGrid.ListPadding = 2f;
- 
+
             _panel.Append(_slotGrid);
 
             _scrollbar = new FancyScrollbar();
@@ -388,7 +386,7 @@ namespace Stellamod.UI.CollectionSystem
 
             _slotGrid.Recalculate();
             base.Recalculate();
-           
+
         }
 
         public override void Update(GameTime gameTime)

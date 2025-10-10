@@ -1,14 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
-using Stellamod.Helpers;
-using Stellamod.Items;
 using Stellamod.Items.Accessories.Players;
-using Stellamod.Projectiles.Crossbows;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;

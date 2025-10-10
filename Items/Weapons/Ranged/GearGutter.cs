@@ -1,6 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Dusts;
-using Stellamod.Items.Materials;
 
 using Stellamod.Projectiles.Gun;
 using Terraria;

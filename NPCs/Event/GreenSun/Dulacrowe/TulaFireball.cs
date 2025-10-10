@@ -3,11 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -63,7 +58,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
         {
             var textureAsset = TextureRegistry.CloudTexture;
 
-       
+
             float drawScale = 0.1f;
             float drawRotation = Projectile.rotation;
 
@@ -82,7 +77,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
             spriteBatch.Draw(textureAsset.Value, drawPosition, null, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
-            
+
             // Retrieve reference to shader
             var shader = ShaderRegistry.MiscFireWhitePixelShader;
 

@@ -1,26 +1,21 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Shaders;
+using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria;
 using Terraria.DataStructures;
-using Stellamod.Core.Shaders.MagicTrails;
-using Stellamod.Core.Shaders;
-using Stellamod.Helpers;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    public class ShredderProj : ModProjectile, 
+    public class ShredderProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         private float _rotationSpeed;
-     
+
         public override void OnSpawn(IEntitySource source)
         {
             for (int i = 0; i < Projectile.oldPos.Length; i++)
@@ -45,7 +40,7 @@ namespace Stellamod.Projectiles.Gun
             Projectile.penetrate = -1;
             Projectile.usesIDStaticNPCImmunity = true;
             Projectile.idStaticNPCHitCooldown = 12;
-         
+
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -57,7 +52,7 @@ namespace Stellamod.Projectiles.Gun
         {
             float rotationDirection = Projectile.ai[0];
             Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(_rotationSpeed * rotationDirection));
-            _rotationSpeed+=0.15f;
+            _rotationSpeed += 0.15f;
 
             //Dunno if this is needed but whatever
             Projectile.rotation = Projectile.velocity.ToRotation();

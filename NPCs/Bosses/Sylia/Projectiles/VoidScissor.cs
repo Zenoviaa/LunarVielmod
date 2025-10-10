@@ -33,7 +33,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         public override void AI()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 TargetVelocity = Projectile.velocity;
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/RipperSlash2");

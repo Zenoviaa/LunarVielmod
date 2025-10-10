@@ -4,7 +4,6 @@ using Stellamod.Projectiles;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Catacombs;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -51,7 +50,7 @@ namespace Stellamod
         {
             int count = FireDungeonAltarWorld.Length;
             writer.Write(count);
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 writer.WriteVector2(FireDungeonAltarWorld[i]);
             }
@@ -78,7 +77,7 @@ namespace Stellamod
         {
             int count = reader.ReadInt32();
             FireDungeonAltarWorld = new Vector2[count];
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 FireDungeonAltarWorld[i] = reader.ReadVector2();
             }
@@ -106,7 +105,7 @@ namespace Stellamod
             if (!_findTeleportTiles)
             {
                 FindDungeonAltarTiles();
- 
+
                 bool foundTile;
                 FindTiles(ModContent.TileType<FlowerSummon>(), out Vector2[] stoneGolemAltar, out foundTile);
                 if (foundTile)
@@ -155,7 +154,7 @@ namespace Stellamod
             int fireType = ModContent.TileType<CatacombStoneFire>();
             int waterType = ModContent.TileType<CatacombStoneWater>();
             int trapType = ModContent.TileType<CatacombStoneTrap>();
-            for(int i = 0; i < 100; i++)
+            for (int i = 0; i < 100; i++)
             {
                 int tileType = Main.tile[x, y + i].TileType;
                 if (tileType == fireType || tileType == waterType || tileType == trapType)
@@ -184,15 +183,15 @@ namespace Stellamod
                     {
                         Vector2 worldPoint = new Vector2(x, y).ToWorldCoordinates();
                         int catacombsType = GetCatacombsTile(x, y);
-                        if(catacombsType == fireType)
+                        if (catacombsType == fireType)
                         {
                             fireDungeonWorldList.Add(worldPoint);
-                        }  
+                        }
                         else if (catacombsType == waterType)
                         {
                             waterDungeonWorldList.Add(worldPoint);
-                        } 
-                        else if(catacombsType == trapType)
+                        }
+                        else if (catacombsType == trapType)
                         {
                             trapDungeonWorldList.Add(worldPoint);
                         }
@@ -246,7 +245,7 @@ namespace Stellamod
             foreach (var kvp in FocalPortals)
             {
                 altarTile = kvp.Key;
-                Vector2 portalPosition = new Vector2((altarTile.X + 1 )* 16, (altarTile.Y - 6) * 16);
+                Vector2 portalPosition = new Vector2((altarTile.X + 1) * 16, (altarTile.Y - 6) * 16);
                 Vector2 catacombsPortalPosition = new Vector2(kvp.Value.X, kvp.Value.Y) + new Vector2(0, -16 * 160);
 
                 int p = Projectile.NewProjectile(Main.LocalPlayer.GetSource_FromThis(), portalPosition, Vector2.Zero,
@@ -268,11 +267,11 @@ namespace Stellamod
         {
             //Save it
             Point altarTile = new Point(altarTileX, altarTileY);
-            foreach(var kvp in FocalPortals)
+            foreach (var kvp in FocalPortals)
             {
                 Point otherPortal = kvp.Key;
                 float dist = Vector2.Distance(new Vector2(altarTileX, altarTileY), new Vector2(otherPortal.X, otherPortal.Y));
-                if(dist <= 6)
+                if (dist <= 6)
                 {
                     altarTile = otherPortal;
                     break;

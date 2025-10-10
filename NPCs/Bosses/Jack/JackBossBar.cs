@@ -17,28 +17,28 @@ namespace Stellamod.NPCs.Bosses.Jack
     // You can make it so your NPC never shows a boss bar, such as Dungeon Guardian or Lunatic Cultist Clone:
     //  NPC.BossBar = Main.BigBossProgressBar.NeverValid;
     public class JackBossBar : ModBossBar
-	{
-		private int VeribossHeadIndex = -1;
-		public override Asset<Texture2D> GetIconTexture(ref Rectangle? iconFrame)
-		{
-			if (VeribossHeadIndex != -1)
-			{
-				return TextureAssets.NpcHeadBoss[VeribossHeadIndex];
-			}
-			return null;
-		}
+    {
+        private int VeribossHeadIndex = -1;
+        public override Asset<Texture2D> GetIconTexture(ref Rectangle? iconFrame)
+        {
+            if (VeribossHeadIndex != -1)
+            {
+                return TextureAssets.NpcHeadBoss[VeribossHeadIndex];
+            }
+            return null;
+        }
 
-		public override bool PreDraw(SpriteBatch spriteBatch, NPC npc, ref BossBarDrawParams drawParams)
-		{
-			// Make the bar shake the less health the NPC has
-			float lifePercent = drawParams.Life / drawParams.LifeMax;
-			float shakeIntensity = Utils.Clamp(1f - lifePercent - 0.2f, 0f, 1f);
-			drawParams.BarCenter.Y -= 20f;
-			drawParams.BarCenter += Main.rand.NextVector2Circular(0.5f, 0.5f) * shakeIntensity * 15f;
+        public override bool PreDraw(SpriteBatch spriteBatch, NPC npc, ref BossBarDrawParams drawParams)
+        {
+            // Make the bar shake the less health the NPC has
+            float lifePercent = drawParams.Life / drawParams.LifeMax;
+            float shakeIntensity = Utils.Clamp(1f - lifePercent - 0.2f, 0f, 1f);
+            drawParams.BarCenter.Y -= 20f;
+            drawParams.BarCenter += Main.rand.NextVector2Circular(0.5f, 0.5f) * shakeIntensity * 15f;
 
-			VeribossHeadIndex = npc.GetBossHeadTextureIndex();
+            VeribossHeadIndex = npc.GetBossHeadTextureIndex();
 
-			return true;
-		}
-	}
+            return true;
+        }
+    }
 }

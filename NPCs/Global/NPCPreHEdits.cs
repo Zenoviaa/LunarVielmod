@@ -1,11 +1,9 @@
-﻿using Stellamod.Items.Accessories;
-using Stellamod.Items.Accessories.Brooches;
+﻿using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Special.MinerLogs;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.PowdersItem;
-using Stellamod.Items.Weapons.Summon;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -274,7 +272,7 @@ namespace Stellamod.NPCs.Global
             {
 
 
-           
+
 
             }
 

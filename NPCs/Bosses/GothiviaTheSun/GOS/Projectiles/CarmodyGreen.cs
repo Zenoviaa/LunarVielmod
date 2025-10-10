@@ -1,10 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
-using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
-using Stellamod.Projectiles.Summons;
-using Stellamod.Projectiles.Visual;
 using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
@@ -163,8 +159,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 //NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<ALCADSWIRL>());
             }
             NPC.noTileCollide = true;
-        
-           
+
+
             UpdateFrame(1f, 1, 80);
             bee2--;
             gr++;
@@ -172,7 +168,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
 
 
-            
+
             if (gr == 80 && !HHH)
             {
 
@@ -183,14 +179,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
                 gr = 0;
             }
-            
+
 
             if (bee2 <= 90)
             {
                 HHH = true;
             }
 
-           
+
 
             if (bee2 == 0)
             {

@@ -1,21 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
-using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee.Greatswords;
-using Stellamod.Items.Weapons.Ranged.GunSwapping;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.NPCs.Bosses.Fenix.Projectiles;
-using Stellamod.Particles;
-using Stellamod.Projectiles.Gun;
 using Stellamod.UI.Systems;
-using Stellamod.Utilis;
-using Stellamod.WorldG;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -23,7 +11,6 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 
 namespace Stellamod.NPCs.Event.GreenSun.IrravheilFlames
@@ -76,7 +63,7 @@ namespace Stellamod.NPCs.Event.GreenSun.IrravheilFlames
             NPC.knockBackResist = 0.4f;
             NPC.noGravity = false;
             NPC.noTileCollide = false;
-     
+
         }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
@@ -222,10 +209,10 @@ namespace Stellamod.NPCs.Event.GreenSun.IrravheilFlames
                 // The faceTarget parameter means that npc.direction will automatically be 1 or -1 if the targeted player is to the right or left.
                 // This is also automatically flipped if npc.confused.
             }
-                NPC.TargetClosest(true);
+            NPC.TargetClosest(true);
 
             // Now we check the make sure the target is still valid and within our specified notice range (500)
-           if (Tti > 120)
+            if (Tti > 120)
             {
                 if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 375f)
                 {
@@ -235,9 +222,9 @@ namespace Stellamod.NPCs.Event.GreenSun.IrravheilFlames
                     ResetTimers();
                 }
             }
-               
 
-            
+
+
 
         }
 
@@ -272,7 +259,7 @@ namespace Stellamod.NPCs.Event.GreenSun.IrravheilFlames
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
                 NPC.velocity *= 0f;
 
-               
+
 
                 if (StellaMultiplayer.IsHost)
                 {

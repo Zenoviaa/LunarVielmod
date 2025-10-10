@@ -1,10 +1,9 @@
-﻿using Stellamod.Items.Quest.Zui;
-using Stellamod.Tiles.Abyss;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ModLoader;
+﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Items.Quest.Zui;
+using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {

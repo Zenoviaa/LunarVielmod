@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.UI.Systems;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -17,7 +15,7 @@ namespace Stellamod.Projectiles.Summons
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 2;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
         }
-       
+
         private int rippleCount = 10;
         private int rippleSize = 5;
         private int rippleSpeed = 20;
@@ -25,7 +23,7 @@ namespace Stellamod.Projectiles.Summons
 
         public override void SetDefaults()
         {
-          
+
             Projectile.width = 22;
             Projectile.height = 22;
             Projectile.tileCollide = false; // Makes the minion go through tiles freely
@@ -48,12 +46,12 @@ namespace Stellamod.Projectiles.Summons
 
             if (Projectile.timeLeft <= 180)
             {
-               
+
                 if (Projectile.ai[0] == 0)
                 {
                     Projectile.ai[0] = 1; // Set state to exploded
                     Projectile.alpha = 255; // Make the Projectile invisible.
-                  
+
 
                     if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
                     {
@@ -79,13 +77,13 @@ namespace Stellamod.Projectiles.Summons
 
         public override bool PreDraw(ref Color lightColor)
         {
-           /*
-            Vector2 center = Projectile.Center + new Vector2(0f, Projectile.height * -0.1f);
+            /*
+             Vector2 center = Projectile.Center + new Vector2(0f, Projectile.height * -0.1f);
 
-            // This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
-            Vector2 direction = Main.rand.NextVector2CircularEdge(Projectile.width * 0.6f, Projectile.height * 0.6f);
-            float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
-            Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);*/
+             // This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
+             Vector2 direction = Main.rand.NextVector2CircularEdge(Projectile.width * 0.6f, Projectile.height * 0.6f);
+             float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
+             Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);*/
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
             // Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
@@ -125,7 +123,7 @@ namespace Stellamod.Projectiles.Summons
                     Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(209, 0, 180, 77), Projectile.rotation, frameOrigin, Projectile.scale, SpriteEffects.None, 0);
                 }
             }
-                      
+
             return true;
         }
 
@@ -135,6 +133,6 @@ namespace Stellamod.Projectiles.Summons
             {
                 Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
             }
-        }    
+        }
     }
 }

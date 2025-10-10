@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
-using Stellamod.Content.Items.MoonlightMagic.Forms;
-using Stellamod.Helpers;
 using Stellamod.Core.Particles;
+using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ModLoader;
@@ -13,13 +12,13 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Bloodlet
 {
     public class BloodThinningEnchantment : BaseEnchantment
     {
-        
+
         public override void SetDefaults()
         {
             base.SetDefaults();
             time = 30;
         }
-    
+
         public override void AI()
         {
             base.AI();
@@ -37,8 +36,8 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Bloodlet
                     Particle.NewParticle<BloodSparkleParticle>(spawnPoint, velocity, Color.White);
                 }
 
-                
-               
+
+
                 float damage = Projectile.damage;
                 damage *= 1.25f;
                 Projectile.damage = (int)damage;

@@ -1,13 +1,8 @@
-﻿using Stellamod.Projectiles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Projectiles;
 using Terraria;
-using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.NPCs
 {
@@ -55,7 +50,7 @@ namespace Stellamod.NPCs
             NPC.velocity = VectorHelper.VelocitySlowdownTo(NPC.Center, circlePosition, movementSpeed);
 
             _timer--;
-            if(_timer <= 0)
+            if (_timer <= 0)
             {
                 if (StellaMultiplayer.IsHost)
                 {

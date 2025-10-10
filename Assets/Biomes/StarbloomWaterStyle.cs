@@ -12,6 +12,6 @@ namespace Stellamod.Assets.Biomes
         public override int GetDropletGore() => GoreID.WaterDripHallow;
         public override Color BiomeHairColor() => Color.LightGoldenrodYellow;
 
-       
+
     }
 }

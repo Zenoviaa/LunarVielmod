@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Graphics.Shaders;
@@ -47,7 +46,7 @@ namespace Stellamod.Projectiles.Bow
                 Color[] colors = new Color[] { Color.LightCyan, Color.Cyan, Color.Blue, Color.White };
                 Color color = colors[Main.rand.Next(0, colors.Length)];
                 float scale = Main.rand.NextFloat(0.5f, 0.8f);
-                            }
+            }
 
         }
 
@@ -117,7 +116,7 @@ namespace Stellamod.Projectiles.Bow
             {
                 Vector2 velocity = Main.rand.NextVector2CircularEdge(16, 16);
                 float scale = Main.rand.NextFloat(0.3f, 0.5f);
-                            }
+            }
         }
     }
 }

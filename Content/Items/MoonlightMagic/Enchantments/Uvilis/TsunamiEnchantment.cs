@@ -1,14 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
-using Stellamod.Content.Items.MoonlightMagic.Forms;
-using Stellamod.Helpers;
-using Stellamod.Core.Helpers.Math;
-using Stellamod.Core.ItemTemplates;
-using Stellamod.Core.Particles;
+using Stellamod.Core.Bases;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
-using Stellamod.Visual.Particles;
+using Stellamod.Helpers;
+using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.Trails;
 using System;
 using Terraria;
@@ -42,9 +39,9 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Uvilis
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            
+
             //Spawn the explosion
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, 
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center,
                 Projectile.velocity.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<TsunamiEnchantmentExplosion>(),
               Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
             return true;
@@ -54,7 +51,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Uvilis
         {
             base.OnHitNPC(target, hit, damageDone);
 
-            
+
             //Spawn the explosion
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center,
                 Projectile.velocity.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<TsunamiEnchantmentExplosion>(),
@@ -85,9 +82,9 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Uvilis
 
         protected override float BeamWidthFunction(float p)
         {
-            float width = 64 * 1.3f ;
+            float width = 64 * 1.3f;
             p = EasingFunction.QuadraticBump(p);
-         
+
             switch (trailingMode)
             {
                 default:
@@ -102,10 +99,8 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Uvilis
 
         protected override float WidthFunction(float p)
         {
-            
-            float m = 32;
-            return base.WidthFunction(p) * EasingFunction.QuadraticBump(MathF.Sin(p * 4)) 
-                * MathUtil.Osc(0.75f, 1f, speed:3, offset: p * 4)
+            return base.WidthFunction(p) * EasingFunction.QuadraticBump(MathF.Sin(p * 4))
+                * MathUtil.Osc(0.75f, 1f, speed: 3, offset: p * 4)
                 + MathUtil.Osc(5f, 10f, speed: 3, offset: MathF.Sin(p * 16));
         }
 
@@ -196,7 +191,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Uvilis
 
         public override bool PreDraw(ref Color lightColor)
         {
-        
+
             DrawMainShader();
             DrawOutlineShader();
             DrawOutlineShader2();

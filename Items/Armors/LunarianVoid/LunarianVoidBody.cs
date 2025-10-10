@@ -1,7 +1,6 @@
 using Terraria;
-using Terraria.ModLoader;
 using Terraria.ID;
-using Stellamod.Items.Materials;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.LunarianVoid
 {
@@ -27,6 +26,6 @@ namespace Stellamod.Items.Armors.LunarianVoid
             player.GetCritChance(DamageClass.Throwing) += 10f;
         }
 
-       
+
     }
 }

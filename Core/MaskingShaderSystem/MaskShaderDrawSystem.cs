@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Helpers;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Shaders;
@@ -38,7 +37,7 @@ namespace Stellamod.Core.MaskingShaderSystem
                 }
 
                 //Sort by shader
-              //  _draws.Sort((x, y) => x.GetMaskDrawShader().ToString().CompareTo(y.GetMaskDrawShader().ToString()));
+                //  _draws.Sort((x, y) => x.GetMaskDrawShader().ToString().CompareTo(y.GetMaskDrawShader().ToString()));
                 return _draws;
             }
         }
@@ -65,9 +64,7 @@ namespace Stellamod.Core.MaskingShaderSystem
             int height = Main.screenHeight;
             _preMaskDrawRenderTarget ??= new RenderTarget2D(Main.instance.GraphicsDevice, width, height);
             _maskRenderTarget ??= new RenderTarget2D(Main.instance.GraphicsDevice, width, height);
-
-            int drawCount = 0;
-       //     Console.WriteLine(Draws.Count);
+            //     Console.WriteLine(Draws.Count);
             //This should be in front of NPCS
             //Just need to loop over all of them and draw them
             //We do it this way so it's super duper optimized

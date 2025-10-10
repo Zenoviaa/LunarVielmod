@@ -99,6 +99,6 @@ namespace Stellamod.Items.Weapons.Melee
             return false;
         }
 
-       
+
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -51,17 +50,17 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
             //On second thought, maybe have ai similar to charging type minions like optic staff
             //hmmm
             NPC npcToHomeTo = NPCHelper.FindClosestNPC(Projectile.position, 512);
-            if(npcToHomeTo != null)
+            if (npcToHomeTo != null)
             {
-                _projSpeed +=0.25f;
-                if(_projSpeed > Max_Proj_Speed)
+                _projSpeed += 0.25f;
+                if (_projSpeed > Max_Proj_Speed)
                 {
                     _projSpeed = Max_Proj_Speed;
                 }
 
                 Projectile.velocity = (npcToHomeTo.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * _projSpeed;
             }
-            
+
             Projectile.rotation = Projectile.velocity.ToRotation();
             Visuals();
         }
@@ -91,7 +90,7 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
             }
 
             _dustCounter++;
-            if(_dustCounter > Body_Dust_Rate)
+            if (_dustCounter > Body_Dust_Rate)
             {
                 Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
                 Dust dust = Dust.NewDustPerfect(position, DustID.GemAmethyst, Scale: Main.rand.NextFloat(0.5f, 3f));

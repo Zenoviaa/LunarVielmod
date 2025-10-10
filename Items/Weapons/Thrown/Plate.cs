@@ -6,11 +6,11 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Thrown
 {
     public class Plate : ModItem
-	{
-        public override void SetStaticDefaults() 
-		{
-			// DisplayName.SetDefault("Cactius"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-		}
+    {
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Cactius"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
+        }
 
         public override void SetDefaults()
         {

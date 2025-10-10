@@ -1,14 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
-using Stellamod.Content.Items.MoonlightMagic.Forms;
-using Stellamod.Helpers;
-using Stellamod.Core.Helpers.Math;
-using Stellamod.Core.ItemTemplates;
-using Stellamod.Core.Particles;
+using Stellamod.Core.Bases;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
-using Stellamod.Visual.Particles;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.ModLoader;
@@ -140,7 +136,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Nature
         private void DrawMainShader()
         {
             //Trail
-           // trailMode = 0;
+            // trailMode = 0;
             var shader = MagicNaturalShader.Instance;
             shader.PrimaryTexture = TrailRegistry.NoiseTextureLeaves;
             shader.NoiseTexture = TrailRegistry.NoiseTextureLeaves;
@@ -157,19 +153,19 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Nature
             TrailDrawer.Draw(Main.spriteBatch, _circlePos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
         }
 
-       
+
 
         public override bool PreDraw(ref Color lightColor)
         {
             DrawMainShader();
             // DrawOutlineShader();
-            return false ;
+            return false;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-          //  target.AddBuff(BuffID.OnFire, 90);
+            //  target.AddBuff(BuffID.OnFire, 90);
         }
     }
 }

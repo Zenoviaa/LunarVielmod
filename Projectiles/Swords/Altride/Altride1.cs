@@ -41,7 +41,7 @@ namespace Stellamod.Projectiles.Swords.Altride
             Projectile.friendly = true;
             Projectile.tileCollide = false;
         }
-       
+
         public override void AI()
         {
             Timer++;
@@ -52,7 +52,7 @@ namespace Stellamod.Projectiles.Swords.Altride
             }
             if (Timer == 1)
             {
-              
+
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit2"), Projectile.position);
 
 

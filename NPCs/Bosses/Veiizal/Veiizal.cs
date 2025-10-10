@@ -4,21 +4,11 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.DreadMire;
-using Stellamod.NPCs.Bosses.DreadMire.Heart;
-using Stellamod.NPCs.Bosses.singularityFragment;
-using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
 using Stellamod.NPCs.Bosses.Verlia;
 using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -523,7 +513,7 @@ namespace Stellamod.NPCs.Bosses.Veiizal
                         // default attack, just moves above player, waits  seconds then does a random attack
                         NPC.velocity.X *= 1.03f;
                         NPC.velocity.Y *= 0.99f;
-                        NPC.ai[0]++;                   
+                        NPC.ai[0]++;
                         if (NPC.ai[0] == 20)
                         {
                             int Sound = Main.rand.Next(1, 3);
@@ -549,7 +539,7 @@ namespace Stellamod.NPCs.Bosses.Veiizal
                             NPC.ai[1] = 0;
                             NPC.ai[0] = 0;
                         }
-    
+
 
                         break;
                 }

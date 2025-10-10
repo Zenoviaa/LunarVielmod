@@ -1,20 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
+using Stellamod.Trails;
 using System;
-using System.IO;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Dusts;
-using Stellamod.Trails;
-using Stellamod.Utilis;
-using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
-using Stellamod.Items.Accessories.Players;
-
-using Stellamod.Particles;
-using Stellamod.Helpers;
 
 namespace Stellamod.Projectiles.Slashers.Maelstrom
 {
@@ -113,7 +105,7 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Player player = Main.player[Projectile.owner];          
+            Player player = Main.player[Projectile.owner];
             Vector2 oldMouseWorld = Main.MouseWorld;
             if (!bounced)
             {
@@ -121,7 +113,7 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
                 bounced = true;
             }
 
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 16f);   
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 16f);
         }
 
         public PrimDrawer TrailDrawer { get; private set; } = null;

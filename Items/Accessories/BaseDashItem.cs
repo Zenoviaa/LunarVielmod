@@ -1,9 +1,4 @@
 ﻿using Stellamod.Items.Accessories.Players;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -34,7 +29,7 @@ namespace Stellamod.Items.Accessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             base.UpdateAccessory(player, hideVisual);
-            
+
             //This class should be inherited to prevent multiple dash augments from being equipped, 
             //These things are gonna be powerful so
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();

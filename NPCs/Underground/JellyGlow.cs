@@ -4,12 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Special.MinerLogs;
-using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
-using Stellamod.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -70,7 +67,7 @@ namespace Stellamod.NPCs.Underground
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
         }
 
-     
+
 
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
@@ -85,13 +82,13 @@ namespace Stellamod.NPCs.Underground
             if (StellaMultiplayer.IsHost && !Pregnate)
             {
                 int range = 256;
-                for(int i = 0; i < Main.rand.Next(5, 13); i++)
+                for (int i = 0; i < Main.rand.Next(5, 13); i++)
                 {
                     int x = (int)NPC.Center.X + Main.rand.Next(-range, range);
                     int y = (int)NPC.Center.Y + Main.rand.Next(-range, range);
-                    NPC.NewNPC(NPC.GetSource_FromThis(), x, y, 
-                        ModContent.NPCType<BabyJellyGlow>(), 
-                        ai0: NPC.whoAmI, 
+                    NPC.NewNPC(NPC.GetSource_FromThis(), x, y,
+                        ModContent.NPCType<BabyJellyGlow>(),
+                        ai0: NPC.whoAmI,
                         ai1: Main.rand.NextFloat(0.00f, 1.00f));
                 }
 
@@ -146,7 +143,7 @@ namespace Stellamod.NPCs.Underground
 
         private void Friendly()
         {
-            if(_wanderDirection == Vector2.Zero)
+            if (_wanderDirection == Vector2.Zero)
             {
                 _wanderDirection = Vector2.UnitX;
             }
@@ -165,7 +162,7 @@ namespace Stellamod.NPCs.Underground
             float progress = Timer / Movement_Osc_Time;
             float easedProgress = Easing.InOutCirc(progress);
             Vector2 smoothVelocity = targetVelocity * easedProgress;
-           // NPC.velocity = smoothVelocity;
+            // NPC.velocity = smoothVelocity;
             NPC.velocity.Y = MathHelper.Lerp(-0.5f, 0.5f, easedProgress);
         }
 
@@ -218,7 +215,7 @@ namespace Stellamod.NPCs.Underground
                 ModContent.ItemType<JellyStaff>(),
                    ModContent.ItemType<VeiledScriptureMiner9>()));
         }
-      
+
 
         float trueFrame = 0;
         public override void FindFrame(int frameHeight)
@@ -248,7 +245,7 @@ namespace Stellamod.NPCs.Underground
             Vector2 drawPos = NPC.Center - Main.screenPosition + new Vector2(0, -64);
             for (int i = 0; i < 4; i++)
             {
-                Main.spriteBatch.Draw(texture, drawPos, null, new Color((int)(huntrianColorXyz.X * 1), (int)(huntrianColorXyz.Y * 1), (int)(huntrianColorXyz.Z * 1), 0), 
+                Main.spriteBatch.Draw(texture, drawPos, null, new Color((int)(huntrianColorXyz.X * 1), (int)(huntrianColorXyz.Y * 1), (int)(huntrianColorXyz.Z * 1), 0),
                     NPC.rotation, new Vector2(32, 32), 0.66f * (7 + 0.6f), SpriteEffects.None, 0f);
             }
 

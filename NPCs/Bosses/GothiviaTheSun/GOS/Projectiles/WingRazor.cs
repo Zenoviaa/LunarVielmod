@@ -1,16 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Particles;
+using Stellamod.Dusts;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
-using System;
-using System.Collections.Generic;
 using Terraria.ModLoader;
-using System.IO;
-using Stellamod.Dusts;
-using Stellamod.Trails;
 
 
 
@@ -63,7 +58,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             Projectile.rotation = Projectile.velocity.ToRotation();
             Timer++;
 
-         
+
             if (Timer == 1)
             {
                 for (int inn = 0; inn < 38; inn++)
@@ -83,13 +78,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
                     //Get a random
                     float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                                    }
+                }
                 var entitySource = Projectile.GetSource_FromThis();
                 if (StellaMultiplayer.IsHost)
                 {
 
 
-                    
+
                 }
             }
             ai_Counter++;
@@ -100,11 +95,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             UpdateFrame(0.6f, 1, 60);
         }
 
-       
 
 
 
-       
+
+
         public override void OnKill(int timeLeft)
         {
             for (int inn = 0; inn < 38; inn++)
@@ -124,7 +119,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
                 //Get a random
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                            }
+            }
             var entitySource = Projectile.GetSource_FromThis();
             if (StellaMultiplayer.IsHost)
             {
@@ -173,7 +168,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
 
             }
-           
+
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 16f);
         }

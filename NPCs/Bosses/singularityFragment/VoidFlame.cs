@@ -112,7 +112,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
             spriteBatch.Draw(textureAsset.Value, drawPosition, null, (Color)GetAlpha(lightColor), drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
 
-    
+
 
             spriteBatch.End();
             spriteBatch.Begin();

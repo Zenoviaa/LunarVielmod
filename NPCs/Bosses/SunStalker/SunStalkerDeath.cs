@@ -46,7 +46,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             NPC.value = 30f;
             NPC.buffImmune[BuffID.OnFire] = true;
             NPC.alpha = 0;
-     
+
             NPC.knockBackResist = 0f;
             NPC.noTileCollide = true;
             NPC.noGravity = true;

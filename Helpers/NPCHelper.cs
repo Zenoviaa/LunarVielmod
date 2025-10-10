@@ -36,7 +36,7 @@ namespace Stellamod.Helpers
         /// <returns></returns>
         public static bool IsBossAlive()
         {
-            for(int k = 0; k < Main.maxNPCs; k++)
+            for (int k = 0; k < Main.maxNPCs; k++)
             {
                 NPC npc = Main.npc[k];
                 if (npc.boss)

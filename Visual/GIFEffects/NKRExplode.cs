@@ -65,7 +65,7 @@ namespace Stellamod.Visual.GIFEffects
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
-            
+
             Rectangle rectangle = new Rectangle(0, 0, 129, 129);
             rectangle.X = ((int)trueFrame % 5) * rectangle.Width;
             rectangle.Y = (((int)trueFrame - ((int)trueFrame % 5)) / 5) * rectangle.Height;

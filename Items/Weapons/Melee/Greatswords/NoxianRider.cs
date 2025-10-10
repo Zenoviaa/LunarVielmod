@@ -54,7 +54,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
 
 
             //Set stamina to use
-            
+
             //set staminacombo
             maxStaminaCombo = 1;
             //Set stamina projectile

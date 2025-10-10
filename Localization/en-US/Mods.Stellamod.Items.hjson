@@ -9111,3 +9111,18 @@ StoneTombBlock: {
 	DisplayName: Stone Tomb Block
 	Tooltip: ""
 }
+
+NoStaff: {
+	DisplayName: No Staff
+	Tooltip: ""
+}
+
+SlotTooltipItem: {
+	DisplayName: Slot Tooltip Item
+	Tooltip: ""
+}
+
+UniversalEnchantment: {
+	DisplayName: Universal Enchantment
+	Tooltip: ""
+}

@@ -1,7 +1,4 @@
-﻿using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
-using Stellamod.Projectiles;
+﻿using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

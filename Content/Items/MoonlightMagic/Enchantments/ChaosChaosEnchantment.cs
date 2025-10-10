@@ -23,7 +23,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments
             if (!HasSwapped)
             {
                 var enchantmentsToSpawn = AllEnchantments;
-                for(int i = 0; i < 10; i++)
+                for (int i = 0; i < 10; i++)
                 {
                     BaseEnchantment enchantmentToSwapTo = enchantmentsToSpawn[Main.rand.Next(0, enchantmentsToSpawn.Length)];
                     if (EnchantmentHelper.SpecialEnchantments.Contains(enchantmentToSwapTo.Type))

@@ -53,7 +53,7 @@ namespace Stellamod.Items.Weapons.Melee.Longswords
 
 
             //Set stamina to use
-            
+
             //set staminacombo
             maxStaminaCombo = 10;
             //Set stamina projectile
@@ -64,7 +64,7 @@ namespace Stellamod.Items.Weapons.Melee.Longswords
     public class PearlingSwordSlash : BaseSwingProjectile
     {
         public override string Texture => this.PathHere() + "/Pearling";
-    
+
         public bool Hit;
 
         public override void SetStaticDefaults()
@@ -363,8 +363,8 @@ namespace Stellamod.Items.Weapons.Melee.Longswords
     }
     public class PearlingSwordStaminaSlash : BaseSwingProjectile
     {
-        public override string Texture => this.PathHere()+"/Pearling";
-    
+        public override string Texture => this.PathHere() + "/Pearling";
+
         public bool Hit;
 
         public override void SetStaticDefaults()
@@ -414,14 +414,11 @@ namespace Stellamod.Items.Weapons.Melee.Longswords
         public override void SetComboDefaults(List<BaseSwingStyle> swings)
         {
             base.SetComboDefaults(swings);
-            float ovalRotOffset = 0;
             if (ComboDirection == 1)
             {
-                ovalRotOffset = 0;
             }
             else
             {
-                ovalRotOffset = MathHelper.Pi + MathHelper.PiOver2;
             }
 
             SoundStyle swingSound1 = SoundRegistry.NSwordSlash1;

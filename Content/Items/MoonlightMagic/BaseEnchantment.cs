@@ -121,7 +121,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             tooltipLine.OverrideColor = Color.IndianRed;
             tooltips.Add(tooltipLine);
 
-           
+
         }
 
         public virtual void DrawTextShader(SpriteBatch spriteBatch, Item item, DrawableTooltipLine line, ref int yOffset) { }

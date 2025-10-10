@@ -1,9 +1,8 @@
 using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Gun;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -22,52 +21,52 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.mana = 3;
         }
         public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Tychine Gun");
-			// Tooltip.SetDefault("Chance to shoot sharks dealing three times the normal damage");
-		}
+        {
+            // DisplayName.SetDefault("Tychine Gun");
+            // Tooltip.SetDefault("Chance to shoot sharks dealing three times the normal damage");
+        }
 
-		public override void SetDefaults()
-		{
-			Item.noMelee = true;
-			Item.damage = 8;
-			Item.DamageType = DamageClass.Ranged;
-			Item.width = 40;
-			Item.height = 40;
+        public override void SetDefaults()
+        {
+            Item.noMelee = true;
+            Item.damage = 8;
+            Item.DamageType = DamageClass.Ranged;
+            Item.width = 40;
+            Item.height = 40;
 
 
-			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.knockBack = 6;
-			Item.value = 10000;
-			Item.rare = ItemRarityID.Orange;
-			Item.UseSound = SoundID.Item11;
-			Item.autoReuse = true;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.knockBack = 6;
+            Item.value = 10000;
+            Item.rare = ItemRarityID.Orange;
+            Item.UseSound = SoundID.Item11;
+            Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<VoidBlasterProj>();
             Item.shootSpeed = 20f;
-			Item.useAmmo = AmmoID.Bullet;
+            Item.useAmmo = AmmoID.Bullet;
 
             Item.useAnimation = 20;
             Item.useTime = 3; // one third of useAnimation
             Item.reuseDelay = 60;
         }
 
-		public override Vector2? HoldoutOffset()
-		{
-			return new Vector2(-4, 0);
-		}
+        public override Vector2? HoldoutOffset()
+        {
+            return new Vector2(-4, 0);
+        }
 
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		{
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
             int numberProjectiles = 1; // 4 or 5 shots
-			for (int i = 0; i < numberProjectiles; i++)
+            for (int i = 0; i < numberProjectiles; i++)
             {
                 type = ProjectileType<VoidBlasterProj>();
                 Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedByRandom(MathHelper.ToRadians(30)); // 30 degree spread.
-																												// If you want to randomize the speed to stagger the projectiles
-				//float scale = 1f - (Main.rand.NextFloat() * .4f);
-				// perturbedSpeed = perturbedSpeed * scale; 
-				Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, Item.knockBack, player.whoAmI);
-			}
+                                                                                                                        // If you want to randomize the speed to stagger the projectiles
+                                                                                                                        //float scale = 1f - (Main.rand.NextFloat() * .4f);
+                                                                                                                        // perturbedSpeed = perturbedSpeed * scale; 
+                Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, Item.knockBack, player.whoAmI);
+            }
 
             //Dust Burst Towards Mouse
 

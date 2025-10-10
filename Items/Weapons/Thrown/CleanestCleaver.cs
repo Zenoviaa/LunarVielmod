@@ -1,6 +1,3 @@
-
-using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Thrown;
@@ -19,10 +16,10 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.damage = 5;
         }
 
-        public override void SetStaticDefaults() 
-		{
-			// DisplayName.SetDefault("Plantius"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-		}
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Plantius"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
+        }
 
         public override void SetDefaults()
         {

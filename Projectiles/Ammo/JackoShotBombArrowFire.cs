@@ -76,15 +76,15 @@ namespace Stellamod.Projectiles.Ammo
                 Projectile.friendly = true;
                 float maxHomingDistance = 512;
                 NPC npcToChase = ProjectileHelper.FindNearestEnemy(Projectile.Center, maxHomingDistance);
-   
+
                 if (npcToChase != null)
                 {
                     Vector2 dirToNpc = (npcToChase.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
                     Projectile.velocity += dirToNpc;
                     Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, npcToChase.Center, degreesToRotate: 10);
                 }
-             
-                
+
+
             }
 
             Projectile.rotation = Projectile.velocity.X * 0.05f;

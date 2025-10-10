@@ -1,4 +1,3 @@
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -8,11 +7,11 @@ namespace Stellamod.Items.Armors.ForestCore
     [AutoloadEquip(EquipType.Legs)]
     public class ForestCoreLegs : ModItem
     {
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Forest Core Boots");
-			// Tooltip.SetDefault("Increases movement speed by 10%");
-		}
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Forest Core Boots");
+            // Tooltip.SetDefault("Increases movement speed by 10%");
+        }
 
         public override void SetDefaults()
         {
@@ -28,6 +27,6 @@ namespace Stellamod.Items.Armors.ForestCore
             player.moveSpeed += 0.1f;
         }
 
-     
+
     }
 }

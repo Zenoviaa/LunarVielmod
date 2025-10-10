@@ -72,13 +72,13 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                     Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<VoidBeam>(), 350, 0f, -1, 0, NPC.whoAmI);
                     Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<VoidBeamIN>(), 350, 0f, -1, 0, NPC.whoAmI);
                 }
-              
+
                 Lazer = true;
             }
 
             NPC.ai[1] = direction.X;
             NPC.ai[3] = direction.Y;
-            if(SingularityFragment.LazerType == 0)
+            if (SingularityFragment.LazerType == 0)
             {
                 Timer -= .01f + LazerAdd;
             }

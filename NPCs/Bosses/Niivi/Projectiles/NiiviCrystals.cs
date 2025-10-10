@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Trails;
 using System;
 using Terraria;
@@ -51,7 +50,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle soundStyle = SoundRegistry.Niivi_CrystalSummon;
                 soundStyle.Volume = 0.66f;
@@ -111,7 +110,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
-           
+
             var shader = ShaderRegistry.MiscSilPixelShader;
             float progress = Timer / 60f;
             progress = 1f - progress;
@@ -220,11 +219,11 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                     if (Main.rand.NextBool(2))
                     {
                         //Snowflake particle
-                                            }
+                    }
                     else
                     {
                         //Star particle
-                                            }
+                    }
                 }
 
             }
@@ -271,7 +270,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 //Some teleport effect or something
                 if (StellaMultiplayer.IsHost)
                 {
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, 
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                         ModContent.ProjectileType<NiiviCrystalWarpExplosionProj>(), 0, 0, Main.myPlayer);
                 }
                 NPC.active = false;
@@ -298,12 +297,12 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             AttackTimer--;
             NPC.TargetClosest();
             Player target = Main.player[NPC.target];
-            float length = 450 ;
+            float length = 450;
             //Oscillate movement
             float ySpeed = MathF.Sin(Timer * 0.05f);
             NPC.velocity = new Vector2(0, ySpeed);
 
-            if(AttackTimer <= 0)
+            if (AttackTimer <= 0)
             {
                 if (Timer > 30 && Timer % 15 == 0 && Timer <= 360 && StellaMultiplayer.IsHost)
                 {
@@ -313,7 +312,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                         ModContent.ProjectileType<NiiviThundercloudProj>(), Damage_Lightning_Small, 2, Main.myPlayer);
                 }
 
-                if(Timer % 100 == 0)
+                if (Timer % 100 == 0)
                 {
                     AttackTimer = 30;
                 }
@@ -392,7 +391,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 }
             }
 
-            if(Timer >= length)
+            if (Timer >= length)
             {
                 if (StellaMultiplayer.IsHost)
                 {

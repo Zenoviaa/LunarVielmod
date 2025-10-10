@@ -46,9 +46,9 @@ namespace Stellamod.Projectiles.Test
             shader.Apply(null);
 
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, 
+            spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White,
                 Projectile.rotation,
-                Projectile.Frame().Size() / 2, 
+                Projectile.Frame().Size() / 2,
                 Projectile.scale, SpriteEffects.None, 0f);
 
             spriteBatch.End();

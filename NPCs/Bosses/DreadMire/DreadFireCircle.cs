@@ -198,7 +198,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
             if (NPC.ai[3] <= 60)
             {
-                if(NPC.alpha >= 0)
+                if (NPC.alpha >= 0)
                 {
                     NPC.alpha -= 5;
                 }
@@ -206,7 +206,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 {
                     Size += 0.6f;
                 }
-                
+
             }
             if (NPC.ai[3] >= 250)
             {
@@ -238,7 +238,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.ai[1] += .03f;
 
             CircleTimer++;
-            if(CircleTimer % 125 == 0 && StellaMultiplayer.IsHost)
+            if (CircleTimer % 125 == 0 && StellaMultiplayer.IsHost)
             {
                 Vector2 directionToTarget = NPC.Center.DirectionTo(Main.player[NPC.target].Center);
                 Vector2 velocity = directionToTarget * 8;

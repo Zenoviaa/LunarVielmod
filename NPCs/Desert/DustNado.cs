@@ -1,11 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Desert.Projectiles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -34,13 +29,13 @@ namespace Stellamod.NPCs.Desert
         {
             NPC.TargetClosest();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 if (StellaMultiplayer.IsHost)
                 {
                     Vector2 velocity = Vector2.Zero;
                     Player target = Main.player[NPC.target];
-                    if(target.position.X > NPC.position.X)
+                    if (target.position.X > NPC.position.X)
                     {
                         velocity.X = 1.5f;
                     }

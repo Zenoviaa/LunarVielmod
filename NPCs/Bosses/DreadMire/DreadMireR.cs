@@ -6,7 +6,6 @@ using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Mage.Tomes;
-using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using System.Collections.Generic;
@@ -40,7 +39,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Shoot_Bombs,
             Laser_Rain,
             Final_Laser,
-      
+
         }
 
 
@@ -82,7 +81,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         private bool InPhase2 => NPC.life < NPC.lifeMax * 0.6f;
         private bool InPhase3 => NPC.life < NPC.lifeMax * 0.3f;
 
-   
+
         private float LaserTimer;
         private Player Target => Main.player[NPC.target];
         private Vector2 OldTargetPos;
@@ -168,13 +167,13 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
         private void SetInvincible(bool invincibleState)
         {
-            if(invincibleState && !_invincible && StellaMultiplayer.IsHost)
+            if (invincibleState && !_invincible && StellaMultiplayer.IsHost)
             {
                 _invincible = true;
                 NPC.netUpdate = true;
             }
 
-            if(!invincibleState && _invincible && StellaMultiplayer.IsHost)
+            if (!invincibleState && _invincible && StellaMultiplayer.IsHost)
             {
                 _invincible = false;
                 NPC.netUpdate = true;
@@ -183,7 +182,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
         private void ResetState(ActionState state)
         {
-            if(State != ActionState.Teleport && State != ActionState.Idle && State != ActionState.DeSpawn)
+            if (State != ActionState.Teleport && State != ActionState.Idle && State != ActionState.DeSpawn)
             {
                 PreviousState = State;
             }
@@ -267,7 +266,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             for (float i = 0f; i < 1f; i += 0.25f)
             {
                 float radians = (i + timer) * MathHelper.TwoPi;
-                spriteBatch.Draw(texture, DrawPos + new Vector2(0f, 1).RotatedBy(radians) * time,DrawRectangle, new Color(99, 39, 51, 0), 0, frameOrigin, NPC.scale, Effects, 0);
+                spriteBatch.Draw(texture, DrawPos + new Vector2(0f, 1).RotatedBy(radians) * time, DrawRectangle, new Color(99, 39, 51, 0), 0, frameOrigin, NPC.scale, Effects, 0);
             }
 
             for (float i = 0f; i < 1f; i += 0.34f)
@@ -387,7 +386,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 _phase2Special = true;
                 return;
             }
-           
+
             if (InPhase3 && !_phase3Special && State != ActionState.Heart_Phase)
             {
                 ResetState(ActionState.Heart_Phase);
@@ -465,7 +464,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 var entitySource = NPC.GetSource_FromThis();
                 if (StellaMultiplayer.IsHost)
                 {
-                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, 
+                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y,
                         ModContent.NPCType<DreadMirePentagramV2>());
                 }
                 Animation = AnimationState.PowerUp;
@@ -488,7 +487,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 dust.position = NPC.Center - vector2_3;
             }
 
-            if(Timer >= 200)
+            if (Timer >= 200)
             {
                 ResetState(ActionState.Teleport);
             }
@@ -502,9 +501,9 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         }
 
         private void AI_Idle()
-        {         
+        {
             Timer++;
-            if(Timer < 10)
+            if (Timer < 10)
             {
                 NPC.velocity.Y -= 0.33f;
             }
@@ -513,13 +512,13 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 NPC.velocity.Y *= 0.92f;
             }
 
-            if(Timer < 26)
+            if (Timer < 26)
             {
                 NPC.alpha -= 10;
             }
-    
+
             Animation = AnimationState.Idle;
-            if(Timer >= 30)
+            if (Timer >= 30)
             {
                 List<ActionState> possibleAttacks = new List<ActionState>();
                 switch (PreviousState)
@@ -566,7 +565,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         private void AI_RandomLasers()
         {
             LaserTimer++;
-            if(LaserTimer % 240 == 0 && StellaMultiplayer.IsHost)
+            if (LaserTimer % 240 == 0 && StellaMultiplayer.IsHost)
             {
                 Vector2 targetCenter = Target.Center;
                 targetCenter.X += Main.rand.NextFloat(-600, 600);
@@ -595,7 +594,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 }
             }
 
-            if(Timer > 10 && Timer < 180)
+            if (Timer > 10 && Timer < 180)
             {
                 Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
                 float minSpeed = 3;
@@ -606,7 +605,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 NPC.rotation = NPC.velocity.X * 0.025f;
             }
 
-            if(Timer > 180)
+            if (Timer > 180)
             {
                 float speed = 2f;
                 Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
@@ -615,7 +614,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 NPC.rotation *= 0.94f;
             }
 
-            if(Timer == 240)
+            if (Timer == 240)
             {
                 ResetState(ActionState.Teleport);
             }
@@ -624,7 +623,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         private void AI_Teleport()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 if (StellaMultiplayer.IsHost)
                 {
@@ -632,8 +631,8 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 }
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_TP_Out"), NPC.position);
             }
-        
-            if(Timer < 26)
+
+            if (Timer < 26)
             {
                 NPC.alpha += 10;
             }
@@ -647,7 +646,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 waitTime = 26;
             }
 
-            if(Timer == waitTime)
+            if (Timer == waitTime)
             {
                 if (StellaMultiplayer.IsHost)
                 {
@@ -691,7 +690,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 }
             }
 
-            if(Timer >= 55)
+            if (Timer >= 55)
             {
                 ResetState(ActionState.Teleport);
             }
@@ -705,7 +704,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.alpha += 5;
             NPC.velocity *= 0.9f;
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SetInvincible(true);
                 var entitySource = NPC.GetSource_FromThis();
@@ -715,7 +714,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 }
             }
 
-            if(Timer == 20)
+            if (Timer == 20)
             {
                 if (StellaMultiplayer.IsHost)
                 {
@@ -723,7 +722,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 }
             }
 
-            if(Timer >= 60)
+            if (Timer >= 60)
             {
                 if (StellaMultiplayer.IsHost)
                 {
@@ -734,7 +733,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 }
             }
 
-            if(Timer >= 60 && !NPC.AnyNPCs(dreadMiresHeartType))
+            if (Timer >= 60 && !NPC.AnyNPCs(dreadMiresHeartType))
             {
                 SetInvincible(false);
                 ResetState(ActionState.Teleport);
@@ -756,7 +755,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 }
             }
 
-            if(Timer % 5 == 0)
+            if (Timer % 5 == 0)
             {
                 int Sound = Main.rand.Next(1, 3);
                 if (Sound == 1)
@@ -780,7 +779,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             }
 
 
-            if(Timer >= 100)
+            if (Timer >= 100)
             {
                 ResetState(ActionState.Teleport);
             }
@@ -848,7 +847,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 if (StellaMultiplayer.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
-                    NPC.NewNPC(entitySource, (int)OldTargetPos.X - 10, (int)OldTargetPos.Y, 
+                    NPC.NewNPC(entitySource, (int)OldTargetPos.X - 10, (int)OldTargetPos.Y,
                         ModContent.NPCType<DreadMireZapwarn>());
                 }
             }
@@ -858,9 +857,9 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 if (StellaMultiplayer.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
-                    NPC.NewNPC(entitySource, (int)OldTargetPos.X - 200, (int)OldTargetPos.Y, 
+                    NPC.NewNPC(entitySource, (int)OldTargetPos.X - 200, (int)OldTargetPos.Y,
                         ModContent.NPCType<DreadMireZapwarn>());
-                    NPC.NewNPC(entitySource, (int)OldTargetPos.X + 200, (int)OldTargetPos.Y, 
+                    NPC.NewNPC(entitySource, (int)OldTargetPos.X + 200, (int)OldTargetPos.Y,
                         ModContent.NPCType<DreadMireZapwarn>());
                 }
             }
@@ -870,9 +869,9 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 if (StellaMultiplayer.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
-                    NPC.NewNPC(entitySource, (int)OldTargetPos.X - 400, (int)OldTargetPos.Y, 
+                    NPC.NewNPC(entitySource, (int)OldTargetPos.X - 400, (int)OldTargetPos.Y,
                         ModContent.NPCType<DreadMireZapwarn>());
-                    NPC.NewNPC(entitySource, (int)OldTargetPos.X + 400, (int)OldTargetPos.Y, 
+                    NPC.NewNPC(entitySource, (int)OldTargetPos.X + 400, (int)OldTargetPos.Y,
                         ModContent.NPCType<DreadMireZapwarn>());
                 }
             }
@@ -882,9 +881,9 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 if (StellaMultiplayer.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
-                    NPC.NewNPC(entitySource, (int)OldTargetPos.X - 600, (int)OldTargetPos.Y, 
+                    NPC.NewNPC(entitySource, (int)OldTargetPos.X - 600, (int)OldTargetPos.Y,
                         ModContent.NPCType<DreadMireZapwarn>());
-                    NPC.NewNPC(entitySource, (int)OldTargetPos.X + 600, (int)OldTargetPos.Y, 
+                    NPC.NewNPC(entitySource, (int)OldTargetPos.X + 600, (int)OldTargetPos.Y,
                         ModContent.NPCType<DreadMireZapwarn>());
                 }
             }
@@ -894,14 +893,14 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 if (StellaMultiplayer.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
-                    NPC.NewNPC(entitySource, (int)OldTargetPos.X - 800, (int)OldTargetPos.Y, 
+                    NPC.NewNPC(entitySource, (int)OldTargetPos.X - 800, (int)OldTargetPos.Y,
                         ModContent.NPCType<DreadMireZapwarn>());
-                    NPC.NewNPC(entitySource, (int)OldTargetPos.X + 800, (int)OldTargetPos.Y, 
+                    NPC.NewNPC(entitySource, (int)OldTargetPos.X + 800, (int)OldTargetPos.Y,
                         ModContent.NPCType<DreadMireZapwarn>());
                 }
             }
 
-            if(Timer >= 90)
+            if (Timer >= 90)
             {
                 ResetState(ActionState.Teleport);
             }
@@ -919,7 +918,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 var entitySource = NPC.GetSource_FromThis();
                 if (StellaMultiplayer.IsHost)
                 {
-                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, 
+                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y,
                         ModContent.NPCType<DreadMirePentagramV2>());
                 }
                 Animation = AnimationState.PowerUp;
@@ -946,10 +945,10 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 if (StellaMultiplayer.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
-                    for(int i = 0; i < 5; i++)
+                    for (int i = 0; i < 5; i++)
                     {
                         NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMireZapwarn>());
-                    }                    
+                    }
                 }
             }
 
@@ -960,7 +959,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 if (StellaMultiplayer.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center - new Vector2(0, 900), new Vector2(0, 10),
-                        ModContent.ProjectileType<FinalBeam>(), FinalLaserDamage, 0, Owner: Main.myPlayer, ai1: NPC.whoAmI);         
+                        ModContent.ProjectileType<FinalBeam>(), FinalLaserDamage, 0, Owner: Main.myPlayer, ai1: NPC.whoAmI);
                 }
             }
             if (Timer >= 200 && Timer <= 600)
@@ -1001,7 +1000,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 }
             }
 
-            if(Timer >= 600)
+            if (Timer >= 600)
             {
                 ResetState(ActionState.Teleport);
             }
@@ -1026,7 +1025,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
         public override void OnKill()
         {
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedDreadBoss, -1);        
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedDreadBoss, -1);
         }
     }
 }

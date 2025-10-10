@@ -1,13 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -59,7 +56,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
             set
             {
                 _state = value;
-                if(StellaMultiplayer.IsHost)
+                if (StellaMultiplayer.IsHost)
                     NPC.netUpdate = true;
             }
         }
@@ -407,7 +404,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
             if (timer == 40)
             {
-                ResetTimers();      
+                ResetTimers();
                 NPC.spriteDirection *= -1;
                 State = ActionState.Dashleft;
             }

@@ -19,20 +19,20 @@ namespace Stellamod.Projectiles.Crossbows.Gemmed
             Main.projFrames[Projectile.type] = 1;//number of frames the animation has
         }
 
-		public override void SetDefaults()
+        public override void SetDefaults()
         {
-			Projectile.damage = 0;
-			Projectile.width = 1;
-			Projectile.height = 1;
-			Projectile.aiStyle = 595;
-			Projectile.friendly = true;
-			Projectile.DamageType = DamageClass.Ranged;
-			Projectile.ignoreWater = true;
-			Projectile.tileCollide = false;
-			Projectile.penetrate = -1;
-			Projectile.ownerHitCheck = true;
-			Projectile.timeLeft = 55;
-		}
+            Projectile.damage = 0;
+            Projectile.width = 1;
+            Projectile.height = 1;
+            Projectile.aiStyle = 595;
+            Projectile.friendly = true;
+            Projectile.DamageType = DamageClass.Ranged;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
+            Projectile.ownerHitCheck = true;
+            Projectile.timeLeft = 55;
+        }
 
         public override bool? CanDamage()
         {
@@ -41,85 +41,85 @@ namespace Stellamod.Projectiles.Crossbows.Gemmed
 
         public override void AI()
         {
-			Timer++;
-			if (Timer > 155)
-			{
-				// Our timer has finished, do something here:
-				// Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"), Projectile.position);
-				Timer = 0;
-			}
+            Timer++;
+            if (Timer > 155)
+            {
+                // Our timer has finished, do something here:
+                // Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"), Projectile.position);
+                Timer = 0;
+            }
 
-			Player player = Main.player[Projectile.owner];
-			if (player.noItems || player.CCed || player.dead || !player.active)
-				Projectile.Kill();
+            Player player = Main.player[Projectile.owner];
+            if (player.noItems || player.CCed || player.dead || !player.active)
+                Projectile.Kill();
 
-			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-			if (Main.myPlayer == Projectile.owner)
-			{
-				player.ChangeDir(Projectile.direction);
-				SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
-				Projectile.netUpdate = true;
-				if (!player.channel)
-					Projectile.Kill();
-			}
+            Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
+            if (Main.myPlayer == Projectile.owner)
+            {
+                player.ChangeDir(Projectile.direction);
+                SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
+                Projectile.netUpdate = true;
+                if (!player.channel)
+                    Projectile.Kill();
+            }
 
-			Projectile.velocity = SwordRotation.ToRotationVector2();
-			Projectile.spriteDirection = player.direction;
-			if (Projectile.spriteDirection == 1)
-				Projectile.rotation = Projectile.velocity.ToRotation();
-			else
-				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
+            Projectile.velocity = SwordRotation.ToRotationVector2();
+            Projectile.spriteDirection = player.direction;
+            if (Projectile.spriteDirection == 1)
+                Projectile.rotation = Projectile.velocity.ToRotation();
+            else
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
 
-			if (Timer == 1)
-			{
-				float speedX = Projectile.velocity.X * 10;
-				float speedY = Projectile.velocity.Y * 7;
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CrossbowPull"), Projectile.position);
-			}
+            if (Timer == 1)
+            {
+                float speedX = Projectile.velocity.X * 10;
+                float speedY = Projectile.velocity.Y * 7;
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CrossbowPull"), Projectile.position);
+            }
 
-			if (Timer == 40)
-			{
-				float speedX = Projectile.velocity.X * 10;
-				float speedY = Projectile.velocity.Y * 7;
+            if (Timer == 40)
+            {
+                float speedX = Projectile.velocity.X * 10;
+                float speedY = Projectile.velocity.Y * 7;
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<PlatinumCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
-				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
-				ShakeModSystem.Shake = 2;
-			}
+                Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<PlatinumCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+                SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
+                ShakeModSystem.Shake = 2;
+            }
 
-			if (Timer == 43)
-			{
-				float speedX = Projectile.velocity.X * 10;
-				float speedY = Projectile.velocity.Y * 7;
+            if (Timer == 43)
+            {
+                float speedX = Projectile.velocity.X * 10;
+                float speedY = Projectile.velocity.Y * 7;
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 11f, ModContent.ProjectileType<PlatinumCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
-				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
-			}
+                Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 11f, ModContent.ProjectileType<PlatinumCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+                SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
+            }
 
-			if (Timer == 46)
-			{
+            if (Timer == 46)
+            {
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<PlatinumCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
-				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
-			}
+                Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<PlatinumCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+                SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
+            }
 
 
-			Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position
-			player.heldProj = Projectile.whoAmI;
-			player.itemTime = 2;
-			player.itemAnimation = 2;
-			player.itemRotation = (float)Math.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
+            Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position
+            player.heldProj = Projectile.whoAmI;
+            player.itemTime = 2;
+            player.itemAnimation = 2;
+            player.itemRotation = (float)Math.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
 
-			if (++Projectile.frameCounter >= 1)
-			{
-				Projectile.frameCounter = 0;
-				if (++Projectile.frame >= 1)
-				{
-					Projectile.frame = 0;
-				}
-			}	
-		}
+            if (++Projectile.frameCounter >= 1)
+            {
+                Projectile.frameCounter = 0;
+                if (++Projectile.frame >= 1)
+                {
+                    Projectile.frame = 0;
+                }
+            }
+        }
 
         public override bool PreDraw(ref Color lightColor)
         {

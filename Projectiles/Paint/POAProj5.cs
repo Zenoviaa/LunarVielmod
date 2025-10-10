@@ -1,18 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
-
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
-using Stellamod.Particles;
+using Stellamod.Projectiles.Visual;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Trails;
-using Stellamod.Utilis;
-using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
-using Stellamod.Projectiles.Visual;
+using Terraria.ModLoader;
 
 
 namespace Stellamod.Projectiles.Paint
@@ -69,8 +63,8 @@ namespace Stellamod.Projectiles.Paint
                     Projectile.Kill();
                 }
             }
-            
-         
+
+
             Vector3 RGB = new(2.55f, 2.55f, 0.94f);
             // The multiplication here wasn't doing anything
             Lighting.AddLight(Projectile.Center, RGB.X, RGB.Y, RGB.Z);

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
 
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
@@ -11,7 +10,6 @@ using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Underground
 {
@@ -128,7 +126,7 @@ namespace Stellamod.NPCs.Underground
                     SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, NPC.position);
                     AI_Timer = 0;
                 }
-            } 
+            }
             else
             {
                 float walkDirection = AI_Walk_Direction;

@@ -11,7 +11,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.UI;
 
 namespace Stellamod.Items.Weapons.Melee.Swords
 {
@@ -53,7 +52,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
 
 
             //Set stamina to use
-            
+
             //set staminacombo
             maxStaminaCombo = 4;
             //Set stamina projectile

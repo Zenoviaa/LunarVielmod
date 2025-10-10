@@ -7,26 +7,26 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Materials
 {
     public class Catagrass : ModItem
-	{
-		public override void SetStaticDefaults()
-		{
-			// Tooltip.SetDefault("This is a modded tile.");
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
-			
-		}
+    {
+        public override void SetStaticDefaults()
+        {
+            // Tooltip.SetDefault("This is a modded tile.");
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
 
-		public override void SetDefaults()
-		{
-			Item.width = 12;
-			Item.height = 12;
-			Item.maxStack = Item.CommonMaxStack;
-			Item.useTurn = true;
-			Item.autoReuse = true;
-			Item.useAnimation = 5;
-			Item.useTime = 5;
-			Item.useStyle = ItemUseStyleID.Swing;
-			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.CatagrassBlock>();
-		}
-	}
+        }
+
+        public override void SetDefaults()
+        {
+            Item.width = 12;
+            Item.height = 12;
+            Item.maxStack = Item.CommonMaxStack;
+            Item.useTurn = true;
+            Item.autoReuse = true;
+            Item.useAnimation = 5;
+            Item.useTime = 5;
+            Item.useStyle = ItemUseStyleID.Swing;
+            Item.consumable = true;
+            Item.createTile = ModContent.TileType<Tiles.CatagrassBlock>();
+        }
+    }
 }

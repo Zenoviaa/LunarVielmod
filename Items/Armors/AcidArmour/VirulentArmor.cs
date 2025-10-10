@@ -1,19 +1,17 @@
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.AcidArmour
 {
     [AutoloadEquip(EquipType.Body)]
     public class VirulentArmor : ModItem
     {
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("AcidBody");
-			// Tooltip.SetDefault("Increases ranged damage by 13% and ranged speed by 10%");
-		}
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("AcidBody");
+            // Tooltip.SetDefault("Increases ranged damage by 13% and ranged speed by 10%");
+        }
 
         public override void SetDefaults()
         {
@@ -29,7 +27,7 @@ namespace Stellamod.Items.Armors.AcidArmour
             player.lifeRegen += 3;
         }
 
-       
-       
+
+
     }
 }

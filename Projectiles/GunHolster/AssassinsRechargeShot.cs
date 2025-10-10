@@ -1,19 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Trails;
+using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-
-
-using Stellamod.Particles;
-
-using System;
-
-using Terraria.Audio;
 
 namespace Stellamod.Projectiles.GunHolster
 {
@@ -26,7 +21,7 @@ namespace Stellamod.Projectiles.GunHolster
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
-       
+
         public override void SetDefaults()
         {
             Projectile.width = 9;
@@ -101,7 +96,7 @@ namespace Stellamod.Projectiles.GunHolster
             for (int j = 0; j < 20; j++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-                            }
+            }
 
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Suckler"));
             float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
@@ -141,7 +136,7 @@ namespace Stellamod.Projectiles.GunHolster
             for (int j = 0; j < 20; j++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-                            }
+            }
 
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Suckler"));
             float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);

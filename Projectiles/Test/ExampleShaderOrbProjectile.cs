@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.Trails;
-using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -53,10 +51,6 @@ namespace Stellamod.Projectiles.Test
 
             // Retrieve reference to shader
             var shader = ShaderRegistry.MiscFireWhitePixelShader;
-
-            //You have to set the opacity/alpha here, alpha in the spritebatch won't do anything
-            //Should be between 0-1
-            float opacity = 1f;
             shader.UseOpacity(0.3f);
 
             //How intense the colors are

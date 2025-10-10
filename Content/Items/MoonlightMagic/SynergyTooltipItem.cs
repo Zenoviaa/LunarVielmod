@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Assets;
+using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria.Localization;
 using Terraria.ModLoader;

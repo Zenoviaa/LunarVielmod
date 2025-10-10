@@ -39,14 +39,14 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Basic
         {
             Projectile.velocity *= 1.5f;
             MagicProj.Form = FormRegistry.Runic.Value;
-            
-            
+
+
         }
 
 
 
-   
+
     }
 
-    
+
 }

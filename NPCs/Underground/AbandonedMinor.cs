@@ -47,7 +47,7 @@ namespace Stellamod.NPCs.Underground
                 _lastDirection = NPC.spriteDirection;
             }
 
-            if(_waitTimer >= 400)
+            if (_waitTimer >= 400)
             {
                 _waitTimer = 0;
             }
@@ -55,7 +55,7 @@ namespace Stellamod.NPCs.Underground
 
         public override void FindFrame(int frameHeight)
         {
-            if(_waitTimer < 120)
+            if (_waitTimer < 120)
             {
                 //Idle
                 NPC.frameCounter += 0.2f;

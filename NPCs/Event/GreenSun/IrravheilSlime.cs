@@ -5,8 +5,6 @@ using ReLogic.Content;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Materials;
 using Stellamod.NPCs.Event.GreenSun.IrravheilFlames;
-using Stellamod.Utilis;
-using Stellamod.WorldG;
 using System;
 using System.IO;
 using Terraria;
@@ -64,9 +62,9 @@ namespace Stellamod.NPCs.Event.GreenSun
         {
             for (int k = 0; k < 3; k++)
             {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, 
+                Dust.NewDust(NPC.position, NPC.width, NPC.height,
                     ModContent.DustType<Dusts.GlowDust>(), newColor: new Color(24, 142, 61));
-                int d = Dust.NewDust(NPC.position, NPC.width, NPC.height, 
+                int d = Dust.NewDust(NPC.position, NPC.width, NPC.height,
                     ModContent.DustType<Dusts.GunFlash>(), newColor: new Color(24, 142, 61));
                 Main.dust[d].rotation = (Main.dust[d].position - NPC.position).ToRotation() - MathHelper.PiOver4;
             }
@@ -161,7 +159,7 @@ namespace Stellamod.NPCs.Event.GreenSun
             base.PostAI();
             NPC.ai[0] += 3;
             JumpTimer--;
-            if(NPC.velocity.Y < 0 && JumpTimer <= 0 && !DoJump)
+            if (NPC.velocity.Y < 0 && JumpTimer <= 0 && !DoJump)
             {
                 DoJump = true;
                 NPC.velocity.Y *= 5.5f;

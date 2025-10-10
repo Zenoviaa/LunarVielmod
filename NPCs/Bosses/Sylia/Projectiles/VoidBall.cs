@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -91,7 +90,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             }
 
             _dustCounter++;
-            if(_dustCounter > Body_Dust_Rate)
+            if (_dustCounter > Body_Dust_Rate)
             {
                 Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
                 Dust dust = Dust.NewDustPerfect(position, DustID.GemAmethyst, Scale: Main.rand.NextFloat(0.5f, 3f));
@@ -107,7 +106,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         public override void OnKill(int timeLeft)
         {
             //Spawn Void Bolts
-            for(int i =0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 Vector2 edge = Main.rand.NextVector2CircularEdge(48, 48);
                 Vector2 voidBoltPosition = new Vector2(

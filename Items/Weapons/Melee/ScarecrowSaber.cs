@@ -2,12 +2,10 @@
 using Stellamod.Core.Bases;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
-using Stellamod.Items.Weapons.Melee.Swords;
 using Stellamod.Projectiles.Slashers.ScarecrowSaber;
 using Stellamod.Trailing;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;

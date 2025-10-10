@@ -5,11 +5,6 @@ using Stellamod.Core.XixianFlaskSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -25,7 +20,7 @@ namespace Stellamod.Items.Insources
         public override void ModifyHurt(ref Player.HurtModifiers modifiers)
         {
             base.ModifyHurt(ref modifiers);
-            if(stacks > 0)
+            if (stacks > 0)
             {
                 modifiers.IncomingDamageMultiplier *= 0.1f;
                 stacks--;
@@ -45,7 +40,7 @@ namespace Stellamod.Items.Insources
         public override void PostUpdateBuffs()
         {
             base.PostUpdateBuffs();
-            if(stacks > 0)
+            if (stacks > 0)
             {
                 Player.AddBuff(ModContent.BuffType<WondrousShieldInsourceBuff>(), 2);
             }

@@ -88,7 +88,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             {
                 drawDirection = -1f;
             }
-               
+
             MagicCircleRot += 0.03f * drawDirection;
             MagicCircleScale += 0.01f * drawDirection;
             float maxMagicCircleScale = 0.25f;
@@ -102,7 +102,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 return;
 
             Vector2 drawPosition = NPC.Center - screenPos;
-            Vector2 origin = MagicCircleSize / 2;   
+            Vector2 origin = MagicCircleSize / 2;
             Color circleColor = ColorFunctions.MiracleVoid;
             Color color = Color.Multiply(new(circleColor.R, circleColor.G, circleColor.B, 0), 1f);
             spriteBatch.Draw(MagicCircleTexture, drawPosition, null, color, MagicCircleRot, origin, MagicCircleScale, SpriteEffects.None, 0f);
@@ -111,9 +111,9 @@ namespace Stellamod.NPCs.Bosses.Sylia
             origin = VoidScissorSize / 2;
             float distance = 64;
             float scissorCount = 4;
-       
+
             //Scissor Circle
-            for(int i = 0; i < scissorCount; i++)
+            for (int i = 0; i < scissorCount; i++)
             {
                 float osc = VectorHelper.Osc(0, 1, offset: i / scissorCount);
                 float rotation = (MathHelper.TwoPi * (i / scissorCount)) + MagicCircleRot;

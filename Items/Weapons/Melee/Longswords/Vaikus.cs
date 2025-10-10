@@ -56,7 +56,7 @@ namespace Stellamod.Items.Weapons.Melee.Longswords
 
 
             //Set stamina to use
-            
+
             //set staminacombo
             maxStaminaCombo = 1;
             //Set stamina projectile
@@ -364,7 +364,7 @@ namespace Stellamod.Items.Weapons.Melee.Longswords
     }
     public class VaikusSwordStaminaSlash : BaseSwingProjectile
     {
-        public override string Texture => this.PathHere()+"/Vaikus";
+        public override string Texture => this.PathHere() + "/Vaikus";
 
         public bool Hit;
 
@@ -484,14 +484,11 @@ namespace Stellamod.Items.Weapons.Melee.Longswords
         public override void SetComboDefaults(List<BaseSwingStyle> swings)
         {
             base.SetComboDefaults(swings);
-            float ovalRotOffset = 0;
             if (ComboDirection == 1)
             {
-                ovalRotOffset = 0;
             }
             else
             {
-                ovalRotOffset = MathHelper.Pi + MathHelper.PiOver2;
             }
 
             SoundStyle swingSound1 = SoundRegistry.NSwordSlash1;

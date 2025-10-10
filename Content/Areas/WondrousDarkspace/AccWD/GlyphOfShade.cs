@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core.Bases;
-using Stellamod.Items.Materials.Molds;
+using Stellamod.Items;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Items;
 
 namespace Stellamod.Content.Areas.WondrousDarkspace.AccWD
 {

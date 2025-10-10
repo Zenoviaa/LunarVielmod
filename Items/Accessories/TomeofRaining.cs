@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
-using Stellamod.WorldG;
 using Terraria;
 using Terraria.Chat;
 using Terraria.ID;
@@ -51,6 +49,6 @@ namespace Stellamod.Items.Accessories
             return true;
         }
 
-       
+
     }
 }

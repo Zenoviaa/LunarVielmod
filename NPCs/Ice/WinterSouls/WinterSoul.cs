@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Stellamod.Items.Materials;
 using System;
 using System.IO;
@@ -216,11 +215,11 @@ namespace Stellamod.NPCs.Ice.WinterSouls
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             string drawTexturePath = Texture;
-            if(Style == 1)
+            if (Style == 1)
             {
                 drawTexturePath += "_2";
             }
-            if(Style == 2)
+            if (Style == 2)
             {
                 drawTexturePath += "_3";
             }
@@ -234,13 +233,13 @@ namespace Stellamod.NPCs.Ice.WinterSouls
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
-            for(float f = 0; f < 1f; f += 0.1f)
+            for (float f = 0; f < 1f; f += 0.1f)
             {
                 float rot = f * MathHelper.TwoPi;
                 Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(1f, 6);
                 spriteBatch.Draw(drawTexture, drawPos + offset, NPC.frame, drawColor * 0.3f, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
             }
-      
+
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
@@ -259,7 +258,7 @@ namespace Stellamod.NPCs.Ice.WinterSouls
             spriteBatch.Draw(drawTexture, drawPos, NPC.frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
 
             Texture2D dimLight = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 spriteBatch.Draw(dimLight, drawPos, null, new Color((int)(15f * alphaCounter), (int)(15f * alphaCounter), (int)(55f * alphaCounter), 0), NPC.rotation, new Vector2(64 / 2, 64 / 2), 0.2f * (2 + 0.3f * 2), SpriteEffects.None, 0f);
             }

@@ -1,9 +1,6 @@
-
-using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Paint;
-using Stellamod.Projectiles.Thrown;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -19,10 +16,10 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.damage = 8;
             Item.mana = 0;
         }
-        public override void SetStaticDefaults() 
-		{
-			// DisplayName.SetDefault("Cactius"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-		}
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Cactius"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
+        }
 
         public override void SetDefaults()
         {

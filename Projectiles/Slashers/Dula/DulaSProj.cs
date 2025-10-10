@@ -62,7 +62,7 @@ namespace Stellamod.Projectiles.Slashers.Dula
             float multiplier = 0.2f;
             RGB *= multiplier;
             Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-   
+
 
             int dir = (int)Projectile.ai[1];
             float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true));
@@ -111,7 +111,7 @@ namespace Stellamod.Projectiles.Slashers.Dula
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
 
-           
+
                 var d = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), speed * 11, 0, Color.DarkGoldenrod, Scale: 0.9f);
                 ;
                 d.noGravity = true;
@@ -127,7 +127,7 @@ namespace Stellamod.Projectiles.Slashers.Dula
 
 
             Vector2 oldMouseWorld = Main.MouseWorld;
-           
+
 
             if (target.lifeMax <= 3000)
             {
@@ -143,8 +143,8 @@ namespace Stellamod.Projectiles.Slashers.Dula
 
 
 
-            
-    
+
+
 
 
             for (int i = 0; i < 4; i++)
@@ -263,7 +263,7 @@ namespace Stellamod.Projectiles.Slashers.Dula
 
             int frameHeight = texture.Height / Main.projFrames[Projectile.type];
             int startY = frameHeight * Projectile.frame;
-           
+
             float mult = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft));
             float alpha = (float)Math.Sin(mult * Math.PI);
             Vector2 pos = player.Center + Projectile.velocity * (mult);

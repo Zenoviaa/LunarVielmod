@@ -33,7 +33,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles
         public override void AI()
         {
             // Fade in.
-            
+
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
 
             Projectile.scale = MathF.Sin(Time / 600f * MathHelper.Pi) * 3f;

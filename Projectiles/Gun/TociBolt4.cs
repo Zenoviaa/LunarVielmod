@@ -3,13 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
     public class TociBolt4 : ModProjectile
-	{
+    {
         public override string Texture => TextureRegistry.EmptyTexture;
 
         private float Timer

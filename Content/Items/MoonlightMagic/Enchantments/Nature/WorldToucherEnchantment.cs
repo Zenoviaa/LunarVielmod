@@ -1,15 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
-using Stellamod.Content.Items.MoonlightMagic.Forms;
 using Stellamod.Helpers;
-using Stellamod.Core.Helpers.Math;
-using Stellamod.Core.ItemTemplates;
-using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
-using Stellamod.Visual.Particles;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -50,7 +42,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Nature
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-          
+
             Projectile.penetrate--;
             if (Projectile.penetrate <= 0)
             {
@@ -74,18 +66,18 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Nature
             base.OnHitNPC(target, hit, damageDone);
 
             //Spawn the explosion
-            
+
         }
 
 
         public override void AI()
         {
-            
+
             if (Attagain <= 14)
             {
                 Attagain++;
             }
-            
+
             if (Attagain > 14)
             {
                 Projectile.friendly = false;
@@ -103,9 +95,9 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Nature
                 Projectile.damage = (int)damage;
                 HitOnce = false;
             }
-          
+
         }
     }
 
-    
+
 }

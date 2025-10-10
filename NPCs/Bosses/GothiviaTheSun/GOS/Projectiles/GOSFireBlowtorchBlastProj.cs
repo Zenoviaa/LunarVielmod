@@ -37,7 +37,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         public override void AI()
         {
             Timer++;
-            if(Timer == LifeTime / 2)
+            if (Timer == LifeTime / 2)
             {
                 if (StellaMultiplayer.IsHost)
                 {
@@ -62,7 +62,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                     Projectile.scale = 1f;
             }
 
-            if(Timer > LifeTime / 2)
+            if (Timer > LifeTime / 2)
             {
                 float progress = (Timer - LifeTime / 2) / LifeTime;
                 float easedProgress = Easing.OutExpo(progress);
@@ -73,7 +73,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                         * BlowtorchDistance, i / 8f));
                 }
                 LinePos = points.ToArray();
-            } 
+            }
         }
 
         public override bool ShouldUpdatePosition()
@@ -171,7 +171,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 BeamDrawer.DrawPixelated(linePos, -Main.screenPosition, 32);
             }
 
-         
+
             BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
             BeamDrawer.SpecialShader.UseColor(Color.Lerp(Color.White, Color.OrangeRed, 0.3f));
             BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.BeamTrail);

@@ -62,14 +62,14 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                 Color chainLightColor = Lighting.GetColor((int)position.X / 16, (int)position.Y / 16); //Lighting of the position of the chain segment
                 Vector2 origin = new Vector2(chainTex.Width / 2, chainTex.Height); //Draw from center bottom of texture
 
-          
+
                 for (int j = 0; j < 1; j++)
                 {
-                    Main.spriteBatch.Draw(texture, position - Main.screenPosition, null, 
+                    Main.spriteBatch.Draw(texture, position - Main.screenPosition, null,
                         new Color((int)(huntrianColorXyz.X * 1), (int)(huntrianColorXyz.Y * 1), (int)(huntrianColorXyz.Z * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f) * 0.5f, SpriteEffects.None, 0f);
                 }
 
-                Main.spriteBatch.Draw(texture, position - Main.screenPosition, null, 
+                Main.spriteBatch.Draw(texture, position - Main.screenPosition, null,
                     new Color((int)(huntrianColorXyz.X * 1), (int)(huntrianColorXyz.Y * 1), (int)(huntrianColorXyz.Z * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (7 + 0.6f) * 0.5f, SpriteEffects.None, 0f);
                 Lighting.AddLight(position - Main.screenPosition, lightColor.ToVector3() * 1.0f * Main.essScale);
                 spriteBatch.Draw(chainTex, position - Main.screenPosition, null, chainLightColor, rotation, origin, scale, SpriteEffects.None, 0);
@@ -78,7 +78,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            if(targetProjectile != null && targetProjectile.active)
+            if (targetProjectile != null && targetProjectile.active)
                 DrawChainCurve(Main.spriteBatch, Projectile.Center, lightColor, out Vector2[] chainPositions);
 
             DrawHelper.DrawAdditiveAfterImage(Projectile, Color.LightGoldenrodYellow, Color.Black, ref lightColor);

@@ -8,7 +8,7 @@ namespace Stellamod.Tiles
     {
         public override void RandomUpdate(int i, int j, int type)
         {
-            if(type == TileID.Stone)
+            if (type == TileID.Stone)
             {
                 Tile tile = Framing.GetTileSafely(i, j);
                 Tile tileBelow = Framing.GetTileSafely(i, j + 1);
@@ -41,7 +41,7 @@ namespace Stellamod.Tiles
                         }
                     }
                 }
-            }  
+            }
         }
     }
 }

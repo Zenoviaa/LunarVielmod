@@ -1,6 +1,5 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Stellamod.WorldG;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -16,7 +15,7 @@ namespace Stellamod.Assets.Biomes
             get
             {
                 //Put your if statement here
-               
+
 
                 //Normal music
                 if (Main.dayTime)
@@ -29,7 +28,7 @@ namespace Stellamod.Assets.Biomes
                 }
             }
         }
-     
+
         public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
         public override string BestiaryIcon => base.BestiaryIcon;
         public override string BackgroundPath => MapBackground;

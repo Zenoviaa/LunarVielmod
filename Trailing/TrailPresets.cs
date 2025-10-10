@@ -17,7 +17,7 @@ namespace Stellamod.Trailing
                 RimHighlightColor = Color.Pink,
                 WindColor = Color.Blue,
                 BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive,
-                         WindTexture = TrailRegistry.StarTrail.Value
+                WindTexture = TrailRegistry.StarTrail.Value
             },
             TrailWidthFunction = (float interpolant) =>
             {
@@ -29,8 +29,8 @@ namespace Stellamod.Trailing
                 return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
             }
 
-        }; 
-        
+        };
+
         public static SlashTrailer Starvast2 => new SlashTrailer
         {
             Shader = new SlashEffect()
@@ -53,8 +53,8 @@ namespace Stellamod.Trailing
                 return Color.Lerp(lerp1, Color.Transparent, interpolant);
             }
 
-        }; 
-        
+        };
+
         public static SlashTrailer StarringBalls => new SlashTrailer
         {
             Shader = new SlashEffect()
@@ -80,8 +80,8 @@ namespace Stellamod.Trailing
                 return Color.Lerp(Color.Transparent, lerp1, EasingFunction.QuadraticBump(interpolant)) * (1f - interpolant);
             }
 
-        }; 
-        
+        };
+
         public static SlashTrailer MooningSlicer => new SlashTrailer
         {
             Shader = new SlashEffect()
@@ -148,8 +148,8 @@ namespace Stellamod.Trailing
                 return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
             }
 
-        }; 
-        
+        };
+
         public static SlashTrailer Assassin => new SlashTrailer
         {
             Shader = new SlashEffect()
@@ -171,8 +171,8 @@ namespace Stellamod.Trailing
                 return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
             }
 
-        }; 
-        
+        };
+
         public static SlashTrailer GladiatorSpear => new SlashTrailer
         {
             Shader = new SlashEffect()
@@ -194,8 +194,8 @@ namespace Stellamod.Trailing
                 return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
             }
 
-        }; 
-        
+        };
+
         public static SlashTrailer InkingSpire => new SlashTrailer
         {
             Shader = new SlashEffect()
@@ -217,8 +217,8 @@ namespace Stellamod.Trailing
                 return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
             }
 
-        }; 
-        
+        };
+
         public static SlashTrailer HypnotizedSoul => new SlashTrailer
         {
             Shader = new SlashEffect()

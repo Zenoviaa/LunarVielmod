@@ -1,4 +1,3 @@
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -8,11 +7,11 @@ namespace Stellamod.Items.Armors.Astrasilk
     [AutoloadEquip(EquipType.Legs)]
     public class AstrasilkLegs : ModItem
     {
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Astrasilk Boots");
-			// Tooltip.SetDefault("Increases movement speed by 20%");
-		}
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Astrasilk Boots");
+            // Tooltip.SetDefault("Increases movement speed by 20%");
+        }
 
         public override void SetDefaults()
         {
@@ -28,6 +27,6 @@ namespace Stellamod.Items.Armors.Astrasilk
             player.moveSpeed += 0.2f;
         }
 
-       
+
     }
 }

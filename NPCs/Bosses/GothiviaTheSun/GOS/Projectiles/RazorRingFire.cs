@@ -49,14 +49,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             Projectile projectile = Main.projectile[(int)Projectile.ai[1]];
             Projectile.Center = projectile.Center;
 
-          
+
             if (!projectile.active)
             {
 
                 Projectile.Kill();
             }
-   
-           
+
+
 
             //Lighting
             Vector3 RGB = new(0.89f, 2.53f, 2.55f);

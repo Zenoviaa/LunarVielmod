@@ -1,21 +1,13 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Buffs;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.Graphics.Shaders;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
-using Terraria.ID;
-using Terraria.Audio;
-using Stellamod.UI.Systems;
-using Stellamod.Buffs;
 
 namespace Stellamod.Projectiles.Magic
 {

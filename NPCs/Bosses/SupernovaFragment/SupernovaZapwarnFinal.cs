@@ -1,11 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Stellamod.NPCs.Bosses.singularityFragment;
-using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 

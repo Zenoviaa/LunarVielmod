@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -77,13 +76,13 @@ namespace Stellamod.Projectiles.IgniterExplosions
                         target.AddBuff(BuffID.OnFire3, 120);
                         break;
                     case 1:
-                       
+
                         break;
                     case 2:
-                       
+
                         break;
                     case 3:
-                        
+
                         break;
                 }
             }

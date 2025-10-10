@@ -1,18 +1,13 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.Graphics.Shaders;
-using Terraria.ModLoader;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Graphics.Shaders;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Spears
 {
@@ -77,7 +72,7 @@ namespace Stellamod.Projectiles.Spears
         public override void AI()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Missile_Land");
                 SoundEngine.PlaySound(soundStyle, Projectile.position);

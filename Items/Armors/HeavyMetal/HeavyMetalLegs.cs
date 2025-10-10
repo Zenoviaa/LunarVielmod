@@ -9,11 +9,11 @@ namespace Stellamod.Items.Armors.HeavyMetal
     [AutoloadEquip(EquipType.Legs)]
     public class HeavyMetalLegs : ModItem
     {
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("HeavyMetal Legs");
-			// Tooltip.SetDefault("Increases movement speed by 10%");
-		}
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("HeavyMetal Legs");
+            // Tooltip.SetDefault("Increases movement speed by 10%");
+        }
 
         public override void SetDefaults()
         {

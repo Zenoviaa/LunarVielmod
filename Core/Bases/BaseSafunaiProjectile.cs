@@ -1,19 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Effects;
-using Stellamod.Core.Shaders;
+using Stellamod.Core.Effects.Trails;
+using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using System;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Core.SwingSystem;
 
 namespace Stellamod.Core.Bases
 {

@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Tiles.Acid
 {
     public class AcidBrick : ModTile
-	{
+    {
         public override void SetStaticDefaults()
         {
             Main.tileSolid[Type] = true;
@@ -23,8 +23,8 @@ namespace Stellamod.Tiles.Acid
         }
 
         public override bool CanExplode(int i, int j)
-		{
-			return false;
-		}
-	}
+        {
+            return false;
+        }
+    }
 }

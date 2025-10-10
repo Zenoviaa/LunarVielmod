@@ -2,7 +2,6 @@
 
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -34,19 +33,19 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
         public override void AI()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 InitialVelocity = Projectile.velocity;
             }
 
-            if(Timer % 8 == 0)
+            if (Timer % 8 == 0)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Pink);
             }
 
             float maxDetectDistance = 2000;
             Player closestPlayer = PlayerHelper.FindClosestPlayer(Projectile.position, maxDetectDistance);
-            if(closestPlayer != null && Timer < 150)
+            if (closestPlayer != null && Timer < 150)
             {
                 Vector2 targetDirection = Projectile.Center.DirectionTo(closestPlayer.Center);
                 Vector2 targetVelocity = targetDirection * InitialVelocity.Length();
@@ -56,7 +55,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
-        
+
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width;
@@ -70,7 +69,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.StarTrail, 
+            DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.StarTrail,
                 frameSize: new Vector2(32, 22));
             return base.PreDraw(ref lightColor);
         }
@@ -94,7 +93,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 
                 //Get a random
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                            }
+            }
 
 
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);

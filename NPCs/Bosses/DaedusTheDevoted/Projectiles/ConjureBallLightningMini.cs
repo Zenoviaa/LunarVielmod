@@ -158,7 +158,7 @@ namespace Stellamod.NPCs.Bosses.DaedusTheDevoted.Projectiles
                 _scale = MathHelper.Lerp(0f, Main.rand.NextFloat(0.4f, 0.8f) + (Charge * 1.4f), Easing.InCubic(Timer / 15f));
             }
 
-            if(Timer >= 90)
+            if (Timer >= 90)
             {
                 Projectile.tileCollide = true;
             }

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Buffs;
+using Stellamod.Helpers;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
-using Stellamod.Buffs;
-using Microsoft.Xna.Framework;
-using Stellamod.Helpers;
 
 namespace Stellamod.Items.Consumables
 {

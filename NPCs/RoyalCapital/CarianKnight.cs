@@ -48,10 +48,10 @@ namespace Stellamod.NPCs.RoyalCapital
         {
             base.AI();
             ai_Counter++;
- 
+
             Player player = Main.player[NPC.target];
             NPC.rotation = NPC.velocity.X * 0.03f;
-            if(ai_Counter == 400)
+            if (ai_Counter == 400)
             {
                 if (StellaMultiplayer.IsHost)
                 {
@@ -59,7 +59,7 @@ namespace Stellamod.NPCs.RoyalCapital
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 9,
                         ModContent.ProjectileType<CarianKnightProj>(), 40, 1, Main.myPlayer);
                 }
-  
+
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GhostExcalibur1"));
                 for (int i = 0; i < 16; i++)
                 {
@@ -68,7 +68,7 @@ namespace Stellamod.NPCs.RoyalCapital
                     d.noGravity = true;
                 }
                 ai_Counter = 0;
-            } 
+            }
             else if (ai_Counter > 300)
             {
                 NPC.velocity *= 0.2f;
@@ -79,8 +79,8 @@ namespace Stellamod.NPCs.RoyalCapital
                 Vector2 speed = (NPC.Center - position).SafeNormalize(Vector2.Zero) * particleSpeed;
                 var d = Dust.NewDustPerfect(position, DustID.GemAmethyst, speed, Scale: 2f);
                 d.noGravity = true;
-            } 
-            else if(ai_Counter == 300)
+            }
+            else if (ai_Counter == 300)
             {
                 SoundEngine.PlaySound(SoundID.Zombie82, NPC.position);
                 SoundEngine.PlaySound(SoundID.Zombie99, NPC.position);

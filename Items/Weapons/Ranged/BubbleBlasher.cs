@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Ranged
 {
     public class BubbleBlasher : ClassSwapItem
-	{
+    {
         public override DamageClass AlternateClass => DamageClass.Magic;
 
         public override void SetClassSwappedDefaults()
@@ -19,23 +19,23 @@ namespace Stellamod.Items.Weapons.Ranged
         }
 
         public override void SetDefaults()
-		{
-			Item.damage = 45;
-			Item.DamageType = DamageClass.Ranged;
-			Item.width = 56;
-			Item.height = 56;
-			Item.useTime = 30;
-			Item.useAnimation = 30;
-			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.knockBack = 6;
-			Item.value = 100000;
-			Item.rare = ItemRarityID.Green;
-			Item.UseSound = SoundID.Item66;
-			Item.autoReuse = true;
+        {
+            Item.damage = 45;
+            Item.DamageType = DamageClass.Ranged;
+            Item.width = 56;
+            Item.height = 56;
+            Item.useTime = 30;
+            Item.useAnimation = 30;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.knockBack = 6;
+            Item.value = 100000;
+            Item.rare = ItemRarityID.Green;
+            Item.UseSound = SoundID.Item66;
+            Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<BBBubble>();
             Item.shopCustomPrice = 23;
-			Item.shootSpeed = 5;
-			Item.useAmmo = AmmoID.Bullet;
+            Item.shootSpeed = 5;
+            Item.useAmmo = AmmoID.Bullet;
             Item.noMelee = true;
         }
 

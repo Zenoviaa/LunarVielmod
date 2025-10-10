@@ -94,7 +94,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             UpdateFrame(0.8f, 1, 55);
             NPC.alpha -= 10;
             Timer++;
-            if(Timer >= 43)
+            if (Timer >= 43)
             {
                 NPC.Kill();
             }

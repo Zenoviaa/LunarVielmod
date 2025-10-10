@@ -1,6 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Arrows;
-using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

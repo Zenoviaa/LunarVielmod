@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -60,7 +59,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         //Trails
         public float WidthFunction(float completionRatio)
         {
-            float baseWidth = Projectile.scale * Projectile.width*1.5f;
+            float baseWidth = Projectile.scale * Projectile.width * 1.5f;
             return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
         }
 
@@ -93,7 +92,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             }
 
             _dustCounter++;
-            if(_dustCounter > Body_Dust_Rate)
+            if (_dustCounter > Body_Dust_Rate)
             {
                 Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
                 Dust dust = Dust.NewDustPerfect(position, DustID.GemAmethyst, Scale: Main.rand.NextFloat(0.5f, 3f));

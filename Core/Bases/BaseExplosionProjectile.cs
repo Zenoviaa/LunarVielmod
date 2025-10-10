@@ -1,7 +1,7 @@
-﻿using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Shaders;
+using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;

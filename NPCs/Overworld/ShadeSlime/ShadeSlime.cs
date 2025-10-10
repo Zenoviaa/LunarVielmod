@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
 using System;
 using Terraria;
 using Terraria.GameContent;
@@ -209,6 +208,6 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
             }
         }
 
-       
+
     }
 }

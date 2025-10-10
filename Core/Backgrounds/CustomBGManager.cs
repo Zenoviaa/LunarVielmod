@@ -1,13 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
 using Stellamod.Core.Effects;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
-using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Backgrounds
@@ -132,11 +128,11 @@ namespace Stellamod.Core.Backgrounds
             {
                 worldSurfaceY -= 1100;
             }
-           
+
             int diffY = (int)(worldSurfaceY - Main.screenPosition.Y);
             int parallaxY = (int)(diffY * -0.4f);
 
-                    
+
             Vector2 drawPosition = Vector2.Zero + bgLayer.DrawOffset + new Vector2(0, -parallaxY);
             drawPosition += bg.DrawOffset;
             if (!bg.NoSurfaceOffset)
@@ -146,7 +142,7 @@ namespace Stellamod.Core.Backgrounds
                     drawPosition.Y = minY;
                 drawPosition.Y -= 800;
             }
-          
+
             drawPosition.Y += bg.ParallaxYOffset;
             float drawScale = 2 * bg.DrawScale * bgLayer.DrawScale;
 

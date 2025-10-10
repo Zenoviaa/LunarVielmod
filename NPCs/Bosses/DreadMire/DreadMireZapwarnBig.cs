@@ -67,7 +67,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
         }
         public override void AI()
-        {   
+        {
             if (!Down)
             {
                 alphaCounter += 0.04f;

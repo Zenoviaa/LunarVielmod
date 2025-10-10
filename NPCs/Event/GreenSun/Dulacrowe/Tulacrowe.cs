@@ -1,19 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
-using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Melee.Greatswords;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.NPCs.Bosses.Fenix.Projectiles;
-using Stellamod.Particles;
 using Stellamod.UI.Systems;
-using Stellamod.Utilis;
-using Stellamod.WorldG;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -21,7 +12,6 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 
 namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
@@ -88,18 +78,18 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             NPC.TargetClosest();
             switch (State)
             {
-              
-               
-                
-                
-                
+
+
+
+
+
                 case ActionState.Notice:
                     NPC.damage = 0;
                     NPC.velocity *= 0.9f;
                     counter++;
                     Notice();
                     break;
-       
+
                 case ActionState.Summon:
                     NPC.damage = 90;
                     counter++;
@@ -223,7 +213,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                 }
 
             }
-           
+
         }
 
         public void Notice()

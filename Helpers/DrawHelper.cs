@@ -50,7 +50,7 @@ namespace Stellamod.Helpers
             NPC NPC = modNpc.NPC;
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D texture = ModContent.Request<Texture2D>(textureOverride).Value;
- 
+
             Vector2 drawPos = NPC.position - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
             drawPos.Y -= yOffset;
             float outlineOffset = 2;

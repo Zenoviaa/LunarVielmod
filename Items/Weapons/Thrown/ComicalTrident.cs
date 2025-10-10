@@ -1,12 +1,7 @@
-﻿
-using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
-using Stellamod.Projectiles.Thrown;
+﻿using Stellamod.Projectiles.Thrown;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
@@ -41,7 +36,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shootSpeed = 19f;
             Item.rare = ItemRarityID.Orange;
             Item.consumable = false;
-          
+
         }
     }
 }

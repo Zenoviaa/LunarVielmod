@@ -18,13 +18,13 @@ namespace Stellamod.Items.Weapons.Melee
         public override void PostUpdateEquips()
         {
             parryTimer--;
-            if(parryTimer <= 0)
+            if (parryTimer <= 0)
             {
                 parryTimer = 0;
             }
 
             parryCooldown--;
-            if(parryCooldown <= 0)
+            if (parryCooldown <= 0)
             {
                 parryCooldown = 0;
             }
@@ -142,12 +142,12 @@ namespace Stellamod.Items.Weapons.Melee
         {
             base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
             VixylPlayer vixylPlayer = player.GetModPlayer<VixylPlayer>();
-            if(player.HasBuff(ModContent.BuffType<VixylDodgeBuff>()))
+            if (player.HasBuff(ModContent.BuffType<VixylDodgeBuff>()))
             {
                 //Verli spam slashes
                 type = ModContent.ProjectileType<VixylSlashProj>();
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordHoldVerlia"), position);
-            } 
+            }
             else if (vixylPlayer.parryCooldown <= 0 && !player.immune)
             {
                 vixylPlayer.parryTimer = 18;

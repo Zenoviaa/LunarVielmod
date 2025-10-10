@@ -53,7 +53,7 @@ namespace Stellamod.UI.PopupSystem
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft + Offset.X - (Width.Pixels / 2);
             Top.Pixels = RelativeTop + Offset.Y;
-            
+
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)

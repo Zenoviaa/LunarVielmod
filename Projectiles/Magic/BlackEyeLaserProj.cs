@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-    public class BlackEyeLaserProj  : ModProjectile
+    public class BlackEyeLaserProj : ModProjectile
     {
         public PrimitiveTrail BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
@@ -45,7 +45,7 @@ namespace Stellamod.Projectiles.Magic
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekLaser2"), Projectile.position);
             }
 
-            if(Main.myPlayer == Projectile.owner)
+            if (Main.myPlayer == Projectile.owner)
             {
                 Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, Main.MouseWorld, 1);
                 Projectile.netUpdate = true;

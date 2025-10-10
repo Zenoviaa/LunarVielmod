@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Dusts;
-using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -56,7 +55,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
             if (Projectile.ai[1] <= 1)
             {
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     Projectile.timeLeft = Main.rand.Next(180, 190);
                     Projectile.netUpdate = true;

@@ -1,20 +1,13 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Buffs;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.ModLoader;
-using Stellamod.UI.Systems;
-using Stellamod.Dusts;
-using Terraria.ID;
-using System.Threading;
 using Terraria.Audio;
-using Stellamod.Buffs;
+using Terraria.ModLoader;
 
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
@@ -45,7 +38,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
         public override void AI()
         {
-            if(Time == 1 && Main.myPlayer == Projectile.owner)
+            if (Time == 1 && Main.myPlayer == Projectile.owner)
             {
                 if (Main.rand.NextBool(2))
                 {
@@ -57,7 +50,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                 }
                 Projectile.netUpdate = true;
             }
-            if(Time == 1)
+            if (Time == 1)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekLaser2"), Projectile.position);
             }

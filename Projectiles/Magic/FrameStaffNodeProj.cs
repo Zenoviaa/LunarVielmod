@@ -1,11 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -47,19 +42,20 @@ namespace Stellamod.Projectiles.Magic
         {
             //Oscillate movement
             Timer++;
-            if(Timer < 60)
+            if (Timer < 60)
             {
                 float ySpeed = Timer / 60;
                 ySpeed = Easing.SpikeInOutCirc(ySpeed);
                 Projectile.velocity = new Vector2(0, -ySpeed);
-            } else if (Timer < 120)
+            }
+            else if (Timer < 120)
             {
                 //Inverse
                 float ySpeed = 1f - ((Timer - 60) / 60);
                 ySpeed = Easing.SpikeInOutCirc(ySpeed);
                 Projectile.velocity = new Vector2(0, ySpeed);
             }
-            if(Timer == 120)
+            if (Timer == 120)
             {
                 Timer = 0;
             }
@@ -78,7 +74,7 @@ namespace Stellamod.Projectiles.Magic
 
         private bool IsActivated()
         {
-            for(int i = 0; i < Main.maxProjectiles; i++)
+            for (int i = 0; i < Main.maxProjectiles; i++)
             {
                 Projectile p = Main.projectile[i];
                 if (!p.active)
@@ -92,7 +88,7 @@ namespace Stellamod.Projectiles.Magic
             }
 
             return false;
-        } 
+        }
 
         public override bool PreDraw(ref Color lightColor)
         {

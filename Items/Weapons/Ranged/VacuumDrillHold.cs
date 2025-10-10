@@ -1,9 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil;
-using Stellamod.Projectiles.Crossbows.Lasers;
 using Stellamod.Projectiles.Gun;
-using Stellamod.UI.Systems;
 using System;
 using Terraria;
 using Terraria.Audio;

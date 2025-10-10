@@ -48,7 +48,7 @@ namespace Stellamod.Tiles
                 }
             }
         }
- 
+
         public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
         {
             Tile tileAbove = Framing.GetTileSafely(i, j - 1);

@@ -63,7 +63,7 @@ namespace Stellamod.Projectiles.Gun
             target.AddBuff(BuffID.Poisoned, 300);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<NailKaboom>(), 0, 0, Projectile.owner);
-            switch(Main.rand.Next(0, 2))
+            switch (Main.rand.Next(0, 2))
             {
                 case 0:
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit"));

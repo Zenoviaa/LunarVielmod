@@ -16,7 +16,7 @@ namespace Stellamod.NPCs.Projectiles
         public ref float Time => ref Projectile.ai[0];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];
         public const float LaserLength = 2400f;
-       
+
 
         public override void SetDefaults()
         {

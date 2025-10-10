@@ -59,7 +59,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             NPC.noGravity = true;
             NPC.dontTakeDamage = true;
             NPC.dontCountMe = true;
-  
+
         }
         int frame = 0;
         public override void FindFrame(int frameHeight)

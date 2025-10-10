@@ -28,7 +28,7 @@ namespace Stellamod.NPCs.Colosseum.Common
 
         protected void DespawnExplosion()
         {
-            for(int i =0; i <24; i++)
+            for (int i = 0; i < 24; i++)
             {
                 float f = i;
                 float num = 24;
