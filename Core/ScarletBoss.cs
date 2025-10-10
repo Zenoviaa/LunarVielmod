@@ -1,4 +1,5 @@
-﻿using Stellamod.Core.HealthbarSystem;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.HealthbarSystem;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -15,6 +16,11 @@ namespace Stellamod.Core
         }
         public string Texture_BossIcon => Texture + "_BossIcon";
         public string Texture_BossBar => Texture + "_BossBar";
+
+        public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
+        {
+            return false;
+        }
 
         public override void AI()
         {
