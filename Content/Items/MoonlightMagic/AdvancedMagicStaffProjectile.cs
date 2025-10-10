@@ -20,8 +20,6 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
         public override string Texture => TextureRegistry.EmptyTexture;
 
-        private Asset<Texture2D> _texture;
-
         private ref float Countertimer => ref Projectile.ai[0];
         private ref float _swingDirection => ref Projectile.ai[1];
         private ref float _swingTime => ref Projectile.ai[2];
@@ -58,17 +56,15 @@ namespace Stellamod.Content.Items.MoonlightMagic
             return false;
         }
 
-        private void FetchTexture()
+        private Texture2D GetTexture()
         {
-            if (_texture == null)
-            {
-                _texture = ModContent.Request<Texture2D>(Owner.HeldItem.ModItem.Texture);
-            }
+            var asset = ModContent.Request<Texture2D>(Owner.HeldItem.ModItem.Texture);
+            return asset.Value;
         }
 
         private Vector2 GetFramingSize()
         {
-            return _texture.Size();
+            return GetTexture().Size();
         }
 
         public override void AI()
@@ -80,7 +76,6 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 Projectile.timeLeft = SwingTime;
             }
 
-            FetchTexture();
             AI_MoveInOval();
         }
 
@@ -204,10 +199,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override bool PreDraw(ref Color lightColor)
         {
             DrawSlashTrail();
-            if (_texture == null)
-                return false;
-
-            Texture2D texture = _texture.Value;
+            Texture2D texture = GetTexture();
             int frameHeight = texture.Height / Main.projFrames[Projectile.type];
             int startY = frameHeight * Projectile.frame;
 
@@ -226,10 +218,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override void PostDraw(Color lightColor)
         {
             base.PostDraw(lightColor);
-            if (_texture == null)
-                return;
-
-            Texture2D texture = _texture.Value;
+            Texture2D texture = GetTexture();
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);

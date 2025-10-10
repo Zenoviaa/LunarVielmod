@@ -36,6 +36,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
         public virtual void AI() { }
         public virtual void DrawTrail(Vector2[] oldPos) { }
+
+        public virtual void DrawRingTrail(Vector2[] oldPos, float[] oldRot, Vector2 offset) { }
         public virtual void DrawForm(SpriteBatch spriteBatch,
             Texture2D formTexture,
             Vector2 drawPos, Color drawColor, Color lightColor, float drawRotation, float drawScale)
@@ -132,6 +134,11 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public BaseElement Instantiate()
         {
             return (BaseElement)Clone();
+        }
+
+        public Texture2D GetRingTexture()
+        {
+            return ModContent.Request<Texture2D>(Texture + "_Ring").Value;
         }
     }
 }

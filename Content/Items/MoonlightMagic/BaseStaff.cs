@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
 using Stellamod.Core.MagicSystem.UI;
+using Stellamod.Items.Weapons.Mage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -94,8 +95,17 @@ namespace Stellamod.Content.Items.MoonlightMagic
             int seed = WorldGen._genRandSeed;
             Random = new UnifiedRandom(seed);
             TrailLength = Random.Next(16, 32);
-        }
 
+
+            Item.shoot = ModContent.ProjectileType<AdvancedMagicStaffHold>();
+            Item.shootSpeed = 15;
+            Item.channel = true;
+            Item.autoReuse = false;
+        }
+        public override bool CanUseItem(Player player)
+        {
+            return player.ownedProjectileCounts[Item.shoot] < 1;
+        }
         public virtual void ModifyElementPreferences(List<int> elements)
         {
 
@@ -340,12 +350,6 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 }
             }
             return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-        }
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            AdvancedMagicUtil.NewMagicProjectile(this, player, source, position, velocity, type, damage, knockback);
-            return false;
         }
 
         public override void SaveData(TagCompound tag)
