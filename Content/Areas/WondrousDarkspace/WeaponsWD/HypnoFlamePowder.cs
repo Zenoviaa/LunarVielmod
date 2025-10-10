@@ -1,13 +1,14 @@
-﻿using Stellamod.Items.Materials;
+﻿using Stellamod.Items;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Projectiles;
 using Terraria.Audio;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.PowdersItem
+namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
 {
-    public class ShadowFlamePowder : BasePowder
+    public class HypnoFlamePowder : BasePowder
     {
         public override void SetDefaults()
         {
@@ -26,7 +27,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<MiracleThread>());
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBag>(), material: ModContent.ItemType<HypnotizedSoul>());
         }
     }
 }

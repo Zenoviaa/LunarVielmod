@@ -36,8 +36,12 @@ namespace Stellamod.Core.MagicSystem.UI
         public Asset<Texture2D> ElementSlotAsset { get; private set; }
         public void SetContext(StaffEditingContext ctx)
         {
+       
             //Set the context
             _ctx = ctx;
+
+            Item = _ctx.GetElement();
+
         }
 
         /// <summary>

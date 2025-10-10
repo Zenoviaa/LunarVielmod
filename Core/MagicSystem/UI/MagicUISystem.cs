@@ -46,6 +46,7 @@ namespace Stellamod.Core.MagicSystem.UI
 
         public void CloseUI()
         {
+
             _staffInterface.SetState(null);
         }
 

@@ -69,7 +69,7 @@ namespace Stellamod.Core.MagicSystem.UI
             Rectangle rectangle = GetDimensions().ToRectangle();
 
             bool contains = ContainsPoint(Main.MouseScreen);
-            if (contains && !PlayerInput.IgnoreMouseInterface)
+            if (contains && !PlayerInput.IgnoreMouseInterface && !Main.LocalPlayer.mouseInterface)
             {
                 Main.LocalPlayer.mouseInterface = true;
                 HandleMouseItem();

@@ -9126,3 +9126,8 @@ UniversalEnchantment: {
 	DisplayName: Universal Enchantment
 	Tooltip: ""
 }
+
+HypnoFlamePowder: {
+	Tooltip: ""
+	DisplayName: Hypno Flame Powder
+}

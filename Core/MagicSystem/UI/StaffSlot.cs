@@ -58,7 +58,23 @@ namespace Stellamod.Core.MagicSystem.UI
         public void SetContext(StaffEditingContext ctx)
         {
             _ctx = ctx;
-            Item = _ctx.staffToEdit.Item;
+            if(_ctx.staffToEdit.Item.type == ModContent.ItemType<NoStaff>())
+            {
+                Item = new Item();
+                Item.SetDefaults(0);
+            } else
+            {
+                Item = _ctx.staffToEdit.Item;
+            }
+        
+        }
+
+        public void ReturnItem()
+        {
+            if (Item.IsAir)
+                return;
+            Player player = Main.LocalPlayer;
+            player.QuickSpawnItemDirect(player.GetSource_FromThis(), Item);
         }
 
         public void HandleMouseItem()
@@ -84,6 +100,7 @@ namespace Stellamod.Core.MagicSystem.UI
                 }
             }
         }
+
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {

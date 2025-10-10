@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Accessories.Brooches;
+﻿using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
+using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Special.MinerLogs;
@@ -214,7 +215,7 @@ namespace Stellamod.NPCs.Global
 
             if (npc.type == NPCID.GoblinSummoner)
             {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadowFlamePowder>(), 1, 1, 1));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HypnoFlamePowder>(), 1, 1, 1));
 
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
             }

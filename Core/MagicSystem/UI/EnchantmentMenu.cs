@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Helpers;
+using Stellamod.UI;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -19,6 +20,7 @@ namespace Stellamod.Core.MagicSystem.UI
         private UIGrid _timedGrid;
         private UIImage _backgroundSquare;
         private UIScrollbar _scrollbar;
+        private XButton _xButton;
 
         private InventoryMenu _inventoryMenu;
 
@@ -49,13 +51,13 @@ namespace Stellamod.Core.MagicSystem.UI
                 ScaleToFit = true,
             };
 
+            _xButton = new XButton(Close);
             _elementSlot = new ElementSlot();
             _staffSlot = new StaffSlot();
         }
 
         public int RelativeLeft => ScreenHelper.TrueScreenWidth / 2 - (int)Width.Pixels / 2;
         public int RelativeTop => ScreenHelper.TrueScreenHeight / 2 - (int)Height.Pixels / 2;
-
         public void UseContext(StaffEditingContext ctx)
         {
             _ctx = ctx;
@@ -107,7 +109,7 @@ namespace Stellamod.Core.MagicSystem.UI
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
 
-
+           
             Append(_backgroundSquare);
 
             _grid.Width.Set(0, 0.8f);
@@ -135,6 +137,7 @@ namespace Stellamod.Core.MagicSystem.UI
             _inventoryMenu.HAlign = 0.9f;
             _inventoryMenu.VAlign = 0.05f;
             Append(_inventoryMenu);
+            Append(_xButton);
             SetPos();
         }
 
@@ -143,6 +146,7 @@ namespace Stellamod.Core.MagicSystem.UI
             base.OnDeactivate();
             if (!Main.gameMenu)
             {
+                _staffSlot.ReturnItem();
                 SoundEngine.PlaySound(SoundID.MenuClose);
             }
         }
@@ -163,6 +167,12 @@ namespace Stellamod.Core.MagicSystem.UI
             //Constantly lock the UI in the position regardless of resolution changes
             SetPos();
 
+        }
+
+        private void Close()
+        {
+            MagicUISystem uiSystem = ModContent.GetInstance<MagicUISystem>();
+            uiSystem.CloseUI();
         }
     }
 }
