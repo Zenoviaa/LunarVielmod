@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.UI;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
@@ -15,6 +16,7 @@ namespace Stellamod.Core.XixianFlaskSystem.UI
         private UIPanel _panel;
         private UIImage _circleImage;
         private UIImage _flaskImage;
+        private XButton _xButton;
         private InsourceInventoryMenu _inventoryMenu;
         private List<InsourceSlot> _slots;
 
@@ -26,6 +28,7 @@ namespace Stellamod.Core.XixianFlaskSystem.UI
 
         public XixianFlaskUI()
         {
+            _xButton = new XButton(Close);
             _grid = new UIGrid();
             _panel = new UIPanel();
             _slots = new List<InsourceSlot>();
@@ -56,6 +59,7 @@ namespace Stellamod.Core.XixianFlaskSystem.UI
 
             _inventoryMenu.Left.Set(0, 0.5f);
             Append(_inventoryMenu);
+            Append(_xButton);
         }
 
         public bool NeedsRecalculate()
@@ -112,6 +116,12 @@ namespace Stellamod.Core.XixianFlaskSystem.UI
                 slot.Left.Pixels = offset.X;
                 slot.Top.Pixels = offset.Y;
             }
+        }
+
+        private void Close()
+        {
+            XixianFlaskUISystem xi = ModContent.GetInstance<XixianFlaskUISystem>();
+            xi.CloseUI();
         }
     }
 }
