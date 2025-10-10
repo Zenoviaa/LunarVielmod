@@ -258,7 +258,7 @@ namespace Stellamod.Core.Bases
             Item heldItem = Owner.HeldItem;
             if (heldItem.ModItem == null)
                 return;
-            Asset<Texture2D> heldTexture = ModContent.Request<Texture2D>("Stellamod/Core/ItemTemplates/CrossbowCrosshairLineParticle");
+            Asset<Texture2D> heldTexture = ModContent.Request<Texture2D>("Stellamod/Core/Bases/CrossbowCrosshairLineParticle");
             SpriteBatch spriteBatch = Main.spriteBatch;
             Vector2 centerPos = Owner.Center - Main.screenPosition;
             _shader ??= new();
@@ -309,7 +309,7 @@ namespace Stellamod.Core.Bases
                 return;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-            Asset<Texture2D> tex = ModContent.Request<Texture2D>("Stellamod/Core/ItemTemplates/CrossbowCrosshair");
+            Asset<Texture2D> tex = ModContent.Request<Texture2D>("Stellamod/Core/Bases/CrossbowCrosshair");
             Vector2 drawPos = Main.MouseWorld - Main.screenPosition;
             Vector2 drawOrigin = tex.Size() / 2f;
             float drawScale = 1f * CrosshairProgress * ExtraMath.Osc(0.95f, 1f, speed: 12);
