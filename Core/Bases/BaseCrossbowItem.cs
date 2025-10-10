@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
+using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
 using System.Collections.Generic;
 using Terraria;
@@ -72,17 +74,43 @@ namespace Stellamod.Core.Bases
         {
             base.ModifyTooltips(tooltips);
             var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Crossbow", Helpers.LangText.Common("Crossbow"))
-            {
-                OverrideColor = Color.OrangeRed
-            };
-            tooltips.Add(line);
 
-            line = new TooltipLine(Mod, "CrossbowHelp", Helpers.LangText.Common("CrossbowHelp"))
+
+            Keys keys = Keys.LeftShift;
+            bool isExpanded = Main.keyState.IsKeyDown(keys);
+    
+            if (!isExpanded)
             {
-                OverrideColor = Color.LightGray
-            };
-            tooltips.Add(line);
+                line = new TooltipLine(Mod, "ExpandTooltipHelp", LangText.Common("ExpandTooltipHelp", "Left Shift"));
+                line.OverrideColor = Color.LightGray;
+                tooltips.Add(line);
+            }
+            else
+            {
+                line = new TooltipLine(Mod, "Crossbow", Helpers.LangText.Common("Crossbow"))
+                {
+                    OverrideColor = Color.OrangeRed
+                };
+                tooltips.Add(line);
+
+                line = new TooltipLine(Mod, "CrossbowHelp", Helpers.LangText.Common("CrossbowHelp"))
+                {
+                    OverrideColor = Color.LightGray
+                };
+                tooltips.Add(line);
+
+                line = new TooltipLine(Mod, "BasicSlash", LangText.Common("BasicSlash", LangText.Item(this, "BasicSlash")));
+                line.OverrideColor = new Color(124, 187, 80);
+                tooltips.Add(line);
+
+                line = new TooltipLine(Mod, "StaminaSlash", LangText.Common("StaminaSlash", LangText.Item(this, "StaminaSlash")));
+                line.OverrideColor = Color.Goldenrod;
+                tooltips.Add(line);
+
+                line = new TooltipLine(Mod, "StaminaCost", LangText.Common("StaminaCost", staminaCost.ToString()));
+                line.OverrideColor = Color.Goldenrod;
+                tooltips.Add(line);
+            }
         }
     }
 }

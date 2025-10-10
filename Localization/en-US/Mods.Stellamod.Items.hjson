@@ -54,6 +54,7 @@ Common: {
 	XixianFlaskLock: This item is LOCKED, continue exploring and you may find it.
 	StaminaFlaskLock: This item is LOCKED, continue exploring and you may find it.
 	StaminaCost: Costs {0} stamina to use
+	ExpandTooltipHelp: Press [{0}] for more information
 }
 
 SetBonus: {
@@ -9130,7 +9131,6 @@ HypnoFlamePowder: {
 }
 
 Hypnotizer: {
-	
 	DisplayName: Hypnotizer
 	Tooltip: It's so pretty I'm almost hypnotized. Maybe that's not a bad thing...
 	BasicSlash: No effect!
