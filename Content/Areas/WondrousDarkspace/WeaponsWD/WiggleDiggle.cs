@@ -43,7 +43,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew<BlankGun, MiracleThread>();
+            this.RegisterBrew<MiracleThread, BlankGun>();
         }
 
         public override Vector2? HoldoutOffset()
