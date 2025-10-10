@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Stellamod.Helpers;
 using Stellamod.Systems.MiscellaneousMath;
 using System;
@@ -41,11 +42,13 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public virtual void DrawAura(Vector2 auraPos, float strength, Vector2 scale, Color color)
         {
             string texturePath = Texture + "_Ring";
-            if (!ModContent.FileExists(texturePath))
+            Asset<Texture2D> asset= null;
+            if(!ModContent.RequestIfExists<Texture2D>(texturePath, out asset))
             {
                 texturePath = "Stellamod/Content/Items/MoonlightMagic/Elements/BasicElement_Ring";
+                ModContent.RequestIfExists<Texture2D>(texturePath, out asset);
             }
-            var asset = ModContent.Request<Texture2D>(texturePath);
+
             Texture2D ringTexture = asset.Value;
 
 
@@ -72,6 +75,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
             Color auraColor = GetAuraColor();
             auraColor = auraColor.MultiplyRGB(color);
+            auraColor *= 0.5f;
             auraColor.A = 0;
         
             Vector2 drawPos = auraPos - Main.screenPosition;
