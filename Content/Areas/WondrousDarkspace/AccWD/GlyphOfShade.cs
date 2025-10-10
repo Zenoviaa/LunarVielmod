@@ -6,8 +6,9 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.Items;
 
-namespace Stellamod.Items.Accessories.Runes
+namespace Stellamod.Content.Areas.WondrousDarkspace.AccWD
 {
     public class GlyphOfShadePlayer : ModPlayer
     {

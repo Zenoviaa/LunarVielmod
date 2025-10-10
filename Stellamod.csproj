@@ -634,7 +634,6 @@
     <None Remove="Projectiles\WataBoom2.png" />
     <None Remove="Projectiles\ZuiRay.png" />
     <None Remove="TilesNew\AnimatedBackgroundWallTest_S.png" />
-    <None Remove="TilesNew\Darkspace\SilkTileBlock.png" />
     <None Remove="TilesNew\EffectTiles\FogSpawnerBlock.png" />
     <None Remove="TilesNew\EffectTiles\FogSpawnerWallItem.png" />
     <None Remove="TilesNew\Fable\FableBar_S.png" />

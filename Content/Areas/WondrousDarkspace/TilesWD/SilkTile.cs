@@ -5,7 +5,7 @@ using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.TilesNew.Darkspace
+namespace Stellamod.Content.Areas.WondrousDarkspace.TilesWD
 {
     public class SilkTile : ModTile
     {

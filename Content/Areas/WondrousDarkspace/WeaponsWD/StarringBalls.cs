@@ -4,20 +4,58 @@ using Stellamod.Core;
 using Stellamod.Core.Effects;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.Trailing;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 
-namespace Stellamod.Projectiles.Magic
+namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
 {
+    public class StarringBalls : ClassSwapItem
+    {
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 16;
+            Item.mana = 0;
+        }
+
+        public override void SetDefaults()
+        {
+            Item.damage = 33;
+            Item.DamageType = DamageClass.Magic;
+            Item.width = 40;
+            Item.height = 40;
+            Item.useTime = 25;
+            Item.useAnimation = 25;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.noUseGraphic = true;
+            Item.knockBack = 2;
+            Item.value = 10000;
+            Item.rare = ItemRarityID.LightPurple;
+            Item.UseSound = SoundID.DD2_DarkMageAttack;
+            Item.autoReuse = true;
+            Item.shoot = ModContent.ProjectileType<SparkBallsP>();
+            Item.shootSpeed = 8f;
+            Item.mana = 6;
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<HypnotizedSoul, BlankOrb>();
+        }
+    }
+
     public class SparkBallsP : ScarletProjectile
     {
         private ITrailer _trailer;
@@ -49,7 +87,7 @@ namespace Stellamod.Projectiles.Magic
             _trailer ??= TrailPresets.StarringBalls;
             _trailer.DrawTrail(ref lightColor, OldCenterPos);
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, 
+            Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation,
                 new Vector2(texture.Width / 2, texture.Height / 2), MathUtil.Osc(0.8f, 1f, speed: 3), Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
 
             return false;

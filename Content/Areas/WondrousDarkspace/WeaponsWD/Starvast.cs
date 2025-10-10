@@ -3,6 +3,7 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Swords;
@@ -11,7 +12,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Melee.Swords
+namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
 {
     public class Starvast : BaseSwingItemV2
     {

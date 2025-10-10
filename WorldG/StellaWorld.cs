@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
 using Stellamod.Core.SilkSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
@@ -29,7 +30,6 @@ using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
 using Stellamod.Tiles.Illuria;
 using Stellamod.Tiles.Veil;
-using Stellamod.TilesNew.Darkspace;
 using Stellamod.WorldG.StructureManager;
 using System;
 using System.Collections.Generic;
