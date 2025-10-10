@@ -127,7 +127,8 @@ namespace Stellamod.Core.Shaders
             MiscShaderData shader,
             Vector2? offset = null)
         {
-            spriteBatch.End();
+            if(spriteBatch.HasBegun())
+                spriteBatch.End();
             spriteBatch.Begin();
             shader.Apply();
             var vertices = CalculateVertices(
