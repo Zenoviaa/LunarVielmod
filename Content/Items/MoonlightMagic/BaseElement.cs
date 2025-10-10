@@ -31,6 +31,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             base.SetDefaults();
         }
+
         public override string LocalizationCategory => "Elements";
 
         public virtual void AI() { }

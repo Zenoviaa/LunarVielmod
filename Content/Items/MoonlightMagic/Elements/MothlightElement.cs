@@ -50,7 +50,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
         public override void OnKill()
         {
-            base.OnKill();
+           // base.OnKill();
             SpawnDeathParticles();
         }
 
