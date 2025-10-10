@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Items.MoonlightMagic.Elements;
 using Stellamod.Core.MagicSystem.UI;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -98,6 +100,25 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
 
         }
+
+        public bool IsMatchingPreference()
+        {
+            if (primaryElement.IsAir)
+                return true;
+            if (primaryElement.ModItem.Type == ModContent.ItemType<BasicElement>())
+                return true;
+            List<int> elements = new List<int>();
+            ModifyElementPreferences(elements);
+            foreach(int e in elements)
+            {
+                if(primaryElement.ModItem.Type == e)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
         public override void NetSend(BinaryWriter writer)
         {
             base.NetSend(writer);
@@ -149,6 +170,10 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 }
             }
 
+            if (!IsMatchingPreference())
+            {
+                damageModifier -= 0.3f;
+            }
             damage *= damageModifier;
         }
 
@@ -220,6 +245,13 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 tooltips.Add(tooltipLine);
             }
 
+            if (!IsMatchingPreference())
+            {
+                tooltipLine = new TooltipLine(Mod, "EnchantHelp",
+                  Language.GetTextValue("Mods.Stellamod.Enchantments.EnchantmentMismatch"));
+                tooltipLine.OverrideColor = Color.Red;
+                tooltips.Add(tooltipLine);
+            }
 
             for (int i = 0; i < equippedEnchantments.Length; i++)
             {

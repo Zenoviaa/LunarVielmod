@@ -11,6 +11,7 @@ EnchantmentCommonTimedHelp: I am a timed enchantment, put me into a timer slot!
 EnchantmentTimerSlotHelp: I am a timer slot, I only accept timed enchantments!
 EnchantmentNormalSlotHelp: I am a regular slot, I only accept normal enchantments!
 EnchantmentLockedHelp: This enchantment is LOCKED! Keep exploring and you may find it.
+EnchantmentMismatch: This staff hates this element, 30% less damage.
 
 ChaosChaosEnchantment: {
 	DisplayName: Chaos Chaos Enchantment
