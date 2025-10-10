@@ -322,7 +322,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCs
         {
             if (!spawnInfo.Player.GetModPlayer<MyPlayer>().ZoneWonder)
                 return 0;
-            return 2;
+            return ScarletSpawnChance.Wondrous_Spawn_Rate;
         }
 
         public override void OnKill()
