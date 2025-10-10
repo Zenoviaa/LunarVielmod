@@ -205,51 +205,16 @@ namespace Stellamod.Content.Items.MoonlightMagic
             if (element == null)
                 return;
 
-            Texture2D ringTexture = element.GetRingTexture();
-            if (ringTexture == null)
-                return;
-            Vector2 drawPos = Owner.Center - Main.screenPosition;
             int frameNumber = (int)MathHelper.Lerp(0, 2, ChargeProgress);
             if(_targetRingFrame != frameNumber)
             {
                 SwitchRingFrame(frameNumber);
             }
-            Rectangle frame = ringTexture.GetFrame(_ringFrame, 3);
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            Color drawColor = new Color(255, 255, 255, 0) * 0.2f * _ringAlpha;
-            float drawRotation = Timer * 0.01f;
-            Vector2 drawOrigin = frame.Size() / 2f;
-            Vector2 drawScale = new Vector2(1f, 1f) * _ringScale;
 
-            spriteBatch.Draw(ringTexture, drawPos, frame, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            element.DrawAura(Owner.Center - Vector2.UnitY * 64, ChargeProgress, _ringScale, Color.White * _ringAlpha);
         }
 
-        private void DrawMagicTrailRing(ref Color lightColor)
-        {
-            BaseStaff staff = Owner.HeldItem.ModItem as BaseStaff;
-            Item elementItem = staff.GetElement();
-            BaseElement element = elementItem.ModItem as BaseElement;
-            if (element == null)
-                return;
 
-
-            List<Vector2> trailPoints = new List<Vector2>();
-            List<float> trailRot = new List<float>();
-            float xRadius = MathHelper.Lerp(64, 80, ChargeProgress);
-            float yRadius = MathHelper.Lerp(16, 18, ChargeProgress);
-            for(int i = 0; i < 48; i++)
-            {
-                float rads = Timer * 0.15f + i * 0.05f;
-                rads += MathHelper.PiOver2;
-                float xOffset = xRadius * MathF.Sin(rads);
-                float yOffset = yRadius * MathF.Cos(rads);
-                Vector2 point = Owner.Center + new Vector2(xOffset, yOffset);
-                trailPoints.Add(point);
-                trailRot.Add(0);
-            }
-            element.DrawRingTrail(trailPoints.ToArray(), trailRot.ToArray(), Vector2.Zero);
-
-        }
         private void DrawStaff(ref Color lightColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Owner.HeldItem.ModItem.Texture).Value;
@@ -269,7 +234,6 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override bool PreDraw(ref Color lightColor)
         {
             DrawRing(ref lightColor);
-            DrawMagicTrailRing(ref lightColor);
             DrawStaff(ref lightColor);
             return false;
         }

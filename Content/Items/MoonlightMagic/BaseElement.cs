@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Graphics.Shaders;
 using Terraria.Localization;
 using Terraria.ModLoader;
 namespace Stellamod.Content.Items.MoonlightMagic
@@ -37,7 +38,62 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public virtual void AI() { }
         public virtual void DrawTrail(Vector2[] oldPos) { }
 
-        public virtual void DrawRingTrail(Vector2[] oldPos, float[] oldRot, Vector2 offset) { }
+        public virtual void DrawAura(Vector2 auraPos, float strength, Vector2 scale, Color color)
+        {
+            string texturePath = Texture + "_Ring";
+            if (!ModContent.FileExists(texturePath))
+            {
+                texturePath = "Stellamod/Content/Items/MoonlightMagic/Elements/BasicElement_Ring";
+            }
+            var asset = ModContent.Request<Texture2D>(texturePath);
+            Texture2D ringTexture = asset.Value;
+
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            MiscShaderData shaderData = GameShaders.Misc["LunarVeil:DaedusRobe"];
+            shaderData.Shader.Parameters["windNoiseTexture"].SetValue(TextureRegistry.CloudNoise.Value);
+
+            float speed = 1;
+            shaderData.Shader.Parameters["uImageSize0"].SetValue(ringTexture.Size());
+            shaderData.Shader.Parameters["startPixel"].SetValue(60);
+            shaderData.Shader.Parameters["endPixel"].SetValue(115);
+            shaderData.Shader.Parameters["time"].SetValue(Main.GlobalTimeWrappedHourly * speed);
+            shaderData.Shader.Parameters["distortionStrength"].SetValue(0.075f * strength);
+
+
+            Vector2 vel = Vector2.Lerp(-Vector2.UnitX, Vector2.UnitX, ExtraMath.Osc(0f, 1f)) * 0.1f;
+            vel.Y *= 0.25f;
+            shaderData.Shader.Parameters["movementVelocity"].SetValue(vel);
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, default, default, default, shaderData.Shader, Main.GameViewMatrix.TransformationMatrix);
+
+
+
+            Color auraColor = GetAuraColor();
+            auraColor = auraColor.MultiplyRGB(color);
+            auraColor.A = 0;
+        
+            Vector2 drawPos = auraPos - Main.screenPosition;
+            int frame = (int)MathHelper.Lerp(0, 2, strength);
+            Rectangle frameRect = ringTexture.GetFrame(frame, 3);
+
+
+            Vector2 drawScale = scale * Vector2.One;
+            drawScale *= MathHelper.Lerp(0.8f, 1f, ExtraMath.Osc(0f, 1f));
+
+            float drawRotation = MathHelper.Lerp(-0.05f, 0.05f, ExtraMath.Osc(0f, 1f, MathHelper.Lerp(1f, 3f, strength)));
+            Vector2 drawOrigin = frameRect.Size() / 2f;
+            spriteBatch.Draw(ringTexture, drawPos, frameRect, auraColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+        }
+
+        public virtual Color GetAuraColor()
+        {
+            return Color.White;
+        }
         public virtual void DrawForm(SpriteBatch spriteBatch,
             Texture2D formTexture,
             Vector2 drawPos, Color drawColor, Color lightColor, float drawRotation, float drawScale)

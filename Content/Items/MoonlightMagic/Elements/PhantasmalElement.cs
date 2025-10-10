@@ -163,18 +163,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             //This just applis the shader changes
             TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
         }
-        public override void DrawRingTrail(Vector2[] oldPos, float[] oldRot, Vector2 offset)
-        {
-            var shader = MagicNormalShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.GlowTrail;
-            shader.NoiseTexture = TrailRegistry.SpikyTrail1;
-            shader.BlendState = BlendState.Additive;
-            shader.SamplerState = SamplerState.PointWrap;
-            shader.Speed = 0.5f;
-            shader.Repeats = 1f;
-            //This just applis the shader changes
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, oldRot, ColorFunction, RingWidthFunction, shader, offset);
-        }
+
         private float RingWidthFunction(float completionRatio)
         {
             return EasingFunction.QuadraticBump(completionRatio) * 8;
