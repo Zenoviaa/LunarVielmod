@@ -53,6 +53,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
         public AdvancedMagicProjectile MagicProj { get; set; }
         public Projectile Projectile => MagicProj.Projectile;
+
+        public Player Owner => Main.player[Projectile.owner];
         public override string LocalizationCategory => "Enchantments";
 
         public int time;

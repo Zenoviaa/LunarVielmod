@@ -591,3 +591,8 @@ WindSwitcherEnchantment: {
 	DisplayName: Wind Switcher Enchantment
 	Tooltip: ""
 }
+
+BoomerangEnchantment: {
+	DisplayName: Boomerang Enchantment
+	Tooltip: ""
+}

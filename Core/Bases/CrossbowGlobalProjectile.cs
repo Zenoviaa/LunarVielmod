@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Effects;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -17,6 +18,7 @@ namespace Stellamod.Core.Bases
         public bool Initialized;
         public bool CrossbowShot;
         public Vector2[] CrossbowOldPos;
+        public ITrailer Trailer;
         public override void SendExtraAI(Projectile projectile, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             base.SendExtraAI(projectile, bitWriter, binaryWriter);
@@ -76,6 +78,7 @@ namespace Stellamod.Core.Bases
         public PrimDrawer TrailDrawer { get; private set; } = null;
         protected virtual void DrawSlashTrail(Projectile projectile, ref Color lightColor)
         {
+            Trailer?.DrawTrail(ref lightColor, CrossbowOldPos);
             if (CrossbowOldPos == null)
                 return;
 
@@ -86,6 +89,7 @@ namespace Stellamod.Core.Bases
             TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
             GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
             TrailDrawer.DrawPrims(CrossbowOldPos, drawOffset + projectile.Size / 2, 155);
+           
         }
 
         public override bool PreDraw(Projectile projectile, ref Color lightColor)

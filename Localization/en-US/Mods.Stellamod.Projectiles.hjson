@@ -1502,3 +1502,7 @@ IronBowHold.DisplayName: Iron Bow Hold
 IronBowStaminaHold.DisplayName: Iron Bow Stamina Hold
 SpringArrow.DisplayName: Spring Arrow
 HexCloudEnchantmentExplosion.DisplayName: Hex Cloud Enchantment Explosion
+HypnotizerStaminaShotExplosionProjectile.DisplayName: Hypnotizer Stamina Shot Explosion Projectile
+HypnotizerStaminaHold.DisplayName: Hypnotizer Stamina Hold
+HypnotizerHold.DisplayName: Hypnotizer Hold
+HypnotizerArrow.DisplayName: Hypnotizer Arrow

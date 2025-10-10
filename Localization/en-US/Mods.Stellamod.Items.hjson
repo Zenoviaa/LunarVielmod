@@ -9131,3 +9131,9 @@ HypnoFlamePowder: {
 	Tooltip: ""
 	DisplayName: Hypno Flame Powder
 }
+
+Hypnotizer: {
+	
+	DisplayName: Hypnotizer
+	Tooltip: ""
+}
