@@ -47,7 +47,7 @@ namespace Stellamod.Helpers
         public static bool downedLumiBoss = false;
         public static bool downedVoidBoss = false;
 
-        private static void ResetFlags()
+        public static void ResetFlags()
         {
             downedVeriBoss = false;
             downedJackBoss = false;

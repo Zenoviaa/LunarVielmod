@@ -9176,3 +9176,23 @@ JourneysBeginningWand: {
 	Tooltip: ""
 	DisplayName: Journeys Beginning Wand
 }
+
+TriggerEraser: {
+	DisplayName: Trigger Eraser
+	Tooltip: ""
+}
+
+TriggerWand: {
+	DisplayName: Trigger Wand
+	Tooltip: ""
+}
+
+Modelizer: {
+	DisplayName: Modelizer
+	Tooltip: ""
+}
+
+WandSaver: {
+	DisplayName: Wand Saver
+	Tooltip: ""
+}

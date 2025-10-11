@@ -273,6 +273,12 @@
     <None Remove="Gores\SunStalker5.png" />
     <None Remove="Gores\SunStalker6.png" />
     <None Remove="Gores\SunStalker7.png" />
+    <None Remove="Helpers\Magic.png" />
+    <None Remove="Helpers\Modelizer.png" />
+    <None Remove="Helpers\Save.png" />
+    <None Remove="Helpers\StructureLine.png" />
+    <None Remove="Helpers\StructurePoint.png" />
+    <None Remove="Helpers\WandSaver.png" />
     <None Remove="Items\Accessories\AquaCrystal.png" />
     <None Remove="Items\Accessories\ArncharMagazine.png" />
     <None Remove="Items\Accessories\ArncharMagazine_Glow.png" />
@@ -674,12 +680,6 @@
     <None Remove="Tiles\ShrineBreakers\Underground\ShrineBridgetC.png" />
     <None Remove="UI\ArmorReforgeSystem\ReforgeButton.png" />
     <None Remove="UI\ArmorReforgeSystem\ReforgeButtonSelected.png" />
-    <None Remove="UI\StructureSelector\Paper.png" />
-    <None Remove="UI\StructureSelector\PaperSelected.png" />
-    <None Remove="UI\StructureSelector\Save.png" />
-    <None Remove="UI\StructureSelector\UndoSelected.png" />
-    <None Remove="UI\ToolsSystem\Paper.png" />
-    <None Remove="UI\ToolsSystem\PaperSelected.png" />
     <None Remove="Visual\Particles\GlowCircleDetailedBoomParticle1.png" />
     <None Remove="Visual\Particles\GlowSpikeParticle.png" />
     <None Remove="Visual\Particles\GlowStretchParticle.png" />

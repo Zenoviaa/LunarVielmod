@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.TitleSystem;
+using Stellamod.Helpers;
 using Stellamod.Items.Ores;
 using Stellamod.NPCs.Bosses.CommanderGintzia;
 using Stellamod.NPCs.Bosses.EliteCommander;
 using Stellamod.NPCs.Bosses.Gustbeak;
-using Stellamod.UI.TitleSystem;
-using Stellamod.WorldG.StructureManager;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
