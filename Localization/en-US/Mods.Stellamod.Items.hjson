@@ -8562,7 +8562,7 @@ IronBall: {
 }
 
 PrimeRing: {
-	Tooltip: ""
+	Tooltip: +1 Stamina
 	DisplayName: Prime Ring
 }
 
@@ -8918,12 +8918,12 @@ GlyphOfShade: {
 
 IvynNecklace: {
 	DisplayName: Ivyn Necklace
-	Tooltip: ""
+	Tooltip: +1 Stamina
 }
 
 IvynthornChoker: {
 	DisplayName: Ivynthorn Choker
-	Tooltip: ""
+	Tooltip: When hit releases damaging thorns.
 }
 
 KindCompass: {
