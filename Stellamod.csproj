@@ -691,7 +691,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Textures\Menu\" />
-    <Folder Include="Core\QuestSystem\Quests\" />
     <Folder Include="Items\Armors\Daedia\" />
     <Folder Include="NPCs\Event\Gintzearmy\BossGintze\" />
     <Folder Include="NPCs\Minibosses\" />
