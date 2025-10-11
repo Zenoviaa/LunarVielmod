@@ -2,7 +2,7 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class CrescentStaff : BaseStaff
+    public class CrescentWand : BaseStaff
     {
         public override void SetDefaults()
         {

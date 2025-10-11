@@ -2,22 +2,24 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class WillowOfTheSouls : BaseStaff
+    public class CrowEggWand : BaseStaff
     {
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 16;
-            Item.shootSpeed = 7;
-            Size = 24;
-            TrailLength = 55;
-            Form = FormRegistry.Crescent.Value;
+            Item.damage = 20;
+            Item.shootSpeed = 13;
+            Item.useTime = 30;
+            Item.useAnimation = 60;
+            Size = 12;
+            TrailLength = 20;
+            Form = FormRegistry.Circle.Value;
         }
 
 
         public override int GetNormalSlotCount()
         {
-            return 3;
+            return 5;
         }
 
         public override int GetTimedSlotCount()

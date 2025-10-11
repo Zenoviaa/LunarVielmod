@@ -2,24 +2,24 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class ChalicemanSepter : BaseStaff
+    public class MirrorWand : BaseStaff
     {
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 28;
-            Item.shootSpeed = 14;
-            Item.useTime = 20;
+            Item.damage = 35;
+            Item.shootSpeed = 19;
+            Item.useTime = 40;
             Item.useAnimation = 40;
-            Size = 10;
-            TrailLength = 22;
-            Form = FormRegistry.Triangle.Value;
+            Size = 20;
+            TrailLength = 50;
+            Form = FormRegistry.Lantern.Value;
         }
 
 
         public override int GetNormalSlotCount()
         {
-            return 2;
+            return 3;
         }
 
         public override int GetTimedSlotCount()

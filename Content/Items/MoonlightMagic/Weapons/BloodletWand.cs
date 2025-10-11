@@ -2,29 +2,29 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class CrowEggStaff : BaseStaff
+    public class BloodletWand : BaseStaff
     {
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 20;
-            Item.shootSpeed = 13;
-            Item.useTime = 30;
-            Item.useAnimation = 60;
-            Size = 12;
-            TrailLength = 20;
-            Form = FormRegistry.Circle.Value;
+            Item.damage = 18;
+            Item.shootSpeed = 10;
+            Item.useTime = 18;
+            Item.useAnimation = 36;
+            Size = 8;
+            TrailLength = 16;
+            Form = FormRegistry.Squid.Value;
         }
 
 
         public override int GetNormalSlotCount()
         {
-            return 5;
+            return 2;
         }
 
         public override int GetTimedSlotCount()
         {
-            return 1;
+            return 2;
         }
     }
 }

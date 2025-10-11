@@ -2,29 +2,29 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class RainsyStaff : BaseStaff
+    public class GhettingbergWand : BaseStaff
     {
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 12;
-            Item.shootSpeed = 14;
-            Item.useTime = 14;
-            Item.useAnimation = 14;
+            Item.damage = 14;
+            Item.shootSpeed = 10;
+            Item.useTime = 21;
+            Item.useAnimation = 21;
             Size = 10;
-            TrailLength = 16;
-            Form = FormRegistry.Pickaxe.Value;
+            TrailLength = 32;
+            Form = FormRegistry.Vase.Value;
         }
 
 
         public override int GetNormalSlotCount()
         {
-            return 3;
-        }
-        public override int GetTimedSlotCount()
-        {
-            return 0;
+            return 1;
         }
 
+        public override int GetTimedSlotCount()
+        {
+            return 3;
+        }
     }
 }

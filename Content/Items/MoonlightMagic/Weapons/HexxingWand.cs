@@ -2,29 +2,29 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class FoxNMagic : BaseStaff
+    public class HexxingWand : BaseStaff
     {
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 39;
-            Item.shootSpeed = 13;
-            Item.useTime = 30;
-            Item.useAnimation = 60;
-            Size = 12;
-            TrailLength = 20;
-            Form = FormRegistry.Swirl.Value;
+            Item.damage = 10;
+            Item.shootSpeed = 16;
+            Item.useTime = 23;
+            Item.useAnimation = 23;
+            Size = 8;
+            TrailLength = 30;
+            Form = FormRegistry.Snowglobe.Value;
         }
 
 
         public override int GetNormalSlotCount()
         {
-            return 5;
+            return 3;
         }
 
         public override int GetTimedSlotCount()
         {
-            return 4;
+            return 0;
         }
     }
 }

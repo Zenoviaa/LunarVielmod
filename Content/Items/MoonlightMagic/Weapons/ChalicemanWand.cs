@@ -2,18 +2,18 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class MothwingStaff : BaseStaff
+    public class ChalicemanWand : BaseStaff
     {
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 9;
-            Item.shootSpeed = 13;
-            Item.useTime = 26;
-            Item.useAnimation = 26;
-            Size = 8;
-            TrailLength = 38;
-            Form = FormRegistry.Fairy.Value;
+            Item.damage = 28;
+            Item.shootSpeed = 14;
+            Item.useTime = 20;
+            Item.useAnimation = 40;
+            Size = 10;
+            TrailLength = 22;
+            Form = FormRegistry.Triangle.Value;
         }
 
 
@@ -24,7 +24,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 
         public override int GetTimedSlotCount()
         {
-            return 1;
+            return 4;
         }
     }
 }

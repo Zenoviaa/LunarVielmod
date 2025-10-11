@@ -2,18 +2,16 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class BloodletSepter : BaseStaff
+    public class SnowflakeWand : BaseStaff
     {
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 18;
-            Item.shootSpeed = 10;
-            Item.useTime = 18;
-            Item.useAnimation = 36;
-            Size = 8;
-            TrailLength = 16;
-            Form = FormRegistry.Squid.Value;
+            Item.damage = 12;
+            Item.shootSpeed = 5;
+            Size = 32;
+            TrailLength = 64;
+            Form = FormRegistry.FourPointedStar.Value;
         }
 
 
@@ -24,7 +22,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 
         public override int GetTimedSlotCount()
         {
-            return 2;
+            return 1;
         }
     }
 }

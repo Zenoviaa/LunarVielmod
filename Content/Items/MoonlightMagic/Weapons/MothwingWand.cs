@@ -2,16 +2,18 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class Snowflake : BaseStaff
+    public class MothwingWand : BaseStaff
     {
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 12;
-            Item.shootSpeed = 5;
-            Size = 32;
-            TrailLength = 64;
-            Form = FormRegistry.FourPointedStar.Value;
+            Item.damage = 9;
+            Item.shootSpeed = 13;
+            Item.useTime = 26;
+            Item.useAnimation = 26;
+            Size = 8;
+            TrailLength = 38;
+            Form = FormRegistry.Fairy.Value;
         }
 
 

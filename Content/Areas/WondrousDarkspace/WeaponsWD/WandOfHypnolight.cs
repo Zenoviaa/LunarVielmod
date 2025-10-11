@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
 {
 
-    public class StaffOfHypnolight : BaseStaff
+    public class WandOfHypnolight : BaseStaff
     {
         public override void SetDefaults()
         {

@@ -9196,3 +9196,78 @@ WandSaver: {
 	DisplayName: Wand Saver
 	Tooltip: ""
 }
+
+FoxNMagicWand: {
+	DisplayName: Fox N Magic Wand
+	Tooltip: ""
+}
+
+CrowEggWand: {
+	Tooltip: ""
+	DisplayName: Crow Egg Wand
+}
+
+CrescentWand: {
+	Tooltip: ""
+	DisplayName: Crescent Wand
+}
+
+ChalicemanWand: {
+	Tooltip: ""
+	DisplayName: Chaliceman Wand
+}
+
+BloodletWand: {
+	Tooltip: ""
+	DisplayName: Bloodlet Wand
+}
+
+WandOfHypnolight: {
+	Tooltip: ""
+	DisplayName: Wand Of Hypnolight
+}
+
+GhettingbergWand: {
+	DisplayName: Ghettingberg Wand
+	Tooltip: ""
+}
+
+HexxingWand: {
+	DisplayName: Hexxing Wand
+	Tooltip: ""
+}
+
+MirrorWand: {
+	DisplayName: Mirror Wand
+	Tooltip: ""
+}
+
+MothwingWand: {
+	DisplayName: Mothwing Wand
+	Tooltip: ""
+}
+
+RainsyWand: {
+	DisplayName: Rainsy Wand
+	Tooltip: ""
+}
+
+RewinderWand: {
+	DisplayName: Rewinder Wand
+	Tooltip: ""
+}
+
+SnowflakeWand: {
+	DisplayName: Snowflake Wand
+	Tooltip: ""
+}
+
+ThePinglerWand: {
+	DisplayName: The Pingler Wand
+	Tooltip: ""
+}
+
+WillowOfTheSoulsWand: {
+	DisplayName: Willow Of The Souls Wand
+	Tooltip: ""
+}

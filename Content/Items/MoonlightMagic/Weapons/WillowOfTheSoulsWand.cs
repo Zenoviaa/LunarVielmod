@@ -2,18 +2,16 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class MirrorStaff : BaseStaff
+    public class WillowOfTheSoulsWand : BaseStaff
     {
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 35;
-            Item.shootSpeed = 19;
-            Item.useTime = 40;
-            Item.useAnimation = 40;
-            Size = 20;
-            TrailLength = 50;
-            Form = FormRegistry.Lantern.Value;
+            Item.damage = 16;
+            Item.shootSpeed = 7;
+            Size = 24;
+            TrailLength = 55;
+            Form = FormRegistry.Crescent.Value;
         }
 
 
@@ -24,7 +22,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 
         public override int GetTimedSlotCount()
         {
-            return 4;
+            return 1;
         }
     }
 }
