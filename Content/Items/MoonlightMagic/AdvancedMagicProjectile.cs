@@ -15,10 +15,12 @@ namespace Stellamod.Content.Items.MoonlightMagic
         private BaseMovement _movement;
         public override string Texture => TextureRegistry.EmptyTexture;
 
+        private ref float Timer => ref Projectile.ai[0];
+        private ref float Charge => ref Projectile.ai[1];
         public Vector2[] OldPos { get; private set; }
         public float[] OldRot { get; private set; }
         public float Size { get; set; } = 16;
-        public float ScaleMultiplier => Size / 16f;
+        public float ScaleMultiplier => (Size / 16f) * MathHelper.Lerp(0.5f, 1f, Charge);
         public int TrailLength { get; set; }
         public float GlobalTimer
         {
@@ -268,7 +270,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 Color drawColor = Color.White.MultiplyRGB(lightColor);
                 PrimaryElement?.DrawForm(spriteBatch, Form, Projectile.Center - Main.screenPosition,
-                    drawColor, lightColor, Projectile.velocity.ToRotation(), Projectile.scale);
+                    drawColor, lightColor, Projectile.velocity.ToRotation(), Projectile.scale * MathHelper.Lerp(0.5f, 1f, Charge));
             }
 
             return false;

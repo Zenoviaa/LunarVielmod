@@ -270,7 +270,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             {
                 Item heldItem = Owner.HeldItem;
                 float levelProgress = (_level / 3f);
-                int damage = (int)MathHelper.Lerp(0, Projectile.damage, levelProgress);
+                int damage = (int)MathHelper.Lerp(1, Projectile.damage, levelProgress);
                 float knockback = Projectile.knockBack;
                 Vector2 fireVelocity = Projectile.velocity * 15;
                 BaseStaff staff = Owner.HeldItem.ModItem as BaseStaff;
@@ -280,7 +280,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 Projectile.velocity = fireVelocity;
                 Projectile.damage = damage;
                 Projectile.knockBack = knockback;
-                AdvancedMagicUtil.NewMagicProjectile(staff, Projectile);
+                AdvancedMagicUtil.NewMagicProjectile(staff, Projectile, levelProgress);
                 Projectile.velocity = oldVelocity;
 
                 for (int i = 0; i < 7 * levelProgress; i++)

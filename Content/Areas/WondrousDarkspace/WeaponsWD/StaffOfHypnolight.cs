@@ -16,6 +16,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
         {
             base.SetDefaults();
             Form = FormRegistry.Fairy.Value;
+            Item.damage = 200;
         }
 
         public override int GetNormalSlotCount()

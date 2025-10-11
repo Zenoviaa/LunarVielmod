@@ -9,29 +9,16 @@ namespace Stellamod.Content.Items.MoonlightMagic
 {
     public static class AdvancedMagicUtil
     {
-        public static void NewMagicProjectile(BaseStaff item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            //
-            SwingPlayerV2 comboPlayer = player.GetModPlayer<SwingPlayerV2>();
-            comboPlayer.ComboWaitTime = 0;
 
-            int combo = comboPlayer.ComboCounter;
-            int dir = comboPlayer.ComboDirection;
-            Projectile staff = Projectile.NewProjectileDirect(
-                source, position, velocity, ModContent.ProjectileType<AdvancedMagicStaffProjectile>(), damage, knockback, player.whoAmI,
-                ai0: 0, ai1: dir, ai2: item.Item.useTime);
-            comboPlayer.IncreaseCombo();
-            staff.netUpdate = true;
-        }
-
-        public static void NewMagicProjectile(BaseStaff item, Projectile sourceProjectile)
+        public static void NewMagicProjectile(BaseStaff item, Projectile sourceProjectile, float charge)
         {
             Player player = Main.player[sourceProjectile.owner];
             float speed = sourceProjectile.velocity.Length();
             Vector2 velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * speed;
             Projectile p = Projectile.NewProjectileDirect(
                                 sourceProjectile.GetSource_FromThis(), player.Center, velocity,
-                                ModContent.ProjectileType<AdvancedMagicProjectile>(), sourceProjectile.damage, sourceProjectile.knockBack, sourceProjectile.owner);
+                                ModContent.ProjectileType<AdvancedMagicProjectile>(), sourceProjectile.damage, sourceProjectile.knockBack, sourceProjectile.owner, 
+                                ai1: charge);
             p.netUpdate = true;
         }
 
@@ -41,7 +28,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             Projectile p = Projectile.NewProjectileDirect(
                                 sourceProjectile.Projectile.GetSource_FromThis(), position, velocity,
-                                ModContent.ProjectileType<AdvancedMagicProjectile>(), damage, knockback, sourceProjectile.Projectile.owner);
+                                ModContent.ProjectileType<AdvancedMagicProjectile>(), damage, knockback, sourceProjectile.Projectile.owner,
+                                ai1: 1f);
 
             //Set Moonlight Defaults
             AdvancedMagicProjectile moonlightMagicProjectile = p.ModProjectile as AdvancedMagicProjectile;
