@@ -159,6 +159,7 @@ namespace Stellamod.Core.MagicSystem.UI
             {
 
                 SlotTooltipItem tooltipItem = ModContent.GetInstance<SlotTooltipItem>();
+                tooltipItem.Reset();
                 tooltipItem.isTimedSlot = _isTimedSlot;
                 Main.HoverItem = tooltipItem.Item;
                 Main.hoverItemName = tooltipItem.Item.HoverName;
