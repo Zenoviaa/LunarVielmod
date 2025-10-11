@@ -42,9 +42,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
         private float _midringTimer3;
 
         private bool _hasFired;
-        private float MaxChargeTime => 120;
+  
         private float CrosshairProgress;
-        private float LevelProgress => _level / 3f;
         private float Interpolant;
         private ref float Timer => ref Projectile.ai[1];
         private ref float ChargeProgress => ref Projectile.ai[2];
@@ -52,6 +51,22 @@ namespace Stellamod.Content.Items.MoonlightMagic
         private Player Owner => Main.player[Projectile.owner];
         private Vector2 EndPoint => Projectile.Center + -Vector2.UnitY * 40;
         private BaseElement Element => GetElement();
+
+        private float GetChargeTime()
+        {
+            const float Base_Charge_Time = 360;
+            AdvancedMagicPlayer magicPlayer = Owner.GetModPlayer<AdvancedMagicPlayer>();
+            float chargeTime = Base_Charge_Time;
+            float decrease = chargeTime * magicPlayer.chargeTimeBonus;
+            chargeTime -= decrease;
+            return chargeTime;
+        }
+
+        private float GetLevelChargeTime()
+        {
+            return GetChargeTime() / 3;
+        }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -201,7 +216,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 Projectile.velocity = Owner.Center.DirectionTo(Main.MouseWorld);
                 Projectile.netUpdate = true;
             }
-            if (Timer == MaxChargeTime)
+            if (Timer == GetLevelChargeTime())
             {
                 if (_level < 3)
                 {
@@ -213,11 +228,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
                     }
                 }
             }
-            else if (Timer < MaxChargeTime)
-            {
 
-            }
-            ChargeProgress = Timer / MaxChargeTime;
+            ChargeProgress = Timer / GetLevelChargeTime();
             ChargeProgress = MathHelper.Clamp(ChargeProgress, 0, 1);
             if (Main.myPlayer == Projectile.owner)
             {

@@ -1,8 +1,10 @@
 using Stellamod.Buffs;
+using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Helpers;
 using Stellamod.Items.Armors.Scrappy;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -13,6 +15,14 @@ namespace Stellamod.Items.Armors.Staffigy
     [AutoloadEquip(EquipType.Head)]
     public class StaffigyHat : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+
+            ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
+        }
+
         public override void SetDefaults()
         {
             Item.width = 40;
@@ -39,7 +49,9 @@ namespace Stellamod.Items.Armors.Staffigy
 
         public override void UpdateArmorSet(Player player)
         {
+            player.GetModPlayer<AdvancedMagicPlayer>().chargeTimeBonus += 0.2f;
             player.setBonus = LangText.SetBonus(this);//"Become greatly empowered for a short time when low on health!\nJust one last breath...");
+    
             player.statManaMax2 += 20;
 
 

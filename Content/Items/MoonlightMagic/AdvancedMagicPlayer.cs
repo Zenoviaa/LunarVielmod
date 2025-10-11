@@ -12,8 +12,18 @@ namespace Stellamod.Content.Items.MoonlightMagic
     {
         private List<int> _itemTypes = new List<int>();
         public List<Item> Backpack { get; set; } = new List<Item>();
+
+
+        public float chargeTimeBonus;
+
+
         public static event Action<Item> OnPickupMagicItem;
 
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+            chargeTimeBonus = 0f;
+        }
         public bool IsUnlocked(Item item)
         {
             return _itemTypes.Contains(item.type);

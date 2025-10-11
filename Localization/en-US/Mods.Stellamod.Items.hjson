@@ -9152,3 +9152,18 @@ InsourcedBrew: {
 	DisplayName: Insourced Brew
 	Tooltip: Increases insource slots by 1
 }
+
+StaffigyRobe: {
+	Tooltip: ""
+	DisplayName: Staffigy Robe
+}
+
+StaffigyPants: {
+	Tooltip: ""
+	DisplayName: Staffigy Pants
+}
+
+StaffigyHat: {
+	Tooltip: ""
+	DisplayName: Staffigy Hat
+}
