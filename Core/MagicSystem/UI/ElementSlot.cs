@@ -85,12 +85,29 @@ namespace Stellamod.Core.MagicSystem.UI
             //Draw Backing
             Vector2 pos = rectangle.TopLeft();
 
+
             //Draw the background and then draw the item icon
             Texture2D value = ElementSlotAsset.Value;
             Vector2 centerPos = pos + (rectangle.Size() / 2f) * 1.5f;
             spriteBatch.Draw(value, rectangle.TopLeft(), null, Color.White, 0f, default(Vector2), _scale * 1.5f, SpriteEffects.None, 0f);
 
-            ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale * 1.5f, 64, Color.White);
+            Color drawColor = Color.White;
+            if(_ctx.staffToEdit != null && !_ctx.staffToEdit.IsMatchingPreference())
+            {
+                drawColor = Color.Lerp(Color.White, Color.Black, 0.6f);
+
+
+                if (IsMouseHovering && Item.IsAir)
+                {
+
+                    SlotTooltipItem tooltipItem = ModContent.GetInstance<SlotTooltipItem>();
+                    tooltipItem.Reset();
+                    tooltipItem.isMismatch = true;
+                    Main.HoverItem = tooltipItem.Item;
+                    Main.hoverItemName = tooltipItem.Item.HoverName;
+                }
+            }
+            ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale * 1.5f, 64, drawColor);
             Main.inventoryScale = oldScale;
         }
     }

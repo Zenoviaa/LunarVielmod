@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Quests.OldManQuest;
 using Stellamod.Core;
 using Stellamod.Core.QuestSystem;
-using Stellamod.Core.QuestSystem.Quests.OldManQuest;
 using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Melee.Swords;
 using Stellamod.Items.Weapons.Ranged;

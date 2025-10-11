@@ -10,12 +10,26 @@ namespace Stellamod.Content.Items.MoonlightMagic
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         public bool isTimedSlot;
+        public bool isMismatch;
+        public void Reset()
+        {
+            isTimedSlot = false;
+            isMismatch = false; 
+        }
+
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
             tooltips.Clear();
             TooltipLine tooltipLine;
-
+            if (isMismatch)
+            {
+                tooltipLine = new TooltipLine(Mod, "EnchantmentMismatchHelp",
+                    Language.GetTextValue("Mods.Stellamod.Enchantments.EnchantmentMismatch"));
+                tooltipLine.OverrideColor = Color.Red;
+                tooltips.Add(tooltipLine);
+                return;
+            }
             if (isTimedSlot)
             {
                 tooltipLine = new TooltipLine(Mod, "EnchantmentTimedHelp",

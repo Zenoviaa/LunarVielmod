@@ -1,5 +1,5 @@
-﻿using Stellamod.Core.QuestSystem;
-using Stellamod.Core.QuestSystem.Quests.OldManQuest;
+﻿using Stellamod.Content.Quests.OldManQuest;
+using Stellamod.Core.QuestSystem;
 using Terraria;
 using Terraria.ModLoader;
 

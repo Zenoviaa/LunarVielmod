@@ -1415,6 +1415,7 @@ AssassinsArrow.DisplayName: Assassins Arrow
 ExampleMotionBlurProjectile.DisplayName: Example Motion Blur Projectile
 WigglerDetonator.DisplayName: Wiggler Detonator
 MagicalAxeBoomer.DisplayName: Magical Axe Boomer
+Magic.DisplayName: Magic
 CandleShotBoom.DisplayName: Candle Shot Boom
 ClockworkBoomer.DisplayName: Clockwork Boomer
 ProbeLaser.DisplayName: Probe Laser
@@ -1510,3 +1511,5 @@ TwilightTomeTome.DisplayName: Twilight Tome Tome
 AdvancedMagicStaffHold.DisplayName: Advanced Magic Staff Hold
 Littlemoth.DisplayName: Littlemoth
 StaffigyCrescent.DisplayName: Staffigy Crescent
+TilePainterPreview.DisplayName: Tile Painter Preview
+DraggablePoint.DisplayName: Draggable Point
