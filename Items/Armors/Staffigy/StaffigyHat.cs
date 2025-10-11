@@ -1,5 +1,6 @@
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Items.Armors.Scrappy;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -7,39 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Staffigy
 {
-    public class StaffigyHat : ModPlayer
-    {
-        public bool hasSetBonus;
-        public override void ResetEffects()
-        {
-            hasSetBonus = false;
-        }
-        public override void OnHurt(Player.HurtInfo info)
-        {
-            if (!hasSetBonus)
-                return;
-
-            //Nuh uh
-            if (Player.HasBuff<ShadeWrathCooldown>())
-                return;
-
-
-            float percentOfLife = (float)Player.statLife / (float)Player.statLifeMax;
-            if (percentOfLife <= 0.4f)
-            {
-                //Trigger the buff
-                int time = 300;
-                Player.AddBuff(ModContent.BuffType<ShadeWrath>(), time);
-
-                int cooldownTime = 55 * 60;
-                Player.AddBuff(ModContent.BuffType<ShadeWrathCooldown>(), cooldownTime);
-
-                //Idk some effects here or something
-                //Some sounds
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/OverGrowth_TP1"));
-            }
-        }
-    }
+   
 
     [AutoloadEquip(EquipType.Head)]
     public class StaffigyHat : ModItem
@@ -60,7 +29,8 @@ namespace Stellamod.Items.Armors.Staffigy
 
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
-            return body.type == Mod.Find<ModItem>("ShadeWraithBody").Type && legs.type == Mod.Find<ModItem>("ShadeWraithLegs").Type;
+            return body.type == ModContent.ItemType<StaffigyRobe>()
+                && legs.type == ModContent.ItemType<StaffigyPants>();
         }
         public override void ArmorSetShadows(Player player)
         {
@@ -70,7 +40,7 @@ namespace Stellamod.Items.Armors.Staffigy
         public override void UpdateArmorSet(Player player)
         {
             player.setBonus = LangText.SetBonus(this);//"Become greatly empowered for a short time when low on health!\nJust one last breath...");
-            player.GetModPlayer<ShadeWraithPlayer>().hasSetBonus = true;
+           
         }
 
 

@@ -91,7 +91,7 @@ namespace Stellamod.Core.ArmorShop
 
             //Shadewrath done
             ArmorShopSet SW = new ArmorShopSet();
-            SW.AddHead(ModContent.ItemType<StaffigyHat>());
+            SW.AddHead(ModContent.ItemType<ShadeWraithHead>());
             SW.AddBody(ModContent.ItemType<ShadeWraithBody>());
             SW.AddLegs(ModContent.ItemType<ShadeWraithLegs>());
             SW.SetMaterial(ItemID.GraniteBlock);
