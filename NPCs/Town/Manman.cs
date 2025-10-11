@@ -215,7 +215,7 @@ namespace Stellamod.NPCs.Town
         {
             Main.CloseNPCChatOrSign();
             CloseTownDialogue();
-
+            Main.playerInventory = true;
             ArmorShopUISystem uiSystem = ModContent.GetInstance<ArmorShopUISystem>();
             uiSystem.OpenUI();
 

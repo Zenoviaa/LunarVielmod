@@ -9146,3 +9146,8 @@ StaffOfHypnolight: {
 	DisplayName: Staff Of Hypnolight
 	Tooltip: ""
 }
+
+InsourcedBrew: {
+	DisplayName: Insourced Brew
+	Tooltip: Increases insource slots by 1
+}
