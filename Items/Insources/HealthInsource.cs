@@ -10,9 +10,11 @@ namespace Stellamod.Items.Insources
             return 60 * 30;
         }
 
-        public void UseInsource(Player player)
+
+        public override void UseInsource(FlaskPlayer flaskPlayer)
         {
-            player.Heal(50);
+            base.UseInsource(flaskPlayer);
+            flaskPlayer.Player.Heal(50);
         }
     }
 }
