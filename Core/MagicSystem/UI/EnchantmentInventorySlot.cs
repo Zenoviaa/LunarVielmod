@@ -21,6 +21,7 @@ namespace Stellamod.Core.MagicSystem.UI
             _scale = 1;
             _context = ItemSlot.Context.BankItem;
             OnLeftClick += On_LeftClick;
+            
             Item = new Item();
             Item.SetDefaults(0);
 
@@ -69,7 +70,7 @@ namespace Stellamod.Core.MagicSystem.UI
             Rectangle rectangle = GetDimensions().ToRectangle();
 
             bool contains = ContainsPoint(Main.MouseScreen);
-            if (contains && !PlayerInput.IgnoreMouseInterface && !Main.LocalPlayer.mouseInterface)
+            if (IsMouseHovering && !PlayerInput.IgnoreMouseInterface && !Main.LocalPlayer.mouseInterface)
             {
                 Main.LocalPlayer.mouseInterface = true;
                 HandleMouseItem();

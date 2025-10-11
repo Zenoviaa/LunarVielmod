@@ -8,6 +8,7 @@ namespace Stellamod.Core.MagicSystem.UI
     public class EnchantmentMenuUIState : UIState
     {
         public EnchantmentMenu enchantmentMenu;
+
         public EnchantmentMenuUIState() : base()
         {
 

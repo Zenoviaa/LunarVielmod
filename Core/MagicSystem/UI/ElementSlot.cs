@@ -75,8 +75,8 @@ namespace Stellamod.Core.MagicSystem.UI
             Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();
 
-            bool contains = ContainsPoint(Main.MouseScreen);
-            if (contains && !PlayerInput.IgnoreMouseInterface)
+
+            if (IsMouseHovering && !PlayerInput.IgnoreMouseInterface)
             {
                 Main.LocalPlayer.mouseInterface = true;
                 HandleMouseItem();
@@ -97,7 +97,7 @@ namespace Stellamod.Core.MagicSystem.UI
                 drawColor = Color.Lerp(Color.White, Color.Black, 0.6f);
 
 
-                if (IsMouseHovering && Item.IsAir)
+                if (IsMouseHovering && !Item.IsAir)
                 {
 
                     SlotTooltipItem tooltipItem = ModContent.GetInstance<SlotTooltipItem>();

@@ -13,7 +13,6 @@ EnchantmentNormalSlotHelp: I am a regular slot, I only accept normal enchantment
 EnchantmentLockedHelp: This enchantment is LOCKED! Keep exploring and you may find it.
 EnchantmentMismatch: This staff hates this element, 30% less damage.
 
-
 ChaosChaosEnchantment: {
 	DisplayName: Chaos Chaos Enchantment
 	Tooltip: Grants the effects of 10 random enchantments!

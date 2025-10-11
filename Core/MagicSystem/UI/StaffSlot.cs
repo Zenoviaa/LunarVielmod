@@ -107,8 +107,7 @@ namespace Stellamod.Core.MagicSystem.UI
             float oldScale = Main.inventoryScale;
             Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();
-            bool contains = ContainsPoint(Main.MouseScreen);
-            if (contains && !PlayerInput.IgnoreMouseInterface)
+            if (IsMouseHovering && !PlayerInput.IgnoreMouseInterface)
             {
                 Main.LocalPlayer.mouseInterface = true;
                 HandleMouseItem();

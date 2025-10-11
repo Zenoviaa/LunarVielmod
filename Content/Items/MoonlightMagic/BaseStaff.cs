@@ -174,10 +174,10 @@ namespace Stellamod.Content.Items.MoonlightMagic
                         switch (match)
                         {
                             case ElementMatch.Match:
-                                damageModifier += 0.04f;
+                                damageModifier += 0.05f;
                                 break;
                             case ElementMatch.Mismatch:
-                                damageModifier -= 0.04f;
+                                damageModifier -= 0.05f;
                                 break;
                         }
                     }

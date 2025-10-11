@@ -6,9 +6,11 @@ using Stellamod.UI;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI.Elements;
+using Terraria.UI;
 
 namespace Stellamod.Core.MagicSystem.UI
 {
@@ -117,6 +119,7 @@ namespace Stellamod.Core.MagicSystem.UI
             _grid.HAlign = 0.5f;
             _grid.VAlign = 0.65f;
             _grid.ListPadding = 2f;
+            _grid.OverflowHidden = false;
             Append(_grid);
 
             _timedGrid.Width.Set(0, 0.8f);
@@ -159,6 +162,8 @@ namespace Stellamod.Core.MagicSystem.UI
 
             _backgroundSquare.Width = Width;
             _backgroundSquare.Height = Height;
+
+            
         }
         public override void Update(GameTime gameTime)
         {
@@ -166,6 +171,7 @@ namespace Stellamod.Core.MagicSystem.UI
 
             //Constantly lock the UI in the position regardless of resolution changes
             SetPos();
+
 
         }
 
