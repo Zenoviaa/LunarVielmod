@@ -49,6 +49,8 @@ namespace Stellamod.Content.Items.MoonlightMagic.Forms
 
         public static Asset<Texture2D> Ship => ModContent.Request<Texture2D>(AssetDirectory + "Ship");
 
+        public static Asset<Texture2D> Gear => ModContent.Request<Texture2D>(AssetDirectory + "Gear");
+
         public static Asset<Texture2D> Lamp => ModContent.Request<Texture2D>(AssetDirectory + "Lamp");
     }
 }
