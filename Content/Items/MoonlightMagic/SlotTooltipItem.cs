@@ -24,7 +24,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             TooltipLine tooltipLine;
             if (isMismatch)
             {
-                tooltipLine = new TooltipLine(Mod, "EnchantmentTimedHelp",
+                tooltipLine = new TooltipLine(Mod, "EnchantmentMismatchHelp",
                     Language.GetTextValue("Mods.Stellamod.Enchantments.EnchantmentMismatch"));
                 tooltipLine.OverrideColor = Color.Red;
                 tooltips.Add(tooltipLine);
