@@ -205,7 +205,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             {
                 if (_level < 3)
                 {
-
+                    SoundEngine.PlaySound(Element.ChargeSound, Projectile.position);
                     _level++;
                     if (_level < 3)
                     {

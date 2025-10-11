@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
@@ -26,6 +27,10 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             SoundStyle hitStyle = SoundRegistry.PrimeMagicHit;
             hitStyle.PitchVariance = 0.25f;
             HitSound = hitStyle;
+
+            SoundStyle chargeSoundStyle = AssetRegistry.Sounds.MagicWand.BasicCharge;
+            chargeSoundStyle.PitchVariance = 0.15f;
+            ChargeSound = chargeSoundStyle;
         }
 
         public override Color GetElementColor()

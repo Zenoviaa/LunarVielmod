@@ -69,6 +69,26 @@ namespace Stellamod.Assets
                 public static SoundStyle JiitasSadWah = new SoundStyle($"{Path}Jiitas/JiitasSadWah");
             }
 
+            public static class MagicWand
+            {
+                public static SoundStyle BasicCharge = new SoundStyle($"{Path}MagicWand/BasicCharge");
+                public static SoundStyle BloodletCharge = new SoundStyle($"{Path}MagicWand/BloodletCharge");
+                public static SoundStyle BloodletChargeShot = new SoundStyle($"{Path}MagicWand/BloodletChargeShot");
+                public static SoundStyle DeeyaCharge = new SoundStyle($"{Path}MagicWand/DeeyaCharge");
+                public static SoundStyle DeeyaChargeShot = new SoundStyle($"{Path}MagicWand/DeeyaChargeShot");
+                public static SoundStyle FireCharge = new SoundStyle($"{Path}MagicWand/FireCharge");
+                public static SoundStyle FireChargeShot = new SoundStyle($"{Path}MagicWand/FireChargeShot");
+                public static SoundStyle GuutCharge = new SoundStyle($"{Path}MagicWand/GuutCharge");
+                public static SoundStyle GuutChargeShot = new SoundStyle($"{Path}MagicWand/GuutChargeShot");
+                public static SoundStyle HexCharge = new SoundStyle($"{Path}MagicWand/HexCharge");
+                public static SoundStyle HexChargeShot = new SoundStyle($"{Path}MagicWand/HexChargeShot");
+                public static SoundStyle NatureCharge = new SoundStyle($"{Path}MagicWand/NatureCharge");
+                public static SoundStyle NatureChargeShot = new SoundStyle($"{Path}MagicWand/NatureChargeShot");
+                public static SoundStyle PhantasmalCharge = new SoundStyle($"{Path}MagicWand/PhantasmalCharge");
+                public static SoundStyle PhantasmalChargeShot = new SoundStyle($"{Path}MagicWand/PhantasmalChargeShot");
+                public static SoundStyle UvilisCharge = new SoundStyle($"{Path}MagicWand/UvilisCharge");
+                public static SoundStyle UvilisChargeShot = new SoundStyle($"{Path}MagicWand/UvilisChargeShot");
+            }
             public static class Magic
             {
                 public static SoundStyle AutomationCast1 = new SoundStyle($"{Path}Magic/AutomationCast1");

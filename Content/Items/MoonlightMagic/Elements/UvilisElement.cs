@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
@@ -25,9 +26,14 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
         public override void SetDefaults()
         {
             base.SetDefaults();
-            SoundStyle uvilisCastStyle = SoundRegistry.UvilisCast;
-            uvilisCastStyle.PitchVariance = 0.15f;
-            CastSound = uvilisCastStyle;
+
+            SoundStyle chargeSoundStyle = AssetRegistry.Sounds.MagicWand.UvilisCharge;
+            chargeSoundStyle.PitchVariance = 0.15f;
+            ChargeSound = chargeSoundStyle;
+
+            SoundStyle chargeShotSoundStyle = AssetRegistry.Sounds.MagicWand.UvilisChargeShot;
+            chargeShotSoundStyle.PitchVariance = 0.15f;
+            CastSound = chargeShotSoundStyle;
 
             SoundStyle uvilisHitStyle = SoundRegistry.UvilisHit;
             uvilisHitStyle.PitchVariance = 0.15f;
