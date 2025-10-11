@@ -39,6 +39,10 @@ namespace Stellamod.Content.Items.MoonlightMagic
                     _primaryElement = new Item();
                     _primaryElement.SetDefaults(0);
                 }
+                if (_primaryElement.IsAir)
+                {
+                    _primaryElement = ModContent.GetModItem(ModContent.ItemType<BasicElement>()).Item.Clone();
+                }
                 return _primaryElement;
             }
             set
