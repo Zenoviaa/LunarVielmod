@@ -76,6 +76,7 @@ namespace Stellamod.Items.Armors.HeavyMetal
             player.maxMinions += 1;
             player.GetModPlayer<HeavyMetalPlayer>().hasSetBonus = true;
             player.setBonus = LangText.SetBonus(this);//"2 Gintze Guards come to fight for you"  + "\n+1 Summons!");  // This is the setbonus tooltip
+            player.endurance += 0.2f;
         }
 
        
