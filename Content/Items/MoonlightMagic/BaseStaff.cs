@@ -85,7 +85,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Item.useTime = 32;
             Item.useAnimation = 32;
             Item.useStyle = ItemUseStyleID.Shoot;
-            Item.knockBack = 6;
+            Item.knockBack = 12;
             Item.mana = 10;
 
             Item.rare = ItemRarityID.Blue;
