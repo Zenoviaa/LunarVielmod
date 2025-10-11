@@ -37,8 +37,8 @@ namespace Stellamod.Core.SwingSystem
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            this.GetLocalization(nameof(BasicSlash), () => "");
-            this.GetLocalization(nameof(StaminaSlash), () => "");
+            this.GetLocalization(nameof(BasicSlash), () => "No Effect");
+            this.GetLocalization(nameof(StaminaSlash), () => "No Effect");
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
