@@ -48,7 +48,7 @@ namespace Stellamod.Items.Armors.Staffigy
 
             Timer++;
             float osc = MathF.Sin(Timer) + 1f;
-            Projectile.Center = Owner.Center + Vector2.Lerp(Vector2.Zero, -Vector2.UnitY * 32, ExtraMath.OscTimer(Timer * 0.1f, 0f, 1f));
+            Projectile.Center = Owner.Center + Vector2.Lerp(Vector2.Zero, -Vector2.UnitY * 32, ExtraMath.OscTimer(Timer * 0.03f, 0f, 1f));
             Projectile.Center -= Vector2.UnitY * 24;
             Projectile.Center += Vector2.UnitX * 12 * -Owner.direction;
             Projectile.spriteDirection = Owner.direction;

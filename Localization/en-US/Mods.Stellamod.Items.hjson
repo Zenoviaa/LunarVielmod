@@ -9171,3 +9171,8 @@ StaffigyHat: {
 	Tooltip: +10% Magic damage!
 	DisplayName: Staffigy Hat
 }
+
+JourneysBeginningWand: {
+	Tooltip: ""
+	DisplayName: Journeys Beginning Wand
+}
