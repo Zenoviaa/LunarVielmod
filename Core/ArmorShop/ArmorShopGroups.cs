@@ -1,10 +1,10 @@
-﻿using Stellamod.Items.Armors;
+﻿using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
+using Stellamod.Items.Armors;
 using Stellamod.Items.Armors.AcidArmour;
 using Stellamod.Items.Armors.Appretience;
 using Stellamod.Items.Armors.Artisan;
 using Stellamod.Items.Armors.Astrasilk;
 using Stellamod.Items.Armors.Daeden;
-using Stellamod.Items.Armors.Daedia;
 using Stellamod.Items.Armors.Ducanblitz;
 using Stellamod.Items.Armors.Elagent;
 using Stellamod.Items.Armors.Eldritchian;

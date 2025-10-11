@@ -5,7 +5,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 
-namespace Stellamod.Items.Armors.Daedia
+namespace Stellamod.Content.Areas.WondrousDarkspace.ArmorWD
 {
     public class LightBomb : ModProjectile
     {
@@ -90,8 +90,8 @@ namespace Stellamod.Items.Armors.Daedia
             TimerR++;
             if (TimerR == 100)
             {
-                float speedXa = (Projectile.velocity.X / 2) + Main.rand.NextFloat(-10f, 10f);
-                float speedYa = (Projectile.velocity.Y / 6) + Main.rand.Next(-10, 10);
+                float speedXa = Projectile.velocity.X / 2 + Main.rand.NextFloat(-10f, 10f);
+                float speedYa = Projectile.velocity.Y / 6 + Main.rand.Next(-10, 10);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 0.1f, speedYa * 0.1f, ProjectileID.SpiritFlame, 10, 0f, Projectile.owner, 0f, 0f);
                 TimerR = 0;
             }
@@ -120,13 +120,13 @@ namespace Stellamod.Items.Armors.Daedia
                 {
                     if (i == 0)
                     {
-                        rotationToDraw = Utils.AngleLerp(Projectile.rotation, Projectile.oldRot[0], j);
+                        rotationToDraw = Projectile.rotation.AngleLerp(Projectile.oldRot[0], j);
                         interpolatedPos = Vector2.Lerp(Projectile.Center, Projectile.oldPos[0] + Projectile.Size / 2, j);
                     }
                     else
                     {
                         interpolatedPos = Vector2.Lerp(Projectile.oldPos[i - 1] + Projectile.Size / 2, Projectile.oldPos[i] + Projectile.Size / 2, j);
-                        rotationToDraw = Utils.AngleLerp(Projectile.oldRot[i - 1], Projectile.oldRot[i], j);
+                        rotationToDraw = Projectile.oldRot[i - 1].AngleLerp(Projectile.oldRot[i], j);
                     }
                     Main.EntitySpriteDraw(texture, interpolatedPos - Main.screenPosition + Projectile.Size / 2 + new Vector2(-20, -15), null, afterImgColor * (1 - i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
                 }

@@ -2,6 +2,7 @@
 
 using Stellamod.Buffs;
 using Stellamod.Buffs.Minions;
+using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
 using Stellamod.Dusts;
 using Stellamod.Gores.Foreground;
 using Stellamod.Helpers;
@@ -9,7 +10,6 @@ using Stellamod.Items.Accessories.PicturePerfect;
 using Stellamod.Items.Accessories.Runes;
 using Stellamod.Items.Armors.Alsis;
 using Stellamod.Items.Armors.Artisan;
-using Stellamod.Items.Armors.Daedia;
 using Stellamod.Items.Armors.Ducanblitz;
 using Stellamod.Items.Armors.Govheil;
 using Stellamod.Items.Armors.Lovestruck;
