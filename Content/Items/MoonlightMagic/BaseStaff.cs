@@ -298,8 +298,10 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override void RightClick(Player player)
         {
             base.RightClick(player);
-            ModContent.GetInstance<MagicUISystem>().OpenUI(ModContent.GetInstance<NoStaff>());
-;        }
+            ModContent.GetInstance<MagicUISystem>().OpenUI(Item.Clone().ModItem as BaseStaff);
+
+            Item.SetDefaults(0); 
+        }
 
         public void SetElement(Item item)
         {

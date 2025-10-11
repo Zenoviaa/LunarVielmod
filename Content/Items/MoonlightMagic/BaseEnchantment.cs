@@ -16,6 +16,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         ICloneable
     {
         private static BaseEnchantment[] _enchantments;
+
         public static int[] GetTypes()
         {
             BaseEnchantment[] allEnchantments = BaseEnchantment.AllEnchantments;
@@ -41,6 +42,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             }
             return enchantmentTypes;
         }
+
         public static BaseEnchantment[] AllEnchantments
         {
             get
@@ -125,6 +127,11 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
 
         }
+        public override bool ItemSpace(Player player)
+        {
+            return true;
+        }
+    
 
         public virtual void DrawTextShader(SpriteBatch spriteBatch, Item item, DrawableTooltipLine line, ref int yOffset) { }
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)

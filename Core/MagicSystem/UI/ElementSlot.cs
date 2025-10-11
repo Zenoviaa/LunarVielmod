@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Helpers;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -65,6 +67,9 @@ namespace Stellamod.Core.MagicSystem.UI
                 if (Main.mouseLeftRelease && Main.mouseLeft)
                 {
                     _ctx.SetElement(Item);
+                    SoundStyle place = AssetRegistry.Sounds.MagicWand.EnchantmentPlace;
+                    place.PitchVariance = 0.15f;
+                    SoundEngine.PlaySound(place);
                 }
             }
         }
