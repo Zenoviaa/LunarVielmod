@@ -19,7 +19,7 @@ namespace Stellamod.Items.Armors.Staffigy
             Item.height = 22;
             Item.value = 10000;
             Item.rare = ItemRarityID.Green;
-            Item.defense = 4;
+            Item.defense = 3;
         }
 
         public override void UpdateEquip(Player player)

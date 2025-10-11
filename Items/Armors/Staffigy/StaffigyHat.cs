@@ -24,7 +24,7 @@ namespace Stellamod.Items.Armors.Staffigy
 
         public override void UpdateEquip(Player player)
         {
-            player.GetDamage(DamageClass.Generic) += 0.02f;
+            player.GetDamage(DamageClass.Magic) += 0.1f;
         }
 
         public override bool IsArmorSet(Item head, Item body, Item legs)
@@ -40,7 +40,9 @@ namespace Stellamod.Items.Armors.Staffigy
         public override void UpdateArmorSet(Player player)
         {
             player.setBonus = LangText.SetBonus(this);//"Become greatly empowered for a short time when low on health!\nJust one last breath...");
-           
+            player.statManaMax2 += 20;
+
+
         }
 
 

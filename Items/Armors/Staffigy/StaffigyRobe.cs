@@ -33,7 +33,8 @@ namespace Stellamod.Items.Armors.Staffigy
         public override void UpdateEquip(Player player)
         {
 
-            player.statLifeMax2 += 20;
+            player.statManaMax2 += 40;
+            player.GetCritChance(DamageClass.Magic) += 5;
 
         }
 
