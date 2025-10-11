@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Content.Quests.DelgrimQuest;
 using Stellamod.Core;
 using Stellamod.Core.QuestSystem;
-using Stellamod.Core.QuestSystem.Quests.DelgrimQuest;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Materials.Molds;

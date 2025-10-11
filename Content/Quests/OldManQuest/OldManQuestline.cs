@@ -1,11 +1,12 @@
-﻿using Stellamod.Items.Accessories;
+﻿using Stellamod.Core.QuestSystem;
+using Stellamod.Items.Accessories;
 using Stellamod.Items.Harvesting;
 using Stellamod.NPCs.Underground;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Core.QuestSystem.Quests.OldManQuest
+namespace Stellamod.Content.Quests.OldManQuest
 {
     public class CollectFlowersI : Quest
     {

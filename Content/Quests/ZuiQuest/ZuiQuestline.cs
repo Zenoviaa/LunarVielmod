@@ -1,4 +1,5 @@
-﻿using Stellamod.Helpers;
+﻿using Stellamod.Core.QuestSystem;
+using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Armors.Witchen;
@@ -15,7 +16,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Core.QuestSystem.Quests.ZuiQuest
+namespace Stellamod.Content.Quests.ZuiQuest
 {
     public abstract class ZuiQuest : Quest
     {

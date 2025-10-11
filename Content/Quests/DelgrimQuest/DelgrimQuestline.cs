@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Accessories;
+﻿using Stellamod.Core.QuestSystem;
+using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Melee.Greatswords;
@@ -7,7 +8,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Core.QuestSystem.Quests.DelgrimQuest
+namespace Stellamod.Content.Quests.DelgrimQuest
 {
     public abstract class DelgrimQuest : Quest
     {
