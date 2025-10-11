@@ -9154,7 +9154,8 @@ InsourcedBrew: {
 }
 
 StaffigyRobe: {
-	Tooltip: '''
+	Tooltip:
+		'''
 		+40 Max Mana
 		5% increased Magical Critical Strike Chance!
 		'''

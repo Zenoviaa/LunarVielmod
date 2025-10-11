@@ -63,5 +63,10 @@ namespace Stellamod.Helpers
             float dif = (to - from) / 2f;
             return from + dif + dif * (float)System.Math.Sin(Main.GlobalTimeWrappedHourly * speed + offset);
         }
+        public static float OscTimer(float timer, float from, float to, float speed = 1f, float offset = 0f)
+        {
+            float dif = (to - from) / 2f;
+            return from + dif + dif * (float)System.Math.Sin(timer * speed + offset);
+        }
     }
 }
