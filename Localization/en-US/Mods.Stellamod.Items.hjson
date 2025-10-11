@@ -8554,6 +8554,8 @@ Vael: {
 WarriorsGrace: {
 	DisplayName: Warriors Grace
 	Tooltip: ""
+	BasicSlash: ""
+	StaminaSlash: ""
 }
 
 IronBall: {

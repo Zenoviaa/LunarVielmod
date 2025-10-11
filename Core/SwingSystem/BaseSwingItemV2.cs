@@ -17,6 +17,30 @@ namespace Stellamod.Core.SwingSystem
         public int staminaCost = 2;
 
         public MeleeWeaponType meleeWeaponType;
+
+        public string BasicSlash
+        {
+            get
+            {
+                return LangText.Common("BasicSlash", LangText.Item(this, "BasicSlash"));
+            }
+        }
+
+        public string StaminaSlash
+        {
+            get
+            {
+                return LangText.Common("StaminaSlash", LangText.Item(this, "StaminaSlash"));
+            }
+        }
+
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            this.GetLocalization(nameof(BasicSlash), () => "");
+            this.GetLocalization(nameof(StaminaSlash), () => "");
+        }
+
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
@@ -26,11 +50,11 @@ namespace Stellamod.Core.SwingSystem
             tooltips.Add(line);
 
 
-            line = new TooltipLine(Mod, "BasicSlash", LangText.Common("BasicSlash", LangText.Item(this, "BasicSlash")));
+            line = new TooltipLine(Mod, "BasicSlash", BasicSlash);
             line.OverrideColor = new Color(124, 187, 80);
             tooltips.Add(line);
 
-            line = new TooltipLine(Mod, "StaminaSlash", LangText.Common("StaminaSlash", LangText.Item(this, "StaminaSlash")));
+            line = new TooltipLine(Mod, "StaminaSlash", StaminaSlash);
             line.OverrideColor = Color.Goldenrod;
             tooltips.Add(line);
 
