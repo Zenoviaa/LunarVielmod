@@ -523,82 +523,15 @@ ShitgunEnchantment: {
 	Tooltip: Turns your spells into shotgun blasts with half of your original spell damage!
 }
 
-ReverserOfDreadEnchantment: {
-	DisplayName: Reverser Of Dread Enchantment
-	Tooltip: ""
-}
 
-DreadSwitcherEnchantment: {
-	Tooltip: ""
-	DisplayName: Dread Switcher Enchantment
-}
 
-IceSwitcherEnchantment: {
-	DisplayName: Ice Switcher Enchantment
-	Tooltip: ""
-}
-
-ReverserOfIceEnchantment: {
-	DisplayName: Reverser Of Ice Enchantment
-	Tooltip: ""
-}
-
-MoonSwitcherEnchantment: {
-	DisplayName: Moon Switcher Enchantment
-	Tooltip: ""
-}
-
-ReverserOfMoonEnchantment: {
-	DisplayName: Reverser Of Moon Enchantment
-	Tooltip: ""
-}
-
-ReverserOfRoyalMagicEnchantment: {
-	DisplayName: Reverser Of Royal Magic Enchantment
-	Tooltip: ""
-}
-
-RoyalMagicSwitcherEnchantment: {
-	DisplayName: Royal Magic Switcher Enchantment
-	Tooltip: ""
-}
-
-AdditorVeilEnchantment: {
-	DisplayName: Additor Veil Enchantment
-	Tooltip: ""
-}
-
-ReverserOfVeilEnchantment: {
-	DisplayName: Reverser Of Veil Enchantment
-	Tooltip: ""
-}
-
-VeilSwitcherEnchantment: {
-	DisplayName: Veil Switcher Enchantment
-	Tooltip: ""
-}
-
-ReverserOfWindEnchantment: {
-	DisplayName: Reverser Of Wind Enchantment
-	Tooltip: ""
-}
-
-WindCloudEnchantment: {
-	DisplayName: Wind Cloud Enchantment
-	Tooltip: ""
-}
-
-WindSwitcherEnchantment: {
-	DisplayName: Wind Switcher Enchantment
-	Tooltip: ""
-}
 
 BoomerangEnchantment: {
 	DisplayName: Boomerang Enchantment
-	Tooltip: ""
+	Tooltip: Makes your spell come back to you!
 }
 
 GearFormEnchantment: {
 	DisplayName: Gear Form Enchantment
-	Tooltip: ""
+	Tooltip: Changes the form of the spell to a crescent moon and +2 Penetration!
 }
