@@ -164,10 +164,6 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
         }
 
-        private float RingWidthFunction(float completionRatio)
-        {
-            return EasingFunction.QuadraticBump(completionRatio) * 8;
-        }
         private Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(new Color(69, 196, 182), Color.SpringGreen, completionRatio);

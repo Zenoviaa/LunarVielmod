@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Systems.MiscellaneousMath;
+using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -26,6 +29,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
     {
         public SoundStyle? CastSound { get; set; }
         public SoundStyle? HitSound { get; set; }
+        public SoundStyle? ChargeSound { get; set; }
         public AdvancedMagicProjectile MagicProj { get; set; }
         public Projectile Projectile => MagicProj.Projectile;
 
@@ -39,7 +43,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public virtual void AI() { }
         public virtual void DrawTrail(Vector2[] oldPos) { }
 
-        public virtual void DrawAura(Vector2 auraPos, float strength, Vector2 scale, Color color)
+        public virtual void DrawRing(Vector2 auraPos, int frame, float rotation, Vector2 scale, Color color)
         {
             string texturePath = Texture + "_Ring";
             Asset<Texture2D> asset= null;
@@ -61,7 +65,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             shaderData.Shader.Parameters["startPixel"].SetValue(60);
             shaderData.Shader.Parameters["endPixel"].SetValue(115);
             shaderData.Shader.Parameters["time"].SetValue(Main.GlobalTimeWrappedHourly * speed);
-            shaderData.Shader.Parameters["distortionStrength"].SetValue(0.075f * strength);
+            shaderData.Shader.Parameters["distortionStrength"].SetValue(0.0375f);
 
 
             Vector2 vel = Vector2.Lerp(-Vector2.UnitX, Vector2.UnitX, ExtraMath.Osc(0f, 1f)) * 0.1f;
@@ -73,20 +77,19 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
 
 
-            Color auraColor = GetAuraColor();
+            Color auraColor = GetElementColor();
             auraColor = auraColor.MultiplyRGB(color);
             auraColor *= 0.5f;
             auraColor.A = 0;
         
             Vector2 drawPos = auraPos - Main.screenPosition;
-            int frame = (int)MathHelper.Lerp(0, 2, strength);
             Rectangle frameRect = ringTexture.GetFrame(frame, 3);
 
 
             Vector2 drawScale = scale * Vector2.One;
             drawScale *= MathHelper.Lerp(0.8f, 1f, ExtraMath.Osc(0f, 1f));
 
-            float drawRotation = MathHelper.Lerp(-0.05f, 0.05f, ExtraMath.Osc(0f, 1f, MathHelper.Lerp(1f, 3f, strength)));
+            float drawRotation = rotation + MathHelper.Lerp(-0.05f, 0.05f, ExtraMath.Osc(0f, 1f));
             Vector2 drawOrigin = frameRect.Size() / 2f;
             spriteBatch.Draw(ringTexture, drawPos, frameRect, auraColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
 
@@ -94,9 +97,26 @@ namespace Stellamod.Content.Items.MoonlightMagic
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
 
-        public virtual Color GetAuraColor()
+        public virtual void DrawRingTrail(Vector2[] oldPos, float[] oldRot)
         {
-            return Color.White;
+            var shader = MagicNormalShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
+            shader.NoiseTexture = TrailRegistry.SpikyTrail1;
+            shader.BlendState = BlendState.Additive;
+            shader.SamplerState = SamplerState.PointWrap;
+            shader.Speed = 0.5f;
+            shader.Repeats = 1f;
+            //This just applis the shader changes
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, oldRot, RingColorFunction, RingWidthFunction, shader);
+        }
+
+        private float RingWidthFunction(float completionRatio)
+        {
+            return EasingFunction.QuadraticBump(completionRatio) * 2;
+        }
+        private Color RingColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.Lerp(Color.White, GetElementColor(), 0.85f), GetElementColor(), completionRatio);
         }
         public virtual void DrawForm(SpriteBatch spriteBatch,
             Texture2D formTexture,

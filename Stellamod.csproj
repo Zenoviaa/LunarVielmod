@@ -202,6 +202,7 @@
     <None Remove="Effects\CrystalShaders\L.png" />
     <None Remove="Effects\CrystalShaders\LightningBolt.fx" />
     <None Remove="Effects\CrystalShaders\MagicCheckers.fx" />
+    <None Remove="Effects\CrystalShaders\MagicCircle.fx" />
     <None Remove="Effects\CrystalShaders\MagicIce.fx" />
     <None Remove="Effects\CrystalShaders\MagicRoyalMagic.fx" />
     <None Remove="Effects\CrystalShaders\MagicVeil.fx" />
@@ -233,6 +234,7 @@
     <None Remove="Effects\GlowCircle.fx" />
     <None Remove="Effects\GustArmor.fx" />
     <None Remove="Effects\Lava.fx" />
+    <None Remove="Effects\MagicCircle.fx" />
     <None Remove="effects\NormalDistortion.fx" />
     <None Remove="Effects\PaletteBloodCathedral.fx" />
     <None Remove="Effects\PaletteDesert.fx" />
