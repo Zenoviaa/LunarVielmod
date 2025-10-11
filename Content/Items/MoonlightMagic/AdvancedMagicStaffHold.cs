@@ -278,6 +278,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
                 Vector2 oldVelocity = Projectile.velocity;
                 Projectile.velocity = fireVelocity;
+                Projectile.damage = damage;
+                Projectile.knockBack = knockback;
                 AdvancedMagicUtil.NewMagicProjectile(staff, Projectile);
                 Projectile.velocity = oldVelocity;
 
