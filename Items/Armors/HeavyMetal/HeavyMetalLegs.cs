@@ -28,13 +28,7 @@ namespace Stellamod.Items.Armors.HeavyMetal
         {
             player.moveSpeed *= 1.05f;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<GintzlMetal>(), 17);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+     
 
 
     }

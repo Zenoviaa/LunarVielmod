@@ -56,7 +56,7 @@ namespace Stellamod.Items.Armors.HeavyMetal
             Item.height = 30;
             Item.value = 10000;
             Item.rare = ItemRarityID.Blue;
-            Item.defense = 3;
+            Item.defense = 5;
         }
 
 
@@ -78,12 +78,6 @@ namespace Stellamod.Items.Armors.HeavyMetal
             player.setBonus = LangText.SetBonus(this);//"2 Gintze Guards come to fight for you"  + "\n+1 Summons!");  // This is the setbonus tooltip
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<GintzlMetal>(), 18);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+       
     }
 }
