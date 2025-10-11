@@ -523,9 +523,6 @@ ShitgunEnchantment: {
 	Tooltip: Turns your spells into shotgun blasts with half of your original spell damage!
 }
 
-
-
-
 BoomerangEnchantment: {
 	DisplayName: Boomerang Enchantment
 	Tooltip: Makes your spell come back to you!
