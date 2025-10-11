@@ -123,6 +123,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 return true;
             List<int> elements = new List<int>();
             ModifyElementPreferences(elements);
+            if (elements.Count == 0)
+                return true;
             foreach(int e in elements)
             {
                 if(primaryElement.ModItem.Type == e)
