@@ -21,15 +21,9 @@ namespace Stellamod.Items.Armors.HeavyMetal
             Item.height = 30;
             Item.value = Item.sellPrice(0, 0, 20, 0);
             Item.rare = ItemRarityID.Blue;
-            Item.defense = 3;
+            Item.defense = 6;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<GintzlMetal>(), 22);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+      
     }
 }

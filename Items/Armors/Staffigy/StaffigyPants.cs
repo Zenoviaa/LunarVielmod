@@ -1,18 +1,16 @@
-using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
-namespace Stellamod.Items.Armors.HeavyMetal
+namespace Stellamod.Items.Armors.Staffigy
 {
     [AutoloadEquip(EquipType.Legs)]
-    public class HeavyMetalLegs : ModItem
+    public class StaffigyPants : ModItem
     {
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("HeavyMetal Legs");
-            // Tooltip.SetDefault("Increases movement speed by 10%");
+            // DisplayName.SetDefault("Shade Wraith Legs");
+            // Tooltip.SetDefault("Increases melee critical strike chance by 8% and movement speed by 10%");
         }
 
         public override void SetDefaults()
@@ -20,15 +18,14 @@ namespace Stellamod.Items.Armors.HeavyMetal
             Item.width = 28;
             Item.height = 22;
             Item.value = 10000;
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Green;
             Item.defense = 3;
         }
 
         public override void UpdateEquip(Player player)
         {
-            player.moveSpeed *= 1.05f;
+            player.moveSpeed += 0.3f;
         }
-     
 
 
     }
