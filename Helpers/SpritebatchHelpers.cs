@@ -48,8 +48,7 @@ namespace Stellamod.Helpers
             Vector2 right = Vector2.UnitX * outlineOffset;
             Vector2 up = Vector2.UnitY * -outlineOffset;
             Vector2 down = Vector2.UnitY * outlineOffset;
-            SpriteEffects spriteEffects = SpriteEffects.None;
-            SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
+            SpriteEffects spriteEffects = modProj.Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             Rectangle drawFrame = modProj.Projectile.Frame();

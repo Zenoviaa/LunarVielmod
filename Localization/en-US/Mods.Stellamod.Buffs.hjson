@@ -872,3 +872,8 @@ StrengthInsourceBuff: {
 	DisplayName: Strength Insource Buff
 	Description: Mods.Stellamod.Buffs.StrengthInsourceBuff.Description
 }
+
+LittlemothBuff: {
+	DisplayName: Littlemoth Buff
+	Description: Mods.Stellamod.Buffs.LittlemothBuff.Description
+}
