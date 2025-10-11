@@ -22,6 +22,7 @@ using Stellamod.Items.Armors.LunarianVoid;
 using Stellamod.Items.Armors.Scissorian;
 using Stellamod.Items.Armors.Scrappy;
 using Stellamod.Items.Armors.ShadeWraith;
+using Stellamod.Items.Armors.Staffigy;
 using Stellamod.Items.Armors.Stone;
 using Stellamod.Items.Armors.Terric;
 using Stellamod.Items.Armors.Ulven;
@@ -90,7 +91,7 @@ namespace Stellamod.Core.ArmorShop
 
             //Shadewrath done
             ArmorShopSet SW = new ArmorShopSet();
-            SW.AddHead(ModContent.ItemType<ShadeWraithHead>());
+            SW.AddHead(ModContent.ItemType<StaffigyHat>());
             SW.AddBody(ModContent.ItemType<ShadeWraithBody>());
             SW.AddLegs(ModContent.ItemType<ShadeWraithLegs>());
             SW.SetMaterial(ItemID.GraniteBlock);
@@ -144,6 +145,14 @@ namespace Stellamod.Core.ArmorShop
             Daedia.AddLegs(ModContent.ItemType<DaediaThighs>());
             Daedia.SetMaterial(ModContent.ItemType<HypnotizedSoul>());
             Daedia.Register();
+
+            //Staffigy done
+            ArmorShopSet staff = new ArmorShopSet();
+            staff.AddHead(ModContent.ItemType<StaffigyHat>());
+            staff.AddBody(ModContent.ItemType<StaffigyRobe>());
+            staff.AddLegs(ModContent.ItemType<StaffigyPants>());
+            staff.SetMaterial(ModContent.ItemType<HypnotizedSoul>());
+            staff.Register();
 
             //vextin done
             ArmorShopSet Vext = new ArmorShopSet();
