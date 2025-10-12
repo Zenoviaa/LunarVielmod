@@ -1,9 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Helpers;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -21,6 +24,7 @@ namespace Stellamod.Core.MagicSystem.UI
             _scale = 1;
             _context = ItemSlot.Context.BankItem;
             OnLeftClick += On_LeftClick;
+            
             Item = new Item();
             Item.SetDefaults(0);
 
@@ -46,14 +50,21 @@ namespace Stellamod.Core.MagicSystem.UI
             if (Item == null)
                 return;
             if (!Main.mouseItem.IsAir)
-                return;
+            {
+                Player player = Main.LocalPlayer;
+                player.QuickSpawnItem(new EntitySource_DropAsItem(player), Main.mouseItem);
+                Main.mouseItem = new Item();
+                Main.mouseItem.SetDefaults(0);
+            }
             AdvancedMagicPlayer magicPlayer = Main.LocalPlayer.GetModPlayer<AdvancedMagicPlayer>();
             if (!magicPlayer.IsUnlocked(Item))
             {
                 return;
             }
             Main.mouseItem = Item.Clone();
-            //TODO: Play UI click sound
+            SoundStyle grab = AssetRegistry.Sounds.MagicWand.EnchantmentGrab;
+            grab.PitchVariance = 0.15f;
+            SoundEngine.PlaySound(grab);
         }
         private void HandleMouseItem()
         {
@@ -69,7 +80,7 @@ namespace Stellamod.Core.MagicSystem.UI
             Rectangle rectangle = GetDimensions().ToRectangle();
 
             bool contains = ContainsPoint(Main.MouseScreen);
-            if (contains && !PlayerInput.IgnoreMouseInterface && !Main.LocalPlayer.mouseInterface)
+            if (IsMouseHovering && !PlayerInput.IgnoreMouseInterface && !Main.LocalPlayer.mouseInterface)
             {
                 Main.LocalPlayer.mouseInterface = true;
                 HandleMouseItem();

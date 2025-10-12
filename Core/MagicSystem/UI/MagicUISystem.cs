@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.Items.MoonlightMagic;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -7,6 +8,7 @@ using Terraria.UI;
 
 namespace Stellamod.Core.MagicSystem.UI
 {
+
     [Autoload(Side = ModSide.Client)]
     public class MagicUISystem : ModSystem
     {
@@ -21,6 +23,7 @@ namespace Stellamod.Core.MagicSystem.UI
             enchantmentMenuUI = new EnchantmentMenuUIState();
             enchantmentMenuUI.Activate();
         }
+
 
         public void OpenUI(BaseStaff staff)
         {

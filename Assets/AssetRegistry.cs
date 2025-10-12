@@ -71,6 +71,8 @@ namespace Stellamod.Assets
 
             public static class MagicWand
             {
+                public static SoundStyle EnchantmentGrab = new SoundStyle($"{Path}MagicWand/EnchantmentGrab");
+                public static SoundStyle EnchantmentPlace = new SoundStyle($"{Path}MagicWand/EnchantmentPlace");
                 public static SoundStyle BasicCharge = new SoundStyle($"{Path}MagicWand/BasicCharge");
                 public static SoundStyle BloodletCharge = new SoundStyle($"{Path}MagicWand/BloodletCharge");
                 public static SoundStyle BloodletChargeShot = new SoundStyle($"{Path}MagicWand/BloodletChargeShot");

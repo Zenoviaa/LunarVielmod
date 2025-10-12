@@ -11,10 +11,14 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override string Texture => TextureRegistry.EmptyTexture;
         public bool isTimedSlot;
         public bool isMismatch;
+        public bool isSynergy;
+        public bool noSynergy;
         public void Reset()
         {
             isTimedSlot = false;
-            isMismatch = false; 
+            isMismatch = false;
+            isSynergy = false;
+            noSynergy = false;
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -26,7 +30,25 @@ namespace Stellamod.Content.Items.MoonlightMagic
             {
                 tooltipLine = new TooltipLine(Mod, "EnchantmentMismatchHelp",
                     Language.GetTextValue("Mods.Stellamod.Enchantments.EnchantmentMismatch"));
-                tooltipLine.OverrideColor = Color.Red;
+                tooltipLine.OverrideColor = Color.IndianRed;
+                tooltips.Add(tooltipLine);
+                return;
+            }
+
+            if (isSynergy)
+            {
+                tooltipLine = new TooltipLine(Mod, "EnchantmentSynergy",
+                    Language.GetTextValue("Mods.Stellamod.Enchantments.EnchantmentCommonSynergy", "5"));
+                tooltipLine.OverrideColor = Color.LightGreen;
+                tooltips.Add(tooltipLine);
+                return;
+            }
+
+            if (noSynergy)
+            {
+                tooltipLine = new TooltipLine(Mod, "EnchantmentSynergy",
+                    Language.GetTextValue("Mods.Stellamod.Enchantments.EnchantmentCommonNoSynergy"));
+                tooltipLine.OverrideColor = Color.Gray;
                 tooltips.Add(tooltipLine);
                 return;
             }

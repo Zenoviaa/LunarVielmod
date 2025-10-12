@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar;
 using Stellamod.Core;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.JackTheScholar;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Bestiary;
@@ -15,7 +15,7 @@ namespace Stellamod.NPCs.Town
     {
         private int _frame;
         public int NumberOfTimesTalkedTo = 0;
-        public override string Texture => "Stellamod/NPCs/Bosses/JackTheScholar/JackTheScholar";
+        public override string Texture => "Stellamod/Content/Areas/Fable/BossesFB/JackTheScholar/JackTheScholar";
         public override void SetStaticDefaults()
         {
             // DisplayName automatically assigned from localization files, but the commented line below is the normal approach.

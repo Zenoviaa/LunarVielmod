@@ -40,6 +40,7 @@ namespace Stellamod.Core.MagicSystem.UI
             _panel.BorderColor = Color.Transparent;
             Append(_panel);
 
+            _grid.Left.Pixels = 10;
             _grid.Width.Set(0, 1f);
             _grid.Height.Set(0, 1f);
             _grid.HAlign = 0.5f;
@@ -47,20 +48,22 @@ namespace Stellamod.Core.MagicSystem.UI
             _grid.ListPadding = 2;
             _panel.Append(_grid);
 
-            _scrollbar.Width.Set(20, 0);
-            _scrollbar.Height.Set(340, 0);
-            _scrollbar.Left.Set(0, 1);
-            _scrollbar.Top.Set(0, 0f);
 
-            float maxViewSize = 48 * 8f;
-            _scrollbar.SetView(0, maxViewSize);
-            Append(_scrollbar);
 
             _uiList.Width.Pixels = Width.Pixels;
             _uiList.Height.Pixels = Height.Pixels;
             _uiList.Add(_panel);
             _uiList.SetScrollbar(_scrollbar);
             Append(_uiList);
+
+            _scrollbar.Width.Set(20, 0);
+            _scrollbar.Height.Set(340, 0);
+            _scrollbar.Left.Set(0, 0.95f);
+            _scrollbar.Top.Set(0, 0f);
+
+            float maxViewSize = 48 * 8f;
+            _scrollbar.SetView(0, maxViewSize);
+            Append(_scrollbar);
         }
         public void SetEnchantments()
         {
@@ -93,8 +96,7 @@ namespace Stellamod.Core.MagicSystem.UI
             float progress = _panel.Height.Pixels / Height.Pixels;
             progress = MathHelper.Clamp(progress, 0f, 1f);
             _scrollbar.Height.Set(Height.Pixels * progress, 0);
-
-
+         
             //Hacky way to get invisible scrollbar when there's no need for it
             if (_panel.Height.Pixels < Height.Pixels)
             {

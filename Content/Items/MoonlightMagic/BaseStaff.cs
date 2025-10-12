@@ -123,6 +123,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 return true;
             List<int> elements = new List<int>();
             ModifyElementPreferences(elements);
+            if (elements.Count == 0)
+                return true;
             foreach(int e in elements)
             {
                 if(primaryElement.ModItem.Type == e)
@@ -174,10 +176,10 @@ namespace Stellamod.Content.Items.MoonlightMagic
                         switch (match)
                         {
                             case ElementMatch.Match:
-                                damageModifier += 0.04f;
+                                damageModifier += 0.05f;
                                 break;
                             case ElementMatch.Mismatch:
-                                damageModifier -= 0.04f;
+                                damageModifier -= 0.05f;
                                 break;
                         }
                     }
@@ -298,8 +300,10 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override void RightClick(Player player)
         {
             base.RightClick(player);
-            ModContent.GetInstance<MagicUISystem>().OpenUI(ModContent.GetInstance<NoStaff>());
-;        }
+            ModContent.GetInstance<MagicUISystem>().OpenUI(Item.Clone().ModItem as BaseStaff);
+
+            Item.SetDefaults(0); 
+        }
 
         public void SetElement(Item item)
         {

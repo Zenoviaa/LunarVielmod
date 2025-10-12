@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Bases;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
+using Stellamod.Core.ProjectileHelpers;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
@@ -59,6 +60,11 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Uvilis
     public class WaterDrillEnchantmentExplosion : BasePillarExplosionProjectile
     {
         int trailingMode = 0;
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ProjectileSets.BossMultihitDamageFalloff[Type] = true;
+        }
         protected override float DistanceFunction(float completionRatio)
         {
             return 300 * (1.0f - EasingFunction.QuadraticBump(completionRatio)) * GlobalWidth;

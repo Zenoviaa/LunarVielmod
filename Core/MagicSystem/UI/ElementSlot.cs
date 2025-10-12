@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Helpers;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -65,6 +67,9 @@ namespace Stellamod.Core.MagicSystem.UI
                 if (Main.mouseLeftRelease && Main.mouseLeft)
                 {
                     _ctx.SetElement(Item);
+                    SoundStyle place = AssetRegistry.Sounds.MagicWand.EnchantmentPlace;
+                    place.PitchVariance = 0.15f;
+                    SoundEngine.PlaySound(place);
                 }
             }
         }
@@ -75,8 +80,8 @@ namespace Stellamod.Core.MagicSystem.UI
             Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();
 
-            bool contains = ContainsPoint(Main.MouseScreen);
-            if (contains && !PlayerInput.IgnoreMouseInterface)
+
+            if (IsMouseHovering && !PlayerInput.IgnoreMouseInterface)
             {
                 Main.LocalPlayer.mouseInterface = true;
                 HandleMouseItem();
@@ -97,7 +102,7 @@ namespace Stellamod.Core.MagicSystem.UI
                 drawColor = Color.Lerp(Color.White, Color.Black, 0.6f);
 
 
-                if (IsMouseHovering && Item.IsAir)
+                if (IsMouseHovering && !Item.IsAir)
                 {
 
                     SlotTooltipItem tooltipItem = ModContent.GetInstance<SlotTooltipItem>();

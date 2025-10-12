@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted;
 using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Mage.Tomes;
-using Stellamod.NPCs.Bosses.DaedusTheDevoted;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -20,7 +20,7 @@ namespace Stellamod.NPCs.Town
         private int _frame;
         public int NumberOfTimesTalkedTo = 0;
         public const string ShopName = "Shop";
-        public override string Texture => "Stellamod/NPCs/Bosses/DaedusTheDevoted/DaedusTheDevoted";
+        public override string Texture => "Stellamod/Content/Areas/Fable/BossesFB/DaedusTheDevoted/DaedusTheDevoted";
         public override void SetStaticDefaults()
         {
             // DisplayName automatically assigned from localization files, but the commented line below is the normal approach.
