@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
 using Stellamod.Core.Bases;
+using Stellamod.Core.ProjectileHelpers;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
@@ -65,6 +66,11 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Guuts
         int trailMode;
         int rStart = 4;
         int rEnd = 428;
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ProjectileSets.BossMultihitDamageFalloff[Type] = true;
+        }
         public override void SetDefaults()
         {
             base.SetDefaults();

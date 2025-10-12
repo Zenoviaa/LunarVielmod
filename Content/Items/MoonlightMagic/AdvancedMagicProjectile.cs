@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
+using Stellamod.Core.ProjectileHelpers;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Items.MoonlightMagic
@@ -58,6 +60,12 @@ namespace Stellamod.Content.Items.MoonlightMagic
         }
         public List<BaseEnchantment> Enchantments { get; private set; } = new List<BaseEnchantment>();
         private Player Owner => Main.player[Projectile.owner];
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ProjectileSets.ResetBossMultihitDamageFalloff[Type] = true;
+        }
+
         public void ReplaceEnchantment(BaseEnchantment enchantmentPrefab, int index)
         {
             BaseEnchantment prefab = (ModContent.GetModItem(enchantmentPrefab.Type) as BaseEnchantment);
@@ -222,6 +230,13 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
+            if (target.boss)
+            {
+                float damage = Projectile.damage;
+                damage *= 0.5f;
+                Projectile.damage = (int)damage;
+            }
+
             PrimaryElement?.OnHitNPC(target, hit, damageDone);
             for (int i = 0; i < Enchantments.Count; i++)
             {

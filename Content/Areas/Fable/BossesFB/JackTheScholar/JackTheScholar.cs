@@ -20,7 +20,6 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
 {
-    [AutoloadBossHead]
     public class JackTheScholar : ScarletBoss
     {
         private enum AIState
@@ -100,6 +99,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
             //Setup the music and boss bar
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Jack");
             NPC.aiStyle = 0;
+         
         }
 
         public override void FindFrame(int frameHeight)
