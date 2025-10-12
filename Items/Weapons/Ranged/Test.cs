@@ -1,7 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.Particles;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Projectiles.Test;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -50,6 +55,123 @@ namespace Stellamod.Items.Weapons.Ranged
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(2f, -2f);
+        }
+
+        private void CoolAssFire(Vector2 position, Vector2 velocity)
+        {
+            for (float f = 0; f < 16; f++)
+            {
+                Vector2 pVelocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
+                pVelocity *= Main.rand.NextFloat(0.5f, 2f);
+                var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                FXUtil.GlowFragmentParticle(position, pVelocity, 
+                    innerColor: Color.Red, 
+                    outerColor: Color.Orange, 
+                    fadeToColor: Color.Purple, 
+                    distortOut: true);
+         
+                if (Main.rand.NextBool(4))
+                {
+                    Dust.NewDustPerfect(position, ModContent.DustType<TSmokeDust>(),
+                                     velocity.RotatedByRandom(MathHelper.PiOver4 / 2f) * 2);
+                }
+                if (Main.rand.NextBool(4))
+                {
+                    Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(),
+                                     velocity.RotatedByRandom(MathHelper.PiOver4 / 2f) * 3 * Main.rand.NextFloat(0.4f, 1f), newColor: Color.White, Scale: 0.2f);
+                }
+                if (Main.rand.NextBool(4))
+                {
+                   
+                    var part = FXUtil.GlowFragmentParticle(position, pVelocity,
+                     innerColor: Color.DarkRed,
+                     outerColor: Color.DarkBlue,
+                     fadeToColor: Color.Black,
+                     distortOut: false);
+                    part.Scale *= 2;
+                }
+            }
+
+        }
+        private void CoolAssFire2(Vector2 position, Vector2 velocity)
+        {
+            for (float f = 0; f < 16; f++)
+            {
+                Vector2 pVelocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
+                pVelocity *= Main.rand.NextFloat(0.5f, 2f);
+                var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                FXUtil.GlowFragmentParticle(position, pVelocity,
+                    innerColor: Color.Yellow,
+                    outerColor: Color.Green,
+                    fadeToColor: Color.Pink,
+                    distortOut: true);
+
+                if (Main.rand.NextBool(4))
+                {
+                    Dust.NewDustPerfect(position, ModContent.DustType<TSmokeDust>(),
+                                     velocity.RotatedByRandom(MathHelper.PiOver4 / 2f) * 2);
+                }
+                if (Main.rand.NextBool(4))
+                {
+                    Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(),
+                                     velocity.RotatedByRandom(MathHelper.PiOver4 / 2f) * 3 * Main.rand.NextFloat(0.4f, 1f), newColor: Color.White, Scale: 0.2f);
+                }
+                if (Main.rand.NextBool(4))
+                {
+
+                    var part = FXUtil.GlowFragmentParticle(position, pVelocity,
+                     innerColor: Color.DarkRed,
+                     outerColor: Color.DarkBlue,
+                     fadeToColor: Color.Black,
+                     distortOut: false);
+                    part.Scale *= 2;
+                }
+            }
+
+        }
+        private void CoolAssFire4(Vector2 position, Vector2 velocity)
+        {
+            for (float f = 0; f < 16; f++)
+            {
+                Vector2 pVelocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
+                pVelocity *= Main.rand.NextFloat(0.5f, 2f);
+                var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                FXUtil.GlowFragmentParticle(position, pVelocity,
+                    innerColor: Color.Cyan * 0.4f,
+                    outerColor: Color.Blue * 0.4f,
+                    fadeToColor: Color.Purple * 0.2f,
+                    distortOut: true);
+
+
+            }
+
+        }
+        private void CoolAssFire3(Vector2 position, Vector2 velocity)
+        {
+            for (float f = 0; f < 16; f++)
+            {
+                Vector2 pVelocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
+                pVelocity *= Main.rand.NextFloat(0.5f, 2f);
+                var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                FXUtil.GlowFragmentParticle(position, pVelocity,
+                    innerColor: Color.Green,
+                    outerColor: Color.Blue,
+                    fadeToColor: Color.AliceBlue,
+                    distortOut: true);
+
+                if (Main.rand.NextBool(4))
+                {
+                    Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(),
+                                     velocity.RotatedByRandom(MathHelper.PiOver4 / 2f) * 3 * Main.rand.NextFloat(0.4f, 1f), newColor: Color.White, Scale: 0.2f);
+                }
+            }
+
+        }
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            CoolAssFire3(position, velocity);
+
+            return false;
         }
     }
 }

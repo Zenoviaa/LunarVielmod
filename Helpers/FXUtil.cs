@@ -38,6 +38,17 @@ namespace Stellamod.Helpers
             return particle;
         }
 
+        public static GlowFragmentParticle GlowFragmentParticle(Vector2 position, Vector2 velocity, Color innerColor, Color outerColor, Color fadeToColor, bool distortOut = false)
+        {
+            GlowFragmentParticle particle = Particle.NewParticle<GlowFragmentParticle>(position, Vector2.Zero);
+            particle.Velocity = velocity;
+            particle.innerColor = innerColor;
+            particle.outerColor = outerColor;
+            particle.fadeToColor = fadeToColor;
+            particle.distortOut = distortOut;
+            return particle;
+        }
+            
         public static GlowStretchParticle GlowStretch(Vector2 position, Vector2 velocity)
         {
             GlowStretchParticle particle = Particle.NewParticle<GlowStretchParticle>(position, Vector2.Zero);
