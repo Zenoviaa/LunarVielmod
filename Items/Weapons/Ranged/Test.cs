@@ -7,6 +7,7 @@ using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Test;
+using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
@@ -30,7 +31,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Projectile.height = 16;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
-            TrailCacheLength = 32; 
+            TrailCacheLength = 128; 
         }
         public override void AI()
         {
@@ -39,27 +40,29 @@ namespace Stellamod.Items.Weapons.Ranged
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            FlamingTrailShader flamingTrailShader = FlamingTrailShader.Instance;
-            flamingTrailShader.PrimaryTexture = TrailRegistry.SmallWhispyTrail;
-            flamingTrailShader.OuterColor = Color.BlanchedAlmond;
-            flamingTrailShader.InnerColor = Color.Orange;
-            flamingTrailShader.Distortion = 0.5f;
-            flamingTrailShader.Power = 2;
-            flamingTrailShader.BlendState = BlendState.Additive;
+            var shader = GlowingTrailShader.Instance;
 
-            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, new float[OldCenterPos.Length], TrailColorFunction, TrailWidthFunction, flamingTrailShader);
-           // TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, new float[OldCenterPos.Length], TrailColorFunction, TrailWidthFunction, flamingTrailShader);
+            shader.OuterColor = Color.LightBlue ;
+            shader.InnerColor = Color.Red;
+            shader.Distortion = 1;
+          //  shader.NoiseTexture = TrailRegistry.CrystalTrail;
+            shader.BlendState = BlendState.AlphaBlend;
+
+            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, new float[OldCenterPos.Length], TrailColorFunction, TrailWidthFunction, shader);
+            shader.BlendState = BlendState.Additive;
+            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, new float[OldCenterPos.Length], TrailColorFunction, TrailWidthFunction, shader);
+            // TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, new float[OldCenterPos.Length], TrailColorFunction, TrailWidthFunction, flamingTrailShader);
             return false;
         }
 
         private float TrailWidthFunction(float arg)
         {
-            return MathHelper.Lerp(36, 8, arg);
+            return MathHelper.Lerp(32, 8, EasingFunction.InOutSine(arg));
         }
 
         private Color TrailColorFunction(float arg)
         {
-            return Color.Lerp(Color.White, Color.Red, arg);
+            return Color.Lerp(Color.White, Color.Lerp(Color.Blue, Color.Transparent, arg), arg);
         }
     }
 
