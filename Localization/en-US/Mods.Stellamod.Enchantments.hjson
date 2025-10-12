@@ -557,3 +557,8 @@ OverchargerEnchantment: {
 	DisplayName: Overcharger Enchantment
 	Tooltip: Allows you to keep charging your wand for even more damage! +4% every second!
 }
+
+OversightEnchantment: {
+	DisplayName: Oversight Enchantment
+	Tooltip: Allows you to keep charging your wand for even more damage AND size! +2% damage every second!
+}

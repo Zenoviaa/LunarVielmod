@@ -226,7 +226,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Timer++;
             if (Timer == 1)
             {
-                MagicPlayer.chargeDamageBonus = 0;
+                MagicPlayer.ResetChargeEffects();
                 SoundStyle mySound = new SoundStyle("Stellamod/Assets/Sounds/StormKnight_Rechage");
                 mySound.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(mySound, Projectile.position);

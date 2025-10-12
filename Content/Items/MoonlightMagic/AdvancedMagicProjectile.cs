@@ -22,7 +22,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public Vector2[] OldPos { get; private set; }
         public float[] OldRot { get; private set; }
         public float Size { get; set; } = 16;
-        public float ScaleMultiplier => (Size / 16f) * MathHelper.Lerp(0.5f, 1f, Charge);
+        public float ChargeSizeMultiplier { get; set; } = 1f;
+        public float ScaleMultiplier => (Size / 16f) * MathHelper.Lerp(0.5f, 1f, Charge) * ChargeSizeMultiplier;
         public int TrailLength { get; set; }
         public float GlobalTimer
         {
@@ -60,6 +61,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         }
         public List<BaseEnchantment> Enchantments { get; private set; } = new List<BaseEnchantment>();
         private Player Owner => Main.player[Projectile.owner];
+        private AdvancedMagicPlayer MagicPlayer => Owner.GetModPlayer<AdvancedMagicPlayer>();
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -138,6 +140,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
         public void SetMoonlightDefaults(BaseStaff item)
         {
+            ChargeSizeMultiplier = 1 + MagicPlayer.chargeWidthBonus;
             Projectile.width = Projectile.height = item.Size;
             if (item.primaryElement == null || item.primaryElement.ModItem is not BaseElement || item.primaryElement.IsAir)
                 PrimaryElement = new BasicElement();
@@ -284,8 +287,10 @@ namespace Stellamod.Content.Items.MoonlightMagic
             {
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 Color drawColor = Color.White.MultiplyRGB(lightColor);
+                float scale = Projectile.scale * MathHelper.Lerp(0.5f, 1f, Charge);
+
                 PrimaryElement?.DrawForm(spriteBatch, Form, Projectile.Center - Main.screenPosition,
-                    drawColor, lightColor, Projectile.velocity.ToRotation(), Projectile.scale * MathHelper.Lerp(0.5f, 1f, Charge));
+                    drawColor, lightColor, Projectile.velocity.ToRotation(), scale);
             }
 
             return false;

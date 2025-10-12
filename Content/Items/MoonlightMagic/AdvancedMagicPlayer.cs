@@ -15,6 +15,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
 
         public float chargeTimeBonus;
+        public float chargeWidthBonus;
         public float chargeDamageBonus;
         public bool overchargingVisual;
 
@@ -24,6 +25,14 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             base.ResetEffects();
             chargeTimeBonus = 0f;
+            overchargingVisual = false;
+        }
+
+        public void ResetChargeEffects()
+        {
+            chargeTimeBonus = 0f;
+            chargeWidthBonus = 0f;
+            chargeDamageBonus = 0f;
             overchargingVisual = false;
         }
 
