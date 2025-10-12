@@ -57,5 +57,23 @@ namespace Stellamod.Helpers
             float rotation = modProj.Projectile.rotation;
             spriteBatch.Draw(texture, drawPos, drawFrame, Color.White.MultiplyRGB(lightColor), rotation, drawOrigin, scale, spriteEffects, 0);
         }
+        public static void DrawCentered(this ModProjectile modProj, ref Color lightColor, Vector2 scale)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(modProj.Texture).Value;
+            Vector2 drawPos = modProj.Projectile.Center - Main.screenPosition;
+            float outlineOffset = 2;
+            Vector2 left = Vector2.UnitX * -outlineOffset;
+            Vector2 right = Vector2.UnitX * outlineOffset;
+            Vector2 up = Vector2.UnitY * -outlineOffset;
+            Vector2 down = Vector2.UnitY * outlineOffset;
+            SpriteEffects spriteEffects = modProj.Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Rectangle drawFrame = modProj.Projectile.Frame();
+            Vector2 drawOrigin = drawFrame.Size() / 2;
+   
+            float rotation = modProj.Projectile.rotation;
+            spriteBatch.Draw(texture, drawPos, drawFrame, Color.White.MultiplyRGB(lightColor), rotation, drawOrigin, scale, spriteEffects, 0);
+        }
     }
 }

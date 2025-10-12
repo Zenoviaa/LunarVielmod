@@ -532,3 +532,8 @@ GearFormEnchantment: {
 	DisplayName: Gear Form Enchantment
 	Tooltip: Changes the form of the spell to a crescent moon and +2 Penetration!
 }
+
+BubbletagEnchantment: {
+	Tooltip: ""
+	DisplayName: Bubbletag Enchantment
+}
