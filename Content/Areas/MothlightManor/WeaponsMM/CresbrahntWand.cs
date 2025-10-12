@@ -15,18 +15,18 @@ namespace Stellamod.Content.Areas.MothlightManor.WeaponsMM
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Form = FormRegistry.Fairy.Value;
+            Form = FormRegistry.Sword.Value;
             Item.damage = 1000;
         }
 
         public override int GetNormalSlotCount()
         {
-            return 8;
+            return 7;
         }
 
         public override int GetTimedSlotCount()
         {
-            return 7;
+            return 6;
         }
 
         public override void ModifyElementPreferences(List<int> elements)

@@ -9273,3 +9273,8 @@ WillowOfTheSoulsWand: {
 	DisplayName: Willow Of The Souls Wand
 	Tooltip: ""
 }
+
+CresbrahntWand: {
+	DisplayName: Cresbrahnt Wand
+	Tooltip: ""
+}
