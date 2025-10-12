@@ -39,7 +39,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Basic
             float damage = Projectile.damage;
             damage *= 1.2f;
             Projectile.damage = (int)damage;
-            MagicProj.Form = FormRegistry.Hammer.Value;
+            MagicProj.Form = FormRegistry.Sword.Value;
 
 
         }
