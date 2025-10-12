@@ -4,6 +4,7 @@ using Stellamod.Content.Items.MoonlightMagic.Elements;
 using Stellamod.Core.ProjectileHelpers;
 using Stellamod.Helpers;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -11,10 +12,12 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Items.MoonlightMagic
 {
-    public class AdvancedMagicProjectile : ModProjectile
+    public class AdvancedMagicProjectile : ModProjectile,
+        IProjectileNetID
     {
         private BaseElement _baseElement;
         private BaseMovement _movement;
+        private int _netID;
         public override string Texture => TextureRegistry.EmptyTexture;
 
         private ref float Timer => ref Projectile.ai[0];
@@ -68,6 +71,22 @@ namespace Stellamod.Content.Items.MoonlightMagic
             ProjectileSets.ResetBossMultihitDamageFalloff[Type] = true;
         }
 
+        public int GetNetID()
+        {
+            return _netID;
+        }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(_netID);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            _netID = reader.ReadInt32();
+        }
+
         public void ReplaceEnchantment(BaseEnchantment enchantmentPrefab, int index)
         {
             BaseEnchantment prefab = (ModContent.GetModItem(enchantmentPrefab.Type) as BaseEnchantment);
@@ -108,6 +127,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
         public void SetMoonlightDefaults(AdvancedMagicProjectile item)
         {
+
             Projectile.width = Projectile.height = (int)item.Size;
             if (item.PrimaryElement == null || item.PrimaryElement is not BaseElement)
                 PrimaryElement = new BasicElement();
@@ -136,6 +156,13 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
             OldPos = new Vector2[TrailLength];
             OldRot = new float[TrailLength];
+
+            if (Main.myPlayer == Projectile.owner)
+            {
+                _netID = ProjectileNetIDHelper.RegisterID();
+                Projectile.netUpdate = true;
+            }
+
         }
 
         public void SetMoonlightDefaults(BaseStaff item)
@@ -300,5 +327,6 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             base.PostDraw(lightColor);
         }
+
     }
 }

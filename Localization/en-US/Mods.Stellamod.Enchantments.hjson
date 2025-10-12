@@ -562,3 +562,8 @@ OversightEnchantment: {
 	DisplayName: Oversight Enchantment
 	Tooltip: Allows you to keep charging your wand for even more damage AND size! +2% damage every second!
 }
+
+SpadedBladeEnchantment: {
+	DisplayName: Spaded Blade Enchantment
+	Tooltip: Creates a holographic saw around your spell that rapidly shreds through nearby enemies!
+}
