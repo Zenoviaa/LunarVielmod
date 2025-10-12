@@ -4,7 +4,14 @@ using Terraria.Graphics.Shaders;
 
 namespace Stellamod.Core.Effects
 {
-    public abstract class Shader
+    public interface IShader
+    {
+        void ModifyGraphicsDevice(GraphicsDevice device);
+        void ApplyPasses();
+        void ApplyToEffect();
+        void SetLightColor(Color lightColor);
+    }
+    public abstract class Shader : IShader
     {
         public Shader()
         {
@@ -18,9 +25,29 @@ namespace Stellamod.Core.Effects
         public SamplerState SamplerState { get; set; } = SamplerState.LinearWrap;
 
         public Color LightColor { get; set; }
+        public void SetLightColor(Color lightColor)
+        {
+            LightColor = lightColor;
+        }
+        public void ModifyGraphicsDevice(GraphicsDevice device)
+        {
+            device.BlendState = BlendState;
+            device.SamplerStates[0] = SamplerState;
+        }
+
+        public void ApplyPasses()
+        {
+            foreach (var pass in Effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+            }
+        }
+
         public virtual void ApplyToEffect()
         {
 
         }
+
+
     }
 }

@@ -42,7 +42,7 @@ namespace Stellamod.Core.Effects
         /// Useful for it the trail is supposed to gradually change over time.
         /// </summary>
         public float Interpolant { get; set; }
-        public Shader Shader { get; set; }
+        public IShader Shader { get; set; }
         public ITrailer.GetTrailWidth TrailWidthFunction { get; set; }
         public ITrailer.GetTrailColor TrailColorFunction { get; set; }
 
@@ -91,7 +91,7 @@ namespace Stellamod.Core.Effects
             return vertices;
         }
 
-        private void DrawPrimsTriangles(List<VertexPositionColorTexture> vertices, Shader shader)
+        private void DrawPrimsTriangles(List<VertexPositionColorTexture> vertices, IShader shader)
         {
             if (vertices.Count % 6 != 0 || vertices.Count <= 3)
                 return;
@@ -103,15 +103,9 @@ namespace Stellamod.Core.Effects
 
             graphicsDevice.RasterizerState.CullMode = CullMode.None;
 
-            if (shader != null)
-            {
-                graphicsDevice.BlendState = shader.BlendState;
-                graphicsDevice.SamplerStates[0] = shader.SamplerState;
-            }
-            foreach (var pass in shader.Effect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-            }
+
+            shader?.ModifyGraphicsDevice(graphicsDevice);
+            shader?.ApplyPasses();
             graphicsDevice.DrawUserPrimitives(
               PrimitiveType.TriangleList, vertices.ToArray(), 0, vertices.Count / 3);
 
@@ -123,7 +117,7 @@ namespace Stellamod.Core.Effects
         public void DrawTrail(ref Color lightColor, Vector2[] trailCache)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            Shader.LightColor = lightColor;
+            Shader.SetLightColor(lightColor);
             Shader.ApplyToEffect();
             var vertices = CalculateVertices(trailCache);
             DrawPrimsTriangles(vertices, Shader);

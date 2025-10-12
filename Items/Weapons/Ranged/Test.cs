@@ -1,9 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Shaders;
+using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Test;
+using Stellamod.Trails;
 using Stellamod.Visual.Particles;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -13,6 +19,50 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
+    public class TestFireball : ScarletProjectile
+    {
+        public override string Texture => TextureRegistry.EmptyTexture;
+        private ref float Timer => ref Projectile.ai[0];
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 16;
+            Projectile.height = 16;
+            Projectile.penetrate = -1;
+            Projectile.tileCollide = false;
+            TrailCacheLength = 32; 
+        }
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            FlamingTrailShader flamingTrailShader = FlamingTrailShader.Instance;
+            flamingTrailShader.PrimaryTexture = TrailRegistry.SmallWhispyTrail;
+            flamingTrailShader.OuterColor = Color.BlanchedAlmond;
+            flamingTrailShader.InnerColor = Color.Orange;
+            flamingTrailShader.Distortion = 0.5f;
+            flamingTrailShader.Power = 2;
+            flamingTrailShader.BlendState = BlendState.Additive;
+
+            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, new float[OldCenterPos.Length], TrailColorFunction, TrailWidthFunction, flamingTrailShader);
+           // TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, new float[OldCenterPos.Length], TrailColorFunction, TrailWidthFunction, flamingTrailShader);
+            return false;
+        }
+
+        private float TrailWidthFunction(float arg)
+        {
+            return MathHelper.Lerp(36, 8, arg);
+        }
+
+        private Color TrailColorFunction(float arg)
+        {
+            return Color.Lerp(Color.White, Color.Red, arg);
+        }
+    }
+
     public class Test : ModItem
     {
         private int _dir = 1;
@@ -175,7 +225,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             GlowDonut(position, velocity);
-
+            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<TestFireball>(), damage, knockback, player.whoAmI);
             return false;
         }
     }

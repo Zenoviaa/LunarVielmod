@@ -6,7 +6,7 @@ namespace Stellamod.Core.Effects
     {
         delegate float GetTrailWidth(float interpolant);
         delegate Color GetTrailColor(float interpolant);
-        Shader Shader { get; set; }
+        IShader Shader { get; set; }
         GetTrailWidth TrailWidthFunction { get; set; }
         GetTrailColor TrailColorFunction { get; set; }
         void SetTrailingValues(float interpolant);

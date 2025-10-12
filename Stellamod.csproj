@@ -202,6 +202,7 @@
     <None Remove="Effects\CrystalShaders\DyeMothlightMasking.fx" />
     <None Remove="Effects\CrystalShaders\DyeStatic.fx" />
     <None Remove="Effects\CrystalShaders\FirePixel.fx" />
+    <None Remove="Effects\CrystalShaders\FlamingTrail.fx" />
     <None Remove="Effects\CrystalShaders\Fog - Copy.fx" />
     <None Remove="Effects\CrystalShaders\Fog.fx" />
     <None Remove="Effects\CrystalShaders\Foggy.fx" />

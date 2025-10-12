@@ -1,9 +1,11 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Effects;
 using Terraria.Graphics.Shaders;
 
 namespace Stellamod.Core.Shaders
 {
-    public abstract class BaseShader
+    public abstract class BaseShader : IShader
     {
         public virtual string EffectPath
         {
@@ -26,6 +28,30 @@ namespace Stellamod.Core.Shaders
         }
 
         public virtual void SetDefaults()
+        {
+
+        }
+
+        public void ModifyGraphicsDevice(GraphicsDevice device)
+        {
+            device.BlendState = BlendState;
+            device.SamplerStates[0] = SamplerState;
+        }
+
+        public void ApplyPasses()
+        {
+            foreach (var pass in Effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+            }
+        }
+
+        public void ApplyToEffect()
+        {
+        
+        }
+
+        public void SetLightColor(Color lightColor)
         {
 
         }

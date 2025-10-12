@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core.Effects.Trails;
+using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
@@ -8,6 +9,23 @@ namespace Stellamod.Trailing
 {
     public static class TrailPresets
     {
+        public static SlashTrailer FlamingTrail => new SlashTrailer
+        {
+            Shader = new FlamingTrailShader()
+            {
+                
+            },
+            TrailWidthFunction = (float interpolant) =>
+            {
+                return EasingFunction.QuadraticBump(interpolant) * 16;
+            },
+            TrailColorFunction = (float interpolant) =>
+            {
+                return Color.Lerp(Color.White, Color.Transparent, interpolant);
+            }
+
+        };
+
         public static SlashTrailer Starvast => new SlashTrailer
         {
             Shader = new SlashEffect()

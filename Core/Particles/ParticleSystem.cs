@@ -139,7 +139,7 @@ namespace Stellamod.Core.Particles
 
         public void DrawBlackParticles(SpriteBatch spriteBatch)
         {
-            ArmorShaderData armorShaderData = null;
+            BaseShader myCustomShader = null;
             for (int i = 0; i < BlackParticles.Count; i++)
             {
                 var particle = BlackParticles[i];
@@ -149,26 +149,19 @@ namespace Stellamod.Core.Particles
                 if (!ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
                     continue;
 
-                if (particle.shader != armorShaderData)
+                if (particle.customShader != myCustomShader)
                 {
                     spriteBatch.End();
-                    armorShaderData = particle.shader;
-                    if (armorShaderData == null)
-                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, default, default, default, Main.GameViewMatrix.TransformationMatrix);
+                    myCustomShader = particle.customShader;
+                    if (myCustomShader == null)
+                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, default, default, default, Main.GameViewMatrix.TransformationMatrix);
                     else
                     {
-                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.Transform);
-                        particle.shader.Apply(null);
+                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                            myCustomShader.Effect, Main.Transform);
                     }
                 }
-
                 particle.Draw(spriteBatch);
-            }
-
-            if (armorShaderData != null)
-            {
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, default, default, default, Main.GameViewMatrix.TransformationMatrix);
             }
         }
 
