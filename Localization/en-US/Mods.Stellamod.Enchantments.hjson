@@ -549,6 +549,6 @@ CutlassFormEnchantment: {
 }
 
 BubbletagEnchantment: {
-	Tooltip: ""
+	Tooltip: Summons 3 bubbles that home into nearby enemies!
 	DisplayName: Bubbletag Enchantment
 }

@@ -7,7 +7,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 39;
+            Item.damage = 1000;
             Item.shootSpeed = 13;
             Item.useTime = 30;
             Item.useAnimation = 60;

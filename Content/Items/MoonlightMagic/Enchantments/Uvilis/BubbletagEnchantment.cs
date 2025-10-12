@@ -17,7 +17,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Uvilis
         public override void SetDefaults()
         {
             base.SetDefaults();
-            time = 45;
+            time = 15;
         }
 
         public override void AI()
@@ -43,7 +43,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Uvilis
                     {
                         float interpolant = f / 3f;
                         float rot = interpolant * MathHelper.TwoPi;
-                        Vector2 vel = rot.ToRotationVector2() * 16;
+                        Vector2 vel = rot.ToRotationVector2() * Projectile.velocity.Length() * 0.3f;
                         Vector2 pos = Projectile.Center + vel;
                         float damage = Projectile.damage * 0.5f;
                         int bubbleDamage = (int)damage;
@@ -117,11 +117,11 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Uvilis
             float interpolant = Timer / 30f;
             float eased = EasingFunction.OutExpo(interpolant);
             _scale = Vector2.Lerp(Vector2.Zero, Vector2.One, eased);
-            _scale *= ExtraMath.Osc(0.9f, 1f, speed: 3, offset: Projectile.whoAmI);
+            _scale *= ExtraMath.Osc(0.5f, 1f, speed: 6, offset: Projectile.whoAmI);
             float maxHomingDetectDistance = 512;
             NPC npcToChase = ProjectileHelper.FindNearestEnemy(Projectile.Center, maxHomingDetectDistance);
             if (npcToChase != null)
-                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, npcToChase.Center, degreesToRotate: 10);
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, npcToChase.Center, degreesToRotate: 2);
         }
 
 
@@ -141,6 +141,11 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Uvilis
         public override bool PreDraw(ref Color lightColor)
         {
             this.DrawCentered(ref lightColor, _scale);
+            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
+            Color glowColor = Color.LightBlue;
+            glowColor *= 0.5f;
+            glowColor.A = 0;
+            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, glowColor, Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f) * VectorHelper.Osc(0.75f, 1f, speed: 3), SpriteEffects.None, 0f);
             return false;
         }
 
