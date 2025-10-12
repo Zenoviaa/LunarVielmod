@@ -93,7 +93,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Item.shoot = ModContent.ProjectileType<AdvancedMagicProjectile>();
             Item.autoReuse = true;
             TrailLength = 16;
-            Size = 8;
+            Size = 16;
 
             //Randomize trail values
             int seed = WorldGen._genRandSeed;
