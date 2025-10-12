@@ -17,7 +17,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Uvilis
     {
         public override float GetStaffManaModifier()
         {
-            return 0.2f;
+            return 0.8f;
         }
 
         public override int GetElementType()

@@ -16,7 +16,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Bloodlet
     {
         public override float GetStaffManaModifier()
         {
-            return 0.2f;
+            return 0.5f;
         }
 
         public override int GetElementType()

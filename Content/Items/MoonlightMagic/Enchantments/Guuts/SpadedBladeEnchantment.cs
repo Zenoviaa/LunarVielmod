@@ -23,7 +23,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Guuts
         private bool _hasFired;
         public override float GetStaffManaModifier()
         {
-            return 1.2f;
+            return 2.2f;
         }
 
         public override int GetElementType()

@@ -19,7 +19,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Deeya
     {
         public override float GetStaffManaModifier()
         {
-            return 2f;
+            return 3f;
         }
 
 

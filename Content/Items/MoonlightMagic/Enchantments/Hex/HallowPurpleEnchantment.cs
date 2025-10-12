@@ -18,7 +18,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Hex
     {
         public override float GetStaffManaModifier()
         {
-            return 1f;
+            return 2f;
         }
 
 

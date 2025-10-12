@@ -16,7 +16,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Guuts
     {
         public override float GetStaffManaModifier()
         {
-            return 0.1f;
+            return 0.5f;
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
