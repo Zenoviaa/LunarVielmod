@@ -23,7 +23,21 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Hex
             Countertimer++;
 
             //If greater than time then start homing, we'll just swap the movement type of the projectile
+            if (Countertimer == time)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(8, 8);
+                    Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
+                    //  Particle.NewParticle<SparkleHexParticle>(spawnPoint, velocity, Color.White);
+                }
 
+
+
+                float damage = Projectile.damage;
+                damage *= 1.10f;
+                Projectile.damage = (int)damage;
+            }
 
             if (Countertimer < time)
             {
