@@ -40,27 +40,9 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Nature
             }
         }
 
-        public override float GetStaffManaModifier()
-        {
-            return 0.2f;
-        }
-
         public override int GetElementType()
         {
             return ModContent.ItemType<NaturalElement>();
-        }
-
-
-        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
-        {
-            // Projectile.velocity += (Projectile.velocity.SafeNormalize(Vector2.Zero) * 4).RotatedBy(MathHelper.ToRadians(15 * MathF.Sin(Countertimer)));
-            return true;
-        }
-
-        public override void SpecialInventoryDraw(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
-        {
-            base.SpecialInventoryDraw(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.NaturalGreen);
         }
     }
 }

@@ -15,7 +15,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
 
         public float chargeTimeBonus;
-
+        public float chargeDamageBonus;
+        public bool overchargingVisual;
 
         public static event Action<Item> OnPickupMagicItem;
 
@@ -23,7 +24,9 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             base.ResetEffects();
             chargeTimeBonus = 0f;
+            overchargingVisual = false;
         }
+
         public bool IsUnlocked(Item item)
         {
             return _itemTypes.Contains(item.type);

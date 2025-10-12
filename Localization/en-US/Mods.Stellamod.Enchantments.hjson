@@ -552,3 +552,8 @@ BubbletagEnchantment: {
 	Tooltip: Summons 3 bubbles that home into nearby enemies!
 	DisplayName: Bubbletag Enchantment
 }
+
+OverchargerEnchantment: {
+	DisplayName: Overcharger Enchantment
+	Tooltip: Allows you to keep charging your wand for even more damage! +4% every second!
+}

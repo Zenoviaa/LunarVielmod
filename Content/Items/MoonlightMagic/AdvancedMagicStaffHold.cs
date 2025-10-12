@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Core.Effects;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Dusts;
@@ -40,15 +41,17 @@ namespace Stellamod.Content.Items.MoonlightMagic
         private float _midringTimer1;
         private float _midringTimer2;
         private float _midringTimer3;
-
+        private float _chargeOscSpeed;
         private bool _hasFired;
-  
+
+        private float _overchargeScaleTimer;
         private float CrosshairProgress;
         private float Interpolant;
         private ref float Timer => ref Projectile.ai[1];
         private ref float ChargeProgress => ref Projectile.ai[2];
         public override string Texture => TextureRegistry.EmptyTexture;
         private Player Owner => Main.player[Projectile.owner];
+        private AdvancedMagicPlayer MagicPlayer => Owner.GetModPlayer<AdvancedMagicPlayer>();
         private Vector2 EndPoint => Projectile.Center + -Vector2.UnitY * 40;
         private BaseElement Element => GetElement();
 
@@ -65,6 +68,11 @@ namespace Stellamod.Content.Items.MoonlightMagic
         private float GetLevelChargeTime()
         {
             return GetChargeTime() / 3;
+        }
+
+        public bool IsOvercharging()
+        {
+            return _level >= 3;
         }
 
         public override void SetDefaults()
@@ -200,15 +208,45 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
       
 
+       
         private void AI_Charge()
         {
+            AdvancedMagicPlayer magicPlayer = Owner.GetModPlayer<AdvancedMagicPlayer>();
+            Item heldItem = Owner.HeldItem;
+            BaseStaff staff = Owner.HeldItem.ModItem as BaseStaff;
+            foreach(var enchantmentItem in staff.equippedEnchantments)
+            {
+                if(enchantmentItem.ModItem is BaseEnchantment e)
+                {
+
+                    e.AI_Charge(magicPlayer, this);
+                }
+            }
+
             Timer++;
             if (Timer == 1)
             {
+                MagicPlayer.chargeDamageBonus = 0;
                 SoundStyle mySound = new SoundStyle("Stellamod/Assets/Sounds/StormKnight_Rechage");
                 mySound.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(mySound, Projectile.position);
 
+            }
+            if (IsOvercharging())
+            {
+                if (Timer % 60 == 0)
+                {
+                    _overchargeScaleTimer = 0;
+                    SoundStyle mySound = AssetRegistry.Sounds.MagicWand.BasicCharge;
+                    mySound.PitchVariance = 0.05f;
+                    mySound.Pitch = MathHelper.Lerp(0f, 0.8f, MagicPlayer.chargeDamageBonus);
+                    SoundEngine.PlaySound(mySound, Projectile.position);
+                }
+                _overchargeScaleTimer++;
+            }
+            else
+            {
+                _overchargeScaleTimer = 60;
             }
             if (Main.myPlayer == Projectile.owner)
             {
@@ -264,6 +302,20 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 }
             }
         }
+
+        private int CalculateFinalDamage()
+        {
+            float levelProgress = (_level / 3f);
+
+            float baseDamage = MathHelper.Lerp(1, Projectile.damage, levelProgress);
+            AdvancedMagicPlayer magicPlayer = Owner.GetModPlayer<AdvancedMagicPlayer>();
+            float finalDamage = baseDamage * (1f + magicPlayer.chargeDamageBonus);
+
+
+
+            int damage = (int)finalDamage;
+            return damage;
+        }
         private void AI_Swing()
         {
             Timer++;
@@ -282,7 +334,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             {
                 Item heldItem = Owner.HeldItem;
                 float levelProgress = (_level / 3f);
-                int damage = (int)MathHelper.Lerp(1, Projectile.damage, levelProgress);
+                int damage = CalculateFinalDamage();
                 float knockback = Projectile.knockBack;
                 Vector2 fireVelocity = Projectile.velocity * 15;
                 BaseStaff staff = Owner.HeldItem.ModItem as BaseStaff;
@@ -343,7 +395,6 @@ namespace Stellamod.Content.Items.MoonlightMagic
             _ovalSwing.UpdateSwing(Interpolant, Projectile.Center, Projectile.velocity, out Vector2 offset);
             Projectile.Center = Owner.Center + offset;
             Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
-          //  SetHoldPosition();
         }
 
         private void AI_Release()
@@ -378,21 +429,25 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Vector2 ring2Scale = Vector2.Lerp(Vector2.Zero, Vector2.One * new Vector2(1, 0.35f), ring2Ease);
             Vector2 ring3Scale = Vector2.Lerp(Vector2.Zero, Vector2.One * new Vector2(1, 0.35f), ring3Ease);
 
+            bool overchargingVisual = IsOvercharging() && MagicPlayer.overchargingVisual;
+            float chargingSpeed = overchargingVisual ? 8 : 1;
+            Color chargingColor = overchargingVisual ? Color.LightPink : Color.White;
 
-            Vector2 ring1Offset = Projectile.velocity * MathHelper.Lerp(8, 32, ExtraMath.Osc(0f, 1f));
-            Vector2 ring2Offset = Projectile.velocity * MathHelper.Lerp(8, 32, ExtraMath.Osc(0f, 1f, offset: 3));
-            Vector2 ring3Offset = Projectile.velocity * MathHelper.Lerp(8, 32, ExtraMath.Osc(0f, 1f, offset: 6));
+
+            Vector2 ring1Offset = Projectile.velocity * MathHelper.Lerp(8, 32, ExtraMath.Osc(0f, 1f, speed: chargingSpeed)); 
+            Vector2 ring2Offset = Projectile.velocity * MathHelper.Lerp(8, 32, ExtraMath.Osc(0f, 1f, speed: chargingSpeed, offset: 3));
+            Vector2 ring3Offset = Projectile.velocity * MathHelper.Lerp(8, 32, ExtraMath.Osc(0f, 1f, speed: chargingSpeed, offset: 6));
             if (_level >= 1)
             {
-                element.DrawRing(Owner.Center + Projectile.velocity * 64 * ring1Ease + ring1Offset, 2, drawRotation, ring1Scale, Color.White * ring1Ease);
+                element.DrawRing(Owner.Center + Projectile.velocity * 64 * ring1Ease + ring1Offset, 2, drawRotation, ring1Scale, chargingColor * ring1Ease);
             }
             if(_level >= 2)
             {
-                element.DrawRing(Owner.Center + Projectile.velocity * 100 * ring2Ease + ring2Offset, 1, drawRotation , ring2Scale, Color.White * ring2Ease);
+                element.DrawRing(Owner.Center + Projectile.velocity * 100 * ring2Ease + ring2Offset, 1, drawRotation , ring2Scale, chargingColor * ring2Ease);
             }
             if(_level >= 3)
             {
-                element.DrawRing(Owner.Center + Projectile.velocity * 140 * ring3Ease + ring3Offset, 0, drawRotation, ring3Scale, Color.White * ring3Ease);
+                element.DrawRing(Owner.Center + Projectile.velocity * 140 * ring3Ease + ring3Offset, 0, drawRotation, ring3Scale, chargingColor * ring3Ease);
             }
   
         }
@@ -511,11 +566,13 @@ namespace Stellamod.Content.Items.MoonlightMagic
             shader.Apply();
 
 
+            float drawScale = 1f + MagicPlayer.chargeDamageBonus;
+            drawScale *= MathHelper.Lerp(0.5f, 1f, Easing.InOutSine(_overchargeScaleTimer / 60f));
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
             for (int i = 0; i < 2; i++)
             {
-                spriteBatch.Draw(texture, centerPos + Projectile.velocity * 64, null, startGlow, Projectile.rotation, texture.Size() / 2f, 1f, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, centerPos + Projectile.velocity * 64, null, startGlow, Projectile.rotation, texture.Size() / 2f, drawScale, SpriteEffects.None, 0);
             }
 
             spriteBatch.RestartDefaults();

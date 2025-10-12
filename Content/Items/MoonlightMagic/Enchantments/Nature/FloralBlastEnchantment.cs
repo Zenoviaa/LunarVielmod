@@ -14,28 +14,11 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Nature
 {
     public class FloralBlastEnchantment : BaseEnchantment
     {
-        public override float GetStaffManaModifier()
-        {
-            return 0.2f;
-        }
-
         public override int GetElementType()
         {
             return ModContent.ItemType<NaturalElement>();
         }
 
-
-        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
-        {
-
-            return true;
-        }
-
-        public override void SpecialInventoryDraw(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
-        {
-            base.SpecialInventoryDraw(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.NaturalGreen);
-        }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {

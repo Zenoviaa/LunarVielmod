@@ -13,11 +13,6 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Nature
             return ModContent.ItemType<NaturalElement>();
         }
 
-        public override float GetStaffManaModifier()
-        {
-            return 0.2f;
-        }
-
         public override void AI()
         {
             base.AI();
