@@ -6,6 +6,7 @@ using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.Visual.Particles;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Graphics.Shaders;
@@ -17,6 +18,11 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 {
     public class PrismaticElement : BaseElement
     {
+        public override void ModifySisters(List<int> sisters)
+        {
+            base.ModifySisters(sisters);
+            sisters.Add(ModContent.ItemType<UvilisElement>());
+        }
         public override void SetDefaults()
         {
             base.SetDefaults();

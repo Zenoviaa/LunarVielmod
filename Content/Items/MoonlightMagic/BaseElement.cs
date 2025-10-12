@@ -27,15 +27,35 @@ namespace Stellamod.Content.Items.MoonlightMagic
         ICloneable,
         IAdvancedMagicAddon
     {
+        private List<int> _sisters;
         public SoundStyle? CastSound { get; set; }
         public SoundStyle? HitSound { get; set; }
         public SoundStyle? ChargeSound { get; set; }
         public AdvancedMagicProjectile MagicProj { get; set; }
         public Projectile Projectile => MagicProj.Projectile;
 
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            _sisters = new List<int>();
+            ModifySisters(_sisters);
+        }
+        public virtual void ModifySisters(List<int> sisters)
+        {
+
+        }
         public override void SetDefaults()
         {
             base.SetDefaults();
+        }
+
+        public bool IsSynergizingWith(int elementType)
+        {
+            _sisters = new List<int>();
+            ModifySisters(_sisters);
+            if (_sisters == null)
+                return false;
+            return Type == elementType || _sisters.Contains(elementType);
         }
 
         public override string LocalizationCategory => "Elements";

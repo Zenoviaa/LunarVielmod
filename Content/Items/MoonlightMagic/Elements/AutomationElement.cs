@@ -5,6 +5,7 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -16,6 +17,11 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
         private int trailMode = 0;
         private LightningTrail _lightningTrail;
 
+        public override void ModifySisters(List<int> sisters)
+        {
+            base.ModifySisters(sisters);
+            sisters.Add(ModContent.ItemType<GuutElement>());
+        }
         public override void SetDefaults()
         {
             base.SetDefaults();

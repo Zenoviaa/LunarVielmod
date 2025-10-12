@@ -115,7 +115,12 @@ namespace Stellamod.Core.MagicSystem.UI
             bool isSynergy = false;
             if(enchantment != null)
             {
-                isSynergy = _ctx.staffToEdit != null && _ctx.staffToEdit.GetElement().type == enchantment.GetElementType();
+                if(_ctx.staffToEdit != null)
+                {
+                    BaseElement element = _ctx.staffToEdit.GetElement().ModItem as BaseElement;
+                    isSynergy = element.IsSynergizingWith(enchantment.GetElementType());
+                }
+
             }
 
             if (IsMouseHovering && !PlayerInput.IgnoreMouseInterface)

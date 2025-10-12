@@ -150,6 +150,7 @@
     <None Remove="Content\Areas\SpringHills\TilesSH\StoneObelisk_S.png" />
     <None Remove="Content\Areas\SpringHills\TilesSH\StoneTomb_S.png" />
     <None Remove="Content\Areas\SpringHills\TilesSH\StoneUnder_S.png" />
+    <None Remove="Content\Items\MoonlightMagic\Elements\MothlightElement_Ring.png" />
     <None Remove="Core\Bases\BaseHitEffect.png" />
     <None Remove="Core\Foggy\Fog.png" />
     <None Remove="Core\QuestSystem\QuestResetter.png" />

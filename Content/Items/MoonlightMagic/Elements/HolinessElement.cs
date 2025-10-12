@@ -8,6 +8,7 @@ using Stellamod.Helpers;
 using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -17,6 +18,12 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
     public class HolinessElement : BaseElement
     {
         int trailMode = 0;
+
+        public override void ModifySisters(List<int> sisters)
+        {
+            base.ModifySisters(sisters);
+            sisters.Add(ModContent.ItemType<RadianceElement>());
+        }
         public override void SetDefaults()
         {
             base.SetDefaults();

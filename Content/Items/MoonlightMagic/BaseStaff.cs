@@ -172,15 +172,9 @@ namespace Stellamod.Content.Items.MoonlightMagic
                     damageModifier += 0.05f;
                     if (primaryElement.ModItem is BaseElement element)
                     {
-                        ElementMatch match = element.GetMatch(enchantment);
-                        switch (match)
+                        if (element.IsSynergizingWith(element.Type))
                         {
-                            case ElementMatch.Match:
-                                damageModifier += 0.05f;
-                                break;
-                            case ElementMatch.Mismatch:
-                                damageModifier -= 0.05f;
-                                break;
+                             damageModifier += 0.05f;
                         }
                     }
                 }

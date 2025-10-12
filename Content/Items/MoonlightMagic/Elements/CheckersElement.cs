@@ -6,6 +6,7 @@ using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -16,6 +17,12 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
     public class CheckersElement : BaseElement
     {
         private int trailMode = 0;
+
+        public override void ModifySisters(List<int> sisters)
+        {
+            base.ModifySisters(sisters);
+            sisters.Add(ModContent.ItemType<BasicElement>());
+        }
         public override void SetDefaults()
         {
             base.SetDefaults();

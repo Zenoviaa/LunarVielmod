@@ -75,6 +75,16 @@ namespace Stellamod.Content.Items.MoonlightMagic
             return (BaseEnchantment)Clone();
         }
 
+        public bool SynergizesWith(int elementType)
+        {
+            ModItem item = ModContent.GetModItem(elementType);
+            if(item is BaseElement element)
+            {
+                return element.IsSynergizingWith(GetElementType());
+            }
+            return false;
+        }
+
         public virtual int GetElementType()
         {
             return ModContent.ItemType<BasicElement>();

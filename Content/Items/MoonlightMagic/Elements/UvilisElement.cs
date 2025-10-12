@@ -8,6 +8,7 @@ using Stellamod.Helpers;
 using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -18,6 +19,12 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
     public class UvilisElement : BaseElement
     {
         int trailingMode = 0;
+
+        public override void ModifySisters(List<int> sisters)
+        {
+            base.ModifySisters(sisters);
+            sisters.Add(ModContent.ItemType<PrismaticElement>());
+        }
         public override int GetOppositeElementType()
         {
             return ModContent.ItemType<HexElement>();
