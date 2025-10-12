@@ -74,5 +74,10 @@ namespace Stellamod
         public float DashMeterX = 50;
         [Range(0f, 100f)]
         public float DashMeterY = 50;
+
+        [Range(0f, 100f)]
+        public float EnchantmentMenuX = 50;
+        [Range(0f, 100f)]
+        public float EnchantmentMenuY = 50;
     }
 }

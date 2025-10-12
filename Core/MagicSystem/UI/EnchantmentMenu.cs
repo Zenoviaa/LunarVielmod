@@ -1,14 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories.Players;
+using Stellamod.NPCs.Bosses.DaedusRework;
+using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.UI;
+using System.Reflection;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Config;
 using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
 
@@ -157,8 +164,8 @@ namespace Stellamod.Core.MagicSystem.UI
 
         private void SetPos()
         {
-            Left.Pixels = RelativeLeft;
-            Top.Pixels = RelativeTop;
+            Left.Pixels = _pos.X;
+            Top.Pixels = _pos.Y;
 
             _backgroundSquare.Width = Width;
             _backgroundSquare.Height = Height;
@@ -180,5 +187,75 @@ namespace Stellamod.Core.MagicSystem.UI
             MagicUISystem uiSystem = ModContent.GetInstance<MagicUISystem>();
             uiSystem.CloseUI();
         }
+
+        private static bool _isDragging;
+        private static Vector2? _drag = null;
+        private static Vector2 _pos;
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            base.DrawSelf(spriteBatch);
+
+    
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            Vector2 ratioPos = new Vector2(config.EnchantmentMenuX, config.EnchantmentMenuY);
+            if (ratioPos.X < 0f || ratioPos.X > 100f)
+            {
+                ratioPos.X = 50;
+            }
+
+            if (ratioPos.Y < 0f || ratioPos.Y > 100f)
+            {
+                ratioPos.Y = 3;
+            }
+
+            Vector2 drawPos = ratioPos;
+            _pos.X = drawPos.X = (int)(drawPos.X * 0.01f * Main.screenWidth);
+            _pos.Y = drawPos.Y = (int)(drawPos.Y * 0.01f * Main.screenHeight);
+
+            Rectangle mouseRect = new Rectangle((int)Main.MouseScreen.X, (int)Main.MouseScreen.Y, 8, 8);
+            Vector2 size = new Vector2(Width.Pixels, Height.Pixels / 4);
+            Rectangle barRect = Utils.CenteredRectangle(drawPos + size / 2, size * Main.UIScale);
+
+            MouseState ms = Mouse.GetState();
+            Vector2 mousePos = Main.MouseScreen;
+            Vector2 newScreenRatioPosition = ratioPos;
+            if (ms.LeftButton == ButtonState.Pressed && !_isDragging && barRect.Intersects(mouseRect))
+            {
+                _isDragging = true;
+            }
+
+            //Handle dragging
+            if (_isDragging)
+            {
+
+                if (!_drag.HasValue)
+                    _drag = mousePos - drawPos;
+
+                Vector2 newCorner = mousePos - _drag.GetValueOrDefault(Vector2.Zero);
+
+                // Convert the new corner position into a screen ratio position.
+                newScreenRatioPosition.X = (100f * newCorner.X) / Main.screenWidth;
+                newScreenRatioPosition.Y = (100f * newCorner.Y) / Main.screenHeight;
+
+                // Compute the change in position. If it is large enough, actually move the meter
+                Vector2 delta = newScreenRatioPosition - ratioPos;
+                if (Math.Abs(delta.X) >= 0.05f || Math.Abs(delta.Y) >= 0.05f)
+                {
+                    config.EnchantmentMenuX = newScreenRatioPosition.X;
+                    config.EnchantmentMenuY = newScreenRatioPosition.Y;
+                }
+
+                if (ms.LeftButton == ButtonState.Released)
+                {
+                    _isDragging = false;
+                    _drag = null;
+                    MethodInfo saveMethodInfo = typeof(ConfigManager).GetMethod("Save", BindingFlags.Static | BindingFlags.NonPublic);
+                    if (saveMethodInfo is not null)
+                        saveMethodInfo.Invoke(null, new object[] { config });
+                }
+            }
+
+        }
     }
 }
+

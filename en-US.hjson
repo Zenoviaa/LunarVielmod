@@ -98,6 +98,16 @@ Mods: {
 					Tooltip: ""
 					Label: Red Damage Numbers Toggle
 				}
+
+				EnchantmentMenuX: {
+					Label: Enchantment Menu X
+					Tooltip: ""
+				}
+
+				EnchantmentMenuY: {
+					Label: Enchantment Menu Y
+					Tooltip: ""
+				}
 			}
 
 			LunarVeilServerConfig.DisplayName: Lunar Veil Server Config
