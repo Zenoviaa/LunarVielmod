@@ -460,7 +460,7 @@ FlowingBloodEnchantment: {
 
 TrailerEnchantment: {
 	DisplayName: Trailer Enchantment
-	Tooltip: Your Spell gains a longer trail while time is active!
+	Tooltip: Your Spell gains a longer trail while time is active, +10% spell damage!
 }
 
 GroundEaterEnchantment: {

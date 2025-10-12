@@ -35,7 +35,7 @@ namespace Stellamod.Content.Areas.MothlightManor.WeaponsMM
             elements.Add(ModContent.ItemType<PrimeMagicElement>());
             elements.Add(ModContent.ItemType<RadianceElement>());
             elements.Add(ModContent.ItemType<HexElement>());
-            elements.Add(ModContent.ItemType<HolinessElement>());
+            elements.Add(ModContent.ItemType<MothlightElement>());
             elements.Add(ModContent.ItemType<PhantasmalElement>());
         }
         /*
