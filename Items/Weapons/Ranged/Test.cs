@@ -88,7 +88,7 @@ namespace Stellamod.Items.Weapons.Ranged
                      outerColor: Color.DarkBlue,
                      fadeToColor: Color.Black,
                      distortOut: false);
-                    part.Scale *= 2;
+                    part.Scale *= 1.3f;
                 }
             }
 
@@ -167,9 +167,14 @@ namespace Stellamod.Items.Weapons.Ranged
             }
 
         }
+
+        private void GlowDonut(Vector2 position, Vector2 velocity)
+        {
+            var frag = Particle.NewParticle<GlowDonutParticle>(position, velocity);
+        }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            CoolAssFire3(position, velocity);
+            GlowDonut(position, velocity);
 
             return false;
         }

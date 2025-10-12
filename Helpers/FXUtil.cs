@@ -37,7 +37,16 @@ namespace Stellamod.Helpers
             particle.Velocity = velocity;
             return particle;
         }
-
+        public static GlowDonutParticle GlowDonutParticle(Vector2 position, Vector2 velocity, Color innerColor, Color outerColor, Color fadeToColor, bool distortOut = false)
+        {
+            GlowDonutParticle particle = Particle.NewParticle<GlowDonutParticle>(position, Vector2.Zero);
+            particle.Velocity = velocity;
+            particle.innerColor = innerColor;
+            particle.outerColor = outerColor;
+            particle.fadeToColor = fadeToColor;
+            particle.distortOut = distortOut;
+            return particle;
+        }
         public static GlowFragmentParticle GlowFragmentParticle(Vector2 position, Vector2 velocity, Color innerColor, Color outerColor, Color fadeToColor, bool distortOut = false)
         {
             GlowFragmentParticle particle = Particle.NewParticle<GlowFragmentParticle>(position, Vector2.Zero);
