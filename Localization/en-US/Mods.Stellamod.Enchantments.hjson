@@ -567,3 +567,8 @@ SpadedBladeEnchantment: {
 	DisplayName: Spaded Blade Enchantment
 	Tooltip: Creates a holographic saw around your spell that rapidly shreds through nearby enemies!
 }
+
+WaveringFollowEnchantment: {
+	DisplayName: Wavering Follow Enchantment
+	Tooltip: Your spell will very loosely follow your cursor!
+}
