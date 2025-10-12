@@ -572,3 +572,13 @@ WaveringFollowEnchantment: {
 	DisplayName: Wavering Follow Enchantment
 	Tooltip: Your spell will very loosely follow your cursor!
 }
+
+GravityDownEnchantment: {
+	DisplayName: Gravity Down Enchantment
+	Tooltip: Slowly pulls your spell downard
+}
+
+GravityUpEnchantment: {
+	DisplayName: Gravity Up Enchantment
+	Tooltip: Slowly pulls your spell upward
+}
