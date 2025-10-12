@@ -530,5 +530,20 @@ BoomerangEnchantment: {
 
 GearFormEnchantment: {
 	DisplayName: Gear Form Enchantment
-	Tooltip: Changes the form of the spell to a crescent moon and +2 Penetration!
+	Tooltip: Changes the form of the spell to a gear and +2 Penetration!
+}
+
+SwordFormEnchantment: {
+	DisplayName: Sword Form Enchantment
+	Tooltip: Changes the form of the spell to a sword and +20% Damage!
+}
+
+AxeFormEnchantment: {
+	DisplayName: Axe Form Enchantment
+	Tooltip: Changes the form of the spell to an axe and 5x Knockback!
+}
+
+CutlassFormEnchantment: {
+	DisplayName: Cutlass Form Enchantment
+	Tooltip: Changes the form of the spell to a cutlass and +250% projectile speed!
 }
