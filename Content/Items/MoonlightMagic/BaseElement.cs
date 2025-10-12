@@ -46,8 +46,6 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             var sisters = new List<int>();
             ModifySisters(sisters);
-            if (sisters == null)
-                return false;
             return Type == elementType || sisters.Contains(elementType);
         }
 
