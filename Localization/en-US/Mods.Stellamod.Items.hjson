@@ -4323,9 +4323,7 @@ PotOfGreed: {
 	DisplayName: Pot Of Greed
 	Tooltip:
 		'''
-		Summons a laughing pot that creates up to 10 shadow clones of your minions when you go near it
-		The shadow clones linger for a short while and deal less damage than the real thing
-		There can only be one
+		Summons a laughing pot that creates shadow bats that seek out nearby enemies when you're near it!
 		'''
 }
 
