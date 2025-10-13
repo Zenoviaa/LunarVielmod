@@ -50,6 +50,7 @@ Common: {
 	StaminaSlash: Stamina Slash: {0}
 	WeaponTypeSword: Sword Weapon Type
 	WeaponTypeKnives: Knives Weapon Type
+	WeaponTypeScythe: Scythe Weapon Type
 	InsourceTime: "{0} seconds added to your flask cooldown"
 	XixianFlaskLock: This item is LOCKED, continue exploring and you may find it.
 	StaminaFlaskLock: This item is LOCKED, continue exploring and you may find it.
@@ -9282,4 +9283,11 @@ LarveinScripture: {
 TomeOfHypnoMoth: {
 	DisplayName: Tome Of Hypno Moth
 	Tooltip: Casts a miniature singularity that explodes into magical moths!
+}
+
+HypnoticScythe: {
+	BasicSlash: No Effect
+	StaminaSlash: Summons 2 moths and temporarily increases your attack speed!
+	DisplayName: Hypnotic Scythe
+	Tooltip: ""
 }

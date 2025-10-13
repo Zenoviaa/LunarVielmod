@@ -23,6 +23,7 @@ namespace Stellamod.Core.SwingSystem
         public int ComboIndex => (int)Projectile.ai[2];
 
         public float HitstopTimer;
+        public int ComboCount => _swings.Count;
 
         public float Interpolant { get; private set; }
         public Vector2[] afterImageCache;

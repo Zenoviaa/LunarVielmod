@@ -9,6 +9,7 @@ namespace Stellamod.Core.SwingSystem
     public class OvalSwing : ISwing
     {
         private int _dir;
+        private float _throw;
         private float _swingRadians;
         private bool _hasPlayedSound;
         public OvalSwing()
@@ -35,10 +36,10 @@ namespace Stellamod.Core.SwingSystem
         }
 
         public float TrailOffset { get; set; }
+        public float ThrowRadius { get; set; }
         public Easer Easing { get; set; }
         public SoundStyle? Sound { get; set; }
 
-        public float RadOffset => 0;
         public float GetDuration(float attackSpeedMultiplier)
         {
             return Duration * attackSpeedMultiplier;
@@ -67,8 +68,13 @@ namespace Stellamod.Core.SwingSystem
             rads += MathHelper.PiOver2;
 
             // rads += targetRotation;
-            xOffset = XSwingRadius * MathF.Sin(rads);
-            yOffset = YSwingRadius * MathF.Cos(rads);
+            float xRadius = XSwingRadius + _throw;
+            float yRadius = YSwingRadius + _throw;
+
+
+            xOffset = xRadius * MathF.Sin(rads);
+            yOffset = yRadius * MathF.Cos(rads);
+
         }
 
         public void UpdateSwing(float time, Vector2 position, Vector2 velocity,
@@ -86,6 +92,12 @@ namespace Stellamod.Core.SwingSystem
             float yOffset;
             float radOffset = _swingRadians;
             float targetRotation = velocity.ToRotation();
+
+
+            if (ThrowRadius > 0)
+            {
+               _throw = MathHelper.Lerp(0f, ThrowRadius, EasingFunction.QuadraticBump(time));
+            }
             CalculateXY(easedInterpolant, velocity, out xOffset, out yOffset);
 
             //Set Offset
@@ -107,6 +119,11 @@ namespace Stellamod.Core.SwingSystem
                 float yOffset;
                 float targetRotation = velocity.ToRotation();
                 float interpolant = MathHelper.SmoothStep(0, time, progressOnTrail);
+
+                if (ThrowRadius > 0)
+                {
+                    _throw = MathHelper.Lerp(0f, ThrowRadius, EasingFunction.QuadraticBump(interpolant));
+                }
                 CalculateXY(interpolant, velocity, out xOffset, out yOffset);
                 //Set Offset, now we can take this and offset it more in the projectile
                 trailCache[t] = new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
@@ -142,6 +159,11 @@ namespace Stellamod.Core.SwingSystem
 
                 float radOffset = _swingRadians / 2;
                 float targetRotation = velocity.ToRotation();
+
+                if (ThrowRadius > 0)
+                {
+                    _throw = MathHelper.Lerp(0f, ThrowRadius, EasingFunction.QuadraticBump(MathHelper.SmoothStep(startTrailLerpValue, endTrailLerpValue, progressOnTrail)));
+                }
                 CalculateXY(interpolant, velocity, out xOffset, out yOffset);
                 //Set Offset, now we can take this and offset it more in the projectile
                 trailCache[t] = new Vector2(xOffset * TrailOffset, yOffset * TrailOffset).RotatedBy(targetRotation);

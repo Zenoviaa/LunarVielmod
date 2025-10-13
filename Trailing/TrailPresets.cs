@@ -25,6 +25,28 @@ namespace Stellamod.Trailing
             }
 
         };
+        public static SlashTrailer HypnoticScythe => new SlashTrailer
+        {
+            Shader = new SlashEffect()
+            {
+                BaseColor = Color.Pink,
+                HighlightColor = Color.Cyan,
+                RimHighlightColor = Color.Pink,
+                WindColor = Color.Blue,
+                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive,
+                WindTexture = TrailRegistry.StarTrail.Value
+            },
+            TrailWidthFunction = (float interpolant) =>
+            {
+                return EasingFunction.QuadraticBump(interpolant) * 16;
+            },
+            TrailColorFunction = (float interpolant) =>
+            {
+                Color lerp1 = Color.Lerp(Color.Pink, Color.Cyan, interpolant);
+                return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+            }
+
+        };
 
         public static SlashTrailer Starvast => new SlashTrailer
         {

@@ -230,7 +230,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
             if (closest != null)
             {
                 Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, closest.Center, 4);
-                if (Projectile.velocity.Length() < 15)
+                if (Projectile.velocity.Length() < 8)
                 {
                     Projectile.velocity *= 1.5f;
                 }
@@ -239,6 +239,9 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
                 {
                     Projectile.velocity.Y -= 1;
                 }
+            } else
+            {
+                Projectile.velocity *= 0.98f;
             }
         }
 

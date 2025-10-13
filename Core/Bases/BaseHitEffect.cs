@@ -41,16 +41,17 @@ namespace Stellamod.Core.Bases
 
             if (Projectile.ai[0] <= 1)
             {
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(8, 8);
                     Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
-                    Particle.NewParticle<GlowParticle>(spawnPoint, velocity, Color.White);
+                    Particle.NewParticle<GlowParticle>(spawnPoint, velocity, Color.White, Scale: Main.rand.NextFloat(0.15f, 0.35f));
 
 
 
 
                 }
+                FXUtil.GlowFragmentParticle(Projectile.Center, Main.rand.NextVector2Circular(4, 4), Color.White, Color.LightGray, Color.Black, true);
 
                 for (int i = 0; i < 1; i++)
                 {

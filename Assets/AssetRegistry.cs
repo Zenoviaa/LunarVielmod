@@ -147,6 +147,18 @@ namespace Stellamod.Assets
 
             public static class Melee
             {
+                public static SoundStyle ScytheBigSlash = new SoundStyle($"{Path}Melee/ScytheBigSlash");
+                public static SoundStyle ScytheBladeSlash1 = new SoundStyle($"{Path}Melee/ScytheBladeSlash1");
+                public static SoundStyle ScytheHit1 = new SoundStyle($"{Path}Melee/ScytheHit1");
+                public static SoundStyle ScytheHit2 = new SoundStyle($"{Path}Melee/ScytheHit2");
+                public static SoundStyle ScytheHit3 = new SoundStyle($"{Path}Melee/ScytheHit3");
+                public static SoundStyle ScythePull = new SoundStyle($"{Path}Melee/ScythePull");
+                public static SoundStyle ScytheWindSlash1 = new SoundStyle($"{Path}Melee/ScytheWindSlash1");
+                public static SoundStyle ScytheWindSlash2 = new SoundStyle($"{Path}Melee/ScytheWindSlash2");
+                public static SoundStyle ScytheWindSlash3 = new SoundStyle($"{Path}Melee/ScytheWindSlash3");
+                public static SoundStyle ScytheWindSlash4 = new SoundStyle($"{Path}Melee/ScytheWindSlash4");
+
+
                 public static SoundStyle SpearHit1 = new SoundStyle($"{Path}Melee/SpearHit1");
                 public static SoundStyle SwordSpin1 = new SoundStyle($"{Path}Melee/SwordSpin1");
                 public static SoundStyle HammerHit1 = new SoundStyle($"{Path}Melee/HammerHit1");

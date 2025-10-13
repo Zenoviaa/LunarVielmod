@@ -105,7 +105,73 @@ namespace Stellamod.Core.Bases
                 Sound = spearSlash2
             });
         }
+        public static void AddScytheSwingStyle(ISwingProjectile swings)
+        {
+            SoundStyle swingSound1 = AssetRegistry.Sounds.Melee.ScytheWindSlash1;
+            swingSound1.PitchVariance = 0.25f;
 
+            SoundStyle swingSound2 = AssetRegistry.Sounds.Melee.ScytheWindSlash2;
+            swingSound2.PitchVariance = 0.25f;
+
+            SoundStyle swingSound3 = AssetRegistry.Sounds.Melee.ScytheBigSlash;
+            swingSound3.PitchVariance = 0.5f;
+
+
+            //Pair 1
+            swings.Add(new OvalSwing
+            {
+                Duration = 24,
+                XSwingRadius = 80,
+                YSwingRadius = 48,
+                SwingDegrees = 360,
+                Easing = EasingFunction.InOutExpo,
+                Sound = swingSound1,
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 24,
+                XSwingRadius = 80,
+                YSwingRadius = 80,
+                SwingDegrees = 360,
+                Easing = EasingFunction.InOutExpo,
+                Sound = swingSound2
+            });
+
+            //Pair 2
+            swings.Add(new OvalSwing
+            {
+                Duration = 24,
+                XSwingRadius = 80,
+                YSwingRadius = 80,
+                SwingDegrees = 360,
+                Easing = EasingFunction.InOutExpo,
+                Sound = swingSound1
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 24,
+                XSwingRadius = 80,
+                YSwingRadius = 80,
+                SwingDegrees = 360,
+                Easing = EasingFunction.InOutExpo7,
+                Sound = swingSound2
+            });
+
+           //Throw
+            swings.Add(new OvalSwing
+            {
+                Duration = 40,
+                XSwingRadius = 100,
+                YSwingRadius = 100,
+                SwingDegrees = 540,
+                ThrowRadius = 32,
+                Easing = EasingFunction.InOutExpo7,
+                Sound = swingSound3,
+                HitCount=3,
+            });
+        }
         public static void AddSwordSwingStyle(ISwingProjectile swings)
         {
             SoundStyle swingSound1 = AssetRegistry.Sounds.Melee.NormalSwordSlash1;

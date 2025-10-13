@@ -29,6 +29,7 @@ namespace Stellamod.Core.SwingSystem
         public bool DrawTrail { get; set; }
         public Easer Easing { get; set; }
         public SoundStyle? Sound { get; set; }
+        public Vector2? OverrideVelocity { get; set; }
         public float GetDuration(float attackSpeedMultiplier)
         {
             return Duration * attackSpeedMultiplier;
@@ -45,7 +46,10 @@ namespace Stellamod.Core.SwingSystem
 
         private void CalculateOffset(float time, Vector2 velocity, out Vector2 offset)
         {
-
+            if (OverrideVelocity.HasValue)
+            {
+                velocity = OverrideVelocity.Value;
+            }
             float start = 0;
             float end = ThrowDistance;
             float interpolant = Easing(time);
@@ -57,6 +61,10 @@ namespace Stellamod.Core.SwingSystem
             if (!_hasThrust && time >= 0.1f)
             {
                 ThrustParticleOffset = ThrowDistance / 2;
+                if (OverrideVelocity.HasValue)
+                {
+                    velocity = OverrideVelocity.Value;
+                }
                 FXUtil.SimpleImpactEffect(position + ThrustParticleOffset * velocity.SafeNormalize(Vector2.Zero), velocity, Main.rand.Next(4, 8), Color.White, Color.LightGray, Color.Black);
                 _hasThrust = true;
             }

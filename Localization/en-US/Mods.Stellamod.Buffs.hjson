@@ -877,3 +877,8 @@ LittlemothBuff: {
 	DisplayName: Littlemoth Buff
 	Description: Mods.Stellamod.Buffs.LittlemothBuff.Description
 }
+
+TranceBuff: {
+	DisplayName: Trance
+	Description: Greatly increased attack speed!
+}
