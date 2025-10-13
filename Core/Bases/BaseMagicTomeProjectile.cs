@@ -14,6 +14,7 @@ namespace Stellamod.Core.Bases
     public abstract class BaseMagicTomeProjectile : ModProjectile
     {
         private float _initialSpeed;
+        public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];
         private Player Owner => Main.player[Projectile.owner];
 

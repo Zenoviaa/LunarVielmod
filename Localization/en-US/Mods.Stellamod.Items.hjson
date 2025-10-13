@@ -9278,3 +9278,13 @@ CresbrahntWand: {
 	DisplayName: Cresbrahnt Wand
 	Tooltip: ""
 }
+
+LarveinScripture: {
+	DisplayName: Larvein Scripture
+	Tooltip: ""
+}
+
+TomeOfHypnoMoth: {
+	DisplayName: Tome Of Hypno Moth
+	Tooltip: Casts a miniature singularity that explodes into magical moths!
+}

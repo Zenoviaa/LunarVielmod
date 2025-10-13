@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Buffs;
-using Stellamod.Projectiles.Magic;
+using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

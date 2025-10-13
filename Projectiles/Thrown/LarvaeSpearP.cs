@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Projectiles.Magic;
+using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
