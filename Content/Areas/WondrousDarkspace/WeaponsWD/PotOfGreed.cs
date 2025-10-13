@@ -159,7 +159,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
 
             float distance = Vector2.Distance(Owner.Center, Projectile.Center);
             Timer++;
-            if (distance < 252 && Timer % 12 == 0)
+            if (distance < 252 && Timer % 24 == 0)
             {
                 if (Main.myPlayer == Projectile.owner)
                 {

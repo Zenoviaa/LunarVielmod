@@ -4321,10 +4321,7 @@ Lacerator: {
 
 PotOfGreed: {
 	DisplayName: Pot Of Greed
-	Tooltip:
-		'''
-		Summons a laughing pot that creates shadow bats that seek out nearby enemies when you're near it!
-		'''
+	Tooltip: Summons a laughing pot that creates shadow bats that seek out nearby enemies when you're near it!
 }
 
 Ripper: {
