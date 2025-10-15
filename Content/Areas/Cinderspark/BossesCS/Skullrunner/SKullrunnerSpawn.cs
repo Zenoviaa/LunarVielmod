@@ -256,6 +256,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 if (StellaMultiplayer.IsHost)
                 {
                     NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Skullrunner>());
+                    NPC.active = false;
                 }
             }
         }
