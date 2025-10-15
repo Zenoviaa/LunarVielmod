@@ -838,6 +838,8 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
         }
         private void AI_DashStartup()
         {
+            OutlineColor = Color.Yellow;
+           
             Timer++;
             if (Timer % 8 == 0)
             {
@@ -863,22 +865,77 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
 
         private void AI_Dash()
         {
+  
             Timer++;
             if (Timer < 30)
             {
+                if(Timer % 4 == 0)
+                {
+                    Vector2 dustSpawnPos = NPC.Center + Main.rand.NextVector2CircularEdge(32, 32);
+                    Vector2 dustVelocity = (NPC.Center - dustSpawnPos) * 0.1f;
+                    Dust.NewDustPerfect(dustSpawnPos, DustID.InfernoFork, dustVelocity);
+                }
+
+                OutlineColor = Color.Yellow;
                 NPC.velocity *= 0.9f;
             }
             else if (Timer < 90)
             {
+
+                OutlineColor = Color.Red;
                 if (Timer == 31)
                 {
+
+                    SoundStyle hitSound = AssetRegistry.Sounds.Melee.Vinger2;
+                    hitSound.PitchVariance = 0.2f;
+                    SoundEngine.PlaySound(hitSound, NPC.position);
+
+                    for (int i = 0; i < 7; i++)
+                    {
+                        Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Yellow, 1f).noGravity = true;
+                    }
+
+                    for (int i = 0; i < 7; i++)
+                    {
+                        Dust.NewDustPerfect(NPC.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Orange, 1f).noGravity = true;
+                    }
+
+                    FXUtil.ShakeCamera(NPC.Center, 1024, 32);
+                    FXUtil.GlowCircleBoom(NPC.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.Yellow,
+                        outerGlowColor: Color.Red, duration: 25, baseSize: 0.28f);
+
+                    SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, NPC.position);
+                    for (float f = 0; f < 32; f++)
+                    {
+                        Dust.NewDustPerfect(NPC.Center, DustID.Torch,
+                            (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.White, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                    }
+
+
+                    for (float i = 0; i < 8; i++)
+                    {
+                        float progress = i / 4f;
+                        float rot = progress * MathHelper.ToRadians(360);
+                        rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                        Vector2 offset = rot.ToRotationVector2() * 24;
+                        var particle = FXUtil.GlowCircleDetailedBoom1(NPC.Center,
+                            innerColor: Color.White,
+                            glowColor: Color.Yellow,
+                            outerGlowColor: Color.Red,
+                            baseSize: Main.rand.NextFloat(0.1f, 0.2f),
+                            duration: Main.rand.NextFloat(15, 25));
+                        particle.Rotation = rot + MathHelper.ToRadians(45);
+                    }
+
                     SoundEngine.PlaySound(SoundID.Item73, NPC.position);
-                    _dashVelocity = DirectionToTarget * 15;
+                    _dashVelocity = DirectionToTarget * 42;
                 }
                 NPC.velocity = Vector2.Lerp(NPC.velocity, _dashVelocity, 0.1f);
 
             }
-            if (Timer == 120)
+            if (Timer == 75)
             {
                 _dashCounter++;
                 if (_dashCounter < 3)
