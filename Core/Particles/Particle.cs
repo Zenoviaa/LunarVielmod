@@ -49,9 +49,6 @@ namespace Stellamod.Core.Particles
             if (Main.netMode == NetmodeID.Server)
                 return null;
 
-            if (ParticleSystem.Particles.Count > ParticleSystem.MaxParticleCount - 2)
-                return null;
-
             T p = ParticleLoader.GetParticle(ParticleUtils.ParticleType<T>()).NewInstance() as T;
             p.active = true;
             p.color = newColor;
@@ -68,10 +65,7 @@ namespace Stellamod.Core.Particles
         {
             if (Main.netMode == NetmodeID.Server)
                 return null;
-
-            if (ParticleSystem.BlackParticles.Count > ParticleSystem.MaxParticleCount - 2)
-                return null;
-
+ 
             T p = ParticleLoader.GetParticle(ParticleUtils.ParticleType<T>()).NewInstance() as T;
             p.active = true;
             p.color = newColor;

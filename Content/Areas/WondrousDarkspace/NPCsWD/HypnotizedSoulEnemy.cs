@@ -24,7 +24,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             {
                 Vector2 suckPosition = targetSuckPosition.Value;
                 Vector2 velocityToPosition = (suckPosition - Player.Center);
-                Player.velocity = Vector2.Lerp(Player.velocity, velocityToPosition, 0.15f);
+                Player.velocity = Vector2.Lerp(Player.velocity, velocityToPosition, 0.35f);
                 targetSuckPosition = null;
             }
         }

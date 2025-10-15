@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
@@ -227,7 +228,7 @@ namespace Stellamod.Items.Weapons.Ranged
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<TestFireball>(), damage, knockback, player.whoAmI);
+            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<RisingLavaBubble>(), damage, knockback, player.whoAmI);
             return false;
         }
     }

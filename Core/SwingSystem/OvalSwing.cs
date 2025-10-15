@@ -22,6 +22,7 @@ namespace Stellamod.Core.SwingSystem
             Easing = EasingFunction.InOutExpo;
             TrailOffset = 1.5f;
             HitCount = 1;
+            ThrowTrailOffset = -48;
         }
 
         public const float TRAIL_START_OFFSET = 0.2f;
@@ -37,6 +38,7 @@ namespace Stellamod.Core.SwingSystem
 
         public float TrailOffset { get; set; }
         public float ThrowRadius { get; set; }
+        public float ThrowTrailOffset { get; set; }
         public Easer Easing { get; set; }
         public SoundStyle? Sound { get; set; }
 
@@ -162,7 +164,7 @@ namespace Stellamod.Core.SwingSystem
 
                 if (ThrowRadius > 0)
                 {
-                    _throw = MathHelper.Lerp(0f, ThrowRadius, EasingFunction.QuadraticBump(MathHelper.SmoothStep(startTrailLerpValue, endTrailLerpValue, progressOnTrail)));
+                    _throw = MathHelper.Lerp(0f, ThrowRadius + ThrowTrailOffset, EasingFunction.QuadraticBump(MathHelper.SmoothStep(startTrailLerpValue, endTrailLerpValue, progressOnTrail)));
                 }
                 CalculateXY(interpolant, velocity, out xOffset, out yOffset);
                 //Set Offset, now we can take this and offset it more in the projectile
