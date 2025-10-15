@@ -1,13 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Stellamod.Tiles.SpecialDecorativeWall;
+using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
 {
@@ -39,7 +44,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
             Projectile.width = 16;
             Projectile.height = 16;
             Projectile.penetrate = -1;
-            Projectile.hostile = true;
+            Projectile.hostile = false;
             Projectile.light = 0.5f;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
@@ -85,9 +90,8 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
             Timer++;
             _explosionScalar = 1f;
             float riseTime = 60f;
-            float risingVelocityY = MathHelper.Lerp(-5, 0, Timer / riseTime);
-            risingVelocityY = EasingFunction.InOutSine(risingVelocityY);
-            Projectile.velocity.Y = MathHelper.Lerp(Projectile.velocity.Y, risingVelocityY, 0.1f);
+            float risingVelocityY = MathHelper.Lerp(-16, 0, EasingFunction.InOutSine(Timer / riseTime));
+            Projectile.velocity.Y = risingVelocityY;
             if (Timer >= 90)
             {
                 SwitchState(AIState.Exploding);
@@ -198,7 +202,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
         {
             base.AI();
             Timer++;
-            if(Timer % 16 == 0)
+            if(Timer % 8 == 0)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Lava);
             }
@@ -206,7 +210,10 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            return base.PreDraw(ref lightColor);
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            this.Outline(Color.Red, ref lightColor);
+            this.DrawCentered(ref lightColor);
+            return false;
         }
         public override void OnKill(int timeLeft)
         {
