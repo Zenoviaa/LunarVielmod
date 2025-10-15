@@ -70,7 +70,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
                     AI_Exploding();
                     break;
             }
-            DrawHelper.AnimateTopToBottom(Projectile, 5);
+            DrawHelper.AnimateTopToBottom(Projectile, 8);
         }
 
         private void SwitchState(AIState state)

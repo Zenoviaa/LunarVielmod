@@ -17,7 +17,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
 {
-    public class SKullrunnerSpawn : ModNPC
+    public class SkullrunnerSpawn : ModNPC
     {
         private int _frame;
         private enum AnimationState
@@ -71,7 +71,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             NPC.value = Item.buyPrice(silver: 50);
             NPC.knockBackResist = 0f;
             NPC.noGravity = true;
-            NPC.boss = true;
+            NPC.noTileCollide = true;
             NPC.npcSlots = 10f;
 
             //Setup the music and boss bar

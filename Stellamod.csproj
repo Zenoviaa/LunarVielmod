@@ -103,6 +103,7 @@
     <None Remove="Content\Areas\Cinderspark\BossesCS\Skullrunner\Jiitas_BossIcon.png" />
     <None Remove="Content\Areas\Cinderspark\BossesCS\Skullrunner\Projectiles\BurningBlackSkull.png" />
     <None Remove="Content\Areas\Cinderspark\BossesCS\Skullrunner\SkullrunnerSpawn.png" />
+    <None Remove="Content\Areas\Cinderspark\BossesCS\Skullrunner\SkullrunnerSpawn_Aura.png" />
     <None Remove="Content\Areas\Fable\BossesFB\DaedusTheDevoted\DaedusTheDevoted.png" />
     <None Remove="Content\Areas\Fable\BossesFB\DaedusTheDevoted\DaedusTheDevoted_BossBar.png" />
     <None Remove="Content\Areas\Fable\BossesFB\DaedusTheDevoted\DaedusTheDevoted_BossIcon.png" />
