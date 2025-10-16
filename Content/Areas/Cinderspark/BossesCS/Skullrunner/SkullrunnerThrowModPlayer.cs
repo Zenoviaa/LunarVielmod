@@ -6,6 +6,7 @@ using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -38,6 +39,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 Tile? floorTile = Player.GetFloorTile(point.X, point.Y);
                 if (floorTile.HasValue)
                 {
+                    Player.Hurt(new PlayerDeathReason(), 20, 1);
                     Eruption(Player.Center, -Vector2.UnitY);
                     throwVelocity = null;
                 }

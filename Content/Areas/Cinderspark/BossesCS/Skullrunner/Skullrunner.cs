@@ -627,7 +627,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             if(Timer >= grabTicks)
             {
                 float distanceToTarget = Vector2.Distance(_handPosition, Target.Center);
-                if(distanceToTarget <= 48)
+                if(distanceToTarget <= 48 && !Target.immune)
                 {
                     _grabbedTarget = true;
                 }

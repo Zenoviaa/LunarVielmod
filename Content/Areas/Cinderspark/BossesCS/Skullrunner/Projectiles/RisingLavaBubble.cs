@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
+using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
@@ -76,6 +78,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
                     break;
             }
             DrawHelper.AnimateTopToBottom(Projectile, 8);
+            Lighting.AddLight(Projectile.position, Color.OrangeRed.ToVector3() * 0.78f);
         }
 
         private void SwitchState(AIState state)
@@ -180,7 +183,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
 
     }
 
-    public class LavaPop : ModProjectile
+    public class LavaPop : ScarletProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
@@ -191,6 +194,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
         public override void SetDefaults()
         {
             base.SetDefaults();
+            TrailCacheLength = 8;
             Projectile.width = 12;
             Projectile.height = 12;
             Projectile.penetrate = -1;
@@ -242,6 +246,15 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
 
             if (Timer % 8 == 0)
             {
+                Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+                Vector2 pVelocity = Main.rand.NextVector2Circular(4, 4);
+                var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                FXUtil.GlowFragmentParticle(position, pVelocity,
+                    innerColor: Color.Red,
+                    outerColor: Color.Orange,
+                    fadeToColor: Color.Purple,
+                    distortOut: true);
+
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.InfernoFork);
             }
             Projectile.rotation = Projectile.velocity.ToRotation();
@@ -249,10 +262,24 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
+
+            FlamingTrailShader flamingTrailShader = FlamingTrailShader.Instance;
+            TrailDrawer.Draw(spriteBatch, OldCenterPos, OldCenterRot, ColorFunction, WidthFunction, flamingTrailShader, Vector2.Zero);
             this.Outline(Color.Red, ref lightColor);
             this.DrawCentered(ref lightColor);
             return false;
         }
+        public float WidthFunction(float completionRatio)
+        {
+            float baseWidth = Projectile.scale * Projectile.width;
+            return MathHelper.SmoothStep(baseWidth, 0.5f, completionRatio);
+        }
+
+        public Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.OrangeRed, Color.Red, completionRatio) * 0.7f;
+        }
+
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
