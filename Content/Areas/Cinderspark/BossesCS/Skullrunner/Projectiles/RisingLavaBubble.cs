@@ -202,9 +202,47 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
         {
             base.AI();
             Timer++;
-            if(Timer % 8 == 0)
+            if (Timer == 1)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Lava);
+                Vector2 velocity = Projectile.velocity;
+                Vector2 position = Projectile.Center;
+                for (float f = 0; f < 16; f++)
+                {
+                    Vector2 pVelocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
+                    pVelocity *= Main.rand.NextFloat(0.5f, 2f);
+                    var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                    FXUtil.GlowFragmentParticle(position, pVelocity,
+                        innerColor: Color.Red,
+                        outerColor: Color.Orange,
+                        fadeToColor: Color.Purple,
+                        distortOut: true);
+
+                    if (Main.rand.NextBool(4))
+                    {
+                        Dust.NewDustPerfect(position, ModContent.DustType<TSmokeDust>(),
+                                         velocity.RotatedByRandom(MathHelper.PiOver4 / 2f) * 2);
+                    }
+                    if (Main.rand.NextBool(4))
+                    {
+                        Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(),
+                                         velocity.RotatedByRandom(MathHelper.PiOver4 / 2f) * 3 * Main.rand.NextFloat(0.4f, 1f), newColor: Color.White, Scale: 0.2f);
+                    }
+                    if (Main.rand.NextBool(4))
+                    {
+
+                        var part = FXUtil.GlowFragmentParticle(position, pVelocity,
+                         innerColor: Color.DarkRed,
+                         outerColor: Color.DarkBlue,
+                         fadeToColor: Color.Black,
+                         distortOut: false);
+                        part.Scale *= 1.3f;
+                    }
+                }
+            }
+
+            if (Timer % 8 == 0)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.InfernoFork);
             }
             Projectile.rotation = Projectile.velocity.ToRotation();
         }

@@ -52,9 +52,10 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             Dunksink,
             DunkRise
         }
-
+        private float _lifeTimer;
         private AnimationState _animation;
 
+        private bool _oscScale;
         private bool _grabbedTarget;
         private bool _freezeFrame;
         private int _frame;
@@ -106,6 +107,8 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             writer.Write(_grabbedTarget);
             writer.WriteVector2(_startDunkPosition);
             writer.WriteVector2(_endDunkPosition);
+            writer.Write(_beatCounter);
+            writer.Write(_lifeTimer);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -123,6 +126,9 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
 
             _startDunkPosition = reader.ReadVector2();
             _endDunkPosition = reader.ReadVector2();
+            _beatCounter = reader.ReadSingle();
+
+            _lifeTimer = reader.ReadSingle();
         }
 
 
@@ -154,6 +160,31 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             //Setup the music and boss bar
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Skullrunner");
             NPC.aiStyle = -1;
+        }
+
+        private bool _beatHit;
+        private float _beatCounter;
+        private void Metronome()
+        {
+          
+            float beatsPerTick= 130 / 60f / 60f;
+            BeatTimer += beatsPerTick;
+
+            _beatHit = false;
+            while(BeatTimer >= 1f)
+            {
+                BeatTimer -= 1f;
+                _beatCounter++;
+                _beatHit = true;
+            }
+            if(_beatCounter >= 96)
+            {
+                _bopCounter = 0;
+                _dashCounter = 0;
+                _beatCounter = 0;
+                _attackSequenceCounter = 0;
+                NPC.netUpdate = true;
+            }
         }
 
         public override void FindFrame(int frameHeight)
@@ -223,14 +254,10 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 _spawnPos = NPC.Center;
                 _handRiseStartPosition = _spawnPos;
             }
-            BeatTimer++;
-            if(BeatTimer >= 44 * 60)
-            {
-                _bopCounter = 0;
-                _attackSequenceCounter = 0;
-                BeatTimer = 0;
-                NPC.netUpdate = true;
-            }
+            Metronome();
+
+            _oscScale = false;
+                _lifeTimer++;
             switch (State)
             {
                 case AIState.OutOfBreath:
@@ -240,6 +267,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                     AI_Idle();
                     break;
                 case AIState.BobbingFlyingSkulls:
+                    _oscScale = true;
                     AI_BobbingFlyingSkulls();
                     break;
                 case AIState.Reposition:
@@ -280,17 +308,27 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                     break;
             }
 
+            Vector2 oscScale = Vector2.Lerp(Vector2.One, new Vector2(1.1f, 0.9f), ExtraMath.Osc(0f, 1f, speed: 3));
+            if (_oscScale)
+            {
+                _scale = Vector2.Lerp(_scale, oscScale, 0.1f);
+            }
+            else
+            {
+                _scale = Vector2.Lerp(_scale, Vector2.One, 0.1f);
+            }
+
             Lighting.AddLight(NPC.position, Color.OrangeRed.ToVector3() * 0.78f);
         }
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
-            return base.CanHitPlayer(target, ref cooldownSlot);
+            return base.CanHitPlayer(target, ref cooldownSlot) && State == AIState.Dash;
         }
 
         private bool BeatHit()
         {
-            return BeatTimer % 27 == 0;
+            return _beatHit;
         }
 
         private void AI_DunkStart()
@@ -406,7 +444,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 _dashVelocity *= 37;
             }
             NPC.velocity = Vector2.Lerp(NPC.velocity, _dashVelocity, 0.3f);
-            NPC.rotation = NPC.velocity.X * 0.03f;
+            NPC.rotation = NPC.velocity.X * 0.013f;
             _handPosition += NPC.velocity;
 
 
@@ -469,6 +507,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
 
         private void AI_Dunkgrab()
         {
+            OutlineColor = Color.Yellow;
             _animation = AnimationState.Dunking;
             Timer++;
             if (Timer == 1)
@@ -858,27 +897,37 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
         }
         private void AI_DashStartup()
         {
+      
             OutlineColor = Color.Yellow;
            
             Timer++;
             if (Timer % 8 == 0)
             {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Lava);
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.InfernoFork);
             }
-
+            float waitTime = _dashCounter < 1 ? 57 : 27;
             //At 0:30 seconds he does a lot of circular movement and then dashes towards the player,
             //does this 3 times before he just bumps his head to the beat.
             //Repeats that cycle one more time before returning to phase 1 again
 
             Vector2 targetPosition = Target.Center;
-            Vector2 offset = -Vector2.UnitY.RotatedBy(BeatTimer * 0.1f) * 284;
+            Vector2 offset = -Vector2.UnitY.RotatedBy(_lifeTimer * 0.15f) * MathHelper.Lerp(250, 400, Timer / waitTime);
             targetPosition += offset;
             Vector2 velocityToPosition = targetPosition - NPC.Center;
             velocityToPosition *= 0.2f;
             NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToPosition, 0.5f);
             NPC.rotation = MathHelper.Lerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.1f);
 
-            float waitTime = _dashCounter < 1 ? 57 : 27;
+        
+            if (Timer < waitTime / 2f)
+            {
+
+                _animation = AnimationState.Deadass;
+            }
+            else
+            {
+                _animation = AnimationState.Laugh;
+            }
             if (Timer >= waitTime && BeatHit())
             {
                 SwitchState(AIState.Dash);
@@ -939,8 +988,12 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 SoundEngine.PlaySound(SoundID.Item73, NPC.position);
                 _dashVelocity = DirectionToTarget * 52;
             }
-            NPC.velocity = Vector2.Lerp(NPC.velocity, _dashVelocity, 0.3f);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, _dashVelocity, 0.5f);
 
+            if (Timer % 1 == 0)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.InfernoFork);
+            }
 
 
             if (Timer >= 2 && BeatHit())
@@ -1039,8 +1092,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             float targetRotation = MathF.Sin(Timer * 0.125f) * 0.5f;
             NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.1f);
 
-            Vector2 oscScale = Vector2.Lerp(Vector2.One, new Vector2(1.1f, 0.9f), ExtraMath.Osc(0f, 1f, speed: 3));
-            _scale = oscScale;
+     
             //Bobble his head to the beat
             //It's 130 beat sper minute
             //3600 ticks per minute
@@ -1096,12 +1148,8 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
         {
             if (StellaMultiplayer.IsHost)
             {
-                if (_attackSequenceCounter == 0 && BeatTimer < 60)
+                if (_attackSequenceCounter == 4 && _beatCounter < 62)
                     return;
-
-                if (_attackSequenceCounter == 4 && BeatTimer < 60 * 29)
-                    return;
-
                 switch (_attackSequenceCounter)
                 {
                     case 0:
