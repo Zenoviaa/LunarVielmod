@@ -240,6 +240,7 @@
     <None Remove="Effects\CrystalShaders\PixelMagicVaellus.fx" />
     <None Remove="Effects\CrystalShaders\SimpleGradientTrail.fx" />
     <None Remove="Effects\CrystalShaders\SimpleTrail.fx" />
+    <None Remove="Effects\CrystalShaders\Skullfire.fx" />
     <None Remove="Effects\CrystalShaders\SpriteWhite.fx" />
     <None Remove="Effects\CrystalShaders\ThunderCloud.fx" />
     <None Remove="Effects\CrystalShaders\Water.fx" />

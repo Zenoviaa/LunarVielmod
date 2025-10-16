@@ -17,6 +17,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
     public class HypnotizedSoulModPlayer : ModPlayer
     {
         public Vector2? targetSuckPosition;
+        public Vector2? resetVelocity;
         public override void PreUpdateMovement()
         {
             base.PreUpdateMovement();
@@ -26,6 +27,11 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
                 Vector2 velocityToPosition = (suckPosition - Player.Center);
                 Player.velocity = Vector2.Lerp(Player.velocity, velocityToPosition, 0.5f);
                 targetSuckPosition = null;
+            }
+            if (resetVelocity.HasValue)
+            {
+                Player.velocity = resetVelocity.Value;
+                resetVelocity = null;
             }
         }
     }

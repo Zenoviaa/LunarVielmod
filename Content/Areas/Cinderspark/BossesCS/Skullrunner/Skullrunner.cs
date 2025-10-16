@@ -9,6 +9,7 @@ using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using System.IO;
@@ -38,12 +39,19 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             BobbingFlyingSkulls,
             Reposition,
 
+            EightwayBlobs,
             OutOfBreath,
 
             Dash_Startup,
+            Dash_Startup_Circle,
             Dash,
+            Dash_Big,
             Dash_Headbop,
+      
+      
 
+            QuickDunkStart,
+            DunkBeginStart,
             DunkStart,
             Dunking,
             Dunkgrab,
@@ -55,6 +63,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
         private float _lifeTimer;
         private AnimationState _animation;
 
+        private bool _cockHand;
         private bool _oscScale;
         private bool _grabbedTarget;
         private bool _freezeFrame;
@@ -72,9 +81,11 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
         private Vector2 _handDrawScale = Vector2.One;
         private bool _showHand;
 
+        private float _lastDunkDirection = 1;
         private Vector2 _startDunkPosition;
         private Vector2 _endDunkPosition;
 
+        private bool _longDash;
         private float Alpha = 1f;
         private Color OutlineColor;
         private Color HandOutlineColor;
@@ -109,6 +120,9 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             writer.WriteVector2(_endDunkPosition);
             writer.Write(_beatCounter);
             writer.Write(_lifeTimer);
+            writer.Write(_localBeatCounter);
+            writer.Write(_longDash);
+            writer.Write(_lastDunkDirection);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -126,9 +140,13 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
 
             _startDunkPosition = reader.ReadVector2();
             _endDunkPosition = reader.ReadVector2();
+
             _beatCounter = reader.ReadSingle();
 
             _lifeTimer = reader.ReadSingle();
+            _localBeatCounter = reader.ReadSingle();
+            _longDash = reader.ReadBoolean();
+            _lastDunkDirection = reader.ReadSingle();
         }
 
 
@@ -148,7 +166,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             NPC.height = 64;
             NPC.damage = 32;
             NPC.defense = 0;
-            NPC.lifeMax = 1100;
+            NPC.lifeMax = 7000;
             NPC.HitSound = SoundID.NPCHit16;
             NPC.value = Item.buyPrice(silver: 50);
             NPC.knockBackResist = 0f;
@@ -164,6 +182,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
 
         private bool _beatHit;
         private float _beatCounter;
+        private float _localBeatCounter;
         private void Metronome()
         {
           
@@ -175,13 +194,17 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             {
                 BeatTimer -= 1f;
                 _beatCounter++;
+                _localBeatCounter++;
                 _beatHit = true;
             }
             if(_beatCounter >= 96)
             {
+                _cockHand = false;
+                _longDash = false;
                 _bopCounter = 0;
                 _dashCounter = 0;
                 _beatCounter = 0;
+                _localBeatCounter = 0;
                 _attackSequenceCounter = 0;
                 NPC.netUpdate = true;
             }
@@ -278,13 +301,26 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 case AIState.Dash_Startup:
                     AI_DashStartup();
                     break;
+
+                case AIState.Dash_Startup_Circle:
+                    AI_DashStartupCircle();
+                    break;
                 case AIState.Dash:
                     AI_Dash();
+                    break;
+                case AIState.Dash_Big:
+                    AI_DashBig();
                     break;
                 case AIState.Dash_Headbop:
                     AI_DashHeadbop();
                     break;
 
+                case AIState.EightwayBlobs:
+                    AI_EightwayBlobs();
+                    break;
+                case AIState.DunkBeginStart:
+                    AI_DunkPrepare();
+                    break;
                 case AIState.DunkStart:
                     AI_DunkStart();
                     break;
@@ -323,46 +359,137 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
-            return base.CanHitPlayer(target, ref cooldownSlot) && State == AIState.Dash;
+            return base.CanHitPlayer(target, ref cooldownSlot) && (State == AIState.Dash || State == AIState.Dash_Big);
         }
 
         private bool BeatHit()
         {
             return _beatHit;
         }
-
-        private void AI_DunkStart()
+        private void AI_DashStartupCircle()
         {
+            _showHand = false;
+            _animation = AnimationState.Deadass;
+            OutlineColor = Color.Yellow;
+            Timer++;
+            if(Timer == 1)
+            {
+                _startDunkPosition = NPC.Center;
+            }
+
+            if (Timer % 3 == 0)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.InfernoFork);
+            }
+
+            //At 0:30 seconds he does a lot of circular movement and then dashes towards the player,
+            //does this 3 times before he just bumps his head to the beat.
+            //Repeats that cycle one more time before returning to phase 1 again
+
+            Vector2 targetPosition = _startDunkPosition;
+            Vector2 offset = -Vector2.UnitY.RotatedBy(_lifeTimer * 0.15f) * 128;
+            targetPosition += offset;
+            Vector2 velocityToPosition = targetPosition - NPC.Center;
+            velocityToPosition *= 0.2f;
+            NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToPosition, 0.5f);
+            NPC.rotation = MathHelper.Lerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.1f);
+
+            if (_localBeatCounter >= 1)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+        private void AI_EightwayBlobs()
+        {
+            _showHand = false;
+            _animation = AnimationState.Laugh;
+            OutlineColor = Color.Transparent;
+            HandOutlineColor = Color.Transparent;
+            Timer++;
+
+            //Nove in a circle
+            float rotOffset = Timer * 0.025f;
+            float offset = 80;
+            Vector2 targetCirclePos = Target.Center + rotOffset.ToRotationVector2() * offset;
+
+            switch (Cycle)
+            {
+                default:
+                case 0:
+                    targetCirclePos.Y -= 32;
+                    break;
+                case 1:
+                    targetCirclePos.Y += 32;
+                    break;
+            }
+
+            Vector2 velocityToCirclePos = (targetCirclePos - NPC.Center);
+            velocityToCirclePos *= 0.1f;
+
+            NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToCirclePos, 0.1f);
+            float targetRotation = MathF.Sin(Timer * 0.125f) * 0.5f;
+            NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.1f);
+
+
+            //Bobble his head to the beat
+            //It's 130 beat sper minute
+            //3600 ticks per minute
+            //3600 / 130
+            //27 ticks per beat, roughly, not evenly but close enough, you'd need a long fight to notice desync
+            if (BeatHit())
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+
+                    Vector2 spawnPos = Target.Center + Vector2.UnitY * 128;
+                    spawnPos.X += Main.rand.NextFloat(-252, 252);
+                    Vector2 velocity = -Vector2.UnitY * 10;
+                    int projectileType = ModContent.ProjectileType<RisingLavaBubble>();
+                    int lavaBubbleDamage = LavaBubbleDamage;
+                    int lavaBubbleKnockback = 1;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPos, velocity, projectileType, lavaBubbleDamage, lavaBubbleKnockback, Main.myPlayer);
+                }
+
+                Cycle++;
+                if (Cycle >= 2)
+                {
+                    Cycle = 0;
+                }
+            }
+
+            if(_localBeatCounter >= 3)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+        private void AI_DunkPosition()
+        {
+            _showHand = true;
             Timer++;
             _handPosition += NPC.velocity;
+            Vector2 sidePosition = NPC.Center + -Vector2.UnitX * NPC.direction * 72 + Vector2.UnitY * 48;
             NPC.TargetClosest();
             FaceDirection();
+      
             if (Timer < 10)
             {
-                _startBobPos = Target.Center + Vector2.UnitX * NPC.direction * 420;
+                _startBobPos = Target.Center + Vector2.UnitX * _lastDunkDirection * 72;
                 NPC.velocity *= 0.9f;
                 NPC.rotation *= 0.9f;
-                _handRiseStartPosition = NPC.Center + new Vector2(64, 128);
             }
-            else if (Timer < 80)
+            else if (Timer < 40)
             {
                 _animation = AnimationState.Sideframe;
-                if(_attackSequenceCounter == 2)
-                {
-                    float interpolant = (Timer - 10) / 60f;
-                    float easing = EasingFunction.InOutSine(interpolant);
-                    _handPosition = Vector2.Lerp(_handRiseStartPosition, _handRiseStartPosition + new Vector2(0, -128), easing);
-                }
-                _showHand = true;
-
+                _handPosition = Vector2.Lerp(_handPosition, sidePosition, 0.1f);
             }
-            else if (Timer < 150)
+            else if (Timer < 50)
             {
-                Vector2 sidePosition = NPC.Center + -Vector2.UnitX * NPC.direction * 72 + Vector2.UnitY * 48;
+
                 _handFrame = 1;
                 _handPosition = Vector2.Lerp(_handPosition, sidePosition, 0.1f);
-                if (Timer == 81)
+                if (Timer == 41 && !_cockHand)
                 {
+                    _cockHand = true;
                     FXUtil.GlowCircleBoom(_handPosition,
                         innerColor: Color.White,
                         glowColor: Color.Yellow,
@@ -382,7 +509,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                         Dust.NewDustPerfect(_handPosition, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 0.5f).noGravity = true;
                     }
                 }
-        
+
             }
             HandOutlineColor = Color.Yellow;
             float targetRotation = (Target.Center - _handPosition).ToRotation();
@@ -423,10 +550,26 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                     Cycle = 0;
                 }
             }
+        }
 
-            if (Timer >= 150)
+        private void AI_DunkPrepare()
+        {
+            if(Timer == 1)
             {
-                _endDunkPosition = NPC.Center + Vector2.UnitY * 100;
+                _handPosition = NPC.Center;
+            }
+            AI_DunkPosition();
+            if (_localBeatCounter >= 2)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+
+        private void AI_DunkStart()
+        {
+            AI_DunkPosition();
+            if (_localBeatCounter >= 2)
+            {
                 SwitchState(AIState.Dunking);
             }
         }
@@ -438,21 +581,22 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             //If you move out of the way you won't get grabbed, but this attack is fast sooo
             if (Timer == 1)
             {
+                _lastDunkDirection *= -1;
                 _startDunkPosition = Target.Center;
-                _endDunkPosition = NPC.Center;
-                _dashVelocity = (_startDunkPosition - NPC.Center).SafeNormalize(Vector2.Zero);
-                _dashVelocity *= 37;
+                _endDunkPosition = _spawnPos + -NPC.spriteDirection * Vector2.UnitX * 384 - Vector2.UnitY * 64;
+                _dashVelocity = (_startDunkPosition - _handPosition).SafeNormalize(Vector2.Zero);
+                _dashVelocity *= 4;
             }
-            NPC.velocity = Vector2.Lerp(NPC.velocity, _dashVelocity, 0.3f);
-            NPC.rotation = NPC.velocity.X * 0.013f;
-            _handPosition += NPC.velocity;
+
+            NPC.velocity *= 0.9f;
+            _handPosition += _dashVelocity;
 
 
             float targetRotation = (_endDunkPosition - _handPosition).ToRotation();
             _handDrawRotation = MathHelper.Lerp(_handDrawRotation, targetRotation, 0.1f);
 
-            float distanceToOldTarget = Vector2.Distance(NPC.Center, _startDunkPosition);
-            float distanceToTarget = Vector2.Distance(NPC.Center, Target.Center);
+            float distanceToOldTarget = Vector2.Distance(_handPosition, _startDunkPosition);
+            float distanceToTarget = Vector2.Distance(_handPosition, Target.Center);
             switch (Cycle)
             {
                 case 0:
@@ -475,7 +619,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                             velocityToPlayer *= speed;
                         }
                         _handPosition += velocityToPlayer;
-                        if (distanceToOldTarget <= 40)
+                        if (distanceToOldTarget <= 32)
                         {
                             Cycle++;
                         }
@@ -496,13 +640,6 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                     }
                     break;
             }
-   
-            //Failsafe ig
-            if (Timer >= 90)
-            {
-                _grabbedTarget = false;
-                SwitchState(AIState.Dunkgrab);
-            }
         }
 
         private void AI_Dunkgrab()
@@ -521,7 +658,12 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             _handPosition += NPC.velocity;
 
             //We need to create a cool oval and lerp
-            float dunkingTicks = 35;
+            float dunkingTicks = 30;
+            if (_longDash)
+            {
+                dunkingTicks *= 4.2f;
+            }
+
             float dunkingInterpolant = Timer / dunkingTicks;
             float dunkEase = dunkingInterpolant;
             Vector2 linearPosition = Vector2.Lerp(_startDunkPosition, _endDunkPosition, dunkEase);
@@ -529,6 +671,11 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             //Go up
             float jumpEase = EasingFunction.QuadraticBump(dunkEase);
             float yOffset = MathHelper.Lerp(0f, -274, jumpEase);
+            if (_longDash)
+            {
+                yOffset *= 2;
+            }
+
             Vector2 dunkPosition = linearPosition + new Vector2(0, yOffset);
             Vector2 velocityToDunkPosition = (dunkPosition - NPC.Center);
             NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToDunkPosition, 0.5f);
@@ -546,7 +693,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 hypnotizedSoulModPlayer.targetSuckPosition = _handPosition;
             }
 
-            if (Timer >= dunkingTicks + 5)
+            if (Timer >= dunkingTicks + 2)
             {
                 if (_grabbedTarget)
                 {
@@ -663,9 +810,11 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             Timer++;
             if(Timer == 1)
             {
+  
                 Eruption(NPC.Center, -Vector2.UnitY);
             }
-
+            HypnotizedSoulModPlayer hypnotizedSoulModPlayer = Target.GetModPlayer<HypnotizedSoulModPlayer>();
+            hypnotizedSoulModPlayer.resetVelocity = Vector2.UnitY * 40;
 
             Vector2 velocity = Vector2.UnitY * MathF.Sin(Timer * 0.2f) * 0.1f;
             velocity -= Vector2.UnitY * MathHelper.Lerp(6, 0f, Timer / 60f);
@@ -673,7 +822,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
 
             _handPosition += NPC.velocity;
             NPC.rotation = NPC.velocity.X * 0.05f;
-            if (Timer >= 13)
+            if (Timer >= 6)
             {
                 _animation = AnimationState.Laugh;
             }
@@ -681,7 +830,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             {
                 _animation = AnimationState.Deadass;
             }
-            if (Timer >= 27)
+            if (Timer >= 11)
             {
                 SwitchState(AIState.Dunksink);
             }
@@ -702,7 +851,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 NPC.netUpdate = true;
             }
 
-            float sinkingTinks = 27;
+            float sinkingTinks = 13;
             float interpolant = Timer / sinkingTinks;
             float ease = EasingFunction.InOutSine(interpolant);
             Vector2 targetPosition = Vector2.Lerp(_startDunkPosition, _endDunkPosition, ease);
@@ -723,13 +872,13 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             if(Timer == 1)
             {
                 //Choose which side to rise from
-                float offset = 300;
-                _startDunkPosition = NPC.Center + Vector2.UnitX * offset;
+                float offset = 48;
+                _startDunkPosition = Target.Center + Vector2.UnitX * offset * -NPC.spriteDirection;
                 _endDunkPosition = _startDunkPosition - Vector2.UnitY * 128;
                 NPC.netUpdate = true;
             }
 
-            float risingTicks = 27;
+            float risingTicks = 13;
             float interpolant = Timer / risingTicks;
             float ease = EasingFunction.InOutSine(interpolant);
             Vector2 targetPosition = Vector2.Lerp(_startDunkPosition, _endDunkPosition, ease);
@@ -753,7 +902,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
 
             _handFrame = 1;
             _animation = AnimationState.Confusednograb;
-            if (Timer >= 27)
+            if (Timer >= 11)
             {
                 SwitchState(AIState.Dunksink);
             }
@@ -768,30 +917,22 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             Timer++;
             NPC.TargetClosest();
 
-            if (NPC.HasValidTarget)
+            Vector2 hoverAroundPos = _spawnPos;
+            Vector2 velocityToHoverPos = (hoverAroundPos - NPC.Center).SafeNormalize(Vector2.Zero);
+            float distance = Vector2.Distance(Target.Center, hoverAroundPos);
+            float maxSpeed = 15;
+            if (distance < maxSpeed)
             {
-                Vector2 hoverAroundPos = Target.Center - Vector2.UnitY * 165;
-                Vector2 velocityToHoverPos = (hoverAroundPos - NPC.Center).SafeNormalize(Vector2.Zero);
-                float distance = Vector2.Distance(Target.Center, hoverAroundPos);
-                float maxSpeed = 7;
-                if (distance < maxSpeed)
-                {
-                    velocityToHoverPos *= distance;
-                }
-                else
-                {
-                    velocityToHoverPos *= maxSpeed;
-                }
-        
-                if(distance > 32)
-                {
-                    NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToHoverPos, 0.05f);
-                }
-                else
-                {
-                    NPC.velocity *= 0.98f;
-                }
-         
+                velocityToHoverPos *= distance;
+            }
+            else
+            {
+                velocityToHoverPos *= maxSpeed;
+            }
+
+            if (distance > 32)
+            {
+                NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToHoverPos, 0.05f);
             }
             else
             {
@@ -821,7 +962,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             }
             float targetRotation = MathF.Sin(Timer * 0.2f) * 0.05f;
             NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.1f);
-            if (Timer >= 340)
+            if (_localBeatCounter >= 6)
             {
                 SwitchState(AIState.Idle);
             }
@@ -928,10 +1069,77 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             {
                 _animation = AnimationState.Laugh;
             }
-            if (Timer >= waitTime && BeatHit())
+            if (_localBeatCounter >= 5)
             {
-                SwitchState(AIState.Dash);
+                SwitchState(AIState.Idle);
             }
+        }
+        private void AI_DashBig()
+        {
+            Timer++;
+            OutlineColor = Color.Red;
+            if (Timer == 1)
+            {
+
+                SoundStyle hitSound = AssetRegistry.Sounds.Melee.Vinger2;
+                hitSound.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(hitSound, NPC.position);
+
+                for (int i = 0; i < 7; i++)
+                {
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Yellow, 1f).noGravity = true;
+                }
+
+                for (int i = 0; i < 7; i++)
+                {
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Orange, 1f).noGravity = true;
+                }
+
+                FXUtil.ShakeCamera(NPC.Center, 1024, 32);
+                FXUtil.GlowCircleBoom(NPC.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.Yellow,
+                    outerGlowColor: Color.Red, duration: 25, baseSize: 0.28f);
+
+                SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, NPC.position);
+                for (float f = 0; f < 32; f++)
+                {
+                    Dust.NewDustPerfect(NPC.Center, DustID.Torch,
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.White, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                }
+
+
+                for (float i = 0; i < 8; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(NPC.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.Yellow,
+                        outerGlowColor: Color.Red,
+                        baseSize: Main.rand.NextFloat(0.1f, 0.2f),
+                        duration: Main.rand.NextFloat(15, 25));
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
+
+                SoundEngine.PlaySound(SoundID.Item73, NPC.position);
+                _dashVelocity = DirectionToTarget * 62;
+            }
+            NPC.velocity = Vector2.Lerp(NPC.velocity, _dashVelocity, 0.5f);
+
+            if (Timer % 1 == 0)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.InfernoFork);
+            }
+
+
+            if (Timer >= 2 && BeatHit())
+            {
+                SwitchState(AIState.Idle);
+            }
+            NPC.rotation = NPC.velocity.X * 0.035f;
         }
 
         private void AI_Dash()
@@ -986,7 +1194,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 }
 
                 SoundEngine.PlaySound(SoundID.Item73, NPC.position);
-                _dashVelocity = DirectionToTarget * 52;
+                _dashVelocity = DirectionToTarget * 22;
             }
             NPC.velocity = Vector2.Lerp(NPC.velocity, _dashVelocity, 0.5f);
 
@@ -998,16 +1206,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
 
             if (Timer >= 2 && BeatHit())
             {
-                _dashCounter++;
-                if (_dashCounter < 3)
-                {
-                    SwitchState(AIState.Dash_Startup);
-                }
-                else
-                {
-                    SwitchState(AIState.Dash_Headbop);
-                }
-
+                SwitchState(AIState.Idle);
             }
             NPC.rotation = NPC.velocity.X * 0.035f;
         }
@@ -1036,12 +1235,15 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             NPC.direction = (Target.Center.X < NPC.Center.X) ? 1 : -1;
             NPC.spriteDirection = -NPC.direction;
         }
+
+
         private void AI_BobbingFlyingSkulls()
         {
             //Bobbles his head to the beat as little tiny flying skulls come from the side as
             //he has his glowing cool aura circle,
             //you can attack him here as he’s just floating around to the beat.
 
+            _startBobPos = _spawnPos;
             NPC.TargetClosest();
 
             OutlineColor = Color.Yellow;
@@ -1126,11 +1328,12 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 }
             }
 
-            if (Timer >= 660)
+            //This attack is uh
+            //How many beats long?
+            if (_beatCounter >= 29)
             {
                 SwitchState(AIState.Idle);
             }
-
         }
         private void AI_Idle()
         {
@@ -1138,34 +1341,104 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             Vector2 velocity = Vector2.UnitY * MathF.Sin(Timer * 0.2f) * 0.1f;
             NPC.velocity = Vector2.Lerp(NPC.velocity, velocity, 0.1f);
             NPC.rotation = NPC.velocity.X * 0.05f;
-            if (Timer >= 30)
-            {
-                ProgressSequence();
-            }
+            ProgressSequence();
         }
 
         private void ProgressSequence()
         {
             if (StellaMultiplayer.IsHost)
             {
-                if (_attackSequenceCounter == 4 && _beatCounter < 62)
-                    return;
                 switch (_attackSequenceCounter)
                 {
                     case 0:
                         SwitchState(AIState.BobbingFlyingSkulls);
                         break;
                     case 1:
-                        SwitchState(AIState.DunkStart);
+                        if (_beatCounter < 27)
+                            return;
+
+                        SwitchState(AIState.DunkBeginStart);
                         break;
                     case 2:
+                        if (_beatCounter < 30)
+                            return;
+
                         SwitchState(AIState.DunkStart);
                         break;
                     case 3:
-                        SwitchState(AIState.OutOfBreath);
+                        if (_beatCounter < 35)
+                            return;
+
+                        SwitchState(AIState.DunkStart);
                         break;
                     case 4:
+                        if (_beatCounter < 39)
+                            return;
+
+                        SwitchState(AIState.EightwayBlobs);
+                        break;
+                    case 5:
+                        if (_beatCounter < 46)
+                            return;
+
+                        SwitchState(AIState.DunkStart);
+                        break;
+                    case 6:
+                        if (_beatCounter < 50)
+                            return;
+
+                        SwitchState(AIState.DunkStart);
+                        break;
+                    case 7:
+                        if (_beatCounter < 54)
+                            return;
+
+                        _longDash = true;
+                        SwitchState(AIState.DunkStart);
+                        break;
+                    case 8:
+                        if (_beatCounter < 64)
+                            return;
+
+                        SwitchState(AIState.Dash_Startup_Circle);
+                        break;
+                    case 9:
+
+                        SwitchState(AIState.Dash);
+                        break;
+                    case 10:
+                        SwitchState(AIState.Dash_Startup_Circle);
+                        break;
+                    case 11:
+                        SwitchState(AIState.Dash);
+                        break;
+                    case 12:
+                        SwitchState(AIState.Dash_Startup_Circle);
+                        break;
+                    case 13:
+                        SwitchState(AIState.Dash);
+                        break;
+                    case 14:
+                        SwitchState(AIState.Dash_Startup_Circle);
+                        break;
+                    case 15:
+                        SwitchState(AIState.Dash);
+                        break;
+                    case 16:
+                        SwitchState(AIState.OutOfBreath);
+                        break;
+                    case 17:
+                        if (_beatCounter < 81)
+                            return;
                         SwitchState(AIState.Dash_Startup);
+                        break;
+                    case 18:
+                        if (_beatCounter < 85)
+                            return;
+                        SwitchState(AIState.Dash_Big);
+                        break;
+                    case 19:
+                        SwitchState(AIState.OutOfBreath);
                         break;
                 }
                 _attackSequenceCounter++;
@@ -1180,6 +1453,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 Timer = 0;
                 State = state;
                 Cycle = 0;
+                _localBeatCounter = 0;
                 if (State != AIState.Reposition && _targetReposition != Vector2.Zero && state == AIState.Idle)
                 {
                     SwitchState(AIState.Reposition);
@@ -1187,6 +1461,76 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             }
         }
 
+
+        private Vector2[] _flamePos;
+        private float[] _flameRot;
+        private Vector2[] _flameOffsets;
+        private void DrawFlame(SpriteBatch spriteBatch)
+        {
+            int size = 32;
+            if(_flamePos == null || _flamePos.Length != size)
+            {
+                _flameOffsets = new Vector2[size];
+                _flamePos = new Vector2[size];
+                _flameRot= new float[size];
+            }
+            for(float f = 0;f < size; f++)
+            {
+                int index = (int)f;
+                Vector2 target = NPC.Center - NPC.velocity;
+                target -= Vector2.UnitY * 90;
+                Vector2 pos = Vector2.Lerp(NPC.Center, target, f / size);
+
+                float sinInterp = f / size * 16 + Main.GlobalTimeWrappedHourly * 8;
+                pos.X += MathF.Sin(sinInterp) * 32;
+                pos += _flameOffsets[index];
+                if (Main.rand.NextBool(3))
+                {
+                    _flameOffsets[index] = Main.rand.NextVector2Circular(16, 16);
+                }
+
+             //   pos += Vector2.Lerp(Vector2.Zero, , f / size);
+                _flamePos[index] = pos;
+            }
+            var shader = FlamingTrailShader.Instance;
+
+            shader.OuterColor = Color.LightBlue;
+            shader.InnerColor = Color.Red;
+            shader.Distortion = 8;
+            //  shader.NoiseTexture = TrailRegistry.CrystalTrail;
+            shader.BlendState = BlendState.AlphaBlend;
+
+            TrailDrawer.Draw(Main.spriteBatch, _flamePos, _flameRot, FireColorFunction, FireWidthFunction, shader);
+     
+            //Experiment with this ater
+            /*
+            Texture2D flameTexture = ModContent.Request<Texture2D>(Texture + "_Flame").Value;
+            Vector2 drawOrigin = flameTexture.Size() / 2f;
+            float drawRotation = 0;
+            Vector2 drawScale = new Vector2(0.4f, 0.8f);
+            Vector2 drawPosition = NPC.Center - Main.screenPosition - Vector2.UnitY * 32;
+            Color drawColor = Color.White;
+
+            var flameShader = SkullfireShader.Instance;
+            flameShader.Tiling = Vector2.One * 0.2f;
+  
+            flameShader.Time = Main.GlobalTimeWrappedHourly * 24;
+            spriteBatch.Restart(blendState: BlendState.AlphaBlend, effect: flameShader.Effect);
+            spriteBatch.Draw(flameTexture, drawPosition, null, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            spriteBatch.RestartDefaults();
+            */
+
+        }
+        public float FireWidthFunction(float completionRatio)
+        {
+            float baseWidth = 48;
+            return MathHelper.Lerp(27, 27, completionRatio);
+        }
+
+        public Color FireColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.Yellow, Color.Red, completionRatio) * 0.7f * Alpha;
+        }
 
         private void DrawAura(SpriteBatch spriteBatch)
         {
@@ -1254,6 +1598,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             float drawScale = 1.5f;
+            DrawFlame(spriteBatch);
             DrawAura(spriteBatch);
             DrawTrail(spriteBatch);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
