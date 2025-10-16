@@ -1,6 +1,7 @@
 ﻿
 
 using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
@@ -90,7 +91,7 @@ namespace Stellamod.Tiles.Abyss.Aurelus
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     Main.NewText(LangText.Misc("AurelusSummon.1"), Color.Blue);
-                    int npcID = NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<SingularityFragment>());
+                    int npcID = NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<SkullrunnerSpawn>());
                     Main.npc[npcID].netUpdate2 = true;
                 }
                 else
@@ -98,7 +99,7 @@ namespace Stellamod.Tiles.Abyss.Aurelus
                     if (Main.netMode == NetmodeID.SinglePlayer)
                         return false;
 
-                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<SingularityFragment>(), i * 16, (j * 16) - 5);
+                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<SkullrunnerSpawn>(), i * 16, (j * 16) - 5);
                 }
 
                 return true;

@@ -25,6 +25,9 @@ float3 innerColor;
 float3 outerColor;
 float3 fadeColor;
 
+float2 velocity;
+float distortion;
+float power;
 float time;
 float2 tiling;
 texture noiseTexture;
@@ -38,56 +41,56 @@ sampler2D noiseTex = sampler_state
     AddressV = wrap;
 };
 
-float QuadraticBump(float t)
+float2 DistortCoordinates(float2 coords)
 {
-    const float factor = 4;
-    return t * (factor - t * factor);
-}
-float SampleNoise(float2 coords, float2 offset)
-{
-    float2 noiseCoords = (coords + offset) * tiling;
-    float sample = tex2D(noiseTex, noiseCoords);
-    return sample;
-}
-
-float SampleGradient(float2 coords)
-{
-    return coords.y;
-
-}
-
-float2 PolarCoordinates(float2 coords)
-{
-#define PI 3.14159
-    float2 baseUV = coords;
-    baseUV -= 0.5f;
-    baseUV *= 2.0;
-    
-    float angle = atan2(baseUV.y, baseUV.x) / 2.0 * PI;
-    float dist = length(float2(baseUV.x, baseUV.y));
-    
-    float2 polarUV = float2(angle, dist);
-    return polarUV;
+    float2 offsetCoords = coords + float2(0.0, time * -0.025);
+    float sample = tex2D(noiseTex, offsetCoords * tiling);
+    float rot = lerp(0, 3.14, sample);
+    float2 angleOffset = float2(sin(rot), cos(rot)) * distortion;
+    return coords + angleOffset;
 }
 
 float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
 {
-    float noiseValue = SampleNoise(coords, float2(0.0, time * 0.05));
-    float gradientValue = SampleGradient(coords);
-				
-    float step1 = step(noiseValue, gradientValue);
-    float step2 = step(noiseValue, gradientValue - 0.2);
-    float step3 = step(noiseValue, gradientValue - 0.4);
-
-    float4 fireColor = float4(lerp(innerColor, outerColor, step1 - step2), step1);
-    fireColor.rgb = lerp(fireColor.rgb, fadeColor, step2 - step3);
+    //Distort the coordinates for that wobbly effect
+    coords = DistortCoordinates(coords);
+    coords += velocity * (1.0 - coords.y);
     
-    float4 spriteColor = tex2D(uImage0, coords);
-    float4 finalColor = spriteColor * fireColor;
     
-    float2 polarCoords = PolarCoordinates(coords);
-    float alpha = QuadraticBump(polarCoords.y);
-    return fireColor * sampleColor * alpha;
+    //We need to create like a base fill for the fire
+    //So we'll sample the noise and power it so it's mostly white
+    float2 noiseCoords = (coords + float2(0, time * 0.05)) * tiling;
+    float fillNoiseSample = tex2D(noiseTex, noiseCoords);
+        
+    //Then we need to weaken the sample based on the y  coordinate, as it goes up,
+    //So it like shrinks
+    //Smoothstep so it's nice and interpolated
+    float noisePow = smoothstep(2.0, power, coords.y);
+    fillNoiseSample = pow(fillNoiseSample, noisePow);
+    
+    //Now we need another scrolling noise texture to add like interest
+    float2 n2Coords = (coords + float2(0, time * 0.06) * tiling);
+    float n2Sample = tex2D(noiseTex, n2Coords);
+    n2Sample = pow(n2Sample, noisePow);
+    
+    //Then one more
+    float2 n3Coords = (coords + float2(0, time * 0.07) * tiling);
+    float n3Sample = tex2D(noiseTex, n3Coords);
+    n3Sample = pow(n3Sample, noisePow);
+    
+    float noise = fillNoiseSample + n2Sample + n3Sample;
+    noise = saturate(noise);
+    
+    //Now we calculate colors
+    float3 fireColor = lerp(innerColor, outerColor, noise);
+    fireColor = lerp(fadeColor, fireColor, coords.y);
+    float3 noiseFireRGB = fireColor * noise;
+    
+    //Multiply with the mask/shaping texture
+    float4 finalColor = tex2D(uImage0, coords);
+    finalColor.rgb *= noiseFireRGB;
+    return finalColor * sampleColor;
+    
 }
 
 technique SpriteDrawing

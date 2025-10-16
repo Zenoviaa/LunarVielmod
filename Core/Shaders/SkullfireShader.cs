@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace Stellamod.Core.Shaders
 {
     public class SkullfireShader : BaseShader
     {
+        private EffectParameter _velocityParam;
+        private EffectParameter _powerParam;
         private EffectParameter _fadeColorParam;
         private EffectParameter _innerColorParam;
         private EffectParameter _outerColorParam;
@@ -81,15 +84,44 @@ namespace Stellamod.Core.Shaders
                 _noiseTextureParam.SetValue(value);
             }
         }
+
+        public float Power
+        {
+            set
+            {
+                _powerParam ??= Effect.Parameters["power"];
+                _powerParam.SetValue(value);
+            }
+        }
+        public float Distortion
+        {
+            set
+            {
+                _distortionParam ??= Effect.Parameters["distortion"];
+                _distortionParam.SetValue(value);
+            }
+        }
+        public Vector2 Velocity
+        {
+            set
+            {
+                _velocityParam ??= Effect.Parameters["velocity"];
+                _velocityParam.SetValue(value);
+            }
+        }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
-            InnerColor = Color.Yellow;
-            OuterGlowColor = Color.Red;
-            FadeColor = Color.OrangeRed;
-            Time = Main.GlobalTimeWrappedHourly * 8;
-            Tiling = Vector2.One * 2;
-            NoiseTexture = TextureRegistry.BlurryPerlinNoise2.Value;
+            InnerColor = Color.Red;
+            OuterGlowColor = Color.Yellow;
+            FadeColor = Color.Blue;
+            Power = 1;
+            Distortion = 0.2f;
+            Time = Main.GlobalTimeWrappedHourly * 12;
+            Tiling = new Vector2(1, 1f) * 1;
+            Velocity = Vector2.Zero;
+            NoiseTexture = TrailRegistry.WhispyTrail.Value;
         }
 
     }
