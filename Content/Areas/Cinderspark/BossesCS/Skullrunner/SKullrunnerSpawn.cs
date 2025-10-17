@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Stellamod.Assets;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles;
 using Stellamod.Content.Areas.WondrousDarkspace.NPCsWD;
@@ -269,6 +270,27 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 Cycle = 0;
             }
         }
+        private void DrawGlowingAura(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            float drawScale = 1;
+            Texture2D auraTexture = ModContent.Request<Texture2D>(Texture + "_Aura").Value;
+            Texture2D auraTexture2 = ModContent.Request<Texture2D>(Texture + "_Aura2").Value;
+
+
+
+            Vector2 auraDrawPos = NPC.Center - screenPos;
+            auraDrawPos -= Vector2.UnitY * 16 * ExtraMath.Osc(0f, 1f);
+            Vector2 auraDrawOrigin = auraTexture.Size() / 2f;
+            Vector2 auraDrawOrigin2 = auraTexture2.Size() / 2f;
+            Vector2 auraDrawScale = Vector2.One * 0.75f;
+            spriteBatch.Restart(blendState: BlendState.Additive);
+
+            float auraDrawRotation = Main.GlobalTimeWrappedHourly * 0.4f;
+            spriteBatch.Draw(auraTexture2, auraDrawPos, null, Color.White * 0.85f, auraDrawRotation, auraDrawOrigin2, auraDrawScale * drawScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(auraTexture, auraDrawPos, null, Color.White * 0.85f, -auraDrawRotation * 0.5f, auraDrawOrigin, auraDrawScale * drawScale, SpriteEffects.None, 0);
+
+            spriteBatch.RestartDefaults();
+        }
 
 
         private void DrawAura(SpriteBatch spriteBatch)
@@ -308,17 +330,9 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             float drawScale = 1.5f;
             DrawAura(spriteBatch);
             DrawTrail(spriteBatch);
+            DrawGlowingAura(spriteBatch, screenPos);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPos = NPC.position - screenPos + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
-
-            Texture2D auraTexture = ModContent.Request<Texture2D>(Texture + "_Aura").Value;
-            Vector2 auraDrawPos = NPC.Center - screenPos;
-            auraDrawPos -= Vector2.UnitY * 16 * ExtraMath.Osc(0f, 1f);
-            Vector2 auraDrawOrigin = auraTexture.Size() / 2f;
-            Vector2 auraDrawScale = Vector2.One * 0.75f;
-            spriteBatch.Restart(blendState: BlendState.Additive);
-            spriteBatch.Draw(auraTexture, auraDrawPos, null, Color.White, 0, auraDrawOrigin, auraDrawScale * drawScale, SpriteEffects.None, 0);
-            spriteBatch.RestartDefaults();
 
 
             SpriteEffects spriteEffects = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;

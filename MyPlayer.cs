@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
-
+using Microsoft.Xna.Framework.Input;
 using Stellamod.Buffs;
 using Stellamod.Buffs.Minions;
 using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
+using Stellamod.Core.ToolsSystem;
 using Stellamod.Dusts;
 using Stellamod.Gores.Foreground;
 using Stellamod.Helpers;
@@ -678,10 +679,24 @@ namespace Stellamod
         public override void OnEnterWorld()
         {
             Main.NewText(LangText.Misc("EnterWorld"));
-        }
+        }private bool _pressed;
         public override void PostUpdate()
         {
+            Keys keys = Keys.OemTilde;
+            if (!_pressed)
+            {
+                _pressed = Main.keyState.IsKeyDown(keys);
+            } else if (_pressed)
+            {
+                if (Main.keyState.IsKeyUp(keys))
+                {
+                    ToolsUISystem uiSystem = ModContent.GetInstance<ToolsUISystem>();
+                    uiSystem.ToggleUI();
+                    _pressed = false;
+                }
+            }
 
+    
 
             if (Main.netMode != NetmodeID.Server)
             {

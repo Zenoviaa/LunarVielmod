@@ -117,7 +117,7 @@ namespace Stellamod.Core.Shaders
             OuterGlowColor = Color.Yellow;
             FadeColor = Color.Blue;
             Power = 1;
-            Distortion = 0.2f;
+            Distortion = 0.1f;
             Time = Main.GlobalTimeWrappedHourly * 12;
             Tiling = new Vector2(1, 1f) * 1;
             Velocity = Vector2.Zero;

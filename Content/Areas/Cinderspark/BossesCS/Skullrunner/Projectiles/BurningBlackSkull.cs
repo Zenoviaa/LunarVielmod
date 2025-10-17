@@ -31,8 +31,8 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
         {
             base.SetDefaults();
             TrailCacheLength = 16;
-            Projectile.width = 8;
-            Projectile.height = 8;
+            Projectile.width = 6;
+            Projectile.height = 6;
             Projectile.penetrate = 2;
             Projectile.hostile = true;
             Projectile.timeLeft = 400;

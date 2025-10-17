@@ -3,6 +3,7 @@ using Stellamod.Assets;
 using Stellamod.Core.Particles;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -39,7 +40,19 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 Tile? floorTile = Player.GetFloorTile(point.X, point.Y);
                 if (floorTile.HasValue)
                 {
-                    Player.Hurt(new PlayerDeathReason(), 20, 1);
+                    float damage = 32;
+                    if (Main.masterMode)
+                        damage *= 3;
+                    if (Main.expertMode)
+                        damage *= 2;
+
+                    if(Main.myPlayer == Player.whoAmI)
+                    {
+                        Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - Vector2.UnitY * 128, Vector2.UnitY,
+                            ModContent.ProjectileType<ScatterBoom>(), 0, 0, Player.whoAmI);
+                    }
+                    Player.Hurt(new PlayerDeathReason(), (int)damage, 1);
+
                     Eruption(Player.Center, -Vector2.UnitY);
                     throwVelocity = null;
                 }
@@ -59,7 +72,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             }
 
             FXUtil.ShakeCamera(position, 1024, 98);
-            FXUtil.PunchCamera(position, -Vector2.UnitY * 4, 8, 16, 4);
+            FXUtil.PunchCamera(position, Vector2.UnitY * 2, 8, 8, 32);
             FXUtil.GlowCircleBoom(position,
                 innerColor: Color.White,
                 glowColor: Color.Yellow,

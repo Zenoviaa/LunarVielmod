@@ -14,8 +14,8 @@ namespace Stellamod.Helpers
             Item.width = 16;
             Item.height = 16;
             Item.rare = ItemRarityID.Green;
-            Item.useTime = 2;
-            Item.useAnimation = 2;
+            Item.useTime = 1;
+            Item.useAnimation = 1;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = false;
         }
@@ -71,7 +71,7 @@ namespace Stellamod.Helpers
                     Point bottomLeft = Main.MouseWorld.ToTileCoordinates();
                     Point topRight = bottomLeft + new Point(rectangle.Width, -rectangle.Height);
                     SnapshotSystem snapshotSystem = ModContent.GetInstance<SnapshotSystem>();
-                    snapshotSystem.Save(bottomLeft, topRight);
+                 //   snapshotSystem.Save(bottomLeft, topRight);
                     Structurizer.ReadSavedStruct(Structurizer.SelectedStructure, bottomLeft);
                     TriggerStructurizer.ReadSavedStruct(Structurizer.SelectedStructure, bottomLeft);
                 }

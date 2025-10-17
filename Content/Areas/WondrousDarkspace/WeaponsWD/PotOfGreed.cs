@@ -229,7 +229,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
             NPC closest = NPCHelper.FindClosestNPC(Projectile.position, 1024);
             if (closest != null)
             {
-                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, closest.Center, 4);
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, closest.Center, 8);
                 if (Projectile.velocity.Length() < 8)
                 {
                     Projectile.velocity *= 1.5f;
@@ -245,7 +245,11 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
             }
         }
 
-
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            Projectile.velocity = -Projectile.velocity;
+            return false;
+        }
 
         public override bool PreDraw(ref Color lightColor)
         {

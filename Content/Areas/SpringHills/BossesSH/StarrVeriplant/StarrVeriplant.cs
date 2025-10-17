@@ -41,6 +41,8 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
         private ref float StompCounter => ref NPC.ai[3];
 
         private Player Target => Main.player[NPC.target];
+
+        private Color OutlineColor;
         private bool InPhase2 => NPC.life < NPC.lifeMax / 2;
         private bool HasDoneStomp;
         private bool CanSuperStomp;
@@ -89,7 +91,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
         {
             NPC.width = 80;
             NPC.height = 44;
-            NPC.damage = 50;
+            NPC.damage = 25;
             NPC.lifeMax = 400;
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
@@ -143,7 +145,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
             Texture2D outlineTexture = ModContent.Request<Texture2D>(Texture + "_Outline").Value;
             Vector2 outlineDrawPos = NPC.position - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
             outlineDrawPos.Y -= 54;
-            Color outlineColor = Color.Lerp(Color.Transparent, Color.Red, OutlineOpacity);
+            Color outlineColor = Color.Lerp(Color.Transparent, OutlineColor, OutlineOpacity);
             spriteBatch.Draw(outlineTexture, outlineDrawPos, NPC.frame, outlineColor, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, Effects, 0);
 
             return base.PreDraw(spriteBatch, screenPos, drawColor);
@@ -318,7 +320,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
 
             //Idle state and then choose attack
             Timer++;
-            if (Timer >= 60)
+            if (Timer >= 90)
             {
                 if (StellaMultiplayer.IsHost)
                 {
@@ -353,6 +355,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                     //Target a player
                     Timer++;
                     DrawOutline = true;
+                    OutlineColor = Color.Yellow;
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
@@ -378,6 +381,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                 case 1:
                     //Hover Left/Right
                     Timer++;
+                    OutlineColor = Color.Yellow;
                     Vector2 horizontalVelocity = Target.Center - NPC.Center;
                     float xMove = horizontalVelocity.X;
 
@@ -400,8 +404,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
 
                 case 2:
                     Timer++;
-                    DrawOutline = false;
-
+                    OutlineColor = Color.Red;
                     //Give some initial velocity
                     if (Timer == 1)
                     {
@@ -473,6 +476,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                     }
                     break;
                 case 3:
+                    DrawOutline = false;
                     NPC.velocity.X = 0;
                     NPC.velocity.Y = 0;
                     CanMultiStomp = true;
@@ -494,6 +498,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                     //Target a player
                     Timer++;
                     DrawOutline = true;
+                    OutlineColor = Color.Yellow;
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
@@ -517,7 +522,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                     break;
                 case 1:
                     Timer++;
-                    DrawOutline = false;
+                    OutlineColor = Color.Red;
                     //Give some initial velocity
                     if (Timer == 1)
                     {
@@ -624,6 +629,8 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                     //Target a player
                     Timer++;
                     DrawOutline = true;
+
+                    OutlineColor = Color.Yellow;
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
@@ -672,7 +679,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                 case 2:
                     Timer++;
                     DrawOutline = false;
-
+                    OutlineColor = Color.Red;
                     //Give some initial velocity
                     if (Timer == 1)
                     {

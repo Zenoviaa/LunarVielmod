@@ -63,6 +63,8 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
         private float _lifeTimer;
         private AnimationState _animation;
 
+        private float _auraInterpolant;
+        private bool _drawAura;
         private bool _drawTrail;
         private float _trailInterpolant;
         private bool _cockHand;
@@ -167,7 +169,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             NPC.width = 64;
             NPC.height = 64;
             NPC.damage = 32;
-            NPC.defense = 0;
+            NPC.defense = 10;
             NPC.lifeMax = 7000;
             NPC.HitSound = SoundID.NPCHit16;
             NPC.value = Item.buyPrice(silver: 50);
@@ -287,7 +289,15 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             {
                 _trailInterpolant = MathHelper.Lerp(_trailInterpolant, 0f, 0.1f);
             }
+            if (_drawAura)
+            {
+                _auraInterpolant = MathHelper.Lerp(_auraInterpolant, 0.85f, 0.1f);
+            } else
+            {
+                _auraInterpolant = MathHelper.Lerp(_auraInterpolant, 0.2f, 0.1f);
+            }
             _drawTrail = false;
+            _drawAura = false;
             _oscScale = false;
                 _lifeTimer++;
             switch (State)
@@ -300,6 +310,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                     break;
                 case AIState.BobbingFlyingSkulls:
                     _oscScale = true;
+                    _drawAura = true;
                     AI_BobbingFlyingSkulls();
                     break;
 
@@ -325,6 +336,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                     break;
 
                 case AIState.EightwayBlobs:
+                    _drawAura = true;
                     AI_EightwayBlobs();
                     break;
                 case AIState.DunkBeginStart:
@@ -476,8 +488,14 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
         }
         private void AI_DunkPosition()
         {
+            if (!_showHand)
+            {
+                _handPosition = NPC.Center;
+            }
             _showHand = true;
             Timer++;
+ 
+
             _handPosition += NPC.velocity;
             Vector2 sidePosition = NPC.Center + -Vector2.UnitX * NPC.direction * 72 + Vector2.UnitY * 48;
             NPC.TargetClosest();
@@ -616,7 +634,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             //Otherwise it'll desync
             float grabTicks = 12;
             float interpolant = Timer / grabTicks;
-            float ease = EasingFunction.InOutSine(interpolant);
+            float ease = EasingFunction.InOutCubic(interpolant);
             Vector2 newHandPosition = Vector2.Lerp(_handRiseStartPosition, _startDunkPosition, ease);
             _handPosition = newHandPosition;
 
@@ -627,7 +645,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             if(Timer >= grabTicks)
             {
                 float distanceToTarget = Vector2.Distance(_handPosition, Target.Center);
-                if(distanceToTarget <= 48 && !Target.immune)
+                if(distanceToTarget <= 74 && !Target.immune)
                 {
                     _grabbedTarget = true;
                 }
@@ -662,7 +680,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             }
 
             float dunkingInterpolant = Timer / dunkingTicks;
-            float dunkEase = dunkingInterpolant;
+            float dunkEase = EasingFunction.InOutSine(dunkingInterpolant);
             Vector2 linearPosition = Vector2.Lerp(_startDunkPosition, _endDunkPosition, dunkEase);
 
             //Go up
@@ -915,6 +933,8 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
         {
             _showHand = false;
             _animation = AnimationState.Outtabreath;
+            OutlineColor = Color.Transparent;
+            HandOutlineColor = Color.Transparent;
             //As the song stops yelling he becomes out of breathe,
             //little exploding 8-way lava bubbles come from the lava and pop like hive knight, 
             Timer++;
@@ -1041,7 +1061,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
         }
         private void AI_DashStartup()
         {
-      
+            _animation = AnimationState.Sideframe;
             OutlineColor = Color.Yellow;
            
             Timer++;
@@ -1060,18 +1080,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             Vector2 velocityToPosition = targetPosition - NPC.Center;
             velocityToPosition *= 0.2f;
             NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToPosition, 0.5f);
-            NPC.rotation = MathHelper.Lerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.1f);
-
-        
-            if (Timer < waitTime / 2f)
-            {
-
-                _animation = AnimationState.Deadass;
-            }
-            else
-            {
-                _animation = AnimationState.Laugh;
-            }
+            NPC.rotation = NPC.velocity.ToRotation();
             if (_localBeatCounter >= 5)
             {
                 SwitchState(AIState.Idle);
@@ -1130,7 +1139,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 SoundEngine.PlaySound(SoundID.Item73, NPC.position);
                 _dashVelocity = DirectionToTarget * 62;
             }
-            NPC.velocity = Vector2.Lerp(NPC.velocity, _dashVelocity, 0.5f);
+            NPC.velocity = _dashVelocity;
 
             if (Timer % 1 == 0)
             {
@@ -1199,7 +1208,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 SoundEngine.PlaySound(SoundID.Item73, NPC.position);
                 _dashVelocity = DirectionToTarget * 22;
             }
-            NPC.velocity = Vector2.Lerp(NPC.velocity, _dashVelocity, 0.5f);
+            NPC.velocity = _dashVelocity;
 
             if (Timer % 1 == 0)
             {
@@ -1296,7 +1305,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
 
                         Vector2 skullSpawnVelocity = (NPC.Center - skullSpawnPoint);
                         skullSpawnVelocity = skullSpawnVelocity.SafeNormalize(Vector2.Zero);
-                        skullSpawnVelocity *= Main.rand.NextFloat(2, 5);
+                        skullSpawnVelocity *= Main.rand.NextFloat(4, 7);
 
                         int skullProjectileType = ModContent.ProjectileType<BurningBlackSkull>();
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), skullSpawnPoint, skullSpawnVelocity,
@@ -1316,6 +1325,13 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             //How many beats long?
             if (_beatCounter >= 29)
             {
+                foreach(var proj in Main.ActiveProjectiles)
+                {
+                    if (!proj.active)
+                        continue;
+                    if (proj.type == ModContent.ProjectileType<BurningBlackSkull>())
+                        proj.Kill();
+                }
                 SwitchState(AIState.Idle);
             }
         }
@@ -1452,15 +1468,16 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             Vector2 drawOrigin = flameTexture.Size() / 2f;
             float drawRotation = 0;
             Vector2 drawScale = new Vector2(0.4f, 0.8f);
-            Vector2 drawPosition = NPC.Center - Main.screenPosition - Vector2.UnitY * 32;
+            Vector2 drawPosition = NPC.Center - Main.screenPosition - Vector2.UnitY * 64;
             Color drawColor = Color.White * Alpha;
 
             var flameShader = SkullfireShader.Instance;
 
             spriteBatch.Restart(blendState: BlendState.Additive, effect: flameShader.Effect);
-            spriteBatch.Draw(flameTexture, drawPosition, null, drawColor * 0.5f, drawRotation, drawOrigin, drawScale * 1, SpriteEffects.None, 0);
-            spriteBatch.Draw(flameTexture, drawPosition, null, drawColor * 0.5f, drawRotation, drawOrigin, drawScale * 0.85f, SpriteEffects.None, 0);
-            spriteBatch.Draw(flameTexture, drawPosition, null, drawColor, drawRotation, drawOrigin, drawScale * 0.75f, SpriteEffects.None, 0);
+            spriteBatch.Draw(flameTexture, drawPosition, null, drawColor, drawRotation, drawOrigin, drawScale * 0.8f, SpriteEffects.None, 0);
+            spriteBatch.Draw(flameTexture, drawPosition, null, drawColor, drawRotation, drawOrigin, drawScale * 0.8f, SpriteEffects.None, 0);
+          //  spriteBatch.Draw(flameTexture, drawPosition, null, drawColor * 0.5f, drawRotation, drawOrigin, drawScale * 0.85f, SpriteEffects.None, 0);
+         //   spriteBatch.Draw(flameTexture, drawPosition, null, drawColor, drawRotation, drawOrigin, drawScale * 0.75f, SpriteEffects.None, 0);
             spriteBatch.RestartDefaults();
         }
 
@@ -1526,23 +1543,38 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             spriteBatch.Draw(handTexture, handDrawPosition, handRect, drawColor * Alpha, _handDrawRotation, drawOrigin, _handDrawScale * drawScale, SpriteEffects.None, 0);
         }
 
+        private void DrawGlowingAura(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            float drawScale = 1;
+            Texture2D auraTexture = ModContent.Request<Texture2D>(Texture + "_Aura").Value;
+            Texture2D auraTexture2 = ModContent.Request<Texture2D>(Texture + "_Aura2").Value;
+
+
+
+            Vector2 auraDrawPos = NPC.Center - screenPos;
+            auraDrawPos -= Vector2.UnitY * 16 * ExtraMath.Osc(0f, 1f);
+            Vector2 auraDrawOrigin = auraTexture.Size() / 2f;
+            Vector2 auraDrawOrigin2 = auraTexture2.Size() / 2f;
+            Vector2 auraDrawScale = Vector2.One * 0.75f;
+            spriteBatch.Restart(blendState: BlendState.Additive);
+
+            float auraDrawRotation = Main.GlobalTimeWrappedHourly * 0.4f;
+            spriteBatch.Draw(auraTexture2, auraDrawPos, null, Color.White * Alpha * _auraInterpolant, auraDrawRotation, auraDrawOrigin2, auraDrawScale * drawScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(auraTexture, auraDrawPos, null, Color.White * Alpha * _auraInterpolant, -auraDrawRotation * 0.5f, auraDrawOrigin, auraDrawScale * drawScale, SpriteEffects.None, 0);
+            
+            spriteBatch.RestartDefaults();
+        }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             float drawScale = 1.5f;
             DrawFlame(spriteBatch);
             DrawAura(spriteBatch);
+            DrawGlowingAura(spriteBatch, screenPos);
             DrawTrail(spriteBatch);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPos = NPC.position - screenPos + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
 
-            Texture2D auraTexture = ModContent.Request<Texture2D>(Texture + "_Aura").Value;
-            Vector2 auraDrawPos = NPC.Center - screenPos;
-            auraDrawPos -= Vector2.UnitY * 16 * ExtraMath.Osc(0f, 1f);
-            Vector2 auraDrawOrigin = auraTexture.Size() / 2f;
-            Vector2 auraDrawScale = Vector2.One * 0.75f;
-            spriteBatch.Restart(blendState: BlendState.Additive);
-            spriteBatch.Draw(auraTexture, auraDrawPos, null, Color.White * Alpha, 0, auraDrawOrigin, auraDrawScale * drawScale, SpriteEffects.None, 0);
-            spriteBatch.RestartDefaults();
 
             float outlineOffset = 2;
             Vector2 left = Vector2.UnitX * -outlineOffset;

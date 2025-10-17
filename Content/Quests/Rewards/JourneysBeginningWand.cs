@@ -13,7 +13,7 @@ namespace Stellamod.Content.Quests.Rewards
         {
             base.SetDefaults();
             Form = FormRegistry.SmallKnife.Value;
-            Item.damage = 320;
+            Item.damage = 160;
         }
 
         public override int GetNormalSlotCount()

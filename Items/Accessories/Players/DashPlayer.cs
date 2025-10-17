@@ -127,7 +127,7 @@ namespace Stellamod.Items.Accessories.Players
             DoubleTapped = false;
             DashVelocity = 25;
             DashDuration = 40;
-            DashCooldown = 67;
+            DashCooldown = 44;
             // ResetEffects is called not long after player.doubleTapCardinalTimer's values have been set
             // When a directional key is pressed and released, vanilla starts a 15 tick (1/4 second) timer during which a second press activates a dash
             // If the timers are set to 15, then this is the first press just processed by the vanilla logic.  Otherwise, it's a double-tap

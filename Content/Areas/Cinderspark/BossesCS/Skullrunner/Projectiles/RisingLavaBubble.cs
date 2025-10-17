@@ -92,10 +92,10 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
         {
             Timer++;
             _explosionScalar = 1f;
-            float riseTime = 60f;
+            float riseTime = 30f;
             float risingVelocityY = MathHelper.Lerp(-16, 0, EasingFunction.InOutSine(Timer / riseTime));
             Projectile.velocity.Y = risingVelocityY;
-            if (Timer >= 90)
+            if (Timer >= riseTime + 30f)
             {
                 SwitchState(AIState.Exploding);
             }
@@ -106,7 +106,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
             Timer++;
             float explodingTime = 30f;
             ExplodeWarning = Timer / explodingTime;
-            if(Timer >= 25)
+            if(Timer >= 13)
             {
                 _explosionScalar = 1.5f;
             }
@@ -254,6 +254,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
                     outerColor: Color.Orange,
                     fadeToColor: Color.Purple,
                     distortOut: true);
+                frag.Scale *= 0.5f;
 
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.InfernoFork);
             }
