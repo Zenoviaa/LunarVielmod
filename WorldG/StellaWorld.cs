@@ -2175,14 +2175,6 @@ namespace Stellamod.WorldG
                 if (sandAndSnow >= 1)
                     continue;
 
-                // place the Rogue
-                //	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-                //Main.npc[num].homeTileX = -1;
-                //	Main.npc[num].homeTileY = -1;
-                //	Main.npc[num].direction = 1;
-                //	Main.npc[num].homeless = true;
-
-
 
                 for (int da = 0; da < 1; da++)
                 {
