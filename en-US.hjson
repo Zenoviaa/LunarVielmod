@@ -118,6 +118,28 @@ Mods: {
 			"Open Questbook.DisplayName": Open  Questbook
 			"Use Xixian Flask.DisplayName": Use  Xixian  Flask
 		}
+
+		Tablets: {
+			SpringTabletXixianFlask: {
+				Message: Mods.Stellamod.Tablets.SpringTabletXixianFlask.Message
+				Title: Mods.Stellamod.Tablets.SpringTabletXixianFlask.Title
+			}
+
+			SpringTabletStamina: {
+				Message: Mods.Stellamod.Tablets.SpringTabletStamina.Message
+				Title: Mods.Stellamod.Tablets.SpringTabletStamina.Title
+			}
+
+			SpringTabletDash: {
+				Message: Mods.Stellamod.Tablets.SpringTabletDash.Message
+				Title: Mods.Stellamod.Tablets.SpringTabletDash.Title
+			}
+
+			SpringTabletBoss: {
+				Message: Mods.Stellamod.Tablets.SpringTabletBoss.Message
+				Title: Mods.Stellamod.Tablets.SpringTabletBoss.Title
+			}
+		}
 	}
 
 	Tiles: {

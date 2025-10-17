@@ -9291,3 +9291,63 @@ HypnoticScythe: {
 	DisplayName: Hypnotic Scythe
 	Tooltip: ""
 }
+
+SpringTabletDashItem: {
+	DisplayName: Spring Tablet Dash Item
+	Tooltip: ""
+}
+
+SpringTabletBossItem: {
+	Tooltip: ""
+	DisplayName: Spring Tablet Boss Item
+}
+
+SpringTabletItem: {
+	DisplayName: Spring Tablet Item
+	Tooltip: ""
+}
+
+SpringTabletStaminaItem: {
+	DisplayName: Spring Tablet Stamina Item
+	Tooltip: ""
+}
+
+SpringTabletXixianFlaskItem: {
+	DisplayName: Spring Tablet Xixian Flask Item
+	Tooltip: ""
+}
+
+StaminaFlaskCollectibleItem: {
+	DisplayName: Stamina Flask Collectible Item
+	Tooltip: ""
+}
+
+XixianFlaskCollectibleItem: {
+	DisplayName: Xixian Flask Collectible Item
+	Tooltip: ""
+}
+
+BossBarrierBlockItem: {
+	DisplayName: Boss Barrier Block Item
+	Tooltip: ""
+}
+
+GodraySpawnerItem: {
+	DisplayName: Godray Spawner Item
+	Tooltip: ""
+}
+
+SpectralEntranceItem: {
+	DisplayName: Spectral Entrance Item
+	Tooltip: ""
+}
+
+StarrVeriplantBarrierBlockItem: {
+	DisplayName: Starr Veriplant Barrier Block Item
+	Tooltip: ""
+}
+
+TheUrdveilDoorItem: {
+	DisplayName: The Urdveil Door Item
+	Tooltip: ""
+}

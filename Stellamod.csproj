@@ -49,6 +49,7 @@
     <None Remove="Assets\Effects\RippingSlashShader.fx" />
     <None Remove="Assets\Effects\SharpExplosionShader.fx" />
     <None Remove="Assets\Effects\Silhouette.fx" />
+    <None Remove="Assets\NoiseTextures\Godray.png" />
     <None Remove="Assets\Textures\AshedRE.png" />
     <None Remove="Assets\Textures\Backgrounds\IceBack.png" />
     <None Remove="Assets\Textures\Backgrounds\IceBack2.png" />
@@ -215,6 +216,7 @@
     <None Remove="Effects\CrystalShaders\GlowFragment.fx" />
     <None Remove="Effects\CrystalShaders\GlowingTrail.fx" />
     <None Remove="Effects\CrystalShaders\GlowPillar.fx" />
+    <None Remove="Effects\CrystalShaders\Godray.fx" />
     <None Remove="Effects\CrystalShaders\L.png" />
     <None Remove="Effects\CrystalShaders\LightningBolt.fx" />
     <None Remove="Effects\CrystalShaders\MagicCheckers.fx" />
@@ -662,8 +664,6 @@
     <None Remove="Projectiles\WataBoom2.png" />
     <None Remove="Projectiles\ZuiRay.png" />
     <None Remove="TilesNew\AnimatedBackgroundWallTest_S.png" />
-    <None Remove="TilesNew\EffectTiles\FogSpawnerBlock.png" />
-    <None Remove="TilesNew\EffectTiles\FogSpawnerWallItem.png" />
     <None Remove="TilesNew\Fable\FableBar_S.png" />
     <None Remove="TilesNew\Fable\FableBench_S.png" />
     <None Remove="TilesNew\Fable\FableBigMushroom_S.png" />

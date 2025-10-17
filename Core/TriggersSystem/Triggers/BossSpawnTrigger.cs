@@ -53,15 +53,13 @@ namespace Stellamod.Core.TriggersSystem.Triggers
             Point spawnPoint = new Point(position.X, position.Y);
             spawnPoint.X += spawnOffset.X;
             spawnPoint.Y += spawnOffset.Y;
-            NPC.NewNPC(new EntitySource_TileBreak(position.X, position.Y), spawnPoint.X * 16, spawnPoint.Y * 16, GetModNPC().Type);
+            NPC.NewNPC(new EntitySource_TileBreak(spawnPoint.X, spawnPoint.Y), spawnPoint.X * 16, spawnPoint.Y * 16, GetModNPC().Type);
         }
 
         public override bool ShouldInvoke()
         {
             //Triggers should only run on the host
             //We don't have to check that I don't think
-            if (NPC.AnyDanger())
-                return false;
             if (string.IsNullOrEmpty(bossToSpawn))
                 return false;
             if (GetModNPC() == null)

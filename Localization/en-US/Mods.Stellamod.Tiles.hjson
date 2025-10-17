@@ -164,3 +164,7 @@ MothlightSpawnerBrick.MapEntry: Mothlight Spawner Brick
 MothlightMushroom.MapEntry: Mothlight Mushroom
 MothlightGrass.MapEntry: Mothlight Grass
 MothlightBrick.MapEntry: Mothlight Brick
+StaminaFlaskCollectible.MapEntry: Stamina Flask Collectible
+XixianFlaskCollectible.MapEntry: Xixian Flask Collectible
+BossBarrierBlock.MapEntry: Boss Barrier Block
+StarrVeriplantBarrierBlock.MapEntry: Starr Veriplant Barrier Block

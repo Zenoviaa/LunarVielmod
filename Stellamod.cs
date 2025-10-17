@@ -428,7 +428,7 @@ namespace Stellamod
         //   public override Asset<Texture2D> MoonTexture => ModContent.Request<Texture2D>($"{menuAssetPath}/TheMoon");
 
 
-        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Menutheme");
+        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/BeforeTheFlames");
 
         public override ModSurfaceBackgroundStyle MenuBackgroundStyle => ModContent.GetInstance<StarbloomBackgroundStyle>();
 

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
+using Stellamod.Core.Effects;
 using Stellamod.Core.Shaders;
-using Stellamod.Trails;
+using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -74,32 +76,51 @@ namespace Stellamod.Core.Foggy
             orig(self);
             if (doDraws)
             {
-                var texture = TrailRegistry.Clouds3;
+                var texture = TextureRegistry.Clouds6;
                 SpriteBatch spriteBatch = Main.spriteBatch;
 
 
                 //Apply Fog Shader
-                var fogShader = FogShader.Instance;
+                var fogShader = Shaders.FogShader.Instance;
                 fogShader.FogTexture = texture;
                 fogShader.ProgressPower = 0.75f;
                 fogShader.EdgePower = 1f;
                 fogShader.Speed = 1f;
                 fogShader.Apply();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
-                    fogShader.Effect, Main.GameViewMatrix.TransformationMatrix);
+                var currentTexture = texture;
+                var blendState = BlendState.AlphaBlend;
+                BaseShader currentShader = fogShader;
+
+                spriteBatch.Begin(SpriteSortMode.Immediate, blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
+                    currentShader.Effect, Main.GameViewMatrix.TransformationMatrix);
 
                 foreach (var kvp in _fogIndex)
                 {
                     var fog = kvp.Value;
+                    BaseShader newShader = null;
+                    if (fog.shaderFunc != null)
+                    {
+                        newShader = fog.shaderFunc();
+                    }
+
+                    if (blendState != fog.blendState || newShader != currentShader)
+                    {
+                        currentTexture = fog.texture;
+                        currentShader = newShader;
+                        blendState = fog.blendState;
+
+                        Effect effect = null;
+                        if (currentShader != null)
+                            effect = currentShader.Effect;
+                        spriteBatch.End();
+                        spriteBatch.Begin(SpriteSortMode.Immediate, blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
+                            effect, Main.GameViewMatrix.TransformationMatrix);
+                    }
+
                     Vector2 center = fog.position - Main.screenPosition;
                     Vector2 scale = Vector2.One * fog.scale;
                     Vector2 origin = fog.texture.Size() / 2;
-
-                    fogShader.FogTexture = fog.texture;
-                    fogShader.Speed = fog.scrollSpeed;
-                    fogShader.Offset = fog.offset;
-                    fogShader.Apply();
-                    spriteBatch.Draw(fog.texture.Value, center, null, fog.color, fog.rotation, origin, scale, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(currentTexture.Value, center, null, fog.color, fog.rotation, origin, scale, SpriteEffects.None, 0f);
                 }
 
                 spriteBatch.End();

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Core.Foggy;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -8,7 +10,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace Stellamod.TilesNew.EffectTiles
+namespace Stellamod.Content.Areas.SpecialTiles.EffectTiles
 {
     public class FogSpawnerTile : ModTile
     {
@@ -39,7 +41,24 @@ namespace Stellamod.TilesNew.EffectTiles
             FogSystem fogSystem = ModContent.GetInstance<FogSystem>();
             Point point = new Point(i, j);
             Fog fog = fogSystem.SetupFog(point, FogCreateFunction);
+            fog.updateFunc = FogUpdateFunction;
+            fog.shaderFunc = FogShaderFunction;
+
             return base.PreDraw(i, j, spriteBatch);
+        }
+        public virtual BaseShader FogShaderFunction()
+        {
+            var fogShader = FogShader.Instance;
+            fogShader.FogTexture = TextureRegistry.Clouds6;
+            fogShader.ProgressPower = 0.75f;
+            fogShader.EdgePower = 1f;
+            fogShader.Speed = 1f;
+            fogShader.Apply();
+            return fogShader;
+        }
+        private void FogUpdateFunction(Fog fog)
+        {
+
         }
 
         private void FogCreateFunction(Fog fog)
