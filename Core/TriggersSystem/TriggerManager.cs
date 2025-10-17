@@ -162,6 +162,14 @@ namespace Stellamod.Core.TriggersSystem
             On_Main.DrawDust -= DrawDebugHook;
         }
 
+
+        public override void ClearWorld()
+        {
+            base.ClearWorld();
+            _triggerIndex ??= new Dictionary<Point, Trigger>();
+            _triggerIndex.Clear();
+        }
+
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
