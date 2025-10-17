@@ -35,8 +35,8 @@ namespace Stellamod.Core.TriggersSystem.Triggers
         {
             if (_modNPC == null || _modNPC.Name != bossToSpawn)
             {
-                ModContent.TryFind<ModNPC>(Stellamod.Instance.Name, bossToSpawn, out ModNPC b);
-                _modNPC = b;
+                ModNPC modNpc = ModContent.Find<ModNPC>(bossToSpawn);
+                _modNPC = modNpc;
             }
             return _modNPC;
         }

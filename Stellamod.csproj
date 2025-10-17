@@ -345,6 +345,8 @@
     <None Remove="Items\Consumables\SingularityBag.png" />
     <None Remove="Items\Consumables\SunClaw.png" />
     <None Remove="Items\Materials\AcidicalDirtBlock.png" />
+    <None Remove="Items\Materials\AncientLunarStone.png" />
+    <None Remove="Items\Materials\LunarStone.png" />
     <None Remove="Items\Materials\RareLunarStone.png" />
     <None Remove="Items\Placeable\Alcadzia\AlciteI.png" />
     <None Remove="Items\Placeable\Alcadzia\AowerBottomI.png" />
@@ -418,6 +420,7 @@
     <None Remove="Localization\en-US\Mods.Stellamod.Elements.hjson" />
     <None Remove="Localization\en-US\Mods.Stellamod.Enchantments.hjson" />
     <None Remove="Localization\en-US\Mods.Stellamod.Quests.hjson" />
+    <None Remove="Localization\en-US\Mods.Stellamod.Tablets.hjson" />
     <None Remove="Localization\en-US\Mods.Stellamod.TownDialogue.hjson" />
     <None Remove="NPCs\Bosses\CommanderGintzia\CommanderGintziaTaunting.png" />
     <None Remove="NPCs\Bosses\CommanderGintzia\Hands\FingerBlast.png" />
@@ -533,6 +536,7 @@
     <None Remove="NPCs\TestLaserNPC.png" />
     <None Remove="NPCs\Town\Merena_Head.png" />
     <None Remove="NPCs\Town\Merena_Party.png" />
+    <None Remove="NPCs\Town\Mordred.png" />
     <None Remove="NPCs\Underground\AbandonedMinorSummon.png" />
     <None Remove="NPCs\Underground\FloweredRedLight.png" />
     <None Remove="NPCs\Underground\FloweredWhiteLight.png" />
