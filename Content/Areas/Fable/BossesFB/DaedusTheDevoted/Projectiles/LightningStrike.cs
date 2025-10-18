@@ -1,9 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Particles;
+using Stellamod.Core.Shaders;
+using Stellamod.Dusts;
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -14,12 +18,14 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
 {
     public class LightningStrike : ModProjectile
     {
+        private bool _calculatedStrikePoints;
         public float BeamLength;
         public Vector2[] BeamPoints;
+        public float[] BeamRot;
+        private float _lightningPower;
+        private float _lightningTime;
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];
-
-        public CoreLightning Lightning { get; set; } = new CoreLightning();
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -28,7 +34,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
             Projectile.penetrate = -1;
             Projectile.friendly = false;
             Projectile.hostile = true;
-            Projectile.timeLeft = 30;
+            Projectile.timeLeft = 60;
             Projectile.tileCollide = false;
         }
 
@@ -43,14 +49,27 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
             Timer++;
             if (Timer == 1)
             {
+                _lightningPower = 10;
                 Player targetPlayer = PlayerHelper.FindClosestPlayer(Projectile.position, 1680);
                 float offset = ProjectileHelper.PerformBeamHitscan(targetPlayer.Bottom - Vector2.UnitY, -Vector2.UnitY, 2400);
                 Projectile.position = targetPlayer.Bottom + new Vector2(0, -offset * 0.7f);
             }
+
+            if (Timer == 15)
+            {
+                _lightningPower = 5;
+            }
+
+            if (Timer == 15)
+            {
+                _lightningPower = 30;
+            }
             float targetBeamLength = ProjectileHelper.PerformBeamHitscan(Projectile.position, Vector2.UnitY, 2400);
             BeamLength = targetBeamLength;
-            if (Timer == 1)
+            if (Timer == 30)
             {
+                _lightningPower = 0.9f;
+                _lightningTime = 0;
                 //Sound Effect Goooo
                 SoundStyle lightningSoundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap");
                 lightningSoundStyle.PitchVariance = 0.1f;
@@ -69,7 +88,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 Vector2 lightningHitPos = Projectile.position + new Vector2(0, BeamLength);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(lightningHitPos, 1024, 32);
 
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     Vector2 velocity = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
                     velocity = velocity.RotatedByRandom(MathHelper.ToRadians(24));
@@ -101,41 +120,111 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), lightningHitPos + new Vector2(0, 24), Vector2.Zero,
                         ModContent.ProjectileType<GroundCracking>(), 0, 0, Projectile.owner);
                 }
+
+                var part = FXUtil.GlowCircleBoom(lightningHitPos,
+                    innerColor: Color.White,
+                    glowColor: Color.Yellow,
+                    outerGlowColor: Color.Blue, duration: 12, baseSize: 0.14f);
+                part.Scale *= 2;
+                for (float f = 0; f < 32; f++)
+                {
+                    Dust.NewDustPerfect(lightningHitPos, DustID.Torch,
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.White, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                }
+
+
+                for (float i = 0; i < 15; i++)
+                {
+                    float rot = rot = -Vector2.UnitY.ToRotation();
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+
+                    Vector2 offset = rot.ToRotationVector2() * Main.rand.NextFloat(32, 64);
+                    Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(2, 15);
+                    var particle = FXUtil.GlowCircleDetailedBoom1(lightningHitPos + offset,
+                        innerColor: Color.White,
+                        glowColor: Color.Yellow,
+                        outerGlowColor: Color.Blue,
+                        baseSize: Main.rand.NextFloat(0.03f, 0.1f),
+                        duration: Main.rand.NextFloat(5, 25));
+                    particle.Velocity = velocity;
+                    particle.Scale *= 0.35f;
+                    particle.Rotation = rot;
+                }
+
+
+                Vector2 position = lightningHitPos;
+                Vector2 lvelocity = -Vector2.UnitY * 8;
+                for (float f = 0; f < 16; f++)
+                {
+                    Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
+                    pVelocity *= Main.rand.NextFloat(0.5f, 2f);
+                    var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                    FXUtil.GlowFragmentParticle(position, pVelocity,
+                        innerColor: Color.White,
+                        outerColor: Color.Yellow,
+                        fadeToColor: Color.Purple,
+                        distortOut: true);
+
+                    if (Main.rand.NextBool(4))
+                    {
+                        Dust.NewDustPerfect(position, ModContent.DustType<TSmokeDust>(),
+                                         lvelocity.RotatedByRandom(MathHelper.PiOver4 / 2f) * 2);
+                    }
+                    if (Main.rand.NextBool(4))
+                    {
+                        Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(),
+                                         lvelocity.RotatedByRandom(MathHelper.PiOver4 / 2f) * 3 * Main.rand.NextFloat(0.4f, 1f), newColor: Color.White, Scale: 0.2f);
+                    }
+                }
+
             }
 
-            for (int i = 0; i < Lightning.Trails.Length; i++)
+            if (Timer > 35)
             {
-                float progress = i / (float)Lightning.Trails.Length;
-                var trail = Lightning.Trails[i];
-                trail.LightningRandomOffsetRange = MathHelper.Lerp(32, 8, progress) * MathHelper.Lerp(2f, 0, Timer / 30f);
-                trail.LightningRandomExpand = MathHelper.Lerp(64, 16, progress);
-                trail.PrimaryColor = Color.Lerp(Color.White, Color.Yellow, progress);
-                trail.NoiseColor = Color.Lerp(Color.White, Color.Yellow, progress);
+                _lightningPower = MathHelper.Lerp(_lightningPower, 10, 0.1f);
             }
 
-            //Setup lightning stuff
-            //Should make it scale in/out
-            float lightningProgress = Timer / 30f;
-            float easedLightningProgress = Easing.SpikeOutCirc(lightningProgress);
-            Lightning.WidthMultiplier = MathHelper.Lerp(0f, 8, easedLightningProgress);
-            if (Timer % 3 == 0)
+            if(Timer == 42)
+            {
+                _lightningPower = 1.5f;
+            }
+            if (Timer == 52)
+            {
+                _lightningPower = 2.3f;
+            }
+
+            _lightningTime -= 0.1f;
+            if (!_calculatedStrikePoints)
             {
                 List<Vector2> beamPoints = new List<Vector2>();
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
-                for (int i = 0; i <= 8; i++)
+                float numPoints = 80;
+                float randOffset = Main.rand.NextFloat(-1f, 1f);
+                Vector2 start = Projectile.Center;
+                Vector2 end = Projectile.Center + direction * BeamLength;
+                end.X += Main.rand.Next(-16, -16);
+                for (float i = 0; i <= numPoints; i++)
                 {
-                    float maxProgress = MathHelper.Lerp(0f, 1f, Easing.OutExpo(Timer / 15f));
-                    float progress = MathHelper.Lerp(0f, maxProgress, i / 8f);
-                    beamPoints.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + direction * BeamLength, progress));
+                    
+
+                    float interp = i / numPoints;
+                    Vector2 point = Vector2.Lerp(start, end, interp);
+                    point.X += EasingFunction.QuadraticBump(interp) * 64 * randOffset;
+                    //if(i % 4 == 0)
+                        //point.X += Main.rand.Next(-16, 16);
+                    beamPoints.Add(point);
                 }
+
                 BeamPoints = beamPoints.ToArray();
-                Lightning.RandomPositions(BeamPoints);
+                BeamRot = new float[BeamPoints.Length];
+
+                _calculatedStrikePoints = true;
             }
         }
 
         public override bool? CanDamage()
         {
-            return Timer > 5 && Timer < 30;
+            return Timer > 30;
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -157,9 +246,25 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            Lightning.Draw(spriteBatch, BeamPoints, Projectile.oldRot);
+            LightningShader lightningShader = LightningShader.Instance;
+            lightningShader.Time = _lightningTime;
+            lightningShader.Power = _lightningPower;
+            TrailDrawer.Draw(spriteBatch, BeamPoints, BeamRot, LightningColorFunction, LightningWidthFunction, lightningShader);
+            if(Timer >= 30)
+                TrailDrawer.Draw(spriteBatch, BeamPoints, BeamRot, LightningColorFunction, LightningWidthFunction, lightningShader);
 
             return false;
+        }
+        
+        private float LightningWidthFunction(float completionRatio)
+        {
+            return MathHelper.Lerp(180, 0, completionRatio);
+        }
+
+        private Color LightningColorFunction(float completionRatio)
+        {
+            Color lerpColor = Color.Lerp(Color.White, Color.Blue, (Timer-30f) / 30f);
+            return Color.Lerp(Color.Transparent, lerpColor, EasingFunction.QuadraticBump(completionRatio)); ;
         }
     }
 }
