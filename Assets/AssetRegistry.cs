@@ -16,6 +16,7 @@ namespace Stellamod.Assets
                 public static Asset<Texture2D> Clouds3 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Noise/Clouds3");
                 public static Asset<Texture2D> CloudsSmall = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Noise/SmallClouds");
                 public static Asset<Texture2D> Perlin = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Noise/PerlinNoise");
+                public static Asset<Texture2D> CandleFlame = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/CandleFlame");
             }
             public static class Trails
             {
@@ -134,7 +135,7 @@ namespace Stellamod.Assets
                 public static SoundStyle PrimeMagicHit1 = new SoundStyle($"{Path}Magic/PrimeMagicHit1");
                 public static SoundStyle PrimeMagicHit2 = new SoundStyle($"{Path}Magic/PrimeMagicHit2");
 
-                public static SoundStyle RadiantCast1 = new SoundStyle($"{Path}Magic/RadiantCast1");
+                public static SoundStyle RadiantCast1 = new SoundStyle($"{Path}Magic/RadianceCast1");
                 public static SoundStyle RadianceHit1 = new SoundStyle($"{Path}Magic/RadianceHit1");
 
                 public static SoundStyle WindCast1 = new SoundStyle($"{Path}Magic/WindCast1");

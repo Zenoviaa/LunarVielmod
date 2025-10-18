@@ -853,7 +853,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                             nextAttack = AIState.Conjure_Ball_Lightning_Mega;
                             break;
                     }
-                    nextAttack = AIState.Lightning_Strike;
+                    nextAttack = AIState.Jack_Fire;
                     AttackCycle++;
                     if (InPhase2)
                     {
@@ -1904,7 +1904,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Raise;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
-                    if (Timer % 4 == 0)
+                    if (Timer % 128 == 0)
                     {
                         Vector2 dustSpawnPoint = lightningSpawnPos;
                         Vector2 dustVelocity = Main.rand.NextVector2Circular(4, 4);
@@ -1918,12 +1918,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     Vector2 v = targetPos - NPC.Center;
                     Vector2 tv = v * 0.07f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, tv, 0.2f);
-                    if (Timer % 12 == 0)
-                    {
-                        SoundStyle soundStyle = SoundID.DD2_LightningAuraZap;
-                        soundStyle.PitchVariance = 0.3f;
-                        SoundEngine.PlaySound(soundStyle, NPC.position);
-                    }
 
                     float p = Timer / 120f;
                     Vector2 pos = NPC.Center + (p * MathHelper.TwoPi).ToRotationVector2() * 80;
@@ -1931,12 +1925,13 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     Dust.NewDustPerfect(pos, DustID.Torch, Vector2.Zero, Scale: 1f);
                     Dust.NewDustPerfect(pos2, DustID.Torch, Vector2.Zero, Scale: 1f);
 
-                    if (Timer % 12 == 0)
+                    if (Timer % 42 == 0)
                     {
                         FaceSegment.BlackTimer = 1f;
                         LightningBallTimer = 0;
-                        Vector2 spawnPoint = NPC.Center + Main.rand.NextVector2Circular(128, 128);
-                        Vector2 startVelocity = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 8;
+                        Vector2 spawnPoint = NPC.Center + new Vector2(0, -96);
+                        spawnPoint.X += Main.rand.NextFloat(-300, 300);
+                        Vector2 startVelocity = (Target.Center - spawnPoint).SafeNormalize(Vector2.Zero) * 10;
                         int projType = ModContent.ProjectileType<ElectricFire>();
                         int damage = JackFireDamage;
                         int knockback = 1;

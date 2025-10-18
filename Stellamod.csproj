@@ -204,6 +204,9 @@
     <None Remove="Dusts\TSmokeTornadoDustTip.png" />
     <None Remove="Effects\BlackWhite.fx" />
     <None Remove="Effects\Blur.fx" />
+    <None Remove="Effects\CrystalShaders\BlackFire.fx" />
+    <None Remove="Effects\CrystalShaders\BlackFireSmoke.fx" />
+    <None Remove="Effects\CrystalShaders\BlackLingeringSmoke.fx" />
     <None Remove="Effects\CrystalShaders\DyeFirePixel.fx" />
     <None Remove="Effects\CrystalShaders\DyeInvisible.fx" />
     <None Remove="Effects\CrystalShaders\DyeMothlight.fx" />
@@ -211,6 +214,7 @@
     <None Remove="Effects\CrystalShaders\DyeStatic.fx" />
     <None Remove="Effects\CrystalShaders\FirePixel.fx" />
     <None Remove="Effects\CrystalShaders\FlamingTrail.fx" />
+    <None Remove="Effects\CrystalShaders\Flare.fx" />
     <None Remove="Effects\CrystalShaders\Fog - Copy.fx" />
     <None Remove="Effects\CrystalShaders\Fog.fx" />
     <None Remove="Effects\CrystalShaders\Foggy.fx" />

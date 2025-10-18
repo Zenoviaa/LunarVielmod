@@ -56,7 +56,10 @@ namespace Stellamod.Visual.Particles
             }
             else
             {
-                Scale *= 1.02f;
+                if (Scale < 2)
+                    Scale *= 1.05f;
+                else
+                    Scale *= 1.02f;
             }
 
             Velocity *= 0.99f;

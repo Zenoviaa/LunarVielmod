@@ -11,6 +11,7 @@ namespace Stellamod.Helpers
             string path = (t.GetType().Namespace).Replace('.', '/');
             return path;
         }
+        public static string CandleFlame => "Stellamod/Assets/NoiseTextures/CandleFlame";
         public static string EmptyTexture => "Stellamod/Assets/Textures/Empty";
         public static string EmptyBigTexture => "Stellamod/Assets/Textures/EmptyBig";
         public static string EmptyGlowParticle => "Stellamod/Visual/Particles/GlowCircleBoomParticle";
@@ -32,6 +33,7 @@ namespace Stellamod.Helpers
         public static Asset<Texture2D> CloudNoise => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/CloudNoise");
         public static Asset<Texture2D> CloudNoise2 => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/CloudNoise2");
         public static Asset<Texture2D> CloudNoise3 => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/CloudNoise3");
+        public static Asset<Texture2D> BlurryPerlinNoise => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BlurryPerlinNoise");
         public static Asset<Texture2D> BlurryPerlinNoise2 => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BlurryPerlinNoise2");
         public static Asset<Texture2D> LavaDepths => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/LavaDepths");
         public static Asset<Texture2D> CloudTexture => ModContent.Request<Texture2D>("Stellamod/Assets/Effects/CloudTexture");
