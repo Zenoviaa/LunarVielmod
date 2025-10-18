@@ -50,6 +50,9 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
             Timer++;
             if (Timer == 1)
             {
+                SoundStyle zap = SoundID.DD2_LightningBugZap;
+                zap.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(zap, Projectile.position);
                 _lightningPower = 10;
                 Player targetPlayer = PlayerHelper.FindClosestPlayer(Projectile.position, 1680);
                 float offset = ProjectileHelper.PerformBeamHitscan(targetPlayer.Bottom - Vector2.UnitY, -Vector2.UnitY, 2400);
@@ -232,6 +235,10 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
 
             if(Timer == 58)
             {
+                SoundStyle zap = SoundID.DD2_LightningBugZap;
+                zap.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(zap, Projectile.position);
+
                 for (float f = 0; f < 2; f++)
                 {
                     Vector2 pVelocity = -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4 );

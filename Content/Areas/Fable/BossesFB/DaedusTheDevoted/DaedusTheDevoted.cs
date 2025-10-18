@@ -853,7 +853,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                             nextAttack = AIState.Conjure_Ball_Lightning_Mega;
                             break;
                     }
-                //    nextAttack = AIState.Lightning_Strike;
+                    nextAttack = AIState.Lightning_Strike;
                     AttackCycle++;
                     if (InPhase2)
                     {
@@ -1241,7 +1241,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                             int knockback = 1;
                             Vector2 firePos = lightningSpawnPos;
                             Vector2 fireVelocity = (Target.Center - firePos).SafeNormalize(Vector2.Zero);
-                            fireVelocity *= 7;
+                            fireVelocity *= 2;
                             float charge = Timer / 90f;
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), firePos, fireVelocity,
                                 ModContent.ProjectileType<ConjureBallLightning>(), damage, knockback, Main.myPlayer,
