@@ -242,13 +242,16 @@
     <None Remove="Effects\CrystalShaders\PixelMagicMoon.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicSparkleWater.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicVaellus.fx" />
+    <None Remove="Effects\CrystalShaders\Radiant.fx" />
     <None Remove="Effects\CrystalShaders\SimpleGradientTrail.fx" />
     <None Remove="Effects\CrystalShaders\SimpleTrail.fx" />
     <None Remove="Effects\CrystalShaders\Skullfire.fx" />
+    <None Remove="Effects\CrystalShaders\Spark.fx" />
     <None Remove="Effects\CrystalShaders\SpriteWhite.fx" />
     <None Remove="Effects\CrystalShaders\ThunderCloud.fx" />
     <None Remove="Effects\CrystalShaders\Water.fx" />
     <None Remove="Effects\CrystalShaders\WaterBasic.fx" />
+    <None Remove="Effects\CrystalShaders\Zap.fx" />
     <None Remove="effects\DaedusRobe.fx" />
     <None Remove="Effects\DarknessCurve.fx" />
     <None Remove="Effects\DarknessVignette.fx" />
