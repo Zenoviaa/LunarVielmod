@@ -129,7 +129,17 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 Projectile.velocity *= 0.5f;
             }
 
-
+            if(Timer < 30 && Timer % 5 == 0)
+            {
+                FXUtil.GlowCircleBoom(Projectile.Center,
+                  innerColor: Color.Yellow,
+                  glowColor: Color.Orange,
+                  outerGlowColor: Color.Red, duration: 5, baseSize: 0.04f);
+            }
+            if(Timer == 30)
+            {
+                Particle.NewParticle<SkullParticle>(Projectile.Center, Vector2.Zero, Color.Red);
+            }
             if (Timer == 70)
             {
                 //Ping Sound
@@ -297,6 +307,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
+            if (Timer < 90)
+                return false;
             BlackFireSmokeShader blackSmokeShader = BlackFireSmokeShader.Instance;
             TrailDrawer.Draw(Main.spriteBatch, SmokeOldCenterPos, OldCenterRot, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);
         

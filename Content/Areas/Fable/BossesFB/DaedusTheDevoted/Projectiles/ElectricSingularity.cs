@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Particles;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
-using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -12,26 +14,11 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
 {
     public class ElectricSingularity : ModNPC
     {
-        private float _scale;
-        private Vector2[] _zaps;
-        private Vector2[] _lightningZaps
-        {
-            get
-            {
-                _zaps ??= new Vector2[4];
-                return _zaps;
-            }
-        }
+        private Vector2 _zapVelocity;
 
+        private float _scale;
         private ref float Timer => ref NPC.ai[0];
         private ref float AttackTimer => ref NPC.ai[1];
-        public CoreLightning Lightning { get; set; } = new CoreLightning();
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            Main.npcFrameCount[Type] = 4;
-        }
-
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -50,66 +37,24 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
             Vector2 drawOrigin = texture.Size() / 2f;
             float drawRotation = NPC.rotation;
             float drawScale = _scale;
-
+            Vector2 stretchScale = Vector2.One;
+            stretchScale.X *= 2;
             Vector2 drawPos = NPC.Center - Main.screenPosition;
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-            for (int i = 0; i < 16; i++)
-            {
-                Vector2 flameDrawPos = drawPos + Main.rand.NextVector2Circular(8, 8);
-                float rot = Main.rand.NextFloat(0f, 3.14f);
-
-                spriteBatch.Draw(texture, flameDrawPos, NPC.frame, drawColor * 0.5f, drawRotation + rot, NPC.frame.Size() / 2f,
-                    drawScale * VectorHelper.Osc(0.95f, 2f, speed: 6, offset: i), SpriteEffects.None, 0);
-            }
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-            for (int i = 0; i < 32; i++)
-            {
-                Vector2 flameDrawPos = drawPos + Main.rand.NextVector2Circular(2, 2);
-                float rot = Main.rand.NextFloat(0f, 3.14f);
-
-                spriteBatch.Draw(texture, flameDrawPos, NPC.frame, Color.Black, drawRotation + rot, NPC.frame.Size() / 2f,
-                    drawScale * VectorHelper.Osc(0.85f, 0.95f, speed: 2, offset: i), SpriteEffects.None, 0);
-            }
-
-
-            Lightning.WidthMultiplier = 0.35f;
-            for (int i = 0; i < Lightning.Trails.Length; i++)
-            {
-                var trail = Lightning.Trails[i];
-                trail.PrimaryColor = Color.Black;
-                trail.NoiseColor = Color.Black;
-            }
-            Lightning.DrawAlpha(spriteBatch, _lightningZaps, null);
+            SparkyShader sparkyShader = SparkyShader.Instance;
+            sparkyShader.InnerColor = Color.Lerp(Color.DarkGoldenrod, Color.White, AttackTimer / 60f);
+            sparkyShader.OuterColor = Color.Lerp(Color.DarkRed, Color.Yellow, AttackTimer / 60f);
+            spriteBatch.Restart(effect: sparkyShader.Effect, blendState: BlendState.Additive);
+            spriteBatch.Draw(texture, drawPos, null, Color.White, NPC.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPos, null, Color.White * 0.25f, NPC.rotation - Main.GlobalTimeWrappedHourly, drawOrigin, stretchScale * 1.5f * ExtraMath.Osc(0.5f, 1f, speed: 6, offset: 3), SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPos, null, Color.White * 0.25f, NPC.rotation + Main.GlobalTimeWrappedHourly, drawOrigin, stretchScale * 1.5f * ExtraMath.Osc(0.5f, 1f, speed: 6), SpriteEffects.None, 0);
+            spriteBatch.RestartDefaults();
             return false;
         }
 
-        private int _frame;
-        public override void FindFrame(int frameHeight)
-        {
-            base.FindFrame(frameHeight);
-
-            //Animation Speed
-            NPC.frameCounter += 0.5f;
-            if (NPC.frameCounter >= 1f)
-            {
-                _frame++;
-                NPC.frameCounter = 0f;
-
-            }
-            if (_frame >= 4)
-            {
-                _frame = 0;
-            }
-            NPC.frame.Y = frameHeight * _frame;
-        }
         public override void AI()
         {
             base.AI();
+            NPC.rotation += Main.rand.NextFloat(0.01f, 0.02f);
             NPC.TargetClosest();
             Player target = Main.player[NPC.target];
 
@@ -128,7 +73,14 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
 
             if (AttackTimer >= 60)
             {
+                var part = Particle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity * 0.15f);
+                part.innerColor = Color.White;
+                part.outerColor = Color.Yellow;
+                part.fadeToColor = Color.Goldenrod;
+                part.Scale *= 0.05f;
+                part.Rotation = NPC.velocity.ToRotation();
 
+                _scale *= 0.5f;
                 if (target.active)
                 {
                     Vector2 velToPlayer = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
@@ -169,17 +121,41 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 }
             }
 
-            if (Timer % 3 == 0)
+            if (Timer % 12 == 0)
             {
-                for (int i = 0; i < _lightningZaps.Length; i++)
+                for (float f = 0; f < 1; f++)
                 {
-                    float progress = i / (float)_lightningZaps.Length;
-                    float rot = progress * MathHelper.TwoPi * 1 + Timer * 0.05f;
-                    Vector2 offset = rot.ToRotationVector2() * MathF.Sin(Timer * 8 * i) * MathF.Sin(Timer * i) * VectorHelper.Osc(64, 80, speed: 3);
-                    _lightningZaps[i] = NPC.Center + offset;
+                    Vector2 pVelocity = -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4);
+                    pVelocity *= Main.rand.NextFloat(0.5f, 1f);
+                    var spark = Particle.NewParticle<SparkParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
                 }
+            }
+            if (Timer % 60 == 0)
+            {
+                _zapVelocity = NPC.velocity.SafeNormalize(Vector2.Zero) * 25;
+                _zapVelocity = _zapVelocity.RotatedByRandom(0.3f);
+                SoundStyle zap = SoundID.DD2_LightningBugZap;
+                zap.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(zap, NPC.position);
 
-                Lightning.RandomPositions(_lightningZaps);
+                FXUtil.GlowCircleBoom(NPC.Center,
+                                  innerColor: Color.White,
+                                  glowColor: Color.Yellow,
+                                  outerGlowColor: Color.Blue, duration: 7, baseSize: 0.15f);
+            }
+            if (_zapVelocity != Vector2.Zero)
+            {
+                NPC.velocity += _zapVelocity;
+                _zapVelocity *= 0.5f;
+            }
+
+            if (Timer % 8 == 0)
+            {
+                Vector2 pVelocity = -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4);
+                pVelocity *= Main.rand.NextFloat(0.5f, 1f);
+                var spark = Particle.NewParticle<ZapParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
+                spark.Scale *= 0.5f;
+                spark.Rotation = Main.rand.NextFloat(0f, 3.14f);
             }
 
             if (Timer % 12 == 0)
@@ -204,6 +180,9 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
             if (Timer > 400)
             {
                 _scale *= 0.98f;
+            } else
+            {
+                _scale = MathHelper.Lerp(_scale, 1f, 0.02f);
             }
 
             if (Timer >= 440)

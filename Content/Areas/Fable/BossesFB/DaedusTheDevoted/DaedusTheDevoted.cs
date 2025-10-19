@@ -853,7 +853,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                             nextAttack = AIState.Conjure_Ball_Lightning_Mega;
                             break;
                     }
-                    nextAttack = AIState.Jack_Fire;
+                    nextAttack = AIState.Singularity;
                     AttackCycle++;
                     if (InPhase2)
                     {
