@@ -118,16 +118,16 @@ namespace Stellamod.Core.Shaders
         public override void SetDefaults()
         {
             base.SetDefaults();
-            GlowColor = Color.DarkBlue;
+            GlowColor = Color.Blue;
             InnerColor = Color.Red;
             OuterColor = Color.Yellow;
             BlendState = BlendState.Additive;
             NoiseTexture3 = TrailRegistry.WaterTrail;
             NoiseTexture2 = TrailRegistry.DirnTrail;
             NoiseTexture = TrailRegistry.DirnTrail;
-            Time = Main.GlobalTimeWrappedHourly * -7;
-            Distortion = 0.22f;
-            Tiling = Vector2.One * 2;
+            Time = Main.GlobalTimeWrappedHourly * -14;
+            Distortion = 0.214f;
+            Tiling = Vector2.One * 1;
         }
     }
 }

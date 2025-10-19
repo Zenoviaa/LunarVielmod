@@ -20,7 +20,7 @@ namespace Stellamod.Core.SwingSystem
             YSwingRadius = 24;
             SwingDegrees = 270;
             Easing = EasingFunction.InOutExpo;
-            TrailOffset = 1.5f;
+            TrailOffset = 1.3f;
             HitCount = 1;
             ThrowTrailOffset = -48;
         }
@@ -143,7 +143,7 @@ namespace Stellamod.Core.SwingSystem
                 float progressOnTrail = t / l;
 
                 //Calculate starting lerp value
-                float startTrailLerpValue = MathHelper.Clamp(time - TRAIL_START_OFFSET, 0, 1);
+                float startTrailLerpValue = MathHelper.Clamp(time - 0.3f, 0, 1);
                 float startTrailProgress = startTrailLerpValue;
                 startTrailProgress = Easing(startTrailLerpValue);
 

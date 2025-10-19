@@ -315,25 +315,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
             BlackFireShader blackFireShader = BlackFireShader.Instance;
             blackFireShader.Time = _fireTime;
             TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, OldCenterRot, ColorFunction, WidthFunction, blackFireShader, Vector2.Zero);
-       
-            /*
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawOrigin = texture.Size() / 2f;
-            Color drawColor = Color.White.MultiplyRGB(lightColor);
-            float drawRotation = Projectile.rotation;
-            float drawScale = _scale * 0.5f;
 
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            var shader = FableFireShader.Instance;
-          
-
-            spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
-            spriteBatch.Draw(texture, drawPos, null, Color.White, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-
-            Texture2D dimLight = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-           // spriteBatch.Draw(dimLight, drawPos, null, Color.White, drawRotation, dimLight.Size() / 2f, drawScale * 2, SpriteEffects.None, 0);
-            spriteBatch.RestartDefaults();*/
             return false;
         }
 

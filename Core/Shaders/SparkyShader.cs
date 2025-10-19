@@ -89,7 +89,7 @@ namespace Stellamod.Core.Shaders
             InnerColor = Color.Yellow;
             OuterColor = Color.Red;
             BlendState = BlendState.Additive;
-            Distortion =0.5f;
+            Distortion = 0.5f;
 
             NoiseTexture = TrailRegistry.WaterTrail;
             Time = Main.GlobalTimeWrappedHourly * 40;

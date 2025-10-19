@@ -42,8 +42,7 @@ namespace Stellamod.Dusts
             if (dust.alpha > 100)
             {
                 dust.scale *= 0.975f;
-                float px = 0.5f;
-                dust.scale = MathF.Round(dust.scale / px) * px;
+            
                 dust.alpha += 2;
             }
             else

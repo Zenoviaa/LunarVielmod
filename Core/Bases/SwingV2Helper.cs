@@ -185,37 +185,37 @@ namespace Stellamod.Core.Bases
 
             swings.Add(new OvalSwing
             {
-                Duration = 24,
+                Duration = 18,
                 XSwingRadius = 80,
                 YSwingRadius = 48,
                 SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo,
+                Easing = EasingFunction.InOutExpo7,
                 Sound = swingSound1,
             });
 
             swings.Add(new OvalSwing
             {
-                Duration = 24,
+                Duration = 18,
                 XSwingRadius = 80,
                 YSwingRadius = 48,
                 SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo,
+                Easing = EasingFunction.InOutExpo7,
                 Sound = swingSound2
             });
 
             swings.Add(new OvalSwing
             {
-                Duration = 24,
+                Duration = 18,
                 XSwingRadius = 80,
                 YSwingRadius = 48,
                 SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo,
+                Easing = EasingFunction.InOutExpo7,
                 Sound = swingSound1
             });
 
             swings.Add(new OvalSwing
             {
-                Duration = 24,
+                Duration = 18,
                 XSwingRadius = 80,
                 YSwingRadius = 48,
                 SwingDegrees = 270,

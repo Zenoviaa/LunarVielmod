@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials.Molds;
 using Terraria;
@@ -8,7 +11,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Mage
+namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 {
     public class Splitflame : ClassSwapItem
     {
@@ -103,7 +106,37 @@ namespace Stellamod.Items.Weapons.Mage
                 if (Projectile.velocity.Length() < 15)
                     Projectile.velocity *= 1.5f;
             }
+            Projectile.rotation = Projectile.velocity.X * 0.025f;
             Lighting.AddLight(Projectile.Center, Color.OrangeRed.ToVector3() * 1.75f * Main.essScale);
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D texture = ModContent.Request<Texture2D>(TextureRegistry.CandleFlame).Value;
+            Vector2 drawOrigin = texture.Size() / 2f;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            float drawRotation = Projectile.rotation;
+            float drawScale = Projectile.scale * 0.1f;
+
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            var shader = FableFireShader.Instance;
+
+
+            spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
+            spriteBatch.Draw(texture, drawPos, null, Color.White, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+
+            Texture2D dimLight = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
+
+            spriteBatch.RestartDefaults();
+            Color dimLightColor = Color.Red;
+            dimLightColor.A = 0;
+            spriteBatch.Draw(dimLight, drawPos, null, dimLightColor, drawRotation, dimLight.Size() / 2f, drawScale * 10, SpriteEffects.None, 0);
+
+            dimLightColor = Color.Yellow;
+            dimLightColor.A = 0;
+            if (Main.rand.NextBool(3))
+                spriteBatch.Draw(dimLight, drawPos, null, dimLightColor, drawRotation, dimLight.Size() / 2f, drawScale * 10, SpriteEffects.None, 0);
+            return false;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -143,7 +176,7 @@ namespace Stellamod.Items.Weapons.Mage
             {
                 FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
                 SoundEngine.PlaySound(SoundRegistry.CombusterBoom, Projectile.position);
-                for (float f = 0; f < 30; f++)
+                for (float f = 0; f < 15; f++)
                 {
                     Color glyphColor = Color.Red;
                     switch (Main.rand.Next(3))

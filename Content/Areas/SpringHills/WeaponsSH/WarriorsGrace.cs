@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
+using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
@@ -68,74 +69,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             SlashTrailer.TrailWidthFunction = GetTrailWidth;
             SlashTrailer.Shader = SlashEffect;
             Trailer = SlashTrailer;
-
-            SoundStyle swingSound1 = AssetRegistry.Sounds.Melee.NormalSwordSlash1;
-            swingSound1.PitchVariance = 0.5f;
-
-            SoundStyle swingSound2 = AssetRegistry.Sounds.Melee.NormalSwordSlash2;
-            swingSound2.PitchVariance = 0.5f;
-
-            SoundStyle swingSound3 = AssetRegistry.Sounds.Melee.SwordSpin1;
-            swingSound3.PitchVariance = 0.5f;
-            Add(new OvalSwing
-            {
-                Duration = 24,
-                XSwingRadius = 48,
-                YSwingRadius = 48,
-                SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo,
-                Sound = swingSound1,
-            });
-
-            Add(new OvalSwing
-            {
-                Duration = 24,
-                XSwingRadius = 64,
-                YSwingRadius = 32,
-                SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo,
-                Sound = swingSound2,
-            });
-
-            Add(new OvalSwing
-            {
-                Duration = 24,
-                XSwingRadius = 64,
-                YSwingRadius = 32,
-                SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo,
-                Sound = swingSound2,
-            });
-
-            Add(new OvalSwing
-            {
-                Duration = 24,
-                XSwingRadius = 48,
-                YSwingRadius = 48,
-                SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo7,
-                Sound = swingSound1,
-            });
-
-            Add(new OvalSwing
-            {
-                Duration = 24,
-                XSwingRadius = 48,
-                YSwingRadius = 48,
-                SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo7,
-                Sound = swingSound1,
-            });
-
-            Add(new OvalSwing
-            {
-                Duration = 40,
-                XSwingRadius = 48,
-                YSwingRadius = 48,
-                SwingDegrees = 480,
-                Easing = EasingFunction.InOutExpo,
-                Sound = swingSound3,
-            });
+            SwingV2Helper.AddSwordSwingStyle(this); 
         }
 
 

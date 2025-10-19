@@ -85,7 +85,7 @@ namespace Stellamod.Core.SwingSystem
             if (!_hasInitialized)
             {
                 _swings = new List<ISwing>();
-                swingTrailCache = new Vector2[100];
+                swingTrailCache = new Vector2[200];
                 afterImageCache = new Vector2[8];
                 DefineCombo();
                 ISwing swing = GetSwing();
