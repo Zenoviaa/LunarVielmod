@@ -887,3 +887,8 @@ FlamecrestShieldBuff: {
 	DisplayName: Flameward
 	Description: You'll take greatly reduced damage from the next fire attack!
 }
+
+PrismaticBubbledBuff: {
+	DisplayName: Prismatic Bubbled Buff
+	Description: Mods.Stellamod.Buffs.PrismaticBubbledBuff.Description
+}

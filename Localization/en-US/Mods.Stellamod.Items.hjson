@@ -4637,8 +4637,8 @@ ScytheOfSouls: {
 }
 
 BubbleBlasher: {
-	DisplayName: Bubble Blasher
-	Tooltip: Send your enemies afar with this!
+	DisplayName: Bubble Blaster
+	Tooltip: Shoot to trap your enemies within a bubble, then shoot them again to explode them!
 }
 
 LarveinGreatbow: {
