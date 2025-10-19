@@ -4564,6 +4564,8 @@ LarvaedSpear: {
 DevilsPeak: {
 	DisplayName: Devils Peak
 	Tooltip: This is peak fiction
+	BasicSlash: Burns enemies
+	StaminaSlash: Throws out a super charged slash, that'll cause a massive volcanic roar upon impact!
 }
 
 ClockworkCity: {

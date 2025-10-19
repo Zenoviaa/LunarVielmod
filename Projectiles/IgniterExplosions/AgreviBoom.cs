@@ -21,7 +21,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             base.Start();
             if (Main.myPlayer == Projectile.owner)
             {
-                var circle = EffectsHelper.SimpleExplosionCircle(Projectile, Color.LightGoldenrodYellow, endRadius: 96);
+              //  var circle = EffectsHelper.SimpleExplosionCircle(Projectile, Color.LightGoldenrodYellow, endRadius: 96);
             }
         }
 

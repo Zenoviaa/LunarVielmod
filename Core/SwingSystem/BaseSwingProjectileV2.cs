@@ -30,6 +30,7 @@ namespace Stellamod.Core.SwingSystem
         public Vector2[] swingTrailCache;
         public int hitStopTime;
         public bool useAfterImage;
+        public Color glowColor;
         public const int EXTRA_UPDATE_COUNT = 7;
 
         //Default to the item sprite of the texture, we can just predraw if we need to change it
@@ -132,7 +133,7 @@ namespace Stellamod.Core.SwingSystem
             //Check if the sword is colliding, this does a line check instead of terraria default box.
             Texture2D texture = GetTexture();
             float length = texture.Width / 2 + texture.Height / 2;
-            length *= 1.5f;
+            length *= 1.6f;
 
             Vector2 start = Projectile.Center - Projectile.rotation.ToRotationVector2() * length;
             Vector2 end = Projectile.Center + Projectile.rotation.ToRotationVector2() * length;
@@ -276,6 +277,17 @@ namespace Stellamod.Core.SwingSystem
             spriteBatch.Draw(texture,
                 Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
                 sourceRectangle, drawColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0); // drawing the sword itself
+
+        
+            if(glowColor.A > 0)
+            {
+                spriteBatch.Restart(blendState: BlendState.Additive);
+                spriteBatch.Draw(texture,
+                      Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+                      sourceRectangle, glowColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0);
+                spriteBatch.RestartDefaults();
+            }
+        
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

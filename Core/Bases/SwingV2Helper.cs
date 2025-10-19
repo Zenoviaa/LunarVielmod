@@ -120,7 +120,7 @@ namespace Stellamod.Core.Bases
             //Pair 1
             swings.Add(new OvalSwing
             {
-                Duration = 24,
+                Duration = 22,
                 XSwingRadius = 100,
                 YSwingRadius = 48,
                 SwingDegrees = 360,
@@ -130,7 +130,7 @@ namespace Stellamod.Core.Bases
 
             swings.Add(new OvalSwing
             {
-                Duration = 24,
+                Duration = 22,
                 XSwingRadius = 100,
                 YSwingRadius = 100,
                 SwingDegrees = 360,
@@ -141,7 +141,7 @@ namespace Stellamod.Core.Bases
             //Pair 2
             swings.Add(new OvalSwing
             {
-                Duration = 24,
+                Duration = 22,
                 XSwingRadius = 100,
                 YSwingRadius = 100,
                 SwingDegrees = 360,
@@ -151,7 +151,7 @@ namespace Stellamod.Core.Bases
 
             swings.Add(new OvalSwing
             {
-                Duration = 24,
+                Duration = 22,
                 XSwingRadius = 100,
                 YSwingRadius = 100,
                 SwingDegrees = 360,

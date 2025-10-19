@@ -246,6 +246,7 @@
     <None Remove="Effects\CrystalShaders\PixelMagicMoon.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicSparkleWater.fx" />
     <None Remove="Effects\CrystalShaders\PixelMagicVaellus.fx" />
+    <None Remove="Effects\CrystalShaders\RadialBlast.fx" />
     <None Remove="Effects\CrystalShaders\Radiant.fx" />
     <None Remove="Effects\CrystalShaders\SimpleGradientTrail.fx" />
     <None Remove="Effects\CrystalShaders\SimpleTrail.fx" />
