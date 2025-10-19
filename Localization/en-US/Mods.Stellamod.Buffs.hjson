@@ -882,3 +882,8 @@ TranceBuff: {
 	DisplayName: Trance
 	Description: Greatly increased attack speed!
 }
+
+FlamecrestShieldBuff: {
+	DisplayName: Flameward
+	Description: You'll take greatly reduced damage from the next fire attack!
+}

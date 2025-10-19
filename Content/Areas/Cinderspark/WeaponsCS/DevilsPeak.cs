@@ -29,10 +29,12 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void SetDefaults2()
         {
             base.SetDefaults2();
+            Item.damage = 24;
+            Item.rare = ItemRarityID.Green;
             Item.shoot = ModContent.ProjectileType<DevilsPeakSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<DevilsPeakStaminaSlash>();
             meleeWeaponType = MeleeWeaponType.Scythe;
-            staminaCost = 3;
+            staminaCost = 2;
         }
 
         public override void AddRecipes()

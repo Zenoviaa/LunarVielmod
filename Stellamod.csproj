@@ -207,6 +207,7 @@
     <None Remove="Effects\CrystalShaders\BlackFire.fx" />
     <None Remove="Effects\CrystalShaders\BlackFireSmoke.fx" />
     <None Remove="Effects\CrystalShaders\BlackLingeringSmoke.fx" />
+    <None Remove="Effects\CrystalShaders\Bubble.fx" />
     <None Remove="Effects\CrystalShaders\DyeFirePixel.fx" />
     <None Remove="Effects\CrystalShaders\DyeInvisible.fx" />
     <None Remove="Effects\CrystalShaders\DyeMothlight.fx" />

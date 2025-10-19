@@ -4901,8 +4901,8 @@ FlamecrestShield: {
 	DisplayName: Flamecrest Shield
 	Tooltip:
 		'''
-		Immune to all fire-based debuffs!
-		You take 50% less damage from fire-based attacks!
+		You take 90% less damage from fire-based attacks!
+		After being hit by one, it needs 10 seconds to recharge
 		Can't burn me now :P
 		'''
 }
