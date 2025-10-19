@@ -82,7 +82,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void AI()
         {
             base.AI();
-            glowColor = Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(Interpolant));
+            glowColor = Color.Lerp(Color.Transparent, Color.Red, EasingFunction.QuadraticBump(Interpolant));
             if (Timer % 8 == 0 && Interpolant >= 0.3f)
             {
                 if (!_playedSound)
@@ -183,7 +183,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void AI()
         {
             base.AI();
-            glowColor = Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(Interpolant));
+            glowColor = Color.Lerp(Color.Transparent, Color.Red, EasingFunction.QuadraticBump(Interpolant));
             if (Timer % 8 == 0)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), newColor: Color.Black);

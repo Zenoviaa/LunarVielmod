@@ -285,6 +285,11 @@ namespace Stellamod.Core.SwingSystem
                 spriteBatch.Draw(texture,
                       Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
                       sourceRectangle, glowColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0);
+
+                spriteBatch.Draw(texture,
+                  Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+                  sourceRectangle, glowColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0);
+
                 spriteBatch.RestartDefaults();
             }
         
