@@ -45,6 +45,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
     public class DevilsPeakSlash : BaseSwingProjectileV2
     {
         private bool _playedSound;
+        private bool _flareCircle;
         public override void DefineCombo()
         {
             base.DefineCombo();
@@ -83,7 +84,24 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         {
             base.AI();
             glowColor = Color.Lerp(Color.Transparent, Color.Red, EasingFunction.QuadraticBump(Interpolant));
-            if (Timer % 8 == 0 && Interpolant >= 0.3f)
+            growScale = MathHelper.Lerp(0f, 0.15f, EasingFunction.QuadraticBump(Interpolant));
+            if(ComboIndex == ComboCount - 1 && Interpolant >= 0.3f && !_flareCircle)
+            {
+                _flareCircle = true;
+                for(float f = 0; f < 16; f++)
+                {
+                    float lerp = f / 16f;
+                    Vector2 offset = Vector2.UnitY.RotatedBy(lerp * MathHelper.TwoPi) * 196;
+                    Vector2 pos = Owner.Center + offset;
+                    Vector2 velocity = (Owner.Center - pos).SafeNormalize(Vector2.Zero) * 16;
+                    var part = Particle.NewParticle<FlareParticle>(Owner.Center + offset, velocity);
+                    part.Scale *= 0.5f;
+                }
+                SoundStyle fireSound = AssetRegistry.Sounds.MagicWand.FireCharge;
+                fireSound.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(fireSound, Projectile.position);
+            }
+            if (Timer % 16 == 0 && Interpolant >= 0.3f)
             {
                 if (!_playedSound)
                 {
@@ -184,6 +202,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         {
             base.AI();
             glowColor = Color.Lerp(Color.Transparent, Color.Red, EasingFunction.QuadraticBump(Interpolant));
+            growScale = MathHelper.Lerp(0f, 0.3f, EasingFunction.QuadraticBump(Interpolant));
             if (Timer % 8 == 0)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), newColor: Color.Black);

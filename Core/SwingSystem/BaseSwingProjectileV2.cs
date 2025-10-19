@@ -31,6 +31,7 @@ namespace Stellamod.Core.SwingSystem
         public int hitStopTime;
         public bool useAfterImage;
         public Color glowColor;
+        public float growScale;
         public const int EXTRA_UPDATE_COUNT = 7;
 
         //Default to the item sprite of the texture, we can just predraw if we need to change it
@@ -204,7 +205,7 @@ namespace Stellamod.Core.SwingSystem
             Owner.itemAnimation = 2;
 
             // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
-            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f));// set arm position (90 degree offset since arm starts lowered)
+            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(135));// set arm position (90 degree offset since arm starts lowered)
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -273,7 +274,7 @@ namespace Stellamod.Core.SwingSystem
             Color drawColor = Projectile.GetAlpha(lightColor);
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-            float drawScale = 1f;
+            float drawScale = 1.15f + growScale;
             spriteBatch.Draw(texture,
                 Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
                 sourceRectangle, drawColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0); // drawing the sword itself

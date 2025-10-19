@@ -9,6 +9,7 @@ namespace Stellamod.Visual.Particles
 {
     public class FlareParticle : Particle
     {
+        private float _offset;
         private float _interpolant;
         public int FrameWidth = 128;
         public int FrameHeight = 128;
@@ -25,6 +26,7 @@ namespace Stellamod.Visual.Particles
             Rotation = Main.rand.NextFloat(0, 3.14f);
             Frame = new Rectangle(0, 0, FrameWidth, FrameHeight);
             Scale = Main.rand.NextFloat(0.65f, 1);
+            _offset = Main.rand.NextFloat(0f, 10f);
             stretchScale = Vector2.One;
             customShader = FlareShader.Instance;
 
@@ -51,6 +53,7 @@ namespace Stellamod.Visual.Particles
             shader.InnerColor = Color.Lerp(innerColor, fadeToColor, _interpolant);
             shader.OuterColor = Color.Lerp(outerColor, fadeToColor, _interpolant);
             shader.Power = MathHelper.Lerp(1.0f, 3f, _interpolant);
+            shader.Time = Main.GlobalTimeWrappedHourly * 5 + _offset;
             shader.Apply();
 
 
