@@ -102,7 +102,6 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
                 Sound = swingSound1,
             });
         }
-
         public override void AI()
         {
             base.AI();

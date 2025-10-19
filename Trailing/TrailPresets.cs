@@ -47,7 +47,28 @@ namespace Stellamod.Trailing
             }
 
         };
+        public static SlashTrailer CinderBreaker => new SlashTrailer
+        {
+            Shader = new SlashEffect()
+            {
+                BaseColor = Color.Yellow,
+                HighlightColor = Color.Orange,
+                RimHighlightColor = Color.Red,
+                WindColor = Color.DarkRed,
+                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive,
+                WindTexture = TrailRegistry.WhispyTrail.Value
+            },
+            TrailWidthFunction = (float interpolant) =>
+            {
+                return EasingFunction.QuadraticBump(interpolant) * 7;
+            },
+            TrailColorFunction = (float interpolant) =>
+            {
+                Color lerp1 = Color.Lerp(Color.Yellow, Color.Red, interpolant);
+                return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+            }
 
+        };
         public static SlashTrailer Starvast => new SlashTrailer
         {
             Shader = new SlashEffect()
