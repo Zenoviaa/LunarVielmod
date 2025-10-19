@@ -2696,7 +2696,7 @@ CinderBraker: {
 	DisplayName: Cinder Breaker
 	Tooltip: A slashing sword that shoots swords!
 	WeaponType: Sword Weapon Type
-	BasicSlash: Hit enemies erupt with a fiery sword
+	BasicSlash: The final swing in the combo will cause enemies to combust!
 	StaminaSlash: Unleashes a wave of volcanic eruptions!
 }
 
