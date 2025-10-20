@@ -892,3 +892,8 @@ PrismaticBubbledBuff: {
 	DisplayName: Prismatic Bubbled Buff
 	Description: Mods.Stellamod.Buffs.PrismaticBubbledBuff.Description
 }
+
+FireFury: {
+	DisplayName: Fire Fury
+	Description: Mods.Stellamod.Buffs.FireFury.Description
+}

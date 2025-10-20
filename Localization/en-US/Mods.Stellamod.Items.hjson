@@ -5556,6 +5556,8 @@ SolarianPants: {
 IyxTheInfamous: {
 	DisplayName: Iyx The Infamous
 	Tooltip: From the fallen warriors of the cinder, to the magical entropy of the world, this weapon was lost long ago.
+	BasicSlash: No Effect
+	StaminaSlash: No Effect
 }
 
 PoisonedAngel: {

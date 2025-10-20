@@ -40,6 +40,11 @@ namespace Stellamod.Core.Shaders
 
         public void ApplyPasses()
         {
+            var transformMatrix = Effect.Parameters["transformMatrix"];
+            if (transformMatrix != null)
+            {
+                transformMatrix.SetValue(TrailDrawer.WorldViewPoint2);
+            }
             foreach (var pass in Effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
