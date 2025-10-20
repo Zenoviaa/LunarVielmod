@@ -239,6 +239,18 @@ namespace Stellamod.Content.Areas.Cinderspark.AccCS
                 BlockVisuals();
             }
         }
+
+        public bool ConsumeShield()
+        {
+            if (!hasFlamecrestShield)
+                return false;
+            if (resistCooldown > 0)
+                return false;
+
+            resistCooldown = 600;
+            BlockVisuals();
+            return true;
+        }
     }
 
     public class FlamecrestShieldBuff : ModBuff

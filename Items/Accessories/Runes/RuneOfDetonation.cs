@@ -1,12 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core.Bases;
+using Stellamod.Core.Particles;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Stellamod.Items.Accessories.Runes
 {
@@ -23,39 +27,42 @@ namespace Stellamod.Items.Accessories.Runes
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 30;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 30;
+            Projectile.friendly = true;
         }
 
         public override void AI()
         {
             base.AI();
             Timer++;
-            if (Timer % 10 == 0)
+            if(Timer == 1)
             {
                 Vector2 explosionPosition = Projectile.Center;
                 explosionPosition += Main.rand.NextVector2Circular(32, 32);
 
-                if (Main.myPlayer == Projectile.owner)
+                for (float f = 0; f < 8; f++)
                 {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), explosionPosition, Vector2.Zero,
-                        ModContent.ProjectileType<FableExSps>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    float rot = f / 8f;
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                    Vector2 velocity = (rot*MathHelper.TwoPi).ToRotationVector2();
+                    velocity *= Main.rand.NextFloat(4, 8);
+                    Particle.NewParticle<ImpactParticle>(Projectile.Center, velocity);
                 }
-
+                FXUtil.GlowCircleBoom(Projectile.Center, Color.Yellow, Color.Orange, Color.Red);
 
                 //Effects
                 SoundStyle explosionSoundStyle = new SoundStyle($"Stellamod/Assets/Sounds/HeatExplosion");
                 explosionSoundStyle.PitchVariance = 0.15f;
                 SoundEngine.PlaySound(explosionSoundStyle, Projectile.position);
 
-                MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
-                myPlayer.ShakeAtPosition(Projectile.Center, 1024, 8);
+                FXUtil.ShakeCamera(Projectile.position, 1024, 16);
             }
         }
     }
 
     public class RuneOfDetonationPlayer : ModPlayer
     {
-        private int _lastTargetIndex;
-        private int _hitCount;
         public bool hasDetonationRune;
         public override void ResetEffects()
         {
@@ -63,41 +70,21 @@ namespace Stellamod.Items.Accessories.Runes
             hasDetonationRune = false;
         }
 
-        public override void PostUpdateEquips()
-        {
-            base.PostUpdateEquips();
-            if (!hasDetonationRune)
-            {
-                _lastTargetIndex = -1;
-                _hitCount = 1;
-            }
-        }
-
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
             if (!hasDetonationRune)
                 return;
-            if (_lastTargetIndex != target.whoAmI)
+            if (target.HasBuff(BuffID.OnFire))
+                return;
+            target.AddBuff(BuffID.OnFire, 120);
+            if (target.life + damageDone >= target.lifeMax)
             {
-                _hitCount = 1;
-                _lastTargetIndex = target.whoAmI;
-            }
-            else
-            {
-                _hitCount++;
-            }
-
-            if (_hitCount >= 5)
-            {
-                float damage = damageDone;
-                damage *= 0.33f;
-                damage = MathHelper.Clamp(damage, 0, 33);
-
+                int damage = (int)(target.lifeMax * 0.3f);
                 Projectile.NewProjectile(Player.GetSource_FromThis(), target.Center, Vector2.Zero,
-                    ModContent.ProjectileType<RuneOfDetonationBomb>(), (int)damage, hit.Knockback, Player.whoAmI);
-                _hitCount = 1;
+                    ModContent.ProjectileType<RuneOfDetonationBomb>(), damage, hit.Knockback, Player.whoAmI);
             }
+
         }
     }
 

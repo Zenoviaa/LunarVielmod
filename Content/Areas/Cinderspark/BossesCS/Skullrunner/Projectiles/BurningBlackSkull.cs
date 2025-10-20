@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
+using Stellamod.Core.ProjectileHelpers;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Dusts;
@@ -25,6 +26,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
         {
             base.SetStaticDefaults();
             Main.projFrames[Type] = 3;
+            ProjectileSets.ResistedByFlamecrestShield[Type] = true;
         }
 
         public override void SetDefaults()

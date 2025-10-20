@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
+using Stellamod.Content.Areas.Cinderspark.AccCS;
 using Stellamod.Core.Particles;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -45,7 +46,8 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                         damage *= 3;
                     if (Main.expertMode)
                         damage *= 2;
-
+                    if (Player.GetModPlayer<FlamecrestPlayer>().ConsumeShield())
+                        damage *= 0.9f;
                     if(Main.myPlayer == Player.whoAmI)
                     {
                         Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - Vector2.UnitY * 128, Vector2.UnitY,

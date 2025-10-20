@@ -2104,13 +2104,8 @@ RuneOfCorsage: {
 }
 
 RuneOfDetonation: {
-	DisplayName: Rune Of Detonation
-	Tooltip: Great for skilled players!
-	Effect:
-		'''
-		After 5 consecutive hits on an enemy, they'll violently explode!
-		Make sure to not miss :P
-		'''
+	DisplayName: Glyph Of Detonation
+	Tooltip: When you hit an enemy at full HP, they explode!
 }
 
 RuneOfReality: {

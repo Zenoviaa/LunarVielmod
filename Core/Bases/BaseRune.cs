@@ -29,15 +29,6 @@ namespace Stellamod.Core.Bases
             Item.accessory = true;
         }
 
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            base.ModifyTooltips(tooltips);
-            TooltipLine line = new TooltipLine(Mod, "Effect", LangText.Item(this, "Effect"));
-            line.OverrideColor = new Color(80, 187, 124);
-            tooltips.Add(line);
-        }
-
-
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             DrawHelper.DrawGlowInInventory(Item, spriteBatch, position, Color.Purple);
