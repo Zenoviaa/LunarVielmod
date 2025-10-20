@@ -1,11 +1,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.GunSystem;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
@@ -14,20 +14,12 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 
 namespace Stellamod.Content.Areas.Dock.WeaponsDK
 {
-    public class BubbleBlasher : ClassSwapItem
+    public class BubbleBlasher : BaseGun
     {
-        public override DamageClass AlternateClass => DamageClass.Magic;
-        public override void SetClassSwappedDefaults()
-        {
-            Item.damage = 20;
-            Item.mana = 7;
-        }
-
         public override void SetDefaults()
         {
             Item.damage = 45;
@@ -44,6 +36,7 @@ namespace Stellamod.Content.Areas.Dock.WeaponsDK
             Item.shoot = ModContent.ProjectileType<PrismaticBubble>();
             Item.shootSpeed = 5;
             Item.noMelee = true;
+            Item.noUseGraphic = true;
         }
 
         public override Vector2? HoldoutOffset()
@@ -95,7 +88,7 @@ namespace Stellamod.Content.Areas.Dock.WeaponsDK
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle explosionSound1 = new SoundStyle("Stellamod/Assets/Sounds/JellyTome");
                 explosionSound1.PitchVariance = 0.2f;
@@ -158,7 +151,7 @@ namespace Stellamod.Content.Areas.Dock.WeaponsDK
     public class PrismaticBubble : ModProjectile
     {
 
-        private int _targetNPCIndex=-1;
+        private int _targetNPCIndex = -1;
         private int _lastHP;
         private Vector2 _stretchScale;
         private Vector2 _explodeScale;
@@ -223,7 +216,7 @@ namespace Stellamod.Content.Areas.Dock.WeaponsDK
         {
             if (_targetNPCIndex == -1)
                 return null;
-            return Main.npc[_targetNPCIndex];   
+            return Main.npc[_targetNPCIndex];
         }
 
         public override void AI()
@@ -242,27 +235,28 @@ namespace Stellamod.Content.Areas.Dock.WeaponsDK
                 _stretchScale = Vector2.Lerp(_stretchScale, Vector2.One, 0.06f);
             }
 
-            if(Timer % 8 == 0)
+            if (Timer % 8 == 0)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<GlowDust>(), newColor: Color.LightBlue, Scale: 0.35f);
             }
-            if(_bubbleScale == 0f)
+            if (_bubbleScale == 0f)
             {
                 _bubbleScale = Main.rand.NextFloat(0.75f, 1f);
             }
-            if(Projectile.velocity.Length() > 1 && HasCapturedTarget())
+            if (Projectile.velocity.Length() > 1 && HasCapturedTarget())
             {
                 Projectile.velocity *= 0.98f;
                 Projectile.velocity = Projectile.velocity.RotatedBy(0.01f);
                 Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, Owner.Center, 2);
-            } else if (Projectile.velocity.Length() < 10 && !HasCapturedTarget())
+            }
+            else if (Projectile.velocity.Length() < 10 && !HasCapturedTarget())
             {
                 Projectile.velocity *= 1.05f;
             }
-            
+
             Projectile.rotation = Projectile.velocity.ToRotation();
             NPC target = GetTarget();
-     
+
             if (HasCapturedTarget())
             {
                 target.AddBuff(ModContent.BuffType<PrismaticBubbledBuff>(), 2);
@@ -279,11 +273,12 @@ namespace Stellamod.Content.Areas.Dock.WeaponsDK
             else if (HasReleasedTarget())
             {
                 Projectile.Kill();
-            } else
+            }
+            else
             {
                 _captureScale = Vector2.Lerp(_captureScale, Vector2.One * 0.5f, 0.1f);
                 NPC nearestNPC = NPCHelper.FindClosestNPC(Projectile.position, 64);
-                if(nearestNPC != null)
+                if (nearestNPC != null)
                 {
                     Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearestNPC.Center, 18);
 
@@ -294,14 +289,14 @@ namespace Stellamod.Content.Areas.Dock.WeaponsDK
             {
                 WobbleTimer++;
                 ExplodeTimer++;
-    
+
                 float lerp = ExplodeTimer / 12f;
                 float interp = EasingFunction.OutSine(lerp);
                 _explodeScale = Vector2.Lerp(Vector2.One, Vector2.One * 1.6f, interp);
-                if(ExplodeTimer >= 12f)
+                if (ExplodeTimer >= 12f)
                 {
                     //KABOOM!
-        
+
                     Projectile.Kill();
                 }
             }
@@ -342,7 +337,7 @@ namespace Stellamod.Content.Areas.Dock.WeaponsDK
             bubbleShader.Time = WobbleTimer * 0.05f;          //  bubbleShader.Power = MathHelper.Lerp(1f, 5f, ExtraMath.Osc(0f, 1f, speed: 3));
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             spriteBatch.Restart(blendState: BlendState.Additive, effect: bubbleShader.Effect);
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 spriteBatch.Draw(texture, drawPos, null,
                     Color.White,
@@ -386,7 +381,7 @@ namespace Stellamod.Content.Areas.Dock.WeaponsDK
                 0, texture.Size() / 2f,
                 drawScale, SpriteEffects.None, 0);
 
-         
+
             spriteBatch.RestartDefaults();
             return false;
         }
@@ -406,8 +401,8 @@ namespace Stellamod.Content.Areas.Dock.WeaponsDK
                 Projectile.netUpdate = true;
                 return;
             }
-          
-            
+
+
             _lastHP = target.life;
             _targetNPCIndex = target.whoAmI;
             Projectile.netUpdate = true;

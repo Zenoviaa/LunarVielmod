@@ -643,7 +643,6 @@ namespace Stellamod
         {
 
             Player.ManageSpecialBiomeVisuals("Stellamod:VeilSky", ZoneVeil);
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
 
             //     base.Player.ManageSpecialBiomeVisuals("Stellamod:GreenSunSky", EventWorld.GreenSun && ZoneAcid);
 
@@ -1300,12 +1299,6 @@ namespace Stellamod
 
             }
 
-            if ((ZoneFable || ZoneMorrow))
-            {
-                Main.GraveyardVisualIntensity = 0.4f;
-                Main.windPhysicsStrength = 50;
-
-            }
 
             if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && !Main.dayTime && (ZoneFable || ZoneMorrow))
             {

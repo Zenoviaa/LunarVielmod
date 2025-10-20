@@ -108,6 +108,16 @@ Mods: {
 					Label: Enchantment Menu Y
 					Tooltip: ""
 				}
+
+				AmmoBarX: {
+					Label: Ammo Bar X
+					Tooltip: ""
+				}
+
+				AmmoBarY: {
+					Label: Ammo Bar Y
+					Tooltip: ""
+				}
 			}
 
 			LunarVeilServerConfig.DisplayName: Lunar Veil Server Config

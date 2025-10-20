@@ -42,6 +42,11 @@ namespace Stellamod.Assets
                 public static SoundStyle Aim = new SoundStyle($"{Path}Bow/Aim");
                 public static SoundStyle CrossbowPull = new SoundStyle($"{Path}Bow/CrossbowPull");
             }
+            public static class Gun
+            {
+                public static SoundStyle GunReload = new SoundStyle($"{Path}Gun/GunReload");
+                public static SoundStyle GunToss = new SoundStyle($"{Path}Gun/GunToss");
+            }
 
             public static class Ravager
             {

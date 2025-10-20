@@ -897,3 +897,8 @@ FireFury: {
 	DisplayName: Fire Fury
 	Description: Mods.Stellamod.Buffs.FireFury.Description
 }
+
+Reloading: {
+	DisplayName: Reloading
+	Description: Mods.Stellamod.Buffs.Reloading.Description
+}
