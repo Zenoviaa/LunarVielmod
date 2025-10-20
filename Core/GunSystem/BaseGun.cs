@@ -211,7 +211,16 @@ namespace Stellamod.Core.GunSystem
 
             float center = reloadTime / 2f;
             float diff = MathF.Abs(center - reloadTimer);
-            return diff <= marginOfError;
+            bool hasTimed = diff <= marginOfError;
+            if (!hasTimed)
+            {
+                SoundStyle jamSound = AssetRegistry.Sounds.Gun.GunJam;
+                jamSound.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(jamSound, Player.position);
+                return false;
+            }
+            return true;
+  
         }
         public override void PostUpdateEquips()
         {
@@ -242,14 +251,15 @@ namespace Stellamod.Core.GunSystem
                     reloadTimer = 0;
                 }
 
-                if (TimedReload())
-                {
-                    heldGun.Reload();
-                    reloadFireDelay = 60;
-                    doCoolReloadAnimation = true;
-                }
+                Main.player
                 if (Main.myPlayer == Player.whoAmI)
                 {
+                    if (TimedReload())
+                    {
+                        heldGun.Reload();
+                        reloadFireDelay = 60;
+                        doCoolReloadAnimation = true;
+                    }
                     if (Player.ownedProjectileCounts[ModContent.ProjectileType<ReloadBar>()] == 0)
                     {
                         Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
