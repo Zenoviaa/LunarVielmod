@@ -20,6 +20,7 @@ namespace Stellamod.Core.GunSystem
     public class ReloadBar : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
+        private ref float FailTimer => ref Projectile.ai[1];
         private Player Owner => Main.player[Projectile.owner];
         private GunHoldPlayer GunHoldPlayer => Owner.GetModPlayer<GunHoldPlayer>();
         public override void SetDefaults()
@@ -46,7 +47,19 @@ namespace Stellamod.Core.GunSystem
             {
                 Projectile.timeLeft = 2;
             }
-            Projectile.Center = Owner.Center + new Vector2(0, 64);
+            if (GunHoldPlayer.doFailAnimation)
+            {
+                FailTimer = 30;
+                GunHoldPlayer.doFailAnimation = false;
+            }
+
+            Vector2 offset = Vector2.Zero;
+            if(FailTimer > 0)
+            {
+                offset = Main.rand.NextVector2Circular(16, 16);
+                FailTimer--;
+            }
+            Projectile.Center = Owner.Center + new Vector2(0, 64) + offset;
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -186,7 +199,7 @@ namespace Stellamod.Core.GunSystem
         public float reloadFireDelay;
 
         public bool doCoolReloadAnimation;
-        
+        public bool doFailAnimation;
         public float reloadRatio => reloadTimer / reloadTime;
         public BaseGun HeldGun => Player.HeldItem.ModItem as BaseGun;
         public override void ResetEffects()
@@ -217,6 +230,7 @@ namespace Stellamod.Core.GunSystem
                 SoundStyle jamSound = AssetRegistry.Sounds.Gun.GunJam;
                 jamSound.PitchVariance = 0.1f;
                 SoundEngine.PlaySound(jamSound, Player.position);
+                doFailAnimation = true;
                 return false;
             }
             return true;
