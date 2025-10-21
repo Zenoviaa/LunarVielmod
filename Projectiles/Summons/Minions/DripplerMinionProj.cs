@@ -18,7 +18,7 @@ namespace Stellamod.Projectiles.Summons.Minions
              * If the player targets a certain NPC with right-click, it will fly through tiles to it
              * If it isn't attacking, it will float near the player with minimal movement
              */
-    public class DripplerMinionProj : ModProjectile, ITargetable
+    public class DripplerMinionProj : ModProjectile
     {
         private Vector2 _targetOffset;
         private int _targetNpc = -1;

@@ -255,6 +255,7 @@
     <None Remove="Effects\CrystalShaders\Skullfire.fx" />
     <None Remove="Effects\CrystalShaders\Spark.fx" />
     <None Remove="Effects\CrystalShaders\Sparky.fx" />
+    <None Remove="Effects\CrystalShaders\Spectral.fx" />
     <None Remove="Effects\CrystalShaders\SpriteWhite.fx" />
     <None Remove="Effects\CrystalShaders\TeslaOrb.fx" />
     <None Remove="Effects\CrystalShaders\ThunderCloud.fx" />

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
+using Stellamod.Core.Shaders;
 using Stellamod.Core.SummonerSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -80,35 +81,16 @@ namespace Stellamod.Projectiles.Summons.Minions
             return Color.Lerp(Color.OrangeRed, Color.Transparent, completionRatio) * 0.7f;
         }
 
-        public override bool PreDraw(ref Color lightColor)
+
+
+        public override void DrawSpectral(SpriteBatch spriteBatch)
         {
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            Rectangle frame = Projectile.Frame();
-            Vector2 drawOrigin = frame.Size() / 2f;
-
-            float rotation = Projectile.rotation;
-            Color finalColor = Color.White.MultiplyRGB(lightColor);
-
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, Projectile.Frame(), Color.White, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            base.DrawSpectral(spriteBatch);
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
             GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
 
 
-            Texture2D glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
-            spriteBatch.Restart(blendState: BlendState.Additive);
-            for (int i = 0; i < 6; i++)
-                spriteBatch.Draw(glowTexture, drawPos, frame, finalColor * WhiteTimer, rotation, drawOrigin, Vector2.One, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
-            spriteBatch.RestartDefaults();
-            return false;
-        }
-
-        public override void PostDraw(Color lightColor)
-        {
-            base.PostDraw(lightColor);
-            SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
             for (float f = 0f; f < 4f; f++)
             {
@@ -117,6 +99,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                     Projectile.Frame(), Color.White * VectorHelper.Osc(0f, 0.5f), Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             }
         }
+
 
         // This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
         public override bool MinionContactDamage()

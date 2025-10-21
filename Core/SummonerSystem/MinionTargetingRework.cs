@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -24,8 +27,6 @@ namespace Stellamod.Core.SummonerSystem
 
     public class DummyNPC : ModNPC
     {
-        private int ProjectileType => (int)NPC.ai[0];
-        public override LocalizedText DisplayName => ModContent.GetModProjectile(ProjectileType).DisplayName;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -37,6 +38,7 @@ namespace Stellamod.Core.SummonerSystem
             NPC.HitSound = SoundID.NPCHit16;
             NPC.friendly = true;
             NPC.aiStyle = 7;
+            NPC.ShowNameOnHover = false;
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -46,6 +48,7 @@ namespace Stellamod.Core.SummonerSystem
     }
 
     public abstract class KillableMinion : ModProjectile,
+        IDrawSpectral,
         ITargetable
     {
         private bool _spawnedMinionNPC;
@@ -73,7 +76,7 @@ namespace Stellamod.Core.SummonerSystem
             if (!_spawnedMinionNPC && StellaMultiplayer.IsHost)
             {
                 _npcWhoAmI = NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y,
-                    ModContent.NPCType<DummyNPC>(), ai0: Type);
+                    ModContent.NPCType<DummyNPC>());
                 _spawnedMinionNPC = true;
                 Projectile.netUpdate = true;
             }
@@ -94,6 +97,33 @@ namespace Stellamod.Core.SummonerSystem
         public virtual void Death()
         {
             Projectile.Kill();
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+
+            return false;
+        }
+        public virtual void DrawSpectral(SpriteBatch spriteBatch)
+        {
+            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Rectangle frame = Projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
+
+            float rotation = Projectile.rotation;
+            Point p = Projectile.position.ToTileCoordinates();
+            Color lightColor = Lighting.GetColor(p.X, p.Y);
+            Color finalColor = Color.White.MultiplyRGB(lightColor);
+
+            spriteBatch.Restart(effect: SpriteWhiteShader.Instance.Effect, blendState: BlendState.Additive);
+            spriteBatch.Draw(texture, drawPos - Vector2.UnitX * 2, frame, Color.White, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            spriteBatch.Draw(texture, drawPos + Vector2.UnitX * 2, frame, Color.White, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            spriteBatch.Draw(texture, drawPos - Vector2.UnitY * 2, frame, Color.White, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            spriteBatch.Draw(texture, drawPos + Vector2.UnitY * 2, frame, Color.White, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            spriteBatch.RestartDefaults();
+            spriteBatch.Draw(texture, drawPos, frame, finalColor, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+
+
         }
     }
 
