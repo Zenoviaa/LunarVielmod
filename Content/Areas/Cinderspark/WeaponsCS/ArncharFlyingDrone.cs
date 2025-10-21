@@ -37,8 +37,19 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
     public class ArncharMinionProj : KillableMinion
     {
-        private float WhiteTimer;
         private ref float Timer => ref Projectile.ai[0];
+        private enum AIState
+        {
+            Idle,
+            Attack
+        }
+
+        private AIState State
+        {
+            get => (AIState)Projectile.ai[1];
+            set => Projectile.ai[1] = (float)value;
+        }
+        private ref float IdleTimer => ref Projectile.ai[2];
         private Player Owner => Main.player[Projectile.owner];
         public override void SetStaticDefaults()
         {
@@ -97,7 +108,77 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         // This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
         public override bool MinionContactDamage()
         {
-            return true;
+            return false;
+        }
+
+        private void AI_Idle()
+        {
+            SummonHelper.CalculateIdleValues(Owner, Projectile, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
+            SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
+
+            IdleTimer++;
+            if (IdleTimer >= 120)
+            {
+                SummonHelper.SearchForTargets(Owner, Projectile, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
+                if (foundTarget)
+                {
+                    SwitchState(AIState.Attack);
+                }
+            }
+        }
+
+        private void AI_Attack()
+        {
+            IdleTimer = 0;
+            Timer++;
+            SummonHelper.SearchForTargets(Owner, Projectile, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
+
+            Vector2 targetHoverPos = targetCenter - new Vector2(0, 48);
+            targetHoverPos.X += MathF.Sin(Timer) * 32;
+
+            Vector2 targetVelocity = (targetHoverPos - Projectile.Center) * 0.05f;
+            Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.1f);
+            if (Timer > 30 && Timer % 10 == 0)
+            {
+                int Sound = Main.rand.Next(1, 3);
+                SoundStyle mySound = new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone1");
+
+                if (Sound == 1)
+                {
+                    mySound = new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone1");
+                }
+                else
+                {
+                    mySound = new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone2");
+                }
+
+                mySound.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(mySound, Projectile.position);
+                Vector2 fireVelocity = (targetCenter - Projectile.Center).SafeNormalize(Vector2.Zero) * 12;
+                Projectile.velocity -= fireVelocity * 0.5f;
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, fireVelocity,
+                        ModContent.ProjectileType<ArchariliteArrowSmall>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 0, 0);
+                }
+
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.velocity = Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(35));
+                    Projectile.netUpdate = true;
+                }
+            }
+            if (Timer > 120)
+            {
+                SwitchState(AIState.Idle);
+                Timer = 0;
+            }
+        }
+        private void SwitchState(AIState state)
+        {
+            Timer = 0;
+            State = state;
+            Projectile.netUpdate = true;
         }
 
         public override void AI()
@@ -113,59 +194,14 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 else
                     Dust.NewDustPerfect(Projectile.Center, DustID.Torch, Projectile.velocity * 0.1f, 0, Color.OrangeRed, 1f).noGravity = true;
             }
-            WhiteTimer *= 0.98f;
-            SummonHelper.SearchForTargets(Owner, Projectile, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-            if (!foundTarget)
+            switch (State)
             {
-                Timer--;
-                if (Timer <= 0)
-                    Timer = 0;
-                SummonHelper.CalculateIdleValues(Owner, Projectile, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
-                SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
-            }
-            else if (foundTarget)
-            {
-                Timer++;
-                Vector2 targetHoverPos = targetCenter - new Vector2(0, 80);
-                targetHoverPos.X += MathF.Sin(Timer) * 32;
-
-                Vector2 targetVelocity = (targetHoverPos - Projectile.Center) * 0.05f;
-                Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.1f);
-                if (Timer > 30 && Timer % 10 == 0)
-                {
-                    int Sound = Main.rand.Next(1, 3);
-                    SoundStyle mySound = new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone1");
-
-                    if (Sound == 1)
-                    {
-                        mySound = new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone1");
-                    }
-                    else
-                    {
-                        mySound = new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone2");
-                    }
-
-                    mySound.PitchVariance = 0.2f;
-                    SoundEngine.PlaySound(mySound, Projectile.position);
-                    Vector2 fireVelocity = (targetCenter - Projectile.Center).SafeNormalize(Vector2.Zero) * 12;
-                    Projectile.velocity -= fireVelocity;
-                    WhiteTimer = 1f;
-                    if (Main.myPlayer == Projectile.owner)
-                    {
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, fireVelocity,
-                            ModContent.ProjectileType<ArchariliteArrowSmall>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 0, 0);
-                    }
-
-                    if (Main.myPlayer == Projectile.owner)
-                    {
-                        Projectile.velocity = Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(35));
-                        Projectile.netUpdate = true;
-                    }
-                }
-                if (Timer > 120)
-                {
-                    Timer = 0;
-                }
+                case AIState.Idle:
+                    AI_Idle();
+                    break;
+                case AIState.Attack:
+                    AI_Attack();
+                    break;
             }
 
             Projectile.rotation = Projectile.velocity.X * 0.05f;
