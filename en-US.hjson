@@ -127,6 +127,7 @@ Mods: {
 			Dash.DisplayName: Dash
 			"Open Questbook.DisplayName": Open  Questbook
 			"Use Xixian Flask.DisplayName": Use  Xixian  Flask
+			"Use Summoning Bell.DisplayName": Use  Summoning  Bell
 		}
 
 		Tablets: {

@@ -7,12 +7,14 @@ namespace Stellamod
         public static ModKeybind FlaskKeybind { get; private set; }
         public static ModKeybind DashKeybind { get; private set; }
         public static ModKeybind QuestKeybind { get; private set; }
+        public static ModKeybind BellKeybind { get; private set; }
         public override void Load()
         {
             // Register keybinds            
             DashKeybind = KeybindLoader.RegisterKeybind(Mod, "Dash", "F");
             QuestKeybind = KeybindLoader.RegisterKeybind(Mod, "Open Questbook", "Q");
             FlaskKeybind = KeybindLoader.RegisterKeybind(Mod, "Use Xixian Flask", "G");
+            BellKeybind = KeybindLoader.RegisterKeybind(Mod, "Use Summoning Bell", "R");
 
         }
     }

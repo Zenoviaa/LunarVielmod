@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Core.SummonerSystem;
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -34,10 +35,12 @@ namespace Stellamod.Core.XixianFlaskSystem
                 //Right click 
                 //Cycle
                 player.GetModPlayer<FlaskPlayer>().ResetProgress();
+                player.GetModPlayer<BellPlayer>().ResetProgress();
             }
             else
             {
                 player.GetModPlayer<FlaskPlayer>().GrantAllProgress();
+                player.GetModPlayer<BellPlayer>().GrantAllProgress();
 
             }
             return true;

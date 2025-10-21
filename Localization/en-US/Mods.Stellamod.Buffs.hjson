@@ -902,3 +902,8 @@ Reloading: {
 	DisplayName: Reloading
 	Description: Mods.Stellamod.Buffs.Reloading.Description
 }
+
+BellBlessing: {
+	DisplayName: Bell Blessing
+	Description: Mods.Stellamod.Buffs.BellBlessing.Description
+}

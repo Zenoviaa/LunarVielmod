@@ -53,6 +53,7 @@ namespace Stellamod.Core.SummonerSystem
     {
         private bool _spawnedMinionNPC;
         private int _npcWhoAmI = -1;
+        private Player Owner => Main.player[Projectile.owner];
         public virtual int GetAggro()
         {
             return -500;
@@ -92,6 +93,9 @@ namespace Stellamod.Core.SummonerSystem
         public override void AI()
         {
             base.AI();
+            if (!SummonHelper.CheckMinionActive<BellBlessing>(Owner, Projectile))
+                return;
+
             ManageHealthbar();
         }
         public virtual void Death()
@@ -103,7 +107,7 @@ namespace Stellamod.Core.SummonerSystem
 
             return false;
         }
-        public virtual void DrawSpectral(SpriteBatch spriteBatch)
+        public virtual void DrawSpectralWhites(SpriteBatch spriteBatch)
         {
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
@@ -115,15 +119,24 @@ namespace Stellamod.Core.SummonerSystem
             Color lightColor = Lighting.GetColor(p.X, p.Y);
             Color finalColor = Color.White.MultiplyRGB(lightColor);
 
-            spriteBatch.Restart(effect: SpriteWhiteShader.Instance.Effect, blendState: BlendState.Additive);
             spriteBatch.Draw(texture, drawPos - Vector2.UnitX * 2, frame, Color.White, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             spriteBatch.Draw(texture, drawPos + Vector2.UnitX * 2, frame, Color.White, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             spriteBatch.Draw(texture, drawPos - Vector2.UnitY * 2, frame, Color.White, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             spriteBatch.Draw(texture, drawPos + Vector2.UnitY * 2, frame, Color.White, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-            spriteBatch.RestartDefaults();
+        }
+
+        public virtual void DrawSpectral(SpriteBatch spriteBatch)
+        {
+            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Rectangle frame = Projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
+
+            float rotation = Projectile.rotation;
+            Point p = Projectile.position.ToTileCoordinates();
+            Color lightColor = Lighting.GetColor(p.X, p.Y);
+            Color finalColor = Color.White.MultiplyRGB(lightColor);
             spriteBatch.Draw(texture, drawPos, frame, finalColor, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-
-
         }
     }
 

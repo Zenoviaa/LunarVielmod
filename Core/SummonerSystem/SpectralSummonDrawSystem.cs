@@ -1,12 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Shaders;
-using Stellamod.Trails;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -14,6 +9,7 @@ namespace Stellamod.Core.SummonerSystem
 {
     public interface IDrawSpectral
     {
+        void DrawSpectralWhites(SpriteBatch spriteBatch);
         void DrawSpectral(SpriteBatch spriteBatch);
     }
 
@@ -24,7 +20,7 @@ namespace Stellamod.Core.SummonerSystem
 
         private static RenderTarget2D _rt;
         private static List<IDrawSpectral> _spectralDraws = new();
-   
+
 
         public override void Load()
         {
@@ -56,9 +52,9 @@ namespace Stellamod.Core.SummonerSystem
         {
             // Clear our render target from the previous frame.
             _spectralDraws.Clear();
-            foreach(var proj in Main.ActiveProjectiles)
+            foreach (var proj in Main.ActiveProjectiles)
             {
-                if(proj.ModProjectile is IDrawSpectral minion)
+                if (proj.ModProjectile is IDrawSpectral minion)
                 {
                     _spectralDraws.Add(minion);
                 }
@@ -80,6 +76,14 @@ namespace Stellamod.Core.SummonerSystem
             SwapToRenderTarget(renderTarget);
             if (drawSpectrals.Count > 0)
             {
+                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, SpriteWhiteShader.Instance.Effect);
+
+                foreach (var drawer in drawSpectrals)
+                {
+                    drawer.DrawSpectralWhites(Main.spriteBatch);
+                }
+
+                Main.spriteBatch.End();
                 Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
 
                 foreach (var drawer in drawSpectrals)
@@ -127,7 +131,7 @@ namespace Stellamod.Core.SummonerSystem
                     });
 
                 }
-     
+
                 _prevScreenSize = currentScreenSize;
             }
         }

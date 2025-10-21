@@ -9350,3 +9350,13 @@ TheUrdveilDoorItem: {
 	DisplayName: The Urdveil Door Item
 	Tooltip: ""
 }
+
+ArncharFlyingDrone: {
+	DisplayName: Arnchar Flying Drone
+	Tooltip: ""
+}
+
+SummoningBell: {
+	DisplayName: Summoning Bell
+	Tooltip: ""
+}

@@ -1,28 +1,45 @@
-﻿using Microsoft.Xna.Framework;
+
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs.Minions;
-using Stellamod.Core.Shaders;
 using Stellamod.Core.SummonerSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Bow;
 using Stellamod.Trails;
 using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Summons.Minions
+namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 {
+    public class ArncharFlyingDrone : BaseBellMinionItem
+    {
+        public override void SetDefaults2()
+        {
+            base.SetDefaults2();
+            Item.damage = 15;
+            Item.knockBack = 3f;
+            Item.shoot = ModContent.ProjectileType<ArncharMinionProj>();
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<Cinderscrap>());
+        }
+    }
+
     public class ArncharMinionProj : KillableMinion
     {
         private float WhiteTimer;
         private ref float Timer => ref Projectile.ai[0];
         private Player Owner => Main.player[Projectile.owner];
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Arnchar Drone");
@@ -65,32 +82,9 @@ namespace Stellamod.Projectiles.Summons.Minions
             return false;
         }
 
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return Color.White;
-        }
-
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.OrangeRed, Color.Transparent, completionRatio) * 0.7f;
-        }
-
-
-
         public override void DrawSpectral(SpriteBatch spriteBatch)
         {
             base.DrawSpectral(spriteBatch);
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
-
             Texture2D glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
             for (float f = 0f; f < 4f; f++)
             {
@@ -100,19 +94,17 @@ namespace Stellamod.Projectiles.Summons.Minions
             }
         }
 
-
         // This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
         public override bool MinionContactDamage()
         {
             return true;
         }
+
         public override void AI()
         {
             base.AI();
             Player player = Main.player[Projectile.owner];
             Projectile.spriteDirection = Projectile.direction;
-            if (!SummonHelper.CheckMinionActive<ArncharMinionBuff>(player, Projectile))
-                return;
 
             if (Main.rand.NextBool(12))
             {
@@ -181,4 +173,3 @@ namespace Stellamod.Projectiles.Summons.Minions
         }
     }
 }
-
