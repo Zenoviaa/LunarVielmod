@@ -36,6 +36,15 @@ namespace Stellamod.Core.SummonerSystem.UI
                     OverrideColor = Color.LightPink
                 };
                 tooltips.Add(line);
+
+                float ticks = bellPlayer.castingTime;
+                float seconds = ticks / 60;
+                string secondsString = seconds.ToString("#.#");
+                line = new TooltipLine(Mod, "belltip", LangText.Common("TotalCastingTime", secondsString))
+                {
+                    OverrideColor = Color.LightPink
+                };
+                tooltips.Add(line);
             }
 
         }

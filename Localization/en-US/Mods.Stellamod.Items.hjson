@@ -59,6 +59,7 @@ Common: {
 	BellLock: Real
 	BellUse: Put your minions into the bell, then hold [{0}] to summon them!
 	CastingTime: "{0} seconds added to your casting time"
+	TotalCastingTime: "{0} seconds of casting time"
 }
 
 SetBonus: {
