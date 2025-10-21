@@ -27,7 +27,7 @@ namespace Stellamod.Core.SummonerSystem
             // These below are needed for a minion weapon
             Item.noMelee = true;
             Item.DamageType = DamageClass.Summon;
-
+            SetDefaults2();
         }
         public virtual void SetDefaults2()
         {

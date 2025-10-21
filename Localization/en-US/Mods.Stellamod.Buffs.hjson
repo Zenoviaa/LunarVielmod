@@ -907,3 +907,8 @@ BellBlessing: {
 	DisplayName: Bell Blessing
 	Description: Mods.Stellamod.Buffs.BellBlessing.Description
 }
+
+BellSummoning: {
+	DisplayName: Bell Summoning
+	Description: Mods.Stellamod.Buffs.BellSummoning.Description
+}

@@ -56,6 +56,8 @@ Common: {
 	StaminaFlaskLock: This item is LOCKED, continue exploring and you may find it.
 	StaminaCost: Costs {0} stamina to use
 	ExpandTooltipHelp: Press [{0}] for more information
+	BellLock: Real
+	BellUse: Put your minions into the bell, then hold [{0}] to summon them!
 }
 
 SetBonus: {

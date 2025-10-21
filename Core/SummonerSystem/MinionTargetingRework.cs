@@ -25,8 +25,13 @@ namespace Stellamod.Core.SummonerSystem
         int GetAggro();
     }
 
+    public class SpectralMinion : ModBuff
+    {
+
+    }
     public class DummyNPC : ModNPC
     {
+        private ref float KillMyselfTimer => ref NPC.ai[0];
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -41,6 +46,18 @@ namespace Stellamod.Core.SummonerSystem
             NPC.ShowNameOnHover = false;
         }
 
+        public override void AI()
+        {
+            base.AI();
+            if (NPC.HasBuff<SpectralMinion>())
+                KillMyselfTimer = 0;
+            else
+                KillMyselfTimer++;
+            if(KillMyselfTimer >= 5)
+            {
+                NPC.active = false;
+            }
+        }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             return false;
@@ -85,6 +102,7 @@ namespace Stellamod.Core.SummonerSystem
                 return;
             NPC npc = Main.npc[_npcWhoAmI];
             npc.Center = Projectile.Center;
+            npc.AddBuff(ModContent.BuffType<SpectralMinion>(), 2);
             if (!npc.active)
             {
                 Death();
@@ -93,6 +111,7 @@ namespace Stellamod.Core.SummonerSystem
         public override void AI()
         {
             base.AI();
+            Owner.GetModPlayer<BellPlayer>().hasBellMinions = true;
             if (!SummonHelper.CheckMinionActive<BellBlessing>(Owner, Projectile))
                 return;
 
@@ -100,6 +119,7 @@ namespace Stellamod.Core.SummonerSystem
         }
         public virtual void Death()
         {
+            FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightGray, Color.Blue);
             Projectile.Kill();
         }
         public override bool PreDraw(ref Color lightColor)

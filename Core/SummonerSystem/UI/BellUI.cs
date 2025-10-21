@@ -62,6 +62,7 @@ namespace Stellamod.Core.SummonerSystem.UI
             _inventoryMenu.Left.Set(0, 0.5f);
             Append(_inventoryMenu);
             Append(_xButton);
+            Orient();
         }
 
         public bool NeedsRecalculate()
@@ -93,7 +94,12 @@ namespace Stellamod.Core.SummonerSystem.UI
             {
                 CalculateSlots();
             }
+            Orient();
 
+        }
+
+        private void Orient()
+        {
             Width.Pixels = width;
             Height.Pixels = height;
 

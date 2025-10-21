@@ -32,7 +32,7 @@ namespace Stellamod.Core.SummonerSystem.UI
             else
             {
                 // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
-                var line = new TooltipLine(Mod, "belltip", LangText.Common("BellUse"))
+                var line = new TooltipLine(Mod, "belltip", LangText.Common("BellUse", LunarVeilKeybinds.BellKeybind.GetAssignedKeys()[0]))
                 {
                     OverrideColor = Color.LightPink
                 };
