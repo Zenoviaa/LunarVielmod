@@ -32,6 +32,13 @@ namespace Stellamod.Core.SummonerSystem
         {
             base.ResetEffects();
             castingTime = 60;
+            foreach(var item in _minions)
+            {
+                if (item.ModItem is BaseBellMinionItem bellMinion)
+                {
+                    castingTime += bellMinion.GetAddedCastingTime();
+                }
+            }
             isSummoning = false;
             hasBellMinions = false;
         }

@@ -889,26 +889,36 @@ FlamecrestShieldBuff: {
 }
 
 PrismaticBubbledBuff: {
-	DisplayName: Prismatic Bubbled Buff
-	Description: Mods.Stellamod.Buffs.PrismaticBubbledBuff.Description
+	DisplayName: Prismatic Bubbled
+	Description: Aaaaaaaaaaa help me!
 }
 
 FireFury: {
 	DisplayName: Fire Fury
-	Description: Mods.Stellamod.Buffs.FireFury.Description
+	Description: Fast and furious!
 }
 
 Reloading: {
 	DisplayName: Reloading
-	Description: Mods.Stellamod.Buffs.Reloading.Description
+	Description: You need to reload your gun! Time the minigame correctly!
 }
 
 BellBlessing: {
 	DisplayName: Bell Blessing
-	Description: Mods.Stellamod.Buffs.BellBlessing.Description
+	Description: You and what army?
 }
 
 BellSummoning: {
 	DisplayName: Bell Summoning
-	Description: Mods.Stellamod.Buffs.BellSummoning.Description
+	Description: You're summoning your followers! 
+}
+
+BellExhaust: {
+	DisplayName: Bell Exhaust
+	Description: You're too exhausted to use your bell again!
+}
+
+SpectralMinion: {
+	DisplayName: Spectral Minion
+	Description: A goofy goober
 }

@@ -58,6 +58,7 @@ Common: {
 	ExpandTooltipHelp: Press [{0}] for more information
 	BellLock: Real
 	BellUse: Put your minions into the bell, then hold [{0}] to summon them!
+	CastingTime: "{0} seconds added to your casting time"
 }
 
 SetBonus: {
@@ -9355,7 +9356,7 @@ TheUrdveilDoorItem: {
 
 ArncharFlyingDrone: {
 	DisplayName: Arnchar Flying Drone
-	Tooltip: ""
+	Tooltip: Summons a flying drone to chase down enemies and pelt them with mini lasers!
 }
 
 SummoningBell: {

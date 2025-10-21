@@ -1,4 +1,8 @@
-﻿using Terraria.ID;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.XixianFlaskSystem;
+using Stellamod.Helpers;
+using System.Collections.Generic;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.SummonerSystem
@@ -16,16 +20,33 @@ namespace Stellamod.Core.SummonerSystem
             Item.useTime = 36;
             Item.useAnimation = 36;
             Item.useStyle = ItemUseStyleID.Swing;
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Green;
 
             // These below are needed for a minion weapon
             Item.noMelee = true;
             Item.DamageType = DamageClass.Summon;
             SetDefaults2();
         }
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            base.ModifyTooltips(tooltips);
+            float ticks = GetAddedCastingTime();
+            float seconds = ticks / 60;
+            string secondsString = seconds.ToString("#.#");
+            TooltipLine line = new TooltipLine(Mod, "AmountOfCastingTime",
+                LangText.Common("CastingTime", secondsString));
+            line.OverrideColor = Color.Lerp(new Color(80, 187, 180), Color.Black, 0.25f);
+            tooltips.Add(line);
+        }
         public virtual void SetDefaults2()
         {
 
+        }
+
+
+        public virtual float GetAddedCastingTime()
+        {
+            return 60f;
         }
     }
 }
