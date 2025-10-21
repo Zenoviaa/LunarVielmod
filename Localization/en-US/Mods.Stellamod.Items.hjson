@@ -2098,8 +2098,12 @@ OceansTrinket: {
 }
 
 RuneOfCorsage: {
-	DisplayName: Rune Of Corsage
-	Tooltip: Great for regeneration!
+	DisplayName: Glyph Of Corsage
+	Tooltip: 
+		'''
+		While standing still, you have boosted life regeneration
+		Nearby enemies are poisoned
+		'''
 	Effect:
 		'''
 		While standing still, you have boosted life regeneration
