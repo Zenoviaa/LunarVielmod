@@ -46,7 +46,7 @@ namespace Stellamod.Core.SummonerSystem
 
         public virtual float GetAddedCastingTime()
         {
-            return 60f;
+            return 300;
         }
     }
 }

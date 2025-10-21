@@ -108,8 +108,8 @@ namespace Stellamod.Core.SummonerSystem.UI
             Top.Pixels = RelativeTop;
 
             Vector2 flaskOffset = new Vector2(92);
-            _flaskImage.Left.Pixels = flaskOffset.X + 12;
-            _flaskImage.Top.Pixels = flaskOffset.Y;
+            _flaskImage.Left.Pixels = flaskOffset.X + 17;
+            _flaskImage.Top.Pixels = flaskOffset.Y + 8;
             for (int i = 0; i < _slots.Count; i++)
             {
                 var slot = _slots[i];

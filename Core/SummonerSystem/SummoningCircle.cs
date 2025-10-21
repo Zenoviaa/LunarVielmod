@@ -45,7 +45,7 @@ namespace Stellamod.Core.SummonerSystem
             auraColor *= Projectile.timeLeft / 30f;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             Rectangle? frameRect = null;
-            Vector2 scale = new Vector2(1f, 0.2f);
+            Vector2 scale = new Vector2(1f, 0.05f);
             Vector2 drawScale = scale * Vector2.One;
             drawScale *= MathHelper.Lerp(0.8f, 1f, ExtraMath.Osc(0f, 1f));
 
