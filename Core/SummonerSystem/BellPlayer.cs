@@ -28,6 +28,7 @@ namespace Stellamod.Core.SummonerSystem
         public float castingTime;
         public bool isSummoning;
         public bool hasBellMinions;
+        public float summonRatio => castTimer / castingTime;    
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -72,7 +73,13 @@ namespace Stellamod.Core.SummonerSystem
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
                     ModContent.ProjectileType<SummoningCircle>(), 1, 1, Player.whoAmI);
             }
-
+            if (isSummoning
+                && Player.ownedProjectileCounts[ModContent.ProjectileType<SummoningBar>()] == 0
+                && Main.myPlayer == Player.whoAmI)
+            {
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
+                    ModContent.ProjectileType<SummoningBar>(), 1, 1, Player.whoAmI);
+            }
             if (isSummoning)
             {
                 castTimer++;
