@@ -102,7 +102,9 @@ namespace Stellamod.Core.SummonerSystem
             foreach (var minionItem in _minions)
             {
                 int newDamage = (int)Player.GetTotalDamage(DamageClass.Summon).ApplyTo(minionItem.damage);
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Bottom - new Vector2(0, 50), Vector2.Zero,
+                Vector2 startpos = Player.Bottom - new Vector2(0, 50);
+                startpos.X += Main.rand.NextFloat(-100, 100);
+                Projectile.NewProjectile(Player.GetSource_FromThis(), startpos, Vector2.Zero,
                     ModContent.ProjectileType<SummoningBeam>(), newDamage, minionItem.knockBack, Player.whoAmI,
                     ai1: minionItem.shoot);
             }
