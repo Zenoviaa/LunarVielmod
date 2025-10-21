@@ -243,7 +243,7 @@ namespace Stellamod.Core.SwingSystem
                 Vector2 origin = sourceRectangle.Size() / 2f;
                 Color drawColor = GetAfterImageColor(interpolant);
                 drawColor *= EasingFunction.QuadraticBump(interpolant);
-                float drawScale = 1f;
+                float drawScale = 1.15f + growScale;
                 Vector2 position = afterImageCache[a];
                 float drawRotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
 

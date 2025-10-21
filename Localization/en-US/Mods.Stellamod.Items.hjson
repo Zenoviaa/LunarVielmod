@@ -60,6 +60,7 @@ Common: {
 	BellUse: Put your minions into the bell, then hold [{0}] to summon them!
 	CastingTime: "{0} seconds added to your casting time"
 	TotalCastingTime: "{0} seconds of casting time"
+	ClassNerf: You are not proficient at using this damage class...
 }
 
 SetBonus: {
@@ -2099,7 +2100,7 @@ OceansTrinket: {
 
 RuneOfCorsage: {
 	DisplayName: Glyph Of Corsage
-	Tooltip: 
+	Tooltip:
 		'''
 		While standing still, you have boosted life regeneration
 		Nearby enemies are poisoned
@@ -9366,5 +9367,10 @@ ArncharFlyingDrone: {
 
 SummoningBell: {
 	DisplayName: Summoning Bell
+	Tooltip: ""
+}
+
+ClassSwapItem: {
+	DisplayName: Class Swap Item
 	Tooltip: ""
 }

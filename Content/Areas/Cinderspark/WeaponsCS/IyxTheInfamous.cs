@@ -25,6 +25,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void SetDefaults2()
         {
             base.SetDefaults2();
+            Item.damage = 30;
             Item.shoot = ModContent.ProjectileType<IyxTheInfamousSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<IyxTheInfamousStaminaSlash>();
             meleeWeaponType = MeleeWeaponType.Sword;
