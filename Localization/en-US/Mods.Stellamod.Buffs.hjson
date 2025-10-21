@@ -910,7 +910,7 @@ BellBlessing: {
 
 BellSummoning: {
 	DisplayName: Bell Summoning
-	Description: You're summoning your followers! 
+	Description: You're summoning your followers!
 }
 
 BellExhaust: {

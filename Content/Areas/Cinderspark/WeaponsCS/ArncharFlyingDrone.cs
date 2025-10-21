@@ -23,7 +23,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 15;
+            Item.damage = 38;
             Item.knockBack = 3f;
             Item.shoot = ModContent.ProjectileType<ArncharMinionProj>();
         }
@@ -117,7 +117,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
 
             IdleTimer++;
-            if (IdleTimer >= 120)
+            if (IdleTimer >= 180)
             {
                 SummonHelper.SearchForTargets(Owner, Projectile, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
                 if (foundTarget)
@@ -138,7 +138,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
             Vector2 targetVelocity = (targetHoverPos - Projectile.Center) * 0.05f;
             Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.1f);
-            if (Timer > 30 && Timer % 10 == 0)
+            if (Timer > 30 && Timer % 20 == 0)
             {
                 int Sound = Main.rand.Next(1, 3);
                 SoundStyle mySound = new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone1");

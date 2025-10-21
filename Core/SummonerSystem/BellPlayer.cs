@@ -33,8 +33,10 @@ namespace Stellamod.Core.SummonerSystem
         {
             base.ResetEffects();
             castingTime = 60;
-            foreach(var item in _minions)
+
+            for(int i = 0; i < Player.maxMinions && i < _minions.Count; i++)
             {
+                var item = _minions[i];
                 if (item.ModItem is BaseBellMinionItem bellMinion)
                 {
                     castingTime += bellMinion.GetAddedCastingTime();
@@ -106,8 +108,9 @@ namespace Stellamod.Core.SummonerSystem
             if (Main.myPlayer != Player.whoAmI)
                 return;
 
-            foreach (var minionItem in _minions)
+            for(int i = 0; i < Player.maxMinions && i < _minions.Count; i++)
             {
+                var minionItem = _minions[i];
                 int newDamage = (int)Player.GetTotalDamage(DamageClass.Summon).ApplyTo(minionItem.damage);
                 Vector2 startpos = Player.Bottom - new Vector2(0, 50);
                 startpos.X += Main.rand.NextFloat(-100, 100);
@@ -115,6 +118,7 @@ namespace Stellamod.Core.SummonerSystem
                     ModContent.ProjectileType<SummoningBeam>(), newDamage, minionItem.knockBack, Player.whoAmI,
                     ai1: minionItem.shoot);
             }
+
             Player.AddBuff(ModContent.BuffType<BellExhaust>(), 600);
         }
         public override void SaveData(TagCompound tag)
