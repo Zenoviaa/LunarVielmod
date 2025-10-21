@@ -1,12 +1,11 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core.XixianFlaskSystem;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using System.Collections.Generic;
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
-using Terraria;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 
 namespace Stellamod.Core.SummonerSystem.UI
 {

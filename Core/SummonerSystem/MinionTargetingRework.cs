@@ -75,6 +75,7 @@ namespace Stellamod.Core.SummonerSystem
         {
             return -500;
         }
+       
 
         public override void SendExtraAI(BinaryWriter writer)
         {
