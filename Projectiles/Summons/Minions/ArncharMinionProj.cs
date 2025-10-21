@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
+using Stellamod.Core.SummonerSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Bow;
@@ -15,7 +16,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    public class ArncharMinionProj : ModProjectile
+    public class ArncharMinionProj : KillableMinion
     {
         private float WhiteTimer;
         private ref float Timer => ref Projectile.ai[0];
@@ -124,7 +125,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         }
         public override void AI()
         {
-
+            base.AI();
             Player player = Main.player[Projectile.owner];
             Projectile.spriteDirection = Projectile.direction;
             if (!SummonHelper.CheckMinionActive<ArncharMinionBuff>(player, Projectile))

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
+using Stellamod.Core.SummonerSystem;
 using Stellamod.Helpers;
 using System;
 using Terraria;
@@ -17,7 +18,7 @@ namespace Stellamod.Projectiles.Summons.Minions
              * If the player targets a certain NPC with right-click, it will fly through tiles to it
              * If it isn't attacking, it will float near the player with minimal movement
              */
-    public class DripplerMinionProj : ModProjectile
+    public class DripplerMinionProj : ModProjectile, ITargetable
     {
         private Vector2 _targetOffset;
         private int _targetNpc = -1;

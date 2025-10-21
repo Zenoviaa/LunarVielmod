@@ -251,7 +251,7 @@ namespace Stellamod.Core.GunSystem
                     reloadTimer = 0;
                 }
 
-                Main.player
+             
                 if (Main.myPlayer == Player.whoAmI)
                 {
                     if (TimedReload())
