@@ -4,7 +4,7 @@ using Terraria;
 
 namespace Stellamod.Projectiles.Crossbows
 {
-    public class WoodenCrossbowHold : BaseCrossbowProjectile
+    public class WoodenCrossbowHold : CrossbowHold
     {
         public override void Shoot(Vector2 position, Vector2 velocity)
         {

@@ -28,7 +28,7 @@ namespace Stellamod.Core.ClassReworkSystem
         public override void AI()
         {
             base.AI();
-            const float holdDistance = 40;
+            const float holdDistance = 28;
             const float radius = 32;
 
             ClassReworkPlayer classReworkPlayer = Owner.GetModPlayer<ClassReworkPlayer>();

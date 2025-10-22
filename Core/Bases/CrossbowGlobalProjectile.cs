@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Effects;
+using Stellamod.Core.Shaders;
+using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -37,7 +39,6 @@ namespace Stellamod.Core.Bases
             Initialized = false;
             CrossbowShot = false;
             CrossbowOldPos = null;
-            TrailDrawer = null;
         }
 
         public override void PostAI(Projectile projectile)
@@ -48,7 +49,7 @@ namespace Stellamod.Core.Bases
 
             if (!Initialized)
             {
-                CrossbowOldPos = new Vector2[64];
+                CrossbowOldPos = new Vector2[32];
 
                 projectile.extraUpdates += 4;
                 projectile.ArmorPenetration += 10;
@@ -64,18 +65,22 @@ namespace Stellamod.Core.Bases
 
             projectile.velocity.Y -= 0.075f;
         }
+        private Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.White, Color.SpringGreen, completionRatio);
+        }
 
         private float WidthFunction(float completionRatio)
         {
-            return MathHelper.Lerp(12, 0f, completionRatio);
+            float w = 12;
+            float ew = w / 10;
+            float width = w;
+            float p = completionRatio / 0.5f;
+            float ep = EasingFunction.OutCirc(p);
+            float circleWidth = MathHelper.Lerp(0, w, ep);
+            float trailWidth = MathHelper.Lerp(width, 0, EasingFunction.OutCirc(completionRatio));
+            return MathHelper.Lerp(circleWidth, trailWidth, EasingFunction.OutExpo(completionRatio));
         }
-
-        private Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.White, Color.Transparent, completionRatio);
-        }
-
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         protected virtual void DrawSlashTrail(Projectile projectile, ref Color lightColor)
         {
             Trailer?.DrawTrail(ref lightColor, CrossbowOldPos);
@@ -83,13 +88,16 @@ namespace Stellamod.Core.Bases
                 return;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.RestartDefaults();
-            Vector2 drawOffset = -Main.screenPosition;
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
-            TrailDrawer.DrawPrims(CrossbowOldPos, drawOffset + projectile.Size / 2, 155);
-           
+
+            var shader = MagicNormalShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
+            shader.NoiseTexture = TrailRegistry.SpikyTrail1;
+            shader.BlendState = BlendState.Additive;
+            shader.SamplerState = SamplerState.PointWrap;
+            shader.Speed = 0.5f;
+            shader.Repeats = 1f;
+            //This just applis the shader changes
+            TrailDrawer.Draw(Main.spriteBatch, CrossbowOldPos, projectile.oldRot, ColorFunction, WidthFunction, shader, offset: projectile.Size / 2);
         }
 
         public override bool PreDraw(Projectile projectile, ref Color lightColor)
@@ -115,22 +123,19 @@ namespace Stellamod.Core.Bases
             float size = 0.12f + Main.rand.NextFloat(-0.04f, 0.04f);
             if (hit.Crit)
                 size *= 2;
-            var particle = FXUtil.GlowCircleLongBoom(projectile.Center,
-                innerColor: Color.White,
-                glowColor: Color.LightGray,
-                outerGlowColor: Color.DarkGray, duration: 25, baseSize: size);
-            particle.Rotation = projectile.velocity.RotatedByRandom(MathHelper.ToRadians(45)).ToRotation();
+
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(target.Center, 1024f, 12f);
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 2; i++)
             {
-                Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.White, 1f).noGravity = true;
+                Dust.NewDustPerfect(projectile.Center, ModContent.DustType<GlowDust>(),
+                    projectile.oldVelocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.5f, 1f), 0, Color.White, 1f).noGravity = true;
             }
 
-            FXUtil.GlowCircleBoom(target.Center,
+            FXUtil.GlowCircleBoom(projectile.Center,
                 innerColor: Color.White,
                 glowColor: Color.Black,
-                outerGlowColor: Color.Black, duration: 25, baseSize: 0.12f);
+                outerGlowColor: Color.Black, duration: 25, baseSize: Main.rand.NextFloat(0.07f, 0.12f));
         }
     }
 }
