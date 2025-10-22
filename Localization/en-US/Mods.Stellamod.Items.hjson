@@ -44,6 +44,7 @@ Common: {
 		'''
 		Hold to charge up an arrow, then release to fire
 		Charged shots do much more damage!
+		Hold right click to use your special
 		'''
 	StyleSword: Sword Attack Style
 	BasicSlash: "{0}"
@@ -3084,6 +3085,8 @@ SolMothStaff: {
 HeatGlider: {
 	DisplayName: Heat Glider
 	Tooltip: Oh burn baby burn :)
+	StaminaSlash: Shoots a powerful, piercing, and ricocheting solar arrow!
+	BasicSlash: ""
 }
 
 JPost: {

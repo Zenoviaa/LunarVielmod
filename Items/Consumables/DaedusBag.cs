@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Terraria;

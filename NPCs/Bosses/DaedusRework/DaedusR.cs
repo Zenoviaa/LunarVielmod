@@ -1,12 +1,12 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Igniters;
-using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Thrown;
 using System.IO;
 using Terraria;
