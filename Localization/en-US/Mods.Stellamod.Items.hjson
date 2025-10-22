@@ -39,15 +39,15 @@ Common: {
 		If your big gun hits a summon, it will increase their damage by 25% 
 		'''
 	ScorpionRightClickHelp: "Right click in inventory to open your gun slots "
-	Crossbow: Crossbow Weapon Type
+	Crossbow: Bow Weapon Type
 	CrossbowHelp:
 		'''
-		Use to load an arrow into the crossbow
-		Use again to fire a powerful sniper-like arrow!
+		Hold to charge up an arrow, then release to fire
+		Charged shots do much more damage!
 		'''
 	StyleSword: Sword Attack Style
-	BasicSlash: Basic Slash: {0}
-	StaminaSlash: Stamina Slash: {0}
+	BasicSlash: "{0}"
+	StaminaSlash: "Special: {0}"
 	WeaponTypeSword: Sword Weapon Type
 	WeaponTypeKnives: Knives Weapon Type
 	WeaponTypeScythe: Scythe Weapon Type
@@ -2874,7 +2874,9 @@ IvynShot: {
 
 JackoShot: {
 	DisplayName: Jacko Shot
-	Tooltip: Every third shot shoots a fire arrow that explodes into 3 homing embers!
+	Tooltip: Pumpkin bow
+	BasicSlash: ""
+	StaminaSlash: Shoots an pumpkin arrow that explodes into 3 homing flames!
 }
 
 JellyBow: {
@@ -6772,8 +6774,8 @@ FlowerHat: {
 Cryal: {
 	DisplayName: Cryal
 	Tooltip: Frosty~
-	BasicSlash: Shoots two arrows
-	StaminaSlash: Shoots a frosty comet that slows down and explodes into frozen fish!
+	BasicSlash: Shoots two arrows at once!
+	StaminaSlash: Shoots a frosty comet that slows down and explodes into frozen fish
 }
 
 MahoganyStorm: {
@@ -8942,6 +8944,8 @@ KindCompass: {
 IronBow: {
 	DisplayName: Iron Bow
 	Tooltip: ""
+	BasicSlash: ""
+	StaminaSlash: Shoots a quick burst of 3 arrows
 }
 
 HangingSpringPotFlowerItem: {

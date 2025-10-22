@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Igniter;
 using Stellamod.Items.Consumables;
@@ -9,7 +10,6 @@ using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Utilis;
 using System;
 using System.IO;

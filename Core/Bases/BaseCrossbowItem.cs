@@ -12,7 +12,7 @@ namespace Stellamod.Core.Bases
 {
     public abstract class BaseCrossbowItem : ModItem
     {
-        public int staminaCost = 1;
+        public int staminaCost = 2;
         public int staminaProjectileShoot;
 
         public string BasicSlash
@@ -32,6 +32,12 @@ namespace Stellamod.Core.Bases
         }
 
 
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            this.GetLocalization(nameof(BasicSlash), () => "");
+            this.GetLocalization(nameof(StaminaSlash), () => "No Effect");
+        }
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -94,39 +100,41 @@ namespace Stellamod.Core.Bases
             var line = new TooltipLine(Mod, "", "");
             Keys keys = Keys.LeftShift;
             bool isExpanded = Main.keyState.IsKeyDown(keys);
-
+            line = new TooltipLine(Mod, "Crossbow", Helpers.LangText.Common("Crossbow"))
+            {
+                OverrideColor = Color.LightGreen
+            };
+            tooltips.Add(line);
             if (!isExpanded)
             {
                 line = new TooltipLine(Mod, "ExpandTooltipHelp", LangText.Common("ExpandTooltipHelp", "Left Shift"));
-                line.OverrideColor = Color.LightGray;
+                line.OverrideColor = Color.Lerp(Color.White, Color.Black, 0.7f);
                 tooltips.Add(line);
             }
             else
             {
-                line = new TooltipLine(Mod, "Crossbow", Helpers.LangText.Common("Crossbow"))
-                {
-                    OverrideColor = Color.OrangeRed
-                };
-                tooltips.Add(line);
+
 
                 line = new TooltipLine(Mod, "CrossbowHelp", Helpers.LangText.Common("CrossbowHelp"))
                 {
-                    OverrideColor = Color.LightGray
+                    OverrideColor = Color.White
                 };
                 tooltips.Add(line);
 
-                line = new TooltipLine(Mod, "BasicSlash", LangText.Common("BasicSlash", LangText.Item(this, "BasicSlash")));
-                line.OverrideColor = new Color(124, 187, 80);
-                tooltips.Add(line);
-
-                line = new TooltipLine(Mod, "StaminaSlash", LangText.Common("StaminaSlash", LangText.Item(this, "StaminaSlash")));
-                line.OverrideColor = Color.Goldenrod;
-                tooltips.Add(line);
-
-                line = new TooltipLine(Mod, "StaminaCost", LangText.Common("StaminaCost", staminaCost.ToString()));
-                line.OverrideColor = Color.Goldenrod;
-                tooltips.Add(line);
             }
+
+
+            line = new TooltipLine(Mod, "BasicSlash", LangText.Common("BasicSlash", LangText.Item(this, "BasicSlash")));
+            line.OverrideColor = new Color(124, 187, 80);
+            tooltips.Add(line);
+
+            line = new TooltipLine(Mod, "StaminaSlash", LangText.Common("StaminaSlash", LangText.Item(this, "StaminaSlash")));
+            line.OverrideColor = Color.Gold;
+            tooltips.Add(line);
+
+            line = new TooltipLine(Mod, "StaminaCost", LangText.Common("StaminaCost", staminaCost.ToString()));
+            line.OverrideColor = Color.Gold;
+            tooltips.Add(line);
         }
 
         public virtual void ShootBow(Player player, EntitySource_ItemUse_WithAmmo source,

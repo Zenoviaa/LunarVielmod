@@ -26,6 +26,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
         {
             base.SetDefaults();
             Item.damage = 8;
+            Item.rare = ItemRarityID.Green;
         }
 
         public override void ShootBow(Player player, EntitySource_ItemUse_WithAmmo source, ShootParams shootParams)
