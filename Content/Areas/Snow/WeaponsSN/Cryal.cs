@@ -107,7 +107,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
 
         public override void PostDraw(Color lightColor)
         {
-            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
+            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             for (int i = 0; i < 3; i++)
             {
                 Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null,
