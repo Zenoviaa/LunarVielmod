@@ -71,6 +71,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.Frostburn, 180);
+            Projectile.velocity *= 0.3f;
         }
         public override void SetDefaults()
         {
@@ -105,6 +106,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
             return false;
         }
 
+       
         public override void PostDraw(Color lightColor)
         {
             Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;

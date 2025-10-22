@@ -14,6 +14,24 @@ namespace Stellamod.Core.Bases
     {
         public int staminaCost = 1;
         public int staminaProjectileShoot;
+
+        public string BasicSlash
+        {
+            get
+            {
+                return LangText.Common("BasicSlash", LangText.Item(this, "BasicSlash"));
+            }
+        }
+
+        public string StaminaSlash
+        {
+            get
+            {
+                return LangText.Common("StaminaSlash", LangText.Item(this, "StaminaSlash"));
+            }
+        }
+
+
         public override void SetDefaults()
         {
             base.SetDefaults();

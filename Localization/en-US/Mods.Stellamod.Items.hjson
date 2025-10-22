@@ -6771,7 +6771,9 @@ FlowerHat: {
 
 Cryal: {
 	DisplayName: Cryal
-	Tooltip: Shoots 2 icy bolts and some arrows!
+	Tooltip: Frosty~
+	BasicSlash: Shoots two arrows
+	StaminaSlash: Shoots a frosty comet that slows down and explodes into frozen fish!
 }
 
 MahoganyStorm: {
