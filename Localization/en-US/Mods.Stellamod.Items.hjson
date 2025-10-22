@@ -3502,6 +3502,8 @@ Blackdot: {
 Galvinie: {
 	DisplayName: Galvinie
 	Tooltip: Your mouse isn't gonna like this
+	BasicSlash: Wooden arrows are converted into lightning fast golden arrows
+	StaminaSlash: Shoots a quick burst of 3 arrows
 }
 
 TheBurningRod: {

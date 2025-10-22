@@ -234,6 +234,7 @@ namespace Stellamod.Core.Bases
                         innerColor: Color.White,
                         glowColor: Color.LightGray,
                         outerGlowColor: Color.Black);
+                    particle.Scale *= 0.5f;
                     particle.Rotation = rot + MathHelper.ToRadians(45);
                 }
             }
