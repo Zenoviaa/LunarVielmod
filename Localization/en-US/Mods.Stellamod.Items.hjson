@@ -2794,11 +2794,9 @@ X3107: {
 
 ArchariliteEnergyShot: {
 	DisplayName: Arncharilite Energy Shot
-	Tooltip:
-		'''
-		Shoots a spread of 3 arrows
-		Becomes empowered by the Arnchar Super Charger!
-		'''
+	Tooltip: ""
+	BasicSlash: ""
+	StaminaSlash:  Shoots a spread of 3 super-powered arrows, great for burst damage!
 }
 
 AssassinsDischarge: {
