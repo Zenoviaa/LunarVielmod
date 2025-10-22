@@ -47,7 +47,7 @@ Common: {
 		'''
 	StyleSword: Sword Attack Style
 	BasicSlash: "{0}"
-	StaminaSlash: "Special: {0}"
+	StaminaSlash: Special: {0}
 	WeaponTypeSword: Sword Weapon Type
 	WeaponTypeKnives: Knives Weapon Type
 	WeaponTypeScythe: Scythe Weapon Type
@@ -2881,7 +2881,9 @@ JackoShot: {
 
 JellyBow: {
 	DisplayName: Jelly Bow
-	Tooltip: It's a nice bow, there's nothing else special about it
+	Tooltip: So is it sticky or slippery?
+	BasicSlash: ""
+	StaminaSlash: Shoots an exploding jelly shot
 }
 
 LAZER: {

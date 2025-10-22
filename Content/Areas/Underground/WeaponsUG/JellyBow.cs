@@ -1,32 +1,62 @@
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Bases;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Magic
+namespace Stellamod.Content.Areas.Underground.WeaponsUG
 {
+    public class JellyBow : BaseCrossbowItem
+    {
+
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = 12;
+            Item.rare = ItemRarityID.Green;
+        }
+
+        public override void StaminaShootBow(Player player, EntitySource_ItemUse_WithAmmo source, ShootParams shootParams)
+        {
+            base.StaminaShootBow(player, source, shootParams);
+            float bowDamage = shootParams.damage * shootParams.chargeStrength * 2;
+            Vector2 bulletVelocity = shootParams.velocity * shootParams.chargeStrength * 32;
+            Projectile.NewProjectile(source, shootParams.position, bulletVelocity,
+                ModContent.ProjectileType<Gelatin>(), (int)bowDamage, shootParams.knockBack, player.whoAmI);
+        }
+
+    }
+
+
     public class GelatinBoom : BaseIgniterExplosion
     {
         public override int FrameCount => 22;
         public override void Start()
         {
             base.Start();
-            var circle = EffectsHelper.SimpleExplosionCircle(Projectile, Color.Aqua, endRadius: 80);
+      
+            for(float f = 0; f < 16; f++)
+            {
+                Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), velocity, Scale: Main.rand.NextFloat(0.5f, 1f), newColor: Color.LightPink);
+            }
             for (int i = 0; i < 2; i++)
             {
-                int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.VenomStaff, 0f, -2f, 0, default(Color), .8f);
+                int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.VenomStaff, 0f, -2f, 0, default, .8f);
                 Main.dust[num1].noGravity = true;
                 Main.dust[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 Main.dust[num1].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 if (Main.dust[num1].position != Projectile.Center)
                     Main.dust[num1].velocity = Projectile.DirectionTo(Main.dust[num1].position) * 6f;
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.VenomStaff, 0f, -2f, 0, default(Color), .8f);
+                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.VenomStaff, 0f, -2f, 0, default, .8f);
                 Main.dust[num].noGravity = true;
                 Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
@@ -37,7 +67,7 @@ namespace Stellamod.Projectiles.Magic
 
             for (int i = 0; i < 15; i++)
             {
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.VenomStaff, 0f, -2f, 0, default(Color), 1f);
+                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.VenomStaff, 0f, -2f, 0, default, 1f);
                 Main.dust[num].noGravity = true;
                 Main.dust[num].scale = 1.9f;
                 Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
@@ -49,7 +79,7 @@ namespace Stellamod.Projectiles.Magic
 
             for (int i = 0; i < 5; i++)
             {
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.VenomStaff, 0f, -2f, 0, default(Color), 1.2f);
+                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.VenomStaff, 0f, -2f, 0, default, 1.2f);
                 Main.dust[num].noGravity = true;
                 Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;

@@ -2,10 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using ReLogic.Content;
+using Stellamod.Content.Areas.Underground.WeaponsUG;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Special.MinerLogs;
-using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using System;
 using Terraria;
