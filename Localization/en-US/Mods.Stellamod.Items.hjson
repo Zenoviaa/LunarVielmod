@@ -6340,8 +6340,10 @@ PureHeart: {
 }
 
 MushroomGreatbow: {
-	Tooltip: ""
+	Tooltip: Honestly, it looks kinda creepy
 	DisplayName: Mushroom Greatbow
+	BasicSlash: ""
+	StaminaSlash: Shoots a quick burst of 5 arrows
 }
 
 Hookarama: {
