@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.ClassReworkSystem
@@ -59,6 +60,8 @@ namespace Stellamod.Core.ClassReworkSystem
                 if (npc.CountsAsACritter)
                     continue;
                 if (npc.boss)
+                    continue;
+                if (npc.type == NPCID.TargetDummy)
                     continue;
 
                 Rectangle targetRect = npc.getRect();

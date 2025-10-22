@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
@@ -32,6 +33,8 @@ namespace Stellamod.Core.SwingSystem
         public bool useAfterImage;
         public Color glowColor;
         public float growScale;
+        public float swordBeamLength;
+        
         public const int EXTRA_UPDATE_COUNT = 7;
 
         //Default to the item sprite of the texture, we can just predraw if we need to change it
@@ -135,6 +138,7 @@ namespace Stellamod.Core.SwingSystem
             Texture2D texture = GetTexture();
             float length = texture.Width / 2 + texture.Height / 2;
             length *= 1.6f;
+            length += swordBeamLength / 2;
 
             Vector2 start = Projectile.Center - Projectile.rotation.ToRotationVector2() * length;
             Vector2 end = Projectile.Center + Projectile.rotation.ToRotationVector2() * length;
@@ -214,6 +218,7 @@ namespace Stellamod.Core.SwingSystem
             if (useAfterImage)
                 DrawAfterImage(ref lightColor, OldCenterPos);
             DrawSwingTrail(ref lightColor, swingTrailCache);
+            DrawSwordBeam(ref lightColor);
             DrawSwordSprite(ref lightColor);
             return false;
         }
@@ -261,6 +266,24 @@ namespace Stellamod.Core.SwingSystem
             //So much simpler, and we can just make new trailers
 
             Trailer?.DrawTrail(ref lightColor, swingTrailCache);
+            if (swordBeamLength <= 0)
+                return;
+            var oldColorFunction = Trailer.TrailColorFunction;
+            var oldWidthFunc = Trailer.TrailWidthFunction;
+            float ExpandWidthFunction(float completionRatio)
+            {
+                return oldWidthFunc(completionRatio) * 2.5f;
+            }
+            Color FadeColorFunction(float completionRatio)
+            {
+                return oldColorFunction(completionRatio) * 0.5f;
+            }
+
+            Trailer.TrailWidthFunction = ExpandWidthFunction;
+            Trailer.TrailColorFunction = FadeColorFunction;
+            Trailer?.DrawTrail(ref lightColor, swingTrailCache);
+            Trailer.TrailWidthFunction = oldWidthFunc;
+            Trailer.TrailColorFunction = oldColorFunction;
         }
 
         public virtual void DrawSwordSprite(ref Color lightColor)
@@ -294,6 +317,33 @@ namespace Stellamod.Core.SwingSystem
                 spriteBatch.RestartDefaults();
             }
         
+        }
+
+        public virtual void DrawSwordBeam(ref Color lightColor)
+        {
+            if (swordBeamLength <= 0)
+                return;
+
+            SwordBeamShader swordBeamShader = SwordBeamShader.Instance;
+
+            Texture2D texture = GetTexture();
+            int frameHeight = texture.Height / Main.projFrames[Projectile.type];
+            int startY = frameHeight * Projectile.frame;
+
+            Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
+            Vector2 origin = sourceRectangle.Size() / 2f;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
+            drawPos += (Projectile.rotation+MathHelper.ToRadians(-45)).ToRotationVector2() * swordBeamLength;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            float drawScale = 1.15f + growScale;
+            spriteBatch.Restart(blendState: BlendState.Additive, effect: swordBeamShader.Effect);
+            spriteBatch.Draw(texture,
+               drawPos,
+                  sourceRectangle, drawColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0);
+
+            spriteBatch.RestartDefaults();
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
