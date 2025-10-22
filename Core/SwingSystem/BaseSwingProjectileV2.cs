@@ -218,7 +218,7 @@ namespace Stellamod.Core.SwingSystem
             if (useAfterImage)
                 DrawAfterImage(ref lightColor, OldCenterPos);
             DrawSwingTrail(ref lightColor, swingTrailCache);
-            DrawSwordBeam(ref lightColor);
+          //  DrawSwordBeam(ref lightColor);
             DrawSwordSprite(ref lightColor);
             return false;
         }
