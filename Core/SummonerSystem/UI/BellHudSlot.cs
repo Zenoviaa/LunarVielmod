@@ -46,13 +46,17 @@ namespace Stellamod.Core.SummonerSystem.UI
         {
             get
             {
-                ClassReworkPlayer classReworkPlayer = Main.LocalPlayer.GetModPlayer<ClassReworkPlayer>();
-                if(classReworkPlayer.playerClass != PlayerClass.Summoner && 
-                    classReworkPlayer.playerClass != PlayerClass.Omni && 
-                    classReworkPlayer.playerClass != PlayerClass.God)
+                if (Main.PlayerLoaded)
                 {
-                    return 9999;
+                    ClassReworkPlayer classReworkPlayer = Main.LocalPlayer.GetModPlayer<ClassReworkPlayer>();
+                    if (classReworkPlayer.playerClass != PlayerClass.Summoner &&
+                        classReworkPlayer.playerClass != PlayerClass.Omni &&
+                        classReworkPlayer.playerClass != PlayerClass.God)
+                    {
+                        return 9999;
+                    }
                 }
+
                 if (!Main.playerInventory)
                 {
                     return 412 + 64;
