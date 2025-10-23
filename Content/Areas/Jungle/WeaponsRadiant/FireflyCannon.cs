@@ -22,6 +22,8 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
         public override void SetDefaults()
         {
             base.SetDefaults();
+            remainingAmmo = maxAmmo = 3;
+            reloadWindow = 120;
             Item.damage = 54;
             Item.width = 94;
             Item.height = 36;
@@ -41,11 +43,12 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
         }
 
         public override bool GunShot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {            //Funny Recoil
-            float recoilStrength = 14;
+        {            
+            //Funny Recoil
+            float recoilStrength = 10;
             Vector2 targetVelocity = -velocity.SafeNormalize(Vector2.Zero) * recoilStrength;
             player.velocity = VectorHelper.VelocityUpTo(player.velocity, targetVelocity);
-
+           type = ModContent.ProjectileType<FireflyBomb>();
             //Funny Screenshake
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 32f);
             int numProjectiles = Main.rand.Next(8, 12);
@@ -173,7 +176,19 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
             shader.Repeats = 1f;
             //This just applis the shader changes
             TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
-            DrawHelper.DrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.Yellow, lightColor, 0);
+
+
+            Texture2D texture = TextureRegistry.DimLight.Value;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Color glowColor = Color.Yellow;
+            glowColor.A = 0;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            spriteBatch.Draw(texture, drawPos, null, glowColor, 0, texture.Size() / 2, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPos, null, glowColor, 0, texture.Size() / 2, 0.5f, SpriteEffects.None, 0);
+
+            glowColor = Color.White;
+            glowColor.A = 0;
+            spriteBatch.Draw(texture, drawPos, null, glowColor, 0, texture.Size() / 2, 0.25f, SpriteEffects.None, 0);
             return base.PreDraw(ref lightColor);
         }
 

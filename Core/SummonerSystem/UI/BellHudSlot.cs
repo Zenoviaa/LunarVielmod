@@ -15,6 +15,7 @@ using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria;
 using Stellamod.Helpers;
+using Stellamod.Core.ClassReworkSystem;
 
 namespace Stellamod.Core.SummonerSystem.UI
 {
@@ -45,6 +46,13 @@ namespace Stellamod.Core.SummonerSystem.UI
         {
             get
             {
+                ClassReworkPlayer classReworkPlayer = Main.LocalPlayer.GetModPlayer<ClassReworkPlayer>();
+                if(classReworkPlayer.playerClass != PlayerClass.Summoner && 
+                    classReworkPlayer.playerClass != PlayerClass.Omni && 
+                    classReworkPlayer.playerClass != PlayerClass.God)
+                {
+                    return 9999;
+                }
                 if (!Main.playerInventory)
                 {
                     return 412 + 64;

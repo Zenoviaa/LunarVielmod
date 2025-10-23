@@ -2910,12 +2910,12 @@ TecnoBlaster: {
 TheRedSkull: {
 	DisplayName: The Red Skull
 	Tooltip: ""
-	BasicSlash: 
+	BasicSlash:
 		'''
 		Every three shots on the same target will cause them to explode!
 		Another skull emoji.
 		'''
-	StaminaSlash: 
+	StaminaSlash: Fires a quick burst of 3 arrows
 }
 
 Tociflare: {
@@ -3158,7 +3158,9 @@ RuneOfWind: {
 
 GintzlsSteed: {
 	DisplayName: Gintzls Steed
-	Tooltip: I dont know how they are shooting arrows with no arms..
+	Tooltip: I don't know how they are shooting arrows with no arms..
+	BasicSlash: ""
+	StaminaSlash: Fires a long burst of 7 arrows!
 }
 
 Gallasis: {

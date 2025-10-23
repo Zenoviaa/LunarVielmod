@@ -118,7 +118,7 @@ namespace Stellamod.Core.GunSystem
             Item.noUseGraphic = true;
         }
 
-        public override bool CanShoot(Player player)
+        public override bool CanUseItem(Player player)
         {
             GunHoldPlayer gunHoldPlayer = player.GetModPlayer<GunHoldPlayer>();
             return remainingAmmo > 0 && !player.HasBuff<Reloading>() && gunHoldPlayer.reloadFireDelay <= 0;
@@ -423,6 +423,8 @@ namespace Stellamod.Core.GunSystem
             SpriteBatch spriteBatch = Main.spriteBatch;
 
             SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            if (Owner.direction == -1)
+                spriteEffects |= SpriteEffects.FlipVertically;
             spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(lightColor), Projectile.rotation, texture.Size() / 2f, Projectile.scale, spriteEffects, 0);
             return false;
         }

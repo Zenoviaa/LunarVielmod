@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Stellamod.Buffs.Minions;
+using Stellamod.Content.Areas.Jungle.WeaponsRadiant;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.ID;

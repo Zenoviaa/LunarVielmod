@@ -29,7 +29,7 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
             float numberProjectiles = 3;
             float rotation = MathHelper.ToRadians(10);
 
-            Vector2 velocity = shootParams.velocity * shootParams.speed;
+            Vector2 velocity = shootParams.velocity * shootParams.speed * 24;
             velocity *= 3;
             velocity *= shootParams.chargeStrength;
             Vector2 position = shootParams.position;
