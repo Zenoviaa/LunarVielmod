@@ -3311,7 +3311,7 @@ Gintelze: {
 HolmbergScythe: {
 	DisplayName: Holmberg Scythe
 	Tooltip: Rip the universe in half!
-	StaminaSlash: "Summons a barrage of homing scythes!"
+	StaminaSlash: Summons a barrage of homing scythes!
 	BasicSlash: ""
 }
 

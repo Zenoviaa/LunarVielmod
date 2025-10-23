@@ -1,16 +1,97 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Bases;
+using Stellamod.Core.SwingSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.Trailing;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Spears
+namespace Stellamod.Content.Areas.Illuria.WeaponsIL
 {
+    public class Sirius : BaseSwingItemV2
+    {
+        public override void SetDefaults2()
+        {
+            base.SetDefaults2();
+            Item.damage = 300;
+
+            Item.useTime = 32;
+            Item.useAnimation = 32;
+            Item.useStyle = ItemUseStyleID.Swing;
+
+            Item.knockBack = 6;
+            Item.rare = ModContent.RarityType<NiiviSpecialRarity>();
+            Item.shoot = ModContent.ProjectileType<SiriusSlash>();
+            staminaProjectileShoot = ModContent.ProjectileType<SiriusProj>();
+            meleeWeaponType = MeleeWeaponType.Spear;
+        }
+
+        public override void PostUpdate()
+        {
+            Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale); // Makes this item glow when thrown out of inventory.
+        }
+
+        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            DrawHelper.DrawGlowInInventory(Item, spriteBatch, position, ColorFunctions.Niivin);
+            return true;
+        }
+
+        public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+        {
+            DrawHelper.DrawGlow2InWorld(Item, spriteBatch, ref rotation, ref scale, whoAmI);
+            return true;
+        }
+
+        public override void Update(ref float gravity, ref float maxFallSpeed)
+        {
+            //The below code makes this item hover up and down in the world
+            //Don't forget to make the item have no gravity, otherwise there will be weird side effects
+            float hoverSpeed = 5;
+            float hoverRange = 0.2f;
+            float y = VectorHelper.Osc(-hoverRange, hoverRange, hoverSpeed);
+            Vector2 position = new Vector2(Item.position.X, Item.position.Y + y);
+            Item.position = position;
+        }
+    }
+
+
+
+
+
+
+
+
+    public class SiriusSlash : BaseSwingProjectileV2
+    {
+        public override void DefineCombo()
+        {
+            base.DefineCombo();
+            SwingV2Helper.AddSpearSwingStyle(this);
+            Trailer = TrailPresets.Sirius;
+            useAfterImage = true;
+        }
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitNPC(target, ref modifiers);
+            SoundStyle spearHit = SoundRegistry.SpearHit1;
+            spearHit.PitchVariance = 0.5f;
+            SoundEngine.PlaySound(spearHit, Projectile.position);
+            if (ComboIndex == 5)
+            {
+                modifiers.FinalDamage *= 2;
+            }
+        }
+    }
+
+
     public class SiriusProj : ModProjectile
     {
         const float Exploding_Time = 90;

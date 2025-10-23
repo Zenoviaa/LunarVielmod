@@ -233,6 +233,28 @@ namespace Stellamod.Trailing
             }
 
         };
+        public static SlashTrailer Sirius => new SlashTrailer
+        {
+            Shader = new SlashEffect()
+            {
+                BaseColor = Color.White,
+                HighlightColor = Color.Cyan,
+                RimHighlightColor = Color.DarkBlue,
+                WindColor = Color.DarkViolet,
+                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive,
+                WindTexture = TrailRegistry.LightningTrail2.Value
+            },
+            TrailWidthFunction = (float interpolant) =>
+            {
+                return EasingFunction.QuadraticBump(interpolant) * 5;
+            },
+            TrailColorFunction = (float interpolant) =>
+            {
+                Color lerp1 = Color.Lerp(Color.White, Color.Blue, interpolant);
+                return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+            }
+
+        };
 
         public static SlashTrailer GladiatorSpear => new SlashTrailer
         {
