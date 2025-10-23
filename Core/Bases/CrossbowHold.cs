@@ -355,7 +355,8 @@ namespace Stellamod.Core.Bases
             float drawRotation = Projectile.rotation;
             if (Projectile.spriteDirection == -1)
                 drawRotation += MathHelper.ToRadians(90);
-
+            if (Owner.direction == -1)
+                spriteEffects |= SpriteEffects.FlipVertically;
             Color drawColor = Color.White.MultiplyRGB(lightColor);
             Vector2 drawScale = DrawScale;
 
