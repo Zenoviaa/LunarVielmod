@@ -45,7 +45,7 @@ namespace Stellamod.Visual.Particles
         {
             color *= 0.98f;
             if(fast)
-                color *= 0.94f;
+                color *= 0.92f;
             Velocity *= 0.95f;
             Rotation = Velocity.ToRotation();
             fadeIn++;

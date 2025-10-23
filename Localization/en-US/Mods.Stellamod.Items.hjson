@@ -2796,7 +2796,7 @@ ArchariliteEnergyShot: {
 	DisplayName: Arncharilite Energy Shot
 	Tooltip: ""
 	BasicSlash: ""
-	StaminaSlash:  Shoots a spread of 3 super-powered arrows, great for burst damage!
+	StaminaSlash: Shoots a spread of 3 super-powered arrows, great for burst damage!
 }
 
 AssassinsDischarge: {
