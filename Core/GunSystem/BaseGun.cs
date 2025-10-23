@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Stellamod.Assets;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
@@ -116,6 +117,39 @@ namespace Stellamod.Core.GunSystem
             Item.DamageType = DamageClass.Ranged;
             Item.useAmmo = AmmoID.Bullet;
             Item.noUseGraphic = true;
+        }
+
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            base.ModifyTooltips(tooltips);
+            var line = new TooltipLine(Mod, "", "");
+            Keys keys = Keys.LeftShift;
+            bool isExpanded = Main.keyState.IsKeyDown(keys);
+            line = new TooltipLine(Mod, "Gun", Helpers.LangText.Common("WeaponTypeGun"))
+            {
+                OverrideColor = Color.LightGreen
+            };
+            tooltips.Add(line);
+            if (!isExpanded)
+            {
+                line = new TooltipLine(Mod, "ExpandTooltipHelp", LangText.Common("ExpandTooltipHelp", "Left Shift"));
+                line.OverrideColor = Color.Lerp(Color.White, Color.Black, 0.7f);
+                tooltips.Add(line);
+            }
+            else
+            {
+                line = new TooltipLine(Mod, "GunHelp", LangText.Common("GunHelp"))
+                {
+                    OverrideColor = Color.White
+                };
+                tooltips.Add(line);
+            }
+
+            line = new TooltipLine(Mod, "AmmoCapacity", LangText.Common("MagazineHelp", maxAmmo))
+            {
+                OverrideColor = Color.White
+            };
+            tooltips.Add(line);
         }
 
         public override bool CanUseItem(Player player)

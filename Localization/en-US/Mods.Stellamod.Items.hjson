@@ -62,6 +62,13 @@ Common: {
 	CastingTime: "{0} seconds added to your casting time"
 	TotalCastingTime: "{0} seconds of casting time"
 	ClassNerf: You are not proficient at using this damage class...
+	WeaponTypeGun: Gun Weapon Type
+	MagazineHelp: "{0} Ammo Capacity"
+	GunHelp:
+		'''
+		Once you run out of ammo, you'll need to reload!
+		Succeed at a short timing minigame and stylishly prepare your firearm!
+		'''
 }
 
 SetBonus: {
