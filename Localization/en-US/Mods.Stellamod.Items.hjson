@@ -52,6 +52,8 @@ Common: {
 	WeaponTypeSword: Sword Weapon Type
 	WeaponTypeKnives: Knives Weapon Type
 	WeaponTypeScythe: Scythe Weapon Type
+	WeaponTypeGreatsword: Greatsword Weapon Type
+	WeaponTypeSpear: Spear Weapon Type
 	InsourceTime: "{0} seconds added to your flask cooldown"
 	XixianFlaskLock: This item is LOCKED, continue exploring and you may find it.
 	StaminaFlaskLock: This item is LOCKED, continue exploring and you may find it.
@@ -6666,13 +6668,9 @@ GarbageChestplate: {
 
 Sirius: {
 	DisplayName: Sirius
-	Tooltip:
-		'''
-		Throws a spear that lodges into targets and then violently explodes!
-		Niivi's wrath~
-		'''
-	BasicSlash: No Effect
-	StaminaSlash: No Effect
+	Tooltip: "Niivi's wrath~"
+	BasicSlash: ""
+	StaminaSlash: Throws a spear that lodges into targets and then violently explodes!
 }
 
 Iknoctstein: {
@@ -7142,9 +7140,9 @@ IcelockLongbow: {
 
 Chillrend: {
 	DisplayName: Chillrend
-	Tooltip: The final slash spins the sword around and creates an icey vortex
-	BasicSlash: No Effect
-	StaminaSlash: No Effect
+	Tooltip: Chillin'
+	BasicSlash: ""
+	StaminaSlash: Throws the sword and creates an icey vortex!
 }
 
 ManifestedCommitment: {

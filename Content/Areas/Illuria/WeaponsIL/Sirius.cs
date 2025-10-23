@@ -28,6 +28,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             Item.knockBack = 6;
             Item.rare = ModContent.RarityType<NiiviSpecialRarity>();
             Item.shoot = ModContent.ProjectileType<SiriusSlash>();
+            Item.shootSpeed = 20;
             staminaProjectileShoot = ModContent.ProjectileType<SiriusProj>();
             meleeWeaponType = MeleeWeaponType.Spear;
         }
@@ -126,13 +127,14 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
 
         public override void SetDefaults()
         {
-            Projectile.width = 70;
-            Projectile.height = 74;
+            Projectile.width = 32;
+            Projectile.height = 32;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.penetrate = -1;
             Projectile.localNPCHitCooldown = 45;
             Projectile.usesLocalNPCImmunity = true;
+            Projectile.extraUpdates = 1;
         }
 
         public override void AI()
@@ -142,6 +144,10 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 case ActionState.Throwing:
                     Projectile.velocity.Y += 0.1f;
                     Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+                    if (Main.rand.NextBool(4))
+                    {
+                        Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<GlyphDust>(), newColor: Color.Blue, Scale: Main.rand.NextFloat(0.5f, 1f));
+                    }
                     break;
                 case ActionState.Lodged_In_NPC:
                     StickToTarget();
@@ -257,13 +263,8 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
 
         public override bool PreDraw(ref Color lightColor)
         {
-            if (_targetNpc == -1)
-            {
-                DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.CausticTrail);
-                DrawHelper.DrawAdditiveAfterImage(Projectile, ColorFunctions.Niivin, Color.Transparent, ref lightColor);
-            }
-
-            return base.PreDraw(ref lightColor);
+            this.DrawCentered(ref lightColor);
+            return false;
         }
 
         public override void PostDraw(Color lightColor)
@@ -277,7 +278,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             //Lerping
             float progress = ExplodingTimer / Exploding_Time;
             Color drawColor = Color.Lerp(Color.Transparent, Color.White, progress);
-            Vector2 drawPosition = Projectile.position - Main.screenPosition + drawOrigin;
+            Vector2 drawPosition = Projectile.Center - Main.screenPosition;
             Main.spriteBatch.Draw(whiteTexture, drawPosition, null, drawColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
         }
     }
