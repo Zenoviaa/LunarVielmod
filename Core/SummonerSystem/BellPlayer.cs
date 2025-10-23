@@ -34,7 +34,7 @@ namespace Stellamod.Core.SummonerSystem
             base.ResetEffects();
             castingTime = 60;
 
-            for(int i = 0; i < (Player.maxMinions + 1) && i < _minions.Count; i++)
+            for(int i = 0; i < (Player.maxMinions) && i < _minions.Count; i++)
             {
                 var item = _minions[i];
                 if (item.ModItem is BaseBellMinionItem bellMinion)
