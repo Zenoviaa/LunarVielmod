@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Content.Areas.Terror.WeaponsTR;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Mage.Tomes;
-using Stellamod.Items.Weapons.Ranged;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.Utilis;
 using System;

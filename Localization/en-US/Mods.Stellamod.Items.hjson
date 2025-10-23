@@ -2911,11 +2911,13 @@ TecnoBlaster: {
 
 TheRedSkull: {
 	DisplayName: The Red Skull
-	Tooltip:
+	Tooltip: ""
+	BasicSlash: 
 		'''
 		Every three shots on the same target will cause them to explode!
 		Another skull emoji.
 		'''
+	StaminaSlash: 
 }
 
 Tociflare: {

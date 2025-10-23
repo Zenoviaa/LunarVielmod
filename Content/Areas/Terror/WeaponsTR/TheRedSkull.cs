@@ -1,15 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.Bases;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Ranged
+namespace Stellamod.Content.Areas.Terror.WeaponsTR
 {
     public class RedSkullPlayer : ModPlayer
     {
@@ -43,7 +46,7 @@ namespace Stellamod.Items.Weapons.Ranged
                     for (int i = 0; i < 3; i++)
                     {
                         if (Main.rand.NextBool(4))
-                            Dust.NewDustPerfect(target.Center, ModContent.DustType<SmokeDust>(), (Vector2.One * Main.rand.Next(1, 2)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
+                            Dust.NewDustPerfect(target.Center, ModContent.DustType<SmokeDust>(), (Vector2.One * Main.rand.Next(1, 2)).RotatedByRandom(19.0), 0, default, 1f).noGravity = true;
                         Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 2)).RotatedByRandom(19.0), 0, Color.Red, 1f).noGravity = true;
                     }
                 }
@@ -52,7 +55,7 @@ namespace Stellamod.Items.Weapons.Ranged
                 {
                     for (float f = 0; f < 16; f++)
                     {
-                        Vector2 vel = ((f / 16f) * MathHelper.ToRadians(360)).ToRotationVector2() * -4;
+                        Vector2 vel = (f / 16f * MathHelper.ToRadians(360)).ToRotationVector2() * -4;
                         Dust.NewDustPerfect(target.Center - vel * 16, ModContent.DustType<GlowDust>(), vel, 0, Color.Red, 1f).noGravity = true;
                     }
                 }
@@ -61,7 +64,7 @@ namespace Stellamod.Items.Weapons.Ranged
                 {
                     for (int i = 0; i < 7; i++)
                     {
-                        Dust.NewDustPerfect(target.Center, ModContent.DustType<SmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
+                        Dust.NewDustPerfect(target.Center, ModContent.DustType<SmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, default, 1f).noGravity = true;
                     }
                     int Sound = Main.rand.Next(1, 3);
                     if (Sound == 1)
@@ -75,7 +78,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
                     for (int i = 0; i < 8; i++)
                     {
-                        float progress = (float)i / 8f;
+                        float progress = i / 8f;
                         float rot = progress * MathHelper.TwoPi;
                         Vector2 vel = rot.ToRotationVector2() * 4;
                         Dust.NewDustPerfect(proj.Center, DustID.RedTorch, vel, Scale: 1f);
@@ -92,44 +95,28 @@ namespace Stellamod.Items.Weapons.Ranged
             }
         }
     }
-    public class TheRedSkull : ClassSwapItem
+
+    public class TheRedSkull : BaseCrossbowItem
     {
-
-        public override DamageClass AlternateClass => DamageClass.Magic;
-
-        public override void SetClassSwappedDefaults()
-        {
-            Item.damage = 12;
-            Item.mana = 4;
-        }
-
         public override void SetDefaults()
         {
+            base.SetDefaults();
             Item.damage = 23;
-            Item.width = 50;
-            Item.height = 50;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.knockBack = 4;
-            Item.value = Item.sellPrice(0, 1, 1, 29);
             Item.rare = ItemRarityID.Green;
+        }
 
-            Item.shootSpeed = 15;
-            Item.autoReuse = true;
-            Item.DamageType = DamageClass.Ranged;
-            Item.shoot = ProjectileID.PurificationPowder;
-            Item.shootSpeed = 20f;
-            Item.useAmmo = AmmoID.Arrow;
-            Item.UseSound = SoundID.Item5;
-            Item.useAnimation = 31;
-            Item.useTime = 31;
-            Item.consumeAmmoOnLastShotOnly = true;
-            Item.noMelee = true;
+        public override void StaminaShootBow(Player player, EntitySource_ItemUse_WithAmmo source, ShootParams shootParams)
+        {
+            base.StaminaShootBow(player, source, shootParams);
+            CrossbowPlayer crossbowPlayer = player.GetModPlayer<CrossbowPlayer>();
+            crossbowPlayer.BurstShot(3, 5, shootParams.velocity, shootParams.chargeStrength);
         }
 
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-5f, 0f);
         }
+
         public override void AddRecipes()
         {
             base.AddRecipes();
