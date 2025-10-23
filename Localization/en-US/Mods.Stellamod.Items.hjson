@@ -2819,11 +2819,9 @@ BrokenWrath: {
 
 CloudBow: {
 	DisplayName: Cloud Bow
-	Tooltip:
-		'''
-		Shoots a cloud arrow that can cause enemies to rise into the sky!
-		Also shoots a spread of 3 arrows
-		'''
+	Tooltip: ""
+	BasicSlash: Shoots a spread of 3 arrows
+	StaminaSlash: Shoots a powerful cloud arrow that makes enemies rise into the sky!
 }
 
 Crysalizer: {
