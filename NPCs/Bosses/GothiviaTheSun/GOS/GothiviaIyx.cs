@@ -2318,7 +2318,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             // ItemDropRule.MasterModeCommonDrop for the relic
 
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 13, 25));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedLove>(), 1, 1, 1));
+            //npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedLove>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GothiviaIyxBag>()));
             // ItemDropRule.MasterModeDropOnAllPlayers for the pet
             //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));

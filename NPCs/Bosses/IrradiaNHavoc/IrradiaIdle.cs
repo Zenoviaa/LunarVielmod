@@ -205,32 +205,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc
 
 
 
-
-                if (Main.LocalPlayer.HasItem(ModContent.ItemType<ManifestedBravery>()))
-                {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                    {
-                        NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y - 5,
-                            ModContent.NPCType<StartIrradia>());
-                    }
-                    else
-                    {
-                        if (Main.netMode == NetmodeID.SinglePlayer)
-                            return;
-
-                        StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
-                            ModContent.NPCType<StartIrradia>(), (int)NPC.Center.X, (int)NPC.Center.Y - 5);
-                    }
-                }
-                else
-                {
-
-
-                    Main.npcChatText = LangText.Chat(this, "Special1");
-                }
-
-
-
                 // Reforge/Anvil sound
 
 
