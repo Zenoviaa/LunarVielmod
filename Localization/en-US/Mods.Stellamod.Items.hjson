@@ -3311,6 +3311,8 @@ Gintelze: {
 HolmbergScythe: {
 	DisplayName: Holmberg Scythe
 	Tooltip: Rip the universe in half!
+	StaminaSlash: No Effect
+	BasicSlash: No Effect
 }
 
 Alcarish: {

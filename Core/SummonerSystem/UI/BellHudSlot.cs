@@ -46,17 +46,6 @@ namespace Stellamod.Core.SummonerSystem.UI
         {
             get
             {
-                if (Main.PlayerLoaded)
-                {
-                    ClassReworkPlayer classReworkPlayer = Main.LocalPlayer.GetModPlayer<ClassReworkPlayer>();
-                    if (classReworkPlayer.playerClass != PlayerClass.Summoner &&
-                        classReworkPlayer.playerClass != PlayerClass.Omni &&
-                        classReworkPlayer.playerClass != PlayerClass.God)
-                    {
-                        return 9999;
-                    }
-                }
-
                 if (!Main.playerInventory)
                 {
                     return 412 + 64;
@@ -93,6 +82,14 @@ namespace Stellamod.Core.SummonerSystem.UI
 
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;
+
+            ClassReworkPlayer classReworkPlayer = Main.LocalPlayer.GetModPlayer<ClassReworkPlayer>();
+            if (classReworkPlayer.playerClass != PlayerClass.Summoner &&
+                classReworkPlayer.playerClass != PlayerClass.Omni &&
+                classReworkPlayer.playerClass != PlayerClass.God)
+            {
+                Left.Pixels += 9999;
+            }
             Top.Pixels = RelativeTop;
         }
     }
