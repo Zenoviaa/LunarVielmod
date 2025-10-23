@@ -6671,6 +6671,8 @@ Sirius: {
 		Throws a spear that lodges into targets and then violently explodes!
 		Niivi's wrath~
 		'''
+	BasicSlash: No Effect
+	StaminaSlash: No Effect
 }
 
 Iknoctstein: {
@@ -7141,6 +7143,8 @@ IcelockLongbow: {
 Chillrend: {
 	DisplayName: Chillrend
 	Tooltip: The final slash spins the sword around and creates an icey vortex
+	BasicSlash: No Effect
+	StaminaSlash: No Effect
 }
 
 ManifestedCommitment: {

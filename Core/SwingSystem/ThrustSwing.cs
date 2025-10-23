@@ -26,6 +26,7 @@ namespace Stellamod.Core.SwingSystem
         public float TrailOffset { get; set; }
         public float ThrustParticleOffset { get; set; }
 
+        public float SpinDegrees { get; set; }
         public bool DrawTrail { get; set; }
         public Easer Easing { get; set; }
         public SoundStyle? Sound { get; set; }
@@ -56,8 +57,12 @@ namespace Stellamod.Core.SwingSystem
             float distance = MathHelper.Lerp(start, end, interpolant);
             offset = velocity.SafeNormalize(Vector2.Zero) * distance;
         }
-        public void UpdateSwing(float time, Vector2 position, Vector2 velocity, out Vector2 offset)
+        public void UpdateSwing(BaseSwingProjectileV2 swingProjectile)
         {
+            float time = swingProjectile.Interpolant;
+            Vector2 position = swingProjectile.Projectile.Center;
+            Vector2 velocity = swingProjectile.Projectile.velocity;
+
             if (!_hasThrust && time >= 0.1f)
             {
                 ThrustParticleOffset = ThrowDistance / 2;
@@ -69,10 +74,20 @@ namespace Stellamod.Core.SwingSystem
                 _hasThrust = true;
             }
 
-            CalculateOffset(time, velocity, out offset);
+             
+            CalculateOffset(time, velocity, out Vector2 offset);
+            var projectile = swingProjectile.Projectile;
+            projectile.Center = swingProjectile.Owner.Center + offset;
+            projectile.rotation = (projectile.Center - swingProjectile.Owner.Center).ToRotation() + MathHelper.PiOver4;
+
         }
-        public void CalculateAfterImagePoints(float time, Vector2 velocity, ref Vector2[] trailCache)
+
+        public void CalculateAfterImagePoints(BaseSwingProjectileV2 swingProjectile)
         {
+            ref Vector2[] trailCache = ref swingProjectile.afterImageCache;
+            ref float[] trailRotationCache = ref swingProjectile.swingRotationCache;
+            Vector2 velocity = swingProjectile.Projectile.velocity;
+            float time = swingProjectile.Interpolant;
             for (int t = 0; t < trailCache.Length; t++)
             {
                 float l = trailCache.Length;
@@ -84,8 +99,11 @@ namespace Stellamod.Core.SwingSystem
             }
         }
 
-        public void CalculateTrailingPoints(float time, Vector2 velocity, ref Vector2[] trailCache)
+        public void CalculateTrailingPoints(BaseSwingProjectileV2 swingProjectile)
         {
+            float time = swingProjectile.Interpolant;
+            ref Vector2[] trailCache = ref swingProjectile.swingTrailCache;
+            Vector2 velocity = swingProjectile.Projectile.velocity;
             if (!DrawTrail)
                 return;
 

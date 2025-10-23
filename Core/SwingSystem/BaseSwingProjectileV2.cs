@@ -29,6 +29,7 @@ namespace Stellamod.Core.SwingSystem
         public float Interpolant { get; private set; }
         public Vector2[] afterImageCache;
         public Vector2[] swingTrailCache;
+        public float[] swingRotationCache;
         public int hitStopTime;
         public bool useAfterImage;
         public Color glowColor;
@@ -92,6 +93,7 @@ namespace Stellamod.Core.SwingSystem
                 _swings = new List<ISwing>();
                 swingTrailCache = new Vector2[200];
                 afterImageCache = new Vector2[8];
+                swingRotationCache = new float[8];
                 DefineCombo();
                 ISwing swing = GetSwing();
                 swing.SetDirection((int)SwingDirection);
@@ -164,7 +166,7 @@ namespace Stellamod.Core.SwingSystem
             Interpolant = Timer / swingTime;
             Interpolant = MathHelper.Clamp(Interpolant, 0f, 1f);
 
-            _canHurtThings = Interpolant > 0.1f && Interpolant <= 0.9f;
+            _canHurtThings = Timer > 16 && Interpolant <= 0.9f;
 
             //For the purposes of netcode,
             //Killing the projectile manually instead of trying to sync time left is better I think.
@@ -174,15 +176,14 @@ namespace Stellamod.Core.SwingSystem
             }
 
             //We now have the offset so we can apply that to the weapon
-            swing.UpdateSwing(Interpolant, Projectile.Center, Projectile.velocity, out Vector2 offset);
-            Projectile.Center = Owner.Center + offset;
-            Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
+            swing.UpdateSwing(this);
 
             //Set the position of the hand for the swing
             AI_OrientHand();
 
             //Calculate the trailing
-            swing.CalculateTrailingPoints(Interpolant, Projectile.velocity, ref swingTrailCache);
+            swing.CalculateTrailingPoints(this);
+            swing.CalculateAfterImagePoints(this);
             Matrix translationMatrix = Matrix.CreateTranslation(new Vector3(Owner.Center.X, Owner.Center.Y, 0));
             //Now we transform the points
             //Calculating points locally and then translating it is a bit simpler.

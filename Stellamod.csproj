@@ -625,8 +625,6 @@
     <None Remove="Projectiles\Paint\POAProj4.png" />
     <None Remove="Projectiles\Paint\POAProj5.png" />
     <None Remove="Projectiles\ScissorianSlash2.png" />
-    <None Remove="Projectiles\Slashers\Chillrend\ChillrendProj.png" />
-    <None Remove="Projectiles\Slashers\Chillrend\ChillrendProj2.png" />
     <None Remove="Projectiles\Slashers\ExampleSinSwingProj.png" />
     <None Remove="Projectiles\Slashers\GrailAxe\GrailShot.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosP.png" />
@@ -728,6 +726,7 @@
     <Folder Include="Items\Armors\Daedia\" />
     <Folder Include="NPCs\Event\Gintzearmy\BossGintze\" />
     <Folder Include="NPCs\Minibosses\" />
+    <Folder Include="Projectiles\Slashers\Chillrend\" />
     <Folder Include="Projectiles\Slashers\NewFolder\" />
     <Folder Include="Projectiles\Swords\Slashes\" />
     <Folder Include="Structures\Catacombs\" />
