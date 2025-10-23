@@ -1,31 +1,71 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Projectiles;
 using Stellamod.UI.Systems;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles
+namespace Stellamod.Content.Areas.Fable.WeaponsFB
 {
-    public class BurningAngelProj : ModProjectile
+    public class BurningAngel : ClassSwapItem
     {
+        public override DamageClass AlternateClass => DamageClass.Throwing;
         public override void SetDefaults()
         {
-            Projectile.penetrate = 1;
-            Projectile.ignoreWater = true;
-            Projectile.tileCollide = true;
-            Projectile.DamageType = DamageClass.Ranged;
-            Projectile.height = 40;
-            Projectile.width = 40;
-            Projectile.friendly = true;
-            Projectile.scale = 1f;
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 5;
-            Projectile.timeLeft = 100;
-        }
+            Item.width = 40;
+            Item.height = 10;
+            Item.rare = ItemRarityID.Green;
+            Item.useTime = 51;
+            Item.useAnimation = 51;
+            Item.useStyle = ItemUseStyleID.Guitar;
+            Item.autoReuse = true;
+            Item.noMelee = true;
+            Item.noUseGraphic = true;
+            Item.UseSound = SoundID.DD2_FlameburstTowerShot;
 
+            // Weapon Properties
+            Item.DamageType = DamageClass.Ranged;
+            Item.damage = 4;
+            Item.knockBack = 5f;
+            Item.noMelee = true;
+            Item.crit = 26;
+
+            // Gun Properties
+            Item.shoot = ModContent.ProjectileType<BurningAngelProj>();
+            Item.shootSpeed = 4f;
+            Item.value = 10000;
+        }
+        public override Vector2? HoldoutOffset()
+        {
+            return new Vector2(2f, -2f);
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), material: ModContent.ItemType<AlcadizScrap>());
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    public class BurningAngelProj : ModProjectile
+    {
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Heat Arrow");
@@ -33,11 +73,26 @@ namespace Stellamod.Projectiles
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
-        public float Timer
+        public override void SetDefaults()
         {
-            get => Projectile.ai[0];
-            set => Projectile.ai[0] = value;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 5;
+            Projectile.penetrate = 1;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = true;
+            Projectile.height = 32;
+            Projectile.width = 32;
+            Projectile.friendly = true;
+            Projectile.scale = 1f;    
+            Projectile.timeLeft = 100;
         }
+
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            return false;
+        }
+
+        private ref float Timer => ref Projectile.ai[0];
 
         public override void AI()
         {
@@ -48,13 +103,10 @@ namespace Stellamod.Projectiles
             player.RotatedRelativePoint(Projectile.Center);
             Projectile.rotation -= 0.5f;
             Projectile.velocity *= 0.97f;
-            if (Timer == 1)
-            {
-                ShakeModSystem.Shake = 1;
-            }
+
             if (Timer < 30)
             {
-                if (Main.mouseLeft && Main.myPlayer == Projectile.owner)
+                if(Main.myPlayer == Projectile.owner && player.controlUseItem)
                 {
                     Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * Projectile.Distance(Main.MouseWorld) / 12;
                     Projectile.netUpdate = true;
@@ -67,17 +119,6 @@ namespace Stellamod.Projectiles
                 player.itemRotation = rotation * player.direction;
             }
 
-            if (Timer == 99)
-            {
-                ShakeModSystem.Shake = 4;
-                float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-                float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcadizBombExplosion>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
-                SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
-                Projectile.Kill();
-            }
-
             Vector3 RGB = new(2.55f, 2.55f, 0.94f);
             // The multiplication here wasn't doing anything
             Lighting.AddLight(Projectile.Center, RGB.X, RGB.Y, RGB.Z);
@@ -86,17 +127,9 @@ namespace Stellamod.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, 0f, 150, Color.MediumPurple, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-                Main.dust[dustnumber].noGravity = true;
-            }
-
             SpriteEffects Effects = Projectile.spriteDirection != 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            Main.instance.LoadProjectile(Projectile.type);
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
             // Redraw the projectile with the color not influenced by light
@@ -116,14 +149,27 @@ namespace Stellamod.Projectiles
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            ShakeModSystem.Shake = 5;
-            float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-            float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcadizBombExplosion>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
-            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             Projectile.Kill();
+        }
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                ModContent.ProjectileType<AlcadizBombExplosion>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner);
+            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
 

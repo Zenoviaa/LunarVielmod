@@ -403,7 +403,6 @@
     <None Remove="Items\Placeable\Veil\SigfriedPaintingI.png" />
     <None Remove="Items\Placeable\Veil\VeilPot.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineAI.png" />
-    <None Remove="Items\Shrines\GovheilNAlca\ShrineBUANI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineGardenWreckerI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineHalhurishI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineLightsI.png" />
@@ -708,7 +707,6 @@
     <None Remove="TilesNew\FogSpawnerTile.png" />
     <None Remove="Tiles\Furniture\NestBossRelic.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineAlcaPowderC.png" />
-    <None Remove="Tiles\ShrineBreakers\Govheil\ShrineBUAN.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineGardenWreckerC.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineHalhurishC.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineLights.png" />
