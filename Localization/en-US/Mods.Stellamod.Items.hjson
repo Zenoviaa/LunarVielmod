@@ -4660,6 +4660,8 @@ DreadGauntlets: {
 ScytheOfSouls: {
 	DisplayName: Scythe Of Souls
 	Tooltip: Use these vengeful souls at will, they are quite quirky!
+	BasicSlash: No Effect
+	StaminaSlash: No Effect
 }
 
 BubbleBlasher: {
