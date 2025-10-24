@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Trails;

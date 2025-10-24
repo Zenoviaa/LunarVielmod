@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Buffs.Minions;
+using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Projectiles.Swords;

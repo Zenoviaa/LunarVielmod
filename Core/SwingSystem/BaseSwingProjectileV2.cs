@@ -35,7 +35,7 @@ namespace Stellamod.Core.SwingSystem
         public Color glowColor;
         public float growScale;
         public float swordBeamLength;
-        
+        public float swingTime;
         public const int EXTRA_UPDATE_COUNT = 7;
 
         //Default to the item sprite of the texture, we can just predraw if we need to change it
@@ -160,13 +160,16 @@ namespace Stellamod.Core.SwingSystem
             ISwing swing = GetSwing();
 
             //Now we need to calculate the time/interpolant for this swinging
-            float duration = swing.GetDuration(1f / Owner.GetTotalAttackSpeed(Projectile.DamageType));
+            if(swingTime == 0)
+            {
+                float duration = swing.GetDuration(1f / Owner.GetTotalAttackSpeed(Projectile.DamageType));
+                swingTime = GetSwingTime(duration);
+            }
 
-            float swingTime = GetSwingTime(duration);
             Interpolant = Timer / swingTime;
             Interpolant = MathHelper.Clamp(Interpolant, 0f, 1f);
 
-            _canHurtThings = Timer > 16 && Interpolant <= 0.9f;
+            _canHurtThings = swing.CanHurt(this);
 
             //For the purposes of netcode,
             //Killing the projectile manually instead of trying to sync time left is better I think.
@@ -215,6 +218,8 @@ namespace Stellamod.Core.SwingSystem
 
         public override bool PreDraw(ref Color lightColor)
         {
+            if (Timer <= 3)
+                return false;
             //Draw the texture, by 
             if (useAfterImage)
                 DrawAfterImage(ref lightColor, OldCenterPos);

@@ -4352,6 +4352,8 @@ PotOfGreed: {
 Ripper: {
 	DisplayName: Ripper
 	Tooltip: Summons a storm of swords towards your cursor!
+	BasicSlash: No Effect
+	StaminaSlash: No Effect
 }
 
 XScissor: {
@@ -6668,7 +6670,7 @@ GarbageChestplate: {
 
 Sirius: {
 	DisplayName: Sirius
-	Tooltip: "Niivi's wrath~"
+	Tooltip: Niivi's wrath~
 	BasicSlash: ""
 	StaminaSlash: Throws a spear that lodges into targets and then violently explodes!
 }

@@ -41,6 +41,7 @@ namespace Stellamod.Core.SwingSystem
         public float ThrowTrailOffset { get; set; }
         public float SpinDegrees { get; set; }
         public float SpinThrowDistance { get; set; }
+        public bool AlwaysShowTrail { get; set; }
         public Easer Easing { get; set; }
         public SoundStyle? Sound { get; set; }
 
@@ -74,6 +75,27 @@ namespace Stellamod.Core.SwingSystem
             // rads += targetRotation;
             float xRadius = XSwingRadius + _throw;
             float yRadius = YSwingRadius + _throw;
+
+
+            xOffset = xRadius * MathF.Sin(rads);
+            yOffset = yRadius * MathF.Cos(rads);
+
+        }
+        private void CalculateXY2(float interpolant, Vector2 velocity, out float xOffset, out float yOffset)
+        {
+            float range = _swingRadians;
+            float startRads = -range / 2;
+            float endRads = range / 2;
+
+            startRads *= _dir;
+            endRads *= _dir;
+
+            float rads = MathHelper.Lerp(startRads, endRads, interpolant);
+            rads += MathHelper.PiOver2;
+
+            // rads += targetRotation;
+            float xRadius = 64 + _throw;
+            float yRadius = 64 + _throw;
 
 
             xOffset = xRadius * MathF.Sin(rads);
@@ -207,7 +229,7 @@ namespace Stellamod.Core.SwingSystem
 
                 Vector2 offset = new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
                 trailCache[t] = swingProjectile.Owner.Center + offset;
-                trailRotationCache[t] = (trailCache[t] - swingProjectile.Owner.Center).ToRotation() + MathHelper.PiOver4;
+                trailRotationCache[t] = (trailCache[t] - swingProjectile.Owner.Center).ToRotation() +  MathHelper.PiOver4;
 
 
 
@@ -218,11 +240,26 @@ namespace Stellamod.Core.SwingSystem
                 trailRotationCache[t] += rot;
             }
         }
+
+        public bool CanHurt(BaseSwingProjectileV2 swingProjectile)
+        {
+            if (SpinThrowDistance > 0)
+                return true;
+            float time = swingProjectile.Interpolant;
+            float ease = Easing(time);
+            return ease > 0.2f && ease <= 0.8f;
+        }
         public void CalculateTrailingPoints(BaseSwingProjectileV2 swingProjectile)
         {
             float time = swingProjectile.Interpolant;
             ref Vector2[] trailCache = ref swingProjectile.swingTrailCache;
             Vector2 velocity = swingProjectile.Projectile.velocity;
+            if (!AlwaysShowTrail)
+            {
+                if (time - 0.3f < 0)
+                    return;
+            }
+
             //Alright, calculating trail points
             //The points will be offset by the position matrix
             //So we just calculate the local points here
@@ -258,8 +295,8 @@ namespace Stellamod.Core.SwingSystem
                 }
                 CalculateXY(interpolant, velocity, out xOffset, out yOffset);
                 //Set Offset, now we can take this and offset it more in the projectile
-                trailCache[t] = new Vector2(xOffset * TrailOffset, yOffset * TrailOffset).RotatedBy(targetRotation);
-                trailCache[t] += Vector2.Lerp(Vector2.Zero, velocity * SpinThrowDistance, EasingFunction.QuadraticBump(interpolant));
+                trailCache[t] = new Vector2(xOffset * TrailOffset * 1.3f, yOffset * TrailOffset * 1.3f).RotatedBy(targetRotation);
+                trailCache[t] += Vector2.Lerp(Vector2.Zero, velocity * SpinThrowDistance, EasingFunction.QuadraticBump(time));
             }
         }
     }

@@ -10,6 +10,7 @@ using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
+using Stellamod.Trailing;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -62,8 +63,9 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
 
             };
             Trailer = devilsPeak;
+
             useAfterImage = false;
-            hitStopTime = EXTRA_UPDATE_COUNT * 4;
+            hitStopTime = EXTRA_UPDATE_COUNT * 8;
         }
         public override void AI()
         {
@@ -82,7 +84,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             base.OnHitNPC(target, hit, damageDone);
             if (!_hit)
             {
-                FXUtil.ShakeCamera(target.Center, 1024, 4);
+                FXUtil.ShakeCamera(target.Center, 1024, 8);
                 Vector2 position = target.Center;
                 Vector2 lvelocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * 4;
                 for (float f = 0; f < 4; f++)
@@ -159,9 +161,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 Duration = 64,
                 XSwingRadius = 108 / 1.5f,
                 YSwingRadius = 80 / 1.5f,
-                SwingDegrees = 64,
-                SpinThrowDistance = 32,
-                SpinDegrees = 1080,
+                SwingDegrees = 720,
                 Easing = (float lerpValue) => Easing.InOutExpo(lerpValue, 7),
                 Sound = swingSound1,
                 HitCount = 6
@@ -203,7 +203,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 if (Main.myPlayer == Projectile.owner)
                 {
                     Vector2 shootVelocity = Projectile.velocity;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, shootVelocity,
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Vector2.Zero,
                         ModContent.ProjectileType<ChillrendBlizzardProj>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
                 }
                 AuroraProj2 = true;

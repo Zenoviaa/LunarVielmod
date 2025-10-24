@@ -12,7 +12,7 @@ namespace Stellamod.Core.SwingSystem
 {
     public abstract class BaseSwingItemV2 : ModItem
     {
-        public int comboResetTime = 60;
+        public int comboResetTime = 120;
         public int staminaProjectileShoot;
         public int staminaCost = 2;
 
@@ -77,7 +77,7 @@ namespace Stellamod.Core.SwingSystem
             Item.knockBack = 6;
             Item.rare = ItemRarityID.Blue;
             Item.shootSpeed = 10;
-            comboResetTime = 60;
+            comboResetTime = 120;
             SetDefaults2();
         }
 

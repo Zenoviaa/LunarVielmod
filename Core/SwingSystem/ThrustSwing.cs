@@ -45,6 +45,12 @@ namespace Stellamod.Core.SwingSystem
             _dir = direction;
         }
 
+        public bool CanHurt(BaseSwingProjectileV2 swingProjectile)
+        {
+            float time = swingProjectile.Interpolant;
+            float ease = Easing(time);
+            return ease > 0f && ease <= 0.8f;
+        }
         private void CalculateOffset(float time, Vector2 velocity, out Vector2 offset)
         {
             if (OverrideVelocity.HasValue)

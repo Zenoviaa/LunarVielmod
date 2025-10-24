@@ -11,6 +11,8 @@ namespace Stellamod.Core.SwingSystem
         int GetHitCount();
 
 
+        bool CanHurt(BaseSwingProjectileV2 swingProjectile);
+
         void UpdateSwing(BaseSwingProjectileV2 swingProjectile);
         void CalculateAfterImagePoints(BaseSwingProjectileV2 swingProjectile);
         void CalculateTrailingPoints(BaseSwingProjectileV2 swingProjectile);

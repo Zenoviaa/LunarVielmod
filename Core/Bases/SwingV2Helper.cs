@@ -26,7 +26,7 @@ namespace Stellamod.Core.Bases
 
             swings.Add(new OvalSwing
             {
-                Duration=24,
+                Duration = 44,
                 XSwingRadius = 64,
                 YSwingRadius = 48,
                 SwingDegrees=330,
@@ -34,17 +34,24 @@ namespace Stellamod.Core.Bases
                 Sound = swingSound1,
             });
 
-            swings.Add(new ThrustSwing
+
+            swings.Add(new OvalSwing
             {
-                Duration = 32,
-                ThrowDistance = 240,
-                Easing = (float lerpValue) => Easing.SpikeOutExpo(lerpValue),
+                Duration = 90,
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                SwingDegrees = 2000,
+                SpinThrowDistance = 40,
+                SpinDegrees=1,
+                AlwaysShowTrail=true,
+                Easing = (float lerpValue) => lerpValue,
                 Sound = swingSound3,
+                HitCount = 12
             });
 
             swings.Add(new OvalSwing
             {
-                Duration = 24,
+                Duration = 70,
                 XSwingRadius = 84 / 1.5f,
                 YSwingRadius = 70 / 1.5f,
                 SwingDegrees =270,
@@ -54,7 +61,7 @@ namespace Stellamod.Core.Bases
 
             swings.Add(new OvalSwing
             {
-                Duration = 24,
+                Duration = 70,
                 XSwingRadius = 84 / 1.5f,
                 YSwingRadius = 70 / 1.5f,
                 SwingDegrees = 270,
@@ -66,7 +73,7 @@ namespace Stellamod.Core.Bases
             {
                 XSwingRadius = 64,
                 YSwingRadius=64,
-                Duration = 32,
+                Duration = 48,
                 SwingDegrees = 330,
                 Easing = (float lerpValue) => Easing.InOutExpo(lerpValue, 10),
                 Sound = swingSound1,
@@ -76,29 +83,33 @@ namespace Stellamod.Core.Bases
             {
                 XSwingRadius = 64,
                 YSwingRadius = 64,
-                Duration = 32,
+                Duration = 96,
                 SwingDegrees = 330,
                 Easing = (float lerpValue) => Easing.InOutExpo(lerpValue, 10),
                 Sound = swingSound1,
             });
 
-            swings.Add(new ThrustSwing
-            {
-                Duration = 32,
-                ThrowDistance = 300,
-                Easing = (float lerpValue) => Easing.SpikeOutExpo(lerpValue),
-                Sound = swingSound3,
-            });
-
 
             swings.Add(new OvalSwing
             {
-                Duration = 64,
-                XSwingRadius = 108 / 1.5f,
-                YSwingRadius = 80 / 1.5f,
-                SwingDegrees = 64,
-                SpinThrowDistance=32,
-                SpinDegrees= 1080,
+                Duration = 100,
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                SwingDegrees = 2000,
+                SpinThrowDistance = 40,
+                SpinDegrees = 1,
+                AlwaysShowTrail = true,
+                Easing = (float lerpValue) => lerpValue,
+                Sound = swingSound3,
+                HitCount = 6
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 115,
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                SwingDegrees = 770,
                 Easing = (float lerpValue) => Easing.InOutExpo(lerpValue, 7),
                 Sound = swingSound3,
                 HitCount=6
