@@ -51,6 +51,7 @@ namespace Stellamod.WorldG
     public class StellaWorld : ModSystem
     {
         public Point WitchTownLocation { get; private set; }
+        public Point ManorLocation { get; private set; }
         private void DisableGenTask(List<GenPass> tasks, string passName)
         {
             tasks.Find(x => x.Name.Equals(passName)).Disable();
@@ -178,9 +179,41 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Evil", WorldGenEvil));
                 tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Colosseum", WorldGenColosseum));
                 tasks.Insert(CathedralGen2 + 21, new PassLegacy("Grassing Caves", WorldGenGrassPass));
+                tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Skullrunner", WorldGenSkullrunner));
             }
         }
 
+
+        private void WorldGenSkullrunner(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Getting dunked on";
+            int[] tileBlend = new int[]
+            {
+                TileID.RubyGemspark
+            };
+
+            int[] tileBlend2 = new int[]
+            {
+                TileID.Stone
+            };
+
+            bool placed = false;
+            int attempts = 0;
+            while (!placed && attempts++ < 10000000)
+            {
+                // Select a place in the first 6th of the world, avoiding the oceans
+                int smx = ManorLocation.X + WorldGen.genRand.Next(-200, 200); 
+                smx -= 600;                                                                                        
+
+                int smy = ManorLocation.Y;
+                Point Loc = new Point(smx, smy);
+
+                string path = "Structures/Skullrunner";
+                int[] ChestIndexs = Structurizer.ReadStruct(Loc, path, tileBlend);
+                Structurizer.ProtectStructure(Loc, path);
+                placed = true;
+            }
+        }
 
         private void WorldGenDarkspace(GenerationProgress progress, GameConfiguration configuration)
         {
@@ -1896,6 +1929,7 @@ namespace Stellamod.WorldG
 
                     NPCs.Town.AlcadSpawnSystem.OrdinTile = Loc;
                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path, tileBlend);
+                    ManorLocation = Loc;
                     StructureLoader.ProtectStructure(Loc, path);
                     foreach (int chestIndex in ChestIndexs)
                     {
