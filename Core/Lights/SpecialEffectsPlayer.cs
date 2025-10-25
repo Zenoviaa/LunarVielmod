@@ -100,7 +100,7 @@ namespace Stellamod.Core.Lights
             blackCurve = 1f;
 
 
-            _targetVignetteOpacity = 1f;
+            _targetVignetteOpacity = 0.5f;
         }
 
         private void TogglePaletteShader(string name, bool isActive)
