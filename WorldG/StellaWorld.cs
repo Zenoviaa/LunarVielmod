@@ -167,19 +167,20 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen Rallad", WorldGenRallad));
                 tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
                 tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Stone Golem Cave", WorldGenStoneGolemCave));
-                tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
-                tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
-                tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Manor", WorldGenManor));
-                tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Gia's House", WorldGenGiaHouse));
-                tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
-                tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
-                tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
-                tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
-                tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Dock", WorldGenDock));
-                tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Evil", WorldGenEvil));
-                tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Colosseum", WorldGenColosseum));
-                tasks.Insert(CathedralGen2 + 21, new PassLegacy("Grassing Caves", WorldGenGrassPass));
-                tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Skullrunner", WorldGenSkullrunner));
+             
+                tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
+                tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Manor", WorldGenManor));
+                tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Gia's House", WorldGenGiaHouse));
+                tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
+                tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
+                tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
+                tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
+                tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Dock", WorldGenDock));
+                tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Evil", WorldGenEvil));
+                tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Colosseum", WorldGenColosseum));
+                tasks.Insert(CathedralGen2 + 20, new PassLegacy("Grassing Caves", WorldGenGrassPass));
+                tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Skullrunner", WorldGenSkullrunner));
+                tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
             }
         }
 
