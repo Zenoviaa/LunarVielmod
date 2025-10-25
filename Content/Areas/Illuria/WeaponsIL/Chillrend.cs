@@ -66,7 +66,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             Trailer = devilsPeak;
             swordBeamLength = 180;
             outlineColor = Color.Cyan;
-            glowAfterImageColor = Color.DarkBlue;
+            glowAfterImageColor = Color.SkyBlue * 0.1f;
             useAfterImage = false;
             hitStopTime = EXTRA_UPDATE_COUNT * 8;
         }
@@ -165,7 +165,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             };
             swordBeamLength = 180;
             outlineColor = Color.Cyan;
-            glowAfterImageColor = Color.DarkBlue;
+            glowAfterImageColor = Color.SkyBlue * 0.1f;
             useAfterImage = false;
             Trailer = devilsPeak;
 

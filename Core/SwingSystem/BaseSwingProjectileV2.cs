@@ -321,8 +321,9 @@ namespace Stellamod.Core.SwingSystem
         }
         public virtual void DrawSwingTrail2(ref Color lightColor, Vector2[] swingTrailCache)
         {
-      
 
+            if (swordBeamLength <= 0)
+                return;
             //I think it makes the most sense to abstract our trails out to a trailer and shader cache,
             //so we can just replace the trailer for different trails!
             //So much simpler, and we can just make new trailers
@@ -330,7 +331,7 @@ namespace Stellamod.Core.SwingSystem
             var oldColorFunc = Trailer.TrailColorFunction;
             float GetTrailWidth(float interpolant)
             {
-                return oldWidthFunc(interpolant) * 2f;
+                return oldWidthFunc(interpolant) * 2.5f;
             }
             Color GetTrailColor(float interpolant)
             {
@@ -409,7 +410,7 @@ namespace Stellamod.Core.SwingSystem
 
             SwordBeamShader swordBeamShader = SwordBeamShader.Instance;
             swordBeamShader.InnerColor = outlineColor;
-            swordBeamShader.OuterColor = Color.White;
+            swordBeamShader.OuterColor = glowAfterImageColor;
 
             Texture2D texture = RequestHologramTexture().Value;
             Vector2 offset = (Projectile.rotation + MathHelper.ToRadians(-45)).ToRotationVector2() * swordBeamLength / 2;

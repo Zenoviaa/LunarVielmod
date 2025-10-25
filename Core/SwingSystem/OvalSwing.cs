@@ -309,7 +309,7 @@ namespace Stellamod.Core.SwingSystem
 
 
                 Vector2 offset2 = offset;
-                offset2 *= 1.5f;
+                offset2 *= 2;
                 bigTrailCache[t] = offset2.RotatedBy(targetRotation);
 
 
