@@ -17,6 +17,7 @@ namespace Stellamod.Core.SwingSystem
         private bool _hasInitialized;
         private bool _canHurtThings;
         private bool _hasHitStop;
+        private float _fade;
         private List<ISwing> _swings;
 
         public ITrailer Trailer { get; set; }
@@ -186,7 +187,7 @@ namespace Stellamod.Core.SwingSystem
                 oldTime[i] = oldTime[i - 1];
             }
             oldTime[0] = Interpolant;
-
+            _fade = MathHelper.Lerp(_fade, 1f, 0.1f);
             _canHurtThings = swing.CanHurt(this);
 
             //For the purposes of netcode,
@@ -316,8 +317,14 @@ namespace Stellamod.Core.SwingSystem
             //I think it makes the most sense to abstract our trails out to a trailer and shader cache,
             //so we can just replace the trailer for different trails!
             //So much simpler, and we can just make new trailers
-
+            var oldColorFunc = Trailer.TrailColorFunction;
+            Color GetTrailColor(float interpolant)
+            {
+                return oldColorFunc(interpolant) * EasingFunction.QuadraticBump(Interpolant) * _fade;
+            }
+            Trailer.TrailColorFunction = GetTrailColor;
             Trailer?.DrawTrail(ref lightColor, swingTrailCache);
+            Trailer.TrailColorFunction = oldColorFunc;
         }
         public virtual void DrawSwingTrail2(ref Color lightColor, Vector2[] swingTrailCache)
         {
@@ -331,11 +338,11 @@ namespace Stellamod.Core.SwingSystem
             var oldColorFunc = Trailer.TrailColorFunction;
             float GetTrailWidth(float interpolant)
             {
-                return oldWidthFunc(interpolant) * 2.5f;
+                return oldWidthFunc(interpolant) * 2;
             }
             Color GetTrailColor(float interpolant)
             {
-                return oldColorFunc(interpolant) * 0.35f;
+                return oldColorFunc(interpolant) * 0.35f * EasingFunction.QuadraticBump(Interpolant) * _fade;
             }
 
             Trailer.TrailWidthFunction = GetTrailWidth;
