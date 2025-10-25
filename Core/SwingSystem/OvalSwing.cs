@@ -266,11 +266,11 @@ namespace Stellamod.Core.SwingSystem
             //Alright, calculating trail points
             //The points will be offset by the position matrix
             //So we just calculate the local points here
-            for (int t = 0; t < trailCache.Length; t++)
+            float length = (float)trailCache.Length;
+            for (int t = 0; t < length; t++)
             {
-                float l = trailCache.Length;
                 //Lerp between the points
-                float progressOnTrail = t / l;
+                float progressOnTrail = t / length;
 
                 //Calculate starting lerp value
                 float startTrailLerpValue = MathHelper.Clamp(time - 0.3f, 0, 1);

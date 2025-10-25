@@ -187,7 +187,10 @@ namespace Stellamod.Core.SwingSystem
                 oldTime[i] = oldTime[i - 1];
             }
             oldTime[0] = Interpolant;
-            _fade = MathHelper.Lerp(_fade, 1f, 0.1f);
+            if(_fade < 1f)
+            {
+                _fade += 0.005f;
+            }
             _canHurtThings = swing.CanHurt(this);
 
             //For the purposes of netcode,
