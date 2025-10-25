@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using ReLogic.Utilities;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
@@ -32,9 +33,50 @@ namespace Stellamod.WorldG
 
         public override bool? UseItem(Player player)
         {
-            GenerateColosseum();
+            GenerateSkullrunnerCircle();
             return base.UseItem(player);
         }
+
+        private void GenerateSkullrunnerCircle()
+        {
+            var genRand = WorldGen.genRand;
+            Vector2 mouseWorld = Main.MouseWorld;
+            int tileX = (int)Main.MouseWorld.X / 16;
+            int tileY = (int)Main.MouseWorld.Y / 16;
+            int size = 80;
+            int tileType = ModContent.TileType<ManorBlock>();
+            Point point = new Point(tileX, tileY);
+            WorldUtils.Gen(point, new Shapes.Circle(size, size), Actions.Chain(
+                new GenAction[] {new Actions.SetTile((ushort)tileType, true, true) }));
+
+            int hollowSize = 60;
+            WorldUtils.Gen(point, new Shapes.Circle(hollowSize, hollowSize), Actions.Chain(
+                new GenAction[] { new Actions.ClearTile(true) }));
+
+
+            WorldUtils.Gen(point, new ShapeUtilities.HalfCircle(hollowSize), Actions.Chain(
+                new GenAction[] { new Actions.SetLiquid(LiquidID.Lava) }));
+
+
+            int rectSize = size-10;
+            int rectHeight = rectSize - 60;
+            Point rectanglePoint = new Point(tileX - rectSize / 2, tileY);
+            WorldUtils.Gen(rectanglePoint, new Shapes.Rectangle(rectSize, rectHeight), Actions.Chain(
+                new GenAction[] { new Actions.SetTile((ushort)tileType, true, true) }));
+
+            int rectSize2 = size - 14;
+            Point rectanglePoint2 = new Point(tileX - rectSize2 / 2, tileY + 2);
+            WorldUtils.Gen(rectanglePoint2, new Shapes.Rectangle(rectSize2, rectHeight), Actions.Chain(
+              new GenAction[] { new Actions.SetTile((ushort)tileType, true, true) }));
+
+
+            int rectSize3 = size - 18;
+            Point rectanglePoint3 = new Point(tileX - rectSize3 / 2, tileY + 4);
+            WorldUtils.Gen(rectanglePoint3, new Shapes.Rectangle(rectSize3, rectHeight), Actions.Chain(
+              new GenAction[] { new Actions.SetTile((ushort)tileType, true, true) }));
+
+        }
+
 
         private void GenerateColosseum()
         {
