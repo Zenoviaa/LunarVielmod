@@ -279,6 +279,7 @@
     <None Remove="Effects\PaletteDesert.fx" />
     <None Remove="Effects\PaletteDesertTop.fx" />
     <None Remove="Effects\PaletteDungeon.fx" />
+    <None Remove="Effects\PaletteFable.fx" />
     <None Remove="Effects\PaletteHell.fx" />
     <None Remove="Effects\PaletteRoyalCapital.fx" />
     <None Remove="Effects\PaletteVirulent.fx" />
