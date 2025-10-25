@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Projectiles.Ammo;
 using Terraria;
 using Terraria.Audio;

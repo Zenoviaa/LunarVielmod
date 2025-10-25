@@ -39,7 +39,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
             Item.value = Item.buyPrice(silver: 1);
             Item.rare = ItemRarityID.Blue;
             Item.shootSpeed = 10;
-            Item.shoot = ModContent.ProjectileType<ZhielhanderStaminaSlash>();
+            Item.shoot = ModContent.ProjectileType<ZhielhanderSwordSlash>();
             Item.autoReuse = true;
 
             //Combo variables

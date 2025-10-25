@@ -35,6 +35,45 @@ namespace Stellamod.Projectiles.IgniterExplosions
 
         public override void AI()
         {
+            Timer++;
+            if(Timer == 1)
+            {
+                FXUtil.GlowCircleBoom(Projectile.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.Yellow,
+                    outerGlowColor: Color.Blue, duration: 25, baseSize: 0.24f);
+
+                for (float i = 0; i < 8; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.Yellow,
+                        outerGlowColor: Color.Blue,
+                        baseSize: Main.rand.NextFloat(0.1f, 0.2f),
+                        duration: Main.rand.NextFloat(15, 25));
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
+
+                for (float f = 0; f < 24; f++)
+                {
+                    float progress = f / 24f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                    Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(4f, 25f);
+                    var particle = FXUtil.GlowStretch(Projectile.Center, velocity);
+                    particle.InnerColor = Color.White;
+                    particle.GlowColor = Color.LightCyan;
+                    particle.OuterGlowColor = Color.Black;
+                    particle.Duration = Main.rand.NextFloat(25, 50);
+                    particle.BaseSize = Main.rand.NextFloat(0.09f, 0.18f);
+                    particle.VectorScale *= 0.5f;
+
+                }
+            }
             Vector3 RGB = new(0.89f, 2.53f, 2.55f);
             // The multiplication here wasn't doing anything
             Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);

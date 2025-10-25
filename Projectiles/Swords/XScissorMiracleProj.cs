@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Summon;

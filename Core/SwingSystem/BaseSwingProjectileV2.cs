@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
@@ -15,6 +17,7 @@ namespace Stellamod.Core.SwingSystem
         private bool _hasInitialized;
         private bool _canHurtThings;
         private bool _hasHitStop;
+        private float _fade;
         private List<ISwing> _swings;
 
         public ITrailer Trailer { get; set; }
@@ -28,10 +31,18 @@ namespace Stellamod.Core.SwingSystem
         public float Interpolant { get; private set; }
         public Vector2[] afterImageCache;
         public Vector2[] swingTrailCache;
+        public Vector2[] bigSwingTrailCache;
+        public float[] swingRotationCache;
+        public float[] oldTime;
         public int hitStopTime;
         public bool useAfterImage;
         public Color glowColor;
         public float growScale;
+        public float swordBeamLength;
+        public float swingTime;
+        public Color outlineColor;
+        public Color glowAfterImageColor;
+        public bool drawCentered;
         public const int EXTRA_UPDATE_COUNT = 7;
 
         //Default to the item sprite of the texture, we can just predraw if we need to change it
@@ -56,6 +67,11 @@ namespace Stellamod.Core.SwingSystem
             Projectile.extraUpdates = EXTRA_UPDATE_COUNT - 1;
             hitStopTime = EXTRA_UPDATE_COUNT * 2;
             SetDefaults2();
+        }
+
+        public virtual Asset<Texture2D> RequestHologramTexture()
+        {
+            return TextureRegistry.GlowSword_Sword;
         }
 
         public virtual void SetDefaults2()
@@ -87,8 +103,11 @@ namespace Stellamod.Core.SwingSystem
             if (!_hasInitialized)
             {
                 _swings = new List<ISwing>();
-                swingTrailCache = new Vector2[200];
-                afterImageCache = new Vector2[8];
+                swingTrailCache = new Vector2[252];
+                bigSwingTrailCache = new Vector2[252];
+                afterImageCache = new Vector2[16];
+                swingRotationCache = new float[16];
+                oldTime = new float[252];
                 DefineCombo();
                 ISwing swing = GetSwing();
                 swing.SetDirection((int)SwingDirection);
@@ -135,6 +154,7 @@ namespace Stellamod.Core.SwingSystem
             Texture2D texture = GetTexture();
             float length = texture.Width / 2 + texture.Height / 2;
             length *= 1.6f;
+            length += swordBeamLength / 2;
 
             Vector2 start = Projectile.Center - Projectile.rotation.ToRotationVector2() * length;
             Vector2 end = Projectile.Center + Projectile.rotation.ToRotationVector2() * length;
@@ -154,13 +174,21 @@ namespace Stellamod.Core.SwingSystem
             ISwing swing = GetSwing();
 
             //Now we need to calculate the time/interpolant for this swinging
-            float duration = swing.GetDuration(1f / Owner.GetTotalAttackSpeed(Projectile.DamageType));
+            if(swingTime == 0)
+            {
+                float duration = swing.GetDuration(1f / Owner.GetTotalAttackSpeed(Projectile.DamageType));
+                swingTime = GetSwingTime(duration);
+            }
 
-            float swingTime = GetSwingTime(duration);
             Interpolant = Timer / swingTime;
             Interpolant = MathHelper.Clamp(Interpolant, 0f, 1f);
-
-            _canHurtThings = Interpolant > 0.1f && Interpolant <= 0.9f;
+            for (int i = oldTime.Length - 1; i > 0; i--)
+            {
+                oldTime[i] = oldTime[i - 1];
+            }
+            oldTime[0] = Interpolant;
+            _fade = MathHelper.Lerp(_fade, 1f, 0.1f);
+            _canHurtThings = swing.CanHurt(this);
 
             //For the purposes of netcode,
             //Killing the projectile manually instead of trying to sync time left is better I think.
@@ -170,15 +198,15 @@ namespace Stellamod.Core.SwingSystem
             }
 
             //We now have the offset so we can apply that to the weapon
-            swing.UpdateSwing(Interpolant, Projectile.Center, Projectile.velocity, out Vector2 offset);
-            Projectile.Center = Owner.Center + offset;
-            Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
+            drawCentered = false;
+            swing.UpdateSwing(this);
 
             //Set the position of the hand for the swing
             AI_OrientHand();
 
             //Calculate the trailing
-            swing.CalculateTrailingPoints(Interpolant, Projectile.velocity, ref swingTrailCache);
+            swing.CalculateTrailingPoints(this);
+            swing.CalculateAfterImagePoints(this);
             Matrix translationMatrix = Matrix.CreateTranslation(new Vector3(Owner.Center.X, Owner.Center.Y, 0));
             //Now we transform the points
             //Calculating points locally and then translating it is a bit simpler.
@@ -186,7 +214,10 @@ namespace Stellamod.Core.SwingSystem
             {
                 swingTrailCache[t] = Vector2.Transform(swingTrailCache[t], translationMatrix);
             }
-
+            for (int t = 0; t < bigSwingTrailCache.Length; t++)
+            {
+                bigSwingTrailCache[t] = Vector2.Transform(bigSwingTrailCache[t], translationMatrix);
+            }
         }
 
         private void AI_OrientHand()
@@ -210,14 +241,41 @@ namespace Stellamod.Core.SwingSystem
 
         public override bool PreDraw(ref Color lightColor)
         {
+            if (Timer <= 3)
+                return false;
             //Draw the texture, by 
             if (useAfterImage)
                 DrawAfterImage(ref lightColor, OldCenterPos);
             DrawSwingTrail(ref lightColor, swingTrailCache);
+            DrawSwingTrail2(ref lightColor, bigSwingTrailCache);
+            DrawSwordBeam(ref lightColor);
             DrawSwordSprite(ref lightColor);
             return false;
         }
 
+
+        public Vector2 CalculateTrailOffset()
+        {
+            return Vector2.Zero;
+        }
+        public float GetTrailMultiplier()
+        {
+            Texture2D texture = GetTexture();
+            Vector2 center = texture.Size() / 2f;
+            Vector2 tip = new Vector2(texture.Width, 0);
+            float distance = Vector2.Distance(center, tip);
+            float worldDistance = distance / 16f / 2f;
+            return worldDistance;
+        }
+        public float GetTrailCenterMultiplier()
+        {
+            Texture2D texture = GetTexture();
+            Vector2 center = texture.Size() / 2f;
+            Vector2 tip = new Vector2(texture.Width, 0);
+            float distance = Vector2.Distance(center, tip);
+            float worldDistance = distance / 2f;
+            return worldDistance;
+        }
         public virtual Texture2D GetTexture()
         {
             Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Owner.HeldItem.ModItem.Texture);
@@ -243,7 +301,7 @@ namespace Stellamod.Core.SwingSystem
                 Vector2 origin = sourceRectangle.Size() / 2f;
                 Color drawColor = GetAfterImageColor(interpolant);
                 drawColor *= EasingFunction.QuadraticBump(interpolant);
-                float drawScale = 1f;
+                float drawScale = 1.15f + growScale;
                 Vector2 position = afterImageCache[a];
                 float drawRotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
 
@@ -259,8 +317,42 @@ namespace Stellamod.Core.SwingSystem
             //I think it makes the most sense to abstract our trails out to a trailer and shader cache,
             //so we can just replace the trailer for different trails!
             //So much simpler, and we can just make new trailers
-
+            var oldColorFunc = Trailer.TrailColorFunction;
+            Color GetTrailColor(float interpolant)
+            {
+                return oldColorFunc(interpolant) * EasingFunction.QuadraticBump(Interpolant) * _fade;
+            }
+            Trailer.TrailColorFunction = GetTrailColor;
             Trailer?.DrawTrail(ref lightColor, swingTrailCache);
+            Trailer.TrailColorFunction = oldColorFunc;
+        }
+        public virtual void DrawSwingTrail2(ref Color lightColor, Vector2[] swingTrailCache)
+        {
+
+            if (swordBeamLength <= 0)
+                return;
+            //I think it makes the most sense to abstract our trails out to a trailer and shader cache,
+            //so we can just replace the trailer for different trails!
+            //So much simpler, and we can just make new trailers
+            var oldWidthFunc = Trailer.TrailWidthFunction;
+            var oldColorFunc = Trailer.TrailColorFunction;
+            float GetTrailWidth(float interpolant)
+            {
+                return oldWidthFunc(interpolant) * 2;
+            }
+            Color GetTrailColor(float interpolant)
+            {
+                return oldColorFunc(interpolant) * 0.35f * EasingFunction.QuadraticBump(Interpolant) * _fade;
+            }
+
+            Trailer.TrailWidthFunction = GetTrailWidth;
+            Trailer.TrailColorFunction = GetTrailColor;
+            Trailer?.DrawTrail(ref lightColor, swingTrailCache);
+
+
+
+            Trailer.TrailWidthFunction = oldWidthFunc;
+            Trailer.TrailColorFunction = oldColorFunc;
         }
 
         public virtual void DrawSwordSprite(ref Color lightColor)
@@ -274,13 +366,35 @@ namespace Stellamod.Core.SwingSystem
             Color drawColor = Projectile.GetAlpha(lightColor);
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-            float drawScale = 1.15f + growScale;
-            spriteBatch.Draw(texture,
-                Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
-                sourceRectangle, drawColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0); // drawing the sword itself
+            float drawScale = 1 + growScale;
 
-        
-            if(glowColor.A > 0)
+
+            Vector2 drawPosition = Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
+            if (outlineColor.A > 0)
+            {
+                Color drawOutlineColor = outlineColor.MultiplyRGB(lightColor);
+                SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
+                spriteBatch.Restart(effect: whiteShader.Effect);
+                spriteBatch.Draw(texture,
+                    drawPosition + Vector2.UnitX * 2,
+                    sourceRectangle, drawOutlineColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture,
+                    drawPosition + Vector2.UnitX * -2,
+                    sourceRectangle, drawOutlineColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0);
+
+                spriteBatch.Draw(texture,
+                    drawPosition + Vector2.UnitY * 2,
+                    sourceRectangle, drawOutlineColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture,
+                    drawPosition + Vector2.UnitY * -2,
+                    sourceRectangle, drawOutlineColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0);
+                spriteBatch.RestartDefaults();
+            }
+
+            spriteBatch.Draw(texture, drawPosition,
+                sourceRectangle, drawColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0);
+
+            if (glowColor.A > 0)
             {
                 spriteBatch.Restart(blendState: BlendState.Additive);
                 spriteBatch.Draw(texture,
@@ -294,6 +408,57 @@ namespace Stellamod.Core.SwingSystem
                 spriteBatch.RestartDefaults();
             }
         
+        }
+
+        public virtual void DrawSwordBeam(ref Color lightColor)
+        {
+            if (swordBeamLength <= 0)
+                return;
+
+            SwordBeamShader swordBeamShader = SwordBeamShader.Instance;
+            swordBeamShader.InnerColor = outlineColor;
+            swordBeamShader.OuterColor = glowAfterImageColor;
+
+            Texture2D texture = RequestHologramTexture().Value;
+            Vector2 offset = (Projectile.rotation + MathHelper.ToRadians(-45)).ToRotationVector2() * swordBeamLength / 2;
+            Vector2 origin = texture.Size() / 2f;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
+            float rotationOffset = MathHelper.ToRadians(45);
+            drawPos += offset;
+  
+            Color drawColor = Color.White.MultiplyRGB(lightColor) * 0.2f;
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            float drawScale = 1.15f + growScale;
+            spriteBatch.Restart(blendState: BlendState.AlphaBlend, effect: swordBeamShader.Effect);
+
+
+
+            for (int a = 0; a < afterImageCache.Length; a++)
+            {
+                float interpolant = a;
+                interpolant /= (float)afterImageCache.Length;
+                interpolant = 1f - interpolant;
+                Color drawColor2 = glowAfterImageColor;
+                drawColor2 *= EasingFunction.InOutSine(interpolant);
+                Vector2 position = afterImageCache[a];
+                float drawRotation = swingRotationCache[a];
+
+                Vector2 offset2 = (drawRotation + MathHelper.ToRadians(-45)).ToRotationVector2() * swordBeamLength / 2;
+                position += offset2;
+                spriteBatch.Draw(texture,
+                  position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+                    null, drawColor2, drawRotation + rotationOffset, origin, drawScale, SpriteEffects.None, 0); // drawing the sword itself
+            }
+
+
+
+
+            spriteBatch.Draw(texture,
+               drawPos,
+                  null, drawColor, Projectile.rotation + rotationOffset, origin, drawScale, SpriteEffects.None, 0);
+
+            spriteBatch.RestartDefaults();
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

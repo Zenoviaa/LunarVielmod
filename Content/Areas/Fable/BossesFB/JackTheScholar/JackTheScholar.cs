@@ -3,18 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles;
 using Stellamod.Core;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Igniter;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -47,6 +38,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
             Summon_Hand_Down
         }
 
+        private Color _outlineColor;
+        private Color TargetOutlineColor;
         private AnimationState Animation;
         private float _dyingRotation;
         private float _hitDirection;
@@ -99,7 +92,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
             //Setup the music and boss bar
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Jack");
             NPC.aiStyle = 0;
-         
+
         }
 
         public override void FindFrame(int frameHeight)
@@ -237,6 +230,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
         public override void AI()
         {
             base.AI();
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             switch (State)
             {
                 case AIState.Idle:
@@ -414,6 +408,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
 
             //Jack just sits around for a bit while he decides what to do, nothing special here
             Animation = AnimationState.Idle;
+            TargetOutlineColor = Color.Transparent;
 
             Timer++;
             NPC.velocity.X *= 0.96f;
@@ -667,9 +662,11 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                 Vector2 pos2 = NPC.Center + (progress * MathHelper.TwoPi + MathHelper.Pi).ToRotationVector2() * dist;
                 Dust.NewDustPerfect(pos, DustID.Torch, Vector2.Zero, Scale: scale);
                 Dust.NewDustPerfect(pos2, DustID.Torch, Vector2.Zero, Scale: scale);
+                TargetOutlineColor = Color.Yellow;
             }
             if (Timer >= 20 && Timer < 150)
             {
+                TargetOutlineColor = Color.Red;
                 if (Timer % 15 == 0)
                 {
                     Vector2 spawnPoint = NPC.Center + Main.rand.NextVector2Circular(64, 64);
@@ -727,9 +724,11 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                 Vector2 pos2 = NPC.Center + (progress * MathHelper.TwoPi + MathHelper.Pi).ToRotationVector2() * dist;
                 Dust.NewDustPerfect(pos, DustID.Torch, Vector2.Zero, Scale: scale);
                 Dust.NewDustPerfect(pos2, DustID.Torch, Vector2.Zero, Scale: scale);
+                TargetOutlineColor = Color.Yellow;
             }
             if (Timer % 60 == 0)
             {
+                TargetOutlineColor = Color.Red;
                 Vector2 spawnPoint = NPC.Center + Main.rand.NextVector2Circular(24, 24);
                 Vector2 startVelocity = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 8;
                 startVelocity.Y = -8;
@@ -776,6 +775,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                 soundStyle.PitchVariance = 0.1f;
                 SoundEngine.PlaySound(soundStyle, NPC.position);
             }
+            TargetOutlineColor = Color.Yellow;
 
             if (Timer >= 30 && Timer < 240)
             {
@@ -828,6 +828,14 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                 Animation = AnimationState.Summon_Hand_Up;
             }
 
+            if(Timer < 60)
+            {
+                TargetOutlineColor = Color.Yellow;
+            }
+            else
+            {
+                TargetOutlineColor = Color.Red;
+            }
             if (Timer == 60)
             {
                 NPC.velocity.Y = -16;
@@ -891,13 +899,21 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                 SoundEngine.PlaySound(soundStyle, NPC.position);
             }
 
+            if(Timer < 20)
+            {
+                TargetOutlineColor = Color.Yellow;
+            }
+            else
+            {
+                TargetOutlineColor = Color.Red;
+            }
             if (Timer >= 20 && Timer < 150)
             {
                 if (Timer % 12 == 0)
                 {
                     Vector2 spawnPoint = NPC.Center + Main.rand.NextVector2Circular(128, 128);
                     Vector2 startVelocity = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 8;
-                    int projType = ModContent.ProjectileType<Projectiles.WillOWisp>();
+                    int projType = ModContent.ProjectileType<WillOWisp>();
                     int damage = 12;
                     int knockback = 1;
                     if (StellaMultiplayer.IsHost)

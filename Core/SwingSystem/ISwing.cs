@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Terraria;
 
 namespace Stellamod.Core.SwingSystem
 {
@@ -9,12 +10,11 @@ namespace Stellamod.Core.SwingSystem
 
         int GetHitCount();
 
-        /// <summary>
-        /// Update the 
-        /// </summary>
-        /// <param name="time"></param>
-        void UpdateSwing(float time, Vector2 position, Vector2 velocity, out Vector2 offset);
-        void CalculateAfterImagePoints(float time, Vector2 velocity, ref Vector2[] trailCache);
-        void CalculateTrailingPoints(float time, Vector2 velocity, ref Vector2[] trailCache);
+
+        bool CanHurt(BaseSwingProjectileV2 swingProjectile);
+
+        void UpdateSwing(BaseSwingProjectileV2 swingProjectile);
+        void CalculateAfterImagePoints(BaseSwingProjectileV2 swingProjectile);
+        void CalculateTrailingPoints(BaseSwingProjectileV2 swingProjectile);
     }
 }

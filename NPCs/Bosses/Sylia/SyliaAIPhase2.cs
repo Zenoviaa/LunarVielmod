@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-
+using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Sylia.Projectiles;
 using Stellamod.Projectiles.Swords;

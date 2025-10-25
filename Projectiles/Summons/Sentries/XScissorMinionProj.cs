@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Minions;
+using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Summons.VoidMonsters;
 using Stellamod.Projectiles.Swords;

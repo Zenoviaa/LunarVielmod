@@ -24,6 +24,29 @@ namespace Stellamod.Trailing
                 return Color.Lerp(Color.White, Color.Transparent, interpolant);
             }
 
+        }; 
+        
+        public static SlashTrailer Chillrend => new SlashTrailer
+        {
+            Shader = new SlashEffect()
+            {
+                BaseColor = Color.LightGray,
+                HighlightColor = Color.White,
+                RimHighlightColor = Color.White,
+                WindColor = Color.LightGray,
+                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive,
+                WindTexture = TrailRegistry.StarTrail.Value
+            },
+            TrailWidthFunction = (float interpolant) =>
+            {
+                return EasingFunction.QuadraticBump(interpolant) * 16;
+            },
+            TrailColorFunction = (float interpolant) =>
+            {
+                Color lerp1 = Color.Lerp(Color.White, Color.LightGray, interpolant);
+                return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+            }
+
         };
         public static SlashTrailer HypnoticScythe => new SlashTrailer
         {
@@ -43,6 +66,29 @@ namespace Stellamod.Trailing
             TrailColorFunction = (float interpolant) =>
             {
                 Color lerp1 = Color.Lerp(Color.Pink, Color.Cyan, interpolant);
+                return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+            }
+
+        };
+        
+        public static SlashTrailer Miracle => new SlashTrailer
+        {
+            Shader = new SlashEffect()
+            {
+                BaseColor = Color.Blue,
+                HighlightColor = Color.Purple,
+                RimHighlightColor = Color.DarkViolet,
+                WindColor = Color.DarkViolet,
+                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive,
+                WindTexture = TrailRegistry.WhispyTrail.Value
+            },
+            TrailWidthFunction = (float interpolant) =>
+            {
+                return EasingFunction.QuadraticBump(interpolant) * 7;
+            },
+            TrailColorFunction = (float interpolant) =>
+            {
+                Color lerp1 = Color.Lerp(Color.Blue, Color.Purple, interpolant);
                 return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
             }
 
@@ -229,6 +275,28 @@ namespace Stellamod.Trailing
             TrailColorFunction = (float interpolant) =>
             {
                 Color lerp1 = Color.Lerp(Color.Red, Color.Black, interpolant);
+                return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+            }
+
+        };
+        public static SlashTrailer Sirius => new SlashTrailer
+        {
+            Shader = new SlashEffect()
+            {
+                BaseColor = Color.White,
+                HighlightColor = Color.Cyan,
+                RimHighlightColor = Color.DarkBlue,
+                WindColor = Color.DarkViolet,
+                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive,
+                WindTexture = TrailRegistry.LightningTrail2.Value
+            },
+            TrailWidthFunction = (float interpolant) =>
+            {
+                return EasingFunction.QuadraticBump(interpolant) * 5;
+            },
+            TrailColorFunction = (float interpolant) =>
+            {
+                Color lerp1 = Color.Lerp(Color.White, Color.Blue, interpolant);
                 return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
             }
 

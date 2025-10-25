@@ -15,7 +15,7 @@ namespace Stellamod.Projectiles.Magic
             base.Start();
             if (Main.myPlayer == Projectile.owner)
             {
-                var circle = EffectsHelper.SimpleExplosionCircle(Projectile, Color.Red, endRadius: 80);
+                FXUtil.GlowCircleBoom(Projectile.Center, Color.Red, Color.DarkRed, Color.Purple);
                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
                 SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Projectile.position);
             }

@@ -1,13 +1,13 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Igniter;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
 using Terraria;

@@ -39,23 +39,38 @@ Common: {
 		If your big gun hits a summon, it will increase their damage by 25% 
 		'''
 	ScorpionRightClickHelp: "Right click in inventory to open your gun slots "
-	Crossbow: Crossbow Weapon Type
+	Crossbow: Bow Weapon Type
 	CrossbowHelp:
 		'''
-		Use to load an arrow into the crossbow
-		Use again to fire a powerful sniper-like arrow!
+		Hold to charge up an arrow, then release to fire
+		Charged shots do much more damage!
+		Hold right click to use your special
 		'''
 	StyleSword: Sword Attack Style
-	BasicSlash: Basic Slash: {0}
-	StaminaSlash: Stamina Slash: {0}
+	BasicSlash: "{0}"
+	StaminaSlash: Special: {0}
 	WeaponTypeSword: Sword Weapon Type
 	WeaponTypeKnives: Knives Weapon Type
 	WeaponTypeScythe: Scythe Weapon Type
+	WeaponTypeGreatsword: Greatsword Weapon Type
+	WeaponTypeSpear: Spear Weapon Type
 	InsourceTime: "{0} seconds added to your flask cooldown"
 	XixianFlaskLock: This item is LOCKED, continue exploring and you may find it.
 	StaminaFlaskLock: This item is LOCKED, continue exploring and you may find it.
 	StaminaCost: Costs {0} stamina to use
 	ExpandTooltipHelp: Press [{0}] for more information
+	BellLock: Real
+	BellUse: Put your minions into the bell, then hold [{0}] to summon them!
+	CastingTime: "{0} seconds added to your casting time"
+	TotalCastingTime: "{0} seconds of casting time"
+	ClassNerf: You are not proficient at using this damage class...
+	WeaponTypeGun: Gun Weapon Type
+	MagazineHelp: "{0} Ammo Capacity"
+	GunHelp:
+		'''
+		Once you run out of ammo, you'll need to reload!
+		Succeed at a short timing minigame and stylishly prepare your firearm!
+		'''
 }
 
 SetBonus: {
@@ -2094,8 +2109,12 @@ OceansTrinket: {
 }
 
 RuneOfCorsage: {
-	DisplayName: Rune Of Corsage
-	Tooltip: Great for regeneration!
+	DisplayName: Glyph Of Corsage
+	Tooltip:
+		'''
+		While standing still, you have boosted life regeneration
+		Nearby enemies are poisoned
+		'''
 	Effect:
 		'''
 		While standing still, you have boosted life regeneration
@@ -2784,11 +2803,9 @@ X3107: {
 
 ArchariliteEnergyShot: {
 	DisplayName: Arncharilite Energy Shot
-	Tooltip:
-		'''
-		Shoots a spread of 3 arrows
-		Becomes empowered by the Arnchar Super Charger!
-		'''
+	Tooltip: ""
+	BasicSlash: ""
+	StaminaSlash: Shoots a spread of 3 super-powered arrows, great for burst damage!
 }
 
 AssassinsDischarge: {
@@ -2811,11 +2828,9 @@ BrokenWrath: {
 
 CloudBow: {
 	DisplayName: Cloud Bow
-	Tooltip:
-		'''
-		Shoots a cloud arrow that can cause enemies to rise into the sky!
-		Also shoots a spread of 3 arrows
-		'''
+	Tooltip: ""
+	BasicSlash: Shoots a spread of 3 arrows
+	StaminaSlash: Shoots a powerful cloud arrow that makes enemies rise into the sky!
 }
 
 Crysalizer: {
@@ -2865,12 +2880,16 @@ IvynShot: {
 
 JackoShot: {
 	DisplayName: Jacko Shot
-	Tooltip: Every third shot shoots a fire arrow that explodes into 3 homing embers!
+	Tooltip: Pumpkin bow
+	BasicSlash: ""
+	StaminaSlash: Shoots an pumpkin arrow that explodes into 3 homing flames!
 }
 
 JellyBow: {
 	DisplayName: Jelly Bow
-	Tooltip: It's a nice bow, there's nothing else special about it
+	Tooltip: So is it sticky or slippery?
+	BasicSlash: ""
+	StaminaSlash: Shoots an exploding jelly shot
 }
 
 LAZER: {
@@ -2899,11 +2918,13 @@ TecnoBlaster: {
 
 TheRedSkull: {
 	DisplayName: The Red Skull
-	Tooltip:
+	Tooltip: ""
+	BasicSlash:
 		'''
 		Every three shots on the same target will cause them to explode!
 		Another skull emoji.
 		'''
+	StaminaSlash: Fires a quick burst of 3 arrows
 }
 
 Tociflare: {
@@ -3071,6 +3092,8 @@ SolMothStaff: {
 HeatGlider: {
 	DisplayName: Heat Glider
 	Tooltip: Oh burn baby burn :)
+	StaminaSlash: Shoots a powerful, piercing, and ricocheting solar arrow!
+	BasicSlash: ""
 }
 
 JPost: {
@@ -3144,7 +3167,9 @@ RuneOfWind: {
 
 GintzlsSteed: {
 	DisplayName: Gintzls Steed
-	Tooltip: I dont know how they are shooting arrows with no arms..
+	Tooltip: I don't know how they are shooting arrows with no arms..
+	BasicSlash: ""
+	StaminaSlash: Fires a long burst of 7 arrows!
 }
 
 Gallasis: {
@@ -3288,6 +3313,8 @@ Gintelze: {
 HolmbergScythe: {
 	DisplayName: Holmberg Scythe
 	Tooltip: Rip the universe in half!
+	StaminaSlash: Summons a barrage of homing scythes!
+	BasicSlash: ""
 }
 
 Alcarish: {
@@ -3486,6 +3513,8 @@ Blackdot: {
 Galvinie: {
 	DisplayName: Galvinie
 	Tooltip: Your mouse isn't gonna like this
+	BasicSlash: Wooden arrows are converted into lightning fast golden arrows
+	StaminaSlash: Shoots a quick burst of 3 arrows
 }
 
 TheBurningRod: {
@@ -4323,6 +4352,8 @@ PotOfGreed: {
 Ripper: {
 	DisplayName: Ripper
 	Tooltip: Summons a storm of swords towards your cursor!
+	BasicSlash: No Effect
+	StaminaSlash: No Effect
 }
 
 XScissor: {
@@ -4629,6 +4660,8 @@ DreadGauntlets: {
 ScytheOfSouls: {
 	DisplayName: Scythe Of Souls
 	Tooltip: Use these vengeful souls at will, they are quite quirky!
+	BasicSlash: No Effect
+	StaminaSlash: No Effect
 }
 
 BubbleBlasher: {
@@ -5556,6 +5589,8 @@ SolarianPants: {
 IyxTheInfamous: {
 	DisplayName: Iyx The Infamous
 	Tooltip: From the fallen warriors of the cinder, to the magical entropy of the world, this weapon was lost long ago.
+	BasicSlash: No Effect
+	StaminaSlash: No Effect
 }
 
 PoisonedAngel: {
@@ -6325,8 +6360,10 @@ PureHeart: {
 }
 
 MushroomGreatbow: {
-	Tooltip: ""
+	Tooltip: Honestly, it looks kinda creepy
 	DisplayName: Mushroom Greatbow
+	BasicSlash: ""
+	StaminaSlash: Shoots a quick burst of 5 arrows
 }
 
 Hookarama: {
@@ -6635,11 +6672,9 @@ GarbageChestplate: {
 
 Sirius: {
 	DisplayName: Sirius
-	Tooltip:
-		'''
-		Throws a spear that lodges into targets and then violently explodes!
-		Niivi's wrath~
-		'''
+	Tooltip: Niivi's wrath~
+	BasicSlash: ""
+	StaminaSlash: Throws a spear that lodges into targets and then violently explodes!
 }
 
 Iknoctstein: {
@@ -6760,7 +6795,9 @@ FlowerHat: {
 
 Cryal: {
 	DisplayName: Cryal
-	Tooltip: Shoots 2 icy bolts and some arrows!
+	Tooltip: Frosty~
+	BasicSlash: Shoots two arrows at once!
+	StaminaSlash: Shoots a frosty comet that slows down and explodes into frozen fish
 }
 
 MahoganyStorm: {
@@ -7107,7 +7144,9 @@ IcelockLongbow: {
 
 Chillrend: {
 	DisplayName: Chillrend
-	Tooltip: The final slash spins the sword around and creates an icey vortex
+	Tooltip: Chillin'
+	BasicSlash: ""
+	StaminaSlash: Throws the sword and creates an icey vortex!
 }
 
 ManifestedCommitment: {
@@ -8929,6 +8968,8 @@ KindCompass: {
 IronBow: {
 	DisplayName: Iron Bow
 	Tooltip: ""
+	BasicSlash: ""
+	StaminaSlash: Shoots a quick burst of 3 arrows
 }
 
 HangingSpringPotFlowerItem: {
@@ -9346,5 +9387,20 @@ StarrVeriplantBarrierBlockItem: {
 
 TheUrdveilDoorItem: {
 	DisplayName: The Urdveil Door Item
+	Tooltip: ""
+}
+
+ArncharFlyingDrone: {
+	DisplayName: Arnchar Flying Drone
+	Tooltip: Summons a flying drone to chase down enemies and pelt them with mini lasers!
+}
+
+SummoningBell: {
+	DisplayName: Summoning Bell
+	Tooltip: ""
+}
+
+ClassSwapItem: {
+	DisplayName: Class Swap Item
 	Tooltip: ""
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-
+using Stellamod.Core.ClassReworkSystem;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
@@ -125,7 +125,7 @@ namespace Stellamod.Items.Accessories.Players
             DashItem = null;
             DashAugmentEquipped = false;
             DoubleTapped = false;
-            DashVelocity = 25;
+            DashVelocity = 10;
             DashDuration = 40;
             DashCooldown = 44;
             // ResetEffects is called not long after player.doubleTapCardinalTimer's values have been set
@@ -158,7 +158,7 @@ namespace Stellamod.Items.Accessories.Players
             // if the player can use our dash, has double tapped in a direction, and our dash isn't currently on cooldown
             if (CanUseDash() && (LunarVeilKeybinds.DashKeybind.JustPressed || DoubleTapped) && DashDir != -1 && DashDelay == 0 && DashCount > 0 && Main.myPlayer == Player.whoAmI)
             {
-                float dashVelocity = 8;
+                float dashVelocity = DashVelocity;
                 DashCount--;
                 DashCountTimer = 0;
 

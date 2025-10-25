@@ -1,10 +1,10 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Terror.WeaponsTR;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Mage.Tomes;
-using Stellamod.Items.Weapons.Ranged;
 using Stellamod.NPCs.Bosses.DreadMire;
 using Terraria;
 using Terraria.GameContent;

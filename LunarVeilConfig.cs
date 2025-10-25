@@ -79,5 +79,11 @@ namespace Stellamod
         public float EnchantmentMenuX = 50;
         [Range(0f, 100f)]
         public float EnchantmentMenuY = 50;
+
+        [Range(0f, 100f)]
+        public float AmmoBarX = 50;
+        [Range(0f, 100f)]
+        public float AmmoBarY = 50;
+
     }
 }

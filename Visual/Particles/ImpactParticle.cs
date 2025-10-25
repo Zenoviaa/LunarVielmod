@@ -20,6 +20,7 @@ namespace Stellamod.Visual.Particles
         public int FrameWidth = 128;
         public int FrameHeight = 128;
         public int MaxFrameCount = 1;
+        public bool fast;
 
         public Color innerColor;
         public Color outerColor;
@@ -43,6 +44,8 @@ namespace Stellamod.Visual.Particles
         public override void Update()
         {
             color *= 0.98f;
+            if(fast)
+                color *= 0.92f;
             Velocity *= 0.95f;
             Rotation = Velocity.ToRotation();
             fadeIn++;

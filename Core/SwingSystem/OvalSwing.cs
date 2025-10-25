@@ -39,6 +39,9 @@ namespace Stellamod.Core.SwingSystem
         public float TrailOffset { get; set; }
         public float ThrowRadius { get; set; }
         public float ThrowTrailOffset { get; set; }
+        public float SpinDegrees { get; set; }
+        public float SpinThrowDistance { get; set; }
+        public bool AlwaysShowTrail { get; set; }
         public Easer Easing { get; set; }
         public SoundStyle? Sound { get; set; }
 
@@ -78,10 +81,91 @@ namespace Stellamod.Core.SwingSystem
             yOffset = yRadius * MathF.Cos(rads);
 
         }
+        private void CalculateXY2(float interpolant, Vector2 velocity, out float xOffset, out float yOffset)
+        {
+            float range = _swingRadians;
+            float startRads = -range / 2;
+            float endRads = range / 2;
 
+            startRads *= _dir;
+            endRads *= _dir;
+
+            float rads = MathHelper.Lerp(startRads, endRads, interpolant);
+            rads += MathHelper.PiOver2;
+
+            // rads += targetRotation;
+            float xRadius = 64 + _throw;
+            float yRadius = 64 + _throw;
+
+
+            xOffset = xRadius * MathF.Sin(rads);
+            yOffset = yRadius * MathF.Cos(rads);
+
+        }
+        public void CalculateTrailingPoints(float time, Vector2 velocity, ref Vector2[] trailCache)
+        {
+            //Alright, calculating trail points
+            //The points will be offset by the position matrix
+            //So we just calculate the local points here
+            for (int t = 0; t < trailCache.Length; t++)
+            {
+                float l = trailCache.Length;
+                //Lerp between the points
+                float progressOnTrail = t / l;
+
+                //Calculate starting lerp value
+                float startTrailLerpValue = MathHelper.Clamp(time - TRAIL_START_OFFSET, 0, 1);
+                float startTrailProgress = startTrailLerpValue;
+                startTrailProgress = Easing(startTrailLerpValue);
+
+
+                //Calculate ending lerp value
+                float endTrailLerpValue = time;
+                float endTrailProgress = endTrailLerpValue;
+                endTrailProgress = Easing(endTrailLerpValue);
+
+                //Smoothing lerp in between points
+                float interpolant = MathHelper.SmoothStep(startTrailProgress, endTrailProgress, progressOnTrail);
+
+                float xOffset;
+                float yOffset;
+
+                float radOffset = _swingRadians / 2;
+                float targetRotation = velocity.ToRotation();
+                CalculateXY(interpolant, velocity, out xOffset, out yOffset);
+                //Set Offset, now we can take this and offset it more in the projectile
+                trailCache[t] = new Vector2(xOffset * TrailOffset, yOffset * TrailOffset).RotatedBy(targetRotation);
+            }
+        }
         public void UpdateSwing(float time, Vector2 position, Vector2 velocity,
             out Vector2 offset)
         {
+            //Calculate easing
+            float easedInterpolant = Easing(time);
+            if (!_hasPlayedSound && easedInterpolant >= 0.35f && Sound != null)
+            {
+                SoundEngine.PlaySound(Sound, position);
+                _hasPlayedSound = true;
+            }
+            //Calculate the offset at this time
+            float xOffset;
+            float yOffset;
+            float radOffset = _swingRadians;
+            float targetRotation = velocity.ToRotation();
+            CalculateXY(easedInterpolant, velocity, out xOffset, out yOffset);
+
+            //Set Offset
+            offset = new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
+           
+  
+        }
+
+        public void UpdateSwing(BaseSwingProjectileV2 swingProjectile)
+        {
+            float time = swingProjectile.Interpolant;
+            Vector2 position = swingProjectile.Projectile.Center;
+            Vector2 velocity = swingProjectile.Projectile.velocity;
+
             //Calculate easing
             float easedInterpolant = Easing(time);
             if (!_hasPlayedSound && easedInterpolant >= 0.35f && Sound != null)
@@ -103,36 +187,82 @@ namespace Stellamod.Core.SwingSystem
             CalculateXY(easedInterpolant, velocity, out xOffset, out yOffset);
 
             //Set Offset
-            offset = new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
+            Vector2 offset = new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
+            var projectile = swingProjectile.Projectile;
+
+            projectile.Center = swingProjectile.Owner.Center + offset;
+            projectile.rotation = (projectile.Center - swingProjectile.Owner.Center).ToRotation() + MathHelper.PiOver4;
+
+            if (SpinDegrees <= 0)
+                return;
+
+            float rot = MathHelper.Lerp(0, MathHelper.ToRadians(SpinDegrees), time);
+            projectile.rotation += rot;
+            projectile.Center += Vector2.Lerp(Vector2.Zero, projectile.velocity * SpinThrowDistance, EasingFunction.QuadraticBump(time));
+    
         }
 
-        public void CalculateAfterImagePoints(float time, Vector2 velocity, ref Vector2[] trailCache)
+
+        public void CalculateAfterImagePoints(BaseSwingProjectileV2 swingProjectile)
         {
+            ref Vector2[] trailCache = ref swingProjectile.afterImageCache;
+            float[] oldTime = swingProjectile.oldTime;
+            ref float[] trailRotationCache = ref swingProjectile.swingRotationCache;
+            Vector2 velocity = swingProjectile.Projectile.velocity;
+            float interpolant = swingProjectile.Interpolant;
             //Alright, calculating trail points
             //The points will be offset by the position matrix
             //So we just calculate the local points here
             for (int t = 0; t < trailCache.Length; t++)
             {
-                float l = trailCache.Length;
-                //Lerp between the points
-                float progressOnTrail = t / l;
-
+                float time = swingProjectile.oldTime[t * 5];
+                float easedInterpolant = Easing(time);
                 float xOffset;
                 float yOffset;
                 float targetRotation = velocity.ToRotation();
-                float interpolant = MathHelper.SmoothStep(0, time, progressOnTrail);
 
                 if (ThrowRadius > 0)
                 {
-                    _throw = MathHelper.Lerp(0f, ThrowRadius, EasingFunction.QuadraticBump(interpolant));
+                    _throw = MathHelper.Lerp(0f, ThrowRadius, EasingFunction.QuadraticBump(time));
                 }
-                CalculateXY(interpolant, velocity, out xOffset, out yOffset);
+                CalculateXY(easedInterpolant, velocity, out xOffset, out yOffset);
                 //Set Offset, now we can take this and offset it more in the projectile
-                trailCache[t] = new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
+
+                Vector2 offset = new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
+                trailCache[t] = swingProjectile.Owner.Center + offset;
+                trailRotationCache[t] = (trailCache[t] - swingProjectile.Owner.Center).ToRotation() +  MathHelper.PiOver4;
+
+
+
+                if (SpinDegrees <= 0)
+                    continue;
+
+                float rot = MathHelper.Lerp(0, MathHelper.ToRadians(SpinDegrees), time);
+                trailCache[t] += Vector2.Lerp(Vector2.Zero, velocity * SpinThrowDistance, EasingFunction.QuadraticBump(interpolant));
+                trailRotationCache[t] += rot;
             }
         }
-        public void CalculateTrailingPoints(float time, Vector2 velocity, ref Vector2[] trailCache)
+
+        public bool CanHurt(BaseSwingProjectileV2 swingProjectile)
         {
+            if (SpinThrowDistance > 0)
+                return true;
+            float time = swingProjectile.Interpolant;
+            float ease = Easing(time);
+            return ease > 0.2f && ease <= 0.8f;
+        }
+        public void CalculateTrailingPoints(BaseSwingProjectileV2 swingProjectile)
+        {
+            float time = swingProjectile.Interpolant;
+            ref Vector2[] trailCache = ref swingProjectile.swingTrailCache;
+            ref Vector2[] bigTrailCache = ref swingProjectile.bigSwingTrailCache;
+            Vector2 velocity = swingProjectile.Projectile.velocity;
+            if (!AlwaysShowTrail)
+            {
+                if (time - 0.3f < 0)
+                    return;
+            }
+
             //Alright, calculating trail points
             //The points will be offset by the position matrix
             //So we just calculate the local points here
@@ -167,8 +297,28 @@ namespace Stellamod.Core.SwingSystem
                     _throw = MathHelper.Lerp(0f, ThrowRadius + ThrowTrailOffset, EasingFunction.QuadraticBump(MathHelper.SmoothStep(startTrailLerpValue, endTrailLerpValue, progressOnTrail)));
                 }
                 CalculateXY(interpolant, velocity, out xOffset, out yOffset);
+                float centerTrailOffset = swingProjectile.GetTrailCenterMultiplier();
+                if(SpinThrowDistance > 0)
+                {
+                    xOffset *= centerTrailOffset;
+                    yOffset *= centerTrailOffset;
+                }
                 //Set Offset, now we can take this and offset it more in the projectile
-                trailCache[t] = new Vector2(xOffset * TrailOffset, yOffset * TrailOffset).RotatedBy(targetRotation);
+                Vector2 offset = new Vector2(xOffset * TrailOffset * 1.3f, yOffset * TrailOffset * 1.3f);
+                trailCache[t] = offset.RotatedBy(targetRotation);
+
+
+                Vector2 offset2 = offset;
+                offset2 *= 2;
+                bigTrailCache[t] = offset2.RotatedBy(targetRotation);
+
+
+                Vector2 throwOffset = Vector2.Lerp(Vector2.Zero, velocity * SpinThrowDistance, EasingFunction.QuadraticBump(time));
+                trailCache[t] += throwOffset;
+                bigTrailCache[t] += throwOffset;
+
+
+
             }
         }
     }

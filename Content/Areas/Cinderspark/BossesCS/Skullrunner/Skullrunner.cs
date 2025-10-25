@@ -500,6 +500,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             Vector2 sidePosition = NPC.Center + -Vector2.UnitX * NPC.direction * 72 + Vector2.UnitY * 48;
             NPC.TargetClosest();
             FaceDirection();
+            
       
             if (Timer < 10)
             {

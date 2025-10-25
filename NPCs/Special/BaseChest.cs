@@ -105,6 +105,7 @@ namespace Stellamod.NPCs.Special
                 Main.dust[d].velocity *= 0.3f;
             }
 
+            NPC.velocity.X = 0;
             NPC.velocity.Y = MathF.Sin(Timer * 0.01f) * 0.5f;
             Lighting.AddLight(NPC.position, ChestColor.ToVector3() * 0.78f);
         }

@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Terror.WeaponsTR;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Mage.Tomes;
-using Stellamod.Items.Weapons.Ranged;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using System.Collections.Generic;
 using System.IO;
@@ -1009,7 +1009,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
 
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedAnxiety>(), 1, 1, 1));
+         //   npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedAnxiety>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<DreadmireBag>()));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.DreadBossRel>()));

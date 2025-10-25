@@ -37,6 +37,7 @@ namespace Stellamod.Items.Weapons.Melee
             base.DefineCombo();
             SwingV2Helper.AddSwordSwingStyle(this);
             Trailer = TrailPresets.InkingSpire;
+            swordBeamLength = 32;
         }
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)

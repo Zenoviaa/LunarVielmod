@@ -1348,7 +1348,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 7));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Twirlers>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedCommitment>(), 1, 1, 1));
+            //npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedCommitment>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GothiviaBag>()));
             // ItemDropRule.MasterModeDropOnAllPlayers for the pet
             //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));

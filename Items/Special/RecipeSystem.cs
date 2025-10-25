@@ -14,11 +14,12 @@ namespace Stellamod.Items.Special
         {
             for (int i = 0; i < Recipe.numRecipes; i++)
             {
+                /*
                 Recipe recipe = Main.recipe[i];
                 if (recipe.TryGetResult(ItemID.Zenith, out Item result3))
                 {
                     recipe.AddIngredient(ModContent.ItemType<ManifestedLove>(), 1);
-                }
+                }*/
             }
         }
 

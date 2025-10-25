@@ -21,7 +21,6 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
         {
             base.SetDefaults();
             Item.damage = 2;
-            CrossbowProjectileType = ModContent.ProjectileType<HypnotizerHold>();
             staminaProjectileShoot = ModContent.ProjectileType<HypnotizerStaminaHold>();
         }
 
@@ -38,7 +37,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
 
 
 
-    public class HypnotizerHold : BaseCrossbowProjectile
+    public class HypnotizerHold : CrossbowHold
     {
         public override void Shoot(Vector2 position, Vector2 velocity)
         {
@@ -75,7 +74,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
 
 
 
-    public class HypnotizerStaminaHold : BaseCrossbowProjectile
+    public class HypnotizerStaminaHold : CrossbowHold
     {
         public override void SetDefaults()
         {

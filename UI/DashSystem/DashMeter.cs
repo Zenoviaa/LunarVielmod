@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Terraria;
+using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.UI;
@@ -133,6 +134,11 @@ namespace Stellamod.UI.DashSystem
             Rectangle mouseRect = new Rectangle((int)Main.MouseScreen.X, (int)Main.MouseScreen.Y, 8, 8);
             Vector2 size = new Vector2(_edge.Size().X * (maxFillAmount + 3), _edge.Size().Y);
             Rectangle barRect = Utils.CenteredRectangle(drawPos + size / 2, size * Main.UIScale);
+            if (barRect.Intersects(mouseRect) && !PlayerInput.IgnoreMouseInterface)
+            {
+                Main.LocalPlayer.mouseInterface = true;
+                _isDragging = true;
+            }
 
             MouseState ms = Mouse.GetState();
             Vector2 mousePos = Main.MouseScreen;

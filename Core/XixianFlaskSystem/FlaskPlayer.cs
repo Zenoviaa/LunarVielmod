@@ -123,11 +123,6 @@ namespace Stellamod.Core.XixianFlaskSystem
             }
         }
 
-        public List<Item> GetInsourceInventory()
-        {
-            return _unlockedInsources;
-        }
-
         public List<Item> GetInsources()
         {
             return _insources;

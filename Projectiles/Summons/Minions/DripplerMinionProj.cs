@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
+using Stellamod.Core.SummonerSystem;
 using Stellamod.Helpers;
 using System;
 using Terraria;
