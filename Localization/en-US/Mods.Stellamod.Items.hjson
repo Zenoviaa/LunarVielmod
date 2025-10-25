@@ -9404,3 +9404,8 @@ ClassSwapItem: {
 	DisplayName: Class Swap Item
 	Tooltip: ""
 }
+
+ManorPillarItem: {
+	DisplayName: Manor Pillar Item
+	Tooltip: ""
+}
