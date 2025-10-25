@@ -38,8 +38,8 @@ namespace Stellamod.Core.Bases
             swings.Add(new OvalSwing
             {
                 Duration = 90,
-                XSwingRadius = 64,
-                YSwingRadius = 64,
+                XSwingRadius = 1,
+                YSwingRadius = 1,
                 SwingDegrees = 2000,
                 SpinThrowDistance = 40,
                 SpinDegrees=1,
@@ -93,8 +93,8 @@ namespace Stellamod.Core.Bases
             swings.Add(new OvalSwing
             {
                 Duration = 100,
-                XSwingRadius = 64,
-                YSwingRadius = 64,
+                XSwingRadius = 1,
+                YSwingRadius = 1,
                 SwingDegrees = 2000,
                 SpinThrowDistance = 40,
                 SpinDegrees = 1,

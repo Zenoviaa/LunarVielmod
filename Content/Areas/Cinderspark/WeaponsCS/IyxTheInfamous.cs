@@ -125,7 +125,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 Shader = blackFireShader,
                 TrailWidthFunction = (interpolant) =>
                 {
-                    return EasingFunction.QuadraticBump(interpolant) * 128 * MathHelper.Lerp(1f, 0.0f, EasingFunction.InOutSine(Interpolant));
+                    return EasingFunction.QuadraticBump(interpolant) * 64;
                 },
                 TrailColorFunction = (interpolant) =>
                 {

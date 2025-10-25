@@ -21,33 +21,16 @@ float4 uSourceRect;
 float2 uZoom;
 
 //Vars
-float time;
-float2 tiling;
 float3 innerColor;
 float3 outerColor;
-
-texture noiseTexture;
-sampler2D noiseTex = sampler_state
-{
-    texture = <noiseTexture>;
-    magfilter = LINEAR;
-    minfilter = LINEAR;
-    mipfilter = LINEAR;
-    AddressU = wrap;
-    AddressV = wrap;
-};
 
 float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
 {
     //All we have to do is sample the white to black of the texture, using that as an interpolant for the colors
     //Then using the time we can oscillate and add some glow with power?
-    float n = tex2D(noiseTex, coords + float2(time * -0.05, time * -0.05) * tiling);
-    float n2 = tex2D(noiseTex, coords + float2(time * -0.025, time * -0.025) * tiling);
-    float noise = saturate(n + n2);
-    float3 color = lerp(outerColor, innerColor, noise);
-    
-    float swordAlpha = tex2D(uImage0, coords).a;
-    float4 finalColor = float4(color, swordAlpha) * swordAlpha * sampleColor;
+    float n = tex2D(uImage0, coords);
+    float3 color = lerp(outerColor, innerColor, n);
+    float4 finalColor = float4(color * n, 0.0) * sampleColor;
     return finalColor;
 }
 

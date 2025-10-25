@@ -14,9 +14,6 @@ namespace Stellamod.Core.Shaders
 {
     public class SwordBeamShader : BaseShader
     {
-        private EffectParameter _tilingParam;
-        private EffectParameter _noiseTextureParam;
-        private EffectParameter _timeParam;
         private EffectParameter _innerColorParam;
         private EffectParameter _outerColorParam;
         private static SwordBeamShader _instance;
@@ -31,16 +28,7 @@ namespace Stellamod.Core.Shaders
         }
 
 
-        public Asset<Texture2D> NoiseTexture
-        {
-            set
-            {
-                _noiseTextureParam ??= Effect.Parameters["noiseTexture"];
-                _noiseTextureParam.SetValue(value.Value);
-            }
-        }
-
-
+   
         public Color InnerColor
         {
             set
@@ -59,35 +47,13 @@ namespace Stellamod.Core.Shaders
             }
         }
 
-        public float Time
-        {
-            set
-            {
-                _timeParam ??= Effect.Parameters["time"];
-                _timeParam.SetValue(value);
-            }
-        }
 
-
-
-        public Vector2 Tiling
-        {
-            set
-            {
-                _tilingParam ??= Effect.Parameters["tiling"];
-                _tilingParam.SetValue(value);
-            }
-        }
         public override void SetDefaults()
         {
             base.SetDefaults();
             InnerColor = Color.White;
             OuterColor = Color.Red;
-
             BlendState = BlendState.AlphaBlend;
-            NoiseTexture =AssetRegistry.Textures.Noise.Perlin;
-            Time = Main.GlobalTimeWrappedHourly * 0.5f;
-            Tiling = Vector2.One * 8;
         }
     }
 }

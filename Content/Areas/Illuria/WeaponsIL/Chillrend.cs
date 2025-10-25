@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
@@ -46,27 +47,35 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             SwingV2Helper.AddGreatswordSwingStyle(this);
             BlackFireShader blackFireShader = new BlackFireShader();
             blackFireShader.SetDefaults();
-            blackFireShader.InnerColor = Color.White;
+            blackFireShader.InnerColor = Color.Gray;
             blackFireShader.OuterColor = Color.Cyan;
             SlashTrailer devilsPeak = new SlashTrailer
             {
                 Shader = blackFireShader,
                 TrailWidthFunction = (interpolant) =>
                 {
-                    return EasingFunction.QuadraticBump(interpolant) * 128 * MathHelper.Lerp(0.5f, 0.0f, EasingFunction.InOutSine(Interpolant));
+                    return EasingFunction.InOutSine(interpolant) * 186 * EasingFunction.InOutSine(1f - Interpolant);
                 },
                 TrailColorFunction = (interpolant) =>
                 {
-                    Color lerp1 = Color.Lerp(Color.Cyan, Color.DarkBlue, interpolant);
+                    Color lerp1 = Color.Lerp(Color.DarkViolet, Color.SkyBlue, interpolant);
                     return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
                 }
 
             };
             Trailer = devilsPeak;
-
+            swordBeamLength = 180;
+            outlineColor = Color.Cyan;
+            glowAfterImageColor = Color.DarkBlue;
             useAfterImage = false;
             hitStopTime = EXTRA_UPDATE_COUNT * 8;
         }
+        
+        public override Asset<Texture2D> RequestHologramTexture()
+        {
+            return TextureRegistry.GlowSword_Chillrend;
+        }
+
         public override void AI()
         {
             base.AI();

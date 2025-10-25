@@ -178,11 +178,13 @@ namespace Stellamod.Content.Areas.Ishtar.WeaponsIS
             base.AI();
             glowColor = Color.Lerp(Color.Transparent, Color.LightBlue, EasingFunction.QuadraticBump(Interpolant));
             growScale = MathHelper.Lerp(0f, 0.15f, EasingFunction.QuadraticBump(Interpolant));
-            if(Timer % 16 == 0 && _projCount < 3)
+            if(Interpolant > 0.5f && _projCount < 1)
             {
                 if(Main.myPlayer == Projectile.owner)
                 {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity.RotatedBy(-0.5f), ModContent.ProjectileType<ScytheOfSoulsProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity, ModContent.ProjectileType<ScytheOfSoulsProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity.RotatedBy(0.5f), ModContent.ProjectileType<ScytheOfSoulsProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
                 _projCount++;
             }

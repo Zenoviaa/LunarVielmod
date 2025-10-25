@@ -55,6 +55,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
             base.DefineCombo();
             SwingV2Helper.AddSwordSwingStyle(this);
             Trailer = TrailPresets.Miracle;
+            useAfterImage = true;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
