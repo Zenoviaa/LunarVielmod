@@ -147,22 +147,26 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             swingSound1.PitchVariance = 0.5f;
             BlackFireShader blackFireShader = new BlackFireShader();
             blackFireShader.SetDefaults();
-            blackFireShader.InnerColor = Color.White;
+            blackFireShader.InnerColor = Color.Gray;
             blackFireShader.OuterColor = Color.Cyan;
             SlashTrailer devilsPeak = new SlashTrailer
             {
                 Shader = blackFireShader,
                 TrailWidthFunction = (interpolant) =>
                 {
-                    return EasingFunction.QuadraticBump(interpolant) * 128 * MathHelper.Lerp(0.5f, 0.0f, EasingFunction.InOutSine(Interpolant));
+                    return EasingFunction.InOutSine(interpolant) * 186 * EasingFunction.InOutSine(1f - Interpolant);
                 },
                 TrailColorFunction = (interpolant) =>
                 {
-                    Color lerp1 = Color.Lerp(Color.Cyan, Color.DarkBlue, interpolant);
+                    Color lerp1 = Color.Lerp(Color.DarkViolet, Color.SkyBlue, interpolant);
                     return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
                 }
 
             };
+            swordBeamLength = 180;
+            outlineColor = Color.Cyan;
+            glowAfterImageColor = Color.DarkBlue;
+            useAfterImage = false;
             Trailer = devilsPeak;
 
             Add(new OvalSwing
@@ -179,10 +183,17 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         private bool _thrust;
         public float thrustSpeed = 5;
         public float stabRange;
+
+        public override Asset<Texture2D> RequestHologramTexture()
+        {
+            return TextureRegistry.GlowSword_Chillrend;
+        }
+
         public override void AI()
         {
             base.AI();
-
+            glowColor = Color.Lerp(Color.Transparent, Color.Cyan, EasingFunction.QuadraticBump(Interpolant));
+            growScale = MathHelper.Lerp(0f, 0.15f, EasingFunction.QuadraticBump(Interpolant));
             Vector2 swingDirection = Projectile.velocity.SafeNormalize(Vector2.Zero);
             if (Interpolant > 0.5f && !AuroraProj2)
             {
