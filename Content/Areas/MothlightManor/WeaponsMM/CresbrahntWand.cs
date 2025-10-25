@@ -17,6 +17,7 @@ namespace Stellamod.Content.Areas.MothlightManor.WeaponsMM
             base.SetDefaults();
             Form = FormRegistry.Sword.Value;
             Item.damage = 1000;
+            Item.mana = 45;
         }
 
         public override int GetNormalSlotCount()
