@@ -29,7 +29,7 @@ namespace Stellamod.Core.Lights
         private Color[] _bloodyPalette;
         private Color[] _dungeonPalette;
         private Color[] _desertTopPalette;
-
+        private Color[] _fablePalette;
         private MyPlayer MyPlayer => Player.GetModPlayer<MyPlayer>();
 
         private FilterManager FilterManager => Terraria.Graphics.Effects.Filters.Scene;
@@ -67,6 +67,7 @@ namespace Stellamod.Core.Lights
         public float darknessCurveProgress = 1f;
         public float desertTopPaletteProgress;
         public float rustyPaletteProgress;
+        public float fablePaletteProgress;
         private void LoadPalettes()
         {
             string rootDirectory = "Core/Lights/Palettes";
@@ -79,6 +80,7 @@ namespace Stellamod.Core.Lights
             _rustyPalette = PalFileImporter.ReadPalette($"{rootDirectory}/Rusty");
             _bloodyPalette = PalFileImporter.ReadPalette($"{rootDirectory}/BloodHound");
             _dungeonPalette = PalFileImporter.ReadPalette($"{rootDirectory}/Dungeon");
+            _fablePalette = PalFileImporter.ReadPalette($"{rootDirectory}/Fable");
         }
 
         public override void ResetEffects()
@@ -249,6 +251,22 @@ namespace Stellamod.Core.Lights
             screenShaderData = FilterManager["LunarVeil:PaletteDesertTop"].GetShader();
             screenShaderData.UseProgress(desertTopPaletteProgress);
             TogglePaletteShader("LunarVeil:PaletteDesertTop", desertTopPaletteProgress != 0);
+
+
+            //fable
+            bool fablePaletteActive = Player.GetModPlayer<MyPlayer>().ZoneFable;
+            if (fablePaletteActive)
+            {
+                fablePaletteProgress += speed;
+            }
+            else
+            {
+                fablePaletteProgress -= speed;
+            }
+            fablePaletteProgress = MathHelper.Clamp(fablePaletteProgress, 0f, 1f);
+            screenShaderData = FilterManager["LunarVeil:PaletteFable"].GetShader();
+            screenShaderData.UseProgress(fablePaletteProgress);
+            TogglePaletteShader("LunarVeil:PaletteFable", fablePaletteProgress != 0);
 
 
             bool bloodPaletteActive = MyPlayer.ZoneBloodCathedral && !Main.dayTime;
