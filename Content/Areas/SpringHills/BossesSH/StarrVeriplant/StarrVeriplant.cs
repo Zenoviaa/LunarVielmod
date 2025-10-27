@@ -804,6 +804,11 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedStoneGolemBoss, -1);
         }
 
+        public override bool CanFight()
+        {
+            return !DownedBossSystem.downedStoneGolemBoss;
+        }
+
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             //  npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StoneKey>(), 1, 1, 1));

@@ -67,6 +67,11 @@ namespace Stellamod.Core.TriggersSystem.Triggers
             if (NPC.AnyNPCs(_modNPC.Type))
                 return false;
 
+            ModNPC modNPC = GetModNPC();
+            if(modNPC is ScarletBoss scarletBoss && !scarletBoss.CanFight())
+            {
+                return false;
+            }
             bool allPlayersFar = true;
 
             Point spawnPoint = new Point(position.X, position.Y);

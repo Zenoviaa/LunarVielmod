@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core.HealthbarSystem;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -29,6 +30,11 @@ namespace Stellamod.Core
                 return;
 
             ModContent.GetInstance<BossHealthbarSystem>().Add(this);
+        }
+
+        public virtual bool CanFight()
+        {
+            return true;
         }
     }
 }
