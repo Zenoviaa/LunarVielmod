@@ -104,7 +104,7 @@ namespace Stellamod.Core.SummonerSystem.UI
             Height.Pixels = height;
 
             //Constantly lock the UI in the position regardless of resolution changes
-            Left.Pixels = RelativeLeft;
+            Left.Pixels = RelativeLeft + 100;
             Top.Pixels = RelativeTop;
 
             Vector2 flaskOffset = new Vector2(92);

@@ -1,31 +1,19 @@
 SpringTabletXixianFlask: {
 	Title: The Xixian Flask
-	Message:
-		'''
-		At the top of your screen you have a flask that acts as a reusable healing potion! You can customize the effects of the flask by putting in insources, and then use it with the assigned keybind. Try opening your inventory and taking a look!
-		'''
+	Message: At the top of your screen you have a flask that acts as a reusable healing potion! You can customize the effects of the flask by putting in insources, and then use it with the assigned keybind. Try opening your inventory and taking a look!
 }
 
 SpringTabletDash: {
 	Title: Using Your Dash
-	Message:
-		'''
-		Over time, you'll regenerate stamina, represented by the bar at the top. Stamina can be used for abilities such as dashing, or special attacks! While you are dashing, you have immunity time, so try dodging through that arrow trap!
-		'''
+	Message: Over time, you'll regenerate stamina, represented by the bar at the top. Stamina can be used for abilities such as dashing, or special attacks! While you are dashing, you have immunity time, so try dodging through that arrow trap!
 }
 
 SpringTabletBoss: {
 	Title: Bosses...
-	Message:
-		'''
-		This world is inhabited by a large number of powerful foes, are you up for the challenge?
-		'''
+	Message: This world is inhabited by a large number of powerful foes, are you up for the challenge?
 }
 
 SpringTabletStamina: {
 	Title: Special Attacks!
-	Message:
-		'''
-		Dodging isn't the only thing stamina can be used for! Some weapons also come equipped with very powerful special attacks that you can use by right-clicking. This consumes a few points of stamina, but are a great way to change the tide of battle! Be on the look out for cool abilities!
-		'''
+	Message: Dodging isn't the only thing stamina can be used for! Some weapons also come equipped with very powerful special attacks that you can use by right-clicking. This consumes a few points of stamina, but are a great way to change the tide of battle! Be on the look out for cool abilities!
 }
