@@ -1087,7 +1087,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
             // ItemDropRule.MasterModeCommonDrop for the relic
 
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 7));
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GothiviaBag>()));
             // ItemDropRule.MasterModeDropOnAllPlayers for the pet
             //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
 

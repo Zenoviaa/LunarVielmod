@@ -129,7 +129,6 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.SOMBossRel>()));
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<SingularityBag>()));
 
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TomeOfTheSingularity>(), chanceDenominator: 2));

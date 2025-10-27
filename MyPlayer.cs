@@ -666,11 +666,8 @@ namespace Stellamod
         public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
         {
 
-            return (IEnumerable<Item>)(object)new Item[2]
+            return (IEnumerable<Item>)(object)new Item[1]
             {
-                new Item(ModContent.ItemType<SirestiasStarterBag>(), 1, 0),
-
-
                 new Item(ModContent.ItemType<SiresMail>(), 1, 0),
             };
         }

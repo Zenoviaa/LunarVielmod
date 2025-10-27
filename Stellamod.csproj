@@ -361,9 +361,6 @@
     <None Remove="Items\Armors\Miracle\MiracleHead.png" />
     <None Remove="Items\Armors\Miracle\MiracleHead_Head.png" />
     <None Remove="Items\Armors\Terric\TericGramNPC2.png" />
-    <None Remove="Items\Consumables\DreadmireBag.png" />
-    <None Remove="Items\Consumables\JackoBag.png" />
-    <None Remove="Items\Consumables\SingularityBag.png" />
     <None Remove="Items\Consumables\SunClaw.png" />
     <None Remove="Items\Materials\AcidicalDirtBlock.png" />
     <None Remove="Items\Materials\AncientLunarStone.png" />

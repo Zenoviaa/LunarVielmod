@@ -477,7 +477,6 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 2));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GothiviasSeal>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<DaedusBag>()));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.DaedusBossRel>()));
 
 

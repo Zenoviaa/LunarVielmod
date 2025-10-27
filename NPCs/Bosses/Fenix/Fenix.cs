@@ -130,8 +130,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 5, 12));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AuroreanStarI>(), 1, 100, 500));
-
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<FenixBag>()));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<FenixBossRel>()));
 
             //notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LittleScissor>(), 1));
