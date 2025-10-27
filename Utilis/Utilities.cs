@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets.Biomes;
+using Stellamod.Content.Areas.SpringHills;
 using System;
 using Terraria;
 using Terraria.DataStructures;
@@ -70,6 +71,6 @@ namespace Stellamod.Utilis
         public static bool ZoneAbyss(this Player player) => player.InModBiome<AbyssBiome>();
         public static bool ZoneAcid(this Player player) => player.InModBiome<AcidBiome>();
         public static bool ZoneAurelus(this Player player) => player.InModBiome<AurelusBiome>();
-        public static bool ZoneXixianVillage(this Player player) => player.InModBiome<XixVillage>();
+        public static bool ZoneXixianVillage(this Player player) => player.InModBiome<XixVillageBiome>();
     }
 }

@@ -74,7 +74,7 @@ namespace Stellamod.NPCs.Special
                 float progress = f / 4f;
                 float rot = progress * MathHelper.TwoPi;
                 rot += Timer * 0.1f;
-                Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(4f, 6f);
+                Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(2f, 3f);
                 spriteBatch.Draw(texture, drawPos + offset, frame, drawColor.MultiplyRGB(ChestColor), NPC.rotation, drawOrigin, NPC.scale, SpriteEffects.None, 0f);
             }
             spriteBatch.RestartDefaults();
@@ -91,7 +91,7 @@ namespace Stellamod.NPCs.Special
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower3"), NPC.position);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MorrowExp"), NPC.position);
-                for (float f = 0; f < 32; f++)
+                for (float f = 0; f < 10; f++)
                 {
                     Dust.NewDustPerfect(NPC.Center, DustID.Fireworks,
                         (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, ChestColor, Main.rand.NextFloat(1f, 3f)).noGravity = true;
@@ -147,10 +147,12 @@ namespace Stellamod.NPCs.Special
                     particle.VectorScale *= 0.5f;
                 }
 
-                for (float f = 0; f < 32; f++)
+                for (float f = 0; f < 12; f++)
                 {
+                    Vector2 velocity = Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(1f, 7f);
+                    float scale = Main.rand.NextFloat(0.5f, 2.5f);
                     Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowSparkleDust>(),
-                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, ChestColor, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                        velocity, 0, ChestColor, scale).noGravity = true;
                 }
             }
         }

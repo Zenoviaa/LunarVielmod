@@ -28,7 +28,7 @@ namespace Stellamod.Core.TabletSystem
         private UserInterface _userInterface;
         public TabletUIState tabletUIState;
         public float Duration { get; set; }
-        private Vector2 StartDrawOffset => new Vector2(0, 400);
+        private Vector2 StartDrawOffset => new Vector2(0, 128);
         private Vector2 EndDrawOffset => new Vector2(0, 0);
         public override int uiSlot => Slot_MinorUI;
         public override void OnModLoad()
@@ -80,10 +80,10 @@ namespace Stellamod.Core.TabletSystem
             }
 
             float progress = _timer / Duration;
-            float easedProgress = EasingFunction.InOutCubic(progress);
+            float easedProgress = EasingFunction.InOutSine(progress);
             var ui = tabletUIState.tabletUI;
             ui.DrawOffset = Vector2.Lerp(StartDrawOffset, EndDrawOffset, easedProgress);
-            ui.TabletColor = Color.Lerp(Color.Transparent, Color.White, easedProgress);
+            ui.Alpha = MathHelper.Lerp(0f, 1f, easedProgress);
         }
 
         private void Update_Close(GameTime gameTime)
@@ -99,10 +99,10 @@ namespace Stellamod.Core.TabletSystem
             }
 
             float progress = _timer / Duration;
-            float easedProgress = EasingFunction.InOutCubic(progress);
+            float easedProgress = EasingFunction.InOutSine(progress);
             var ui = tabletUIState.tabletUI;
             ui.DrawOffset = Vector2.Lerp(StartDrawOffset, EndDrawOffset, easedProgress);
-            ui.TabletColor = Color.Lerp(Color.Transparent, Color.White, easedProgress);
+            ui.Alpha = MathHelper.Lerp(0f, 1f, easedProgress);
         }
 
         public override void CloseThis()

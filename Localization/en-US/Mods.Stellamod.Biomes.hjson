@@ -147,3 +147,13 @@ WonderousDarkspaceBiome: {
 	DisplayName: Wonderous Darkspace Biome
 	TownNPCDialogueName: the Wonderous Darkspace Biome
 }
+
+SpringHillsBiome: {
+	DisplayName: Spring Hills
+	TownNPCDialogueName: the Spring Hills
+}
+
+XixVillageBiome: {
+	DisplayName: Witch Town
+	TownNPCDialogueName: the Witch Town
+}

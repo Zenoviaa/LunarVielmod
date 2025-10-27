@@ -23,6 +23,7 @@ namespace Stellamod.Core.TabletSystem
         public UIText Text;
         public Color TabletColor;
         public Vector2 DrawOffset;
+        public float Alpha;
         public TabletUI() : base()
         {
             TabletCardTexture = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/TabletCard");
@@ -39,7 +40,7 @@ namespace Stellamod.Core.TabletSystem
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
             Title.HAlign = 0.5f;
-
+            Title.Top.Pixels = 16;
             Text.Width.Pixels = Width.Pixels - 64;
             Text.Height = Height;
             Text.MarginLeft = 16;
@@ -65,10 +66,9 @@ namespace Stellamod.Core.TabletSystem
             base.Update(gameTime);
             Left.Pixels = RelativeLeft + DrawOffset.X;
             Top.Pixels = RelativeTop + DrawOffset.Y;
-
-
-            Title.TextColor = TabletColor;
-            Text.TextColor = TabletColor;
+     
+            Title.TextColor = TabletColor * Alpha;
+            Text.TextColor = TabletColor * Alpha;
             bool contains = ContainsPoint(Main.MouseScreen);
             if (contains && !PlayerInput.IgnoreMouseInterface)
             {
@@ -78,15 +78,18 @@ namespace Stellamod.Core.TabletSystem
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            base.DrawSelf(spriteBatch);
+          //  base.DrawSelf(spriteBatch);
             CalculatedStyle dimensions = GetDimensions();
             Point point = new Point((int)dimensions.X, (int)dimensions.Y);
             Rectangle drawRectangle = new Rectangle(point.X, point.Y,
                 TabletCardTexture.Value.Width, TabletCardTexture.Value.Height);
-            drawRectangle.Location += new Point(0, (int)VectorHelper.Osc(-4f, 4f));
+            drawRectangle.Location += new Point(0, (int)VectorHelper.Osc(-2f, 2f));
 
-            spriteBatch.Draw(InnerTexture.Value, drawRectangle, null, TabletColor);
-            spriteBatch.Draw(TabletCardTexture.Value, drawRectangle, null, TabletColor);
+
+            Color backingColor = Color.Lerp(Color.White, Color.Black, 0.75f) * Alpha;
+            Color frontColor = Color.White * Alpha;
+            spriteBatch.Draw(InnerTexture.Value, drawRectangle, null, frontColor);
+            spriteBatch.Draw(TabletCardTexture.Value, drawRectangle, null, backingColor);
 
         }
     }
