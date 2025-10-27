@@ -28,7 +28,7 @@ namespace Stellamod.Content.Biomes
         private void SpringHillsForegroundBackground()
         {
             //Only do this in spring hills
-            if (!ZoneSpringHills)
+            if (!ZoneSpringHills && !Player.ZoneForest)
                 return;
             _windCounter--;
             if (_windCounter <= 0)
