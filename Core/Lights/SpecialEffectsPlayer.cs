@@ -94,7 +94,7 @@ namespace Stellamod.Core.Lights
 
 
             //Curve based
-            float progress = (float)(Main.LocalPlayer.position.ToTileCoordinates().Y - Main.worldSurface) / 1000;
+            float progress = (float)(Player.position.ToTileCoordinates().Y - Main.worldSurface) / 1000;
             progress = MathHelper.Clamp(progress, 0, 1);
             darknessCurve = MathHelper.Lerp(0f, darknessCurve, progress * darknessCurveProgress);
 
