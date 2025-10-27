@@ -4,7 +4,6 @@ using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.Trails;
 using System;
 using System.IO;
@@ -668,7 +667,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     Dust.NewDustPerfect(NPC.Center, DustID.GoldCoin, Velocity: velocity);
                 }
 
-                
+
                 SoundStyle teleportStyle = new SoundStyle("Stellamod/Assets/Sounds/StarFlower1");
                 teleportStyle.PitchVariance = 0.05f;
                 teleportStyle.Pitch = TeleportCount * 0.05f;
@@ -832,8 +831,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             TopSegment.outlineColor = _outlineColor;
             TopSegment.Outline(spriteBatch, screenPos, drawColor);
 
-           // RobeSegment.outlineColor = _outlineColor;
-           // RobeSegment.Outline(spriteBatch, screenPos, drawColor);
+            // RobeSegment.outlineColor = _outlineColor;
+            // RobeSegment.Outline(spriteBatch, screenPos, drawColor);
 
             FaceSegment.outlineColor = _outlineColor;
             FaceSegment.Outline(spriteBatch, screenPos, drawColor);
@@ -1390,9 +1389,9 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     }
                     TargetOutlineColor = Color.Red;
                     LightningBallTimer += 1 / 10f;
-                    if(Timer < 80)
+                    if (Timer < 80)
                     {
-                        if(Timer % 10 == 0)
+                        if (Timer % 10 == 0)
                         {
                             FXUtil.GlowCircleBoom(lightningSpawnPos, Color.Yellow, Color.Orange, Color.Blue);
                         }
