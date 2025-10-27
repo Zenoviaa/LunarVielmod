@@ -1,4 +1,5 @@
 ﻿
+using Stellamod.Content.Areas.SpringHills.TilesSH;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Abyss.Aurelus;
@@ -99,8 +100,12 @@ namespace Stellamod
 
         public int DarkspaceCount;
         public static bool InDarkspace => ModContent.GetInstance<BiomeTileCounts>().DarkspaceCount > 10;
+
+        public int SpringGrassCount;
+        public static bool InSpringHills => ModContent.GetInstance<BiomeTileCounts>().SpringGrassCount > 80;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
+            SpringGrassCount = tileCounts[ModContent.TileType<SpringGrass>()];
             AcidCount = tileCounts[ModContent.TileType<AcidialDirt>()];
             AbyssCount = tileCounts[ModContent.TileType<AbyssalDirt>()];
             AurelusCount = tileCounts[ModContent.TileType<AurelusTempleBlock>()];

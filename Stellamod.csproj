@@ -298,6 +298,7 @@
     <None Remove="Effects\WhiteflamePixelShader.fx" />
     <None Remove="Gores\Bricks1.png" />
     <None Remove="Gores\Bricks2.png" />
+    <None Remove="Gores\Foreground\SpringFallingFlower.png" />
     <None Remove="Gores\GraniteProbe1.png" />
     <None Remove="Gores\GraniteProbe2.png" />
     <None Remove="Gores\GreyBricks1.png" />
