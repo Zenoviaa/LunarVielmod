@@ -1,14 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Stellamod.Tiles.SpecialDecorativeWall;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 {
-    public abstract class BaseHand : ModNPC
+    public abstract class BaseHand : ModNPC,
+        IDrawOutlines
     {
         protected enum AIState
         {
@@ -23,6 +26,8 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
         private float OrbitProgress;
         private float DespawnProgress;
+        private Color _outlineColor;
+        protected Color TargetOutlineColor;
         protected ref float Timer => ref NPC.ai[0];
         protected AIState State
         {
@@ -76,6 +81,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
         public override void AI()
         {
             base.AI();
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             RotationTimer++;
             if (State == AIState.DoAttack)
             {
@@ -126,6 +132,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
         }
         private void AI_Despawn()
         {
+            TargetOutlineColor = Color.Transparent;
             Timer++;
             DespawnProgress = Timer / 60f;
             NPC.velocity *= 0.92f;
@@ -137,7 +144,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
         protected virtual void AI_Orbit()
         {
-
+            TargetOutlineColor = Color.Transparent;
             float swingRange = MathHelper.TwoPi;
             float swingXRadius = 128;
             float swingYRadius = 48;
@@ -161,7 +168,29 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             Timer++;
             OrbitProgress = 0f;
         }
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawPos = NPC.Center - screenPos;
+            Vector2 drawOrigin = texture.Size() / 2f;
+            float drawRotation = NPC.rotation;
+            float drawScale = NPC.scale;
+            float dp = 1f - DespawnProgress;
+            float outlineOffset = 2;
 
+
+            Vector2 left = drawPos + Vector2.UnitX * -outlineOffset;
+            Vector2 right = drawPos + Vector2.UnitX * outlineOffset;
+            Vector2 up = drawPos + Vector2.UnitY * -outlineOffset;
+            Vector2 down = drawPos + Vector2.UnitY * outlineOffset;
+            Color outlineColor = _outlineColor;
+            SpriteEffects spriteEffects = SpriteEffects.None;
+
+            spriteBatch.Draw(texture, left, null, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+            spriteBatch.Draw(texture, right, null, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+            spriteBatch.Draw(texture, up, null, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+            spriteBatch.Draw(texture, down, null, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+        }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
@@ -173,24 +202,9 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
             if (State == AIState.Orbit)
             {
-                drawColor = drawColor.MultiplyRGB(Color.Gray);
+                drawColor = Color.Lerp(drawColor, Color.Black, 0.8f);
             }
 
-
-            spriteBatch.Restart(blendState: BlendState.Additive);
-            for (float f = 0f; f < 1f; f += 0.25f)
-            {
-                float rot = f * MathHelper.ToRadians(360);
-                Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(2f, 4f);
-                Vector2 glowDrawPos = drawPos + offset;
-                Color glowColor = drawColor * 0.8f;
-                spriteBatch.Draw(texture, glowDrawPos, null, glowColor * dp, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
-                if (State == AIState.Transition)
-                {
-                    spriteBatch.Draw(texture, glowDrawPos, null, glowColor * dp, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
-                }
-            }
-            spriteBatch.RestartDefaults();
             spriteBatch.Draw(texture, drawPos, null, drawColor * dp, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
             return false;
         }
@@ -223,5 +237,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
                 Dust.NewDustPerfect(NPC.Center, DustID.GemDiamond, vel);
             }
         }
+
+
     }
 }

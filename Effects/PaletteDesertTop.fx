@@ -38,7 +38,7 @@ float colorDistance2(float3 a, float3 b)
 float3 calculateColor(float3 color)
 {
 	// Palette 1
-    const float3 colors[35] =
+    const float3 colors[37] =
     {
         float3(0.1254902, 0.06666667, 0.078431375),
         float3(0.1882353, 0.09019608, 0.101960786),
@@ -74,7 +74,9 @@ float3 calculateColor(float3 color)
         float3(0.15686275, 0.11764706, 0.2901961),
         float3(0.39215687, 0.3764706, 0.44313726),
         float3(0.7490196, 0.64705884, 0.627451),
-        float3(0.92156863, 0.8784314, 0.8784314)
+        float3(0.92156863, 0.8784314, 0.8784314),
+        float3(1, 0, 0),
+        float3(1, 0.9529412, 0),
     };
 
 
@@ -83,7 +85,7 @@ float3 calculateColor(float3 color)
     float currentDist;
 
     // For loop with the same loops than the color palette.
-    for (int i = 1; i < 35; i++)
+    for (int i = 1; i < 37; i++)
     {
         currentDist = colorDistance2(color, colors[i]);
         if (currentDist < dist)

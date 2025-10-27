@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands;
+using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable;
@@ -15,8 +15,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 {
-    [AutoloadBossHead]
-    public class CommanderGintzia : BaseColosseumNPC
+    public partial class CommanderGintzia : ScarletBoss
     {
         private int _frame;
         private int _comeHereIndex;
@@ -52,6 +51,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         }
 
         private ref float AttackCycle => ref NPC.ai[2];
+        private ref float AccelTimer => ref NPC.ai[3];
         private Player Target => Main.player[NPC.target];
         private bool InPhase2 => NPC.life < NPC.lifeMax / 2;
         private bool Phase2Transition;
@@ -113,8 +113,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             NPC.boss = true;
             NPC.npcSlots = 10f;
             NPC.takenDamageMultiplier = 0.9f;
-            NPC.BossBar = ModContent.GetInstance<CommanderGintziaBossBar>();
-
             NPC.aiStyle = -1;
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Gintzicane");
         }
@@ -182,10 +180,8 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         public override void AI()
         {
             base.AI();
-            if (Timer % 120 == 0)
-            {
-                FollowCenter = Target.Center;
-            }
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+
             NPC.TargetClosest();
             if (!NPC.HasValidTarget && State != AIState.Despawn)
             {
@@ -242,6 +238,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
         private void SummonHand(int npcIndex)
         {
+            TargetOutlineColor = Color.Yellow;
             NPC npc = Main.npc[npcIndex];
             npc.ai[1] = 2;
             npc.netUpdate = true;
@@ -393,24 +390,28 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
         private void FollowTarget()
         {
-            Vector2 targetCenter = FollowCenter + new Vector2(0, -212);
+            Vector2 targetCenter = FollowCenter + new Vector2(0, -64);
             Vector2 velToPlayer = targetCenter - NPC.Center;
             velToPlayer = velToPlayer.SafeNormalize(Vector2.Zero);
 
             //Home to this point
-            float maxSpeed = 24f;
+            AccelTimer++;
+            float speedInterpolant = AccelTimer / 60f;
+            float easedSpeed = EasingFunction.InOutSine(speedInterpolant);
+            float maxSpeed = MathHelper.Lerp(0f, 3f, speedInterpolant);
             Vector2 targetVelocity = velToPlayer;
             float distance = Vector2.Distance(NPC.Center, targetCenter);
-            if (distance < maxSpeed)
+            if (distance < 120)
             {
                 targetVelocity *= distance;
+                NPC.velocity *= 0.92f;
             }
             else
             {
                 targetVelocity *= maxSpeed;
+                NPC.velocity = targetVelocity;
+                NPC.velocity.Y += MathF.Sin(Timer * 0.1f) * 1;
             }
-            NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.01f);
-            NPC.velocity.Y += MathF.Sin(Timer * 0.1f) * 0.02f;
 
             float targetRotation = NPC.velocity.X * 0.025f;
             NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.1f);
@@ -418,7 +419,13 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
         private void AI_Idle()
         {
+            TargetOutlineColor = Color.Transparent;
             Timer++;
+            if (Timer == 1)
+            {
+                AccelTimer = 0;
+                FollowCenter = Target.Center;
+            }
             FollowTarget();
             if (Timer >= 60)
             {
@@ -454,6 +461,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         private void AI_SummonHands()
         {
             Timer++;
+            TargetOutlineColor = Color.Yellow;
             if (Timer == 1)
             {
                 if (StellaMultiplayer.IsHost)
@@ -580,6 +588,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         private void AI_Slam()
         {
             Timer++;
+            TargetOutlineColor = Color.Yellow;
             if (Timer == 1)
             {
                 NPC.velocity.Y = 0;
@@ -609,6 +618,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         private void AI_Land()
         {
             Timer++;
+            TargetOutlineColor = Color.Red;
             NPC.velocity.X *= 0.94f;
             NPC.rotation *= 0.94f;
             if (Timer == 1)
@@ -851,42 +861,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             }
         }
 
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            string texturePath = Texture;
-            if (State == AIState.Slam || State == AIState.Land)
-                texturePath += "_Slam";
-            Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
-            Vector2 drawPos = NPC.Center - screenPos;
-            Vector2 drawOrigin = NPC.frame.Size() / 2f;
-            float drawRotation = NPC.rotation;
-            float drawScale = NPC.scale;
-            SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            spriteBatch.Restart(blendState: BlendState.Additive);
-            for (float f = 0f; f < 1f; f += 0.25f)
-            {
-                float rot = f * MathHelper.ToRadians(360);
-                Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(2f, 4f);
-                Vector2 glowDrawPos = drawPos + offset;
-                Color glowColor = drawColor * 0.6f;
-                spriteBatch.Draw(texture, glowDrawPos, NPC.frame, glowColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
-            }
-
-
-            spriteBatch.RestartDefaults();
-            spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
-
-            if (TransitionColorProgress > 0)
-            {
-                spriteBatch.Restart(blendState: BlendState.Additive);
-                for (int i = 0; i < 2; i++)
-                {
-                    spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor * TransitionColorProgress, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
-                }
-                spriteBatch.RestartDefaults();
-            }
-            return false;
-        }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
@@ -894,10 +868,11 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<CommanderGintziaBossRel>()));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VoidKey>()));
         }
-
         public override void OnKill()
         {
             base.OnKill();
+            ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
+            colosseumSystem.Progress();
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedCommanderGintziaBoss, -1);
         }
     }

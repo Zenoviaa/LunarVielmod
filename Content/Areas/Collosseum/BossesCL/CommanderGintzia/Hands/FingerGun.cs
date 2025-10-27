@@ -57,6 +57,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             ChargeProgress = ChargeTimer / 60f;
             if (Timer < 90)
             {
+                TargetOutlineColor = Color.Yellow;
                 //Home to this point
                 float maxSpeed = 24f;
                 Vector2 targetVelocity = (targetPos - NPC.Center).SafeNormalize(Vector2.Zero);
@@ -78,6 +79,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
             if (Timer >= 90 && Timer % 60 == 0)
             {
+                TargetOutlineColor = Color.Red;
                 ChargeTimer = 0;
                 NPC.rotation -= DirectionToShootFrom * MathHelper.ToRadians(75);
                 NPC.velocity += DirectionToShootFrom * Vector2.UnitX * 6;

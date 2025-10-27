@@ -72,7 +72,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             ChargeProgress = Timer / 150f;
             if (Timer < 120)
             {
-
+                TargetOutlineColor = Color.Yellow;
                 //Home to this point
                 NPC.velocity = (targetPos - NPC.Center) * 0.1f;
                 NPC.velocity.Y += MathF.Sin(Timer * 0.1f) * 0.02f;
@@ -80,6 +80,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
             if (Timer > 120 && Timer < 150)
             {
+                TargetOutlineColor = Color.Red;
                 NPC.velocity *= 0.92f;
             }
 
@@ -92,6 +93,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
             if (Timer == 150)
             {
+       
                 Vector2 vel = (targetCenter - NPC.Center).SafeNormalize(Vector2.Zero);
                 vel *= 12;
                 NPC.velocity = vel;

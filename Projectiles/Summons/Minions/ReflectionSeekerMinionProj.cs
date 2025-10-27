@@ -22,23 +22,6 @@ namespace Stellamod.Projectiles.Summons.Minions
         private static RenderTarget2D playerRT;
         public static Player[] playerVisualClone = new Player[256];
 
-        public override void Load()
-        {
-            if (!Main.dedServ)
-            {
-                using var eventSlim = new ManualResetEventSlim();
-                Main.QueueMainThreadAction(() =>
-                {
-                    if (playerRT != null && !playerRT.IsDisposed)
-                        playerRT.Dispose();
-                    playerRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
-                    eventSlim.Set();
-                });
-
-                eventSlim.Wait();
-            }
-        }
-
         public override void Unload()
         {
             /*

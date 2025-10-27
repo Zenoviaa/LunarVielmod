@@ -61,6 +61,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
             if (Timer < 90)
             {
+                TargetOutlineColor = Color.Yellow;
                 ChargeProgress = Timer / 60f;
                 float offset = 512;
                 Vector2 targetCenter = Target.Center;
@@ -95,6 +96,10 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
                         ModContent.ProjectileType<ComeHereBlast>(), BlastDamage, 2, Main.myPlayer);
                 }
+            }
+            if(Timer >= 180)
+            {
+                TargetOutlineColor = Color.Red;
             }
 
             if (Timer > 90)

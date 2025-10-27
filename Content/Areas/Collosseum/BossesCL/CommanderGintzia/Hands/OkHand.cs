@@ -45,8 +45,10 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
         protected override void AI_Attack()
         {
             base.AI_Attack();
+            TargetOutlineColor = Color.Red;
             if (Timer == 1)
             {
+   
                 HasDoneGrab = false;
                 GrabbedPlayer = -1;
                 NPC.netUpdate = true;

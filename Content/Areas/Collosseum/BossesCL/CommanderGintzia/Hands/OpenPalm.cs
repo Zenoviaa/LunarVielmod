@@ -84,7 +84,12 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             NPC.velocity.Y += MathF.Sin(Timer * 0.1f) * 0.02f;
             if (Timer > 91)
             {
+                TargetOutlineColor = Color.Red;
                 NPC.velocity *= 0.95f;
+            }
+            else
+            {
+                TargetOutlineColor = Color.Yellow;
             }
             if (Timer >= 90 && Timer % 90 == 0)
             {
