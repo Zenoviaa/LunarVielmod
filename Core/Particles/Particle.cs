@@ -46,9 +46,6 @@ namespace Stellamod.Core.Particles
 
         public static T NewParticle<T>(Vector2 center, Vector2 velocity, Color newColor = default, float Scale = 1f) where T : Particle
         {
-            if (Main.netMode == NetmodeID.Server)
-                return null;
-
             T p = ParticleLoader.GetParticle(ParticleUtils.ParticleType<T>()).NewInstance() as T;
             p.active = true;
             p.color = newColor;
@@ -56,16 +53,13 @@ namespace Stellamod.Core.Particles
             p.Velocity = velocity;
             p.Scale = Scale;
             p.OnSpawn();
-
-            ParticleSystem.Particles.Add(p);
+            if(Main.netMode != NetmodeID.Server)
+                ParticleSystem.Particles.Add(p);
             return p;
         }
 
         public static T NewBlackParticle<T>(Vector2 center, Vector2 velocity, Color newColor = default, float Scale = 1f) where T : Particle
         {
-            if (Main.netMode == NetmodeID.Server)
-                return null;
- 
             T p = ParticleLoader.GetParticle(ParticleUtils.ParticleType<T>()).NewInstance() as T;
             p.active = true;
             p.color = newColor;
@@ -75,7 +69,8 @@ namespace Stellamod.Core.Particles
             p.OnSpawn();
 
             p.Scale *= Scale;
-            ParticleSystem.BlackParticles.Add(p);
+            if (Main.netMode != NetmodeID.Server)
+                ParticleSystem.BlackParticles.Add(p);
             return p;
         }
 

@@ -126,6 +126,8 @@ namespace Stellamod.Core.Particles
 
         private void DrawMainParticles(On_Main.orig_DrawDust orig, Main self)
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
             orig(self);
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, default, default, default, Main.GameViewMatrix.TransformationMatrix);

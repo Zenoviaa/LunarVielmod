@@ -1787,7 +1787,7 @@ namespace Stellamod.WorldG
         private void WorldGenFabiliaRuin(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Buring the landscape with Cinder and Fable";
-            string path = "Struct/Huntria/FableBiomeFinal";
+            string path = "Structures/Fable";
             Rectangle fableRect = Structurizer.ReadRectangle(path);
             int[] tileBlend = new int[]
             {

@@ -244,6 +244,8 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
             Rectangle frame = NPC.frame;
             Vector2 drawOrigin = frame.Size() / 2f;
             SpriteBatch spriteBatch = Main.spriteBatch;
+
+            _silhouetteShader ??= new SilhouetteShader();
             spriteBatch.Restart(effect: _silhouetteShader.Effect, blendState: BlendState.Additive);
             SpriteEffects effects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             for (int i = 0; i < OldCenterPos.Length; i++)
