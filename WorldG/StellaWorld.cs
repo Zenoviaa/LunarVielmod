@@ -204,7 +204,7 @@ namespace Stellamod.WorldG
             GenVars.jungleOriginX = (Main.maxTilesX / 4) - 100;
 
             int centerSnowBiome = Main.maxTilesX / 2;
-            GenVars.snowOriginLeft = centerSnowBiome + 1500;
+            GenVars.snowOriginLeft = centerSnowBiome + 1700;
             GenVars.snowOriginRight = GenVars.snowOriginLeft + 630;
         }
 
@@ -1822,7 +1822,7 @@ namespace Stellamod.WorldG
             while (!placed && attempts++ < 10000000)
             {
                 // Select a place in the first 6th of the world, avoiding the oceans
-                int smx = WitchTownLocation.X + fableRect.Width + 150 + Main.rand.Next(0, 100);
+                int smx = WitchTownLocation.X + fableRect.Width + 190 + Main.rand.Next(0, 100);
                 int smy = ((int)(Main.worldSurface - 250));
 
                 // We go down until we hit a solid tile or go under the world's surface
