@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles;
+using Stellamod.Core;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.DaedusRework;
@@ -375,7 +376,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
     }
 
     [AutoloadBossHead]
-    public class DaedusTheDevoted : ModNPC
+    public class DaedusTheDevoted : ScarletBoss
     {
         private enum AIState
         {
