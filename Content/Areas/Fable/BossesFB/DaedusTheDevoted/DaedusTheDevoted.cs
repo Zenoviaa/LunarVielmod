@@ -1113,17 +1113,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                             Vector2 startPos = Target.Center;
                             startPos.Y -= 128;
 
-                            for (int i = 0; i < 10; i++)
-                            {
-                                Vector2 firePos = startPos;
-                                firePos.X += MathHelper.Lerp(-700, 700, i / 10f);
-                                float length = ProjectileHelper.PerformBeamHitscan(firePos, Vector2.UnitY, maxBeamLength: 2400);
-                                firePos.Y += length;
-
-                                Vector2 fireVelocity = -Vector2.UnitY * 7;
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), firePos, fireVelocity,
-                                    ModContent.ProjectileType<FireRiseWarn>(), damage, knockback, Main.myPlayer);
-                            }
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), startPos, Vector2.Zero,
+                                ModContent.ProjectileType<RadiantBall>(), damage, knockback, Main.myPlayer);
                         }
                     }
 
