@@ -772,7 +772,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
 
 
-            Vector2 offset = new Vector2(0, -252);
+            Vector2 offset = new Vector2(0, -128);
             Vector2 targetPos = Target.Center + offset;
             Vector2 velocityToTarget = targetPos - NPC.Center;
             float m = InPhase2 ? 0.06f : 0.03f;
