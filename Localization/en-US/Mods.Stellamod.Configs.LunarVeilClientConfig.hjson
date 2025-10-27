@@ -1,0 +1,122 @@
+DisplayName: Lunar Veil Client Config
+
+Headers: {
+	Visual: Visual
+	Effects: Effects
+	UI: UI
+}
+
+VanillaTexturesToggle: {
+	Label: Vanilla Textures Overhaul
+	Tooltip: "Updates vanilla textures to match the style of Lunar Veil!"
+}
+
+VanillaUIRespritesToggle: {
+	Label: Vanilla UI Textures Overhaul
+	Tooltip: "Updates vanilla UI textures to match the style of Lunar Veil!"
+}
+
+VanillaParticlesToggle: {
+	Label: Vanilla Particles
+	Tooltip: "Adds additional particle effects and miscellaneous effects to vanilla biomes."
+}
+
+VanillaBiomesPaletteShadersToggle: {
+	Label: Vanilla Palette Shaders
+	Tooltip: "Adds palette shaders to vanilla biomes."
+}
+
+RedDamageNumbersToggle: {
+	Label: Red Damage Numbers
+	Tooltip: "Makes all damage numbers a bit more red"
+}
+
+LiquidsToggle: {
+	Label: Liquids
+	Tooltip: "Adds additional liquid effects and textures to the waters!"
+}
+
+SkiesToggle: {
+	Label: Skies
+	Tooltip: "Adds additional clouds and colors to the skies!"
+}
+
+ParticlesToggle: {
+	Label: Particles
+	Tooltip: "Adds extra particle effects to biomes."
+}
+
+OutlinePlayer: {
+	Label: Outline Player
+	Tooltip: "Outlines the player to aid with visibility!"
+}
+
+OutlineOtherPlayers: {
+	Label: Outline Other Players
+	Tooltip: "Outlines other players to aid with visibility!"
+}
+
+ShakeToggle: {
+	Label: Camera Shake
+	Tooltip: "Toggles screenshake effects!"
+}
+
+CameraSmoothness: {
+	Label: Camera Smoothness
+	Tooltip: "Makes the camera more smoothly follow the player"
+}
+
+LowDetailShadersToggle: {
+	Label: Low Detail Shaders
+	Tooltip: "Makes some shaders a bit less intensive"
+}
+
+EnchantMenuX: {
+	Label: Enchant Menu X
+	Tooltip: ""
+}
+
+EnchantMenuY: {
+	Label: Enchant Menu Y
+	Tooltip: ""
+}
+
+StaminaMeterX: {
+	Label: Stamina Meter X
+	Tooltip: ""
+}
+
+StaminaMeterY: {
+	Label: Stamina Meter Y
+	Tooltip: ""
+}
+
+DashMeterX: {
+	Label: Dash Meter X
+	Tooltip: ""
+}
+
+DashMeterY: {
+	Label: Dash Meter Y
+	Tooltip: ""
+}
+
+EnchantmentMenuX: {
+	Label: Enchantment Menu X
+	Tooltip: ""
+}
+
+EnchantmentMenuY: {
+	Label: Enchantment Menu Y
+	Tooltip: ""
+}
+
+AmmoBarX: {
+	Label: Ammo Bar X
+	Tooltip: ""
+}
+
+AmmoBarY: {
+	Label: Ammo Bar Y
+	Tooltip: ""
+}

@@ -435,9 +435,11 @@
     <None Remove="Items\Weapons\Scorpions\RoyalPalace\RoyalPalaceScorpionMount_Front.png" />
     <None Remove="Items\Weapons\Summon\WindPortal.png" />
     <None Remove="Localization\en-US\Mods.Stellamod.ArmorReforge.hjson" />
+    <None Remove="Localization\en-US\Mods.Stellamod.Configs.LunarVeilServerConfig.hjson" />
     <None Remove="Localization\en-US\Mods.Stellamod.Dialogue.hjson" />
     <None Remove="Localization\en-US\Mods.Stellamod.Elements.hjson" />
     <None Remove="Localization\en-US\Mods.Stellamod.Enchantments.hjson" />
+    <None Remove="Localization\en-US\Mods.Stellamod.Keybinds.hjson" />
     <None Remove="Localization\en-US\Mods.Stellamod.Quests.hjson" />
     <None Remove="Localization\en-US\Mods.Stellamod.Tablets.hjson" />
     <None Remove="Localization\en-US\Mods.Stellamod.TownDialogue.hjson" />

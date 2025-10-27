@@ -1,11 +1,19 @@
 SpringTabletXixianFlask: {
+	Title: Mods.Stellamod.Tablets.SpringTabletXixianFlask.Title
+	Message: Mods.Stellamod.Tablets.SpringTabletXixianFlask.Message
 }
 
 SpringTabletDash: {
+	Title: Mods.Stellamod.Tablets.SpringTabletDash.Title
+	Message: Mods.Stellamod.Tablets.SpringTabletDash.Message
 }
 
 SpringTabletBoss: {
+	Title: Mods.Stellamod.Tablets.SpringTabletBoss.Title
+	Message: Mods.Stellamod.Tablets.SpringTabletBoss.Message
 }
 
 SpringTabletStamina: {
+	Title: Mods.Stellamod.Tablets.SpringTabletStamina.Title
+	Message: Mods.Stellamod.Tablets.SpringTabletStamina.Message
 }
