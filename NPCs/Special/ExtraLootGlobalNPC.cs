@@ -17,7 +17,7 @@ namespace Stellamod.NPCs.Special
                 return;
 
             //1 / 25 to get a chest from an enemy
-            if (Main.rand.NextBool(25))
+            if (Main.rand.NextBool(28))
             {
                 //From that
                 //1/5 for rare - 20%
