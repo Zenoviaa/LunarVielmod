@@ -8,67 +8,67 @@ Headers: {
 
 VanillaTexturesToggle: {
 	Label: Vanilla Textures Overhaul
-	Tooltip: "Updates vanilla textures to match the style of Lunar Veil!"
+	Tooltip: Updates vanilla textures to match the style of Lunar Veil!
 }
 
 VanillaUIRespritesToggle: {
 	Label: Vanilla UI Textures Overhaul
-	Tooltip: "Updates vanilla UI textures to match the style of Lunar Veil!"
+	Tooltip: Updates vanilla UI textures to match the style of Lunar Veil!
 }
 
 VanillaParticlesToggle: {
 	Label: Vanilla Particles
-	Tooltip: "Adds additional particle effects and miscellaneous effects to vanilla biomes."
+	Tooltip: Adds additional particle effects and miscellaneous effects to vanilla biomes.
 }
 
 VanillaBiomesPaletteShadersToggle: {
 	Label: Vanilla Palette Shaders
-	Tooltip: "Adds palette shaders to vanilla biomes."
+	Tooltip: Adds palette shaders to vanilla biomes.
 }
 
 RedDamageNumbersToggle: {
 	Label: Red Damage Numbers
-	Tooltip: "Makes all damage numbers a bit more red"
+	Tooltip: Makes all damage numbers a bit more red
 }
 
 LiquidsToggle: {
 	Label: Liquids
-	Tooltip: "Adds additional liquid effects and textures to the waters!"
+	Tooltip: Adds additional liquid effects and textures to the waters!
 }
 
 SkiesToggle: {
 	Label: Skies
-	Tooltip: "Adds additional clouds and colors to the skies!"
+	Tooltip: Adds additional clouds and colors to the skies!
 }
 
 ParticlesToggle: {
 	Label: Particles
-	Tooltip: "Adds extra particle effects to biomes."
+	Tooltip: Adds extra particle effects to biomes.
 }
 
 OutlinePlayer: {
 	Label: Outline Player
-	Tooltip: "Outlines the player to aid with visibility!"
+	Tooltip: Outlines the player to aid with visibility!
 }
 
 OutlineOtherPlayers: {
 	Label: Outline Other Players
-	Tooltip: "Outlines other players to aid with visibility!"
+	Tooltip: Outlines other players to aid with visibility!
 }
 
 ShakeToggle: {
 	Label: Camera Shake
-	Tooltip: "Toggles screenshake effects!"
+	Tooltip: Toggles screenshake effects!
 }
 
 CameraSmoothness: {
 	Label: Camera Smoothness
-	Tooltip: "Makes the camera more smoothly follow the player"
+	Tooltip: Makes the camera more smoothly follow the player
 }
 
 LowDetailShadersToggle: {
 	Label: Low Detail Shaders
-	Tooltip: "Makes some shaders a bit less intensive"
+	Tooltip: Makes some shaders a bit less intensive
 }
 
 EnchantMenuX: {

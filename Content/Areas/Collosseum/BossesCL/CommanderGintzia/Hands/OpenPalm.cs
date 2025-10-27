@@ -43,8 +43,9 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
-            return base.CanHitPlayer(target, ref cooldownSlot) && Timer > 90;
+            return false;
         }
+
         protected override void AI_Attack()
         {
             base.AI_Attack();
@@ -124,33 +125,12 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             }
         }
 
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = 48f;
-            return MathHelper.SmoothStep(baseWidth, 0f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            ColorProgress *= 0.9999f;
-            Color startColor = Color.White;
-            Color trailColor = Color.Lerp(startColor, Color.Transparent, completionRatio);
-            trailColor *= ColorProgress;
-            return trailColor;
-        }
-
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            spriteBatch.RestartDefaults();
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.Dashtrail);
-            Vector2 trailOffset = -Main.screenPosition + NPC.Size / 2;
-            TrailDrawer.DrawPrims(NPC.oldPos, trailOffset, 155);
-
             Texture2D texture = TextureRegistry.FourPointedStar.Value;
             Color glowColor = Color.White;
             glowColor *= ChargeProgress;
+            glowColor *= 0.5f;
             glowColor.A = 0;
             Vector2 drawPos = NPC.Center - Main.screenPosition;
             spriteBatch.Draw(texture, drawPos, null, glowColor, NPC.rotation, texture.Size() / 2, 0.5f, SpriteEffects.None, 0);

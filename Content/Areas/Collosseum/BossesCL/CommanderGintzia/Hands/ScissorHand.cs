@@ -34,6 +34,10 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             base.AI_Orbit();
             ChargeProgress = MathHelper.Lerp(ChargeProgress, 0f, 0.1f);
         }
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return false;
+        }
 
         protected override void AI_Attack()
         {
@@ -119,6 +123,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             Texture2D texture = TextureRegistry.FourPointedStar.Value;
             Color glowColor = Color.White;
             glowColor *= ChargeProgress;
+            glowColor *= 0.5f;
             glowColor.A = 0;
             Vector2 drawPos = NPC.Center - Main.screenPosition;
             spriteBatch.Draw(texture, drawPos, null, glowColor, NPC.rotation, texture.Size() / 2, 0.4f, SpriteEffects.None, 0);

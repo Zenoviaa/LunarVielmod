@@ -17,7 +17,7 @@ namespace Stellamod.Content.Areas.SpringHills.TilesSH
             RegisterItemDrop(ModContent.ItemType<SpringGrassBlock>());
             MineResist = 1f;
             MinPick = 50;
-            AddMapEntry(new Color(110, 74, 51));
+            AddMapEntry(new Color(151, 107, 75));
         }
 
         public override void NumDust(int i, int j, bool fail, ref int num)

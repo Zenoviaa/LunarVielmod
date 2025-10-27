@@ -36,6 +36,7 @@ using Stellamod.WorldG.StructureManager;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent.Biomes;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.IO;
@@ -62,14 +63,16 @@ namespace Stellamod.WorldG
             //We don't need this for now
             int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Lakes"));
             int RoyalGen = tasks.FindIndex(genpass => genpass.Name.Equals("Corruption"));
-
+          
             //Disable Some Passes
             DisableGenTask(tasks, "Terrain");
             DisableGenTask(tasks, "Tunnels");
             DisableGenTask(tasks, "Mount Caves");
             DisableGenTask(tasks, "Surface Caves");
             DisableGenTask(tasks, "Mountain Caves");
-            //  DisableGenTask(tasks, "Surface Chests");
+
+      
+
             DisableGenTask(tasks, "Wavy Caves");
             DisableGenTask(tasks, "Living Trees");
             DisableGenTask(tasks, "Dirt Layer Caves");
@@ -85,11 +88,15 @@ namespace Stellamod.WorldG
             DisableGenTask(tasks, "Dunes");
             DisableGenTask(tasks, "Marble");
             DisableGenTask(tasks, "Granite");
-            //    DisableGenTask(tasks, "Ocean Sand");
+
+            int fullDesert = tasks.FindIndex(genpass => genpass.Name.Equals("Full Desert"));
+            tasks[fullDesert] = new PassLegacy("Lock Full Desert", LockDesert);
+
             int terrainIndex = tasks.FindIndex(x => x.Name.Equals("Terrain"));
             if (terrainIndex != -1)
             {
                 tasks.Insert(terrainIndex + 1, new VanillaTerrainPass());
+                tasks.Insert(terrainIndex + 2, new PassLegacy("World Gen GenVar Locations", WorldGenVarLocations));
             }
 
             int shimmerGen = tasks.FindIndex(x => x.Name.Equals("Shimmer"));
@@ -152,16 +159,12 @@ namespace Stellamod.WorldG
             int CathedralGen2 = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
             if (CathedralGen2 != -1)
             {
-
-                //tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
-                //	tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent", WorldGenVirulent));
-
                 tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Abandoned Mineshafts", WorldGenMineshafts));
                 tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
           
                 tasks.Insert(CathedralGen2 + 3, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
                 tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
-             //   tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen Stone Castle", WorldGenStoneCastle));
+  
                 tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen Veldris", WorldGenVeizalManor));
                 tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
                 tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen Rallad", WorldGenRallad));
@@ -184,6 +187,27 @@ namespace Stellamod.WorldG
             }
         }
 
+        private void LockDesert(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Full Desert Rework";
+            DesertBiome desertBiome = GenVars.configuration.CreateBiome<DesertBiome>();
+            var genRand = WorldGen.genRand;
+            int x = (Main.maxTilesX / 2 - 500);
+            while (!desertBiome.Place(new Point(x, (int)GenVars.worldSurfaceHigh + 25), GenVars.structures))
+            {
+                x = (Main.maxTilesX / 2 - 500) + genRand.Next(-200, 0);
+            }
+        }
+
+        private void WorldGenVarLocations(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Locking Snow Biome Location";
+            GenVars.jungleOriginX = (Main.maxTilesX / 4) - 100;
+
+            int centerSnowBiome = Main.maxTilesX / 2;
+            GenVars.snowOriginLeft = centerSnowBiome + 1500;
+            GenVars.snowOriginRight = GenVars.snowOriginLeft + 630;
+        }
 
         private void WorldGenSkullrunner(GenerationProgress progress, GameConfiguration configuration)
         {
@@ -1799,7 +1823,7 @@ namespace Stellamod.WorldG
             while (!placed && attempts++ < 10000000)
             {
                 // Select a place in the first 6th of the world, avoiding the oceans
-                int smx = WitchTownLocation.X + fableRect.Width + 100 + Main.rand.Next(0, 100);
+                int smx = WitchTownLocation.X + fableRect.Width + 150 + Main.rand.Next(0, 100);
                 int smy = ((int)(Main.worldSurface - 250));
 
                 // We go down until we hit a solid tile or go under the world's surface

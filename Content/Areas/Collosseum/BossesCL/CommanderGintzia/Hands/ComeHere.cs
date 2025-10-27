@@ -97,6 +97,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
                         ModContent.ProjectileType<ComeHereBlast>(), BlastDamage, 2, Main.myPlayer);
                 }
             }
+
             if(Timer >= 180)
             {
                 TargetOutlineColor = Color.Red;
@@ -124,6 +125,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             Texture2D texture = TextureRegistry.FourPointedStar.Value;
             Color glowColor = Color.White;
             glowColor *= ChargeProgress;
+            glowColor *= 0.5f;
             glowColor.A = 0;
             Vector2 drawPos = NPC.Center - Main.screenPosition;
             spriteBatch.Draw(texture, drawPos, null, glowColor, NPC.rotation, texture.Size() / 2, NPC.scale, SpriteEffects.None, 0);

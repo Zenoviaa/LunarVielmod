@@ -18,7 +18,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             base.SetDefaults();
         }
 
-
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
@@ -116,6 +115,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             Texture2D texture = TextureRegistry.FourPointedStar.Value;
             Color glowColor = Color.White;
             glowColor *= ChargeProgress;
+            glowColor *= 0.5f;
             glowColor.A = 0;
             Vector2 drawPos = NPC.Center - Main.screenPosition;
             spriteBatch.Draw(texture, drawPos, null, glowColor, NPC.rotation, texture.Size() / 2, 0.33f, SpriteEffects.None, 0);

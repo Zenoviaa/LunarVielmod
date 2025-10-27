@@ -28,6 +28,11 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             DirectionToShootFrom = reader.ReadSingle();
         }
 
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return false;
+        }
+
         protected override void AI_Orbit()
         {
             base.AI_Orbit();
@@ -123,6 +128,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             Texture2D texture = TextureRegistry.FourPointedStar.Value;
             Color glowColor = Color.White;
             glowColor *= ChargeProgress;
+            glowColor *= 0.5f;
             glowColor.A = 0;
             Vector2 drawPos = NPC.Center - Main.screenPosition;
             float drawScale = MathHelper.Lerp(0f, 0.5f, ChargeProgress);

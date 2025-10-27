@@ -191,6 +191,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             spriteBatch.Draw(texture, up, null, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
             spriteBatch.Draw(texture, down, null, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
