@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.Trails;
@@ -23,6 +24,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
         public float frameCounter;
         public int frame;
+        public Color outlineColor;
         public NPC NPC { get; init; }
         public string BaseTexturePath => GetType().DirectoryHere() + "/";
         public virtual void AI() { }
@@ -298,28 +300,37 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                 }
             }
         }
+        private void DrawOutline(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(BaseTexturePath + "DaedusBack").Value;
+            SpriteEffects spriteEffects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            Vector2 drawPos = NPC.Center - screenPos;
+            drawPos.Y -= 8;
+            float outlineOffset = 2;
+            Vector2 left = Vector2.UnitX * -outlineOffset;
+            Vector2 right = Vector2.UnitX * outlineOffset;
+            Vector2 up = Vector2.UnitY * -outlineOffset;
+            Vector2 down = Vector2.UnitY * outlineOffset;
 
+            SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
+
+            Vector2 drawOrigin = NPC.frame.Size() / 2;
+            spriteBatch.Restart(effect: whiteShader.Effect);
+
+            spriteBatch.Draw(texture, drawPos + left, NPC.frame, outlineColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + right, NPC.frame, outlineColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + up, NPC.frame, outlineColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + down, NPC.frame, outlineColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
+
+            spriteBatch.RestartDefaults();
+        }
         public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            DrawOutline(spriteBatch, screenPos, drawColor);
             Texture2D texture = ModContent.Request<Texture2D>(BaseTexturePath + "DaedusBack").Value;
             Rectangle animationFrame = texture.GetFrame(frame, totalFrameCount: 60);
             Vector2 drawPos = NPC.Center - screenPos;
             Vector2 drawOrigin = animationFrame.Size() / 2f;
-            //Ok so we need some glowing huhh
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-
-            for (float f = 0; f < 1f; f += 0.1f)
-            {
-                float rot = f * MathHelper.TwoPi;
-                Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(4f, 8f, speed: 3);
-                Vector2 glowDrawPos = drawPos + offset;
-                spriteBatch.Draw(texture, glowDrawPos, animationFrame, drawColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0f);
-            }
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(texture, drawPos, animationFrame, drawColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0f);
         }
     }
@@ -487,7 +498,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
         private int JackFireDamage => 12;
         private int GroundFireDamage => 20;
 
-
+        private Color _outlineColor;
+        public Color TargetOutlineColor;
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
@@ -556,6 +568,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             {
                 ArenaCenter = NPC.Center;
             }
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+
 
             //Teleport Go!!!
             if (TeleportTarget != Vector2.Zero)
@@ -716,7 +730,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                 BlackLightning.Draw(spriteBatch, _blackLightningZaps, null);
                 BlackLightning.Draw(spriteBatch, _blackLightningZaps2, null);
             }
-
+            BackSegment.outlineColor = _outlineColor;
             BackSegment.Draw(spriteBatch, screenPos, drawColor);
             ArmSegment.Draw(spriteBatch, screenPos, drawColor);
             TopSegment.Draw(spriteBatch, screenPos, drawColor);
@@ -1100,7 +1114,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         }
                         TargetMovePos = Target.Center - new Vector2(0, 512);
                     }
-
+                    TargetOutlineColor = Color.Yellow;
                     Vector2 movePos = TargetMovePos + Vector2.UnitY.RotatedBy(0.025f * Timer * (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero).X) * 256;
                     Vector2 velocityToTarget = movePos - NPC.Center;
                     Vector2 targetVelocity = velocityToTarget * 0.03f;
@@ -1129,7 +1143,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
                 case 1:
                     Timer++;
-
+                    TargetOutlineColor = Color.Red;
                     NPC.velocity *= 0.96f;
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Raise;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
@@ -1157,6 +1171,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     break;
 
                 case 2:
+                    TargetOutlineColor = Color.Transparent;
                     Timer++;
                     FaceSegment.Glow = false;
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
@@ -1194,7 +1209,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     Vector2 velocityToTarget = movePos - NPC.Center;
                     Vector2 targetVelocity = velocityToTarget * 0.03f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
-
+                    TargetOutlineColor = Color.Yellow;
                     FaceSegment.Glow = true;
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Raise;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Laughing;
@@ -1229,7 +1244,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         Dust d = Dust.NewDustPerfect(dustSpawnPoint, DustID.GemTopaz, Velocity: dustVelocity, Scale: 0.5f);
                         d.noGravity = true;
                     }
-
+                    TargetOutlineColor = Color.Red;
                     LightningBallTimer += 1 / 5f;
                     if (Timer > 20 && Timer % 30 == 0)
                     {
@@ -1258,7 +1273,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
                 case 2:
                     Timer++;
-
+                    TargetOutlineColor = Color.Transparent;
                     FaceSegment.Glow = false;
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
@@ -1295,7 +1310,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     Vector2 velocityToTarget = movePos - NPC.Center;
                     Vector2 targetVelocity = velocityToTarget * 0.03f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
-
+                    TargetOutlineColor = Color.Yellow;
                     FaceSegment.Glow = true;
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Raise;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Laughing;
@@ -1330,7 +1345,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         Dust d = Dust.NewDustPerfect(dustSpawnPoint, DustID.GemTopaz, Velocity: dustVelocity, Scale: 0.5f);
                         d.noGravity = true;
                     }
-
+                    TargetOutlineColor = Color.Red;
                     Vector2 offset = new Vector2(0, -252);
                     Vector2 targetPos = Target.Center + offset;
                     Vector2 v = targetPos - NPC.Center;
@@ -1365,7 +1380,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
                 case 2:
                     Timer++;
-
+                    TargetOutlineColor = Color.Transparent;
                     FaceSegment.Glow = false;
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
@@ -1402,7 +1417,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     Vector2 velocityToTarget = movePos - NPC.Center;
                     Vector2 targetVelocity = velocityToTarget * 0.03f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
-
+                    TargetOutlineColor = Color.Yellow;
                     FaceSegment.Glow = true;
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Raise;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Laughing;
@@ -1455,7 +1470,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     Vector2 v = targetPos - NPC.Center;
                     Vector2 tv = v * 0.07f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, tv, 0.2f);
-
+                    TargetOutlineColor = Color.Red;
 
                     if (Timer % 12 == 0)
                     {
@@ -1477,7 +1492,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
                 case 2:
                     Timer++;
-
+                    TargetOutlineColor = Color.Transparent;
                     FaceSegment.Glow = false;
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
@@ -1514,7 +1529,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     Vector2 velocityToTarget = movePos - NPC.Center;
                     Vector2 targetVelocity = velocityToTarget * 0.03f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
-
+                    TargetOutlineColor = Color.Yellow;
                     FaceSegment.Glow = true;
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Raise;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Laughing;
@@ -1549,7 +1564,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         Dust d = Dust.NewDustPerfect(dustSpawnPoint, DustID.GemTopaz, Velocity: dustVelocity, Scale: 0.5f);
                         d.noGravity = true;
                     }
-
+                    TargetOutlineColor = Color.Red;
                     Vector2 offset = new Vector2(0, -252);
                     Vector2 targetPos = Target.Center + offset;
                     Vector2 v = targetPos - NPC.Center;
@@ -1589,7 +1604,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
                 case 2:
                     Timer++;
-
+                    TargetOutlineColor = Color.Transparent;
                     FaceSegment.Glow = false;
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
@@ -1626,7 +1641,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     Vector2 velocityToTarget = movePos - NPC.Center;
                     Vector2 targetVelocity = velocityToTarget * 0.03f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
-
+                    TargetOutlineColor = Color.Yellow;
                     FaceSegment.Glow = true;
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Raise;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Laughing;
@@ -1674,7 +1689,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         soundStyle.PitchVariance = 0.3f;
                         SoundEngine.PlaySound(soundStyle, NPC.position);
                     }
-
+                    TargetOutlineColor = Color.Red;
                     if (Timer > 120)
                     {
                         LightningBallTimer = 0;
@@ -1692,7 +1707,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
                 case 2:
                     Timer++;
-
+                    TargetOutlineColor = Color.Transparent;
                     FaceSegment.Glow = false;
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
@@ -1729,7 +1744,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     Vector2 velocityToTarget = movePos - NPC.Center;
                     Vector2 targetVelocity = velocityToTarget * 0.03f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
-
+                    TargetOutlineColor = Color.Yellow;
                     FaceSegment.Glow = true;
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Raise;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Laughing;
@@ -1753,7 +1768,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
                 case 1:
                     Timer++;
-
+                    TargetOutlineColor = Color.Red;
 
                     if (Timer % 4 == 0)
                     {
@@ -1839,6 +1854,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     {
                         NPC.velocity.Y -= 15;
                     }
+                    TargetOutlineColor = Color.Transparent;
                     NPC.velocity *= 0.9f;
                     ArmSegment.Fast = false;
                     FaceSegment.Glow = false;
@@ -1869,7 +1885,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
                         TargetMovePos = Target.Center - new Vector2(0, 128);
                     }
-
+                    TargetOutlineColor = Color.Yellow;
                     //Slow down movement and summon ball lightnings
                     //I think two?
                     //Raise arms and prepare
@@ -1901,7 +1917,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
                 case 1:
                     Timer++;
-
+                    TargetOutlineColor = Color.Red;
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Raise;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
                     if (Timer % 128 == 0)
@@ -1950,7 +1966,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
                 case 2:
                     Timer++;
-
+                    TargetOutlineColor = Color.Transparent;
                     FaceSegment.Glow = false;
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
@@ -1981,6 +1997,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
         private void AI_Death()
         {
+            TargetOutlineColor = Color.Transparent;
             switch (AttackCounter)
             {
                 case 0:

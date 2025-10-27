@@ -62,7 +62,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
                 Projectile.velocity *= 0.94f;
             }
 
-            if (Timer < 30 && _target == null || !_target.active)
+            if (Timer < 30 && _target == null)
             {
                 _target = PlayerHelper.FindClosestPlayer(Projectile.Center, maxDetectDistance: 1024);
             }
