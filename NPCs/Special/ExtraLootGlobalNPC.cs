@@ -11,6 +11,10 @@ namespace Stellamod.NPCs.Special
             //Friendly npcs can't drop chests lol
             if (npc.friendly)
                 return;
+            if (npc.dontCountMe)
+                return;
+            if (npc.damage <= 0)
+                return;
 
             //1 / 25 to get a chest from an enemy
             if (Main.rand.NextBool(25))
