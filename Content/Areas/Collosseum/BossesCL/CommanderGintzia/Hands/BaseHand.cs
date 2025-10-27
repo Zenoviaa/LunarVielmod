@@ -6,7 +6,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 {
     public abstract class BaseHand : ModNPC
     {
@@ -32,7 +32,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
         protected int ParentIndex
         {
             get => (int)NPC.ai[2];
-            set => NPC.ai[2] = (int)value;
+            set => NPC.ai[2] = value;
         }
         protected ref float RotationTimer => ref NPC.ai[3];
 
@@ -117,7 +117,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
             Timer++;
             float progress = Timer / 180f;
             float easedProgress = Easing.SpikeOutCirc(progress);
-            RotationTimer += (easedProgress * 3f);
+            RotationTimer += easedProgress * 3f;
             AI_Orbit();
             if (Timer >= 180)
             {
@@ -217,7 +217,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
             base.OnKill();
             for (int i = 0; i < 12; i++)
             {
-                float progress = (float)i / 12f;
+                float progress = i / 12f;
                 float rot = progress * MathHelper.TwoPi;
                 Vector2 vel = rot.ToRotationVector2() * 4;
                 Dust.NewDustPerfect(NPC.Center, DustID.GemDiamond, vel);

@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.CommanderGintzia
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 {
     public class CommanderGintziaBossBar : ModBossBar
     {

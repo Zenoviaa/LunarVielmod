@@ -7,7 +7,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 
-namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 {
     public class HandShake : BaseHand
     {
@@ -92,7 +92,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 
                 for (int i = 0; i < 12; i++)
                 {
-                    float progress = (float)i / 12f;
+                    float progress = i / 12f;
                     float rot = progress * MathHelper.TwoPi;
                     vel = rot.ToRotationVector2() * 4;
                     Dust.NewDustPerfect(NPC.Center, DustID.GemDiamond, vel);

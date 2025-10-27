@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia;
 using Stellamod.Core.TitleSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Ores;
-using Stellamod.NPCs.Bosses.CommanderGintzia;
 using Stellamod.NPCs.Bosses.EliteCommander;
 using Stellamod.NPCs.Bosses.Gustbeak;
 using System.IO;

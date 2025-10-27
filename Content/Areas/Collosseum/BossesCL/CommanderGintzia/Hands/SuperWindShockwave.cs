@@ -8,7 +8,7 @@ using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 {
     public class SuperWindShockwave : ModProjectile
     {
@@ -71,11 +71,11 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
             {
                 Vector2 oldPos = Projectile.oldPos[i];
                 List<Vector2> shockwavePos = new List<Vector2>();
-                float totalP = (float)i / (float)Projectile.oldPos.Length;
+                float totalP = i / (float)Projectile.oldPos.Length;
                 totalP = 1f - totalP;
                 for (int s = 0; s < 8; s++)
                 {
-                    float p = (float)s / 8f;
+                    float p = s / 8f;
                     Vector2 pos = Vector2.Lerp(oldPos, oldPos - Vector2.UnitY * 252 * totalP *
                         VectorHelper.Osc(0.5f, 1f, speed: 6, offset: i * 4) * MathHelper.Clamp(Timer / 30f, 0f, 1f), p);
                     pos.Y += Projectile.height / 2;
@@ -88,7 +88,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
 
                 for (int s = 0; s < 8; s++)
                 {
-                    float p = (float)s / 8f;
+                    float p = s / 8f;
                     Vector2 pos = Vector2.Lerp(oldPos, oldPos + Vector2.UnitY * 80 * totalP *
                         VectorHelper.Osc(0.5f, 1f, speed: 6, offset: i * 4) * MathHelper.Clamp(Timer / 30f, 0f, 1f), p);
                     pos.Y += Projectile.height / 2;

@@ -8,7 +8,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.CommanderGintzia
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 {
     public class CommanderGintziaTaunting : ModNPC
     {
@@ -171,7 +171,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.1f);
             ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
             if (!colosseumSystem.IsActive() ||
-                (colosseumSystem.waveIndex == 6 && colosseumSystem.colosseumIndex == 2))
+                colosseumSystem.waveIndex == 6 && colosseumSystem.colosseumIndex == 2)
             {
                 SwitchState(AIState.Despawn);
             }
@@ -188,7 +188,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
             NPC.velocity.Y = MathHelper.Lerp(0f, -10f, Timer / 90f);
             NPC.velocity.X *= 0.98f;
             NPC.rotation *= 0.98f;
-            FadeProgress = 1f - (Timer / 90f);
+            FadeProgress = 1f - Timer / 90f;
             NPC.EncourageDespawn(60);
         }
 

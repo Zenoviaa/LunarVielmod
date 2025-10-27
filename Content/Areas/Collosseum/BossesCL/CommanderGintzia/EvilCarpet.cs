@@ -4,7 +4,7 @@ using Stellamod.Helpers;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.CommanderGintzia
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 {
     public class EvilCarpet : ModNPC
     {
@@ -26,7 +26,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
         protected int ParentIndex
         {
             get => (int)NPC.ai[2];
-            set => NPC.ai[2] = (int)value;
+            set => NPC.ai[2] = value;
         }
         protected NPC Parent => Main.npc[ParentIndex];
         public override void SetStaticDefaults()
@@ -83,7 +83,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                     break;
             }
 
-            bool shouldKill = !Parent.active || (Parent.type != ModContent.NPCType<CommanderGintzia>() && Parent.type != ModContent.NPCType<CommanderGintziaTaunting>());
+            bool shouldKill = !Parent.active || Parent.type != ModContent.NPCType<CommanderGintzia>() && Parent.type != ModContent.NPCType<CommanderGintziaTaunting>();
             if (shouldKill && State != AIState.Despawn)
             {
                 SwitchState(AIState.Despawn);

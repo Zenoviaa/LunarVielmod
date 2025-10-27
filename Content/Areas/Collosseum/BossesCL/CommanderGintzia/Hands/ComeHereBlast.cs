@@ -6,7 +6,7 @@ using Terraria.Audio;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 {
     public class ComeHereBlast : ModProjectile
     {
@@ -68,7 +68,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia.Hands
 
             for (int i = 0; i < _oldSwingPos.Length; i++)
             {
-                float progress = (float)i / (float)_oldSwingPos.Length;
+                float progress = i / (float)_oldSwingPos.Length;
                 Vector2 pos = Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity, progress);
                 _oldSwingPos[i] = pos;
             }

@@ -112,14 +112,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             return false;
         }
 
-        public void SwitchToAnimation(AnimationState newState, params AnimationState[] animations)
-        {
-            if (!CheckCurrentAnimation(animations))
-            {
-                Animation = newState;
-            }
-        }
-
         public override void AI()
         {
             base.AI();

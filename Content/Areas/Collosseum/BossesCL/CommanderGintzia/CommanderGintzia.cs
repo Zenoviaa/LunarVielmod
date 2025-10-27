@@ -1,10 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable;
-using Stellamod.NPCs.Bosses.CommanderGintzia.Hands;
-using Stellamod.NPCs.Bosses.EliteCommander.Projectiles;
 using Stellamod.NPCs.Colosseum.Common;
 using System;
 using System.IO;
@@ -14,7 +13,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.CommanderGintzia
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 {
     [AutoloadBossHead]
     public class CommanderGintzia : BaseColosseumNPC
@@ -314,7 +313,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
 
                     _comeHereIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<ComeHere>(),
                         ai2: NPC.whoAmI,
-                        ai3: (between * 1));
+                        ai3: between * 1);
                 }
                 PlaySound();
             }
@@ -325,7 +324,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 {
                     _fingerGunIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<FingerGun>(),
                         ai2: NPC.whoAmI,
-                        ai3: (between * 2));
+                        ai3: between * 2);
                 }
                 PlaySound();
             }
@@ -336,7 +335,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 {
                     _fistIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<Fist>(),
                         ai2: NPC.whoAmI,
-                        ai3: (between * 3));
+                        ai3: between * 3);
                 }
                 PlaySound();
             }
@@ -347,7 +346,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 {
                     _handShakeIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<HandShake>(),
                         ai2: NPC.whoAmI,
-                        ai3: (between * 4));
+                        ai3: between * 4);
                 }
                 PlaySound();
             }
@@ -358,7 +357,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 {
                     _okHandIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<OkHand>(),
                         ai2: NPC.whoAmI,
-                        ai3: (between * 5));
+                        ai3: between * 5);
                 }
                 PlaySound();
             }
@@ -369,7 +368,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 {
                     _openHandIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<OpenPalm>(),
                         ai2: NPC.whoAmI,
-                        ai3: (between * 6));
+                        ai3: between * 6);
                 }
                 PlaySound();
             }
@@ -380,7 +379,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 {
                     _scissorHandIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<ScissorHand>(),
                         ai2: NPC.whoAmI,
-                        ai3: (between * 7));
+                        ai3: between * 7);
                 }
                 PlaySound();
             }
@@ -601,7 +600,7 @@ namespace Stellamod.NPCs.Bosses.CommanderGintzia
                 NPC.noTileCollide = !Collision.CanHitLine(startPos, 1, 1, endPos, 1, 1);
             }
             NPC.rotation *= 0.94f;
-            if ((Timer > 30 && NPC.collideY) || Timer > 180)
+            if (Timer > 30 && NPC.collideY || Timer > 180)
             {
                 SwitchState(AIState.Land);
             }
