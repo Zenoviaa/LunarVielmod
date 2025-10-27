@@ -90,17 +90,13 @@ namespace Stellamod.Core.Lights
             hasSunGlyph = false;
             darkness = 0;
             darknessCurve = 0.5f;
-            // blurStrength = 0;
-
-
+            
             //Curve based
             float progress = (float)(Player.position.ToTileCoordinates().Y - Main.worldSurface) / 1000;
             progress = MathHelper.Clamp(progress, 0, 1);
             darknessCurve = MathHelper.Lerp(0f, darknessCurve, progress * darknessCurveProgress);
-
             whiteCurve = 0f;
             blackCurve = 1f;
-
 
             _targetVignetteOpacity = 0.5f;
         }
@@ -126,8 +122,10 @@ namespace Stellamod.Core.Lights
 
         private void SpecialBiomeEffects()
         {
+            //This code should only run on each client
             if (Main.netMode == NetmodeID.Server)
                 return;
+          
             //Darkness
             if (!_init)
             {
@@ -393,16 +391,10 @@ namespace Stellamod.Core.Lights
             _targetVignetteStrength = darkness;
         }
 
-        public override void PostUpdateMiscEffects()
-        {
-            base.PostUpdateMiscEffects();
-
-        }
 
         public override void PostUpdate()
         {
             base.PostUpdate();
-
             SpecialBiomeEffects();
             UpdateVignette();
         }
