@@ -2,12 +2,16 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles;
 using Stellamod.Core;
+using Stellamod.Core.Particles;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.DaedusRework;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
 {
@@ -164,8 +168,35 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
             return false;
         }
 
+        private void DrawOutline(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            SpriteEffects spriteEffects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawPos = NPC.Center - screenPos;
+            drawPos.Y -= 8;
+            float outlineOffset = 2;
+            Vector2 left = Vector2.UnitX * -outlineOffset;
+            Vector2 right = Vector2.UnitX * outlineOffset;
+            Vector2 up = Vector2.UnitY * -outlineOffset;
+            Vector2 down = Vector2.UnitY * outlineOffset;
+
+            SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
+
+            Color outlineColor = _outlineColor;
+            Vector2 drawOrigin = NPC.frame.Size() / 2;
+            spriteBatch.Restart(effect: whiteShader.Effect);
+
+            spriteBatch.Draw(texture, drawPos + left, NPC.frame, outlineColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + right, NPC.frame, outlineColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + up, NPC.frame, outlineColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + down, NPC.frame, outlineColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
+
+            spriteBatch.RestartDefaults();
+        }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            DrawOutline(spriteBatch, screenPos, drawColor);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPos = NPC.Center - screenPos;
             Rectangle frame = NPC.frame;
@@ -180,25 +211,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
-            //Glow Code :) 
-            for (float f = 0f; f < 1.0f; f += 0.2f)
-            {
-                Vector2 offsetDrawPos = NPC.Center - screenPos + (f * MathHelper.TwoPi).ToRotationVector2() * glowDrawOffset;
-                offsetDrawPos.Y -= 8;
-                spriteBatch.Draw(texture, offsetDrawPos, frame, drawColor, drawRotation, drawOrigin, NPC.scale, effects, layerDepth: 0);
-            }
-
             if (InPhase2)
             {
-                glowDrawOffset = VectorHelper.Osc(3f, 4f, 25);
-                for (float f = 0f; f < 1.0f; f += 0.1f)
-                {
-                    Vector2 offsetDrawPos = NPC.Center - screenPos + (f * MathHelper.TwoPi).ToRotationVector2() * glowDrawOffset;
-                    offsetDrawPos.Y -= 8;
-                    spriteBatch.Draw(texture, offsetDrawPos, frame, drawColor, drawRotation, drawOrigin, NPC.scale, effects, layerDepth: 0);
-                }
-
-                //Trail Code
                 for (int k = 0; k < NPC.oldPos.Length; k++)
                 {
                     Color startColor = new Color(255, 255, 113);
@@ -207,6 +221,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                     trailDrawPos.Y -= 8;
                     trailDrawPos += Main.rand.NextVector2Circular(2, 2);
                     Color color = NPC.GetAlpha(Color.Lerp(startColor, endColor, 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
+                    color *= 0.5f;
                     spriteBatch.Draw(texture, trailDrawPos, NPC.frame, color, NPC.oldRot[k], NPC.frame.Size() / 2, NPC.scale, effects, 0f);
                 }
             }
@@ -219,6 +234,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                 Vector2 trailDrawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
                 trailDrawPos.Y -= 8;
                 Color color = NPC.GetAlpha(Color.Lerp(startColor, endColor, 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
+                color *= 0.5f;
                 spriteBatch.Draw(texture, trailDrawPos, NPC.frame, color, NPC.oldRot[k], NPC.frame.Size() / 2, NPC.scale, effects, 0f);
             }
 
@@ -423,7 +439,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
             //Gonna make sure this code is easy to work with though
 
             //He cycles a bit faster in phase 2
-            float timeToWait = InPhase2 ? 30 : 60;
+            float timeToWait = InPhase2 ? 50 : 80;
             if (Timer >= timeToWait)
             {
                 //How we choosing attack uhh, oh i know
@@ -564,6 +580,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
 
         private void AI_HopAround()
         {
+            TargetOutlineColor = Color.Transparent;
             //Jack hops/dances around towards you for a bit
             Animation = AnimationState.Idle;
 
@@ -856,6 +873,9 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                     Dust.NewDust(NPC.Bottom, 0, 0, DustID.Smoke, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
                     Dust.NewDust(NPC.Bottom, 0, 0, DustID.InfernoFork, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
                 }
+
+                for (int j = 0; j < 7; j++)
+                    Particle.NewParticle<EmberParticle>(NPC.Center, NPC.velocity.RotatedByRandom(0.5f));
                 SoundEngine.PlaySound(SoundID.Item73, NPC.position);
             }
 
@@ -951,7 +971,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                 SoundEngine.PlaySound(soundStyle, NPC.position);
                 FlamethrowerVelocity = directionToTarget * 8;
             }
-
+            TargetOutlineColor = Color.Red;
             float degreesRotate = 0.5f;
             float length = FlamethrowerVelocity.Length();
             float targetAngle = NPC.Center.AngleTo(Target.Center);
@@ -959,11 +979,11 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
             FlamethrowerVelocity = newVelocity;
             if (Timer >= 45 && Timer < 150)
             {
-                if (Timer % 3 == 0)
+                if (Timer % 30 == 0)
                 {
                     Vector2 spawnPoint = NPC.Center;
                     Vector2 startVelocity = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 8;
-                    int projType = ModContent.ProjectileType<Flamethrow>();
+                    int projType = ModContent.ProjectileType<Fireball>();
                     int damage = 12;
                     int knockback = 1;
                     if (StellaMultiplayer.IsHost)

@@ -140,7 +140,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
         }
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 24; i++)
+            for (int i = 0; i < 12; i++)
             {
                 int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FlameBurst, 0f, -2f, 0, default, 1.5f);
                 Dust dust = Main.dust[num];
@@ -149,7 +149,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
                 dust.position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 dust.velocity = Projectile.DirectionTo(dust.position) * 6f;
             }
-
+            var part = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Yellow, Color.Red);
+            part.Scale *= 0.5f;
             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
         }
 

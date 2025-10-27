@@ -1,8 +1,10 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Particles;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -99,7 +101,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
             {
                 Dust.NewDustPerfect(Projectile.position, DustID.GoldCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default, 4f).noGravity = true;
             }
-            for (int i = 0; i < 24; i++)
+            for (int i = 0; i < 12; i++)
             {
                 Dust.NewDustPerfect(Projectile.position, DustID.Torch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default, 6f).noGravity = true;
             }
@@ -113,9 +115,13 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
                 Vector2 velocity = rot.ToRotationVector2() * 8;
                 int laughingBlastType = ModContent.ProjectileType<LaughingBlast>();
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, laughingBlastType, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                for(int j = 0; j < 4; j++)
+                    Particle.NewParticle<EmberParticle>(Projectile.Center, velocity.RotatedByRandom(0.5f));
             }
 
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 512f, 32f);
+
+            FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Yellow, Color.Red);
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 16);
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             SoundEngine.PlaySound(SoundID.DD2_MonkStaffGroundMiss, Projectile.position);
         }
