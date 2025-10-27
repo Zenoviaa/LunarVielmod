@@ -21,7 +21,7 @@ namespace Stellamod.Core.XixianFlaskSystem.UI
 
         public XixianFlaskUIState xixianFlaskUIState;
         public FlaskSlotUIState flaskSlotUIState;
-        public override int uiSlot => Slot_MinorUI;
+        public override int uiSlot => Slot_MajorUI;
         public override void OnModLoad()
         {
             base.OnModLoad();

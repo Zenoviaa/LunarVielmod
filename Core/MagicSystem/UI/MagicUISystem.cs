@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.Items.MoonlightMagic;
+using Stellamod.UI;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -10,11 +11,12 @@ namespace Stellamod.Core.MagicSystem.UI
 {
 
     [Autoload(Side = ModSide.Client)]
-    public class MagicUISystem : ModSystem
+    public class MagicUISystem : BaseUISystem
     {
         private UserInterface _staffInterface;
         private GameTime _lastUpdateUiGameTime;
         public EnchantmentMenuUIState enchantmentMenuUI;
+        public override int uiSlot => Slot_MajorUI;
 
         public override void OnModLoad()
         {

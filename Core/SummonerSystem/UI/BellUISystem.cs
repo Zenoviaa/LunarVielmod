@@ -20,7 +20,7 @@ namespace Stellamod.Core.SummonerSystem.UI
 
         public BellUIState bellUIState;
         public BellHudSlotUIState bellHudSlotUIState;
-        public override int uiSlot => Slot_MinorUI;
+        public override int uiSlot => Slot_MajorUI;
         public override void OnModLoad()
         {
             base.OnModLoad();
