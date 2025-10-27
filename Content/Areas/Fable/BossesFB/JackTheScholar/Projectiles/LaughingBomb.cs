@@ -17,6 +17,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
         private ref float Timer => ref Projectile.ai[0];
         private float _scale;
         private Player _target;
+        private Color _outlineColor;
         private Vector2 InitialVelocity;
         public override void SetStaticDefaults()
         {
@@ -78,9 +79,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
                 float targetAngle = Projectile.Center.AngleTo(_target.Center - new Vector2(0, 128));
                 Vector2 newVelocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(degreesRotate)).ToRotationVector2() * length;
                 Projectile.velocity = newVelocity;
-
             }
-
+            _outlineColor = Color.Lerp(Color.Transparent, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 32));
             if (Timer > 130)
             {
                 Projectile.velocity *= 0.93f;
@@ -130,16 +130,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
         {
             DrawHelper.AnimateTopToBottom(Projectile, 4);
         }
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 1.2f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.LightGoldenrodYellow, Color.Transparent, completionRatio);
-        }
 
         public override bool PreDraw(ref Color lightColor)
         {
@@ -156,6 +146,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
                 float range = 4 * progress;
                 drawPos += Main.rand.NextVector2Circular(range, range);
             }
+
+            this.Outline(_outlineColor, ref lightColor);
             spriteBatch.Draw(texture, drawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
             return false;
         }

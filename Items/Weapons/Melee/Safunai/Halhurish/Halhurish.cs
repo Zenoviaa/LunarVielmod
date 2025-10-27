@@ -46,7 +46,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunai.Halhurish
             Item.channel = true;
             Item.autoReuse = true;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 12;
+            Item.damage = 14;
             Item.rare = ItemRarityID.Blue;
         }
     }

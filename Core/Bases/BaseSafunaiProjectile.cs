@@ -44,6 +44,7 @@ namespace Stellamod.Core.Bases
             Projectile.ignoreWater = true;
             Projectile.penetrate = -1;
             Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
             Projectile.extraUpdates = 16;
         }
 

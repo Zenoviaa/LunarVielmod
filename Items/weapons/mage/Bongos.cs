@@ -30,8 +30,8 @@ namespace Stellamod.Items.Weapons.Mage
         }
         public override void SetDefaults()
         {
-            Item.damage = 12;
-            Item.mana = 15;
+            Item.damage = 20;
+            Item.mana = 42;
             Item.width = 40;
             Item.height = 40;
             Item.useTime = 20;

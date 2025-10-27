@@ -22,15 +22,6 @@ namespace Stellamod.Items.Weapons.Melee.Safunai.Parendine
             };
             tooltips.Add(line);
 
-            line = new TooltipLine(Mod, "Parendine", "(B) Medium Damage Scaling (Frost balls) On Hit!")
-            {
-                OverrideColor = new Color(220, 87, 24)
-
-            };
-            tooltips.Add(line);
-
-
-
         }
         public override void SetDefaults()
         {

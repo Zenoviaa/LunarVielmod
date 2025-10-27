@@ -681,7 +681,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                 Dust.NewDustPerfect(pos2, DustID.Torch, Vector2.Zero, Scale: scale);
                 TargetOutlineColor = Color.Yellow;
             }
-            if (Timer >= 20 && Timer < 150)
+            if (Timer >= 60 && Timer < 150)
             {
                 TargetOutlineColor = Color.Red;
                 if (Timer % 15 == 0)

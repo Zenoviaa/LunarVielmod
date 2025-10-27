@@ -1202,7 +1202,7 @@ WCIgniter: {
 }
 
 Bongos: {
-	DisplayName: Star-Gilded Bongo
+	DisplayName: Star-Gilded Bongo Artifact
 	Tooltip: Boom bong boom at cursor
 }
 
@@ -1222,7 +1222,7 @@ FlameburstBalls: {
 }
 
 GildedStaff: {
-	DisplayName: Gilded Staff
+	DisplayName: Gilded Artifact
 	Tooltip: Hold to charge a weak, magical energy ball!
 }
 
@@ -1678,7 +1678,7 @@ SupernovaSitar: {
 
 Parendine: {
 	DisplayName: Parendine
-	Tooltip: Whip frosty!
+	Tooltip: Whip frosty! Inflicts frostburn
 }
 
 AuroranSeeker: {
@@ -5589,8 +5589,8 @@ SolarianPants: {
 IyxTheInfamous: {
 	DisplayName: Iyx The Infamous
 	Tooltip: From the fallen warriors of the cinder, to the magical entropy of the world, this weapon was lost long ago.
-	BasicSlash: No Effect
-	StaminaSlash: No Effect
+	BasicSlash: The final hit in the combo increases your attack speed for a short time
+	StaminaSlash: Does a very fast and furious long combo!
 }
 
 PoisonedAngel: {
@@ -8966,7 +8966,7 @@ KindCompass: {
 }
 
 IronBow: {
-	DisplayName: Iron Bow
+	DisplayName: Basic Bow
 	Tooltip: ""
 	BasicSlash: ""
 	StaminaSlash: Shoots a quick burst of 3 arrows

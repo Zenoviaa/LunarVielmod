@@ -102,7 +102,19 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 NPC.velocity.X = diffX * 0.03f;
             }
 
-            NPC.velocity.Y = MathF.Sin(Timer * 0.05f) * 2;
+            if (target.active)
+            {
+                float distanceToTarget = Vector2.Distance(NPC.Center, target.Center);
+                if(distanceToTarget > 200)
+                {
+                    Vector2 targetVelocity = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.1f);
+                } 
+                else
+                {
+                    NPC.velocity.Y = MathF.Sin(Timer * 0.05f) * 2;
+                }
+            }
 
             Timer++;
             if (Timer == 1)

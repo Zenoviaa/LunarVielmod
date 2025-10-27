@@ -71,9 +71,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 _lightningPower = 0.9f;
                 _lightningTime = 0;
                 //Sound Effect Goooo
-                SoundStyle lightningSoundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap");
-                lightningSoundStyle.PitchVariance = 0.1f;
-                SoundEngine.PlaySound(lightningSoundStyle, Projectile.position);
 
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
                 for (int i = 0; i < 8; i++)
@@ -84,7 +81,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                     d.noGravity = true;
                 }
 
-                _lightningHitPos = Projectile.position + new Vector2(0, BeamLength);
+                _lightningHitPos = Projectile.Center + Projectile.velocity * BeamLength;
                 var part = FXUtil.GlowCircleBoom(_lightningHitPos,
                     innerColor: Color.White,
                     glowColor: Color.Yellow,
@@ -288,7 +285,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
     {
         private float _scale;
         private ref float Timer => ref Projectile.ai[0];
-        private ref float AttackNum => ref Projectile.ai[1];    
+        private ref float AttackNum => ref Projectile.ai[1];
+        private int NPCIndex => (int)Projectile.ai[2];
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -317,6 +315,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 }
             }
 
+            NPC npc = Main.npc[NPCIndex];
+            Projectile.Center = npc.Center - Vector2.UnitY * 80;
             Projectile.velocity.Y = MathF.Sin(Timer * 0.1f) * 0.1f;
             if(AttackNum < 3 && Timer % 60 == 0)
             {

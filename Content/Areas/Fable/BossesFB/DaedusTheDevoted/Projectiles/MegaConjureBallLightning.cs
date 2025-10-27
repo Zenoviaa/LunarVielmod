@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
@@ -59,21 +60,15 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
             Lightning.WidthMultiplier = 2;
             Lightning.SetBoltDefaults();
             Lightning.Draw(spriteBatch, _lightningZaps, null);
+
+            Vector2 scale = Vector2.One * drawScale;
+   
+            var shader = TeslaOrbShader.Instance;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
 
-            for (int i = 0; i < 16; i++)
-            {
-                Vector2 flameDrawPos = drawPos + Main.rand.NextVector2Circular(2, 2);
-                float rot = Main.rand.NextFloat(0f, 3.14f);
-
-                spriteBatch.Draw(texture, flameDrawPos, Projectile.Frame(), drawColor, drawRotation + rot, Projectile.Frame().Size() / 2f,
-                    drawScale * VectorHelper.Osc(0.5f, 1f, speed: 6, offset: i), SpriteEffects.None, 0);
-            }
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Draw(texture, drawPos, null, drawColor, Projectile.rotation, drawOrigin, scale, SpriteEffects.None, 0);
+            spriteBatch.RestartDefaults();
             return false;
         }
 

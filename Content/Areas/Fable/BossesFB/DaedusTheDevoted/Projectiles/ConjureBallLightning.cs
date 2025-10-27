@@ -59,10 +59,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
             scale.X *= _stretchX;
             SpriteBatch spriteBatch = Main.spriteBatch;
             var shader = TeslaOrbShader.Instance;
-            if (Main.rand.NextBool(3))
-            {
- 
-            }
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
      

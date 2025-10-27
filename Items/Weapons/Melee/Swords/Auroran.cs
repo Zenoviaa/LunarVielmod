@@ -20,6 +20,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
         public override void SetDefaults2()
         {
             base.SetDefaults2();
+            Item.damage = 7;
             Item.shoot = ModContent.ProjectileType<AuroranSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<AuroranStaminaSlash>();
             meleeWeaponType = MeleeWeaponType.Sword;

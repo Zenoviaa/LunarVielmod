@@ -46,7 +46,7 @@ namespace Stellamod.NPCs.Town
 
         public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
         {
-            spawner.structureToSpawnIn = "Struct/Huntria/FableBiomeFinal";
+            spawner.structureToSpawnIn = "Structures/Fable";
             spawner.spawnTileOffset = new Point(190, -70);
         }
 

@@ -12,6 +12,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
     public class ElectricTentacle : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
+        private ref float AttackTimer => ref Projectile.ai[1];
+        private ref float RotationTime => ref Projectile.ai[2];
         public CoreLightning Lightning { get; set; } = new CoreLightning();
         public override string Texture => TextureRegistry.EmptyBigTexture;
         public override void SetStaticDefaults()
@@ -52,12 +54,19 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 Lightning.RandomPositions(Projectile.oldPos);
             }
 
-            Player player = PlayerHelper.FindClosestPlayer(Projectile.position, float.MaxValue);
-            if (player != null)
+            if(RotationTime == 0)
             {
-                Vector2 dirToNpc = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
-                Projectile.velocity += dirToNpc * 0.05f;
-                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, degreesToRotate: 1f);
+                if (StellaMultiplayer.IsHost)
+                {
+                    RotationTime = Main.rand.NextFloat(30, 60);
+                    Projectile.netUpdate = true;
+                }
+            }
+
+            if(Timer >= RotationTime)
+            {
+                Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.PiOver2);
+                Timer = 0;
             }
 
             Lightning.WidthMultiplier = 2;

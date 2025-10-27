@@ -23,6 +23,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.shoot = ModContent.ProjectileType<MooningSlicerSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<MooningSlicerStaminaSlash>();
             meleeWeaponType = MeleeWeaponType.Sword;
+            staminaCost = 3;
         }
 
         public override void AddRecipes()

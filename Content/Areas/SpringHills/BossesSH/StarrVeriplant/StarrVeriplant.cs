@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant.Projectiles;
+using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.EliteCommander.Projectiles;
@@ -18,8 +19,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
 {
-    [AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
-    public class StarrVeriplant : ModNPC
+    public class StarrVeriplant : ScarletBoss
     {
         private enum ActionState
         {
@@ -90,7 +90,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
         public override void SetDefaults()
         {
             NPC.width = 80;
-            NPC.height = 44;
+            NPC.height = 128;
             NPC.damage = 25;
             NPC.lifeMax = 400;
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
@@ -129,12 +129,12 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
 
             Color startTrailColor = Color.LightGoldenrodYellow;
             Color endTrailColor = Color.DarkGoldenrod;
-            startTrailColor *= 0.5f;
-            endTrailColor *= 0.5f;
+            startTrailColor *= 0.25f;
+            endTrailColor *= 0.25f;
             for (int k = 0; k < NPC.oldPos.Length; k++)
             {
                 Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
-                drawPos.Y -= 54;
+                drawPos.Y -= 10;
                 Color color = NPC.GetAlpha(Color.Lerp(startTrailColor, endTrailColor, 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
                 spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, drawPos, NPC.frame, color, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, Effects, 0f);
             }
@@ -144,7 +144,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
 
             Texture2D outlineTexture = ModContent.Request<Texture2D>(Texture + "_Outline").Value;
             Vector2 outlineDrawPos = NPC.position - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
-            outlineDrawPos.Y -= 54;
+            outlineDrawPos.Y -= 12;
             Color outlineColor = Color.Lerp(Color.Transparent, OutlineColor, OutlineOpacity);
             spriteBatch.Draw(outlineTexture, outlineDrawPos, NPC.frame, outlineColor, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, Effects, 0);
 
