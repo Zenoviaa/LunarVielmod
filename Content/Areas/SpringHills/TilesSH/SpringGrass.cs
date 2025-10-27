@@ -7,6 +7,46 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.SpringHills.TilesSH
 {
+    public class GlobalSpringGrass : GlobalTile
+    {
+        public override void RandomUpdate(int i, int j, int type)
+        {
+            base.RandomUpdate(i, j, type);
+            int[] tilesToChooseFrom = new int[]
+            {
+                ModContent.WallType<SpringFlower>(),
+                ModContent.WallType<SpringFlowerBlueBush>(),
+                ModContent.WallType<SpringFlowerDarkPurple>(),
+                ModContent.WallType<SpringFlowerGrass>(),
+                ModContent.WallType<SpringFlowerPurpleBush>(),
+                ModContent.WallType<SpringFlowerPurpleLeaf>(),
+                ModContent.WallType<SpringFlowerRedBush>(),
+                ModContent.WallType<SpringFlowerVine>(),
+                ModContent.WallType<SpringFlowerWhite>(),
+                ModContent.WallType<SpringFlowerWhiteBud>(),
+                ModContent.WallType<SpringFlowerWhiteBudSmall>(),
+            };
+
+            if (type == TileID.Grass)
+            {
+                Tile tile = Framing.GetTileSafely(i, j);
+                if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
+                {
+                    if (Main.rand.NextBool(2))
+                    {
+                        int wallType = tilesToChooseFrom[Main.rand.Next(0, tilesToChooseFrom.Length)];
+                        if (tile.WallType == WallID.FlowerUnsafe ||
+                            tile.WallType == WallID.GrassUnsafe ||
+                            tile.WallType == WallID.LivingLeaf || tile.WallType == 0)
+                        {
+                            WorldGen.KillWall(i, j);
+                            WorldGen.PlaceWall(i, j, wallType, true);
+                        }
+                    }
+                }
+            }
+        }
+    }
     public class SpringGrass : ModTile
     {
         public override void SetStaticDefaults()
