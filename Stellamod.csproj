@@ -113,6 +113,7 @@
     <None Remove="Content\Areas\Fable\BossesFB\JackTheScholar\WoodlandRavager_BossIcon.png" />
     <None Remove="Content\Areas\SpringHills\BossesSH\Minerva\Minerva_BossBar.png" />
     <None Remove="Content\Areas\SpringHills\BossesSH\Minerva\Minerva_BossIcon.png" />
+    <None Remove="Content\Areas\SpringHills\BossesSH\StarrVeriplant\StarrVeriplant_BossBar.png" />
     <None Remove="Content\Areas\SpringHills\TilesSH\BrokenCarraige_S.png" />
     <None Remove="Content\Areas\SpringHills\TilesSH\HangingBulbLarge_S.png" />
     <None Remove="Content\Areas\SpringHills\TilesSH\HangingBulbLong_S.png" />
