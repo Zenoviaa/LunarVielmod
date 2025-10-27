@@ -621,7 +621,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             NPC.width = 128;
             NPC.height = 128;
             NPC.damage = 14;
-            NPC.defense = 10;
+            NPC.defense = 2;
             NPC.lifeMax = 2600;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Bomb");
@@ -893,7 +893,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                 NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, MathF.Sin(Timer) * 0.02f, 0.1f);
             }
 
-            if (Timer >= 360)
+            if (Timer >= 320)
             {
                 SwitchState(AIState.Idle);
             }

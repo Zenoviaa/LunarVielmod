@@ -20,7 +20,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 7;
+            Item.damage = 10;
             Item.shoot = ModContent.ProjectileType<AuroranSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<AuroranStaminaSlash>();
             meleeWeaponType = MeleeWeaponType.Sword;
@@ -49,10 +49,10 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             base.AI();
             if (!AuroraProj1 && Interpolant > 0.5f)
             {
-                if (Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner && ComboIndex == ComboCount - 1)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity,
-                        ModContent.ProjectileType<Aurora>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                        ModContent.ProjectileType<Aurora>(), (int)(Projectile.damage * 0.5f), Projectile.knockBack, Projectile.owner);
                 }
                 AuroraProj1 = true;
             }
