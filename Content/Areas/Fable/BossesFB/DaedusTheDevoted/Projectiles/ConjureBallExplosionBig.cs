@@ -20,8 +20,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
         {
             base.SetDefaults();
             _lightningZaps = new Vector2[12];
-            Projectile.width = 512;
-            Projectile.height = 512;
+            Projectile.width = 600;
+            Projectile.height = 600;
             Projectile.hostile = true;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;

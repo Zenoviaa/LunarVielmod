@@ -54,6 +54,25 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                 }
             }
         }
+        public void Outline(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(BaseTexturePath + "DaedusTop").Value;
+            Rectangle animationFrame = texture.GetFrame(frame, totalFrameCount: 60);
+            SpriteEffects spriteEffects = SpriteEffects.None;
+            Vector2 drawPos = NPC.Center - screenPos;
+            drawPos.Y -= 0;
+            float outlineOffset = 2;
+            Vector2 left = Vector2.UnitX * -outlineOffset;
+            Vector2 right = Vector2.UnitX * outlineOffset;
+            Vector2 up = Vector2.UnitY * -outlineOffset;
+            Vector2 down = Vector2.UnitY * outlineOffset;
+
+            Vector2 drawOrigin = animationFrame.Size() / 2;
+            spriteBatch.Draw(texture, drawPos + left, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + right, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + up, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + down, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
+        }
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -143,6 +162,27 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                 GlowTimer = MathHelper.Lerp(GlowTimer, 0f, 0.01f);
             }
             BlackTimer = MathHelper.Lerp(BlackTimer, 0f, 0.1f);
+        }
+        public void Outline(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(BaseTexturePath + "DaedusFace").Value;
+            Rectangle animationFrame = texture.GetFrame(frame, totalFrameCount: 6);
+            SpriteEffects spriteEffects = SpriteEffects.None;
+            Vector2 drawPos = NPC.Center - screenPos;
+            drawPos.Y -= 0;
+            float outlineOffset = 2;
+            Vector2 left = Vector2.UnitX * -outlineOffset;
+            Vector2 right = Vector2.UnitX * outlineOffset;
+            Vector2 up = Vector2.UnitY * -outlineOffset;
+            Vector2 down = Vector2.UnitY * outlineOffset;
+
+            SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
+
+            Vector2 drawOrigin = animationFrame.Size() / 2;
+            spriteBatch.Draw(texture, drawPos + left, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + right, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + up, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + down, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
         }
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -270,6 +310,25 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             }
 
         }
+        public void Outline(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(BaseTexturePath + "DaedusArms").Value;
+            Rectangle animationFrame = texture.GetFrame(frame, totalFrameCount: 17);
+            SpriteEffects spriteEffects = SpriteEffects.None;
+            Vector2 drawPos = NPC.Center - screenPos;
+            drawPos.Y -= 0;
+            float outlineOffset = 2;
+            Vector2 left = Vector2.UnitX * -outlineOffset;
+            Vector2 right = Vector2.UnitX * outlineOffset;
+            Vector2 up = Vector2.UnitY * -outlineOffset;
+            Vector2 down = Vector2.UnitY * outlineOffset;
+
+            Vector2 drawOrigin = animationFrame.Size() / 2;
+            spriteBatch.Draw(texture, drawPos + left, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + right, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + up, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + down, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
+        }
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -306,9 +365,9 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
         {
             Texture2D texture = ModContent.Request<Texture2D>(BaseTexturePath + "DaedusBack").Value;
             Rectangle animationFrame = texture.GetFrame(frame, totalFrameCount: 60);
-            SpriteEffects spriteEffects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            SpriteEffects spriteEffects = SpriteEffects.None;
             Vector2 drawPos = NPC.Center - screenPos;
-            drawPos.Y -= 8;
+            drawPos.Y -= 0;
             float outlineOffset = 2;
             Vector2 left = Vector2.UnitX * -outlineOffset;
             Vector2 right = Vector2.UnitX * outlineOffset;
@@ -320,12 +379,33 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             Vector2 drawOrigin = animationFrame.Size() / 2;
             spriteBatch.Restart(effect: whiteShader.Effect);
 
-            spriteBatch.Draw(texture, drawPos + left, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
-            spriteBatch.Draw(texture, drawPos + right, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
-            spriteBatch.Draw(texture, drawPos + up, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
-            spriteBatch.Draw(texture, drawPos + down, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + left, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + right, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + up, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + down, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
 
             spriteBatch.RestartDefaults();
+        }
+        public void Outline(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(BaseTexturePath + "DaedusBack").Value;
+            Rectangle animationFrame = texture.GetFrame(frame, totalFrameCount: 60);
+            SpriteEffects spriteEffects = SpriteEffects.None;
+            Vector2 drawPos = NPC.Center - screenPos;
+            drawPos.Y -= 0;
+            float outlineOffset = 2;
+            Vector2 left = Vector2.UnitX * -outlineOffset;
+            Vector2 right = Vector2.UnitX * outlineOffset;
+            Vector2 up = Vector2.UnitY * -outlineOffset;
+            Vector2 down = Vector2.UnitY * outlineOffset;
+
+            SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
+
+            Vector2 drawOrigin = animationFrame.Size() / 2;
+            spriteBatch.Draw(texture, drawPos + left, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + right, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + up, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos + down, animationFrame, outlineColor, NPC.rotation, drawOrigin, NPC.scale * 2, spriteEffects, 0);
         }
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -739,7 +819,26 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                 BlackLightning.Draw(spriteBatch, _blackLightningZaps, null);
                 BlackLightning.Draw(spriteBatch, _blackLightningZaps2, null);
             }
+
+            //Draw Outlines
+            SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
+            spriteBatch.Restart(effect: whiteShader.Effect);
             BackSegment.outlineColor = _outlineColor;
+            BackSegment.Outline(spriteBatch, screenPos, drawColor);
+
+            ArmSegment.outlineColor = _outlineColor;
+            ArmSegment.Outline(spriteBatch, screenPos, drawColor);
+
+            TopSegment.outlineColor = _outlineColor;
+            TopSegment.Outline(spriteBatch, screenPos, drawColor);
+
+           // RobeSegment.outlineColor = _outlineColor;
+           // RobeSegment.Outline(spriteBatch, screenPos, drawColor);
+
+            FaceSegment.outlineColor = _outlineColor;
+            FaceSegment.Outline(spriteBatch, screenPos, drawColor);
+            spriteBatch.RestartDefaults();
+
             BackSegment.Draw(spriteBatch, screenPos, drawColor);
             ArmSegment.Draw(spriteBatch, screenPos, drawColor);
             TopSegment.Draw(spriteBatch, screenPos, drawColor);
@@ -851,6 +950,13 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                 //How we choosing attack uhh, oh i know
                 if (StellaMultiplayer.IsHost)
                 {
+                    if (_attackNum >= 3)
+                    {
+                        _attackNum = 0;
+                        SwitchState(AIState.Tired);
+                        return;
+                    }
+
                     AIState nextAttack = AIState.Lightning_Strike;
                     switch (AttackCycle)
                     {
@@ -936,17 +1042,9 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         nextAttack = AIState.Phase_2_Transition;
                     }
 
-                    if (_attackNum >= 3)
-                    {
-                        _attackNum = 0;
-                        SwitchState(AIState.Tired);
-                    }
-                    else
-                    {
-                        _attackNum++;
-                        SwitchState(nextAttack);
-                    }
-                    SwitchState(AIState.Electric_Tentacle);
+                    _attackNum++;
+                    SwitchState(nextAttack);
+
 
                 }
             }
@@ -1116,7 +1214,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                             startPos.Y -= 128;
 
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), startPos, Vector2.Zero,
-                                ModContent.ProjectileType<RadiantBall>(), damage, knockback, Main.myPlayer);
+                                ModContent.ProjectileType<RadiantBall>(), damage, knockback, Main.myPlayer, ai2: NPC.whoAmI);
                         }
                     }
 
@@ -1291,8 +1389,15 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         d.noGravity = true;
                     }
                     TargetOutlineColor = Color.Red;
-                    LightningBallTimer += 1 / 5f;
-                    if (Timer > 20 && Timer % 30 == 0)
+                    LightningBallTimer += 1 / 10f;
+                    if(Timer < 80)
+                    {
+                        if(Timer % 10 == 0)
+                        {
+                            FXUtil.GlowCircleBoom(lightningSpawnPos, Color.Yellow, Color.Orange, Color.Blue);
+                        }
+                    }
+                    if (Timer > 80 && Timer % 30 == 0)
                     {
                         LightningBallTimer = 0;
                         FaceSegment.BlackTimer = 1f;
@@ -1310,7 +1415,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         }
                     }
 
-                    if (Timer >= 90)
+                    if (Timer >= 150)
                     {
                         Timer = 0;
                         AttackCounter++;
@@ -1745,7 +1850,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         if (StellaMultiplayer.IsHost)
                         {
                             Vector2 firePos = lightningSpawnPos;
-                            NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)firePos.X, (int)firePos.Y, ModContent.NPCType<ElectricSingularity>());
+                            NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)firePos.X, (int)firePos.Y,
+                                ModContent.NPCType<ElectricSingularity>());
                         }
                     }
 

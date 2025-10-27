@@ -15,7 +15,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 7;
+            Item.damage = 3;
         }
 
         public override void StaminaShootBow(Player player, EntitySource_ItemUse_WithAmmo source, ShootParams shootParams)

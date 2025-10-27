@@ -49,6 +49,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
             Timer++;
             if (Timer == 1)
             {
+
                 SoundStyle zap = SoundID.DD2_LightningBugZap;
                 zap.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(zap, Projectile.position);
@@ -71,6 +72,9 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 _lightningPower = 0.9f;
                 _lightningTime = 0;
                 //Sound Effect Goooo
+                SoundStyle lightningSoundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap");
+                lightningSoundStyle.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(lightningSoundStyle, Projectile.position);
 
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
                 for (int i = 0; i < 8; i++)
@@ -207,7 +211,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 }
             }
             _lightningTime -= 0.1f;
-            if (!_calculatedStrikePoints)
+            if (!_calculatedStrikePoints && BeamLength > 0)
             {
                 List<Vector2> beamPoints = new List<Vector2>();
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
@@ -258,6 +262,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
+            if (!_calculatedStrikePoints)
+                return false;
             SpriteBatch spriteBatch = Main.spriteBatch;
             LightningShader lightningShader = LightningShader.Instance;
             lightningShader.Time = _lightningTime;
@@ -305,6 +311,13 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
             float targetScale = ExtraMath.Osc(0.8f, 1f, speed: 2);
             _scale = MathHelper.Lerp(_scale, targetScale, 0.1f);
             Timer++;
+            if(Timer == 1)
+            {
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Enrage");
+                soundStyle.PitchVariance = 0.15f;
+                SoundEngine.PlaySound(soundStyle, Projectile.position);
+
+            }
             if (Timer % 12 == 0)
             {
                 for (float f = 0; f < 1; f++)

@@ -39,9 +39,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
             Timer++;
             if (Timer == 1)
             {
-                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Wave");
-                soundStyle.PitchVariance = 0.15f;
-                SoundEngine.PlaySound(soundStyle, Projectile.position);
 
                 for (int i = 0; i < 16; i++)
                 {

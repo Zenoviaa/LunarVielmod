@@ -58,6 +58,8 @@ namespace Stellamod.Systems.MiscellaneousMath
         public static Vector2[] RemoveZeros(Vector2[] arr, Vector2 offset)
         {
             var valid = new List<Vector2>();
+            if (arr == null || arr.Length == 0)
+                return valid.ToArray();
             for (int i = 0; i < arr.Length; i++)
             {
                 if (arr[i] == Vector2.Zero || arr[i].HasNaNs())

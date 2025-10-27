@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -35,8 +37,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
             base.SetDefaults();
             _width = 1;
             _lightningZaps = new Vector2[7];
-            Projectile.width = 256;
-            Projectile.height = 256;
+            Projectile.width = 128;
+            Projectile.height = 128;
             Projectile.friendly = false;
             Projectile.tileCollide = false;
             Projectile.hostile = true;
@@ -61,7 +63,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
             Lightning.SetBoltDefaults();
             Lightning.Draw(spriteBatch, _lightningZaps, null);
 
-            Vector2 scale = Vector2.One * drawScale;
+            Vector2 scale = Vector2.One * drawScale * 0.4f;
    
             var shader = TeslaOrbShader.Instance;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
@@ -75,7 +77,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
         public override void AI()
         {
             base.AI();
-
+            Projectile.rotation += 0.2f;
 
             Timer++;
             if (Timer == 1)
@@ -101,7 +103,15 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 }
                 Lightning.RandomPositions(_lightningZaps);
             }
-
+            if (Timer % 6 == 0)
+            {
+                for (float f = 0; f < 1; f++)
+                {
+                    Vector2 pVelocity = -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4);
+                    pVelocity *= Main.rand.NextFloat(0.5f, 1f);
+                    var spark = Particle.NewParticle<SparkParticle>(Projectile.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
+                }
+            }
             if (Timer % 12 == 0)
             {
                 Vector2 vel = Vector2.Zero;
@@ -126,7 +136,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 if (Parent != -1)
                 {
                     NPC parentNpc = Main.npc[(int)Parent];
-                    Projectile.Center = parentNpc.Center - new Vector2(0, 256);
+                    Projectile.Center = parentNpc.Center - new Vector2(0, 128);
                     Projectile.velocity = Vector2.Zero;
                 }
 
@@ -138,7 +148,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 Projectile.velocity = Vector2.UnitY * 3;
             }
 
-            if (Timer > 450)
+            if (Timer > 360)
             {
                 Projectile.tileCollide = true;
             }
