@@ -5,7 +5,6 @@ using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -129,13 +128,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
 
                 for (float i = 0; i <= numPoints; i++)
                 {
-
-
                     float interp = i / numPoints;
                     Vector2 point = Vector2.Lerp(start, end, interp);
-                    
-                    //if(i % 4 == 0)
-                    //point.X += Main.rand.Next(-16, 16);
                     beamPoints.Add(point);
                 }
                 BeamPoints = beamPoints.ToArray();

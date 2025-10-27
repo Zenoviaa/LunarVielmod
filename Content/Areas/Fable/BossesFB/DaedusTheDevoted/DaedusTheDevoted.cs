@@ -392,6 +392,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             Jack_Fire, // P1
             Phase_2_Transition,
             Death,
+            Tired
         }
 
         private ref float Timer => ref NPC.ai[0];
@@ -405,6 +406,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
         private ref float AttackCounter => ref NPC.ai[2];
         private ref float AttackCycle => ref NPC.ai[3];
 
+        private float _attackNum;
         private float _hitDirection;
         private float _deathRotation;
         private bool InPhase2 => NPC.life < NPC.lifeMax / 2f;
@@ -508,6 +510,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             writer.WriteVector2(BigTeleportTarget);
             writer.Write(Phase2Transition);
             writer.WriteVector2(ArenaCenter);
+            writer.Write(_attackNum);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
@@ -516,6 +519,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             BigTeleportTarget = reader.ReadVector2();
             Phase2Transition = reader.ReadBoolean();
             ArenaCenter = reader.ReadVector2();
+            _attackNum = reader.ReadInt32();
         }
 
         public override void SetStaticDefaults()
@@ -678,6 +682,9 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
             switch (State)
             {
+                case AIState.Tired:
+                    AI_Tired();
+                    break;
                 case AIState.Idle:
                     AI_Idle();
                     break;
@@ -757,6 +764,41 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             }
         }
 
+        private void AI_Tired()
+        {
+            Timer++;
+            NPC.TargetClosest();
+            if (!NPC.HasValidTarget)
+            {
+                NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, -8), 0.025f);
+                NPC.EncourageDespawn(60);
+                return;
+            }
+
+            ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
+            FaceSegment.Animation = DaedusFaceSegment.AnimationState.Scared;
+            TargetOutlineColor = Color.Transparent;
+
+            float distanceToTarget = Vector2.Distance(NPC.Center, Target.Center);
+            if (distanceToTarget > 128)
+            {
+                Vector2 offset = new Vector2(0, -64);
+                Vector2 targetPos = Target.Center + offset;
+                Vector2 velocityToTarget = targetPos - NPC.Center;
+                Vector2 targetVelocity = velocityToTarget * 0.01f;
+                NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
+            }
+            else
+            {
+                NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, MathF.Sin(Timer) * 0.02f, 0.1f);
+            }
+
+            if (Timer >= 360)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+
         private void AI_Idle()
         {
             Timer++;
@@ -771,6 +813,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
             FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
 
+            TargetOutlineColor = Color.Transparent;
 
             Vector2 offset = new Vector2(0, -128);
             Vector2 targetPos = Target.Center + offset;
@@ -794,7 +837,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             //He can hover over the player and do a thunderslap and the player has to dodge, the lower health he can do it more(ph2)
 
             //Jack summon fire but slightly bigger
-            float timeToWait = 120;
+            float timeToWait = 100;
 
             //FAST
             if (InPhase2)
@@ -868,7 +911,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                             nextAttack = AIState.Conjure_Ball_Lightning_Mega;
                             break;
                     }
-           
+
                     AttackCycle++;
                     if (InPhase2)
                     {
@@ -892,8 +935,17 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         nextAttack = AIState.Phase_2_Transition;
                     }
 
+                    if (_attackNum >= 3)
+                    {
+                        _attackNum = 0;
+                        SwitchState(AIState.Tired);
+                    }
+                    else
+                    {
+                        _attackNum++;
+                        SwitchState(nextAttack);
+                    }
 
-                    SwitchState(nextAttack);
                 }
             }
         }
@@ -1116,7 +1168,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         TargetMovePos = Target.Center - new Vector2(0, 512);
                     }
                     TargetOutlineColor = Color.Yellow;
-                    Vector2 movePos = TargetMovePos + Vector2.UnitY.RotatedBy(0.025f * Timer * (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero).X) * 256;
+                    Vector2 movePos = TargetMovePos + Vector2.UnitY.RotatedBy(0.025f * Timer * (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero).X) * 128;
                     Vector2 velocityToTarget = movePos - NPC.Center;
                     Vector2 targetVelocity = velocityToTarget * 0.03f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
@@ -1206,7 +1258,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     //Slow down movement and summon ball lightnings
                     //I think two?
                     //Raise arms and prepare
-                    Vector2 movePos = TargetMovePos + Vector2.UnitY.RotatedBy(0.025f * Timer * (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero).X) * 256;
+                    Vector2 movePos = TargetMovePos + Vector2.UnitY.RotatedBy(0.025f * Timer * (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero).X) * 128;
                     Vector2 velocityToTarget = movePos - NPC.Center;
                     Vector2 targetVelocity = velocityToTarget * 0.03f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
@@ -1307,7 +1359,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     //Slow down movement and summon ball lightnings
                     //I think two?
                     //Raise arms and prepare
-                    Vector2 movePos = TargetMovePos + Vector2.UnitY.RotatedBy(0.025f * Timer * (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero).X) * 256;
+                    Vector2 movePos = TargetMovePos + Vector2.UnitY.RotatedBy(0.025f * Timer * (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero).X) * 128;
                     Vector2 velocityToTarget = movePos - NPC.Center;
                     Vector2 targetVelocity = velocityToTarget * 0.03f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
@@ -1414,7 +1466,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     //Slow down movement and summon ball lightnings
                     //I think two?
                     //Raise arms and prepare
-                    Vector2 movePos = TargetMovePos + Vector2.UnitY.RotatedBy(0.025f * Timer * (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero).X) * 256;
+                    Vector2 movePos = TargetMovePos + Vector2.UnitY.RotatedBy(0.025f * Timer * (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero).X) * 128;
                     Vector2 velocityToTarget = movePos - NPC.Center;
                     Vector2 targetVelocity = velocityToTarget * 0.03f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
@@ -1526,7 +1578,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     //Slow down movement and summon ball lightnings
                     //I think two?
                     //Raise arms and prepare
-                    Vector2 movePos = TargetMovePos + Vector2.UnitY.RotatedBy(0.025f * Timer * (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero).X) * 256;
+                    Vector2 movePos = TargetMovePos + Vector2.UnitY.RotatedBy(0.025f * Timer * (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero).X) * 128;
                     Vector2 velocityToTarget = movePos - NPC.Center;
                     Vector2 targetVelocity = velocityToTarget * 0.03f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
@@ -1638,7 +1690,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     //Slow down movement and summon ball lightnings
                     //I think two?
                     //Raise arms and prepare
-                    Vector2 movePos = TargetMovePos + Vector2.UnitY.RotatedBy(0.025f * Timer * (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero).X) * 256;
+                    Vector2 movePos = TargetMovePos + Vector2.UnitY.RotatedBy(0.025f * Timer * (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero).X) * 128;
                     Vector2 velocityToTarget = movePos - NPC.Center;
                     Vector2 targetVelocity = velocityToTarget * 0.03f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
@@ -1741,7 +1793,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     //Slow down movement and summon ball lightnings
                     //I think two?
                     //Raise arms and prepare
-                    Vector2 movePos = TargetMovePos + Vector2.UnitY.RotatedBy(0.025f * Timer * (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero).X) * 256;
+                    Vector2 movePos = TargetMovePos + Vector2.UnitY.RotatedBy(0.025f * Timer * (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero).X) * 128;
                     Vector2 velocityToTarget = movePos - NPC.Center;
                     Vector2 targetVelocity = velocityToTarget * 0.03f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
