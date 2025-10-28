@@ -6,6 +6,7 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -41,7 +42,8 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             Spawn,
             Idle,
             OrbitingStarPull,
-            SpiralStarPull
+            SpiralStarPull,
+            ZigzagStorm
         }
         private int ShootingStarDamage => 24;
         private int SpiralStarDamage => 16;
@@ -149,6 +151,9 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 case AIState.SpiralStarPull:
                     AI_SpiralStarPull();
                     break;
+                case AIState.ZigzagStorm:
+                    AI_ZigzagStorm();
+                    break;
             }
         }
 
@@ -165,9 +170,12 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 case 1:
                     SwitchState(AIState.SpiralStarPull);
                     break;
+                case 2:
+                    SwitchState(AIState.ZigzagStorm);
+                    break;
             }
             AttackCycle++;
-            if (AttackCycle >= 2)
+            if (AttackCycle >= 3)
             {
                 AttackCycle = 0;
             }
@@ -260,6 +268,53 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         {
             base.OnKill();
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedSOMBoss, -1);
+        }
+        private void AI_ZigzagStorm()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                SoundStyle crackSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPOut");
+                crackSound.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(crackSound, NPC.position);
+                SpazOut();
+            }
+            if (Timer == 10)
+            {
+                SoundStyle crackSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPOut");
+                crackSound.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(crackSound, NPC.position);
+                SpazOut();
+            }
+            if (Timer == 20)
+            {
+                SoundStyle crackSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPOut");
+                crackSound.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(crackSound, NPC.position);
+                SpazOut();
+            }
+
+            if(Timer > 60 && Timer % 10 == 0)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    int orbitingStarType = ModContent.ProjectileType<ZigzaggingStar>();
+                    float rot = MathHelper.TwoPi * Main.rand.NextFloat(0f, 1f);
+                    rot += Timer * 0.05f;
+                    Vector2 offset = rot.ToRotationVector2();
+                    offset *= 1000;
+                    Vector2 spawnPos = NPC.Center + offset;
+                    Vector2 spawnVelocity = Vector2.Zero;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPos, spawnVelocity, orbitingStarType, SpiralStarDamage, 1, Main.myPlayer, ai0: NPC.whoAmI);
+                }
+                AttackCounter++;
+            }
+
+            if(AttackCounter >= 16)
+            {
+                SwitchState(AIState.Idle);
+            }
+
         }
         private void AI_SpiralStarPull()
         {
