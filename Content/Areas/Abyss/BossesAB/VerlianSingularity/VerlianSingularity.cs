@@ -34,9 +34,12 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         private float _spinTimer;
         private float _spawnScale;
         private float _spazzingTimer;
+        private float _hitTimer;
+        private float _hitScale;
         private bool _focusOn;
         private bool _spawnedCrescentMoon;
         private Vector2 _shakeOffset;
+        private Vector2 _hitOffset;
         private enum AIState
         {
             Spawn,
@@ -68,8 +71,8 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
         public override void SetDefaults()
         {
-            NPC.width = 64;
-            NPC.height = 64;
+            NPC.width = 82;
+            NPC.height = 82;
             NPC.damage = 100;
             NPC.defense = 11;
             NPC.lifeMax = 4500;
@@ -124,6 +127,13 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 _spazzingTimer--;
             }
 
+            if(_hitTimer > 0)
+            {
+                _hitOffset = Main.rand.NextVector2Circular(2, 2);
+                _hitTimer--;
+            }
+            _hitScale = MathHelper.Lerp(_hitScale, 1f, 0.1f);
+
             SuckNearbyPlayers();
             switch (State)
             {
@@ -136,7 +146,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                         if (StellaMultiplayer.IsHost)
                         {
                             NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
-                                ModContent.NPCType<VerlianSingularity>(), ai0: NPC.whoAmI);
+                                ModContent.NPCType<VerlianMoon>(), ai0: NPC.whoAmI);
                         }
 
                         _spawnedCrescentMoon = true;    
@@ -174,6 +184,8 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                     SwitchState(AIState.ZigzagStorm);
                     break;
             }
+
+            SwitchState(AIState.ZigzagStorm);
             AttackCycle++;
             if (AttackCycle >= 3)
             {
@@ -189,7 +201,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 if(distanceToPlayer > 1000 && distanceToPlayer < 2000)
                 {
                     Vector2 pullingVelocity = player.NormalizedVelocityTo(NPC);
-                    pullingVelocity *= 2;
+                    pullingVelocity *= 5;
 
                     SingularitySuckPlayer suckPlayer = player.GetModPlayer<SingularitySuckPlayer>();
                     suckPlayer.pullVelocity = pullingVelocity;
@@ -197,6 +209,11 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             }
         }
 
+        private void HitOut()
+        {
+            _hitScale = 0.92f;
+            _hitTimer = 10;
+        }
 
         /// <summary>
         /// Creates a pulsing effect, good way to show the singularity is summoning projectiles
@@ -262,6 +279,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         public override void HitEffect(NPC.HitInfo hit)
         {
             base.HitEffect(hit);
+            HitOut();
         }
 
         public override void OnKill()
@@ -294,13 +312,13 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 SpazOut();
             }
 
-            if(Timer > 60 && Timer % 10 == 0)
+            if(Timer > 60 && Timer % 20 == 0)
             {
                 if (StellaMultiplayer.IsHost)
                 {
                     int orbitingStarType = ModContent.ProjectileType<ZigzaggingStar>();
-                    float rot = MathHelper.TwoPi * Main.rand.NextFloat(0f, 1f);
-                    rot += Timer * 0.05f;
+                    float rot = Timer * 0.05f;
+              
                     Vector2 offset = rot.ToRotationVector2();
                     offset *= 1000;
                     Vector2 spawnPos = NPC.Center + offset;
@@ -310,7 +328,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 AttackCounter++;
             }
 
-            if(AttackCounter >= 16)
+            if(AttackCounter >= 32)
             {
                 SwitchState(AIState.Idle);
             }
@@ -504,11 +522,21 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         #region Draw Code
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPosition = NPC.Center - screenPos;
+            Texture2D celestialRing = ModContent.Request<Texture2D>(Texture + "_CelestialRing").Value;
+            Vector2 ringDrawOrigin = celestialRing.Size() / 2f;
+            Color ringDrawColor = Color.White;
+            ringDrawColor *= 0.15f;
+            ringDrawColor *= _spawnScale;
+            ringDrawColor.A = 0;
+            spriteBatch.Draw(celestialRing, drawPosition, null, ringDrawColor, NPC.rotation, ringDrawOrigin, 4, SpriteEffects.None, 0);
+
+
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+       
             Vector2 drawOrigin = texture.Size() / 2f;
-            Vector2 drawScale = NPC.scale * Vector2.One * _spawnScale * 2;
-            drawPosition += _shakeOffset;
+            Vector2 drawScale = NPC.scale * Vector2.One * _spawnScale * 2 * _hitScale;
+            drawPosition += _shakeOffset + _hitOffset;
 
             float spinRotOffset = _spinTimer * -0.01f;
             SparkyShader sparkyShader = SparkyShader.Instance;

@@ -2,9 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
@@ -18,38 +20,61 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.extraUpdates = 1;
+            TrailCacheLength = 48;
+            Projectile.extraUpdates = 3;
         }
 
         public override void AI()
         {
             base.AI();
+
+            NPC parent = GetParentNPC();
             Timer++;
-            if (Timer >= 90)
+            if (Timer == 1)
+            {
+                Vector2 velocityToParent = (parent.Center - Projectile.Center);
+                velocityToParent = velocityToParent.SafeNormalize(Vector2.Zero);
+                Projectile.velocity = velocityToParent;
+            }
+            if (Timer >= 180)
             {
                 if (StellaMultiplayer.IsHost)
                 {
-                    float range = 36;
+                    float range = 90;
                     ZigZagOffsetRadians = MathHelper.Lerp(
                         -MathHelper.ToRadians(range),
                         MathHelper.ToRadians(range), Main.rand.NextFloat(0f, 1f));
                     Projectile.netUpdate = true;
                 }
+                SoundStyle starrer = new SoundStyle("Stellamod/Assets/Sounds/Starrer");
+                starrer.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(starrer, Projectile.position);
+                FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightCyan, Color.DarkBlue, baseSize: 0.06f);
                 Timer = 0;
             }
 
-            NPC parent = GetParentNPC();
+         
+    
             Vector2 velToParent = (parent.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
             velToParent = velToParent.RotatedBy(ZigZagOffsetRadians);
             velToParent *= Projectile.velocity.Length();
             Projectile.velocity = velToParent;
             if (Timer < 45)
             {
-                Projectile.velocity *= 1.01f;
+                _scale *= 0.9f;
+                Projectile.velocity *= 1.04f;
+                if(Timer % 9 == 0)
+                {
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), newColor: Color.White, Scale: 0.5f);
+                }
             }
             else
             {
-                Projectile.velocity *= 0.99f;
+                Projectile.velocity *= 0.98f;
+            }
+            if(Timer >= 135)
+            {
+                _scale *= 1.05f;
             }
 
             float interpolant = Projectile.velocity.Length() / 15f;
@@ -80,7 +105,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
 
         private Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.White, Color.LightCyan, completionRatio);
+            return Color.Lerp(Color.LightCyan, Color.DarkBlue, completionRatio);
         }
 
         private float WidthFunction(float completionRatio)
@@ -118,8 +143,8 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
             drawColor.A = 0;
             Vector2 drawOrigin = starTexture.Size() / 2f;
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Draw(starTexture, drawPosition, null, drawColor, Projectile.rotation, drawOrigin, _scale, SpriteEffects.None, 0);
-            spriteBatch.Draw(starTexture, drawPosition, null, drawColor, Projectile.rotation, drawOrigin, _scale * 0.5f, SpriteEffects.None, 0);
+            spriteBatch.Draw(starTexture, drawPosition, null, drawColor, Projectile.rotation, drawOrigin, _scale * 0.2f, SpriteEffects.None, 0);
+            spriteBatch.Draw(starTexture, drawPosition, null, drawColor, Projectile.rotation, drawOrigin, _scale * 0.05f, SpriteEffects.None, 0);
             return false;
         }
 

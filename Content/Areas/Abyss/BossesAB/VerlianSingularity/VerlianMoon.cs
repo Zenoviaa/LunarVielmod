@@ -47,7 +47,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             Timer++;
             NPC npc = GetParentNPC();
             float orbitDistance = 512;
-            float radians = Timer * 0.1f;
+            float radians = Timer * 0.0035f;
             Vector2 orbitingVector = Vector2.UnitY.RotatedBy(radians) * orbitDistance;
             NPC.Center = npc.Center + orbitingVector;
 
@@ -72,7 +72,10 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             Vector2 lightDrawOrigin = lightTexture.Size() / 2f;
             float sparkyRot = NPC.rotation;
             float scaleOsc2 = ExtraMath.Osc(0.4f, 0.5f, speed: 1);
-            spriteBatch.Draw(lightTexture, drawPosition, null, Color.White * 0.75f, sparkyRot, lightDrawOrigin, drawScale * 1.5f * scaleOsc2, SpriteEffects.None, 0);
+            Color lightTextureDrawColor = Color.White;
+            lightTextureDrawColor *= 0.5f;
+            lightTextureDrawColor.A = 0;
+            spriteBatch.Draw(lightTexture, drawPosition, null, lightTextureDrawColor, sparkyRot, lightDrawOrigin, drawScale * 3.5f * scaleOsc2, SpriteEffects.None, 0);
 
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
