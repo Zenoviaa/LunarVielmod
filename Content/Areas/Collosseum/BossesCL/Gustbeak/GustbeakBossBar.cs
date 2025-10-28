@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.Gustbeak
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
 {
     public class GustbeakBossBar : ModBossBar
     {

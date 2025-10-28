@@ -5,7 +5,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
 {
     public class AverageWindBall : BaseWindProjectile
     {
@@ -60,7 +60,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
                 Projectile.velocity = -Vector2.UnitY * 8f;
                 for (float f = 0; f < 24; f++)
                 {
-                    float rot = (f / 24f) * MathHelper.TwoPi;
+                    float rot = f / 24f * MathHelper.TwoPi;
                     Vector2 velOffset = rot.ToRotationVector2() * 6;
                     Dust d = Dust.NewDustPerfect(Projectile.Center, DustID.GemDiamond, velOffset, Scale: 1f);
                     d.noGravity = true;

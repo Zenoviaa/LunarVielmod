@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak;
+using Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles;
+using Stellamod.Core;
 using Stellamod.Core.DrawEffects;
 using Stellamod.Core.Lights;
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Items.Placeable;
-using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
 using Stellamod.NPCs.Colosseum.Common;
 using Stellamod.Projectiles;
 using Stellamod.UI.Systems;
@@ -20,8 +22,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Gustbeak
 {
-    [AutoloadBossHead]
-    public partial class Gustbeak : BaseColosseumNPC
+    public partial class Gustbeak : ScarletBoss
     {
 
         private enum AIState
@@ -301,7 +302,6 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             NPC.boss = true;
             NPC.npcSlots = 10f;
             NPC.takenDamageMultiplier = 0.9f;
-            NPC.BossBar = ModContent.GetInstance<GustbeakBossBar>();
             NPC.aiStyle = -1;
             if (!Main.dedServ)
             {
@@ -1539,6 +1539,8 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
         public override void OnKill()
         {
             base.OnKill();
+            ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
+            colosseumSystem.Progress();
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedSunsBoss, -1);
         }
     }

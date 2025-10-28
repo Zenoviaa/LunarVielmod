@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Runes;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
-using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

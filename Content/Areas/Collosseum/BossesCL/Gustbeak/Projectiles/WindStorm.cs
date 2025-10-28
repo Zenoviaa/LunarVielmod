@@ -7,7 +7,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
 {
     public class WindStorm : BaseWindProjectile
     {
@@ -67,7 +67,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
                 //Spawn new slashes on our little wind orb
                 for (int i = 0; i < 8; i++)
                 {
-                    float progress = (float)i / 8f;
+                    float progress = i / 8f;
                     Vector2 offset = Vector2.Lerp(Vector2.Zero, -Vector2.UnitY * 256, progress);
                     offset.X -= Projectile.width / 2;
                     offset.Y += Projectile.height / 2;

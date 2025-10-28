@@ -9,7 +9,7 @@ using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
 {
     public abstract class BaseWindProjectile : ModProjectile
     {

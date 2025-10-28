@@ -8,7 +8,7 @@ using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
 {
     public class WindStormDebris : ModProjectile
     {
@@ -55,7 +55,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
             base.OnKill(timeLeft);
             for (float f = 0; f < 12; f++)
             {
-                float rot = (f / 12f) * MathHelper.TwoPi;
+                float rot = f / 12f * MathHelper.TwoPi;
                 Vector2 velOffset = rot.ToRotationVector2() * 4;
                 Dust.NewDustPerfect(Projectile.Center, DustID.GemDiamond, velOffset, Scale: 1f);
             }

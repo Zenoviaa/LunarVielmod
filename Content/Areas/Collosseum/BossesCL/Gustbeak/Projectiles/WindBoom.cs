@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 
-namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
 {
     public class WindBoom : BaseWindProjectile
     {
@@ -32,7 +32,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
 
                 for (float f = 0; f < 12; f++)
                 {
-                    float rot = (f / 12f) * MathHelper.TwoPi;
+                    float rot = f / 12f * MathHelper.TwoPi;
                     Vector2 velOffset = rot.ToRotationVector2() * 6;
                     Dust d = Dust.NewDustPerfect(Projectile.Center, DustID.GemDiamond, velOffset, Scale: 1f);
                     d.noGravity = true;

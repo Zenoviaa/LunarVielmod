@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
 using Stellamod.Trails;
 using System;
 using System.IO;
@@ -12,6 +11,7 @@ using Terraria.Audio;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 {

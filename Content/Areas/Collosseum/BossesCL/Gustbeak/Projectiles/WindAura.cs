@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Terraria;
 
-namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
 {
     public class WindAura : BaseWindProjectile
     {
