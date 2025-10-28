@@ -5,6 +5,39 @@ namespace Stellamod.Helpers
 {
     public static class ExtraMath
     {
+        /// <summary>
+        /// Shorthand for the distance between two entities
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public static float DistanceFrom(this Entity start, Entity end)
+        {
+            return Vector2.Distance(start.Center, end.Center);
+        }
+
+        /// <summary>
+        /// Shorthand for calculating the velocity to an entity's center
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public static Vector2 VelocityTo(this Entity start, Entity end)
+        {
+            return (end.Center - start.Center);
+        }
+
+        /// <summary>
+        /// Shorthand for calculating the normalized velocity to an entity's center
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public static Vector2 NormalizedVelocityTo(this Entity start, Entity end)
+        {
+            return (end.Center - start.Center).SafeNormalize(Vector2.Zero);
+        }
+
         public static Vector2 GetRotation(Vector2[] oldPos, int index)
         {
             if (oldPos.Length == 1)

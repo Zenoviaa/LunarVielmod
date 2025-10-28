@@ -13,6 +13,21 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 {
+    public class SingularitySuckPlayer : ModPlayer
+    {
+        public Vector2? pullVelocity;
+        public override void PreUpdateMovement()
+        {
+            base.PreUpdateMovement();
+            if (pullVelocity.HasValue)
+            {
+                Vector2 velocity = pullVelocity.Value;
+                Player.velocity = velocity;
+                pullVelocity = null;
+            }
+        }
+    }
+
     public class VerlianSingularity : ScarletBoss
     {
         private float _spinTimer;
@@ -106,6 +121,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 _spazzingTimer--;
             }
 
+            SuckNearbyPlayers();
             switch (State)
             {
                 case AIState.Spawn:
@@ -145,6 +161,24 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 AttackCycle = 0;
             }
         }
+
+        private void SuckNearbyPlayers()
+        {
+            foreach(var player in Main.ActivePlayers)
+            {
+                float distanceToPlayer = NPC.DistanceFrom(player);
+                if(distanceToPlayer > 1000 && distanceToPlayer < 2000)
+                {
+                    Vector2 pullingVelocity = player.NormalizedVelocityTo(NPC);
+                    pullingVelocity *= 2;
+
+                    SingularitySuckPlayer suckPlayer = player.GetModPlayer<SingularitySuckPlayer>();
+                    suckPlayer.pullVelocity = pullingVelocity;
+                }
+            }
+        }
+
+
         /// <summary>
         /// Creates a pulsing effect, good way to show the singularity is summoning projectiles
         /// </summary>
