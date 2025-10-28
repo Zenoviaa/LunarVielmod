@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
@@ -25,6 +26,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
             public SpriteEffects spriteEffects;
             public BaseGustbeakSegment[] children;
             public bool drawArmored;
+            public bool drawOutline;
             public Color outlineColor;
             public virtual void AI()
             {
@@ -51,10 +53,12 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
 
                 bool oldDrawArmored = drawArmored;
                 drawArmored = false;
+                drawOutline = true;
                 Draw(spriteBatch, left, outlineColor);
                 Draw(spriteBatch, right, outlineColor);
                 Draw(spriteBatch, up, outlineColor);
                 Draw(spriteBatch, down, outlineColor);
+                drawOutline = false;
                 drawArmored = oldDrawArmored;
             }
             public virtual void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -88,7 +92,9 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
             public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
             {
                 base.Draw(spriteBatch, screenPos, drawColor);
-                Color colorToDrawIn = Color.White.MultiplyRGB(drawColor) * invisibility;
+                Color colorToDrawIn = Color.White.MultiplyRGBA(drawColor) * invisibility;
+                if (drawOutline)
+                    colorToDrawIn = drawColor;
                 Texture2D texture = GetTexture(Texture);
                 Vector2 drawPos = position - screenPos;
                 Vector2 drawOrigin = texture.Size() / 2;
@@ -108,17 +114,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                 texture = GetArmoredTexture(Texture);
                 if (!drawArmored || texture == null)
                     return;
-
-                MiscShaderData miscShaderData = GameShaders.Misc["LunarVeil:GustArmor"];
-                miscShaderData.Shader.Parameters["time"].SetValue(MathF.Sin(Main.GlobalTimeWrappedHourly * 0.02f) * 24);
-                miscShaderData.Shader.Parameters["noiseTexture"].SetValue(TrailRegistry.CrystalNoise.Value);
-                miscShaderData.Shader.Parameters["noiseTextureSize"].SetValue(TrailRegistry.CrystalNoise.Value.Size());
-                miscShaderData.Apply();
-
-                spriteBatch.Restart(effect: miscShaderData.Shader, blendState: BlendState.Additive);
                 spriteBatch.Draw(texture, drawPos, null, colorToDrawIn, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
-                spriteBatch.Draw(texture, drawPos, null, colorToDrawIn, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
-                spriteBatch.RestartDefaults();
             }
         }
         public abstract class BaseGustbeakWingSegment : BaseGustbeakSegment

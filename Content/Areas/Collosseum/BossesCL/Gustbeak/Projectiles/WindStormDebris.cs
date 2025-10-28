@@ -1,27 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
 {
-    public class WindStormDebris : ModProjectile,
+    public class WindStormDebris : BaseWindProjectile,
         IDrawOutlines
     {
-        private ref float Timer => ref Projectile.ai[0];
+        private Vector2 _scale;
         private ref float FallDownTime => ref Projectile.ai[1];
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            ProjectileID.Sets.TrailCacheLength[Type] = 10;
-            ProjectileID.Sets.TrailingMode[Type] = 2;
-        }
 
         public override void SetDefaults()
         {
@@ -36,7 +32,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
         public override void AI()
         {
             base.AI();
-            Timer++;
+            _scale = Vector2.Lerp(_scale, Vector2.One, 0.02f);
             if (Timer == 1 && Main.myPlayer == Projectile.owner)
             {
                 FallDownTime = Main.rand.NextFloat(80, 120);
@@ -63,28 +59,23 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             }
             for (float f = 0; f < 4; f++)
             {
-                Vector2 velocity = Main.rand.NextVector2Circular(64, 64);
+                Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                 FXUtil.GlowStretch(Projectile.Center, velocity);
             }
+            SoundEngine.PlaySound(SoundID.Item70, Projectile.position);
+            FXUtil.ShakeCamera(Projectile.position, 1024, 8);
         }
-
-
-        protected virtual void DrawWindTrail(ref Color lightColor)
-        {
-
-        }
-
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            this.OutlineNoRestart(Color.Red, ref lightColor, Vector2.One);
-        }
-        public override bool PreDraw(ref Color lightColor)
-        {
-           
-            this.DrawCentered(ref lightColor);
-            return false;
+            this.OutlineNoRestart(Color.Red, ref lightColor, _scale);
         }
 
+        public override bool PreDraw(ref Color lightColor)
+        {
+            DrawWindTrail(ref lightColor);
+            this.DrawCentered(ref lightColor, _scale);
+            return false;
+        }
     }
 }
