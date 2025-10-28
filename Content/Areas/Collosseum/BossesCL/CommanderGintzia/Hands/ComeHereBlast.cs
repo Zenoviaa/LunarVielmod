@@ -11,6 +11,20 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 {
+    public class BlowAwayPlayer : ModPlayer
+    {
+        public Vector2? blowVelocity;
+        public override void PreUpdateMovement()
+        {
+            base.PreUpdateMovement();
+            if (blowVelocity.HasValue)
+            {
+                Vector2 targetVelocity = blowVelocity.Value;
+                Player.velocity = Vector2.Lerp(Player.velocity, targetVelocity, 0.5f);
+                blowVelocity = null;
+            }
+        }
+    }
     public class ComeHereBlast : ModProjectile
     {
         private Vector2[] _oldSwingPos;
@@ -84,7 +98,8 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
                     Vector2 vel = suckVelocity;
                     vel.Y = 0;
                     vel.X = Projectile.velocity.X;
-                    player.velocity += vel * 0.005f;
+                    BlowAwayPlayer blowAwayPlayer = player.GetModPlayer<BlowAwayPlayer>();
+                    blowAwayPlayer.blowVelocity = vel;
                 }
             }
         }
@@ -119,6 +134,13 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
             float alpha = MathHelper.Clamp(Timer / 60f, 0f,1f);
             result *= alpha;
+            if(Projectile.timeLeft < 60)
+            {
+                float lerp = (Projectile.timeLeft) / 60f;
+                result *= lerp; 
+            }
+            float fadeInOut = EasingFunction.QuadraticBump(progressOnStrip);
+            result *= fadeInOut;
             return result;
         }
 
