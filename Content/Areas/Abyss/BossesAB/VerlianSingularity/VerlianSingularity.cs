@@ -377,10 +377,6 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 SpawnPulse();
             }
             float targetScale = MathHelper.Lerp(0f, 1f, AttackCounter / 4f);
-            if (Timer >= 64 && Timer <= 90 && AttackCounter == 2)
-            {
-                targetScale *= 0.5f;
-            }
             _spawnScale = MathHelper.Lerp(_spawnScale, targetScale, 0.1f);
 
             if (Timer >= 102)
