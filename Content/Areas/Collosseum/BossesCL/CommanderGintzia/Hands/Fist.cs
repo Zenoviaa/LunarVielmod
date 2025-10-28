@@ -72,6 +72,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             ChargeProgress = Timer / 150f;
             if (Timer < 120)
             {
+                DrawWindTrail = true;
                 TargetOutlineColor = Color.Yellow;
                 //Home to this point
                 NPC.velocity = (targetPos - NPC.Center) * 0.1f;
@@ -113,6 +114,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
             if (Timer > 180)
             {
+                DrawWindTrail = false;
                 NPC.velocity *= 0.92f;
             }
             if (Timer > 210)

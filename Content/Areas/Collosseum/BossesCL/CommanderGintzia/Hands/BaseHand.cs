@@ -54,6 +54,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
         }
 
         public float TrailAlpha;
+        public bool DrawWindTrail;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -97,6 +98,18 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             if (State == AIState.DoDeath)
             {
                 SwitchState(AIState.Despawn);
+            }
+            if (DrawWindTrail)
+            {
+                TrailAlpha += 0.01f;
+                if (TrailAlpha >= 1f)
+                    TrailAlpha = 1f;
+            }
+            else
+            {
+                TrailAlpha -= 0.01f;
+                if (TrailAlpha <= 0)
+                    TrailAlpha = 0f;
             }
             bool shouldKill = !Parent.active || Parent.type != ModContent.NPCType<CommanderGintzia>();
             if (shouldKill && State != AIState.Despawn)
@@ -172,6 +185,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             OrbitProgress = 0f;
         }
 
+       
         public virtual Color StripColors(float progressOnStrip)
         {
             //  return Color.Lerp(Color.LightGoldenrodYellow, Color.White, Utils.GetLerpValue(0f, 0.7f, progressOnStrip, clamped: true)) * (1f - Utils.GetLerpValue(0f, 0.98f, progressOnStrip));

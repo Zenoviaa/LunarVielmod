@@ -82,6 +82,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             }
             else
             {
+                DrawWindTrail = true;
                 if (Timer == 3)
                 {
                     FXUtil.ShakeCamera(NPC.position, 1024, 8);
@@ -126,6 +127,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
                 if (Timer > 90)
                 {
+                    DrawWindTrail = false;
                     NPC.velocity *= 0.92f;
                 }
             }

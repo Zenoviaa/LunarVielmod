@@ -61,6 +61,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
             if (Timer < 90)
             {
+                DrawWindTrail = true;
                 TargetOutlineColor = Color.Yellow;
                 ChargeProgress = Timer / 60f;
                 float offset = 512;
@@ -90,6 +91,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
             if (Timer == 180)
             {
+       
                 if (StellaMultiplayer.IsHost)
                 {
                     Vector2 velocity = Vector2.UnitX * -DirectionToShootFrom * 1500;
@@ -100,6 +102,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
             if(Timer >= 180)
             {
+                DrawWindTrail = false;
                 TargetOutlineColor = Color.Red;
             }
 
