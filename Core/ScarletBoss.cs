@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.HealthbarSystem;
+using Stellamod.Core.TitleSystem;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -35,6 +37,17 @@ namespace Stellamod.Core
         public virtual bool CanFight()
         {
             return true;
+        }
+
+        public void ShowNamePlate()
+        {
+            //UI can't run on the server
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
+            TitleCardUISystem uiSystem = ModContent.GetInstance<TitleCardUISystem>();
+            uiSystem.OpenUI(DisplayName.Value, 7);
+            uiSystem.titleUIState.titleCardUI.LineTexture = ModContent.Request<Texture2D>(TitleCardUISystem.RootTexturePath + "UnderlineBiome");
         }
     }
 }

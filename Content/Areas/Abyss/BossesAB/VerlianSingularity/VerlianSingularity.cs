@@ -4,10 +4,8 @@ using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
-using Stellamod.Core.TitleSystem;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -33,13 +31,13 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         private int SpiralStarDamage => 16;
         private ref float Timer => ref NPC.ai[0];
         private ref float AttackCounter => ref NPC.ai[1];
-        private ref float SpazTimer => ref NPC.ai[2];
-        private ref float AttackCycle => ref NPC.ai[3];
         private AIState State
         {
             get => (AIState)NPC.ai[2];
             set => NPC.ai[2] = (float)value;
         }
+        private ref float AttackCycle => ref NPC.ai[3];
+
 
 
         public override void SetStaticDefaults()
@@ -89,11 +87,11 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             NPC.rotation = MathHelper.Lerp(startRadians, endRadians, interpolant);
             NPC.velocity = Vector2.UnitY.RotatedBy(_spinTimer * 0.02f) * 0.5f;
             NPC.velocity.X = 0;
-            
-            
-            if(_spazzingTimer > 0)
+
+
+            if (_spazzingTimer > 0)
             {
-                if(_spazzingTimer % 10 == 0)
+                if (_spazzingTimer % 10 == 0)
                 {
                     Vector2 pVelocity = Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4 / 3f);
                     pVelocity *= Main.rand.NextFloat(0.5f, 1f);
@@ -102,7 +100,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                     spark.outerColor = Color.Cyan;
                     spark.fadeToColor = Color.Blue;
                     spark.Scale *= 0.5f;
-                 
+
                 }
                 _shakeOffset = Main.rand.NextVector2Circular(4, 4);
                 _spazzingTimer--;
@@ -142,7 +140,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                     break;
             }
             AttackCycle++;
-            if(AttackCycle >= 2)
+            if (AttackCycle >= 2)
             {
                 AttackCycle = 0;
             }
@@ -221,7 +219,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         private void AI_SpiralStarPull()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle crackSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPOut");
                 crackSound.PitchVariance = 0.1f;
@@ -229,7 +227,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 SpazOut();
             }
 
-            if(Timer % 10 == 0)
+            if (Timer % 10 == 0)
             {
                 MiniSpazOut();
 
@@ -249,7 +247,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 AttackCounter++;
             }
 
-            if(AttackCounter >= 32)
+            if (AttackCounter >= 32)
             {
                 SwitchState(AIState.Idle);
             }
@@ -258,13 +256,13 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         private void AI_OrbitingStarPull()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SpazOut();
             }
 
             //Asgore attack basically
-            if(Timer >= 60)
+            if (Timer >= 60)
             {
                 var part = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.Zero, Color.White);
                 part.Scale *= 4;
@@ -277,7 +275,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                     float num = 16;
                     float direction = AttackCounter % 2 == 0 ? 1 : -1;
                     float randOffset = Main.rand.NextFloat(-0.5f, 0.5f);
-                    for(float f = 0; f < num; f++)
+                    for (float f = 0; f < num; f++)
                     {
                         float interpolant = f / num;
                         float rot = MathHelper.TwoPi * interpolant;
@@ -287,17 +285,17 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                         offset *= 1200;
                         Vector2 spawnPos = NPC.Center + offset;
                         Vector2 spawnVelocity = Vector2.Zero;
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPos, spawnVelocity, orbitingStarType, ShootingStarDamage, 1, Main.myPlayer, 
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPos, spawnVelocity, orbitingStarType, ShootingStarDamage, 1, Main.myPlayer,
                             ai0: NPC.whoAmI,
                             ai2: direction);
                     }
-                
+
                 }
                 Timer = 0;
                 AttackCounter++;
             }
 
-            if(AttackCounter >= 6)
+            if (AttackCounter >= 6)
             {
                 SwitchState(AIState.Idle);
             }
@@ -354,7 +352,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 FXUtil.GlowStretch(spawnPos, velocity);
             }
 
-            for(float f = 0; f < 16; f++)
+            for (float f = 0; f < 16; f++)
             {
                 Vector2 pVelocity = Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi);
                 pVelocity *= Main.rand.NextFloat(0.5f, 8f);
@@ -383,12 +381,10 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             {
                 Timer = 0;
                 AttackCounter++;
-         
+
                 if (AttackCounter >= 3)
                 {
-                    TitleCardUISystem uiSystem = ModContent.GetInstance<TitleCardUISystem>();
-                    uiSystem.OpenUI(DisplayName.Value, 7);
-                    uiSystem.titleUIState.titleCardUI.LineTexture = ModContent.Request<Texture2D>(TitleCardUISystem.RootTexturePath + "UnderlineBiome");
+                    ShowNamePlate();
                     SpawnPulse();
                     SoundStyle crackSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPIn");
                     SoundEngine.PlaySound(crackSound, NPC.position);
@@ -399,7 +395,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         private void AI_Idle()
         {
             Timer++;
-            if(Timer >= 240)
+            if (Timer >= 240)
             {
                 ChooseAttack();
             }
