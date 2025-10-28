@@ -83,10 +83,26 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             NPC.velocity = Vector2.UnitY.RotatedBy(_spinTimer * 0.02f) * 0.5f;
             switch (State)
             {
+                case AIState.Spawn:
+                    AI_Spawn();
+                    break;
                 case AIState.Idle:
                     AI_Idle();
                     break;
             }
+        }
+        private void SwitchState(AIState state)
+        {
+            if (StellaMultiplayer.IsHost)
+            {
+                Timer = 0;
+                State = state;
+                NPC.netUpdate = true;
+            }
+        }
+        private void AI_Spawn()
+        {
+
         }
         private void AI_Idle()
         {

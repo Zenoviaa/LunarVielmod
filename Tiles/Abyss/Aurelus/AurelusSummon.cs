@@ -1,6 +1,7 @@
 ﻿
 
 using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -86,12 +87,12 @@ namespace Stellamod.Tiles.Abyss.Aurelus
         {
             Player player = Main.LocalPlayer;
             int key = ModContent.ItemType<VoidKey>();
-            if (player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()))
+            if (player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<VerlianSingularity>()))
             {
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     Main.NewText(LangText.Misc("AurelusSummon.1"), Color.Blue);
-                    int npcID = NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<SkullrunnerSpawn>());
+                    int npcID = NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<VerlianSingularity>());
                     Main.npc[npcID].netUpdate2 = true;
                 }
                 else
@@ -99,20 +100,20 @@ namespace Stellamod.Tiles.Abyss.Aurelus
                     if (Main.netMode == NetmodeID.SinglePlayer)
                         return false;
 
-                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<SkullrunnerSpawn>(), i * 16, (j * 16) - 5);
+                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<VerlianSingularity>(), i * 16, (j * 16) - 5);
                 }
 
                 return true;
             }
 
-            if (player.HasItem(key) && NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()))
+            if (player.HasItem(key) && NPC.AnyNPCs(ModContent.NPCType<VerlianSingularity>()))
             {
-                Main.NewText(LangText.Misc("AurelusSummon.2"), Color.LightSkyBlue);
+                Main.NewText(LangText.Misc("AurelusSummon.2"), Color.LightCyan);
             }
 
-            if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()))
+            if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<VerlianSingularity>()))
             {
-                Main.NewText(LangText.Misc("AurelusSummon.3"), Color.LightSkyBlue);
+                Main.NewText(LangText.Misc("AurelusSummon.3"), Color.LightCyan);
             }
 
             return true;
