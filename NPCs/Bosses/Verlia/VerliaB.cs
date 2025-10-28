@@ -2032,7 +2032,6 @@ namespace Stellamod.NPCs.Bosses.Verlia
                  ModContent.ItemType<Curlistine>()));
 
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<PearlescentScrap>(), minimumDropped: 3, maximumDropped: 25));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<VerliaBroochA>()));
             npcLoot.Add(notExpertRule);
         }
 

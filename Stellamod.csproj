@@ -525,7 +525,6 @@
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARSPAWNEFFECT.png" />
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STRIKEBULLET.png" />
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STRIKEBULLET2.png" />
-    <None Remove="NPCs\Bosses\SunStalker\SunStalkerRayLightBig - Copy.png" />
     <None Remove="NPCs\Bosses\SupernovaFragment\SupernovaExplosionSmall.png" />
     <None Remove="NPCs\Bosses\SupernovaFragment\SupernovaFinalExplosion.png" />
     <None Remove="NPCs\Bosses\SupernovaFragment\SupernovaGodExplosion.png" />

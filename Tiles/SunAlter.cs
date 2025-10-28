@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.SunStalker;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -78,32 +77,6 @@ namespace Stellamod.Tiles
         }
         public override bool RightClick(int i, int j)
         {
-            Player player = Main.LocalPlayer;
-            if (!NPC.AnyNPCs(ModContent.NPCType<SunStalkerPreSpawn>()) &&
-                !NPC.AnyNPCs(ModContent.NPCType<SunStalker>()))
-            {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    Main.NewText(LangText.Misc("SunAlter.2"), Color.Gold);
-                    int npcID = NPC.NewNPC(new Terraria.DataStructures.EntitySource_TileUpdate(i, j), i * 16 + Main.rand.Next(-10, 10), j * 16, ModContent.NPCType<SunStalkerPreSpawn>(), 0, 0, 0, 0, 0, Main.myPlayer);
-                    Main.npc[npcID].netUpdate2 = true;
-                }
-                else
-                {
-                    if (Main.netMode == NetmodeID.SinglePlayer)
-                        return false;
-
-                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
-                        ModContent.NPCType<SunStalkerPreSpawn>(), i * 16, (j * 16) - 5);
-                }
-
-                return true;
-            }
-            else
-            {
-                Main.NewText("...", Color.Gold);
-            }
-
             return true;
         }
     }
