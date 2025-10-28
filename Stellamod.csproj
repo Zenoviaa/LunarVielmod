@@ -100,6 +100,8 @@
     <None Remove="Buffs\VialedUp.png" />
     <None Remove="Buffs\VixylDodgeBuff.png" />
     <None Remove="Buffs\Whipfx\SineSireDebuff.png" />
+    <None Remove="Content\Areas\Abyss\BossesAB\VerlianSingularity\VerlianSingularity_BossBar.png" />
+    <None Remove="Content\Areas\Abyss\BossesAB\VerlianSingularity\VerlianSingularity_BossIcon.png" />
     <None Remove="Content\Areas\Cinderspark\BossesCS\Skullrunner\Jiitas_BossBar.png" />
     <None Remove="Content\Areas\Cinderspark\BossesCS\Skullrunner\Jiitas_BossIcon.png" />
     <None Remove="Content\Areas\Cinderspark\BossesCS\Skullrunner\Projectiles\BurningBlackSkull.png" />
@@ -260,6 +262,7 @@
     <None Remove="Effects\CrystalShaders\Radiant.fx" />
     <None Remove="Effects\CrystalShaders\SimpleGradientTrail.fx" />
     <None Remove="Effects\CrystalShaders\SimpleTrail.fx" />
+    <None Remove="Effects\CrystalShaders\Singularity.fx" />
     <None Remove="Effects\CrystalShaders\Skullfire.fx" />
     <None Remove="Effects\CrystalShaders\Spark.fx" />
     <None Remove="Effects\CrystalShaders\Sparky.fx" />

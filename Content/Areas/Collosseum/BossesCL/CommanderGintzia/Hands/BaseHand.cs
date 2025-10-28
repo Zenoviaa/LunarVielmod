@@ -256,7 +256,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
             if (State == AIState.Orbit)
             {
-                drawColor = Color.Lerp(drawColor, Color.Black, 0.8f);
+                drawColor = Color.Lerp(drawColor, Color.Black, 0.4f);
             }
 
             spriteBatch.Draw(texture, drawPos, null, drawColor * dp, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);

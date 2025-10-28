@@ -69,7 +69,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
                 AimFromPos = new Vector2(Target.Center.X + DirectionToShootFrom * offset, targetCenter.Y);
 
                 //Home to this point
-                float maxSpeed = 24f;
+                float maxSpeed = 32;
                 Vector2 targetVelocity = (AimFromPos - NPC.Center).SafeNormalize(Vector2.Zero);
                 float distance = Vector2.Distance(NPC.Center, AimFromPos);
                 if (distance < maxSpeed)
@@ -80,7 +80,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
                 {
                     targetVelocity *= maxSpeed;
                 }
-                NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.03f);
+                NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.1f);
                 NPC.velocity.Y += MathF.Sin(Timer * 0.1f) * 0.02f;
 
 

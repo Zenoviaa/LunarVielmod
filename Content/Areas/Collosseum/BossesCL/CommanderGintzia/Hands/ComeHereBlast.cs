@@ -91,7 +91,8 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
             Vector2 bottomLeft = Projectile.Center + new Vector2(0, Projectile.width);
 
-            Rectangle blowRect = new Rectangle((int)bottomLeft.X, (int)bottomLeft.Y, (int)Projectile.velocity.X, (int)Projectile.width);
+            Rectangle blowRect = new Rectangle((int)bottomLeft.X, (int)bottomLeft.Y, 
+                (int)Projectile.velocity.X, (int)Projectile.width);
 
             foreach (var player in Main.ActivePlayers)
             {
@@ -100,7 +101,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
                     Vector2 blowVelocity = Projectile.velocity.SafeNormalize(Vector2.Zero);
                     blowVelocity.Y = 0;
-                    blowVelocity *= 3f;
+                    blowVelocity *= 7;
                              
                     BlowAwayPlayer blowAwayPlayer = player.GetModPlayer<BlowAwayPlayer>();
                     blowAwayPlayer.blowVelocity = blowVelocity;

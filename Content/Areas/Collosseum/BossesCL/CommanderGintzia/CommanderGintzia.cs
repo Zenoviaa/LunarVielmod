@@ -26,6 +26,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         private int _openHandIndex;
         private int _scissorHandIndex;
         private int _evilCarpetIndex;
+        private float _hoverTimer;
         private enum AIState
         {
             Spawn,
@@ -193,6 +194,9 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
                 Main.windSpeedTarget = -200f * 0.01f;
             }
             NPC.spriteDirection = NPC.direction;
+            if (FollowCenter == Vector2.Zero)
+                FollowCenter = NPC.Center;
+            FollowTarget();
             switch (State)
             {
                 case AIState.Spawn:
@@ -402,6 +406,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             //Home to this point
             AccelTimer++;
             float speedInterpolant = AccelTimer / 60f;
+
             float easedSpeed = EasingFunction.InOutSine(speedInterpolant);
             float maxSpeed = MathHelper.Lerp(0f, 3f, speedInterpolant);
             Vector2 targetVelocity = velToPlayer;
@@ -409,10 +414,24 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             if (distance < 120)
             {
                 targetVelocity *= distance;
-                NPC.velocity *= 0.92f;
+                NPC.velocity *= 0.98f;
+
+                float targetX = (MathF.Sin(AccelTimer * 0.1f) * 0.5f / 0.5f);
+                float targetY = (MathF.Sin(AccelTimer * 0.2f) * 0.5f / 0.5f);
+
+                _hoverTimer++;
+                float hovertime = 90;
+                if (_hoverTimer >= hovertime)
+                    _hoverTimer = hovertime;
+                float interp = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(_hoverTimer / hovertime));
+                NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetX, interp);
+                NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.X, targetY, interp);
             }
             else
             {
+                _hoverTimer --;
+                if (_hoverTimer <= 0)
+                    _hoverTimer = 0;
                 targetVelocity *= maxSpeed;
                 NPC.velocity = targetVelocity;
                 NPC.velocity.Y += MathF.Sin(Timer * 0.1f) * 1;
@@ -431,7 +450,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
                 AccelTimer = 0;
                 FollowCenter = Target.Center;
             }
-            FollowTarget();
+     
             if (Timer >= 200)
             {
                 if (InPhase2 && !Phase2Transition)
@@ -518,7 +537,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
             }
 
-            FollowTarget();
             if (Timer >= 360)
             {
                 SwitchState(AIState.Idle);
@@ -583,7 +601,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
             }
 
-            FollowTarget();
             if (Timer >= 360)
             {
                 SwitchState(AIState.Idle);

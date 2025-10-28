@@ -1258,3 +1258,5 @@ DummyNPC: {
 		Princess_LovesNPC: I like {NPCName}.
 	}
 }
+
+VerlianSingularity.DisplayName: Verlian Singularity

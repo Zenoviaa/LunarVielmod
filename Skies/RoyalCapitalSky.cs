@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.Graphics.Effects;
@@ -12,7 +13,7 @@ namespace Stellamod.Skies
     {
         private Vector2 _parallax;
         private Vector2 _lastCameraPos;
-        public bool IsActive => Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAlcadzia;
+        public bool IsActive => Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAlcadzia || NPC.AnyNPCs(ModContent.NPCType<VerlianSingularity>());
         public float Opacity;
         public override void OnModLoad()
         {
