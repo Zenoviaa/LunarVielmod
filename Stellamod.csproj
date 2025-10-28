@@ -106,6 +106,8 @@
     <None Remove="Content\Areas\Cinderspark\BossesCS\Skullrunner\SkullrunnerSpawn.png" />
     <None Remove="Content\Areas\Cinderspark\BossesCS\Skullrunner\SkullrunnerSpawn_Aura.png" />
     <None Remove="Content\Areas\Collosseum\BossesCL\CommanderGintzia\CommanderGintzia_BossBar.png" />
+    <None Remove="Content\Areas\Collosseum\BossesCL\Gustbeak\Gustbeak_BossBar.png" />
+    <None Remove="Content\Areas\Collosseum\BossesCL\Gustbeak\Gustbeak_BossIcon.png" />
     <None Remove="Content\Areas\Fable\BossesFB\DaedusTheDevoted\DaedusTheDevoted.png" />
     <None Remove="Content\Areas\Fable\BossesFB\DaedusTheDevoted\DaedusTheDevoted_BossBar.png" />
     <None Remove="Content\Areas\Fable\BossesFB\DaedusTheDevoted\DaedusTheDevoted_BossIcon.png" />
@@ -481,8 +483,8 @@
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekSnake_White.png" />
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekTail_Glow.png" />
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekTail_White.png" />
-    <None Remove="NPCs\Bosses\Gustbeak\Gustbeak_HeadGore.png" />
-    <None Remove="NPCs\Bosses\Gustbeak\Projectiles\WingAirblast.png" />
+    <None Remove="Content\Areas\Collosseum\BossesCL\Gustbeak\Gustbeak_HeadGore.png" />
+    <None Remove="Content\Areas\Collosseum\BossesCL\Gustbeak\Projectiles\WingAirblast.png" />
     <None Remove="NPCs\Bosses\IrradiaNHavoc\Irradia\StartIrradia.png" />
     <None Remove="NPCs\Bosses\IrradiaNHavoc\Projectiles\IrradiaAxeFlameArrow.png" />
     <None Remove="NPCs\Bosses\IrradiaNHavoc\Projectiles\IrradiaCombustionBoom.png" />

@@ -4,7 +4,6 @@ using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable;
-using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
 using Stellamod.NPCs.Colosseum.Common;
 using System;
 using System.IO;

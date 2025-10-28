@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
@@ -10,7 +11,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
 {
-    public class WindStormDebris : ModProjectile
+    public class WindStormDebris : ModProjectile,
+        IDrawOutlines
     {
         private ref float Timer => ref Projectile.ai[0];
         private ref float FallDownTime => ref Projectile.ai[1];
@@ -59,54 +61,30 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
                 Vector2 velOffset = rot.ToRotationVector2() * 4;
                 Dust.NewDustPerfect(Projectile.Center, DustID.GemDiamond, velOffset, Scale: 1f);
             }
+            for (float f = 0; f < 4; f++)
+            {
+                Vector2 velocity = Main.rand.NextVector2Circular(64, 64);
+                FXUtil.GlowStretch(Projectile.Center, velocity);
+            }
         }
 
-        public PrimDrawer Trail { get; set; }
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 0.62f;
-            return MathHelper.SmoothStep(364, baseWidth, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.Transparent, Color.White, Easing.SpikeOutCirc(completionRatio));
-        }
 
         protected virtual void DrawWindTrail(ref Color lightColor)
         {
-            Trail ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.SimpleTrail);
-            Trail.DrawPrims(Projectile.oldPos, -Main.screenPosition + Projectile.Size / 2, totalTrailPoints: 155);
+
         }
 
 
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            this.OutlineNoRestart(Color.Red, ref lightColor, Vector2.One);
+        }
         public override bool PreDraw(ref Color lightColor)
         {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.RestartDefaults();
-            DrawWindTrail(ref lightColor);
-
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            Vector2 drawOrigin = texture.Size() / 2;
-
-            float drawScale = 1f;
-            float drawRotation = Projectile.rotation;
-            Color colorToDrawIn = Color.White.MultiplyRGB(lightColor);
-            SpriteEffects spriteEffects = SpriteEffects.None;
-
-            spriteBatch.Restart(blendState: BlendState.Additive);
-
-
-            for (float f = 0f; f < 1f; f += 0.1f)
-            {
-                Vector2 o = (f * MathHelper.TwoPi).ToRotationVector2() * VectorHelper.Osc(2f, 3f, speed: 3f);
-                spriteBatch.Draw(texture, drawPos + o, null, colorToDrawIn, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
-            }
-            spriteBatch.RestartDefaults();
-            spriteBatch.Draw(texture, drawPos, null, colorToDrawIn, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
+           
+            this.DrawCentered(ref lightColor);
             return false;
         }
+
     }
 }

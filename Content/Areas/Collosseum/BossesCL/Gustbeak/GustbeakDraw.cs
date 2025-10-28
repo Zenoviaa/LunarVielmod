@@ -7,7 +7,7 @@ using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.Gustbeak
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
 {
     public partial class Gustbeak
     {
@@ -25,6 +25,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             public SpriteEffects spriteEffects;
             public BaseGustbeakSegment[] children;
             public bool drawArmored;
+            public Color outlineColor;
             public virtual void AI()
             {
                 if (children != null)
@@ -41,7 +42,21 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                     }
                 }
             }
+            public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+            {
+                Vector2 left = screenPos + new Vector2(-2, 0);
+                Vector2 right = screenPos + new Vector2(2, 0);
+                Vector2 up = screenPos + new Vector2(0, -2);
+                Vector2 down = screenPos + new Vector2(0, 2);
 
+                bool oldDrawArmored = drawArmored;
+                drawArmored = false;
+                Draw(spriteBatch, left, outlineColor);
+                Draw(spriteBatch, right, outlineColor);
+                Draw(spriteBatch, up, outlineColor);
+                Draw(spriteBatch, down, outlineColor);
+                drawArmored = oldDrawArmored;
+            }
             public virtual void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
             {
 
@@ -49,13 +64,13 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
             protected virtual Texture2D GetTexture(string name)
             {
-                string path = $"Stellamod/NPCs/Bosses/Gustbeak/Gustbeak_{name}";
+                string path = this.GetType().DirectoryHere() + $"/Gustbeak_{name}";
                 Texture2D texture = ModContent.Request<Texture2D>(path).Value;
                 return texture;
             }
             protected virtual Texture2D GetArmoredTexture(string name)
             {
-                string path = $"Stellamod/NPCs/Bosses/Gustbeak/Gustbeak_{name}_Armored";
+                string path = this.GetType().DirectoryHere() + $"/Gustbeak_{name}_Armored";
                 if (ModContent.RequestIfExists<Texture2D>(path, out var asset))
                 {
                     return asset.Value;
@@ -210,6 +225,8 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                         break;
                 }
             }
+
+
 
             public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
             {

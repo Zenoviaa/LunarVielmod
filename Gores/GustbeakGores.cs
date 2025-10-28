@@ -1,11 +1,13 @@
-﻿using Terraria.ModLoader;
+﻿using Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak;
+using Stellamod.Helpers;
+using Terraria.ModLoader;
 
 namespace Stellamod.Gores
 {
 
     public abstract class GustbeakGore : ModGore
     {
-        protected string BaseGorePath => "Stellamod/NPCs/Bosses/Gustbeak/Gustbeak";
+        protected string BaseGorePath => typeof(Gustbeak).DirectoryHere() +"/Gustbeak";
     }
     public class GustbeakBackLegBackGore : GustbeakGore
     {

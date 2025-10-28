@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak;
 using Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.DrawEffects;
 using Stellamod.Core.Lights;
+using Stellamod.Core.Shaders;
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Items.Placeable;
@@ -20,9 +20,10 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.Gustbeak
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
 {
-    public partial class Gustbeak : ScarletBoss
+    public partial class Gustbeak : ScarletBoss,
+        IDrawOutlines
     {
 
         private enum AIState
@@ -225,6 +226,9 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
         private float WindCharge;
         private Vector2 TailPosition;
         private Player Target => Main.player[NPC.target];
+
+        private Color _outlineColor;
+        private Color TargetOutlineColor;
         private Vector2 TargetCenter => Target.Center;
         private Vector2 DashStartCenter;
         private Vector2 DashVelocity;
@@ -318,6 +322,45 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
         {
             return false;
         }
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            WingBack.outlineColor = _outlineColor;
+            WingBack.DrawOutlines(spriteBatch, screenPos, drawColor);
+
+            BackLegBack.outlineColor = _outlineColor;
+            BackLegBack.DrawOutlines(spriteBatch, screenPos, drawColor);
+
+            FrontLegBack.outlineColor = _outlineColor;
+            FrontLegBack.DrawOutlines(spriteBatch, screenPos, drawColor);
+
+            //Back Body Sprites
+
+            Tail.outlineColor = _outlineColor;
+            Tail.DrawOutlines(spriteBatch, screenPos, drawColor);
+
+            BodyBack.outlineColor = _outlineColor;
+            BodyBack.DrawOutlines(spriteBatch, screenPos, drawColor);
+
+            BodyMiddle.outlineColor = _outlineColor;
+            BodyMiddle.DrawOutlines(spriteBatch, screenPos, drawColor);
+
+            BodyFront.outlineColor = _outlineColor;
+            BodyFront.DrawOutlines(spriteBatch, screenPos, drawColor);
+
+            //Other Sprites
+            BackLegFront.outlineColor = _outlineColor;
+            BackLegFront.DrawOutlines(spriteBatch, screenPos, drawColor);
+
+            FrontLegFront.outlineColor = _outlineColor;
+            FrontLegFront.DrawOutlines(spriteBatch, screenPos, drawColor);
+
+            Head.outlineColor = _outlineColor;
+            Head.DrawOutlines(spriteBatch, screenPos, drawColor);
+
+            WingFront.outlineColor = _outlineColor;
+            WingFront.DrawOutlines(spriteBatch, screenPos, drawColor);
+        }
+
 
         private void DrawGustbeak(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -351,26 +394,6 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            spriteBatch.Restart(blendState: BlendState.Additive);
-            //Draw Outline stuff
-            for (int i = 0; i < Segments.Length; i++)
-            {
-                var segment = Segments[i];
-                segment.drawArmored = false;
-            }
-
-
-
-
-            for (float f = 0.0f; f < 1.0f; f += 1f)
-            {
-                float rot = f * MathHelper.TwoPi;
-                rot += Main.GlobalTimeWrappedHourly * 0.5f;
-                Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(3f, 5f);
-                DrawGustbeak(spriteBatch, screenPos + offset, drawColor);
-            }
-
-            spriteBatch.RestartDefaults();
 
 
             //Draw back to front i think
@@ -381,6 +404,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                 segment.drawArmored = true;
             }
             DrawGustbeak(spriteBatch, screenPos, drawColor);
+
 
             spriteBatch.RestartDefaults();
             Wind.Draw(spriteBatch, drawColor);
@@ -393,6 +417,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
         public override void AI()
         {
             base.AI();
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             float rotToTarget = (TargetCenter - NPC.Center).ToRotation();
             Head.position = NPC.Center;
             if (State == AIState.Spawn)
@@ -604,6 +629,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_Idle()
         {
+            TargetOutlineColor = Color.Transparent;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.TargetClosest();
@@ -639,7 +665,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
                 SoundEngine.PlaySound(wingFlap, NPC.position);
             }
 
-            if (Timer >= 15 && StellaMultiplayer.IsHost)
+            if (Timer >= 200 && StellaMultiplayer.IsHost)
             {
                 if (!Phase2Transition && InPhase2)
                 {
@@ -712,6 +738,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_WindBlastStart()
         {
+            TargetOutlineColor = Color.Yellow;
             //Well first we need to get the rigging and animation setup
             //Let's make a list of tasks
 
@@ -759,6 +786,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_WindBlast()
         {
+            TargetOutlineColor = Color.Red;
             Timer++;
             if (Timer == 1)
             {
@@ -822,6 +850,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_WindBlastEnd()
         {
+            TargetOutlineColor = Color.Transparent;
             Timer++;
             Head.Animation = GustbeakHead.AnimationState.Close_Mouth;
             if (Timer >= 15)
@@ -832,6 +861,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_AverageMagicBallStart()
         {
+            TargetOutlineColor = Color.Yellow;
             Timer++;
             Head.Animation = GustbeakHead.AnimationState.Open_Mouth;
 
@@ -853,6 +883,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_AverageMagicBall()
         {
+            TargetOutlineColor = Color.Red;
             Timer++;
             WindCharge++;
             if (Timer == 1)
@@ -862,7 +893,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
             //Yeah Yeah Yeah
             float dir = Target.Center.X < NPC.Center.X ? -1 : 1;
-            Vector2 pointAbovePlayer = Target.Center + new Vector2(-252 * dir, -128);
+            Vector2 pointAbovePlayer = Target.Center + new Vector2(-252 * dir, -64);
             Vector2 velToPlayer = pointAbovePlayer - NPC.Center;
             velToPlayer = velToPlayer.SafeNormalize(Vector2.Zero);
 
@@ -922,6 +953,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_AverageMagicBallEnd()
         {
+            TargetOutlineColor = Color.Transparent;
             Timer++;
 
             //Kinda just want him to fly opposite way he's facing for a bit
@@ -940,6 +972,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_WingAirblastStart()
         {
+            TargetOutlineColor = Color.Yellow;
             Timer++;
             Head.Animation = GustbeakHead.AnimationState.Open_Mouth;
 
@@ -958,6 +991,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_WingAirblast()
         {
+            TargetOutlineColor = Color.Red;
             Timer++;
             if (Timer == 1)
             {
@@ -1033,6 +1067,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_WingAirblastEnd()
         {
+            TargetOutlineColor = Color.Transparent;
             Timer++;
             NPC.velocity *= 0.99f;
             Head.Animation = GustbeakHead.AnimationState.Close_Mouth;
@@ -1045,6 +1080,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_WingTornadoStart()
         {
+            TargetOutlineColor = Color.Yellow;
             Timer++;
             Head.Animation = GustbeakHead.AnimationState.Open_Mouth;
             Vector2 pointAbovePlayer = Target.Center + new Vector2(-512 * DirToPlayer, -128);
@@ -1063,6 +1099,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_WingTornado()
         {
+            TargetOutlineColor = Color.Red;
             Timer++;
             if (Timer == 1)
             {
@@ -1121,6 +1158,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_WingTornadoEnd()
         {
+            TargetOutlineColor = Color.Transparent;
             Timer++;
             float progress = MathHelper.Clamp(Timer / 60f, 0f, 1f);
             WingBack.WingAnimationSpeedMult = MathHelper.Lerp(2f, 1f, progress);
@@ -1136,6 +1174,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_Phase2Transition()
         {
+            TargetOutlineColor = Color.Transparent;
             Timer++;
 
             //He also slows down
@@ -1172,6 +1211,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_WindDashStart()
         {
+            TargetOutlineColor = Color.Yellow;
             //Align directly right or left of player
             Timer++;
             if (Timer == 1)
@@ -1213,6 +1253,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_WindDash()
         {
+            TargetOutlineColor = Color.Red;
             Timer++;
             WingFront.Animation = BaseGustbeakWingSegment.AnimationState.Hold_Up;
             WingBack.Animation = BaseGustbeakWingSegment.AnimationState.Hold_Up;
@@ -1288,6 +1329,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_WindDashEnd()
         {
+            TargetOutlineColor = Color.Transparent;
             Timer++;
             WingFront.Animation = BaseGustbeakWingSegment.AnimationState.Flap;
             WingBack.Animation = BaseGustbeakWingSegment.AnimationState.Flap;
@@ -1301,6 +1343,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_WindCrashStart()
         {
+            TargetOutlineColor = Color.Yellow;
             Timer++;
             if (Timer == 1)
             {
@@ -1341,6 +1384,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_WindCrash()
         {
+            TargetOutlineColor = Color.Red;
             Timer++;
             WingFront.Animation = BaseGustbeakWingSegment.AnimationState.Hold_Up;
             WingBack.Animation = BaseGustbeakWingSegment.AnimationState.Hold_Up;
@@ -1408,6 +1452,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_WindCrashEnd()
         {
+            TargetOutlineColor = Color.Transparent;
             Timer++;
             WingFront.Animation = BaseGustbeakWingSegment.AnimationState.Flap;
             WingBack.Animation = BaseGustbeakWingSegment.AnimationState.Flap;
@@ -1421,6 +1466,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
 
         private void AI_Death()
         {
+            TargetOutlineColor = Color.Transparent;
             Timer++;
             NPC.velocity *= 0.99f;
             WingFront.Animation = BaseGustbeakWingSegment.AnimationState.Hold_Out;
@@ -1543,5 +1589,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak
             colosseumSystem.Progress();
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedSunsBoss, -1);
         }
+
+
     }
 }
