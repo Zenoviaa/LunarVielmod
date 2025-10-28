@@ -34,6 +34,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         private float _spawnScale;
         private float _spazzingTimer;
         private bool _focusOn;
+        private bool _spawnedCrescentMoon;
         private Vector2 _shakeOffset;
         private enum AIState
         {
@@ -128,6 +129,16 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                     AI_Spawn();
                     break;
                 case AIState.Idle:
+                    if (!_spawnedCrescentMoon)
+                    {
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+                                ModContent.NPCType<VerlianSingularity>(), ai0: NPC.whoAmI);
+                        }
+
+                        _spawnedCrescentMoon = true;    
+                    }
                     _spawnScale = MathHelper.Lerp(_spawnScale, 1, 0.1f);
                     SuckingParticles();
                     AI_Idle();
@@ -429,7 +440,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         private void AI_Idle()
         {
             Timer++;
-            if (Timer >= 240)
+            if (Timer >= 300)
             {
                 ChooseAttack();
             }

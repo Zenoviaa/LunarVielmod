@@ -12,6 +12,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
         }
 
         protected ref float Timer => ref Projectile.ai[1];
+      
         public override void SetDefaults()
         {
             base.SetDefaults();
