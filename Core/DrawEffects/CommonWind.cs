@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Core.Shaders;
+using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
@@ -89,7 +91,6 @@ namespace Stellamod.Core.DrawEffects
         public Func<float, Color> ColorFunc { get; set; }
         public Func<float, float> WidthFunc { get; set; }
         public Func<float, float> EasingFunc { get; set; }
-        public PrimDrawer TrailDrawer { get; set; }
         public float ExpandMultiplier { get; set; }
         public float WidthMultiplier { get; set; }
         public Asset<Texture2D> TrailTexture { get; set; }
@@ -101,8 +102,7 @@ namespace Stellamod.Core.DrawEffects
 
         private float DefaultWidthFunction(float progress)
         {
-            float easedProgress = Easing.SpikeOutCirc(progress);
-            return MathHelper.Lerp(48, 212, easedProgress) * WidthMultiplier;
+            return EasingFunction.QuadraticBump(progress) * 16;
         }
 
         private float DefaultEasingFunction(float progress)
@@ -111,7 +111,7 @@ namespace Stellamod.Core.DrawEffects
         }
         private Color TrueColorFunction(float progress)
         {
-            return ColorFunc(progress);
+            return ColorFunc(progress) * 0.4f;
         }
 
         private float TrueWidthFunction(float progress)
@@ -161,15 +161,24 @@ namespace Stellamod.Core.DrawEffects
 
         public void Draw(SpriteBatch spriteBatch, Color drawColor)
         {
-            TrailDrawer ??= new PrimDrawer(TrueWidthFunction, TrueColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
+            var shader = MagicRadianceShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
+            shader.NoiseTexture = TrailRegistry.CloudsSmall;
+            shader.OutlineTexture = TrailRegistry.DottedTrailOutline;
+            shader.PrimaryColor = Color.Lerp(Color.White, Color.LightGray, 0.5f);
+            shader.NoiseColor = Color.LightGray;
+            shader.OutlineColor = Color.Transparent;
+            shader.BlendState = BlendState.Additive;
+            shader.SamplerState = SamplerState.PointWrap;
+            shader.Speed = 5.2f;
+            shader.Distortion = 0.15f;
+            shader.Power = 0.25f;
 
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailTexture);
-            Vector2 trailOffset = -Main.screenPosition;
-            spriteBatch.RestartDefaults();
+            //This just applis the shader changes
             for (int i = 0; i < _windSlashes.Count; i++)
             {
                 CoreWindSlash slash = _windSlashes[i];
-                TrailDrawer.DrawPrims(slash.oldPos, trailOffset, totalTrailPoints: 155);
+                TrailDrawer.Draw(Main.spriteBatch, slash.oldPos, TrueColorFunction, TrueWidthFunction, shader);
             }
         }
     }

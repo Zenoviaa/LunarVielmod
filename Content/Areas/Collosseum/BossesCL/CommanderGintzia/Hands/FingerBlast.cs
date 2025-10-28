@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 {
@@ -76,7 +78,14 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            var source = Projectile.GetSource_FromThis();
+            FXUtil.GlowCircleBoom(Projectile.Center,
+                innerColor: Color.White,
+                glowColor: Color.Black,
+                outerGlowColor: Color.Black, duration: 25, baseSize: 0.12f);
+            for (int i = 0; i < 2; i++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.White, 0.5f).noGravity = true;
+            }
         }
     }
 }

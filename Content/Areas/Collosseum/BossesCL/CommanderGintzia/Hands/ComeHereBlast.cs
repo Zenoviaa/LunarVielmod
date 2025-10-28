@@ -1,4 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Shaders;
+using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
@@ -86,41 +89,43 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             }
         }
 
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 1f;
-            return MathHelper.SmoothStep(baseWidth, baseWidth, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            Color startColor = Color.White;
-            float a = Easing.SpikeOutCirc(completionRatio);
-            if (Timer < 30)
-            {
-                startColor *= Timer / 30f;
-            }
-
-            if (Timer > 210)
-            {
-                float p = (Timer - 210) / 30f;
-                p = 1f - p;
-                startColor *= p;
-            }
-
-            return Color.Lerp(startColor, Color.Transparent, Easing.InCirc(completionRatio)) * a;
-        }
-
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         public override bool PreDraw(ref Color lightColor)
         {
-            //Draw Trail
-            Main.spriteBatch.RestartDefaults();
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.Dashtrail);
-            Vector2 trailOffset = -Main.screenPosition + Projectile.Size / 2;
-            TrailDrawer.DrawPrims(_oldSwingPos, trailOffset, 155);
+            var shader = MagicRadianceShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
+            shader.NoiseTexture = TrailRegistry.CloudsSmall;
+            shader.OutlineTexture = TrailRegistry.DottedTrailOutline;
+            shader.PrimaryColor = Color.Lerp(Color.White, Color.LightGray, 0.5f);
+            shader.NoiseColor = Color.LightGray;
+            shader.OutlineColor = Color.Transparent;
+            shader.BlendState = BlendState.Additive;
+            shader.SamplerState = SamplerState.PointWrap;
+            shader.Speed = 5.2f;
+            shader.Distortion = 0.15f;
+            shader.Power = 0.25f;
+
+            //This just applis the shader changes
+
+            //Main Fill
+            TrailDrawer.Draw(Main.spriteBatch,_oldSwingPos, Projectile.oldRot, StripColors, StripWidth, shader, offset: Projectile.Size / 2);
             return false;
+        }
+        private Color StripColors(float progressOnStrip)
+        {
+            //  return Color.Lerp(Color.LightGoldenrodYellow, Color.White, Utils.GetLerpValue(0f, 0.7f, progressOnStrip, clamped: true)) * (1f - Utils.GetLerpValue(0f, 0.98f, progressOnStrip));
+            Color result = Color.Lerp(Color.LightGray, Color.White,
+                Utils.GetLerpValue(0f, 0.7f, progressOnStrip, clamped: true)) * (1f - Utils.GetLerpValue(0f, 0.98f, progressOnStrip));
+            //     result.A /= 2;
+
+            float alpha = MathHelper.Clamp(Timer / 60f, 0f,1f);
+            result *= alpha;
+            return result;
+        }
+
+        private float StripWidth(float progressOnStrip)
+        {
+            float baseWidth = Projectile.scale * Projectile.width * 1f * 3;
+            return MathHelper.SmoothStep(baseWidth, baseWidth, progressOnStrip);
         }
     }
 }

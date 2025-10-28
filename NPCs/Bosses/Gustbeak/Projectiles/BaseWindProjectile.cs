@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.DrawEffects;
+using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
@@ -53,11 +55,37 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
 
         protected virtual void DrawWindTrail(ref Color lightColor)
         {
-            Trail ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.Dashtrail);
-            Trail.DrawPrims(Projectile.oldPos, -Main.screenPosition + Projectile.Size / 2, totalTrailPoints: 155);
+            var shader = MagicRadianceShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
+            shader.NoiseTexture = TrailRegistry.CloudsSmall;
+            shader.OutlineTexture = TrailRegistry.DottedTrailOutline;
+            shader.PrimaryColor = Color.Lerp(Color.White, Color.LightGray, 0.5f);
+            shader.NoiseColor = Color.LightGray;
+            shader.OutlineColor = Color.Transparent;
+            shader.BlendState = BlendState.Additive;
+            shader.SamplerState = SamplerState.PointWrap;
+            shader.Speed = 5.2f;
+            shader.Distortion = 0.15f;
+            shader.Power = 0.25f;
+
+            //This just applis the shader changes
+
+            //Main Fill
+            TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, Projectile.oldRot, StripColors, StripWidth, shader, offset: Projectile.Size / 2);
+        }
+        private Color StripColors(float progressOnStrip)
+        {
+            //  return Color.Lerp(Color.LightGoldenrodYellow, Color.White, Utils.GetLerpValue(0f, 0.7f, progressOnStrip, clamped: true)) * (1f - Utils.GetLerpValue(0f, 0.98f, progressOnStrip));
+            Color result = Color.Lerp(Color.LightGray, Color.White,
+                Utils.GetLerpValue(0f, 0.7f, progressOnStrip, clamped: true)) * (1f - Utils.GetLerpValue(0f, 0.98f, progressOnStrip));
+            //     result.A /= 2;
+            return result;
         }
 
+        private float StripWidth(float progressOnStrip)
+        {
+            return MathHelper.Lerp(26f, 32f, Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
+        }
         protected virtual void DrawWindSlashes(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -83,7 +111,7 @@ namespace Stellamod.NPCs.Bosses.Gustbeak.Projectiles
             Rectangle frame = Projectile.Frame();
             Vector2 drawOrigin = frame.Size() / 2f;
             Color drawColor = Color.White.MultiplyRGB(lightColor);
-            drawColor *= 0.75f;
+            drawColor *= 0.35f;
             float drawRotation = Projectile.rotation;
             float drawScale = 0.5f * DrawScale;
             spriteBatch.Draw(texture, drawPos, frame, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, layerDepth: 0);

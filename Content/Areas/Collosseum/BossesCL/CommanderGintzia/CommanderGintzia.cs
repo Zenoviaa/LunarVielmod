@@ -4,6 +4,7 @@ using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable;
+using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
 using Stellamod.NPCs.Colosseum.Common;
 using System;
 using System.IO;
@@ -181,11 +182,16 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         {
             base.AI();
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
-
+            _windStorm ??= new WindStorm(3);
+            _windStorm?.Update(NPC.Center);
             NPC.TargetClosest();
             if (!NPC.HasValidTarget && State != AIState.Despawn)
             {
                 SwitchState(AIState.Despawn);
+            }
+            if (InPhase2)
+            {
+                Main.windSpeedTarget = -200f * 0.01f;
             }
             NPC.spriteDirection = NPC.direction;
             switch (State)
@@ -427,7 +433,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
                 FollowCenter = Target.Center;
             }
             FollowTarget();
-            if (Timer >= 60)
+            if (Timer >= 200)
             {
                 if (InPhase2 && !Phase2Transition)
                 {

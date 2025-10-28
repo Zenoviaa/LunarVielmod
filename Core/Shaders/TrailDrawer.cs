@@ -11,23 +11,6 @@ namespace Stellamod.Core.Shaders
 {
     public class TrailDrawer
     {
-        public static Matrix WorldViewPoint
-        {
-            get
-            {
-                GraphicsDevice graphics = Main.graphics.GraphicsDevice;
-                Vector2 screenZoom = Main.GameViewMatrix.Zoom;
-                int width = graphics.Viewport.Width;
-                int height = graphics.Viewport.Height;
-
-                var zoom = Matrix.CreateLookAt(Vector3.Zero, Vector3.UnitZ, Vector3.Up) *
-                    Matrix.CreateTranslation(width / 2f, height / -2f, 0) *
-                    Matrix.CreateRotationZ(MathHelper.Pi) * Matrix.CreateScale(screenZoom.X, screenZoom.Y, 1f);
-                var projection = Matrix.CreateOrthographic(width, height, 0, 1000);
-                return zoom * projection;
-            }
-        }
-
         public static Matrix WorldViewPoint2
         {
             get
@@ -113,7 +96,6 @@ namespace Stellamod.Core.Shaders
             var vertices = new List<VertexPositionColorTexture>();
             oldPos = MathUtil.RemoveZeros(oldPos, o);
             MathUtil.LerpTrailPoints(oldPos, out Vector2[] trailingPoints);
-            MathUtil.LerpRotationPoints(oldRot, out float[] rotationPoints);
             CalculateVerticesTris(trailingPoints, colorFunc, widthFunc, vertices);
             return vertices;
         }
@@ -164,6 +146,41 @@ namespace Stellamod.Core.Shaders
 
             //
             var vertices = CalculateVertices(oldPos, oldRot, colorFunc, widthFunc, offset);
+            DrawPrimsTriangles(vertices, shader);
+
+            if (shader != null)
+            {
+                shader.FillShape = false;
+
+            }
+
+        }
+        public static void Draw(SpriteBatch spriteBatch,
+     Vector2[] oldPos,
+     Func<float, Color> colorFunc,
+     Func<float, float> widthFunc,
+     BaseShader shader,
+     Vector2? offset = null)
+        {
+            //Apply passes
+            if (shader != null)
+            {
+                shader.Apply();
+                ApplyPasses(shader.Effect);
+                if (shader.FillShape)
+                {
+                    Vector2[] filledPos = new Vector2[oldPos.Length + 1];
+                    for (int i = 0; i < oldPos.Length; i++)
+                    {
+                        filledPos[i] = oldPos[i];
+                    }
+                    filledPos[filledPos.Length - 1] = oldPos[0];
+                    oldPos = filledPos;
+                }
+            }
+
+            //
+            var vertices = CalculateVertices(oldPos, null, colorFunc, widthFunc, offset);
             DrawPrimsTriangles(vertices, shader);
 
             if (shader != null)

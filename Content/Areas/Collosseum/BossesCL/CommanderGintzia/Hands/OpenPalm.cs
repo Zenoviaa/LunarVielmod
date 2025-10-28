@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Gustbeak.Projectiles;
 using Stellamod.Trails;
@@ -81,7 +83,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             {
                 targetVelocity *= maxSpeed;
             }
-            NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.3f);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.1f);
             NPC.velocity.Y += MathF.Sin(Timer * 0.1f) * 0.02f;
             if (Timer > 91)
             {
@@ -125,8 +127,11 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             }
         }
 
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+
+
             Texture2D texture = TextureRegistry.FourPointedStar.Value;
             Color glowColor = Color.White;
             glowColor *= ChargeProgress;

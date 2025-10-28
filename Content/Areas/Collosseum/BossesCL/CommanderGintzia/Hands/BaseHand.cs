@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Shaders;
+using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -51,6 +53,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             }
         }
 
+        public float TrailAlpha;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -154,7 +157,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             Vector2 offset = new Vector2(xOffset, yOffset);
             Vector2 targetCenter = Parent.Center + offset + new Vector2(0, -16);
             Vector2 targetVelocity = (targetCenter - NPC.Center) * 0.25f;
-            OrbitProgress += 0.01f;
+            OrbitProgress += 0.001f;
             if (OrbitProgress >= 1f)
                 OrbitProgress = 1f;
             NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, OrbitProgress);
@@ -167,6 +170,21 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
         {
             Timer++;
             OrbitProgress = 0f;
+        }
+
+        public virtual Color StripColors(float progressOnStrip)
+        {
+            //  return Color.Lerp(Color.LightGoldenrodYellow, Color.White, Utils.GetLerpValue(0f, 0.7f, progressOnStrip, clamped: true)) * (1f - Utils.GetLerpValue(0f, 0.98f, progressOnStrip));
+            Color result = Color.Lerp(Color.LightGray, Color.White,
+                Utils.GetLerpValue(0f, 0.7f, progressOnStrip, clamped: true)) * (1f - Utils.GetLerpValue(0f, 0.98f, progressOnStrip));
+            //     result.A /= 2;
+            result *= TrailAlpha;
+            return result;
+        }
+
+        public virtual float StripWidth(float progressOnStrip)
+        {
+            return MathHelper.Lerp(26f, 32f, Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
         }
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
@@ -194,6 +212,27 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            if(TrailAlpha > 0f)
+            {
+                var shader = MagicRadianceShader.Instance;
+                shader.PrimaryTexture = TrailRegistry.GlowTrail;
+                shader.NoiseTexture = TrailRegistry.CloudsSmall;
+                shader.OutlineTexture = TrailRegistry.DottedTrailOutline;
+                shader.PrimaryColor = Color.Lerp(Color.White, Color.LightGray, 0.5f);
+                shader.NoiseColor = Color.LightGray;
+                shader.OutlineColor = Color.Transparent;
+                shader.BlendState = BlendState.Additive;
+                shader.SamplerState = SamplerState.PointWrap;
+                shader.Speed = 5.2f;
+                shader.Distortion = 0.15f;
+                shader.Power = 0.25f;
+
+                //This just applis the shader changes
+
+                //Main Fill
+                TrailDrawer.Draw(Main.spriteBatch, NPC.oldPos, StripColors, StripWidth, shader, offset: NPC.Size / 2);
+            }
+
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPos = NPC.Center - screenPos;
             Vector2 drawOrigin = texture.Size() / 2f;

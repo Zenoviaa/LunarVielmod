@@ -76,15 +76,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Restart(blendState: BlendState.Additive);
-
-            for (float f = 0f; f < 1f; f += 0.25f)
-            {
-                Vector2 drawPos = Projectile.Center - Main.screenPosition;
-                float rotation = f * MathHelper.TwoPi;
-                Vector2 offset = rotation.ToRotationVector2() * 6;
-                drawPos += offset;
-                DrawWindBall(drawPos, ref lightColor);
-            }
             DrawWindBall(Projectile.Center - Main.screenPosition, ref lightColor);
             spriteBatch.RestartDefaults();
 

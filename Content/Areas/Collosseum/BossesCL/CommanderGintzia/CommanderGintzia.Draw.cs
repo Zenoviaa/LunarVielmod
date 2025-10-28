@@ -9,6 +9,8 @@ using Terraria;
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Core.Shaders;
+using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Trails;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 {
@@ -17,6 +19,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
     {
         private Color _outlineColor;
         private Color TargetOutlineColor;
+        private WindStorm _windStorm;
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             string texturePath = Texture;
@@ -43,9 +46,53 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             spriteBatch.Draw(texture, down, NPC.frame, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
         }
 
+        private void DrawGustStorm(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            var shader = MagicRadianceShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
+            shader.NoiseTexture = TrailRegistry.CloudsSmall;
+            shader.OutlineTexture = TrailRegistry.DottedTrailOutline;
+            shader.PrimaryColor = Color.Lerp(Color.White, Color.LightGray, 0.5f);
+            shader.NoiseColor = Color.LightGray;
+            shader.OutlineColor = Color.Transparent;
+            shader.BlendState = BlendState.Additive;
+            shader.SamplerState = SamplerState.PointWrap;
+            shader.Speed = 5.2f;
+            shader.Distortion = 0.15f;
+            shader.Power = 0.25f;
+
+            //This just applis the shader changes
+
+            //Main Fill
+            List<Vector2> gustpos = new List<Vector2>();
+            Vector2 start = NPC.Center - Vector2.UnitX * 128;
+            Vector2 end = NPC.Center + Vector2.UnitX * 128;
+            float numPoints = 80f;
+            for (float f = 0; f < numPoints; f++)
+            {
+                float lerpValue = f / numPoints;
+                Vector2 gustPoint = Vector2.Lerp(end, start, lerpValue);
+                gustpos.Add(gustPoint);
+            }
+
+            Vector2[] arr = gustpos.ToArray();
+            float[] rot = new float[arr.Length];
+            TrailDrawer.Draw(Main.spriteBatch, arr, rot, StripColors, StripWidth, shader);
+        }
+        private Color StripColors(float progressOnStrip)
+        {
+            //  return Color.Lerp(Color.LightGoldenrodYellow, Color.White, Utils.GetLerpValue(0f, 0.7f, progressOnStrip, clamped: true)) * (1f - Utils.GetLerpValue(0f, 0.98f, progressOnStrip));
+            return Color.Lerp(Color.Transparent, Color.LightGray, EasingFunction.QuadraticBump(progressOnStrip)) * 0.5f;
+        }
+
+        private float StripWidth(float progressOnStrip)
+        {
+            float baseWidth = 80;
+            return MathHelper.SmoothStep(baseWidth, baseWidth, progressOnStrip);
+        }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-
+            DrawGustStorm(spriteBatch, screenPos, drawColor);
             string texturePath = Texture;
             if (State == AIState.Slam || State == AIState.Land)
                 texturePath += "_Slam";
@@ -66,6 +113,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
                 }
                 spriteBatch.RestartDefaults();
             }
+            _windStorm?.Draw();
             return false;
         }
 
