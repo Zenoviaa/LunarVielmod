@@ -27,6 +27,7 @@ namespace Stellamod.Visual.Particles
         public bool distortOut;
         public float downwardPull;
         public bool shrink;
+        public bool noStretch;
         public override void OnSpawn()
         {
             shrink = false;
@@ -48,7 +49,10 @@ namespace Stellamod.Visual.Particles
         public override void Update()
         {
             color *= Main.rand.NextFloat(0.98f, 1f); ;
-
+            if (noStretch)
+            {
+                _stretchScale = Vector2.One;
+            }
             if (shrink)
             {
                 Scale *= 0.9f;
