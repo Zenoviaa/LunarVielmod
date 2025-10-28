@@ -24,7 +24,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             base.SetDefaults();
             Projectile.width = 16;
             Projectile.height = 256;
-            Projectile.hostile = true;
+            Projectile.hostile = false;
             Projectile.timeLeft = 300;
             Projectile.light = 0.2f;
             Projectile.penetrate = -1;

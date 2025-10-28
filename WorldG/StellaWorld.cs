@@ -204,7 +204,7 @@ namespace Stellamod.WorldG
             GenVars.jungleOriginX = (Main.maxTilesX / 4) - 100;
 
             int centerSnowBiome = Main.maxTilesX / 2;
-            GenVars.snowOriginLeft = centerSnowBiome + 1700;
+            GenVars.snowOriginLeft = centerSnowBiome + 1900;
             GenVars.snowOriginRight = GenVars.snowOriginLeft + 630;
         }
 

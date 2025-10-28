@@ -636,7 +636,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
                     int knockback = 1;
                     Vector2 velocity = Vector2.UnitX;
                     velocity *= 4;
-                    Vector2 offset = new Vector2(0, -40);
+                    Vector2 offset = new Vector2(0, -48);
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom + offset, velocity,
                         ModContent.ProjectileType<SuperWindShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
                     velocity = -velocity;

@@ -56,7 +56,8 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             Vector2 targetPos = new Vector2(targetCenter.X + DirectionToShootFrom * offset, targetCenter.Y);
 
             float rotation = (Target.Center - NPC.Center).ToRotation();
-            NPC.rotation = MathHelper.Lerp(NPC.rotation, MathHelper.WrapAngle(rotation), 0.1f);
+            NPC.rotation = MathHelper.Lerp(NPC.rotation, rotation, 0.2f);
+            NPC.rotation = MathHelper.WrapAngle(NPC.rotation);
 
             ChargeTimer++;
             ChargeProgress = ChargeTimer / 60f;

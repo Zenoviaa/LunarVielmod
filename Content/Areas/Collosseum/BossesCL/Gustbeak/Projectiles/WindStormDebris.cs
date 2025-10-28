@@ -15,6 +15,14 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
         private Vector2 _scale;
         private ref float FallDownTime => ref Projectile.ai[1];
 
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            Main.projFrames[Type] = 1;
+            ProjectileID.Sets.TrailCacheLength[Type] = 16;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
+        }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -28,19 +36,26 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
         public override void AI()
         {
             base.AI();
-            _scale = Vector2.Lerp(_scale, Vector2.One, 0.02f);
+            _scale = Vector2.Lerp(_scale, Vector2.One, 0.1f);
+         
+
             if (Timer == 1 && Main.myPlayer == Projectile.owner)
             {
-                FallDownTime = Main.rand.NextFloat(80, 120);
+                FallDownTime = Main.rand.NextFloat(15, 100);
                 Projectile.netUpdate = true;
             }
-            Projectile.velocity.Y += MathF.Sin(Timer * 0.2f) * 0.1f;
+         
             Projectile.rotation += 0.02f;
             Projectile.rotation -= Projectile.velocity.Length() * 0.025f;
             if (Timer > FallDownTime)
             {
                 Projectile.tileCollide = true;
-                Projectile.velocity.Y += 1f;
+                if(Projectile.velocity.Y < 16)
+                    Projectile.velocity.Y += 1f;
+            }
+            else
+            {
+                Projectile.velocity.Y += MathF.Sin(Timer * 0.2f) * 0.1f;
             }
         }
 
@@ -72,6 +87,10 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             DrawWindTrail(ref lightColor);
             this.DrawCentered(ref lightColor, _scale);
             return false;
+        }
+        public override float StripWidth(float progressOnStrip)
+        {
+            return base.StripWidth(progressOnStrip) * 0.66f;
         }
     }
 }

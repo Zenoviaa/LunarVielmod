@@ -656,7 +656,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
             Timer++;
             WingFront.Animation = BaseGustbeakWingSegment.AnimationState.Flap;
             WingBack.Animation = BaseGustbeakWingSegment.AnimationState.Flap;
-            Vector2 targetVelocity = new Vector2(0, MathF.Sin(Timer * 0.1f)) * 0.2f;
+            Vector2 targetVelocity = new Vector2(0, MathF.Sin(Timer * 0.1f)) * 0.5f;
             NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
             if (Timer % 7 == 0)
             {
@@ -1050,7 +1050,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                 {
                     int damage = WingAirBlastDamage;
                     int knockback = 32;
-                    Vector2 firePoint = NPC.Center + Main.rand.NextVector2CircularEdge(128, 128);
+                    Vector2 firePoint = NPC.Center + Main.rand.NextVector2CircularEdge(64, 64);
                     Vector2 fireVelocity = (Target.Center - firePoint).SafeNormalize(Vector2.Zero);
                     fireVelocity *= 8;
 
@@ -1083,12 +1083,13 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
             TargetOutlineColor = Color.Yellow;
             Timer++;
             Head.Animation = GustbeakHead.AnimationState.Open_Mouth;
-            Vector2 pointAbovePlayer = Target.Center + new Vector2(-512 * DirToPlayer, -128);
+            Vector2 targetCenter = ModContent.GetInstance<ColosseumSystem>().GongSpawnWorld;
+            Vector2 pointAbovePlayer = targetCenter + new Vector2(-128 * DirToPlayer, -128);
             Vector2 velToPlayer = pointAbovePlayer - NPC.Center;
             velToPlayer = velToPlayer.SafeNormalize(Vector2.Zero);
 
             //Home to this point
-            float maxSpeed = MathHelper.Lerp(8, 2f, Timer / 60f);
+            float maxSpeed = MathHelper.Lerp(16, 4f, Timer / 60f);
             NPC.velocity = Vector2.Lerp(NPC.velocity, velToPlayer * maxSpeed, 0.01f);
             NPC.velocity.Y += MathF.Sin(Timer * 0.1f) * 0.02f;
             if (Timer > 60)

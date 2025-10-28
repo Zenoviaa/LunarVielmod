@@ -42,16 +42,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             Projectile.rotation += 0.025f;
             DrawHelper.AnimateTopToBottom(Projectile, 2);
         }
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 0.62f;
-            return MathHelper.SmoothStep(32, baseWidth, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.Transparent, Color.White, Easing.SpikeOutCirc(completionRatio));
-        }
 
         protected virtual void DrawWindTrail(ref Color lightColor)
         {
@@ -73,7 +63,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             //Main Fill
             TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, Projectile.oldRot, StripColors, StripWidth, shader, offset: Projectile.Size / 2);
         }
-        private Color StripColors(float progressOnStrip)
+        public virtual Color StripColors(float progressOnStrip)
         {
             //  return Color.Lerp(Color.LightGoldenrodYellow, Color.White, Utils.GetLerpValue(0f, 0.7f, progressOnStrip, clamped: true)) * (1f - Utils.GetLerpValue(0f, 0.98f, progressOnStrip));
             Color result = Color.Lerp(Color.LightGray, Color.White,
@@ -82,7 +72,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             return result;
         }
 
-        private float StripWidth(float progressOnStrip)
+        public virtual float StripWidth(float progressOnStrip)
         {
             return MathHelper.Lerp(26f, 32f, Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
         }

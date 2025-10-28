@@ -54,10 +54,11 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                 bool oldDrawArmored = drawArmored;
                 drawArmored = false;
                 drawOutline = true;
-                Draw(spriteBatch, left, outlineColor);
-                Draw(spriteBatch, right, outlineColor);
-                Draw(spriteBatch, up, outlineColor);
-                Draw(spriteBatch, down, outlineColor);
+                Color oC = outlineColor * invisibility;
+                Draw(spriteBatch, left, oC);
+                Draw(spriteBatch, right, oC);
+                Draw(spriteBatch, up, oC);
+                Draw(spriteBatch, down, oC);
                 drawOutline = false;
                 drawArmored = oldDrawArmored;
             }

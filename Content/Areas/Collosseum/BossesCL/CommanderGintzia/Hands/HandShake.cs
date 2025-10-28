@@ -18,6 +18,12 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             base.SetDefaults();
         }
 
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            if (Timer < 90)
+                return false;
+            return base.CanHitPlayer(target, ref cooldownSlot);
+        }
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);

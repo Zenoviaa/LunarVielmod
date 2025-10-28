@@ -57,9 +57,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
         public override bool CanHitPlayer(Player target)
         {
-            if (Blow)
-                return false;
-            return base.CanHitPlayer(target);
+            return false;
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -86,20 +84,26 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             for (int i = 0; i < _oldSwingPos.Length; i++)
             {
                 float progress = i / (float)_oldSwingPos.Length;
-                Vector2 pos = Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity, progress);
+                Vector2 pos = Vector2.Lerp(Projectile.Center,
+                    Projectile.Center + Projectile.velocity, progress);
                 _oldSwingPos[i] = pos;
             }
 
+            Vector2 bottomLeft = Projectile.Center + new Vector2(0, Projectile.width);
+
+            Rectangle blowRect = new Rectangle((int)bottomLeft.X, (int)bottomLeft.Y, (int)Projectile.velocity.X, (int)Projectile.width);
+
             foreach (var player in Main.ActivePlayers)
             {
-                if (Colliding(Projectile.getRect(), player.getRect()).Value)
+                if (Colliding(blowRect, player.getRect()).Value)
                 {
-                    Vector2 suckVelocity = player.Center - Projectile.Center;
-                    Vector2 vel = suckVelocity;
-                    vel.Y = 0;
-                    vel.X = Projectile.velocity.X;
+
+                    Vector2 blowVelocity = Projectile.velocity.SafeNormalize(Vector2.Zero);
+                    blowVelocity.Y = 0;
+                    blowVelocity *= 3f;
+                             
                     BlowAwayPlayer blowAwayPlayer = player.GetModPlayer<BlowAwayPlayer>();
-                    blowAwayPlayer.blowVelocity = vel;
+                    blowAwayPlayer.blowVelocity = blowVelocity;
                 }
             }
         }
@@ -146,7 +150,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
         private float StripWidth(float progressOnStrip)
         {
-            float baseWidth = Projectile.scale * Projectile.width * 1f * 3;
+            float baseWidth = Projectile.scale * Projectile.width * 1f;
             return MathHelper.SmoothStep(baseWidth, baseWidth, progressOnStrip);
         }
     }
