@@ -71,6 +71,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
         private bool _oscScale;
         private bool _grabbedTarget;
         private bool _freezeFrame;
+        private bool _showNamePlate;
         private int _frame;
         private Vector2 _scale = Vector2.One;
         private Vector2 _targetReposition;
@@ -299,6 +300,12 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             _drawTrail = false;
             _drawAura = false;
             _oscScale = false;
+            if (!_showNamePlate)
+            {
+                ShowNamePlate();
+                _showNamePlate = true;
+            }
+
                 _lifeTimer++;
             switch (State)
             {

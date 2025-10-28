@@ -77,6 +77,8 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
             Phase2Transition,
             Death
         }
+
+        private bool _showNamePlate;
         private int _frame;
         private FastNoiseLite _noise;
         private float _dancingPuppetSpawnTimer;
@@ -518,6 +520,11 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
             {
                 case ActionState.Idle:
                     AI_Idle();
+                    if (!_showNamePlate)
+                    {
+                        ShowNamePlate();
+                        _showNamePlate = true;
+                    }
                     break;
                 case ActionState.KnifeSpin:
                     AI_KnifeSpin();

@@ -482,6 +482,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
         private float _attackNum;
         private float _hitDirection;
         private float _deathRotation;
+        private bool _showNamePlate;
         private bool InPhase2 => NPC.life < NPC.lifeMax / 2f;
         private bool Phase2Transition;
         private float Phase2WingsProgress;
@@ -759,6 +760,11 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     break;
                 case AIState.Idle:
                     AI_Idle();
+                    if (!_showNamePlate)
+                    {
+                        ShowNamePlate();
+                        _showNamePlate = true;
+                    }
                     break;
                 case AIState.Lightning_Strike:
                     AI_LightningStrike();

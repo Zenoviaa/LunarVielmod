@@ -223,6 +223,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
             }
         }
 
+        private bool _showNamePlate;
         private float WindCharge;
         private Vector2 TailPosition;
         private Player Target => Main.player[NPC.target];
@@ -478,6 +479,11 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                     break;
                 case AIState.Idle:
                     AI_Idle();
+                    if (!_showNamePlate)
+                    {
+                        ShowNamePlate();
+                        _showNamePlate = true;
+                    }
                     break;
 
                 case AIState.WindBlast_Start:

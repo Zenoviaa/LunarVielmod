@@ -43,6 +43,8 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
         private Player Target => Main.player[NPC.target];
 
         private Color OutlineColor;
+
+        private bool _showNamePlate;
         private bool InPhase2 => NPC.life < NPC.lifeMax / 2;
         private bool HasDoneStomp;
         private bool CanSuperStomp;
@@ -246,6 +248,11 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
             {
                 case ActionState.Spawn:
                     AI_Spawn();
+                    if (!_showNamePlate)
+                    {
+                        ShowNamePlate();
+                        _showNamePlate = true;
+                    }
                     break;
                 case ActionState.Idle:
                     AI_Idle();

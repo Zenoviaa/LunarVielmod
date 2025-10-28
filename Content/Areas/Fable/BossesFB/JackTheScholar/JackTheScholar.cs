@@ -47,6 +47,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
         private AnimationState Animation;
         private float _dyingRotation;
         private float _hitDirection;
+        private bool _showNamePlate;
         private ref float Timer => ref NPC.ai[0];
         private ref float AttackCycle => ref NPC.ai[1];
         private AIState State
@@ -251,6 +252,11 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
             {
                 case AIState.Idle:
                     AI_Idle();
+                    if (!_showNamePlate)
+                    {
+                        ShowNamePlate();
+                        _showNamePlate = true;
+                    }
                     break;
                 case AIState.Hop_Around:
                     AI_HopAround();

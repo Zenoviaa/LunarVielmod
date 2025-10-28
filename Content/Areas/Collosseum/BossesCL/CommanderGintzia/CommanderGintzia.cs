@@ -390,9 +390,14 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
                 PlaySound();
             }
 
+            if(Timer == 200)
+            {
+                ShowNamePlate();
+            }
 
             if (Timer >= 210)
             {
+               
                 SwitchState(AIState.Idle);
             }
         }

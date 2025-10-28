@@ -39,6 +39,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
         private bool _isDangerous;
         private bool _isWarning;
         private bool _spawned;
+        private bool _showNamePlate;
         private int _frame;
         private ref float Timer => ref NPC.ai[0];
         private AIState State
@@ -248,6 +249,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
 
             if (!_spawned)
             {
+                ShowNamePlate();
                 SwitchState(AIState.Roar);
                 _spawned = true;
             }
