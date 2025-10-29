@@ -120,12 +120,13 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             SwingV2Helper.AddSwordSwingStyle(this);
             BlackFireShader blackFireShader = new BlackFireShader();
             blackFireShader.SetDefaults();
+
             SlashTrailer devilsPeak = new SlashTrailer
             {
                 Shader = blackFireShader,
                 TrailWidthFunction = (interpolant) =>
                 {
-                    return EasingFunction.QuadraticBump(interpolant) * 64;
+                    return EasingFunction.QuadraticBump(interpolant) * 128 ;
                 },
                 TrailColorFunction = (interpolant) =>
                 {
