@@ -53,7 +53,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
                     innerColor: Color.White,
                     glowColor: Color.LightBlue,
                     outerGlowColor: Color.Blue, duration: 25, baseSize: boomSize);
-                part.Scale *= 2;
+                part.Scale *= 3;
                 for (float i = 0; i < 4; i++)
                 {
                     float progress = i / 4f;

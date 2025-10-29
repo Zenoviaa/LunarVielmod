@@ -223,6 +223,8 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             Vector2 drawScale = Vector2.One;
             Vector2 drawPosition = Player.Center - Main.screenPosition;
             drawPosition.Y -= 12;
+            Texture2D zuiTexyt = ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect).Value;
+            spriteBatch.Draw(zuiTexyt, drawPosition, null, glowColor, 0, zuiTexyt.Size() / 2f, drawScale * 0.75f, SpriteEffects.None, 0);
             spriteBatch.Draw(wingsTexture, drawPosition, frame, glowColor, 0, drawOrigin, drawScale, SpriteEffects.None, 0);
         }
     }

@@ -56,6 +56,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
             else
             {
                 _scale = MathHelper.Lerp(_scale, 1f, 0.1f);
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile.Center, parent.Center, Projectile.velocity, 1);
             }
             if (distanceToParent <= 16)
             {
