@@ -1,15 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Assets;
+using Stellamod.Core.Effects;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
+using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Core.HealthbarSystem
 {
     public class BossHealthbarUI : UIPanel
     {
+        private UIText _bossNameText;
         private Vector2 _barFillScale;
         private Vector2 _redFillScale;
         private Vector2 _whiteFillScale;
@@ -21,6 +26,7 @@ namespace Stellamod.Core.HealthbarSystem
 
         public BossHealthbarUI()
         {
+            _bossNameText = new UIText("Boss");
             string directory = this.GetType().DirectoryHere();
 
             string barPath = directory + "/Healthbar";
@@ -28,6 +34,9 @@ namespace Stellamod.Core.HealthbarSystem
 
             string fillPath = directory + "/HealthbarFill";
             FillTextureAsset = ModContent.Request<Texture2D>(fillPath, ReLogic.Content.AssetRequestMode.ImmediateLoad);
+
+            string edgePath = directory + "/HealthbarEdge";
+            EdgeTextureAsset = ModContent.Request<Texture2D>(edgePath, ReLogic.Content.AssetRequestMode.ImmediateLoad);
 
             string barMoonPath = directory + "/HealthbarMoon";
             BarMoonTextureAsset = ModContent.Request<Texture2D>(barMoonPath, ReLogic.Content.AssetRequestMode.ImmediateLoad);
@@ -41,9 +50,11 @@ namespace Stellamod.Core.HealthbarSystem
             Height.Pixels = BarTextureAsset.Height();
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
+            Append(_bossNameText);
         }
         public Asset<Texture2D> BarTextureAsset;
         public Asset<Texture2D> FillTextureAsset;
+        public Asset<Texture2D> EdgeTextureAsset;
         public Asset<Texture2D> BossFillTextureAsset;
         public Asset<Texture2D> BarMoonTextureAsset;
         public ScarletBoss TrackingNpc;
@@ -54,6 +65,9 @@ namespace Stellamod.Core.HealthbarSystem
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
+
+            _bossNameText.Left.Pixels = 48;
+            _bossNameText.Top.Pixels = -10;
         }
 
         private float GetFill()
@@ -65,6 +79,14 @@ namespace Stellamod.Core.HealthbarSystem
             float lifeMax = TrackingNpc.NPC.lifeMax;
             return life / lifeMax;
         }
+
+        private string GetBossTitle()
+        {
+            if (TrackingNpc == null)
+                return string.Empty;
+            return TrackingNpc.DisplayName.Value;
+        }
+
         public bool IsTracking()
         {
             return TrackingNpc != null && TrackingNpc.NPC.active;
@@ -72,6 +94,7 @@ namespace Stellamod.Core.HealthbarSystem
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
+   
             Rectangle rectangle = GetDimensions().ToRectangle();
             Vector2 topLeft = rectangle.TopLeft();
             spriteBatch.Draw(BarTextureAsset.Value, topLeft, null, Color.White, 0f, default, 1f, SpriteEffects.None, 0f);
@@ -86,7 +109,7 @@ namespace Stellamod.Core.HealthbarSystem
             Vector2 scale = Vector2.Lerp(new Vector2(1, 1), maxScale, fillAmount);
             if (_oldFill != fillAmount)
             {
-                _whiteTimer = 100;
+                _whiteTimer = 25;
                 _redTimer = 10;
                 _oldFill = fillAmount;
             }
@@ -105,15 +128,42 @@ namespace Stellamod.Core.HealthbarSystem
             _barFillScale = Vector2.Lerp(_barFillScale, scale, 0.1f);
 
 
-            spriteBatch.Draw(FillTextureAsset.Value, fillTopLeft, null, Color.White, 0f, default, _whiteFillScale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(FillTextureAsset.Value, fillTopLeft, null, Color.White * 0.25f, 0f, default, _whiteFillScale, SpriteEffects.None, 0f);
             spriteBatch.Draw(FillTextureAsset.Value, fillTopLeft, null, Color.Red, 0f, default, _redFillScale, SpriteEffects.None, 0f);
             if (IsTracking())
             {
+                _bossNameText.SetText(GetBossTitle());
                 Asset<Texture2D> bossIconTexture = ModContent.Request<Texture2D>(TrackingNpc.Texture_BossIcon);
+                Asset<Texture2D> bossFillTexture = ModContent.Request<Texture2D>(TrackingNpc.Texture_BossBar);
                 spriteBatch.Draw(bossIconTexture.Value, topLeft + new Vector2(50, 58) / 2 + new Vector2(2), null, Color.White, 0f, bossIconTexture.Size() / 2, 1f, SpriteEffects.None, 0f);
 
-                Asset<Texture2D> bossFillTexture = ModContent.Request<Texture2D>(TrackingNpc.Texture_BossBar);
+                var shader = BossHealthbarShader.Instance;
+                shader.InnerColor = Color.Transparent;
+                shader.OuterColor = Color.White;
+                shader.NoiseTexture = AssetRegistry.Textures.Noise.Perlin;
+
                 spriteBatch.Draw(bossFillTexture.Value, fillTopLeft, null, Color.White, 0f, default, _barFillScale, SpriteEffects.None, 0f);
+
+
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, default, default, default, shader.Effect, Main.UIScaleMatrix);
+
+        
+                spriteBatch.Draw(bossFillTexture.Value, fillTopLeft, null, Color.White, 0f, default, _barFillScale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(bossFillTexture.Value, fillTopLeft, null, Color.White, 0f, default, _barFillScale, SpriteEffects.None, 0f);
+                spriteBatch.End();
+                spriteBatch.Begin(default, default, default, default, default, default, Main.UIScaleMatrix);
+
+                Vector2 offset = new Vector2(_barFillScale.X * 2, 0);
+                Vector2 edgeDrawPos = fillTopLeft + offset;
+                spriteBatch.Draw(EdgeTextureAsset.Value, edgeDrawPos, null, Color.White, 0f, default, 1f, SpriteEffects.None, 0f);
+                for(float f = 0; f < 1f; f += 0.1f)
+                {
+                    Vector2 o = Vector2.UnitY.RotatedBy(f * MathHelper.TwoPi);
+                    o *= ExtraMath.Osc(1, 2);
+                    Vector2 drawPos = edgeDrawPos + o;
+                    spriteBatch.Draw(EdgeTextureAsset.Value, drawPos, null, Color.White * 0.25f, 0f, default, 1f, SpriteEffects.None, 0f);
+                }
             }
 
 

@@ -84,9 +84,30 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             On_Collision.WetCollision += NoWetCollision;
             On_Collision.AnyCollision += NoAnyCollision;
             On_Collision.SlopeCollision += NoSlopeCollision;
-         
+            On_Player.SlopingCollision += NoSlopingCollision;
+            On_Player.DryCollision += NoDryCollision;
+        
         }
 
+        private void NoDryCollision(On_Player.orig_DryCollision orig, Player self, bool fallThrough, bool ignorePlats)
+        {
+            if (!inSpace)
+            {
+                orig(self, fallThrough, ignorePlats);
+                return;
+            }
+            orig(self, true, true);
+        }
+
+        private void NoSlopingCollision(On_Player.orig_SlopingCollision orig, Player self, bool fallThrough, bool ignorePlats)
+        {
+            if (!inSpace)
+            {
+                orig(self, fallThrough, ignorePlats);
+                return;
+            }
+            orig(self, true, true);
+        }
 
         public override void OnModUnload()
         {
@@ -96,6 +117,8 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             On_Collision.WetCollision -= NoWetCollision;
             On_Collision.AnyCollision -= NoAnyCollision;
             On_Collision.SlopeCollision -= NoSlopeCollision;
+            On_Player.SlopingCollision -= NoSlopingCollision;
+            On_Player.DryCollision -= NoDryCollision;
         }
         public override void PreUpdateNPCs()
         {
@@ -307,7 +330,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             NPC.height = 128;
             NPC.damage = 100;
             NPC.defense = 14;
-            NPC.lifeMax = 5500;
+            NPC.lifeMax = 6000;
             NPC.scale = 1f;
 
             NPC.value = Item.buyPrice(gold: 5);
