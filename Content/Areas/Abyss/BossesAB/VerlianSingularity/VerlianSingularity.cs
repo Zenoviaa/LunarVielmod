@@ -307,7 +307,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             NPC.height = 128;
             NPC.damage = 100;
             NPC.defense = 14;
-            NPC.lifeMax = 5000;
+            NPC.lifeMax = 5500;
             NPC.scale = 1f;
 
             NPC.value = Item.buyPrice(gold: 5);
