@@ -135,18 +135,18 @@ namespace Stellamod.WorldG
             {
                 tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Abysm", WorldGenAbysm));
                 tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Abysm Caves", NewCaveFormationAbysm));
-                tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Virulent", WorldGenVirulent));
-                tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Virulent Caves", WorldGenVirulentCaves));
-                tasks.Insert(MorrowGen + 5, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
-                tasks.Insert(MorrowGen + 6, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-                tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
-                tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Illuria", WorldGenIlluria));
-                tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
-                tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
-                tasks.Insert(MorrowGen + 11, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-                tasks.Insert(MorrowGen + 12, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
-                tasks.Insert(MorrowGen + 13, new PassLegacy("Icey Caverns", WorldGenIceCaverns));
-                tasks.Insert(MorrowGen + 14, new PassLegacy("World Gen Ice Ores", WorldGenGlisteningOre));
+            //    tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Virulent", WorldGenVirulent));
+            //    tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Virulent Caves", WorldGenVirulentCaves));
+                tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
+                tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
+                tasks.Insert(MorrowGen + 5, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
+                tasks.Insert(MorrowGen + 6, new PassLegacy("World Gen Illuria", WorldGenIlluria));
+                tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
+                tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
+                tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
+                tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
+                tasks.Insert(MorrowGen + 11, new PassLegacy("Icey Caverns", WorldGenIceCaverns));
+                tasks.Insert(MorrowGen + 12, new PassLegacy("World Gen Ice Ores", WorldGenGlisteningOre));
             }
          
             int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
