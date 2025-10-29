@@ -32,7 +32,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         public override void AI()
         {
             base.AI();
-            Projectile.Center = Owner.Center;
+            Projectile.Center = GetParentNPC().Center;
             if (NPC.AnyNPCs(ModContent.NPCType<VerlianSingularity>()))
             {
                 Projectile.timeLeft = 2;
@@ -281,8 +281,8 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         public override void SetDefaults()
         {
             _chargeColor = Color.White;
-            NPC.width = 100;
-            NPC.height = 100;
+            NPC.width = 128;
+            NPC.height = 128;
             NPC.damage = 100;
             NPC.defense = 14;
             NPC.lifeMax = 5000;

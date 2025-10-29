@@ -48,12 +48,12 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
                 }
 
                 FXUtil.ShakeCamera(Projectile.Center, 1024, 32);
-                float boomSize = Main.rand.NextFloat(0.025f, 0.08f);
-                FXUtil.GlowCircleBoom(Projectile.Center,
+                float boomSize = Main.rand.NextFloat(0.045f, 0.08f);
+                var part = FXUtil.GlowCircleBoom(Projectile.Center,
                     innerColor: Color.White,
                     glowColor: Color.LightBlue,
                     outerGlowColor: Color.Blue, duration: 25, baseSize: boomSize);
-
+                part.Scale *= 2;
                 for (float i = 0; i < 4; i++)
                 {
                     float progress = i / 4f;
