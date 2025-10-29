@@ -5,17 +5,101 @@ using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
+using Stellamod.Skies;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 {
+    [AutoloadEquip(EquipType.Wings)]
+    public class MagicWings : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            // These wings use the same values as the solar wings
+            // Fly time: 180 ticks = 3 seconds
+            // Fly speed: 9
+            // Acceleration multiplier: 2.5
+            ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(180, 9f, 2.5f);
+        }
+
+        public override void SetDefaults()
+        {
+            Item.width = 22;
+            Item.height = 20;
+            Item.value = 10000;
+            Item.rare = ItemRarityID.Green;
+            Item.accessory = true;
+        }
+
+        public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
+            ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
+        {
+            ascentWhenFalling = 0.85f; // Falling glide speed
+            ascentWhenRising = 0.15f; // Rising speed
+            maxCanAscendMultiplier = 2;
+            maxAscentMultiplier = 3f;
+            constantAscend = 0.135f;
+        }
+
+    }
+    public class SingularityFallSystem : ModSystem
+    {
+        public bool inSpace;
+
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+            On_Collision.TileCollision += NoCollision;
+            On_Collision.AdvancedTileCollision += NoAdvancedCollision;
+            On_Collision.WetCollision += NoWetCollision;
+        }
+
+
+
+        public override void OnModUnload()
+        {
+            base.OnModUnload();
+            On_Collision.TileCollision -= NoCollision;
+            On_Collision.AdvancedTileCollision -= NoAdvancedCollision;
+            On_Collision.WetCollision -= NoWetCollision;
+        }
+        public override void PreUpdateNPCs()
+        {
+            base.PreUpdateNPCs();
+            inSpace = false;
+        }
+
+     
+        private Vector2 NoCollision(On_Collision.orig_TileCollision orig, Vector2 Position, Vector2 Velocity, int Width, int Height, bool fallThrough, bool fall2, int gravDir)
+        {
+            if (!inSpace)
+                return orig(Position, Velocity, Width, Height, fallThrough, fall2, gravDir);
+            return Velocity;
+        }
+        private Vector2 NoAdvancedCollision(On_Collision.orig_AdvancedTileCollision orig, bool[] forcedIgnoredTiles, Vector2 Position, Vector2 Velocity, int Width, int Height, bool fallThrough, bool fall2, int gravDir)
+        {
+            if (!inSpace)
+                return orig(forcedIgnoredTiles, Position, Velocity, Width, Height, fallThrough, fall2, gravDir);
+            return Velocity;
+        }
+        private bool NoWetCollision(On_Collision.orig_WetCollision orig, Vector2 Position, int Width, int Height)
+        {
+            if(!inSpace)
+                return orig(Position, Width, Height);
+            return false;
+        }
+
+
+    }
     public class SingularitySuckPlayer : ModPlayer
     {
+
         public Vector2? pullVelocity;
         public override void PreUpdateMovement()
         {
@@ -26,7 +110,24 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 Player.velocity = velocity;
                 pullVelocity = null;
             }
+            Player.wingsLogic = 4;
         }
+
+        public override void PostUpdateEquips()
+        {
+            base.PostUpdateEquips();
+            SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
+            if (!fallSystem.inSpace)
+                return;
+            int wingSlot = EquipLoader.GetEquipSlot(Mod, "MagicWings", EquipType.Wings);
+            Player.wings = wingSlot;
+            Player.wingsLogic = wingSlot;
+            Player.wingTime = 1000;
+            Player.wingTimeMax = 1000;
+            Player.noFallDmg = true;
+            Player.equippedWings = Player.armor[1];
+        }
+
     }
 
     public class VerlianSingularity : ScarletBoss
@@ -38,18 +139,24 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         private float _hitScale;
         private bool _focusOn;
         private bool _spawnedCrescentMoon;
+        private bool _starField;
         private Vector2 _shakeOffset;
         private Vector2 _hitOffset;
+        private Color _chargeColor;
         private enum AIState
         {
             Spawn,
             Idle,
             OrbitingStarPull,
             SpiralStarPull,
-            ZigzagStorm
+            ZigzagStorm,
+            SlowFallingStars,
+            SingularityBoom,
+            Phase2Transition
         }
         private int ShootingStarDamage => 24;
         private int SpiralStarDamage => 16;
+        private int SingularityBoom => 32;
         private ref float Timer => ref NPC.ai[0];
         private ref float AttackCounter => ref NPC.ai[1];
         private AIState State
@@ -71,11 +178,12 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
         public override void SetDefaults()
         {
-            NPC.width = 82;
-            NPC.height = 82;
+            _chargeColor = Color.White;
+            NPC.width = 100;
+            NPC.height = 100;
             NPC.damage = 100;
-            NPC.defense = 11;
-            NPC.lifeMax = 4500;
+            NPC.defense = 14;
+            NPC.lifeMax = 5000;
             NPC.scale = 1f;
 
             NPC.value = Item.buyPrice(gold: 5);
@@ -101,6 +209,15 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         {
             base.AI();
             _spinTimer++;
+            if (_starField)
+            {
+                RoyalCapitalStars stars = ModContent.GetInstance<RoyalCapitalStars>();
+                stars.inStarField = true;
+
+
+                SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
+                fallSystem.inSpace = true;
+            }
 
             float startRadians = -MathHelper.ToRadians(22);
             float endRadians = startRadians + MathHelper.ToRadians(2);
@@ -164,9 +281,92 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 case AIState.ZigzagStorm:
                     AI_ZigzagStorm();
                     break;
+                case AIState.SlowFallingStars:
+                    AI_SlowFallingStars();
+                    break;
+                case AIState.SingularityBoom:
+                    AI_SingularityBoom();
+                    break;
+                case AIState.Phase2Transition:
+                    AI_Phase2Transition();
+                    break;
             }
         }
 
+        private void AI_Phase2Transition()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                FXUtil.FocusCamera(NPC.Center, 400);
+                SpawnPulse();
+            }
+
+            float targetScale = MathHelper.Lerp(0f, 1f, AttackCounter / 4f);
+            _spawnScale = MathHelper.Lerp(_spawnScale, targetScale, 0.1f);
+
+            if (Timer >= 102)
+            {
+                Timer = 0;
+                AttackCounter++;
+
+                if (AttackCounter >= 3)
+                {
+                    _starField = true;
+                    SpawnPulse();
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                            ModContent.ProjectileType<SingularityBoom>(), SingularityBoom, 2, Main.myPlayer);
+                    }
+                    SoundStyle crackSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPIn");
+                    SoundEngine.PlaySound(crackSound, NPC.position);
+                    SwitchState(AIState.Idle);
+                }
+            }
+        }
+
+        private void AI_SingularityBoom()
+        {
+            Timer++;
+            if(Timer < 100)
+            {
+                float interpolant = Timer / 100;
+                float ease = EasingFunction.InOutSine(interpolant);
+                _spawnScale = MathHelper.Lerp(1f, 0.25f, ease);
+                _chargeColor = Color.Lerp(Color.White, Color.Yellow, ease);
+                if(Timer % 10 == 0)
+                {
+                    _shakeOffset = Main.rand.NextVector2CircularEdge(16, 16) * ease;
+                 
+                }
+                if(Timer % 20 == 0)
+                {
+                    SpawnPulse();
+                }
+            } 
+            else if (Timer < 160)
+            {
+                _chargeColor = Color.Lerp(Color.Yellow, Color.White, ExtraMath.Osc(0f, 1f, speed: 32));
+               
+            } 
+            else if(Timer == 160)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                        ModContent.ProjectileType<SingularityBoom>(), SingularityBoom, 2, Main.myPlayer);
+                }
+            } else
+            {
+                _spawnScale = MathHelper.Lerp(_spawnScale, 1.5f, ExtraMath.Osc(0f, 0.1f, speed: 32));
+            }
+            if(Timer >= 240)
+            {
+                _chargeColor = Color.White;
+                SwitchState(AIState.Idle);
+            }
+        }
         private void ChooseAttack()
         {
             if (!StellaMultiplayer.IsHost)
@@ -183,11 +383,21 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 case 2:
                     SwitchState(AIState.ZigzagStorm);
                     break;
+                case 3:
+                    SwitchState(AIState.SlowFallingStars);
+                    break;
+                case 4:
+                    SwitchState(AIState.SingularityBoom);
+                    break;
             }
 
-            SwitchState(AIState.ZigzagStorm);
+            if(NPC.life < NPC.lifeMax / 2 && !_starField)
+            {
+                SwitchState(AIState.Phase2Transition);
+            }
+
             AttackCycle++;
-            if (AttackCycle >= 3)
+            if (AttackCycle >= 5)
             {
                 AttackCycle = 0;
             }
@@ -287,6 +497,42 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             base.OnKill();
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedSOMBoss, -1);
         }
+
+        private void AI_SlowFallingStars()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                SoundStyle crackSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPIn");
+                crackSound.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(crackSound, NPC.position);
+                SpazOut();
+                _spawnScale *= 1.01f;
+            }
+
+            if (Timer > 60 && Timer % 22 == 0)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    int orbitingStarType = ModContent.ProjectileType<SlowFallingStar>();
+                    float rot = Timer * 0.05f;
+
+                    Vector2 offset = rot.ToRotationVector2();
+                    offset *= 1000;
+         
+                    Vector2 spawnVelocity = Vector2.Zero;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + offset, spawnVelocity, orbitingStarType, SpiralStarDamage, 1, Main.myPlayer, ai0: NPC.whoAmI);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center - offset, spawnVelocity, orbitingStarType, SpiralStarDamage, 1, Main.myPlayer, ai0: NPC.whoAmI);
+                }
+                AttackCounter++;
+            }
+
+            if (AttackCounter >= 32)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+
         private void AI_ZigzagStorm()
         {
             Timer++;
@@ -565,6 +811,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             Texture2D diskTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SF").Value;
             Vector2 diskDrawOrigin = diskTexture.Size() / 2f;
             Color diskDrawColor = Color.Lerp(Color.White, Color.Cyan, ExtraMath.Osc(0f, 1f, speed: 2));
+            diskDrawColor = diskDrawColor.MultiplyRGB(_chargeColor);
             diskDrawColor.A = 0;
 
             float scaleOsc = ExtraMath.Osc(0.5f, 0.65f, speed: 1);

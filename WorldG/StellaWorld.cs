@@ -344,7 +344,6 @@ namespace Stellamod.WorldG
                 cavePosition += caveVelocity * caveWidth * 0.5f;
             }
 
-
             for (int x = 0; x < Main.maxTilesX; x++)
             {
                 for (int y = yMin - 100; y < yMax + 100; y++)

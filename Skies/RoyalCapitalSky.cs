@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Helpers;
+using System;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
@@ -15,17 +16,48 @@ namespace Stellamod.Skies
         private Vector2 _lastCameraPos;
         public bool IsActive => Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAlcadzia || NPC.AnyNPCs(ModContent.NPCType<VerlianSingularity>());
         public float Opacity;
+        public bool inStarField;
+        public override void PreUpdateEntities()
+        {
+            base.PreUpdateEntities();
+            inStarField = false;
+        }
         public override void OnModLoad()
         {
             base.OnModLoad();
+            On_Main.DrawNPCs += DrawBlack;
+            On_Main.DrawWaters += DrawBlackWaters;
             On_Main.DrawDust += DrawStars;
         }
+
 
         public override void OnModUnload()
         {
             base.OnModUnload();
+            On_Main.DrawNPCs -= DrawBlack;
+            On_Main.DrawWaters -= DrawBlackWaters;
             On_Main.DrawDust -= DrawStars;
         }
+        private void DrawBlackWaters(On_Main.orig_DrawWaters orig, Main self, bool isBackground)
+        {
+            if (inStarField)
+            {
+                return;
+            }
+            orig(self, isBackground);
+        }
+
+        private void DrawBlack(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
+        {
+            if (inStarField)
+            {
+                GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+                graphicsDevice.Clear(Color.Black);
+            }
+   
+            orig(self, behindTiles);
+        }
+
         public override void PostUpdateDusts()
         {
             base.PostUpdateDusts();

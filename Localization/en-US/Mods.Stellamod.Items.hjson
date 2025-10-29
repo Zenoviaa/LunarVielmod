@@ -9409,3 +9409,8 @@ ManorPillarItem: {
 	DisplayName: Manor Pillar Item
 	Tooltip: ""
 }
+
+MagicWings: {
+	DisplayName: Magic Wings
+	Tooltip: ""
+}
