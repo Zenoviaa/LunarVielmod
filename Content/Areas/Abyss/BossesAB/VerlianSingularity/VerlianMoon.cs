@@ -46,6 +46,11 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             _scale = MathHelper.Lerp(_scale, 1f, 0.1f);
             Timer++;
             NPC npc = GetParentNPC();
+            if (!npc.active)
+            {
+                NPC.active = false;
+            }
+
             float orbitDistance = 512;
             float radians = Timer * 0.0035f;
             Vector2 orbitingVector = Vector2.UnitY.RotatedBy(radians) * orbitDistance;

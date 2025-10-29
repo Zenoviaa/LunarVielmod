@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
@@ -32,6 +34,10 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
             NPC parent = GetParentNPC();
             if (Timer == 1)
             {
+                SoundStyle starSingle = AssetRegistry.Sounds.Stars.Starsingle4;
+                starSingle.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(starSingle, Projectile.position);
+
                 Vector2 velocityToParent = (parent.Center - Projectile.Center);
                 velocityToParent = velocityToParent.SafeNormalize(Vector2.Zero);
                 velocityToParent = velocityToParent.RotatedBy(MathHelper.ToRadians(90 * Direction));

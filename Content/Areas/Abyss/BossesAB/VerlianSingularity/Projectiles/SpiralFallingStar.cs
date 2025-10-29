@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
@@ -28,6 +30,10 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
             NPC parent = GetParentNPC();
             if (Timer == 1)
             {
+                SoundStyle starSingle = AssetRegistry.Sounds.Stars.Starsingle5;
+                starSingle.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(starSingle, Projectile.position);
+
                 Vector2 velocityToParent = (parent.Center - Projectile.Center);
                 velocityToParent = velocityToParent.SafeNormalize(Vector2.Zero);
                 Projectile.velocity = velocityToParent;
@@ -62,7 +68,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
         #region Draw Code
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            return;
+            /*
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             float outlineOffset = 2;
@@ -82,7 +88,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
             spriteBatch.Draw(texture, left, drawFrame, drawColor, rotation, drawOrigin, scale, spriteEffects, 0);
             spriteBatch.Draw(texture, right, drawFrame, drawColor, rotation, drawOrigin, scale, spriteEffects, 0);
             spriteBatch.Draw(texture, up, drawFrame, drawColor, rotation, drawOrigin, scale, spriteEffects, 0);
-            spriteBatch.Draw(texture, down, drawFrame, drawColor, rotation, drawOrigin, scale, spriteEffects, 0);
+            spriteBatch.Draw(texture, down, drawFrame, drawColor, rotation, drawOrigin, scale, spriteEffects, 0);*/
         }
 
         private Color ColorFunction(float completionRatio)

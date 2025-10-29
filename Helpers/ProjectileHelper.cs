@@ -1,11 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
 {
     public static class ProjectileHelper
     {
+        /// <summary>
+        /// Short hand for checking if the projectile is owned by the local client
+        /// </summary>
+        /// <param name="modProj"></param>
+        /// <returns></returns>
+        public static bool OwnedByLocalClient(this ModProjectile modProj)
+        {
+            return modProj.Projectile.owner == Main.myPlayer;
+        }
+
         public static bool? OldPosColliding(Vector2[] positions, Rectangle projHitbox, Rectangle targetHitbox, float lineWidth = 6)
         {
             float collisionPoint = 0;

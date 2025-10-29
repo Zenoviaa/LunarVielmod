@@ -25,10 +25,14 @@ namespace Stellamod.Projectiles.Wings
             Projectile.hostile = false;
         }
 
+        public virtual bool ActiveCheck()
+        {
+            return Owner.HasItemEquipped(AccessoryItemType);
+        }
         public override void AI()
         {
             base.AI();
-            if (!Owner.HasItemEquipped(AccessoryItemType))
+            if (!ActiveCheck())
             {
                 Projectile.Kill();
                 return;

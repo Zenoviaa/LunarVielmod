@@ -4,10 +4,11 @@ using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.Wings;
 using Stellamod.Skies;
 using Stellamod.Visual.Particles;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -16,6 +17,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 {
+
     [AutoloadEquip(EquipType.Wings)]
     public class MagicWings : ModItem
     {
@@ -58,8 +60,8 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             On_Collision.TileCollision += NoCollision;
             On_Collision.AdvancedTileCollision += NoAdvancedCollision;
             On_Collision.WetCollision += NoWetCollision;
+            On_Collision.AnyCollision += NoAnyCollision;
         }
-
 
 
         public override void OnModUnload()
@@ -68,6 +70,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             On_Collision.TileCollision -= NoCollision;
             On_Collision.AdvancedTileCollision -= NoAdvancedCollision;
             On_Collision.WetCollision -= NoWetCollision;
+            On_Collision.AnyCollision -= NoAnyCollision;
         }
         public override void PreUpdateNPCs()
         {
@@ -75,30 +78,41 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             inSpace = false;
         }
 
-     
+        private Vector2 NoAnyCollision(On_Collision.orig_AnyCollision orig, Vector2 Position, Vector2 Velocity, int Width, int Height, bool evenActuated)
+        {
+            if (!inSpace)
+                return orig(Position, Velocity, Width, Height, evenActuated);
+            return Velocity;
+        }
+
         private Vector2 NoCollision(On_Collision.orig_TileCollision orig, Vector2 Position, Vector2 Velocity, int Width, int Height, bool fallThrough, bool fall2, int gravDir)
         {
             if (!inSpace)
                 return orig(Position, Velocity, Width, Height, fallThrough, fall2, gravDir);
             return Velocity;
         }
+
         private Vector2 NoAdvancedCollision(On_Collision.orig_AdvancedTileCollision orig, bool[] forcedIgnoredTiles, Vector2 Position, Vector2 Velocity, int Width, int Height, bool fallThrough, bool fall2, int gravDir)
         {
             if (!inSpace)
                 return orig(forcedIgnoredTiles, Position, Velocity, Width, Height, fallThrough, fall2, gravDir);
             return Velocity;
         }
+
         private bool NoWetCollision(On_Collision.orig_WetCollision orig, Vector2 Position, int Width, int Height)
         {
-            if(!inSpace)
+            if (!inSpace)
                 return orig(Position, Width, Height);
             return false;
         }
-
-
     }
+
     public class SingularitySuckPlayer : ModPlayer
     {
+        private float _frameCounter;
+        private int _frame;
+        private float _frameSpeed;
+        private float _wingTimer;
 
         public Vector2? pullVelocity;
         public override void PreUpdateMovement()
@@ -119,6 +133,13 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
             if (!fallSystem.inSpace)
                 return;
+
+            _wingTimer++;
+            if (_wingTimer % 7 == 0)
+            {
+                Dust.NewDustPerfect(Player.Center, ModContent.DustType<GlyphDust>(), Vector2.Zero, newColor: Color.White, Scale: 0.5f);
+            }
+
             int wingSlot = EquipLoader.GetEquipSlot(Mod, "MagicWings", EquipType.Wings);
             Player.wings = wingSlot;
             Player.wingsLogic = wingSlot;
@@ -126,8 +147,63 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             Player.wingTimeMax = 1000;
             Player.noFallDmg = true;
             Player.equippedWings = Player.armor[1];
+
+            if (IsFlying())
+            {
+                _frameSpeed = 4;
+                _frameCounter++;
+                if (_frameCounter >= _frameSpeed)
+                {
+                    _frameCounter = 0;
+                    _frame++;
+                    if (_frame >= 8)
+                    {
+                        _frame = 0;
+                    }
+                }
+            }
+            else
+            {
+                if(_frame > 0)
+                {
+                    _frameCounter--;
+                    if (_frameCounter <= 0)
+                    {
+                        _frameCounter = _frameSpeed;
+                        _frame--;
+                    }
+                }
+          
+              
+            }
         }
 
+        private bool IsFlying()
+        {
+            return Player.controlJump && !Player.mount.Active && Player.wingTime > 0;
+        }
+
+        public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+        {
+            base.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
+            SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
+            if (!fallSystem.inSpace)
+                return;
+            if (drawInfo.shadow != 0f)
+                return;
+            float alpha = EasingFunction.InOutSine(_wingTimer / 60f);
+            Texture2D wingsTexture = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/MagicWingsProj").Value;
+            Rectangle frame = wingsTexture.GetFrame(_frame, 8);
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Color glowColor = Color.White;
+            glowColor *= alpha;
+            glowColor.A = 0;
+            Vector2 drawOrigin = frame.Size() / 2f;
+            Vector2 drawScale = Vector2.One;
+            Vector2 drawPosition = Player.Center - Main.screenPosition;
+            drawPosition.Y -= 12;
+            spriteBatch.Draw(wingsTexture, drawPosition, frame, glowColor, 0, drawOrigin, drawScale, SpriteEffects.None, 0);
+        }
     }
 
     public class VerlianSingularity : ScarletBoss
@@ -152,11 +228,18 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             ZigzagStorm,
             SlowFallingStars,
             SingularityBoom,
-            Phase2Transition
+            Phase2Transition,
+            BlackLightning,
+            BerserkLaser,
+            Death,
+            Despawn
         }
+
         private int ShootingStarDamage => 24;
         private int SpiralStarDamage => 16;
         private int SingularityBoom => 32;
+        private int BlackLightningDamage => 20;
+        private int BerserkLaserDamage => 50;
         private ref float Timer => ref NPC.ai[0];
         private ref float AttackCounter => ref NPC.ai[1];
         private AIState State
@@ -165,9 +248,6 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             set => NPC.ai[2] = (float)value;
         }
         private ref float AttackCycle => ref NPC.ai[3];
-
-
-
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -191,11 +271,11 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             NPC.boss = true;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
-            NPC.npcSlots = 10f;
+            NPC.npcSlots = 30f;
 
-            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/VoidDead1") with { PitchVariance = 0.1f };
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SingularityFragment");
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/VoidHit") with { PitchVariance = 0.1f };
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/VoidDead1") with { PitchVariance = 0.1f };
         }
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -208,6 +288,15 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         public override void AI()
         {
             base.AI();
+            NPC.TargetClosest();
+            if (!NPC.HasValidTarget)
+            {
+                if (State != AIState.Despawn)
+                {
+                    SwitchState(AIState.Despawn);
+                }
+            }
+
             _spinTimer++;
             if (_starField)
             {
@@ -223,9 +312,18 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             float endRadians = startRadians + MathHelper.ToRadians(2);
             float interpolant = ExtraMath.Osc(0f, 1f, speed: 1);
             NPC.rotation = MathHelper.Lerp(startRadians, endRadians, interpolant);
-            NPC.velocity = Vector2.UnitY.RotatedBy(_spinTimer * 0.02f) * 0.5f;
-            NPC.velocity.X = 0;
+            if (!_starField)
+            {
 
+                NPC.velocity = Vector2.UnitY.RotatedBy(_spinTimer * 0.02f) * 0.5f;
+                NPC.velocity.X = 0;
+
+
+            }
+            else
+            {
+                NPC.velocity = Vector2.UnitY.RotatedBy(_spinTimer * 0.01f) * 2.2f;
+            }
 
             if (_spazzingTimer > 0)
             {
@@ -244,7 +342,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 _spazzingTimer--;
             }
 
-            if(_hitTimer > 0)
+            if (_hitTimer > 0)
             {
                 _hitOffset = Main.rand.NextVector2Circular(2, 2);
                 _hitTimer--;
@@ -266,7 +364,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                                 ModContent.NPCType<VerlianMoon>(), ai0: NPC.whoAmI);
                         }
 
-                        _spawnedCrescentMoon = true;    
+                        _spawnedCrescentMoon = true;
                     }
                     _spawnScale = MathHelper.Lerp(_spawnScale, 1, 0.1f);
                     SuckingParticles();
@@ -290,13 +388,149 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 case AIState.Phase2Transition:
                     AI_Phase2Transition();
                     break;
+                case AIState.BlackLightning:
+                    AI_BlackLightning();
+                    break;
+                case AIState.BerserkLaser:
+                    AI_BerserkLaser();
+                    break;
+                case AIState.Death:
+                    AI_Death();
+                    break;
+                case AIState.Despawn:
+                    AI_Despawn();
+                    break;
+            }
+        }
+
+        private void AI_Despawn()
+        {
+            Timer++;
+            float interpolant = Timer / 120f;
+            float ease = EasingFunction.InOutSine(interpolant);
+            _spawnScale = MathHelper.Lerp(_spawnScale, 0f, ease);
+            if (Timer >= 120f)
+            {
+                NPC.EncourageDespawn(1);
+            }
+        }
+        private void AI_BlackLightning()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                SoundStyle chargeSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge");
+                SoundEngine.PlaySound(chargeSound, NPC.position);
+            }
+            if (Timer % 10 == 0 && Timer < 120)
+            {
+                _spawnScale *= 0.75f;
+            }
+            else if (Timer < 180)
+            {
+                _chargeColor = Color.Lerp(Color.White, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 32));
+            }
+            else if (Timer < 500 && Timer % 15 == 0)
+            {
+                SpawnPulse();
+                _spawnScale *= 1.25f;
+                _spawnScale *= Main.rand.NextFloat(0.5f, 1f);
+                if (StellaMultiplayer.IsHost)
+                {
+                    int blackLightningProjectileType = ModContent.ProjectileType<BlackLightning>();
+                    Vector2 spawnPos = NPC.Center;
+                    Vector2 velocity = Main.rand.NextVector2CircularEdge(1, 1);
+                    var source = NPC.GetSource_FromThis();
+                    Projectile.NewProjectile(source, spawnPos, velocity, blackLightningProjectileType, BlackLightningDamage, 2, Main.myPlayer, ai0: NPC.whoAmI);
+                    velocity = Main.rand.NextVector2CircularEdge(1, 1);
+                    Projectile.NewProjectile(source, spawnPos, velocity, blackLightningProjectileType, BlackLightningDamage, 2, Main.myPlayer, ai0: NPC.whoAmI);
+                    velocity = Main.rand.NextVector2CircularEdge(1, 1);
+                    Projectile.NewProjectile(source, spawnPos, velocity, blackLightningProjectileType, BlackLightningDamage, 2, Main.myPlayer, ai0: NPC.whoAmI);
+                }
+            }
+            else if (Timer >= 500)
+            {
+                _spawnScale = MathHelper.Lerp(_spawnScale, 1f, 0.05f);
+                if(Timer >= 600)
+                {
+                    SwitchState(AIState.SingularityBoom);
+                }
+            
+            }
+        }
+
+        private void AI_BerserkLaser()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                SoundStyle chargeSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge2");
+                SoundEngine.PlaySound(chargeSound, NPC.position);
+                FXUtil.FocusCamera(NPC.Center, 60);
+                SpawnPulse();
+            }
+
+            if (Timer < 60)
+            {
+                _spawnScale = MathHelper.Lerp(_spawnScale, 0.5f, 0.01f);
+            }
+
+            if (Timer == 120)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    int damage = BerserkLaserDamage;
+                    int projType = ModContent.ProjectileType<BerserkLaser>();
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, -Vector2.UnitY * 1000,
+                        projType, damage, 2, Main.myPlayer, ai0: NPC.whoAmI);
+                }
+            }
+
+            if (Timer >= 720)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+
+        private void AI_Death()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                SoundStyle chargeSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge");
+                SoundEngine.PlaySound(chargeSound, NPC.position);
+                FXUtil.FocusCamera(NPC.Center, 400);
+            }
+
+            if (Timer % 4 == 0)
+            {
+                _shakeOffset = Main.rand.NextVector2Circular(24, 24);
+            }
+
+            SuckingParticles();
+            SuckingParticles();
+            foreach (var proj in Main.ActiveProjectiles)
+            {
+                //Cheaper check than casting the mod proj
+                if (proj.ai[0] == NPC.whoAmI)
+                    proj.Kill();
+            }
+
+            if (Timer == 400)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                        ModContent.ProjectileType<SingularityBoom>(), SingularityBoom, 2, Main.myPlayer);
+                }
+                NPC.Kill();
             }
         }
 
         private void AI_Phase2Transition()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 FXUtil.FocusCamera(NPC.Center, 400);
                 SpawnPulse();
@@ -329,39 +563,40 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         private void AI_SingularityBoom()
         {
             Timer++;
-            if(Timer < 100)
+            if (Timer < 100)
             {
                 float interpolant = Timer / 100;
                 float ease = EasingFunction.InOutSine(interpolant);
                 _spawnScale = MathHelper.Lerp(1f, 0.25f, ease);
                 _chargeColor = Color.Lerp(Color.White, Color.Yellow, ease);
-                if(Timer % 10 == 0)
+                if (Timer % 10 == 0)
                 {
                     _shakeOffset = Main.rand.NextVector2CircularEdge(16, 16) * ease;
-                 
+
                 }
-                if(Timer % 20 == 0)
+                if (Timer % 20 == 0)
                 {
                     SpawnPulse();
                 }
-            } 
+            }
             else if (Timer < 160)
             {
                 _chargeColor = Color.Lerp(Color.Yellow, Color.White, ExtraMath.Osc(0f, 1f, speed: 32));
-               
-            } 
-            else if(Timer == 160)
+
+            }
+            else if (Timer == 160)
             {
                 if (StellaMultiplayer.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                         ModContent.ProjectileType<SingularityBoom>(), SingularityBoom, 2, Main.myPlayer);
                 }
-            } else
+            }
+            else
             {
                 _spawnScale = MathHelper.Lerp(_spawnScale, 1.5f, ExtraMath.Osc(0f, 0.1f, speed: 32));
             }
-            if(Timer >= 240)
+            if (Timer >= 240)
             {
                 _chargeColor = Color.White;
                 SwitchState(AIState.Idle);
@@ -372,43 +607,79 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             if (!StellaMultiplayer.IsHost)
                 return;
 
-            switch (AttackCycle)
+            if (!_starField)
             {
-                case 0:
-                    SwitchState(AIState.OrbitingStarPull);
-                    break;
-                case 1:
-                    SwitchState(AIState.SpiralStarPull);
-                    break;
-                case 2:
-                    SwitchState(AIState.ZigzagStorm);
-                    break;
-                case 3:
-                    SwitchState(AIState.SlowFallingStars);
-                    break;
-                case 4:
-                    SwitchState(AIState.SingularityBoom);
-                    break;
+                switch (AttackCycle)
+                {
+                    case 0:
+                        SwitchState(AIState.OrbitingStarPull);
+                        break;
+                    case 1:
+                        SwitchState(AIState.SpiralStarPull);
+                        break;
+                    case 2:
+                        SwitchState(AIState.ZigzagStorm);
+                        break;
+                    case 3:
+                        SwitchState(AIState.SlowFallingStars);
+                        break;
+                    case 4:
+                        SwitchState(AIState.SingularityBoom);
+                        break;
+                }
+
+                AttackCycle++;
+                if (AttackCycle >= 5)
+                {
+                    AttackCycle = 0;
+                }
+            }
+            else if (_starField)
+            {
+                switch (AttackCycle)
+                {
+                    case 0:
+                        SwitchState(AIState.SingularityBoom);
+                        break;
+                    case 1:
+                        SwitchState(AIState.OrbitingStarPull);
+                        break;
+                    case 2:
+                        SwitchState(AIState.BlackLightning);
+                        break;
+                    case 3:
+                        SwitchState(AIState.ZigzagStorm);
+                        break;
+                    case 4:
+                        SwitchState(AIState.SlowFallingStars);
+                        break;
+                    case 5:
+                        SwitchState(AIState.SpiralStarPull);
+                        break;
+                    case 6:
+                        SwitchState(AIState.BerserkLaser);
+                        break;
+                }
+
+                AttackCycle++;
+                if (AttackCycle >= 7)
+                {
+                    AttackCycle = 0;
+                }
             }
 
-            if(NPC.life < NPC.lifeMax / 2 && !_starField)
+            if (NPC.life < NPC.lifeMax / 2 && !_starField)
             {
                 SwitchState(AIState.Phase2Transition);
-            }
-
-            AttackCycle++;
-            if (AttackCycle >= 5)
-            {
-                AttackCycle = 0;
             }
         }
 
         private void SuckNearbyPlayers()
         {
-            foreach(var player in Main.ActivePlayers)
+            foreach (var player in Main.ActivePlayers)
             {
                 float distanceToPlayer = NPC.DistanceFrom(player);
-                if(distanceToPlayer > 1000 && distanceToPlayer < 2000)
+                if (distanceToPlayer > 1000 && distanceToPlayer < 2000)
                 {
                     Vector2 pullingVelocity = player.NormalizedVelocityTo(NPC);
                     pullingVelocity *= 5;
@@ -490,6 +761,16 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         {
             base.HitEffect(hit);
             HitOut();
+            if (NPC.life <= 0 && State != AIState.Death)
+            {
+                NPC.life = 1;
+                SwitchState(AIState.Death);
+            }
+
+            if (NPC.life <= 0)
+            {
+                NPC.life = 1;
+            }
         }
 
         public override void OnKill()
@@ -519,7 +800,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
                     Vector2 offset = rot.ToRotationVector2();
                     offset *= 1000;
-         
+
                     Vector2 spawnVelocity = Vector2.Zero;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + offset, spawnVelocity, orbitingStarType, SpiralStarDamage, 1, Main.myPlayer, ai0: NPC.whoAmI);
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center - offset, spawnVelocity, orbitingStarType, SpiralStarDamage, 1, Main.myPlayer, ai0: NPC.whoAmI);
@@ -558,13 +839,13 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 SpazOut();
             }
 
-            if(Timer > 60 && Timer % 20 == 0)
+            if (Timer > 60 && Timer % 20 == 0)
             {
                 if (StellaMultiplayer.IsHost)
                 {
                     int orbitingStarType = ModContent.ProjectileType<ZigzaggingStar>();
                     float rot = Timer * 0.05f;
-              
+
                     Vector2 offset = rot.ToRotationVector2();
                     offset *= 1000;
                     Vector2 spawnPos = NPC.Center + offset;
@@ -574,7 +855,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 AttackCounter++;
             }
 
-            if(AttackCounter >= 32)
+            if (AttackCounter >= 32)
             {
                 SwitchState(AIState.Idle);
             }
@@ -759,7 +1040,8 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         private void AI_Idle()
         {
             Timer++;
-            if (Timer >= 300)
+            float idleTime = _starField ? 200 : 300;
+            if (Timer >= idleTime)
             {
                 ChooseAttack();
             }
@@ -779,7 +1061,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
 
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-       
+
             Vector2 drawOrigin = texture.Size() / 2f;
             Vector2 drawScale = NPC.scale * Vector2.One * _spawnScale * 2 * _hitScale;
             drawPosition += _shakeOffset + _hitOffset;

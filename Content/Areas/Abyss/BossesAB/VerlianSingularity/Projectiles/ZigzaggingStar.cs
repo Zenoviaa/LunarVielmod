@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Dusts;
@@ -32,13 +33,16 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
             Timer++;
             if (Timer == 1)
             {
+                SoundStyle starSingle = AssetRegistry.Sounds.Stars.Starsingle3;
+                starSingle.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(starSingle, Projectile.position);
                 Vector2 velocityToParent = (parent.Center - Projectile.Center);
                 velocityToParent = velocityToParent.SafeNormalize(Vector2.Zero);
                 Projectile.velocity = velocityToParent;
             }
             if (Timer >= 180)
             {
-                if (StellaMultiplayer.IsHost)
+                if (this.OwnedByLocalClient())
                 {
                     float range = 90;
                     ZigZagOffsetRadians = MathHelper.Lerp(
