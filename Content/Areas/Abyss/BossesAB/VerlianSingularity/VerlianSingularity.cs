@@ -86,7 +86,89 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             On_Collision.SlopeCollision += NoSlopeCollision;
             On_Player.SlopingCollision += NoSlopingCollision;
             On_Player.DryCollision += NoDryCollision;
-        
+            On_Collision.SolidCollision_Vector2_int_int += NoSolidCollision;
+            On_Collision.EmptyTile += AllEmptyTiles;
+            On_Collision.SolidCollision_Vector2_int_int_bool += NoSolidCollision2;
+            On_Collision.IsWorldPointSolid += NoSolid;
+            On_Collision.StepDown += NoStepDown;
+            On_Collision.StepUp += NoStepUp;
+            On_Player.SlopeDownMovement += NoSlopeDown;
+
+        }
+        public override void OnModUnload()
+        {
+            base.OnModUnload();
+            On_Collision.TileCollision -= NoCollision;
+            On_Collision.AdvancedTileCollision -= NoAdvancedCollision;
+            On_Collision.WetCollision -= NoWetCollision;
+            On_Collision.AnyCollision -= NoAnyCollision;
+            On_Collision.SlopeCollision -= NoSlopeCollision;
+            On_Player.SlopingCollision -= NoSlopingCollision;
+            On_Player.DryCollision -= NoDryCollision;
+            On_Collision.EmptyTile -= AllEmptyTiles;
+            On_Collision.SolidCollision_Vector2_int_int -= NoSolidCollision;
+            On_Collision.SolidCollision_Vector2_int_int_bool -= NoSolidCollision2;
+            On_Collision.IsWorldPointSolid -= NoSolid;
+            On_Collision.StepDown -= NoStepDown;
+            On_Collision.StepUp -= NoStepUp;
+            On_Player.SlopeDownMovement -= NoSlopeDown;
+        }
+        private void NoSlopeDown(On_Player.orig_SlopeDownMovement orig, Player self)
+        {
+            if (inSpace)
+                return;
+            orig(self);
+        }
+
+        private void NoStepUp(On_Collision.orig_StepUp orig, ref Vector2 position, ref Vector2 velocity, int width, int height, ref float stepSpeed, ref float gfxOffY, int gravDir, bool holdsMatching, int specialChecksMode)
+        {
+            if (inSpace)
+                return;
+            orig(ref position, ref velocity, width, height, ref stepSpeed, ref gfxOffY, gravDir, holdsMatching, specialChecksMode);
+        }
+
+        private void NoStepDown(On_Collision.orig_StepDown orig, ref Vector2 position, ref Vector2 velocity, int width, int height, ref float stepSpeed, ref float gfxOffY, int gravDir, bool waterWalk)
+        {
+            if (inSpace)
+                return;
+            orig(ref position, ref velocity, width, height, ref stepSpeed, ref gfxOffY, gravDir, waterWalk);
+        }
+
+
+        private bool NoSolid(On_Collision.orig_IsWorldPointSolid orig, Vector2 pos, bool treatPlatformsAsNonSolid)
+        {
+            if (!inSpace)
+            {
+                return orig(pos, treatPlatformsAsNonSolid);
+            }
+            return false;
+        }
+
+        private bool NoSolidCollision2(On_Collision.orig_SolidCollision_Vector2_int_int_bool orig, Vector2 Position, int Width, int Height, bool acceptTopSurfaces)
+        {
+            if (!inSpace)
+            {
+                return orig(Position, Width, Height, acceptTopSurfaces);
+            }
+            return false;
+        }
+
+
+        private bool NoSolidCollision(On_Collision.orig_SolidCollision_Vector2_int_int orig, Vector2 Position, int Width, int Height)
+        {
+            if (!inSpace)
+            {
+                return orig(Position, Width, Height);
+            }
+            return false;
+        }
+        private bool AllEmptyTiles(On_Collision.orig_EmptyTile orig, int i, int j, bool ignoreTiles)
+        {
+            if (!inSpace)
+            {
+                return orig(i, j, ignoreTiles);
+            }
+            return true;
         }
 
         private void NoDryCollision(On_Player.orig_DryCollision orig, Player self, bool fallThrough, bool ignorePlats)
@@ -109,17 +191,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             orig(self, true, true);
         }
 
-        public override void OnModUnload()
-        {
-            base.OnModUnload();
-            On_Collision.TileCollision -= NoCollision;
-            On_Collision.AdvancedTileCollision -= NoAdvancedCollision;
-            On_Collision.WetCollision -= NoWetCollision;
-            On_Collision.AnyCollision -= NoAnyCollision;
-            On_Collision.SlopeCollision -= NoSlopeCollision;
-            On_Player.SlopingCollision -= NoSlopingCollision;
-            On_Player.DryCollision -= NoDryCollision;
-        }
+
         public override void PreUpdateNPCs()
         {
             base.PreUpdateNPCs();
@@ -183,7 +255,6 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
                 pullVelocity = null;
             }
-            Player.wingsLogic = 4;
         }
 
         public override void PostUpdateEquips()
