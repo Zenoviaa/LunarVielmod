@@ -18,6 +18,27 @@ using Terraria.ModLoader;
 namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 {
 
+    public class SingularityHitbox : VSProjectile
+    {
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 20;
+            Projectile.height = 20;
+            Projectile.penetrate = -1;
+            Projectile.hostile = true;
+        }
+        public override void AI()
+        {
+            base.AI();
+            Projectile.Center = Owner.Center;
+            if (NPC.AnyNPCs(ModContent.NPCType<VerlianSingularity>()))
+            {
+                Projectile.timeLeft = 2;
+            }
+        }
+    }
     [AutoloadEquip(EquipType.Wings)]
     public class MagicWings : ModItem
     {
@@ -216,6 +237,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         private bool _focusOn;
         private bool _spawnedCrescentMoon;
         private bool _starField;
+        private bool _spawnedHitbox;
         private Vector2 _shakeOffset;
         private Vector2 _hitOffset;
         private Color _chargeColor;
@@ -280,9 +302,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
-            if (State == AIState.Spawn)
-                return false;
-            return base.CanHitPlayer(target, ref cooldownSlot);
+            return false;
         }
 
         public override void AI()
@@ -356,6 +376,14 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                     AI_Spawn();
                     break;
                 case AIState.Idle:
+                    if (!_spawnedHitbox)
+                    {
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<SingularityHitbox>(), 50, 1, Main.myPlayer, ai0: NPC.whoAmI);
+                        }
+                        _spawnedHitbox = true;
+                    }
                     if (!_spawnedCrescentMoon)
                     {
                         if (StellaMultiplayer.IsHost)
