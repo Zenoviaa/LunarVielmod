@@ -563,7 +563,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 _bloomLine *= 0.9f;
                 SuckingParticles();
             }
-            if(Timer >= 120 && Timer % 45 == 0 && Timer < 600)
+            if(Timer >= 120 && Timer % 45 == 0 && Timer < 1200)
             {
          
                 SpawnPulse();
@@ -581,7 +581,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 }
             }
 
-            if(Timer >= 120 && Timer < 600)
+            if(Timer >= 120 && Timer < 1200)
             {
                 _ragingGlowCircle = true;
             }
@@ -594,7 +594,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             {
        
             }
-            if (Timer >= 720)
+            if (Timer >= 1320)
             {
                 SwitchState(AIState.Idle);
             }
@@ -783,7 +783,6 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             {
                 SwitchState(AIState.Phase2Transition);
             }
-       
         }
 
         private void SuckNearbyPlayers()

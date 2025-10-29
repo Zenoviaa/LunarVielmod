@@ -31,7 +31,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
             base.SetDefaults();
 
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 420;
+            Projectile.timeLeft = 1020;
         }
         public override bool ShouldUpdatePosition()
         {
