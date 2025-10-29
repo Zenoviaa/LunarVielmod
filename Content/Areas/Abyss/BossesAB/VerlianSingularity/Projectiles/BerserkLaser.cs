@@ -83,7 +83,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
             Projectile.Center = parentNpc.Center;
 
 
-            float rotatedRadians = MathHelper.ToRadians(1);
+            float rotatedRadians = MathHelper.ToRadians(1.5f);
      
             Projectile.velocity = Projectile.velocity.RotatedBy(rotatedRadians);
             if (Timer >= 120)
@@ -109,6 +109,10 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
                 float interpolant = n / numPoints;
                 Vector2 velocity = Projectile.velocity;
                 Vector2 laserPoint = Vector2.Lerp(Projectile.Center, Projectile.Center + velocity, interpolant);
+                if (Main.rand.NextBool(128))
+                {
+                    Particle.NewParticle<ZapParticle>(laserPoint + Main.rand.NextVector2Circular(64, 64), Main.rand.NextVector2Circular(8, 8));
+                }
             //    laserPoint = laserPoint.RotatedBy(MathHelper.Lerp(1f, 0f, interpolant), GetParentNPC().Center);
                 laserPoints.Add(laserPoint);
             }
@@ -124,7 +128,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
         {
             float inScale = EasingFunction.InOutSine(_inTimer / 30f);
             float outScale = EasingFunction.InOutSine(Projectile.timeLeft / 30f);
-            float width = 32;
+            float width = 70;
             float groScale = MathHelper.Lerp(1f, 2f, EasingFunction.InOutSine(_growTimer / 30f));
             return width * inScale * outScale * Main.rand.NextFloat(0.95f, 1f) * EasingFunction.QuadraticBump(interpolant) * groScale;
         }

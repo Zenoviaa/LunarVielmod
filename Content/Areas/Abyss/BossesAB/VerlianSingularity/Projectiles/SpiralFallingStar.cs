@@ -32,7 +32,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
             {
                 SoundStyle starSingle = AssetRegistry.Sounds.Stars.Starsingle5;
                 starSingle.PitchVariance = 0.2f;
-                SoundEngine.PlaySound(starSingle, Projectile.position);
+                SoundEngine.PlaySound(starSingle, GetParentNPC().position);
 
                 Vector2 velocityToParent = (parent.Center - Projectile.Center);
                 velocityToParent = velocityToParent.SafeNormalize(Vector2.Zero);
@@ -60,6 +60,9 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
             }
             if (distanceToParent <= 16)
             {
+                SoundStyle starSingle2 = AssetRegistry.Sounds.Stars.Starsingle1;
+                starSingle2.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(starSingle2, Projectile.position);
                 Projectile.Kill();
             }
 

@@ -9,6 +9,7 @@ using Stellamod.Helpers;
 using Stellamod.Projectiles.Wings;
 using Stellamod.Skies;
 using Stellamod.Visual.Particles;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -82,6 +83,8 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             On_Collision.AdvancedTileCollision += NoAdvancedCollision;
             On_Collision.WetCollision += NoWetCollision;
             On_Collision.AnyCollision += NoAnyCollision;
+            On_Collision.SlopeCollision += NoSlopeCollision;
+         
         }
 
 
@@ -92,11 +95,18 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             On_Collision.AdvancedTileCollision -= NoAdvancedCollision;
             On_Collision.WetCollision -= NoWetCollision;
             On_Collision.AnyCollision -= NoAnyCollision;
+            On_Collision.SlopeCollision -= NoSlopeCollision;
         }
         public override void PreUpdateNPCs()
         {
             base.PreUpdateNPCs();
             inSpace = false;
+        }
+        private Vector4 NoSlopeCollision(On_Collision.orig_SlopeCollision orig, Vector2 Position, Vector2 Velocity, int Width, int Height, float gravity, bool fall)
+        {
+            if (!inSpace)
+                return orig(Position, Velocity, Width, Height, gravity, fall);
+            return new Vector4(Position.X, Position.Y, Velocity.X, Velocity.Y);
         }
 
         private Vector2 NoAnyCollision(On_Collision.orig_AnyCollision orig, Vector2 Position, Vector2 Velocity, int Width, int Height, bool evenActuated)
@@ -143,6 +153,11 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             {
                 Vector2 velocity = pullVelocity.Value;
                 Player.velocity = velocity;
+                for(float f = 0; f < 3; f++)
+                {
+                    FXUtil.GlowStretch(Player.Center, velocity.RotatedByRandom(MathHelper.ToRadians(15)));
+                }
+
                 pullVelocity = null;
             }
             Player.wingsLogic = 4;
@@ -231,6 +246,8 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
     public class VerlianSingularity : ScarletBoss
     {
+        private float _incresionDiskFrameBottom;
+        private float _incresionDiskFrameTop;
         private float _spinTimer;
         private float _spawnScale;
         private float _spazzingTimer;
@@ -240,6 +257,9 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         private bool _spawnedCrescentMoon;
         private bool _starField;
         private bool _spawnedHitbox;
+        private bool _ragingGlowCircle;
+        private bool _warning;
+        private float _bloomLine;
         private Vector2 _shakeOffset;
         private Vector2 _hitOffset;
         private Color _chargeColor;
@@ -310,6 +330,8 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         public override void AI()
         {
             base.AI();
+            DrawHelper.UpdateFrame(ref _incresionDiskFrameBottom, 0.8f, 1, 40);
+            DrawHelper.UpdateFrame(ref _incresionDiskFrameTop, 0.8f, 1, 76);
             NPC.TargetClosest();
             if (!NPC.HasValidTarget)
             {
@@ -330,10 +352,9 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 fallSystem.inSpace = true;
             }
 
-            float startRadians = -MathHelper.ToRadians(22);
-            float endRadians = startRadians + MathHelper.ToRadians(2);
-            float interpolant = ExtraMath.Osc(0f, 1f, speed: 1);
-            NPC.rotation = MathHelper.Lerp(startRadians, endRadians, interpolant);
+            if (NPC.rotation == 0f)
+                NPC.rotation += MathHelper.ToRadians(15);
+            NPC.rotation += 0.001f;
             if (!_starField)
             {
 
@@ -370,7 +391,8 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 _hitTimer--;
             }
             _hitScale = MathHelper.Lerp(_hitScale, 1f, 0.1f);
-
+            _warning = false;
+            _ragingGlowCircle = false;
             SuckNearbyPlayers();
             switch (State)
             {
@@ -496,7 +518,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             {
                 SoundStyle chargeSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge2");
                 SoundEngine.PlaySound(chargeSound, NPC.position);
-                FXUtil.FocusCamera(NPC.Center, 60);
+                FXUtil.FocusCamera(NPC.Center - Vector2.UnitY * 500, 120);
                 SpawnPulse();
             }
 
@@ -505,8 +527,28 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 _spawnScale = MathHelper.Lerp(_spawnScale, 0.5f, 0.01f);
             }
 
+            if(Timer < 120)
+            {
+                _bloomLine = MathHelper.Lerp(_bloomLine, 1f, EasingFunction.InOutSine(Timer / 120f));
+                if(Timer % 5 == 0)
+                {
+                    Vector2 position = NPC.Center - Vector2.UnitY * Main.rand.NextFloat(0, 1000);
+                    Vector2 velocity = -Vector2.UnitY;
+                    var part = Particle.NewParticle<ZapParticle>(position, velocity);
+                    part.Scale *= Main.rand.NextFloat(0.5f, 3f);
+
+                    position = NPC.Center - Vector2.UnitY * Main.rand.NextFloat(0, 1000);
+                    var part2 = Particle.NewParticle<SparkParticle>(position, velocity);
+                    part2.Scale *= Main.rand.NextFloat(0.5f, 3f);
+                }
+            }
             if (Timer == 120)
             {
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                        ModContent.ProjectileType<SingularityBoom>(), SingularityBoom, 2, Main.myPlayer);
+                }
                 if (StellaMultiplayer.IsHost)
                 {
                     int damage = BerserkLaserDamage;
@@ -516,6 +558,42 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 }
             }
 
+            if(Timer >= 120)
+            {
+                _bloomLine *= 0.9f;
+                SuckingParticles();
+            }
+            if(Timer >= 120 && Timer % 45 == 0 && Timer < 600)
+            {
+         
+                SpawnPulse();
+                if (StellaMultiplayer.IsHost)
+                {
+                    int blackLightningProjectileType = ModContent.ProjectileType<BlackLightning>();
+                    Vector2 spawnPos = NPC.Center;
+                    Vector2 velocity = Main.rand.NextVector2CircularEdge(1, 1);
+                    var source = NPC.GetSource_FromThis();
+                    Projectile.NewProjectile(source, spawnPos, velocity, blackLightningProjectileType, BlackLightningDamage, 2, Main.myPlayer, ai0: NPC.whoAmI);
+                    velocity = Main.rand.NextVector2CircularEdge(1, 1);
+                    Projectile.NewProjectile(source, spawnPos, velocity, blackLightningProjectileType, BlackLightningDamage, 2, Main.myPlayer, ai0: NPC.whoAmI);
+                    velocity = Main.rand.NextVector2CircularEdge(1, 1);
+                    Projectile.NewProjectile(source, spawnPos, velocity, blackLightningProjectileType, BlackLightningDamage, 2, Main.myPlayer, ai0: NPC.whoAmI);
+                }
+            }
+
+            if(Timer >= 120 && Timer < 600)
+            {
+                _ragingGlowCircle = true;
+            }
+            if(Timer >= 120 && Timer % 2 == 0)
+            {
+                _shakeOffset = Main.rand.NextVector2Circular(12, 12);
+            }
+
+            if(Timer > 600)
+            {
+       
+            }
             if (Timer >= 720)
             {
                 SwitchState(AIState.Idle);
@@ -525,6 +603,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         private void AI_Death()
         {
             Timer++;
+            _ragingGlowCircle = true;
             if (Timer == 1)
             {
                 SoundStyle chargeSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge");
@@ -592,9 +671,11 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
         private void AI_SingularityBoom()
         {
+            _warning = true;
             Timer++;
             if (Timer < 100)
             {
+              
                 float interpolant = Timer / 100;
                 float ease = EasingFunction.InOutSine(interpolant);
                 _spawnScale = MathHelper.Lerp(1f, 0.25f, ease);
@@ -702,6 +783,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             {
                 SwitchState(AIState.Phase2Transition);
             }
+       
         }
 
         private void SuckNearbyPlayers()
@@ -1084,6 +1166,13 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             Texture2D celestialRing = ModContent.Request<Texture2D>(Texture + "_CelestialRing").Value;
             Vector2 ringDrawOrigin = celestialRing.Size() / 2f;
             Color ringDrawColor = Color.White;
+            if (_warning)
+            {
+                ringDrawColor = Color.Lerp(Color.Transparent, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 24));
+            } else
+            {
+            
+            }
             ringDrawColor *= 0.15f;
             ringDrawColor *= _spawnScale;
             ringDrawColor.A = 0;
@@ -1122,7 +1211,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
             Texture2D diskTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SF").Value;
             Vector2 diskDrawOrigin = diskTexture.Size() / 2f;
-            Color diskDrawColor = Color.Lerp(Color.White, Color.Cyan, ExtraMath.Osc(0f, 1f, speed: 2));
+            Color diskDrawColor = Color.Lerp(Color.White, Color.Lerp(Color.White, Color.Cyan, 0.15f), ExtraMath.Osc(0f, 1f, speed: 2));
             diskDrawColor = diskDrawColor.MultiplyRGB(_chargeColor);
             diskDrawColor.A = 0;
 
@@ -1130,7 +1219,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation, diskDrawOrigin, drawScale * 0.8f * scaleOsc, SpriteEffects.None, 0);
             spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation, diskDrawOrigin, drawScale * 0.7f * scaleOsc, SpriteEffects.None, 0);
 
-
+            diskTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SF2").Value;
             for (float f = 0; f < 4; f++)
             {
 
@@ -1145,8 +1234,79 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             Color extra67DrawColor = Color.Lerp(Color.White, Color.Cyan, ExtraMath.Osc(0f, 1f, speed: 2));
             extra67DrawColor.A = 0;
             spriteBatch.Draw(extra67, drawPosition, null, extra67DrawColor, NPC.rotation, extra67DrawOrigin, drawScale * 0.8f * scaleOsc, SpriteEffects.None, 0);
+            DrawIncresionDiskBottom(spriteBatch, screenPos, drawColor);
+            DrawIncresionDiskTop(spriteBatch, screenPos, drawColor);
+            if(_bloomLine > 0)
+            {
+                Texture2D bloomLineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
+                Vector2 bloomLineOrigin = bloomLineTexture.Size() / 2f;
+                Color glowDrawColor = Color.Lerp(Color.Yellow, Color.Cyan, ExtraMath.Osc(0f, 1f, speed: 32));
+                glowDrawColor *= _bloomLine;
+                glowDrawColor.A = 0;
+                spriteBatch.Draw(bloomLineTexture, drawPosition - new Vector2(0, (float)bloomLineTexture.Height), null, glowDrawColor, 0, bloomLineOrigin, drawScale, SpriteEffects.None, 0);
+            }
+            if (_ragingGlowCircle)
+            {
+                Texture2D glowCircleTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
+                Vector2 glowCircleDrawOrigin = glowCircleTexture.Size() / 2f;
+                Color glowDrawColor = Color.Lerp(Color.Yellow, Color.Cyan, ExtraMath.Osc(0f, 1f, speed: 32));
+                glowDrawColor.A = 0;
+                spriteBatch.Draw(glowCircleTexture, drawPosition, null, glowDrawColor, NPC.rotation, glowCircleDrawOrigin, drawScale * scaleOsc * 6, SpriteEffects.None, 0);
+                spriteBatch.Draw(glowCircleTexture, drawPosition, null, glowDrawColor, NPC.rotation, glowCircleDrawOrigin, drawScale * scaleOsc * 6, SpriteEffects.None, 0);
+            }
             return false;
         }
+     
+        private void DrawIncresionDiskBottom(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            //Draw Incresion Disk
+            Rectangle incresionDiskRect = DrawHelper.FrameGrid(_incresionDiskFrameBottom, columns: 5, frameWidth: 400, frameHeight: 200);
+            Texture2D supernovaTopTexture = ModContent.Request<Texture2D>(Texture + "_Disk").Value;
+
+            //Incresion Disk Draw Color
+            Color incresionDiskDrawColor = Color.White;
+            incresionDiskDrawColor *= 0.25f;
+            incresionDiskDrawColor.A = 0;
+
+            Vector2 drawPos = NPC.Center - screenPos;
+            Vector2 drawOrigin = incresionDiskRect.Size() / 2;
+            float drawScale = NPC.scale  * _spawnScale * 1.75f;
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, NPC.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+           
+            incresionDiskDrawColor = Color.Cyan;
+            incresionDiskDrawColor *= 0.25f;
+            incresionDiskDrawColor.A = 0;
+
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, NPC.rotation, drawOrigin, drawScale * 1.5f, SpriteEffects.None, 0);
+
+            incresionDiskDrawColor = Color.Purple;
+            incresionDiskDrawColor *= 0.25f;
+            incresionDiskDrawColor.A = 0;
+
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, NPC.rotation, drawOrigin, drawScale * 2, SpriteEffects.None, 0);
+        }
+
+
+        private void DrawIncresionDiskTop(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            //Draw Incresion Disk
+            Rectangle incresionDiskRect = DrawHelper.FrameGrid(_incresionDiskFrameTop, columns: 4, frameWidth: 480, frameHeight: 200);
+            Texture2D supernovaTopTexture = ModContent.Request<Texture2D>(Texture + "_Top").Value;
+
+            //Incresion Disk Draw Color
+            Color incresionDiskDrawColor = Color.White;
+            incresionDiskDrawColor *= 0.15f;
+            incresionDiskDrawColor.A = 0;
+
+            Vector2 drawPos = NPC.Center - screenPos;
+            Vector2 drawOrigin = incresionDiskRect.Size() / 2;
+
+            float drawScale = NPC.scale * 3 * _spawnScale;
+            float drawRotation = NPC.rotation;
+
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+        }
+
         #endregion
     }
 }

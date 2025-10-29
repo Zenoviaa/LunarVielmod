@@ -64,6 +64,15 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
                     Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                     Dust.NewDustPerfect(spawnPos, ModContent.DustType<TSmokeDust>(), velocity, newColor: Color.DarkBlue);
                 }
+
+                var part = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightBlue, Color.Purple, baseSize: 0.2f);
+                part.Scale *= 6;
+
+                var part3 = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightBlue, Color.Purple, baseSize: 0.15f);
+                part3.Scale *= 4;
+
+                var part2 = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightBlue, Color.Purple);
+                part2.Scale *= 3;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ShadowExplosion"), Projectile.position);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/STARGROP"), Projectile.position);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Bomb"), Projectile.position);
@@ -72,6 +81,21 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(128, 128);
                     FXUtil.GlowStretch(Projectile.Center, velocity);
+                }
+                for (float i = 0; i < 8; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.LightCyan,
+                        outerGlowColor: Color.Blue,
+                        baseSize: Main.rand.NextFloat(0.1f, 0.2f),
+                        duration: Main.rand.NextFloat(15, 25));
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                    particle.Scale *= 4;
                 }
             }
         }

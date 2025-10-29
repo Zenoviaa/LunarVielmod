@@ -35,7 +35,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
             {
                 SoundStyle starSingle = AssetRegistry.Sounds.Stars.Starsingle3;
                 starSingle.PitchVariance = 0.2f;
-                SoundEngine.PlaySound(starSingle, Projectile.position);
+                SoundEngine.PlaySound(starSingle, GetParentNPC().position);
                 Vector2 velocityToParent = (parent.Center - Projectile.Center);
                 velocityToParent = velocityToParent.SafeNormalize(Vector2.Zero);
                 Projectile.velocity = velocityToParent;
@@ -50,9 +50,9 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
                         MathHelper.ToRadians(range), Main.rand.NextFloat(0f, 1f));
                     Projectile.netUpdate = true;
                 }
-                SoundStyle starrer = new SoundStyle("Stellamod/Assets/Sounds/Starrer");
-                starrer.PitchVariance = 0.1f;
-                SoundEngine.PlaySound(starrer, Projectile.position);
+                SoundStyle starSingle2 = AssetRegistry.Sounds.Stars.Starsingle2;
+                starSingle2.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(starSingle2, Projectile.position);
                 FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightCyan, Color.DarkBlue, baseSize: 0.06f);
                 Timer = 0;
             }
