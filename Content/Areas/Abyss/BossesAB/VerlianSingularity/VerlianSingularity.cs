@@ -321,6 +321,10 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/VoidHit") with { PitchVariance = 0.1f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/VoidDead1") with { PitchVariance = 0.1f };
         }
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
