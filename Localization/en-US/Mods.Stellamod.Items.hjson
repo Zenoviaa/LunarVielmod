@@ -8589,12 +8589,12 @@ WarriorsGrace: {
 	DisplayName: Warriors Grace
 	Tooltip: ""
 	BasicSlash: ""
-	StaminaSlash: ""
+	StaminaSlash: Does a furry of small slashes!
 }
 
 IronBall: {
 	DisplayName: Iron Ball
-	Tooltip: ""
+	Tooltip: Swing it around really far!
 }
 
 PrimeRing: {
@@ -8964,7 +8964,7 @@ IvynthornChoker: {
 
 KindCompass: {
 	DisplayName: Kind Compass
-	Tooltip: ""
+	Tooltip: +1 Insource slot in your flask!
 }
 
 IronBow: {
@@ -9183,7 +9183,7 @@ TwilightTome: {
 
 StaffOfHypnolight: {
 	DisplayName: Staff Of Hypnolight
-	Tooltip: ""
+	Tooltip: A hypnotic staff huh? Hypnotizing... Mmmm
 }
 
 InsourcedBrew: {
