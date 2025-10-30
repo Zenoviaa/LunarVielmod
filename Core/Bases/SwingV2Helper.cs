@@ -13,6 +13,114 @@ namespace Stellamod.Core.Bases
 
     public static class SwingV2Helper
     {
+        public static void AddKnivesSwingStyle(ISwingProjectile swings)
+        {
+
+            SoundStyle swingSound1 = SoundRegistry.NSwordSlash2;
+            swingSound1.PitchVariance = 0.5f;
+
+            SoundStyle swingSound2 = SoundRegistry.NSwordSlash2;
+            swingSound2.PitchVariance = 0.5f;
+            swingSound2.Pitch = 0.5f;
+
+            SoundStyle swingSound3 = SoundRegistry.NSwordSlash1;
+            swingSound3.PitchVariance = 0.5f;
+
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 8,
+                XSwingRadius = 84,
+                YSwingRadius = 42,
+                SwingDegrees = 315,
+                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue),
+                Sound = swingSound1,
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 8,
+                XSwingRadius = 72,
+                YSwingRadius = 36,
+                SwingDegrees = 315,
+                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue),
+                Sound = swingSound2,
+            });
+
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 8,
+                XSwingRadius = 84,
+                YSwingRadius = 56,
+                SwingDegrees = 315,
+                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue),
+                Sound = swingSound1,
+            });
+
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 8,
+                XSwingRadius = 96,
+                YSwingRadius = 32,
+                SwingDegrees = 315,
+                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue),
+                Sound = swingSound2,
+            });
+
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 8,
+                XSwingRadius = 76,
+                YSwingRadius = 24,
+                SwingDegrees =315,
+                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue),
+                Sound = swingSound1,
+            });
+
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 8,
+                XSwingRadius = 84,
+                YSwingRadius = 32,
+                SwingDegrees = 315,
+                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue),
+                Sound = swingSound2,
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 8,
+                XSwingRadius = 80,
+                YSwingRadius = 16,
+                SwingDegrees = 315,
+                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue),
+                Sound = swingSound1,
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 8,
+                XSwingRadius = 76,
+                YSwingRadius = 24,
+                SwingDegrees = 315,
+                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue),
+                Sound = swingSound2
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 6,
+                XSwingRadius = 76,
+                YSwingRadius = 24,
+                SwingDegrees = 315,
+                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue),
+                Sound = swingSound2
+            });
+        }
         public static void AddGreatswordSwingStyle(ISwingProjectile swings)
         {
             SoundStyle swingSound1 = SoundRegistry.HeavySwordSlash1;

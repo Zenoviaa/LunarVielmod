@@ -105,7 +105,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 particle.Scale *= 0.5f;
                 particle.Rotation = particle.Velocity.ToRotation();
             }
-            player.GetAttackSpeed(DamageClass.Melee) += 0.5f;
+            player.GetAttackSpeed(DamageClass.Melee) += 0.25f;
         }
     }
 

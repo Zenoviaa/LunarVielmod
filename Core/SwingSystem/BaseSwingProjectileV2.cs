@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects;
+using Stellamod.Core.Players;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System.Collections.Generic;
@@ -43,6 +44,7 @@ namespace Stellamod.Core.SwingSystem
         public Color outlineColor;
         public Color glowAfterImageColor;
         public bool drawCentered;
+        public bool isChildProjectile;
         public const int EXTRA_UPDATE_COUNT = 7;
 
         //Default to the item sprite of the texture, we can just predraw if we need to change it
@@ -189,7 +191,7 @@ namespace Stellamod.Core.SwingSystem
             oldTime[0] = Interpolant;
             if(_fade < 1f)
             {
-                _fade += 0.005f;
+                _fade += 0.1f;
             }
             _canHurtThings = swing.CanHurt(this);
 
@@ -256,7 +258,23 @@ namespace Stellamod.Core.SwingSystem
             return false;
         }
 
+        public void CloneProjectile()
+        {
+            if (isChildProjectile)
+                return;
 
+            if (Main.myPlayer == Projectile.owner)
+            {
+                ComboPlayer comboPlayer = Owner.GetModPlayer<ComboPlayer>();
+                int combo = (int)(ComboIndex + 1);
+                int dir = comboPlayer.ComboDirection;
+                var p =Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity,
+                    Type, Projectile.damage, Projectile.knockBack,
+                               Owner.whoAmI, ai2: combo, ai1: dir);
+                BaseSwingProjectileV2 swingProj = p.ModProjectile as BaseSwingProjectileV2;
+                swingProj.isChildProjectile = true;
+            }
+        }
         public Vector2 CalculateTrailOffset()
         {
             return Vector2.Zero;

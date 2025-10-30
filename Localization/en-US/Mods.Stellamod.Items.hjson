@@ -2793,7 +2793,9 @@ SwordOfTheJungleGoddess: {
 
 WoodenSaber: {
 	DisplayName: Wooden Saber
-	Tooltip: Hit enemies explode with ivy
+	Tooltip: ""
+	StaminaSlash: Swings the two knives around you very quickly, hitting multiple times!
+	BasicSlash: No Effect
 }
 
 X3107: {
