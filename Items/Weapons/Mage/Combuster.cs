@@ -17,7 +17,7 @@ namespace Stellamod.Items.Weapons.Mage
             base.SetDefaults();
             Item.width = 20;
             Item.height = 54;
-            Item.damage = 10;
+            Item.damage = 9;
             Item.knockBack = 8;
             Item.DamageType = DamageClass.Magic;
             Item.mana = 25;
