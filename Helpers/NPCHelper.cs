@@ -9,6 +9,7 @@ namespace Stellamod.Helpers
 {
     public static class NPCHelper
     {
+
         public static void OpenShop(NPC npc)
         {
             Main.LocalPlayer.SetTalkNPC(npc.whoAmI);

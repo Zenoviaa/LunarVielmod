@@ -5359,7 +5359,7 @@ CinderedLantern: {
 }
 
 Combuster: {
-	DisplayName: Combuster
+	DisplayName: Combuster Artifact
 	Tooltip: Creates fiery explosions around you cursor! Eventually forming a MASSIVE boom!
 }
 
@@ -9425,4 +9425,9 @@ IvynSharprod: {
 DragonShard: {
 	DisplayName: Dragon Shard
 	Tooltip: Shard from strong foes, used to upgrade your weapons to make them stronger at the white dragon.
+}
+
+FlamecrestWand: {
+	Tooltip: ""
+	DisplayName: Flamecrest Wand
 }

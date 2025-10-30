@@ -10,6 +10,7 @@ using Stellamod.Projectiles.Wings;
 using Stellamod.Skies;
 using Stellamod.Visual.Particles;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -93,7 +94,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             On_Collision.StepDown += NoStepDown;
             On_Collision.StepUp += NoStepUp;
             On_Player.SlopeDownMovement += NoSlopeDown;
-
+            On_Collision.CanHitLine += AlwaysHitLine;
         }
         public override void OnModUnload()
         {
@@ -107,7 +108,16 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             On_Player.DryCollision -= NoDryCollision;
  
             On_Player.SlopeDownMovement -= NoSlopeDown;
+            On_Collision.CanHitLine -= AlwaysHitLine;
         }
+
+        private bool AlwaysHitLine(On_Collision.orig_CanHitLine orig, Vector2 Position1, int Width1, int Height1, Vector2 Position2, int Width2, int Height2)
+        {
+            if (inSpace)
+                return true;
+            return orig(Position1, Width1, Height1, Position2, Width2, Height2);
+        }
+
         private void NoSlopeDown(On_Player.orig_SlopeDownMovement orig, Player self)
         {
             if (inSpace)
@@ -337,7 +347,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
     {
         private float _incresionDiskFrameBottom;
         private float _incresionDiskFrameTop;
-        private float _spinTimer;
+
         private float _spawnScale;
         private float _spazzingTimer;
         private float _hitTimer;
@@ -373,6 +383,8 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         private int SingularityBoom => 32;
         private int BlackLightningDamage => 20;
         private int BerserkLaserDamage => 50;
+
+        private float _spinTimer;
         private ref float Timer => ref NPC.ai[0];
         private ref float AttackCounter => ref NPC.ai[1];
         private AIState State
@@ -381,6 +393,16 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             set => NPC.ai[2] = (float)value;
         }
         private ref float AttackCycle => ref NPC.ai[3];
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(_spinTimer);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            _spinTimer = reader.ReadSingle();
+        }
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -412,7 +434,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         }
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
         {
-            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+            DifficultyChanges.ApplyDifficultyAndScaling(NPC, numPlayers);
         }
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -556,9 +578,10 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             _spawnScale = MathHelper.Lerp(_spawnScale, 0f, ease);
             if (Timer >= 120f)
             {
-                NPC.EncourageDespawn(1);
+                NPC.active = false;
             }
         }
+
         private void AI_BlackLightning()
         {
             Timer++;

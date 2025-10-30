@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Magic;
@@ -8,25 +9,18 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    public class Combuster : ClassSwapItem
+    public class Combuster : ModItem
     {
-
-        public override DamageClass AlternateClass => DamageClass.Throwing;
-
-        public override void SetClassSwappedDefaults()
-        {
-            Item.damage = 18;
-            Item.mana = 0;
-        }
         private int _combo;
         public override void SetDefaults()
         {
+            base.SetDefaults();
             Item.width = 20;
             Item.height = 54;
-            Item.damage = 36;
+            Item.damage = 10;
             Item.knockBack = 8;
             Item.DamageType = DamageClass.Magic;
-            Item.mana = 10;
+            Item.mana = 25;
             Item.useTime = 10;
             Item.useAnimation = 10;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -34,9 +28,9 @@ namespace Stellamod.Items.Weapons.Mage
             Item.knockBack = 2f;
             Item.value = Item.sellPrice(gold: 1);
             Item.shoot = ModContent.ProjectileType<CombusterSparkProj1>();
+            Item.shootSpeed = 5;
             Item.rare = ItemRarityID.LightRed;
         }
-
 
         public override Vector2? HoldoutOffset()
         {
@@ -45,6 +39,8 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
+  
+
             int slowdown = 6;
             int maxCombo = 15;
             if (_combo == maxCombo)
@@ -68,7 +64,18 @@ namespace Stellamod.Items.Weapons.Mage
             _combo++;
             if (_combo >= maxCombo + 1)
                 _combo = 0;
-            position = Main.MouseWorld;
+
+            Vector2 targetPosition = Main.MouseWorld;
+            if (Collision.CanHitLine(player.Center, 1, 1, targetPosition, 1, 1))
+            {
+                position = targetPosition;
+            } 
+            else
+            {
+                float length = ProjectileHelper.PerformBeamHitscan(player.Center, velocity, 1024);
+                position = player.Center + velocity.SafeNormalize(Vector2.Zero) * length;
+            }
+            velocity = Vector2.Zero;
         }
         public override void AddRecipes()
         {
