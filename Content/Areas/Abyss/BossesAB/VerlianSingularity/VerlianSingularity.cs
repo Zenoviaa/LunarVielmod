@@ -397,12 +397,15 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         {
             base.SendExtraAI(writer);
             writer.Write(_spinTimer);
+            writer.Write(_starField);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
             _spinTimer = reader.ReadSingle();
+            _starField = reader.ReadBoolean();
         }
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();

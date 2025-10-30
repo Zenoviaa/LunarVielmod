@@ -67,11 +67,13 @@ float3 calculateColor(float3 color)
     for (int i = 1; i < 16; i++)
     {
         currentDist = colorDistance2(color, colors[i]);
-        if (currentDist < dist)
-        {
-            dist = currentDist;
-            selectedColor = colors[i];
-        }
+        //Branchless way to do this
+        //We want to avoid using if-statements in shaders if possible, as creating branches GREATLY slows them down
+        //We can evaluate a check like this to a 0 or 1, and since only 1 can be true we can invert it simply :) 
+        float a = currentDist < dist;
+        float b = 1.0 - a;
+        dist = a * currentDist + b * dist;
+        selectedColor = a * colors[i] + b * selectedColor;
     }
     
     float3 finalColor = lerp(color, selectedColor, uProgress);
