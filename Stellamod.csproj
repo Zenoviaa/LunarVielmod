@@ -374,9 +374,6 @@
     <None Remove="Items\Armors\Terric\TericGramNPC2.png" />
     <None Remove="Items\Consumables\SunClaw.png" />
     <None Remove="Items\Materials\AcidicalDirtBlock.png" />
-    <None Remove="Items\Materials\AncientLunarStone.png" />
-    <None Remove="Items\Materials\LunarStone.png" />
-    <None Remove="Items\Materials\RareLunarStone.png" />
     <None Remove="Items\Placeable\Alcadzia\AlciteI.png" />
     <None Remove="Items\Placeable\Alcadzia\AowerBottomI.png" />
     <None Remove="Items\Placeable\Alcadzia\AowerTopI.png" />

@@ -63,7 +63,7 @@ namespace Stellamod.Core.TitleSystem
 
             float progress = _timer / _duration;
             float easedProgress = EasingFunction.QuadraticBump(progress);
-            float pixels = MathHelper.Lerp(64, 128, easedProgress);
+            float pixels = MathHelper.Lerp(32, 64, easedProgress);
             _text.Top.Pixels = pixels;
             _text.TextColor = Color.Lerp(Color.Transparent, Color.White, easedProgress);
         }
@@ -83,8 +83,8 @@ namespace Stellamod.Core.TitleSystem
             float easedProgress = EasingFunction.QuadraticBump(progress);
             Texture2D texture = LineTexture.Value;
 
-            float startY = 64 / (float)Main.screenHeight;
-            float endY = 128 / (float)Main.screenHeight;
+            float startY = 32 / (float)Main.screenHeight;
+            float endY = 64 / (float)Main.screenHeight;
             Vector2 ratioPos = new Vector2(50, MathHelper.Lerp(startY, endY, easedProgress) * 100);
             Vector2 drawPos = ratioPos;
             drawPos.X = (int)(drawPos.X * 0.01f * Main.screenWidth);

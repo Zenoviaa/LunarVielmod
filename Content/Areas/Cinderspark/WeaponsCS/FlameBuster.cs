@@ -1,7 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.GunSystem;
+using Stellamod.Items;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials.Molds;
-
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;
@@ -9,25 +10,20 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Ranged
+namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 {
-    public class FlameBuster : ClassSwapItem
+    public class FlameBuster : BaseGun
     {
-
-        public override DamageClass AlternateClass => DamageClass.Magic;
-
-        public override void SetClassSwappedDefaults()
-        {
-            Item.damage = 8;
-            Item.mana = 4;
-        }
         private int _comboCounter;
         public override void SetDefaults()
         {
+            base.SetDefaults();
+            remainingAmmo = 29;
+            maxAmmo = 29;
             Item.width = 92;
             Item.height = 44;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 16;
+            Item.damage = 4;
             Item.value = Item.sellPrice(gold: 2);
             Item.useTime = 29;
             Item.useAnimation = 29;
@@ -46,9 +42,8 @@ namespace Stellamod.Items.Weapons.Ranged
             return new Vector2(-24, 0);
         }
 
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override bool GunShot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-
             _comboCounter++;
             if (_comboCounter > 28)
             {
@@ -66,9 +61,8 @@ namespace Stellamod.Items.Weapons.Ranged
                 Vector2 targetVelocity = -velocity.SafeNormalize(Vector2.Zero) * recoilStrength;
                 player.velocity = VectorHelper.VelocityUpTo(player.velocity, targetVelocity);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 16f);
-                int numProjectiles = Main.rand.Next(4, 9);
+                int numProjectiles = Main.rand.Next(2, 5);
                 velocity *= 2.5f;
-                damage *= 2;
                 type = ModContent.ProjectileType<CinderFlameball>();
                 for (int p = 0; p < numProjectiles; p++)
                 {
@@ -113,8 +107,9 @@ namespace Stellamod.Items.Weapons.Ranged
                 SoundEngine.PlaySound(SoundID.Item38, position);
             }
 
-            return base.Shoot(player, source, position, velocity, type, damage, knockback);
+            return base.GunShot(player, source, position, velocity, type, damage, knockback);
         }
+
         public override void AddRecipes()
         {
             base.AddRecipes();
