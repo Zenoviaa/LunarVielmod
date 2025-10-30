@@ -309,6 +309,7 @@ namespace Stellamod.NPCs.Colosseum.Common
                     Spawn(new Point(-35, 10), ModContent.NPCType<EliteCommander>());
                     break;
                 case 6:
+                    goAwayGintzia = true;
                     Spawn(new Point(0, -30), ModContent.NPCType<CommanderGintzia>());
                     break;
             }
