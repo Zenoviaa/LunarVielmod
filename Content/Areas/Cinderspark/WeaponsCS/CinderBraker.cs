@@ -29,9 +29,10 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void SetDefaults2()
         {
             base.SetDefaults2();
+            Item.damage = 9;
             Item.shoot = ModContent.ProjectileType<CinderBreakerSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<CinderBreakerStaminaSlash>();
-            meleeWeaponType = MeleeWeaponType.Sword;
+            meleeWeaponType = MeleeWeaponType.Knives;
         }
 
         public override void AddRecipes()
@@ -45,11 +46,26 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
     public class CinderBreakerSlash : BaseSwingProjectileV2
     {
         private bool _hit;
+        private bool _hasSpawnedSecondKnife;
         public override void DefineCombo()
         {
             base.DefineCombo();
-            SwingV2Helper.AddSwordSwingStyle(this);
+            SwingV2Helper.AddKnivesSwingStyle(this);
             Trailer = TrailPresets.CinderBreaker;
+            useAfterImage = true;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            if (!_hasSpawnedSecondKnife && ComboIndex != ComboCount - 1 && Interpolant >= 0.9f)
+            {
+                CloneProjectile();
+                _hasSpawnedSecondKnife = true;
+            }
+
+            glowColor = Color.Lerp(Color.Transparent, Color.Red, EasingFunction.QuadraticBump(Interpolant));
+            growScale = MathHelper.Lerp(0f, 0.15f, EasingFunction.QuadraticBump(Interpolant));
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -130,6 +146,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
             });
 
+            useAfterImage = true;
         }
         private bool _thrust;
         public float thrustSpeed = 5;
@@ -137,7 +154,8 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void AI()
         {
             base.AI();
-
+            glowColor = Color.Lerp(Color.Transparent, Color.Red, EasingFunction.QuadraticBump(Interpolant));
+            growScale = MathHelper.Lerp(0f, 0.15f, EasingFunction.QuadraticBump(Interpolant));
             Vector2 swingDirection = Projectile.velocity.SafeNormalize(Vector2.Zero);
             if (Interpolant > 0.5f && !AuroraProj2)
             {
