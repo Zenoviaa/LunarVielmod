@@ -74,6 +74,9 @@ namespace Stellamod.NPCs.Colosseum.Common
             base.SendExtraAI(writer);
             writer.Write(_shouldDie);
             writer.Write(_broadcastWave);
+            writer.Write(_enemyCount);
+            writer.Write(_waveIndex);
+            writer.Write(_maxWave);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -81,6 +84,9 @@ namespace Stellamod.NPCs.Colosseum.Common
             base.ReceiveExtraAI(reader);
             _shouldDie = reader.ReadBoolean();
             _broadcastWave = reader.ReadBoolean();
+            _enemyCount = reader.ReadInt32();  
+            _waveIndex = reader.ReadInt32();
+            _maxWave = reader.ReadInt32();
         }
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -102,7 +108,7 @@ namespace Stellamod.NPCs.Colosseum.Common
             if (_broadcastWave && Main.netMode != NetmodeID.Server)
             {
                 TitleCardUISystem uiSystem = ModContent.GetInstance<TitleCardUISystem>();
-                uiSystem.OpenUI($"Wave {_waveIndex + 1}", duration: 3);
+                uiSystem.OpenUI($"Wave {_waveIndex}", duration: 3);
                 _broadcastWave = false;
             }
 
