@@ -101,5 +101,12 @@ namespace Stellamod.Core.Particles
         }
 
         public Asset<Texture2D> GetTexture() => ParticleSystem.ParticleAssets[Type];
+
+        public string GetShaderPath()
+        {
+            if (customShader != null)
+                return customShader.EffectPath;
+            return string.Empty;
+        }
     }
 }

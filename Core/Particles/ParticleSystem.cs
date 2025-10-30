@@ -159,11 +159,7 @@ namespace Stellamod.Core.Particles
         {
             public int Compare(Particle x, Particle y)
             {
-                if (x.customShader == null)
-                    return -1;
-                if (y.customShader == null)
-                    return 1;
-                return x.customShader.EffectPath.CompareTo(y.customShader.EffectPath);
+                return x.GetShaderPath().CompareTo(y.GetShaderPath());
             }
         }
         public void DrawParticles(SpriteBatch spriteBatch)
