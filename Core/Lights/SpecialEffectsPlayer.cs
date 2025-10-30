@@ -125,6 +125,8 @@ namespace Stellamod.Core.Lights
             //This code should only run on each client
             if (Main.netMode == NetmodeID.Server)
                 return;
+            if (Main.myPlayer != Player.whoAmI)
+                return;
           
             //Darkness
             if (!_init)
@@ -403,6 +405,9 @@ namespace Stellamod.Core.Lights
         {
             if (Main.netMode == NetmodeID.Server)
                 return;
+            if (Main.myPlayer != Player.whoAmI)
+                return;
+
             bool useVignette = darkness != 0;
             if (useVignette)
             {

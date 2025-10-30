@@ -693,7 +693,7 @@ namespace Stellamod
             }
 
     
-
+            /*
             if (Main.netMode != NetmodeID.Server)
             {
 
@@ -766,7 +766,7 @@ namespace Stellamod
 
                     DreadMonThree = true;
                 }
-            }
+            }*/
 
             if (VoidBlasterHits >= 0)
             {

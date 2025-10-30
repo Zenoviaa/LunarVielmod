@@ -27,6 +27,7 @@ namespace Stellamod.WorldG
             //}
             IL_WorldGen.CreateNewWorld += WorldGen_EditWorldSize;
             IL_WorldFile.LoadWorld += WorldGen_EditWorldSize;
+        
             WorldGen_lastMaxTilesX = typeof(WorldGen).GetField("lastMaxTilesX", BindingFlags.Static | BindingFlags.NonPublic);
             WorldGen_lastMaxTilesY = typeof(WorldGen).GetField("lastMaxTilesY", BindingFlags.Static | BindingFlags.NonPublic);
         }
@@ -44,6 +45,12 @@ namespace Stellamod.WorldG
             cursor.EmitDelegate(EditWorldSize);
         }
 
+        public override void ClearWorld()
+        {
+            base.ClearWorld();
+            EditWorldSize();
+        }
+      
         private void EditWorldSize()
         {
             int lastMaxTilesX = (int)WorldGen_lastMaxTilesX.GetValue(null);

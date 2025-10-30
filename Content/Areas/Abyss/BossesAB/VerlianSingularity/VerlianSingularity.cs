@@ -105,12 +105,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             On_Collision.SlopeCollision -= NoSlopeCollision;
             On_Player.SlopingCollision -= NoSlopingCollision;
             On_Player.DryCollision -= NoDryCollision;
-            On_Collision.EmptyTile -= AllEmptyTiles;
-            On_Collision.SolidCollision_Vector2_int_int -= NoSolidCollision;
-            On_Collision.SolidCollision_Vector2_int_int_bool -= NoSolidCollision2;
-            On_Collision.IsWorldPointSolid -= NoSolid;
-            On_Collision.StepDown -= NoStepDown;
-            On_Collision.StepUp -= NoStepUp;
+ 
             On_Player.SlopeDownMovement -= NoSlopeDown;
         }
         private void NoSlopeDown(On_Player.orig_SlopeDownMovement orig, Player self)
@@ -1085,19 +1080,23 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             {
                 MiniSpazOut();
 
-                float num = 2;
-                for (float f = 0; f < num; f++)
+                if (StellaMultiplayer.IsHost)
                 {
-                    int orbitingStarType = ModContent.ProjectileType<SpiralFallingStar>();
-                    float interpolant = f / num;
-                    float rot = MathHelper.TwoPi * interpolant;
-                    rot += Timer * 0.05f;
-                    Vector2 offset = rot.ToRotationVector2();
-                    offset *= 1000;
-                    Vector2 spawnPos = NPC.Center + offset;
-                    Vector2 spawnVelocity = Vector2.Zero;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPos, spawnVelocity, orbitingStarType, SpiralStarDamage, 1, Main.myPlayer, ai0: NPC.whoAmI);
+                    float num = 2;
+                    for (float f = 0; f < num; f++)
+                    {
+                        int orbitingStarType = ModContent.ProjectileType<SpiralFallingStar>();
+                        float interpolant = f / num;
+                        float rot = MathHelper.TwoPi * interpolant;
+                        rot += Timer * 0.05f;
+                        Vector2 offset = rot.ToRotationVector2();
+                        offset *= 1000;
+                        Vector2 spawnPos = NPC.Center + offset;
+                        Vector2 spawnVelocity = Vector2.Zero;
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPos, spawnVelocity, orbitingStarType, SpiralStarDamage, 1, Main.myPlayer, ai0: NPC.whoAmI);
+                    }
                 }
+
                 AttackCounter++;
             }
 
