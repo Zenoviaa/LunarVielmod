@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SteelSeries.GameSense;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -73,6 +74,41 @@ namespace Stellamod.Effects
                 else
                 {
                     WriteLine($"float3({r}, {g}, {b})");
+                }
+
+            }
+            WriteLine("};");
+
+            WriteLine($"const float gray[{colors.Length}] = ");
+            WriteLine("{");
+            for (int c = 0; c < colors.Length; c++)
+            {
+                Vector3 v = colors[c].ToVector3();
+                float r = v.X;
+                float g = v.Y;
+                float b = v.Z;
+                float grayscale = (r * 0.3f + g * 0.59f + b * 0.11f);
+                WriteLine($"{grayscale},");
+
+            }
+            WriteLine("};");
+
+            WriteLine($"const float4 colors[{colors.Length}] = ");
+            WriteLine("{");
+            for (int c = 0; c < colors.Length; c++)
+            {
+                Vector3 v = colors[c].ToVector3();
+                float r = v.X;
+                float g = v.Y;
+                float b = v.Z;
+                float grayscale = (r * 0.3f + g * 0.59f + b * 0.11f);
+                if (c + 1 < colors.Length)
+                {
+                    WriteLine($"float4({r}, {g}, {b}, {grayscale}),");
+                }
+                else
+                {
+                    WriteLine($"float4({r}, {g}, {b}, {grayscale})");
                 }
 
             }
