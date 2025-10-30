@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Effects
@@ -10,6 +12,12 @@ namespace Stellamod.Effects
     public static class PalFileImporter
     {
         static Mod Mod = ModContent.GetInstance<Stellamod>();
+        public static Texture2D CreatePaletteTexture(Color[] colors)
+        {
+            Texture2D texture = new Texture2D(Main.graphics.GraphicsDevice, colors.Length, 1);
+            texture.SetData(colors);
+            return texture;
+        }
         public static Color[] ReadPalette(string path)
         {
             int lineNum = 1;
