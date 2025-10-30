@@ -864,7 +864,10 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             {
                 NPC.velocity.Y -= 0.1f;
             }
-            NPC.EncourageDespawn(60);
+            if(Timer >= 60)
+            {
+                NPC.active = false;
+            }
         }
 
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)

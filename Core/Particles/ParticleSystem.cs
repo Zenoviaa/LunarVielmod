@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Core.Shaders;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Shaders;
@@ -11,6 +12,8 @@ namespace Stellamod.Core.Particles
 {
     public class ParticleSystem : ModSystem
     {
+        private static bool _sortParticleArray;
+        private ParticleComparer _particleComparer;
         //public static Particle[] Particles = new Particle[Coralite.MaxParticleCount];
         public static int MaxParticleCount => 500;
         public static List<Particle> Particles = new(MaxParticleCount);
@@ -21,6 +24,7 @@ namespace Stellamod.Core.Particles
         public override void Load()
         {
             base.Load();
+            _particleComparer = new ParticleComparer();
             On_Main.DrawDust += DrawMainParticles;
         }
 
@@ -60,8 +64,6 @@ namespace Stellamod.Core.Particles
         {
             if (Main.netMode == NetmodeID.Server)
                 return;
-            if (Main.gameInactive)
-                return;
 
             for (int i = 0; i < Particles.Count; i++)
             {
@@ -70,25 +72,18 @@ namespace Stellamod.Core.Particles
                 if (particle == null)
                     continue;
 
-                try
-                {
-                    particle.Update();
-                    if (particle.ShouldUpdateCenter())
-                        particle.Center += particle.Velocity;
+                particle.Update();
+                if (particle.ShouldUpdateCenter())
+                    particle.Center += particle.Velocity;
 
-                    if (particle.shouldKilledOutScreen && !ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
-                        particle.active = false;
-
-                    if (particle.Scale < 0.001f)
-                        particle.active = false;
-
-                    if (particle.fadeIn > 1000)
-                        particle.active = false;
-                }
-                catch (System.Exception)
-                {
+                if (particle.shouldKilledOutScreen && !ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
                     particle.active = false;
-                }
+
+                if (particle.Scale < 0.001f)
+                    particle.active = false;
+
+                if (particle.fadeIn > 1000)
+                    particle.active = false;
             }
 
 
@@ -99,25 +94,18 @@ namespace Stellamod.Core.Particles
                 if (particle == null)
                     continue;
 
-                try
-                {
-                    particle.Update();
-                    if (particle.ShouldUpdateCenter())
-                        particle.Center += particle.Velocity;
+                particle.Update();
+                if (particle.ShouldUpdateCenter())
+                    particle.Center += particle.Velocity;
 
-                    if (particle.shouldKilledOutScreen && !ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
-                        particle.active = false;
-
-                    if (particle.Scale < 0.001f)
-                        particle.active = false;
-
-                    if (particle.fadeIn > 1000)
-                        particle.active = false;
-                }
-                catch (System.Exception)
-                {
+                if (particle.shouldKilledOutScreen && !ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
                     particle.active = false;
-                }
+
+                if (particle.Scale < 0.001f)
+                    particle.active = false;
+
+                if (particle.fadeIn > 1000)
+                    particle.active = false;
             }
 
             Particles.RemoveAll(p => p == null || !p.active);
@@ -160,16 +148,33 @@ namespace Stellamod.Core.Particles
                     else
                     {
                         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-                            myCustomShader.Effect, Main.Transform);
+                            myCustomShader.Effect, Main.GameViewMatrix.TransformationMatrix);
                     }
                 }
                 particle.Draw(spriteBatch);
             }
         }
 
+        public class ParticleComparer : IComparer<Particle>
+        {
+            public int Compare(Particle x, Particle y)
+            {
+                if (x.customShader == null)
+                    return -1;
+                if (y.customShader == null)
+                    return 1;
+                return x.customShader.EffectPath.CompareTo(y.customShader.EffectPath);
+            }
+        }
         public void DrawParticles(SpriteBatch spriteBatch)
         {
             BaseShader myCustomShader = null;
+            if (_sortParticleArray)
+            {
+                Particles.Sort(_particleComparer);
+                _sortParticleArray = false;
+            }
+
             for (int i = 0; i < Particles.Count; i++)
             {
                 var particle = Particles[i];
@@ -188,11 +193,23 @@ namespace Stellamod.Core.Particles
                     else
                     {
                         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-                            myCustomShader.Effect, Main.Transform);
+                            myCustomShader.Effect, Main.GameViewMatrix.TransformationMatrix);
                     }
                 }
                 particle.Draw(spriteBatch);
             }
+        }
+
+        public static void AddParticle<T>(T p) where T : Particle
+        {
+            Particles.Add(p);
+            _sortParticleArray = true;
+        }
+
+        public static void AddBlackParticle<T>(T p) where T : Particle
+        {
+            BlackParticles.Add(p);
+            _sortParticleArray = true;
         }
     }
 }

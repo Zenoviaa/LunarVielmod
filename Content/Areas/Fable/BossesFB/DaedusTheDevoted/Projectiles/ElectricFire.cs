@@ -19,7 +19,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
 {
     public class ElectricFire : ScarletProjectile
     {
-        private float _scale;
         private float _fireTime;
         private ref float Timer => ref Projectile.ai[0];
         private Vector2[] _oldSmokeCenterPos;
@@ -125,7 +124,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
 
             if (Timer < 30)
             {
-                _scale = MathHelper.Lerp(0f, Main.rand.NextFloat(0.75f, 1.2f), Easing.InCubic(Timer / 30f));
                 Projectile.velocity *= 0.5f;
             }
 

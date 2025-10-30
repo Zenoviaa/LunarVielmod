@@ -56,7 +56,7 @@ namespace Stellamod.Core.Particles
                 p.Scale = Scale;
                 p.OnSpawn();
 
-                ParticleSystem.Particles.Add(p);
+                ParticleSystem.AddParticle(p);
             }
   
             return p;
@@ -73,7 +73,7 @@ namespace Stellamod.Core.Particles
                 p.Velocity = velocity;
                 p.Scale = Scale;
                 p.OnSpawn();
-                ParticleSystem.BlackParticles.Add(p);
+                ParticleSystem.AddBlackParticle(p);
             }
             return p;
         }

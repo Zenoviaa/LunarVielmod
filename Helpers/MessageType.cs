@@ -15,7 +15,8 @@
         StartBossFromDialogue,
         StartDialogue,
         STARBLOCK,
-        BreakString
+        BreakString,
+        DashPlayerSync
     }
 
     public enum DialogueType : byte

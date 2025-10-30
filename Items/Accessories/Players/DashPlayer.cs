@@ -2,6 +2,7 @@
 using Stellamod.Core.ClassReworkSystem;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using System.IO;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
@@ -151,6 +152,42 @@ namespace Stellamod.Items.Accessories.Players
             }
         }
 
+        public override void CopyClientState(ModPlayer targetCopy)
+        {
+            base.CopyClientState(targetCopy);
+            DashPlayer clone = targetCopy as DashPlayer;
+            clone.DashDelay = DashDelay;
+            clone.DashTimer = DashTimer;
+            clone.Player.velocity = Player.velocity;
+        }
+
+        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+        {
+            base.SyncPlayer(toWho, fromWho, newPlayer);
+            ModPacket packet = Mod.GetPacket();
+            packet.Write((byte)MessageType.DashPlayerSync);
+            packet.Write((byte)Player.whoAmI);
+            packet.Write(DashDelay);
+            packet.Write(DashTimer);
+            packet.WriteVector2(Player.velocity);
+            packet.Send(toWho, fromWho);
+        }
+
+        public override void SendClientChanges(ModPlayer clientPlayer)
+        {
+            base.SendClientChanges(clientPlayer);
+            DashPlayer clone = clientPlayer as DashPlayer;
+            if (DashDelay != clone.DashDelay || DashTimer != clone.DashTimer)
+            {
+                SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            }
+        }
+        public void ReceivePlayerSync(BinaryReader reader)
+        {
+            DashDelay = reader.ReadInt32();
+            DashTimer = reader.ReadInt32();
+            Player.velocity = reader.ReadVector2();
+        }
         // This is the perfect place to apply dash movement, it's after the vanilla movement code, and before the player's position is modified based on velocity.
         // If they double tapped this frame, they'll move fast this frame
         public override void PreUpdateMovement()

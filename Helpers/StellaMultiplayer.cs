@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core.SilkSystem;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories.Players;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
@@ -186,6 +187,18 @@ namespace Stellamod
                         int x = reader.ReadInt32();
                         int y = reader.ReadInt32();
                         SilkManager.DestroySilk(x, y);
+                    }
+                    break;
+
+                case MessageType.DashPlayerSync:
+                    byte playernumber = reader.ReadByte();
+                    DashPlayer dashPlayer = Main.player[playernumber].GetModPlayer<DashPlayer>();
+                    dashPlayer.ReceivePlayerSync(reader);
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        // Forward the changes to the other clients
+                        dashPlayer.SyncPlayer(-1, whoAmI, false);
                     }
                     break;
             }
