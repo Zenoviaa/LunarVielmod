@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia;
 using Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak;
 using Stellamod.Core.TitleSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Ores;
 using Stellamod.NPCs.Bosses.EliteCommander;
-using System;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
@@ -16,10 +16,11 @@ namespace Stellamod.NPCs.Colosseum.Common
 {
     public class ColosseumWaveManager : ModNPC
     {
+        private bool _broadcastWave;
         private ref float Timer => ref NPC.ai[0];
         private int ColosseumIndex => (int)NPC.ai[1];
         private ref float Progresser => ref NPC.ai[2];
-        public override string Texture => TextureRegistry.EmptyTexture;
+        public override string Texture => TextureRegistry.ZuiEffect;
 
         private static Rectangle _colosseumRectangle;
         private Point _startTile;
@@ -32,7 +33,7 @@ namespace Stellamod.NPCs.Colosseum.Common
         {
             get
             {
-                if(_colosseumRectangle == Rectangle.Empty)
+                if (_colosseumRectangle == Rectangle.Empty)
                     _colosseumRectangle = Structurizer.ReadRectangle("Struct/Colosseum/TheColosseum");
                 NPCPointSpawnSystem npcPointSpawnSystem = ModContent.GetInstance<NPCPointSpawnSystem>();
                 Point colosseumOriginTile = npcPointSpawnSystem.GetStructureTile("Struct/Colosseum/TheColosseum");
@@ -41,6 +42,11 @@ namespace Stellamod.NPCs.Colosseum.Common
                 Vector2 gongSpawnWorld = colosseumCenterTile.ToWorldCoordinates();
                 return gongSpawnWorld;
             }
+        }
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
         }
 
         public override void SetDefaults()
@@ -51,24 +57,30 @@ namespace Stellamod.NPCs.Colosseum.Common
             NPC.lifeMax = 100;
             NPC.defense = 10;
             NPC.damage = 10;
+            NPC.npcSlots = 10f;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
             NPC.dontTakeDamage = true;
             NPC.dontTakeDamageFromHostiles = true;
-            NPC.dontCountMe = true;
             NPC.ShowNameOnHover = false;
+        }
+        public override bool CheckActive()
+        {
+            return false;
         }
 
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
             writer.Write(_shouldDie);
+            writer.Write(_broadcastWave);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
             _shouldDie = reader.ReadBoolean();
+            _broadcastWave = reader.ReadBoolean();
         }
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -85,17 +97,24 @@ namespace Stellamod.NPCs.Colosseum.Common
             {
                 NPC.active = false;
             }
+            NPC.scale = ExtraMath.Osc(0.8f, 1f);
+
+            if (_broadcastWave && Main.netMode != NetmodeID.Server)
+            {
+                TitleCardUISystem uiSystem = ModContent.GetInstance<TitleCardUISystem>();
+                uiSystem.OpenUI($"Wave {_waveIndex + 1}", duration: 3);
+                _broadcastWave = false;
+            }
 
             if (!MultiplayerHelper.IsHost)
                 return;
 
-            if(Progresser > 0)
+            if (Progresser > 0)
             {
                 Progress();
                 Progresser--;
             }
 
-            ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
             if (AllPlayersDead() || AllPlayersTooFarAway())
             {
                 _shouldDie = true;
@@ -330,11 +349,8 @@ namespace Stellamod.NPCs.Colosseum.Common
             {
                 CompleteColosseum();
             }
-            else
-            {
-                TitleCardUISystem uiSystem = ModContent.GetInstance<TitleCardUISystem>();
-                uiSystem.OpenUI($"Wave {_waveIndex + 1}", duration: 3);
-            }
+            _broadcastWave = true;
+            NPC.netUpdate = true;
         }
 
         public void CompleteColosseum()
@@ -399,12 +415,22 @@ namespace Stellamod.NPCs.Colosseum.Common
 
         public static void ColosseumEnemyKilled()
         {
-            foreach(var npc in Main.ActiveNPCs)
+            foreach (var npc in Main.ActiveNPCs)
             {
                 if (npc.type != ModContent.NPCType<ColosseumWaveManager>())
                     continue;
                 npc.ai[2]++;
             }
+        }
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawPosition = NPC.Center - screenPos;
+            Color glowColor = Color.Lerp(Color.White, Color.Goldenrod, ExtraMath.Osc(0f, 1f));
+            glowColor.A = 0;
+            spriteBatch.Draw(texture, drawPosition, null, glowColor, NPC.rotation, texture.Size() / 2f, NPC.scale, SpriteEffects.None, 0);
+            return false;
         }
     }
 }

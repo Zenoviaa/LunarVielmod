@@ -1,4 +1,6 @@
-﻿using Terraria;
+﻿using Stellamod.Helpers;
+using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Colosseum.Common
@@ -8,9 +10,9 @@ namespace Stellamod.NPCs.Colosseum.Common
         protected override void StartColosseum()
         {
             base.StartColosseum();
-            NPC.NewNPC(NPC.GetSource_FromThis(), 
-                (int)NPC.Bottom.X, 
-                (int)NPC.Bottom.Y, ModContent.NPCType<ColosseumWaveManager>(), ai1: 0);
+
+
+            CreateWaveManager(0);
         }
     }
 
@@ -19,9 +21,7 @@ namespace Stellamod.NPCs.Colosseum.Common
         protected override void StartColosseum()
         {
             base.StartColosseum();
-            NPC.NewNPC(NPC.GetSource_FromThis(),
-                (int)NPC.Bottom.X,
-                (int)NPC.Bottom.Y, ModContent.NPCType<ColosseumWaveManager>(), ai1: 1);
+            CreateWaveManager(1);
         }
     }
 
@@ -30,9 +30,7 @@ namespace Stellamod.NPCs.Colosseum.Common
         protected override void StartColosseum()
         {
             base.StartColosseum();
-            NPC.NewNPC(NPC.GetSource_FromThis(),
-                (int)NPC.Bottom.X,
-                (int)NPC.Bottom.Y, ModContent.NPCType<ColosseumWaveManager>(), ai1: 2);
+            CreateWaveManager(2);
         }
     }
 }

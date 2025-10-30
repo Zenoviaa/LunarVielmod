@@ -17,7 +17,8 @@
         STARBLOCK,
         BreakString,
         DashPlayerSync,
-        ResetColosseum
+        ResetColosseum,
+        StartColosseum
     }
 
     public enum DialogueType : byte

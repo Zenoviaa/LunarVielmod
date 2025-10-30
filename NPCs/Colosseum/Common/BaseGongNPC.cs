@@ -91,9 +91,12 @@ namespace Stellamod.NPCs.Colosseum.Common
         public override void HitEffect(NPC.HitInfo hit)
         {
             base.HitEffect(hit);
-            if (State == AIState.Idle)
+            if (MultiplayerHelper.IsHost)
             {
-                SwitchState(AIState.Shake);
+                if (State == AIState.Idle)
+                {
+                    SwitchState(AIState.Shake);
+                }
             }
         }
 
@@ -190,6 +193,13 @@ namespace Stellamod.NPCs.Colosseum.Common
         protected virtual void StartColosseum()
         {
 
+        }
+
+        public void CreateWaveManager(int tier)
+        {
+            NPC.NewNPC(NPC.GetSource_FromThis(),
+            (int)NPC.Bottom.X,
+            (int)NPC.Bottom.Y, ModContent.NPCType<ColosseumWaveManager>(), ai1: tier);
         }
     }
 }
