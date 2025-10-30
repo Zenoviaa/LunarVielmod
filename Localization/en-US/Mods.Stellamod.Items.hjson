@@ -9421,3 +9421,8 @@ IvynSharprod: {
 	Tooltip: Increases armor penetration by 3
 	DisplayName: Ivyn Sharprod
 }
+
+DragonShard: {
+	DisplayName: Dragon Shard
+	Tooltip: ""
+}

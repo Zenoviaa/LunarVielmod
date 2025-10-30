@@ -1,4 +1,5 @@
-﻿using Stellamod.Helpers;
+﻿using Stellamod.Content.Items.Materials;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,8 @@ namespace Stellamod.Core.WeaponUpgrade
         public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
         {
             base.ModifyWeaponDamage(item, player, ref damage);
-            float damageModifier = MathF.Pow(1.05f, weaponLevel);
-            damage += damageModifier - 1.0f;
+            float damageModifier = weaponLevel * 0.1f;
+            damage += damageModifier;
         }
 
         public override void NetSend(Item item, BinaryWriter writer)
@@ -35,59 +36,24 @@ namespace Stellamod.Core.WeaponUpgrade
 
         public int GetMaterialType()
         {
-            int lunarStone = ModContent.ItemType<LunarStone>();
-            int rareLunarStone = ModContent.ItemType<RareLunarStone>();
-            int ancientLunarStone = ModContent.ItemType<AncientLunarStone>();
-            if (weaponLevel < 5)
-            {
-                return lunarStone;
-            }
-            else if (weaponLevel < 10)
-            {
-                return rareLunarStone;
-            }
-            else if (weaponLevel < 15)
-            {
-                return ancientLunarStone;
-            }
-
-            return ancientLunarStone;
+            return ModContent.ItemType<DragonShard>();
         }
         public int GetUpgradeAmt()
         {
 
             switch (weaponLevel)
             {
-                default:
+             
                 case 0:
-                    return 5;
-                case 1:
-                    return 10;
-                case 2:
-                    return 20;
-                case 3:
-                    return 50;
-                case 4:
-                    return 100;
-                case 5:
-                    return 3;
-                case 6:
-                    return 5;
-                case 7:
-                    return 10;
-                case 8:
-                    return 15;
-                case 9:
-                    return 20;
-                case 10:
                     return 1;
-                case 11:
+                case 1:
                     return 2;
-                case 12:
+                case 2:
                     return 3;
-                case 13:
+                case 3:
                     return 4;
-                case 14:
+                case 4:
+                default:
                     return 5;
             }
         }
@@ -96,7 +62,7 @@ namespace Stellamod.Core.WeaponUpgrade
         {
             int mat = GetMaterialType();
             int amt = GetUpgradeAmt();
-            return player.CountItem(mat) >= amt && item.damage > 0;
+            return player.CountItem(mat) >= amt && item.damage > 0 && weaponLevel < 20;
         }
 
         public void Upgrade(Item item, Player player)
@@ -116,11 +82,6 @@ namespace Stellamod.Core.WeaponUpgrade
 
             TooltipLine itemNameLine = tooltips.Find(x => x.Name == "ItemName");
             itemNameLine.Text = itemNameLine.Text + " " + $"+{weaponLevel}";
-            /*
-            if (weaponLevel >= 15)
-            {
-                item.rare = ModContent.RarityType<GoldenSpecialRarity>();
-            }*/
         }
 
         public override void SaveData(Item item, TagCompound tag)

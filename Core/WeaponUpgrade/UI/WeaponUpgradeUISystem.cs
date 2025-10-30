@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Content.Items.Materials;
 using Stellamod.Items.Materials;
 using Stellamod.UI;
 using System.Collections.Generic;
@@ -40,7 +41,7 @@ namespace Stellamod.Core.WeaponUpgrade.UI
             {
                 if (ItemToUpgrade == null || ItemToUpgrade.IsAir)
                 {
-                    return ModContent.ItemType<LunarStone>();
+                    return ModContent.ItemType<DragonShard>();
                 }
                 else
                 {

@@ -3,8 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -31,6 +33,9 @@ namespace Stellamod.Core.WeaponUpgrade.UI
             if (uiSystem.CanReforge())
             {
                 uiSystem.Reforge();
+                SoundStyle sound = SoundID.Item37;
+                SoundEngine.PlaySound(sound);
+                FXUtil.ShakeCamera(Main.LocalPlayer.position, 1024, 8);
             }
 
             // We can do stuff in here!
