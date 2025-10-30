@@ -32,7 +32,7 @@ namespace Stellamod.Core
     {
         public static void ApplyDifficultyAndScaling(NPC npc, float numPlayers)
         {
-            float balance = 1.0f + (0.6f * (numPlayers - 1));
+            float balance = 1.0f + (0.6f * (numPlayers-1));
             npc.lifeMax = (int)(npc.lifeMax * balance);
         }
     }
