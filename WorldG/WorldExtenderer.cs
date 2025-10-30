@@ -48,22 +48,14 @@ namespace Stellamod.WorldG
         public override void ClearWorld()
         {
             base.ClearWorld();
-            EditWorldSize();
+            ResizeMapTarget();
         }
       
-        private void EditWorldSize()
+        private void ResizeMapTarget()
         {
-            int lastMaxTilesX = (int)WorldGen_lastMaxTilesX.GetValue(null);
-            int lastMaxTilesY = (int)WorldGen_lastMaxTilesY.GetValue(null);
+            if (Main.maxTilesX < NewMaxTilesX)
+                return;
 
-            // TODO: investigate cpu/ram trade-off for reducing this later when regular-sized worlds loaded.
-
-            // Goal: Increase limits, don't decrease anything lower than normal max for compatibility.
-            Main.maxTilesX = NewMaxTilesX;
-            Main.maxTilesY = NewMaxTilesY;
-
-            // TODO: dynamically change mapTargetX and Y to support any dimensions. (simple division.)
-            // Map render targets. -- ingame map number of images to write to. The textures themselves
             Main.mapTargetX = 10; // change that 4 in vanilla to target-x
             Main.mapTargetY = 2; // change that 
             Main.instance.mapTarget = new RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
@@ -86,6 +78,19 @@ namespace Stellamod.WorldG
 
             Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
             Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
+
+        }
+        private void EditWorldSize()
+        {
+            int lastMaxTilesX = (int)WorldGen_lastMaxTilesX.GetValue(null);
+            int lastMaxTilesY = (int)WorldGen_lastMaxTilesY.GetValue(null);
+
+            // TODO: investigate cpu/ram trade-off for reducing this later when regular-sized worlds loaded.
+
+            // Goal: Increase limits, don't decrease anything lower than normal max for compatibility.
+            Main.maxTilesX = NewMaxTilesX;
+            Main.maxTilesY = NewMaxTilesY;
+            ResizeMapTarget();
 
 
         }
