@@ -18,7 +18,7 @@ namespace Stellamod.Buffs
         public override void Update(NPC npc, ref int buffIndex)
         {
 
-            if (StellaMultiplayer.IsHost && !HasChains(npc))
+            if (MultiplayerHelper.IsHost && !HasChains(npc))
             {
                 int npcIndexToFollow = npc.whoAmI;
                 Vector2 velocity = Vector2.UnitY * 0.01f;

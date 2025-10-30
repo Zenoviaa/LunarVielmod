@@ -163,7 +163,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         private void ResetTimers()
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 _resetTimers = true;
                 NPC.netUpdate = true;
@@ -276,7 +276,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
 
             int lifeToGiveIllurineScaleInBoss = NPC.lifeMax / 100;
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 ScaleDamageCounter += hit.Damage;
                 if (ScaleDamageCounter >= lifeToGiveIllurineScaleInBoss)
@@ -334,7 +334,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     dab.noGravity = false;
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     for (int i = 0; i < 8; i++)
                     {
@@ -474,7 +474,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             Timer++;
             if (Timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(EntitySource, NPC.Center, Vector2.Zero, ModContent.ProjectileType<NiiviSpawnExplosionProj>(),
                         0, 0, Main.myPlayer);
@@ -529,7 +529,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             Timer++;
             if (Timer >= 60)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<NiiviRoaming>());
                 }
@@ -860,7 +860,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 {
                     Vector2 velocity = Vector2.Zero;
                     int type = ModContent.ProjectileType<NiiviFrostTelegraphProj>();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(EntitySource, LaserAttackPos, velocity, type,
                             0, 0, Main.myPlayer);
@@ -876,7 +876,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     int type = ModContent.ProjectileType<NiiviLaserBlastProj>();
                     int damage = P1_LaserDamage;
                     float knockback = 1;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float size = 5.5f;
                         float beamLength = distance;
@@ -970,7 +970,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 {
                     Vector2 velocity = Vector2.Zero;
                     int type = ModContent.ProjectileType<NiiviFrostTelegraphProj>();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(EntitySource, NPC.Center, velocity, type,
                         0, 0, Main.myPlayer);
@@ -980,7 +980,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 //Charge up
                 if (Timer >= 60)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         int type = ModContent.ProjectileType<NiiviFrostCircleProj>();
                         int damage = 0;
@@ -1061,7 +1061,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     int damage = P1_FrostBreathDamage;
                     float knockback = 1;
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(EntitySource, spawnPos, velocity, type,
                         damage, knockback, Main.myPlayer);
@@ -1107,7 +1107,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     NPC.velocity = -Vector2.UnitY;
                     Timer = 0;
                     AttackTimer++;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnCenter = Target.Center + new Vector2(0, -128);
                         NPC.NewNPC(EntitySource, (int)spawnCenter.X, (int)spawnCenter.Y, ModContent.NPCType<NiiviCrystalStars>());
@@ -1167,7 +1167,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 {
                     shaderSystem.TintScreen(Color.White, 0.2f, timer: 15);
                     NPC.velocity = -NPC.Center.DirectionTo(Target.Center) * 16;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speed = Main.rand.NextFloat(24, 42);
                         Vector2 spawnCenter = NPC.Center + Main.rand.NextVector2Circular(128, 128);
@@ -1234,7 +1234,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 {
                     Timer = 0;
                     AttackTimer++;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnCenter = Target.Center + new Vector2(0, -128);
                         NPC.NewNPC(EntitySource, (int)spawnCenter.X, (int)spawnCenter.Y, ModContent.NPCType<NiiviCrystalLightning>());
@@ -1373,7 +1373,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 if (Timer % 16 == 0)
                 {
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(pos, 1024, 16);
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, Vector2.Zero,
                             ModContent.ProjectileType<NiiviCosmicBombAbsorbProj>(), 0, 0, Main.myPlayer);
@@ -1388,7 +1388,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     Vector2 velocity = Vector2.Zero;
                     int type = ModContent.ProjectileType<NiiviStarFieldProj>();
                     int damage = P2_VoidField;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(EntitySource, NPC.Center + HeadRotation.ToRotationVector2() * 256, velocity, type,
                             damage, 0, Main.myPlayer);
@@ -1470,7 +1470,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 {
                     Vector2 velocity = Vector2.Zero;
                     int type = ModContent.ProjectileType<NiiviFrostTelegraphProj>();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(EntitySource, LaserAttackPos, velocity, type,
                             0, 0, Main.myPlayer);
@@ -1484,7 +1484,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     int damage = P1_LaserDamage;
                     float knockback = 1;
                     NPC.rotation = HeadRotation;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(EntitySource, NPC.Center, fireDirection, type,
                         damage, knockback, Main.myPlayer, ai1: NPC.whoAmI);
@@ -1549,7 +1549,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 FlipToDirection();
                 if (Timer == 1)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(EntitySource, NPC.Center + HeadRotation.ToRotationVector2() * 256, Vector2.Zero,
                             ModContent.ProjectileType<NiiviCosmicBombProj>(), P1_CosmicBombDamage, 1, Main.myPlayer);
@@ -1658,7 +1658,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             if (Timer == 1)
             {
                 NPC.velocity = -Vector2.UnitY;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(),
                         ModContent.ItemType<IridineNecklace>(), Main.rand.Next(1, 1));

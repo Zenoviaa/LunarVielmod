@@ -85,7 +85,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 {
                     Vector2 velToPlayer = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
                     velToPlayer *= 9;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velToPlayer,
                             ModContent.ProjectileType<ConjureBallLightningMini>(), 21, 1, Owner: Main.myPlayer);

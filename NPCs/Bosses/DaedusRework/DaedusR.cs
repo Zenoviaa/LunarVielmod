@@ -331,7 +331,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     Vector2 GPos;
                     GPos.X = DaedusPos.X;
                     GPos.Y = NPC.Center.Y;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         NPC.NewNPC(NPC.GetSource_FromThis(), (int)DaedusPos.X, (int)NPC.Center.Y,
                             ModContent.NPCType<SolarSingularity>());
@@ -367,7 +367,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                             NPC.ai[0]++;
                             if (NPC.ai[0] >= 100)
                             {
-                                if (StellaMultiplayer.IsHost)
+                                if (MultiplayerHelper.IsHost)
                                 {
 
                                     int attack = Main.rand.Next(2, 5);
@@ -406,7 +406,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                             Vector2 DLightPos;
                             DLightPos.Y = DaedusPos.Y + 230;
 
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 DLightPos.X = Main.rand.NextFloat(DaedusPos.X - 300, DaedusPos.X + 300);
                                 NPC.NewNPC(NPC.GetSource_FromThis(), (int)DLightPos.X, (int)DLightPos.Y,
@@ -435,7 +435,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                         }
                         if (NPC.ai[0] == 90)
                         {
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 140, NPC.position.Y + 65, 0, 0,
                                     ModContent.ProjectileType<FlameTornado>(), (int)(NPC.damage * 0f), 0f, Main.myPlayer);
@@ -459,7 +459,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                         }
                         if (NPC.ai[0] == 90)
                         {
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, 0, 0,
                                     ModContent.ProjectileType<BouncySword>(), (int)(40 * 1f), 0f, Main.myPlayer);
@@ -513,7 +513,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 Dust.NewDustPerfect(NPC.Center, DustID.Hay, velocity);
             }
 
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                     ModContent.ProjectileType<DaedusDeath>(), 0, 0, Main.myPlayer, ai0: -NPC.direction);

@@ -86,7 +86,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             set
             {
                 _state = value;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                     NPC.netUpdate = true;
             }
         }
@@ -801,7 +801,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
                 NPC.velocity.Y *= 0;
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(3))
                     {
@@ -834,7 +834,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/BindingBless1") { Pitch = Main.rand.NextFloat(-3f, 3f) }, NPC.Center);
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -898,7 +898,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
                 NPC.velocity *= 0.2f;
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(2))
                     {
@@ -926,7 +926,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             if (timer == 1)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothReact") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -937,7 +937,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 }
 
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int distanceY = Main.rand.Next(-900, -600);
                     int distanceYa = Main.rand.Next(-100, -100);
@@ -982,7 +982,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             }
             if (timer == 110)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -993,10 +993,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 }
                 ShakeModSystem.Shake = 12;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothCarmody") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<CarmodyGreen>());
 
@@ -1025,7 +1025,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             if (timer == 1)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothReact") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -1036,7 +1036,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 }
 
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int distanceY = Main.rand.Next(600, 900);
                     int distanceYa = Main.rand.Next(-100, -100);
@@ -1081,7 +1081,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             if (timer == 110)
             {
                 ShakeModSystem.Shake = 12;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -1091,10 +1091,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 }
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothCarmody") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Carmody>());
 
@@ -1121,7 +1121,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             float ai1 = NPC.whoAmI;
             if (timer == 2)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -1154,7 +1154,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") { Pitch = Main.rand.NextFloat(-5f, 2f) }, NPC.Center);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { Pitch = Main.rand.NextFloat(-5f, 1f) }, NPC.Center);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(2))
                     {
@@ -1217,7 +1217,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") { Pitch = Main.rand.NextFloat(-5f, 2f) }, NPC.Center);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { Pitch = Main.rand.NextFloat(-5f, 1f) }, NPC.Center);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(2))
                     {
@@ -1280,7 +1280,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 ShakeModSystem.Shake = 8;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") { Pitch = Main.rand.NextFloat(-5f, 2f) }, NPC.Center);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { Pitch = Main.rand.NextFloat(-5f, 1f) }, NPC.Center);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(2))
                     {
@@ -1327,7 +1327,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     State = ActionState.StartGoth;
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     if (NPC.life < NPC.lifeMax / 2)
                     {
@@ -1383,7 +1383,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             float ai1 = NPC.whoAmI;
             if (timer == 2)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(4))
                     {
@@ -1529,7 +1529,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (timer == 24)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<BlinkingStar>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
 
@@ -1544,7 +1544,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 {
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorWing") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
 
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<WingRazor>(), 700, 0f, Main.myPlayer, 0f, ai1);
@@ -1601,7 +1601,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     if (Wtimes >= 8)
                     {
                         ResetTimers();
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             switch (Main.rand.Next(2))
                             {
@@ -1656,7 +1656,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
 
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -1665,7 +1665,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothSummon") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -1707,7 +1707,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
 
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -1716,7 +1716,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothSummon") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -1759,7 +1759,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             if (timer == 1)
             {
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -1768,10 +1768,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothSunLonger") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Sun2>());
 
@@ -1824,7 +1824,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
 
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -1833,10 +1833,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothSunLonger") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Sun>());
                     }
@@ -1884,7 +1884,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 shaderSystem.VignetteScreen(2f, timer: 150);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothSummon") { Pitch = Main.rand.NextFloat(-1f, 1f) }, NPC.Center);
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -1893,7 +1893,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -1907,7 +1907,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
                 ShakeModSystem.Shake = 5;
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                     shaderSystem.UnVignetteScreen();
@@ -2069,7 +2069,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothingBow") { Pitch = Main.rand.NextFloat(-1f, 1f) }, NPC.Center);
                 //
                 Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -2082,7 +2082,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     case 0:
                         for (int i = 0; i < 1; i++)
                         {
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothSunBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
 
@@ -2094,7 +2094,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     case 1:
                         for (int i = 0; i < 1; i++)
                         {
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothFireBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
 
@@ -2120,7 +2120,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothingBow") { Pitch = Main.rand.NextFloat(-1f, 1f) }, NPC.Center);
 
                 Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -2132,7 +2132,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     case 0:
                         for (int i = 0; i < 1; i++)
                         {
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothSunBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
 
@@ -2144,7 +2144,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     case 1:
                         for (int i = 0; i < 1; i++)
                         {
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothFireBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
 
@@ -2175,7 +2175,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothingBow") { Pitch = Main.rand.NextFloat(-1f, 1f) }, NPC.Center);
 
                 Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -2187,7 +2187,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     case 0:
                         for (int i = 0; i < 1; i++)
                         {
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothSunBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
 
@@ -2199,7 +2199,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     case 1:
                         for (int i = 0; i < 1; i++)
                         {
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothFireBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
 
@@ -2242,7 +2242,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                     if (NPC.life > NPC.lifeMax / 2)
                     {
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             switch (Main.rand.Next(4))
                             {
@@ -2272,7 +2272,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                     if (NPC.life < NPC.lifeMax / 2)
                     {
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             switch (Main.rand.Next(5))
                             {
@@ -2370,7 +2370,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
         public void ResetTimers()
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 _resetTimers = true;
                 NPC.netUpdate = true;
@@ -2390,7 +2390,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Spawn"), NPC.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 128f);
             var entitySource = NPC.GetSource_FromThis();
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<GothiviaDeath>());
             }

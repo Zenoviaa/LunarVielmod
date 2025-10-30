@@ -89,7 +89,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                     NPC.Center = Vector2.Lerp(NPC.Center, Target.Center + new Vector2(0, -384), 0.1f);
                     if (Timer >= 60)
                     {
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             int damage = 50;
                             int knockback = 1;

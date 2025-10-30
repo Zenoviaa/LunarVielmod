@@ -69,7 +69,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
         {
 
             timer++;
-            if (timer == 1 && StellaMultiplayer.IsHost)
+            if (timer == 1 && MultiplayerHelper.IsHost)
             {
                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                     ModContent.ProjectileType<SPARKLYSTARBOOM>(), 0, 0, Main.myPlayer);
@@ -90,7 +90,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 
             if (Shooting == 80)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
                     float speedXBb = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);

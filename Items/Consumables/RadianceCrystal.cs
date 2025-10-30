@@ -85,7 +85,7 @@ namespace Stellamod.Items.Consumables
                     else
                     {
                         Main.NewText(LangText.Misc("RadianceStone.1"), Color.Gold);
-                        StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<ZuiTheTraveller>(), (int)player.position.X, (int)player.position.Y);
+                        MultiplayerHelper.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<ZuiTheTraveller>(), (int)player.position.X, (int)player.position.Y);
                     }
 
                     int TextToSpawn = Main.rand.Next(1, 8 + 1);

@@ -106,7 +106,7 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 
             if (NPC.ai[0] <= 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.position.X += Main.rand.Next(-350, 351);
                     NPC.position.Y += Main.rand.Next(-350, 351);
@@ -133,7 +133,7 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
                         Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
                 }
                 var entitySource = NPC.GetSource_FromThis();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 0, 0, ModContent.ProjectileType<CaevaSpawnEffect>(), 40, 1, Main.myPlayer, 0, 0);
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 25, 0, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);

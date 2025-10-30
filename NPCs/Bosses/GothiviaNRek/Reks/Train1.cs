@@ -56,7 +56,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
             set
             {
                 _state = value;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                     NPC.netUpdate = true;
             }
         }
@@ -616,7 +616,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
         public void ResetTimers()
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 _resetTimers = true;
                 NPC.netUpdate = true;

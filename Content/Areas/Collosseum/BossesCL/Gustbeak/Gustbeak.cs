@@ -611,7 +611,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
 
             if (Timer == 240)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                         ModContent.ProjectileType<AivanKaboom>(), 0, 0, Main.myPlayer);
@@ -671,7 +671,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                 SoundEngine.PlaySound(wingFlap, NPC.position);
             }
 
-            if (Timer >= 200 && StellaMultiplayer.IsHost)
+            if (Timer >= 200 && MultiplayerHelper.IsHost)
             {
                 if (!Phase2Transition && InPhase2)
                 {
@@ -836,7 +836,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                     d.noGravity = true;
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int damage = WindBlastDamage;
                     int knockback = 32;
@@ -939,7 +939,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                     d.noGravity = true;
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int damage = AverageBallDamage;
                     int knockback = 32;
@@ -1052,7 +1052,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                     d.noGravity = true;
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int damage = WingAirBlastDamage;
                     int knockback = 32;
@@ -1089,7 +1089,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
             TargetOutlineColor = Color.Yellow;
             Timer++;
             Head.Animation = GustbeakHead.AnimationState.Open_Mouth;
-            Vector2 targetCenter = ModContent.GetInstance<ColosseumSystem>().GongSpawnWorld;
+            Vector2 targetCenter = ColosseumWaveManager.GongSpawnWorld;
             Vector2 pointAbovePlayer = targetCenter + new Vector2(-128 * DirToPlayer, -128);
             Vector2 velToPlayer = pointAbovePlayer - NPC.Center;
             velToPlayer = velToPlayer.SafeNormalize(Vector2.Zero);
@@ -1138,7 +1138,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
 
             if (Timer == 70)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int tornadoDamage = TornadoDamage;
                     int knockback = 2;
@@ -1278,7 +1278,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                     Dust.NewDustPerfect(NPC.Center, DustID.GemDiamond, vel);
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int damage = WindDashDamage;
                     int knockback = 4;
@@ -1304,7 +1304,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                     Dust.NewDustPerfect(NPC.Center, DustID.GemDiamond, vel);
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 vel = Vector2.UnitY * 3;
                     if (Target.Center.Y < NPC.Center.Y)
@@ -1409,7 +1409,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                     Dust.NewDustPerfect(NPC.Center, DustID.GemDiamond, vel);
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int damage = WindCrashDamage;
                     int knockback = 4;
@@ -1432,7 +1432,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                 SoundStyle soundStyle = SoundID.DD2_WyvernDiveDown;
                 soundStyle.PitchVariance = 0.15f;
                 SoundEngine.PlaySound(soundStyle, NPC.position);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int damage = WindCrashDamage;
                     int knockback = 4;
@@ -1524,7 +1524,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
 
         private void SwitchState(AIState state)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Timer = 0;
                 State = state;
@@ -1592,8 +1592,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
         public override void OnKill()
         {
             base.OnKill();
-            ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
-            colosseumSystem.Progress();
+            ColosseumWaveManager.ColosseumEnemyKilled();
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedSunsBoss, -1);
         }
 

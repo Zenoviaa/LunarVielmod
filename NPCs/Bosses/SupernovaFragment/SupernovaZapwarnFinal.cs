@@ -72,7 +72,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
                 LightPos.X = NPC.position.X;
                 LightPos.Y = NPC.position.Y - 500;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Zero, ModContent.ProjectileType<SupernovaFinalExplosion>(), 800, 0f, Owner: Main.myPlayer);

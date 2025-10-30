@@ -238,7 +238,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.ai[1] += .03f;
 
             CircleTimer++;
-            if (CircleTimer % 125 == 0 && StellaMultiplayer.IsHost)
+            if (CircleTimer % 125 == 0 && MultiplayerHelper.IsHost)
             {
                 Vector2 directionToTarget = NPC.Center.DirectionTo(Main.player[NPC.target].Center);
                 Vector2 velocity = directionToTarget * 8;

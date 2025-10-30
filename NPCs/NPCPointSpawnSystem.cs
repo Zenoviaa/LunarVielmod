@@ -108,7 +108,7 @@ namespace Stellamod.NPCs
         {
             base.PostUpdateEverything();
             LoadNPCPointSpawners();
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 if (NPC.AnyDanger(ignorePillarsAndMoonlordCountdown: true))
                 {

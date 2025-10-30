@@ -439,7 +439,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                         if (Main.netMode == NetmodeID.SinglePlayer)
                             return;
 
-                        StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
+                        MultiplayerHelper.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
                             ModContent.NPCType<StartGoth>(), (int)NPC.Center.X, (int)NPC.Center.Y - 5);
                     }
                 }

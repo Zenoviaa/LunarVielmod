@@ -28,7 +28,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
             }
             if (timer == 60)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<Viola>());
                 }

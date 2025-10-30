@@ -200,7 +200,7 @@ namespace Stellamod.Projectiles.Steins
                     case 0:
                         target.SimpleStrikeNPC(Projectile.damage * 7, 1, crit: false, Projectile.knockBack);
 
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             var entitySource = Projectile.GetSource_FromThis();
                             NPC.NewNPC(entitySource, (int)player.Center.X, (int)player.Center.Y, ModContent.NPCType<DreadMirePentagramV2>());
@@ -242,7 +242,7 @@ namespace Stellamod.Projectiles.Steins
                     case 1:
                         target.SimpleStrikeNPC(Projectile.damage * 3, 1, crit: false, Projectile.knockBack);
 
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             var entitySource = Projectile.GetSource_FromThis();
                             NPC.NewNPC(entitySource, (int)player.Center.X, (int)player.Center.Y, ModContent.NPCType<DreadMirePentagramV2>());
@@ -285,7 +285,7 @@ namespace Stellamod.Projectiles.Steins
                     case 2:
                         target.SimpleStrikeNPC(Projectile.damage * 1, 1, crit: false, Projectile.knockBack);
 
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             var entitySource = Projectile.GetSource_FromThis();
                             NPC.NewNPC(entitySource, (int)player.Center.X, (int)player.Center.Y, ModContent.NPCType<DreadMirePentagramV2>());

@@ -469,7 +469,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             //27 ticks per beat, roughly, not evenly but close enough, you'd need a long fight to notice desync
             if (BeatHit())
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
 
                     Vector2 spawnPos = Target.Center + Vector2.UnitY * 128;
@@ -977,7 +977,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 Cycle++;
                 if(Cycle % 2 == 0)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
 
                         Vector2 spawnPos = Target.Center + Vector2.UnitY * 128;
@@ -1256,7 +1256,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
 
             if (Timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     _startBobPos = NPC.Center;
                     NPC.netUpdate = true;
@@ -1303,7 +1303,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             //27 ticks per beat, roughly, not evenly but close enough, you'd need a long fight to notice desync
             if (BeatHit())
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     for (int i = 0; i < 2; i++)
                     {
@@ -1354,7 +1354,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
 
         private void ProgressSequence()
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 switch (_attackSequenceCounter)
                 {
@@ -1456,7 +1456,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
 
         private void SwitchState(AIState state)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Timer = 0;
                 State = state;

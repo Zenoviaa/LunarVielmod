@@ -163,7 +163,7 @@ namespace Stellamod.NPCs.Event.GreenSun
             {
                 DoJump = true;
                 NPC.velocity.Y *= 5.5f;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.UnitX * 2,
                         ModContent.ProjectileType<IrradiatedDeathSpray>(), 34, 1, Main.myPlayer);

@@ -841,7 +841,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
         private void SwitchState(AIState state)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Timer = 0;
                 State = state;
@@ -948,7 +948,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             if (Timer >= timeToWait)
             {
                 //How we choosing attack uhh, oh i know
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     if (_attackNum >= 3)
                     {
@@ -1090,7 +1090,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         laughSound.PitchVariance = 1f;
                         laughSound.Pitch = 0.75f;
                         SoundEngine.PlaySound(laughSound, NPC.position);
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             float range = MathHelper.Lerp(1024, 64, Timer / 300f);
                             TeleportTarget = Target.Center + Main.rand.NextVector2CircularEdge(range, range);
@@ -1109,7 +1109,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     NPC.velocity = NPC.velocity.RotatedBy(0.05f);
                     if (Timer == 30)
                     {
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             BigTeleportTarget = Target.Center + new Vector2(0, -256);
                             NPC.velocity = Vector2.Zero;
@@ -1206,7 +1206,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         FaceSegment.BlackTimer = 1f;
                         Timer = 0;
                         AttackCounter++;
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             int damage = 21;
                             int knockback = 1;
@@ -1250,7 +1250,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         laughSound.Pitch = 0.75f;
                         SoundEngine.PlaySound(laughSound, NPC.position);
 
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             Projectile.NewProjectile(NPC.GetSource_FromThis(),
                                 Target.Center - new Vector2(0, 128), Vector2.UnitY * 64,
@@ -1295,7 +1295,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     if (Timer > 20 && Timer % 30 == 0)
                     {
                         FaceSegment.BlackTimer = 1f;
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             int damage = LightningStrikeDamage;
                             int knockback = 1;
@@ -1401,7 +1401,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     {
                         LightningBallTimer = 0;
                         FaceSegment.BlackTimer = 1f;
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             int damage = MiniLightningBallDamage;
                             int knockback = 1;
@@ -1516,7 +1516,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         FaceSegment.BlackTimer = 1f;
                         Timer = 0;
                         AttackCounter++;
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             int damage = 21;
                             int knockback = 1;
@@ -1594,7 +1594,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     Timer++;
                     if (Timer == 1)
                     {
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             int damage = ConjureBallLightningDamage;
                             int knockback = 1;
@@ -1733,7 +1733,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     {
                         LightningBallTimer = 0;
                         FaceSegment.BlackTimer = 1f;
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             int damage = ElectricFieldDamage;
                             int knockback = 1;
@@ -1847,7 +1847,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         FaceSegment.BlackTimer = 1f;
                         Timer = 0;
                         AttackCounter++;
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             Vector2 firePos = lightningSpawnPos;
                             NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)firePos.X, (int)firePos.Y,
@@ -1987,7 +1987,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         Timer = 0;
                         AttackCounter++;
 
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             int damage = ThunderslapDamage;
                             int knockback = 1;
@@ -2103,7 +2103,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         int projType = ModContent.ProjectileType<ElectricFire>();
                         int damage = JackFireDamage;
                         int knockback = 1;
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPoint, startVelocity, projType, damage, knockback, Main.myPlayer);
                         }
@@ -2186,7 +2186,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         laughSound.PitchVariance = 1f;
                         laughSound.Pitch = 0.75f;
                         SoundEngine.PlaySound(laughSound, NPC.position);
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             BigTeleportTarget = Target.Center + new Vector2(0, -256);
                             NPC.velocity = Vector2.Zero;

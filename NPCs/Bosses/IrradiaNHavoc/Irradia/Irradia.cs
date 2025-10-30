@@ -74,7 +74,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             set
             {
                 _state = value;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                     NPC.netUpdate = true;
             }
         }
@@ -590,7 +590,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
             if (timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
 
                 }
@@ -627,7 +627,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             {
                 if (Elect)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
                         float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, 4f);
@@ -642,7 +642,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
 
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(3))
                     {
@@ -676,7 +676,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             {
                 if (Jumpin < 1)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         switch (Main.rand.Next(6))
                         {
@@ -741,7 +741,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                 if (Jumpin == 1)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         switch (Main.rand.Next(3))
                         {
@@ -775,7 +775,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                 if (Jumpin == 2)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         switch (Main.rand.Next(3))
                         {
@@ -809,7 +809,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                 if (Jumpin == 3)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         switch (Main.rand.Next(3))
                         {
@@ -843,7 +843,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                 if (Jumpin == 4)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         switch (Main.rand.Next(3))
                         {
@@ -880,7 +880,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                 if (Jumpin == 5)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         switch (Main.rand.Next(3))
                         {
@@ -919,7 +919,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                 if (Jumpin == 6)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         switch (Main.rand.Next(3))
                         {
@@ -983,7 +983,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             if (timer == 49)
             {
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -999,7 +999,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             if (timer == 50)
             {
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(6))
                     {
@@ -1045,7 +1045,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             timer++;
             if (timer == 60)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
                     float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
@@ -1079,7 +1079,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             timer++;
             if (timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
                     float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, 4f);
@@ -1110,7 +1110,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
             if (recharge == 120)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
                     float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, 4f);
@@ -1144,7 +1144,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
             if (recharge == 40)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
                     float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, 4f);
@@ -1186,7 +1186,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                 if (NPC.life < NPC.lifeMax / 2)
                 {
                     ResetTimers();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         switch (Main.rand.Next(3))
                         {
@@ -1224,7 +1224,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                 if (NPC.life < NPC.lifeMax / 2)
                 {
                     ResetTimers();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         switch (Main.rand.Next(3))
                         {
@@ -1280,7 +1280,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             {
                 ResetTimers();
                 NPC.velocity.X -= 1;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0),
@@ -1314,7 +1314,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             {
                 ResetTimers();
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0),
@@ -1397,7 +1397,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
         public void ResetTimers()
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 _resetTimers = true;
                 NPC.netUpdate = true;

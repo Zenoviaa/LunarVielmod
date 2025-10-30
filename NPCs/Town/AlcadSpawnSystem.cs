@@ -243,7 +243,7 @@ namespace Stellamod.NPCs.Town
         {
             base.PostUpdateEverything();
             return;
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 if (TargetBossAlive())
                 {

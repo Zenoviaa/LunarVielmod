@@ -85,7 +85,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         public override void AI()
         {
             base.AI();
-            FollowCenter = ModContent.GetInstance<ColosseumSystem>().GongSpawnWorld + new Vector2(MathF.Sin(Timer * 0.01f) * 800, -168);
+            FollowCenter = ColosseumWaveManager.GongSpawnWorld + new Vector2(MathF.Sin(Timer * 0.01f) * 800, -168);
             NPC.TargetClosest();
             NPC.spriteDirection = NPC.direction;
             switch (State)
@@ -104,7 +104,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
         private void SwitchState(AIState state)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Timer = 0;
                 State = state;
@@ -114,8 +114,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
         public override bool CheckActive()
         {
-            ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
-            return !colosseumSystem.IsActive();
+            return !ColosseumWaveManager.IsActive();
         }
 
         private void AI_Spawn()
@@ -125,7 +124,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             {
                 int xSpawn = (int)NPC.position.X;
                 int ySpawn = (int)NPC.position.Y;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<EvilCarpet>(),
                         ai2: NPC.whoAmI);
@@ -169,12 +168,16 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
             float targetRotation = NPC.velocity.X * 0.025f;
             NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.1f);
-            ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
-            if (!colosseumSystem.IsActive() ||
-                colosseumSystem.waveIndex == 6 && colosseumSystem.colosseumIndex == 2)
+       
+            if (MultiplayerHelper.IsHost)
             {
-                SwitchState(AIState.Despawn);
+                if (!ColosseumWaveManager.IsActive() || ColosseumWaveManager.goAwayGintzia)
+                {
+                    SwitchState(AIState.Despawn);
+                }
             }
+
+
         }
 
         private void AI_Despawn()

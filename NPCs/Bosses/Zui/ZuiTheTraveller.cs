@@ -63,7 +63,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             set
             {
                 _state = value;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                     NPC.netUpdate = true;
             }
         }
@@ -526,7 +526,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             if (timer == 1)
             {
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldenAura2"), NPC.position);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(entitySource, NPC.Center + new Vector2(150, 150), Vector2.Zero,
                         ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
@@ -539,7 +539,7 @@ namespace Stellamod.NPCs.Bosses.Zui
                     d.noGravity = true;
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -558,7 +558,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             {
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     if (NPC.life > (NPC.lifeMax / 2))
                     {
@@ -614,7 +614,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             Vector2 velocity = NPC.Center.DirectionTo(target.Center) * 10;
             if (timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     // Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
                     //   ModContent.ProjectileType<ZuiRay>(), 70, 10, Main.myPlayer, ai0: NPC.whoAmI);
@@ -647,7 +647,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
             if (timer == 20)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                     ModContent.NPCType<ZuiLASERWARN>());
@@ -670,7 +670,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
             if (timer == 40)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                 ModContent.NPCType<ZuiLASERWARN>());
@@ -695,7 +695,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
             if (timer == 60)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                 ModContent.NPCType<ZuiLASERWARN>());
@@ -720,7 +720,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
             if (timer == 80)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                     ModContent.NPCType<ZuiLASERWARN>());
@@ -744,7 +744,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
             if (timer == 100)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                     ModContent.NPCType<ZuiLASERWARN>());
@@ -768,7 +768,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
             if (timer == 120)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                     ModContent.NPCType<ZuiLASERWARN>());
@@ -790,7 +790,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             {
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     if (!downtoclown)
                     {
@@ -835,13 +835,13 @@ namespace Stellamod.NPCs.Bosses.Zui
             Vector2 velocity = NPC.Center.DirectionTo(target.Center) * 10;
             if (timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                         ModContent.NPCType<ZuiLASERWARN>());
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     NPC.NewNPC(entitySource, (int)NPC.Center.X + Main.rand.Next(-40, 40), (int)target.Center.Y,
@@ -853,14 +853,14 @@ namespace Stellamod.NPCs.Bosses.Zui
             {
                 if (rayer == 9)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         var entitySource = NPC.GetSource_FromThis();
                         NPC.NewNPC(entitySource, (int)NPC.Center.X + gruber1, (int)target.Center.Y,
                             ModContent.NPCType<GoldBeamWarn>());
                     }
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         var entitySource = NPC.GetSource_FromThis();
                         NPC.NewNPC(entitySource, (int)NPC.Center.X + gruber2, (int)target.Center.Y,
@@ -890,7 +890,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
             if (timer == 50)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                         ModContent.NPCType<ZuiLASERWARN>());
@@ -901,7 +901,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
             if (timer == 100)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                         ModContent.NPCType<ZuiLASERWARN>());
@@ -916,7 +916,7 @@ namespace Stellamod.NPCs.Bosses.Zui
                 rayer = 0;
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
 
                     if (!downtoclown)
@@ -960,7 +960,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             Vector2 velocity = NPC.Center.DirectionTo(target.Center) * 10;
             if (timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                         ModContent.NPCType<ZuiLASERWARN>());
@@ -999,7 +999,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
             if (timer == 100)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                         ModContent.NPCType<ZuiLASERWARN>());
@@ -1040,7 +1040,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             {
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(2))
                     {
@@ -1147,7 +1147,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             {
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(2))
                     {
@@ -1174,7 +1174,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             Vector2 velocity = NPC.Center.DirectionTo(target.Center) * 10;
             if (timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int distanceY = Main.rand.Next(-175, -175);
                     int distanceYa = Main.rand.Next(-175, -175);
@@ -1228,7 +1228,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             if (timer == 155)
             {
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
 
                     Running = false;
@@ -1259,7 +1259,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             Vector2 velocity = NPC.Center.DirectionTo(target.Center) * 10;
             if (timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int distanceY = Main.rand.Next(-175, -175);
                     int distanceYa = Main.rand.Next(-175, -175);
@@ -1311,7 +1311,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             if (timer == 155)
             {
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
 
                     Running = false;
@@ -1354,7 +1354,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             {
 
                 target.velocity *= 0;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(entitySource, NPC.Center + new Vector2(150, 150), Vector2.Zero,
                         ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
@@ -1375,7 +1375,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             if (timer == 32)
             {
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(entitySource, NPC.Center + new Vector2(150, 150), Vector2.Zero,
                         ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
@@ -1450,7 +1450,7 @@ namespace Stellamod.NPCs.Bosses.Zui
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SunStalker_PreSpawn"));
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1024f, 32f);
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(entitySource, NPC.Center + new Vector2(150, 150), Vector2.Zero,
                     ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
@@ -1474,7 +1474,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             {
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     downtoclown = true;
                     switch (Main.rand.Next(2))
@@ -1519,7 +1519,7 @@ namespace Stellamod.NPCs.Bosses.Zui
                 int distanceY;
                 int distanceYa;
                 Vector2 teleportPos = NPC.Center;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(2))
                     {
@@ -1542,7 +1542,7 @@ namespace Stellamod.NPCs.Bosses.Zui
                     NPC.netUpdate = true;
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), teleportPos + new Vector2(150, 150), velocity * 0,
                     ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 10, Main.myPlayer, ai0: NPC.whoAmI);
@@ -1599,7 +1599,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             if (timer == 32)
             {
                 ZuiLongSlash += 1;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(entitySource, NPC.Center + new Vector2(150, 150), Vector2.Zero,
                         ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
@@ -1663,7 +1663,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             if (timer == 35)
             {
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1024f, 32f);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(entitySource, NPC.Center + new Vector2(150, 150), Vector2.Zero,
                     ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
@@ -1707,7 +1707,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             {
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     ResetTimers();
                     downtoclown = false;
@@ -1805,7 +1805,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
 
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + new Vector2(150, 150), velocity * 0,
@@ -1829,7 +1829,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             if (timer == 15)
             {
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(entitySource, NPC.Center + new Vector2(150, 150), Vector2.Zero,
                     ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
@@ -1859,7 +1859,7 @@ namespace Stellamod.NPCs.Bosses.Zui
                     yud++;
                     NPC.velocity *= 0;
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(entitySource, NPC.Center + new Vector2(150, 150), Vector2.Zero,
                             ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
@@ -1873,7 +1873,7 @@ namespace Stellamod.NPCs.Bosses.Zui
                         d.noGravity = true;
                     }
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
                         float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
@@ -1925,7 +1925,7 @@ namespace Stellamod.NPCs.Bosses.Zui
                         }
 
                         ResetTimers();
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             downtoclown = false;
                             ZuiLongSlash = 0;
@@ -1960,7 +1960,7 @@ namespace Stellamod.NPCs.Bosses.Zui
                 NPC.position.X = target.Center.X + distanceYa;
                 NPC.position.Y = target.Center.Y + distanceY;
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + new Vector2(150, 150), velocity * 0,
                     ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 10, Main.myPlayer, ai0: NPC.whoAmI);
@@ -1994,7 +1994,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
             if (timer == 2)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(entitySource, (int)NPC.Center.X + Main.rand.Next(-1, 1), (int)target.Center.Y,
                         ModContent.NPCType<GoldBeamWarn>());
@@ -2004,7 +2004,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             rayer++;
             if (rayer == 9)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(entitySource, (int)NPC.Center.X + gruber1, (int)target.Center.Y,
                         ModContent.NPCType<GoldBeamWarn>());
@@ -2040,7 +2040,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             if (timer == 35)
             {
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1024f, 32f);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(entitySource, NPC.Center + new Vector2(150, 150), Vector2.Zero,
                         ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
@@ -2069,7 +2069,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             if (timer == 64 && ZuiSonic >= 8)
             {
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     ResetTimers();
                     downtoclown = false;
@@ -2113,7 +2113,7 @@ namespace Stellamod.NPCs.Bosses.Zui
                 NPC.position.X = target.Center.X + distanceYa;
                 NPC.position.Y = target.Center.Y + distanceY;
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + new Vector2(150, 150), velocity * 0,
                         ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 10, Main.myPlayer, ai0: NPC.whoAmI);
@@ -2137,7 +2137,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
             if (timer == 64)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     ResetTimers();
                     var source = NPC.GetSource_FromThis();
@@ -2217,7 +2217,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
         public void ResetTimers()
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 _resetTimers = true;
                 NPC.netUpdate = true;
@@ -2229,7 +2229,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Spawn"), NPC.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 128f);
             var entitySource = NPC.GetSource_FromThis();
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<ZuiDeath>());
             }

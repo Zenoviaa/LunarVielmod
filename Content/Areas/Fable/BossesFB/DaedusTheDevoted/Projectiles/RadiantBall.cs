@@ -333,7 +333,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
             Projectile.velocity.Y = MathF.Sin(Timer * 0.1f) * 0.1f;
             if(AttackNum < 3 && Timer % 60 == 0)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Player target = PlayerHelper.FindClosestPlayer(Projectile.position, 1024);
                     if(target != null)

@@ -107,7 +107,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             }
             if (!Lightning)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Rot = Main.rand.NextFloat(-0.05f, 0.05f);
                     Lightning = true;

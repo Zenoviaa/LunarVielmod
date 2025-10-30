@@ -164,7 +164,7 @@ namespace Stellamod.NPCs.Town
                     if (Main.netMode == NetmodeID.SinglePlayer)
                         return;
 
-                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
+                    MultiplayerHelper.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
                         ModContent.NPCType<JackTheScholar>(), (int)NPC.position.X, (int)NPC.position.Y);
                 }
 

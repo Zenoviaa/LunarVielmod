@@ -48,7 +48,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             if (Timer == 1)
             {
                 NPC.TargetClosest();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     DirectionToShootFrom = Main.rand.NextBool(2) ? -1 : 1;
                     NPC.netUpdate = true;
@@ -92,7 +92,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             if (Timer == 180)
             {
        
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 velocity = Vector2.UnitX * -DirectionToShootFrom * 1500;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,

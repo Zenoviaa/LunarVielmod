@@ -105,7 +105,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
             {
                 if (Timer % (TimeBetweenShots * 8) == 0)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnPos = Target.Center;
                         spawnPos.Y -= 600;
@@ -124,7 +124,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
                 Vector2 shootPosition = SurpriseTrackingPosition;
                 shootPosition.Y = Target.Bottom.Y;
                 shootPosition += Main.rand.NextVector2Circular(8, 8);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), shootPosition, Vector2.Zero, ModContent.ProjectileType<JiitasGunShot>(), JiitasShotDamage, 0, Main.myPlayer);
                 }

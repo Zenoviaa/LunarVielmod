@@ -53,7 +53,7 @@ namespace Stellamod.NPCs.RoyalCapital
             NPC.rotation = NPC.velocity.X * 0.03f;
             if (ai_Counter == 400)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 direction = NPC.DirectionTo(player.Center);
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 9,

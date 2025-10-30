@@ -82,7 +82,7 @@ namespace Stellamod.NPCs.Cinderspark
 
             if (ai_Timer == 240)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     for (int i = 0; i < 1; i++)
                     {
@@ -174,7 +174,7 @@ namespace Stellamod.NPCs.Cinderspark
 
         public override void OnKill()
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 for (int i = 0; i < 1; i++)
                 {

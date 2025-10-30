@@ -70,7 +70,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             NPC.spriteDirection = -NPC.direction;
             NPC.velocity.X = 0;
 
-            if (StellaMultiplayer.IsHost && _angry)
+            if (MultiplayerHelper.IsHost && _angry)
             {
                 NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                     ModContent.NPCType<WoodlandRavager>());

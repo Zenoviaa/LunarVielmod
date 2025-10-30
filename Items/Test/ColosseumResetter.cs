@@ -1,4 +1,5 @@
-﻿using Stellamod.NPCs.Colosseum.Common;
+﻿using Stellamod.Helpers;
+using Stellamod.NPCs.Colosseum.Common;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;
@@ -35,8 +36,15 @@ namespace Stellamod.Items.Test
 
         public override bool? UseItem(Player player)
         {
-            ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
-            colosseumSystem.Reset();
+            if (MultiplayerHelper.IsHost)
+            {
+                ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
+                colosseumSystem.Reset();
+            }
+            else
+            {
+                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.ResetColosseum).Send(-1);
+            }
             return true;
         }
     }

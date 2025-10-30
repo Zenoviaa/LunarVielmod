@@ -80,7 +80,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                     float randScale = Main.rand.NextFloat(0.5f, 1.5f);
                 }
                 var entitySource = Projectile.GetSource_FromThis();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
 
 
@@ -121,7 +121,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
             }
             var entitySource = Projectile.GetSource_FromThis();
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
 
 
@@ -143,7 +143,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                         float progress = (float)i / num;
                         float rot = progress * MathHelper.TwoPi;
                         Vector2 velocity = rot.ToRotationVector2();
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             float knockback = 1;
                             Projectile.NewProjectile(EntitySource, Projectile.Center, velocity,
@@ -157,7 +157,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                         float progress = (float)i / num;
                         float rot = progress * MathHelper.TwoPi;
                         Vector2 velocity = rot.ToRotationVector2();
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             float knockback = 1;
                             Projectile.NewProjectile(EntitySource, Projectile.Center, velocity,

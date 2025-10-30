@@ -61,7 +61,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
         private Color OutlineColor;
         private void SwitchState(AIState state)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 TargetWanderAngle = Main.rand.NextFloat(0f, 1f) * MathHelper.TwoPi;
                 Timer = 0;
@@ -192,7 +192,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
         private void AI_Wander()
         {
             Timer++;
-            if (StellaMultiplayer.IsHost && Timer % 200 == 0)
+            if (MultiplayerHelper.IsHost && Timer % 200 == 0)
             {
                 TargetWanderAngle = Main.rand.NextFloat(0f, 1f) * MathHelper.TwoPi;
                 NPC.netUpdate = true;

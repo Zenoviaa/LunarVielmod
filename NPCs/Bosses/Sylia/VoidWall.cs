@@ -250,7 +250,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     break;
 
                 case AttackState.Void_Vomit:
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 velocity = (targetCenter - NPC.Center).SafeNormalize(Vector2.Zero) * 20;
                         int p = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
@@ -279,7 +279,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     if (ai_Counter % 30 == 0)
                     {
                         Vector2 voidBlastVelocity = (targetCenter - NPC.Center).SafeNormalize(Vector2.Zero) * 9.5f;
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             if (Main.rand.NextBool(2))
                             {
@@ -329,7 +329,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     break;
 
                 case AttackState.Void_Suck:
-                    if (StellaMultiplayer.IsHost && ai_Counter == 0)
+                    if (MultiplayerHelper.IsHost && ai_Counter == 0)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                             ModContent.ProjectileType<VoidVortex>(), 0, 0, Owner: Main.myPlayer, NPC.whoAmI);

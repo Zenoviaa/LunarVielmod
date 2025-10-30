@@ -92,7 +92,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
             if (counter == 140)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 direction = player.Center - NPC.Center;
                     direction.Normalize();

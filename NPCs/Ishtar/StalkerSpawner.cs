@@ -26,7 +26,7 @@ namespace Stellamod.NPCs.Ishtar
 
         public override void AI()
         {
-            if (!_spawn && StellaMultiplayer.IsHost)
+            if (!_spawn && MultiplayerHelper.IsHost)
             {
                 NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 30, (int)NPC.Center.Y,
                     ModContent.NPCType<Stalker>());

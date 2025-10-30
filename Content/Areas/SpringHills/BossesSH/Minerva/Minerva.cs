@@ -269,7 +269,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         private void SwitchState(AIState state)
         {
             _resetAnimation = true;
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Timer = 0;
                 State = state;
@@ -504,7 +504,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
 
             if (Timer % 70 == 0)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 leftVelocity = -Vector2.UnitX * 10;
                     Vector2 rightVelocity = Vector2.UnitX * 10;
@@ -591,7 +591,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             NPC.velocity.Y *= 0.8f;
             if (Timer >= 15)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 rightVelocity = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 15;
                     var source = NPC.GetSource_FromThis();
@@ -644,7 +644,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             if (Timer >= 15)
             {
                 NPC.velocity.X = -NPC.direction;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 rightVelocity = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 15;
                     var source = NPC.GetSource_FromThis();
@@ -685,7 +685,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         }
         private void ChooseAttack()
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
 
                 switch (AttackCycle)

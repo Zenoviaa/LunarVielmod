@@ -96,7 +96,7 @@ namespace Stellamod.NPCs.Colosseum
 
         private void SwitchState(AIState state)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Timer = 0;
                 State = state;
@@ -128,7 +128,7 @@ namespace Stellamod.NPCs.Colosseum
             FireVelocity = Vector2.Lerp(FireVelocity, (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero), 0.1f);
             if (Timer >= 120)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int damage = 17;
                     int knockback = 2;

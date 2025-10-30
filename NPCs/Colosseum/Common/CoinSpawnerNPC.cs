@@ -40,7 +40,7 @@ namespace Stellamod.NPCs.Colosseum.Common
             if (Timer >= 2)
             {
                 Timer = 0;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 spawnPos = Vector2.Zero;
                     spawnPos.Y = NPC.Center.Y;

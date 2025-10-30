@@ -298,7 +298,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
 
         private void SwitchState(AIState state)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Timer = 0;
                 Cycle = 0;
@@ -344,7 +344,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
                 FXUtil.ShakeCamera(NPC.position, 1024, 80);
                 Particle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     //This is the part where you spawn the cool ahh shockwaves
                     //But we have to make cool ahh shockwaves :(
@@ -424,7 +424,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
                 int rockCount = InPhase2() ? 5 : 10;
                 if (Timer < 51 && Timer % rockCount == 0)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 rockSpawnPoint = _crashPoint;
                         rockSpawnPoint.X += Main.rand.Next(-400, 400);
@@ -504,7 +504,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             {
                 if (Timer >= IdleMadTime)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         if (InPhase3() && Main.rand.NextBool(2))
                         {

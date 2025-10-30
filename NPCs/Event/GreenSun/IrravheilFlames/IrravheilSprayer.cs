@@ -186,7 +186,7 @@ namespace Stellamod.NPCs.Event.GreenSun.IrravheilFlames
             if (Tti == 60)
             {
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float num = 8;
                     for (float i = 0; i < num; i++)
@@ -261,7 +261,7 @@ namespace Stellamod.NPCs.Event.GreenSun.IrravheilFlames
 
 
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
 
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<IrradiatedDeathSpray>(), 50, 1, Main.myPlayer, 0, 0);

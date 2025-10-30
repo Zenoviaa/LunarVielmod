@@ -116,7 +116,7 @@ namespace Stellamod.NPCs.Colosseum.Common
 
         private void SwitchState(AIState state)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Timer = 0;
                 State = state;
@@ -148,7 +148,11 @@ namespace Stellamod.NPCs.Colosseum.Common
                 soundStyle.PitchVariance = 0.1f;
                 SoundEngine.PlaySound(soundStyle, NPC.position);
                 FXUtil.ShakeCamera(NPC.position, distance: 2048, strength: 8);
-                StartColosseum();
+                if (MultiplayerHelper.IsHost)
+                {
+                    StartColosseum();
+                }
+               
             }
             if (Timer < 60)
             {

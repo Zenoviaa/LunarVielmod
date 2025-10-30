@@ -75,7 +75,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                     }
 
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048f, 32f);
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnPos = new Vector2(Projectile.Center.X, Projectile.Center.Y - 1500);
                         Vector2 spawnVelocity = new Vector2(0, 10);

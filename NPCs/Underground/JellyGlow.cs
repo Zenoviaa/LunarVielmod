@@ -79,7 +79,7 @@ namespace Stellamod.NPCs.Underground
 
             UpdateFrame(0.8f, 1, 60);
 
-            if (StellaMultiplayer.IsHost && !Pregnate)
+            if (MultiplayerHelper.IsHost && !Pregnate)
             {
                 int range = 256;
                 for (int i = 0; i < Main.rand.Next(5, 13); i++)

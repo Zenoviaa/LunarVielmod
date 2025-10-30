@@ -289,7 +289,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     if (Main.netMode == NetmodeID.SinglePlayer)
                         return;
 
-                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
+                    MultiplayerHelper.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
                         ModContent.NPCType<Sylia>(), (int)NPC.Center.X, (int)NPC.Center.Y - 5);
                 }
             }

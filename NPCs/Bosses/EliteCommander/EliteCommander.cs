@@ -261,7 +261,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
             }
             if (Timer > JumpTarget || AbovePlayerTimer > 60)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     JumpTarget = Main.rand.NextFloat(180, 240);
                     if (InSecondPhase)
@@ -286,7 +286,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
 
             if (Timer == 10)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float distance = Main.rand.NextFloat(2, 5);
                     float jumpHeight = -14f;
@@ -315,7 +315,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
             Timer++;
             if (Timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     //This is the part where you spawn the cool ahh shockwaves
                     //But we have to make cool ahh shockwaves :(
@@ -373,7 +373,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
             {
                 if (InSecondPhase)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         if (Main.rand.NextBool(2))
                         {
@@ -399,7 +399,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
             NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, 0f, 0.1f);
             if (Timer == 60)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int damage = HandDamage;
                     int knockback = 1;
@@ -427,7 +427,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
 
         private void SwitchState(AIState state)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Timer = 0;
                 AbovePlayerTimer = 0;

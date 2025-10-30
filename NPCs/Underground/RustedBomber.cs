@@ -51,7 +51,7 @@ namespace Stellamod.NPCs.Underground
             {
                 _attack = false;
                 Vector2 fireCenter = NPC.Center + new Vector2(0, -NPC.height / 2);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
 
                     for (int i = 0; i < Main.rand.Next(2, 4); i++)

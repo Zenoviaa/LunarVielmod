@@ -225,7 +225,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                             NPC.rotation = NPC.DirectionTo(player.Center).ToRotation() - MathHelper.PiOver2;
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
 
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
                                 float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
@@ -243,7 +243,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                             NPC.rotation = NPC.DirectionTo(player.Center).ToRotation() - MathHelper.PiOver2;
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
 
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
                                 float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
@@ -259,7 +259,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                         {
                             NPC.rotation = NPC.DirectionTo(player.Center).ToRotation() - MathHelper.PiOver2;
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
                                 float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
@@ -275,7 +275,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                             NPC.active = false;
                             NPC.rotation = NPC.DirectionTo(player.Center).ToRotation() - MathHelper.PiOver2;
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
                                 float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);

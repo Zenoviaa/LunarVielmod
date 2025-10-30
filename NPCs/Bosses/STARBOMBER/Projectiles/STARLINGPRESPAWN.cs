@@ -47,7 +47,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<STARLING>());
             }

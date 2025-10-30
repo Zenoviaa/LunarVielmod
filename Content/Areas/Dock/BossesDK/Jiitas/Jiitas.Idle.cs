@@ -59,13 +59,13 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
 
         private void ChooseAttack()
         {
-            if (!StellaMultiplayer.IsHost)
+            if (!MultiplayerHelper.IsHost)
                 return;
 
             if (_attackCycle.Count == 0)
             {
                 //Determine the attack pattern
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int randIndex = Main.rand.Next(0, 3);
                     switch (randIndex)

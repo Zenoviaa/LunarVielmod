@@ -68,7 +68,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
             set
             {
                 _state = value;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                     NPC.netUpdate = true;
             }
         }
@@ -353,7 +353,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                     if (timert == 600)
                     {
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 0, speedYb * 0,
                                 ModContent.ProjectileType<Helios>(), 30, 0f, Owner: Main.myPlayer);
@@ -557,7 +557,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
             if (timer == 250)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y + 5, ModContent.NPCType<Gothiviab>());
                 }
@@ -574,7 +574,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
             {
                 float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                 float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f - 2;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 200, NPC.position.Y - 60, speedXb * 0, speedYb * 0.2f,
                         ModContent.ProjectileType<Speechbubble>(), 0, 0f, Owner: Main.myPlayer);
@@ -598,7 +598,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
                 if (NPC.life < NPC.lifeMax / 2)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         switch (Main.rand.Next(3))
                         {
@@ -637,7 +637,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
                 if (NPC.life < NPC.lifeMax / 2)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         switch (Main.rand.Next(3))
                         {
@@ -696,7 +696,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
             {
                 ResetTimers();
                 NPC.velocity.X -= 1;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0),
@@ -732,7 +732,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                 ResetTimers();
                 NPC.velocity.X += 1;
                 var entitySource = NPC.GetSource_FromThis();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0),
                         Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0, Owner: Main.myPlayer);
@@ -775,7 +775,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                 float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                 int damage = Main.expertMode ? 4 : 7;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX / 2, speedYb * 0,
                         ModContent.ProjectileType<LaserShooterFirstPhase>(), 10, 0f, Owner: Main.myPlayer);
@@ -809,7 +809,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                     float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                     float offsetY = Main.rand.Next(-50, 50) * 0.01f;
                     int damage = Main.expertMode ? 44 : 47;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0),
                             Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0, Owner: Main.myPlayer);
@@ -828,7 +828,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                     float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                     float offsetY = Main.rand.Next(-50, 50) * 0.01f;
                     int damage = Main.expertMode ? 44 : 47;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0),
                             Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0, Owner: Main.myPlayer);
@@ -849,7 +849,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                     float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                     float offsetY = Main.rand.Next(-50, 50) * 0.01f;
                     int damage = Main.expertMode ? 34 : 37;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0),
                             Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0, Owner: Main.myPlayer);
@@ -868,7 +868,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                     float offsetY = Main.rand.Next(-50, 50) * 0.01f;
                     int damage = Main.expertMode ? 34 : 37;
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0),
                             Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0, Owner: Main.myPlayer);
@@ -905,7 +905,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                     float offsetX = Main.rand.Next(-10, 10);
                     int damage = Main.expertMode ? 44 : 47;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0),
                             Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0, Owner: Main.myPlayer);
@@ -929,7 +929,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                     float offsetX = Main.rand.Next(-10, 10);
                     int damage = Main.expertMode ? 44 : 47;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0),
                             Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0, Owner: Main.myPlayer);
@@ -955,7 +955,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                     float offsetX = Main.rand.Next(-5, 5);
                     int damage = Main.expertMode ? 44 : 47;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0),
                             Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0, Owner: Main.myPlayer);
@@ -976,7 +976,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                     float offsetX = Main.rand.Next(-5, 5);
                     int damage = Main.expertMode ? 44 : 47;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0),
                             Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0, Owner: Main.myPlayer);
@@ -1054,7 +1054,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
             if (timer == 12)
             {
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(2))
                     {

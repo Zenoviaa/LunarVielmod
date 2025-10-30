@@ -84,7 +84,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
                     if (Main.netMode == NetmodeID.SinglePlayer)
                         return false;
 
-                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<Gothiviabb>(), i * 16, (j * 16));
+                    MultiplayerHelper.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<Gothiviabb>(), i * 16, (j * 16));
                 }
             }
             else if (NPC.AnyNPCs(ModContent.NPCType<Gothiviab>()) || NPC.AnyNPCs(ModContent.NPCType<Gothiviabb>()))

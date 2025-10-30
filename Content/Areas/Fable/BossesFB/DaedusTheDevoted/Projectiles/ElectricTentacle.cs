@@ -53,7 +53,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
 
             if(RotationTime == 0)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     RotationTime = Main.rand.NextFloat(30, 60);
                     Projectile.netUpdate = true;

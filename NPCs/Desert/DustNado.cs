@@ -31,7 +31,7 @@ namespace Stellamod.NPCs.Desert
             Timer++;
             if (Timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 velocity = Vector2.Zero;
                     Player target = Main.player[NPC.target];

@@ -99,7 +99,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 32f);
                     LightPos.X = NPC.position.X;
                     LightPos.Y = NPC.position.Y - 500;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         var entitySource = NPC.GetSource_FromThis();
                         Projectile.NewProjectile(entitySource, LightPos.X, LightPos.Y, 0, 0,

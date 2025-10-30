@@ -284,7 +284,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
         }
         private void SwitchState(ActionState state)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Timer = 0;
                 ActionStep = 0;
@@ -503,7 +503,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
                 CloneAlpha = MathHelper.SmoothStep(CloneAlpha, 0f, 0.1f);
             }
 
-            if (HasPhaseTransitioned && StellaMultiplayer.IsHost)
+            if (HasPhaseTransitioned && MultiplayerHelper.IsHost)
             {
                 _dancingPuppetSpawnTimer++;
                 if (_dancingPuppetSpawnTimer % 60 == 0)

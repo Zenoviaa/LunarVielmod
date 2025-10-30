@@ -100,7 +100,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
         private Color OutlineColor;
         private void SwitchState(AIState state)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Timer = 0;
                 State = state;
@@ -204,7 +204,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
 
             if (Timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float targetBeamLength = ProjectileHelper.PerformBeamHitscan(NPC.Center, -Vector2.UnitY, 1200);
                     NPC.Center = NPC.Center - Vector2.UnitY * targetBeamLength;
@@ -249,7 +249,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             float interpolant = Timer / 60f;
             if (Timer >= 60f)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                         ModContent.ProjectileType<HangingCageExplosionProjectile>(), 37, 2, Main.myPlayer);

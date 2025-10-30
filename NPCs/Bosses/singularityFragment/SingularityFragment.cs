@@ -227,7 +227,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                 if (NPC.ai[1] >= 5)
                 {
                     NPC.damage = 0;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         _invincible = true;
                         NPC.netUpdate = true;
@@ -238,7 +238,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                     if (SingularityOrbs > 0)
                     {
                         SparkCountMax = 3;
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             _invincible = true;
                             NPC.netUpdate = true;
@@ -246,7 +246,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                     }
                     else
                     {
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             _invincible = false;
                             NPC.netUpdate = true;
@@ -258,7 +258,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             else
             {
                 NPC.damage = 0;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     _invincible = true;
                     NPC.netUpdate = true;
@@ -314,7 +314,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                                         for (int I = 0; I < 5; I++)
                                         {
                                             SingularityOrbs = 5;
-                                            if (StellaMultiplayer.IsHost)
+                                            if (MultiplayerHelper.IsHost)
                                             {
                                                 Vector2 position = NPC.Center + radius * (I * rot).ToRotationVector2();
                                                 NPC.NewNPC(NPC.GetSource_FromAI(), (int)(position.X), (int)(position.Y),
@@ -350,7 +350,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             {
                                 if (SingularityOrbs == 0)
                                 {
-                                    if (StellaMultiplayer.IsHost)
+                                    if (MultiplayerHelper.IsHost)
                                     {
 
                                         Attack = Main.rand.Next(1, MaxAttac);
@@ -400,7 +400,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                                 }
                                 else
                                 {
-                                    if (StellaMultiplayer.IsHost)
+                                    if (MultiplayerHelper.IsHost)
                                     {
                                         Attack = Main.rand.Next(1, 3);
                                         NPC.netUpdate = true;
@@ -411,7 +411,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                                         {
                                             Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
                                         }
-                                        if (StellaMultiplayer.IsHost)
+                                        if (MultiplayerHelper.IsHost)
                                         {
                                             Attack = Main.rand.Next(1, 3);
                                             NPC.netUpdate = true;
@@ -441,7 +441,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                         {
                             if (NPC.ai[0] == 20)
                             {
-                                if (StellaMultiplayer.IsHost)
+                                if (MultiplayerHelper.IsHost)
                                 {
                                     NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y,
                                         ModContent.NPCType<SingularitySpark>());
@@ -458,7 +458,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                                     NPC.velocity += Backlash / 2;
                                 }
 
-                                if (StellaMultiplayer.IsHost)
+                                if (MultiplayerHelper.IsHost)
                                 {
                                     float offsetX = Main.rand.Next(-5, 5);
                                     float offsetY = Main.rand.Next(-5, 5);
@@ -529,7 +529,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
                             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
 
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
 
                                 float offsetX = Main.rand.Next(-1, 1);
@@ -558,7 +558,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                         {
                             LastBacklash = Vector2.Normalize(NPC.Center - Main.player[NPC.target].Center) * 8.5f;
                             LastDirection = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SingularitySparkBig>());
                             }
@@ -570,7 +570,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             SoundEngine.PlaySound(SoundID.Item91, NPC.position);
 
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 2212f, 13f);
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Zero,
                                     ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
@@ -581,7 +581,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                                 NPC.velocity += LastBacklash / 5;
                             }
 
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                                 float offsetY = Main.rand.Next(-50, 50) * 0.01f;
@@ -605,7 +605,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
                             SoundEngine.PlaySound(SoundID.Item8, NPC.position);
 
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                                 float offsetY = Main.rand.Next(-50, 50) * 0.01f;
@@ -621,7 +621,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                         {
                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Shot1"), NPC.position);
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
                                 direction.Normalize();
@@ -696,7 +696,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             NPC.velocity *= 0.90f;
                             if (NPC.ai[0] == 50)
                             {
-                                if (StellaMultiplayer.IsHost)
+                                if (MultiplayerHelper.IsHost)
                                 {
                                     LazerType = Main.rand.Next(0, 2);
                                     if (LazerType == 0)
@@ -717,7 +717,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             if (NPC.ai[0] == 170)
                             {
                                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2212f, 62f);
-                                if (StellaMultiplayer.IsHost)
+                                if (MultiplayerHelper.IsHost)
                                 {
                                     Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero,
                                         ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
@@ -730,7 +730,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                                 float rot = MathHelper.TwoPi / 2;
                                 for (int I = 0; I < 1; I++)
                                 {
-                                    if (StellaMultiplayer.IsHost)
+                                    if (MultiplayerHelper.IsHost)
                                     {
                                         Vector2 position = NPC.Center + radius * (I * rot).ToRotationVector2();
                                         NPC.NewNPC(NPC.GetSource_FromAI(), (int)(position.X), (int)(position.Y),
@@ -799,7 +799,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             NPC.velocity *= 0.90f;
                             if (NPC.ai[0] == 50)
                             {
-                                if (StellaMultiplayer.IsHost)
+                                if (MultiplayerHelper.IsHost)
                                 {
                                     LazerType = Main.rand.Next(0, 2);
                                     if (LazerType == 0)
@@ -840,7 +840,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                                     Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
                                 }
 
-                                if (StellaMultiplayer.IsHost)
+                                if (MultiplayerHelper.IsHost)
                                 {
                                     Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero,
                                         ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
@@ -855,7 +855,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                                 {
                                     Vector2 position = NPC.Center + radius * (I * rot).ToRotationVector2();
 
-                                    if (StellaMultiplayer.IsHost)
+                                    if (MultiplayerHelper.IsHost)
                                     {
                                         NPC.NewNPC(NPC.GetSource_FromAI(), (int)(position.X), (int)(position.Y),
                                             ModContent.NPCType<LazerOrb>(), NPC.whoAmI, NPC.whoAmI, I * rot, radius);

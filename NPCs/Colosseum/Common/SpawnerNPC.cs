@@ -70,7 +70,7 @@ namespace Stellamod.NPCs.Colosseum.Common
             Timer++;
             if (Timer == 100)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.position.X, (int)NPC.position.Y, NPCType);
                 }

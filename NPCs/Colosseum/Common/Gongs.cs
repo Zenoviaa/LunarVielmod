@@ -8,8 +8,9 @@ namespace Stellamod.NPCs.Colosseum.Common
         protected override void StartColosseum()
         {
             base.StartColosseum();
-            ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
-            colosseumSystem.StartColosseum(0, NPC.Bottom.ToTileCoordinates());
+            NPC.NewNPC(NPC.GetSource_FromThis(), 
+                (int)NPC.Bottom.X, 
+                (int)NPC.Bottom.Y, ModContent.NPCType<ColosseumWaveManager>(), ai1: 0);
         }
     }
 
@@ -18,8 +19,9 @@ namespace Stellamod.NPCs.Colosseum.Common
         protected override void StartColosseum()
         {
             base.StartColosseum();
-            ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
-            colosseumSystem.StartColosseum(1, NPC.Bottom.ToTileCoordinates());
+            NPC.NewNPC(NPC.GetSource_FromThis(),
+                (int)NPC.Bottom.X,
+                (int)NPC.Bottom.Y, ModContent.NPCType<ColosseumWaveManager>(), ai1: 1);
         }
     }
 
@@ -28,8 +30,9 @@ namespace Stellamod.NPCs.Colosseum.Common
         protected override void StartColosseum()
         {
             base.StartColosseum();
-            ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
-            colosseumSystem.StartColosseum(2, NPC.Bottom.ToTileCoordinates());
+            NPC.NewNPC(NPC.GetSource_FromThis(),
+                (int)NPC.Bottom.X,
+                (int)NPC.Bottom.Y, ModContent.NPCType<ColosseumWaveManager>(), ai1: 2);
         }
     }
 }

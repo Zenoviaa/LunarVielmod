@@ -38,7 +38,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
 
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Built"), Projectile.position);
 
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<IrradiaSpikeBox>());
             }

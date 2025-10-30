@@ -113,7 +113,7 @@ namespace Stellamod.NPCs.Ice.WinterSouls
         float alphaCounter;
         public override void AI()
         {
-            if (StellaMultiplayer.IsHost && Style == -1)
+            if (MultiplayerHelper.IsHost && Style == -1)
             {
                 Style = Main.rand.Next(0, 3);
                 NPC.netUpdate = true;

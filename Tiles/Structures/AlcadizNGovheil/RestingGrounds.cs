@@ -121,7 +121,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
                     if (Main.netMode == NetmodeID.SinglePlayer)
                         return false;
 
-                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<DaedusR>(), i * 16, (j * 16) - 5);
+                    MultiplayerHelper.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<DaedusR>(), i * 16, (j * 16) - 5);
                 }
 
                 return true;

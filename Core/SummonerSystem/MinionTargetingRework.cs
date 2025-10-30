@@ -92,7 +92,7 @@ namespace Stellamod.Core.SummonerSystem
 
         private void ManageHealthbar()
         {
-            if (!_spawnedMinionNPC && StellaMultiplayer.IsHost)
+            if (!_spawnedMinionNPC && MultiplayerHelper.IsHost)
             {
                 _npcWhoAmI = NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y,
                     ModContent.NPCType<DummyNPC>());

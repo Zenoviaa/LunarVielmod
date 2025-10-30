@@ -93,7 +93,7 @@ namespace Stellamod.NPCs.Underground
         private void WanderOff()
         {
             PanicTimer++;
-            if (PanicTimer >= PanicLength && StellaMultiplayer.IsHost)
+            if (PanicTimer >= PanicLength && MultiplayerHelper.IsHost)
             {
                 PanicLength = Main.rand.Next(30, 210);
                 PanicDirection = Main.rand.NextVector2Circular(1, 1);
@@ -126,7 +126,7 @@ namespace Stellamod.NPCs.Underground
         private void Panic()
         {
             PanicTimer++;
-            if (PanicTimer >= PanicLength && StellaMultiplayer.IsHost)
+            if (PanicTimer >= PanicLength && MultiplayerHelper.IsHost)
             {
                 PanicLength = Main.rand.Next(30, 210);
                 PanicDirection = Main.rand.NextVector2Circular(1, 1);

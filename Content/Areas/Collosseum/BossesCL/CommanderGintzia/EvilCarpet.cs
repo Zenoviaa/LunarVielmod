@@ -92,7 +92,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         }
         protected void SwitchState(AIState state)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Timer = 0;
                 State = state;

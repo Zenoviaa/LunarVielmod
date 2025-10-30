@@ -133,7 +133,7 @@ namespace Stellamod.NPCs.Cinderspark
                 NPC.velocity = targetVelocity;
                 if (_attackCounter > 120)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         for (int i = 0; i < Main.rand.Next(4, 8); i++)
                         {

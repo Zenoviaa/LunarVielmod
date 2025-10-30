@@ -54,7 +54,7 @@ namespace Stellamod.NPCs.Cinderspark
 
         public override void OnKill()
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 for (int i = 0; i < 1; i++)
                 {

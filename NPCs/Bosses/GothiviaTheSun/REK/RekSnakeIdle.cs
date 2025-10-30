@@ -232,7 +232,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 return;
             }
 
-            if (StellaMultiplayer.IsHost && _spawnRek)
+            if (MultiplayerHelper.IsHost && _spawnRek)
             {
                 NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<RekSnake>());
                 NPC.active = false;

@@ -329,7 +329,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
             Timer++;
             if (Timer >= 90)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     //We want him to always use multi stomp the moment he goes into phase 2
                     //So we have a bool for that
@@ -562,7 +562,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                             Dust.NewDustPerfect(NPC.Bottom + offset, ModContent.DustType<Dusts.TSmokeDust>(), velocity, 0, Color.Black * 0.5f,
                                 Main.rand.NextFloat(0.3f, 0.7f));
                         }
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             //This is the part where you spawn the cool ahh shockwaves
                             //But we have to make cool ahh shockwaves :(
@@ -763,7 +763,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                         SoundStyle boom = new SoundStyle("Stellamod/Assets/Sounds/RocketExplosion");
                         boom.PitchVariance = 0.3f;
                         SoundEngine.PlaySound(boom, NPC.position);
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             //This is the part where you spawn the cool ahh shockwaves
                             //But we have to make cool ahh shockwaves :(

@@ -110,7 +110,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 32f);
                     LightPos.X = NPC.position.X;
                     LightPos.Y = NPC.position.Y - 500;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         var EntitySource = NPC.GetSource_FromThis();
                         Utilities.NewProjectileBetter(LightPos.X, LightPos.Y - 150, 0, 10,

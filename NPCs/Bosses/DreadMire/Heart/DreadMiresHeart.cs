@@ -161,7 +161,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                 if (NPC.ai[0] >= 1)
                 {
                     var entitySource = NPC.GetSource_FromThis();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagram>());
                     }
@@ -183,7 +183,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                         break;
                     case 1:
                         NPC.velocity *= 1.82f;
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             if (NPC.Center.X >= player.Center.X && moveSpeed >= Main.rand.Next(-60, -40)) // flies to players x position
                             {
@@ -238,7 +238,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                             double offsetAngle;
                             for (int i = 0; i < 4; i++)
                             {
-                                if (StellaMultiplayer.IsHost)
+                                if (MultiplayerHelper.IsHost)
                                 {
                                     offsetAngle = (startAngle + deltaAngle * (i + i * i) / 2f) + 32f * i + offsetRandom;
                                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center.X, NPC.Center.Y, (float)(Math.Sin(offsetAngle) * Speed), (float)(Math.Cos(offsetAngle) * Speed),
@@ -251,7 +251,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
 
                         if (NPC.ai[0] == 290)
                         {
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 NPC.ai[1] = Main.rand.Next(2, 4);
                                 NPC.ai[0] = 0;
@@ -283,7 +283,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                         }
                         if (NPC.ai[0] == 50)
                         {
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 var entitySource = NPC.GetSource_FromThis();
                                 NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagramSmall>());
@@ -301,7 +301,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DMHeart__Dash2"), NPC.position);
                             }
 
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
                                 direction.Normalize();
@@ -371,7 +371,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                         if (NPC.ai[0] == 100)
                         {
                             var entitySource = NPC.GetSource_FromThis();
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagramSmall>());
                             }
@@ -385,7 +385,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                         }
                         if (NPC.ai[0] >= 120 && NPC.ai[0] <= 180)
                         {
-                            if (Main.rand.NextBool(3) && StellaMultiplayer.IsHost)
+                            if (Main.rand.NextBool(3) && MultiplayerHelper.IsHost)
                             {
                                 NPC.alpha = 20;
                                 int Sound = Main.rand.Next(1, 4);
@@ -471,7 +471,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
             if (NPC.life <= 0)
             {
                 Player player = Main.player[NPC.target];
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagramSmall>());

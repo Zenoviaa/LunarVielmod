@@ -238,7 +238,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
         private void SwitchState(AIState state)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Timer = 0;
                 State = state;
@@ -307,7 +307,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             }
             if (Timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     _evilCarpetIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<EvilCarpet>(),
                         ai2: NPC.whoAmI);
@@ -315,7 +315,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             }
             if (Timer == 10)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
 
                     _comeHereIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<ComeHere>(),
@@ -327,7 +327,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
             if (Timer == 40)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     _fingerGunIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<FingerGun>(),
                         ai2: NPC.whoAmI,
@@ -338,7 +338,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
             if (Timer == 70)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     _fistIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<Fist>(),
                         ai2: NPC.whoAmI,
@@ -349,7 +349,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
             if (Timer == 100)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     _handShakeIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<HandShake>(),
                         ai2: NPC.whoAmI,
@@ -360,7 +360,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
             if (Timer == 130)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     _okHandIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<OkHand>(),
                         ai2: NPC.whoAmI,
@@ -371,7 +371,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
             if (Timer == 160)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     _openHandIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<OpenPalm>(),
                         ai2: NPC.whoAmI,
@@ -382,7 +382,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
             if (Timer == 190)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     _scissorHandIndex = NPC.NewNPC(NPC.GetSource_FromThis(), xSpawn, ySpawn, ModContent.NPCType<ScissorHand>(),
                         ai2: NPC.whoAmI,
@@ -469,7 +469,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
                 {
                     if (InPhase2)
                     {
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             if (Main.rand.NextBool(7))
                             {
@@ -495,7 +495,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             TargetOutlineColor = Color.Yellow;
             if (Timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (AttackCycle)
                     {
@@ -555,7 +555,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             Timer++;
             if (Timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (AttackCycle)
                     {
@@ -652,7 +652,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             NPC.rotation *= 0.94f;
             if (Timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     //This is the part where you spawn the cool ahh shockwaves
                     //But we have to make cool ahh shockwaves :(
@@ -796,8 +796,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         {
             Timer++;
             ColosseumSystem colosseum = ModContent.GetInstance<ColosseumSystem>();
-            Point colosseumTile = colosseum.colosseumTile;
-            Vector2 colosseumWorld = colosseum.GongSpawnWorld;
+            Vector2 colosseumWorld = ColosseumWaveManager.GongSpawnWorld;
 
             Vector2 velocity = (colosseumWorld - NPC.Center).SafeNormalize(Vector2.Zero);
             float distance = Vector2.Distance(NPC.Center, colosseumWorld);
@@ -822,13 +821,13 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
             if (Timer == 150)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(),
                         ModContent.ItemType<VoidKey>(), Main.rand.Next(1, 1));
                     NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
                 }
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(),
                         ModContent.ItemType<CommanderGintziaBossRel>(), Main.rand.Next(1, 1));
@@ -847,9 +846,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             if (Timer == 240)
             {
                 NPC.SetEventFlagCleared(ref DownedBossSystem.downedCommanderGintziaBoss, -1);
-                ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
-                colosseumSystem.Progress();
-
             }
             if (Timer == 241)
             {
@@ -903,8 +899,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         public override void OnKill()
         {
             base.OnKill();
-            ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
-            colosseumSystem.Progress();
+            ColosseumWaveManager.ColosseumEnemyKilled();
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedCommanderGintziaBoss, -1);
         }
     }

@@ -180,7 +180,7 @@ namespace Stellamod.NPCs.Morrow
             if (timer == 9)
             {
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(4))
                     {

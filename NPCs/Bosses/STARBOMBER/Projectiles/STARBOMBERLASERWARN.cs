@@ -110,7 +110,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
                     LightPos.X = NPC.position.X;
                     LightPos.Y = NPC.position.Y - 500;
                     var EntitySource = NPC.GetSource_FromThis();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Utilities.NewProjectileBetter(LightPos.X, LightPos.Y - 150, 0, 10,
                             ModContent.ProjectileType<STARBEAM>(), 300, 0f, owner: Main.myPlayer);

@@ -57,7 +57,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 return;
             }
 
-            if (Timer >= 90 && StellaMultiplayer.IsHost)
+            if (Timer >= 90 && MultiplayerHelper.IsHost)
             {
                 //Determine attack
                 switch (AttackCycle)
@@ -128,7 +128,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             Vector2 topLeft = ArenaCenter + new Vector2(-ArenaRadius, -height);
             Vector2 topRight = ArenaCenter + new Vector2(ArenaRadius, -height);
 
-            if (Timer % 16 == 0 && StellaMultiplayer.IsHost)
+            if (Timer % 16 == 0 && MultiplayerHelper.IsHost)
             {
                 float rand = Main.rand.NextFloat(0.00f, 1.00f);
                 Vector2 randPos = Vector2.Lerp(topLeft, topRight, rand);
@@ -159,7 +159,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             Vector2 left = ArenaCenter + new Vector2(-ArenaRadius, 0);
             Vector2 right = ArenaCenter + new Vector2(ArenaRadius, 0);
 
-            if (Timer % 16 == 0 && StellaMultiplayer.IsHost)
+            if (Timer % 16 == 0 && MultiplayerHelper.IsHost)
             {
                 int randDir = Main.rand.NextBool(2) ? -1 : 1;
                 float range = 128;
@@ -196,7 +196,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 NPC.velocity = Vector2.Zero;
             }
 
-            if (Timer == 1 && StellaMultiplayer.IsHost)
+            if (Timer == 1 && MultiplayerHelper.IsHost)
             {
 
                 //Get random start target
@@ -228,7 +228,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             {
                 //Move along it
                 NPC.velocity = QuickSlashV2Velocity;
-                if (Timer % 4 == 0 && StellaMultiplayer.IsHost)
+                if (Timer % 4 == 0 && MultiplayerHelper.IsHost)
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(1, 1);
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
@@ -264,7 +264,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             IdleHover();
             if (Timer % 20 == 0)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 velocity = Vector2.UnitX.RotatedByRandom(MathHelper.TwoPi);
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), Target.Center, velocity,
@@ -291,7 +291,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 return;
             }
 
-            if (Timer % 10 == 0 && StellaMultiplayer.IsHost)
+            if (Timer % 10 == 0 && MultiplayerHelper.IsHost)
             {
                 Vector2 velocity = NPC.Center.DirectionTo(Target.Center);
                 velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 4);
@@ -308,7 +308,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 TelegraphTimer++;
             }
 
-            if (Timer % 40 == 0 && StellaMultiplayer.IsHost)
+            if (Timer % 40 == 0 && MultiplayerHelper.IsHost)
             {
                 Vector2 velocity = Vector2.UnitX.RotatedByRandom(MathHelper.TwoPi);
                 Projectile.NewProjectile(NPC.GetSource_FromThis(), Target.Center, velocity,

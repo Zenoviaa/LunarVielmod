@@ -93,7 +93,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             {
                 //EXPLODE
                 //DEATH
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<KaBoomSigil>(), 0, 0, Main.myPlayer);
                 }

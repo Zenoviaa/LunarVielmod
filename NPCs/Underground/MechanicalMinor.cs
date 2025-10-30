@@ -71,7 +71,7 @@ namespace Stellamod.NPCs.Underground
                 }
                 else if (_attackTimer >= 120)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
 
                         Vector2 velocity = NPC.DirectionTo(target.Center) * 10;

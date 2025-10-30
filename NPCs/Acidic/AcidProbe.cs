@@ -210,7 +210,7 @@ namespace Stellamod.NPCs.Acidic
                     float offsetX = Main.rand.Next(-350, 350) * 0.01f;
                     float offsetY = Main.rand.Next(-350, 350) * 0.01f;
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY,
                             ModContent.ProjectileType<IrradiatedDeathSpray>(), 12, 1, Main.myPlayer, 0, 0);
                 }

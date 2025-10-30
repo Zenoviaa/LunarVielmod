@@ -61,7 +61,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
             set
             {
                 _state = value;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                     NPC.netUpdate = true;
             }
         }
@@ -418,7 +418,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                 Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
                 float offsetX = Main.rand.Next(-50, 50) * 0.01f;
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 0, speedYb * 0,
                         ModContent.ProjectileType<RekGreek1>(), 0, 0f, Owner: Main.myPlayer);
@@ -757,7 +757,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
         public void ResetTimers()
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 _resetTimers = true;
                 NPC.netUpdate = true;

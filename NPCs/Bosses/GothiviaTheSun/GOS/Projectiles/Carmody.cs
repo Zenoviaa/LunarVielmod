@@ -129,7 +129,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 LightPos.X = NPC.Center.X;
                 LightPos.Y = NPC.Center.Y;
                 var EntitySource = NPC.GetSource_FromThis();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Utilities.NewProjectileBetter(LightPos.X, LightPos.Y - 2000, 0, 10,
                         ModContent.ProjectileType<ORANGELS>(), 1500, 0f, owner: Main.myPlayer);
@@ -141,7 +141,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 int damage = 10;
                 int knockback = 1;
                 Vector2 pos = NPC.Center;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
                              type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
@@ -171,7 +171,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             if (gr == 80 && !HHH)
             {
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothDarkBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
                 }
@@ -199,7 +199,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 int knockback = 1;
                 Vector2 pos = NPC.Center;
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
                      type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);

@@ -166,7 +166,7 @@ namespace Stellamod.NPCs.Bosses.Jack
 
                     int Gore2 = ModContent.Find<ModGore>("Stellamod/Jack1").Type;
                     Gore.NewGore(EntitySource, NPC.position, NPC.velocity, Gore2);
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, 0, ModContent.ProjectileType<JackSpawnEffect>(), 50, 0f, -1, 0, NPC.whoAmI);
                     }

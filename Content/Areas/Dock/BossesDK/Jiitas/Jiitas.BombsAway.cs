@@ -103,7 +103,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
                 bombThrow.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(bombThrow, NPC.position);
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 upwardVelocity = -Vector2.UnitY * BombsAwayThrowSpeed;
                     upwardVelocity.X += Main.rand.NextFloat(-4, 4);

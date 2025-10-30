@@ -284,7 +284,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
         private void ResetAI()
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 _resetAI = true;
                 NPC.netUpdate = true;
@@ -294,7 +294,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
         private void Teleport(float x, float y)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 _teleportX = x;
                 _teleportY = y;
@@ -353,7 +353,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
         public override void HitEffect(NPC.HitInfo hit)
         {
             base.HitEffect(hit);
-            if (StellaMultiplayer.IsHost && NPC.life <= 0)
+            if (MultiplayerHelper.IsHost && NPC.life <= 0)
             {
                 NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SyliaDeath>());
             }

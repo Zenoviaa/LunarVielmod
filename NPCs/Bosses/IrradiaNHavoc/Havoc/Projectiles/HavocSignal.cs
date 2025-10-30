@@ -25,7 +25,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles
 
         public static void NewSignal(Havoc.ActionState actionState)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 var source = new EntitySource_Misc("signal");
                 NPC.NewNPC(source, 0, 0, ModContent.NPCType<HavocSignal>(), ai0: (float)actionState);

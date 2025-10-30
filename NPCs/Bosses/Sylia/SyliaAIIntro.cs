@@ -36,7 +36,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             if (Timer < 120 && Timer % particleSpawnSpeed == 0)
             {
                 //Spawn a particle at sthe center of the arena
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 randOffset = Main.rand.NextVector2Circular(4, 4);
                     Projectile.NewProjectile(npcSource, ArenaCenter + randOffset, randOffset,
@@ -54,7 +54,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             if (Timer == 150)
             {
                 DrawSylia = true;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     //X Slash
                     Vector2 velocity = Vector2.UnitX.RotatedBy(-MathHelper.PiOver4);
@@ -78,7 +78,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 float voidBarrierRadius = ArenaRadius;
                 Vector2 leftBarrierPos = ArenaCenter + voidBarrierRadius * Vector2.UnitX;
                 Vector2 rightBarrierPos = ArenaCenter + voidBarrierRadius * -Vector2.UnitX;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(npcSource, leftBarrierPos, -Vector2.UnitY,
                         ModContent.ProjectileType<VoidBeamBarrier>(), NPC.ScaleFromContactDamage(1f), 4, Main.myPlayer);

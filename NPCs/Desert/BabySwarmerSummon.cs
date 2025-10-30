@@ -26,7 +26,7 @@ namespace Stellamod.NPCs.Desert
 
         public override void AI()
         {
-            if (!_spawn && StellaMultiplayer.IsHost)
+            if (!_spawn && MultiplayerHelper.IsHost)
             {
                 for (int i = 0; i < Main.rand.Next(3, 8); i++)
                 {

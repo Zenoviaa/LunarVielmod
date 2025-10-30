@@ -49,7 +49,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             if (Timer == 1)
             {
                 NPC.TargetClosest();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     StartOffset = Main.rand.NextFloat(-10f, 10f);
                     NPC.netUpdate = true;

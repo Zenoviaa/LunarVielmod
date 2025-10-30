@@ -225,7 +225,7 @@ namespace Stellamod.Core.SilkSystem
         {
 
 
-            if (StellaMultiplayer.IsHost || Main.netMode == NetmodeID.SinglePlayer)
+            if (MultiplayerHelper.IsHost || Main.netMode == NetmodeID.SinglePlayer)
             {
 
                 SilkString connectedString = _silkStrings.Find(x => x.IsConnectedToTile(i, j));
@@ -249,7 +249,7 @@ namespace Stellamod.Core.SilkSystem
                 }
                 NetMessage.SendData(MessageID.WorldData);
             }
-            else if (!StellaMultiplayer.IsHost)
+            else if (!MultiplayerHelper.IsHost)
             {
                 Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.BreakString, i, j).Send(-1);
             }

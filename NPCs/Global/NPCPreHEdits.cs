@@ -27,7 +27,7 @@ namespace Stellamod.NPCs.Global
             {
                 if (Timerboss == 180)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXnpc = npc.velocity.X;
                         float speedYnpc = npc.velocity.Y;
@@ -44,7 +44,7 @@ namespace Stellamod.NPCs.Global
             {
                 if (Timerboss == 100)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXnpc = npc.velocity.X;
                         float speedYnpc = npc.velocity.Y;
@@ -61,7 +61,7 @@ namespace Stellamod.NPCs.Global
                 {
                     if (Timerboss == 60)
                     {
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             float speedXnpc = npc.velocity.X;
                             float speedYnpc = npc.velocity.Y;
@@ -78,7 +78,7 @@ namespace Stellamod.NPCs.Global
 
                     if (Timerboss == 30)
                     {
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             float speedXnpc = npc.velocity.X;
                             float speedYnpc = npc.velocity.Y;
@@ -90,7 +90,7 @@ namespace Stellamod.NPCs.Global
 
                     if (Timerboss == 60)
                     {
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             float speedXnpc = npc.velocity.X;
                             float speedYnpc = npc.velocity.Y;

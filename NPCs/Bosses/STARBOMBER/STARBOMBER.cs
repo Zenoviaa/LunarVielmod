@@ -62,7 +62,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             set
             {
                 _state = value;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                     NPC.netUpdate = true;
             }
         }
@@ -431,7 +431,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
                 NPC.position.Y = _teleportY;
                 _teleportX = 0;
                 _teleportY = 0;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                         ModContent.ProjectileType<STARTELEPORTBOOM>(), 0, 0, Main.myPlayer);
@@ -442,7 +442,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
         private void Teleport(float x, float y)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 _teleportX = x;
                 _teleportY = y;
@@ -495,7 +495,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
                     ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                     screenShaderSystem.TintScreen(Color.White, 0.3f, timer: 5);
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                             ModContent.ProjectileType<STARBOMBERBOOM>(), 50, 2, Main.myPlayer);
@@ -731,7 +731,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             if (timer > 112)
             {
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(4))
                     {
@@ -762,7 +762,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
             if (timer == 2)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y + speedYa + 110, 0, speedYa - 1 * 3,
@@ -774,7 +774,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             if (timer > 560)
             {
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(2))
                     {
@@ -798,7 +798,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             {
 
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARNBIG>());
@@ -834,7 +834,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
                 }
 
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(3))
                     {
@@ -874,7 +874,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             ChargeVisuals(timer, 120);
             if (timer == 120)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<STARLINGBIG>());
                 }
@@ -905,7 +905,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             if (timer == 26)
             {
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(2))
                     {
@@ -1012,7 +1012,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             {
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
                 NPC.scale = 0f;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                         ModContent.ProjectileType<STARTELEPORTBOOM>(), 0, 0, Main.myPlayer);
@@ -1025,7 +1025,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
                 }
 
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(2))
                     {
@@ -1123,7 +1123,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             if (missue == 50)
             {
                 SoundEngine.PlaySound(SoundID.Item92, NPC.position);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 randPosOffset = Main.rand.NextVector2Circular(64, 64);
                     Vector2 randVelocity = Main.rand.NextVector2CircularEdge(15, 15);
@@ -1170,7 +1170,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
             if (timer > 303)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                         ModContent.ProjectileType<STARTELEPORTBOOM>(), 0, 0, Main.myPlayer);
@@ -1215,7 +1215,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
             if (timer == 5)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
@@ -1227,7 +1227,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
             if (timer == 25)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
@@ -1238,7 +1238,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             if (timer == 45)
             {
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
@@ -1248,7 +1248,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             if (timer == 55)
             {
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
@@ -1258,7 +1258,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             if (timer == 75)
             {
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
@@ -1268,7 +1268,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             if (timer == 95)
             {
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
@@ -1279,7 +1279,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             {
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(3))
                     {
@@ -1326,7 +1326,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
             if (timer == 5)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
                     float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
@@ -1343,7 +1343,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             if (timer == 45)
             {
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/gun1"));
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
                     float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
@@ -1361,7 +1361,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             {
 
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/gun1"));
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
                     float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
@@ -1377,7 +1377,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             {
 
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/gun1"));
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
                     float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
@@ -1454,7 +1454,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
             if (constshoot == 70)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
                     float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -1468,7 +1468,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
                 constshoot = 0;
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXaz = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-10, 10);
                     float speedYaz = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-10, 10);
@@ -1480,7 +1480,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             if (timer > 720)
             {
                 NPC.damage = 0;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                         ModContent.ProjectileType<STARTELEPORTBOOM>(), 0, 0, Main.myPlayer);
@@ -1510,7 +1510,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
         public void ResetTimers()
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 _resetTimers = true;
                 NPC.netUpdate = true;

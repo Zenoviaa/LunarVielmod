@@ -295,7 +295,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
 
         private void SwitchState(AIState state)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Timer = 0;
                 AttackCycle = 0;
@@ -331,7 +331,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                     if (Timer == 1)
                     {
                         //Launch into the air and go spinning until he hits the ground
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             NPC.velocity.X = 15 * _hitDirection;
                             NPC.velocity.Y = -8;
@@ -449,7 +449,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
             if (Timer >= timeToWait)
             {
                 //How we choosing attack uhh, oh i know
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     AIState nextAttack = AIState.Hop_Around;
                     switch (AttackCount)
@@ -559,7 +559,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                     int projType = ModContent.ProjectileType<Projectiles.WillOWisp>();
                     int damage = 12;
                     int knockback = 1;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPoint, startVelocity, projType, damage, knockback, Main.myPlayer);
                     }
@@ -626,7 +626,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                         SoundStyle wee = new SoundStyle("Stellamod/Assets/Sounds/Jack_Land");
                         wee.PitchVariance = 0.1f;
                         SoundEngine.PlaySound(wee, NPC.position);
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             //Nuber of times he hops gonan be random
                             if (Main.rand.NextBool(2) && !InPhase2)
@@ -697,7 +697,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                     int projType = ModContent.ProjectileType<Projectiles.WillOWisp>();
                     int damage = 12;
                     int knockback = 1;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPoint, startVelocity, projType, damage, knockback, Main.myPlayer);
                     }
@@ -759,7 +759,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                 int projType = ModContent.ProjectileType<LaughingBomb>();
                 int damage = 24;
                 int knockback = 1;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPoint, startVelocity, projType, damage, knockback, Main.myPlayer);
 
@@ -812,7 +812,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                     int projType = ModContent.ProjectileType<FlamePillar>();
                     int damage = 16;
                     int knockback = 1;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPoint1, startVelocity, projType, damage, knockback, Main.myPlayer);
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPoint2, startVelocity, projType, damage, knockback, Main.myPlayer);
@@ -892,7 +892,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
 
             if (Timer == 120)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     if (Main.rand.NextBool(2))
                     {
@@ -942,7 +942,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                     int projType = ModContent.ProjectileType<WillOWisp>();
                     int damage = 12;
                     int knockback = 1;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPoint, startVelocity, projType, damage, knockback, Main.myPlayer);
                     }
@@ -992,7 +992,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                     int projType = ModContent.ProjectileType<Fireball>();
                     int damage = 12;
                     int knockback = 1;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPoint, FlamethrowerVelocity, projType, damage, knockback, Main.myPlayer);
                     }

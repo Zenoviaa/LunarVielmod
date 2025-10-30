@@ -260,7 +260,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             {
                 FXUtil.ShakeCamera(Projectile.Center, 1024, 32);
                 FXUtil.PunchCamera(Projectile.Center, Vector2.UnitY * 2, 8, 8, 32);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float damage = Projectile.damage;
                     damage *= 3f;

@@ -520,7 +520,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 case AIState.Idle:
                     if (!_spawnedHitbox)
                     {
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<SingularityHitbox>(), 50, 1, Main.myPlayer, ai0: NPC.whoAmI);
                         }
@@ -528,7 +528,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                     }
                     if (!_spawnedCrescentMoon)
                     {
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                                 ModContent.NPCType<VerlianMoon>(), ai0: NPC.whoAmI);
@@ -606,7 +606,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 SpawnPulse();
                 _spawnScale *= 1.25f;
                 _spawnScale *= Main.rand.NextFloat(0.5f, 1f);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int blackLightningProjectileType = ModContent.ProjectileType<BlackLightning>();
                     Vector2 spawnPos = NPC.Center;
@@ -663,12 +663,12 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             }
             if (Timer == 120)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                         ModContent.ProjectileType<SingularityBoom>(), SingularityBoom, 2, Main.myPlayer);
                 }
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int damage = BerserkLaserDamage;
                     int projType = ModContent.ProjectileType<BerserkLaser>();
@@ -686,7 +686,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             {
          
                 SpawnPulse();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int blackLightningProjectileType = ModContent.ProjectileType<BlackLightning>();
                     Vector2 spawnPos = NPC.Center;
@@ -746,7 +746,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
             if (Timer == 400)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                         ModContent.ProjectileType<SingularityBoom>(), SingularityBoom, 2, Main.myPlayer);
@@ -776,7 +776,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 {
                     _starField = true;
                     SpawnPulse();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                             ModContent.ProjectileType<SingularityBoom>(), SingularityBoom, 2, Main.myPlayer);
@@ -816,7 +816,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             }
             else if (Timer == 160)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                         ModContent.ProjectileType<SingularityBoom>(), SingularityBoom, 2, Main.myPlayer);
@@ -834,7 +834,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         }
         private void ChooseAttack()
         {
-            if (!StellaMultiplayer.IsHost)
+            if (!MultiplayerHelper.IsHost)
                 return;
 
             if (!_starField)
@@ -1023,7 +1023,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
             if (Timer > 60 && Timer % 22 == 0)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int orbitingStarType = ModContent.ProjectileType<SlowFallingStar>();
                     float rot = Timer * 0.05f;
@@ -1071,7 +1071,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
             if (Timer > 60 && Timer % 20 == 0)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int orbitingStarType = ModContent.ProjectileType<ZigzaggingStar>();
                     float rot = Timer * 0.05f;
@@ -1106,7 +1106,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             {
                 MiniSpazOut();
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float num = 2;
                     for (float f = 0; f < num; f++)
@@ -1147,7 +1147,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 part.Scale *= 4;
                 part.shrink = true;
                 part.noStretch = true;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int orbitingStarType = ModContent.ProjectileType<OrbitingShootingStar>();
 
@@ -1194,7 +1194,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         }
         private void SwitchState(AIState state)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Timer = 0;
                 AttackCounter = 0;

@@ -105,7 +105,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                     LightPos.X = NPC.position.X;
                     LightPos.Y = NPC.position.Y - 500;
                     var EntitySource = NPC.GetSource_FromThis();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Utilities.NewProjectileBetter(LightPos.X, LightPos.Y, 0, 10,
                             ModContent.ProjectileType<TerrorBeam>(), 300, 0f, owner: Main.myPlayer, 0, NPC.whoAmI);

@@ -51,7 +51,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             {
                 ChargeProgress = 0;
                 NPC.TargetClosest();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     StartOffset = Main.rand.NextFloat(-10f, 10f);
                     NPC.netUpdate = true;

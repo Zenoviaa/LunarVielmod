@@ -108,7 +108,7 @@ namespace Stellamod.NPCs.Cinderspark
                 if (ai_Counter == 240)
                 {
                     //Shoot projectile
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         for (int i = 0; i < Main.rand.Next(4, 8); i++)
                         {

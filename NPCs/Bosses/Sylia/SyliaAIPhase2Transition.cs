@@ -53,7 +53,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             if (Timer == 240)
             {
                 //Void Wall Spawn Here
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y + 128, ModContent.NPCType<VoidWall>());
                 }

@@ -105,7 +105,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
             if (NPC.Bottom.Y < Target.Top.Y && Timer == 20)
             {
                 //Throw Knives
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 throwVelocity = DirectionToTarget * 2;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, throwVelocity, ModContent.ProjectileType<JiitasKnife>(), SpinJumpKnifeDamage, 1, Main.myPlayer);
@@ -115,7 +115,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
             if (NPC.Bottom.Y < Target.Top.Y && Timer == 30)
             {
                 //Throw Knives
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 throwVelocity = DirectionToTarget * 2;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, throwVelocity, ModContent.ProjectileType<JiitasKnife>(), SpinJumpKnifeDamage, 1, Main.myPlayer);
@@ -124,7 +124,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
             if (NPC.Bottom.Y < Target.Top.Y && Timer == 40)
             {
                 //Throw Knives
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 throwVelocity = DirectionToTarget * 2;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, throwVelocity, ModContent.ProjectileType<JiitasKnife>(), SpinJumpKnifeDamage, 1, Main.myPlayer);
@@ -135,7 +135,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
                 if (Timer == 50)
                 {
                     //Throw Knives
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 throwVelocity = DirectionToTarget * 2;
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, throwVelocity, ModContent.ProjectileType<JiitasKnife>(), SpinJumpKnifeDamage, 1, Main.myPlayer);
@@ -144,7 +144,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
                 if (Timer == 60)
                 {
                     //Throw Knives
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 throwVelocity = DirectionToTarget * 2;
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, throwVelocity, ModContent.ProjectileType<JiitasKnife>(), SpinJumpKnifeDamage, 1, Main.myPlayer);

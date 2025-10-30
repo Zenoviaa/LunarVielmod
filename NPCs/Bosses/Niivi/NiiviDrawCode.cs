@@ -29,7 +29,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             {
                 if (value == false && _draw != false)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(Npc.GetSource_FromThis(), DrawPosition, Vector2.Zero,
                             ModContent.ProjectileType<NiiviCrystalWarpExplosionProj>(), 0, 0, Main.myPlayer);

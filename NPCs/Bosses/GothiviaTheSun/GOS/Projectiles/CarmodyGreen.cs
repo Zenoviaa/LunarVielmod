@@ -128,14 +128,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 LightPos.X = NPC.Center.X;
                 LightPos.Y = NPC.Center.Y;
                 var EntitySource = NPC.GetSource_FromThis();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Utilities.NewProjectileBetter(LightPos.X, LightPos.Y - 2000, 0, 10,
                         ModContent.ProjectileType<GREENLS>(), 1500, 0f, owner: Main.myPlayer);
 
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int type = ModContent.ProjectileType<GreenSunsSuckingProj>();
                     int damage = 10;
@@ -172,7 +172,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             if (gr == 80 && !HHH)
             {
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothDarkBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
                 }
@@ -197,7 +197,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 shaderSystem.UnDistortScreen();
                 shaderSystem.UnVignetteScreen();
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int type = ModContent.ProjectileType<GreenSunsBoomProj>();
                     int damage = 10;

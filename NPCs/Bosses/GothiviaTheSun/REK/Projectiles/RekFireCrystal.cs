@@ -68,7 +68,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                     Dust.NewDustPerfect(NPC.Center, dustType, velocity, Alpha: 0, newColor: Color.White);
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                     ModContent.ProjectileType<RekFireCrystalCircleProj>(), 0, 0, Main.myPlayer);
@@ -79,7 +79,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             {
                 int damage = 150;
                 int knockback = 2;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, -LaserDirection,
                         ModContent.ProjectileType<RekFireCrystalLaserProj>(), damage, knockback, Main.myPlayer, ai1: NPC.whoAmI);

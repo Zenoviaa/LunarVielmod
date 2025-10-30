@@ -212,7 +212,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
             if (timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int index = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y + 355, ModContent.NPCType<Bossdeath1>());
                     Main.npc[index].netUpdate = true;
@@ -235,7 +235,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
             if (timer == 3)
             {
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;

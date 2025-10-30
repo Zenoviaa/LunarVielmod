@@ -156,7 +156,7 @@ namespace Stellamod.NPCs.Colosseum
             NPC.velocity.X *= 0.92f;
             if (Timer > 30 && Timer % 30 == 0 && Timer < 150)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int damage = 12;
                     int knockback = 2;
@@ -201,7 +201,7 @@ namespace Stellamod.NPCs.Colosseum
 
         private void SwitchState(AIState state)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Timer = 0;
                 State = state;

@@ -9,21 +9,18 @@ namespace Stellamod.NPCs.Colosseum.Common
     {
         public override bool CheckActive()
         {
-            ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
-            return !colosseumSystem.IsActive();
+            return !ColosseumWaveManager.IsActive();
         }
 
         public override void OnKill()
         {
             base.OnKill();
-            ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
-            colosseumSystem.Progress();
+            ColosseumWaveManager.ColosseumEnemyKilled();
         }
 
         protected bool IsColosseumActive()
         {
-            ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
-            return colosseumSystem.IsActive();
+            return ColosseumWaveManager.IsActive();
         }
 
         protected void DespawnExplosion()

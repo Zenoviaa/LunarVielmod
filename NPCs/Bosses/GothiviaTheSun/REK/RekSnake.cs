@@ -189,7 +189,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
         private void ResetTimers()
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 _resetTimers = true;
                 NPC.netUpdate = true;
@@ -200,7 +200,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
         {
             State = state;
             ResetTimers();
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 NPC.netUpdate = true;
             }
@@ -387,7 +387,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             if (InPhase2 && !PoppedOutEye)
             {
                 Head.TexturePath = $"{BaseTexturePath}RekSnakeNoEye";
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(EntitySource, (int)NPC.Center.X, (int)NPC.Center.Y,
                         ModContent.NPCType<RekFireEye>(), ai1: NPC.whoAmI);
@@ -773,7 +773,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 screenShaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.2f, 0.2f), blend: 0.15f, timer: 30);
                 screenShaderSystem.TintScreen(Color.Red, 0.3f, timer: 30);
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float knockback = 1;
                     Projectile.NewProjectile(EntitySource, NPC.Center, Vector2.Zero, ModContent.ProjectileType<RekFireShockWave>(),
@@ -822,7 +822,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             {
                 NPC.TargetClosest();
                 Vector2 laserDirection = NPC.Center.DirectionTo(Target.Center);
-                if (InPhase2 && StellaMultiplayer.IsHost)
+                if (InPhase2 && MultiplayerHelper.IsHost)
                 {
 
                     float knockback = 1;
@@ -837,7 +837,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 Vector2 laserDirection = NPC.Center.DirectionTo(Target.Center);
                 Vector2 laserVelocity = laserDirection * 40;
 
-                if (!InPhase2 && StellaMultiplayer.IsHost)
+                if (!InPhase2 && MultiplayerHelper.IsHost)
                 {
                     float knockback = 1;
                     Projectile.NewProjectile(EntitySource, NPC.Center, laserVelocity, ModContent.ProjectileType<RekFireEyeLaserMiniProj>(),
@@ -894,7 +894,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 var segment = Segments[(int)AttackTimer];
                 Vector2 directionToTarget = segment.Center.DirectionTo(Target.Center);
                 Vector2 velocity = directionToTarget * 12;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     if (AttackTimer % 3 == 0)
                     {
@@ -921,7 +921,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 }
 
                 StopSegmentGlow((int)AttackTimer);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     AttackTimer = Main.rand.Next(0, Segments.Length);
                     NPC.netUpdate = true;
@@ -979,7 +979,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                     if (Vector2.Distance(NPC.Center, targetSegment.Center) <= 32)
                     {
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/REKEAT"), NPC.position);
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             float rot = targetSegment.Rotation - MathHelper.PiOver2;
                             Vector2 velocity = rot.ToRotationVector2();
@@ -1033,7 +1033,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                         float progress = i / num;
                         float rot = progress * MathHelper.TwoPi;
                         Vector2 velocity = rot.ToRotationVector2();
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             float knockback = 1;
                             Projectile.NewProjectile(EntitySource, NPC.Center, velocity,
@@ -1113,7 +1113,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             if (Timer == 90)
             {
                 StopSegmentGlow();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(EntitySource, (int)CrystalPosition.X, (int)CrystalPosition.Y, ModContent.NPCType<RekFireCrystal>());
                 }
@@ -1190,7 +1190,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 screenShaderSystem.TintScreen(Color.Orange, 0.3f, timer: 5);
                 screenShaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.5f, 0.5f), timer: 15);
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     for (float i = 0; i < 8; i++)
                     {

@@ -254,7 +254,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             if (Timer > 300)
             {
                 //Start fight
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Skullrunner>());
                     NPC.active = false;
@@ -263,7 +263,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
         }
         private void SwitchState(AIState state)
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 Timer = 0;
                 State = state;

@@ -100,7 +100,7 @@ namespace Stellamod.NPCs.Desert
         {
             NPC.TargetClosest();
             NPC.spriteDirection = -NPC.direction;
-            if (StellaMultiplayer.IsHost && Main.rand.NextBool(20))
+            if (MultiplayerHelper.IsHost && Main.rand.NextBool(20))
             {
                 Speed /= 2;
                 WanderX = Main.rand.NextFloat(-10f, 10f);

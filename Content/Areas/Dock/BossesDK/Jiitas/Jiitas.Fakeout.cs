@@ -129,7 +129,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
             if (Timer >= FakeOutGhostTime)
             {
                 NoWarn();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 teleportSpot = new Vector2();
                     teleportSpot.Y = Target.Bottom.Y - 96;
@@ -209,7 +209,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
                 Vector2 right = Target.Center + new Vector2(384, 0);
                 float interpolant = Timer / 30f;
                 Vector2 spot = Vector2.Lerp(left, right, interpolant);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     spot.Y = Target.Center.Y - 500;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), spot, Vector2.Zero, ModContent.ProjectileType<JiitasBomb>(), FakeOutDamage, 1, Main.myPlayer);

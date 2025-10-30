@@ -67,7 +67,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                     Timer = -179f;
                 }
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<VoidBeam>(), 350, 0f, -1, 0, NPC.whoAmI);
                     Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<VoidBeamIN>(), 350, 0f, -1, 0, NPC.whoAmI);

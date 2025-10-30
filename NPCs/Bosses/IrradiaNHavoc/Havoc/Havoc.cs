@@ -151,7 +151,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
                 return;
             }
 
-            if (ArenaCenter == default(Vector2) && StellaMultiplayer.IsHost)
+            if (ArenaCenter == default(Vector2) && MultiplayerHelper.IsHost)
             {
                 ArenaCenter = NPC.position;
                 NPC.netUpdate = true;
@@ -419,7 +419,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
                 AI_MoveToward(arenaLeft, 32);
                 if (distanceToLeft <= 16)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         LaserAttackDistance = Main.rand.NextFloat(16, 750);
                         TargetSegmentStretch = Main.rand.NextFloat(2, 5);
@@ -515,7 +515,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
                     {
                         var segment = Segments[i];
                         Vector2 velocity = Vector2.UnitY;
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             int type = ModContent.ProjectileType<HavocLaserWarnProj>();
                             Vector2 pos = segment.Center;
@@ -588,7 +588,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
                     SoundEngine.PlaySound(soundStyle, NPC.position);
 
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         int type = ModContent.ProjectileType<HavocLaserBigProj>();
                         int damage = LaserBigDamage;

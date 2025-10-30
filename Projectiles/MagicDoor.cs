@@ -49,13 +49,13 @@ namespace Stellamod.Projectiles
             Projectile.scale = easedProgress;
             if (easedProgress >= 0.5f && !_hasSpawned && Main.myPlayer == Projectile.owner)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<SupernovaFragment>());
                 }
                 else
                 {
-                    StellaMultiplayer.SpawnBossFromClient((byte)Projectile.owner,
+                    MultiplayerHelper.SpawnBossFromClient((byte)Projectile.owner,
                         ModContent.NPCType<SupernovaFragment>(), (int)Projectile.Center.X, (int)Projectile.Center.Y);
                 }
 

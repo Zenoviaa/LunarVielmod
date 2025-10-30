@@ -82,7 +82,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
                 SoundStyle bombThrow = AssetRegistry.Sounds.Jiitas.JiitasBombThrow;
                 bombThrow.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(bombThrow, NPC.position);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 spawnPos = Target.Center;
                     spawnPos.Y -= 600;
@@ -93,7 +93,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
                         Vector2 left = Target.Center - new Vector2(384, 0);
                         Vector2 right = Target.Center + new Vector2(384, 0);
                         Vector2 spot = Vector2.Lerp(left, right, Main.rand.NextFloat(0f, 1f));
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             spot.Y = Target.Center.Y - 500;
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), spot, Vector2.Zero, ModContent.ProjectileType<JiitasBomb>(), BombDropDamage, 1, Main.myPlayer);

@@ -87,7 +87,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             set
             {
                 _state = value;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                     NPC.netUpdate = true;
             }
         }
@@ -611,7 +611,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             {
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
                 ResetTimers();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     switch (Main.rand.Next(4))
                     {
@@ -664,7 +664,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             timer++;
             if (timer == 2)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -677,7 +677,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 6)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                     GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y + 1000, 0, -10, ModContent.ProjectileType<VRay>(), 600, 0f, -1, 0, NPC.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AbsoluteDistillence"));
             }
@@ -696,7 +696,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             timer++;
             if (timer == 2)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -711,7 +711,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             {
                 if (timer == 6)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SoftSummon"));
                         float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
@@ -723,7 +723,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
                 if (timer == 20)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                         float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
@@ -734,7 +734,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
                 if (timer == 25)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                         float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
@@ -745,7 +745,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
                 if (timer == 35)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                         float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
@@ -756,7 +756,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
                 if (timer == 45)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                         float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
@@ -767,7 +767,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
                 if (timer == 54)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                         float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
@@ -793,7 +793,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             timer++;
             if (timer == 2)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -809,7 +809,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             {
                 if (timer == 6)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXd = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                         float speedYd = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -840,7 +840,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             if (timer == 2)
             {
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SoftSummon"));
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -855,7 +855,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             {
                 if (timer == 6)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXd = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                         float speedYd = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -887,7 +887,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             {
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SoftSummon"));
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Moaning"));
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -902,7 +902,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             {
                 if (timer == 10)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
                         float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
@@ -918,7 +918,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
                 if (timer == 30)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                         float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-2f, -2f);
@@ -936,7 +936,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
                 if (timer == 50)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                         float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-1f, -1f);
@@ -1005,7 +1005,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
             if (timer == 100)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40,
                         ModContent.NPCType<GhostCharger>());
@@ -1019,7 +1019,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 150)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa - 60, speedXb * 1, speedYa - 1 * 0,
                         ModContent.ProjectileType<SineSword>(), 50, 0f, Owner: Main.myPlayer);
@@ -1032,7 +1032,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 200)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 90, speedXa * 1, speedYa - 1 * 0,
                         ModContent.ProjectileType<SineSword>(), 40, 0f, Owner: Main.myPlayer);
@@ -1043,7 +1043,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 250)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 20, speedXb * 1, speedYa - 1 * 0,
                         ModContent.ProjectileType<SineSword>(), 23, 0f, Owner: Main.myPlayer);
@@ -1053,7 +1053,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 300)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40, ModContent.NPCType<GhostCharger>());
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 40, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), 30, 0f, Owner: Main.myPlayer);
@@ -1063,7 +1063,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 350)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40,
                         ModContent.NPCType<GhostCharger>());
@@ -1075,7 +1075,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 400)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa - 100, speedXa * 1, speedYa - 1 * 0,
                         ModContent.ProjectileType<SineSword>(), 30, 0f, Owner: Main.myPlayer);
@@ -1085,7 +1085,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 450)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 90, speedXb * 1, speedYa - 1 * 0,
                         ModContent.ProjectileType<SineSword>(), 50, 0f, Owner: Main.myPlayer);
@@ -1094,7 +1094,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             }
             if (timer == 500)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40,
                         ModContent.NPCType<GhostCharger>());
@@ -1106,7 +1106,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 275)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2,
                         ModContent.ProjectileType<AltideSword>(), 45, 0f, Owner: Main.myPlayer);
@@ -1120,7 +1120,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 375)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40,
                         ModContent.NPCType<GhostCharger>());
@@ -1132,7 +1132,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 225)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40,
                         ModContent.NPCType<GhostCharger>());
@@ -1145,7 +1145,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             if (timer == 125)
             {
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 230, speedXb * 1, speedYa - 1 * 0,
                         ModContent.ProjectileType<SineSword>(), 40, 0f, Owner: Main.myPlayer);
@@ -1155,7 +1155,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 325)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2,
                         ModContent.ProjectileType<AltideSword>(), 15, 0f, Owner: Main.myPlayer);
@@ -1170,7 +1170,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 475)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2,
                         ModContent.ProjectileType<AltideSword>(), 15, 0f, Owner: Main.myPlayer);
@@ -1186,7 +1186,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 400)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40,
                         ModContent.NPCType<GhostCharger>());
@@ -1198,7 +1198,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 425)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2,
                         ModContent.ProjectileType<AltideSword>(), 15, 0f, Owner: Main.myPlayer);
@@ -1211,7 +1211,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             }
             if (timer == 175)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40, ModContent.NPCType<GhostCharger>());
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2,
@@ -1318,7 +1318,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             {
                 if (NPC.life < NPC.lifeMax / 2)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXBa = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
                         float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
@@ -1338,7 +1338,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
                 if (NPC.life < NPC.lifeMax / 3)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
 
                         float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
@@ -1352,7 +1352,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
                 if (NPC.life < NPC.lifeMax / 4)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                         float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
@@ -1369,7 +1369,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 if (NPC.life < NPC.lifeMax / 5)
                 {
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                         float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
@@ -1385,7 +1385,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 if (NPC.life < NPC.lifeMax / 6)
                 {
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                         float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
@@ -1419,7 +1419,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 else
                 {
                     ResetTimers();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         switch (Main.rand.Next(2))
                         {
@@ -1456,7 +1456,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             {
                 if (NPC.life < NPC.lifeMax / 2)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXBa = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
                         float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
@@ -1477,7 +1477,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 if (NPC.life < NPC.lifeMax / 3)
                 {
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                         float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
@@ -1494,7 +1494,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 if (NPC.life < NPC.lifeMax / 4)
                 {
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                         float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
@@ -1508,7 +1508,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 if (NPC.life < NPC.lifeMax / 5)
                 {
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                         float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
@@ -1523,7 +1523,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 if (NPC.life < NPC.lifeMax / 6)
                 {
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                         float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
@@ -1568,7 +1568,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
                 if (timer == 25)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2,
                         ModContent.ProjectileType<FrostShot2>(), 40, 0f, Owner: Main.myPlayer);
@@ -1578,7 +1578,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
                 if (timer == 45)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2,
                             ModContent.ProjectileType<FrostShot2>(), 40, 0f, Owner: Main.myPlayer);
@@ -1589,7 +1589,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
                 if (timer == 65)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2,
                         ModContent.ProjectileType<FrostShot2>(), 40, 0f, Owner: Main.myPlayer);
@@ -1607,7 +1607,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
                 if (timer == 15)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2,
                         ModContent.ProjectileType<FrostShot>(), 43, 0f, Owner: Main.myPlayer);
@@ -1618,7 +1618,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
                 if (timer == 45)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2,
                                 ModContent.ProjectileType<FrostShot>(), 43, 0f, Owner: Main.myPlayer);
@@ -1658,7 +1658,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/VTeleportOut"));
                 if (NPC.life < NPC.lifeMax / 2)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40, ModContent.NPCType<GhostCharger>());
                         int index = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y - 30, ModContent.NPCType<GhostCharger>());
@@ -1694,7 +1694,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 2)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int distanceY = Main.rand.Next(-125, -125);
                     _teleportX = player.Center.X;
@@ -1730,7 +1730,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 2)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int distanceY = Main.rand.Next(-30, -30);
                     _teleportX = player.Center.X;
@@ -1772,7 +1772,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 if (NPC.life < NPC.lifeMax / 2)
                 {
                     ResetTimers();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         switch (Main.rand.Next(2))
                         {
@@ -1792,7 +1792,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 else
                 {
                     ResetTimers();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         switch (Main.rand.Next(4))
                         {
@@ -1897,7 +1897,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             {
                 if (player.Center.X > NPC.Center.X)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                         float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -1910,7 +1910,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 }
                 else
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                         float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -1971,7 +1971,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             float speed = 6f;
             if (timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -2073,7 +2073,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
         public void ResetTimers()
         {
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
                 _resetTimers = true;
                 NPC.netUpdate = true;

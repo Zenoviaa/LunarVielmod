@@ -257,7 +257,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
 
                         for (int i = 0; i < numberProjectiles; i++)
                         {
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Vector2 perturbedSpeed = new Vector2((direction.X * 1.5f), (direction.Y * 1.5f)).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f;
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<TulacroweFireball>(), 40, 1, Main.myPlayer, 0, 0);
@@ -268,7 +268,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                         break;
                     case 1:
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SoftSummon"), NPC.position);
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 100, 0, speedYa * 0, ModContent.ProjectileType<TulacBombProj>(), 50, 0f, Owner: Main.myPlayer);
@@ -276,7 +276,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                         break;
                     case 2:
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RibbonStaffBoom1"), NPC.position);
-                        if (StellaMultiplayer.IsHost)
+                        if (MultiplayerHelper.IsHost)
                         {
                             float num = 64;
                             for (float i = 0; i < num; i++)
@@ -296,7 +296,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
 
                         for (int i = 0; i < numberProjectiles2; i++)
                         {
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Vector2 perturbedSpeed = new Vector2((direction.X * 1.5f), (direction.Y * 1.5f)).RotatedBy(MathHelper.Lerp(-rotation2, rotation2, i / (numberProjectiles2 - 1))) * 1f;
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<TulacroweFireball>(), 45, 1, Main.myPlayer, 0, 0);

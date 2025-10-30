@@ -35,7 +35,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (gren == 2)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
@@ -91,7 +91,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
                 //oh wait i need net code
                 // NPC.NewNPC(, (int)ai_Boss_Spawn);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     //Main.NewText(LangText.Misc("")"Jack has awoken!", Color.Gold);
                     int npcID = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<StarteV>());

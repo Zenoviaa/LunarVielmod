@@ -72,7 +72,7 @@ namespace Stellamod
             return packet;
         }
 
-        public override void HandlePacket(BinaryReader reader, int whoAmI) => StellaMultiplayer.HandlePacket(reader, whoAmI);
+        public override void HandlePacket(BinaryReader reader, int whoAmI) => MultiplayerHelper.HandlePacket(reader, whoAmI);
 
 
 

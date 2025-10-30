@@ -228,7 +228,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
             }
 
-            if (Timer % 4 == 0 && StellaMultiplayer.IsHost)
+            if (Timer % 4 == 0 && MultiplayerHelper.IsHost)
             {
                 float speed = 16;
                 Vector2 velocity = Rotation.ToRotationVector2() * speed;
@@ -240,7 +240,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 int damage = Damage_FrostBreath;
                 float knockback = 1;
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity, type,
                     damage, knockback, Main.myPlayer);
@@ -250,7 +250,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             if (Timer % 32 == 0)
             {
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     int type = ModContent.ProjectileType<NiiviFrostFlowerProj>();
                     int damage = Damage_FrostBomb;
@@ -268,7 +268,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             if (Timer >= length)
             {
                 //Some teleport effect or something
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                         ModContent.ProjectileType<NiiviCrystalWarpExplosionProj>(), 0, 0, Main.myPlayer);
@@ -304,7 +304,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
             if (AttackTimer <= 0)
             {
-                if (Timer > 30 && Timer % 15 == 0 && Timer <= 360 && StellaMultiplayer.IsHost)
+                if (Timer > 30 && Timer % 15 == 0 && Timer <= 360 && MultiplayerHelper.IsHost)
                 {
                     Vector2 pos = target.Center + target.velocity * 48;
                     pos += new Vector2(Main.rand.NextFloat(-64, 64), 0);
@@ -317,7 +317,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                     AttackTimer = 30;
                 }
 
-                if (Timer == 400 && StellaMultiplayer.IsHost)
+                if (Timer == 400 && MultiplayerHelper.IsHost)
                 {
                     Vector2 pos = target.Center + target.velocity * 48;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, Vector2.UnitY,
@@ -328,7 +328,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
             if (Timer >= length)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                         ModContent.ProjectileType<NiiviCrystalWarpExplosionProj>(), 0, 0, Main.myPlayer);
@@ -359,7 +359,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             float ySpeed = MathF.Sin(Timer * 0.05f);
             NPC.velocity = new Vector2(0, ySpeed);
 
-            if (Timer % 8 == 0 && StellaMultiplayer.IsHost)
+            if (Timer % 8 == 0 && MultiplayerHelper.IsHost)
             {
                 int type = ModContent.ProjectileType<NiiviCometProj>();
                 int damage = Damage_Comet;
@@ -393,7 +393,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
             if (Timer >= length)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                         ModContent.ProjectileType<NiiviCrystalWarpExplosionProj>(), 0, 0, Main.myPlayer);

@@ -128,7 +128,7 @@ namespace Stellamod.NPCs.RoyalCapital
                     Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
                     direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         int projectile = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 3,
                         ProjectileID.DD2SquireSonicBoom, 60, 0, Main.myPlayer);
@@ -233,7 +233,7 @@ namespace Stellamod.NPCs.RoyalCapital
                 {
                     Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, NPC.direction, -1f, 1, default, .61f);
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         float speedXB = NPC.velocity.X * Main.rand.NextFloat(-0.5f, 0.5f);
                         float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, 4) * 0f;

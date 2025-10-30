@@ -257,7 +257,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             else
             {
                 NPC.damage = 0;
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     _invincible = true;
                     NPC.netUpdate = true;
@@ -460,7 +460,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Shot"), NPC.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
                     direction.Normalize();
@@ -480,7 +480,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Shot1"), NPC.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
                     direction.Normalize();
@@ -522,7 +522,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
 
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
 
                     float offsetX = Main.rand.Next(-1, 1);
@@ -576,7 +576,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 for (int i = 0; i < 4; i++)
                 {
                     offsetAngle = (startAngle + deltaAngle * (i + i * i) / 2f) + 32f * i + offsetRandom;
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center.X, NPC.Center.Y, (float)(Math.Sin(offsetAngle) * 9f), (float)(Math.Cos(offsetAngle) * 9f),
                             ModContent.ProjectileType<NovaBomb>(), 45, 0, Main.myPlayer);
@@ -611,7 +611,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 Vector2 spawnVelocity = Vector2.Zero;
                 if (AITimer == 70)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnPos = new Vector2(NPC.Center.X - 1050 + 175, NPC.Center.Y);
                         Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
@@ -619,7 +619,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 }
                 if (AITimer == 80)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnPos = new Vector2(NPC.Center.X - 700 + 175, NPC.Center.Y);
                         Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
@@ -627,7 +627,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 }
                 if (AITimer == 90)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnPos = new Vector2(NPC.Center.X - 350 + 175, NPC.Center.Y);
                         Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
@@ -635,7 +635,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 }
                 if (AITimer == 100)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnPos = new Vector2(NPC.Center.X + 175, NPC.Center.Y);
                         Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
@@ -643,7 +643,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 }
                 if (AITimer == 110)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnPos = new Vector2(NPC.Center.X + 350 + 175, NPC.Center.Y);
                         Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
@@ -651,7 +651,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 }
                 if (AITimer == 120)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnPos = new Vector2(NPC.Center.X + 700 + 175, NPC.Center.Y);
                         Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
@@ -659,7 +659,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 }
                 if (AITimer == 130)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnPos = new Vector2(NPC.Center.X + 1050 + 175, NPC.Center.Y);
                         Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
@@ -680,7 +680,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 {
                     int Ofset = Main.rand.Next(1, 100);
 
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, Ofset);
                         NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver4 + Ofset);
@@ -694,7 +694,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 if (AITimer == 150)
                 {
                     int Ofset = Main.rand.Next(1, 100);
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, Ofset);
                         NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver4 + Ofset);
@@ -705,7 +705,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 if (AITimer == 250)
                 {
                     int Ofset = Main.rand.Next(1, 100);
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, Ofset);
                         NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarnFinal>(), 0, 0, MathHelper.PiOver4 + Ofset);
@@ -733,7 +733,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 Vector2 spawnVelocity = Vector2.Zero;
                 if (AITimer == 70)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnPos = new Vector2(NPC.Center.X - 1050, NPC.Center.Y);
                         Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
@@ -741,7 +741,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 }
                 if (AITimer == 80)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnPos = new Vector2(NPC.Center.X - 700, NPC.Center.Y);
                         Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
@@ -749,7 +749,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 }
                 if (AITimer == 90)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnPos = new Vector2(NPC.Center.X - 350, NPC.Center.Y);
                         Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
@@ -757,7 +757,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 }
                 if (AITimer == 100)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnPos = new Vector2(NPC.Center.X, NPC.Center.Y);
                         Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
@@ -765,7 +765,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 }
                 if (AITimer == 110)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnPos = new Vector2(NPC.Center.X + 350, NPC.Center.Y);
                         Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
@@ -773,7 +773,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 }
                 if (AITimer == 120)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnPos = new Vector2(NPC.Center.X + 700, NPC.Center.Y);
                         Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
@@ -781,7 +781,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 }
                 if (AITimer == 130)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         Vector2 spawnPos = new Vector2(NPC.Center.X + 1050, NPC.Center.Y);
                         Projectile.NewProjectile(entitySource, spawnPos, spawnVelocity, laserProjType, 250, 1, Main.myPlayer);
@@ -799,7 +799,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 NPC.velocity *= 0.90f;
                 if (AITimer == 5)
                 {
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge"));
                     }
@@ -855,7 +855,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                         for (int I = 0; I < 7; I++)
                         {
                             SingularityOrbs = 7;
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 Vector2 position = NPC.Center + radius * (I * rot).ToRotationVector2();
                                 NPC.NewNPC(NPC.GetSource_FromAI(), (int)(position.X), (int)(position.Y),

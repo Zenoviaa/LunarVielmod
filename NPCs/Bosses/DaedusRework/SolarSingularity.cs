@@ -215,7 +215,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                         if (NPC.ai[0] > 20)
                         {
                             DaedusPos = NPC.position;
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 DaedusPosAdd.X = DaedusPos.X + Main.rand.Next(-50, 50);
                                 DaedusPosAdd.Y = DaedusPos.Y + Main.rand.Next(-50, 50);
@@ -241,7 +241,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                         if (NPC.ai[0] >= 300)
                         {
                             NPC.ai[0] = 0;
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 DaedusPosAdd.X = DaedusPos.X + Main.rand.Next(-90, 90);
                                 DaedusPosAdd.Y = DaedusPos.Y + Main.rand.Next(-50, 50);

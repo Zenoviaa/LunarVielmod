@@ -60,7 +60,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
             if (Timer == 1)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<RazorRingFire>(), 40, 1, Main.myPlayer, 0f, ai1);
                 }
@@ -169,7 +169,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                         float randScale = Main.rand.NextFloat(0.5f, 1.5f);
                     }
                     var entitySource = Projectile.GetSource_FromThis();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
 
 
@@ -209,7 +209,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
             }
             var entitySource = Projectile.GetSource_FromThis();
-            if (StellaMultiplayer.IsHost)
+            if (MultiplayerHelper.IsHost)
             {
 
 

@@ -131,7 +131,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 Vector2 velocity = -Vector2.UnitY;
                 velocity *= Main.rand.NextFloat(4, 8);
                 velocity = velocity.RotatedByRandom(MathHelper.PiOver4);
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position, velocity,
                         ModContent.ProjectileType<NiiviScaleProj>(), 0, 1, Main.myPlayer);
@@ -171,7 +171,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 NPC.velocity = Vector2.UnitX;
             }
 
-            if (StellaMultiplayer.IsHost && _spawnNiivi)
+            if (MultiplayerHelper.IsHost && _spawnNiivi)
             {
                 NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                     ModContent.NPCType<Niivi>());

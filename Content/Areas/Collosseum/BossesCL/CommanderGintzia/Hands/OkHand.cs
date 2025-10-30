@@ -86,7 +86,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
                 if (Timer == 3)
                 {
                     FXUtil.ShakeCamera(NPC.position, 1024, 8);
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
                         ThrowVelocity = new Vector2(Main.rand.NextBool(2) ? -1 : 1, 0);
                         NPC.netUpdate = true;

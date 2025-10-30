@@ -146,7 +146,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Jack_Death1"), NPC.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 128f);
                 var entitySource = NPC.GetSource_FromThis();
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y,
                         ModContent.NPCType<JackDeath>());
@@ -348,7 +348,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                         NPC.ai[0]++;
                         if (NPC.ai[0] >= 2)
                         {
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 int Atack = Main.rand.Next(2, 6 + 1);
                                 if (Atack == PrevAtack)
@@ -372,7 +372,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                             if (NPC.ai[0] == 20)
                             {
                                 Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                                if (StellaMultiplayer.IsHost)
+                                if (MultiplayerHelper.IsHost)
                                 {
                                     int amountOfProjectiles = Main.rand.Next(1, 3);
                                     for (int i = 0; i < amountOfProjectiles; ++i)
@@ -390,7 +390,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                             if (NPC.ai[0] == 80)
                             {
                                 Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                                if (StellaMultiplayer.IsHost)
+                                if (MultiplayerHelper.IsHost)
                                 {
                                     int amountOfProjectiles = Main.rand.Next(1, 3);
                                     for (int i = 0; i < amountOfProjectiles; ++i)
@@ -417,7 +417,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                         {
                             if (NPC.ai[0] == 20)
                             {
-                                if (StellaMultiplayer.IsHost)
+                                if (MultiplayerHelper.IsHost)
                                 {
                                     JackFirerand = Main.rand.Next(25, 40 + 1);
                                     NPC.netUpdate = true;
@@ -438,7 +438,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                 {
                                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                                     SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, NPC.position);
-                                    if (StellaMultiplayer.IsHost)
+                                    if (MultiplayerHelper.IsHost)
                                     {
                                         var entitySource = NPC.GetSource_FromThis();
                                         int OffSet = Main.rand.Next(-130, 130 + 1);
@@ -493,7 +493,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                 if (NPC.ai[0] % 7 == 0)
                                 {
                                     SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, NPC.position);
-                                    if (StellaMultiplayer.IsHost)
+                                    if (MultiplayerHelper.IsHost)
                                     {
                                         var entitySource = NPC.GetSource_FromThis();
                                         int OffSet = Main.rand.Next(-30, 30 + 1);
@@ -585,7 +585,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                 }
                             }
 
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 int amountOfProjectiles = Main.rand.Next(1, 2);
                                 for (int i = 0; i < amountOfProjectiles; ++i)
@@ -629,7 +629,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                 }
                             }
 
-                            if (StellaMultiplayer.IsHost)
+                            if (MultiplayerHelper.IsHost)
                             {
                                 int amountOfProjectiles = Main.rand.Next(2, 4);
                                 for (int i = 0; i < amountOfProjectiles; ++i)

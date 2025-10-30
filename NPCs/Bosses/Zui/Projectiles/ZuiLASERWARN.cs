@@ -132,7 +132,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                     LightPos.X = NPC.Center.X;
                     LightPos.Y = NPC.Center.Y;
                     var EntitySource = NPC.GetSource_FromThis();
-                    if (StellaMultiplayer.IsHost)
+                    if (MultiplayerHelper.IsHost)
                     {
 
 

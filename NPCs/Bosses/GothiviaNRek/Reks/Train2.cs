@@ -561,7 +561,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
             if (timer == 10)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10,
                         ProjectileID.EyeBeam, 14, 0f, Owner: Main.myPlayer);
@@ -574,7 +574,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
             if (timer == 30)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10,
                     ProjectileID.EyeBeam, 14, 0f, Owner: Main.myPlayer);
@@ -586,7 +586,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
             if (timer == 50)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10,
                     ProjectileID.EyeBeam, 14, 0f, Owner: Main.myPlayer);
@@ -598,7 +598,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
             if (timer == 70)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10,
                     ProjectileID.EyeBeam, 14, 0f, Owner: Main.myPlayer);
@@ -610,7 +610,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
             if (timer == 90)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10,
                     ProjectileID.EyeBeam, 14, 0f, Owner: Main.myPlayer);
@@ -622,7 +622,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
             if (timer == 110)
             {
-                if (StellaMultiplayer.IsHost)
+                if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10,
                     ProjectileID.EyeBeam, 14, 0f, Owner: Main.myPlayer);
