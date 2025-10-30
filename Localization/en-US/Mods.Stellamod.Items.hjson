@@ -9416,3 +9416,8 @@ MagicWings: {
 	DisplayName: Magic Wings
 	Tooltip: ""
 }
+
+IvynSharprod: {
+	Tooltip: Increases armor penetration by 3
+	DisplayName: Ivyn Sharprod
+}
