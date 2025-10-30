@@ -795,7 +795,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         private void AI_GiveKey()
         {
             Timer++;
-            ColosseumSystem colosseum = ModContent.GetInstance<ColosseumSystem>();
+
             Vector2 colosseumWorld = ColosseumWaveManager.GongSpawnWorld;
 
             Vector2 velocity = (colosseumWorld - NPC.Center).SafeNormalize(Vector2.Zero);
@@ -846,6 +846,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             if (Timer == 240)
             {
                 NPC.SetEventFlagCleared(ref DownedBossSystem.downedCommanderGintziaBoss, -1);
+                ColosseumWaveManager.ColosseumEnemyKilled();
             }
             if (Timer == 241)
             {
