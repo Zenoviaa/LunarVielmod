@@ -26,6 +26,11 @@ VanillaBiomesPaletteShadersToggle: {
 	Tooltip: Adds palette shaders to vanilla biomes.
 }
 
+PaletteShadersToggle: {
+	Label: Palette Shaders
+	Tooltip: Adds palette shaders to modded biomes.
+}
+
 RedDamageNumbersToggle: {
 	Label: Red Damage Numbers
 	Tooltip: Makes all damage numbers a bit more red

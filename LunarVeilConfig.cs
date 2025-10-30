@@ -39,6 +39,9 @@ namespace Stellamod
         public bool VanillaBiomesPaletteShadersToggle;
 
         [DefaultValue(true)]
+        public bool PaletteShadersToggle;
+
+        [DefaultValue(true)]
         public bool RedDamageNumbersToggle;
 
         [DefaultValue(true)]

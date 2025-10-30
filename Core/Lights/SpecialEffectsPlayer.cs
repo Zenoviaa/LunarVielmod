@@ -103,7 +103,9 @@ namespace Stellamod.Core.Lights
 
         private void TogglePaletteShader(string name, bool isActive)
         {
-
+            LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (name.Contains("Palette") && !clientConfig.PaletteShadersToggle)
+                isActive = false;
             if (isActive)
             {
                 if (!FilterManager[name].IsActive())
