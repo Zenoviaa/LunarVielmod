@@ -277,9 +277,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             useAfterImage = true;
             hitStopTime = EXTRA_UPDATE_COUNT * 4;
         }
-        private bool _thrust;
-        public float thrustSpeed = 5;
-        public float stabRange;
+
         public override void AI()
         {
             base.AI();
@@ -327,7 +325,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             if (ComboIndex < ComboCount)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Main.MouseWorld - Owner.Center, Projectile.type, Projectile.damage, Projectile.knockBack,
-                            Owner.whoAmI, ai2: combo, ai1: dir);
+                            Projectile.owner, ai2: combo, ai1: dir);
             }
         }
     }

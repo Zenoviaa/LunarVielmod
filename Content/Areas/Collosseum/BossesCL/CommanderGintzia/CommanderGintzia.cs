@@ -184,7 +184,8 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             _windStorm ??= new WindStorm(3);
             _windStorm?.Update(NPC.Center);
-            NPC.TargetClosest();
+            if(!NPC.HasValidTarget)
+                NPC.TargetClosest();
             if (!NPC.HasValidTarget && State != AIState.Despawn)
             {
                 SwitchState(AIState.Despawn);
@@ -454,6 +455,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             {
                 AccelTimer = 0;
                 FollowCenter = Target.Center;
+                NPC.TargetClosest();
             }
      
             if (Timer >= 200)
