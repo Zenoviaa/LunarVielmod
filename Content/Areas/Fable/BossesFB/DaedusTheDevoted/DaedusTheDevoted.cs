@@ -101,17 +101,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
         public float GlowTimer { get; set; }
 
         public float BlackTimer { get; set; }
-        private bool CheckCurrentAnimation(params AnimationState[] animations)
-        {
-            for (int i = 0; i < animations.Length; i++)
-            {
-                AnimationState animation = animations[i];
-                if (Animation == animation)
-                    return true;
-            }
-            return false;
-        }
-
         public override void AI()
         {
             base.AI();
@@ -864,12 +853,18 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
         private void AI_Tired()
         {
             Timer++;
-            NPC.TargetClosest();
+         
             if (!NPC.HasValidTarget)
             {
-                NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, -8), 0.025f);
-                NPC.EncourageDespawn(60);
-                return;
+                NPC.TargetClosest();
+              
+                if (!NPC.HasValidTarget)
+                {
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, -8), 0.025f);
+                    NPC.EncourageDespawn(60);
+                    return;
+                }
+              
             }
 
             ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
@@ -899,12 +894,20 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
         private void AI_Idle()
         {
             Timer++;
-            NPC.TargetClosest();
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+          
             if (!NPC.HasValidTarget)
             {
-                NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, -8), 0.025f);
-                NPC.EncourageDespawn(60);
-                return;
+                NPC.TargetClosest();
+                if (!NPC.HasValidTarget)
+                {
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, -8), 0.025f);
+                    NPC.EncourageDespawn(60);
+                    return;
+                }
             }
 
             ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;

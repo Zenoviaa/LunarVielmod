@@ -44,10 +44,8 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
             {
                 if (this.OwnedByLocalClient())
                 {
-                    float range = 90;
-                    ZigZagOffsetRadians = MathHelper.Lerp(
-                        -MathHelper.ToRadians(range),
-                        MathHelper.ToRadians(range), Main.rand.NextFloat(0f, 1f));
+                    float range = MathHelper.ToRadians(45);
+                    ZigZagOffsetRadians = ZigZagOffsetRadians <= 0 ? range : -range;
                     Projectile.netUpdate = true;
                 }
                 SoundStyle starSingle2 = AssetRegistry.Sounds.Stars.Starsingle2;
