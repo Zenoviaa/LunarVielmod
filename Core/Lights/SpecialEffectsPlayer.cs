@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Effects;
 using Terraria;
 using Terraria.Graphics.Effects;
@@ -20,6 +21,7 @@ namespace Stellamod.Core.Lights
 
         private float _blackWhiteLerp;
 
+        private Texture2D _paletteTexture;
         private Color[] _abyssPalette;
         private Color[] _alcadPalette;
         private Color[] _underworldPalette;
@@ -100,7 +102,24 @@ namespace Stellamod.Core.Lights
 
             _targetVignetteOpacity = 0.5f;
         }
-
+        private void ToggleFilter(string name, bool isActive)
+        {
+            LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (isActive)
+            {
+                if (!FilterManager[name].IsActive())
+                {
+                    FilterManager.Activate(name);
+                }
+            }
+            else if (!isActive)
+            {
+                if (FilterManager[name].IsActive())
+                {
+                    FilterManager.Deactivate(name);
+                }
+            }
+        }
         private void TogglePaletteShader(string name, bool isActive)
         {
             LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
@@ -137,6 +156,11 @@ namespace Stellamod.Core.Lights
                 _init = true;
             }
 
+            _paletteTexture ??= PalFileImporter.CreatePaletteTexture(_abyssPalette);
+            var sc = FilterManager["LunarVeil:ScreenPalette"].GetShader();
+            sc.Shader.Parameters["palette"].SetValue(_paletteTexture);
+            sc.Shader.Parameters["size"].SetValue(_abyssPalette.Length);
+            ToggleFilter("LunarVeil:ScreenPalette", true);
             LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
             ScreenShaderData screenShaderData;
             bool abyssPaletteActive = MyPlayer.ZoneAbyss || MyPlayer.ZoneAurelus || MyPlayer.ZoneMechanics || MyPlayer.ZoneIshtar;
