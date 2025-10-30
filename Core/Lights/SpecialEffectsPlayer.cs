@@ -156,7 +156,7 @@ namespace Stellamod.Core.Lights
                 _init = true;
             }
 
-            ToggleFilter("LunarVeil:ScreenPalette", true);
+           // ToggleFilter("LunarVeil:ScreenPalette", true);
             LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
             ScreenShaderData screenShaderData;
             bool abyssPaletteActive = MyPlayer.ZoneAbyss || MyPlayer.ZoneAurelus || MyPlayer.ZoneMechanics || MyPlayer.ZoneIshtar;
