@@ -156,10 +156,6 @@ namespace Stellamod.Core.Lights
                 _init = true;
             }
 
-            _paletteTexture ??= PalFileImporter.CreatePaletteTexture(_abyssPalette);
-            var sc = FilterManager["LunarVeil:ScreenPalette"].GetShader();
-            sc.Shader.Parameters["palette"].SetValue(_paletteTexture);
-            sc.Shader.Parameters["size"].SetValue(_abyssPalette.Length);
             ToggleFilter("LunarVeil:ScreenPalette", true);
             LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
             ScreenShaderData screenShaderData;
