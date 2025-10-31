@@ -394,9 +394,7 @@ IllusionistBook: {
 	DisplayName: Book of Wooden Illusion
 	Tooltip:
 		'''
-		Increased life regeneration!
-		+3% damage
-		3% increased critical strike chance
+		10% decreased magic wand charge time!
 		'''
 }
 
