@@ -8,14 +8,6 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
     public class DaggerDagger : BaseJugglerItem
     {
-        public override DamageClass AlternateClass => DamageClass.Ranged;
-
-        public override void SetClassSwappedDefaults()
-        {
-            Item.damage = 116;
-            Item.mana = 0;
-        }
-
         public override void SetDefaults()
         {
             base.SetDefaults();

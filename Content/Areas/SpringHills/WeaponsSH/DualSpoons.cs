@@ -33,6 +33,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         public override void ShootSwingStamina(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             float radians = MathHelper.ToRadians(15);
+            damage *= 3;
             Projectile.NewProjectile(source, position, velocity.RotatedBy(-radians), type, damage, knockback,
                 player.whoAmI);
             Projectile.NewProjectile(source, position, velocity.RotatedBy(radians), type, damage, knockback,

@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Items.Weapons.Thrown.Jugglers;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown.Jugglers

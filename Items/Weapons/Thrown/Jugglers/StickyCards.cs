@@ -11,13 +11,6 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
     public class StickyCards : BaseJugglerItem
     {
-        public override DamageClass AlternateClass => DamageClass.Ranged;
-
-        public override void SetClassSwappedDefaults()
-        {
-            Item.damage = 45;
-            Item.mana = 0;
-        }
 
         public override void SetDefaults()
         {

@@ -1,22 +1,38 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs.Minions;
+using Stellamod.Core.SummonerSystem;
 using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials.Molds;
 using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Summons.Minions
+namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 {
-    /*
-     * This minion shows a few mandatory things that make it behave properly. 
-     * Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
-     * If the player targets a certain NPC with right-click, it will fly through tiles to it
-     * If it isn't attacking, it will float near the player with minimal movement
-     */
-    public class MushroomStaveMinionProj : ModProjectile
+    public class MushroomStave : BaseBellMinionItem
+    {
+        public override void SetDefaults2()
+        {
+            base.SetDefaults2();
+            Item.damage = 6;
+            Item.knockBack = 3f;
+            Item.shoot = ModContent.ProjectileType<MushroomStaveMinionProj>();
+        }
+
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankRune>(),
+                material: ModContent.ItemType<Mushroom>());
+        }
+    }
+
+    public class MushroomStaveMinionProj : KillableMinion
     {
         public override void SetStaticDefaults()
         {
@@ -65,7 +81,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         {
             return true;
         }
-        public override bool PreDraw(ref Color lightColor)
+        public override void DrawSpectral(SpriteBatch spriteBatch)
         {
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -78,15 +94,13 @@ namespace Stellamod.Projectiles.Summons.Minions
             }
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            return true;
+            base.DrawSpectral(spriteBatch);
         }
+
         public override void AI()
         {
+            base.AI();
             Player player = Main.player[Projectile.owner];
-            if (!SummonHelper.CheckMinionActive<MushroomStaveMinionBuff>(player, Projectile))
-                return;
-
-
             #region General behavior
             Vector2 idlePosition = player.Center;
             idlePosition.Y -= 1f; // Go up 48 coordinates (three tiles from the center of the player)
@@ -186,7 +200,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             if (foundTarget)
             {
 
-                targetCenterUP.Y = targetCenter.Y - 170;
+                targetCenterUP.Y = targetCenter.Y - 100;
                 targetCenterUP.X = targetCenter.X;
                 Vector2 Fdirection = targetCenterUP - Projectile.Center;
                 Fdirection.Normalize();
@@ -195,8 +209,12 @@ namespace Stellamod.Projectiles.Summons.Minions
                 if (Projectile.ai[1] >= 20)
                 {
                     var EntitySource = Projectile.GetSource_Death();
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                        Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<MushroomStaveMinionProg>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                    if (this.OwnedByLocalClient())
+                    {
+                        Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0,
+                            ModContent.ProjectileType<MushroomStaveMinionProg>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 0, 0);
+                    }
+
                     Projectile.ai[1] = 0;
                 }
 
@@ -262,6 +280,79 @@ namespace Stellamod.Projectiles.Summons.Minions
             // Some visuals here
             Lighting.AddLight(Projectile.Center, Color.Pink.ToVector3() * 0.28f);
             #endregion
+        }
+    }
+
+    public class MushroomStaveMinionProg : ModProjectile
+    {
+        public float VELXStart;
+        private ref float VEL => ref Projectile.ai[0];
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+            Main.projFrames[Projectile.type] = 4;
+        }
+
+        public override void SetDefaults()
+        {
+            Projectile.width = 10;
+            Projectile.height = 10;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.penetrate = 10;
+            Projectile.timeLeft = 900;
+            Projectile.tileCollide = true;
+            Projectile.aiStyle = -1;
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            for (int i = 0; i < 50; i++)
+            {
+                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.PinkTorch, 0f, -2f, 0, default, 1.5f);
+                Main.dust[num].noGravity = true;
+                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                {
+                    Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
+                }
+            }
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Main.spriteBatch.End();
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
+            for (int k = 0; k < Projectile.oldPos.Length; k++)
+            {
+                Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
+                Color color = Projectile.GetAlpha(Color.Lerp(new Color(255, 136, 247), new Color(54, 64, 195), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
+                Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
+            }
+            Main.spriteBatch.End();
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            return true;
+        }
+
+        public override void AI()
+        {
+            Projectile.rotation = Projectile.velocity.X * 0.1f;
+            Projectile.ai[1] += 1f;
+
+            Projectile.velocity.X += VEL;
+            Projectile.velocity.Y += 0.01f;
+            if (Projectile.ai[1] >= 60)
+            {
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    VEL = Main.rand.NextFloat(-0.06f, 0.06f);
+                    Projectile.ai[1] = 0;
+
+                    Projectile.netUpdate = true;
+                }
+            }
         }
     }
 }

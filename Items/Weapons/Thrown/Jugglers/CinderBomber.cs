@@ -10,12 +10,6 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
     public class CinderBomber : BaseJugglerItem
     {
-        public override DamageClass AlternateClass => DamageClass.Ranged;
-        public override void SetClassSwappedDefaults()
-        {
-            Item.damage = 36;
-        }
-
         public override void SetDefaults()
         {
             base.SetDefaults();

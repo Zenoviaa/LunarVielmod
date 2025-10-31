@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs.Minions;
 using Stellamod.Core.SummonerSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
@@ -72,22 +71,22 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         {
             return false;
         }
-
-        public override void DrawSpectral(SpriteBatch spriteBatch)
+        public override bool PreDraw(ref Color lightColor)
         {
-            base.DrawSpectral(spriteBatch);
+            SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D closingCircle = ModContent.Request<Texture2D>(TextureRegistry.ThinCircle).Value;
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
-            Rectangle frame = Projectile.Frame();
-            Vector2 drawOrigin = frame.Size() / 2f;
-            Color drawColor = Color.Lerp(Color.Transparent, Color.Blue, Heart/ 1260f);
+
+            Color drawColor = Color.Blue;
             drawColor.A = 0;
             float drawScale = MathHelper.Lerp(1f, 0f, Heart / 1260f);
-            spriteBatch.Draw(closingCircle, drawPosition, frame, drawColor, Projectile.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(closingCircle, drawPosition, null, drawColor, Projectile.rotation, closingCircle.Size() / 2f, drawScale * 0.5f, SpriteEffects.None, 0);
+            return false;
         }
         // The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
         public override void AI()
         {
+            base.AI();
             SummonHelper.CalculateIdleValues(Owner, Projectile, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
             SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
             Visuals();
