@@ -6,6 +6,7 @@ using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.GameContent.TextureAssets;
 
 namespace Stellamod.Core.Lights
 {
@@ -156,7 +157,7 @@ namespace Stellamod.Core.Lights
                 _init = true;
             }
 
-           // ToggleFilter("LunarVeil:ScreenPalette", true);
+
             LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
             ScreenShaderData screenShaderData;
             bool abyssPaletteActive = MyPlayer.ZoneAbyss || MyPlayer.ZoneAurelus || MyPlayer.ZoneMechanics || MyPlayer.ZoneIshtar;

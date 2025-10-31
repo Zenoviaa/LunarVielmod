@@ -1,13 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles
 {
-    public class EliteCommanderHand : ModProjectile
+    public class EliteCommanderHand : ModProjectile,
+        IDrawOutlines
     {
         private int _frame = -1;
         private ref float Timer => ref Projectile.ai[0];
@@ -72,11 +74,11 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
                 soundStyle.PitchVariance = 0.1f;
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
             }
-
+            NPC parent = Main.npc[ParentNPC];
             Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 1024);
             if (player != null)
             {
-                float distance = Vector2.Distance(Projectile.Center, player.Center);
+                float distance = Vector2.Distance(parent.Center, player.Center);
                 if (distance < Radius)
                 {
                     PunchTimer++;
@@ -95,7 +97,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
                 }
             }
 
-            NPC parent = Main.npc[ParentNPC];
+
             if (!parent.active || Timer > Duration - 60)
             {
                 Die = true;
@@ -112,6 +114,8 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
 
             if (Die)
             {
+                Projectile.hostile = false;
+                
                 AlphaTimer = MathHelper.Lerp(1f, 0f, KillTimer / 60f);
                 KillTimer++;
                 if (KillTimer >= 60)
@@ -119,6 +123,23 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
                     Projectile.Kill();
                 }
             }
+        }
+
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Rectangle frame = texture.GetFrame(_frame, 4);
+            Vector2 drawOrigin = frame.Size() / 2;
+            float drawRotation = Projectile.rotation;
+            Color outlineColor = Color.Red * AlphaTimer; 
+
+            float drawScale = 1f;
+            float outlineOffset = 2;
+            spriteBatch.Draw(texture, drawPos + Vector2.UnitX * outlineOffset, frame, outlineColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, drawPos + Vector2.UnitX * -outlineOffset, frame, outlineColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, drawPos + Vector2.UnitY * outlineOffset, frame, outlineColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, drawPos + Vector2.UnitY * -outlineOffset, frame, outlineColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -131,17 +152,9 @@ namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
             float drawRotation = Projectile.rotation;
             Color drawColor = Color.White.MultiplyRGB(lightColor) * AlphaTimer;
             float drawScale = 1f;
-
-            spriteBatch.Restart(blendState: BlendState.Additive);
-            for (float f = 0f; f < 1f; f += 0.25f)
-            {
-                float rot = f * MathHelper.TwoPi;
-                Vector2 glowDrawOffset = rot.ToRotationVector2() * VectorHelper.Osc(2f, 5f, speed: 2f);
-                spriteBatch.Draw(texture, drawPos + glowDrawOffset, frame, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
-            }
-            spriteBatch.RestartDefaults();
             spriteBatch.Draw(texture, drawPos, frame, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
             return false;
         }
+
     }
 }

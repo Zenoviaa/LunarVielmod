@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia;
+using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander;
 using Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak;
 using Stellamod.Core.TitleSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Ores;
-using Stellamod.NPCs.Bosses.EliteCommander;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;

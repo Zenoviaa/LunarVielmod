@@ -1,21 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.Lights;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles;
+using Stellamod.Core;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.EliteCommander.Projectiles;
 using Stellamod.NPCs.Colosseum.Common;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.EliteCommander
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander
 {
-    [AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
-    public class EliteCommander : BaseColosseumNPC
+    public class EliteCommander : ScarletBoss,
+        IDrawOutlines
     {
+        private bool _showNamePlate;
         private int _frame;
         private enum AIState
         {
@@ -27,6 +29,8 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
             Despawn
         }
 
+        private Color _outlineColor;
+        private Color TargetOutlineColor;
         private ref float Timer => ref NPC.ai[0];
         private AIState State
         {
@@ -121,9 +125,6 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
             NPC.npcSlots = 10f;
             NPC.aiStyle = -1;
 
-            // Custom boss bar
-            NPC.BossBar = ModContent.GetInstance<EliteCommanderBossBar>();
-
             // The following code assigns a music track to the boss in a simple way.
             if (!Main.dedServ)
             {
@@ -192,9 +193,39 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
             }
             NPC.frame.Y = frameHeight * _frame;
         }
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            string texturePath = Texture;
+            Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
+            Vector2 drawPos = NPC.position - screenPos + NPC.Size / 2f;
+            drawPos.Y -= 30;
+            Vector2 drawOrigin = NPC.frame.Size() / 2f;
+            float drawRotation = NPC.rotation;
+            float drawScale = NPC.scale;
+            SpriteEffects spriteEffects = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+
+
+            float outlineOffset = 2;
+            Vector2 left = drawPos + Vector2.UnitX * -outlineOffset;
+            Vector2 right = drawPos + Vector2.UnitX * outlineOffset;
+            Vector2 up = drawPos + Vector2.UnitY * -outlineOffset;
+            Vector2 down = drawPos + Vector2.UnitY * outlineOffset;
+            Color outlineColor = _outlineColor;
+
+            spriteBatch.Draw(texture, left, NPC.frame, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+            spriteBatch.Draw(texture, right, NPC.frame, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+            spriteBatch.Draw(texture, up, NPC.frame, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+            spriteBatch.Draw(texture, down, NPC.frame, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+        }
         public override void AI()
         {
             base.AI();
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+            if (!_showNamePlate)
+            {
+                ShowNamePlate();
+                _showNamePlate = true;
+            }
             if (!NPC.HasValidTarget)
             {
                 NPC.TargetClosest();
@@ -225,11 +256,21 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
 
         private void AI_Idle()
         {
+            TargetOutlineColor = Color.Transparent;
             Timer++;
-            NPC.TargetClosest();
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+
             if (!NPC.HasValidTarget)
             {
-                SwitchState(AIState.Despawn);
+                NPC.TargetClosest();
+                if (!NPC.HasValidTarget)
+                {
+                    SwitchState(AIState.Despawn);
+                }
+
             }
 
             if (Timer >= 60)
@@ -248,13 +289,22 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
 
         private void AI_Walk()
         {
+            TargetOutlineColor = Color.Transparent;
             Timer++;
-            NPC.TargetClosest();
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+
             NPC.spriteDirection = NPC.direction;
 
             float moveSpeed = 1f;
             Vector2 targetVelocity = new Vector2(DirectionToTarget * moveSpeed, 0);
             NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetVelocity.X, 0.3f);
+            if (NPC.collideX)
+            {
+                Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);
+            }
             if (Target.Top.Y < NPC.Top.Y)
             {
                 AbovePlayerTimer++;
@@ -276,6 +326,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
 
         private void AI_Jump()
         {
+            TargetOutlineColor = Color.Yellow;
             Timer++;
             if (Timer == 1)
             {
@@ -312,6 +363,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
 
         private void AI_Land()
         {
+            TargetOutlineColor = Color.Red;
             Timer++;
             if (Timer == 1)
             {
@@ -330,16 +382,53 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
                    ModContent.ProjectileType<WindShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
                 }
 
-                SpecialEffectsPlayer specialEffectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
-                specialEffectsPlayer.rippleCount = 20;
-                specialEffectsPlayer.rippleSize = 5;
-                specialEffectsPlayer.rippleSpeed = 15;
-                specialEffectsPlayer.rippleDistortStrength = 300f;
-                specialEffectsPlayer.rippleTimer = 180f;
-
                 SoundStyle landingSound = new SoundStyle($"Stellamod/Assets/Sounds/Verifall");
                 landingSound.PitchVariance = 0.1f;
                 SoundEngine.PlaySound(landingSound, NPC.position);
+                SoundStyle boom = SoundID.DD2_ExplosiveTrapExplode;
+                boom.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(boom, NPC.position);
+                for (int i = 0; i < 16; i++)
+                {
+                    float radius = 150;
+                    Vector2 offset = Vector2.UnitX * Main.rand.Next(-1, 1);
+                    offset *= Main.rand.NextFloat(1f, radius);
+                    offset += new Vector2(radius / 2, 0);
+
+                    Vector2 velocity = Vector2.UnitX * Main.rand.Next(-1, 1);
+                    velocity *= Main.rand.NextFloat(1f, 2f);
+                    Dust.NewDustPerfect(NPC.Bottom + offset, ModContent.DustType<Dusts.TSmokeDust>(), velocity, 0, Color.Black * 0.5f,
+                        Main.rand.NextFloat(0.3f, 0.7f));
+                }
+
+                FXUtil.GlowCircleBoom(NPC.Bottom,
+                   innerColor: Color.White,
+                   glowColor: Color.Black,
+                   outerGlowColor: Color.Black, duration: 25, baseSize: 0.24f);
+                for (float i = 0; i < 4; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(240);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(NPC.Bottom,
+                        innerColor: Color.White,
+                        glowColor: Color.Black,
+                        outerGlowColor: Color.Black,
+                        baseSize: 0.24f);
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
+
+                for (int i = 0; i < 7; i++)
+                {
+                    Vector2 velocity = -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(30)) * Main.rand.NextFloat(15f, 35f);
+                    var particle = FXUtil.GlowStretch(NPC.Bottom, velocity);
+                    particle.InnerColor = Color.White;
+                    particle.GlowColor = Color.LightCyan;
+                    particle.OuterGlowColor = Color.Black;
+                    particle.Duration = Main.rand.NextFloat(25, 50);
+                    particle.BaseSize = Main.rand.NextFloat(0.045f, 0.09f);
+                    particle.VectorScale *= 0.5f;
+                }
 
                 for (int i = 0; i < 16; i++)
                 {
@@ -395,6 +484,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
 
         private void AI_Summon()
         {
+            TargetOutlineColor = Color.Yellow;
             Timer++;
             NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, 0f, 0.1f);
             if (Timer == 60)
@@ -421,8 +511,11 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
         private void AI_Despawn()
         {
             Timer++;
+            if (Timer >= 60)
+            {
+                NPC.active = false;
+            }
             NPC.noTileCollide = true;
-            NPC.EncourageDespawn(60);
         }
 
         private void SwitchState(AIState state)
@@ -447,10 +540,6 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
             return false;
         }
 
-        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
-        {
-            NPC.lifeMax = (int)(NPC.lifeMax * balance);
-        }
 
         public override void HitEffect(NPC.HitInfo hit)
         {
@@ -482,7 +571,7 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
 
             //Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
             //npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.GintzeBossRel>()));
+            // npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.GintzeBossRel>()));
         }
 
 
@@ -490,10 +579,9 @@ namespace Stellamod.NPCs.Bosses.EliteCommander
         {
             base.OnKill();
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedGintzlBoss, -1);
-            if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-            {
-                Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-            }
+            ColosseumWaveManager.ColosseumEnemyKilled();
         }
+
+
     }
 }

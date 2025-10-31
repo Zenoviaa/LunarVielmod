@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant.Projectiles;
 using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.Items.Placeable;
-using Stellamod.NPCs.Bosses.EliteCommander.Projectiles;
 using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;

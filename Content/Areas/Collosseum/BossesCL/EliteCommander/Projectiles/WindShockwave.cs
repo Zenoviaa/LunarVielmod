@@ -8,7 +8,7 @@ using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.EliteCommander.Projectiles
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles
 {
     public class WindShockwave : ModProjectile
     {

@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.HealthbarSystem;
 using Stellamod.Core.TitleSystem;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -11,6 +10,10 @@ namespace Stellamod.Core
 {
     public abstract class ScarletBoss : ModNPC
     {
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            DifficultyChanges.ApplyDifficultyAndScaling(NPC, numPlayers);
+        }
 
         public override void SetDefaults()
         {

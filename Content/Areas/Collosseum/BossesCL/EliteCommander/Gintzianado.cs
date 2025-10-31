@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.EliteCommander
+namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander
 {
     public class Gintzianado : ModProjectile
     {
