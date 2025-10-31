@@ -108,8 +108,6 @@ namespace Stellamod.Buffs.Minions
 
     public class LifeWandMinionBuff : MinionBuff<LifeWandMinionProj> { }
 
-    public class ManaWandMinionBuff : MinionBuff<ManaWandMinionProj> { }
-
     public class MushroomStaveMinionBuff : MinionBuff<MushroomStaveMinionProj> { }
 
     public class ReflectionSeekerMinionBuff : MinionBuff<ReflectionSeekerMinionProj> { }

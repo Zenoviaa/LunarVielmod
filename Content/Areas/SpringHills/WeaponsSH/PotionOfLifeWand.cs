@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
+using Stellamod.Items;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Summons.Minions;
@@ -9,7 +10,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Summon
+namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 {
     public class PotionOfLifeWand : ModItem
     {
