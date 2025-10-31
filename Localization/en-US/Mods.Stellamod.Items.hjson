@@ -9451,3 +9451,10 @@ DoorUp: {
 	DisplayName: Door Up
 	Tooltip: ""
 }
+
+DualSpoons: {
+	BasicSlash: No Effect
+	StaminaSlash: Throws two bouncing spoons!
+	DisplayName: Dual Spoons
+	Tooltip: ""
+}
