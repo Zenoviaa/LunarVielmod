@@ -1,5 +1,5 @@
-﻿using Stellamod.Core.IgnitersNPowders;
-using Stellamod.Items.Harvesting;
+﻿using Stellamod.Content.Items.Materials;
+using Stellamod.Core.IgnitersNPowders;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.IgniterExplosions;
 using Terraria.Audio;

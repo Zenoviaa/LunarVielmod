@@ -1,6 +1,6 @@
-﻿using Stellamod.Core.IgnitersNPowders;
+﻿using Stellamod.Content.Items.Materials;
+using Stellamod.Core.IgnitersNPowders;
 using Stellamod.Items;
-using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.ModLoader;

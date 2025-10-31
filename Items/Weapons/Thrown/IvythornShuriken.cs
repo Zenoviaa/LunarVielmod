@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
+using Stellamod.Content.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Thrown;
 using Terraria;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Items.Materials;
 using Stellamod.Core.IgnitersNPowders;
 using Stellamod.Items;
-using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials.Molds;
 using System.Collections.Generic;
 

@@ -1,9 +1,9 @@
 
 using Microsoft.Xna.Framework;
+using Stellamod.Content.Items.Materials;
 using Stellamod.Core.SummonerSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.ID;

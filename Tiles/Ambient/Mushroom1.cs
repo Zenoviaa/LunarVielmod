@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -22,7 +23,7 @@ namespace Stellamod.Tiles.Ambient
             TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16, 16 };
             TileObjectData.addTile(Type);
             LocalizedText name = CreateMapEntryName();
-            RegisterItemDrop(ModContent.ItemType<Items.Harvesting.Mushroom>());
+            RegisterItemDrop(ModContent.ItemType<Mushroom>());
             AddMapEntry(new Color(100, 200, 100), name);
         }
 
