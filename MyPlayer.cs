@@ -1057,12 +1057,6 @@ namespace Stellamod
 
 
 
-            if (HikersBSpawn && HikersBCooldown <= 0)
-            {
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1.1f, ModContent.ProjectileType<Stump>(), 10, 1f, Player.whoAmI);
-                HikersBCooldown = 30;
-            }
-
 
 
 

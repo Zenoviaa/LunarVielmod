@@ -1,4 +1,5 @@
-﻿using Stellamod.Projectiles;
+﻿using Stellamod.Content.Areas.SpringHills.AccSH;
+using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

@@ -385,8 +385,7 @@ HikersBackpack: {
 	DisplayName: Hiker's Backpack
 	Tooltip:
 		'''
-		Increased life regeneration!
-		+3% damage 
+		8% increased movement speed
 		Drops stumps on the ground as you walk!
 		'''
 }
