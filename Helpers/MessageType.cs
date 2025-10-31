@@ -18,7 +18,8 @@
         BreakString,
         DashPlayerSync,
         ResetColosseum,
-        StartColosseum
+        StartColosseum,
+        HandleDoor
     }
 
     public enum DialogueType : byte

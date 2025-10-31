@@ -738,6 +738,7 @@
     <Folder Include="Projectiles\Swords\Ripper\" />
     <Folder Include="Projectiles\Swords\Slashes\" />
     <Folder Include="Structures\Catacombs\" />
+    <Folder Include="Structures\Dungeon\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ParticleLibrary">

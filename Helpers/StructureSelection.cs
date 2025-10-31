@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.DungeonGeneration;
 using Stellamod.Core.StructureSelector;
 using Stellamod.WorldG.StructureManager;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -349,9 +351,25 @@ namespace Stellamod.Helpers
 
         public void SaveSelection(string fileName)
         {
-            Structurizer.SaveStruct(fileName, BottomLeft, TopRight);
-            TriggerStructurizer.SaveStruct(fileName, BottomLeft, TopRight);
-            TileEntityStructurizer.SaveStruct(fileName, BottomLeft, TopRight);
+            if(DungeonGenerationHelper.DoorInRectangle(BottomLeft, TopRight))
+            {
+                string structurePath = $"Dungeon/{fileName}";
+                string savePath = Main.SavePath + $"/ModSources/{Mod.Name}/Structures/{structurePath}{DungeonGenerationHelper.FileExtension}";
+                using var doorStream = File.Open(savePath, FileMode.Create);
+                DungeonGenerationHelper.SaveDoors(doorStream, BottomLeft, TopRight);
+
+
+                Structurizer.SaveStruct(structurePath, BottomLeft, TopRight);
+                TriggerStructurizer.SaveStruct(structurePath, BottomLeft, TopRight);
+                TileEntityStructurizer.SaveStruct(structurePath, BottomLeft, TopRight);
+            }
+            else
+            {
+                Structurizer.SaveStruct(fileName, BottomLeft, TopRight);
+                TriggerStructurizer.SaveStruct(fileName, BottomLeft, TopRight);
+                TileEntityStructurizer.SaveStruct(fileName, BottomLeft, TopRight);
+            }
+        
             SoundEngine.PlaySound(SoundID.AchievementComplete);
         }
 

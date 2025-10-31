@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.DungeonGeneration;
 using Stellamod.Core.SilkSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
@@ -145,6 +146,24 @@ namespace Stellamod
                     {
                         ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
                         colosseumSystem.Reset();
+                    }
+                    break;
+                case MessageType.HandleDoor:
+                    if(Main.netMode == NetmodeID.Server)
+                    {
+                        int x = (int)reader.ReadInt32();
+                        int y = (int)reader.ReadInt32();
+                        Point tilePosition = new Point(x, y);
+                        int d = (int)reader.ReadInt32();
+                        if(d == -1)
+                        {
+                            DungeonGenerationHelper.RemoveDoorInWorld(tilePosition);
+                        }
+                        else
+                        {
+                            Door door = (Door)d;
+                            DungeonGenerationHelper.PlaceDoorInWorld(tilePosition, door);
+                        }
                     }
                     break;
             }

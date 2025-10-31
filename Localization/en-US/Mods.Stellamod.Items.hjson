@@ -9431,3 +9431,23 @@ FlamecrestWand: {
 	Tooltip: ""
 	DisplayName: Flamecrest Wand
 }
+
+DoorDown: {
+	DisplayName: Door Down
+	Tooltip: ""
+}
+
+DoorLeft: {
+	DisplayName: Door Left
+	Tooltip: ""
+}
+
+DoorRight: {
+	DisplayName: Door Right
+	Tooltip: ""
+}
+
+DoorUp: {
+	DisplayName: Door Up
+	Tooltip: ""
+}
