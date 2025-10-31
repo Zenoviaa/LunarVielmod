@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Core.IgnitersNPowders;
 using Terraria;
 using Terraria.GameInput;
 using Terraria.ModLoader;
@@ -55,8 +55,13 @@ namespace Stellamod.UI.PowderSystem
             {
                 //Handles all the click and hover actions based on the context
                 ItemSlot.Handle(ref Item, _context);
-                _card.Powders[_index] = Item.Clone();
-                _card.Item.NetStateChanged();
+                if(Main.mouseLeft && Main.mouseLeftRelease)
+                {
+                    _card.Powders[_index] = Item.Clone();
+                    _card.Item.NetStateChanged();
+
+                }
+
             }
         }
 
@@ -67,7 +72,7 @@ namespace Stellamod.UI.PowderSystem
             Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();
             bool contains = ContainsPoint(Main.MouseScreen);
-            //   Console.WriteLine(rectangle.Width);
+
             if (contains && !PlayerInput.IgnoreMouseInterface)
             {
                 Main.LocalPlayer.mouseInterface = true;

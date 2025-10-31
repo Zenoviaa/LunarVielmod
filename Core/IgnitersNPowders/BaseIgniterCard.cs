@@ -6,13 +6,23 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-namespace Stellamod.Items.Weapons.Igniters
+namespace Stellamod.Core.IgnitersNPowders
 {
-    public abstract class BaseIgniterCard : ClassSwapItem
+    public class IgniterPlayer : ModPlayer
+    {
+        public float extenderBonus;
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+            extenderBonus = 0f;
+        }
+    }
+    public abstract class BaseIgniterCard : ModItem
     {
         private List<Item> _powders;
         public List<Item> Powders
@@ -37,18 +47,10 @@ namespace Stellamod.Items.Weapons.Igniters
             }
         }
 
-        public override DamageClass AlternateClass => DamageClass.Generic;
         public virtual int GetPowderSlotCount()
         {
             return 3;
         }
-
-        public override void SetClassSwappedDefaults()
-        {
-            Item.damage = 1;
-            Item.mana = 0;
-        }
-
         public override void SetDefaults()
         {
             Item.damage = 2;
@@ -61,7 +63,7 @@ namespace Stellamod.Items.Weapons.Igniters
             Item.useStyle = ItemUseStyleID.Swing;
             Item.noUseGraphic = true;
             Item.noMelee = true;
-            Item.DamageType = DamageClass.Magic;
+            Item.DamageType = DamageClass.Ranged;
             Item.value = 200;
             Item.rare = ItemRarityID.Blue;
 
@@ -75,6 +77,13 @@ namespace Stellamod.Items.Weapons.Igniters
             Item.shootSpeed = 15;
         }
 
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            IgniterPlayer igniterPlayer = player.GetModPlayer<IgniterPlayer>();
+            velocity *= 1.0f + igniterPlayer.extenderBonus;
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+            return false;
+        }
         public override void RightClick(Player player)
         {
             base.RightClick(player);

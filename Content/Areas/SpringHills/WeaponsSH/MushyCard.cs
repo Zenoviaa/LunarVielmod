@@ -1,19 +1,14 @@
-﻿using Stellamod.Items.Harvesting;
+﻿using Stellamod.Core.IgnitersNPowders;
+using Stellamod.Items;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Igniters
+namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 {
     public class MushyCard : BaseIgniterCard
     {
-        public override void SetClassSwappedDefaults()
-        {
-            base.SetClassSwappedDefaults();
-            Item.damage = 2;
-            Item.mana = 0;
-        }
-
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -22,13 +17,14 @@ namespace Stellamod.Items.Weapons.Igniters
 
         public override int GetPowderSlotCount()
         {
-
-            return 3;
+            return 2;
         }
+
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankCard>(), material: ModContent.ItemType<Mushroom>());
+            this.RegisterBrew(mold: ModContent.ItemType<BlankCard>(),
+                material: ModContent.ItemType<Mushroom>());
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Core.IgnitersNPowders;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;

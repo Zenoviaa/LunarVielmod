@@ -8,7 +8,6 @@ using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.AlcadChests;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Alcalite;
-using Stellamod.Items.Armors.Stone;
 using Stellamod.Items.Armors.Windmillion;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
@@ -17,7 +16,6 @@ using Stellamod.Items.Ores;
 using Stellamod.Items.Quest.Merena;
 using Stellamod.Items.Special.MinerLogs;
 using Stellamod.Items.Tools;
-using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Melee.Greatswords;
@@ -32,7 +30,6 @@ using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
 using Stellamod.Tiles.Illuria;
 using Stellamod.Tiles.Veil;
-using Stellamod.WorldG.StructureManager;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -63,7 +60,7 @@ namespace Stellamod.WorldG
             //We don't need this for now
             int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Lakes"));
             int RoyalGen = tasks.FindIndex(genpass => genpass.Name.Equals("Corruption"));
-          
+
             //Disable Some Passes
             DisableGenTask(tasks, "Terrain");
             DisableGenTask(tasks, "Tunnels");
@@ -71,7 +68,7 @@ namespace Stellamod.WorldG
             DisableGenTask(tasks, "Surface Caves");
             DisableGenTask(tasks, "Mountain Caves");
 
-      
+
 
             DisableGenTask(tasks, "Wavy Caves");
             DisableGenTask(tasks, "Living Trees");
@@ -135,8 +132,8 @@ namespace Stellamod.WorldG
             {
                 tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Abysm", WorldGenAbysm));
                 tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Abysm Caves", NewCaveFormationAbysm));
-            //    tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Virulent", WorldGenVirulent));
-            //    tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Virulent Caves", WorldGenVirulentCaves));
+                //    tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Virulent", WorldGenVirulent));
+                //    tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Virulent Caves", WorldGenVirulentCaves));
                 tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
                 tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
                 tasks.Insert(MorrowGen + 5, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
@@ -148,7 +145,7 @@ namespace Stellamod.WorldG
                 tasks.Insert(MorrowGen + 11, new PassLegacy("Icey Caverns", WorldGenIceCaverns));
                 tasks.Insert(MorrowGen + 12, new PassLegacy("World Gen Ice Ores", WorldGenGlisteningOre));
             }
-         
+
             int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
             if (CathedralGen3 != -1)
             {
@@ -160,16 +157,16 @@ namespace Stellamod.WorldG
             {
                 tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Abandoned Mineshafts", WorldGenMineshafts));
                 tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
-          
+
                 tasks.Insert(CathedralGen2 + 3, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
                 tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
-  
+
                 tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen Veldris", WorldGenVeizalManor));
                 tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
                 tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen Rallad", WorldGenRallad));
                 tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
                 tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Stone Golem Cave", WorldGenStoneGolemCave));
-             
+
                 tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
                 tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Manor", WorldGenManor));
                 tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Gia's House", WorldGenGiaHouse));
@@ -226,8 +223,8 @@ namespace Stellamod.WorldG
             while (!placed && attempts++ < 10000000)
             {
                 // Select a place in the first 6th of the world, avoiding the oceans
-                int smx = ManorLocation.X + WorldGen.genRand.Next(-200, 200); 
-                smx -= 600;                                                                                        
+                int smx = ManorLocation.X + WorldGen.genRand.Next(-200, 200);
+                smx -= 600;
 
                 int smy = ManorLocation.Y;
                 Point Loc = new Point(smx, smy);
@@ -1825,7 +1822,7 @@ namespace Stellamod.WorldG
                 int smy = ((int)(Main.worldSurface - 250));
 
                 // We go down until we hit a solid tile or go under the world's surface
-                while (!WorldGen.SolidTile(smx, smy) &&  smy <= Main.worldSurface)
+                while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
                 {
                     smy++;
                 }
@@ -1981,7 +1978,6 @@ namespace Stellamod.WorldG
                         switch (Main.rand.Next(4))
                         {
                             case 0:
-                                itemsToAdd.Add((ModContent.ItemType<CinderedCard>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner5>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(10, 30)));
                                 //  itemsToAdd.Add((ModContent.ItemType<ArncharChunk>(), Main.rand.Next(3, 10)));
@@ -2144,7 +2140,7 @@ namespace Stellamod.WorldG
         #endregion
 
         #region Small Surface Structures
-       
+
         private void WorldGenStoneGolemCave(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Stone Golem Cave";
@@ -2198,7 +2194,7 @@ namespace Stellamod.WorldG
             while (!placed && attempts++ < 10000000)
             {
                 int centerX = Main.maxTilesX / 2;
-                int smx = WorldGen.genRand.Next(centerX - 1000, centerX + 1000); 
+                int smx = WorldGen.genRand.Next(centerX - 1000, centerX + 1000);
                 int smy = ((int)(Main.worldSurface - 200));
 
                 // We go down until we hit a solid tile or go under the world's surface
@@ -2238,13 +2234,13 @@ namespace Stellamod.WorldG
                 for (int da = 0; da < 1; da++)
                 {
                     Point Loc = new Point(smx, smy + 15);
-  
+
                     var tileBlend = new int[]
                     {
                         TileID.RubyGemspark
                     };
 
-         
+
                     int[] ChestIndexs = Structurizer.ReadStruct(Loc, path, tileBlend);
                     Structurizer.ProtectStructure(Loc, path);
 
@@ -4063,7 +4059,6 @@ namespace Stellamod.WorldG
                                 itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
                                 break;
                             case 2:
-                                itemsToAdd.Add((ModContent.ItemType<Neptune8Card>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
                                 itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                                 itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
@@ -4230,7 +4225,6 @@ namespace Stellamod.WorldG
                                 itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
                                 break;
                             case 2:
-                                itemsToAdd.Add((ModContent.ItemType<Neptune8Card>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
                                 itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                                 itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(100, 1500)));

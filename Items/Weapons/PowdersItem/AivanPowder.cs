@@ -1,6 +1,6 @@
-﻿using Stellamod.Items.Materials.Molds;
+﻿using Stellamod.Core.IgnitersNPowders;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
-using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Projectiles;
 using Terraria.Audio;
 using Terraria.ID;

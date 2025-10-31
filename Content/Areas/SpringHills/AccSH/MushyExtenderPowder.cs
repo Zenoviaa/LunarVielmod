@@ -1,28 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.IgnitersNPowders;
+using Stellamod.Items;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials.Molds;
 using System.Collections.Generic;
 
 using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 
-namespace Stellamod.Items.Accessories.Igniter
+namespace Stellamod.Content.Areas.SpringHills.AccSH
 {
     public class MushyExtenderPowder : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Book of Wooden Illusion");
-            /* Tooltip.SetDefault("Increased Regeneration!" +
-				"\n +3% damage" +
-				"\n Increases crit strike change by 5% "); */
-
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        }
-
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
@@ -46,12 +37,15 @@ namespace Stellamod.Items.Accessories.Igniter
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<MyPlayer>().IgniterVelocity = 1.1f;
+            IgniterPlayer igniterPlayer = player.GetModPlayer<IgniterPlayer>();
+            igniterPlayer.extenderBonus += 0.15f;
         }
+
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<Mushroom>());
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(),
+                material: ModContent.ItemType<Mushroom>());
         }
     }
 }

@@ -12,7 +12,6 @@ using Stellamod.Items.Armors.Witchen;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Quest.Zui;
-using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
@@ -540,7 +539,7 @@ namespace Stellamod.NPCs.Town
 
             .Add<ChromaCutter>(ZuiQuestSystem.ShopCondition30)
             //	.Add<OnionOfStrength>(ZuiQuestSystem.ShopCondition30)
-            .Add<ZuiCard>(ZuiQuestSystem.ShopCondition30)
+
             ;
             npcShop.Register(); // Name of this shop tab		
         }

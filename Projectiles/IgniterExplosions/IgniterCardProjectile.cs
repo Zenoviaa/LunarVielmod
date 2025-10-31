@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.IgnitersNPowders;
 using Stellamod.Helpers;
-using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Trails;
 using System.IO;
 using Terraria;
@@ -135,19 +135,6 @@ namespace Stellamod.Projectiles.IgniterExplosions
 
             Projectile.velocity = Vector2.Zero;
         }
-
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 2.2f;
-            return MathHelper.SmoothStep(baseWidth, baseWidth, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            Color startColor = Color.White;
-            return Color.Lerp(startColor, Color.Transparent, completionRatio);
-        }
-
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
@@ -159,114 +146,63 @@ namespace Stellamod.Projectiles.IgniterExplosions
             State = CardState.Exploding;
             Projectile.netUpdate = true;
         }
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            _explosionPos = Projectile.Center;
+            State = CardState.Exploding;
+            Projectile.netUpdate = true;
+            return false;
+        }
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         private bool DrawCard => State != CardState.Exploding && Card != null;
         public override bool PreDraw(ref Color lightColor)
         {
             if (Card == null)
                 return false;
-
+            string texturePath = Card.Texture;
             //Draw Trail
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            }
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            int trailLength = Projectile.oldPos.Length;
+            Vector2 drawOrigin = texture.Size() / 2f;
 
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.Dashtrail);
-            Vector2 trailOffset = -Main.screenPosition + Projectile.Size / 2;
-            TrailDrawer.DrawPrims(Projectile.oldPos, trailOffset, 155);
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            float drawScale = 1f;
 
 
             if (DrawCard)
             {
-                SpriteBatch spriteBatch = Main.spriteBatch;
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-                string texturePath = Card.Texture;
-                Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
-                Vector2 drawOrigin = texture.Size() / 2f;
-
-                for (int k = 0; k < Projectile.oldPos.Length; k++)
+                for (int t = 0; t < trailLength; t++)
                 {
-                    Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + Projectile.Size / 2;
-                    float drawScale = 1f;
-                    Color color = Color.White * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length) * 0.3f;
-                    spriteBatch.Draw(texture, drawPos, null, color, Projectile.rotation, texture.Size() / 2f, drawScale, SpriteEffects.None, 0);
+                    float l = trailLength;
+                    float interpolant = (float)t / l;
+                    Vector2 oldPos = Projectile.oldPos[t];
+                    oldPos -= Main.screenPosition;
+                    oldPos += Projectile.Size / 2f;
+                    spriteBatch.Draw(texture, oldPos, null, drawColor * MathHelper.SmoothStep(0.5f, 0f, interpolant), Projectile.oldRot[t], drawOrigin, drawScale, SpriteEffects.None, 0);
                 }
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
-
 
             //Throw the Card
             if (DrawCard)
             {
-                SpriteBatch spriteBatch = Main.spriteBatch;
-                string texturePath = Card.Texture;
-                Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
                 Vector2 drawPos = Projectile.Center - Main.screenPosition;
-                Color drawColor = Color.White.MultiplyRGB(lightColor);
-                float drawScale = 1f;
                 spriteBatch.Draw(texture, drawPos, null, drawColor, Projectile.rotation, texture.Size() / 2f, drawScale, SpriteEffects.None, 0);
             }
 
             return false;
         }
 
-        public override void PostDraw(Color lightColor)
-        {
-            base.PostDraw(lightColor);
-            /*
-            float heatingUp = 0;
-            NPC npc = SummonHelper.NearestChaseableNPC(Projectile.position);
-            if(npc != null)
-            {
-                float distanceToNPC = Vector2.Distance(Projectile.position, npc.position);
-
-                //16 is one tile sooo
-                //uhhh
-                //64?
-                float progress = distanceToNPC / 64;
-                progress = MathHelper.Clamp(progress, 0f, 1f);
-                heatingUp = MathHelper.Lerp(0f, 1f, progress);
-            }
-
-
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            
-            if (DrawCard)
-            {
-                string texturePath = CardItem.ModItem.Texture;
-                Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
-                for(float f = 0; f < 1f; f += 0.1f)
-                {
-                    Vector2 drawPos = Projectile.Center - Main.screenPosition;
-                    float rot = f * MathHelper.TwoPi;
-                    drawPos += rot.ToRotationVector2() * MathHelper.Lerp(0f, 16, heatingUp);
-                    Color drawColor = Color.White.MultiplyRGB(lightColor);
-                    drawColor *= MathHelper.Lerp(1f, 0.3f, heatingUp);
-                    float drawScale = MathHelper.Lerp(1f, 1f, heatingUp);
-                    spriteBatch.Draw(texture, drawPos, null, drawColor, Projectile.rotation, texture.Size() / 2f, drawScale, SpriteEffects.None, 0);
-                }
-            }
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            */
-        }
 
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Vector2 vel = -Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(33)) * Main.rand.NextFloat(0.2f, 1f) * 0.5f;
                 Dust.NewDustPerfect(Projectile.Center + Projectile.velocity, DustID.WhiteTorch, vel, Scale: Main.rand.NextFloat(0.5f, 2f));
             }
+            FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightGray, Color.Black);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Core.IgnitersNPowders;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
