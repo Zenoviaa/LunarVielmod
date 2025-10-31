@@ -1,11 +1,12 @@
 ﻿using Stellamod.Content.Items.MoonlightMagic;
+using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Accessories
+namespace Stellamod.Content.Areas.SpringHills.AccSH
 {
     public class IllusionistBook : ModItem
     {

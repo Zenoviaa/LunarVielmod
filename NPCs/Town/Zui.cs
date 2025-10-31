@@ -262,8 +262,7 @@ namespace Stellamod.NPCs.Town
             if (ZuiQuestSystem.QuestsCompleted == 1)
             {
 
-                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CanOfLeaves>(), 1);
-
+   
             }
 
             //   Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 2);

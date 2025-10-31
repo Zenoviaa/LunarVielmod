@@ -392,10 +392,7 @@ HikersBackpack: {
 
 IllusionistBook: {
 	DisplayName: Book of Wooden Illusion
-	Tooltip:
-		'''
-		10% decreased magic wand charge time!
-		'''
+	Tooltip: 10% decreased magic wand charge time!
 }
 
 JellyfishTissue: {
@@ -9455,4 +9452,9 @@ DualSpoons: {
 	StaminaSlash: Throws two bouncing spoons!
 	DisplayName: Dual Spoons
 	Tooltip: ""
+}
+
+BoxOfLeaves: {
+	DisplayName: Box Of Leaves
+	Tooltip: Summons two orbiting leaves around you to damage enemies!
 }

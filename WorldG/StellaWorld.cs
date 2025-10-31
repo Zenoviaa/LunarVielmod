@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.Areas.Abyss.WeaponsAB;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
+using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
 using Stellamod.Core.SilkSystem;
 using Stellamod.Helpers;
