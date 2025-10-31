@@ -1,15 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using Stellamod.Items;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
 {
-    public abstract class BaseJugglerItem : ClassSwapItem
+    public abstract class BaseJugglerItem : ModItem
     {
         public override void SetDefaults()
         {
@@ -51,14 +49,6 @@ namespace Stellamod.Core.Bases
                 OverrideColor = Color.LightGray
             };
             tooltips.Add(line);
-        }
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                //Gonna make it kill all balls but idk how
-            }
-            return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
     }
 }
