@@ -9458,3 +9458,10 @@ BoxOfLeaves: {
 	DisplayName: Box Of Leaves
 	Tooltip: Summons two orbiting leaves around you to damage enemies!
 }
+
+IvynBow: {
+	BasicSlash: ""
+	StaminaSlash: Shoots a compressed burst of many leaves!
+	DisplayName: Ivyn Bow
+	Tooltip: Leafy
+}

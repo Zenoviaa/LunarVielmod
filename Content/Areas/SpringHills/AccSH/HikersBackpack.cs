@@ -39,7 +39,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
             {
                 if (Main.myPlayer == Player.whoAmI)
                 {
-                    int damage = 10;
+                    int damage = 5;
                     int kb = 1;
                     Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1.1f,
                         ModContent.ProjectileType<Stump>(), damage, kb, Player.whoAmI);
