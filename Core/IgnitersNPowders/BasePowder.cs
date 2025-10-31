@@ -24,7 +24,7 @@ namespace Stellamod.Core.IgnitersNPowders
 
         public virtual Projectile NewProjectile(Projectile igniterCardProjectile, Vector2 explosionPosition)
         {
-            Vector2 offset = Main.rand.NextVector2Circular(64, 64);
+            Vector2 offset = Main.rand.NextVector2Circular(32, 32);
             Projectile p = Projectile.NewProjectileDirect(igniterCardProjectile.GetSource_FromThis(), explosionPosition + offset, Vector2.Zero,
                ExplosionType, igniterCardProjectile.damage, igniterCardProjectile.knockBack, igniterCardProjectile.owner);
 

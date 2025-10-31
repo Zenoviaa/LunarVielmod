@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.PowderSystem;
@@ -22,6 +24,43 @@ namespace Stellamod.Core.IgnitersNPowders
             extenderBonus = 0f;
         }
     }
+    public class IgniterTooltipDraw : GlobalItem
+    {
+        public override bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            if (line.Mod == "Stellamod" && line.Name.Contains("Powder_"))
+            {
+                line.BaseScale *= 0.8f;
+                line.X += 30;
+                line.Y += 6;
+            }
+
+            return base.PreDrawTooltipLine(item, line, ref yOffset);
+        }
+
+
+
+        public override void PostDrawTooltipLine(Item item, DrawableTooltipLine line)
+        {
+            base.PostDrawTooltipLine(item, line);
+            if (line.Mod == "Stellamod" && line.Name.Contains("Powder_"))
+            {
+
+                int startIndex = line.Name.IndexOf("_") + 1;
+                int endIndex = line.Name.LastIndexOf("_");
+                string textureName = line.Name.Substring(startIndex, endIndex - startIndex);
+                Texture2D texture = ModContent.Request<Texture2D>(textureName).Value;
+
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                Vector2 textPosition = new(line.X, line.Y);
+                Vector2 drawPos = textPosition + new Vector2(0, texture.Size().Y / 3.5f) - new Vector2(15, 6);
+                spriteBatch.Draw(texture, drawPos, null, Color.White, 0f, texture.Size() * 0.5f, 0.8f, SpriteEffects.None, 0f);
+
+            }
+        }
+    }
+
     public abstract class BaseIgniterCard : ModItem
     {
         private List<Item> _powders;
@@ -55,7 +94,6 @@ namespace Stellamod.Core.IgnitersNPowders
         {
             Item.damage = 2;
             Item.knockBack = 2;
-            Item.mana = 3;
             Item.width = 40;
             Item.height = 40;
             Item.useTime = 50;
@@ -118,13 +156,34 @@ namespace Stellamod.Core.IgnitersNPowders
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
-            TooltipLine line = new TooltipLine(Mod, "IgniterCard", LangText.Common("IgniterCard"));
-            line.OverrideColor = new Color(80, 187, 124);
+            TooltipLine line = new TooltipLine(Mod, "IgniterCard", LangText.Common("IgniterCardType"));
+            line.OverrideColor = Color.LightGreen;
             tooltips.Add(line);
 
-            line = new TooltipLine(Mod, "IgniterCardHelp", LangText.Common("IgniterCardHelp"));
-            line.OverrideColor = Color.Lerp(new Color(80, 187, 124), Color.Black, 0.5f);
-            tooltips.Add(line);
+            line = new TooltipLine(Mod, "", "");
+            Keys keys = Keys.LeftShift;
+            bool isExpanded = Main.keyState.IsKeyDown(keys);
+
+            if (!isExpanded)
+            {
+                line = new TooltipLine(Mod, "ExpandTooltipHelp", LangText.Common("ExpandTooltipHelp", "Left Shift"));
+                line.OverrideColor = Color.Lerp(Color.White, Color.Black, 0.7f);
+                tooltips.Add(line);
+            }
+            else
+            {
+                line = new TooltipLine(Mod, "IgniterCardHelp", Helpers.LangText.Common("IgniterCardHelp"))
+                {
+                    OverrideColor = Color.White
+                };
+                tooltips.Add(line);
+                line = new TooltipLine(Mod, "IgniterCard", Helpers.LangText.Common("IgniterCard"))
+                {
+                    OverrideColor = Color.White
+                };
+                tooltips.Add(line);
+            }
+
 
             for (int i = 0; i < Powders.Count; i++)
             {

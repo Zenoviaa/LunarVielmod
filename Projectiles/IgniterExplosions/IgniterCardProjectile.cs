@@ -43,7 +43,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ProjectileID.Sets.TrailCacheLength[Type] = 16;
+            ProjectileID.Sets.TrailCacheLength[Type] = 8;
             ProjectileID.Sets.TrailingMode[Type] = 2;
         }
 
@@ -111,11 +111,18 @@ namespace Stellamod.Projectiles.IgniterExplosions
             {
                 if (_powderIndex < Card.Powders.Count)
                 {
-                    BasePowder powder = Card.Powders[_powderIndex].ModItem as BasePowder;
-                    while (powder == null && _powderIndex < Card.Powders.Count - 1)
+            
+                    for (int i = 0; i < 10; i++)
                     {
-                        _powderIndex++;
+                        Vector2 vel = -Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(33)) * Main.rand.NextFloat(0.2f, 1f) * 0.5f;
+                        Dust.NewDustPerfect(Projectile.Center + Projectile.velocity, DustID.WhiteTorch, vel, Scale: Main.rand.NextFloat(0.5f, 2f));
+                    }
+            
+                    BasePowder powder = Card.Powders[_powderIndex].ModItem as BasePowder;
+                    while ((powder == null || powder.Item.IsAir) && _powderIndex < Card.Powders.Count - 1)
+                    {
                         powder = Card.Powders[_powderIndex].ModItem as BasePowder;
+                        _powderIndex++;
                     }
 
                     if (Main.myPlayer == Projectile.owner && powder != null)
@@ -123,11 +130,16 @@ namespace Stellamod.Projectiles.IgniterExplosions
                         Projectile p = powder.NewProjectile(Projectile, _explosionPos);
                         ExplosionTime = p.timeLeft / 2;
                         Projectile.netUpdate = true;
-                        _powderIndex++;
+                     
                     }
+                    _powderIndex++;
+                }
+                else
+                {
+                    Projectile.Kill();
                 }
 
-                Timer = 0;
+                    Timer = 0;
             }
 
 
@@ -160,7 +172,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             string texturePath = Card.Texture;
             //Draw Trail
             SpriteBatch spriteBatch = Main.spriteBatch;
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
             int trailLength = Projectile.oldPos.Length;
             Vector2 drawOrigin = texture.Size() / 2f;
 
@@ -177,7 +189,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
                     Vector2 oldPos = Projectile.oldPos[t];
                     oldPos -= Main.screenPosition;
                     oldPos += Projectile.Size / 2f;
-                    spriteBatch.Draw(texture, oldPos, null, drawColor * MathHelper.SmoothStep(0.5f, 0f, interpolant), Projectile.oldRot[t], drawOrigin, drawScale, SpriteEffects.None, 0);
+                    spriteBatch.Draw(texture, oldPos, null, drawColor * MathHelper.SmoothStep(0.25f, 0f, interpolant), Projectile.oldRot[t], drawOrigin, drawScale, SpriteEffects.None, 0);
                 }
             }
 
@@ -195,12 +207,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            for (int i = 0; i < 10; i++)
-            {
-                Vector2 vel = -Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(33)) * Main.rand.NextFloat(0.2f, 1f) * 0.5f;
-                Dust.NewDustPerfect(Projectile.Center + Projectile.velocity, DustID.WhiteTorch, vel, Scale: Main.rand.NextFloat(0.5f, 2f));
-            }
-            FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightGray, Color.Black);
+
         }
     }
 }
