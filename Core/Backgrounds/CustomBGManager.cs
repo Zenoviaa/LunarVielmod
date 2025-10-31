@@ -19,8 +19,7 @@ namespace Stellamod.Core.Backgrounds
         public override void PostUpdate()
         {
             base.PostUpdate();
-            MyPlayer myPlayer = Player.GetModPlayer<MyPlayer>();
-            if (myPlayer.ZoneWonder)
+            if (CustomBGManager.drawingCustomBG)
             {
                 LightStrength = 0.01f;
             }
@@ -46,6 +45,7 @@ namespace Stellamod.Core.Backgrounds
         private Shader _currentShader;
         public List<CustomBG> Backgrounds = new List<CustomBG>();
         public bool onScreen;
+        public static bool drawingCustomBG;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -76,13 +76,16 @@ namespace Stellamod.Core.Backgrounds
                 RasterizerState.CullCounterClockwise);
 
             //Sort the list by their priority, so the higest priority one is in front
+            drawingCustomBG = false;
             foreach (var bg in Backgrounds)
             {
+
                 bg.ParallaxYOffset = -100;
                 bg.Alpha += bg.IsActive() ? 0.01f : -0.01f;
                 bg.Alpha = MathHelper.Clamp(bg.Alpha, 0, 1);
                 if (bg.Alpha != 0)
                 {
+                    drawingCustomBG = true;
                     DrawBG(bg);
                 }
             }

@@ -77,7 +77,7 @@ namespace Stellamod.Backgrounds
 
         public override bool IsActive()
         {
-            return Main.LocalPlayer.ZoneSnow;
+            return Main.LocalPlayer.ZoneSnow && Main.LocalPlayer.ZoneOverworldHeight;
         }
     }
 }
