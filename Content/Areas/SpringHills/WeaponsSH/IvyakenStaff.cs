@@ -1,19 +1,43 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs.Minions;
+
+using Microsoft.Xna.Framework;
+using Stellamod.Core.SummonerSystem;
 using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Summons.Minions
+namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 {
-    /*
-		 * This minion shows a few mandatory things that make it behave properly. 
-		 * Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
-		 * If the player targets a certain NPC with right-click, it will fly through tiles to it
-		 * If it isn't attacking, it will float near the player with minimal movement
-		 */
-    public class IvyakenMinionProj : ModProjectile
+    public class IvyakenStaff : BaseBellMinionItem
+    {
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Ivyaken Staff");
+            // Tooltip.SetDefault("Summons an Ivyaken to fight for you");
+            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
+            ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
+        }
+
+        public override void SetDefaults2()
+        {
+            base.SetDefaults2();
+            Item.damage = 6;
+            Item.knockBack = 3f;
+            Item.shoot = ModContent.ProjectileType<IvyakenMinionProj>();
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankRune>(),
+                material: ModContent.ItemType<Ivythorn>());
+        }
+    }
+
+    public class IvyakenMinionProj : KillableMinion
     {
         Player Owner => Main.player[Projectile.owner];
         ref float Timer => ref Projectile.ai[0];
@@ -24,6 +48,8 @@ namespace Stellamod.Projectiles.Summons.Minions
             Main.projFrames[Projectile.type] = 14;
             // This is necessary for right-click targeting
             ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 4;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
 
             // These below are needed for a minion
             // Denotes that this projectile is a pet or minion
@@ -36,8 +62,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public sealed override void SetDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 4;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+
             Projectile.width = 18;
             Projectile.height = 28;
             // Makes the minion go through tiles freely
@@ -77,9 +102,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override void AI()
         {
-            if (!SummonHelper.CheckMinionActive<IvyakenMinionBuff>(Owner, Projectile))
-                return;
-
+            base.AI();
             SummonHelper.SearchForTargets(Owner, Projectile,
                 out bool foundTarget,
                 out float distanceFromTarget,
@@ -132,7 +155,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 }
             }
 
-            if (Main.rand.NextBool(3))
+            if (Main.rand.NextBool(4))
             {
                 int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Dirt);
                 int dust1 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.JunglePlants);
