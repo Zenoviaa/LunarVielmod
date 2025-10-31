@@ -1,10 +1,10 @@
-﻿using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
+﻿using Stellamod.Content.Areas.SpringHills.AccSH;
+using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Special.MinerLogs;
 using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.PowdersItem;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
