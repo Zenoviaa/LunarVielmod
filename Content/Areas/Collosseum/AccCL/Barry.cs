@@ -1,13 +1,63 @@
 ﻿using Microsoft.Xna.Framework;
-
-using Stellamod.Items.Accessories.Catacombs;
+using Stellamod.Items;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles
+namespace Stellamod.Content.Areas.Collosseum.AccCL
 {
+    public class BarryPlayer : ModPlayer
+    {
+        public bool hasBarry;
+        public float regenTimer;
+        public override void ResetEffects()
+        {
+            hasBarry = false;
+        }
+
+        public override void PostUpdateEquips()
+        {
+            regenTimer--;
+            if (regenTimer > 0)
+                return;
+
+            if (hasBarry && Player.ownedProjectileCounts[ModContent.ProjectileType<BarrySpike>()] == 0 && Main.myPlayer == Player.whoAmI)
+            {
+                float count = 9;
+                for (float i = 0; i < count; i++)
+                {
+                    float progress = i / count;
+                    float rot = progress * 360;
+                    Projectile barryProj = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
+                        ModContent.ProjectileType<BarrySpike>(), 40, 20, Player.whoAmI, ai0: rot);
+                }
+            }
+        }
+    }
+
+    public class Barry : ModItem
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.DefaultToAccessory();
+        }
+
+        public override void UpdateAccessory(Player player, bool hideVisual)
+        {
+            player.GetModPlayer<BarryPlayer>().hasBarry = true;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<GintzlMetal>());
+        }
+    }
+
+
     public class BarrySpike : ModProjectile
     {
         private Player Owner => Main.player[Projectile.owner];
