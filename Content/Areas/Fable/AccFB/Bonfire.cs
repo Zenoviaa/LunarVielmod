@@ -15,11 +15,13 @@ namespace Stellamod.Content.Areas.Fable.AccFB
     public class BonfirePlayer : ModPlayer
     {
         public bool hasBonfire;
+        public bool hideVisual;
         public float bonfireCooldown;
         public float DamageBonus => MathHelper.Clamp(bonfireCooldown / 900f, 0f, 1f);
         public override void ResetEffects()
         {
             hasBonfire = false;
+            hideVisual = false;
         }
 
         public override void PostUpdateEquips()
@@ -27,7 +29,7 @@ namespace Stellamod.Content.Areas.Fable.AccFB
             if (hasBonfire)
             {
                 bonfireCooldown++;
-                if (Player.ownedProjectileCounts[ModContent.ProjectileType<BonfireProj>()] == 0 && Main.myPlayer == Player.whoAmI)
+                if (Player.ownedProjectileCounts[ModContent.ProjectileType<BonfireProj>()] == 0 && Main.myPlayer == Player.whoAmI && !hideVisual)
                 {
                     Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
                         ModContent.ProjectileType<BonfireProj>(), 1, 1, Player.whoAmI);
@@ -65,6 +67,7 @@ namespace Stellamod.Content.Areas.Fable.AccFB
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<BonfirePlayer>().hasBonfire = true;
+            player.GetModPlayer<BonfirePlayer>().hideVisual = hideVisual;
         }
 
         public override void AddRecipes()
@@ -92,7 +95,7 @@ namespace Stellamod.Content.Areas.Fable.AccFB
             Projectile.friendly = false;
             Projectile.hostile = false;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 2;
+            Projectile.timeLeft = 4;
         }
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
@@ -120,7 +123,9 @@ namespace Stellamod.Content.Areas.Fable.AccFB
         public override void AI()
         {
             Player owner = Main.player[Projectile.owner];
-            BonfirePlayer bonfirePlayer = owner.GetModPlayer<BonfirePlayer>();  
+            BonfirePlayer bonfirePlayer = owner.GetModPlayer<BonfirePlayer>();
+            if (bonfirePlayer.hideVisual)
+                return;
             if (bonfirePlayer.hasBonfire)
             {
                 Projectile.timeLeft = 2;
