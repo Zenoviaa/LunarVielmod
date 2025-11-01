@@ -1551,6 +1551,8 @@ BurningAngel: {
 		Steerable for a while and consectutive hits speed up next throw!
 		Made from heavy fabled metal!
 		'''
+	BasicSlash: No Effect
+	StaminaSlash: No Effect
 }
 
 GovheilBoreI: {
@@ -2636,8 +2638,11 @@ StaffoftheIrradiaflare: {
 }
 
 StarFlowerStaff: {
-	DisplayName: Star Flower Staff
-	Tooltip: Shoot little balls of light
+	DisplayName: Star Flower Artifact
+	Tooltip:
+		'''
+		Casts a slow moving star-seed that will eventually cause a powerful star-filled explosion!
+		'''
 }
 
 SunBlastStaff: {
@@ -2737,7 +2742,7 @@ Myocardia: {
 ScarecrowSaber: {
 	DisplayName: Scarecrow Saber
 	Tooltip: Very spooky~
-	StaminaSlash: 
+	StaminaSlash:
 		'''
 		Lunge forward in a spinning slash!
 		You are invincible at the start of the lunge, and enemies hit during this time take several times more damage!
@@ -3086,6 +3091,11 @@ MoonMothStaff: {
 SolMothStaff: {
 	DisplayName: Sol Moth Staff
 	Tooltip: Very good for clearing out small hordes!
+}
+
+SolMoth: {
+	DisplayName: Sol Moth
+	Tooltip: ""
 }
 
 HeatGlider: {
@@ -9480,5 +9490,15 @@ IvynSpear: {
 	BasicSlash: ""
 	StaminaSlash: Throws a quick, high damaging spear
 	DisplayName: Ivyn Spear
+	Tooltip: ""
+}
+
+SolMothWand: {
+	DisplayName: Sol Moth Wand
+	Tooltip: ""
+}
+
+IvyakenWand: {
+	DisplayName: Ivyaken Wand
 	Tooltip: ""
 }
