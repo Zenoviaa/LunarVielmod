@@ -37,7 +37,6 @@ namespace Stellamod.Items.Weapons.Mage
             Item.noUseGraphic = true;
             Item.knockBack = 8;
             Item.value = Item.sellPrice(0, 29, 50, 0);
-            Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
             Item.autoReuse = true;
             Item.useTurn = true;
             Item.DamageType = DamageClass.Magic;

@@ -15,7 +15,6 @@ namespace Stellamod.Items.Special.Sirestias
             Item.useTime = 10;
             Item.useAnimation = 10;
             Item.useStyle = ItemUseStyleID.HoldUp;
-            Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
         }
 
 

@@ -50,7 +50,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.knockBack = 2;
             Item.value = Item.sellPrice(0, 2, 50, 0);
             Item.noMelee = false;
-            Item.rare = ModContent.RarityType<GothiviaSpecialRarity>();
+  
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<VileFist>();

@@ -24,7 +24,6 @@ namespace Stellamod.Items.Special
             Item.useTime = 10;
             Item.useAnimation = 10;
             Item.useStyle = ItemUseStyleID.HoldUp;
-            Item.rare = ModContent.RarityType<GoldenSpecialRarity>();
         }
 
         public override void UpdateInventory(Player player)

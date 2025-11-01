@@ -31,7 +31,6 @@ namespace Stellamod.Items.Weapons.Mage
             Item.damage = 200;
             Item.DamageType = DamageClass.Magic;
             Item.mana = 15;
-            Item.rare = ModContent.RarityType<NiiviSpecialRarity>();
 
             Item.useTime = 32;
             Item.useAnimation = 32;

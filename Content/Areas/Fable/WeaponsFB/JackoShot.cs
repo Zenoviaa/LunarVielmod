@@ -16,8 +16,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 11;
-            Item.rare = ItemRarityID.Green;
+            Item.damage = 14;
         }
 
 
