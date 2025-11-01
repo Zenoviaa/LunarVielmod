@@ -1,14 +1,63 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles
+namespace Stellamod.Content.Areas.Fable.WeaponsFB
 {
+    public class Violar : ModItem
+    {
+        public override void SetDefaults()
+        {
+            Item.width = 40;
+            Item.height = 10;
+            Item.scale = 0.75f;
+            Item.rare = ItemRarityID.Green;
+            Item.useTime = 100;
+            Item.useAnimation = 100;
+            Item.useStyle = ItemUseStyleID.Guitar;
+            Item.autoReuse = true;
+            Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/violar");
+
+            // Weapon Properties
+            Item.DamageType = DamageClass.Ranged;
+            Item.damage = 14;
+            Item.knockBack = 5f;
+            Item.noMelee = true;
+            Item.crit = 25;
+
+            // Gun Properties
+            Item.shoot = ModContent.ProjectileType<Violarproj>();
+            Item.shootSpeed = 4f;
+            Item.value = 5000;
+        }
+
+        public override Vector2? HoldoutOffset()
+        {
+            return new Vector2(2f, -2f);
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankOrb>(),
+                material: ModContent.ItemType<AlcadizScrap>());
+        }
+    }
+
+
+
+
+
+
+
     public class Violarproj : ModProjectile
     {
         public float ExplodingTimer;
@@ -29,7 +78,7 @@ namespace Stellamod.Projectiles
             Projectile.penetrate = -1;
             Projectile.ownerHitCheck = true;
             Projectile.extraUpdates = 1;
-            Projectile.timeLeft = 300;
+            Projectile.timeLeft = 152;
             Projectile.light = 0.78f;
         }
 
@@ -53,25 +102,19 @@ namespace Stellamod.Projectiles
         }
         public override void OnKill(int timeLeft)
         {
-
+            FXUtil.GlowCircleBoom(Projectile.Center, Color.Yellow, Color.Orange, Color.Red);
             for (int i = 0; i < 14; i++)
             {
-                Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.OrangeRed, 1f).noGravity = true;
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.OrangeRed, 1f).noGravity = true;
             }
+
             for (int i = 0; i < 14; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
             }
+
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
-            for (int i = 0; i < Main.rand.Next(3, 7); i++)
-            {
-                Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
-                int index = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                    ProjectileID.GreekFire3, Projectile.damage, 0f, Projectile.owner);
-                Main.projectile[index].friendly = true;
-                Main.projectile[index].hostile = false;
-            }
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 32f);
         }
 
 
@@ -127,13 +170,15 @@ namespace Stellamod.Projectiles
 
 
                     var entitySource = Projectile.GetSource_FromThis();
-                    Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music1").Type, Projectile.damage, 0, Projectile.owner);
-                    Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music2").Type, Projectile.damage, 0, Projectile.owner);
-                    Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music1").Type, Projectile.damage, 0, Projectile.owner);
-                    Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music2").Type, Projectile.damage, 0, Projectile.owner);
+                    if (Main.myPlayer == Projectile.owner)
+                    {
+                        Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music1").Type, Projectile.damage, 0, Projectile.owner);
+                        Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music2").Type, Projectile.damage, 0, Projectile.owner);
+                        Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music1").Type, Projectile.damage, 0, Projectile.owner);
+                        Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music2").Type, Projectile.damage, 0, Projectile.owner);
+                    }
 
-                    float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
-                    float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(-10, 11) * 0.2f;
+
                     Projectile.Kill();
                     SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowExp"), Projectile.position);
                     Timer = 0;
@@ -143,8 +188,19 @@ namespace Stellamod.Projectiles
                     Projectile.scale += 0.002f;
                     ExplodingTimer += 0.005f;
                 }
-
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
