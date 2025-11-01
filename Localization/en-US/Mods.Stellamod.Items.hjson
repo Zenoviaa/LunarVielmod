@@ -9499,3 +9499,12 @@ IvyakenWand: {
 	DisplayName: Ivyaken Wand
 	Tooltip: ""
 }
+
+TormentedSoulLocket: {
+	DisplayName: Tormented Soul Locket
+	Tooltip:
+		'''
+		Your spectral summons will explode and heal you for 10 health upon death!
+		5% increased summon damage
+		'''
+}
