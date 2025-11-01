@@ -1,5 +1,4 @@
-﻿
-using Stellamod.Content.Areas.Fable.AccFB;
+﻿using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Items.Armors.Vanity.Astolfo;
 
 using Stellamod.Items.Special.MinerLogs;
