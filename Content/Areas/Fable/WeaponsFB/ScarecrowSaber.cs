@@ -1,15 +1,86 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Bases;
+using Stellamod.Core.SwingSystem;
+using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.NPCs.Bosses.DaedusRework;
+using Stellamod.Trailing;
 using Stellamod.Trails;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Graphics.Shaders;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
+namespace Stellamod.Content.Areas.Fable.WeaponsFB
 {
+    public class ScarecrowSaber : BaseSwingItemV2
+    {
+        public override void SetStaticDefaults()
+        {
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
+
+        public override void SetDefaults2()
+        {
+            base.SetDefaults2();
+            Item.shoot = ModContent.ProjectileType<ScarecrowSaberBasicSlash>();
+            staminaProjectileShoot = ModContent.ProjectileType<ScarecrowSaberSlash>();
+            meleeWeaponType = MeleeWeaponType.Sword;
+        }
+
+        public override bool CanUseItem(Player player)
+        {
+            return player.GetModPlayer<ScarecrowSaberPlayer>().CooldownTimer <= 0;
+        }
+
+
+        public override void MeleeEffects(Player player, Rectangle hitbox)
+        {
+            if (Main.rand.NextBool(2))
+            {
+                // Emit dusts when the sword is swung
+                Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.CopperCoin);
+            }
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<BlankSword, AlcadizScrap>();
+        }
+    }
+
+
+    public class ScarecrowSaberBasicSlash : BaseSwingProjectileV2
+    {
+        public override void DefineCombo()
+        {
+            base.DefineCombo();
+            SwingV2Helper.AddSpearSwingStyle(this);
+            Trailer = TrailPresets.LightSpand;
+            useAfterImage = true;
+        }
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitNPC(target, ref modifiers);
+            SoundStyle spearHit = SoundRegistry.SpearHit1;
+            spearHit.PitchVariance = 0.5f;
+            SoundEngine.PlaySound(spearHit, Projectile.position);
+            target.AddBuff(BuffID.OnFire, 120);
+            if (ComboIndex == 5)
+            {
+                modifiers.FinalDamage *= 2;
+            }
+        }
+    }
+
+
     public class ScarecrowSaberPlayer : ModPlayer
     {
         public Vector2? DashVelocity { get; set; } = null;
@@ -20,10 +91,53 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
         public float CooldownTimer { get; set; }
         public float FixRotationTimer { get; set; }
         public float FixRotationDuration { get; set; } = 15;
-        public override void ResetEffects()
+        public override void CopyClientState(ModPlayer targetCopy)
         {
-            base.ResetEffects();
-            //   DashRotation = false;
+            base.CopyClientState(targetCopy);
+            ScarecrowSaberPlayer clone = targetCopy as ScarecrowSaberPlayer;
+            clone.SlowdownTimer = SlowdownTimer;
+            clone.DashRotation = DashRotation;
+            clone.DashDirection = DashDirection;
+            clone.CooldownTimer = CooldownTimer;
+            clone.FixRotationTimer = FixRotationTimer;
+            clone.FixRotationDuration = FixRotationDuration;
+            clone.Player.velocity = Player.velocity;
+        }
+
+        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+        {
+            base.SyncPlayer(toWho, fromWho, newPlayer);
+            ModPacket packet = Mod.GetPacket();
+            packet.Write((byte)MessageType.ScarecrowPlayerSync);
+            packet.Write((byte)Player.whoAmI);
+            packet.Write(SlowdownTimer);
+            packet.Write(DashRotation);
+            packet.Write(DashDirection);
+            packet.Write(CooldownTimer);
+            packet.Write(FixRotationTimer);
+            packet.Write(FixRotationDuration);
+            packet.WriteVector2(Player.velocity);
+            packet.Send(toWho, fromWho);
+        }
+
+        public override void SendClientChanges(ModPlayer clientPlayer)
+        {
+            base.SendClientChanges(clientPlayer);
+            ScarecrowSaberPlayer clone = clientPlayer as ScarecrowSaberPlayer;
+            if (CooldownTimer != clone.CooldownTimer)
+            {
+                SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            }
+        }
+        public void ReceivePlayerSync(BinaryReader reader)
+        {
+            SlowdownTimer = reader.ReadSingle();
+            DashRotation = reader.ReadBoolean();
+            DashDirection = reader.ReadSingle();
+            CooldownTimer = reader.ReadSingle();
+            FixRotationTimer = reader.ReadSingle();
+            FixRotationDuration = reader.ReadSingle();
+            Player.velocity = reader.ReadVector2();
         }
 
         public override void PreUpdateMovement()
@@ -83,7 +197,6 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
 
     public class ScarecrowSaberSlash : ModProjectile
     {
-        private bool _stoppedMoving;
         private bool _recoiled;
         private float _swingRot;
         private Vector2[] _oldSwingPos;
@@ -93,7 +206,7 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
         private Player Owner => Main.player[Projectile.owner];
         public float holdOffset = 30;
 
-        public override string Texture => "Stellamod/Items/Weapons/Melee/ScarecrowSaber";
+        public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -249,33 +362,10 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
             }
         }
 
-        public float WidthFunction(float completionRatio)
-        {
-            float pr = Timer / 40f;
-            pr = MathHelper.Clamp(pr, 0f, 1f);
-            pr = 1f - pr;
-            float baseWidth = Projectile.scale * Projectile.width * 1.2f * 0.5f * pr;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.LightGoldenrodYellow * 0.1361f, Color.Transparent, completionRatio);
-        }
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         public override bool PreDraw(ref Color lightColor)
         {
             //Draw Trail
             Projectile.oldPos = _oldSwingPos;
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            }
-
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.StarTrail);
-
-            Vector2 trailOffset = -Main.screenPosition;
-            TrailDrawer.DrawPrims(_oldSwingPos, trailOffset, 155);
             Texture2D spinTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Spiin").Value;
             SpriteBatch spriteBatch = Main.spriteBatch;
 
@@ -318,7 +408,7 @@ namespace Stellamod.Projectiles.Slashers.ScarecrowSaber
             glowProgress = MathHelper.Clamp(glowProgress, 0f, 1f);
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Texture2D texture = ModContent.Request<Texture2D>(Owner.HeldItem.ModItem.Texture).Value;
             Vector2 drawOrigin = texture.Size() / 2f;
             Color drawColor = Color.White.MultiplyRGB(lightColor) * glowProgress;
             float drawRotation = Projectile.rotation;

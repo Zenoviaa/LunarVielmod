@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Core.DungeonGeneration;
 using Stellamod.Core.SilkSystem;
 using Stellamod.Helpers;
@@ -130,14 +131,17 @@ namespace Stellamod
                     break;
 
                 case MessageType.DashPlayerSync:
-                    byte playernumber = reader.ReadByte();
-                    DashPlayer dashPlayer = Main.player[playernumber].GetModPlayer<DashPlayer>();
-                    dashPlayer.ReceivePlayerSync(reader);
-
-                    if (Main.netMode == NetmodeID.Server)
                     {
-                        // Forward the changes to the other clients
-                        dashPlayer.SyncPlayer(-1, whoAmI, false);
+
+                        byte playernumber = reader.ReadByte();
+                        DashPlayer dashPlayer = Main.player[playernumber].GetModPlayer<DashPlayer>();
+                        dashPlayer.ReceivePlayerSync(reader);
+
+                        if (Main.netMode == NetmodeID.Server)
+                        {
+                            // Forward the changes to the other clients
+                            dashPlayer.SyncPlayer(-1, whoAmI, false);
+                        }
                     }
                     break;
 
@@ -163,6 +167,19 @@ namespace Stellamod
                         {
                             Door door = (Door)d;
                             DungeonGenerationHelper.PlaceDoorInWorld(tilePosition, door);
+                        }
+                    }
+                    break;
+                case MessageType.ScarecrowPlayerSync:
+                    {
+                        byte playernumber = reader.ReadByte();
+                        ScarecrowSaberPlayer dashPlayer = Main.player[playernumber].GetModPlayer<ScarecrowSaberPlayer>();
+                        dashPlayer.ReceivePlayerSync(reader);
+
+                        if (Main.netMode == NetmodeID.Server)
+                        {
+                            // Forward the changes to the other clients
+                            dashPlayer.SyncPlayer(-1, whoAmI, false);
                         }
                     }
                     break;

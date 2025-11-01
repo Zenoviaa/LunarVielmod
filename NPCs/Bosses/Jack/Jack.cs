@@ -9,7 +9,6 @@ using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee;
 using Stellamod.Utilis;
 using System;
 using System.IO;

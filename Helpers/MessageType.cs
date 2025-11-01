@@ -19,7 +19,8 @@
         DashPlayerSync,
         ResetColosseum,
         StartColosseum,
-        HandleDoor
+        HandleDoor,
+        ScarecrowPlayerSync
     }
 
     public enum DialogueType : byte
@@ -27,16 +28,5 @@
         Start_Verlia,
         Start_Irradia,
         Start_Goth
-    }
-
-    public enum QuestMessageType : byte
-    {
-        Deactivate = 0,
-        Activate,
-        ProgressOrComplete,
-        SyncOnNPCLoot,
-        SyncOnEditSpawnPool,
-        Unlock,
-        SyncNPCQueue
     }
 }

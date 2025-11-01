@@ -2736,7 +2736,8 @@ Myocardia: {
 
 ScarecrowSaber: {
 	DisplayName: Scarecrow Saber
-	Tooltip:
+	Tooltip: Very spooky~
+	StaminaSlash: 
 		'''
 		Lunge forward in a spinning slash!
 		You are invincible at the start of the lunge, and enemies hit during this time take several times more damage!
