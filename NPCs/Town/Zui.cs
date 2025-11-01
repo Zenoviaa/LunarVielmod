@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Snow.AccsSN;
 using Stellamod.Content.Quests.ZuiQuest;
 using Stellamod.Core;
 using Stellamod.Core.QuestSystem;

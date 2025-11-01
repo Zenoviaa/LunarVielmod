@@ -5396,7 +5396,11 @@ WitchenHat: {
 
 IceClimbers: {
 	DisplayName: Ice Climbers
-	Tooltip: Get the ability to climb walls, skate on ice and get 10 Health!
+	Tooltip:
+		'''
+		Greatly increases mobility while on any ice-y tile
+		The ice can't stop ya now!
+		'''
 }
 
 MoltenScrap: {
