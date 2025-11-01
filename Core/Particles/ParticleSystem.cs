@@ -1,20 +1,18 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Core.Shaders;
-using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Particles
 {
-    public class ParticleSystem : ModSystem
+    public partial class ParticleSystem : ModSystem
     {
         private static bool _sortParticleArray;
         private ParticleComparer _particleComparer;
-        //public static Particle[] Particles = new Particle[Coralite.MaxParticleCount];
+
         public static int MaxParticleCount => 500;
         public static List<Particle> Particles = new(MaxParticleCount);
         public static List<Particle> BlackParticles = new(MaxParticleCount);
@@ -57,9 +55,6 @@ namespace Stellamod.Core.Particles
             UpdateParticle();
         }
 
-        /// <summary>
-        /// 更新粒子
-        /// </summary>
         public static void UpdateParticle()
         {
             if (Main.netMode == NetmodeID.Server)
@@ -155,13 +150,6 @@ namespace Stellamod.Core.Particles
             }
         }
 
-        public class ParticleComparer : IComparer<Particle>
-        {
-            public int Compare(Particle x, Particle y)
-            {
-                return x.GetShaderPath().CompareTo(y.GetShaderPath());
-            }
-        }
         public void DrawParticles(SpriteBatch spriteBatch)
         {
             BaseShader myCustomShader = null;
