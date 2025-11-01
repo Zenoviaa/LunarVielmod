@@ -1,11 +1,12 @@
 ﻿using Stellamod.Content.Items.Materials;
 using Stellamod.Core.IgnitersNPowders;
+using Stellamod.Items;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles;
 using Terraria.Audio;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.PowdersItem
+namespace Stellamod.Content.Areas.Snow.WeaponsSN
 {
     public class FrostedPowder : BasePowder
     {
@@ -13,7 +14,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
         {
             base.SetDefaults();
             //Percent increase, 1 is +100% damage
-            DamageModifier = 4;
+            DamageModifier = 0.75f;
             ExplosionType = ModContent.ProjectileType<FrostbiteProj>();
 
             SoundStyle explosionSoundStyle = new SoundStyle($"Stellamod/Assets/Sounds/Frosty");
@@ -21,10 +22,12 @@ namespace Stellamod.Items.Weapons.PowdersItem
             ExplosionSound = explosionSoundStyle;
             ExplosionScreenshakeAmt = 2;
         }
+
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankBag>(), material: ModContent.ItemType<WinterbornShard>());
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBag>(),
+                material: ModContent.ItemType<WinterbornShard>());
         }
     }
 }
