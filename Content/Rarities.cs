@@ -24,6 +24,8 @@ namespace Stellamod.Content
 
         public override bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
         {
+            //Ehh kinda goofy
+            /*
             if (item.rare == ModContent.RarityType<FableScrapRarity>() && line.Name.Contains("ItemName"))
             {
                 Color gColor = Color.Lerp(Color.White, Color.Red, ExtraMath.Osc(0f, 1f));
@@ -34,7 +36,7 @@ namespace Stellamod.Content
                     primaryColor: pColor,
                     noiseColor: new Color(206, 101, 0), TrailRegistry.LightningTrail2);
                 return false;
-            }
+            }*/
             return base.PreDrawTooltipLine(item, line, ref yOffset);
         }
     }
