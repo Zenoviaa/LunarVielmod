@@ -3095,7 +3095,7 @@ SolMothStaff: {
 
 SolMoth: {
 	DisplayName: Sol Moth
-	Tooltip: ""
+	Tooltip: Summons a moth that quickly warps to its targets!
 }
 
 HeatGlider: {
