@@ -2196,10 +2196,10 @@ StarflareBand: {
 }
 
 SunGlyph: {
-	DisplayName: Sun Glyph
+	DisplayName: Sun Stone
 	Tooltip:
 		'''
-		Increases damage by 30% during the day
+		Increases damage by 8% during the day
 		Pushes away some of the darkness in the Abyss
 		'''
 }

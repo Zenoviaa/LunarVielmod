@@ -2,12 +2,13 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Lights;
+using Stellamod.Items;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Accessories
+namespace Stellamod.Content.Areas.Collosseum.AccCL
 {
     public class SunGlyphCrown : ModProjectile
     {
@@ -93,7 +94,7 @@ namespace Stellamod.Items.Accessories
             specialEffectsPlayer.hasSunGlyph = true;
             if (Main.dayTime)
             {
-                player.GetDamage(DamageClass.Generic) += 0.30f;
+                player.GetDamage(DamageClass.Generic) += 0.08f;
             }
 
             if (player.ownedProjectileCounts[ModContent.ProjectileType<SunGlyphCrown>()] == 0 && !hideVisual)
