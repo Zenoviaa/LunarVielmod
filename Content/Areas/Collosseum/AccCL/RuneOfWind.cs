@@ -1,14 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Bases;
+using Stellamod.Core.Shaders;
+using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
+using Stellamod.Items;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Trails;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Accessories.Runes
+namespace Stellamod.Content.Areas.Collosseum.AccCL
 {
     public class RuneOfWindBlowNPC : GlobalNPC
     {
@@ -84,20 +89,26 @@ namespace Stellamod.Items.Accessories.Runes
             return Color.Lerp(Color.Transparent, Color.White, Easing.SpikeOutCirc(completionRatio));
         }
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
+
         public override bool PreDraw(ref Color lightColor)
         {
             //Draw Trail
-            Projectile.oldPos = _windPos;
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            }
+            var shader = MagicRadianceShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
+            shader.NoiseTexture = TrailRegistry.CloudsSmall;
+            shader.OutlineTexture = TrailRegistry.DottedTrailOutline;
+            shader.PrimaryColor = Color.Lerp(Color.White, Color.LightGray, 0.5f);
+            shader.NoiseColor = Color.LightGray;
+            shader.OutlineColor = Color.Transparent;
+            shader.BlendState = BlendState.Additive;
+            shader.SamplerState = SamplerState.PointWrap;
+            shader.Speed = 5.2f;
+            shader.Distortion = 0.15f;
+            shader.Power = 0.25f;
 
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.Dashtrail);
-            Vector2 trailOffset = -Main.screenPosition;
-            TrailDrawer.DrawPrims(_windPos, trailOffset, 155);
+            //This just applis the shader changes
 
+            TrailDrawer.Draw(Main.spriteBatch, _windPos, ColorFunction, WidthFunction, shader);
             return false;
         }
     }

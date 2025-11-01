@@ -3159,9 +3159,8 @@ GintzlSpear: {
 }
 
 RuneOfWind: {
-	DisplayName: Rune Of Wind
-	Tooltip: Great for defense!
-	Effect:
+	DisplayName: Glyph of Wind
+	Tooltip:
 		'''
 		You gain a wind shield that slowly blows away enemies
 		After taking a hit, the wind storm becomes more violent! 
