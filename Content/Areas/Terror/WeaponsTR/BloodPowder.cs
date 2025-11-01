@@ -1,11 +1,12 @@
 ﻿using Stellamod.Core.IgnitersNPowders;
+using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles;
 using Terraria.Audio;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.PowdersItem
+namespace Stellamod.Content.Areas.Terror.WeaponsTR
 {
     public class BloodPowder : BasePowder
     {
@@ -13,7 +14,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
         {
             base.SetDefaults();
             //Percent increase, 1 is +100% damage
-            DamageModifier = 6;
+            DamageModifier = 0.7f;
             ExplosionType = ModContent.ProjectileType<KaBoomKaev>();
 
 
