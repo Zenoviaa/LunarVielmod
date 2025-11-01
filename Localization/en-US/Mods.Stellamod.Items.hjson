@@ -2639,8 +2639,8 @@ StarFlowerStaff: {
 }
 
 SunBlastStaff: {
-	DisplayName: Sun Blast Staff
-	Tooltip: Blastin with the sun
+	DisplayName: Sun Blast Artifact
+	Tooltip: Blastin' with the sun
 }
 
 TheDeafen: {
