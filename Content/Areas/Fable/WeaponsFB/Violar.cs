@@ -19,7 +19,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         {
             Item.width = 40;
             Item.height = 10;
-            Item.scale = 0.75f;
+            Item.scale = 1f;
             Item.rare = ItemRarityID.Green;
             Item.useTime = 100;
             Item.useAnimation = 100;
@@ -29,7 +29,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
 
             // Weapon Properties
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 14;
+            Item.damage = 8;
             Item.knockBack = 5f;
             Item.noMelee = true;
             Item.crit = 25;
