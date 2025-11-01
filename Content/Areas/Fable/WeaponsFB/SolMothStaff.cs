@@ -1,22 +1,51 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
+using Stellamod.Core.SummonerSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Projectiles.Summons.Minions;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Summons.Minions
+namespace Stellamod.Content.Areas.Fable.WeaponsFB
 {
-    /*
-            * This minion shows a few mandatory things that make it behave properly. 
-            * Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
-            * If the player targets a certain NPC with right-click, it will fly through tiles to it
-            * If it isn't attacking, it will float near the player with minimal movement
-            */
-    public class SolMothMinionProj : ModProjectile
+    public class SolMothStaff : BaseBellMinionItem
+    {
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Gelatal Slaff");
+            // Tooltip.SetDefault("Summons an Jelly boi to fight for you");
+            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
+            ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
+        }
+
+        public override void SetDefaults2()
+        {
+            base.SetDefaults2();
+            Item.damage = 9;
+            Item.knockBack = 3f;
+            Item.shoot = ModContent.ProjectileType<SolMothMinionProj>();
+        }
+
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankRune>(), 
+                material: ModContent.ItemType<AlcadizScrap>());
+        }
+    }
+
+
+
+    public class SolMothMinionProj : KillableMinion
     {
         Player Owner => Main.player[Projectile.owner];
         ref float Timer => ref Projectile.ai[0];
@@ -91,10 +120,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override void AI()
         {
-            //Kill yoself if no buff
-            if (!SummonHelper.CheckMinionActive<SolMothMinionBuff>(Owner, Projectile))
-                return;
-
+            / base.AI();
             SummonHelper.SearchForTargets(Owner, Projectile,
                 out bool foundTarget,
                 out float distanceFromTarget,

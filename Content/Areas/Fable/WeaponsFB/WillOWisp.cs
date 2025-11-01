@@ -25,7 +25,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 9;
+            Item.damage = 12;
             Item.knockBack = 3f;
             Item.shoot = ModContent.ProjectileType<WillOWispMinionProj>();
         }
