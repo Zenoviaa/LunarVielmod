@@ -2080,6 +2080,7 @@ LeatherGlove: {
 	DisplayName: Leather Glove
 	Tooltip:
 		'''
+		Get a grip!
 		5% increased melee attack speed
 		'''
 }
@@ -4916,7 +4917,7 @@ FireEmblem: {
 	DisplayName: Fire Emblem
 	Tooltip:
 		'''
-		Your attacks inflict random fire debuffs
+		Your attacks sometimes inflict random fire debuffs
 		Adds a chance for critical hits to explode and burn nearby enemies!
 		...were you expecting something else?
 		'''

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.IgniterExplosions;
@@ -8,7 +9,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Accessories.Catacombs
+namespace Stellamod.Content.Areas.Fable.AccFB
 {
     public class FireEmblemPlayer : ModPlayer
     {
@@ -30,7 +31,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         {
             if (hasFireEmblem && fireEmblemCooldown <= 0)
             {
-                if (Main.rand.NextBool(3))
+                if (Main.rand.NextBool(6))
                 {
                     switch (Main.rand.Next(0, 4))
                     {
