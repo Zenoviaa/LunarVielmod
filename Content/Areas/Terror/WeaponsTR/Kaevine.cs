@@ -4,13 +4,47 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Melee.Safunai.Kaevine
+namespace Stellamod.Content.Areas.Terror.WeaponsTR
 {
+    public class Kaevine : BaseSafunaiItem
+    {
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.width = 16;
+            Item.height = 16;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.useTime = Item.useAnimation = 18;
+            Item.shootSpeed = 1f;
+            Item.knockBack = 4f;
+            Item.UseSound = SoundID.Item116;
+            Item.shoot = ModContent.ProjectileType<KaevineProj>();
+            Item.value = Item.sellPrice(gold: 10);
+            Item.noMelee = true;
+            Item.noUseGraphic = true;
+            Item.channel = true;
+            Item.autoReuse = true;
+            Item.DamageType = DamageClass.Ranged;
+            Item.damage = 13;
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<TerrorFragments, BlankSafunai>();
+        }
+    }
+
     public class KaevineProj : BaseSafunaiProjectile
     {
         public SlashEffect SlashEffect { get; set; }
