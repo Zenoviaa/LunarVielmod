@@ -71,8 +71,8 @@ namespace Stellamod.Core.SwingSystem
             Item.DamageType = DamageClass.Melee;
             Item.noUseGraphic = true;
             Item.noMelee = true;
-            Item.useTime = 126;
-            Item.useAnimation = 126;
+            Item.useTime = 32;
+            Item.useAnimation = 32;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
             Item.rare = ItemRarityID.Blue;

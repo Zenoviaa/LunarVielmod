@@ -4,6 +4,7 @@ using Stellamod.Assets;
 using Stellamod.Content.Gores;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
+using Stellamod.Core.Shaders;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
@@ -26,6 +27,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         public override void SetDefaults2()
         {
             base.SetDefaults2();
+            Item.damage = 12;
             Item.shoot = ModContent.ProjectileType<BurningAngelSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<BurningAngelProj>();
             meleeWeaponType = MeleeWeaponType.Hammer;
@@ -59,8 +61,26 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         public override void DefineCombo()
         {
             base.DefineCombo();
-            SlashTrailer slashTrailer = TrailPresets.CreateBurningTrail();
-            Trailer = slashTrailer;
+            BlackFireShader blackFireShader = new BlackFireShader();
+            blackFireShader.SetDefaults();
+
+            SlashTrailer devilsPeak = new SlashTrailer
+            {
+                Shader = blackFireShader,
+                TrailWidthFunction = (interpolant) =>
+                {
+                    return EasingFunction.QuadraticBump(interpolant) * 32;
+                },
+                TrailColorFunction = (interpolant) =>
+                {
+                    Color lerp1 = Color.Lerp(Color.OrangeRed, Color.RosyBrown, interpolant);
+                    return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+                }
+
+            };
+
+            Trailer = devilsPeak;
+
             SwingV2Helper.AddHammerSwingStyle(this);
             useAfterImage = true;
             hitStopTime = 4 * EXTRA_UPDATE_COUNT;
@@ -77,6 +97,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             _hitCount++;
+            target.AddBuff(BuffID.OnFire, 60);
             float pitch = MathHelper.Clamp(_hitCount * 0.05f, 0f, 1f);
             SoundStyle smashSound = Main.rand.NextBool(2) ? SoundRegistry.HammerHit1 : SoundRegistry.HammerHit2;
             smashSound.PitchVariance = 0.2f;

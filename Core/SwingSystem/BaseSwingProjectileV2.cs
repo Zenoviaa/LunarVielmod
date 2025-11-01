@@ -43,6 +43,7 @@ namespace Stellamod.Core.SwingSystem
         public float swordBeamLength;
         public float swingTime;
         public float bounceTimer;
+        public float extraLength;
         public Color outlineColor;
         public Color glowAfterImageColor;
         public bool drawCentered;
@@ -169,11 +170,11 @@ namespace Stellamod.Core.SwingSystem
             float length = texture.Width / 2 + texture.Height / 2;
             length *= 1.6f;
             length += swordBeamLength / 2;
-
+            length += extraLength;
             Vector2 start = Projectile.Center - Projectile.rotation.ToRotationVector2() * length;
             Vector2 end = Projectile.Center + Projectile.rotation.ToRotationVector2() * length;
             float collisionPoint = 0f;
-            return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, Projectile.scale, ref collisionPoint);
+            return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 8, ref collisionPoint);
         }
 
         public override void AI()
@@ -221,6 +222,7 @@ namespace Stellamod.Core.SwingSystem
 
             //We now have the offset so we can apply that to the weapon
             drawCentered = false;
+            extraLength = 0;
             swing.UpdateSwing(this);
 
             //Set the position of the hand for the swing

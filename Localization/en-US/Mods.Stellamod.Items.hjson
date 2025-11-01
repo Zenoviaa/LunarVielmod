@@ -1547,12 +1547,13 @@ BurningAngel: {
 	DisplayName: Burning Angel
 	Tooltip:
 		'''
-		Shoots out many axes, beware they explode on impact
-		Steerable for a while and consectutive hits speed up next throw!
 		Made from heavy fabled metal!
 		'''
-	BasicSlash: No Effect
-	StaminaSlash: No Effect
+	BasicSlash: ""
+	StaminaSlash:
+		'''
+		Throws a controllable axe!
+		'''
 }
 
 GovheilBoreI: {

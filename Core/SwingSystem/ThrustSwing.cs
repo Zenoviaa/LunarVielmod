@@ -14,7 +14,7 @@ namespace Stellamod.Core.SwingSystem
             //Set some default values
             Duration = 30;
             HitCount = 1;
-            ThrowDistance = 64;
+            ThrowDistance = 90;
             Easing = EasingFunction.InOutExpo;
             TrailOffset = 1.5f;
             DrawTrail = true;
@@ -85,7 +85,7 @@ namespace Stellamod.Core.SwingSystem
             var projectile = swingProjectile.Projectile;
             projectile.Center = swingProjectile.Owner.Center + offset;
             projectile.rotation = (projectile.Center - swingProjectile.Owner.Center).ToRotation() + MathHelper.PiOver4;
-
+            swingProjectile.extraLength += 16;
         }
 
         public void CalculateAfterImagePoints(BaseSwingProjectileV2 swingProjectile)

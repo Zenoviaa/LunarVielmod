@@ -304,7 +304,7 @@ namespace Stellamod.Core.SwingSystem
                     yOffset *= centerTrailOffset;
                 }
                 //Set Offset, now we can take this and offset it more in the projectile
-                Vector2 offset = new Vector2(xOffset * TrailOffset * 1.3f, yOffset * TrailOffset * 1.3f);
+                Vector2 offset = new Vector2(xOffset * TrailOffset , yOffset * TrailOffset );
                 trailCache[t] = offset.RotatedBy(targetRotation);
 
 
