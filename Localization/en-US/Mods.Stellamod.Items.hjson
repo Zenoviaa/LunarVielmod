@@ -55,6 +55,7 @@ Common: {
 	WeaponTypeScythe: Scythe Weapon Type
 	WeaponTypeGreatsword: Greatsword Weapon Type
 	WeaponTypeSpear: Spear Weapon Type
+	WeaponTypeHammer: Hammer Weapon Type
 	InsourceTime: "{0} seconds added to your flask cooldown"
 	XixianFlaskLock: This item is LOCKED, continue exploring and you may find it.
 	StaminaFlaskLock: This item is LOCKED, continue exploring and you may find it.
@@ -9464,4 +9465,11 @@ IvynBow: {
 	StaminaSlash: Shoots a compressed burst of many leaves!
 	DisplayName: Ivyn Bow
 	Tooltip: Leafy
+}
+
+IvynAxe: {
+	BasicSlash: No Effect
+	StaminaSlash: Smash into an enemy to make them erupt with a giant ivythorn root!
+	DisplayName: Ivyn Axe
+	Tooltip: ""
 }

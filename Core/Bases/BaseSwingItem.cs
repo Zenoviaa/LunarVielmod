@@ -17,7 +17,8 @@ namespace Stellamod.Core.Bases
         Knives,
         Spear,
         Scythe,
-        Greatsword
+        Greatsword,
+        Hammer
     }
     public abstract class BaseSwingItem : ClassSwapItem
     {

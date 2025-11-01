@@ -9,11 +9,25 @@ namespace Stellamod.Trailing
 {
     public static class TrailPresets
     {
+        public static SlashTrailer CreateIvynSlashTrail()
+        {
+            var slashEffect = new SlashEffect()
+            {
+                BaseColor = Color.DarkGreen,
+                WindColor = Color.DarkOliveGreen,
+                LightColor = Color.SpringGreen,
+                RimHighlightColor = Color.White,
+                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive
+            };
+            var slashTrailer = new SlashTrailer();
+            slashTrailer.Shader = slashEffect;
+            return slashTrailer;
+        }
         public static SlashTrailer FlamingTrail => new SlashTrailer
         {
             Shader = new FlamingTrailShader()
             {
-                
+
             },
             TrailWidthFunction = (float interpolant) =>
             {
@@ -24,8 +38,8 @@ namespace Stellamod.Trailing
                 return Color.Lerp(Color.White, Color.Transparent, interpolant);
             }
 
-        }; 
-        
+        };
+
         public static SlashTrailer Chillrend => new SlashTrailer
         {
             Shader = new SlashEffect()
@@ -70,7 +84,7 @@ namespace Stellamod.Trailing
             }
 
         };
-        
+
         public static SlashTrailer Miracle => new SlashTrailer
         {
             Shader = new SlashEffect()

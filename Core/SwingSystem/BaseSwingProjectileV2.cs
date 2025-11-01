@@ -7,6 +7,7 @@ using Stellamod.Core.Players;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -41,6 +42,7 @@ namespace Stellamod.Core.SwingSystem
         public float growScale;
         public float swordBeamLength;
         public float swingTime;
+        public float bounceTimer;
         public Color outlineColor;
         public Color glowAfterImageColor;
         public bool drawCentered;
@@ -69,6 +71,16 @@ namespace Stellamod.Core.SwingSystem
             Projectile.extraUpdates = EXTRA_UPDATE_COUNT - 1;
             hitStopTime = EXTRA_UPDATE_COUNT * 2;
             SetDefaults2();
+        }
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(bounceTimer);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            bounceTimer = reader.ReadSingle();
         }
 
         public virtual Asset<Texture2D> RequestHologramTexture()
@@ -169,7 +181,12 @@ namespace Stellamod.Core.SwingSystem
             base.AI();
             //We want to initalize like this for better MP compatibility, using a timer might not always be seen on all clients
             AI_Initialize();
-            if (HitstopTimer <= 0)
+            if(bounceTimer > 0)
+            {
+                Timer--;
+                bounceTimer--;
+            }
+            else if (HitstopTimer <= 0)
                 Timer++;
             else
                 HitstopTimer--;
@@ -275,6 +292,14 @@ namespace Stellamod.Core.SwingSystem
                 swingProj.isChildProjectile = true;
             }
         }
+
+        public void Bounce(float bounceTicks)
+        {
+            Projectile.ResetLocalNPCHitImmunity();
+            bounceTimer += bounceTicks * EXTRA_UPDATE_COUNT;
+            Projectile.netUpdate = true;
+        }
+
         public Vector2 CalculateTrailOffset()
         {
             return Vector2.Zero;
