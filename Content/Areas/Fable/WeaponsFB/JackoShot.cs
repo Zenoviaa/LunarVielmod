@@ -2,6 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Bases;
 using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -31,6 +34,12 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             Vector2 bulletVelocity = shootParams.velocity * shootParams.chargeStrength * 32;
             Projectile.NewProjectile(source, shootParams.position, bulletVelocity,
                 ModContent.ProjectileType<JackoShotBombArrow>(), (int)bowDamage, shootParams.knockBack, player.whoAmI);
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<AlcadizScrap, BlankBow>();
         }
 
     }

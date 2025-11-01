@@ -1,5 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Items.MoonlightMagic;
+using Stellamod.Helpers;
 using Stellamod.Items;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -12,13 +15,35 @@ namespace Stellamod.Content
             base.SetDefaults(entity);
             Cauldron cauldron = ModContent.GetInstance<Cauldron>();
             int rarityType = Cauldron.MaterialRarity[entity.type];
-            if(rarityType != 0)
+            if (rarityType != 0)
             {
                 entity.rare = rarityType;
             }
         }
+
+
+        public override bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
+        {
+            if (item.rare == ModContent.RarityType<FableScrapRarity>() && line.Name.Contains("ItemName"))
+            {
+                Color gColor = Color.Lerp(Color.White, Color.Red, ExtraMath.Osc(0f, 1f));
+                Color pColor = Color.Lerp(Color.White, new Color(255, 207, 79), 0.5f);
+                pColor = Color.Lerp(pColor, Color.DarkRed, ExtraMath.Osc(0f, 1f));
+                EnchantmentDrawHelper.DrawGlowingRarityLine(Main.spriteBatch, item, line, ref yOffset,
+                    glowColor: gColor,
+                    primaryColor: pColor,
+                    noiseColor: new Color(206, 101, 0), TrailRegistry.LightningTrail2);
+                return false;
+            }
+            return base.PreDrawTooltipLine(item, line, ref yOffset);
+        }
     }
 
+
+    public abstract class LunarRarity : ModRarity
+    {
+        public abstract void DrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset);
+    }
 
 
     public class SpringMushroomRarity : ModRarity
@@ -28,7 +53,7 @@ namespace Stellamod.Content
         {
             if (offset > 0)
             { // If the offset is 1 or 2 (a positive modifier).
-                  return ModContent.RarityType<IvythornRarity>(); // Make the rarity of items that have this rarity with a positive modifier the higher tier one.
+                return ModContent.RarityType<IvythornRarity>(); // Make the rarity of items that have this rarity with a positive modifier the higher tier one.
             }
 
             return Type; // no 'lower' tier to go to, so return the type of this rarity.
@@ -42,7 +67,20 @@ namespace Stellamod.Content
         {
             if (offset > 0)
             { // If the offset is 1 or 2 (a positive modifier).
-            //    return ModContent.RarityType<ExampleHigherTierModRarity>(); // Make the rarity of items that have this rarity with a positive modifier the higher tier one.
+                return ModContent.RarityType<FableScrapRarity>(); // Make the rarity of items that have this rarity with a positive modifier the higher tier one.
+            }
+
+            return Type; // no 'lower' tier to go to, so return the type of this rarity.
+        }
+    }
+    public class FableScrapRarity : ModRarity
+    {
+        public override Color RarityColor => new Color(223, 176, 100);
+        public override int GetPrefixedRarity(int offset, float valueMult)
+        {
+            if (offset > 0)
+            { // If the offset is 1 or 2 (a positive modifier).
+              //    return ModContent.RarityType<ExampleHigherTierModRarity>(); // Make the rarity of items that have this rarity with a positive modifier the higher tier one.
             }
 
             return Type; // no 'lower' tier to go to, so return the type of this rarity.
