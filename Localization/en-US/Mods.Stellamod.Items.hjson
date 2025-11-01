@@ -4903,8 +4903,9 @@ Bonfire: {
 	DisplayName: Bonfire
 	Tooltip:
 		'''
-		Summons a bonfire over your head, it increases your life regen and provides light
-		It grows stronger when you are not moving!
+		Summons a bonfire over your head
+		You gain up to a 100% damage increase to your next attack while you are not attacking!
+		It takes 15 seconds to charge
 		'''
 }
 
