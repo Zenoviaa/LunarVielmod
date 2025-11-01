@@ -2743,6 +2743,7 @@ Myocardia: {
 ScarecrowSaber: {
 	DisplayName: Scarecrow Saber
 	Tooltip: Very spooky~
+	BasicSlash: ""
 	StaminaSlash:
 		'''
 		Lunge forward in a spinning slash!

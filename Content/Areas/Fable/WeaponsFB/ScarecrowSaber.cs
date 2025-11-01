@@ -28,9 +28,10 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         public override void SetDefaults2()
         {
             base.SetDefaults2();
+            Item.damage = 10;
             Item.shoot = ModContent.ProjectileType<ScarecrowSaberBasicSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<ScarecrowSaberSlash>();
-            meleeWeaponType = MeleeWeaponType.Sword;
+            meleeWeaponType = MeleeWeaponType.Spear;
         }
 
         public override bool CanUseItem(Player player)
@@ -51,7 +52,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew<BlankSword, AlcadizScrap>();
+            this.RegisterBrew<AlcadizScrap, BlankSword>();
         }
     }
 
@@ -75,7 +76,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             target.AddBuff(BuffID.OnFire, 120);
             if (ComboIndex == 5)
             {
-                modifiers.FinalDamage *= 2;
+                modifiers.FinalDamage += 0.5f;
             }
         }
     }
@@ -289,7 +290,9 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             {
                 DeathTimer++;
             }
-            if ((Timer > 8 && Owner.velocity.Length() < 5) || DeathTimer >= 25)
+            Point point = new Vector2(Owner.BottomLeft.X, Owner.BottomLeft.Y).ToTileCoordinates();
+            Tile? floorTile = Player.GetFloorTile(point.X, point.Y);
+                if ((Timer > 8 && Owner.velocity.Length() < 5 && floorTile.HasValue) || DeathTimer >= 25)
             {
                 //Fix the player's orientation
                 scarecrowSaberPlayer.DashRotation = false;
@@ -364,6 +367,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
 
         public override bool PreDraw(ref Color lightColor)
         {
+      
             //Draw Trail
             Projectile.oldPos = _oldSwingPos;
             Texture2D spinTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Spiin").Value;
@@ -379,64 +383,23 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             float drawRotation = Projectile.rotation;
             float drawScale = 0.35f;
 
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
             for (int i = 0; i < _oldSwingPos.Length; i++)
             {
                 drawPos = _oldSwingPos[i];
                 float p = (float)i / (float)_oldSwingPos.Length;
                 p = 1 - p;
                 Color afterImageColor = drawColor * p;
-                afterImageColor *= 0.5f;
+                afterImageColor *= 0.15f;
+                afterImageColor.A = 0;
                 spriteBatch.Draw(spinTexture, drawPos - Main.screenPosition, null, afterImageColor, drawRotation, spinTexture.Size() / 2f, drawScale, SpriteEffects.None, 0);
             }
 
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-            return base.PreDraw(ref lightColor);
+            return false;
         }
 
         public override void PostDraw(Color lightColor)
         {
             base.PostDraw(lightColor);
-
-            //Draw really cool glow FX
-            float glowProgress = Timer / 40f;
-            glowProgress = 1f - glowProgress;
-            glowProgress = MathHelper.Clamp(glowProgress, 0f, 1f);
-
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            Texture2D texture = ModContent.Request<Texture2D>(Owner.HeldItem.ModItem.Texture).Value;
-            Vector2 drawOrigin = texture.Size() / 2f;
-            Color drawColor = Color.White.MultiplyRGB(lightColor) * glowProgress;
-            float drawRotation = Projectile.rotation;
-            float drawScale = 1f;
-
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            spriteBatch.Draw(texture, drawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-            for (int i = 0; i < 4; i++)
-            {
-                float rot = (float)i / 4f;
-                Vector2 vel = rot.ToRotationVector2() * VectorHelper.Osc(0f, 4f, speed: 16);
-                Vector2 flameDrawPos = drawPos + vel + Main.rand.NextVector2Circular(2, 2);
-                flameDrawPos -= Vector2.UnitY * 4;
-                spriteBatch.Draw(texture, flameDrawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
-            }
-
-            for (int i = 0; i < 4; i++)
-            {
-                Vector2 flameDrawPos = drawPos + Main.rand.NextVector2Circular(2, 2);
-                spriteBatch.Draw(texture, flameDrawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
-            }
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
     }
 }
