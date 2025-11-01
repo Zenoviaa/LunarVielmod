@@ -1,11 +1,12 @@
 ﻿using Stellamod.Core.IgnitersNPowders;
+using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles;
 using Terraria.Audio;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.PowdersItem
+namespace Stellamod.Content.Areas.Fable.AccFB
 {
     public class FlamePowder : BasePowder
     {
@@ -13,7 +14,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
         {
             base.SetDefaults();
             //Percent increase, 1 is +100% damage
-            DamageModifier = 3;
+            DamageModifier = 0.5f;
             ExplosionType = ModContent.ProjectileType<KaBoom>();
 
             SoundStyle explosionSoundStyle = new SoundStyle($"Stellamod/Assets/Sounds/Kaboom");
@@ -25,7 +26,8 @@ namespace Stellamod.Items.Weapons.PowdersItem
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankBag>(), material: ModContent.ItemType<AlcadizScrap>());
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBag>(),
+                material: ModContent.ItemType<AlcadizScrap>());
         }
     }
 }
