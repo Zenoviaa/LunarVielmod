@@ -1,12 +1,16 @@
 
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.Materials;
+using Stellamod.Core.Shaders;
+using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Core.SummonerSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Bow;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -133,8 +137,40 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
             return true;
         }
 
+        public void DrawTrail(Vector2[] oldPos)
+        {
+            var shader = MagicNormalShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
+            shader.NoiseTexture = TrailRegistry.SpikyTrail1;
+            shader.BlendState = BlendState.Additive;
+            shader.SamplerState = SamplerState.PointWrap;
+            shader.Speed = 0.5f;
+            shader.Repeats = 1f;
+            //This just applis the shader changes
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
+        }
+
+        private Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.White, Color.SpringGreen, completionRatio);
+        }
+
+        private float WidthFunction(float completionRatio)
+        {
+            float w = 12;
+            float ew = w / 10;
+            float width = w ;
+
+            float p = completionRatio / 0.5f;
+            float ep = EasingFunction.OutCirc(p);
+            float circleWidth = MathHelper.Lerp(0, w, ep);
+            float trailWidth = MathHelper.Lerp(width, 0, EasingFunction.OutCirc(completionRatio));
+            return MathHelper.Lerp(circleWidth, trailWidth, EasingFunction.OutExpo(completionRatio));
+        }
+
         public override bool PreDraw(ref Color lightColor)
         {
+            DrawTrail(Projectile.oldPos);
             return base.PreDraw(ref lightColor);
         }
 
