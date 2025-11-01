@@ -1,31 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
-using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
 using Stellamod.Content.Gores;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Core.SwingSystem;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Trailing;
-using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Stellamod.Core.Effects.ITrailer;
 
 namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 {
@@ -72,7 +60,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         public override void AI()
         {
             base.AI();
-            if(!_playSound && Interpolant >= 0.5f)
+            if (!_playSound && Interpolant >= 0.5f)
             {
                 SoundStyle leafSound = Main.rand.NextBool(2) ? AssetRegistry.Sounds.Nature.LeafRustle1 : AssetRegistry.Sounds.Nature.LeafRustle2;
                 leafSound.PitchVariance = 0.2f;
@@ -81,7 +69,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             }
             growScale = MathHelper.Lerp(0f, 0.3f, EasingFunction.QuadraticBump(Interpolant));
         }
-       
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Player player = Main.player[Projectile.owner];
@@ -120,7 +108,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             {
                 modifiers.Knockback *= 2;
             }
-          
+
             if (ComboIndex == ComboCount - 1)
             {
                 modifiers.FinalDamage += 0.5f;
@@ -143,7 +131,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             Add(new OvalSwing
             {
                 Duration = 70,
-                XSwingRadius =64,
+                XSwingRadius = 64,
                 YSwingRadius = 64,
                 SwingDegrees = 330,
                 Easing = (lerpValue) => Easing.InOutBack(lerpValue),
@@ -269,10 +257,10 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 int[] gores = AutoGoreLoader.FindGores("IvynWood");
-                foreach(int g in gores)
+                foreach (int g in gores)
                 {
                     Gore.NewGore(Projectile.GetSource_FromThis(),
                         Projectile.Center,
@@ -294,7 +282,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             float ease = EasingFunction.InOutBack(interpolant);
             _scale = Vector2.Lerp(Vector2.Zero, Vector2.One * 0.85f, ease);
             Projectile.rotation = Projectile.velocity.ToRotation();
-            if(Timer >= 24)
+            if (Timer >= 24)
             {
                 int[] gores = AutoGoreLoader.FindGores("IvynWood");
                 foreach (int g in gores)

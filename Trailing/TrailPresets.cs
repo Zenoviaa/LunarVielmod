@@ -9,6 +9,12 @@ namespace Stellamod.Trailing
 {
     public static class TrailPresets
     {
+        public static SlashTrailer CreateBurningTrail()
+        {
+            var slashTrailer = new SlashTrailer();
+            slashTrailer.Shader = new FlamingTrailShader();
+            return slashTrailer;
+        }
         public static SlashTrailer CreateIvynSlashTrail()
         {
             var slashEffect = new SlashEffect()

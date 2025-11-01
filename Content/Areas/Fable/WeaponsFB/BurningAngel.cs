@@ -1,9 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
+using Stellamod.Content.Gores;
+using Stellamod.Core.Bases;
+using Stellamod.Core.Effects.Trails;
+using Stellamod.Core.SwingSystem;
+using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles;
+using Stellamod.Trailing;
 using Stellamod.UI.Systems;
 using System.Collections.Generic;
 using Terraria;
@@ -14,34 +21,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Fable.WeaponsFB
 {
-    public class BurningAngel : ClassSwapItem
+    public class BurningAngel : BaseSwingItemV2
     {
-        public override DamageClass AlternateClass => DamageClass.Throwing;
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            Item.width = 40;
-            Item.height = 10;
-            Item.rare = ItemRarityID.Green;
-            Item.useTime = 51;
-            Item.useAnimation = 51;
-            Item.useStyle = ItemUseStyleID.Guitar;
-            Item.autoReuse = true;
-            Item.noMelee = true;
-            Item.noUseGraphic = true;
-            Item.UseSound = SoundID.DD2_FlameburstTowerShot;
-
-            // Weapon Properties
-            Item.DamageType = DamageClass.Ranged;
-            Item.damage = 4;
-            Item.knockBack = 5f;
-            Item.noMelee = true;
-            Item.crit = 26;
-
-            // Gun Properties
-            Item.shoot = ModContent.ProjectileType<BurningAngelProj>();
-            Item.shootSpeed = 4f;
-            Item.value = 10000;
+            base.SetDefaults2();
+            Item.shoot = ModContent.ProjectileType<BurningAngelSlash>();
+            staminaProjectileShoot = ModContent.ProjectileType<BurningAngelProj>();
+            meleeWeaponType = MeleeWeaponType.Hammer;
+            staminaCost = 1;
         }
+
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(2f, -2f);
@@ -49,7 +39,8 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), material: ModContent.ItemType<AlcadizScrap>());
+            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), 
+                material: ModContent.ItemType<AlcadizScrap>());
         }
     }
 
@@ -60,12 +51,71 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
 
 
 
+    public class BurningAngelSlash : BaseSwingProjectileV2
+    {
+        private float _hitCount;
+        private bool _hit;
+        private bool _playSound;
+        public override void DefineCombo()
+        {
+            base.DefineCombo();
+            SlashTrailer slashTrailer = TrailPresets.CreateBurningTrail();
+            Trailer = slashTrailer;
+            SwingV2Helper.AddHammerSwingStyle(this);
+            useAfterImage = true;
+            hitStopTime = 4 * EXTRA_UPDATE_COUNT;
+        }
 
+
+        public override void AI()
+        {
+            base.AI();
+            glowColor = Color.Lerp(Color.Transparent, Color.Red, EasingFunction.QuadraticBump(Interpolant));
+            growScale = MathHelper.Lerp(0f, 0.3f, EasingFunction.QuadraticBump(Interpolant));
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            _hitCount++;
+            float pitch = MathHelper.Clamp(_hitCount * 0.05f, 0f, 1f);
+            SoundStyle smashSound = Main.rand.NextBool(2) ? SoundRegistry.HammerHit1 : SoundRegistry.HammerHit2;
+            smashSound.PitchVariance = 0.2f;
+            SoundEngine.PlaySound(smashSound, Projectile.position);
+
+            base.OnHitNPC(target, hit, damageDone);
+            if (!_hit)
+            {
+                Bounce(8);
+                FXUtil.ShakeCamera(target.Center, 1024, 16);
+                FXUtil.PunchCamera(target.Center, Projectile.velocity, 0.5f, 2, 30);
+                _hit = true;
+            }
+        }
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitNPC(target, ref modifiers);
+            if (!_hit)
+            {
+                modifiers.Knockback *= 0.5f;
+            }
+            else
+            {
+                modifiers.Knockback *= 2;
+            }
+
+            if (ComboIndex == ComboCount - 1)
+            {
+                modifiers.FinalDamage += 0.5f;
+            }
+        }
+    }
 
 
 
     public class BurningAngelProj : ModProjectile
     {
+        private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Heat Arrow");
@@ -77,7 +127,6 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         {
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 5;
-            Projectile.penetrate = 1;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = true;
             Projectile.height = 32;
@@ -92,7 +141,6 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             return false;
         }
 
-        private ref float Timer => ref Projectile.ai[0];
 
         public override void AI()
         {
@@ -147,11 +195,6 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         }
 
 
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-
-            Projectile.Kill();
-        }
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
