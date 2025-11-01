@@ -1,27 +1,22 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs.Minions;
 using Stellamod.Core.SummonerSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
-using Stellamod.Projectiles.Summons.Minions;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Fable.WeaponsFB
 {
-    public class SolMothStaff : BaseBellMinionItem
+    public class SolMoth : BaseBellMinionItem
     {
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Gelatal Slaff");
-            // Tooltip.SetDefault("Summons an Jelly boi to fight for you");
             ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
             ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
         }
@@ -38,7 +33,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankRune>(), 
+            this.RegisterBrew(mold: ModContent.ItemType<BlankRune>(),
                 material: ModContent.ItemType<AlcadizScrap>());
         }
     }
@@ -47,13 +42,13 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
 
     public class SolMothMinionProj : KillableMinion
     {
-        Player Owner => Main.player[Projectile.owner];
-        ref float Timer => ref Projectile.ai[0];
-        ref float TimerOffset => ref Projectile.ai[1];
+        private Player Owner => Main.player[Projectile.owner];
+        private ref float Timer => ref Projectile.ai[0];
+        private ref float TimerOffset => ref Projectile.ai[1];
+
         public float HuntrianColorX;
         public float HuntrianColorZ;
         public float HuntrianColorY;
-
         public float HuntrianColorOfset;
         public override void SetStaticDefaults()
         {
@@ -120,7 +115,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
 
         public override void AI()
         {
-            / base.AI();
+            base.AI();
             SummonHelper.SearchForTargets(Owner, Projectile,
                 out bool foundTarget,
                 out float distanceFromTarget,
