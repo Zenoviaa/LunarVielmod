@@ -50,7 +50,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             base.StaminaShootBow(player, source, shootParams);
             float bowDamage = shootParams.damage * shootParams.chargeStrength;
             Vector2 position = shootParams.position;
-            Vector2 velocity = shootParams.velocity * shootParams.chargeStrength * 32;
+            Vector2 velocity = shootParams.velocity * shootParams.chargeStrength * 4;
             FunctionRepeatHelper.Repeat(() =>
             {
                 Projectile crossShot = Projectile.NewProjectileDirect(source, position, velocity, ModContent.ProjectileType<MorrowShot>(), (int)bowDamage, 0, player.whoAmI);
@@ -104,7 +104,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
                 Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, closest.Center, 3);
             }
 
-            Projectile.velocity *= 1.01f;
+            Projectile.velocity *= 1.005f;
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
@@ -168,7 +168,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             Projectile.friendly = true;
             Projectile.width = 12;
             Projectile.height = 12;
-            Projectile.extraUpdates = 1;
+            Projectile.extraUpdates = 3;
             Projectile.timeLeft = 300;
             Projectile.penetrate = 3;
             Projectile.usesLocalNPCImmunity = true;
@@ -186,7 +186,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             }
             if (Timer < 100)
             {
-                if (Projectile.velocity.Length() < 35)
+                if (Projectile.velocity.Length() < 15)
                     Projectile.velocity *= 1.05f;
             }
 
