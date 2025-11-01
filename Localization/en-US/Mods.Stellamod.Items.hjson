@@ -2080,8 +2080,7 @@ LeatherGlove: {
 	DisplayName: Leather Glove
 	Tooltip:
 		'''
-		Increases throwing damage by 3
-		Increased throwing velocity
+		5% increased melee attack speed
 		'''
 }
 
