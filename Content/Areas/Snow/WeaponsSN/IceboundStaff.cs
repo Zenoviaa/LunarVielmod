@@ -1,46 +1,86 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs.Minions;
+
+
+using Microsoft.Xna.Framework;
+using Stellamod.Content.Items.Materials;
+using Stellamod.Core.SummonerSystem;
 using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Bow;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Summons.Minions
+namespace Stellamod.Content.Areas.Snow.WeaponsSN
 {
+    public class IceboundStaff : BaseBellMinionItem
+    {
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Gelatal Slaff");
+            // Tooltip.SetDefault("Summons an Jelly boi to fight for you");
+            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
+            ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
+        }
 
-    /*
-     * This minion shows a few mandatory things that make it behave properly. 
-     * Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
-     * If the player targets a certain NPC with right-click, it will fly through tiles to it
-     * If it isn't attacking, it will float near the player with minimal movement
-     */
-    public class IceboundMinionProj : ModProjectile
+        public override void SetDefaults2()
+        {
+            base.SetDefaults2();
+            Item.damage = 16;
+            Item.knockBack = 3f;
+            // No buffTime because otherwise the item tooltip would say something like "1 minute duration"
+            Item.shoot = ModContent.ProjectileType<IceboundMinionProj>();
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankRune>(),
+                material: ModContent.ItemType<WinterbornShard>());
+        }
+    }
+
+
+
+    public class IceboundMinionProj : KillableMinion
     {
         private ref float Timer => ref Projectile.ai[0];
-        public PrimDrawer TrailDrawer { get; private set; } = null;
+        private ref float IsLeader => ref Projectile.ai[1];
         private Projectile Leader
         {
             get
             {
-                for (int i = 0; i < Main.maxProjectiles; i++)
+                foreach (var proj in Main.ActiveProjectiles)
                 {
-                    Projectile p = Main.projectile[i];
-                    if (!p.active)
+                    if (proj.owner != Projectile.owner)
                         continue;
-                    if (p.type == Type && p.owner == Projectile.owner)
-                        return p;
+                    if (proj.type != Type)
+                        continue;
+                    if (proj.ai[1] > 0)
+                        return proj;
                 }
-
                 return Projectile;
             }
         }
 
+        public bool ThereIsNoLeader()
+        {
+            foreach (var proj in Main.ActiveProjectiles)
+            {
+                if (proj.owner != Projectile.owner)
+                    continue;
+                if (proj.type != Type)
+                    continue;
+                if (proj.ai[1] > 0)
+                    return false;
+            }
+            return true;
+        }
+
         public override void SetStaticDefaults()
         {
+
             // DisplayName.SetDefault("Jelly Minion");
             // Sets the amount of frames this minion has on its spritesheet
             // This is necessary for right-click targeting
@@ -93,27 +133,8 @@ namespace Stellamod.Projectiles.Summons.Minions
             return true;
         }
 
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return Color.White;
-        }
-
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 0.3f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.RoyalBlue, Color.Transparent, completionRatio) * 0.7f;
-        }
-
         public override bool PreDraw(ref Color lightColor)
         {
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
             return base.PreDraw(ref lightColor);
         }
 
@@ -165,11 +186,19 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override void AI()
         {
+            base.AI();
+            Timer++;
+            if (this.OwnedByLocalClient())
+            {
+                if (Timer == 1 && ThereIsNoLeader())
+                {
+                    IsLeader = 1;
+
+                }
+
+            }
             Player player = Main.player[Projectile.owner];
             Projectile.spriteDirection = Projectile.direction;
-
-            if (!SummonHelper.CheckMinionActive<IceboundMinionBuff>(player, Projectile))
-                return;
 
             bool isLeader = Leader.whoAmI == Projectile.whoAmI;
             if (isLeader)
@@ -244,5 +273,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             // Some visuals here
             Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
         }
+
+
     }
 }

@@ -97,8 +97,6 @@ namespace Stellamod.Buffs.Minions
 
     public class HMMinionBuff : MinionBuff<HMArncharMinionLeftProj> { }
 
-    public class IceboundMinionBuff : MinionBuff<IceboundMinionProj> { }
-
     public class IrradiatedCreeperMinionBuff : MinionBuff<IrradiatedCreeperMinionProj> { }
 
     public class JellyMinionBuff : MinionBuff<JellyMinionProj> { }
