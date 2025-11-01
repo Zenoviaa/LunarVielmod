@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Content;
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -24,7 +25,7 @@ namespace Stellamod.Items.Ores
             Item.useAnimation = 10;
             Item.useTime = 10;
             Item.useStyle = ItemUseStyleID.Swing;
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ModContent.RarityType<GintzlMetalRarity>();
         }
     }
 }
