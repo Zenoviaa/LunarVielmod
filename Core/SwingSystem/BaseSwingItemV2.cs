@@ -118,11 +118,15 @@ namespace Stellamod.Core.SwingSystem
         {
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
             SwingPlayerV2 comboPlayer = player.GetModPlayer<SwingPlayerV2>();
-            if (player.altFunctionUse == 2 && dashPlayer.CanConsume(staminaCost))
+            if (player.altFunctionUse == 2)
             {
-                comboPlayer.ComboWaitTime = comboResetTime;
-                dashPlayer.Consume(staminaCost);
-                ShootSwingStamina(player, source, position, velocity, staminaProjectileShoot, damage, knockback);
+                if (dashPlayer.CanConsume(staminaCost))
+                {
+                    comboPlayer.ComboWaitTime = comboResetTime;
+                    dashPlayer.Consume(staminaCost);
+                    ShootSwingStamina(player, source, position, velocity, staminaProjectileShoot, damage, knockback);
+                }
+
             }
             else
             {

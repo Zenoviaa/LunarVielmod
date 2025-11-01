@@ -1574,3 +1574,6 @@ LeafShot.DisplayName: Leaf Shot
 IvynAxeSlash.DisplayName: Ivyn Axe Slash
 IvynAxeStaminaSlash.DisplayName: Ivyn Axe Stamina Slash
 IvynRoot.DisplayName: Ivyn Root
+IvynSpearSlash.DisplayName: Ivyn Spear Slash
+IvynSpearStaminaSlash.DisplayName: Ivyn Spear Stamina Slash
+IvynSpearThrow.DisplayName: Ivyn Spear Throw

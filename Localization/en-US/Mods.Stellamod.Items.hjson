@@ -9468,8 +9468,15 @@ IvynBow: {
 }
 
 IvynAxe: {
-	BasicSlash: No Effect
+	BasicSlash: ""
 	StaminaSlash: Smash into an enemy to make them erupt with a giant ivythorn root!
 	DisplayName: Ivyn Axe
+	Tooltip: ""
+}
+
+IvynSpear: {
+	BasicSlash: ""
+	StaminaSlash: Throws a quick, high damaging spear
+	DisplayName: Ivyn Spear
 	Tooltip: ""
 }
