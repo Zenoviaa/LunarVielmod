@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Bases;
 using Stellamod.Helpers;
+using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Terraria;
@@ -9,7 +10,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Accessories.Runes
+namespace Stellamod.Content.Areas.Terror.AccTR
 {
     public class RuneOfStealthGlow : ModProjectile
     {

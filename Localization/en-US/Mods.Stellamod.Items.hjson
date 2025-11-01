@@ -2143,9 +2143,8 @@ RuneOfShade: {
 }
 
 RuneOfStealth: {
-	DisplayName: Rune Of Stealth
-	Tooltip: Great for damage!
-	Effect:
+	DisplayName: Glyph Of Stealth
+	Tooltip:
 		'''
 		You slowly gain damage over time, up to a max of 1.15x damage
 		However, taking a hit resets your bonus!
