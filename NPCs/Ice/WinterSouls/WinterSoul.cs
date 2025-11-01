@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Items.Materials;
+using Stellamod.Content.Items.Materials;
 using System;
 using System.IO;
 using Terraria;
