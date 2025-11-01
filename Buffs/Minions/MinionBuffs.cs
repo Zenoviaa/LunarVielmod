@@ -31,7 +31,6 @@ namespace Stellamod.Buffs.Minions
     }
     public class RevengenceMinionBuff : MinionBuff<RevengenceMinion> { }
     public class StringMinionBuff : MinionBuff<StringMinion> { }
-    public class WillOWispMinionBuff : MinionBuff<WillOWispMinionProj> { }
 
     public class BucketScrapperMinionBuff : MinionBuff<BucketScrapperMinionProj> { }
 

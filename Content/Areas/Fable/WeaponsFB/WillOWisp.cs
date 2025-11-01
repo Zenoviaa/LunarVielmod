@@ -1,30 +1,61 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs.Minions;
+using Stellamod.Core.SummonerSystem;
 using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Summons.Minions
+namespace Stellamod.Content.Areas.Fable.WeaponsFB
 {
-    public class WillOWispMinionProj : ModProjectile
+    public class WillOWisp : BaseBellMinionItem
     {
+        public override void SetStaticDefaults()
+        {
+            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller
+            ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
+            ItemID.Sets.StaffMinionSlotsRequired[Type] = 0.5f; // The default value is 1, but other values are supported. See the docs for more guidance. 
+        }
+
+        public override void SetDefaults2()
+        {
+            base.SetDefaults2();
+            Item.damage = 9;
+            Item.knockBack = 3f;
+            Item.shoot = ModContent.ProjectileType<WillOWispMinionProj>();
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankRune>(),
+                material: ModContent.ItemType<AlcadizScrap>());
+        }
+    }
+
+
+    public class WillOWispMinionProj : KillableMinion
+    {
+        private static int _index;
         private float _scale;
         private Vector2[] _oldPlayerPos;
         private ref float Timer => ref Projectile.ai[0];
+        private ref float WispIndex => ref Projectile.ai[1];
         private Player Owner => Main.player[Projectile.owner];
         public override void SetStaticDefaults()
         {
+            _index = 0;
             // Sets the amount of frames this minion has on its spritesheet
             Main.projFrames[Projectile.type] = 4;
             // This is necessary for right-click targeting
             ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
 
             Main.projPet[Projectile.type] = true; // Denotes that this projectile is a pet or minion
-
             ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
         }
@@ -33,9 +64,6 @@ namespace Stellamod.Projectiles.Summons.Minions
         public override void SetDefaults()
         {
             base.SetDefaults();
-
-
-
             Projectile.width = 12;
             Projectile.height = 12;
             Projectile.friendly = true;
@@ -66,11 +94,18 @@ namespace Stellamod.Projectiles.Summons.Minions
         public override void AI()
         {
             base.AI();
-            if (!SummonHelper.CheckMinionActive<WillOWispMinionBuff>(Owner, Projectile))
-                return;
+
             Timer++;
             if (Timer == 1)
             {
+                if (Main.myPlayer == Projectile.owner)
+                {
+
+                    WispIndex = _index;
+                    _index++;
+                    Projectile.netUpdate = true;
+                }
+
                 _oldPlayerPos = new Vector2[32];
                 for (int i = 0; i < _oldPlayerPos.Length; i++)
                 {
@@ -109,7 +144,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             }
 
             //Get the index of this minion
-            int minionIndex = SummonHelper.GetProjectileIndex(Projectile);
+            int minionIndex = (int)WispIndex;
             Vector2 targetPos;
             if (minionIndex < _oldPlayerPos.Length)
             {
@@ -129,24 +164,11 @@ namespace Stellamod.Projectiles.Summons.Minions
             DrawHelper.AnimateTopToBottom(Projectile, 4);
         }
 
-        public float WidthFunction(float completionRatio)
+        public override void DrawSpectral(SpriteBatch spriteBatch)
         {
-            float baseWidth = Projectile.scale * Projectile.width * 1.2f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.LightGoldenrodYellow * 0.1361f, Color.Transparent, completionRatio);
-        }
-
-        public override bool PreDraw(ref Color lightColor)
-        {
-            DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.StarTrail);
-            SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawOrigin = texture.Size() / 2f;
-            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            Color drawColor = Color.White;
             float drawRotation = Projectile.rotation;
             float drawScale = _scale;
 
@@ -176,6 +198,10 @@ namespace Stellamod.Projectiles.Summons.Minions
 
             Texture2D blackTexture = ModContent.Request<Texture2D>(Texture + "_Black").Value;
             spriteBatch.Draw(blackTexture, drawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+
             return false;
         }
 
@@ -190,6 +216,9 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override void OnKill(int timeLeft)
         {
+            _index--;
+            if (_index <= 0)
+                _index = 0;
             for (int i = 0; i < 24; i++)
             {
                 int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FlameBurst, 0f, -2f, 0, default(Color), 1.5f);
