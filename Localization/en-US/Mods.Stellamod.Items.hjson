@@ -1431,8 +1431,10 @@ Hornet: {
 }
 
 MorrowSalface: {
-	DisplayName: Fabled Salface
-	Tooltip: Shoots three bolts and then a big arcanal bolt
+	DisplayName: Fabled Bow
+	Tooltip: An enchanted bow used to snipe enemies from afar!
+	BasicSlash: Converts woden arrows into blazing fast dagger arrows!
+	StaminaSlash: Shoots a barrage of piercingly-fast enchanted sword arrows!
 }
 
 SteamedNail: {
@@ -1545,15 +1547,9 @@ AlcadizScrap: {
 
 BurningAngel: {
 	DisplayName: Burning Angel
-	Tooltip:
-		'''
-		Made from heavy fabled metal!
-		'''
+	Tooltip: Made from heavy fabled metal!
 	BasicSlash: ""
-	StaminaSlash:
-		'''
-		Throws a controllable axe!
-		'''
+	StaminaSlash: Throws a controllable axe!
 }
 
 GovheilBoreI: {
@@ -2640,10 +2636,7 @@ StaffoftheIrradiaflare: {
 
 StarFlowerStaff: {
 	DisplayName: Star Flower Artifact
-	Tooltip:
-		'''
-		Casts a slow moving star-seed that will eventually cause a powerful star-filled explosion!
-		'''
+	Tooltip: Casts a slow moving star-seed that will eventually cause a powerful star-filled explosion!
 }
 
 SunBlastStaff: {
