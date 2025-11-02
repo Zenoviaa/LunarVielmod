@@ -31,6 +31,10 @@ namespace Stellamod.Visual.Particles
             innerColor = Color.White;
             outerColor = Color.Yellow;
             fadeToColor = Color.Blue;
+
+            innerColor = Color.Lerp(Color.DarkRed, Color.Black, 0.75f);
+            outerColor = Color.Lerp(Color.DarkGray, Color.Black, 0.9f);
+
             color = Color.White;
         }
 
@@ -48,7 +52,8 @@ namespace Stellamod.Visual.Particles
         {
             Vector2 centerPos = Center - Main.screenPosition;
             var shader = BlackLingeringSmokeShader.Instance;
-
+            shader.InnerColor = innerColor;
+            shader.OuterColor = outerColor;
             shader.Apply();
 
 
