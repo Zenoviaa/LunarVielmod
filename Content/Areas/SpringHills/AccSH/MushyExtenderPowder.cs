@@ -38,7 +38,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             IgniterPlayer igniterPlayer = player.GetModPlayer<IgniterPlayer>();
-            igniterPlayer.extenderBonus += 0.15f;
+            igniterPlayer.extenderBonus += 0.25f;
         }
 
         public override void AddRecipes()

@@ -141,7 +141,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         public override void SetStaticDefaults()
         {
             NPCID.Sets.TrailCacheLength[NPC.type] = 16;
-            NPCID.Sets.TrailingMode[NPC.type] = 3;
+            NPCID.Sets.TrailingMode[Type] = 3;
             Main.npcFrameCount[NPC.type] = 1;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             NPCID.Sets.BossBestiaryPriority.Add(Type);
@@ -201,7 +201,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         {
             base.AI();
 
-            NPCID.Sets.TrailingMode[Type] = 3;
+
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             if (!NPC.HasValidTarget)
             {

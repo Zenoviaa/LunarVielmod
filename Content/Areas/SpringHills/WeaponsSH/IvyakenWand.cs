@@ -10,7 +10,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 10;
+            Item.damage = 35;
             Item.shootSpeed = 10;
             Item.useTime = 18;
             Item.useAnimation = 36;

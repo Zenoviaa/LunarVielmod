@@ -41,7 +41,7 @@ namespace Stellamod.Content.Areas.Fable.AccFB
             base.ModifyWeaponDamage(item, ref damage);
             if (!hasBonfire)
                 return;
-            StatModifier m = new StatModifier(1f + DamageBonus, 1f);
+            StatModifier m = new StatModifier(1f + MathHelper.Lerp(0f, 0.5f, DamageBonus), 1f);
             damage = damage.CombineWith(m);
             
         }
