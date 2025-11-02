@@ -11,6 +11,7 @@ using Stellamod.Helpers;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
+
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -54,6 +55,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private bool _afterImage;
         private float _afterImageTime;
+        private float _starTrailTime;
         private bool _fall;
         private bool _contactDamage;
         private int _bellHitNPCIndex;
@@ -577,34 +579,65 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
             }
-            NPC.spriteDirection = -NPC.direction;
+
+            if(Timer == 10)
+            {
+                NPC.velocity.X = -NPC.direction * 8;
+                NPC.velocity.Y = -4;
+            }
+
+
             NPC.velocity.X *= 0.94f;
-            NPC.rotation = 0;
-            if (Timer >= 30)
+            if (Timer >= 30 && NPC.collideY)
             {
                 SwitchState(AIState.ScytheDash_Dash);
             }
+            NPC.rotation = NPC.velocity.X * 0.015f;
+    
         }
 
         private void AI_ScytheDashDash()
         {
             _contactDamage = true;
-
+            _afterImageTime = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 5f));
+            _starTrailTime = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 5f));
             TargetOutlineColor = Color.Red;
             Timer++;
             if (Timer == 1)
             {
-
-
+                AttackNumber++;
+                NPC.direction = TargetDirection;
+  
             }
 
-            if (Timer < 30)
+            if(Timer % 5 == 0)
             {
-                NPC.velocity.X = FacingDirectionToTarget * 12;
-                NPC.spriteDirection = -NPC.direction;
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<GlowSparkleDust>(), newColor: Color.White, Scale: Main.rand.NextFloat(0.2f, 1f));
+            }
+            if (Timer % 1 == 0)
+            {
+                Dust.NewDustPerfect(NPC.Bottom, ModContent.DustType<GlowSparkleDust>(), newColor: Color.White, Scale: 0.5f, Velocity: Vector2.Zero);
             }
 
+            if (Main.rand.NextBool(4))
+            {
+                var p = Particle.NewBlackParticle<BlackSmokeParticle>(NPC.Bottom, Vector2.Zero, Color.DarkGray);
+                p.Scale *= 0.25f;
+                p.color *= 0.5f;
+                p.fadeToColor = Color.Black;
+                p.innerColor = Color.DarkGray;
+                p.outerColor = Color.Black;
+            }
             if (Timer >= 30)
+            {
+                NPC.velocity.X *= 0.9f;
+            } else
+            {
+                NPC.velocity.X = MathHelper.Lerp(0, 40 * NPC.direction, EasingFunction.InOutSine(Timer / 10f));
+
+            }
+            NPC.rotation = NPC.velocity.X * 0.005f;
+            if (Timer >= 30f)
             {
                 SwitchState(AIState.ScytheDash_End);
             }
@@ -612,12 +645,28 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_ScytheDashEnd()
         {
+            _starTrailTime *= 0.9f;
+            _afterImageTime *= 0.9f;
             TargetOutlineColor = Color.Transparent;
             Timer++;
-            NPC.velocity.X *= 0.94f;
-            if (Timer >= 30)
+            NPC.velocity.X *= 0.9f;
+            NPC.rotation = NPC.velocity.X * 0.005f;
+            
+            if(AttackNumber >= 4)
             {
-                SwitchState(AIState.Idle);
+                if(Timer >= 30)
+                {
+                    SwitchState(AIState.Idle);
+                }
+            }
+            else
+            {
+
+                if (Timer >= 5)
+                {
+                    SwitchState(AIState.ScytheDash_Startup);
+                }
+    
             }
         }
         #endregion
@@ -1139,7 +1188,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
             AIState state = _patternManager.NextPattern();
             SwitchState(state);
-            SwitchState(AIState.CometJump_Startup);
+            SwitchState(AIState.ScytheDash_Startup);
         }
         #endregion
 
@@ -1167,6 +1216,23 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 spriteBatch.Draw(texture, oldDrawPos, NPC.frame, fadeColor, NPC.oldRot[i], drawOrigin, drawScale, spriteEffects, 0f);
             }
 
+
+            Texture2D starTexture = ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect).Value;
+            Vector2 sdrawOrigin = starTexture.Size() / 2f;
+            Color cometColor = Color.GhostWhite;
+            cometColor.A = 0;
+            for (int i = 0; i < NPC.oldPos.Length; i++)
+            {
+                Vector2 oldPos = NPC.oldPos[i];
+                Vector2 oldDrawPos = oldPos - Main.screenPosition;
+                float f = i;
+                float interpolant = f / (float)NPC.oldPos.Length;
+                Color fadeColor = Color.Lerp(Color.White, Color.Blue, interpolant) * 0.05f;
+                fadeColor *= (1.0f - interpolant);
+                fadeColor.A = 0;
+                oldDrawPos += NPC.Size / 2f;
+                spriteBatch.Draw(starTexture, oldDrawPos, null, fadeColor * _starTrailTime, NPC.oldRot[i], sdrawOrigin, NPC.scale * 1.5f, SpriteEffects.None, 0f);
+            }
             spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
             return false;
         }
