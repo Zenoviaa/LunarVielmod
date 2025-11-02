@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles;
 using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
@@ -470,11 +471,21 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             {
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
+
             }
 
             if (Timer == 15)
             {
-                NPC.velocity.Y = -10;
+                NPC.velocity.Y = -14;
+                float maxRads = MathHelper.ToRadians(45);
+                var part = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.UnitY);
+                for(float f = 0; f < 8; f++)
+                {
+                    Vector2 vel = -Vector2.UnitY * 4;
+                    vel = vel.RotatedByRandom(maxRads);
+                    vel *= Main.rand.NextFloat(0.1f, 5);
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowSparkleDust>(), vel, newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1.5f));
+                }
             }
             if (Timer >= 15)
             {
@@ -490,29 +501,56 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_CometJumpFloat()
         {
+            OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -252);
+            TargetOutlineColor = Color.Yellow;
             Timer++;
             NPC.velocity.X *= 0.99f;
-            NPC.velocity.Y *= 0.9f;
+            if(Timer >= 15 && Timer <= 25)
+            {
+               // NPC.velocity.Y *= 0.95f;
+            }
+
+            if(Timer % 20 == 0)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<GlowSparkleDust>(), newColor: Color.White, Scale: Main.rand.NextFloat(0f, 0.5f));
+            }
+            _afterImageTime = MathHelper.Lerp(0f, 0.5f, EasingFunction.InOutSine(Timer / 30f));
+            NPC.direction = TargetDirection;
+
+            if(Timer >= 64)
+            {
+                NPC.velocity.X += MathF.Sin(Timer * 0.1f) * 0.2f;
+                NPC.velocity.Y = MathF.Cos(Timer * 0.2f) * 0.4f;
+                float xDistance = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
+                if(xDistance > 64)
+                {
+                    NPC.velocity.X += TargetDirection * 0.1f;
+                }
+                NPC.noGravity = true;
+            }
+   
             NPC.rotation = NPC.velocity.X * 0.05f;
-            if (Timer % 10 == 0)
+            if (Timer % 5 == 0)
             {
                 if (MultiplayerHelper.IsHost)
                 {
                     Vector2 spawnPos = NPC.Center;
                     spawnPos.Y -= 1000;
                     spawnPos.X += Main.rand.NextFloat(-1000, 1000);
-                    Projectile.NewProjectile(SourceFromThis, spawnPos, Vector2.Zero, ModContent.ProjectileType<BishinineComet>(), CometDamage, 1, Main.myPlayer);
+                    Projectile.NewProjectile(SourceFromThis, spawnPos, Vector2.UnitY * 4, ModContent.ProjectileType<BishinineComet>(), CometDamage, 1, Main.myPlayer);
                 }
                 AttackNumber++;
             }
-            if (AttackNumber >= 40)
+            if (AttackNumber >= 100)
             {
                 SwitchState(AIState.CometJump_End);
             }
         }
         private void AI_CometJumpEnd()
         {
+            _afterImageTime *= 0.9f;
             Timer++;
+            NPC.noGravity = false;
             NPC.velocity.X *= 0.9f;
             NPC.rotation = NPC.velocity.X * 0.05f;
             if (NPC.collideY || Timer >= 30)
@@ -642,7 +680,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_GrimSpikesJump()
         {
-            TargetOutlineColor = Color.Red;
+            TargetOutlineColor = Color.Yellow;
             Timer++;
             if (Timer == 1)
             {
@@ -1037,7 +1075,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             AttackNumber = 0;
             NPC.velocity.X *= 0.9f;
             NPC.rotation = NPC.velocity.X * 0.2f;
-
+            NPC.noGravity = false;
             float timeToWait = 30;
             if (InPhase2)
                 timeToWait /= 2;
@@ -1101,7 +1139,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
             AIState state = _patternManager.NextPattern();
             SwitchState(state);
-            SwitchState(AIState.GrimmSpikes_RunToPlayer);
+            SwitchState(AIState.CometJump_Startup);
         }
         #endregion
 

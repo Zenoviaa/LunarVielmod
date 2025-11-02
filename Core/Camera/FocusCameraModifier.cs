@@ -5,6 +5,7 @@ using Terraria.Graphics.CameraModifiers;
 
 namespace Stellamod.Core.Camera
 {
+
     public class FocusCameraModifier : ICameraModifier
     {
         private float _timer;

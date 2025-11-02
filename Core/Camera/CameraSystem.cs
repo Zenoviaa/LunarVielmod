@@ -9,6 +9,7 @@ namespace Stellamod.Core.Camera
         public override void Load()
         {
             base.Load();
+            Main.instance.CameraModifiers.Add(new OffsetCameraModifier());
             Main.instance.CameraModifiers.Add(new SmoothCameraModifier());
         }
     }

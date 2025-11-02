@@ -63,7 +63,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
         }
         public override bool CanHitPlayer(Player target)
         {
-            return base.CanHitPlayer(target) && Timer >= 45;
+            return base.CanHitPlayer(target) && Timer >= 45 && Timer < 150;
         }
         public override void AI()
         {

@@ -42,6 +42,8 @@ namespace Stellamod.Assets
                 public static SoundStyle FallingBell = new SoundStyle($"{Path}Bishinine/FallingBell");
                 public static SoundStyle BellHit1 = new SoundStyle($"{Path}Bishinine/BellHit1");
                 public static SoundStyle BellHit2 = new SoundStyle($"{Path}Bishinine/BellHit2");
+                public static SoundStyle Comet1 = new SoundStyle($"{Path}Bishinine/Comet1");
+                public static SoundStyle Comet2 = new SoundStyle($"{Path}Bishinine/Comet2");
             }
             public static class Nature
             {
