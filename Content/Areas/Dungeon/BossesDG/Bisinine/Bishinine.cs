@@ -274,13 +274,13 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             var land = new SpriteAnimation(24, 24, isLooping: true, drawOriginOverride: new Vector2(53, 57));
             _animator.AddAnimation(Anim_Land, land);
 
-            var hold = new SpriteAnimation(25, 26, isLooping: true, drawOriginOverride: animationDrawOrigin, frameSpeed: 0.25f);
+            var hold = new SpriteAnimation(25, 26, isLooping: true, drawOriginOverride: new Vector2(22, 52), frameSpeed: 0.25f);
             _animator.AddAnimation(Anim_HoldHammer, hold);
 
-            var hitbell = new SpriteAnimation(27, 33, isLooping: false, drawOriginOverride: animationDrawOrigin, frameSpeed: 0.25f);
+            var hitbell = new SpriteAnimation(27, 33, isLooping: false, drawOriginOverride: new Vector2(22, 52), frameSpeed: 0.25f);
             _animator.AddAnimation(Anim_Hitbell, hitbell);
 
-            var teleportOut = new SpriteAnimation(34, 43, isLooping: false, drawOriginOverride: animationDrawOrigin, frameSpeed: 0.25f);
+            var teleportOut = new SpriteAnimation(34, 43, isLooping: false, drawOriginOverride: new Vector2(22, 52), frameSpeed: 0.25f);
             _animator.AddAnimation(Anim_SpinTeleportOut, teleportOut);
 
             var fingerUp = new SpriteAnimation(44, 53, isLooping: false, drawOriginOverride: new Vector2(53, 57));
@@ -1730,13 +1730,9 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_Death()
         {
-            NPC.noGravity = true;
-            NPC.noTileCollide = true;
-            Animator.PlayAnimation(Anim_Spinning);
+ 
 
-            NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, -1, 0.1f);
-            NPC.velocity.X *= 0.9f;
-            NPC.rotation *= 0.9f;
+
 
 
             TargetOutlineColor = Color.Transparent;
@@ -1747,7 +1743,23 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 SoundStyle laughSound = AssetRegistry.Sounds.Bishinine.BishinineLaugh;
                 SoundEngine.PlaySound(laughSound, NPC.position);
             }
-            RetargetCameraModifier.NewTarget = NPC.Center;
+  
+            if(Timer < 90)
+            {
+                Animator.PlayAnimation(Anim_Spinning);
+
+            }
+            else
+            {
+                Animator.PlayAnimation(Anim_HoldHammer);
+            }
+            if (Timer < 120)
+            {
+                NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, -1, 0.1f);
+                NPC.velocity.X *= 0.9f;
+                NPC.noGravity = true;
+                NPC.noTileCollide = true;
+            }
             if (Timer == 120)
             {
                 _black = true;
@@ -1758,6 +1770,10 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 }
             }
 
+            if(Timer <= 140)
+            {
+                RetargetCameraModifier.ReTargetPosition = NPC.Center;
+            }
             if(Timer >= 120 && Timer % 5 == 0)
             {
                 Vector2 vel = Main.rand.NextVector2Circular(4, 4);
@@ -1770,13 +1786,15 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             
             if(Timer >= 120)
             {
+                NPC.noGravity = false;
                 _black = true;
-                NPC.scale = MathHelper.Lerp(1f, 0f, (Timer - 120f) / 120f);
             }
             if (Timer >= 240)
             {
                 NPC.Kill();
             }
+            NPC.rotation *= 0.9f;
+
         }
 
 

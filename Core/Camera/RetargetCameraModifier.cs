@@ -13,41 +13,49 @@ namespace Stellamod.Core.Camera
     public class RetargetCameraModifier : ICameraModifier
     {
         private Vector2 _cameraOffset;
-        private Vector2 _lastTarget;
         private float _timer;
+        private static bool _shouldRetarget;
         public string UniqueIdentity { get; private set; }
 
         public bool Finished => false;
 
-        public static Vector2 NewTarget;
+        private static Vector2 _newTarget;
+        public static Vector2 ReTargetPosition
+        {
+            get
+            {
+                return _newTarget;
+            }
+            set
+            {
+                _shouldRetarget = true;
+                _newTarget = value;
+            }
+        }
 
         public void Update(ref CameraInfo cameraPosition)
         {
-            if (NewTarget != Vector2.Zero)
-                _lastTarget = NewTarget;
-            if (NewTarget == Vector2.Zero)
+            if (!_shouldRetarget)
             {
                 _timer--;
+                if (_timer < 0)
+                    _timer = 0;
             }
             else
             {
                 _timer++;
+                if (_timer > 60f)
+                    _timer = 60f;
             }
 
-            if (_timer <= 0)
-                _timer = 0;
-            if (_timer >= 60f)
-                _timer = 60f;
 
-
-            Vector2 target = NewTarget == Vector2.Zero ? _lastTarget : NewTarget;
-            Vector2 targetPosition = (target - cameraPosition.OriginalCameraPosition);
+            Vector2 targetPosition = (_newTarget - cameraPosition.OriginalCameraPosition);
             Vector2 screenBounds = new Vector2(Main.screenWidth, Main.screenHeight);
             screenBounds *= 0.5f;
             targetPosition -= screenBounds;
 
             _cameraOffset = Vector2.Lerp(Vector2.Zero, targetPosition, EasingFunction.InOutSine(_timer / 60f));
-            NewTarget = Vector2.Zero;
+            _shouldRetarget = false;
             cameraPosition.CameraPosition = cameraPosition.OriginalCameraPosition + _cameraOffset;
         }
     }
