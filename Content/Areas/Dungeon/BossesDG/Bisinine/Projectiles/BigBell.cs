@@ -27,6 +27,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
         private float _targetScale;
         private float _bounceDirection;
         private bool _hasBounced;
+        private bool _fallThrough;
         private float _bounceCount;
         private Vector2 _squishScale;
         private bool _playChargeSound;
@@ -108,6 +109,10 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     AI_Throw();
                     break;
             }
+            if (_fallThrough)
+                Projectile.tileCollide = false;
+            if (!NPC.AnyNPCs(ModContent.NPCType<Bishinine>()))
+                Projectile.Kill();
         }
 
         private void SwitchState(AIState state)
@@ -129,6 +134,11 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 SwitchState(AIState.Grow);
             } else if (ShouldGrow == 2)
             {
+                SwitchState(AIState.Throw);
+            }
+            else if (ShouldGrow == 3)
+            {
+                _fallThrough = true;
                 SwitchState(AIState.Throw);
             }
         }

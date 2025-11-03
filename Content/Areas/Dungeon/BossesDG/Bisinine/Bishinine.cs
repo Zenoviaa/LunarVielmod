@@ -1740,17 +1740,32 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             Timer++;
             if(Timer == 1)
             {
-
+                AttackNumber = 0;
+            }
+            if(Timer == 1)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    _bigBellProjectile = Projectile.NewProjectileDirect(SourceFromThis, NPC.Top - new Vector2(0, 48), Vector2.Zero, ModContent.ProjectileType<BigBell>(), BellBalancingBounceDamage, 2, Main.myPlayer);
+                }
                 SoundStyle laughSound = AssetRegistry.Sounds.Bishinine.BishinineLaugh;
                 SoundEngine.PlaySound(laughSound, NPC.position);
             }
-  
-            if(Timer < 90)
+            if (Timer % 40 == 0 && AttackNumber < 3)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    AttackNumber++;
+                    _bigBellProjectile.ai[1] = 1;
+                    _bigBellProjectile.netUpdate = true;
+                }
+            }
+            if (Timer < 90)
             {
                 Animator.PlayAnimation(Anim_Spinning);
 
             }
-            else
+            else if (Timer < 120)
             {
                 Animator.PlayAnimation(Anim_HoldHammer);
             }
@@ -1758,43 +1773,68 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             {
                 NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, -1, 0.1f);
                 NPC.velocity.X *= 0.9f;
+                NPC.rotation *= 0.9f;
+
                 NPC.noGravity = true;
                 NPC.noTileCollide = true;
             }
-            if (Timer == 120)
+
+            if(Timer >= 120 && Timer < 150)
             {
+                float side = MyTarget.Center.X < _bigBellProjectile.Center.X ? 1 : -1;
+                Vector2 targetCenter = _bigBellProjectile.Center;
+                targetCenter.X += side * 100;
+                Vector2 targetVelocity = (targetCenter - NPC.Center);
+                NPC.direction = targetCenter.X < _bigBellProjectile.Center.X ? 1 : -1;
+                NPC.velocity = targetVelocity * 0.1f;
+             
+                if(Timer >= 140)
+                {
+                    Animator.PlayAnimation(Anim_Hitbell);
+                }
+            }
+
+            if (Timer == 150)
+            {
+                NPC.velocity.Y = -8;
+                NPC.velocity.X = -NPC.direction * 7;
                 _black = true;
                 if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.UnitY, 
                         ModContent.ProjectileType<DeathLightning>(), 0, 0, Main.myPlayer);
                 }
+                if (MultiplayerHelper.IsHost)
+                {
+                    _bigBellProjectile.ai[1] = 3;
+                    _bigBellProjectile.netUpdate = true;
+                }
             }
 
-            if(Timer <= 140)
+            if(Timer <= 180)
             {
                 RetargetCameraModifier.ReTargetPosition = NPC.Center;
             }
-            if(Timer >= 120 && Timer % 5 == 0)
+            if(Timer >= 150 && Timer % 5 == 0)
             {
                 Vector2 vel = Main.rand.NextVector2Circular(4, 4);
                 Particle.NewParticle<EmberParticle>(NPC.Center, vel);
             }
-            if(Timer >= 120 && Main.rand.NextBool(10))
+            if(Timer >= 150 && Main.rand.NextBool(10))
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Ash);
             }
             
-            if(Timer >= 120)
+            if(Timer >= 150)
             {
+                NPC.rotation = MathHelper.Lerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.1f);
                 NPC.noGravity = false;
                 _black = true;
             }
-            if (Timer >= 240)
+            if (Timer >= 300)
             {
                 NPC.Kill();
             }
-            NPC.rotation *= 0.9f;
 
         }
 
