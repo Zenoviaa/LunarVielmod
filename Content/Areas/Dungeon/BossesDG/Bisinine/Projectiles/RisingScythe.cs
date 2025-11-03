@@ -333,6 +333,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
 
         private void AI_FallingBells()
         {
+            Projectile.hostile = false;
             Timer++;
             if(Timer == 1)
             {

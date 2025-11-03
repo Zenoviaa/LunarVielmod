@@ -39,6 +39,7 @@ namespace Stellamod.Assets
             private static string Path => "Stellamod/Assets/Sounds/";
             public static class Bishinine
             {
+                public static SoundStyle Bigballchargepart = new SoundStyle($"{Path}Bishinine/Bigballchargepart");
                 public static SoundStyle BigBallready = new SoundStyle($"{Path}Bishinine/BigBallready");
                 public static SoundStyle BishinineChargeBell = new SoundStyle($"{Path}Bishinine/BishinineChargeBell");
                 public static SoundStyle BishinineCometfallbegin = new SoundStyle($"{Path}Bishinine/BishinineCometfallbegin");

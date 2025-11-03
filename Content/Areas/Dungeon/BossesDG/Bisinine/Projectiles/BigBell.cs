@@ -140,7 +140,9 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             _outlineColor = Color.Yellow;
             if(_sizeIndex < 3)
             {
-     
+                SoundStyle growSound = AssetRegistry.Sounds.Bishinine.Bigballchargepart;
+                growSound.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(growSound, Projectile.position);
                 _sizeIndex++;
             }
             if (_sizeIndex == 3)
@@ -166,8 +168,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                         _bounceDirection = target.Center.X < Projectile.Center.X ? -1 : 1;
                     }
                     _bounceCount++;
-                    Projectile.velocity.X = _bounceDirection * 18;
-                    Projectile.velocity.Y = -8;
+                    Projectile.velocity.X = _bounceDirection * 19;
+                    Projectile.velocity.Y = -13;
                     Projectile.netUpdate = true;
 
                  
