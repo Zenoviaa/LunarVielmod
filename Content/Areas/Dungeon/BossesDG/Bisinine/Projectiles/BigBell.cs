@@ -233,7 +233,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
 
                 var p3 = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.UnitY);
 
-                FXUtil.ShakeCamera(Projectile.position, 1024, 8);
+                FXUtil.ShakeCamera(Projectile.position, 1024, 24);
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
                 SoundStyle bellHitSound = Main.rand.NextBool(2) ? AssetRegistry.Sounds.Bishinine.BellHit1 : AssetRegistry.Sounds.Bishinine.BellHit2;
                 bellHitSound.PitchVariance = 0.3f;
@@ -270,6 +270,22 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
+            for (int i = 0; i < 7; i++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.White, 1f).noGravity = true;
+            }
+            for (int i = 0; i < 7; i++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightGray, 1f).noGravity = true;
+            }
+
+
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 32);
+            FXUtil.GlowCircleBoom(Projectile.Center,
+                innerColor: Color.White,
+                glowColor: Color.Black,
+                outerGlowColor: Color.Black, duration: 25, baseSize: 0.24f);
+          
         }
 
         public override bool PreDraw(ref Color lightColor)

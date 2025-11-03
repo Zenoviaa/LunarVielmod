@@ -696,6 +696,9 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             }
             if (Timer == 15)
             {
+                SoundStyle bellHit = AssetRegistry.Sounds.Magic.AutomationHit1;
+                bellHit.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(bellHit, NPC.position);
                 NPC.velocity.Y = -14;
                 float maxRads = MathHelper.ToRadians(45);
                 var part = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.UnitY);
@@ -828,6 +831,10 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             {
                 NPC.velocity.X = -NPC.direction * 8;
                 NPC.velocity.Y = -4;
+                if(AttackNumber == 0)
+                {
+                    NPC.velocity.Y = -8;
+                }
             }
 
             if(Timer >= 10 && NPC.velocity.Y < 0)
@@ -901,6 +908,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 NPC.velocity.X = MathHelper.Lerp(0, 80 * NPC.direction, EasingFunction.InOutSine(Timer / 10f));
 
             }
+            NPC.velocity.Y -= 0.5f;
             NPC.rotation = NPC.velocity.X * 0.0025f;
             if (Timer >= 10)
             {
@@ -945,8 +953,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_GrimChasePlayer()
         {
+
             _afterImageTime = MathHelper.Lerp(_afterImageTime, 1f, 0.2f);
-            Animator.PlayAnimation(Anim_Run);
             TargetOutlineColor = Color.Yellow;
             /*
              *     She runs over to you and does a jump and spike attack making a bunch of ghastly spikes poke from the ground
@@ -956,45 +964,56 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             if (Timer == 1)
             {
                 NPC.TargetClosest();
-                
+                SoundStyle bellHit = AssetRegistry.Sounds.Bishinine.BishinineLaugh;
+                bellHit.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(bellHit, NPC.position);
             }
-            NPC.direction = TargetDirection;
-
-            float side = AttackTimer % 2 == 0 ? 1 : -1;
-            Vector2 targetCenter = MyTarget.Center;
-            targetCenter.X += side * 32;
-
-            float xDistance = MathF.Abs(targetCenter.X - NPC.Center.X);
-            float yDistance = MathF.Abs(targetCenter.Y - NPC.Center.Y);
-            float maxRunSpeed = 15;
-            float accel = 1;
-            if (NPC.collideX)
+            if (Timer < 55)
             {
-                Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);
+                Animator.PlayAnimation(Anim_HammerDrop);
             }
-
-            if (xDistance > 90)
+            else
             {
-                //Zoom zoom, we gotta run up to the bell
-                if (NPC.Center.X < MyTarget.Center.X)
+                Animator.PlayAnimation(Anim_Run);
+                NPC.direction = TargetDirection;
+
+                float side = AttackTimer % 2 == 0 ? 1 : -1;
+                Vector2 targetCenter = MyTarget.Center;
+                targetCenter.X += side * 32;
+
+                float xDistance = MathF.Abs(targetCenter.X - NPC.Center.X);
+                float yDistance = MathF.Abs(targetCenter.Y - NPC.Center.Y);
+                float maxRunSpeed = 15;
+                float accel = 1;
+                if (NPC.collideX)
                 {
-                    if (NPC.velocity.X < maxRunSpeed)
+                    Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);
+                }
+
+                if (xDistance > 90)
+                {
+                    //Zoom zoom, we gotta run up to the bell
+                    if (NPC.Center.X < MyTarget.Center.X)
                     {
-                        NPC.velocity.X += accel;
+                        if (NPC.velocity.X < maxRunSpeed)
+                        {
+                            NPC.velocity.X += accel;
+                        }
+                    }
+                    else if (NPC.Center.X > MyTarget.Center.X)
+                    {
+                        if (NPC.velocity.X > -maxRunSpeed)
+                        {
+                            NPC.velocity.X -= accel;
+                        }
                     }
                 }
-                else if (NPC.Center.X > MyTarget.Center.X)
+                else if (NPC.collideY)
                 {
-                    if (NPC.velocity.X > -maxRunSpeed)
-                    {
-                        NPC.velocity.X -= accel;
-                    }
+                    SwitchState(AIState.GrimmSpikes_Jump);
                 }
             }
-            else if (NPC.collideY)
-            {
-                SwitchState(AIState.GrimmSpikes_Jump);
-            }
+          
         }
 
         private void AI_GrimSpikesJump()
@@ -1021,6 +1040,9 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             Timer++;
             if (Timer == 30)
             {
+                SoundStyle bellHit = AssetRegistry.Sounds.Magic.AutomationHit1;
+                bellHit.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(bellHit, NPC.position);
                 NPC.velocity.Y = -17;
                 var p = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
                 var p2 = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY * 4);
@@ -1163,6 +1185,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         private void AI_ThrowScytheStartup()
         {
 
+
             Animator.PlayAnimation(Anim_HammerDrop);
             TargetOutlineColor = Color.Yellow;
             NPC.velocity.X *= 0.94f;
@@ -1172,8 +1195,10 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             if (Timer == 1)
             {
                 NPC.TargetClosest();
-                NPC.velocity.Y = -10;
+                NPC.velocity.Y = -2;
                 var p = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+                SoundStyle laugh = AssetRegistry.Sounds.Bishinine.BishinineLaugh;
+                SoundEngine.PlaySound(laugh, NPC.position);
             }
 
             if (Timer >= 30 && NPC.collideY)
@@ -1193,6 +1218,9 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
                 NPC.velocity.X = -NPC.direction * 5;
+
+                SoundStyle laugh = AssetRegistry.Sounds.Bishinine.BishinineSound1;
+                SoundEngine.PlaySound(laugh, NPC.position);
                 if (MultiplayerHelper.IsHost)
                 {
                     Vector2 velocity = -Vector2.UnitY * 24;
@@ -1481,9 +1509,11 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             }
             else
             {
+   
                 Animator.PlayAnimation(Anim_Land);
-                if (Timer >= 120)
+                if (Timer >= 90)
                 {
+                    _hammerRise = true;
                     SwitchState(AIState.Idle);
                 }
             }
