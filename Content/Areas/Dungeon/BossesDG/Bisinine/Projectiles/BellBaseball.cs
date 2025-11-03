@@ -121,6 +121,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             {
                 NPC.Kill();
             }
+            if (!NPC.AnyNPCs(ModContent.NPCType<Bishinine>()))
+                NPC.Kill();
         }
 
         public override void OnKill()
