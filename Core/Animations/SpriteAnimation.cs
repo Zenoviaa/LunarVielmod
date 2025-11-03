@@ -26,6 +26,8 @@ namespace Stellamod.Core.Animations
         public void PlayAnimation(string name)
         {
             SpriteAnimation animation = _animations[name];
+            if (_currentAnimation != null)
+                _currentAnimation.isPlaying = false;
             _currentAnimation = animation;
             _currentAnimation.Start();
         }
@@ -57,22 +59,30 @@ namespace Stellamod.Core.Animations
 
     public class SpriteAnimation
     {
-        public SpriteAnimation(int startFrame, int endFrame, bool isLooping, Vector2? drawOriginOverride = null)
+        public SpriteAnimation(int startFrame, int endFrame, bool isLooping, Vector2? drawOriginOverride = null, float frameSpeed = 0.15f)
         {
             this.startFrame = startFrame;   
             this.endFrame = endFrame;
             this.isLooping = isLooping;
             this.drawOriginOverride = drawOriginOverride;
+            this.frameSpeed = frameSpeed;
         }
         private int _frame;
         private float _frameCounter;
         public int startFrame;
         public int endFrame;
+        public float frameSpeed;
         public bool isLooping;
         public bool isPlaying;
         public Vector2? drawOriginOverride;
         public void Start()
         {
+            if (!isPlaying)
+            {
+                _frame = startFrame;
+                _frameCounter = 0;
+            }
+          
             isPlaying = true;
         }
 
@@ -84,7 +94,7 @@ namespace Stellamod.Core.Animations
         {
             if (isPlaying)
             {
-                _frameCounter += 0.15f;
+                _frameCounter += frameSpeed;
                 if (_frameCounter >= 1f)
                 {
                     _frame++;
