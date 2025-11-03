@@ -39,24 +39,30 @@ namespace Stellamod.Core.Camera
             {
                 _timer--;
                 if (_timer < 0)
+                {
                     _timer = 0;
+                }
+          
             }
             else
             {
                 _timer++;
                 if (_timer > 60f)
+                {
                     _timer = 60f;
+                }
             }
 
 
-            Vector2 targetPosition = (_newTarget - cameraPosition.OriginalCameraPosition);
+
+            Vector2 targetPosition = (_newTarget - cameraPosition.CameraPosition);
             Vector2 screenBounds = new Vector2(Main.screenWidth, Main.screenHeight);
             screenBounds *= 0.5f;
             targetPosition -= screenBounds;
 
             _cameraOffset = Vector2.Lerp(Vector2.Zero, targetPosition, EasingFunction.InOutSine(_timer / 60f));
             _shouldRetarget = false;
-            cameraPosition.CameraPosition = cameraPosition.OriginalCameraPosition + _cameraOffset;
+            cameraPosition.CameraPosition = cameraPosition.CameraPosition + _cameraOffset;
         }
     }
 }
