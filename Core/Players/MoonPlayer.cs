@@ -26,7 +26,7 @@ namespace Stellamod.Core.Players
             {
                 if (hit.Crit)
                 {
-                    CombatText.NewText(target.getRect(), Color.Lerp(Color.LightGoldenrodYellow, Color.White, 0.25f), hit.Damage, dramatic: hit.Crit);
+                    CombatText.NewText(target.getRect(), Color.Lerp(Color.Yellow, Color.White, 0.25f), hit.Damage, dramatic: hit.Crit);
                 }
                 else
                 {
