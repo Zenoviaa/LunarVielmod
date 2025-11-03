@@ -1,12 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
 {
-    public class BellBalance : ModProjectile
+    public class BigBell : ModProjectile
     {
-        private int ParentIndex => (int)Projectile.ai[2];
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();

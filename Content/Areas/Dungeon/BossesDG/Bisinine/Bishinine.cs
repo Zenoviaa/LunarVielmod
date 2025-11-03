@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles;
 using Stellamod.Core;
+using Stellamod.Core.Animations;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
@@ -53,7 +54,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         */
 
-        private bool _afterImage;
+        private Animator _animator;
         private float _afterImageTime;
         private float _starTrailTime;
         private bool _fall;
@@ -145,7 +146,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         {
             NPCID.Sets.TrailCacheLength[NPC.type] = 16;
             NPCID.Sets.TrailingMode[Type] = 3;
-            Main.npcFrameCount[NPC.type] = 1;
+            Main.npcFrameCount[NPC.type] = 78;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             NPCID.Sets.BossBestiaryPriority.Add(Type);
         }
@@ -155,7 +156,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             base.SetDefaults();
             _squishScale = Vector2.One;
             NPC.width = 64;
-            NPC.height = 64;
+            NPC.height = 80;
             NPC.damage = 60;
             NPC.defense = 2;
             NPC.lifeMax = 10000;
@@ -181,6 +182,78 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         {
             return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
         }
+
+
+        #region Animations
+        private const string Anim_Idle = "idle";
+        private const string Anim_Run = "run";
+        private const string Anim_JumpStartup = "jumpstartup";
+        private const string Anim_Jump = "jump";
+        private const string Anim_Fall = "fall";
+        private const string Anim_Land = "land";
+        private const string Anim_HoldHammer = "holdhammer";
+        private const string Anim_Hitbell = "hitbell";
+        private const string Anim_SpinTeleportOut = "spinteleportout";
+        private const string Anim_FingerUp = "fingerup";
+        private const string Anim_ThrowBigBall = "throw";
+        private const string Anim_HammerDrop = "hammerdrop";
+        private const string Anim_Spinning = "spinning";
+        public override void FindFrame(int frameHeight)
+        {
+            base.FindFrame(frameHeight);
+            if (_animator == null)
+                SetupAnimator();
+            _animator.Update();
+            NPC.frame.Y = _animator.GetFrameY(frameHeight);
+        }
+
+        private void SetupAnimator()
+        {
+            _animator = new Animator();
+            Vector2 animationDrawOrigin = new Vector2(45, 58);
+            var idle = new SpriteAnimation(0, 4, isLooping: true, drawOriginOverride: animationDrawOrigin);
+            _animator.AddAnimation(Anim_Idle, idle);
+
+            var running = new SpriteAnimation(7, 15, isLooping: true, drawOriginOverride: animationDrawOrigin);
+            _animator.AddAnimation(Anim_Run, running);
+
+            var jumpStartup = new SpriteAnimation(16, 18, isLooping: false, drawOriginOverride: animationDrawOrigin);
+            _animator.AddAnimation(Anim_JumpStartup, jumpStartup);
+
+            var jump = new SpriteAnimation(19, 19, isLooping: true, drawOriginOverride: animationDrawOrigin);
+            _animator.AddAnimation(Anim_Jump, jump);
+
+            var fall = new SpriteAnimation(20, 23, isLooping: true, drawOriginOverride: animationDrawOrigin);
+            _animator.AddAnimation(Anim_Fall, fall);
+
+            var land = new SpriteAnimation(24, 24, isLooping: true, drawOriginOverride: animationDrawOrigin);
+            _animator.AddAnimation(Anim_Land, land);
+
+            var hold = new SpriteAnimation(25, 26, isLooping: true, drawOriginOverride: animationDrawOrigin);
+            _animator.AddAnimation(Anim_HoldHammer, hold);
+
+            var hitbell = new SpriteAnimation(27, 33, isLooping: false, drawOriginOverride: animationDrawOrigin);
+            _animator.AddAnimation(Anim_Hitbell, hitbell);
+
+            var teleportOut = new SpriteAnimation(34, 43, isLooping: false, drawOriginOverride: animationDrawOrigin);
+            _animator.AddAnimation(Anim_SpinTeleportOut, teleportOut);
+
+            var fingerUp = new SpriteAnimation(44, 53, isLooping: false, drawOriginOverride: animationDrawOrigin);
+            _animator.AddAnimation(Anim_FingerUp, fingerUp);
+
+            var throwBigBall = new SpriteAnimation(55, 61, isLooping: false, drawOriginOverride: animationDrawOrigin);
+            _animator.AddAnimation(Anim_ThrowBigBall, throwBigBall);
+
+            var hammer = new SpriteAnimation(62, 69, isLooping: false, drawOriginOverride: animationDrawOrigin);
+            _animator.AddAnimation(Anim_HammerDrop, hammer);
+
+            var spin = new SpriteAnimation(70, 77, isLooping: true, drawOriginOverride: animationDrawOrigin);
+            _animator.AddAnimation(Anim_Spinning, spin);
+            /*
+            var land = new SpriteAnimation(24, 24, isLooping: true, drawOriginOverride: animationDrawOrigin);
+            _animator.AddAnimation(Anim_Land, land);*/
+        }
+        #endregion
 
         #region Squishing
         private void LandingSquish()
@@ -357,7 +430,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(SourceFromThis, NPC.Center, -Vector2.UnitY * 4,
-                        ModContent.ProjectileType<BellBalance>(), BellBalancingBounceDamage, 1, Main.myPlayer, ai2: NPC.whoAmI);
+                        ModContent.ProjectileType<BigBell>(), BellBalancingBounceDamage, 1, Main.myPlayer);
                 }
             }
 
@@ -1138,6 +1211,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         private void AI_Idle()
         {
             //Set some default vars here
+            _animator.PlayAnimation(Anim_Idle);
             _contactDamage = false;
             TargetOutlineColor = Color.Transparent;
             Timer++;
@@ -1215,15 +1289,29 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
 
         #region Draw Code
+        private Vector2 GetDrawOrigin()
+        {
+            if (_animator == null)
+                return NPC.frame.Size() / 2f;
+            Vector2? drawOrigin = _animator.GetDrawOrigin();
+            if (drawOrigin.HasValue)
+                return drawOrigin.Value;
+            return NPC.frame.Size() / 2f;
+        }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             string texturePath = Texture;
             Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
             Vector2 drawPos = NPC.Center - screenPos;
-            Vector2 drawOrigin = NPC.frame.Size() / 2f;
+            drawPos.Y += NPC.Size.Y / 2;
+
+            Vector2 drawOrigin = GetDrawOrigin();
+            
             float drawRotation = NPC.rotation;
             Vector2 drawScale = _squishScale * NPC.scale;
             SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            if (NPC.spriteDirection == -1)
+                drawOrigin.X = NPC.frame.Size().X - drawOrigin.X;
 
             for (int i = 0; i < NPC.oldPos.Length; i++)
             {
@@ -1234,7 +1322,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 Color fadeColor = Color.Lerp(Color.White, Color.Transparent, interpolant) * 0.25f;
                 fadeColor *= _afterImageTime;
                 oldDrawPos += NPC.Size / 2f;
-                spriteBatch.Draw(texture, oldDrawPos, NPC.frame, fadeColor, NPC.oldRot[i], drawOrigin, drawScale, spriteEffects, 0f);
+                spriteBatch.Draw(texture, oldDrawPos, NPC.frame, fadeColor, NPC.oldRot[i], drawOrigin, drawScale * 2, spriteEffects, 0f);
             }
 
 
@@ -1254,7 +1342,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 oldDrawPos += NPC.Size / 2f;
                 spriteBatch.Draw(starTexture, oldDrawPos, null, fadeColor * _starTrailTime, NPC.oldRot[i], sdrawOrigin, NPC.scale * 1.5f, SpriteEffects.None, 0f);
             }
-            spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+            spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor, drawRotation, drawOrigin, drawScale * 2, spriteEffects, 0f);
             return false;
         }
 
@@ -1263,10 +1351,14 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             string texturePath = Texture;
             Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
             Vector2 drawPos = NPC.Center - Main.screenPosition;
-            Vector2 drawOrigin = NPC.frame.Size() / 2f;
+            drawPos.Y += NPC.Size.Y / 2;
+
+            Vector2 drawOrigin = GetDrawOrigin();
             float drawRotation = NPC.rotation;
-            Vector2 drawScale = _squishScale * NPC.scale;
+            Vector2 drawScale = _squishScale * NPC.scale * 2;
             SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            if (NPC.spriteDirection == -1)
+                drawOrigin.X = NPC.frame.Size().X - drawOrigin.X;
 
 
             float outlineOffset = 2;
