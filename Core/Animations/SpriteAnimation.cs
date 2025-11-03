@@ -23,9 +23,17 @@ namespace Stellamod.Core.Animations
             _animations.Add(name, animation);
         }
 
+        public bool IsFinished()
+        {
+            if (_currentAnimation == null)
+                return true;
+            return _currentAnimation.isFinished;
+        }
         public void PlayAnimation(string name)
         {
             SpriteAnimation animation = _animations[name];
+            if (_currentAnimation == animation)
+                return;
             if (_currentAnimation != null)
                 _currentAnimation.isPlaying = false;
             _currentAnimation = animation;
@@ -74,12 +82,18 @@ namespace Stellamod.Core.Animations
         public float frameSpeed;
         public bool isLooping;
         public bool isPlaying;
+        public bool reverse;
         public Vector2? drawOriginOverride;
+        public bool isFinished;
         public void Start()
         {
             if (!isPlaying)
             {
+
+                isFinished = false;
                 _frame = startFrame;
+                if (reverse)
+                    _frame = endFrame;
                 _frameCounter = 0;
             }
           
@@ -94,19 +108,41 @@ namespace Stellamod.Core.Animations
         {
             if (isPlaying)
             {
+          
                 _frameCounter += frameSpeed;
+
                 if (_frameCounter >= 1f)
                 {
-                    _frame++;
                     _frameCounter = 0f;
-                    if (_frame >= endFrame + 1 && isLooping)
+                    if (reverse)
                     {
-                        _frame = startFrame;
+                        _frame--;
+
+                        if (_frame <= startFrame - 1 && isLooping)
+                        {
+                            _frame = endFrame;
+                        }
+                        else if (_frame <= startFrame - 1 && !isLooping)
+                        {
+                            _frame = startFrame;
+                            isFinished = true;
+                        }
                     }
-                    else if (_frame >= endFrame + 1 && !isLooping)
+                    else
                     {
-                        _frame = endFrame;
+                        _frame++;
+
+                        if (_frame >= endFrame + 1 && isLooping)
+                        {
+                            _frame = startFrame;
+                        }
+                        else if (_frame >= endFrame + 1 && !isLooping)
+                        {
+                            _frame = endFrame;
+                            isFinished = true;
+                        }
                     }
+                       
                 }
             }
 

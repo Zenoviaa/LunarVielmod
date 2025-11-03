@@ -361,14 +361,14 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     vel *= Main.rand.NextFloat(5, 35);
                     FXUtil.GlowStretch(Projectile.Center, vel);
                 }
-                FXUtil.ShakeCamera(Projectile.position, 1024, 8);
+                FXUtil.ShakeCamera(Projectile.position, 1024, 32);
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
-                SoundStyle bellHitSound = AssetRegistry.Sounds.Bishinine.BellHit1;
+                SoundStyle bellHitSound = AssetRegistry.Sounds.Bishinine.BishinineBellSmash;
                 bellHitSound.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(bellHitSound, Projectile.position);
 
             }
-            OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -300);
+            OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -150);
             Projectile.velocity.X = MathHelper.Lerp(-5, 0, EasingFunction.InOutSine(Timer / 30f));
             if (!_bounced)
             {
@@ -430,7 +430,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             }
 
             Texture2D starTexture = ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect).Value;
-            drawOrigin = starTexture.Size() / 2f;
+            Vector2 sdrawOrigin = starTexture.Size() / 2f;
             Color cometColor = Color.GhostWhite;
             cometColor.A = 0;
 
@@ -444,7 +444,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 fadeColor *= (1.0f - interpolant);
                 fadeColor.A = 0;
                 oldDrawPos += Projectile.Size / 2f;
-                spriteBatch.Draw(starTexture, oldDrawPos, null, fadeColor * _alpha, Projectile.oldRot[i], drawOrigin, Projectile.scale * 1.2f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(starTexture, oldDrawPos, null, fadeColor * _alpha, Projectile.oldRot[i], sdrawOrigin, Projectile.scale * 1.2f, SpriteEffects.None, 0f);
             }
             spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(lightColor) * _alpha, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
             return false;

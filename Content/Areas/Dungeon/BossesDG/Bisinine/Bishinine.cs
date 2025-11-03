@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles;
+using Stellamod.Content.Gores;
 using Stellamod.Core;
 using Stellamod.Core.Animations;
 using Stellamod.Core.Camera;
@@ -54,11 +55,14 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         */
 
+        private Projectile _bigBellProjectile;
         private Animator _animator;
         private float _afterImageTime;
         private float _starTrailTime;
         private bool _fall;
+        private bool _hammerRise;
         private bool _contactDamage;
+        private bool _enabledPhase2Attacks;
         private int _bellHitNPCIndex;
 
         private float _squishTimer;
@@ -111,6 +115,10 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             CometJump_Float,
             CometJump_End,
 
+            BouncingScytheStartup,
+            BouncingScytheThrow,
+            BouncingScytheEnd,  
+
             Phase2Transition,
             Despawn,
             Death
@@ -132,6 +140,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             writer.Write(_bellHitNPCIndex);
             writer.Write(_fall);
             writer.Write(_contactDamage);
+            writer.Write(_hammerRise);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -140,6 +149,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             _bellHitNPCIndex = reader.ReadInt32();
             _fall = reader.ReadBoolean();
             _contactDamage = reader.ReadBoolean();
+            _hammerRise = reader.ReadBoolean();
         }
 
         public override void SetStaticDefaults()
@@ -155,8 +165,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         {
             base.SetDefaults();
             _squishScale = Vector2.One;
-            NPC.width = 64;
-            NPC.height = 80;
+            NPC.width = 32;
+            NPC.height = 70;
             NPC.damage = 60;
             NPC.defense = 2;
             NPC.lifeMax = 10000;
@@ -198,15 +208,27 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         private const string Anim_ThrowBigBall = "throw";
         private const string Anim_HammerDrop = "hammerdrop";
         private const string Anim_Spinning = "spinning";
+        private const string Anim_45 = "45";
+        private const string Anim_HammerRise = "hammerrise";
+        private const string Anim_ThrowBigBallReverse = "throwreverse";
+        private const string Anim_FingerUpReverse = "fingerupreverse";
+        private const string Anim_SpinningFast = "spinningfast";
         public override void FindFrame(int frameHeight)
         {
             base.FindFrame(frameHeight);
-            if (_animator == null)
-                SetupAnimator();
-            _animator.Update();
-            NPC.frame.Y = _animator.GetFrameY(frameHeight);
+            Animator.Update();
+            NPC.frame.Y = Animator.GetFrameY(frameHeight);
         }
 
+        private Animator Animator
+        {
+            get
+            {
+                if (_animator == null)
+                    SetupAnimator();
+                return _animator;
+            }
+        }
         private void SetupAnimator()
         {
             _animator = new Animator();
@@ -214,42 +236,63 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             var idle = new SpriteAnimation(0, 4, isLooping: true, drawOriginOverride: animationDrawOrigin);
             _animator.AddAnimation(Anim_Idle, idle);
 
-            var running = new SpriteAnimation(7, 15, isLooping: true, drawOriginOverride: animationDrawOrigin);
+            var running = new SpriteAnimation(7, 15, isLooping: true, drawOriginOverride: animationDrawOrigin, frameSpeed: 0.35f);
             _animator.AddAnimation(Anim_Run, running);
 
-            var jumpStartup = new SpriteAnimation(16, 18, isLooping: false, drawOriginOverride: animationDrawOrigin);
+            var jumpStartup = new SpriteAnimation(16, 18, isLooping: false, drawOriginOverride: new Vector2(53, 57), frameSpeed: 0.15f);
             _animator.AddAnimation(Anim_JumpStartup, jumpStartup);
 
-            var jump = new SpriteAnimation(19, 19, isLooping: true, drawOriginOverride: animationDrawOrigin);
+            var jump = new SpriteAnimation(19, 19, isLooping: true, drawOriginOverride: new Vector2(53, 57));
             _animator.AddAnimation(Anim_Jump, jump);
 
-            var fall = new SpriteAnimation(20, 23, isLooping: true, drawOriginOverride: animationDrawOrigin);
+            var fall = new SpriteAnimation(20, 23, isLooping: true, drawOriginOverride: new Vector2(53, 57));
             _animator.AddAnimation(Anim_Fall, fall);
 
-            var land = new SpriteAnimation(24, 24, isLooping: true, drawOriginOverride: animationDrawOrigin);
+            var land = new SpriteAnimation(24, 24, isLooping: true, drawOriginOverride: new Vector2(53, 57));
             _animator.AddAnimation(Anim_Land, land);
 
-            var hold = new SpriteAnimation(25, 26, isLooping: true, drawOriginOverride: animationDrawOrigin);
+            var hold = new SpriteAnimation(25, 26, isLooping: true, drawOriginOverride: animationDrawOrigin, frameSpeed: 0.25f);
             _animator.AddAnimation(Anim_HoldHammer, hold);
 
-            var hitbell = new SpriteAnimation(27, 33, isLooping: false, drawOriginOverride: animationDrawOrigin);
+            var hitbell = new SpriteAnimation(27, 33, isLooping: false, drawOriginOverride: animationDrawOrigin, frameSpeed: 0.25f);
             _animator.AddAnimation(Anim_Hitbell, hitbell);
 
-            var teleportOut = new SpriteAnimation(34, 43, isLooping: false, drawOriginOverride: animationDrawOrigin);
+            var teleportOut = new SpriteAnimation(34, 43, isLooping: false, drawOriginOverride: animationDrawOrigin, frameSpeed: 0.25f);
             _animator.AddAnimation(Anim_SpinTeleportOut, teleportOut);
 
-            var fingerUp = new SpriteAnimation(44, 53, isLooping: false, drawOriginOverride: animationDrawOrigin);
+            var fingerUp = new SpriteAnimation(44, 53, isLooping: false, drawOriginOverride: new Vector2(53, 57));
             _animator.AddAnimation(Anim_FingerUp, fingerUp);
 
-            var throwBigBall = new SpriteAnimation(55, 61, isLooping: false, drawOriginOverride: animationDrawOrigin);
+            var throwBigBall = new SpriteAnimation(55, 61, isLooping: false, drawOriginOverride: new Vector2(53, 57));
             _animator.AddAnimation(Anim_ThrowBigBall, throwBigBall);
 
             var hammer = new SpriteAnimation(62, 69, isLooping: false, drawOriginOverride: animationDrawOrigin);
             _animator.AddAnimation(Anim_HammerDrop, hammer);
 
-            var spin = new SpriteAnimation(70, 77, isLooping: true, drawOriginOverride: animationDrawOrigin);
+            var spin = new SpriteAnimation(70, 77, isLooping: true, drawOriginOverride: new Vector2(49, 62), frameSpeed: 0.25f);
             _animator.AddAnimation(Anim_Spinning, spin);
+
+
+            var idle2 = new SpriteAnimation(44, 44, isLooping: true, drawOriginOverride: new Vector2(53, 57));
+            _animator.AddAnimation(Anim_45, idle2);
+
+            var hammerRise = new SpriteAnimation(62, 69, isLooping: false, drawOriginOverride: animationDrawOrigin, frameSpeed: 0.25f);
+            hammerRise.reverse = true;
+            _animator.AddAnimation(Anim_HammerRise, hammerRise);
+
+            var fingerUpReverse = new SpriteAnimation(44, 53, isLooping: false, drawOriginOverride: new Vector2(53, 57));
+            fingerUpReverse.reverse = true;
+            _animator.AddAnimation(Anim_FingerUpReverse, fingerUpReverse);
+
+            var throwBigBallReverse = new SpriteAnimation(55, 61, isLooping: false, drawOriginOverride: new Vector2(53, 57));
+            throwBigBallReverse.reverse = true;
+            _animator.AddAnimation(Anim_ThrowBigBallReverse, throwBigBallReverse);
+
+
+            var spinfast = new SpriteAnimation(70, 77, isLooping: true, drawOriginOverride: new Vector2(49, 62), frameSpeed: 0.75f);
+            _animator.AddAnimation(Anim_SpinningFast, spinfast);
             /*
+             * 
             var land = new SpriteAnimation(24, 24, isLooping: true, drawOriginOverride: animationDrawOrigin);
             _animator.AddAnimation(Anim_Land, land);*/
         }
@@ -259,8 +302,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         private void LandingSquish()
         {
             _squishTimer = 0;
-            _startSquishScale = new Vector2(1.34f, 0.75f);
-            _squishScale = new Vector2(1.34f, 0.75f);
+            _startSquishScale = new Vector2(1.4f, 0.65f);
+            _squishScale = new Vector2(1.4f, 0.65f);
         }
 
         private void UnSquish()
@@ -286,6 +329,11 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 {
                     SwitchState(AIState.Despawn);
                 }
+            }
+            if(InPhase2 && !_enabledPhase2Attacks)
+            {
+                _patternManager = null;
+                _enabledPhase2Attacks = true;
             }
             NPC.spriteDirection = NPC.direction;
             if(NPC.collideY && NPC.velocity.Y > 1)
@@ -382,6 +430,16 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 case AIState.BellRoll_End:
                     AI_BellRollEnd();
                     break;
+
+                case AIState.BouncingScytheStartup:
+                    AI_BouncingScytheStartup();
+                    break;
+                case AIState.BouncingScytheThrow:
+                    AI_BouncingScytheThrow();
+                    break;
+                case AIState.BouncingScytheEnd:
+                    AI_BouncingScytheEnd();
+                    break;
             }
         }
 
@@ -396,6 +454,26 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         }
 
 
+        #region Bouncing Scythe
+        private void AI_BouncingScytheStartup()
+        {
+
+        }
+
+
+        private void AI_BouncingScytheThrow()
+        {
+
+        }
+
+
+        private void AI_BouncingScytheEnd()
+        {
+
+        }
+        #endregion
+
+
 
         #region Bell Roll
         private void AI_BellRollStart()
@@ -407,16 +485,31 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 as it bounces from wall to wall as she is balancing on it like lenny from mario bros (second phase attack)
 
              */
+            Animator.PlayAnimation(Anim_FingerUp);
             TargetOutlineColor = Color.Yellow;
             Timer++;
             if (Timer == 1)
             {
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
+                if (MultiplayerHelper.IsHost)
+                {
+                    _bigBellProjectile = Projectile.NewProjectileDirect(SourceFromThis, NPC.Top - new Vector2(0, 48), Vector2.Zero, ModContent.ProjectileType<BigBell>(), BellBalancingBounceDamage, 2, Main.myPlayer);
+                }
             }
             NPC.velocity.X *= 0.94f;
             NPC.rotation = NPC.velocity.X * 0.05f;
-            if (Timer >= 30)
+            if(Timer % 70 == 0 && AttackNumber < 3)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    AttackNumber++;
+                    _bigBellProjectile.ai[1] = 1;
+                    _bigBellProjectile.netUpdate = true;
+                }
+
+            }
+            if (Timer >= 300)
             {
                 SwitchState(AIState.BellRoll_Bounce);
             }
@@ -424,16 +517,32 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_BellRollBounce()
         {
+
+
+
             Timer++;
-            if (Timer == 1)
+            if(Timer == 1)
+            {
+                SoundStyle sound = AssetRegistry.Sounds.Bishinine.BishinineLaugh;
+                SoundEngine.PlaySound(sound, NPC.position);
+            }
+            if (Timer == 25)
             {
                 if (MultiplayerHelper.IsHost)
                 {
-                    Projectile.NewProjectile(SourceFromThis, NPC.Center, -Vector2.UnitY * 4,
-                        ModContent.ProjectileType<BigBell>(), BellBalancingBounceDamage, 1, Main.myPlayer);
+                    _bigBellProjectile.ai[1] = 2;
+                    _bigBellProjectile.netUpdate = true;
                 }
             }
+            if(Timer < 25)
+            {
+                Animator.PlayAnimation(Anim_ThrowBigBall);
+            }
 
+            if (Timer > 125)
+            {
+                Animator.PlayAnimation(Anim_ThrowBigBallReverse);
+            }
 
             //The projectile will control her movement here.
             //It'll lerp her position, hence why it needs a reference to her existence
@@ -445,12 +554,9 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_BellRollEnd()
         {
+            Animator.PlayAnimation(Anim_FingerUpReverse);
             Timer++;
-            if (Timer == 1)
-            {
-                NPC.velocity.Y = -5;
-            }
-            if (NPC.collideY || Timer >= 60)
+            if (Timer >= 60)
             {
                 SwitchState(AIState.Idle);
             }
@@ -464,9 +570,10 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         private void AI_MagicMissileStartup()
         {
             //  Jumps backwards and charges in the air before she shoots a shotgun of magic missiles 
+    
             TargetOutlineColor = Color.Yellow;
             Timer++;
-            if (Timer == 1)
+            if (Timer == 10)
             {
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
@@ -476,12 +583,21 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 NPC.velocity = jumpVelocity;
             }
 
-            if (Timer >= 10f)
+            if(Timer < 10)
+            {
+                Animator.PlayAnimation(Anim_JumpStartup);
+            }
+
+            if(Timer >= 10)
+            {
+                Animator.PlayAnimation(Anim_Jump);
+            }
+            if (Timer >= 20f)
             {
                 NPC.velocity.X *= 0.94f;
             }
-            NPC.rotation = NPC.velocity.X * 0.05f;
-            if (Timer >= 30)
+      //      NPC.rotation = NPC.velocity.X * 0.05f;
+            if (Timer >= 40f)
             {
                 SwitchState(AIState.MagicMissle_Barrage);
             }
@@ -489,6 +605,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_MagicMissileBarrage()
         {
+            Animator.PlayAnimation(Anim_Spinning);
             TargetOutlineColor = Color.Red;
             Timer++;
             if(Timer == 1)
@@ -524,15 +641,40 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_MagicMissileEnd()
         {
+            if (!NPC.collideY)
+            {
+                Animator.PlayAnimation(Anim_Fall);
+            }
+            else
+            {
+          
+            }
+
             _afterImageTime *= 0.9f;
             TargetOutlineColor = Color.Transparent;
-            Timer++;
+            if (NPC.collideY)
+            {
+                if(Timer < 15)
+                {
+                    Animator.PlayAnimation(Anim_Land);
+                }
+                else
+                {
+                    Animator.PlayAnimation(Anim_45);
+                }
+
+                    
+                Timer++;
+                if (Timer >= 30)
+                {
+                    _hammerRise = true;
+                    SwitchState(AIState.Idle);
+                }
+            }
+        
             NPC.velocity.X *= 0.94f;
             NPC.rotation *= 0.94f;
-            if (Timer >= 30)
-            {
-                SwitchState(AIState.Idle);
-            }
+  
         }
         #endregion
 
@@ -548,7 +690,10 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 NPC.direction = TargetDirection;
 
             }
-
+            if(Timer < 15)
+            {
+                Animator.PlayAnimation(Anim_JumpStartup);
+            }
             if (Timer == 15)
             {
                 NPC.velocity.Y = -14;
@@ -564,6 +709,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             }
             if (Timer >= 15)
             {
+                Animator.PlayAnimation(Anim_Jump);
                 NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, NPC.direction, 0.1f);
             }
 
@@ -576,6 +722,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_CometJumpFloat()
         {
+            Animator.PlayAnimation(Anim_Spinning);
             OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -252);
             TargetOutlineColor = Color.Yellow;
             Timer++;
@@ -623,16 +770,30 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         }
         private void AI_CometJumpEnd()
         {
+            if (NPC.collideY)
+            {
+                Animator.PlayAnimation(Anim_Land);
+                Timer++;
+                if(Timer == 1)
+                {
+                    LandingSquish();
+                }
+                if(Timer >= 60)
+                {
+                    _hammerRise = true;
+                    SwitchState(AIState.Idle);
+                }
+            }
+            else
+            {
+                Animator.PlayAnimation(Anim_Fall);
+            }
+           
             _afterImageTime *= 0.9f;
-            Timer++;
+  
             NPC.noGravity = false;
             NPC.velocity.X *= 0.9f;
             NPC.rotation = NPC.velocity.X * 0.05f;
-            if (NPC.collideY || Timer >= 30)
-            {
-                LandingSquish();
-                SwitchState(AIState.Idle);
-            }
         }
 
 
@@ -644,6 +805,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_ScytheDashStartup()
         {
+         
             _starTrailTime *= 0.8f;
             _afterImageTime *= 0.8f;
             TargetOutlineColor = Color.Yellow;
@@ -653,16 +815,29 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             {
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
+                SoundStyle bSound = Main.rand.NextBool(2) ? AssetRegistry.Sounds.Bishinine.BishinineSound1 : AssetRegistry.Sounds.Bishinine.BishinineSound2;
+                bSound.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(bSound, NPC.position);
             }
 
+            if(Timer < 10)
+            {
+                Animator.PlayAnimation(Anim_JumpStartup);
+            }
             if(Timer == 10)
             {
                 NPC.velocity.X = -NPC.direction * 8;
                 NPC.velocity.Y = -4;
             }
 
-
-            NPC.velocity.X *= 0.94f;
+            if(Timer >= 10 && NPC.velocity.Y < 0)
+            {
+                Animator.PlayAnimation(Anim_Jump);
+            } else if (Timer >= 10)
+            {
+                Animator.PlayAnimation(Anim_Fall);
+            }
+                NPC.velocity.X *= 0.94f;
             if (Timer >= 30 && NPC.collideY)
             {
                 SwitchState(AIState.ScytheDash_Dash);
@@ -673,6 +848,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_ScytheDashDash()
         {
+            Animator.PlayAnimation(Anim_SpinningFast);
             _contactDamage = true;
             _afterImageTime = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 5f));
             _starTrailTime = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 5f));
@@ -725,7 +901,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 NPC.velocity.X = MathHelper.Lerp(0, 80 * NPC.direction, EasingFunction.InOutSine(Timer / 10f));
 
             }
-            NPC.rotation = NPC.velocity.X * 0.005f;
+            NPC.rotation = NPC.velocity.X * 0.0025f;
             if (Timer >= 10)
             {
                 SwitchState(AIState.ScytheDash_End);
@@ -734,17 +910,20 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_ScytheDashEnd()
         {
+            Animator.PlayAnimation(Anim_Land);
             _starTrailTime *= 0.8f;
             _afterImageTime *= 0.8f;
             TargetOutlineColor = Color.Transparent;
             Timer++;
             NPC.velocity.X *= 0.9f;
-            NPC.rotation = NPC.velocity.X * 0.005f;
+            NPC.rotation = NPC.velocity.X * 0.0025f;
             
-            if(AttackNumber >= 4)
+            if(AttackNumber >= 7)
             {
                 if(Timer >= 30)
                 {
+                    NPC.velocity.X = 0;
+                    NPC.rotation = 0;
                     SwitchState(AIState.Idle);
                 }
             }
@@ -766,6 +945,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_GrimChasePlayer()
         {
+            _afterImageTime = MathHelper.Lerp(_afterImageTime, 1f, 0.2f);
+            Animator.PlayAnimation(Anim_Run);
             TargetOutlineColor = Color.Yellow;
             /*
              *     She runs over to you and does a jump and spike attack making a bunch of ghastly spikes poke from the ground
@@ -785,7 +966,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
             float xDistance = MathF.Abs(targetCenter.X - NPC.Center.X);
             float yDistance = MathF.Abs(targetCenter.Y - NPC.Center.Y);
-            float maxRunSpeed = 12;
+            float maxRunSpeed = 15;
             float accel = 1;
             if (NPC.collideX)
             {
@@ -818,26 +999,59 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_GrimSpikesJump()
         {
-            TargetOutlineColor = Color.Yellow;
-            Timer++;
-            if (Timer == 1)
+            if(Timer < 30)
             {
-                NPC.velocity.Y = -17;
+                Animator.PlayAnimation(Anim_JumpStartup);
+            }
+            else
+            {
+                if (NPC.velocity.Y < 0)
+                {
+                    Animator.PlayAnimation(Anim_Jump);
+                }
+                else
+                {
+                    Animator.PlayAnimation(Anim_Fall);
+                }
+
             }
 
-            if (Timer >= 15)
+
+            TargetOutlineColor = Color.Yellow;
+            Timer++;
+            if (Timer == 30)
             {
-                if(Timer <= 45)
+                NPC.velocity.Y = -17;
+                var p = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+                var p2 = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY * 4);
+                p2.Scale *= 0.5f;
+            }
+
+            if (Timer >= 45)
+            {
+                if(Timer <= 75)
                 {
                     NPC.velocity.Y *= 0.95f;
                     NPC.rotation = NPC.velocity.X * 0.05f;
                 }
                 else
                 {
+                    if(Timer == 76)
+                    {
+                        SoundStyle fallSound = AssetRegistry.Sounds.Bishinine.BishinineFastfall;
+                        fallSound.PitchVariance = 0.1f;
+                        SoundEngine.PlaySound(fallSound, NPC.position);
+                    }
                     _afterImageTime = MathHelper.Lerp(_afterImageTime, 1f, 0.1f);
                     NPC.rotation = -NPC.velocity.X * 0.05f;
                     NPC.velocity.X += NPC.direction * 0.1f;
-                    NPC.velocity.Y *= 1.01f;
+                    NPC.velocity.Y *= 1.07f;
+                    NPC.noGravity = true;
+                    if(Timer % 5 == 0)
+                    {
+                        var p2 = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, -NPC.velocity);
+                        p2.Scale *= 0.5f;
+                    }
                 }
 
             }
@@ -845,14 +1059,17 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
             NPC.velocity.X *= 0.94f;
 
-            if (Timer >= 10 && NPC.collideY)
+            if (Timer >= 40 && NPC.collideY)
             {
                 SwitchState(AIState.GrimmSpikes_Crash);
             }
         }
 
+
+   
         private void AI_GrimSpikesCrash()
         {
+            Animator.PlayAnimation(Anim_Land);
             _afterImageTime *= 0.94f;
             TargetOutlineColor = Color.Red;
             Timer++;
@@ -860,6 +1077,11 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             NPC.rotation = 0;
             if (Timer == 1)
             {
+                //CometCrash(NPC.Bottom);
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(SourceFromThis, NPC.Bottom, Vector2.UnitY, ModContent.ProjectileType<BishinineCometBoom>(), GrimmSpikesDamage, 1, Main.myPlayer, ai1: 1);
+                }
                 SoundStyle bellHitSound = AssetRegistry.Sounds.Bishinine.BellHit1;
                 bellHitSound.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(bellHitSound, NPC.position);
@@ -928,6 +1150,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
             if (Timer >= 60)
             {
+                _hammerRise = true;
                 SwitchState(AIState.Idle);
             }
         }
@@ -939,6 +1162,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_ThrowScytheStartup()
         {
+
+            Animator.PlayAnimation(Anim_HammerDrop);
             TargetOutlineColor = Color.Yellow;
             NPC.velocity.X *= 0.94f;
             NPC.rotation = 0;
@@ -960,6 +1185,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_ThrowScythe()
         {
+    
             TargetOutlineColor = Color.Red;
             Timer++;
             if (Timer == 1)
@@ -974,11 +1200,20 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                         ModContent.ProjectileType<RisingScythe>(), RisingScytheDamage, 1, Main.myPlayer);
                 }
             }
-
+            if(Timer < 120)
+            {
+                Animator.PlayAnimation(Anim_FingerUp);
+            }
+            else
+            {
+                Animator.PlayAnimation(Anim_FingerUpReverse);
+            }
+              
             NPC.velocity.X *= 0.94f;
             NPC.rotation = NPC.velocity.X * 0.025f;
             if (Timer >= 240)
             {
+                _hammerRise = true;
                 SwitchState(AIState.Idle);
             }
         }
@@ -1035,6 +1270,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_BellDropRunToBell()
         {
+            Animator.PlayAnimation(Anim_HoldHammer);
             Timer++;
             if (Timer == 1)
             {
@@ -1042,68 +1278,69 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 AttackTimer++;
             }
 
+            if(Timer == 3)
+            {
+                SoundStyle sound = Main.rand.NextBool(2) ? AssetRegistry.Sounds.Bishinine.BishinineSound1 : AssetRegistry.Sounds.Bishinine.BishinineSound2;
+                SoundEngine.PlaySound(sound, NPC.position);
+                Vector2 pos = NPC.Center;
+                var part = FXUtil.GlowCircleBoom(pos,
+                               innerColor: Color.White,
+                               glowColor: Color.Blue,
+                               outerGlowColor: Color.Black, duration: 12, baseSize: 0.14f);
+                part.Scale *= 1;
+
+
+                var part2 = FXUtil.GlowCircleBoom(pos,
+                      innerColor: Color.White,
+                      glowColor: Color.Blue,
+                      outerGlowColor: Color.Black, duration: 12, baseSize: 0.14f);
+                part2.Scale *= 3;
+                for (float f = 0; f < 32; f++)
+                {
+                    Dust.NewDustPerfect(pos, DustID.Torch,
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.White, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                }
+
+
+                for (float i = 0; i < 15; i++)
+                {
+                    float rot = rot = Main.rand.NextFloat(-2f, 2f);
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+
+                    Vector2 offset = rot.ToRotationVector2() * Main.rand.NextFloat(32, 64);
+                    Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(2, 15);
+                    var particle = FXUtil.GlowCircleDetailedBoom1(pos + offset,
+                        innerColor: Color.White,
+                        glowColor: Color.Blue,
+                        outerGlowColor: Color.Black,
+                        baseSize: Main.rand.NextFloat(0.03f, 0.1f),
+                        duration: Main.rand.NextFloat(5, 25));
+                    particle.Velocity = velocity;
+                    particle.Scale *= 0.35f;
+                    particle.Rotation = rot;
+                }
+
+            }
             TargetOutlineColor = Color.Yellow;
 
             NPC bellToHit = Main.npc[_bellHitNPCIndex];
             NPC.direction = bellToHit.Center.X > NPC.Center.X ? 1 : -1;
+
+
+
+
+
+            _afterImageTime = MathHelper.Lerp(_afterImageTime, 1f, 0.1f);
       
             float side = MyTarget.Center.X < bellToHit.Center.X ? 1 : -1;
             Vector2 targetCenter = bellToHit.Center;
             targetCenter.X += side * 32;
-
-            float xDistance = MathF.Abs(targetCenter.X - NPC.Center.X);
-            float yDistance = MathF.Abs(targetCenter.Y - NPC.Center.Y);
-            float maxRunSpeed = 25;
-            float accel = 1;
-            if (NPC.collideX)
-            {
-                Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);
-            }
-
-            if (xDistance > 16)
-            {
-                float a = MathHelper.Lerp(0f, accel, EasingFunction.InOutSine(Timer / 15f));
-                if(Timer % 2 == 0 && Timer >= 20)
-                {
-                    var p = Particle.NewBlackParticle<BlackSmokeParticle>(NPC.Bottom, Vector2.Zero, Color.DarkGray);
-                    p.Scale *= 0.25f;
-                    p.color *= 0.5f;
-                    p.fadeToColor = Color.Black;
-                    p.innerColor = Color.DarkGray;
-                    p.outerColor = Color.Black;
-                }
-                _afterImageTime = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 15f));
-                //Zoom zoom, we gotta run up to the bell
-                if (NPC.Center.X < bellToHit.Center.X)
-                {
-                    if (NPC.velocity.X < maxRunSpeed)
-                    {
-                        NPC.velocity.X += a;
-                    }
-                }
-                else if (NPC.Center.X > bellToHit.Center.X)
-                {
-                    if (NPC.velocity.X > -maxRunSpeed)
-                    {
-                        NPC.velocity.X -= a;
-                    }
-                }
-            }
-            else if (yDistance > 48)
-            {
-                //We met the x distance requirement so we have to slow down or we'll overshoot
-                NPC.velocity.X *= 0.9f;
-                if (NPC.collideY && NPC.Bottom.Y < bellToHit.Bottom.Y)
-                {
-                    NPC.velocity.Y = -10;
-                    _fall = false;
-                }
-                else if (NPC.Bottom.Y > bellToHit.Bottom.Y - 32)
-                {
-                    _fall = true;
-                }
-            }
-            else if (NPC.collideY)
+            NPC.velocity = (targetCenter - NPC.Center) * 0.8f;
+            NPC.noTileCollide = true;
+            NPC.noGravity = true;
+            float distToBell = Vector2.Distance(NPC.Center, targetCenter);
+            float waitTime = MathHelper.Lerp(10, 5, MathHelper.Clamp(AttackNumber / 6f, 0f, 1f));
+            if(Timer >= waitTime && distToBell <= 16)
             {
                 SwitchState(AIState.BellDrop_Hit);
             }
@@ -1111,9 +1348,10 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_BellDropHit()
         {
+
             Timer++;
             _afterImageTime *= 0.95f;
-            TargetOutlineColor = Color.Red;
+
             NPC.velocity.X *= 0.7f;
             NPC.velocity.Y = 0;
 
@@ -1121,13 +1359,16 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             NPC bellToHit = Main.npc[_bellHitNPCIndex];
             NPC.direction = bellToHit.Center.X > NPC.Center.X ? 1 : -1;
 
-            if(Timer == 20)
+            if(Timer == 10)
             {
                 NPC.velocity.X = NPC.direction * 4;
                 NPC.rotation = NPC.direction * 0.2f;
             }
-            if (Timer == 30)
+            if (Timer == 10)
             {
+                TargetOutlineColor = Color.Red;
+                SoundStyle sound = AssetRegistry.Sounds.Bishinine.BishinineBellSmash;
+                SoundEngine.PlaySound(sound, NPC.position);
                 NPC.velocity.X = -NPC.direction * 8;
                 NPC.rotation = -NPC.direction * 0.2f;
                 Particle.NewParticle<GlowDonutParticle>(bellToHit.Center, -NPC.direction * Vector2.UnitX);
@@ -1161,14 +1402,20 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                     bellToHit.ai[1] = hitDirection;
                     bellToHit.netUpdate = true;
                 }
-            } else if (Timer >= 30)
+            } else if (Timer >= 14)
             {
                 NPC.rotation *= 0.9f;
+                Animator.PlayAnimation(Anim_SpinTeleportOut);
             }
-
-            if (Timer >= 60)
+            if(Timer < 14)
             {
-                if (AttackNumber >= 6)
+                TargetOutlineColor = Color.Yellow;
+                Animator.PlayAnimation(Anim_Hitbell);
+            }
+            float waitTime = MathHelper.Lerp(60, 40, MathHelper.Clamp(AttackNumber / 6f, 0f, 1f));
+            if (Timer >= waitTime)
+            {
+                if (AttackNumber >= 9)
                 {
                     SwitchState(AIState.BellDrop_End);
                 }
@@ -1181,14 +1428,67 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_BellDropEnd()
         {
+
             NPC bellToHit = Main.npc[_bellHitNPCIndex];
             bellToHit.ai[2] = 1;
             Timer++;
-            NPC.velocity.X *= 0.94f;
-            if (Timer >= 30)
+            if(Timer == 1)
             {
-                SwitchState(AIState.Idle);
+                Vector2 pos = NPC.Center;
+                var part = FXUtil.GlowCircleBoom(pos,
+                               innerColor: Color.White,
+                               glowColor: Color.Blue,
+                               outerGlowColor: Color.Black, duration: 12, baseSize: 0.14f);
+                part.Scale *= 1;
+
+
+                var part2 = FXUtil.GlowCircleBoom(pos,
+                      innerColor: Color.White,
+                      glowColor: Color.Blue,
+                      outerGlowColor: Color.Black, duration: 12, baseSize: 0.14f);
+                part2.Scale *= 3;
+                for (float f = 0; f < 32; f++)
+                {
+                    Dust.NewDustPerfect(pos, DustID.Torch,
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.White, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                }
+
+
+                for (float i = 0; i < 15; i++)
+                {
+                    float rot = rot = Main.rand.NextFloat(-2f, 2f);
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+
+                    Vector2 offset = rot.ToRotationVector2() * Main.rand.NextFloat(32, 64);
+                    Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(2, 15);
+                    var particle = FXUtil.GlowCircleDetailedBoom1(pos + offset,
+                        innerColor: Color.White,
+                        glowColor: Color.Blue,
+                        outerGlowColor: Color.Black,
+                        baseSize: Main.rand.NextFloat(0.03f, 0.1f),
+                        duration: Main.rand.NextFloat(5, 25));
+                    particle.Velocity = velocity;
+                    particle.Scale *= 0.35f;
+                    particle.Rotation = rot;
+                }
             }
+            NPC.noGravity = false;
+            NPC.noTileCollide = false;
+            NPC.velocity.X *= 0.94f;
+            if (!NPC.collideY)
+            {
+                Animator.PlayAnimation(Anim_Fall);
+            }
+            else
+            {
+                Animator.PlayAnimation(Anim_Land);
+                if (Timer >= 120)
+                {
+                    SwitchState(AIState.Idle);
+                }
+            }
+
+
         }
 
         #endregion
@@ -1199,6 +1499,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_Spawn()
         {
+            Animator.PlayAnimation(Anim_Idle);
+            _contactDamage = false;
             TargetOutlineColor = Color.Transparent;
             Timer++;
             NPC.velocity.X *= 0.9f;
@@ -1211,7 +1513,20 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         private void AI_Idle()
         {
             //Set some default vars here
-            _animator.PlayAnimation(Anim_Idle);
+            if (_hammerRise)
+            {
+                Animator.PlayAnimation(Anim_HammerRise);
+                if (Animator.IsFinished())
+                {
+                    _hammerRise = false;
+                }
+            }
+            else
+            {
+                Animator.PlayAnimation(Anim_Idle);
+
+            }
+                
             _contactDamage = false;
             TargetOutlineColor = Color.Transparent;
             Timer++;
@@ -1220,9 +1535,11 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             NPC.velocity.X *= 0.9f;
             NPC.rotation = NPC.velocity.X * 0.2f;
             NPC.noGravity = false;
-            float timeToWait = 30;
+            NPC.noTileCollide = false;
+            float timeToWait = 190;
             if (InPhase2)
                 timeToWait /= 2;
+
             if (Timer >= timeToWait)
             {
                 ChooseAttack();
@@ -1283,7 +1600,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
             AIState state = _patternManager.NextPattern();
             SwitchState(state);
-            SwitchState(AIState.BellFall_Start);
+            //SwitchState(AIState.BellDrop_Start);
         }
         #endregion
 
@@ -1317,6 +1634,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             {
                 Vector2 oldPos = NPC.oldPos[i];
                 Vector2 oldDrawPos = oldPos - Main.screenPosition;
+                oldDrawPos.Y += NPC.Size.Y / 2;
                 float f = i;
                 float interpolant = f / (float)NPC.oldPos.Length;
                 Color fadeColor = Color.Lerp(Color.White, Color.Transparent, interpolant) * 0.25f;

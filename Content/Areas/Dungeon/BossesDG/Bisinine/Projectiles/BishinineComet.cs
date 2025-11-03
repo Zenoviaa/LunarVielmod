@@ -26,6 +26,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
         private bool _calcLightningPoints;
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];
+        private ref float ForceLightning => ref Projectile.ai[1];
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -142,6 +143,11 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                            outerGlowColor: Color.DarkBlue, duration: 15, baseSize: .09f);
                         p3.Scale *= 4;
                         break;
+                }
+
+                if(ForceLightning > 0)
+                {
+                    _drawLightning = true;
                 }
    
                 smashSound.PitchVariance = 0.2f;

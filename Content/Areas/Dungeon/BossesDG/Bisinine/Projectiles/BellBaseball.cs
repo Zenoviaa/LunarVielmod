@@ -50,7 +50,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
         public override void AI()
         {
             base.AI();
-
+            if (!NPC.HasValidTarget)
+                NPC.TargetClosest();
             _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             Timer++;
@@ -65,6 +66,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 HitDirection = 0;
             }
 
+            NPC.noTileCollide = (NPC.Top.Y + 32) < Main.player[NPC.target].Top.Y; 
             NPC.rotation += NPC.velocity.Length() * -0.05f;
             if(NPC.collideX && Timer >= 10)
             {
