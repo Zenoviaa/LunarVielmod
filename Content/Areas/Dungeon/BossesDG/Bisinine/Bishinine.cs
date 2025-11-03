@@ -1847,7 +1847,6 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             {
                 SwitchState(state);
             }
-            SwitchState(AIState.BouncingScytheStartup);
         }
         #endregion
 
