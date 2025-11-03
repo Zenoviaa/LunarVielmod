@@ -1569,7 +1569,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             float waitTime = MathHelper.Lerp(60, 40, MathHelper.Clamp(AttackNumber / 6f, 0f, 1f));
             if (Timer >= waitTime)
             {
-                if (AttackNumber >= 14)
+                int number = InPhase2 ? 20 : 14;
+                if (AttackNumber >= number)
                 {
                     SwitchState(AIState.BellDrop_End);
                 }
