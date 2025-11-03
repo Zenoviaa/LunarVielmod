@@ -36,7 +36,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             Projectile.hostile = true;
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 420;
+            Projectile.timeLeft = 600;
         }
         public override void AI()
         {
@@ -56,8 +56,6 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 Projectile.velocity.X = MathHelper.Lerp(Projectile.velocity.X, targetX, 0.01f);
             }
 
-            if (AttackNumber >= 12)
-                Projectile.Kill();
             if(Timer >= 20)
             {
                 if (Projectile.velocity.Y < 12)

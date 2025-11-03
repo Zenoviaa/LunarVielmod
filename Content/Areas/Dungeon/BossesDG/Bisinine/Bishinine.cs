@@ -56,6 +56,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         */
 
         private Projectile _bigBellProjectile;
+        private BellBaseball _baseballProjectile;
         private Animator _animator;
         private float _afterImageTime;
         private float _starTrailTime;
@@ -65,13 +66,14 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         private bool _enabledPhase2Attacks;
         private bool _hasHammer=true;
         private bool _black;
-        private int _bellHitNPCIndex;
+
         private AIState _nextState;
 
         private float _squishTimer;
         private Vector2 _startSquishScale;
         private Vector2 _squishScale;
-
+        private Vector2 _deathCenter;
+        private Vector2 _teleportCenter;
         private Color _outlineColor;
         private Color TargetOutlineColor;
         private PatternManager<AIState> _patternManager;
@@ -138,26 +140,29 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         private int CometDamage => 90;
         private int BellBalancingBounceDamage => 60;
         private int BouncingScytheDamage => 25;
+        private int BaseballDamage => 25;
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
-            writer.Write(_bellHitNPCIndex);
             writer.Write(_fall);
             writer.Write(_contactDamage);
             writer.Write(_hammerRise);
             writer.Write((int)_nextState);
             writer.Write(_hasHammer);
+            writer.WriteVector2(_deathCenter);
+            writer.WriteVector2(_teleportCenter);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
-            _bellHitNPCIndex = reader.ReadInt32();
             _fall = reader.ReadBoolean();
             _contactDamage = reader.ReadBoolean();
             _hammerRise = reader.ReadBoolean();
             _nextState = (AIState)reader.ReadInt32();
             _hasHammer = reader.ReadBoolean();
+            _deathCenter = reader.ReadVector2();
+            _teleportCenter = reader.ReadVector2();
         }
 
         public override void SetStaticDefaults()
@@ -356,6 +361,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
             if(InPhase2 && !_enabledPhase2Attacks && State != AIState.CometJump_Startup)
             {
+
                 AttackNumber = 0;
                 _patternManager = null;
                 _enabledPhase2Attacks = true;
@@ -369,7 +375,15 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 SwitchState(AIState.CometJump_Startup);
             }
 
-
+            if(_teleportCenter != Vector2.Zero)
+            {
+                NPC.position.X = _teleportCenter.X - NPC.Size.X / 2;
+                NPC.position.Y = _teleportCenter.Y - NPC.Size.Y / 2;
+                NPC.velocity.X = 0f;
+                NPC.velocity.Y = 0f;
+                _teleportCenter = Vector2.Zero;
+        
+            }
             NPC.spriteDirection = NPC.direction;
             if(NPC.collideY && NPC.velocity.Y > 1)
             {
@@ -760,6 +774,17 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                     Projectile.NewProjectile(SourceFromThis, NPC.Center, -Vector2.UnitY * Main.rand.NextFloat(1f, 5f),
                         ModContent.ProjectileType<BisinineMissile>(), MagicMissileDamage, 1, Main.myPlayer);
                 }
+
+                if (InPhase2)
+                {
+                    if (MultiplayerHelper.IsHost)
+                    {
+                        Vector2 velocity = -Vector2.UnitY * Main.rand.NextFloat(4f, 12);
+                        velocity = velocity.RotatedBy(-NPC.direction * 0.5f);
+                        Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity,
+                            ModContent.ProjectileType<BisinineMissile>(), MagicMissileDamage, 1, Main.myPlayer);
+                    }
+                }
             }
       
             if (Timer < 35)
@@ -819,6 +844,11 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         #region Signature Comet Fall
         private void AI_CometJumpStartup()
         {
+            foreach (var proj in Main.ActiveProjectiles)
+            {
+                if (proj.type == ModContent.ProjectileType<BellBaseball>())
+                    proj.ai[2] = 1;
+            }
             Timer++;
             if (Timer == 1)
             {
@@ -1398,8 +1428,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                     Vector2 spawnPosition = NPC.Center;
                     spawnPosition.X += NPC.direction * 80;
                     spawnPosition.Y += -700;
-                    _bellHitNPCIndex = NPC.NewNPC(SourceFromThis, (int)spawnPosition.X, (int)spawnPosition.Y,
-                        ModContent.NPCType<BellBaseball>());
+                    _baseballProjectile = Projectile.NewProjectileDirect(SourceFromThis, spawnPosition, Vector2.Zero, 
+                        ModContent.ProjectileType<BellBaseball>(), BaseballDamage, 1, Main.myPlayer).ModProjectile as BellBaseball;
                     NPC.netUpdate = true;
                 }
                 NPC.velocity.Y = -8;
@@ -1408,18 +1438,20 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             //Just sit here really
             NPC.velocity.X *= 0.9f;
             NPC.rotation = NPC.velocity.X * 0.03f;
+            if (MultiplayerHelper.IsHost)
+            {
+                if (Timer >= 60 && _baseballProjectile.IsReadyToHit)
+                {
+                    SwitchState(AIState.BellDrop_RunToBell);
+                }
+                else if (Timer >= 300)
+                {
+                    //Failsafe
+                    //Just go back to idle state if this attack don't work some reason
+                    SwitchState(AIState.Idle);
+                }
+            }
 
-            NPC bellToHit = Main.npc[_bellHitNPCIndex];
-            if (Timer >= 60 && bellToHit.ai[3] > 0)
-            {
-                SwitchState(AIState.BellDrop_RunToBell);
-            }
-            else if (Timer >= 300)
-            {
-                //Failsafe
-                //Just go back to idle state if this attack don't work some reason
-                SwitchState(AIState.Idle);
-            }
         }
 
         private void AI_BellDropRunToBell()
@@ -1477,24 +1509,26 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             }
             TargetOutlineColor = Color.Yellow;
 
-            NPC bellToHit = Main.npc[_bellHitNPCIndex];
-            NPC.direction = bellToHit.Center.X > NPC.Center.X ? 1 : -1;
 
-
-
-
-
+            if (Timer == 1)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    Vector2 targetCenter = _baseballProjectile.Projectile.Center;
+                    float side = MyTarget.Center.X < _baseballProjectile.Projectile.Center.X ? 1 : -1;
+                    targetCenter.X += side * 32;
+                    _teleportCenter = targetCenter;
+                    NPC.netUpdate = true;
+                }
+            }
+            NPC.direction = MyTarget.Center.X > NPC.Center.X ? 1 : -1;
             _afterImageTime = MathHelper.Lerp(_afterImageTime, 1f, 0.1f);
       
-            float side = MyTarget.Center.X < bellToHit.Center.X ? 1 : -1;
-            Vector2 targetCenter = bellToHit.Center;
-            targetCenter.X += side * 32;
-            NPC.velocity = (targetCenter - NPC.Center) * 0.8f;
+
             NPC.noTileCollide = true;
             NPC.noGravity = true;
-            float distToBell = Vector2.Distance(NPC.Center, targetCenter);
             float waitTime = MathHelper.Lerp(10, 5, MathHelper.Clamp(AttackNumber / 6f, 0f, 1f));
-            if(Timer >= waitTime && distToBell <= 16)
+            if(Timer >= waitTime)
             {
                 SwitchState(AIState.BellDrop_Hit);
             }
@@ -1508,10 +1542,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
             NPC.velocity.X *= 0.7f;
             NPC.velocity.Y = 0;
-
-
-            NPC bellToHit = Main.npc[_bellHitNPCIndex];
-            NPC.direction = bellToHit.Center.X > NPC.Center.X ? 1 : -1;
+            NPC.direction = MyTarget.Center.X > NPC.Center.X ? 1 : -1;
 
             if(Timer == 10)
             {
@@ -1521,42 +1552,17 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             if (Timer == 10)
             {
                 TargetOutlineColor = Color.Red;
-                SoundStyle sound = AssetRegistry.Sounds.Bishinine.BishinineBellSmash;
-                SoundEngine.PlaySound(sound, NPC.position);
+                AttackNumber++;
                 NPC.velocity.X = -NPC.direction * 8;
                 NPC.rotation = -NPC.direction * 0.2f;
-                Particle.NewParticle<GlowDonutParticle>(bellToHit.Center, -NPC.direction * Vector2.UnitX);
-                var p = Particle.NewParticle<GlowDonutParticle>(bellToHit.Center, -NPC.direction * Vector2.UnitX * 5);
-                p.Scale *= 0.5f;
-                for (float f = 0; f < 8; f++)
-                {
-                    Vector2 vel = Vector2.UnitX * NPC.direction;
-                    vel *= Main.rand.NextFloat(1f, 15f);
-                    vel = vel.RotatedByRandom(MathHelper.ToRadians(45));
-                    Vector2 position = bellToHit.Center;
-                    position += Main.rand.NextVector2Circular(32, 32);
-                    Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), vel, newColor: Color.White, Scale: Main.rand.NextFloat(0.2f, 2f));
-
-                    if (Main.rand.NextBool(4))
-                    {
-                        FXUtil.GlowStretch(position, vel);
-                    }
-                }
-
-
-                SoundStyle bellHit = AssetRegistry.Sounds.Bishinine.BellHit1;
-                bellHit.PitchVariance = 0.2f;
-                SoundEngine.PlaySound(bellHit, NPC.position);
-                FXUtil.ShakeCamera(NPC.position, 1024, 8);
-                FXUtil.PunchCamera(NPC.position, Vector2.UnitX * NPC.direction, 8, 8, 8);
-                AttackNumber++;
+            
                 if (MultiplayerHelper.IsHost)
                 {
                     float hitDirection = (MyTarget.Center - NPC.Center).ToRotation();
-                    bellToHit.ai[1] = hitDirection;
-                    bellToHit.netUpdate = true;
+                    _baseballProjectile.Projectile.ai[1] = hitDirection;
                 }
-            } else if (Timer >= 14)
+            }
+            else if (Timer >= 14)
             {
                 NPC.rotation *= 0.9f;
                 Animator.PlayAnimation(Anim_SpinTeleportOut);
@@ -1569,7 +1575,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             float waitTime = MathHelper.Lerp(60, 40, MathHelper.Clamp(AttackNumber / 6f, 0f, 1f));
             if (Timer >= waitTime)
             {
-                int number = InPhase2 ? 20 : 14;
+                int number = InPhase2 ? 22 : 14;
                 if (AttackNumber >= number)
                 {
                     SwitchState(AIState.BellDrop_End);
@@ -1583,12 +1589,14 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_BellDropEnd()
         {
-
-            NPC bellToHit = Main.npc[_bellHitNPCIndex];
-            bellToHit.ai[2] = 1;
             Timer++;
             if(Timer == 1)
             {
+                if (MultiplayerHelper.IsHost)
+                {
+                    _baseballProjectile.Projectile.ai[2] = 1;
+                    _baseballProjectile.Projectile.netUpdate = true;
+                }
                 NPC.velocity.Y = -5;
                 Vector2 pos = NPC.Center;
                 var part = FXUtil.GlowCircleBoom(pos,
@@ -1637,7 +1645,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             }
             else
             {
-   
+
+                _hasHammer = false;
                 Animator.PlayAnimation(Anim_Land);
                 if (Timer >= 90)
                 {
@@ -1747,6 +1756,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 if (MultiplayerHelper.IsHost)
                 {
                     _bigBellProjectile = Projectile.NewProjectileDirect(SourceFromThis, NPC.Top - new Vector2(0, 48), Vector2.Zero, ModContent.ProjectileType<BigBell>(), BellBalancingBounceDamage, 2, Main.myPlayer);
+                    _deathCenter = _bigBellProjectile.Center;
+                    NPC.netUpdate = true;
                 }
                 SoundStyle laughSound = AssetRegistry.Sounds.Bishinine.BishinineLaugh;
                 SoundEngine.PlaySound(laughSound, NPC.position);
@@ -1781,11 +1792,11 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
             if(Timer >= 120 && Timer < 150)
             {
-                float side = MyTarget.Center.X < _bigBellProjectile.Center.X ? 1 : -1;
-                Vector2 targetCenter = _bigBellProjectile.Center;
+                float side = MyTarget.Center.X < _deathCenter.X ? 1 : -1;
+                Vector2 targetCenter = _deathCenter;
                 targetCenter.X += side * 100;
                 Vector2 targetVelocity = (targetCenter - NPC.Center);
-                NPC.direction = targetCenter.X < _bigBellProjectile.Center.X ? 1 : -1;
+                NPC.direction = targetCenter.X < _deathCenter.X ? 1 : -1;
                 NPC.velocity = targetVelocity * 0.1f;
              
                 if(Timer >= 140)
@@ -1887,6 +1898,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             {
                 SwitchState(state);
             }
+            SwitchState(AIState.BellDrop_Start);
         }
         #endregion
 
