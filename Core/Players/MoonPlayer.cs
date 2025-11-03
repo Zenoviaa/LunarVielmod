@@ -24,7 +24,15 @@ namespace Stellamod.Core.Players
             base.OnHitNPC(target, hit, damageDone);
             if (ModContent.GetInstance<LunarVeilClientConfig>().RedDamageNumbersToggle)
             {
-                CombatText.NewText(target.getRect(), Color.Lerp(Color.Red, Color.White, 0.25f), hit.Damage, dramatic: hit.Crit);
+                if (hit.Crit)
+                {
+                    CombatText.NewText(target.getRect(), Color.Lerp(Color.LightGoldenrodYellow, Color.White, 0.25f), hit.Damage, dramatic: hit.Crit);
+                }
+                else
+                {
+                    CombatText.NewText(target.getRect(), Color.Lerp(Color.Red, Color.White, 0.25f), hit.Damage, dramatic: hit.Crit);
+                }
+                   
             }
         }
 
