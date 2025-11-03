@@ -874,8 +874,11 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             if (Timer == 1)
             {
                 NPC.TargetClosest();
+                NPC.velocity.Y = -10;
+                var p = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
             }
-            if (Timer >= 30)
+
+            if (Timer >= 30 && NPC.collideY)
             {
                 SwitchState(AIState.BellFall_ThrowScythe);
             }
@@ -889,17 +892,19 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             if (Timer == 1)
             {
                 NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+                NPC.velocity.X = -NPC.direction * 5;
                 if (MultiplayerHelper.IsHost)
                 {
-                    Vector2 velocity = -Vector2.UnitY * 8;
+                    Vector2 velocity = -Vector2.UnitY * 24;
                     Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity,
                         ModContent.ProjectileType<RisingScythe>(), RisingScytheDamage, 1, Main.myPlayer);
                 }
             }
 
             NPC.velocity.X *= 0.94f;
-            NPC.rotation = 0;
-            if (Timer >= 120)
+            NPC.rotation = NPC.velocity.X * 0.025f;
+            if (Timer >= 240)
             {
                 SwitchState(AIState.Idle);
             }
@@ -1204,7 +1209,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
             AIState state = _patternManager.NextPattern();
             SwitchState(state);
-            SwitchState(AIState.ScytheDash_Startup);
+            SwitchState(AIState.BellFall_Start);
         }
         #endregion
 
