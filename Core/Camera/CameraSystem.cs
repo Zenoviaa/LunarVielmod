@@ -11,6 +11,7 @@ namespace Stellamod.Core.Camera
             base.Load();
             Main.instance.CameraModifiers.Add(new OffsetCameraModifier());
             Main.instance.CameraModifiers.Add(new SmoothCameraModifier());
+            Main.instance.CameraModifiers.Add(new RetargetCameraModifier());
         }
     }
 }

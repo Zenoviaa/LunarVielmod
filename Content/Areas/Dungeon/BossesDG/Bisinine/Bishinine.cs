@@ -64,6 +64,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         private bool _contactDamage;
         private bool _enabledPhase2Attacks;
         private bool _hasHammer=true;
+        private bool _black;
         private int _bellHitNPCIndex;
         private AIState _nextState;
 
@@ -135,8 +136,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         private int GrimmSpikesDamage => 60;
         private int MagicMissileDamage => 60;
         private int CometDamage => 90;
-        private int BellBalancingBounceDamage => 100;
-
+        private int BellBalancingBounceDamage => 60;
+        private int BouncingScytheDamage => 25;
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
@@ -518,13 +519,88 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         #region Bouncing Scythe
         private void AI_BouncingScytheStartup()
         {
+            Animator.PlayAnimation(Anim_HammerDrop);
+            TargetOutlineColor = Color.Yellow;
+            NPC.velocity.X *= 0.94f;
+            NPC.rotation = 0;
+            //Throws the hammerscythe at the ceiling and a bunch of bells fall and bounce on the ground
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                NPC.velocity.Y = -2;
+                var p = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+                SoundStyle laugh = AssetRegistry.Sounds.Bishinine.BishinineLaugh;
+                SoundEngine.PlaySound(laugh, NPC.position);
+            }
 
+            if (Timer >= 30 && NPC.collideY)
+            {
+                SwitchState(AIState.BouncingScytheThrow);
+            }
         }
 
 
         private void AI_BouncingScytheThrow()
         {
+            Timer++;
+            if (Timer == 1)
+            {
+                _hasHammer = false;
+                NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+                NPC.velocity.X = -NPC.direction * 5;
 
+                SoundStyle laugh = AssetRegistry.Sounds.Bishinine.BishinineSound1;
+                SoundEngine.PlaySound(laugh, NPC.position);
+                if (MultiplayerHelper.IsHost)
+                {
+                    Vector2 velocity = -Vector2.UnitY * 10;
+                    Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity,
+                        ModContent.ProjectileType<BouncingScythe>(), BouncingScytheDamage, 1, Main.myPlayer);
+                }
+            }
+            switch (AttackNumber)
+            {
+                case 0:
+                    Animator.PlayAnimation(Anim_FingerUp);
+                    if (Animator.IsFinished())
+                    {
+                        AttackNumber++;
+                    }
+                    break;
+                case 1:
+                    Animator.PlayAnimation(Anim_ThrowBigBall);
+                    if (Animator.IsFinished())
+                    {
+                        AttackNumber++;
+                    }
+                    break;
+                case 2:
+                    Animator.PlayAnimation(Anim_ThrowBigBallReverse);
+                    if (Animator.IsFinished())
+                    {
+                        AttackNumber++;
+                    }
+                    break;
+                case 3:
+                    Animator.PlayAnimation(Anim_FingerUpReverse);
+                    if (Animator.IsFinished())
+                    {
+                        AttackNumber++;
+                    }
+                    break;
+                case 4:
+                    Animator.PlayAnimation(Anim_HammerlessIdle);
+                    break;
+            }
+
+            NPC.velocity.X *= 0.94f;
+            NPC.rotation = NPC.velocity.X * 0.025f;
+            if (Timer >= 220)
+            {
+                SwitchState(AIState.Idle);
+            }
         }
 
 
@@ -1583,6 +1659,10 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             _contactDamage = false;
             TargetOutlineColor = Color.Transparent;
             Timer++;
+            if(Timer == 1)
+            {
+                ShowNamePlate();
+            }
             NPC.velocity.X *= 0.9f;
             if (Timer >= 120)
             {
@@ -1632,10 +1712,67 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             }
         }
 
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            base.HitEffect(hit);
+            if (NPC.life <= 0 && State != AIState.Death)
+            {
+                NPC.life = 1;
+                SwitchState(AIState.Death);
+            }
+
+
+            if (NPC.life <= 0)
+            {
+                NPC.life = 1;
+            }
+        }
+
         private void AI_Death()
         {
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
+            Animator.PlayAnimation(Anim_Spinning);
+
+            NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, -1, 0.1f);
+            NPC.velocity.X *= 0.9f;
+            NPC.rotation *= 0.9f;
+
+
             TargetOutlineColor = Color.Transparent;
             Timer++;
+            if(Timer == 1)
+            {
+
+                SoundStyle laughSound = AssetRegistry.Sounds.Bishinine.BishinineLaugh;
+                SoundEngine.PlaySound(laughSound, NPC.position);
+            }
+            RetargetCameraModifier.NewTarget = NPC.Center;
+            if (Timer == 120)
+            {
+                _black = true;
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.UnitY, 
+                        ModContent.ProjectileType<DeathLightning>(), 0, 0, Main.myPlayer);
+                }
+            }
+
+            if(Timer >= 120 && Timer % 5 == 0)
+            {
+                Vector2 vel = Main.rand.NextVector2Circular(4, 4);
+                Particle.NewParticle<EmberParticle>(NPC.Center, vel);
+            }
+            if(Timer >= 120 && Main.rand.NextBool(10))
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Ash);
+            }
+            
+            if(Timer >= 120)
+            {
+                _black = true;
+                NPC.scale = MathHelper.Lerp(1f, 0f, (Timer - 120f) / 120f);
+            }
             if (Timer >= 240)
             {
                 NPC.Kill();
@@ -1657,6 +1794,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                        new Tuple<AIState, float>(AIState.GrimmSpikes_RunToPlayer, 1.0f),
                        new Tuple<AIState, float>(AIState.ScytheDash_Startup, 1.0f),
                        new Tuple<AIState, float>(AIState.MagicMissle_Startup, 1.0f),
+                       new Tuple<AIState, float>(AIState.BouncingScytheStartup, 1.0f),
                        new Tuple<AIState, float>(AIState.CometJump_Startup, 0.1f),
                        new Tuple<AIState, float>(AIState.BellRoll_Start, 1.0f));
                 }
@@ -1690,6 +1828,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             {
                 SwitchState(state);
             }
+            SwitchState(AIState.BouncingScytheStartup);
         }
         #endregion
 
@@ -1707,6 +1846,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            if (_black)
+                drawColor = Color.Black;
             string texturePath = Texture;
             Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
             Vector2 drawPos = NPC.Center - screenPos;
