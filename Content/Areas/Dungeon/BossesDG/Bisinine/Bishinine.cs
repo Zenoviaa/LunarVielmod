@@ -1881,12 +1881,12 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
             AIState state = _patternManager.NextPattern();
             bool needsHammer = DoesAttackUseHammer(state);
-            if(_hasHammer && !needsHammer)
+            if (_hasHammer && !needsHammer)
             {
                 _nextState = state;
                 _hasHammer = false;
                 SwitchState(AIState.HammerDrop);
-            } 
+            }
             else if (!_hasHammer && needsHammer)
             {
                 _nextState = state;
@@ -1898,7 +1898,6 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             {
                 SwitchState(state);
             }
-            SwitchState(AIState.BellDrop_Start);
         }
         #endregion
 

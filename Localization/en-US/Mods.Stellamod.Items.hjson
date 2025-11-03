@@ -458,7 +458,9 @@ Steali: {
 	DisplayName: Steali
 	Tooltip:
 		'''
-		Greatly increased dash distance
+		Greatly increased dash distance and velocity
+		10% increased stamina regeneration
+		+1 max stamina
 		Hollow Knight inspired!
 		'''
 }
@@ -9507,4 +9509,9 @@ TormentedSoulLocket: {
 		Your spectral summons will explode and heal you for 10 health upon death!
 		5% increased summon damage
 		'''
+}
+
+FastFlight: {
+	DisplayName: Fast Flight
+	Tooltip: Allows flight and slow fall, for a very short time
 }
