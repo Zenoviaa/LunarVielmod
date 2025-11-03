@@ -156,7 +156,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             _squishScale = Vector2.One;
             NPC.width = 64;
             NPC.height = 64;
-            NPC.damage = 14;
+            NPC.damage = 60;
             NPC.defense = 2;
             NPC.lifeMax = 10000;
             NPC.HitSound = SoundID.NPCHit1;
@@ -571,6 +571,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_ScytheDashStartup()
         {
+            _starTrailTime *= 0.8f;
+            _afterImageTime *= 0.8f;
             TargetOutlineColor = Color.Yellow;
             //   Holds her scythe and crosses the ground with fast dashes.
             Timer++;
@@ -607,12 +609,26 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             {
                 AttackNumber++;
                 NPC.direction = TargetDirection;
-  
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(SourceFromThis, NPC.Center - (NPC.direction * Vector2.UnitX * 40) - Vector2.UnitY * 320, Vector2.UnitY, 
+                        ModContent.ProjectileType<DashLightning>(), NPC.damage, 1, Main.myPlayer);
+                }
             }
 
+            if (NPC.collideX)
+            {
+                Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);
+            }
             if(Timer % 5 == 0)
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<GlowSparkleDust>(), newColor: Color.White, Scale: Main.rand.NextFloat(0.2f, 1f));
+            }
+            if (Timer % 1 == 0)
+            {
+                var spark = Particle.NewParticle<SparkParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), Vector2.Zero);
+                spark.outerColor = Color.Blue;
+                spark.fadeToColor = Color.Black;
             }
             if (Timer % 1 == 0)
             {
@@ -628,16 +644,16 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 p.innerColor = Color.DarkGray;
                 p.outerColor = Color.Black;
             }
-            if (Timer >= 30)
+            if (Timer >= 10)
             {
                 NPC.velocity.X *= 0.9f;
             } else
             {
-                NPC.velocity.X = MathHelper.Lerp(0, 40 * NPC.direction, EasingFunction.InOutSine(Timer / 10f));
+                NPC.velocity.X = MathHelper.Lerp(0, 80 * NPC.direction, EasingFunction.InOutSine(Timer / 10f));
 
             }
             NPC.rotation = NPC.velocity.X * 0.005f;
-            if (Timer >= 30f)
+            if (Timer >= 10)
             {
                 SwitchState(AIState.ScytheDash_End);
             }
@@ -645,8 +661,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_ScytheDashEnd()
         {
-            _starTrailTime *= 0.9f;
-            _afterImageTime *= 0.9f;
+            _starTrailTime *= 0.8f;
+            _afterImageTime *= 0.8f;
             TargetOutlineColor = Color.Transparent;
             Timer++;
             NPC.velocity.X *= 0.9f;
@@ -1227,7 +1243,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 Vector2 oldDrawPos = oldPos - Main.screenPosition;
                 float f = i;
                 float interpolant = f / (float)NPC.oldPos.Length;
-                Color fadeColor = Color.Lerp(Color.White, Color.Blue, interpolant) * 0.05f;
+                Color fadeColor = Color.Lerp(Color.White, Color.Blue, interpolant) * 0.25f;
                 fadeColor *= (1.0f - interpolant);
                 fadeColor.A = 0;
                 oldDrawPos += NPC.Size / 2f;
