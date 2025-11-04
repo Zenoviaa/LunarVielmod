@@ -66,7 +66,29 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 _lightningPower = 30;
             }
             float targetBeamLength = ProjectileHelper.PerformBeamHitscan(Projectile.Center, Projectile.velocity, 2400);
-            BeamLength = targetBeamLength;
+            BeamLength = MathHelper.Max(targetBeamLength, 1);
+            if (!_calculatedStrikePoints && BeamLength > 0)
+            {
+                List<Vector2> beamPoints = new List<Vector2>();
+                Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
+                float numPoints = 80;
+                float randOffset = Main.rand.NextFloat(-1f, 1f);
+                Vector2 start = Projectile.Center;
+                Vector2 end = Projectile.Center + direction * BeamLength;
+                end.X += Main.rand.Next(-16, -16);
+                for (float i = 0; i <= numPoints; i++)
+                {
+                    float interp = i / numPoints;
+                    Vector2 point = Vector2.Lerp(start, end, interp);
+                    point.X += EasingFunction.QuadraticBump(interp) * 64 * randOffset;
+                    beamPoints.Add(point);
+                }
+
+                BeamPoints = beamPoints.ToArray();
+                BeamRot = new float[BeamPoints.Length];
+                _calculatedStrikePoints = true;
+            }
+
             if (Timer == 30)
             {
                 _lightningPower = 0.9f;
@@ -211,32 +233,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 }
             }
             _lightningTime -= 0.1f;
-            if (!_calculatedStrikePoints && BeamLength > 0)
-            {
-                List<Vector2> beamPoints = new List<Vector2>();
-                Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
-                float numPoints = 80;
-                float randOffset = Main.rand.NextFloat(-1f, 1f);
-                Vector2 start = Projectile.Center;
-                Vector2 end = Projectile.Center + direction * BeamLength;
-                end.X += Main.rand.Next(-16, -16);
-                for (float i = 0; i <= numPoints; i++)
-                {
 
-
-                    float interp = i / numPoints;
-                    Vector2 point = Vector2.Lerp(start, end, interp);
-                    point.X += EasingFunction.QuadraticBump(interp) * 64 * randOffset;
-                    //if(i % 4 == 0)
-                    //point.X += Main.rand.Next(-16, 16);
-                    beamPoints.Add(point);
-                }
-
-                BeamPoints = beamPoints.ToArray();
-                BeamRot = new float[BeamPoints.Length];
-
-                _calculatedStrikePoints = true;
-            }
         }
 
         public override bool? CanDamage()
