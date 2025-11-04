@@ -48,8 +48,10 @@ namespace Stellamod.Tiles
             BehindDecorativeWall behindDecorativeWall = ModContent.GetModWall(Item.createWall) as BehindDecorativeWall;
             if (behindDecorativeWall != null)
             {
+                if (Main.HoverItem.type == Type)
+                    SpecialDecorativeWall.drawBig = true;
                 behindDecorativeWall.DrawItem(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-                return true;
+                return false;
             }
 
 
@@ -57,8 +59,10 @@ namespace Stellamod.Tiles
             DecorativeWall decorativeWall = ModContent.GetModWall(Item.createWall) as DecorativeWall;
             if (decorativeWall != null)
             {
+                if (Main.HoverItem.type == Type)
+                    SpecialDecorativeWall.drawBig = true;
                 decorativeWall.DrawItem(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-                return true;
+                return false;
             }
             return false;
         }
@@ -110,6 +114,7 @@ namespace Stellamod.Tiles
         public Action ClickFunc { get; set; }
         public float Rotation { get; private set; }
         public bool AdditiveDraw { get; set; }
+        public static bool drawBig;
         public override void SetStaticDefaults()
         {
             StructureColor = Color.White;
@@ -137,8 +142,13 @@ namespace Stellamod.Tiles
                 drawFrame = texture.GetFrame(0, HorizontalFrameCount, VerticalFrameCount);
             }
             Vector2 drawOrigin = drawFrame.Size() / 2f;
-
-            spriteBatch.Draw(texture, position, drawFrame, drawColor, 0, drawOrigin, scale * 0.5f, SpriteEffects.None, 0);
+            Vector2 frameSize = drawFrame.Size();
+            Vector2 targetSize = frame.Size();
+            Vector2 mult = targetSize / frameSize;
+            if (drawBig)
+                mult = Vector2.One; ;
+            drawBig = false;
+            spriteBatch.Draw(texture, position, drawFrame, drawColor, 0, drawOrigin, scale * mult, SpriteEffects.None, 0);
         }
         public override bool CanExplode(int i, int j) => false;
 
