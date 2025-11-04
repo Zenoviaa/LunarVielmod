@@ -69,6 +69,8 @@ namespace Stellamod.Content.Areas.Abyss.AccAB
             base.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
             if (drawInfo.shadow != 0f)
                 return;
+            if (!hasFastFlight)
+                return;
             float alpha = EasingFunction.InOutSine(_wingTimer / 60f);
             Texture2D wingsTexture = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/FastFlightProj").Value;
             Rectangle frame = wingsTexture.GetFrame(_frame, 8);
