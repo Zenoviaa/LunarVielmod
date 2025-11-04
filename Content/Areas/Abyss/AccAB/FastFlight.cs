@@ -24,7 +24,8 @@ namespace Stellamod.Content.Areas.Abyss.AccAB
         public override void PostUpdateEquips()
         {
             base.PostUpdateEquips();
-
+            if (!hasFastFlight)
+                return;
             _wingTimer++;
             if (_wingTimer % 7 == 0)
             {
