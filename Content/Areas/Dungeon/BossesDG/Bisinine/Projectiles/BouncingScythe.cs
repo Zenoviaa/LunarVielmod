@@ -36,7 +36,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             Projectile.hostile = true;
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 600;
+            Projectile.timeLeft = 700;
         }
         public override void AI()
         {

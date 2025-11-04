@@ -137,7 +137,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         private int RisingScytheDamage => 40;
         private int GrimmSpikesDamage => 60;
         private int MagicMissileDamage => 60;
-        private int CometDamage => 90;
+        private int CometDamage => 70;
         private int BellBalancingBounceDamage => 60;
         private int BouncingScytheDamage => 25;
         private int BaseballDamage => 25;
@@ -181,8 +181,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             NPC.width = 32;
             NPC.height = 70;
             NPC.damage = 60;
-            NPC.defense = 2;
-            NPC.lifeMax = 10000;
+            NPC.defense = 12;
+            NPC.lifeMax = 23000;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Bomb");
             NPC.knockBackResist = 0f;
@@ -353,7 +353,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             if (!NPC.HasValidTarget)
             {
                 NPC.TargetClosest();
-                if (!NPC.HasValidTarget)
+                if (!NPC.HasValidTarget && State != AIState.Despawn)
                 {
                     SwitchState(AIState.Despawn);
                 }
@@ -361,7 +361,9 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
             if(InPhase2 && !_enabledPhase2Attacks && State != AIState.CometJump_Startup)
             {
-
+                _contactDamage = false;
+                NPC.velocity.X = 0;
+                NPC.velocity.Y = 0;
                 AttackNumber = 0;
                 _patternManager = null;
                 _enabledPhase2Attacks = true;
@@ -1701,7 +1703,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             NPC.velocity.X *= 0.9f;
             NPC.rotation = NPC.velocity.X * 0.2f;
             NPC.noGravity = false;
-            NPC.noTileCollide = false;
+            NPC.noTileCollide = NPC.Bottom.Y < MyTarget.Top.Y;
             float timeToWait = InPhase2 ? 95 : 60;
             if (Timer >= timeToWait)
             {
@@ -1715,7 +1717,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             Timer++;
             float interpolant = Timer / 60f;
             float ease = EasingFunction.InOutSine(interpolant);
-            NPC.scale = MathHelper.Lerp(NPC.scale, 0f, ease);
+            NPC.scale = MathHelper.Lerp(1f, 0f, ease);
             if (Timer >= 60f)
             {
                 NPC.active = false;

@@ -91,7 +91,7 @@ namespace Stellamod.Content.Areas.Abyss.AccAB
     {
         public override void SetStaticDefaults()
         {
-            ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(20, 9f, 3);
+            ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(14, 9f, 3);
         }
 
         public override void SetDefaults()
