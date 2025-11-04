@@ -1,8 +1,7 @@
-﻿
+﻿using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Items.Armors.Vanity.Astolfo;
 
 using Stellamod.Items.Special.MinerLogs;
-using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Terraria;

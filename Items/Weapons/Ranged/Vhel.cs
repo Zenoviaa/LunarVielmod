@@ -26,7 +26,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 10;
             Item.value = Item.sellPrice(0, 1, 1, 29);
-            Item.rare = ModContent.RarityType<GothiviaSpecialRarity>();
+
             Item.shootSpeed = 15;
             Item.autoReuse = true;
             Item.DamageType = DamageClass.Generic;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Snow.AccsSN;
 using Stellamod.Content.Quests.ZuiQuest;
 using Stellamod.Core;
 using Stellamod.Core.QuestSystem;
@@ -12,7 +13,6 @@ using Stellamod.Items.Armors.Witchen;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Quest.Zui;
-using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
@@ -263,8 +263,7 @@ namespace Stellamod.NPCs.Town
             if (ZuiQuestSystem.QuestsCompleted == 1)
             {
 
-                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CanOfLeaves>(), 1);
-
+   
             }
 
             //   Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), 2);
@@ -540,7 +539,7 @@ namespace Stellamod.NPCs.Town
 
             .Add<ChromaCutter>(ZuiQuestSystem.ShopCondition30)
             //	.Add<OnionOfStrength>(ZuiQuestSystem.ShopCondition30)
-            .Add<ZuiCard>(ZuiQuestSystem.ShopCondition30)
+
             ;
             npcShop.Register(); // Name of this shop tab		
         }

@@ -4,7 +4,6 @@ using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
-using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Terraria;
@@ -47,12 +46,6 @@ namespace Stellamod.Items.Consumables
             // We have to replicate the expert drops from MinionBossBody here via QuickSpawnItem
 
             var entitySource = player.GetSource_OpenItem(Type);
-
-            if (Main.rand.NextBool(7))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<WCIgniter>());
-            }
-
             if (Main.rand.NextBool(40))
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<TrickPowder>());

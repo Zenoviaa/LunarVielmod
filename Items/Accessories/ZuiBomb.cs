@@ -24,7 +24,7 @@ namespace Stellamod.Items.Accessories
             Item.width = 24;
             Item.height = 28;
             Item.value = Item.buyPrice(platinum: 3);
-            Item.rare = ModContent.RarityType<Helpers.GoldenSpecialRarity>();
+     
             Item.accessory = true;
 
 

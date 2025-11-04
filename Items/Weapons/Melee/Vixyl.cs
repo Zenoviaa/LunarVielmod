@@ -133,7 +133,6 @@ namespace Stellamod.Items.Weapons.Melee
             Item.noMelee = true;
             Item.noUseGraphic = true;
 
-            Item.rare = ModContent.RarityType<GothiviaSpecialRarity>();
             Item.shoot = ModContent.ProjectileType<VixylSwordProj>();
             Item.shootSpeed = 15;
         }

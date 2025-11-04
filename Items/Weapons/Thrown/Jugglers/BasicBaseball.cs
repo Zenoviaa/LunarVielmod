@@ -1,7 +1,6 @@
-﻿using Stellamod.Core.Bases;
-using Stellamod.Items.Harvesting;
+﻿using Stellamod.Content.Items.Materials;
+using Stellamod.Core.Bases;
 using Stellamod.Items.Materials.Molds;
-using Stellamod.Projectiles.Thrown.Jugglers;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -10,16 +9,10 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
     public class BasicBaseball : BaseJugglerItem
     {
-        public override DamageClass AlternateClass => DamageClass.Ranged;
-        public override void SetClassSwappedDefaults()
-        {
-            Item.damage = 10;
-        }
-
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 19;
+            Item.damage = 11;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 24;
             Item.height = 24;
@@ -41,5 +34,9 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
             base.AddRecipes();
             this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), material: ModContent.ItemType<Mushroom>());
         }
+    }
+    public class BasicBaseballProj : BaseJugglerProjectile
+    {
+
     }
 }

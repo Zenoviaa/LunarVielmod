@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Content.Items.Materials;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Slashers.ThefirstAurora;
 using System.Collections.Generic;

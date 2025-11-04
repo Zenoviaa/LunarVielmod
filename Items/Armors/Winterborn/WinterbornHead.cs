@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
+using Stellamod.Content.Items.Materials;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

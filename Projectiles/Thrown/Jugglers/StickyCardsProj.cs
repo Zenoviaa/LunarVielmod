@@ -111,21 +111,10 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
                  outerGlowColor: Color.Purple, duration: 25, baseSize: 0.18f);
         }
 
-        public override float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width;
-            return baseWidth * VectorHelper.Osc(0.5f, 1f, 3);
-        }
-
         public float WidthFunctionAura(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width;
             return baseWidth * 0.2f;
-        }
-
-        public override Color ColorFunction(float completionRatio)
-        {
-            return Color.Pink * VectorHelper.Osc(0.5f, 1f, 3) * 0.3f;
         }
 
         public Color ColorFunctionAura(float completionRatio)
@@ -135,33 +124,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D texture2D4 = ModContent.Request<Texture2D>(TextureRegistry.BoreParticleWhite).Value;
-            Color drawColor = new Color(Color.Pink.R, Color.Pink.G, Color.Pink.B, 0);
-            Color drawColor2 = new Color(Color.LightPink.R, Color.LightPink.G, Color.LightPink.B, 0);
-            Color auraColor = Color.Lerp(drawColor, drawColor2, VectorHelper.Osc(0f, 1f, 3));
-            auraColor *= 0.3f;
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null,
-                auraColor, Projectile.rotation,
-                new Vector2(256, 256), 0.2f, SpriteEffects.None, 0f);
-
-
-            BungeeGumTrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            Vector2 textureSize = new Vector2(16, 22);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.StarTrail);
-            BungeeGumTrailDrawer.WidthFunc = WidthFunction;
-            BungeeGumTrailDrawer.ColorFunc = ColorFunction;
-            BungeeGumTrailDrawer.DrawPrims(BungeeGumPos, textureSize * 0.5f - Main.screenPosition, 155);
-
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SpikyTrail1);
-            BungeeGumTrailDrawer.WidthFunc = WidthFunctionAura;
-            BungeeGumTrailDrawer.ColorFunc = ColorFunctionAura;
-            BungeeGumTrailDrawer.DrawPrims(BungeeGumAuraPos, textureSize * 0.5f - Main.screenPosition, 155);
-
-            if (Timer == 0)
-            {
-                DrawHelper.DrawAdditiveAfterImage(Projectile, Color.White, Color.Transparent, ref lightColor);
-            }
-
+           
             return true;
         }
     }

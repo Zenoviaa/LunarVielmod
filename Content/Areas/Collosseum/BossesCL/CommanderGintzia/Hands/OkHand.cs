@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Helpers;
-using Stellamod.Projectiles.Slashers.ScarecrowSaber;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -48,7 +48,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             TargetOutlineColor = Color.Red;
             if (Timer == 1)
             {
-   
+
                 HasDoneGrab = false;
                 GrabbedPlayer = -1;
                 NPC.netUpdate = true;

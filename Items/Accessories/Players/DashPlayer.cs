@@ -2,6 +2,7 @@
 using Stellamod.Core.ClassReworkSystem;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using System;
 using System.IO;
 using Terraria;
 using Terraria.Graphics.Shaders;
@@ -119,8 +120,10 @@ namespace Stellamod.Items.Accessories.Players
         public int MaxDashCount;
         public bool ShouldFlicker => DashCountTimer > MaxDashCountTimer / 2f;
 
+        public float DashRegenerationBonus;
         public override void ResetEffects()
         {
+            DashRegenerationBonus = 0f;
             MaxDashCountTimer = 140;
             MaxDashCount = 3;
             DashItem = null;
@@ -279,7 +282,12 @@ namespace Stellamod.Items.Accessories.Players
             if (DashCount < MaxDashCount)
             {
                 DashCountTimer++;
-                if (DashCountTimer >= MaxDashCountTimer)
+
+                float maxDashCountTimer = MaxDashCountTimer;
+
+
+                maxDashCountTimer *= MathHelper.Lerp(1f, 0f, ExtraMath.Saturate(DashRegenerationBonus));
+                if (DashCountTimer >= maxDashCountTimer)
                 {
                     DashCount++;
                     DashCountTimer = 0;

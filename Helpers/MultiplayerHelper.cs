@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas.Fable.WeaponsFB;
+using Stellamod.Core.DungeonGeneration;
 using Stellamod.Core.SilkSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
@@ -129,14 +131,17 @@ namespace Stellamod
                     break;
 
                 case MessageType.DashPlayerSync:
-                    byte playernumber = reader.ReadByte();
-                    DashPlayer dashPlayer = Main.player[playernumber].GetModPlayer<DashPlayer>();
-                    dashPlayer.ReceivePlayerSync(reader);
-
-                    if (Main.netMode == NetmodeID.Server)
                     {
-                        // Forward the changes to the other clients
-                        dashPlayer.SyncPlayer(-1, whoAmI, false);
+
+                        byte playernumber = reader.ReadByte();
+                        DashPlayer dashPlayer = Main.player[playernumber].GetModPlayer<DashPlayer>();
+                        dashPlayer.ReceivePlayerSync(reader);
+
+                        if (Main.netMode == NetmodeID.Server)
+                        {
+                            // Forward the changes to the other clients
+                            dashPlayer.SyncPlayer(-1, whoAmI, false);
+                        }
                     }
                     break;
 
@@ -145,6 +150,37 @@ namespace Stellamod
                     {
                         ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
                         colosseumSystem.Reset();
+                    }
+                    break;
+                case MessageType.HandleDoor:
+                    if(Main.netMode == NetmodeID.Server)
+                    {
+                        int x = (int)reader.ReadInt32();
+                        int y = (int)reader.ReadInt32();
+                        Point tilePosition = new Point(x, y);
+                        int d = (int)reader.ReadInt32();
+                        if(d == -1)
+                        {
+                            DungeonGenerationHelper.RemoveDoorInWorld(tilePosition);
+                        }
+                        else
+                        {
+                            Door door = (Door)d;
+                            DungeonGenerationHelper.PlaceDoorInWorld(tilePosition, door);
+                        }
+                    }
+                    break;
+                case MessageType.ScarecrowPlayerSync:
+                    {
+                        byte playernumber = reader.ReadByte();
+                        ScarecrowSaberPlayer dashPlayer = Main.player[playernumber].GetModPlayer<ScarecrowSaberPlayer>();
+                        dashPlayer.ReceivePlayerSync(reader);
+
+                        if (Main.netMode == NetmodeID.Server)
+                        {
+                            // Forward the changes to the other clients
+                            dashPlayer.SyncPlayer(-1, whoAmI, false);
+                        }
                     }
                     break;
             }

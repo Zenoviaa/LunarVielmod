@@ -28,6 +28,7 @@ namespace Stellamod.Items.Accessories
             base.UpdateAccessory(player, hideVisual);
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
             dashPlayer.DashVelocity += 7;
+            dashPlayer.DashRegenerationBonus += 0.05f;
         }
     }
 }

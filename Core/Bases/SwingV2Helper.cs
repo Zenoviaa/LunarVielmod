@@ -13,6 +13,114 @@ namespace Stellamod.Core.Bases
 
     public static class SwingV2Helper
     {
+        public static void AddHammerSwingStyle(ISwingProjectile swings)
+        {
+
+            SoundStyle hammerSlash1 = SoundRegistry.HeavySwordSlash1;
+            hammerSlash1.PitchVariance = 0.2f;
+
+            SoundStyle hammerSlash2 = SoundRegistry.HeavySwordSlash2;
+            hammerSlash2.PitchVariance = 0.2f;
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 90,
+                SwingDegrees = 310,
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                Easing = (float lerpValue) => Easing.InOutBack(lerpValue),
+                Sound = hammerSlash1,
+                HitCount=2
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 90,
+                SwingDegrees = 310,
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                Easing = (float lerpValue) => Easing.InOutBack(lerpValue),
+                Sound = hammerSlash2,
+                HitCount = 2
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 90,
+                SwingDegrees = 330,
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                Easing = (float lerpValue) => Easing.InOutBack(lerpValue),
+                Sound = hammerSlash1,
+                HitCount = 2
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 78,
+                SwingDegrees = 330,
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                Easing = (float lerpValue) => Easing.InOutBack(lerpValue),
+                Sound = hammerSlash2,
+                HitCount = 2
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 78,
+                SwingDegrees = 330,
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                Easing = (float lerpValue) => Easing.InOutBack(lerpValue),
+                Sound = hammerSlash1,
+                HitCount = 2
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 78,
+                SwingDegrees = 600,
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                Easing = (float lerpValue) => Easing.InOutBack(lerpValue),
+                Sound = hammerSlash2,
+                HitCount = 2
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 80,
+                SwingDegrees = 600,
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                Easing = (float lerpValue) => Easing.InOutBack(lerpValue),
+                Sound = hammerSlash1,
+                HitCount = 2
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 100,
+                SwingDegrees = 600,
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                Easing = (float lerpValue) => Easing.InOutBack(lerpValue),
+                Sound = hammerSlash2,
+                HitCount = 2
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 120,
+                SwingDegrees = 800,
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                Easing = (float lerpValue) => Easing.InOutBack(lerpValue),
+                Sound = hammerSlash1,
+                HitCount = 2
+            });
+        }
         public static void AddKnivesSwingStyle(ISwingProjectile swings)
         {
 

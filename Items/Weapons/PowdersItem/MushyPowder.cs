@@ -1,6 +1,6 @@
-﻿using Stellamod.Items.Harvesting;
+﻿using Stellamod.Content.Items.Materials;
+using Stellamod.Core.IgnitersNPowders;
 using Stellamod.Items.Materials.Molds;
-using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Projectiles.IgniterExplosions;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -13,7 +13,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
         {
             base.SetDefaults();
             //Percent increase, 1 is +100% damage
-            DamageModifier = 2;
+            DamageModifier = 0.5f;
             ExplosionType = ModContent.ProjectileType<MushyBoom>();
 
             SoundStyle explosionSoundStyle = new SoundStyle("Stellamod/Assets/Sounds/Green");

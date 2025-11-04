@@ -79,6 +79,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 lightningSoundStyle.PitchVariance = 0.1f;
                 SoundEngine.PlaySound(lightningSoundStyle, Projectile.position);
 
+
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
                 for (int i = 0; i < 16; i++)
                 {

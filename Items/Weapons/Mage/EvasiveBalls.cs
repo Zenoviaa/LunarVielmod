@@ -1,4 +1,4 @@
-﻿using Stellamod.Items.Materials;
+﻿using Stellamod.Content.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.ID;

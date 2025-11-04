@@ -1,14 +1,11 @@
-﻿using Humanizer.Bytes;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
-using Stellamod.Items.Weapons.Igniters;
-using Terraria;
-using ReLogic.Content;
-using Stellamod.Trails;
 using System;
+using Terraria;
 namespace Stellamod.Visual.Particles
 {
     public class GlowDonutParticle : Particle
@@ -34,7 +31,7 @@ namespace Stellamod.Visual.Particles
             _stretchScale = new Vector2(1f, 0.2f);
             Rotation = Main.rand.NextFloat(0f, 3.14f);
             distortOut = true;
-                    _direction = Main.rand.NextFloat(-1, 2);
+            _direction = Main.rand.NextFloat(-1, 2);
 
             Frame = new Rectangle(0, 0, 128, 128);
             Scale = Main.rand.NextFloat(0.8f, 1) * 2;
@@ -92,7 +89,7 @@ namespace Stellamod.Visual.Particles
 
             Vector2 drawScale = Scale * _stretchScale;
             drawScale *= MathHelper.Lerp(0.5f, 1f, EasingFunction.OutExpo(_interpolant));
-            spriteBatch.Draw(texture.Value, centerPos, null,color, Rotation, texture.Size() / 2f, drawScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture.Value, centerPos, null, color, Rotation, texture.Size() / 2f, drawScale, SpriteEffects.None, 0);
         }
     }
 }

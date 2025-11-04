@@ -11,13 +11,6 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
     public class StickyCards : BaseJugglerItem
     {
-        public override DamageClass AlternateClass => DamageClass.Ranged;
-
-        public override void SetClassSwappedDefaults()
-        {
-            Item.damage = 45;
-            Item.mana = 0;
-        }
 
         public override void SetDefaults()
         {
@@ -33,7 +26,6 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
             Item.value = Item.sellPrice(0, 29, 50, 0);
-            Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
             Item.crit = 16;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;

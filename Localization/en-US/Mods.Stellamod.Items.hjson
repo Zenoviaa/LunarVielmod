@@ -22,7 +22,8 @@ Common: {
 	PowderDamage: Increases igniter card damage by {0}%!
 	PowderEquip: Equip this powder to a card!
 	IgniterCard: When it hits an enemy, it explodes with the effects of all the powders equipped to it!
-	IgniterCardHelp: Right click in your inventory to put powders on your card!,f
+	IgniterCardHelp: Right click in your inventory to put powders on your card!
+	IgniterCardType: Igniter Weapon Type
 	GenericDamage: " generic damage"
 	Lantern: Lantern Light Pet
 	LanternHelp: Put it in your light pet slot or right click it to use it for more range!
@@ -54,6 +55,7 @@ Common: {
 	WeaponTypeScythe: Scythe Weapon Type
 	WeaponTypeGreatsword: Greatsword Weapon Type
 	WeaponTypeSpear: Spear Weapon Type
+	WeaponTypeHammer: Hammer Weapon Type
 	InsourceTime: "{0} seconds added to your flask cooldown"
 	XixianFlaskLock: This item is LOCKED, continue exploring and you may find it.
 	StaminaFlaskLock: This item is LOCKED, continue exploring and you may find it.
@@ -384,20 +386,14 @@ HikersBackpack: {
 	DisplayName: Hiker's Backpack
 	Tooltip:
 		'''
-		Increased life regeneration!
-		+3% damage 
+		8% increased movement speed
 		Drops stumps on the ground as you walk!
 		'''
 }
 
 IllusionistBook: {
 	DisplayName: Book of Wooden Illusion
-	Tooltip:
-		'''
-		Increased life regeneration!
-		+3% damage
-		3% increased critical strike chance
-		'''
+	Tooltip: 10% decreased magic wand charge time!
 }
 
 JellyfishTissue: {
@@ -462,7 +458,8 @@ Steali: {
 	DisplayName: Steali
 	Tooltip:
 		'''
-		Greatly increased dash distance
+		Greatly increased dash distance and velocity
+		5% increased stamina regeneration
 		Hollow Knight inspired!
 		'''
 }
@@ -1435,8 +1432,10 @@ Hornet: {
 }
 
 MorrowSalface: {
-	DisplayName: Fabled Salface
-	Tooltip: Shoots three bolts and then a big arcanal bolt
+	DisplayName: Fabled Bow
+	Tooltip: An enchanted bow used to snipe enemies from afar!
+	BasicSlash: Converts woden arrows into blazing fast dagger arrows!
+	StaminaSlash: Shoots a barrage of piercingly-fast enchanted sword arrows!
 }
 
 SteamedNail: {
@@ -1549,12 +1548,9 @@ AlcadizScrap: {
 
 BurningAngel: {
 	DisplayName: Burning Angel
-	Tooltip:
-		'''
-		Shoots out many axes, beware they explode on impact
-		Steerable for a while and consectutive hits speed up next throw!
-		Made from heavy fabled metal!
-		'''
+	Tooltip: Made from heavy fabled metal!
+	BasicSlash: ""
+	StaminaSlash: Throws a controllable axe!
 }
 
 GovheilBoreI: {
@@ -2084,8 +2080,8 @@ LeatherGlove: {
 	DisplayName: Leather Glove
 	Tooltip:
 		'''
-		Increases throwing damage by 3
-		Increased throwing velocity
+		Get a grip!
+		5% increased melee attack speed
 		'''
 }
 
@@ -2148,9 +2144,8 @@ RuneOfShade: {
 }
 
 RuneOfStealth: {
-	DisplayName: Rune Of Stealth
-	Tooltip: Great for damage!
-	Effect:
+	DisplayName: Glyph Of Stealth
+	Tooltip:
 		'''
 		You slowly gain damage over time, up to a max of 1.15x damage
 		However, taking a hit resets your bonus!
@@ -2202,10 +2197,10 @@ StarflareBand: {
 }
 
 SunGlyph: {
-	DisplayName: Sun Glyph
+	DisplayName: Sun Stone
 	Tooltip:
 		'''
-		Increases damage by 30% during the day
+		Increases damage by 8% during the day
 		Pushes away some of the darkness in the Abyss
 		'''
 }
@@ -2640,13 +2635,13 @@ StaffoftheIrradiaflare: {
 }
 
 StarFlowerStaff: {
-	DisplayName: Star Flower Staff
-	Tooltip: Shoot little balls of light
+	DisplayName: Star Flower Artifact
+	Tooltip: Casts a slow moving star-seed that will eventually cause a powerful star-filled explosion!
 }
 
 SunBlastStaff: {
-	DisplayName: Sun Blast Staff
-	Tooltip: Blastin with the sun
+	DisplayName: Sun Blast Artifact
+	Tooltip: Blastin' with the sun
 }
 
 TheDeafen: {
@@ -2740,7 +2735,9 @@ Myocardia: {
 
 ScarecrowSaber: {
 	DisplayName: Scarecrow Saber
-	Tooltip:
+	Tooltip: Very spooky~
+	BasicSlash: ""
+	StaminaSlash:
 		'''
 		Lunge forward in a spinning slash!
 		You are invincible at the start of the lunge, and enemies hit during this time take several times more damage!
@@ -3091,6 +3088,11 @@ SolMothStaff: {
 	Tooltip: Very good for clearing out small hordes!
 }
 
+SolMoth: {
+	DisplayName: Sol Moth
+	Tooltip: Summons a moth that quickly warps to its targets!
+}
+
 HeatGlider: {
 	DisplayName: Heat Glider
 	Tooltip: Oh burn baby burn :)
@@ -3158,9 +3160,8 @@ GintzlSpear: {
 }
 
 RuneOfWind: {
-	DisplayName: Rune Of Wind
-	Tooltip: Great for defense!
-	Effect:
+	DisplayName: Glyph of Wind
+	Tooltip:
 		'''
 		You gain a wind shield that slowly blows away enemies
 		After taking a hit, the wind storm becomes more violent! 
@@ -4481,7 +4482,7 @@ GremoryExtenderPowder: {
 
 MushyExtenderPowder: {
 	DisplayName: Mushy Extender Powder
-	Tooltip: Sets powder range to an increase of 110%
+	Tooltip: Increases the velocity of igniter cards by 25%
 }
 
 TomedDustingFlames: {
@@ -4907,8 +4908,9 @@ Bonfire: {
 	DisplayName: Bonfire
 	Tooltip:
 		'''
-		Summons a bonfire over your head, it increases your life regen and provides light
-		It grows stronger when you are not moving!
+		Summons a bonfire over your head
+		You gain up to a 50% damage increase to your next attack while you are not attacking!
+		It takes 15 seconds to charge
 		'''
 }
 
@@ -4921,7 +4923,7 @@ FireEmblem: {
 	DisplayName: Fire Emblem
 	Tooltip:
 		'''
-		Your attacks inflict random fire debuffs
+		Your attacks sometimes inflict random fire debuffs
 		Adds a chance for critical hits to explode and burn nearby enemies!
 		...were you expecting something else?
 		'''
@@ -5393,7 +5395,11 @@ WitchenHat: {
 
 IceClimbers: {
 	DisplayName: Ice Climbers
-	Tooltip: Get the ability to climb walls, skate on ice and get 10 Health!
+	Tooltip:
+		'''
+		Greatly increases mobility while on any ice-y tile
+		The ice can't stop ya now!
+		'''
 }
 
 MoltenScrap: {
@@ -9430,4 +9436,181 @@ DragonShard: {
 FlamecrestWand: {
 	Tooltip: ""
 	DisplayName: Flamecrest Wand
+}
+
+DoorDown: {
+	DisplayName: Door Down
+	Tooltip: ""
+}
+
+DoorLeft: {
+	DisplayName: Door Left
+	Tooltip: ""
+}
+
+DoorRight: {
+	DisplayName: Door Right
+	Tooltip: ""
+}
+
+DoorUp: {
+	DisplayName: Door Up
+	Tooltip: ""
+}
+
+DualSpoons: {
+	BasicSlash: No Effect
+	StaminaSlash: Throws two bouncing spoons!
+	DisplayName: Dual Spoons
+	Tooltip: ""
+}
+
+BoxOfLeaves: {
+	DisplayName: Box Of Leaves
+	Tooltip: Summons two orbiting leaves around you to damage enemies!
+}
+
+IvynBow: {
+	BasicSlash: ""
+	StaminaSlash: Shoots a compressed burst of many leaves!
+	DisplayName: Ivyn Bow
+	Tooltip: Leafy
+}
+
+IvynAxe: {
+	BasicSlash: ""
+	StaminaSlash: Smash into an enemy to make them erupt with a giant ivythorn root!
+	DisplayName: Ivyn Axe
+	Tooltip: ""
+}
+
+IvynSpear: {
+	BasicSlash: ""
+	StaminaSlash: Throws a quick, high damaging spear
+	DisplayName: Ivyn Spear
+	Tooltip: ""
+}
+
+SolMothWand: {
+	DisplayName: Sol Moth Wand
+	Tooltip: ""
+}
+
+IvyakenWand: {
+	DisplayName: Ivyaken Wand
+	Tooltip: ""
+}
+
+TormentedSoulLocket: {
+	DisplayName: Tormented Soul Locket
+	Tooltip:
+		'''
+		Your spectral summons will explode and heal you for 10 health upon death!
+		5% increased summon damage
+		'''
+}
+
+FastFlight: {
+	DisplayName: Fast Flight
+	Tooltip: Allows flight and slow fall, for a very short time
+}
+
+SilverBell2Item: {
+	Tooltip: ""
+	DisplayName: Silver Bell2 Item
+}
+
+SilverBell1Item: {
+	Tooltip: ""
+	DisplayName: Silver Bell1 Item
+}
+
+RoundBell2Item: {
+	Tooltip: ""
+	DisplayName: Round Bell2 Item
+}
+
+RoundBell1Item: {
+	Tooltip: ""
+	DisplayName: Round Bell1 Item
+}
+
+LittleBellPile2Item: {
+	Tooltip: ""
+	DisplayName: Little Bell Pile2 Item
+}
+
+LittleBellPile1Item: {
+	Tooltip: ""
+	DisplayName: Little Bell Pile1 Item
+}
+
+BigBellPile2Item: {
+	Tooltip: ""
+	DisplayName: Big Bell Pile2 Item
+}
+
+BigBellPile1Item: {
+	Tooltip: ""
+	DisplayName: Big Bell Pile1 Item
+}
+
+SilverBell3Item: {
+	DisplayName: Silver Bell3 Item
+	Tooltip: ""
+}
+
+BellSigil1Item: {
+	DisplayName: Bell Sigil1 Item
+	Tooltip: ""
+}
+
+BellSigil2Item: {
+	DisplayName: Bell Sigil2 Item
+	Tooltip: ""
+}
+
+BellSigil3Item: {
+	DisplayName: Bell Sigil3 Item
+	Tooltip: ""
+}
+
+BellSigil4Item: {
+	DisplayName: Bell Sigil4 Item
+	Tooltip: ""
+}
+
+BellSigil5Item: {
+	DisplayName: Bell Sigil5 Item
+	Tooltip: ""
+}
+
+IlluriaBannerItem: {
+	DisplayName: Illuria Banner Item
+	Tooltip: ""
+}
+
+IlluriaShelf1Item: {
+	DisplayName: Illuria Shelf1 Item
+	Tooltip: ""
+}
+
+IlluriaShelf2Item: {
+	DisplayName: Illuria Shelf2 Item
+	Tooltip: ""
+}
+
+IlluriaShelf3Item: {
+	DisplayName: Illuria Shelf3 Item
+	Tooltip: ""
+}
+
+IlluriaShelf4Item: {
+	DisplayName: Illuria Shelf4 Item
+	Tooltip: ""
+}
+
+IlluriaWallsItem: {
+	DisplayName: Illuria Walls Item
+	Tooltip: ""
 }

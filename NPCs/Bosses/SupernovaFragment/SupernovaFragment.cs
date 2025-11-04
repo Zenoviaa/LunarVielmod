@@ -7,7 +7,6 @@ using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Mage.Stein;
-using Stellamod.NPCs.Bosses.Jack;
 using Stellamod.NPCs.Bosses.Verlia;
 using System;
 using System.IO;
@@ -465,10 +464,6 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                     Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
                     direction.Normalize();
                     int damage = Main.expertMode ? 50 : 68;
-                    Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Zero,
-                        ModContent.ProjectileType<JackSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Zero,
-                        ModContent.ProjectileType<JackSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
                     for (int j = -2; j <= 2; j++)
                     {
                         Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center).RotatedBy(j * 0.5f) * 6f,
@@ -485,10 +480,6 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                     Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
                     direction.Normalize();
                     int damage = Main.expertMode ? 50 : 68;
-                    Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Zero,
-                        ModContent.ProjectileType<JackSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Zero,
-                        ModContent.ProjectileType<JackSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
                     for (int j = -1; j <= 1; j++)
                     {
                         Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center).RotatedBy(j * 0.5f) * 6f,

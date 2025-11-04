@@ -5,6 +5,10 @@ namespace Stellamod.Helpers
 {
     public static class ExtraMath
     {
+        public static float Saturate(float a)
+        {
+            return MathHelper.Clamp(a, 0f, 1f);
+        }
         /// <summary>
         /// Shorthand for the distance between two entities
         /// </summary>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Items.Materials;
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
@@ -649,7 +650,6 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.damage = 202;
             Item.width = 56;
             Item.height = 30;
-            Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
             LeftHand = true;
             RightHand = true;
 

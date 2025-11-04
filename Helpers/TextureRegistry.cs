@@ -11,6 +11,7 @@ namespace Stellamod.Helpers
             string path = (t.GetType().Namespace).Replace('.', '/');
             return path;
         }
+        public static string ThinCircle => "Stellamod/Assets/NoiseTextures/Extra_67";
         public static string CandleFlame => "Stellamod/Assets/NoiseTextures/CandleFlame";
         public static string EmptyTexture => "Stellamod/Assets/Textures/Empty";
         public static string EmptyBigTexture => "Stellamod/Assets/Textures/EmptyBig";

@@ -1,6 +1,6 @@
 
 using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
+using Stellamod.Content.Items.Materials;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;

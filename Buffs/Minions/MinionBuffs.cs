@@ -31,7 +31,6 @@ namespace Stellamod.Buffs.Minions
     }
     public class RevengenceMinionBuff : MinionBuff<RevengenceMinion> { }
     public class StringMinionBuff : MinionBuff<StringMinion> { }
-    public class WillOWispMinionBuff : MinionBuff<WillOWispMinionProj> { }
 
     public class BucketScrapperMinionBuff : MinionBuff<BucketScrapperMinionProj> { }
 
@@ -98,23 +97,11 @@ namespace Stellamod.Buffs.Minions
 
     public class HMMinionBuff : MinionBuff<HMArncharMinionLeftProj> { }
 
-    public class IceboundMinionBuff : MinionBuff<IceboundMinionProj> { }
-
     public class IrradiatedCreeperMinionBuff : MinionBuff<IrradiatedCreeperMinionProj> { }
-
-    public class IvyakenMinionBuff : MinionBuff<IvyakenMinionProj> { }
 
     public class JellyMinionBuff : MinionBuff<JellyMinionProj> { }
 
-    public class LifeWandMinionBuff : MinionBuff<LifeWandMinionProj> { }
-
-    public class ManaWandMinionBuff : MinionBuff<ManaWandMinionProj> { }
-
-    public class MushroomStaveMinionBuff : MinionBuff<MushroomStaveMinionProj> { }
-
     public class ReflectionSeekerMinionBuff : MinionBuff<ReflectionSeekerMinionProj> { }
-
-    public class SolMothMinionBuff : MinionBuff<SolMothMinionProj> { }
 
     public class TheBurningRodMinionBuff : MinionBuff<TheBurningRodMinionProj> { }
 

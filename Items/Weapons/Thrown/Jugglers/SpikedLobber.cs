@@ -10,14 +10,6 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
 {
     public class SpikedLobber : BaseJugglerItem
     {
-
-        public override DamageClass AlternateClass => DamageClass.Ranged;
-
-        public override void SetClassSwappedDefaults()
-        {
-            Item.damage = 20;
-            Item.mana = 0;
-        }
         public override void SetDefaults()
         {
             base.SetDefaults();

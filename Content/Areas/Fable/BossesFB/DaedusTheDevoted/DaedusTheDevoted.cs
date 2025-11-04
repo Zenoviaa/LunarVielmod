@@ -468,6 +468,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
         private ref float AttackCounter => ref NPC.ai[2];
         private ref float AttackCycle => ref NPC.ai[3];
 
+        private PatternManager<AIState> _patternManager;
         private float _attackNum;
         private float _hitDirection;
         private float _deathRotation;
@@ -557,12 +558,9 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
         private int LightningStrikeDamage => 21;
         private int MiniLightningBallDamage => 21;
         private int ConjureBallLightningDamage => 42;
-        private int ElectricTentacleDamage => 20;
         private int ElectricFieldDamage => 16;
-        private int SingularityDamage => 20;
         private int ThunderslapDamage => 20;
         private int JackFireDamage => 12;
-        private int GroundFireDamage => 20;
 
         private Color _outlineColor;
         public Color TargetOutlineColor;
@@ -615,11 +613,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             NPC.takenDamageMultiplier = 0.9f;
             NPC.aiStyle = 0;
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Daedus");
-        }
-
-        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
-        {
-            NPC.lifeMax = (int)(NPC.lifeMax * balance);
         }
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -891,6 +884,39 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             }
         }
 
+        private void SetupPatternManager()
+        {
+            if (_patternManager == null)
+            {
+                if (InPhase2)
+                {
+                    _patternManager = new PatternManager<AIState>(
+                        new Tuple<AIState, float>(AIState.Lightning_Strike, 1.0f),
+                        new Tuple<AIState, float>(AIState.Electric_Field, 1.0f),
+                        new Tuple<AIState, float>(AIState.Conjure_Ball_Lightning, 1.0f),
+                        new Tuple<AIState, float>(AIState.Electric_Tentacle, 1.0f),
+                        new Tuple<AIState, float>(AIState.Ground_Explosion, 1.0f),
+                        new Tuple<AIState, float>(AIState.Jack_Fire, 1.0f),
+                        new Tuple<AIState, float>(AIState.Singularity, 1.0f),
+                        new Tuple<AIState, float>(AIState.Conjure_Ball_Lightning_Mega, 0.2f),
+                        new Tuple<AIState, float>(AIState.Thunderslap, 0.2f));
+                }
+                else
+                {
+                    _patternManager = new PatternManager<AIState>(
+                        new Tuple<AIState, float>(AIState.Lightning_Strike, 1.0f),
+                        new Tuple<AIState, float>(AIState.Conjure_Ball_Lightning, 1.0f),
+                        new Tuple<AIState, float>(AIState.Electric_Tentacle, 1.0f),
+                        new Tuple<AIState, float>(AIState.Ground_Explosion, 1.0f),
+                        new Tuple<AIState, float>(AIState.Jack_Fire, 1.0f),
+                        new Tuple<AIState, float>(AIState.Singularity, 1.0f),
+                        new Tuple<AIState, float>(AIState.Conjure_Ball_Lightning_Mega, 0.2f));
+                }
+            }
+
+
+
+        }
         private void AI_Idle()
         {
             Timer++;
@@ -957,86 +983,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         return;
                     }
 
-                    AIState nextAttack = AIState.Lightning_Strike;
-                    switch (AttackCycle)
-                    {
-                        case 0:
-                            if (Main.rand.NextBool(2))
-                            {
-                                nextAttack = AIState.Lightning_Strike;
-                            }
-                            else
-                            {
-                                nextAttack = AIState.Conjure_Ball_Lightning;
-                            }
-
-
-                            break;
-                        case 1:
-                            if (Main.rand.NextBool(2))
-                            {
-                                nextAttack = AIState.Electric_Tentacle;
-                            }
-                            else
-                            {
-                                nextAttack = AIState.Ground_Explosion;
-                            }
-                            break;
-                        case 2:
-                            if (Main.rand.NextBool(2))
-                            {
-                                nextAttack = AIState.Singularity;
-                            }
-                            else
-                            {
-                                nextAttack = AIState.Jack_Fire;
-                            }
-                            break;
-                        case 3:
-                            if (InPhase2)
-                            {
-                                nextAttack = AIState.Electric_Field;
-                            }
-                            else
-                            {
-                                nextAttack = AIState.Conjure_Ball_Lightning_Mega;
-                            }
-
-                            break;
-                        case 4:
-                            if (Main.rand.NextBool(2))
-                            {
-                                nextAttack = AIState.Thunderslap;
-                            }
-                            else
-                            {
-                                nextAttack = AIState.Conjure_Ball_Lightning;
-                            }
-
-                            break;
-                        case 5:
-                            nextAttack = AIState.Conjure_Ball_Lightning_Mega;
-                            break;
-                    }
-
-                    AttackCycle++;
-                    if (InPhase2)
-                    {
-                        if (AttackCycle >= 6)
-                        {
-                            AttackCycle = 0;
-                        }
-
-                    }
-                    else
-                    {
-                        if (AttackCycle >= 4)
-                        {
-                            AttackCycle = 0;
-                        }
-
-                    }
-
+                    SetupPatternManager();
+                    AIState nextAttack = _patternManager.NextPattern();
                     if (!Phase2Transition && InPhase2)
                     {
                         nextAttack = AIState.Phase_2_Transition;
@@ -1052,6 +1000,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
         private void AI_Phase2Transition()
         {
+            _patternManager = null;
             switch (AttackCounter)
             {
                 case 0:

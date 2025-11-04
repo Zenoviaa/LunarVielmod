@@ -7,6 +7,7 @@ using Stellamod.Core.Players;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -41,6 +42,8 @@ namespace Stellamod.Core.SwingSystem
         public float growScale;
         public float swordBeamLength;
         public float swingTime;
+        public float bounceTimer;
+        public float extraLength;
         public Color outlineColor;
         public Color glowAfterImageColor;
         public bool drawCentered;
@@ -69,6 +72,16 @@ namespace Stellamod.Core.SwingSystem
             Projectile.extraUpdates = EXTRA_UPDATE_COUNT - 1;
             hitStopTime = EXTRA_UPDATE_COUNT * 2;
             SetDefaults2();
+        }
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(bounceTimer);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            bounceTimer = reader.ReadSingle();
         }
 
         public virtual Asset<Texture2D> RequestHologramTexture()
@@ -157,11 +170,11 @@ namespace Stellamod.Core.SwingSystem
             float length = texture.Width / 2 + texture.Height / 2;
             length *= 1.6f;
             length += swordBeamLength / 2;
-
+            length += extraLength;
             Vector2 start = Projectile.Center - Projectile.rotation.ToRotationVector2() * length;
             Vector2 end = Projectile.Center + Projectile.rotation.ToRotationVector2() * length;
             float collisionPoint = 0f;
-            return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, Projectile.scale, ref collisionPoint);
+            return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 8, ref collisionPoint);
         }
 
         public override void AI()
@@ -169,7 +182,12 @@ namespace Stellamod.Core.SwingSystem
             base.AI();
             //We want to initalize like this for better MP compatibility, using a timer might not always be seen on all clients
             AI_Initialize();
-            if (HitstopTimer <= 0)
+            if(bounceTimer > 0)
+            {
+                Timer--;
+                bounceTimer--;
+            }
+            else if (HitstopTimer <= 0)
                 Timer++;
             else
                 HitstopTimer--;
@@ -204,6 +222,7 @@ namespace Stellamod.Core.SwingSystem
 
             //We now have the offset so we can apply that to the weapon
             drawCentered = false;
+            extraLength = 0;
             swing.UpdateSwing(this);
 
             //Set the position of the hand for the swing
@@ -275,6 +294,14 @@ namespace Stellamod.Core.SwingSystem
                 swingProj.isChildProjectile = true;
             }
         }
+
+        public void Bounce(float bounceTicks)
+        {
+            Projectile.ResetLocalNPCHitImmunity();
+            bounceTimer += bounceTicks * EXTRA_UPDATE_COUNT;
+            Projectile.netUpdate = true;
+        }
+
         public Vector2 CalculateTrailOffset()
         {
             return Vector2.Zero;

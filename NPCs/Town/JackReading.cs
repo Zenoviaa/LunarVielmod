@@ -1,9 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted;
 using Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar;
 using Stellamod.Core;
 using Stellamod.Helpers;
+using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -66,6 +69,7 @@ namespace Stellamod.NPCs.Town
             NPC.dontTakeDamageFromHostiles = true;
             NPC.BossBar = Main.BigBossProgressBar.NeverValid;
             SpawnAtPoint = true;
+            HasTownDialogue = true;
         }
 
         public override void FindFrame(int frameHeight)
@@ -148,29 +152,55 @@ namespace Stellamod.NPCs.Town
             button = LangText.Chat(this, "Button");
         }
 
-        public override void OnChatButtonClicked(bool firstButton, ref string shop)
+        public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
         {
-            if (firstButton)
-            {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    Main.NewText(LangText.Chat(this, "Challenge"), Color.Gold);
-                    NPC npc = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.position.X, (int)NPC.position.Y,
-                        ModContent.NPCType<JackTheScholar>());
-                    npc.netUpdate = true;
-                }
-                else
-                {
-                    if (Main.netMode == NetmodeID.SinglePlayer)
-                        return;
+            base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+            //Set buttons
+            buttons.Add(new Tuple<string, Action>("Talk", Talk));
+            buttons.Add(new Tuple<string, Action>("Challenge", Challenge));
 
-                    MultiplayerHelper.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
-                        ModContent.NPCType<JackTheScholar>(), (int)NPC.position.X, (int)NPC.position.Y);
-                }
 
-                //Spawn Boss
-                NPC.Kill();
-            }
+            portrait = "JackPortrait";
+            timeBetweenTexts = 0.015f;
+            talkingSound = SoundID.Item1;
+
+            //This pulls from the new Dialogue localization
+            text = "JackOpenChat1";
         }
+
+        public override void IdleChat(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
+        {
+            base.IdleChat(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
+            portrait = "JackPortrait";
+            timeBetweenTexts = 0.015f;
+            talkingSound = SoundID.Item1;
+
+            //This pulls from the new Dialogue localization
+            text = "JackIdleChat1";
+        }
+
+        private void Challenge()
+        {
+            CloseTownDialogue();
+            if (Main.netMode != NetmodeID.MultiplayerClient)
+            {
+                Main.NewText(LangText.Chat(this, "Challenge"), Color.Gold);
+                NPC npc = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.position.X, (int)NPC.position.Y,
+                    ModContent.NPCType<JackTheScholar>());
+                npc.netUpdate = true;
+            }
+            else
+            {
+                if (Main.netMode == NetmodeID.SinglePlayer)
+                    return;
+
+                MultiplayerHelper.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
+                    ModContent.NPCType<JackTheScholar>(), (int)NPC.position.X, (int)NPC.position.Y);
+            }
+
+            //Spawn Boss
+            NPC.Kill();
+        }
+
     }
 }

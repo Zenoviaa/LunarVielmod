@@ -63,7 +63,7 @@ namespace Stellamod.Core.Bases
             if (CrossbowOldPos.Length > 0)
                 CrossbowOldPos[0] = projectile.position;
 
-            projectile.velocity.Y -= 0.075f;
+          //  projectile.velocity.Y -= 0.075f;
         }
         private Color ColorFunction(float completionRatio)
         {

@@ -2,8 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.HealthbarSystem;
 using Stellamod.Core.TitleSystem;
-using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,12 +11,20 @@ namespace Stellamod.Core
 {
     public abstract class ScarletBoss : ModNPC
     {
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            DifficultyChanges.ApplyDifficultyAndScaling(NPC, numPlayers);
+        }
 
         public override void SetDefaults()
         {
             base.SetDefaults();
             NPC.boss = true;
         }
+        public Player MyTarget => Main.player[NPC.target];
+        public float FacingDirectionToTarget => MyTarget.Center.X < NPC.Center.X ? -1 : 1;
+        public int TargetDirection => (int)FacingDirectionToTarget;
+        public IEntitySource SourceFromThis => NPC.GetSource_FromThis();
         public string Texture_BossIcon => Texture + "_BossIcon";
         public string Texture_BossBar => Texture + "_BossBar";
 

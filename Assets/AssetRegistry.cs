@@ -37,6 +37,29 @@ namespace Stellamod.Assets
         public static class Sounds
         {
             private static string Path => "Stellamod/Assets/Sounds/";
+            public static class Bishinine
+            {
+                public static SoundStyle Bigballchargepart = new SoundStyle($"{Path}Bishinine/Bigballchargepart");
+                public static SoundStyle BigBallready = new SoundStyle($"{Path}Bishinine/BigBallready");
+                public static SoundStyle BishinineChargeBell = new SoundStyle($"{Path}Bishinine/BishinineChargeBell");
+                public static SoundStyle BishinineCometfallbegin = new SoundStyle($"{Path}Bishinine/BishinineCometfallbegin");
+                public static SoundStyle BishinineFastfall = new SoundStyle($"{Path}Bishinine/BishinineFastfall");
+                public static SoundStyle BigBellGroundhit = new SoundStyle($"{Path}Bishinine/BigBellGroundhit");
+                public static SoundStyle BishinineBellSmash = new SoundStyle($"{Path}Bishinine/BishinineBellSmash");
+                public static SoundStyle BishinineSound1 = new SoundStyle($"{Path}Bishinine/BishinineSound1");
+                public static SoundStyle BishinineSound2 = new SoundStyle($"{Path}Bishinine/BishinineSound2");
+                public static SoundStyle BishinineLaugh = new SoundStyle($"{Path}Bishinine/Bishininelaugh");
+                public static SoundStyle FallingBell = new SoundStyle($"{Path}Bishinine/FallingBell");
+                public static SoundStyle BellHit1 = new SoundStyle($"{Path}Bishinine/BellHit1");
+                public static SoundStyle BellHit2 = new SoundStyle($"{Path}Bishinine/BellHit2");
+                public static SoundStyle Comet1 = new SoundStyle($"{Path}Bishinine/Comet1");
+                public static SoundStyle Comet2 = new SoundStyle($"{Path}Bishinine/Comet2");
+            }
+            public static class Nature
+            {
+                public static SoundStyle LeafRustle1 = new SoundStyle($"{Path}Nature/LeafRustle1");
+                public static SoundStyle LeafRustle2 = new SoundStyle($"{Path}Nature/LeafRustle2");
+            }
             public static class Stars
             {
                 public static SoundStyle Starsingle1 = new SoundStyle($"{Path}Stars/Starsingle1");

@@ -26,7 +26,6 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             Item.useStyle = ItemUseStyleID.Swing;
 
             Item.knockBack = 6;
-            Item.rare = ModContent.RarityType<NiiviSpecialRarity>();
             Item.shoot = ModContent.ProjectileType<SiriusSlash>();
             Item.shootSpeed = 20;
             staminaProjectileShoot = ModContent.ProjectileType<SiriusProj>();

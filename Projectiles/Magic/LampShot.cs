@@ -103,10 +103,6 @@ namespace Stellamod.Projectiles.Magic
                 Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
             }
             var EntitySource = Projectile.GetSource_Death();
-            if (Main.netMode != NetmodeID.MultiplayerClient)
-            {
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<StarFlowerproj3>(), Projectile.damage * 2, 1, Main.myPlayer, 0, 0);
-            }
 
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 524f, 14f);
             for (int i = 0; i < 2; i++)

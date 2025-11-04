@@ -38,7 +38,6 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useAnimation = 45;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 2;
-            Item.rare = ModContent.RarityType<NiiviSpecialRarity>();
             Item.autoReuse = false;
             Item.shootSpeed = 30f;
             Item.shoot = ModContent.ProjectileType<PolarisHold>();

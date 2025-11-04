@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
@@ -85,16 +86,19 @@ namespace Stellamod.Items
             where Mold : ModItem
         {
             Cauldron cauldron = ModContent.GetInstance<Cauldron>();
+            Cauldron.MaterialRarity[result.Type] = ItemLoader.GetItem(ModContent.ItemType<Material>()).Item.rare;
             return cauldron.AddBrew(result.Item.type, ModContent.ItemType<Mold>(), ModContent.ItemType<Material>(), 10, weight, yield);
         }
         public static CauldronBrew RegisterBrew(this ModItem result, int mold, int material, float weight = 1.0f, int yield = 1)
         {
             Cauldron cauldron = ModContent.GetInstance<Cauldron>();
+            Cauldron.MaterialRarity[result.Type] = ItemLoader.GetItem(material).Item.rare;
             return cauldron.AddBrew(result.Item.type, mold, material, 10, weight, yield);
         }
     }
     public class Cauldron : ModSystem
     {
+        public static int[] MaterialRarity = ItemID.Sets.Factory.CreateIntSet(0);
         private List<CauldronBrew> _brews = new List<CauldronBrew>()
         {
 
@@ -161,7 +165,17 @@ namespace Stellamod.Items
                 (x => x.material == material && materialCount >= x.materialAmount).ToList();
             return possibleBrews;
         }
-
+        public Item FindMaterial(Item item)
+        {
+            foreach (var brew in _brews)
+            {
+                if (brew.result == item.type)
+                    return ModContent.GetModItem(brew.material).Item;
+            }
+            Item r = new Item();
+            r.SetDefaults(0);
+            return r;
+        }
         public Item FindMold(Item item)
         {
             foreach (var brew in _brews)

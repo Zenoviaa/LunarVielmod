@@ -80,7 +80,6 @@
     <None Remove="Buffs\Minions\PegasusMinionBuff.png" />
     <None Remove="Buffs\Minions\PotOfGreedMinionBuff.png" />
     <None Remove="Buffs\Minions\SerpentMinionBuff.png" />
-    <None Remove="Buffs\Minions\WillOWispMinionBuff.png" />
     <None Remove="Buffs\Minions\XScissorMinionBuff.png" />
     <None Remove="Buffs\MiracleBoost.png" />
     <None Remove="Buffs\MiracleLiquid.png" />
@@ -412,7 +411,6 @@
     <None Remove="Items\Shrines\GovheilNAlca\ShrineGardenWreckerI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineHalhurishI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineLightsI.png" />
-    <None Remove="Items\Shrines\GovheilNAlca\ShrineSolMothI.png" />
     <None Remove="Items\Shrines\Underground\ShrineBridgetI.png" />
     <None Remove="Items\Special\ExampleDialogueItem.png" />
     <None Remove="Items\Special\VeiledScriptureAzurerin.png" />
@@ -464,7 +462,7 @@
     <None Remove="NPCs\Bosses\DreadMire\DreadSpawnEffect - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadSpawnEffectSmol.png" />
     <None Remove="NPCs\Bosses\DreadMire\FinalBeam - Copy.png" />
-    <None Remove="NPCs\Bosses\EliteCommander\Projectiles\EliteCommanderHand.png" />
+    <None Remove="Content\Areas\Collosseum\BossesCL\EliteCommander\Projectiles\EliteCommanderHand.png" />
     <None Remove="NPCs\Bosses\Fenix\BLACKHOLE.png" />
     <None Remove="NPCs\Bosses\Fenix\Projectiles\AlcShot.png" />
     <None Remove="NPCs\Bosses\Fenix\Projectiles\CrileShot.png" />
@@ -715,7 +713,6 @@
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineGardenWreckerC.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineHalhurishC.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineLights.png" />
-    <None Remove="Tiles\ShrineBreakers\Govheil\ShrineSolMothC.png" />
     <None Remove="Tiles\ShrineBreakers\Underground\ShrineBridgetC.png" />
     <None Remove="UI\ArmorReforgeSystem\ReforgeButton.png" />
     <None Remove="UI\ArmorReforgeSystem\ReforgeButtonSelected.png" />
@@ -731,13 +728,16 @@
   <ItemGroup>
     <Folder Include="Assets\Textures\Menu\" />
     <Folder Include="Items\Armors\Daedia\" />
+    <Folder Include="Items\Weapons\Melee\Safunai\Kaevine\" />
     <Folder Include="NPCs\Event\Gintzearmy\BossGintze\" />
     <Folder Include="NPCs\Minibosses\" />
     <Folder Include="Projectiles\Slashers\Chillrend\" />
     <Folder Include="Projectiles\Slashers\NewFolder\" />
+    <Folder Include="Projectiles\Slashers\ScarecrowSaber\" />
     <Folder Include="Projectiles\Swords\Ripper\" />
     <Folder Include="Projectiles\Swords\Slashes\" />
     <Folder Include="Structures\Catacombs\" />
+    <Folder Include="Structures\Dungeon\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ParticleLibrary">

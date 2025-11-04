@@ -1,13 +1,9 @@
-﻿using Humanizer.Bytes;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
-using Stellamod.Helpers;
-using Stellamod.Items.Weapons.Igniters;
 using Terraria;
-using ReLogic.Content;
-using Stellamod.Trails;
 namespace Stellamod.Visual.Particles
 {
     public class GlowFragmentParticle : Particle
@@ -64,14 +60,14 @@ namespace Stellamod.Visual.Particles
             GlowFragmentShader shader = GlowFragmentShader.Instance;
             shader.InnerColor = Color.Lerp(innerColor, fadeToColor, _interpolant);
             shader.OuterGlowColor = Color.Lerp(outerColor, fadeToColor, _interpolant);
-            if(distortOut)
+            if (distortOut)
                 shader.Distortion = MathHelper.Lerp(0f, 1f, _interpolant);
             shader.Apply();
 
 
             Asset<Texture2D> texture = GetTexture();
-   
-            spriteBatch.Draw(texture.Value, centerPos, null,color, Rotation, texture.Size() / 2f, Scale * _stretchScale, SpriteEffects.None, 0);
+
+            spriteBatch.Draw(texture.Value, centerPos, null, color, Rotation, texture.Size() / 2f, Scale * _stretchScale, SpriteEffects.None, 0);
         }
     }
 }

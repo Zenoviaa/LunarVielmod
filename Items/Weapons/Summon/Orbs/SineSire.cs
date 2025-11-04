@@ -45,7 +45,6 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
             Item.useAnimation = 4;
             Item.useStyle = ItemUseStyleID.RaiseLamp;
             Item.value = Item.sellPrice(0, 1, 0, 0);
-            Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
 
             // These below are needed for a minion weapon
             Item.noMelee = true;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 
 using System.Linq;
@@ -26,22 +27,31 @@ namespace Stellamod.Core.SummonerSystem
         private List<Item> _unlockedminions = new List<Item>();
         public float castTimer;
         public float castingTime;
+        public float GetCastingTime()
+        {
+            float baseTime = 60;
+            for (int i = 0; i < Player.maxMinions && i < _minions.Count; i++)
+            {
+                var item = _minions[i];
+                if (item.IsAir)
+                    continue;
+                if (item.ModItem is BaseBellMinionItem bellMinion)
+                {
+                    baseTime += bellMinion.GetAddedCastingTime();
+                }
+            }
+            return baseTime;
+        }
         public bool isSummoning;
         public bool hasBellMinions;
-        public float summonRatio => castTimer / castingTime;    
+        public float summonRatio => castTimer / GetCastingTime();
+
         public override void ResetEffects()
         {
             base.ResetEffects();
             castingTime = 60;
 
-            for(int i = 0; i < (Player.maxMinions) && i < _minions.Count; i++)
-            {
-                var item = _minions[i];
-                if (item.ModItem is BaseBellMinionItem bellMinion)
-                {
-                    castingTime += bellMinion.GetAddedCastingTime();
-                }
-            }
+
             isSummoning = false;
             hasBellMinions = false;
         }
@@ -91,7 +101,7 @@ namespace Stellamod.Core.SummonerSystem
                     castingStart.PitchVariance = 0.2f;
                     SoundEngine.PlaySound(castingStart, Player.position);
                 }
-                if (castTimer >= castingTime)
+                if (castTimer >= GetCastingTime())
                 {
                     CompleteSummon();
                     castTimer = 0;

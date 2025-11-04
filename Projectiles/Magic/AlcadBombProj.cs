@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using Stellamod.Content.Areas.Collosseum.AccCL;
 using Stellamod.Core.MaskingShaderSystem;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Runes;
 using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;

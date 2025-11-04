@@ -26,7 +26,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public float[] OldRot { get; private set; }
         public float Size { get; set; } = 16;
         public float ChargeSizeMultiplier { get; set; } = 1f;
-        public float ScaleMultiplier => (Size / 16f) * MathHelper.Lerp(0.5f, 1f, Charge) * ChargeSizeMultiplier;
+        public float ScaleMultiplier => ((Size / 16f) * MathHelper.Lerp(0.5f, 1f, Charge) * ChargeSizeMultiplier) + extraScale;
         public int TrailLength { get; set; }
         public float GlobalTimer
         {
@@ -65,10 +65,22 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public List<BaseEnchantment> Enchantments { get; private set; } = new List<BaseEnchantment>();
         private Player Owner => Main.player[Projectile.owner];
         private AdvancedMagicPlayer MagicPlayer => Owner.GetModPlayer<AdvancedMagicPlayer>();
+        public bool damagingTrail;
+        public float extraScale;
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            if (damagingTrail)
+            {
+                return ProjectileHelper.OldPosColliding(OldPos, projHitbox, targetHitbox);
+            }
+
+            return base.Colliding(projHitbox, targetHitbox);
+        }
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
             ProjectileSets.ResetBossMultihitDamageFalloff[Type] = true;
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2000;
         }
 
         public int GetNetID()
@@ -228,6 +240,10 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 }
             }
 
+            //Set default extra updates
+            //So we can modify stacking freely with enchantments
+            Projectile.extraUpdates = 0;
+            damagingTrail = false;
             for (int i = 0; i < Enchantments.Count; i++)
             {
                 var enchantment = Enchantments[i];

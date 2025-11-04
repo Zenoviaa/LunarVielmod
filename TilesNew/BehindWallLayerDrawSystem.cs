@@ -43,7 +43,7 @@ namespace Stellamod.TilesNew
             Main.tileBatch.Begin();
             int width = TileDrawWidth;
             int height = TileDrawHeight;
-            Point bottomLeft = Main.LocalPlayer.Center.ToTileCoordinates() - new Point(width / 2, height / 2);
+            Point bottomLeft = Main.Camera.Center.ToTileCoordinates() - new Point(width / 2, height / 2);
             int left = bottomLeft.X;
             int right = left + width;
             int bottom = bottomLeft.Y;
@@ -83,7 +83,7 @@ namespace Stellamod.TilesNew
             Main.tileBatch.Begin();
             int width = TileDrawWidth;
             int height = TileDrawHeight;
-            Point bottomLeft = Main.LocalPlayer.Center.ToTileCoordinates() - new Point(width / 2, height / 2);
+            Point bottomLeft = Main.Camera.Center.ToTileCoordinates() - new Point(width / 2, height / 2);
             int left = bottomLeft.X;
             int right = left + width;
             int bottom = bottomLeft.Y;

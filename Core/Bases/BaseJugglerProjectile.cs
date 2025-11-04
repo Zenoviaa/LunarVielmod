@@ -2,11 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -136,12 +134,13 @@ namespace Stellamod.Core.Bases
         public virtual void AI_Catch()
         {
             Timer++;
-            Vector2 circleOffset = new Vector2(64, 0);
-            Vector2 targetPos = Owner.Center + circleOffset.RotatedBy(Timer / 60f);
-            Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, targetPos, HomingStrength * 5f);
-            if (Timer > 60 || Vector2.Distance(Projectile.Center, targetPos) < 128)
+            if (Timer > 5)
             {
-                Projectile.velocity *= 0.92f;
+                Projectile.velocity *= 0.9f;
+            }
+            else
+            {
+                Projectile.velocity.Y -= 0.5f;
             }
 
             Vector2 mouseWorld = Main.MouseWorld;
@@ -264,29 +263,8 @@ namespace Stellamod.Core.Bases
                 jugglerHitMax.PitchVariance = 0.1f;
                 SoundEngine.PlaySound(jugglerHitMax, Projectile.position);
             }
-
-            for (int i = 0; i < 4; i++)
-            {
-                //Get a random velocity
-                Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
-
-                //Get a random
-                float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-            }
-        }
-
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-
-        public virtual float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width;
-            return MathHelper.SmoothStep(baseWidth, baseWidth, completionRatio);
-        }
-
-        public virtual Color ColorFunction(float completionRatio)
-        {
-            Color startColor = Color.White;
-            return Color.Lerp(startColor, Color.Transparent, completionRatio);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
+                ModContent.ProjectileType<BaseHitEffect>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -299,11 +277,21 @@ namespace Stellamod.Core.Bases
         public virtual void DrawTrail(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.RestartDefaults();
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.Dashtrail);
-            Vector2 trailOffset = -Main.screenPosition + Projectile.Size / 2;
-            TrailDrawer.DrawPrims(Projectile.oldPos, trailOffset, 155);
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            int trailLength = Projectile.oldPos.Length;
+            Vector2 drawOrigin = texture.Size() / 2f;
+
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            float drawScale = 1f;
+            for (int t = 0; t < trailLength; t++)
+            {
+                float l = trailLength;
+                float interpolant = (float)t / l;
+                Vector2 oldPos = Projectile.oldPos[t];
+                oldPos -= Main.screenPosition;
+                oldPos += Projectile.Size / 2f;
+                spriteBatch.Draw(texture, oldPos, null, drawColor * MathHelper.SmoothStep(0.5f, 0f, interpolant), Projectile.oldRot[t], drawOrigin, drawScale, SpriteEffects.None, 0);
+            }
         }
 
         public virtual void DrawSprite(ref Color lightColor)

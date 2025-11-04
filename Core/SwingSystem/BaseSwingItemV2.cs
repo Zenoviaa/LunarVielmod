@@ -71,8 +71,8 @@ namespace Stellamod.Core.SwingSystem
             Item.DamageType = DamageClass.Melee;
             Item.noUseGraphic = true;
             Item.noMelee = true;
-            Item.useTime = 126;
-            Item.useAnimation = 126;
+            Item.useTime = 32;
+            Item.useAnimation = 32;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
             Item.rare = ItemRarityID.Blue;
@@ -102,9 +102,6 @@ namespace Stellamod.Core.SwingSystem
         {
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
             SwingPlayerV2 comboPlayer = player.GetModPlayer<SwingPlayerV2>();
-            comboPlayer.ComboWaitTime = comboResetTime;
-            dashPlayer.Consume(staminaCost);
-
             int combo = comboPlayer.StaminaComboCounter;
             int dir = comboPlayer.ComboDirection;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback,
@@ -121,9 +118,15 @@ namespace Stellamod.Core.SwingSystem
         {
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
             SwingPlayerV2 comboPlayer = player.GetModPlayer<SwingPlayerV2>();
-            if (player.altFunctionUse == 2 && dashPlayer.CanConsume(staminaCost))
+            if (player.altFunctionUse == 2)
             {
-                ShootSwingStamina(player, source, position, velocity, staminaProjectileShoot, damage, knockback);
+                if (dashPlayer.CanConsume(staminaCost))
+                {
+                    comboPlayer.ComboWaitTime = comboResetTime;
+                    dashPlayer.Consume(staminaCost);
+                    ShootSwingStamina(player, source, position, velocity, staminaProjectileShoot, damage, knockback);
+                }
+
             }
             else
             {

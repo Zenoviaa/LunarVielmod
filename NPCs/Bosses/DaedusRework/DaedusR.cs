@@ -6,7 +6,6 @@ using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Thrown;
 using System.IO;
 using Terraria;
@@ -475,26 +474,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 2));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GothiviasSeal>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.DaedusBossRel>()));
 
-
-            // All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
-            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-            int numResults = 5;
-
-
-            notExpertRule.OnSuccess(ItemDropRule.AlwaysAtleastOneSuccess(
-                ItemDropRule.Common(ModContent.ItemType<BearBroochA>(), chanceDenominator: numResults),
-                ItemDropRule.Common(ModContent.ItemType<VixedBroochA>(), chanceDenominator: numResults),
-                ItemDropRule.Common(ModContent.ItemType<HeatGlider>(), chanceDenominator: numResults),
-                 ItemDropRule.Common(ModContent.ItemType<DaedCard>(), chanceDenominator: numResults)));
-
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
-            // Finally add the leading rule
-            npcLoot.Add(notExpertRule);
         }
 
 

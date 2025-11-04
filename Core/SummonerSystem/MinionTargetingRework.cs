@@ -71,6 +71,7 @@ namespace Stellamod.Core.SummonerSystem
         private bool _spawnedMinionNPC;
         private int _npcWhoAmI = -1;
         private Player Owner => Main.player[Projectile.owner];
+        public static event Action<Projectile> OnKillMinion;
         public virtual int GetAggro()
         {
             return -500;
@@ -122,6 +123,7 @@ namespace Stellamod.Core.SummonerSystem
         {
             FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightGray, Color.Blue);
             Projectile.Kill();
+            OnKillMinion?.Invoke(Projectile);
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -158,6 +160,11 @@ namespace Stellamod.Core.SummonerSystem
             Color lightColor = Lighting.GetColor(p.X, p.Y);
             Color finalColor = Color.White.MultiplyRGB(lightColor);
             spriteBatch.Draw(texture, drawPos, frame, finalColor, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+        }
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+      
         }
     }
 

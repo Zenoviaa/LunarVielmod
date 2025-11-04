@@ -1,10 +1,10 @@
-﻿using Stellamod.Core.QuestSystem;
+﻿using Stellamod.Content.Items.Materials;
+using Stellamod.Core.QuestSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Armors.Witchen;
 using Stellamod.Items.Consumables;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Special;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;

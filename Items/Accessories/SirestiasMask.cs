@@ -47,7 +47,6 @@ namespace Stellamod.Items.Accessories
             Item.accessory = true;
             Item.value = Item.sellPrice(silver: 12);
             Item.maxStack = 1;
-            Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
             Item.value = Item.sellPrice(0, 15, 0, 0);
         }
 

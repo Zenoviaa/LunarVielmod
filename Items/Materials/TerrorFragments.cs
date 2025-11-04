@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
@@ -26,7 +27,7 @@ namespace Stellamod.Items.Materials
             Item.height = 40;
             Item.maxStack = Item.CommonMaxStack;
             Item.value = Item.sellPrice(0, 0, 20, 0);
-            Item.rare = ItemRarityID.Green;
+            Item.rare = ModContent.RarityType<TerrorFragmentRarity>();
             Item.useTime = 10;
             Item.useAnimation = 10;
             Item.useStyle = ItemUseStyleID.Swing;
