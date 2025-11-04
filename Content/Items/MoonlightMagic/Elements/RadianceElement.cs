@@ -9,6 +9,7 @@ using Stellamod.Helpers;
 using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -114,7 +115,6 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
         public override void DrawTrail(Vector2[] oldPos)
         {
             DrawMainShader(oldPos);
-            DrawOutlineShader(oldPos);
         }
 
         private void AI_Particles()
@@ -215,36 +215,11 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
            outerGlowColor: Color.DarkRed, duration: 15, baseSize: boomSize * 2);
         }
 
-        private Color ColorFunction(float completionRatio)
-        {
-            Color c;
-            switch (trailMode)
-            {
-                default:
-                case 0:
-                    c = Color.Lerp(Color.White, new Color(147, 72, 11), completionRatio);
-                    break;
-                case 1:
-                    c = Color.Lerp(Color.White, new Color(147, 72, 11) * 0f, completionRatio);
-                    break;
-                case 2:
-                    c = Color.White;
-                    c.A = 0;
-                    break;
-            }
-            return c;
-        }
-
         private float WidthFunction(float completionRatio)
         {
             float w = 100;
-            if (trailMode == 2)
-            {
-                w *= 1.3f;
-            }
             float ew = w / 10;
             float width = w * MagicProj.ScaleMultiplier;
-
 
             float p = completionRatio / 0.5f;
             float ep = EasingFunction.OutCirc(p);
@@ -253,57 +228,43 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             return MathHelper.Lerp(circleWidth, trailWidth, EasingFunction.OutExpo(completionRatio));
         }
 
+        private Color ColorFunction(float completionRatio)
+        {
+            Color tipColor = Color.Lerp(Color.Goldenrod, Color.DarkRed, completionRatio);
+            Color finalColor = Color.Lerp(Color.Red, tipColor, EasingFunction.QuadraticBump(MathF.Pow(completionRatio, 0.5f)));
+            Color finalColor2 = Color.Lerp(Color.Transparent, finalColor, EasingFunction.QuadraticBump(completionRatio));
+            return finalColor2;
+        }
+        public float SmokeWidthFunction(float completionRatio)
+        {
+            float w = 250;
+            float ew = w / 10;
+            float width = w * MagicProj.ScaleMultiplier;
 
+            float p = completionRatio / 0.5f;
+            float ep = EasingFunction.OutCirc(p);
+            float circleWidth = MathHelper.Lerp(0, w * MagicProj.ScaleMultiplier, ep);
+            float trailWidth = MathHelper.Lerp(width, 0, EasingFunction.OutCirc(completionRatio));
+            return MathHelper.Lerp(circleWidth, trailWidth, EasingFunction.OutExpo(completionRatio));
+        }
+
+        public Color SmokeColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.Transparent, Color.White, EasingFunction.InOutSine(completionRatio));
+        }
         private void DrawMainShader(Vector2[] oldPos)
         {
-            //Trail
-            trailMode = 0;
-            var shader = MagicRadianceShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.DottedTrail;
-            shader.NoiseTexture = TrailRegistry.CloudsSmall;
-            shader.OutlineTexture = TrailRegistry.DottedTrailOutline;
-            shader.PrimaryColor = Color.Lerp(Color.White, new Color(255, 207, 79), 0.5f);
-            shader.NoiseColor = new Color(206, 101, 0);
-            shader.OutlineColor = Color.Black;
-            shader.BlendState = BlendState.Additive;
-            shader.SamplerState = SamplerState.PointWrap;
-            shader.Speed = 5.2f;
-            shader.Distortion = 0.05f;
-            shader.Power = 0.35f;
+            BlackFireSmokeShader blackSmokeShader = BlackFireSmokeShader.Instance;
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, null, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);
 
-            //This just applis the shader changes
+            BlackFireShader blackFireShader = BlackFireShader.Instance;
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, null, ColorFunction, WidthFunction, blackFireShader, Vector2.Zero);
 
-            //Main Fill
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
-
-            //Secondary fill
-            trailMode = 0;
-            shader.PrimaryColor = new Color(206, 101, 0);
-            shader.NoiseColor = Color.Red;
-            shader.OutlineColor = Color.Black;
-            shader.Speed = 2.2f;
-            shader.Distortion = 0.3f;
-            shader.Power = 1.5f;
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
         }
 
         private void DrawOutlineShader(Vector2[] oldPos)
         {
-            trailMode = 2;
-            var shader = MagicRadianceOutlineShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.DottedTrailOutline;
-            shader.NoiseTexture = TrailRegistry.CloudsSmall;
 
-            Color c = Color.DarkRed;
-            shader.PrimaryColor = c;
-            shader.NoiseColor = Color.DarkRed;
-            shader.BlendState = BlendState.AlphaBlend;
-            shader.SamplerState = SamplerState.PointWrap;
-            shader.Speed = 5.2f;
-            shader.Distortion = 0.15f;
-            shader.Power = 0.05f;
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
         }
     }
 }

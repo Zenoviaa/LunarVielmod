@@ -582,3 +582,8 @@ GravityUpEnchantment: {
 	DisplayName: Gravity Up Enchantment
 	Tooltip: Slowly pulls your spell upward
 }
+
+LaserEnchantment: {
+	DisplayName: Laser Enchantment
+	Tooltip: Turns your spell into a super fast, multi-hitting laser!
+}

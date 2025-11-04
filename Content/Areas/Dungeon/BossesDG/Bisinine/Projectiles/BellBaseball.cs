@@ -92,7 +92,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
         public override void AI()
         {
             base.AI();
-            _targetPlayer = PlayerHelper.FindClosestPlayer(Projectile.position, 4000);
+            _targetPlayer = PlayerHelper.FindClosestPlayer(Projectile.position, 8000);
             _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             Timer++;
