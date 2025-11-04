@@ -28,6 +28,7 @@ namespace Stellamod.Tiles
 
     public abstract class DecorativeWallItem : ModItem
     {
+  
         public override string Texture => "Stellamod/Tiles/ExampleDecorativeWallItem";
         public override void SetDefaults()
         {
@@ -71,6 +72,7 @@ namespace Stellamod.Tiles
     }
     public abstract class BaseSpecialWall : ModWall
     {
+        public Color BackgroundColor => Color.Lerp(Color.White, Color.Black, 0.5f);
         public virtual void DrawPreview(int i, int j)
         {
 

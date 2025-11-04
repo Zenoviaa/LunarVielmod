@@ -82,7 +82,7 @@ namespace Stellamod.UI.ArmorReforgeSystem
             if (item == null)
                 return;
 
-
+ 
             player.RemoveItem(ModContent.ItemType<GlisteningPearl>(), 1);
             ArmorReforgeGlobalItem armorReforgeGlobalItem = item.GetGlobalItem<ArmorReforgeGlobalItem>();
             armorReforgeGlobalItem.reforgeType = chosenReforge;

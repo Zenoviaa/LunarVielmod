@@ -9514,3 +9514,103 @@ FastFlight: {
 	DisplayName: Fast Flight
 	Tooltip: Allows flight and slow fall, for a very short time
 }
+
+SilverBell2Item: {
+	Tooltip: ""
+	DisplayName: Silver Bell2 Item
+}
+
+SilverBell1Item: {
+	Tooltip: ""
+	DisplayName: Silver Bell1 Item
+}
+
+RoundBell2Item: {
+	Tooltip: ""
+	DisplayName: Round Bell2 Item
+}
+
+RoundBell1Item: {
+	Tooltip: ""
+	DisplayName: Round Bell1 Item
+}
+
+LittleBellPile2Item: {
+	Tooltip: ""
+	DisplayName: Little Bell Pile2 Item
+}
+
+LittleBellPile1Item: {
+	Tooltip: ""
+	DisplayName: Little Bell Pile1 Item
+}
+
+BigBellPile2Item: {
+	Tooltip: ""
+	DisplayName: Big Bell Pile2 Item
+}
+
+BigBellPile1Item: {
+	Tooltip: ""
+	DisplayName: Big Bell Pile1 Item
+}
+
+SilverBell3Item: {
+	DisplayName: Silver Bell3 Item
+	Tooltip: ""
+}
+
+BellSigil1Item: {
+	DisplayName: Bell Sigil1 Item
+	Tooltip: ""
+}
+
+BellSigil2Item: {
+	DisplayName: Bell Sigil2 Item
+	Tooltip: ""
+}
+
+BellSigil3Item: {
+	DisplayName: Bell Sigil3 Item
+	Tooltip: ""
+}
+
+BellSigil4Item: {
+	DisplayName: Bell Sigil4 Item
+	Tooltip: ""
+}
+
+BellSigil5Item: {
+	DisplayName: Bell Sigil5 Item
+	Tooltip: ""
+}
+
+IlluriaBannerItem: {
+	DisplayName: Illuria Banner Item
+	Tooltip: ""
+}
+
+IlluriaShelf1Item: {
+	DisplayName: Illuria Shelf1 Item
+	Tooltip: ""
+}
+
+IlluriaShelf2Item: {
+	DisplayName: Illuria Shelf2 Item
+	Tooltip: ""
+}
+
+IlluriaShelf3Item: {
+	DisplayName: Illuria Shelf3 Item
+	Tooltip: ""
+}
+
+IlluriaShelf4Item: {
+	DisplayName: Illuria Shelf4 Item
+	Tooltip: ""
+}
+
+IlluriaWallsItem: {
+	DisplayName: Illuria Walls Item
+	Tooltip: ""
+}
