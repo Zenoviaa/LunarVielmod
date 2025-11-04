@@ -22,20 +22,9 @@ namespace Stellamod.Core.Lights
 
         private float _blackWhiteLerp;
 
-        private Texture2D _paletteTexture;
-        private Color[] _abyssPalette;
-        private Color[] _alcadPalette;
-        private Color[] _underworldPalette;
-        private Color[] _desertPalette;
-        private Color[] _witchTownPalette;
-        private Color[] _rustyPalette;
-        private Color[] _bloodyPalette;
-        private Color[] _dungeonPalette;
-        private Color[] _desertTopPalette;
-        private Color[] _fablePalette;
         private MyPlayer MyPlayer => Player.GetModPlayer<MyPlayer>();
 
-        private FilterManager FilterManager => Terraria.Graphics.Effects.Filters.Scene;
+        private FilterManager FilterManager => Filters.Scene;
 
         private string DarknessVignette => "LunarVeil:DarknessVignette";
 
@@ -74,16 +63,19 @@ namespace Stellamod.Core.Lights
         private void LoadPalettes()
         {
             string rootDirectory = "Core/Lights/Palettes";
-            _abyssPalette = PalFileImporter.ReadPalette($"{rootDirectory}/Abyss");
-            _alcadPalette = PalFileImporter.ReadPalette($"{rootDirectory}/RoyalCapital");
-            _underworldPalette = PalFileImporter.ReadPalette($"{rootDirectory}/Hell");
-            _desertPalette = PalFileImporter.ReadPalette($"{rootDirectory}/maggot24");
-            _desertTopPalette = PalFileImporter.ReadPalette($"{rootDirectory}/DesertTop");
-            _witchTownPalette = PalFileImporter.ReadPalette($"{rootDirectory}/Witchtown");
-            _rustyPalette = PalFileImporter.ReadPalette($"{rootDirectory}/Rusty");
-            _bloodyPalette = PalFileImporter.ReadPalette($"{rootDirectory}/BloodHound");
-            _dungeonPalette = PalFileImporter.ReadPalette($"{rootDirectory}/Dungeon");
-            _fablePalette = PalFileImporter.ReadPalette($"{rootDirectory}/Fable");
+            PalFileImporter.ReadPalette($"{rootDirectory}/Abyss");
+            PalFileImporter.ReadPalette($"{rootDirectory}/RoyalCapital");
+            PalFileImporter.ReadPalette($"{rootDirectory}/Hell");
+            PalFileImporter.ReadPalette($"{rootDirectory}/maggot24");
+            PalFileImporter.ReadPalette($"{rootDirectory}/DesertTop");
+            PalFileImporter.ReadPalette($"{rootDirectory}/Witchtown");
+            PalFileImporter.ReadPalette($"{rootDirectory}/Rusty");
+            PalFileImporter.ReadPalette($"{rootDirectory}/BloodHound");
+            PalFileImporter.ReadPalette($"{rootDirectory}/Dungeon");
+            PalFileImporter.ReadPalette($"{rootDirectory}/Fable");
+            PalFileImporter.ReadPalette($"{rootDirectory}/IllurianMistyDungeon");
+            PalFileImporter.ReadPalette($"{rootDirectory}/MistyDungeon");
+            PalFileImporter.ReadPalette($"{rootDirectory}/VilepipesNGarden");
         }
 
         public override void ResetEffects()
