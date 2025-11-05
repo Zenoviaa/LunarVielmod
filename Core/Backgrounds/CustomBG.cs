@@ -16,9 +16,15 @@ namespace Stellamod.Core.Backgrounds
         public bool NoSurfaceOffset;
         public bool NoSurfaceLight;
         public float ParallaxYOffset;
+        public bool NoParallaxY;
+        public Color DrawColor;
         public virtual bool IsActive()
         {
             return false;
+        }
+        public virtual void SetDrawDefaults()
+        {
+            DrawColor = Color.White;
         }
 
         public virtual int GetParallaxYStartHeight()

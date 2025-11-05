@@ -151,171 +151,19 @@ namespace Stellamod.NPCs.Town
             });
         }
 
-        // The PreDraw hook is useful for drawing things before our sprite is drawn or running code before the sprite is drawn
-        // Returning false will allow you to manually draw your NPC
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            // This code slowly rotates the NPC in the bestiary
-            // (simply checking NPC.IsABestiaryIconDummy and incrementing NPC.Rotation won't work here as it gets overridden by drawModifiers.Rotation each tick)
-            if (NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(Type, out NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers))
-            {
-                drawModifiers.Rotation += 0.001f;
-
-                // Replace the existing NPCBestiaryDrawModifiers with our new one with an adjusted rotation
-                NPCID.Sets.NPCBestiaryDrawOffset.Remove(Type);
-                NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
-            }
-
-            return true;
-
-        }
-        public override bool CanChat()
-        {
-            return true;
-        }
-        public override string GetChat()
-        {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-
-            int partyGirl = NPC.FindFirstNPC(NPCID.Steampunker);
-            if (partyGirl >= 0 && Main.rand.NextBool(4))
-            {
-                chat.Add(LangText.Chat(this, "Basic1", Main.npc[partyGirl].GivenName));
-            }
-            // These are things that the NPC has a chance of telling you when you talk to it.
-            chat.Add(LangText.Chat(this, "Basic2"));
-            chat.Add(LangText.Chat(this, "Basic3"));
-            chat.Add(LangText.Chat(this, "Basic4"));
-            chat.Add(LangText.Chat(this, "Basic5"), 5.0);
-            chat.Add(LangText.Chat(this, "Basic6"), 0.4);
-            chat.Add(LangText.Chat(this, "Basic7"), 0.1);
-            chat.Add(LangText.Chat(this, "Basic8"), 0.1);
-            chat.Add(LangText.Chat(this, "Basic9"), 0.1);
-
-            NumberOfTimesTalkedTo++;
-            if (NumberOfTimesTalkedTo >= 10)
-            {
-                //This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-                chat.Add(LangText.Chat(this, "Basic10"));
-            }
-
-            return chat; // chat is implicitly cast to a string.
-        }
-        public override void HitEffect(NPC.HitInfo hit)
-        {
-            int num = NPC.life > 0 ? 1 : 5;
-
-            for (int k = 0; k < num; k++)
-            {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GreenBlood);
-            }
-        }
-
-
-
-
-
-
+       
 
         public override List<string> SetNPCNameList()
         {
             return new List<string>() {
-                "Mardenth",
-                "Mardenth",
-                "Mardenth",
                 "Mardenth"
-
             };
         }
 
 
 
 
-        public override void SetChatButtons(ref string button, ref string button2)
-        { // What the chat buttons are when you open up the chat UI
-            button = Language.GetTextValue("LegacyInterface.28");
-            button2 = LangText.Chat(this, "Button2");
-
-        }
-
-        public override void OnChatButtonClicked(bool firstButton, ref string shop)
-        {
-            if (firstButton)
-            {
-                // We want 3 different functionalities for chat buttons, so we use HasItem to change button 1 between a shop and upgrade action.
-
-                //if (Main.LocalPlayer.HasItem(ItemID.HiveBackpack))
-                //{
-                //	SoundEngine.PlaySound(SoundID.Item37); // Reforge/Anvil sound
-
-                //	Main.npcChatText = $"I upgraded your {Lang.GetItemNameValue(ItemID.HiveBackpack)} to a {Lang.GetItemNameValue(ModContent.ItemType<WaspNest>())}";
-
-                //	int hiveBackpackItemIndex = Main.LocalPlayer.FindItem(ItemID.HiveBackpack);
-                //	var entitySource = NPC.GetSource_GiftOrReward();
-
-                //	Main.LocalPlayer.inventory[hiveBackpackItemIndex].TurnToAir();
-                //	Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<WaspNest>());
-
-                //	return;
-                //}
-
-                shop = ShopName;
-            }
-
-            if (!firstButton)
-            {
-
-                Player player = Main.LocalPlayer;
-                WeightedRandom<string> chat = new WeightedRandom<string>();
-
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2"));
-
-                //-----------------------------------------------------------------------------------------------	
-                Main.npcChatText = Main.npcChatText = LangText.Chat(this, "Special" + Main.rand.Next(1, 11));
-            }
-
-
-        }
-
-
-        public void ResetTimers()
-        {
-            timer = 0;
-            frameCounter = 0;
-            frameTick = 0;
-        }
-
-
-
-
-
-
-
-
-
-
-
-        public override void ModifyActiveShop(string shopName, Item[] items)
-        {
-            foreach (Item item in items)
-            {
-                // Skip 'air' items and null items.
-                if (item == null || item.type == ItemID.None)
-                {
-                    continue;
-                }
-
-                // If NPC is shimmered then reduce all prices by 50%.
-                if (NPC.IsShimmerVariant)
-                {
-                    int value = item.shopCustomPrice ?? item.value;
-                    item.shopCustomPrice = value / 2;
-                }
-            }
-        }
-
-
-
+   
 
         public override void AddShops()
         {

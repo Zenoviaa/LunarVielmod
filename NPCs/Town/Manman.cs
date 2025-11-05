@@ -113,56 +113,7 @@ namespace Stellamod.NPCs.Town
             });
         }
 
-        // The PreDraw hook is useful for drawing things before our sprite is drawn or running code before the sprite is drawn
-        // Returning false will allow you to manually draw your NPC
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            // This code slowly rotates the NPC in the bestiary
-            // (simply checking NPC.IsABestiaryIconDummy and incrementing NPC.Rotation won't work here as it gets overridden by drawModifiers.Rotation each tick)
-            if (NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(Type, out NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers))
-            {
-                drawModifiers.Rotation += 0.001f;
-
-                // Replace the existing NPCBestiaryDrawModifiers with our new one with an adjusted rotation
-                NPCID.Sets.NPCBestiaryDrawOffset.Remove(Type);
-                NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
-            }
-
-            return true;
-        }
-        public override string GetChat()
-        {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-
-            int partyGirl = NPC.FindFirstNPC(NPCID.Steampunker);
-            if (partyGirl >= 0 && Main.rand.NextBool(4))
-            {
-                chat.Add(LangText.Chat(this, "Basic1", Main.npc[partyGirl].GivenName));
-            }
-            // These are things that the NPC has a chance of telling you when you talk to it.
-            chat.Add(LangText.Chat(this, "Basic2"));
-            chat.Add(LangText.Chat(this, "Basic3"));
-            chat.Add(LangText.Chat(this, "Basic4"));
-            chat.Add(LangText.Chat(this, "Basic5"), 5.0);
-            chat.Add(LangText.Chat(this, "Basic6"), 2.0);
-            chat.Add(LangText.Chat(this, "Basic7"), 0.1);
-            chat.Add(LangText.Chat(this, "Basic8"), 0.1);
-            chat.Add(LangText.Chat(this, "Basic9"), 0.1);
-            chat.Add(LangText.Chat(this, "Basic10"), 0.1);
-            chat.Add(LangText.Chat(this, "Basic11"), 0.1);
-            chat.Add(LangText.Chat(this, "Basic12"), 0.1);
-            chat.Add(LangText.Chat(this, "Basic13"), 0.1);
-
-            NumberOfTimesTalkedTo++;
-            if (NumberOfTimesTalkedTo >= 20)
-            {
-                //This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-                chat.Add(LangText.Chat(this, "Basic14"));
-            }
-
-            return chat; // chat is implicitly cast to a string.
-        }
-
+     
         public override List<string> SetNPCNameList()
         {
             return new List<string>() {
@@ -170,20 +121,6 @@ namespace Stellamod.NPCs.Town
             };
         }
 
-
-        public override void SetChatButtons(ref string button, ref string button2)
-        { // What the chat buttons are when you open up the chat UI
-            button2 = Language.GetTextValue("LegacyInterface.28");
-            button = LangText.Chat(this, "Button");
-        }
-
-        public override void OnChatButtonClicked(bool firstButton, ref string shop)
-        {
-            if (!firstButton)
-            {
-                shop = ShopName;
-            }
-        }
 
         public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
         {

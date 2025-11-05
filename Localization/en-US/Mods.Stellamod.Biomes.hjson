@@ -157,3 +157,8 @@ XixVillageBiome: {
 	DisplayName: Witch Town
 	TownNPCDialogueName: the Witch Town
 }
+
+MistyDungeonBiome: {
+	DisplayName: Misty Dungeon Biome
+	TownNPCDialogueName: the Misty Dungeon Biome
+}

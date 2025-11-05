@@ -43,8 +43,8 @@ namespace Stellamod.UI.ArmorReforgeSystem
         public bool Valid(Item item)
         {
             bool isArmor = item.headSlot >= 0 || item.bodySlot >= 0 || item.legSlot >= 0;
-
-            return isArmor || item.IsAir;
+            bool isAccessory = item.accessory;
+            return isArmor || item.IsAir || isAccessory;
         }
 
         public void HandleMouseItem()
@@ -52,7 +52,10 @@ namespace Stellamod.UI.ArmorReforgeSystem
             if (Valid(Main.mouseItem))
             {
                 _prevItem = Item;
-                ItemSlot.Handle(ref Item, _context);
+                if (Main.mouseLeftRelease && Main.mouseLeft)
+                {
+                    ItemSlot.Handle(ref Item, _context);
+                }
             }
         }
 
@@ -66,6 +69,8 @@ namespace Stellamod.UI.ArmorReforgeSystem
             {
                 Main.LocalPlayer.mouseInterface = true;
                 HandleMouseItem();
+                Main.HoverItem = Item;
+                Main.hoverItemName = Item.HoverName;
             }
 
             //Draw Backing
@@ -81,16 +86,6 @@ namespace Stellamod.UI.ArmorReforgeSystem
             if (Item.stack > 1)
                 ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, Item.stack.ToString(),
                     centerPos + new Vector2(10f, 26f) * _scale, Color.White, 0f, Vector2.Zero, new Vector2(_scale), -1f, _scale);
-            if (contains && Item.IsAir)
-            {
-                timer++;
-                OnEmptyMouseover?.Invoke(timer);
-            }
-            else if (!contains)
-            {
-                timer = 0;
-            }
-
             Main.inventoryScale = oldScale;
         }
     }

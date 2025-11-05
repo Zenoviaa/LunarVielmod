@@ -119,6 +119,13 @@ namespace Stellamod.Core.GunSystem
             Item.noUseGraphic = true;
         }
 
+        public int GetMaxAmmo(Player player)
+        {
+            //We can use local player here can reloading is never checked over clients, I think
+            //ehh
+            return maxAmmo + player.GetModPlayer<GunHoldPlayer>().maxAmmoBonus;
+        }
+
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
@@ -165,7 +172,7 @@ namespace Stellamod.Core.GunSystem
 
         public virtual void Reload()
         {
-            remainingAmmo = maxAmmo;
+            remainingAmmo = GetMaxAmmo(Main.LocalPlayer);
             SoundStyle gunReloadSound = AssetRegistry.Sounds.Gun.GunReload;
             gunReloadSound.PitchVariance = 0.2f;
             SoundEngine.PlaySound(gunReloadSound);
@@ -226,6 +233,7 @@ namespace Stellamod.Core.GunSystem
     }
     public class GunHoldPlayer : ModPlayer
     {
+        public int maxAmmoBonus;
         public bool isReloading;
         public float reloadTimer;
         public float reloadTime;
@@ -239,6 +247,7 @@ namespace Stellamod.Core.GunSystem
         public override void ResetEffects()
         {
             base.ResetEffects();
+            maxAmmoBonus = 0;
             isReloading = false;
           
             marginOfError = 10;

@@ -2,6 +2,7 @@ using Stellamod.Core.ArmorReforge;
 using Stellamod.Core.QuestSystem;
 using Terraria.Localization;
 using Terraria.ModLoader;
+
 namespace Stellamod.Helpers
 {
     public static class LangText
@@ -53,6 +54,10 @@ namespace Stellamod.Helpers
             return Language.GetTextValue($"Mods.Stellamod.ArmorShop.{item.Name}", arg0);
         }
         public static string ArmorReforge(ArmorReforgeType type, string Path, object arg0 = null)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.ArmorReforge.{type.ToString()}." + Path, arg0);
+        }
+        public static string AccessoryReforge(AccessoryReforgeType type, string Path, object arg0 = null)
         {
             return Language.GetTextValue($"Mods.Stellamod.ArmorReforge.{type.ToString()}." + Path, arg0);
         }

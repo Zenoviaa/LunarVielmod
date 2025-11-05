@@ -18,10 +18,12 @@ namespace Stellamod.Core.IgnitersNPowders
     public class IgniterPlayer : ModPlayer
     {
         public float extenderBonus;
+        public float igniterDamageBonus;
         public override void ResetEffects()
         {
             base.ResetEffects();
             extenderBonus = 0f;
+            igniterDamageBonus = 0f;
         }
     }
     public class IgniterTooltipDraw : GlobalItem
@@ -119,6 +121,7 @@ namespace Stellamod.Core.IgnitersNPowders
         {
             IgniterPlayer igniterPlayer = player.GetModPlayer<IgniterPlayer>();
             velocity *= 1.0f + igniterPlayer.extenderBonus;
+            damage = (int)(damage * (1.0f + igniterPlayer.igniterDamageBonus));
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
             return false;
         }

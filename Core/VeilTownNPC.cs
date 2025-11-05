@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Stellamod.Core.QuestSystem;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.NPCs;
 using Stellamod.UI.DialogueTowning;
@@ -8,21 +10,99 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core
 {
-    public abstract class VeilTownNPC : ModNPC
+    public abstract class VeilTownNPC : ModNPC,
+        IDrawOutlines
     {
-
+        protected bool _drawOutlines;
         public bool HasTownDialogue { get; set; }
         public bool SpawnAtPoint { get; set; }
         public bool OnlyInteract { get; set; }
         public virtual string QuestMarkTexture => "Stellamod/Core/QuestSystem/QuestMark";
+
         public virtual void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
         {
 
         }
+
+        public virtual void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            if (!_drawOutlines)
+                return;
+            _drawOutlines = false;
+
+
+            string texturePath = Texture;
+            Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
+            Vector2 drawPos = NPC.Center - Main.screenPosition;
+   
+            Vector2 drawOrigin = NPC.frame.Size() / 2f;
+            float drawRotation = NPC.rotation;
+            float drawScale = NPC.scale;
+            SpriteEffects spriteEffects = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+
+
+            float outlineOffset = 2;
+            Vector2 left = drawPos + Vector2.UnitX * -outlineOffset;
+            Vector2 right = drawPos + Vector2.UnitX * outlineOffset;
+            Vector2 up = drawPos + Vector2.UnitY * -outlineOffset;
+            Vector2 down = drawPos + Vector2.UnitY * outlineOffset;
+            Color outlineColor = Color.White;
+
+            spriteBatch.Draw(texture, left, NPC.frame, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+            spriteBatch.Draw(texture, right, NPC.frame, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+            spriteBatch.Draw(texture, up, NPC.frame, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+            spriteBatch.Draw(texture, down, NPC.frame, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+        }
+        
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            string texturePath = Texture;
+            Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
+            Vector2 drawPos = NPC.Center - Main.screenPosition;
+            Vector2 drawOrigin = NPC.frame.Size() / 2f;
+            float drawRotation = NPC.rotation;
+            float drawScale = NPC.scale;
+            SpriteEffects spriteEffects = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+
+            float outlineOffset = 2;
+            Vector2 left = drawPos + Vector2.UnitX * -outlineOffset;
+            Vector2 right = drawPos + Vector2.UnitX * outlineOffset;
+            Vector2 up = drawPos + Vector2.UnitY * -outlineOffset;
+            Vector2 down = drawPos + Vector2.UnitY * outlineOffset;
+            Color outlineColor = Color.White;
+            spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+            return false;
+        }
+
+        public override bool PreHoverInteract(bool mouseIntersects)
+        {
+            bool isClose = Vector2.Distance(Main.LocalPlayer.Center, NPC.Center) < 200;
+            if (!isClose)
+                return false;
+            if (mouseIntersects)
+            {
+                _drawOutlines = true;
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                Vector2 drawPosition = NPC.Center - Main.screenPosition;
+                Texture2D chatBubble = TextureAssets.Chat.Value;
+                Vector2 drawOrigin = chatBubble.Size() / 2f;
+                drawPosition -= new Vector2(0, NPC.frame.Size().Y / 2f);
+                spriteBatch.Draw(chatBubble, drawPosition, null, Color.White, 0, drawOrigin, 1, SpriteEffects.None,0);
+            }
+            if (Main.mouseRight && Main.mouseRightRelease && mouseIntersects )
+            {
+                DialogueTowningUISystem towningUISystem = ModContent.GetInstance<DialogueTowningUISystem>();
+                towningUISystem.Interact(this);
+            }
+            return false;
+        }
+
 
         public virtual void OpenTownDialogue(
             ref string text,
@@ -148,5 +228,6 @@ namespace Stellamod.Core
                 Lighting.AddLight(drawPos, Color.White.ToVector3() * 0.78f);
             }
         }
+
     }
 }

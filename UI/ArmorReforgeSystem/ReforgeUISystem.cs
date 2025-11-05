@@ -71,29 +71,69 @@ namespace Stellamod.UI.ArmorReforgeSystem
             return false;
         }
 
-        public void Reforge()
+        public void ReforgeArmor(Player player, Item item)
         {
-            Player player = Main.LocalPlayer;
             List<ArmorReforgeType> armorReforges = GeneralHelpers.GetEnumList<ArmorReforgeType>();
             ArmorReforgeType chosenReforge = armorReforges[Main.rand.Next(0, armorReforges.Count)];
-            Item item = reforgeUIState.ui.reforgeSlot.Item;
+            //Don't ever reforge to none
+            while (chosenReforge == ArmorReforgeType.None)
+                chosenReforge = armorReforges[Main.rand.Next(0, armorReforges.Count)];
 
-            //Can't reforge nothing
-            if (item == null)
-                return;
-
- 
             player.RemoveItem(ModContent.ItemType<GlisteningPearl>(), 1);
             ArmorReforgeGlobalItem armorReforgeGlobalItem = item.GetGlobalItem<ArmorReforgeGlobalItem>();
             armorReforgeGlobalItem.reforgeType = chosenReforge;
             item.NetStateChanged();
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Converted"));
 
-            player.GetModPlayer<MyPlayer>().ShakeAtPosition(Main.LocalPlayer.Center, 1024f, 16f);
+            FXUtil.ShakeCamera(Main.LocalPlayer.Center, 1024, 16f);
             string text = LangText.ArmorReforge(chosenReforge, "DisplayName") + " " + item.Name;
             int combatText = CombatText.NewText(player.getRect(), Color.White, text);
             CombatText numText = Main.combatText[combatText];
             numText.lifeTime = 60;
+        }
+
+
+        public void ReforgeAccessory(Player player , Item item)
+        {
+            List<AccessoryReforgeType> reforges = GeneralHelpers.GetEnumList<AccessoryReforgeType>();
+            AccessoryReforgeType chosenReforge = reforges[Main.rand.Next(0, reforges.Count)];
+            //Don't ever reforge to none
+            while (chosenReforge == AccessoryReforgeType.None)
+                chosenReforge = reforges[Main.rand.Next(0, reforges.Count)];
+
+            player.RemoveItem(ModContent.ItemType<GlisteningPearl>(), 1);
+            AccessoryReforgeGlobalItem armorReforgeGlobalItem = item.GetGlobalItem<AccessoryReforgeGlobalItem>();
+            armorReforgeGlobalItem.accessoryReforgeType = chosenReforge;
+            item.NetStateChanged();
+            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Converted"));
+
+            FXUtil.ShakeCamera(Main.LocalPlayer.Center, 1024, 16f);
+            string text = LangText.AccessoryReforge(chosenReforge, "DisplayName") + " " + item.Name;
+            int combatText = CombatText.NewText(player.getRect(), Color.White, text);
+            CombatText numText = Main.combatText[combatText];
+            numText.lifeTime = 60;
+        }
+        public void Reforge()
+        {
+            Player player = Main.LocalPlayer;
+
+            Item item = reforgeUIState.ui.reforgeSlot.Item;
+
+            //Can't reforge nothing
+            if (item == null)
+                return;
+            //Can't reforge air
+            if (item.IsAir)
+                return;
+
+            if (item.accessory)
+            {
+                ReforgeAccessory(player, item);
+            }
+            else
+            {
+                ReforgeArmor(player, item); 
+            }
         }
 
         public void OpenUI()

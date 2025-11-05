@@ -16,9 +16,6 @@ using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Town
 {
-    // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
-    //[AutoloadHead]
-    [AutoloadBossHead]
     public class Sirestias : VeilTownNPC
     {
         public int NumberOfTimesTalkedTo = 0;
@@ -98,35 +95,8 @@ namespace Stellamod.NPCs.Town
             spawner.spawnTileOffset = new Point(150, -35);
         }
 
-        public override ITownNPCProfile TownNPCProfile()
-        {
-            return new DelgrimPersonProfile();
-        }
 
-        public class DelgrimPersonProfile : ITownNPCProfile
-        {
-            public int RollVariation() => 0;
-            public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
-
-            public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
-            {
-                if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
-                    return ModContent.Request<Texture2D>("Stellamod/NPCs/Town/Sirestias");
-
-                if (npc.altTexture == 1)
-                    return ModContent.Request<Texture2D>("Stellamod/NPCs/Town/Sirestias_Head");
-
-                return ModContent.Request<Texture2D>("Stellamod/NPCs/Town/Sirestias");
-            }
-
-            public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("Stellamod/NPCs/Town/Sirestias_Head");
-        }
-
-        public override bool CanChat()
-        {
-            return true;
-        }
-
+    
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
@@ -141,48 +111,6 @@ namespace Stellamod.NPCs.Town
 				// You can also use localization keys (see Localization/en-US.lang)
 				new FlavorTextBestiaryInfoElement(NPC.FullName)
             });
-        }
-
-        // The PreDraw hook is useful for drawing things before our sprite is drawn or running code before the sprite is drawn
-        // Returning false will allow you to manually draw your NPC
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            // This code slowly rotates the NPC in the bestiary
-            // (simply checking NPC.IsABestiaryIconDummy and incrementing NPC.Rotation won't work here as it gets overridden by drawModifiers.Rotation each tick)
-            if (NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(Type, out NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers))
-            {
-
-
-                // Replace the existing NPCBestiaryDrawModifiers with our new one with an adjusted rotation
-                NPCID.Sets.NPCBestiaryDrawOffset.Remove(Type);
-                NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
-            }
-
-            return true;
-
-        }
-        public override string GetChat()
-        {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-
-            int partyGirl = NPC.FindFirstNPC(NPCID.Steampunker);
-
-            // These are things that the NPC has a chance of telling you when you talk to it.
-            chat.Add(LangText.Chat(this, "Basic1"));
-            chat.Add(LangText.Chat(this, "Basic2"));
-            chat.Add(LangText.Chat(this, "Basic3"));
-            chat.Add(LangText.Chat(this, "Basic4"));
-            chat.Add(LangText.Chat(this, "Basic5"));
-
-
-            NumberOfTimesTalkedTo++;
-            if (NumberOfTimesTalkedTo >= 40)
-            {
-                //This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-                chat.Add("...");
-            }
-
-            return chat; // chat is implicitly cast to a string.
         }
 
         public override List<string> SetNPCNameList()

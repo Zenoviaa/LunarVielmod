@@ -19,6 +19,22 @@
         Necromanced,
         RangedHolsting,
         Vampiric,
-        RogueThrown
+        RogueThrown,
+        Gilded,
+        Speeditrous,
+        Scripted,
+        Brewing,
+        Harnessing,
+        Reloaded,
+        Illurias,
+        Sentricus,
+        Reducting,
+        Flying,
+        Berserker,
+        Acrobatic,
+        Feathered,
+        Shattered,
+        Clerical,
+        Summoned
     }
 }

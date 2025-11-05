@@ -91,10 +91,7 @@ namespace Stellamod.NPCs.Town
             NPC.frame.Y = frameHeight * _frame;
         }
 
-        public override bool CanChat()
-        {
-            return true;
-        }
+ 
 
         //This prevents the NPC from despawning
         public override bool CheckActive()
@@ -145,13 +142,7 @@ namespace Stellamod.NPCs.Town
         }
 
 
-        public override void SetChatButtons(ref string button, ref string button2)
-        {
-            // What the chat buttons are when you open up the chat UI
-            // button2 = Language.GetTextValue("LegacyInterface.28");
-            button = LangText.Chat(this, "Button");
-        }
-
+       
         public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
         {
             base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);

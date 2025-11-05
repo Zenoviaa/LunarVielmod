@@ -53,7 +53,7 @@ namespace Stellamod.Content.Quests.ZuiQuest
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            AddReward(ModContent.ItemType<AnotherRock>(), 1);
+           // AddReward(ModContent.ItemType<AnotherRock>(), 1);
             IsAutoQuest = true;
         }
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Biomes;
 using Stellamod.Effects;
 using Terraria;
 using Terraria.Graphics.Effects;
@@ -60,6 +61,7 @@ namespace Stellamod.Core.Lights
         public float desertTopPaletteProgress;
         public float rustyPaletteProgress;
         public float fablePaletteProgress;
+        public float mistyDungeonPaletteProgress;
         private void LoadPalettes()
         {
             string rootDirectory = "Core/Lights/Palettes";
@@ -267,8 +269,6 @@ namespace Stellamod.Core.Lights
             screenShaderData.UseProgress(desertTopPaletteProgress);
             TogglePaletteShader("LunarVeil:PaletteDesertTop", desertTopPaletteProgress != 0);
 
-
-            //fable
             bool fablePaletteActive = Player.GetModPlayer<MyPlayer>().ZoneFable;
             if (fablePaletteActive)
             {
@@ -282,6 +282,21 @@ namespace Stellamod.Core.Lights
             screenShaderData = FilterManager["LunarVeil:PaletteFable"].GetShader();
             screenShaderData.UseProgress(fablePaletteProgress);
             TogglePaletteShader("LunarVeil:PaletteFable", fablePaletteProgress != 0);
+
+            //fable
+            bool mistyPaletteActive = Player.GetModPlayer<BiomePlayer>().ZoneMistyDungeon;
+            if (mistyPaletteActive)
+            {
+                mistyDungeonPaletteProgress += speed;
+            }
+            else
+            {
+                mistyDungeonPaletteProgress -= speed;
+            }
+            mistyDungeonPaletteProgress = MathHelper.Clamp(mistyDungeonPaletteProgress, 0f, 1f);
+            screenShaderData = FilterManager["LunarVeil:PaletteMistyDungeon"].GetShader();
+            screenShaderData.UseProgress(mistyDungeonPaletteProgress);
+            TogglePaletteShader("LunarVeil:PaletteMistyDungeon", mistyDungeonPaletteProgress != 0);
 
 
             bool bloodPaletteActive = MyPlayer.ZoneBloodCathedral && !Main.dayTime;

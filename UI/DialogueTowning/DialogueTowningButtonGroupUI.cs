@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI.Elements;
@@ -9,12 +10,14 @@ namespace Stellamod.UI.DialogueTowning
 {
     public class DialogueTowningButtonGroupUI : UIPanel
     {
+        private List<DialogueTowningButtonUI> _buttons;
         private UIGrid _buttonsGrid;
         public int RelativeLeft => Main.screenWidth / 2;
         public int RelativeTop => Main.screenHeight - 380;
         public Vector2 DrawPos => new Vector2(Left.Pixels, Top.Pixels);
 
         public Vector2 Offset { get; set; }
+        public float Alpha { get; set; }
 
         public override void OnInitialize()
         {
@@ -46,6 +49,7 @@ namespace Stellamod.UI.DialogueTowning
 
         public void ClearButtons()
         {
+            _buttons = new List<DialogueTowningButtonUI>();
             _buttonsGrid.Clear();
             _buttonsGrid.Recalculate();
         }
@@ -56,6 +60,7 @@ namespace Stellamod.UI.DialogueTowning
             button.OnClickEvent = btn;
             button.RealText = LangText.TownDialogue(text);
             _buttonsGrid.Add(button);
+            _buttons.Add(button);
         }
 
         public override void Update(GameTime gameTime)
@@ -69,6 +74,10 @@ namespace Stellamod.UI.DialogueTowning
             Top.Pixels = RelativeTop;
             Left.Pixels += Offset.X;
             Top.Pixels += Offset.Y;
+            foreach (var btn in _buttons)
+            {
+                btn.Alpha = Alpha;
+            }
         }
     }
 }
