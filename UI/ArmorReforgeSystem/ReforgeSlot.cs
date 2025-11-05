@@ -68,6 +68,8 @@ namespace Stellamod.UI.ArmorReforgeSystem
             {
                 Main.LocalPlayer.mouseInterface = true;
                 HandleMouseItem();
+                Main.HoverItem = Item;
+                Main.hoverItemName = Item.HoverName;
             }
 
             //Draw Backing
