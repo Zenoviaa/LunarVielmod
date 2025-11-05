@@ -18,6 +18,7 @@ namespace Stellamod.Core.Backgrounds
         public float ParallaxYOffset;
         public bool NoParallaxY;
         public Color DrawColor;
+        public bool IgnorePaletteShader;
         public virtual bool IsActive()
         {
             return false;

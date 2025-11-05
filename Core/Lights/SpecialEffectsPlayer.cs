@@ -294,9 +294,9 @@ namespace Stellamod.Core.Lights
                 mistyDungeonPaletteProgress -= speed;
             }
             mistyDungeonPaletteProgress = MathHelper.Clamp(mistyDungeonPaletteProgress, 0f, 1f);
-            screenShaderData = FilterManager["LunarVeil:PaletteMistyDungeon"].GetShader();
-            screenShaderData.UseProgress(mistyDungeonPaletteProgress);
-            TogglePaletteShader("LunarVeil:PaletteMistyDungeon", mistyDungeonPaletteProgress != 0);
+            screenShaderData = FilterManager["LunarVeil:PaletteIllurianMistyDungeon"].GetShader();
+            screenShaderData.UseProgress(mistyDungeonPaletteProgress * 0.5f);
+            TogglePaletteShader("LunarVeil:PaletteIllurianMistyDungeon", mistyDungeonPaletteProgress != 0);
 
 
             bool bloodPaletteActive = MyPlayer.ZoneBloodCathedral && !Main.dayTime;

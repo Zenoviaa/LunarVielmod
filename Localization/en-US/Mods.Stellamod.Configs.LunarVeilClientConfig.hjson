@@ -4,6 +4,7 @@ Headers: {
 	Visual: Visual
 	Effects: Effects
 	UI: UI
+	Experiment: Experiment Header
 }
 
 VanillaTexturesToggle: {
@@ -123,5 +124,10 @@ AmmoBarX: {
 
 AmmoBarY: {
 	Label: Ammo Bar Y
+	Tooltip: ""
+}
+
+NoLightingEveryFrameOverride: {
+	Label: No Lighting Every Frame Override
 	Tooltip: ""
 }

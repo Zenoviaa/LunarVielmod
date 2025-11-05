@@ -21,8 +21,8 @@ namespace Stellamod.Backgrounds
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-  
-            CustomBGLayer backLayer = new CustomBGLayer();
+            Layers.Clear();
+                      CustomBGLayer backLayer = new CustomBGLayer();
             backLayer.SetTexture("Assets/Textures/Backgrounds/MistyDungeon_Back");
             backLayer.Parallax = 0.2f;
             backLayer.DrawOffset = Vector2.Zero;
@@ -36,7 +36,30 @@ namespace Stellamod.Backgrounds
             AddLayer(midLayer);
 
 
+            CustomBGLayer midFogLayer = new CustomBGLayer();
+            midFogLayer.SetTexture("Assets/Textures/Backgrounds/RainforestMiddleGradient");
+            midFogLayer.Parallax = 0.35f;
+            midFogLayer.DrawOffset = Vector2.Zero;
 
+            MistShader midMistShader = new MistShader();
+            midMistShader.StartColor = Color.Blue * 0.3f;
+            midMistShader.EndColor = Color.Blue * 0.1f;
+            midFogLayer.Shader = midMistShader;
+            AddLayer(midFogLayer);
+
+
+            /*
+            CustomBGLayer midFogLayer2 = new CustomBGLayer();
+            midFogLayer2.SetTexture("Assets/Textures/Backgrounds/RainforestMiddleGradient");
+            midFogLayer2.Parallax = 0.35f;
+            midFogLayer2.DrawOffset = Vector2.Zero;
+
+            MistShader midMistShader2 = new MistShader();
+            midMistShader2.StartColor = Color.Transparent;
+            midMistShader2.EndColor = Color.Blue * 0.25f;
+            midFogLayer2.Shader = midMistShader2;
+            AddLayer(midFogLayer2);
+            */
 
             CustomBGLayer frontLayer = new CustomBGLayer();
             frontLayer.SetTexture("Assets/Textures/Backgrounds/MistyDungeon_Top");

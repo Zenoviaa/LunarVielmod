@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core.Backgrounds;
 using Stellamod.Core.Effects;
+using Terraria.GameContent.Drawing;
 
 namespace Stellamod.Backgrounds
 {
@@ -30,8 +31,6 @@ namespace Stellamod.Backgrounds
             midLayer.Parallax = 0.35f;
             midLayer.DrawOffset = Vector2.Zero;
             AddLayer(midLayer);
-
-
 
             CustomBGLayer midFogLayer = new CustomBGLayer();
             midFogLayer.SetTexture("Assets/Textures/Backgrounds/RainforestMiddleGradient");
