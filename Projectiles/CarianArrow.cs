@@ -35,10 +35,7 @@ namespace Stellamod.Projectiles
                 Projectile.timeLeft = 2;
             }
 
-            float offset = 80 + VectorHelper.Osc(-16, 16);
-            Vector2 directionToRallad = owner.Center.DirectionTo(TeleportSystem.RalladWorld);
-            Projectile.Center = owner.Center + directionToRallad * offset;
-            Projectile.rotation = directionToRallad.ToRotation();
+
 
             // Some visuals here
             Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);

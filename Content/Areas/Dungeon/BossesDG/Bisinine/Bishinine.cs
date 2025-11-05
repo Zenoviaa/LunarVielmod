@@ -181,7 +181,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             NPC.width = 32;
             NPC.height = 70;
             NPC.damage = 60;
-            NPC.defense = 17;
+            NPC.defense = 15;
             NPC.lifeMax = 23000;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Bomb");

@@ -103,8 +103,11 @@ namespace Stellamod
 
         public int SpringGrassCount;
         public static bool InSpringHills => ModContent.GetInstance<BiomeTileCounts>().SpringGrassCount > 80;
+        public int MistyDungeonCount;
+        public static bool InMistyDungeon => ModContent.GetInstance<BiomeTileCounts>().MistyDungeonCount > 80;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
+            MistyDungeonCount = tileCounts[TileID.BlueDungeonBrick] + tileCounts[TileID.GreenDungeonBrick] + tileCounts[TileID.PinkDungeonBrick];
             SpringGrassCount = tileCounts[ModContent.TileType<SpringGrass>()];
             AcidCount = tileCounts[ModContent.TileType<AcidialDirt>()];
             AbyssCount = tileCounts[ModContent.TileType<AbyssalDirt>()];

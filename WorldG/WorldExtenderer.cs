@@ -3,6 +3,7 @@ using MonoMod.Cil;
 using System;
 using System.Reflection;
 using Terraria;
+using Terraria.ID;
 using Terraria.IO;
 using Terraria.Map;
 using Terraria.ModLoader;
@@ -48,6 +49,11 @@ namespace Stellamod.WorldG
         public override void ClearWorld()
         {
             base.ClearWorld();
+
+            //Server does need to edit minimap drawing code im pretty sure
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
             ResizeMapTarget();
         }
       

@@ -74,22 +74,32 @@ namespace Stellamod.UI.ArmorReforgeSystem
         public void Reforge()
         {
             Player player = Main.LocalPlayer;
-            List<ArmorReforgeType> armorReforges = GeneralHelpers.GetEnumList<ArmorReforgeType>();
-            ArmorReforgeType chosenReforge = armorReforges[Main.rand.Next(0, armorReforges.Count)];
+
             Item item = reforgeUIState.ui.reforgeSlot.Item;
 
             //Can't reforge nothing
             if (item == null)
                 return;
+            //Can't reforge air
+            if (item.IsAir)
+                return;
 
- 
+
+            List<ArmorReforgeType> armorReforges = GeneralHelpers.GetEnumList<ArmorReforgeType>();
+            ArmorReforgeType chosenReforge = armorReforges[Main.rand.Next(0, armorReforges.Count)];
+            //Don't ever reforge to none
+            while (chosenReforge == ArmorReforgeType.None)
+                chosenReforge = armorReforges[Main.rand.Next(0, armorReforges.Count)];
+
+
+
             player.RemoveItem(ModContent.ItemType<GlisteningPearl>(), 1);
             ArmorReforgeGlobalItem armorReforgeGlobalItem = item.GetGlobalItem<ArmorReforgeGlobalItem>();
             armorReforgeGlobalItem.reforgeType = chosenReforge;
             item.NetStateChanged();
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Converted"));
 
-            player.GetModPlayer<MyPlayer>().ShakeAtPosition(Main.LocalPlayer.Center, 1024f, 16f);
+            FXUtil.ShakeCamera(Main.LocalPlayer.Center, 1024, 16f);
             string text = LangText.ArmorReforge(chosenReforge, "DisplayName") + " " + item.Name;
             int combatText = CombatText.NewText(player.getRect(), Color.White, text);
             CombatText numText = Main.combatText[combatText];

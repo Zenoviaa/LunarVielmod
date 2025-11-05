@@ -19,6 +19,11 @@
         Necromanced,
         RangedHolsting,
         Vampiric,
-        RogueThrown
+        RogueThrown,
+        Gilded,
+        Speeditrous,
+        Scripted,
+        Brewing,
+        Harnessing
     }
 }

@@ -29,6 +29,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander
             Despawn
         }
 
+        private bool _contactDamage;
         private Color _outlineColor;
         private Color TargetOutlineColor;
         private ref float Timer => ref NPC.ai[0];
@@ -63,12 +64,14 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander
         {
             base.SendExtraAI(writer);
             writer.Write(JumpTarget);
+            writer.Write(_contactDamage);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
             JumpTarget = reader.ReadSingle();
+            _contactDamage = reader.ReadBoolean();
         }
 
         public override void SetStaticDefaults()
@@ -109,6 +112,10 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander
             });
         }
 
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return base.CanHitPlayer(target, ref cooldownSlot) && !_contactDamage;
+        }
         public override void SetDefaults()
         {
             NPC.Size = new Vector2(42, 67);

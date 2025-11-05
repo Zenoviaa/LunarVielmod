@@ -79,7 +79,7 @@ namespace Stellamod.Core.Backgrounds
             drawingCustomBG = false;
             foreach (var bg in Backgrounds)
             {
-
+                bg.SetDrawDefaults();
                 bg.ParallaxYOffset = -100;
                 bg.Alpha += bg.IsActive() ? 0.01f : -0.01f;
                 bg.Alpha = MathHelper.Clamp(bg.Alpha, 0, 1);
@@ -135,6 +135,8 @@ namespace Stellamod.Core.Backgrounds
             int diffY = (int)(worldSurfaceY - Main.screenPosition.Y);
             int parallaxY = (int)(diffY * -0.4f);
 
+            if (bg.NoParallaxY)
+                parallaxY = 0;
 
             Vector2 drawPosition = Vector2.Zero + bgLayer.DrawOffset + new Vector2(0, -parallaxY);
             drawPosition += bg.DrawOffset;
@@ -153,7 +155,7 @@ namespace Stellamod.Core.Backgrounds
                 bgLayer.Texture.Value,
                 drawPosition,
                 new Rectangle(parallaxX, 0, width, height),
-                drawColor,
+                drawColor.MultiplyRGB(bg.DrawColor),
                 0f,
                 default,
                 scale: drawScale,

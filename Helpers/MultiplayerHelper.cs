@@ -90,19 +90,6 @@ namespace Stellamod
                     ZuiQuestSystem.QuestsCompleted++;
                     break;
 
-                case MessageType.CreatePortal:
-                    float altarX = reader.ReadSingle();
-                    float altarY = reader.ReadSingle();
-                    int left = reader.ReadInt32();
-                    int top = reader.ReadInt32();
-                    TeleportSystem.CreatePortal(new Vector2(altarX, altarY), left, top);
-                    if (Main.netMode == NetmodeID.Server)
-                    {
-                        TeleportSystem.RefreshPortals();
-                    }
-                    break;
-
-
                 case MessageType.StartBossFromDialogue:
                     StartBossFromDialogue((DialogueType)reader.ReadInt32());
                     break;

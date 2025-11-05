@@ -136,3 +136,33 @@ RogueThrown: {
 		-2 life regeneration
 		'''
 }
+
+Gilded: {
+	DisplayName: Gilded
+	Upside: +25% dash distance
+	Downside: +18% damage
+}
+
+Speeditrous: {
+	DisplayName: Speeditrous
+	Upside: +1 dash
+	Downside: -10 life
+}
+
+Scripted: {
+	DisplayName: Scripted
+	Upside: +10% faster wand charge speed
+	Downside: -30 max mana
+}
+
+Brewing: {
+	DisplayName: Brewing
+	Upside: +1 insource slot
+	Downside: +10 seconds insource cooldown
+}
+
+Harnessing: {
+	DisplayName: Harnessing
+	Upside: +5% damage
+	Downside: -1 insource slot
+}

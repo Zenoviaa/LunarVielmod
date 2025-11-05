@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Items.MoonlightMagic;
+using Stellamod.Core.XixianFlaskSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
 using System.Collections.Generic;
@@ -128,6 +130,26 @@ namespace Stellamod.Core.ArmorReforge
                     player.endurance -= 0.18f;
                     player.statLifeMax2 -= 40;
                     player.lifeRegen -= 2;
+                    break;
+                case ArmorReforgeType.Gilded:
+                    player.GetDamage(DamageClass.Generic) -= 0.1f;
+                    player.GetModPlayer<DashPlayer>().DashVelocityBonus += 0.25f;
+                    break;
+                case ArmorReforgeType.Speeditrous:
+                    player.statLifeMax2 -= 10;
+                    player.GetModPlayer<DashPlayer>().MaxDashCount += 1;
+                    break;
+                case ArmorReforgeType.Scripted:
+                    player.statManaMax2 -= 30;
+                    player.GetModPlayer<AdvancedMagicPlayer>().chargeTimeBonus +=0.1f;
+                    break;
+                case ArmorReforgeType.Brewing:
+                    player.GetModPlayer<FlaskPlayer>().maxInsourceCount += 1;
+                    player.GetModPlayer<FlaskPlayer>().insourceTime += 10;
+                    break;
+                case ArmorReforgeType.Harnessing:
+                    player.GetDamage(DamageClass.Generic) += 0.05f;
+                    player.GetModPlayer<FlaskPlayer>().maxInsourceCount -= 1;
                     break;
             }
         }

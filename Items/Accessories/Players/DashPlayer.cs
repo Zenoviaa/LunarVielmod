@@ -121,6 +121,7 @@ namespace Stellamod.Items.Accessories.Players
         public bool ShouldFlicker => DashCountTimer > MaxDashCountTimer / 2f;
 
         public float DashRegenerationBonus;
+        public float DashVelocityBonus;
         public override void ResetEffects()
         {
             DashRegenerationBonus = 0f;
@@ -199,6 +200,7 @@ namespace Stellamod.Items.Accessories.Players
             if (CanUseDash() && (LunarVeilKeybinds.DashKeybind.JustPressed || DoubleTapped) && DashDir != -1 && DashDelay == 0 && DashCount > 0 && Main.myPlayer == Player.whoAmI)
             {
                 float dashVelocity = DashVelocity;
+                dashVelocity *= (1.0f + DashRegenerationBonus);
                 DashCount--;
                 DashCountTimer = 0;
 
