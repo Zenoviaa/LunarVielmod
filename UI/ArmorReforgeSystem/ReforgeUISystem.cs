@@ -71,6 +71,48 @@ namespace Stellamod.UI.ArmorReforgeSystem
             return false;
         }
 
+        public void ReforgeArmor(Player player, Item item)
+        {
+            List<ArmorReforgeType> armorReforges = GeneralHelpers.GetEnumList<ArmorReforgeType>();
+            ArmorReforgeType chosenReforge = armorReforges[Main.rand.Next(0, armorReforges.Count)];
+            //Don't ever reforge to none
+            while (chosenReforge == ArmorReforgeType.None)
+                chosenReforge = armorReforges[Main.rand.Next(0, armorReforges.Count)];
+
+            player.RemoveItem(ModContent.ItemType<GlisteningPearl>(), 1);
+            ArmorReforgeGlobalItem armorReforgeGlobalItem = item.GetGlobalItem<ArmorReforgeGlobalItem>();
+            armorReforgeGlobalItem.reforgeType = chosenReforge;
+            item.NetStateChanged();
+            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Converted"));
+
+            FXUtil.ShakeCamera(Main.LocalPlayer.Center, 1024, 16f);
+            string text = LangText.ArmorReforge(chosenReforge, "DisplayName") + " " + item.Name;
+            int combatText = CombatText.NewText(player.getRect(), Color.White, text);
+            CombatText numText = Main.combatText[combatText];
+            numText.lifeTime = 60;
+        }
+
+
+        public void ReforgeAccessory(Player player , Item item)
+        {
+            List<AccessoryReforgeType> reforges = GeneralHelpers.GetEnumList<AccessoryReforgeType>();
+            AccessoryReforgeType chosenReforge = reforges[Main.rand.Next(0, reforges.Count)];
+            //Don't ever reforge to none
+            while (chosenReforge == AccessoryReforgeType.None)
+                chosenReforge = reforges[Main.rand.Next(0, reforges.Count)];
+
+            player.RemoveItem(ModContent.ItemType<GlisteningPearl>(), 1);
+            AccessoryReforgeGlobalItem armorReforgeGlobalItem = item.GetGlobalItem<AccessoryReforgeGlobalItem>();
+            armorReforgeGlobalItem.accessoryReforgeType = chosenReforge;
+            item.NetStateChanged();
+            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Converted"));
+
+            FXUtil.ShakeCamera(Main.LocalPlayer.Center, 1024, 16f);
+            string text = LangText.AccessoryReforge(chosenReforge, "DisplayName") + " " + item.Name;
+            int combatText = CombatText.NewText(player.getRect(), Color.White, text);
+            CombatText numText = Main.combatText[combatText];
+            numText.lifeTime = 60;
+        }
         public void Reforge()
         {
             Player player = Main.LocalPlayer;
@@ -84,26 +126,14 @@ namespace Stellamod.UI.ArmorReforgeSystem
             if (item.IsAir)
                 return;
 
-
-            List<ArmorReforgeType> armorReforges = GeneralHelpers.GetEnumList<ArmorReforgeType>();
-            ArmorReforgeType chosenReforge = armorReforges[Main.rand.Next(0, armorReforges.Count)];
-            //Don't ever reforge to none
-            while (chosenReforge == ArmorReforgeType.None)
-                chosenReforge = armorReforges[Main.rand.Next(0, armorReforges.Count)];
-
-
-
-            player.RemoveItem(ModContent.ItemType<GlisteningPearl>(), 1);
-            ArmorReforgeGlobalItem armorReforgeGlobalItem = item.GetGlobalItem<ArmorReforgeGlobalItem>();
-            armorReforgeGlobalItem.reforgeType = chosenReforge;
-            item.NetStateChanged();
-            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Converted"));
-
-            FXUtil.ShakeCamera(Main.LocalPlayer.Center, 1024, 16f);
-            string text = LangText.ArmorReforge(chosenReforge, "DisplayName") + " " + item.Name;
-            int combatText = CombatText.NewText(player.getRect(), Color.White, text);
-            CombatText numText = Main.combatText[combatText];
-            numText.lifeTime = 60;
+            if (item.accessory)
+            {
+                ReforgeAccessory(player, item);
+            }
+            else
+            {
+                ReforgeArmor(player, item); 
+            }
         }
 
         public void OpenUI()

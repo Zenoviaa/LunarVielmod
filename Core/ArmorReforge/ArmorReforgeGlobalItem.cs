@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Core.GunSystem;
+using Stellamod.Core.IgnitersNPowders;
 using Stellamod.Core.XixianFlaskSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
@@ -13,6 +14,20 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.Core.ArmorReforge
 {
+    public class ContactDamageReductionPlayer : ModPlayer
+    {
+        public float contactEndurance;
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+            contactEndurance = 0f;
+        }
+        public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
+        {
+            base.ModifyHitByNPC(npc, ref modifiers);
+            modifiers.FinalDamage *= (1.0f - contactEndurance);
+        }
+    }
     public class HealBoostPlayer : ModPlayer
     {
         public float healBonus;
@@ -95,6 +110,93 @@ namespace Stellamod.Core.ArmorReforge
 
     }
 
+    public class AccessoryReforgeGlobalItem : GlobalItem
+    {
+        public AccessoryReforgeType accessoryReforgeType;
+        public override bool InstancePerEntity => true;
+        public override void UpdateAccessory(Item item, Player player, bool hideVisual)
+        {
+            base.UpdateAccessory(item, player, hideVisual);
+            switch (accessoryReforgeType)
+            {
+                default:
+                    break;
+                case AccessoryReforgeType.Hearty:
+                    player.statLifeMax2 += 5;
+                    break;
+                case AccessoryReforgeType.Stalled:
+                    player.endurance += 0.04f;
+                    break;
+                case AccessoryReforgeType.Grimming:
+                    player.lifeRegen += 1;
+                    break;
+                case AccessoryReforgeType.Mortified:
+                    player.GetModPlayer<AdvancedMagicPlayer>().chargeTimeBonus += 0.05f;
+                    break;
+                case AccessoryReforgeType.Hidden:
+                    player.aggro = (int)(player.aggro * 0.95f);
+                    break;
+                case AccessoryReforgeType.Flashing:
+                    player.GetModPlayer<DashPlayer>().MaxDashCount += 1;
+                    break;
+                case AccessoryReforgeType.Powding:
+                    player.GetModPlayer<IgniterPlayer>().extenderBonus += 0.1f;
+                    break;
+                case AccessoryReforgeType.Exploding:
+                    player.GetModPlayer<IgniterPlayer>().igniterDamageBonus += 0.05f;
+                    break;
+                case AccessoryReforgeType.Demolighting:
+                    player.GetModPlayer<GunHoldPlayer>().maxAmmoBonus += 2;
+                    break;
+                case AccessoryReforgeType.Slashing:
+                    player.GetModPlayer<ContactDamageReductionPlayer>().contactEndurance += 0.06f;
+                    break;
+            }
+        }
+
+        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+        {
+            base.ModifyTooltips(item, tooltips);
+            if (accessoryReforgeType == AccessoryReforgeType.None)
+                return;
+
+            TooltipLine itemNameLine = tooltips.Find(x => x.Name == "ItemName");
+            itemNameLine.Text = LangText.AccessoryReforge(accessoryReforgeType, "DisplayName") + " " + itemNameLine.Text;
+            /*TooltipLine line = new TooltipLine(Mod, "ReforgeDisplayName", LangText.ArmorReforge(reforgeType, "DisplayName"));
+            line.OverrideColor = new Color(80, 187, 124);
+            tooltips.Add(line);*/
+
+            var line = new TooltipLine(Mod, "ReforgeUpside", LangText.AccessoryReforge(accessoryReforgeType, "Upside"));
+            line.OverrideColor = new Color(80, 187, 124);
+            tooltips.Add(line);
+
+        }
+        public override void NetSend(Item item, BinaryWriter writer)
+        {
+            base.NetSend(item, writer);
+            AccessoryReforgeGlobalItem globalItem = item.GetGlobalItem<AccessoryReforgeGlobalItem>();
+            writer.Write((int)globalItem.accessoryReforgeType);
+        }
+
+        public override void NetReceive(Item item, BinaryReader reader)
+        {
+            base.NetReceive(item, reader);
+            AccessoryReforgeGlobalItem globalItem = item.GetGlobalItem<AccessoryReforgeGlobalItem>();
+            globalItem.accessoryReforgeType = (AccessoryReforgeType)reader.ReadInt32();
+        }
+
+        public override void SaveData(Item item, TagCompound tag)
+        {
+            base.SaveData(item, tag);
+            tag["accessoryReforge"] = (int)accessoryReforgeType;
+        }
+
+        public override void LoadData(Item item, TagCompound tag)
+        {
+            base.LoadData(item, tag);
+            accessoryReforgeType = (AccessoryReforgeType)tag.Get<int>("accessoryReforge");
+        }
+    }
     public class ArmorReforgeGlobalItem : GlobalItem
     {
         public ArmorReforgeType reforgeType;

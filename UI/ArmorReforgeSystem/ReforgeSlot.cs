@@ -43,7 +43,8 @@ namespace Stellamod.UI.ArmorReforgeSystem
         public bool Valid(Item item)
         {
             bool isArmor = item.headSlot >= 0 || item.bodySlot >= 0 || item.legSlot >= 0;
-            return isArmor || item.IsAir;
+            bool isAccessory = item.accessory;
+            return isArmor || item.IsAir || isAccessory;
         }
 
         public void HandleMouseItem()

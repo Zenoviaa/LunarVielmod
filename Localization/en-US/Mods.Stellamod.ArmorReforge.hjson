@@ -256,3 +256,53 @@ Summoned: {
 	Upside: +1 max minion
 	Downside: +15% incoming damage
 }
+
+Hearty: {
+	DisplayName: Hearty
+	Upside: +5 max life
+}
+
+Stalled: {
+	DisplayName: Stalled
+	Upside: -4% incoming damage
+}
+
+Grimming: {
+	DisplayName: Stalled
+	Upside: +1 life regeneration
+}
+
+Mortified: {
+	DisplayName: Mortified
+	Upside: -5% wand charge time
+}
+
+Hidden: {
+	DisplayName: Hidden
+	Upside: 5% reduced enemy aggro
+}
+
+Flashing: {
+	DisplayName: Flashing
+	Upside: +1 max stamina
+}
+
+Powding: {
+	DisplayName: Powding
+	Upside: 10% increased igniter card velocity
+}
+
+Exploding: {
+	DisplayName: Powding
+	Upside: 5% increased igniter card damage
+}
+
+Demolighting: {
+	DisplayName: Demolighting
+	Upside: +2 ammo in gun clips
+}
+
+Slashing: {
+	DisplayName: Slashing
+	Upside: -6% incoming contact damage
+}

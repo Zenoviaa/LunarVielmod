@@ -57,6 +57,10 @@ namespace Stellamod.Helpers
         {
             return Language.GetTextValue($"Mods.Stellamod.ArmorReforge.{type.ToString()}." + Path, arg0);
         }
+        public static string AccessoryReforge(AccessoryReforgeType type, string Path, object arg0 = null)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.ArmorReforge.{type.ToString()}." + Path, arg0);
+        }
 
         public static string Common(string Path, object arg0 = null)
         {
