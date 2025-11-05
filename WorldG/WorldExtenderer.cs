@@ -97,8 +97,6 @@ namespace Stellamod.WorldG
             Main.maxTilesX = NewMaxTilesX;
             Main.maxTilesY = NewMaxTilesY;
             ResizeMapTarget();
-
-
         }
     }
 }

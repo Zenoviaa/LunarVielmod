@@ -24,6 +24,17 @@
         Speeditrous,
         Scripted,
         Brewing,
-        Harnessing
+        Harnessing,
+        Reloaded,
+        Illurias,
+        Sentricus,
+        Reducting,
+        Flying,
+        Berserker,
+        Acrobatic,
+        Feathered,
+        Shattered,
+        Clerical,
+        Summoned
     }
 }

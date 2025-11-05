@@ -118,7 +118,7 @@ namespace Stellamod.Core.GunSystem
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, default, default, default, SpriteWhiteShader.Instance.Effect, Main.UIScaleMatrix);
 
-            for (int i = 0; i < gun.maxAmmo; i++)
+            for (int i = 0; i < gun.GetMaxAmmo(Main.LocalPlayer); i++)
             {
                 if (i < gun.remainingAmmo)
                 {
@@ -141,7 +141,7 @@ namespace Stellamod.Core.GunSystem
 
             spriteBatch.End();
             spriteBatch.Begin(default, default, default, default, default, default, Main.UIScaleMatrix);
-            for (int i = 0; i < gun.maxAmmo; i++)
+            for (int i = 0; i < gun.GetMaxAmmo(Main.LocalPlayer); i++)
             {
                 if (i < gun.remainingAmmo)
                 {
