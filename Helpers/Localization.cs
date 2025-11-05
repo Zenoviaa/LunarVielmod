@@ -2,6 +2,7 @@ using Stellamod.Core.ArmorReforge;
 using Stellamod.Core.QuestSystem;
 using Terraria.Localization;
 using Terraria.ModLoader;
+
 namespace Stellamod.Helpers
 {
     public static class LangText
