@@ -106,11 +106,6 @@ namespace Stellamod.NPCs.Town
             NPC.frame.Y = frame * frameHeight;
         }
 
-        public override bool CanChat()
-        {
-            return true;
-        }
-
         //This prevents the NPC from despawning
         public override bool CheckActive()
         {
@@ -152,72 +147,14 @@ namespace Stellamod.NPCs.Town
             return true;
 
         }
-        public override string GetChat()
-        {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-
-            int partyGirl = NPC.FindFirstNPC(NPCID.Dryad);
-            if (partyGirl >= 0 && Main.rand.NextBool(4))
-            {
-                chat.Add(LangText.Chat(this, "Basic1", Main.npc[partyGirl].GivenName));
-            }
-            // These are things that the NPC has a chance of telling you when you talk to it.
-            chat.Add(LangText.Chat(this, "Basic2"));
-            chat.Add(LangText.Chat(this, "Basic3"));
-            chat.Add(LangText.Chat(this, "Basic4"));
-            chat.Add(LangText.Chat(this, "Basic5"), 1.0);
-            chat.Add(LangText.Chat(this, "Basic6"), 0.4);
-            chat.Add(LangText.Chat(this, "Basic7"), 0.5);
-            chat.Add(LangText.Chat(this, "Basic8"), 0.1);
-            chat.Add(LangText.Chat(this, "Basic9"), 0.1);
-            chat.Add(LangText.Chat(this, "Basic10"), 0.1);
-            chat.Add(LangText.Chat(this, "Basic11"), 0.5);
-            chat.Add(LangText.Chat(this, "Basic12"), 0.1);
-            chat.Add(LangText.Chat(this, "Basic13"), 2.0);
-
-            NumberOfTimesTalkedTo++;
-            if (NumberOfTimesTalkedTo >= 10)
-            {
-                //This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-                chat.Add(LangText.Chat(this, "Basic14"));
-            }
-
-            return chat; // chat is implicitly cast to a string.
-        }
-
-        public override void HitEffect(NPC.HitInfo hit)
-        {
-            int num = NPC.life > 0 ? 1 : 5;
-
-            for (int k = 0; k < num; k++)
-            {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GreenBlood);
-            }
-        }
-
+    
         public override List<string> SetNPCNameList()
         {
             return new List<string>() {
                 "Zui The Traveller",
             };
         }
-
-        public override void SetChatButtons(ref string button, ref string button2)
-        {
-            // What the chat buttons are when you open up the chat UI
-            button2 = Language.GetTextValue("LegacyInterface.28");
-            button = LangText.Chat(this, "Button");
-        }
-
-
-        public override void OnChatButtonClicked(bool firstButton, ref string shop)
-        {
-            if (!firstButton)
-            {
-                shop = ShopName;
-            }
-        }
-
+ 
         private void Quest_NotCheckmarked()
         {
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound

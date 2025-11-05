@@ -36,6 +36,7 @@ namespace Stellamod.UI.DialogueTowning
         public UIText Text { get; set; }
         public string RealText { get; set; }
         public Action OnClickEvent { get; set; }
+        public float Alpha { get; set; }
         private void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
             SoundStyle soundStyle = SoundID.MenuTick;
@@ -74,7 +75,7 @@ namespace Stellamod.UI.DialogueTowning
                 }
             }
             Color textColor = Color.Lerp(Color.White, Color.Yellow, _timer / 0.12f);
-            Text.TextColor = textColor;
+            Text.TextColor = textColor * Alpha;
             Text.Top.Pixels = 5;
 
             bool contains = ContainsPoint(Main.MouseScreen);
@@ -101,7 +102,7 @@ namespace Stellamod.UI.DialogueTowning
 
 
             spriteBatch.Draw(textureToDraw, point.ToVector2(), null,
-                drawColor, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                drawColor * Alpha, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
         }
     }
 }

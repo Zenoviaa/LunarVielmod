@@ -129,6 +129,7 @@ namespace Stellamod.Core.Shaders
 
             float outlineOffset = 2;
             Vector2 drawPosition = player.position;
+            drawPosition.Y += player.gfxOffY;
             Vector2 left = drawPosition + Vector2.UnitX * -outlineOffset;
             Vector2 right = drawPosition + Vector2.UnitX * outlineOffset;
             Vector2 up = drawPosition + Vector2.UnitY * -outlineOffset;

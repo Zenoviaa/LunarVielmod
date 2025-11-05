@@ -127,10 +127,6 @@ namespace Stellamod.NPCs.Town
             HasTownDialogue = true;
         }
 
-        public override bool CanChat()
-        {
-            return true;
-        }
 
         //This prevents the NPC from despawning
         public override bool CheckActive()
@@ -155,6 +151,23 @@ namespace Stellamod.NPCs.Town
             });
         }
 
+        public override void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            if (!_drawOutlines)
+                return;
+            _drawOutlines = false;
+            BackSegment.outlineColor = Color.White;
+            BackSegment.Outline(spriteBatch, screenPos, Color.White);
+
+            ArmSegment.outlineColor = Color.White;
+            ArmSegment.Outline(spriteBatch, screenPos, Color.White);
+
+            TopSegment.outlineColor = Color.White;
+            TopSegment.Outline(spriteBatch, screenPos, Color.White);
+
+            FaceSegment.outlineColor = Color.White;
+            FaceSegment.Outline(spriteBatch, screenPos, Color.White);
+        }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             BackSegment.Draw(spriteBatch, screenPos, drawColor);
@@ -165,23 +178,6 @@ namespace Stellamod.NPCs.Town
             return false;
         }
 
-        public override string GetChat()
-        {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-            // These are things that the NPC has a chance of telling you when you talk to it.
-            chat.Add(LangText.Chat(this, "Basic1"));
-
-
-            NumberOfTimesTalkedTo++;
-            if (NumberOfTimesTalkedTo >= 10)
-            {
-                //This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-                chat.Add(LangText.Chat(this, "Basic2"));
-            }
-
-            return chat; // chat is implicitly cast to a string.
-        }
-
 
         public override List<string> SetNPCNameList()
         {
@@ -190,21 +186,6 @@ namespace Stellamod.NPCs.Town
             };
         }
 
-
-        public override void SetChatButtons(ref string button, ref string button2)
-        {
-            // What the chat buttons are when you open up the chat UI
-            // button2 = Language.GetTextValue("LegacyInterface.28");
-            button = LangText.Chat(this, "Button");
-        }
-
-        public override void OnChatButtonClicked(bool firstButton, ref string shop)
-        {
-            if (!firstButton)
-            {
-                shop = ShopName;
-            }
-        }
 
         public override void AI()
         {

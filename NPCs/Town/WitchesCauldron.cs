@@ -78,11 +78,6 @@ namespace Stellamod.NPCs.Town
         }
 
 
-        public override bool CanChat()
-        {
-            return true;
-        }
-
         public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
         {
             base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
@@ -99,6 +94,10 @@ namespace Stellamod.NPCs.Town
             };
         }
 
+        public override void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            //base.DrawOutlines(spriteBatch, screenPos, lightColor);
+        }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;

@@ -27,6 +27,7 @@ namespace Stellamod.UI.DialogueTowning
         public Vector2 Offset { get; set; }
 
         public float Duration { get; set; }
+        public float Alpha { get; set; }
         public override void OnInitialize()
         {
             base.OnInitialize();
@@ -57,7 +58,7 @@ namespace Stellamod.UI.DialogueTowning
             Top.Pixels = RelativeTop;
             _text.Left.Pixels = 180 + Offset.X;
             _text.Top.Pixels = 16 + Offset.Y;
-
+            _text.TextColor = Color.White * Alpha;
 
             if (!IsFinishedTyping())
             {
@@ -92,6 +93,7 @@ namespace Stellamod.UI.DialogueTowning
             Vector2 drawOrigin = new Vector2(0, 0);
             float drawScale = 1f;
             Color drawColor = Color.White.MultiplyRGB(Color.Gray);
+            drawColor *= Alpha;
             spriteBatch.Draw(texture, drawPos, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
         }
 
@@ -110,7 +112,8 @@ namespace Stellamod.UI.DialogueTowning
             float rotation = 0;
             Vector2 drawOrigin = new Vector2(0, 0);
             float drawScale = 1f;
-            spriteBatch.Draw(texture, finalDrawPos, null, Color.White, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+
+            spriteBatch.Draw(texture, finalDrawPos, null, Color.White * Alpha, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
         }
 
         private bool IsFinishedTyping()

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.VisualBasic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core;
 using Stellamod.Core.QuestSystem;
@@ -29,7 +30,7 @@ namespace Stellamod.UI.DialogueTowning
         private UserInterface _userInterface;
         private Vector2 _talkWorld;
         private bool _killUi;
-        private Vector2 StartDrawOffset => new Vector2(0, 400);
+        private Vector2 StartDrawOffset => new Vector2(-200, 0);
         private Vector2 EndDrawOffset => new Vector2(0, 0);
 
 
@@ -43,17 +44,15 @@ namespace Stellamod.UI.DialogueTowning
         public override void OnModLoad()
         {
             base.OnModLoad();
-            Duration = 1f;
+       
             _userInterface = new UserInterface();
             dialogueTowningUIState = new DialogueTowningUIState();
             dialogueTowningUIState.Activate();
-            On_Player.SetTalkNPC += SetTalker;
         }
 
         public override void OnModUnload()
         {
             base.OnModUnload();
-            On_Player.SetTalkNPC -= SetTalker;
         }
 
         public override void CloseThis()
@@ -62,50 +61,47 @@ namespace Stellamod.UI.DialogueTowning
             CloseUI();
         }
 
-        private void SetTalker(On_Player.orig_SetTalkNPC orig, Player self, int npcIndex, bool fromNet)
+        public void Interact(VeilTownNPC townNPC)
         {
-            if (npcIndex >= 0 && npcIndex < 200 && Main.myPlayer == self.whoAmI)
-            {
-                NPC npc = Main.npc[npcIndex];
-                if (npc.ModNPC is VeilTownNPC veilTownNPC && veilTownNPC.HasTownDialogue)
-                {
-                    if (WhosTalking != npc.ModNPC.Type)
-                    {
-                        string text = string.Empty;
-                        string portrait = "FenixPortrait";
-                        float timeBetweenTexts = 0.05f;
-                        SoundStyle? talkingSound = null;
-                        dialogueTowningUIState.dialogueTownButtonsUI.ClearButtons();
-                        List<Tuple<string, Action>> buttons = new List<Tuple<string, Action>>();
-                        veilTownNPC.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
-                        if (veilTownNPC.OnlyInteract)
-                            return;
-                        if (veilTownNPC.HasQuestAvailable())
-                        {
-                            buttons.Add(new Tuple<string, Action>("Quest", veilTownNPC.GiveQuest));
-                        }
-                        buttons.Add(new Tuple<string, Action>("Close", veilTownNPC.CloseTownDialogue));
-                        foreach (var pair in buttons)
-                        {
-                            dialogueTowningUIState.dialogueTownButtonsUI.AddButton(pair.Item1, pair.Item2);
-                        }
 
-                        _killUi = true;
-                        OpenUI();
-                        dialogueTowningUIState.dialogueTownUI.ResetText();
-                        dialogueTowningUIState.dialogueTownUI.LocalizedText = LangText.TownDialogue(text);
-                        dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
-                        dialogueTowningUIState.dialogueTownUI.Portrait = ModContent.Request<Texture2D>(RootTexturePath + $"{portrait}");
-                        _talkWorld = Main.LocalPlayer.position;
-                        WhosTalking = veilTownNPC.NPC.type;
-                        orig(self, npcIndex, fromNet);
-                    }
-                    return;
-                }
+            if (WhosTalking == townNPC.Type)
+                return;
+            SoundEngine.PlaySound(SoundID.Chat);
+            string text = string.Empty;
+            string portrait = "FenixPortrait";
+            float timeBetweenTexts = 0.05f;
+            SoundStyle? talkingSound = null;
+            dialogueTowningUIState.dialogueTownButtonsUI.ClearButtons();
+
+            //Create buttons and open dialogue
+            List<Tuple<string, Action>> buttons = new List<Tuple<string, Action>>();
+            townNPC.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+
+            //Some goofballs you can only interact with no dialogue
+            if (townNPC.OnlyInteract)
+                return;
+
+            //Check if quest giver
+            if (townNPC.HasQuestAvailable())
+            {
+                buttons.Add(new Tuple<string, Action>("Quest", townNPC.GiveQuest));
             }
-            _killUi = false;
-            orig(self, npcIndex, fromNet);
+            buttons.Add(new Tuple<string, Action>("Close", townNPC.CloseTownDialogue));
+            foreach (var pair in buttons)
+            {
+                dialogueTowningUIState.dialogueTownButtonsUI.AddButton(pair.Item1, pair.Item2);
+            }
+
+            _killUi = true;
+            OpenUI();
+            dialogueTowningUIState.dialogueTownUI.ResetText();
+            dialogueTowningUIState.dialogueTownUI.LocalizedText = LangText.TownDialogue(text);
+            dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
+            dialogueTowningUIState.dialogueTownUI.Portrait = ModContent.Request<Texture2D>(RootTexturePath + $"{portrait}");
+            _talkWorld = Main.LocalPlayer.position;
+            WhosTalking = townNPC.NPC.type;
         }
+
         public void ChatWith(Quest quest)
         {
             string text = string.Empty;
@@ -173,7 +169,9 @@ namespace Stellamod.UI.DialogueTowning
             }
 
             float progress = _dialogueTimer / Duration;
-            float easedProgress = Easing.InOutCubic(progress);
+            float easedProgress = Easing.OutExpo(progress);
+            dialogueTowningUIState.dialogueTownUI.Alpha = easedProgress;
+            dialogueTowningUIState.dialogueTownButtonsUI.Alpha = easedProgress;
             dialogueTowningUIState.dialogueTownUI.Offset = Vector2.Lerp(StartDrawOffset, EndDrawOffset, easedProgress);
             dialogueTowningUIState.dialogueTownButtonsUI.Offset = dialogueTowningUIState.dialogueTownUI.Offset;
         }
@@ -192,7 +190,9 @@ namespace Stellamod.UI.DialogueTowning
             }
 
             float progress = _dialogueTimer / Duration;
-            float easedProgress = Easing.InOutCubic(progress);
+            float easedProgress = Easing.InOutSine(progress);
+            dialogueTowningUIState.dialogueTownUI.Alpha = easedProgress;
+            dialogueTowningUIState.dialogueTownButtonsUI.Alpha = easedProgress;
             dialogueTowningUIState.dialogueTownUI.Offset = Vector2.Lerp(StartDrawOffset, EndDrawOffset, easedProgress);
             dialogueTowningUIState.dialogueTownButtonsUI.Offset = dialogueTowningUIState.dialogueTownUI.Offset;
         }

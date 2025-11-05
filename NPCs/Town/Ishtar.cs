@@ -13,8 +13,6 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Town
 {
-    // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
-    [AutoloadBossHead]
     public class Ishtar : ModNPC
     {
         public int NumberOfTimesTalkedTo = 0;
