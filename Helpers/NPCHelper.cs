@@ -9,7 +9,14 @@ namespace Stellamod.Helpers
 {
     public static class NPCHelper
     {
+        public static void Kill(this NPC npc)
+        {
+            npc.life = 0;
+            npc.NPCLoot();
+            npc.active = false;
 
+            //npc.netUpdate = true;
+        }
         public static void OpenShop(NPC npc)
         {
             Main.LocalPlayer.SetTalkNPC(npc.whoAmI);
