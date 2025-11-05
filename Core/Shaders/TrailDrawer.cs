@@ -46,8 +46,8 @@ namespace Stellamod.Core.Shaders
 
                 Vector2 top = pos + MathUtil.GetRotation(trailingPoints, i) * width;
                 Vector2 bottom = pos - MathUtil.GetRotation(trailingPoints, i) * width;
-                Vector3 finalTop = top.ToVector3();
-                Vector3 finalBottom = bottom.ToVector3();
+                Vector3 finalTop = new Vector3(top.X, top.Y, 0);
+                Vector3 finalBottom = new Vector3(bottom.X, bottom.Y, 0);
 
 
                 vertices.Add(new VertexPositionColorTexture(finalTop, color, new Vector2(uv, 0)));
