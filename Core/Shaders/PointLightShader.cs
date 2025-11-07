@@ -14,7 +14,7 @@ namespace Stellamod.Core.Shaders
 {
     public class PointLightShader : BaseShader
     {
-        private EffectParameter _pixelationParam;
+        private EffectParameter _tileTextureParam;
         private EffectParameter _screenResolutionParam;
         private EffectParameter _lightColorParam;
         private EffectParameter _lightRadiusParam;
@@ -30,12 +30,12 @@ namespace Stellamod.Core.Shaders
                 return _instance;
             }
         }
-        public float Pixelation
+        public Texture2D TileTexture
         {
             set
             {
-                _pixelationParam ??= Effect.Parameters["pixelation"];
-                _pixelationParam.SetValue(value);
+                _tileTextureParam ??= Effect.Parameters["tileTexture"];
+                _tileTextureParam.SetValue(value);
             }
         }
         public Vector2 ScreenResolution

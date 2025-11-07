@@ -1,6 +1,7 @@
 ﻿
 
 using Microsoft.Xna.Framework;
+using Terraria;
 
 namespace Stellamod.Core.LunarLightingSystem
 {

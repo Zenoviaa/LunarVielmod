@@ -22,10 +22,10 @@ namespace Stellamod.Core.Backgrounds
             base.PostUpdate();
             if (CustomBGManager.drawingCustomBG)
             {
-                LightStrength = 0.01f;
+               
             }
             LunarLighting.AmbientLight = Color.White.ToVector3();
-         
+            LightStrength = 0.05f;
         }
     }
     public class CustomBGGlobalWall : GlobalWall

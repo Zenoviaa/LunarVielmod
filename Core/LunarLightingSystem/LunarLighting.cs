@@ -17,26 +17,42 @@ namespace Stellamod.Core.LunarLightingSystem
         private static Vector2 _previousScreenSize;
         private static Texture2D _lightingTexture;
         private static RenderTarget2D _accumulatedLightRT;
+        private static RenderTarget2D _maskRT;
         private static int _pointLightIndex;
         private static Color[] _lightingData;
 
         private static bool _initLightCasts;
-        private static Color[][] _lightCastData = new Color[Max_Cast_Lights][];
-        private static Texture2D[] _lightCastTextures = new Texture2D[Max_Cast_Lights];
-        private static PointLight[] _pointLights = new PointLight[Max_Cast_Lights];
+        private static Color[][] _lightCastData = new Color[Max_Point_Lights][];
+        private static Texture2D[] _lightCastTextures = new Texture2D[Max_Point_Lights];
+        private static PointLight[] _pointLights = new PointLight[Max_Point_Lights];
         private static Dictionary<Vector3, ILightSource> _lightSources;
 
         //We'll use this for managing indices that can be used for calculating lighting data
         private static Queue<int> _freeLights;
-        private static Queue<PointLight> _lightSourceCreationQueue;
+
         public static int Width => Main.screenWidth / DownSamples;
         public static int Height => Main.screenHeight / DownSamples;
-        public static int DownSamples => 10;
+        public static int DownSamples => 4;
 
         public static Vector3 AmbientLight;
+        public static Texture2D PointLightTexture;
+        public const int Max_Point_Lights = 128;
+        public const int Max_Light_Cast_Texture_Size = 128;
 
-        public const int Max_Cast_Lights = 32;
-        public const int Max_Light_Cast_Texture_Size = 400;
+
+
+
+        public static ref Color[] GetLightingData(int index)
+        {
+            return ref _lightCastData[index];
+        }
+
+        public static ref Texture2D GetLightCastTexture(int index)
+        {
+            return ref _lightCastTextures[index];
+        }
+
+
 
         private static int IndexOf(int x, int y)
         {
@@ -163,22 +179,12 @@ namespace Stellamod.Core.LunarLightingSystem
             _freeLights = new();
             _lightSources = new();
 
-            for(int i = 0; i < Max_Cast_Lights; i++)
+            for(int i = 0; i < Max_Point_Lights; i++)
             {
                 _freeLights.Enqueue(i);
             }
 
             AmbientLight = Color.White.ToVector3();
-        }
-
-        public static ref Color[] GetLightingData(int index)
-        {
-            return ref _lightCastData[index];
-        }
-
-        public static ref Texture2D GetLightCastTexture(int index)
-        {
-            return ref _lightCastTextures[index];
         }
 
         public static int UseLightingIndex()
@@ -327,11 +333,26 @@ namespace Stellamod.Core.LunarLightingSystem
             // CalculateLightingData();
             CalculatePointLightSources();
 
+            graphicsDevice.SetRenderTarget(_maskRT);
+            graphicsDevice.Clear(Color.Transparent);
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, SpriteWhiteShader.Instance.Effect, Main.GameViewMatrix.TransformationMatrix);
+
+            spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+
+            spriteBatch.End();
+
+            //Mask drawing
             graphicsDevice.SetRenderTarget(_accumulatedLightRT);
+         
             graphicsDevice.Clear(Color.Black);
 
 
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            var pointlightShader = PointLightShader.Instance;
+            pointlightShader.ScreenResolution = new Vector2(Main.screenWidth, Main.screenHeight);
+            pointlightShader.TileTexture = _maskRT;
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp,
+               null, Main.Rasterizer, pointlightShader.Effect, Main.GameViewMatrix.TransformationMatrix);
             for (int i = 0; i < 1; i++)
             {
                 foreach (var lightKvp in _lightSources)
@@ -341,6 +362,8 @@ namespace Stellamod.Core.LunarLightingSystem
             }
 
             spriteBatch.End();
+
+
         }
 
         private void ResizeRenderTarget(bool load)
@@ -358,15 +381,16 @@ namespace Stellamod.Core.LunarLightingSystem
                     {
                         if (_accumulatedLightRT != null && !_accumulatedLightRT.IsDisposed)
                             _accumulatedLightRT.Dispose();
+                        if (_maskRT != null && !_maskRT.IsDisposed)
+                            _maskRT.Dispose();
                         if (_lightingTexture != null && !_lightingTexture.IsDisposed)
                             _lightingTexture.Dispose();
-
                         if (!_initLightCasts)
                         {                        //Pre initialize our cast light texture array data
                                                  //64 800x800 textures should be fine I think?
                                                  //This will take a little time to initialize but not too bad
                                                  //We'd reference with an index instead of instantiating in our torch lights
-                            for (int i = 0; i < Max_Cast_Lights; i++)
+                            for (int i = 0; i < Max_Point_Lights; i++)
                             {
                                 int pxCount = Max_Light_Cast_Texture_Size * Max_Light_Cast_Texture_Size;
                                 _lightCastData[i] = new Color[pxCount];
@@ -375,9 +399,10 @@ namespace Stellamod.Core.LunarLightingSystem
                             }
                             _initLightCasts = true;
                         }
-
+                        PointLightTexture ??= new Texture2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
                         //Downscale for optimization and a more pixelated look
-                        _accumulatedLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
+                        _accumulatedLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false, SurfaceFormat.Color, DepthFormat.Depth24Stencil8);
+                        _maskRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false, SurfaceFormat.Color, DepthFormat.Depth24Stencil8);
                         _lightingData = new Color[Width * Height];
                         _lightingTexture = new Texture2D(Main.graphics.GraphicsDevice, Width, Height);
                     });
@@ -398,6 +423,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             
@@ -405,6 +431,20 @@ namespace Stellamod.Core.LunarLightingSystem
             
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+
+
+
+            /*
+
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, SpriteWhiteShader.Instance.Effect, Main.GameViewMatrix.TransformationMatrix);
+
+            spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, null, Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+            */
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Stellamod.Core.LunarLightingSystem
                 return Vector3.Zero;
 
             //Calculate how much to move in a single step
-            float stepLength = 4;
+            float stepLength = 2;
             Vector2 stepDirection = normalizedDirection * stepLength;
 
             Vector2 rayPosition = position;
@@ -82,13 +82,17 @@ namespace Stellamod.Core.LunarLightingSystem
 
         public void CastLight(int pixelRadius, PointLight pointLight)
         {
+            return;
             radius = pixelRadius;
             lightingIndex = LunarLighting.UseLightingIndex();
             if (lightingIndex == -1)
                 return;
 
             Color[] lightingData = LunarLighting.GetLightingData(lightingIndex);
-            Vector2 topLeftPixelWorld = pointLight.position - new Vector2(pixelRadius, pixelRadius) / 2;
+
+            Vector2 offset = (new Vector2(pixelRadius, pixelRadius) / 2) * LunarLighting.DownSamples;
+            Vector2 topLeftPixelWorld = pointLight.position - offset;
+            Vector2 bottomRightPixelWorld = pointLight.position + offset;
             FastParallel.For(0, radius, delegate (int start, int end, object context)
             {
                 for (int x = start; x < end; x++)
@@ -97,7 +101,12 @@ namespace Stellamod.Core.LunarLightingSystem
                     {
                         int index = IndexOf(x, y);
                         lightingData[index] = Color.Black;
-                        Vector2 position = new Vector2(x, y) + topLeftPixelWorld;
+
+                        float xInterpolant = ((float)x / (float)radius);
+                        float yInterpolant = ((float)y / (float)radius);
+                        float worldX = MathHelper.Lerp(topLeftPixelWorld.X, bottomRightPixelWorld.X, xInterpolant);
+                        float worldY = MathHelper.Lerp(topLeftPixelWorld.Y, bottomRightPixelWorld.Y, yInterpolant);
+                        Vector2 position = new Vector2(worldX, worldY);// + topLeftPixelWorld;
                         lightingData[index] = RayTrace(position, pointLight).ToColor();
                     }
                 }

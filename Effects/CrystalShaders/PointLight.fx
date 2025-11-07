@@ -22,6 +22,16 @@ float2 uZoom;
 
 float lightRadius;
 float2 lightingPos;
+texture tileTexture;
+sampler2D tileTex = sampler_state
+{
+    texture = <tileTexture>;
+    magfilter = LINEAR;
+    minfilter = LINEAR;
+    mipfilter = LINEAR;
+    AddressU = wrap;
+    AddressV = wrap;
+};
 
 float lengthSquared(float2 v1)
 {
@@ -44,13 +54,14 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     if (distanceSq < radiusSquared)
     {
         float distance = sqrt(distanceSq);
-        float du = distance / (1 - distance / (radius * radius - 1));
-        float denom = du / radius + 1;
-        
-        //The attenuation is the falloff of the light depending on distance basically
-        float attenuation = 1 / (denom * denom);
+        float attenuation = 1.0f - (distance / (lightRadius / 2.0f));
         diffuseLight.rgb += lightColor * lightIntensity * attenuation;
         diffuseLight *= attenuation;
+        float4 height = tex2D(tileTex, coords);
+        if (height.a > 0.0)
+        {
+            diffuseLight *= attenuation * attenuation;
+        }
     }
     return diffuseLight;
     

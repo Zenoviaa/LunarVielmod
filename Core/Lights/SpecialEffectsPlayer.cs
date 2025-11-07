@@ -325,7 +325,7 @@ namespace Stellamod.Core.Lights
             }
 
             screenShaderData = FilterManager["LunarVeil:DarknessCurve"].GetShader();
-            screenShaderData.UseProgress(0);
+            screenShaderData.UseProgress(0.5f);
             screenShaderData.Shader.Parameters["blackCurve"].SetValue(blackCurve);
             screenShaderData.Shader.Parameters["whiteCurve"].SetValue(whiteCurve);
             TogglePaletteShader("LunarVeil:DarknessCurve", darknessCurve != 0);
