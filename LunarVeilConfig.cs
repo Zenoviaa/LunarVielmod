@@ -94,6 +94,12 @@ namespace Stellamod
         [Range(0f, 100f)]
         public float AmmoBarY = 50;
 
+
+
+        [Header("Lighting")]
+        public bool BeamingLights;
+
+
         [Header("Experiment")]
         public bool NoLightingEveryFrameOverride;
     }

@@ -5,6 +5,7 @@ Headers: {
 	Effects: Effects
 	UI: UI
 	Experiment: Experiment Header
+	Lighting: Lighting Header
 }
 
 VanillaTexturesToggle: {
@@ -129,5 +130,10 @@ AmmoBarY: {
 
 NoLightingEveryFrameOverride: {
 	Label: No Lighting Every Frame Override
+	Tooltip: ""
+}
+
+BeamingLights: {
+	Label: Beaming Lights
 	Tooltip: ""
 }
