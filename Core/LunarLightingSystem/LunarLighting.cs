@@ -16,33 +16,13 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
-    public class GlobalLunarIllumination : GlobalWall
-    {
-        public override void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
-        {
-            var config = ModContent.GetInstance<LunarVeilClientConfig>();
-            if (!config.BeamingLights)
-                return;
-            if (!Main.tile[i, j].HasTile)
-            {
-                float lightStrength =1;
-                if (lightStrength > 0)
-                {
-                    r = MathHelper.Clamp(r + lightStrength, 0, 1);
-                    g = MathHelper.Clamp(g + lightStrength, 0, 1);
-                    b = MathHelper.Clamp(b + lightStrength, 0, 1);
-                }
-            }
 
-        }
-    }
     public class LunarLighting : ModSystem
     {
         private static Vector2 _previousScreenSize;
         private static Texture2D _lightingTexture;
         private static RenderTarget2D _accumulatedLightRT;
         private static RenderTarget2D _pointLightRT;
-       // private static RenderTarget2D[] _lightMapRTs;
 
         private static int _pointLightIndex;
         private static Color[] _lightingData;
@@ -51,6 +31,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private static Dictionary<Vector3, VertexPositionColor[]> _shadowData;
         private static List<Vector3> _oldLights;
         private static List<Vector3> _currentLights;
+        private static List<ILightEmitter> _emitters;
 
         public static int Width => Main.screenWidth / DownSamples;
         public static int Height => Main.screenHeight / DownSamples;
@@ -164,6 +145,7 @@ namespace Stellamod.Core.LunarLightingSystem
             _oldLights = new List<Vector3>();
             _shadowData = new Dictionary<Vector3, VertexPositionColor[]>();
             _currentLights = new List<Vector3>();
+            _emitters = new List<ILightEmitter>();
             ResizeRenderTarget(true);
             On_Main.CheckMonoliths += RenderLights;
             On_Main.DrawInfernoRings += FinalDraw;
@@ -320,6 +302,18 @@ namespace Stellamod.Core.LunarLightingSystem
             };
 
             RenderPointLight(playerLight);
+
+            if(_emitters.Count > 0)
+            {
+                //Draw additional lights
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+                foreach (ILightEmitter emitter in _emitters)
+                {
+
+                }
+                spriteBatch.End();
+            }
+
         }
         public static float GetPlayerLightIntensity()
         {

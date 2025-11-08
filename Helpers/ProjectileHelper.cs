@@ -33,6 +33,8 @@ namespace Stellamod.Helpers
             }
             return false;
         }
+
+
         public static float PerformBeamHitscan(Vector2 startPosition, Vector2 velocity, float maxBeamLength, int numSamplePoints = 3)
         {
             // By default, the hitscan interpolation starts at the Projectile's center.
