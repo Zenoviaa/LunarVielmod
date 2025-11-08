@@ -8,10 +8,30 @@ using Terraria;
 
 namespace Stellamod.Visual.Particles
 {
+    public class AmbientEmberParticle : EmberParticle
+    {
+        public override void OnSpawn()
+        {
+            base.OnSpawn();
+            color = Color.Transparent;
+            Rotation += Main.rand.NextFloat(0f, 3.14f);
+        }
+
+        public override void Update()
+        {
+
+            fadeIn++;
+            _interpolant = fadeIn / 240f;
+            float a = EasingFunction.QuadraticBump(_interpolant);
+            color =  Color.White * a;
+            if (fadeIn > 300)
+                active = false;
+        }
+    }
     public class EmberParticle : Particle
     {
         private Vector2 _stretchScale;
-        private float _interpolant;
+        protected float _interpolant;
         public int FrameWidth = 128;
         public int FrameHeight = 128;
         public int MaxFrameCount = 1;
@@ -22,7 +42,7 @@ namespace Stellamod.Visual.Particles
 
         public override void OnSpawn()
         {
-
+       
             Frame = new Rectangle(0, 0, FrameWidth, FrameHeight);
             Scale = Main.rand.NextFloat(0.3f, 0.6f);
             customShader = RadiantShader.Instance;

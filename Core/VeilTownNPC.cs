@@ -40,7 +40,9 @@ namespace Stellamod.Core
             string texturePath = Texture;
             Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
             Vector2 drawPos = NPC.Center - Main.screenPosition;
-   
+            float yDiff = MathF.Abs(NPC.frame.Size().Y - NPC.Size.Y);
+            drawPos.Y -= yDiff/2;
+
             Vector2 drawOrigin = NPC.frame.Size() / 2f;
             float drawRotation = NPC.rotation;
             float drawScale = NPC.scale;
@@ -65,6 +67,9 @@ namespace Stellamod.Core
             string texturePath = Texture;
             Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
             Vector2 drawPos = NPC.Center - Main.screenPosition;
+            float yDiff = MathF.Abs(NPC.frame.Size().Y - NPC.Size.Y);
+            drawPos.Y -= yDiff/2;
+
             Vector2 drawOrigin = NPC.frame.Size() / 2f;
             float drawRotation = NPC.rotation;
             float drawScale = NPC.scale;

@@ -83,7 +83,7 @@ namespace Stellamod.NPCs.Town
         {
             NPC.friendly = true; // NPC Will not attack player
             NPC.width = 54;
-            NPC.height = 65;
+            NPC.height = 130;
             NPC.aiStyle = 0;
             NPC.damage = 90;
             NPC.defense = 42;
@@ -129,25 +129,6 @@ namespace Stellamod.NPCs.Town
             });
         }
 
-        // The PreDraw hook is useful for drawing things before our sprite is drawn or running code before the sprite is drawn
-        // Returning false will allow you to manually draw your NPC
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            // This code slowly rotates the NPC in the bestiary
-            // (simply checking NPC.IsABestiaryIconDummy and incrementing NPC.Rotation won't work here as it gets overridden by drawModifiers.Rotation each tick)
-            if (NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(Type, out NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers))
-            {
-                drawModifiers.Rotation += 0.001f;
-
-                // Replace the existing NPCBestiaryDrawModifiers with our new one with an adjusted rotation
-                NPCID.Sets.NPCBestiaryDrawOffset.Remove(Type);
-                NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
-            }
-
-            return true;
-
-        }
-    
         public override List<string> SetNPCNameList()
         {
             return new List<string>() {
