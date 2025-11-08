@@ -82,7 +82,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         public void CastLight(int pixelRadius, PointLight pointLight)
         {
-            return;
+/*
             radius = pixelRadius;
             lightingIndex = LunarLighting.UseLightingIndex();
             if (lightingIndex == -1)
@@ -113,12 +113,12 @@ namespace Stellamod.Core.LunarLightingSystem
             });
 
             texture = LunarLighting.GetLightCastTexture(lightingIndex);
-            texture.SetData(lightingData);
+            texture.SetData(lightingData);*/
         }
 
         public void ReleaseLight()
         {
-            LunarLighting.ReleaseLightingIndex(lightingIndex);
+       //     LunarLighting.ReleaseLightingIndex(lightingIndex);
         }
     }
 }

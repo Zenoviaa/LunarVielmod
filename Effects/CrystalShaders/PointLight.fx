@@ -57,11 +57,6 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
         float attenuation = 1.0f - (distance / (lightRadius / 2.0f));
         diffuseLight.rgb += lightColor * lightIntensity * attenuation;
         diffuseLight *= attenuation;
-        float4 height = tex2D(tileTex, coords);
-        if (height.a > 0.0)
-        {
-            diffuseLight *= attenuation * attenuation;
-        }
     }
     return diffuseLight;
     

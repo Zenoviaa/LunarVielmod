@@ -39,7 +39,7 @@ namespace Stellamod.Core.LunarLightingSystem
             var shader = PointLightShader.Instance;
             Vector4 colorAndIntensity = new Vector4(_pointLight.color, _pointLight.intensity);
             Color color = new Color(colorAndIntensity);
-            shader.LightRadius = 1;
+            shader.LightRadius = 0.7f;
 
 
             //Convert to screen space
