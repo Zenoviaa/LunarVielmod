@@ -77,7 +77,7 @@ namespace Stellamod.Core.LunarLightingSystem
             int endTileX, int endTileY, PointLight pointLight)
         {
             Vector3 inverseColor = Vector3.One - pointLight.color;
-            Color color = Color.Black * 0.05f;
+            Color color = Color.Black * 0.25f;
             _shadowColor = color;
             List<VertexPositionColor> vertices = new List<VertexPositionColor>();
             for (int x = startTileX; x < endTileX; x++)

@@ -42,11 +42,11 @@ namespace Stellamod.Core.LunarLightingSystem
         private static Texture2D _lightingTexture;
         private static RenderTarget2D _accumulatedLightRT;
         private static RenderTarget2D _pointLightRT;
+       // private static RenderTarget2D[] _lightMapRTs;
 
         private static int _pointLightIndex;
         private static Color[] _lightingData;
 
-        private static bool _initLightCasts;
         private static PointLight[] _pointLights = new PointLight[Max_Point_Lights];
         private static Dictionary<Vector3, VertexPositionColor[]> _shadowData;
         private static List<Vector3> _oldLights;
@@ -221,6 +221,9 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private static void CalculatePointLightSources()
         {
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (!config.BeamingLights)
+                return;
             //We don't need to check for lights on screen every single frame, just often enough
             //Small optimization tbh
             if (Main.GameUpdateCount % 3 != 0)
@@ -295,47 +298,117 @@ namespace Stellamod.Core.LunarLightingSystem
             graphicsDevice.SetRenderTarget(_accumulatedLightRT);
             graphicsDevice.Clear(Color.Black);
 
-            var pointlightShader = PointLightShader.Instance;
-            pointlightShader.ScreenResolution = new Vector2(Main.screenWidth, Main.screenHeight);
-
+       
             for(int i = 0; i < _pointLightIndex; i++)
             {
 
+
                 //We're drawing everything for how this light perceives the world onto this render target
                 //Then we're going to move it to another one so everything blends properly!
-               // graphicsDevice.SetRenderTarget(_pointLightRT);
-                //graphicsDevice.Clear(Color.Black);
-
+            
                 PointLight pointLight = _pointLights[i];
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, pointlightShader.Effect, Main.GameViewMatrix.TransformationMatrix);
-
-                var shader = PointLightShader.Instance;
-                Vector4 colorAndIntensity = new Vector4(pointLight.color, pointLight.intensity);
-                Color color = new Color(colorAndIntensity);
-                shader.LightRadius = pointLight.radius * 2 / Main.screenWidth;
-
-                //Convert to screen space
-                Vector2 lightingWorldPosition = pointLight.position;
-                Vector2 lightingScreenPosition = lightingWorldPosition - Main.screenPosition;
-                lightingScreenPosition.X /= Main.screenWidth;
-                lightingScreenPosition.Y /= Main.screenHeight;
-                shader.LightPosition = lightingScreenPosition;
-                spriteBatch.Draw(LunarLighting.PointLightTexture, Vector2.Zero, color * ExtraMath.Osc(0.9f, 1f, speed: 2));
-
-                spriteBatch.End();
-
-                //This is bad, just calculat them once :sob:
-
-                Vector3 shadowKey = PointLightToKey(pointLight);
-                TileShading.DrawVertices(_shadowData[shadowKey]);
-
-                //Add it to the final light RT
-                /*
-                graphicsDevice.SetRenderTarget(_accumulatedLightRT);
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-                spriteBatch.Draw(_pointLightRT, Vector2.Zero, Color.White);
-                spriteBatch.End();*/
+                RenderPointLight(pointLight);
             }
+
+            //REnder player point light
+            PointLight playerLight = new PointLight
+            {
+                position = Main.LocalPlayer.Center,
+                color = GetPlayerLightColor(),
+                intensity = 1,
+                radius = GetPlayerLightRadius()
+            };
+
+            RenderPointLight(playerLight);
+        }
+        public static float GetPlayerLightIntensity()
+        {
+            Player player = Main.LocalPlayer;
+            Item heldItem = player.HeldItem;
+            if (ItemID.Sets.Torches[heldItem.type])
+            {
+                return 1;
+            }
+            else
+            {
+                return 0.5f;
+            }
+        }
+        public static Vector3 GetPlayerLightColor()
+        {
+            Player player = Main.LocalPlayer;
+            Item heldItem = player.HeldItem;
+            if (ItemID.Sets.Torches[heldItem.type])
+            {
+                TorchID.TorchColor(heldItem.type, out float R, out float G, out float B);
+                Vector3 torchColor = new Vector3();
+                torchColor.X = R;
+                torchColor.Y = G;
+                torchColor.Z = B;
+                return torchColor;
+            }
+            else
+            {
+                return Vector3.One;
+            }
+        }
+
+        public static float GetPlayerLightRadius()
+        {
+            Player player = Main.LocalPlayer;
+            Item heldItem = player.HeldItem;
+            if (ItemID.Sets.Torches[heldItem.type])
+            {
+                return 800f;
+            }
+            else
+            {
+                return 400f;
+            }
+        }
+
+        private static void RenderPointLight(PointLight pointLight)
+        {
+            var pointlightShader = PointLightShader.Instance;
+            pointlightShader.ScreenResolution = new Vector2(Main.screenWidth, Main.screenHeight);
+
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            graphicsDevice.SetRenderTarget(_pointLightRT);
+            graphicsDevice.Clear(Color.Black);
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, pointlightShader.Effect, Main.GameViewMatrix.TransformationMatrix);
+
+            var shader = PointLightShader.Instance;
+            Vector4 colorAndIntensity = new Vector4(pointLight.color, pointLight.intensity);
+            Color color = new Color(colorAndIntensity);
+            shader.LightRadius = pointLight.radius * 2 / Main.screenWidth;
+
+            //Convert to screen space
+            Vector2 lightingWorldPosition = pointLight.position;
+            Vector2 lightingScreenPosition = lightingWorldPosition - Main.screenPosition;
+            lightingScreenPosition.X /= Main.screenWidth;
+            lightingScreenPosition.Y /= Main.screenHeight;
+            shader.LightPosition = lightingScreenPosition;
+            spriteBatch.Draw(LunarLighting.PointLightTexture, Vector2.Zero, color * ExtraMath.Osc(0.9f, 1f, speed: 2));
+
+            spriteBatch.End();
+
+            //This is bad, just calculat them once :sob:
+
+            Vector3 shadowKey = PointLightToKey(pointLight);
+            if (_shadowData.ContainsKey(shadowKey))
+            {
+                TileShading.DrawVertices(_shadowData[shadowKey]);
+            }
+           
+
+            //Add it to the final light RT
+
+            graphicsDevice.SetRenderTarget(_accumulatedLightRT);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Draw(_pointLightRT, Vector2.Zero, Color.White);
+            spriteBatch.End();
         }
 
         private void ResizeRenderTarget(bool load)
@@ -357,12 +430,9 @@ namespace Stellamod.Core.LunarLightingSystem
                             _pointLightRT.Dispose();
                         if (_lightingTexture != null && !_lightingTexture.IsDisposed)
                             _lightingTexture.Dispose();
-                        if (!_initLightCasts)
-                        {                       
-                            _initLightCasts = true;
-                        }
+
                         PointLightTexture ??= new Texture2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
-                        _accumulatedLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
+                        _accumulatedLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
                         _pointLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
                         _lightingData = new Color[Width * Height];
                         _lightingTexture = new Texture2D(Main.graphics.GraphicsDevice, Width, Height);
@@ -376,6 +446,9 @@ namespace Stellamod.Core.LunarLightingSystem
 
         public static void DrawToScreen()
         {
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (!config.BeamingLights)
+                return;
             if (Main.gameMenu)
                 return;
 
