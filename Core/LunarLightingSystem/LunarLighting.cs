@@ -23,7 +23,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private static Texture2D _lightingTexture;
         private static RenderTarget2D _accumulatedLightRT;
         private static RenderTarget2D _pointLightRT;
-
+        private static RenderTarget2D _downsizedLightRT;
         private static int _pointLightIndex;
         private static Color[] _lightingData;
 
@@ -236,6 +236,7 @@ namespace Stellamod.Core.LunarLightingSystem
                     if (!WorldGen.InWorld(x, y))
                         continue;
                     Tile tile = Main.tile[x, y];
+                   
                     if (TileID.Sets.Torch[tile.TileType])
                     {
 
@@ -303,18 +304,28 @@ namespace Stellamod.Core.LunarLightingSystem
 
             RenderPointLight(playerLight);
 
+
+            _emitters.Clear();
+            foreach(var proj in Main.ActiveProjectiles)
+            {
+                if(proj.ModProjectile is ILightEmitter emitter)
+                {
+                    _emitters.Add(emitter);
+                }
+            }
+
             if(_emitters.Count > 0)
             {
                 //Draw additional lights
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
                 foreach (ILightEmitter emitter in _emitters)
                 {
-
+                    emitter.RenderLight(spriteBatch);
                 }
                 spriteBatch.End();
             }
-
         }
+
         public static float GetPlayerLightIntensity()
         {
             Player player = Main.LocalPlayer;
@@ -328,6 +339,7 @@ namespace Stellamod.Core.LunarLightingSystem
                 return 0.5f;
             }
         }
+
         public static Vector3 GetPlayerLightColor()
         {
             Player player = Main.LocalPlayer;
@@ -403,6 +415,7 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(_pointLightRT, Vector2.Zero, Color.White);
             spriteBatch.End();
+
         }
 
         private void ResizeRenderTarget(bool load)
@@ -424,10 +437,12 @@ namespace Stellamod.Core.LunarLightingSystem
                             _pointLightRT.Dispose();
                         if (_lightingTexture != null && !_lightingTexture.IsDisposed)
                             _lightingTexture.Dispose();
-
+                        if(_downsizedLightRT != null && !_downsizedLightRT.IsDisposed)
+                            _downsizedLightRT.Dispose();
                         PointLightTexture ??= new Texture2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
                         _accumulatedLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
                         _pointLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
+                        _downsizedLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth / DownSamples, Main.screenHeight / DownSamples);
                         _lightingData = new Color[Width * Height];
                         _lightingTexture = new Texture2D(Main.graphics.GraphicsDevice, Width, Height);
                     });
@@ -453,7 +468,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
+          
             spriteBatch.Draw(_accumulatedLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
 
             spriteBatch.End();

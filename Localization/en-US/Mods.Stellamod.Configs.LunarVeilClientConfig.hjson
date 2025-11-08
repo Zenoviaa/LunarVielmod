@@ -135,5 +135,5 @@ NoLightingEveryFrameOverride: {
 
 BeamingLights: {
 	Label: Beaming Lights
-	Tooltip: ""
+	Tooltip: Edits Terraria's lighting quite a bit! Making caves darker and torches do more, AND adding a few ambient touch ups
 }

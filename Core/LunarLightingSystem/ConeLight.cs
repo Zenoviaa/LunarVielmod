@@ -23,8 +23,8 @@ namespace Stellamod.Core.LunarLightingSystem
             Vector2 vel1 = direction.RotatedBy(halfRadians) * distance;
             Vector2 vel2 = direction.RotatedBy(-halfRadians) * distance;
 
-            Vector2 point1 = CollisionHelper.RayCast(start, vel1, distance);
-            Vector2 point2 = CollisionHelper.RayCast(start, vel2, distance);
+            Vector2 point1 = position + vel1; //CollisionHelper.RayCast(start, vel1, distance);
+            Vector2 point2 = position + vel2;
 
             _vertices[0] = new VertexPositionColor(new Vector3(start, 0), lightColor);
             _vertices[1] = new VertexPositionColor(new Vector3(point1, 0), lightColor * 0);

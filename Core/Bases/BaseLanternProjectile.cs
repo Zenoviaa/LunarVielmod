@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Core.Lights;
+using Stellamod.Core.LunarLightingSystem;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.ID;
@@ -9,8 +11,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
 {
-    public abstract class BaseLanternProjectile : ModProjectile,
-           IDrawLightCast
+    public abstract class BaseLanternProjectile : ModProjectile, ILightEmitter,
+        IDrawOutlines
     {
         private enum AIState
         {
@@ -18,6 +20,7 @@ namespace Stellamod.Core.Bases
             Flashlight
         }
 
+        private ConeLight _coneLight;
         private ref float Timer => ref Projectile.ai[0];
         private AIState State
         {
@@ -75,6 +78,7 @@ namespace Stellamod.Core.Bases
             {
                 LightVelocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero);
             }
+
         }
 
         private void AI_Pet()
@@ -96,6 +100,10 @@ namespace Stellamod.Core.Bases
             //    velocity = velocity.SafeNormalize(Vector2.Zero);
             Projectile.velocity = velocity * 0.2f;
             Projectile.rotation = Projectile.velocity.X / 60f;
+
+            _coneLight ??= new ConeLight();
+            _coneLight.lightColor = Color.White;
+            _coneLight.RayCast(Projectile.Center, LightVelocity, MathHelper.ToRadians(45), 400);
         }
 
         private void AI_Flashlight()
@@ -121,6 +129,10 @@ namespace Stellamod.Core.Bases
                 Projectile.rotation = targetRotation + velocityRotationOffset;
                 Projectile.netUpdate = true;
             }
+
+            _coneLight ??= new ConeLight();
+            _coneLight.lightColor = Color.White;
+            _coneLight.RayCast(Projectile.Center, LightVelocity, MathHelper.ToRadians(45), 800);
         }
 
         protected virtual void DrawLanternSprite(ref Color lightColor)
@@ -141,26 +153,20 @@ namespace Stellamod.Core.Bases
             SpriteEffects drawEffects = (Projectile.Center.X < Owner.Center.X && State == AIState.Flashlight) ? SpriteEffects.FlipVertically : SpriteEffects.None;
             float layerDepth = 0;
 
-
-            //Draw Glow Effects
-            //Let's do some additive glow
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive);
-            for (float f = 0; f < 1; f += 0.2f)
-            {
-                float rotation = (f * MathHelper.TwoPi) + Timer * GlowRotationSpeed;
-                Vector2 velocityRot = rotation.ToRotationVector2();
-                velocityRot *= GlowDistanceOffset;
-
-                Vector2 glowDrawPos = drawPos + velocityRot;
-                spriteBatch.Draw(closeYourTomeTyrant, glowDrawPos, null, drawColor, drawRotation, drawOrigin, drawScale, drawEffects, layerDepth);
-            }
-            spriteBatch.End();
-            spriteBatch.Begin();
-
-
             //Actually draw it
             spriteBatch.Draw(closeYourTomeTyrant, drawPos, null, drawColor, drawRotation, drawOrigin, drawScale, drawEffects, layerDepth);
+
+            Texture2D glowTexture = ModContent.Request<Texture2D>(Texture).Value;
+            Color glowColor = Color.White;
+            glowColor *= ExtraMath.Osc(0f, 1f);
+            glowColor *= 0.5f;
+            glowColor.A = 0;
+            spriteBatch.Draw(glowTexture, Projectile.Center - Main.screenPosition, null, glowColor, 0, glowTexture.Size() / 2f, 1, SpriteEffects.None, 0);
+
+            glowTexture = ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect).Value;
+            glowColor *= 0.5f;
+            spriteBatch.Draw(glowTexture, Projectile.Center - Main.screenPosition, null, glowColor, 0, glowTexture.Size() / 2f, 0.75f, SpriteEffects.None, 0);
+
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -169,32 +175,36 @@ namespace Stellamod.Core.Bases
             return false;
         }
 
-        public void DrawLightCast(SpriteBatch spriteBatch)
+        public void RenderLight(SpriteBatch spriteBatch)
         {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture + "_Beam").Value;
-            float degree = FlashlightDegrees * PetLightModifier;
-            float range = MathHelper.ToRadians(degree);
-            float steps = degree;
+            _coneLight?.Draw();
+        }
 
-            for (float i = 0; i < steps; i++)
-            {
-                float progress = i / steps;
-                float rot = MathHelper.Lerp(-range / 2f, range / 2f, progress);
-                Vector2 vel = LightVelocity.RotatedBy(rot);
-                float distance = ProjectileHelper.PerformBeamHitscan(Projectile.Center, vel, maxBeamLength: FlashlightLength * PetLightModifier);
-                float fallOff = 0.0015f;
-                for (float j = 0; j < distance; j += texture.Size().X * 3)
-                {
-                    Vector2 drawPos = Projectile.Center + vel.SafeNormalize(Vector2.Zero) * j;
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            if (State != AIState.Flashlight)
+                return;
 
-                    Lighting.AddLight(drawPos, Color.White.ToVector3() * 0.6f);
-                    drawPos -= Main.screenPosition;
-                    Color drawColor = Color.White;
+            Texture2D closeYourTomeTyrant = ModContent.Request<Texture2D>(Texture).Value;
 
-                    drawColor *= MathHelper.Lerp(0.5f, 0f, fallOff * j);
-                    spriteBatch.Draw(texture, drawPos, null, drawColor, Projectile.rotation, texture.Size() / 2, 16, SpriteEffects.None, 0f);
-                }
-            }
+            //Calculate Drawing Vars
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            //We can add cool oscillation here
+            drawPos.Y += MathHelper.Lerp(-5, 5, VectorHelper.Osc(0f, 1f, speed: 3));
+
+
+            Vector2 drawOrigin = closeYourTomeTyrant.Size() / 2f;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            float drawScale = Projectile.scale;
+            float drawRotation = Projectile.rotation;
+            SpriteEffects drawEffects = (Projectile.Center.X < Owner.Center.X && State == AIState.Flashlight) ? SpriteEffects.FlipVertically : SpriteEffects.None;
+            float layerDepth = 0;
+
+            //Actually draw it
+            spriteBatch.Draw(closeYourTomeTyrant, drawPos + Vector2.UnitX * 2, null, drawColor, drawRotation, drawOrigin, drawScale, drawEffects, layerDepth);
+            spriteBatch.Draw(closeYourTomeTyrant, drawPos - Vector2.UnitX * 2, null, drawColor, drawRotation, drawOrigin, drawScale, drawEffects, layerDepth);
+            spriteBatch.Draw(closeYourTomeTyrant, drawPos + Vector2.UnitY * 2, null, drawColor, drawRotation, drawOrigin, drawScale, drawEffects, layerDepth);
+            spriteBatch.Draw(closeYourTomeTyrant, drawPos - Vector2.UnitY * 2, null, drawColor, drawRotation, drawOrigin, drawScale, drawEffects, layerDepth);
         }
     }
 }
