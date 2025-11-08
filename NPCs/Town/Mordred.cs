@@ -61,7 +61,7 @@ namespace Stellamod.NPCs.Town
             // Sets NPC to be a Town NPC
             NPC.friendly = true; // NPC Will not attack player
             NPC.width = 74;
-            NPC.height = 56;
+            NPC.height = 89;
             NPC.aiStyle = 0;
             NPC.damage = 90;
             NPC.defense = 42;

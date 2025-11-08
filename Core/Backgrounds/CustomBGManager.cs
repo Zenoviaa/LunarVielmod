@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Effects;
+using Stellamod.Core.LunarLightingSystem;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -23,6 +24,8 @@ namespace Stellamod.Core.Backgrounds
             {
                 LightStrength = 0.01f;
             }
+            LunarLighting.AmbientLight = Color.White.ToVector3();
+     
         }
     }
     public class CustomBGGlobalWall : GlobalWall
@@ -30,6 +33,7 @@ namespace Stellamod.Core.Backgrounds
 
         public override void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
         {
+
             float lightStrength = CustomBGGlobalLightPlayer.LightStrength;
             if (lightStrength > 0)
             {

@@ -5,6 +5,7 @@ Headers: {
 	Effects: Effects
 	UI: UI
 	Experiment: Experiment Header
+	Lighting: Lighting Header
 }
 
 VanillaTexturesToggle: {
@@ -129,5 +130,15 @@ AmmoBarY: {
 
 NoLightingEveryFrameOverride: {
 	Label: No Lighting Every Frame Override
+	Tooltip: ""
+}
+
+BeamingLights: {
+	Label: Beaming Lights
+	Tooltip: Edits Terraria's lighting quite a bit! Making caves darker and torches do more, AND adding a few ambient touch ups
+}
+
+SunShadows: {
+	Label: Sun Shadows
 	Tooltip: ""
 }

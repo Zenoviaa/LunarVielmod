@@ -1,4 +1,6 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
+using Terraria.Graphics.Light;
 using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
@@ -8,6 +10,7 @@ namespace Stellamod.Helpers
         public override void PreUpdateWorld()
         {
             base.PreUpdateWorld();
+      
             var client = ModContent.GetInstance<LunarVeilClientConfig>();
             if (client.NoLightingEveryFrameOverride)
             {
