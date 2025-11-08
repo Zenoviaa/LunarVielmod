@@ -28,13 +28,26 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             if (point.Position.Z <= 0)
                 return;
-            Vector2 dis = new Vector2(point.Position.X, point.Position.Y) - pointLight.position;
-            Vector2 offset = dis / MathF.Sqrt(dis.X * dis.X + dis.Y * dis.Y) * pointLight.radius;
-            point.Position += new Vector3(offset, 0);
+    
+            if(pointLight.directionOverride != Vector2.Zero)
+            {
+                point.Position += new Vector3(pointLight.directionOverride, 0);
+            }
+            else
+            {
+                float radius = pointLight.radius;
+                if (pointLight.faint)
+                    radius *= 0.1f;
+                Vector2 dis = new Vector2(point.Position.X, point.Position.Y) - pointLight.position;
+                Vector2 offset = dis / MathF.Sqrt(dis.X * dis.X + dis.Y * dis.Y) * radius;
+                point.Position += new Vector3(offset, 0);
+            }
+
         }
 
         public static void AddQuad(List<VertexPositionColor> vertices, Vector2 xy1, Vector2 xy2, PointLight pointLight)
         {
+
             //For the shadow color I want to take the inverse of the pointlight color and then lerp it towards black a bit       
             VertexPositionColor tl1 = new VertexPositionColor(new Vector3(xy1, 0), _shadowColor);
             VertexPositionColor tr1 = new VertexPositionColor(new Vector3(xy1, 1), _shadowColor);
@@ -76,8 +89,10 @@ namespace Stellamod.Core.LunarLightingSystem
             int startTileX, int startTileY,
             int endTileX, int endTileY, PointLight pointLight)
         {
-            Vector3 inverseColor = Vector3.One - pointLight.color;
+
             Color color = Color.Black * 0.25f;
+            if (pointLight.faint)
+                color *= 0.07f;
             _shadowColor = color;
             List<VertexPositionColor> vertices = new List<VertexPositionColor>();
             for (int x = startTileX; x < endTileX; x++)

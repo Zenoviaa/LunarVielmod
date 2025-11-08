@@ -11,5 +11,9 @@ namespace Stellamod.Core.LunarLightingSystem
         public Vector3 color; 
         public float intensity;
         public float radius;
+        public int extraRenders;
+        public bool calculateVertices;
+        public bool faint;
+        public Vector2 directionOverride;
     }
 }

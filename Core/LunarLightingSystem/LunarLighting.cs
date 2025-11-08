@@ -297,7 +297,7 @@ namespace Stellamod.Core.LunarLightingSystem
             };
 
             RenderPointLight(playerLight);
-
+            RenderSun();
 
             _emitters.Clear();
             foreach (var proj in Main.ActiveProjectiles)
@@ -367,6 +367,34 @@ namespace Stellamod.Core.LunarLightingSystem
             }
         }
 
+        private static void RenderSun()
+        {
+            if (!Main.LocalPlayer.ZoneOverworldHeight)
+                return;
+
+
+            Vector2 sunLeft = Main.Camera.Center + new Vector2(-Main.screenWidth / 2, -Main.screenHeight / 2);
+            Vector2 sunRight = Main.Camera.Center + new Vector2(Main.screenWidth / 2, -Main.screenHeight / 2);
+
+
+         
+            float dayProgress = Main.dayTime ? (float)Main.time / (float)Main.dayLength : (float)Main.time / (float)Main.nightLength;
+            float radians = MathHelper.Lerp(MathHelper.ToRadians(-45), MathHelper.ToRadians(45), dayProgress);
+            Vector2 sunDirection = Vector2.UnitY.RotatedBy(radians) * 500;
+            Vector2 sunPosition = Main.Camera.Center + new Vector2(0, -Main.screenHeight / 2);
+            PointLight sunLight = new PointLight
+            {
+                position = sunPosition,
+                color = Main.ColorOfTheSkies.ToVector3(),
+                radius = 4000,
+                intensity = 1,
+                extraRenders=4,
+                calculateVertices= ModContent.GetInstance<LunarVeilClientConfig>().SunShadows,
+                faint=true,
+                directionOverride = sunDirection
+            };
+            RenderPointLight(sunLight);
+        }
         private static void RenderPointLight(PointLight pointLight)
         {
             var pointlightShader = PointLightShader.Instance;
@@ -391,7 +419,13 @@ namespace Stellamod.Core.LunarLightingSystem
             lightingScreenPosition.Y /= Main.screenHeight;
             shader.LightPosition = lightingScreenPosition;
             spriteBatch.Draw(LunarLighting.PointLightTexture, Vector2.Zero, color * ExtraMath.Osc(0.9f, 1f, speed: 2));
-
+            if(pointLight.extraRenders > 0)
+            {
+                for(int i = 0; i < pointLight.extraRenders; i++)
+                {
+                    spriteBatch.Draw(LunarLighting.PointLightTexture, Vector2.Zero, color * ExtraMath.Osc(0.9f, 1f, speed: 2));
+                }
+            }
             spriteBatch.End();
 
             //This is bad, just calculat them once :sob:
@@ -400,12 +434,17 @@ namespace Stellamod.Core.LunarLightingSystem
             if (_shadowData.ContainsKey(shadowKey))
             {
                 TileShading.DrawVertices(_shadowData[shadowKey]);
+            } else if (pointLight.calculateVertices)
+            {
+                var keys = TileShading.PrepareTilesForShading(pointLight);
+                TileShading.DrawVertices(keys);
             }
 
 
-            //Add it to the final light RT
 
-            graphicsDevice.SetRenderTarget(_accumulatedLightRT);
+                //Add it to the final light RT
+
+                graphicsDevice.SetRenderTarget(_accumulatedLightRT);
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(_pointLightRT, Vector2.Zero, Color.White);
             spriteBatch.End();
