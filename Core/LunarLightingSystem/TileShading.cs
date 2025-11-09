@@ -7,23 +7,73 @@ using Terraria;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
+    public struct TileShadow
+    {
+        public int vertexOffset;
+        public int primitiveCount;
+        public bool useSunBuffer;
+    }
+    public static class TileSunShadowVertexBuffer
+    {
+        private static int _index;
+        public static VertexPositionColor[] ShadowVertices = new VertexPositionColor[Max_Sun_Shadow_Vertices];
+        public const int Max_Sun_Shadow_Vertices = 12 * 20000;
+
+
+        public static int GetVertexOffset()
+        {
+            return _index;
+        }
+        public static bool IsFull()
+        {
+            return _index >= Max_Sun_Shadow_Vertices;
+        }
+
+
+        public static void Clear()
+        {
+            _index = 0;
+        }
+
+        public static int AddTriangle()
+        {
+            int index = _index;
+            _index += 3;
+            return index;
+        }
+    }
+    public static class TileShadowVertexBuffer
+    {
+        private static int _index;
+        public static VertexPositionColor[] ShadowVertices = new VertexPositionColor[Max_Torch_Shadow_Vertices];
+        public const int Max_Torch_Shadow_Vertices = 6 * 100000;
+
+        public static int GetVertexOffset()
+        {
+            return _index;
+        }
+
+
+        public static bool IsFull()
+        {
+            return _index >= Max_Torch_Shadow_Vertices;
+        }
+
+        public static void Clear()
+        {
+            _index = 0;
+        }
+
+        public static int AddTriangle()
+        {
+            int index = _index;
+            _index += 3;
+            return index;
+        }
+    }
     public static class TileShading
     {
         private static Color _shadowColor;
-        public static void Test()
-        {
-            Vector2 cameraCenterWorld = Main.Camera.Center;
-            Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
-            Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
-            Point topLeftTile = cameraTopLeft.ToTileCoordinates();
-            Point bottomRightTile = cameraBottomRight.ToTileCoordinates();
-            PointLight pointLight = new PointLight();
-            pointLight.position = Main.Camera.Center - new Vector2(0, 1000);
-            pointLight.color = Main.ColorOfTheSkies.ToVector3();
-            VertexPositionColor[] vertices = PrepareTilesForShading(topLeftTile.X, topLeftTile.Y, bottomRightTile.X, bottomRightTile.Y, pointLight);
-            DrawVertices(vertices);
-        }
-
         private static void MoveVertex(ref VertexPositionColor point, PointLight pointLight)
         {
             if (point.Position.Z <= 0)
@@ -42,19 +92,25 @@ namespace Stellamod.Core.LunarLightingSystem
                 Vector2 offset = dis / MathF.Sqrt(dis.X * dis.X + dis.Y * dis.Y) * radius;
                 point.Position += new Vector3(offset, 0);
             }
-
         }
 
-        public static void AddQuad(List<VertexPositionColor> vertices, Vector2 xy1, Vector2 xy2, PointLight pointLight)
+        public static void AddQuad(Vector2 xy1, Vector2 xy2, PointLight pointLight, bool useSunBuffer)
         {
-
+            if(useSunBuffer && TileSunShadowVertexBuffer.IsFull())
+            {
+                return;
+            }
+            else if (!useSunBuffer && TileShadowVertexBuffer.IsFull())
+            {
+                return;
+            }
             //For the shadow color I want to take the inverse of the pointlight color and then lerp it towards black a bit       
             VertexPositionColor tl1 = new VertexPositionColor(new Vector3(xy1, 0), _shadowColor);
-            VertexPositionColor tr1 = new VertexPositionColor(new Vector3(xy1, 1), _shadowColor);
+            VertexPositionColor tr1 = new VertexPositionColor(new Vector3(xy1, 1), _shadowColor );
             VertexPositionColor br1 = new VertexPositionColor(new Vector3(xy2, 0), _shadowColor);
 
             VertexPositionColor tl2 = new VertexPositionColor(new Vector3(xy1, 1), _shadowColor);
-            VertexPositionColor tr2 = new VertexPositionColor(new Vector3(xy2, 0), _shadowColor);
+            VertexPositionColor tr2 = new VertexPositionColor(new Vector3(xy2, 0), _shadowColor );
             VertexPositionColor br2 = new VertexPositionColor(new Vector3(xy2, 1), _shadowColor);
 
             MoveVertex(ref tl1, pointLight);
@@ -64,17 +120,43 @@ namespace Stellamod.Core.LunarLightingSystem
             MoveVertex(ref tr2, pointLight);
             MoveVertex(ref br2, pointLight);
 
-            //0, 1, 2
-            vertices.Add(tl1);
-            vertices.Add(tr1);
-            vertices.Add(br1);
 
-            //0, 1, 3
-            vertices.Add(tl2);
-            vertices.Add(tr2);
-            vertices.Add(br2);
+            if (useSunBuffer)
+            {
+                int tri1Index = TileSunShadowVertexBuffer.AddTriangle();
+
+                //0, 1, 2
+                TileSunShadowVertexBuffer.ShadowVertices[tri1Index] = tl1;
+                TileSunShadowVertexBuffer.ShadowVertices[tri1Index + 1] = tr1;
+                TileSunShadowVertexBuffer.ShadowVertices[tri1Index + 2] = br1;
+
+                //0, 1, 3
+                int tri2Index = TileSunShadowVertexBuffer.AddTriangle();
+
+                TileSunShadowVertexBuffer.ShadowVertices[tri2Index] = tl2;
+                TileSunShadowVertexBuffer.ShadowVertices[tri2Index + 1] = tr2;
+                TileSunShadowVertexBuffer.ShadowVertices[tri2Index + 2] = br2;
+            }
+            else
+            {
+                int tri1Index = TileShadowVertexBuffer.AddTriangle();
+
+                //0, 1, 2
+                TileShadowVertexBuffer.ShadowVertices[tri1Index] = tl1;
+                TileShadowVertexBuffer.ShadowVertices[tri1Index + 1] = tr1;
+                TileShadowVertexBuffer.ShadowVertices[tri1Index + 2] = br1;
+
+                //0, 1, 3
+                int tri2Index = TileShadowVertexBuffer.AddTriangle();
+
+                TileShadowVertexBuffer.ShadowVertices[tri2Index] = tl2;
+                TileShadowVertexBuffer.ShadowVertices[tri2Index + 1] = tr2;
+                TileShadowVertexBuffer.ShadowVertices[tri2Index + 2] = br2;
+            }
+
         }
-        public static VertexPositionColor[] PrepareTilesForShading(PointLight pointLight)
+
+        public static TileShadow PrepareTilesForShading(PointLight pointLight, bool useSunBuffer)
         {
             Vector2 topLeftOfPointLight = pointLight.position - new Vector2(pointLight.radius);
             Vector2 bottomRightOfPointLight = pointLight.position + new Vector2(pointLight.radius);
@@ -82,19 +164,22 @@ namespace Stellamod.Core.LunarLightingSystem
 
             Point topLeftTile = topLeftOfPointLight.ToTileCoordinates();
             Point bottomRightTIle = bottomRightOfPointLight.ToTileCoordinates();
-            return PrepareTilesForShading(topLeftTile.X, topLeftTile.Y, bottomRightTIle.X, bottomRightTIle.Y, pointLight);
+            return PrepareTilesForShading(topLeftTile.X, topLeftTile.Y, bottomRightTIle.X, bottomRightTIle.Y, pointLight, useSunBuffer);
         }
 
-        public static VertexPositionColor[] PrepareTilesForShading(
+        public static TileShadow PrepareTilesForShading(
             int startTileX, int startTileY,
-            int endTileX, int endTileY, PointLight pointLight)
+            int endTileX, int endTileY, PointLight pointLight, bool useSunBuffer)
         {
 
-            Color color = Color.Black * 0.25f;
+            Color color = Color.Black * 0.3f;
             if (pointLight.faint)
-                color *= 0.07f;
+                color *= 0.18f;
             _shadowColor = color;
-            List<VertexPositionColor> vertices = new List<VertexPositionColor>();
+            TileShadow tileShadow = new TileShadow();
+            tileShadow.vertexOffset = TileShadowVertexBuffer.GetVertexOffset();
+            if (useSunBuffer)
+                tileShadow.vertexOffset = TileSunShadowVertexBuffer.GetVertexOffset();
             for (int x = startTileX; x < endTileX; x++)
             {
                 for (int y = startTileY; y < endTileY; y++)
@@ -133,19 +218,21 @@ namespace Stellamod.Core.LunarLightingSystem
                     //Vertex 3
                     Vector2 bottomRight = worldPoint + new Vector2(16, 16);
 
-                    AddQuad(vertices, topLeft, bottomRight, pointLight);
-                    AddQuad(vertices, topRight, bottomLeft, pointLight);
+                    AddQuad(topLeft, bottomRight, pointLight, useSunBuffer);
+                    AddQuad(topRight, bottomLeft, pointLight, useSunBuffer);
+                    tileShadow.primitiveCount += 4;
                 }
             }
-
-            return vertices.ToArray();
+            tileShadow.useSunBuffer = useSunBuffer; 
+            return tileShadow;
         }
 
 
-        public static void DrawVertices(VertexPositionColor[] vertices)
+        public static void DrawVertices(TileShadow tileShadow)
         {
-            if (vertices.Length % 6 != 0 || vertices.Length <= 3)
+            if (tileShadow.primitiveCount <= 0)
                 return;
+
             var shader = TileShadowShader.Instance;
             shader.Apply();
             foreach (var pass in shader.Effect.CurrentTechnique.Passes)
@@ -160,8 +247,10 @@ namespace Stellamod.Core.LunarLightingSystem
 
             graphicsDevice.RasterizerState.CullMode = CullMode.None;
             graphicsDevice.BlendState = BlendState.AlphaBlend;
+
+            var vertexBuffer = tileShadow.useSunBuffer ? TileSunShadowVertexBuffer.ShadowVertices : TileShadowVertexBuffer.ShadowVertices;
             graphicsDevice.DrawUserPrimitives(
-              PrimitiveType.TriangleList, vertices, 0, vertices.Length / 3);
+              PrimitiveType.TriangleList, vertexBuffer, tileShadow.vertexOffset, tileShadow.primitiveCount);
 
             graphicsDevice.RasterizerState.CullMode = oldCullMode;
             graphicsDevice.BlendState = originalBlendState;

@@ -77,7 +77,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private static Color[] _lightingData;
 
         private static PointLight[] _pointLights = new PointLight[Max_Point_Lights];
-        private static Dictionary<Vector3, VertexPositionColor[]> _shadowData;
+        private static Dictionary<Vector3, TileShadow> _shadowData;
         private static List<Vector3> _oldLights;
         private static List<Vector3> _currentLights;
         private static List<ILightEmitter> _emitters;
@@ -193,7 +193,7 @@ namespace Stellamod.Core.LunarLightingSystem
         public override void Load()
         {
             _oldLights = new List<Vector3>();
-            _shadowData = new Dictionary<Vector3, VertexPositionColor[]>();
+            _shadowData = new Dictionary<Vector3, TileShadow>();
             _currentLights = new List<Vector3>();
             _emitters = new List<ILightEmitter>();
             ResizeRenderTarget(true);
@@ -317,8 +317,12 @@ namespace Stellamod.Core.LunarLightingSystem
             Vector2 cameraCenterWorld = Main.Camera.Center;
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
             Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+            cameraTopLeft -= new Vector2(128);
+            cameraBottomRight += new Vector2(128);
+
             Point topLeftTile = cameraTopLeft.ToTileCoordinates();
             Point bottomRightTile = cameraBottomRight.ToTileCoordinates();
+            bool shouldCalculateShadows = false;
             for (int x = topLeftTile.X; x < bottomRightTile.X; x++)
             {
                 for (int y = topLeftTile.Y; y < bottomRightTile.Y; y++)
@@ -334,12 +338,36 @@ namespace Stellamod.Core.LunarLightingSystem
                         Vector3 lightColor = Lighting.GetColor(x, y).ToVector3();
                         PointLight pointLight = QueueLight(position, lightColor, 1, pointLightPixelRadius);
                         Vector3 shadowKey = PointLightToKey(pointLight);
+                   
                         if (!_shadowData.ContainsKey(shadowKey))
                         {
-                            var keys = TileShading.PrepareTilesForShading(pointLight);
-                            _shadowData.Add(shadowKey, keys);
+                            shouldCalculateShadows = true;
+                        } else
+                        {
+                            _pointLights[_pointLightIndex - 1].tileShadow = _shadowData[shadowKey];
                         }
+                            
                         _currentLights.Add(shadowKey);
+                    }
+                }
+            }
+
+            if (shouldCalculateShadows)
+            {
+                TileShadowVertexBuffer.Clear();
+                for(int i = 0; i < _pointLightIndex; i++)
+                {
+                    PointLight pointLight = _pointLights[i];
+                    TileShadow tileShadow = TileShading.PrepareTilesForShading(pointLight, useSunBuffer: false);
+                    Vector3 shadowKey = PointLightToKey(pointLight);
+                    if (_shadowData.ContainsKey(shadowKey))
+                    {
+                        _shadowData[shadowKey] = tileShadow;
+                        _pointLights[i].tileShadow = tileShadow;
+                    }
+                    else
+                    {
+                        _shadowData.Add(shadowKey, tileShadow);
                     }
                 }
             }
@@ -402,6 +430,8 @@ namespace Stellamod.Core.LunarLightingSystem
                 radius = GetPlayerLightRadius()
             };
 
+            TileSunShadowVertexBuffer.Clear();
+            playerLight.tileShadow = TileShading.PrepareTilesForShading(playerLight, useSunBuffer: true);
             RenderPointLight(playerLight);
             RenderSun();
 
@@ -495,11 +525,15 @@ namespace Stellamod.Core.LunarLightingSystem
                 radius = 4000,
                 intensity = 1,
                 extraRenders=4,
-                calculateVertices= ModContent.GetInstance<LunarVeilClientConfig>().SunShadows,
                 faint=true,
                 directionOverride = sunDirection
             };
+
+
+            if(ModContent.GetInstance<LunarVeilClientConfig>().SunShadows)
+                sunLight.tileShadow = TileShading.PrepareTilesForShading(sunLight, useSunBuffer: true);
             RenderPointLight(sunLight);
+    
         }
         private static void RenderPointLight(PointLight pointLight)
         {
@@ -535,27 +569,15 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.End();
 
             //This is bad, just calculat them once :sob:
+            TileShading.DrawVertices(pointLight.tileShadow);
 
-            Vector3 shadowKey = PointLightToKey(pointLight);
-            if (_shadowData.ContainsKey(shadowKey))
-            {
-                TileShading.DrawVertices(_shadowData[shadowKey]);
-            } else if (pointLight.calculateVertices)
-            {
-                var keys = TileShading.PrepareTilesForShading(pointLight);
-                TileShading.DrawVertices(keys);
-            }
-
-
-
-                //Add it to the final light RT
-
-                graphicsDevice.SetRenderTarget(_accumulatedLightRT);
+            //Add it to the final light RT
+            graphicsDevice.SetRenderTarget(_accumulatedLightRT);
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(_pointLightRT, Vector2.Zero, Color.White);
             spriteBatch.End();
-
         }
+
 
         private void ResizeRenderTarget(bool load)
         {
