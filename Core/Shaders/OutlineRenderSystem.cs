@@ -145,6 +145,7 @@ namespace Stellamod.Core.Shaders
         }
         private void DrawOutlines(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
         {
+  
             _outlinesToDraw ??= new List<IDrawOutlines>();
             _lightColors ??= new List<Color>();
 

@@ -60,6 +60,7 @@ namespace Stellamod.Core.Backgrounds
         public override void OnModUnload()
         {
             base.OnModUnload();
+           
             On_Main.DoDraw_WallsTilesNPCs -= DrawBehindWalls;
         }
 
@@ -95,7 +96,7 @@ namespace Stellamod.Core.Backgrounds
             }
 
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
         }
         private void DrawBG(CustomBG bg)
         {

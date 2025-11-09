@@ -11,6 +11,7 @@ namespace Stellamod.Core.LunarLightingSystem
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
             if (!config.BeamingLights)
                 return;
+
             if (!Main.tile[i, j].HasTile)
             {
                 float lightStrength =1;
