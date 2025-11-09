@@ -3,14 +3,69 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Threading;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
+using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
+    /*
+    public class RemoveTileRenderingEdit : ModSystem
+    {
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
 
+            On_Main.DoDraw_WallsAndBlacks += NoWallsAndBlacks;
+            On_Main.DrawTiles += NoTilesDraw;
+            On_Main.RenderTiles += NoTileRender;
+            On_Main.RenderTiles2 += NoTileRender2;
+            On_Main.DoDraw_Tiles_Solid += NoDrawTiles;
+            On_Main.DoDraw_Tiles_NonSolid += NoDrawTiles;   
+        }
+
+        private void NoDrawTiles(On_Main.orig_DoDraw_Tiles_NonSolid orig, Main self)
+        {
+       
+        }
+
+        public override void OnModUnload()
+        {
+            base.OnModUnload();
+            On_Main.DoDraw_WallsAndBlacks -= NoWallsAndBlacks;
+            On_Main.DrawTiles -= NoTilesDraw;
+            On_Main.RenderTiles -= NoTileRender;
+            On_Main.RenderTiles2 -= NoTileRender2;
+            On_Main.DoDraw_Tiles_Solid -= NoDrawTiles;
+            On_Main.DoDraw_Tiles_NonSolid -= NoDrawTiles;
+        }
+        private void NoWallsAndBlacks(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
+        {
+
+        }
+
+        private void NoTilesDraw(On_Main.orig_DrawTiles orig, Main self, bool solidLayer, bool forRenderTargets, bool intoRenderTargets, int waterStyleOverride)
+        {
+
+        }
+        private void NoDrawTiles(On_Main.orig_DoDraw_Tiles_Solid orig, Main self)
+        {
+      
+        }
+
+        private void NoTileRender2(On_Main.orig_RenderTiles2 orig, Main self)
+        {
+
+        }
+
+        private void NoTileRender(On_Main.orig_RenderTiles orig, Main self)
+        {
+
+        }
+    }*/
     public class LunarLighting : ModSystem
     {
         private static Vector2 _previousScreenSize;
@@ -113,6 +168,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private static void Method1_CastARayFromEveryPixel()
         {
+  
             Vector2 cameraCenterWorld = Main.Camera.Center;
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
             FastParallel.For(0, Width, delegate (int start, int end, object context)
@@ -141,32 +197,72 @@ namespace Stellamod.Core.LunarLightingSystem
             _currentLights = new List<Vector3>();
             _emitters = new List<ILightEmitter>();
             ResizeRenderTarget(true);
-            On_Main.CheckMonoliths += RenderLights;
-            On_Main.DrawInfernoRings += FinalDraw;
+
+            On_OverlayManager.Draw += DrawLights;
+            On_Main.DoDraw += LightRenderLoop;
+        }
+
+        private void DrawLights(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
+        {
+            if(layer == RenderLayers.All && beginSpriteBatch){
+                DrawToScreen();
+            }
+            orig(self, spriteBatch, layer, beginSpriteBatch);
         }
 
         public override void Unload()
         {
             base.Unload();
-            On_Main.CheckMonoliths -= RenderLights;
-            On_Main.DrawInfernoRings -= FinalDraw;
+            On_Main.DoDraw -= LightRenderLoop;
+            On_OverlayManager.Draw -= DrawLights;
+        }
+
+        private static void DrawToScreen()
+        {
+            if (!ShouldRender())
+                return;
+
+            //New d raw to screen
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+
+            spriteBatch.Draw(_accumulatedLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+
+            spriteBatch.End();
+
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+
+            Texture2D glowTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SoftGlow").Value;
+            Vector2 drawOrigin = glowTexture.Size() / 2f;
+            for (int i = 0; i < _pointLightIndex; i++)
+            {
+                PointLight pointLight = _pointLights[i];
+                Vector2 drawPosition = pointLight.position - Main.screenPosition;
+
+                Point tilePosition = (pointLight.position - new Vector2(8, 8)).ToTileCoordinates();
+                Tile tile = Main.tile[tilePosition.X, tilePosition.Y];
+
+                Color drawColor = Lighting.GetColor(tilePosition.X, tilePosition.Y);
+                drawColor *= ExtraMath.Osc(0.9f, 1f, speed: 2, offset: i);
+                drawColor *= 0.35f;
+                spriteBatch.Draw(glowTexture, drawPosition, null, drawColor, 0, drawOrigin, 2, SpriteEffects.None, 0);
+            }
+
+            spriteBatch.End();
+        }
+        private void LightRenderLoop(On_Main.orig_DoDraw orig, Main self, GameTime gameTime)
+        {
+            RenderLights();
+            orig(self, gameTime);
         }
 
         public override void PostUpdateEverything()
         {
             ResizeRenderTarget(false);
-        }
-
-        private void FinalDraw(On_Main.orig_DrawInfernoRings orig, Main self)
-        {
-            orig(self);
-            DrawToScreen();
-        }
-
-        private void RenderLights(On_Main.orig_CheckMonoliths orig)
-        {
-            RenderLights();
-            orig();
         }
 
         public static Vector3 PointLightToKey(PointLight pointLight)
@@ -259,11 +355,21 @@ namespace Stellamod.Core.LunarLightingSystem
             }
         }
 
+        private static bool ShouldRender()
+        {
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (!config.BeamingLights)
+                return false;
+            if (Main.gameMenu)
+                return false;
+
+            return true;
+        }
         private static void RenderLights()
         {
-            if (Main.gameMenu)
+            if (!ShouldRender())
                 return;
-
+       
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             SpriteBatch spriteBatch = Main.spriteBatch;
             // CalculateLightingData();
@@ -318,6 +424,7 @@ namespace Stellamod.Core.LunarLightingSystem
                 }
                 spriteBatch.End();
             }
+            graphicsDevice.SetRenderTarget(null);
         }
 
         public static float GetPlayerLightIntensity()
@@ -376,8 +483,7 @@ namespace Stellamod.Core.LunarLightingSystem
             Vector2 sunLeft = Main.Camera.Center + new Vector2(-Main.screenWidth / 2, -Main.screenHeight / 2);
             Vector2 sunRight = Main.Camera.Center + new Vector2(Main.screenWidth / 2, -Main.screenHeight / 2);
 
-
-         
+   
             float dayProgress = Main.dayTime ? (float)Main.time / (float)Main.dayLength : (float)Main.time / (float)Main.nightLength;
             float radians = MathHelper.Lerp(MathHelper.ToRadians(-45), MathHelper.ToRadians(45), dayProgress);
             Vector2 sunDirection = Vector2.UnitY.RotatedBy(radians) * 500;
@@ -484,49 +590,6 @@ namespace Stellamod.Core.LunarLightingSystem
                 // Set the current one to the previous one for next frame.
                 _previousScreenSize = currentScreenSize;
             }
-        }
-
-        public static void DrawToScreen()
-        {
-            var config = ModContent.GetInstance<LunarVeilClientConfig>();
-            if (!config.BeamingLights)
-                return;
-            if (Main.gameMenu)
-                return;
-
-
-            //New d raw to screen
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
-            spriteBatch.Draw(_accumulatedLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-           
-            
-            Texture2D glowTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SoftGlow").Value;
-            Vector2 drawOrigin = glowTexture.Size() / 2f;
-            for (int i =0; i < _pointLightIndex; i++)
-            {
-                PointLight pointLight = _pointLights[i];
-                Vector2 drawPosition = pointLight.position - Main.screenPosition;
-
-                Point tilePosition = (pointLight.position-new Vector2(8, 8)).ToTileCoordinates();
-                Tile tile = Main.tile[tilePosition.X, tilePosition.Y];
-                
-                Color drawColor = Lighting.GetColor(tilePosition.X, tilePosition.Y);
-                drawColor *= ExtraMath.Osc(0.9f, 1f, speed: 2, offset: i);
-                drawColor *= 0.35f;
-                spriteBatch.Draw(glowTexture, drawPosition, null, drawColor, 0, drawOrigin, 2, SpriteEffects.None, 0);
-            }
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
-
         }
     }
 }

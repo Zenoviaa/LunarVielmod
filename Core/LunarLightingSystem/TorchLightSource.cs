@@ -6,6 +6,7 @@ using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -13,12 +14,13 @@ namespace Stellamod.Core.LunarLightingSystem
 {
     public class TorchLightSource : ILightSource
     {
-          private LightCaster _lightCaster;
-          private Vector2 _position;
+         
+        private LightCaster _lightCaster;  
+        private Vector2 _position;
         private PointLight _pointLight;
         public TorchLightSource()
         {
-            _lightCaster = new LightCaster();   
+
         }
        
         public void ReCalculateLights(PointLight pointLight)
