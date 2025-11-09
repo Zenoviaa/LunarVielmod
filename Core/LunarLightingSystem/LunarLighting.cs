@@ -200,6 +200,47 @@ namespace Stellamod.Core.LunarLightingSystem
 
             On_OverlayManager.Draw += DrawLights;
             On_Main.DoDraw += LightRenderLoop;
+            On_Lighting.AddLight_int_int_float_float_float += NoAddLight;
+            On_Lighting.AddLight_int_int_int_float += NoAddLight;
+            On_Lighting.AddLight_Vector2_int += NoAddLight;
+            On_Lighting.AddLight_Vector2_Vector3 += NoAddLight;
+            On_Lighting.AddLight_Vector2_float_float_float += NoAddLight;
+        }
+
+
+        public override void Unload()
+        {
+            base.Unload();
+            On_Main.DoDraw -= LightRenderLoop;
+            On_OverlayManager.Draw -= DrawLights;
+            On_Lighting.AddLight_int_int_float_float_float -= NoAddLight;
+            On_Lighting.AddLight_int_int_int_float -= NoAddLight;
+            On_Lighting.AddLight_Vector2_int -= NoAddLight;
+            On_Lighting.AddLight_Vector2_Vector3 -= NoAddLight;
+            On_Lighting.AddLight_Vector2_float_float_float -= NoAddLight;
+        }
+        private void NoAddLight(On_Lighting.orig_AddLight_Vector2_float_float_float orig, Vector2 position, float r, float g, float b)
+        {
+
+        }
+
+        private void NoAddLight(On_Lighting.orig_AddLight_int_int_float_float_float orig, int i, int j, float r, float g, float b)
+        {
+
+        }
+        private void NoAddLight(On_Lighting.orig_AddLight_Vector2_Vector3 orig, Vector2 position, Vector3 rgb)
+        {
+
+        }
+
+        private void NoAddLight(On_Lighting.orig_AddLight_Vector2_int orig, Vector2 position, int torchID)
+        {
+      
+        }
+
+        private void NoAddLight(On_Lighting.orig_AddLight_int_int_int_float orig, int i, int j, int torchID, float lightAmount)
+        {
+ 
         }
 
         private void DrawLights(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
@@ -210,12 +251,7 @@ namespace Stellamod.Core.LunarLightingSystem
             orig(self, spriteBatch, layer, beginSpriteBatch);
         }
 
-        public override void Unload()
-        {
-            base.Unload();
-            On_Main.DoDraw -= LightRenderLoop;
-            On_OverlayManager.Draw -= DrawLights;
-        }
+
 
         private static void DrawToScreen()
         {
@@ -447,12 +483,17 @@ namespace Stellamod.Core.LunarLightingSystem
             if (_emitters.Count > 0)
             {
                 //Draw additional lights
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
                 foreach (ILightEmitter emitter in _emitters)
                 {
+                    graphicsDevice.SetRenderTarget(_pointLightRT);
+                    graphicsDevice.Clear(Color.Black);
                     emitter.RenderLight(spriteBatch);
+
+                    graphicsDevice.SetRenderTarget(_accumulatedLightRT);
+                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+                    spriteBatch.Draw(_pointLightRT, Vector2.Zero, Color.White);
+                    spriteBatch.End();
                 }
-                spriteBatch.End();
             }
             graphicsDevice.SetRenderTarget(null);
         }
@@ -482,6 +523,7 @@ namespace Stellamod.Core.LunarLightingSystem
                 torchColor.X = R;
                 torchColor.Y = G;
                 torchColor.Z = B;
+          
                 return torchColor;
             }
             else

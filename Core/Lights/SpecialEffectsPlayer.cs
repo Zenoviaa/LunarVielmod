@@ -86,7 +86,7 @@ namespace Stellamod.Core.Lights
             hasSpiritPendant = false;
             hasSunGlyph = false;
             darkness = 0;
-            darknessCurve = 0.5f;
+            darknessCurve = 0.25f;
             
             //Curve based
             float progress = (float)(Player.position.ToTileCoordinates().Y - Main.worldSurface) / 1000;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Shaders;
+using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -71,6 +72,7 @@ namespace Stellamod.Core.LunarLightingSystem
             return index;
         }
     }
+
     public static class TileShading
     {
         private static Color _shadowColor;
@@ -166,7 +168,82 @@ namespace Stellamod.Core.LunarLightingSystem
             Point bottomRightTIle = bottomRightOfPointLight.ToTileCoordinates();
             return PrepareTilesForShading(topLeftTile.X, topLeftTile.Y, bottomRightTIle.X, bottomRightTIle.Y, pointLight, useSunBuffer);
         }
+        public static TileShadow PrepareTilesForShading(PointLight pointLight, Vector2 lightNormal, float threshold, bool useSunBuffer)
+        {
+            Vector2 topLeftOfPointLight = pointLight.position - new Vector2(pointLight.radius);
+            Vector2 bottomRightOfPointLight = pointLight.position + new Vector2(pointLight.radius);
 
+
+            Point topLeftTile = topLeftOfPointLight.ToTileCoordinates();
+            Point bottomRightTIle = bottomRightOfPointLight.ToTileCoordinates();
+            return PrepareTilesForShading(topLeftTile.X, topLeftTile.Y, bottomRightTIle.X, bottomRightTIle.Y, pointLight, lightNormal, threshold, useSunBuffer);
+        }
+
+
+        public static TileShadow PrepareTilesForShading(int startTileX, int startTileY,
+            int endTileX, int endTileY, PointLight pointLight, Vector2 lightNormal, float threshold, bool useSunBuffer)
+        {
+            Color color = Color.Black * 0.3f;
+            _shadowColor = color;
+            TileShadow tileShadow = new TileShadow();
+            tileShadow.vertexOffset = TileShadowVertexBuffer.GetVertexOffset();
+            if (useSunBuffer)
+                tileShadow.vertexOffset = TileSunShadowVertexBuffer.GetVertexOffset();
+            
+           
+            for (int x = startTileX; x < endTileX; x++)
+            {
+                for (int y = startTileY; y < endTileY; y++)
+                {
+                    //If a tile is outside of the world just ignore it, otherwise we'll get an error
+                    if (!WorldGen.InWorld(x, y))
+                        continue;
+                    Tile tile = Main.tile[x, y];
+                    if (!tile.HasTile)
+                        continue;
+
+                    //Only cast a shadow if a tile is touching air, so we aren't drawing unnecessary shadows
+                    if (!WorldGen.TileIsExposedToAir(x, y))
+                        continue;
+
+                    if (!Main.tileSolid[tile.TileType])
+                        continue;
+
+                    //Now we calculate vertices
+                    //There's no texture here so it doesn't matter what order we do the triangles in
+                    //Pretty sure we start from top left?
+                    Point tilePoint = new Point(x, y);
+                    Vector2 worldPoint = tilePoint.ToWorldCoordinates(0, 0);
+                    Vector2 lightPosition = pointLight.position;
+                    
+                    //Calculate normal
+                    Vector2 tileNormal = worldPoint - lightPosition;
+                    tileNormal = tileNormal.SafeNormalize(Vector2.Zero);
+
+                    float dot = Vector2.Dot(lightNormal, tileNormal);
+                    if (dot < threshold)
+                        continue;
+
+                    //Vertex 0
+                    Vector2 topLeft = worldPoint;
+
+                    //Vertex 1
+                    Vector2 topRight = worldPoint + new Vector2(16, 0);
+
+                    //Vertex 2
+                    Vector2 bottomLeft = worldPoint + new Vector2(0, 16);
+
+                    //Vertex 3
+                    Vector2 bottomRight = worldPoint + new Vector2(16, 16);
+
+                    AddQuad(topLeft, bottomRight, pointLight, useSunBuffer);
+                    AddQuad(topRight, bottomLeft, pointLight, useSunBuffer);
+                    tileShadow.primitiveCount += 4;
+                }
+            }
+            tileShadow.useSunBuffer = useSunBuffer;
+            return tileShadow;
+        }
         public static TileShadow PrepareTilesForShading(
             int startTileX, int startTileY,
             int endTileX, int endTileY, PointLight pointLight, bool useSunBuffer)

@@ -56,6 +56,7 @@ namespace Stellamod.Core.Bases
             GlowRotationSpeed = 0.05f;
             FlashlightDegrees = 25;
             FlashlightLength = 512;
+            Projectile.ignoreWater = true;
         }
 
         public override void AI()
@@ -103,7 +104,7 @@ namespace Stellamod.Core.Bases
 
             _coneLight ??= new ConeLight();
             _coneLight.lightColor = Color.White;
-            _coneLight.RayCast(Projectile.Center, LightVelocity, MathHelper.ToRadians(45), 400);
+            _coneLight.RayCast(Projectile.Center, LightVelocity, 400, 400);
         }
 
         private void AI_Flashlight()
@@ -132,7 +133,7 @@ namespace Stellamod.Core.Bases
 
             _coneLight ??= new ConeLight();
             _coneLight.lightColor = Color.White;
-            _coneLight.RayCast(Projectile.Center, LightVelocity, MathHelper.ToRadians(45), 800);
+            _coneLight.RayCast(Projectile.Center, LightVelocity, 760, 800);
         }
 
         protected virtual void DrawLanternSprite(ref Color lightColor)

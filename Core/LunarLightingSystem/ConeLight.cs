@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
+using System;
 using Terraria;
 
 namespace Stellamod.Core.LunarLightingSystem
@@ -9,31 +10,68 @@ namespace Stellamod.Core.LunarLightingSystem
     public class ConeLight
     {
         public Color lightColor;
-        private VertexPositionColor[] _vertices;
+        private VertexPositionColorTexture[] _vertices;
+        private TileShadow _tileShadow;
         public ConeLight()
         {
-            _vertices = new VertexPositionColor[3]; 
+            _vertices = new VertexPositionColorTexture[12]; 
         }
 
-        public void RayCast(Vector2 position, Vector2 direction, float radians, float distance)
+
+
+        public void RayCast(Vector2 position, Vector2 direction, float edgeLightWidth, float distance)
         {
+
+
+            float edgeLightRadius = edgeLightWidth / 2f;
+            float castMultiplier = 0.1f;
+            float edgeColorMultiplier = 0f;
             Vector2 start = position;
+            Vector2 end = start + direction * distance;
 
-            float halfRadians = radians / 2f;
-            Vector2 vel1 = direction.RotatedBy(halfRadians) * distance;
-            Vector2 vel2 = direction.RotatedBy(-halfRadians) * distance;
+            //First Quad
+            Vector2 topRightVertex = end - direction.RotatedBy(MathHelper.PiOver2) * edgeLightRadius;
+            Vector2 bottomRightVertex = end;
+ 
+            Vector2 topLeftVertex = start - direction.RotatedBy(MathHelper.PiOver2) * edgeLightRadius * castMultiplier;
+            Vector2 bottomLeftVertex = start;
 
-            Vector2 point1 = position + vel1; //CollisionHelper.RayCast(start, vel1, distance);
-            Vector2 point2 = position + vel2;
+            _vertices[0] = new VertexPositionColorTexture(new Vector3(topLeftVertex, 0), lightColor, new Vector2(1, 1));
+            _vertices[1] = new VertexPositionColorTexture(new Vector3(bottomLeftVertex, 0), lightColor , new Vector2(1, 0));
+            _vertices[2] = new VertexPositionColorTexture(new Vector3(bottomRightVertex, 0), lightColor * edgeColorMultiplier, new Vector2(0, 0));
 
-            _vertices[0] = new VertexPositionColor(new Vector3(start, 0), lightColor);
-            _vertices[1] = new VertexPositionColor(new Vector3(point1, 0), lightColor * 0);
-            _vertices[2] = new VertexPositionColor(new Vector3(point2, 0), lightColor * 0);
+            _vertices[3] = new VertexPositionColorTexture(new Vector3(topLeftVertex, 0), lightColor, new Vector2(1, 1));
+            _vertices[4] = new VertexPositionColorTexture(new Vector3(topRightVertex, 0), lightColor * edgeColorMultiplier, new Vector2(0, 1));
+            _vertices[5] = new VertexPositionColorTexture(new Vector3(bottomRightVertex, 0), lightColor * edgeColorMultiplier, new Vector2(0, 0));
+
+            //Second Quad
+            topRightVertex = end;
+            bottomRightVertex = end + direction.RotatedBy(MathHelper.PiOver2) * edgeLightRadius;
+
+            topLeftVertex = start;
+            bottomLeftVertex = start + direction.RotatedBy(MathHelper.PiOver2) * edgeLightRadius * castMultiplier;
+
+            _vertices[6] = new VertexPositionColorTexture(new Vector3(topLeftVertex, 0), lightColor, new Vector2(0, 0));
+            _vertices[7] = new VertexPositionColorTexture(new Vector3(bottomLeftVertex, 0), lightColor, new Vector2(0, 1));
+            _vertices[8] = new VertexPositionColorTexture(new Vector3(bottomRightVertex, 0), lightColor * edgeColorMultiplier, new Vector2(1, 1));
+
+            _vertices[9] = new VertexPositionColorTexture(new Vector3(topLeftVertex, 0), lightColor, new Vector2(0, 0));
+            _vertices[10] = new VertexPositionColorTexture(new Vector3(topRightVertex, 0), lightColor * edgeColorMultiplier, new Vector2(1, 0));
+            _vertices[11] = new VertexPositionColorTexture(new Vector3(bottomRightVertex, 0), lightColor * edgeColorMultiplier, new Vector2(1, 1));
+
+            PointLight pointLight = new PointLight();
+            pointLight.position = start;
+            pointLight.radius = distance;
+
+
+
+            _tileShadow = TileShading.PrepareTilesForShading(pointLight, direction, 0.9f, useSunBuffer: true);
+        
         }
 
         public void Draw()
         {
-            var shader = TileShadowShader.Instance;
+            var shader = LanternShader.Instance;
             shader.Apply();
             foreach (var pass in shader.Effect.CurrentTechnique.Passes)
             {
@@ -49,6 +87,8 @@ namespace Stellamod.Core.LunarLightingSystem
               PrimitiveType.TriangleList, _vertices, 0, _vertices.Length / 3);
 
             GraphicsHelpers.RestoreGraphicsDeviceState();
+
+            TileShading.DrawVertices(_tileShadow);
         }
     }
 }
