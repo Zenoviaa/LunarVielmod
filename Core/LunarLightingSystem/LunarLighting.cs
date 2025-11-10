@@ -76,7 +76,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private static Texture2D _lightingTexture;
         private static RenderTarget2D _accumulatedLightRT;
         private static RenderTarget2D _pointLightRT;
-        private static RenderTarget2D _downsizedLightRT;
+
         private static int _pointLightIndex;
         private static Color[] _lightingData;
 
@@ -670,12 +670,11 @@ namespace Stellamod.Core.LunarLightingSystem
                             _pointLightRT.Dispose();
                         if (_lightingTexture != null && !_lightingTexture.IsDisposed)
                             _lightingTexture.Dispose();
-                        if (_downsizedLightRT != null && !_downsizedLightRT.IsDisposed)
-                            _downsizedLightRT.Dispose();
+
                         PointLightTexture ??= new Texture2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
                         _accumulatedLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
                         _pointLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
-                        _downsizedLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth / DownSamples, Main.screenHeight / DownSamples);
+
                         _lightingData = new Color[Width * Height];
                         _lightingTexture = new Texture2D(Main.graphics.GraphicsDevice, Width, Height);
                     });
