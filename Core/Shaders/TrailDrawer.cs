@@ -31,31 +31,7 @@ namespace Stellamod.Core.Shaders
             }
         }
 
-
-        private static void CalculateVerticesPairs(Vector2[] trailingPoints, Func<float, Color> colorFunc,
-            Func<float, float> widthFunc, List<VertexPositionColorTexture> vertices)
-        {
-            for (int i = 0; i < trailingPoints.Length; i++)
-            {
-                float length = trailingPoints.Length;
-                float uv = i / length;
-
-                Vector2 width = widthFunc(uv) * Vector2.One;
-                Color color = colorFunc(uv);
-                Vector2 pos = trailingPoints[i];
-
-                Vector2 top = pos + MathUtil.GetRotation(trailingPoints, i) * width;
-                Vector2 bottom = pos - MathUtil.GetRotation(trailingPoints, i) * width;
-                Vector3 finalTop = new Vector3(top.X, top.Y, 0);
-                Vector3 finalBottom = new Vector3(bottom.X, bottom.Y, 0);
-
-
-                vertices.Add(new VertexPositionColorTexture(finalTop, color, new Vector2(uv, 0)));
-                vertices.Add(new VertexPositionColorTexture(finalBottom, color, new Vector2(uv, 1)));
-            }
-        }
-
-        private static void CalculateVerticesTris(Vector2[] trailingPoints, Func<float, Color> colorFunc,
+        public static void CalculateVerticesTris(Vector2[] trailingPoints, Func<float, Color> colorFunc,
             Func<float, float> widthFunc, List<VertexPositionColorTexture> vertices)
         {
 
