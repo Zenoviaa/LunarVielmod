@@ -12,61 +12,6 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
-    /*
-    public class RemoveTileRenderingEdit : ModSystem
-    {
-        public override void OnModLoad()
-        {
-            base.OnModLoad();
-
-            On_Main.DoDraw_WallsAndBlacks += NoWallsAndBlacks;
-            On_Main.DrawTiles += NoTilesDraw;
-            On_Main.RenderTiles += NoTileRender;
-            On_Main.RenderTiles2 += NoTileRender2;
-            On_Main.DoDraw_Tiles_Solid += NoDrawTiles;
-            On_Main.DoDraw_Tiles_NonSolid += NoDrawTiles;   
-        }
-
-        private void NoDrawTiles(On_Main.orig_DoDraw_Tiles_NonSolid orig, Main self)
-        {
-       
-        }
-
-        public override void OnModUnload()
-        {
-            base.OnModUnload();
-            On_Main.DoDraw_WallsAndBlacks -= NoWallsAndBlacks;
-            On_Main.DrawTiles -= NoTilesDraw;
-            On_Main.RenderTiles -= NoTileRender;
-            On_Main.RenderTiles2 -= NoTileRender2;
-            On_Main.DoDraw_Tiles_Solid -= NoDrawTiles;
-            On_Main.DoDraw_Tiles_NonSolid -= NoDrawTiles;
-        }
-        private void NoWallsAndBlacks(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
-        {
-
-        }
-
-        private void NoTilesDraw(On_Main.orig_DrawTiles orig, Main self, bool solidLayer, bool forRenderTargets, bool intoRenderTargets, int waterStyleOverride)
-        {
-
-        }
-        private void NoDrawTiles(On_Main.orig_DoDraw_Tiles_Solid orig, Main self)
-        {
-      
-        }
-
-        private void NoTileRender2(On_Main.orig_RenderTiles2 orig, Main self)
-        {
-
-        }
-
-        private void NoTileRender(On_Main.orig_RenderTiles orig, Main self)
-        {
-
-        }
-    }*/
-
 
     [Autoload(Side = ModSide.Client)]
     public class LunarLighting : ModSystem
@@ -530,7 +475,8 @@ namespace Stellamod.Core.LunarLightingSystem
             Item heldItem = player.HeldItem;
             if (ItemID.Sets.Torches[heldItem.type])
             {
-                TorchID.TorchColor(heldItem.type, out float R, out float G, out float B);
+                int torchID = TorchLightingHelper.TorchItemToTorchID(heldItem.type);
+                TorchID.TorchColor(torchID, out float R, out float G, out float B);
                 Vector3 torchColor = new Vector3();
                 torchColor.X = R;
                 torchColor.Y = G;
