@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
-using Stellamod.Core.Lights;
 using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;

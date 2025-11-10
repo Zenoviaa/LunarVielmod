@@ -534,7 +534,7 @@ namespace Stellamod.Core.LunarLightingSystem
             {
                 position = sunPosition,
                 color = SunColor.ToVector3(),
-                radius = 3000,
+                radius = 4500,
                 intensity = 1 * interpolant,
                 extraRenders = 4,
                 faint = true,

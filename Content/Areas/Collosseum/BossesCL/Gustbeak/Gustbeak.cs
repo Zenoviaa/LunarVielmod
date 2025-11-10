@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.DrawEffects;
-using Stellamod.Core.Lights;
+using Stellamod.Core.Palettes;
 using Stellamod.Core.Shaders;
 using Stellamod.Gores;
 using Stellamod.Helpers;

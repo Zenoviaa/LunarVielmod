@@ -51,7 +51,7 @@ namespace Stellamod.Core.Shaders
                 graphicsDevice.SetRenderTarget(_playerOutlineRenderRT);
                 graphicsDevice.Clear(Color.Transparent);
 
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null);
 
                 if (clientConfig.OutlinePlayer)
                 {
@@ -117,7 +117,7 @@ namespace Stellamod.Core.Shaders
                 return;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, SpriteWhiteShader.Instance.Effect, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, SpriteWhiteShader.Instance.Effect, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(_playerOutlineRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             spriteBatch.End();
         }

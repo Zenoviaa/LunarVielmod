@@ -1,5 +1,8 @@
-﻿using Stellamod.Helpers;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.NPCs.Colosseum.Common;
+using System;
+using System.Diagnostics;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;

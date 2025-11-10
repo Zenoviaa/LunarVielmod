@@ -5,6 +5,7 @@ using Stellamod.Core.Skies;
 using Stellamod.Skies;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Terraria;
 using Terraria.Graphics.Effects;
@@ -57,6 +58,7 @@ namespace Stellamod.Helpers
         public static MiscShaderData NightCloudsShader => GameShaders.Misc["CrystalMoon:NightClouds"];
         public static MiscShaderData CloudsDesertShader => GameShaders.Misc["CrystalMoon:CloudsDesert"];
         public static MiscShaderData CloudsDesertNightShader => GameShaders.Misc["CrystalMoon:CloudsDesertNight"];
+        public static List<string> ScreenShaders;
         private static void RegisterMiscShader(string name, string path, string pass)
         {
             Asset<Effect> miscShader = Assets.Request<Effect>(path, AssetRequestMode.ImmediateLoad);
@@ -71,12 +73,17 @@ namespace Stellamod.Helpers
         }
         private static void RegisterScreenShader(string name, string path, EffectPriority effectPriority = EffectPriority.Medium)
         {
-            Asset<Effect> paletteShader = Assets.Request<Effect>(path);
+            var mod = Stellamod.Instance;
+            if (!mod.FileExists(path + ".xnb"))
+                return;
+            Asset<Effect> paletteShader = Assets.Request<Effect>(path, AssetRequestMode.ImmediateLoad);
             Filters.Scene[name] = new Filter(new ScreenShaderData(paletteShader, "ScreenPass"), effectPriority);
-
+            ScreenShaders.Add(name);
+            Console.WriteLine($"Loaded Screen Shader {name}");
         }
         public static void LoadShaders()
         {
+            ScreenShaders = new List<string>();
             if (!Main.dedServ)
             {
                 Filters.Scene["Stellamod:VeilSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
@@ -130,35 +137,24 @@ namespace Stellamod.Helpers
             Asset<Effect> vignetteShader = Assets.Request<Effect>("Effects/Vignette");
             Filters.Scene[ShaderRegistry.Screen_Vignette] = new Filter(new ScreenShaderData(vignetteShader, "ScreenPass"), EffectPriority.Medium);
 
-
-            Asset<Effect> paletteShader = Assets.Request<Effect>("Effects/Palette");
-            Filters.Scene[ShaderRegistry.Screen_Palette] = new Filter(new ScreenShaderData(paletteShader, "ScreenPass"), EffectPriority.Medium);
-
             Ref<Effect> gustArmorRef = new(Assets.Request<Effect>("Effects/GustArmor", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc["LunarVeil:GustArmor"] = new MiscShaderData(gustArmorRef, "PixelPass");
 
             //Palette Shaders
-            RegisterScreenShader("LunarVeil:PaletteAbyss", "Effects/Palette");
-            RegisterScreenShader("LunarVeil:PaletteHell", "Effects/PaletteHell");
-            RegisterScreenShader("LunarVeil:PaletteRoyalCapital", "Effects/PaletteRoyalCapital");
-            RegisterScreenShader("LunarVeil:PaletteDungeon", "Effects/PaletteDungeon");
-            RegisterScreenShader("LunarVeil:PaletteDesert", "Effects/PaletteDesert");
-            RegisterScreenShader("LunarVeil:PaletteDesertTop", "Effects/PaletteDesertTop");
-            RegisterScreenShader("LunarVeil:PaletteBloodCathedral", "Effects/PaletteBloodCathedral");
-            RegisterScreenShader("LunarVeil:PaletteBloodHound", "Effects/PaletteBloodHound");
-            RegisterScreenShader("LunarVeil:PaletteVirulent", "Effects/PaletteVirulent");
+         
             RegisterScreenShader("LunarVeil:DarknessVignette", "Effects/DarknessVignette");
             RegisterScreenShader("LunarVeil:DarknessCurve", "Effects/DarknessCurve", EffectPriority.High);
             RegisterScreenShader("LunarVeil:Blur", "Effects/Blur", EffectPriority.High);
             RegisterScreenShader("LunarVeil:BlackWhite", "Effects/BlackWhite");
-            RegisterScreenShader("LunarVeil:PaletteFable", "Effects/PaletteFable");
-            RegisterScreenShader("LunarVeil:Posterization", "Effects/Posterization");
-            RegisterScreenShader("LunarVeil:ScreenPalette", "Effects/ScreenPalette");
-
-
-            RegisterScreenShader("LunarVeil:PaletteIllurianMistyDungeon", "Effects/PaletteIllurianMistyDungeon");
-            RegisterScreenShader("LunarVeil:PaletteMistyDungeon", "Effects/PaletteMistyDungeon");
-            RegisterScreenShader("LunarVeil:PaletteVilepipesNGarden", "Effects/PaletteVilepipesNGarden");
+            Mod mod = Stellamod.Instance;
+            foreach (var file in mod.GetFileNames())
+            {
+                if (file.Contains(".pal"))
+                {
+                    string fileName = new FileInfo(file).Name;
+                    RegisterScreenShader($"LunarVeil:{fileName}", $"Effects/Palettes/{fileName.Replace(".pal", "")}", EffectPriority.Low);
+                }
+            }
 
             Ref<Effect> skyRef = new(Assets.Request<Effect>("Effects/RoyalCapitalSky", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc["LunarVeil:RoyalCapitalSky"] = new MiscShaderData(skyRef, "ScreenPass");

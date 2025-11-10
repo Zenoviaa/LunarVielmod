@@ -284,14 +284,6 @@
     <None Remove="Effects\Lava.fx" />
     <None Remove="Effects\MagicCircle.fx" />
     <None Remove="effects\NormalDistortion.fx" />
-    <None Remove="Effects\PaletteBloodCathedral.fx" />
-    <None Remove="Effects\PaletteDesert.fx" />
-    <None Remove="Effects\PaletteDesertTop.fx" />
-    <None Remove="Effects\PaletteDungeon.fx" />
-    <None Remove="Effects\PaletteFable.fx" />
-    <None Remove="Effects\PaletteHell.fx" />
-    <None Remove="Effects\PaletteRoyalCapital.fx" />
-    <None Remove="Effects\PaletteVirulent.fx" />
     <None Remove="Effects\Primitives\Whiteflame.fx" />
     <None Remove="Effects\RoyalCapitalSky - Copy.fx" />
     <None Remove="effects\RoyalCapitalSky.fx" />
