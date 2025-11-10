@@ -3,8 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Threading;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.Swords.Altride;
 using System;
 using System.Collections.Generic;
+
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
@@ -12,6 +14,42 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
+
+    public struct TileAmbientLight
+    {
+        public Vector2 position;
+        public Color color;
+        public float radius;
+    }
+
+
+    public class LightingSets : ModSystem 
+    {
+        public static Color[] EmissiveHeldItems = ItemID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
+        public static Color[] EmissiveTiles = TileID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
+        public override void SetupContent()
+        {
+            EmissiveHeldItems = ItemID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
+            EmissiveTiles = TileID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
+            for (int i = 0; i < 10000; i++)
+            {
+                int id = TorchLightingHelper.TorchItemToTorchID(i);
+                if (id == -1)
+                    continue;
+
+                TorchID.TorchColor(id, out float r, out float g, out float b);
+                EmissiveHeldItems[id] = new Color(r, g, b);
+            }
+            base.SetupContent();
+        }
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+
+
+        }
+    }
+
 
     [Autoload(Side = ModSide.Client)]
     public class LunarLighting : ModSystem
@@ -25,6 +63,8 @@ namespace Stellamod.Core.LunarLightingSystem
         private static int _pointLightIndex;
         private static Color[] _lightingData;
 
+        private static int _ambientLightIndex;
+        private static TileAmbientLight[] _ambientLights = new TileAmbientLight[Max_Ambient_Lights];
         private static PointLight[] _pointLights = new PointLight[Max_Point_Lights];
         private static Dictionary<Vector3, TileShadow> _shadowData;
         private static List<Vector3> _oldLights;
@@ -39,6 +79,7 @@ namespace Stellamod.Core.LunarLightingSystem
         public static Vector3 AmbientLight;
         public static Texture2D PointLightTexture;
         public const int Max_Point_Lights = 128;
+        public const int Max_Ambient_Lights = 2000;
         private static int IndexOf(int x, int y)
         {
             int index = x + y * Width;
@@ -269,6 +310,22 @@ namespace Stellamod.Core.LunarLightingSystem
             _pointLightIndex = 0;
         }
 
+        public static void ClearAmbientLights()
+        {
+            _ambientLightIndex = 0;
+        }
+
+
+        public static void AddAmbientLight(TileAmbientLight ambientLight)
+        {
+            if (_ambientLightIndex < _ambientLights.Length)
+            {
+                int index = _ambientLightIndex;
+                _ambientLights[index] = ambientLight;
+                _ambientLightIndex++;
+            }
+        }
+
         public static PointLight QueueLight(Vector2 position, Vector3 color, float intensity, float radius)
         {
             if (_pointLightIndex < _pointLights.Length)
@@ -303,7 +360,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             _currentLights.Clear();
             ClearLights();
-
+            ClearAmbientLights();
             //Add a point light to all torches
             float pointLightPixelRadius = 800;
 
@@ -316,6 +373,8 @@ namespace Stellamod.Core.LunarLightingSystem
             Point topLeftTile = cameraTopLeft.ToTileCoordinates();
             Point bottomRightTile = cameraBottomRight.ToTileCoordinates();
             bool shouldCalculateShadows = false;
+
+
             for (int x = topLeftTile.X; x < bottomRightTile.X; x++)
             {
                 for (int y = topLeftTile.Y; y < bottomRightTile.Y; y++)
@@ -341,6 +400,25 @@ namespace Stellamod.Core.LunarLightingSystem
                         }
                             
                         _currentLights.Add(shadowKey);
+                    }
+
+                    if(tile.LiquidType == LiquidID.Lava)
+                    {
+                        Vector2 position = new Point(x, y).ToWorldCoordinates();
+                        TileAmbientLight tileAmbientLight = new TileAmbientLight();
+                        tileAmbientLight.position = position;
+                        tileAmbientLight.radius = 64;
+                        tileAmbientLight.color = Color.Red;
+                        AddAmbientLight(tileAmbientLight);
+                    }
+                    if (tile.LiquidType == LiquidID.Shimmer)
+                    {
+                        Vector2 position = new Point(x, y).ToWorldCoordinates();
+                        TileAmbientLight tileAmbientLight = new TileAmbientLight();
+                        tileAmbientLight.position = position;
+                        tileAmbientLight.radius = 64;
+                        tileAmbientLight.color = Color.Purple * 0.7f;
+                        AddAmbientLight(tileAmbientLight);
                     }
                 }
             }
@@ -400,7 +478,7 @@ namespace Stellamod.Core.LunarLightingSystem
             //Mask drawing
             //Clear the final light render target
             graphicsDevice.SetRenderTarget(_accumulatedLightRT);
-            graphicsDevice.Clear(Color.Black);
+            graphicsDevice.Clear(Color.White * 0.4f);
 
 
             for (int i = 0; i < _pointLightIndex; i++)
@@ -452,37 +530,28 @@ namespace Stellamod.Core.LunarLightingSystem
                     spriteBatch.End();
                 }
             }
-            graphicsDevice.SetRenderTarget(null);
-        }
 
-        public static float GetPlayerLightIntensity()
-        {
-            Player player = Main.LocalPlayer;
-            Item heldItem = player.HeldItem;
-            if (ItemID.Sets.Torches[heldItem.type])
+
+            Texture2D glowMask = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SoftGlow").Value;
+            Vector2 drawOrigin = glowMask.Size() / 2f;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            for (int i = 0; i < _ambientLightIndex; i++)
             {
-                return 1;
+                TileAmbientLight ambientLight = _ambientLights[i];
+                spriteBatch.Draw(glowMask, ambientLight.position - Main.screenPosition, null, ambientLight.color, 0, drawOrigin, 2, SpriteEffects.None, 0);
             }
-            else
-            {
-                return 0.5f;
-            }
+            spriteBatch.End();
+            graphicsDevice.SetRenderTarget(null);
         }
 
         public static Vector3 GetPlayerLightColor()
         {
             Player player = Main.LocalPlayer;
             Item heldItem = player.HeldItem;
-            if (ItemID.Sets.Torches[heldItem.type])
+            if (LightingSets.EmissiveHeldItems[heldItem.type].A > 0)
             {
-                int torchID = TorchLightingHelper.TorchItemToTorchID(heldItem.type);
-                TorchID.TorchColor(torchID, out float R, out float G, out float B);
-                Vector3 torchColor = new Vector3();
-                torchColor.X = R;
-                torchColor.Y = G;
-                torchColor.Z = B;
-          
-                return torchColor;
+                Vector3 color = LightingSets.EmissiveHeldItems[heldItem.type].ToVector3();
+                return color;
             }
             else
             {
@@ -494,7 +563,7 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             Player player = Main.LocalPlayer;
             Item heldItem = player.HeldItem;
-            if (ItemID.Sets.Torches[heldItem.type])
+            if (LightingSets.EmissiveHeldItems[heldItem.type].A > 0)
             {
                 return 800f;
             }
@@ -540,7 +609,7 @@ namespace Stellamod.Core.LunarLightingSystem
             {
                 position = sunPosition,
                 color = SunColor.ToVector3(),
-                radius = 4000,
+                radius = 4500,
                 intensity = 1 * interpolant,
                 extraRenders=4,
                 faint=true,
@@ -551,8 +620,8 @@ namespace Stellamod.Core.LunarLightingSystem
             if(ModContent.GetInstance<LunarVeilClientConfig>().SunShadows)
                 sunLight.tileShadow = TileShading.PrepareTilesForShading(sunLight, useSunBuffer: true);
             RenderPointLight(sunLight);
-    
         }
+
         private static void RenderPointLight(PointLight pointLight)
         {
             var pointlightShader = PointLightShader.Instance;

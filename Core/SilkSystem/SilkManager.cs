@@ -45,7 +45,7 @@ namespace Stellamod.Core.SilkSystem
         }
         public void Update()
         {
-            if (Main.rand.NextBool(50))
+            if (Main.rand.NextBool(100))
             {
                 Vector2 spawnPoint = GetRandomPoint();
                 Particle.NewParticle<SilkParticle>(spawnPoint, Vector2.Zero, Color.Transparent);
@@ -152,6 +152,7 @@ namespace Stellamod.Core.SilkSystem
     public class SilkManager : ModSystem
     {
         private static List<SilkString> _silkStrings = new List<SilkString>();
+        public const int Max_Silk_Count = 100;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -220,6 +221,8 @@ namespace Stellamod.Core.SilkSystem
                     silkString.Update();
                 }
             }
+
+        
         }
         public static void DestroySilk(int i, int j)
         {
@@ -297,6 +300,9 @@ namespace Stellamod.Core.SilkSystem
 
         public static void GrowSilk(int i, int j, UnifiedRandom rand)
         {
+            if (_silkStrings.Count >= Max_Silk_Count)
+                return;
+
             int neededAir = j - 3;
             Tile groundTile = Main.tile[i, j];
             Tile airTile = Main.tile[i, neededAir];
@@ -323,11 +329,6 @@ namespace Stellamod.Core.SilkSystem
 
         private void DrawSilkString(SilkString silkString)
         {
-
-            //  drawPos1 -= Main.screenPosition;
-            // drawPos2 -= Main.screenPosition;
-
-
             SpriteBatch spriteBatch = Main.spriteBatch;
 
             SimpleTrailShader trailShader = SimpleTrailShader.Instance;

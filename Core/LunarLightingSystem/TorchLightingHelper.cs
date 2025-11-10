@@ -64,6 +64,7 @@ namespace Stellamod.Core.LunarLightingSystem
             switch (itemID)
             {
                 default:
+                    return -1;
                 case ItemID.Torch:
                     return 0;
                 case ItemID.BlueTorch:
