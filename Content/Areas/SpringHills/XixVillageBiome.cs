@@ -24,7 +24,15 @@ namespace Stellamod.Content.Areas.SpringHills
         public override Color? BackgroundColor => base.BackgroundColor;
 
         public override bool IsBiomeActive(Player player) => BiomeTileCounts.InXixVillage;
-        public override void OnEnter(Player player) => player.GetModPlayer<MyPlayer>().ZoneVillage = true;
-        public override void OnLeave(Player player) => player.GetModPlayer<MyPlayer>().ZoneVillage = false;
+        public override void OnEnter(Player player)
+        {
+            base.OnEnter(player);
+            player.GetModPlayer<MyPlayer>().ZoneVillage = true;
+        }
+        public override void OnLeave(Player player)
+        {
+            base.OnLeave(player);
+            player.GetModPlayer<MyPlayer>().ZoneVillage = false;
+        }
     }
 }

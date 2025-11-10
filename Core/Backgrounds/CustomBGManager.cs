@@ -59,8 +59,7 @@ namespace Stellamod.Core.Backgrounds
 
         public override void OnModUnload()
         {
-            base.OnModUnload();
-           
+            base.OnModUnload();        
             On_Main.DoDraw_WallsTilesNPCs -= DrawBehindWalls;
         }
 

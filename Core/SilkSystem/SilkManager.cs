@@ -213,6 +213,7 @@ namespace Stellamod.Core.SilkSystem
                 return;
             }
 
+      
             for (int i = 0; i < _silkStrings.Count; i++)
             {
                 SilkString silkString = _silkStrings[i];

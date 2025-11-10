@@ -1,9 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.Biomes;
+using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Graphics.Capture;
 using Terraria.Graphics.Effects;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Assets.Biomes
@@ -23,20 +26,22 @@ namespace Stellamod.Assets.Biomes
             On_Player.CanSeeShimmerEffects -= RemoveShimmer;
         }
 
-
         public override void PostUpdateMiscEffects()
         {
             base.PostUpdateMiscEffects();
             if (Main.LocalPlayer == null)
                 return;
-
-            if (Main.rand.NextBool(5) && Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneWonder)
+            if (!Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneWonder)
+                return;
+        
+            if (Main.rand.NextBool(5))
             {
                 float xRand = Main.rand.NextFloat(-1000, 1000);
                 float yRand = Main.rand.NextFloat(-1000, 1000);
                 Particle.NewParticle<StarParticle>(Main.LocalPlayer.Center + new Vector2(xRand, yRand), Vector2.Zero);
             }
         }
+
         private bool RemoveShimmer(On_Player.orig_CanSeeShimmerEffects orig, Player self)
         {
             if (Main.LocalPlayer == null)
@@ -48,7 +53,9 @@ namespace Stellamod.Assets.Biomes
         }
 
     }
-    public class WonderousDarkspaceBiome : ModBiome
+  
+    public class WonderousDarkspaceBiome : BaseUrdveilBiome,
+        IBackLightModifier
     {
 
         // Select all the scenery
@@ -81,7 +88,28 @@ namespace Stellamod.Assets.Biomes
         public override string BackgroundPath => base.BackgroundPath;
         public override Color? BackgroundColor => base.BackgroundColor;
 
-        public override void OnEnter(Player player) => player.GetModPlayer<MyPlayer>().ZoneWonder = true;
-        public override void OnLeave(Player player) => player.GetModPlayer<MyPlayer>().ZoneWonder = false;
+        public override void OnEnter(Player player)
+        {
+            base.OnEnter(player);
+            player.GetModPlayer<MyPlayer>().ZoneWonder = true;
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
+            LunarLighting.AddBackLight(this);
+        }
+        public override void OnLeave(Player player)
+        {
+            base.OnLeave(player);
+            player.GetModPlayer<MyPlayer>().ZoneWonder = false;
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
+            LunarLighting.RemoveBackLight(this);
+        }
+
+        public void ModifyBackLight(ref Color backLightColor)
+        {
+            backLightColor = Color.Lerp(backLightColor, Color.White, 0.4f);
+        }
     }
 }

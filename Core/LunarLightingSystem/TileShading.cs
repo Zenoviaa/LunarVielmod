@@ -251,7 +251,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             Color color = Color.Black * 0.3f;
             if (pointLight.faint)
-                color *= 0.18f;
+                color *= 0.22f;
             _shadowColor = color;
             TileShadow tileShadow = new TileShadow();
             tileShadow.vertexOffset = TileShadowVertexBuffer.GetVertexOffset();

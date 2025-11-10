@@ -1,0 +1,60 @@
+﻿using Microsoft.Xna.Framework;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace Stellamod.Core.LunarLightingSystem
+{
+    public class LightingSets : ModSystem 
+    {
+        public static Color[] EmissiveHeldItems = ItemID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
+        public static Color[] EmissiveTiles = TileID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
+        public override void SetupContent()
+        {
+            EmissiveHeldItems = ItemID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
+            EmissiveTiles = TileID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
+
+
+            RegisterTorchColor(ItemID.Torch);
+            RegisterTorchColor(ItemID.BlueTorch);
+            RegisterTorchColor(ItemID.RedTorch);
+            RegisterTorchColor(ItemID.GreenTorch);
+            RegisterTorchColor(ItemID.PurpleTorch);
+            RegisterTorchColor(ItemID.WhiteTorch);
+            RegisterTorchColor(ItemID.YellowTorch);
+            RegisterTorchColor(ItemID.DemonTorch);
+            RegisterTorchColor(ItemID.CursedTorch);
+            RegisterTorchColor(ItemID.IceTorch);
+            RegisterTorchColor(ItemID.OrangeTorch);
+            RegisterTorchColor(ItemID.IchorTorch);
+            RegisterTorchColor(ItemID.UltrabrightTorch);
+            RegisterTorchColor(ItemID.BoneTorch);
+            RegisterTorchColor(ItemID.RainbowTorch);
+            RegisterTorchColor(ItemID.PinkTorch);
+            RegisterTorchColor(ItemID.DesertTorch);
+            RegisterTorchColor(ItemID.CoralTorch);
+            RegisterTorchColor(ItemID.CorruptTorch);
+            RegisterTorchColor(ItemID.CrimsonTorch);
+            RegisterTorchColor(ItemID.HallowedTorch);
+            RegisterTorchColor(ItemID.JungleTorch);
+            RegisterTorchColor(ItemID.MushroomTorch);
+            RegisterTorchColor(ItemID.ShimmerTorch);
+            LightingSets.EmissiveTiles[TileID.MushroomGrass] = Color.LightBlue;
+            base.SetupContent();
+        }
+
+        public static void RegisterTorchColor(int itemID)
+        {
+            Vector3 torchRGB = new Vector3();
+            int torchID = TorchLightingHelper.TorchItemToTorchID(itemID);
+            TorchID.TorchColor(itemID, out torchRGB.X, out torchRGB.Y, out torchRGB.Z);
+            Color torchColor = new Color(torchRGB);
+            EmissiveHeldItems[itemID] = torchColor;
+        }
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+
+
+        }
+    }
+}
