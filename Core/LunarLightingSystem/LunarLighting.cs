@@ -66,8 +66,12 @@ namespace Stellamod.Core.LunarLightingSystem
 
         }
     }*/
+
+
+    [Autoload(Side = ModSide.Client)]
     public class LunarLighting : ModSystem
     {
+        private static float _overSunTimer;
         private static Vector2 _previousScreenSize;
         private static Texture2D _lightingTexture;
         private static RenderTarget2D _accumulatedLightRT;
@@ -86,6 +90,7 @@ namespace Stellamod.Core.LunarLightingSystem
         public static int Height => Main.screenHeight / DownSamples;
         public static int DownSamples => 4;
 
+        public static Color SunColor;
         public static Vector3 AmbientLight;
         public static Texture2D PointLightTexture;
         public const int Max_Point_Lights = 128;
@@ -294,6 +299,13 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             RenderLights();
             orig(self, gameTime);
+        }
+
+
+        public override void PostUpdateTime()
+        {
+            base.PostUpdateTime();
+            SunColor = Color.Lerp(SunColor, Main.ColorOfTheSkies, 0.01f);
         }
 
         public override void PostUpdateEverything()
@@ -549,7 +561,19 @@ namespace Stellamod.Core.LunarLightingSystem
         private static void RenderSun()
         {
             if (!Main.LocalPlayer.ZoneOverworldHeight)
-                return;
+            {
+                _overSunTimer--;
+                if (_overSunTimer <= 0)
+                    return;
+            }
+            else
+            {
+                _overSunTimer++;
+            }
+
+
+            _overSunTimer = MathHelper.Clamp(_overSunTimer, 0, 120);
+            float interpolant = _overSunTimer / 120f;
 
 
             Vector2 sunLeft = Main.Camera.Center + new Vector2(-Main.screenWidth / 2, -Main.screenHeight / 2);
@@ -559,13 +583,19 @@ namespace Stellamod.Core.LunarLightingSystem
             float dayProgress = Main.dayTime ? (float)Main.time / (float)Main.dayLength : (float)Main.time / (float)Main.nightLength;
             float radians = MathHelper.Lerp(MathHelper.ToRadians(-45), MathHelper.ToRadians(45), dayProgress);
             Vector2 sunDirection = Vector2.UnitY.RotatedBy(radians) * 500;
+            if(dayProgress <= 0.1f || dayProgress >= 0.9f)
+            {
+                sunDirection *= Vector2.Zero;
+            }
+
+  
             Vector2 sunPosition = Main.Camera.Center + new Vector2(0, -Main.screenHeight / 2);
             PointLight sunLight = new PointLight
             {
                 position = sunPosition,
-                color = Main.ColorOfTheSkies.ToVector3(),
+                color = SunColor.ToVector3(),
                 radius = 4000,
-                intensity = 1,
+                intensity = 1 * interpolant,
                 extraRenders=4,
                 faint=true,
                 directionOverride = sunDirection
