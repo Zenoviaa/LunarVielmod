@@ -28,7 +28,16 @@ namespace Stellamod.Tiles
 
     public abstract class DecorativeWallItem : ModItem
     {
-  
+
+        private BaseSpecialWall _specialWall;
+        private BaseSpecialWall SpecialWall
+        {
+            get
+            {
+                _specialWall ??= ModContent.GetModWall(Item.createWall) as BaseSpecialWall;
+                return _specialWall;
+            }
+        }
         public override string Texture => "Stellamod/Tiles/ExampleDecorativeWallItem";
         public override void SetDefaults()
         {
@@ -44,34 +53,51 @@ namespace Stellamod.Tiles
         }
 
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
-        {
-            BehindDecorativeWall behindDecorativeWall = ModContent.GetModWall(Item.createWall) as BehindDecorativeWall;
-            if (behindDecorativeWall != null)
+        {    
+            if(SpecialWall != null)
             {
                 if (Main.HoverItem.type == Type)
                     SpecialDecorativeWall.drawBig = true;
-                behindDecorativeWall.DrawItem(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-                return false;
-            }
-
-
-
-            DecorativeWall decorativeWall = ModContent.GetModWall(Item.createWall) as DecorativeWall;
-            if (decorativeWall != null)
-            {
-                if (Main.HoverItem.type == Type)
-                    SpecialDecorativeWall.drawBig = true;
-                decorativeWall.DrawItem(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+                SpecialWall.DrawItem(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
                 return false;
             }
             return false;
         }
+        public void DrawPreview(int i, int j)
+        {
+            SpecialWall?.DrawPreview(i, j);
+        }
+
     }
+
+
     public abstract class BaseSpecialTile : ModTile
     {
         public virtual void DrawPreview(int i, int j)
         {
 
+        }
+    }
+
+    public class WallPreviewSystem : ModSystem
+    {
+        public override void PostDrawTiles()
+        {
+            base.PostDrawTiles();
+             
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Player player = Main.LocalPlayer;
+            if(player.HeldItem.ModItem is DecorativeWallItem decorativeWallItem)
+            {
+                Vector2 mouseWorld = Main.MouseWorld;
+                int i = (int)(mouseWorld.X / 16f);
+                int j = (int)(mouseWorld.Y / 16f);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+                decorativeWallItem.DrawPreview(i, j);
+                spriteBatch.End();
+            }
+           
+            
         }
     }
     public abstract class BaseSpecialWall : ModWall
@@ -80,6 +106,9 @@ namespace Stellamod.Tiles
         public virtual void DrawPreview(int i, int j)
         {
 
+        }
+        public virtual void DrawItem(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
         }
     }
     public abstract class SpecialDecorativeWall : BaseSpecialWall
@@ -130,7 +159,7 @@ namespace Stellamod.Tiles
             return false;
         }
 
-        public void DrawItem(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        public override void DrawItem(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             int textureWidth = texture.Width;

@@ -9614,3 +9614,63 @@ IlluriaWallsItem: {
 	DisplayName: Illuria Walls Item
 	Tooltip: ""
 }
+
+GintzeCage1Item: {
+	DisplayName: Gintze Cage1 Item
+	Tooltip: ""
+}
+
+GintzeCage2Item: {
+	DisplayName: Gintze Cage2 Item
+	Tooltip: ""
+}
+
+GintzeCage3Item: {
+	DisplayName: Gintze Cage3 Item
+	Tooltip: ""
+}
+
+GintzeCage4Item: {
+	DisplayName: Gintze Cage4 Item
+	Tooltip: ""
+}
+
+GintzeCage5Item: {
+	DisplayName: Gintze Cage5 Item
+	Tooltip: ""
+}
+
+IlluriaWindows1Item: {
+	DisplayName: Illuria Windows1 Item
+	Tooltip: ""
+}
+
+IlluriaWindows2Item: {
+	DisplayName: Illuria Windows2 Item
+	Tooltip: ""
+}
+
+IlluriaWindows3Item: {
+	DisplayName: Illuria Windows3 Item
+	Tooltip: ""
+}
+
+IlluriaWindows4Item: {
+	DisplayName: Illuria Windows4 Item
+	Tooltip: ""
+}
+
+FrontTargetBoardItem: {
+	DisplayName: Front Target Board Item
+	Tooltip: ""
+}
+
+RedRoseItem: {
+	DisplayName: Red Rose Item
+	Tooltip: ""
+}
+
+TargetBoard1Item: {
+	DisplayName: Target Board1 Item
+	Tooltip: ""
+}
