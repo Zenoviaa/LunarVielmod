@@ -14,12 +14,7 @@ namespace Stellamod.Core.Shaders
 {
     public class PointLightShader : BaseShader
     {
-        private EffectParameter _tileTextureParam;
-        private EffectParameter _screenResolutionParam;
-        private EffectParameter _lightColorParam;
-        private EffectParameter _lightRadiusParam;
-        private EffectParameter _lightPositionParam;
-        private EffectParameter _lightIntensityParam;
+        private EffectParameter _transformMatrixParam;
         private static PointLightShader _instance;
         public static PointLightShader Instance
         {
@@ -30,59 +25,20 @@ namespace Stellamod.Core.Shaders
                 return _instance;
             }
         }
-        public Texture2D TileTexture
+
+        public Matrix TransformMatrix
         {
             set
             {
-                _tileTextureParam ??= Effect.Parameters["tileTexture"];
-                _tileTextureParam.SetValue(value);
-            }
-        }
-        public Vector2 ScreenResolution
-        {
-            set
-            {
-                _screenResolutionParam ??= Effect.Parameters["uScreenResolution"];
-                _screenResolutionParam.SetValue(value);
-            }
-        }
-        public Color LightColor
-        {
-            set
-            {
-                _lightColorParam ??= Effect.Parameters["lightColor"];
-                _lightColorParam.SetValue(value.ToVector3());
-            }
-        }
-        public float LightRadius
-        {
-            set
-            {
-                _lightRadiusParam ??= Effect.Parameters["lightRadius"];
-                _lightRadiusParam.SetValue(value);
-            }
-        }
-        public Vector2 LightPosition
-        {
-            set
-            {
-                _lightPositionParam ??= Effect.Parameters["lightingPos"];
-                _lightPositionParam.SetValue(value);
-            }
-        }
-        public float LightIntensity
-        {
-            set
-            {
-                _lightIntensityParam ??= Effect.Parameters["lightIntensity"];
-                _lightIntensityParam.SetValue(value);
+                _transformMatrixParam ??= Effect.Parameters["transformMatrix"];
+                _transformMatrixParam.SetValue(value);
             }
         }
 
         public override void SetDefaults()
         {
             base.SetDefaults();
-
+            TransformMatrix = TrailDrawer.WorldViewPoint2;
         }
     }
 }

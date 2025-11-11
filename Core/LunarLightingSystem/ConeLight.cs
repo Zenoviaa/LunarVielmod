@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
-using System;
 using Terraria;
 
 namespace Stellamod.Core.LunarLightingSystem
@@ -11,10 +10,11 @@ namespace Stellamod.Core.LunarLightingSystem
     {
         public Color lightColor;
         private VertexPositionColorTexture[] _vertices;
-        private TileShadow _tileShadow;
+        private PointLight _pointLight;
         public ConeLight()
         {
-            _vertices = new VertexPositionColorTexture[12]; 
+            _vertices = new VertexPositionColorTexture[12];
+            _pointLight = new PointLight(Vector2.Zero, Color.White, 1, 100, 1800);
         }
 
 
@@ -32,12 +32,12 @@ namespace Stellamod.Core.LunarLightingSystem
             //First Quad
             Vector2 topRightVertex = end - direction.RotatedBy(MathHelper.PiOver2) * edgeLightRadius;
             Vector2 bottomRightVertex = end;
- 
+
             Vector2 topLeftVertex = start - direction.RotatedBy(MathHelper.PiOver2) * edgeLightRadius * castMultiplier;
             Vector2 bottomLeftVertex = start;
 
             _vertices[0] = new VertexPositionColorTexture(new Vector3(topLeftVertex, 0), lightColor, new Vector2(1, 1));
-            _vertices[1] = new VertexPositionColorTexture(new Vector3(bottomLeftVertex, 0), lightColor , new Vector2(1, 0));
+            _vertices[1] = new VertexPositionColorTexture(new Vector3(bottomLeftVertex, 0), lightColor, new Vector2(1, 0));
             _vertices[2] = new VertexPositionColorTexture(new Vector3(bottomRightVertex, 0), lightColor * edgeColorMultiplier, new Vector2(0, 0));
 
             _vertices[3] = new VertexPositionColorTexture(new Vector3(topLeftVertex, 0), lightColor, new Vector2(1, 1));
@@ -59,14 +59,12 @@ namespace Stellamod.Core.LunarLightingSystem
             _vertices[10] = new VertexPositionColorTexture(new Vector3(topRightVertex, 0), lightColor * edgeColorMultiplier, new Vector2(1, 0));
             _vertices[11] = new VertexPositionColorTexture(new Vector3(bottomRightVertex, 0), lightColor * edgeColorMultiplier, new Vector2(1, 1));
 
-            PointLight pointLight = new PointLight();
-            pointLight.position = start;
-            pointLight.radius = distance;
 
-
-
-            _tileShadow = TileShading.PrepareTilesForShading(pointLight, direction, 0.9f, useSunBuffer: true);
-        
+            _pointLight.position = start;
+            _pointLight.radius = distance;
+            _pointLight.lightNormal = direction;
+            _pointLight.threshold = 0.9f;
+            _pointLight.Update();
         }
 
         public void Draw()
@@ -88,7 +86,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             GraphicsHelpers.RestoreGraphicsDeviceState();
 
-            TileShading.DrawVertices(_tileShadow);
+            _pointLight.DrawShadow();
         }
     }
 }
