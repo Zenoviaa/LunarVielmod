@@ -181,6 +181,7 @@ namespace Stellamod.Core.ArmorShop
             Luvo.SetMaterial(ModContent.ItemType<ConvulgingMater>());
             Luvo.Register();
 
+
             //Verl done
             ArmorShopSet Verl = new ArmorShopSet();
             Verl.AddHead(ModContent.ItemType<VerlHat>());
