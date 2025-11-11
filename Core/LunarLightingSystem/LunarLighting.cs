@@ -6,7 +6,8 @@ using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
-
+using System.Diagnostics;
+using System.Reflection;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
@@ -14,7 +15,75 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
+    public sealed class SpriteBatchOverride : ModSystem
+    {
+        private static float _drawCount;
 
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+            Patch();
+            On_Main.DoDraw += PDraw;
+        }
+
+        private void PDraw(On_Main.orig_DoDraw orig, Main self, GameTime gameTime)
+        {
+            _drawCount = 0;
+            orig(self, gameTime);
+            //Console.WriteLine(_drawCount);
+        }
+
+        public override void PreUpdateTime()
+        {
+            base.PreUpdateTime();
+           
+        }
+
+        public override void PostUpdateEverything()
+        {
+            base.PostUpdateEverything();
+         
+        }
+        public override void PostDrawInterface(SpriteBatch spriteBatch)
+        {
+            base.PostDrawInterface(spriteBatch);
+    
+        }
+        // TODO: Should this rather be in class constructor?
+        internal static void Patch()
+        {
+            /*
+             * 		public void Begin(
+			            SpriteSortMode sortMode,
+			            BlendState blendState,
+			            SamplerState samplerState,
+			            DepthStencilState depthStencilState,
+			            RasterizerState rasterizerState,
+			            Effect effect,
+			            Matrix transformMatrix
+             */
+            Type[] parameters = new Type[]
+            {
+                typeof(SpriteSortMode),
+                typeof(BlendState),
+                typeof(SamplerState),
+                typeof(DepthStencilState),
+                typeof(RasterizerState),
+                typeof(Effect),
+                typeof(Matrix)
+            };
+            var beginMethodInfo = typeof(SpriteBatch).GetRuntimeMethod(nameof(SpriteBatch.Begin), parameters);
+
+            Debug.Assert(beginMethodInfo != null);
+   
+            MonoModHooks.Add(beginMethodInfo, (Action<SpriteBatch, SpriteSortMode, BlendState, SamplerState, DepthStencilState, RasterizerState, Effect, Matrix> orig,
+                SpriteBatch self, SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState, Effect effect, Matrix matrix) => {
+                    _drawCount++;
+                
+                    orig(self, sortMode, blendState, samplerState, depthStencilState, rasterizerState, effect, matrix);
+            });
+        }
+    }
     [Autoload(Side = ModSide.Client)]
     public class LunarLighting : ModSystem
     {
@@ -158,27 +227,30 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.Draw(_accumulatedLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
 
             spriteBatch.End();
+
+
             if (Main.mouseRight && Main.mouseRightRelease)
             {
                 CreateAtlasRectangles();
                 _pointLights.Clear();
                 Console.WriteLine("Clear Atlas");
+            } else
+            {
+
+                BakePointLights();
             }
-
-            BakePointLights();
-            
-            //Testing
-            /*
-          spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+                //Testing
+                /*
+              spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
 
 
-          spriteBatch.Draw(_lightMapAtlasRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+              spriteBatch.Draw(_lightMapAtlasRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
 
-          spriteBatch.End();
-             */
+              spriteBatch.End();
+                 */
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
          
             Texture2D glowTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SoftGlow").Value;
             Vector2 drawOrigin = glowTexture.Size() / 2f;
@@ -263,6 +335,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private static void CalculatePointLightSources()
         {
+
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
             if (!config.BeamingLights)
                 return;
@@ -616,7 +689,8 @@ namespace Stellamod.Core.LunarLightingSystem
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             SpriteBatch spriteBatch = Main.spriteBatch;
             graphicsDevice.SetRenderTarget(_lightMapAtlasRT);
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            graphicsDevice.Clear(Color.Black);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(_tempLightMapAtlasRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.End();
             graphicsDevice.SetRenderTarget(null);
@@ -627,10 +701,11 @@ namespace Stellamod.Core.LunarLightingSystem
             _updateTimer = 5;
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             SpriteBatch spriteBatch = Main.spriteBatch;
+
             graphicsDevice.SetRenderTarget(_pointLightRT);
             graphicsDevice.Clear(Color.Black);
             pointLight.BakeLight();
-            graphicsDevice.SetRenderTarget(_lightMapAtlasRT);
+            graphicsDevice.SetRenderTarget(_tempLightMapAtlasRT);
 
             SetAtlasRectangle(pointLight);
             Rectangle rectangle = pointLight.atlasRectangle;
@@ -659,6 +734,9 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private static void SetAtlasRectangle(PointLight pointLight)
         {
+            if (!pointLight.shouldBeBaked)
+                return;
+
             //So what do we do if there's no free rectangles?
             if(_freeAtlasRectangles.Count > 0)
             {
@@ -697,6 +775,8 @@ namespace Stellamod.Core.LunarLightingSystem
 
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             graphicsDevice.SetRenderTarget(_lightMapAtlasRT);
+            graphicsDevice.Clear(Color.Black);
+            graphicsDevice.SetRenderTarget(_tempLightMapAtlasRT);
             graphicsDevice.Clear(Color.Black);
             int pSize = MaxPointLightSize / DownSamples;
             int maxX = MaxAtlasSize / pSize;

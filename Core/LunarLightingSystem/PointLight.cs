@@ -274,6 +274,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             graphicsDevice.RasterizerState.CullMode = CullMode.None;
             graphicsDevice.BlendState = BlendState.Additive;
+            graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
 
             graphicsDevice.DrawUserPrimitives(
               PrimitiveType.TriangleList, lightVertices, 0, lightVertices.Length / 3);
