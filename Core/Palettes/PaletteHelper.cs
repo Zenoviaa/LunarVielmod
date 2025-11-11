@@ -20,16 +20,6 @@ namespace Stellamod.Core.Palettes
             LoadPalettes();
         }
 
-        public override void OnModUnload()
-        {
-            base.OnModUnload();
-            if (_colorAtlas == null)
-                return;
-            foreach(var texture in _colorAtlas)
-            {
-                texture.Value.Dispose();
-            }
-        }
 
         public static Texture3D GetColorSpectrum(string path)
         {
