@@ -519,6 +519,7 @@ namespace Stellamod.Core.LunarLightingSystem
             graphicsDevice.SetRenderTarget(null);
         }
 
+        #region Realtime Lighting
         public static Vector3 GetPlayerLightColor()
         {
             Player player = Main.LocalPlayer;
@@ -616,7 +617,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             RenderPointLightRealtime(_sunPointLight);
         }
-
+        #endregion
         private static void BakePointLights()
         {
             int bakedThisFrame = 0;
@@ -715,25 +716,9 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.End();
         }
 
-        private static void ReBakePointLight(PointLight pointLight)
-        {
-            _updateTimer = 5;
-            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            graphicsDevice.SetRenderTarget(_pointLightRT);
-            graphicsDevice.Clear(Color.Black);
-            pointLight.BakeLight();
-            graphicsDevice.SetRenderTarget(_lightMapAtlasRT);
-
-            Rectangle rectangle = pointLight.atlasRectangle;
-            Vector2 location = new Vector2(rectangle.X, rectangle.Y);
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-            spriteBatch.Draw(_pointLightRT, location, null, Color.White, 0, Vector2.Zero, 1 / (float)DownSamples, SpriteEffects.None, 0);
-            spriteBatch.End();
-        }
-
         private static void SetAtlasRectangle(PointLight pointLight)
         {
+            //Just incase
             if (!pointLight.shouldBeBaked)
                 return;
 
