@@ -43,16 +43,27 @@ namespace Stellamod.Core.LunarLightingSystem
         public float threshold;
         public bool renderShadows;
         public bool globalLight;
-
+        public Rectangle atlasRectangle;
+        public bool shouldBeBaked;
+        public string name;
         public bool NeedsUpdating()
         {
             return _needsUpdating;
         }
+
+        public bool NeedsBaking()
+        {
+            return shouldBeBaked && !_needsUpdating;
+        }
+
         public void Update()
         {
             CastLight();
             CastShadow();
             _needsUpdating = false;
+            shouldBeBaked = true;
+            atlasRectangle = Rectangle.Empty;
+           // Console.WriteLine($"Update Light {position}");
         }
 
         public bool IsVisible()
@@ -233,6 +244,69 @@ namespace Stellamod.Core.LunarLightingSystem
             }
         }
 
+        public Matrix CreateLightViewMatrix()
+        {
+            Vector3 screenPosition = new Vector3(Main.screenPosition.X, Main.screenPosition.Y, 0);
+            Vector3 lightPosition = new Vector3(position - new Vector2(radius / 2), 0);
+            Matrix world = Matrix.CreateTranslation(-lightPosition);
+            Matrix view = Main.GameViewMatrix.TransformationMatrix;
+            Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, -1, 1);
+            Matrix wvp = world * view * projection;
+            return wvp;
+        }
+
+        public void BakeLight()
+        {
+            GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
+            var shader = PointLightShader.Instance;
+            shader.Apply();
+
+            shader.TransformMatrix = CreateLightViewMatrix();
+            foreach (var pass in shader.Effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+            }
+
+
+            BlendState originalBlendState = graphicsDevice.BlendState;
+            CullMode oldCullMode = graphicsDevice.RasterizerState.CullMode;
+            SamplerState originalSamplerState = graphicsDevice.SamplerStates[0];
+
+            graphicsDevice.RasterizerState.CullMode = CullMode.None;
+            graphicsDevice.BlendState = BlendState.Additive;
+
+            graphicsDevice.DrawUserPrimitives(
+              PrimitiveType.TriangleList, lightVertices, 0, lightVertices.Length / 3);
+
+            graphicsDevice.RasterizerState.CullMode = oldCullMode;
+            graphicsDevice.BlendState = originalBlendState;
+            graphicsDevice.SamplerStates[0] = originalSamplerState;
+
+            if (!renderShadows)
+                return;
+            if (_primitiveCount == 0)
+                return;
+
+
+            var shadowShader = TileShadowShader.Instance;
+            shadowShader.Apply();
+            shadowShader.TransformMatrix = CreateLightViewMatrix();
+            foreach (var pass in shadowShader.Effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+            }
+
+
+            graphicsDevice.RasterizerState.CullMode = CullMode.None;
+            graphicsDevice.BlendState = BlendState.AlphaBlend;
+
+            graphicsDevice.DrawUserPrimitives(
+              PrimitiveType.TriangleList, shadowVertices, 0, _primitiveCount);
+
+            graphicsDevice.RasterizerState.CullMode = oldCullMode;
+            graphicsDevice.BlendState = originalBlendState;
+            graphicsDevice.SamplerStates[0] = originalSamplerState;
+        }
         public void DrawLight()
         {
             GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
@@ -249,7 +323,6 @@ namespace Stellamod.Core.LunarLightingSystem
             }
             var shader = PointLightShader.Instance;
             shader.Apply();
-
             foreach (var pass in shader.Effect.CurrentTechnique.Passes)
             {
                 pass.Apply();

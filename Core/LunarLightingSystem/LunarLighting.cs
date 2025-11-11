@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SteelSeries.GameSense;
 using Stellamod.Core.Shaders;
@@ -19,12 +20,17 @@ namespace Stellamod.Core.LunarLightingSystem
     {
         private static float _overSunTimer;
         private static float _daylightFadeTimer;
+        private static float _updateTimer;
         private static Color _backLightColor;
    
         private static Vector2 _previousScreenSize;
         private static RenderTarget2D _accumulatedLightRT;
-        private static RenderTarget2D _pointLightRT;
 
+        private static bool _initAtlas;
+        private static RenderTarget2D _pointLightRT;
+        private static RenderTarget2D _lightMapAtlasRT;
+        private static RenderTarget2D _tempLightMapAtlasRT;
+        private static Queue<Rectangle> _freeAtlasRectangles;
 
         private static PointLight _sunPointLight;
         private static PointLight _playerPointLight;
@@ -40,13 +46,15 @@ namespace Stellamod.Core.LunarLightingSystem
         public static Color SunColor;
         public static Vector3 AmbientLight;
 
-
+        public static int DownSamples => 4;
+        public static int MaxAtlasSize => 2000;
+        public static int MaxPointLightSize => 800;
         public const int Max_Ambient_Lights = 2000;
         public override void Load()
         {
             _backLightModifiers = new List<IBackLightModifier>();
             _emitters = new List<ILightEmitter>();
-
+           
             _sunPointLight = new PointLight(Vector2.Zero, Color.White, 1, 100, 300000);
             _playerPointLight = new PointLight(Vector2.Zero, Color.White, 1, 100);
             _pointLights = new Dictionary<Point, PointLight>();
@@ -127,6 +135,7 @@ namespace Stellamod.Core.LunarLightingSystem
                 DrawToScreen();
             }
             orig(self, spriteBatch, layer, beginSpriteBatch);
+
         }
 
 
@@ -141,18 +150,36 @@ namespace Stellamod.Core.LunarLightingSystem
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
 
 
-            var shader = ColorMultiplyShader.Instance;
-            shader.Intensity = 1;
-            spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, shader.Effect, Main.GameViewMatrix.TransformationMatrix);
+
+           
+            spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
 
             spriteBatch.Draw(_accumulatedLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
 
             spriteBatch.End();
+            if (Main.mouseRight && Main.mouseRightRelease)
+            {
+                CreateAtlasRectangles();
+                _pointLights.Clear();
+                Console.WriteLine("Clear Atlas");
+            }
 
+            BakePointLights();
+            
+            //Testing
+            /*
+          spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+
+
+
+          spriteBatch.Draw(_lightMapAtlasRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+
+          spriteBatch.End();
+             */
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
+         
             Texture2D glowTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SoftGlow").Value;
             Vector2 drawOrigin = glowTexture.Size() / 2f;
             foreach (var kvp in _pointLights)
@@ -287,11 +314,13 @@ namespace Stellamod.Core.LunarLightingSystem
                         //Check if we need to update this light
                         if (myLight.NeedsUpdating())
                         {
+                            myLight.name = "Torch Light";
                             myLight.Update();
                         }
                     } 
                     else if (!TileID.Sets.Torch[tile.TileType] && _pointLights.ContainsKey(lightTilePoint))
                     {
+
                         //Removing lights that no longer exist :p
                         _pointLights.Remove(lightTilePoint);
                     }
@@ -347,6 +376,15 @@ namespace Stellamod.Core.LunarLightingSystem
 
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             SpriteBatch spriteBatch = Main.spriteBatch;
+            _updateTimer--;
+            if (_updateTimer <= -1)
+                _updateTimer = -1;
+            if (_updateTimer == 0)
+            {
+                UpdateLightMaps();
+            }
+
+
             // CalculateLightingData();
             CalculatePointLightSources();
 
@@ -355,21 +393,15 @@ namespace Stellamod.Core.LunarLightingSystem
             //Clear the final light render target
             graphicsDevice.SetRenderTarget(_accumulatedLightRT);
             graphicsDevice.Clear(BackLightColor);
-            foreach (var kvp in _pointLights)
-            {
-                PointLight pointLight = kvp.Value;
-                if (!pointLight.IsVisible())
-                    continue;
-
-                RenderPointLight(pointLight);
-            }
+            RenderPointLights();
 
             _playerPointLight.position = Main.LocalPlayer.Center;
             _playerPointLight.color = new Color(GetPlayerLightColor());
             _playerPointLight.intensity = 1;
             _playerPointLight.radius = GetPlayerLightRadius();
+            _playerPointLight.name = "Player Light";
             _playerPointLight.Update();
-            RenderPointLight(_playerPointLight);
+            RenderPointLightRealtime(_playerPointLight);
             RenderSun();
 
             _emitters.Clear();
@@ -503,17 +535,64 @@ namespace Stellamod.Core.LunarLightingSystem
             _sunPointLight.renderShadows = ModContent.GetInstance<LunarVeilClientConfig>().SunShadows;
             _sunPointLight.shadowColor = Color.Black * 0.05f * shadowDaylightFadeInterpolant;
             _sunPointLight.globalLight = true;
-
+            _sunPointLight.name = "Sun";
             if (_sunPointLight.renderShadows)
             {
                 _sunPointLight.Update();
-
             }
 
-            RenderPointLight(_sunPointLight);
+            RenderPointLightRealtime(_sunPointLight);
         }
 
-        private static void RenderPointLight(PointLight pointLight)
+        private static void BakePointLights()
+        {
+            int bakedThisFrame = 0;
+            int maxPointLightsToBakePerFrame = 3;
+
+            foreach (var kvp in _pointLights)
+            {
+                PointLight pointLight = kvp.Value;
+                if (!pointLight.IsVisible())
+                    continue;
+                if (pointLight.NeedsBaking())
+                {
+                    BakePointLight(pointLight);
+                    bakedThisFrame++;
+                }
+                if (bakedThisFrame >= maxPointLightsToBakePerFrame)
+                    break;
+            }
+
+        }
+        private static void RenderPointLights()
+        {
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            foreach (var kvp in _pointLights)
+            {
+                PointLight pointLight = kvp.Value;
+                if (!pointLight.IsVisible())
+                    continue;
+       
+                RenderPointLightBaked(pointLight, spriteBatch);
+            }
+            spriteBatch.End();
+        }
+
+        private static void RenderPointLightBaked(PointLight pointLight, SpriteBatch spriteBatch)
+        {
+      
+            //Just read the calculated texture from the atlas
+            //This should be way faster, everything is together!
+            Rectangle atlasRectangle = pointLight.atlasRectangle;
+            Vector2 drawOrigin = atlasRectangle.Size() / 2f;
+            float scale = DownSamples;
+    
+            spriteBatch.Draw(_lightMapAtlasRT, pointLight.position - Main.screenPosition, atlasRectangle, Color.White, 0, drawOrigin, scale, SpriteEffects.None, 0);
+        }
+
+        private static void RenderPointLightRealtime(PointLight pointLight)
         {
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -524,16 +603,115 @@ namespace Stellamod.Core.LunarLightingSystem
 
             //This is bad, just calculat them once :sob:
             pointLight.DrawShadow();
-    
-
-            //Add it to the final light RT
             graphicsDevice.SetRenderTarget(_accumulatedLightRT);
+
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(_pointLightRT, Vector2.Zero, Color.White);
             spriteBatch.End();
         }
 
-       
+        private static void UpdateLightMaps()
+        {
+            
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            graphicsDevice.SetRenderTarget(_lightMapAtlasRT);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Draw(_tempLightMapAtlasRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.End();
+            graphicsDevice.SetRenderTarget(null);
+        }
+
+        private static void BakePointLight(PointLight pointLight)
+        {
+            _updateTimer = 5;
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            graphicsDevice.SetRenderTarget(_pointLightRT);
+            graphicsDevice.Clear(Color.Black);
+            pointLight.BakeLight();
+            graphicsDevice.SetRenderTarget(_lightMapAtlasRT);
+
+            SetAtlasRectangle(pointLight);
+            Rectangle rectangle = pointLight.atlasRectangle;
+            Vector2 location = new Vector2(rectangle.X, rectangle.Y);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Draw(_pointLightRT, location, null, Color.White, 0, Vector2.Zero, 1 / (float)DownSamples, SpriteEffects.None, 0);
+            spriteBatch.End();
+        }
+
+        private static void ReBakePointLight(PointLight pointLight)
+        {
+            _updateTimer = 5;
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            graphicsDevice.SetRenderTarget(_pointLightRT);
+            graphicsDevice.Clear(Color.Black);
+            pointLight.BakeLight();
+            graphicsDevice.SetRenderTarget(_lightMapAtlasRT);
+
+            Rectangle rectangle = pointLight.atlasRectangle;
+            Vector2 location = new Vector2(rectangle.X, rectangle.Y);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Draw(_pointLightRT, location, null, Color.White, 0, Vector2.Zero, 1 / (float)DownSamples, SpriteEffects.None, 0);
+            spriteBatch.End();
+        }
+
+        private static void SetAtlasRectangle(PointLight pointLight)
+        {
+            //So what do we do if there's no free rectangles?
+            if(_freeAtlasRectangles.Count > 0)
+            {
+                //Nothing to use
+                //Clear Atlas maybe?
+                //Just don't render the light?
+
+                //We need to find a free spot on the atlas
+                Rectangle rectangleToUse = _freeAtlasRectangles.Dequeue();
+                pointLight.atlasRectangle = rectangleToUse;
+                pointLight.shouldBeBaked = false;
+                Console.WriteLine($"Baked Point Light {pointLight.name} to {rectangleToUse}");
+            }
+            else
+            {
+                //For now
+                pointLight.atlasRectangle = Rectangle.Empty;
+               // Console.WriteLine("Can't Bake");
+            }
+        }
+
+        private static void InitAtlas()
+        {
+            _lightMapAtlasRT = new RenderTarget2D(Main.graphics.GraphicsDevice, MaxAtlasSize, MaxAtlasSize, false,
+                    SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+            _tempLightMapAtlasRT = new RenderTarget2D(Main.graphics.GraphicsDevice, MaxAtlasSize, MaxAtlasSize, false,
+                  SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+
+            CreateAtlasRectangles();
+            _initAtlas = true;
+        }
+
+        private static void CreateAtlasRectangles()
+        {
+            _freeAtlasRectangles = new Queue<Rectangle>();
+
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            graphicsDevice.SetRenderTarget(_lightMapAtlasRT);
+            graphicsDevice.Clear(Color.Black);
+            int pSize = MaxPointLightSize / DownSamples;
+            int maxX = MaxAtlasSize / pSize;
+            int maxY = MaxAtlasSize / pSize;
+            for (int x = 0; x < maxX; x++)
+            {
+                for (int y = 0; y < maxY; y++)
+                {
+                    Rectangle rectangle = new Rectangle(x * pSize
+                        , y * pSize, pSize, pSize);
+                    _freeAtlasRectangles.Enqueue(rectangle);
+                }
+            }
+        }
+
         private void ResizeRenderTarget(bool load)
         {
             // If not in the game menu, and we arent a dedicated server,
@@ -552,9 +730,17 @@ namespace Stellamod.Core.LunarLightingSystem
                         if (_pointLightRT != null && !_pointLightRT.IsDisposed)
                             _pointLightRT.Dispose();
 
+
+
+                        if (!_initAtlas)
+                        {
+                            InitAtlas();
+                        }
+                        _pointLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false,
+                            SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
                         _accumulatedLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false, 
                             SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
-                        _pointLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
+                     
                     });
 
                 }

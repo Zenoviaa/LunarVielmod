@@ -22,6 +22,24 @@ namespace Stellamod.Core.Shaders
             }
         }
 
+        public static Matrix ViewProjection
+        {
+            get
+            {
+                Matrix view = Main.GameViewMatrix.TransformationMatrix;
+                Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, -1, 1);
+                return view * projection;
+            }
+        }
+
+        public static Matrix View
+        {
+            get
+            {
+                Matrix view = Main.GameViewMatrix.TransformationMatrix;
+                return view;
+            }
+        }
         private static void ApplyPasses(Effect effect)
         {
             foreach (var pass in effect.CurrentTechnique.Passes)
