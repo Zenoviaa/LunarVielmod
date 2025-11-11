@@ -141,7 +141,10 @@ namespace Stellamod.Core.LunarLightingSystem
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
 
 
-            spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            var shader = ColorMultiplyShader.Instance;
+            shader.Intensity = 1;
+            spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, shader.Effect, Main.GameViewMatrix.TransformationMatrix);
+
 
             spriteBatch.Draw(_accumulatedLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
 
@@ -245,7 +248,7 @@ namespace Stellamod.Core.LunarLightingSystem
             ClearAmbientLights();
 
             //Add a point light to all torches
-            float pointLightPixelRadius = 900;
+            float pointLightPixelRadius = 800;
 
             Vector2 cameraCenterWorld = Main.Camera.Center;
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
@@ -277,7 +280,7 @@ namespace Stellamod.Core.LunarLightingSystem
                         }
                         else
                         {
-                            myLight = new PointLight(position, new Color(lightColor), 1, pointLightPixelRadius);
+                            myLight = new PointLight(position, new Color(lightColor) , 1f, pointLightPixelRadius);
                             _pointLights.Add(lightTilePoint, myLight);
                         }
 
@@ -352,8 +355,7 @@ namespace Stellamod.Core.LunarLightingSystem
             //Clear the final light render target
             graphicsDevice.SetRenderTarget(_accumulatedLightRT);
             graphicsDevice.Clear(BackLightColor);
-
-            foreach(var kvp in _pointLights)
+            foreach (var kvp in _pointLights)
             {
                 PointLight pointLight = kvp.Value;
                 if (!pointLight.IsVisible())
@@ -531,7 +533,7 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.End();
         }
 
-
+       
         private void ResizeRenderTarget(bool load)
         {
             // If not in the game menu, and we arent a dedicated server,
@@ -550,7 +552,8 @@ namespace Stellamod.Core.LunarLightingSystem
                         if (_pointLightRT != null && !_pointLightRT.IsDisposed)
                             _pointLightRT.Dispose();
 
-                        _accumulatedLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+                        _accumulatedLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false, 
+                            SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
                         _pointLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
                     });
 

@@ -174,7 +174,7 @@ namespace Stellamod.Core.Palettes
             UsePaletteShader("Desert.pal", desertPaletteActive, ref paletteUseProgress[5]);
             UsePaletteShader("DesertTop.pal", desertTopPaletteActive, ref paletteUseProgress[6]);
             UsePaletteShader("Fable.pal", fablePaletteActive, ref paletteUseProgress[7]);
-            UsePaletteShader("MistyDungeon.pal", mistyPaletteActive, ref paletteUseProgress[8]);
+            UsePaletteShader("IllurianMistyDungeon.pal", mistyPaletteActive, ref paletteUseProgress[8]);
             UsePaletteShader("BloodHound.pal", bloodPaletteActive, ref paletteUseProgress[9]);
 
       

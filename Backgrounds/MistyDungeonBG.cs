@@ -13,7 +13,7 @@ namespace Stellamod.Backgrounds
             base.SetDrawDefaults();
             DrawScale = 1.5f;
             DrawOffset = new Vector2(0, 0);
-            DrawColor = Color.Lerp(Color.White, Color.Black, 0);
+            DrawColor = Color.Lerp(Color.White, Color.Black, 0.5f);
             NoSurfaceLight = true;
             NoSurfaceOffset = true;
             NoParallaxY = true;
@@ -41,12 +41,6 @@ namespace Stellamod.Backgrounds
             midFogLayer.Parallax = 0.35f;
             midFogLayer.DrawOffset = Vector2.Zero;
 
-            MistShader midMistShader = new MistShader();
-            midMistShader.StartColor = Color.Blue * 0.3f;
-            midMistShader.EndColor = Color.Blue * 0.1f;
-            midFogLayer.Shader = midMistShader;
-            AddLayer(midFogLayer);
-
 
             /*
             CustomBGLayer midFogLayer2 = new CustomBGLayer();
@@ -60,6 +54,7 @@ namespace Stellamod.Backgrounds
             midFogLayer2.Shader = midMistShader2;
             AddLayer(midFogLayer2);
             */
+
 
             CustomBGLayer frontLayer = new CustomBGLayer();
             frontLayer.SetTexture("Assets/Textures/Backgrounds/MistyDungeon_Top");

@@ -142,3 +142,8 @@ SunShadows: {
 	Label: Sun Shadows
 	Tooltip: ""
 }
+
+DisableMinimapDraws: {
+	Tooltip: ""
+	Label: Disable Minimap Draws
+}

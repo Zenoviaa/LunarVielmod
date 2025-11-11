@@ -1,8 +1,36 @@
-﻿using System.ComponentModel;
+﻿
+using System;
+using System.ComponentModel;
+using Terraria;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
 namespace Stellamod
 {
+    public class ExperimentalConfigs : ModSystem
+    {
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+            On_Main.DrawToMap_Section += NoMapSection;
+        }
+
+        public override void OnModUnload()
+        {
+            base.OnModUnload();
+            On_Main.DrawToMap_Section -= NoMapSection;
+        }
+
+        private void NoMapSection(On_Main.orig_DrawToMap_Section orig, Main self, int secX, int secY)
+        {
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (config.DisableMinimapDraws)
+                return;
+
+            orig(self, secX, secY);
+        }
+    }
+
     public class LunarVeilServerConfig : ModConfig
     {
         // ConfigScope.ClientSide should be used for client side, usually visual or audio tweaks.
@@ -108,5 +136,6 @@ namespace Stellamod
 
         [Header("Experiment")]
         public bool NoLightingEveryFrameOverride;
+        public bool DisableMinimapDraws;
     }
 }

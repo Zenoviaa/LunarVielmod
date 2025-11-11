@@ -3,12 +3,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
-using Stellamod.Helpers;
-using Stellamod.Projectiles.Swords.Altride;
-using Stellamod.Trails;
 using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -29,13 +24,13 @@ namespace Stellamod.Core.LunarLightingSystem
             this.radius = radius;
             lightVertices = new VertexPositionColorTexture[6];
             shadowVertices = new VertexPositionColor[maxShadowVertexCount];
-            shadowColor = Color.Black * 0.4f;
+            shadowColor = Color.Black * 0.3f;
             threshold = 0.9f;
             renderShadows = true;
         }
 
         public Vector2 position;
-        public Color color; 
+        public Color color;
         public float intensity;
         public float radius;
         public int extraRenders;
@@ -48,6 +43,7 @@ namespace Stellamod.Core.LunarLightingSystem
         public float threshold;
         public bool renderShadows;
         public bool globalLight;
+
         public bool NeedsUpdating()
         {
             return _needsUpdating;
@@ -107,7 +103,7 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             if (IsFull())
             {
-          //      Console.WriteLine("Full");
+                //      Console.WriteLine("Full");
                 return;
 
             }
@@ -173,7 +169,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             Point topLeftTile = topLeftOfPointLight.ToTileCoordinates();
             Point bottomRightTIle = bottomRightOfPointLight.ToTileCoordinates();
-       
+
 
             int startTileX = topLeftTile.X;
             int startTileY = topLeftTile.Y;
@@ -217,8 +213,8 @@ namespace Stellamod.Core.LunarLightingSystem
                     //Now we calculate vertices
                     //There's no texture here so it doesn't matter what order we do the triangles in
                     //Pretty sure we start from top left?
-                  
-                
+
+
                     //Vertex 0
                     Vector2 topLeft = worldPoint;
 
@@ -232,7 +228,7 @@ namespace Stellamod.Core.LunarLightingSystem
                     Vector2 bottomRight = worldPoint + new Vector2(16, 16);
 
                     AddQuad(topLeft, bottomRight);
-                    AddQuad(topRight, bottomLeft);  
+                    AddQuad(topRight, bottomLeft);
                 }
             }
         }
@@ -246,20 +242,20 @@ namespace Stellamod.Core.LunarLightingSystem
                 Vector2 drawOrigin = texture.Size() / 2f;
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-                for(int i = 0; i < 3;i ++)
+                for (int i = 0; i < 3; i++)
                     spriteBatch.Draw(texture, Vector2.Zero + new Vector2(Main.screenWidth, Main.screenHeight) / 2f, null, color, 0, drawOrigin, 40, SpriteEffects.None, 0);
                 spriteBatch.End();
                 return;
             }
             var shader = PointLightShader.Instance;
             shader.Apply();
-   
+
             foreach (var pass in shader.Effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
             }
 
-       
+
             BlendState originalBlendState = graphicsDevice.BlendState;
             CullMode oldCullMode = graphicsDevice.RasterizerState.CullMode;
             SamplerState originalSamplerState = graphicsDevice.SamplerStates[0];
