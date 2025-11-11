@@ -11,6 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Palettes
 {
+    [Autoload(Side = ModSide.Client)]
     public class PaletteHelper : ModSystem
     {
         private static Dictionary<string, Texture3D> _colorAtlas;
