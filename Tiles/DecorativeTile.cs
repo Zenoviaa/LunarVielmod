@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using System;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -92,9 +93,50 @@ namespace Stellamod.Tiles
                 Vector2 mouseWorld = Main.MouseWorld;
                 int i = (int)(mouseWorld.X / 16f);
                 int j = (int)(mouseWorld.Y / 16f);
+
+                Texture2D wallTexture = ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect).Value;
+                Vector2 drawOrigin = wallTexture.Size() / 2f;
+
+                Rectangle frame = new Rectangle(0, 0, 16, 16);
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
                 decorativeWallItem.DrawPreview(i, j);
-                spriteBatch.End();
+
+
+                Vector2 tilePos = new Vector2(i, j) * 16;
+
+                spriteBatch.Draw(TextureAssets.Tile[0].Value, tilePos - Main.screenPosition, frame, Color.Green * 0.5f, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+                Vector2 cameraCenterWorld = Main.Camera.Center;
+                Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+                Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+                cameraTopLeft -= new Vector2(128);
+                cameraBottomRight += new Vector2(128);
+
+                Point topLeftTile = cameraTopLeft.ToTileCoordinates();
+                Point bottomRightTile = cameraBottomRight.ToTileCoordinates();
+
+                for (int x = topLeftTile.X; x < bottomRightTile.X; x++)
+                {
+                    for (int y = topLeftTile.Y; y < bottomRightTile.Y; y++)
+                    {
+                        if (!WorldGen.InWorld(x, y))
+                            continue;
+
+                        Tile tile = Main.tile[x, y];
+                        if (!tile.HasTile)
+                            continue;
+                        if (tile.WallType == 0)
+                            continue;
+                        var specialWall = ModContent.GetModWall(tile.WallType) as BaseSpecialWall;
+                        if (specialWall == null)
+                            continue;
+
+                        Vector2 drawPos = new Vector2(x, y) * 16;
+                        Color drawColor = Color.Red;
+           
+                        spriteBatch.Draw(TextureAssets.Tile[0].Value, drawPos - Main.screenPosition, frame, drawColor, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+                    }
+                }
+                        spriteBatch.End();
             }
            
             
