@@ -217,7 +217,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             //We don't need to check for lights every single frame either
             //It won't be noticeable doing this every few frames instead
-            if (Main.GameUpdateCount % 3 != 0)
+            if (Main.GameUpdateCount % 4 != 0)
                 return;
 
             FindPointLightSourcesFromTiles();
