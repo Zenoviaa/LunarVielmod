@@ -98,9 +98,9 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private static bool _initAtlas;
         private static RenderTarget2D _pointLightRT;
-        private static RenderTarget2D _lightMapAtlasRT;
+
         private static RenderTarget2D _tempLightMapAtlasRT;
-        private static Texture2D _lightMapAtlasTexture;
+
         private static Queue<Rectangle> _freeAtlasRectangles;
 
         private static PointLight _sunPointLight;
@@ -234,7 +234,6 @@ namespace Stellamod.Core.LunarLightingSystem
 
             spriteBatch.End();
 
-            BakePointLights();
 
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
@@ -465,19 +464,10 @@ namespace Stellamod.Core.LunarLightingSystem
 
 
 
-            _updateTimer--;
-            if (_updateTimer <= -1)
-                _updateTimer = -1;
-            if (_updateTimer == 0)
-            {
-                UpdateLightMaps();
-            }
-
-
             // CalculateLightingData();
             CalculatePointLightSources();
 
-
+            BakePointLights();
             //Mask drawing
             //Clear the final light render target
             graphicsDevice.SetRenderTarget(_accumulatedLightRT);
@@ -637,7 +627,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private static void BakePointLights()
         {
             int bakedThisFrame = 0;
-            int maxPointLightsToBakePerFrame = 1;
+            int maxPointLightsToBakePerFrame = 5;
 
             foreach (var kvp in _pointLights)
             {
@@ -700,18 +690,6 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.End();
         }
 
-        private static void UpdateLightMaps()
-        {
-            
-            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            graphicsDevice.SetRenderTarget(_lightMapAtlasRT);
-            graphicsDevice.Clear(Color.Black);
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-            spriteBatch.Draw(_tempLightMapAtlasRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            spriteBatch.End();
-            graphicsDevice.SetRenderTarget(null);
-        }
         private static void UnBake(PointLight pointLight)
         {
             if (pointLight.atlasRectangle == Rectangle.Empty)
@@ -769,11 +747,8 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private static void InitAtlas()
         {
-            _lightMapAtlasRT = new RenderTarget2D(Main.graphics.GraphicsDevice, MaxAtlasSize, MaxAtlasSize, false,
-                    SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
             _tempLightMapAtlasRT = new RenderTarget2D(Main.graphics.GraphicsDevice, MaxAtlasSize, MaxAtlasSize, false,
                   SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
-            _lightMapAtlasTexture = new Texture2D(Main.graphics.GraphicsDevice, MaxAtlasSize, MaxAtlasSize, false, SurfaceFormat.Color);
             CreateAtlasRectangles();
             _initAtlas = true;
         }
@@ -781,11 +756,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private static void CreateAtlasRectangles()
         {
             _freeAtlasRectangles = new Queue<Rectangle>();
-            Color[] black = new Color[_lightMapAtlasTexture.Width * _lightMapAtlasTexture.Height];
-            _lightMapAtlasTexture.SetData(0, null, black, 0, black.Length);
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            graphicsDevice.SetRenderTarget(_lightMapAtlasRT);
-            graphicsDevice.Clear(Color.Black);
             graphicsDevice.SetRenderTarget(_tempLightMapAtlasRT);
             graphicsDevice.Clear(Color.Transparent);
             int pSize = MaxPointLightSize / DownSamples;
