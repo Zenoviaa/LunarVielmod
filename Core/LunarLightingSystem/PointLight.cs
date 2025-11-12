@@ -35,7 +35,7 @@ namespace Stellamod.Core.LunarLightingSystem
         public float intensity;
         public float radius;
         public int extraRenders;
-        public bool faint;
+
         public Vector2 directionOverride;
         public VertexPositionColorTexture[] lightVertices;
         public VertexPositionColor[] shadowVertices;
@@ -65,7 +65,6 @@ namespace Stellamod.Core.LunarLightingSystem
             _needsUpdating = false;
             shouldBeBaked = true;
             atlasRectangle = Rectangle.Empty;
-           // Console.WriteLine($"Update Light {position}");
         }
 
         public bool IsVisible()
@@ -128,7 +127,6 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             if (IsFull())
             {
-                //      Console.WriteLine("Full");
                 return;
 
             }
