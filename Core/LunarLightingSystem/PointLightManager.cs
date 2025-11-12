@@ -112,7 +112,7 @@ namespace Stellamod.Core.LunarLightingSystem
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
             Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
 
-            float range = 1000;
+            const float range = 1000;
             cameraTopLeft -= new Vector2(range);
             cameraBottomRight += new Vector2(range);
             return position.X >= cameraTopLeft.X && position.X <= cameraBottomRight.X && position.Y >= cameraTopLeft.Y && position.Y <= cameraBottomRight.Y;
@@ -124,7 +124,7 @@ namespace Stellamod.Core.LunarLightingSystem
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
             Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
 
-            float range = 256;
+            const float range = 256;
             cameraTopLeft -= new Vector2(range);
             cameraBottomRight += new Vector2(range);
 
