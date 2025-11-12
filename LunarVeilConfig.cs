@@ -137,5 +137,6 @@ namespace Stellamod
         [Header("Experiment")]
         public bool NoLightingEveryFrameOverride;
         public bool DisableMinimapDraws;
+        public bool DisableTileRendering;
     }
 }

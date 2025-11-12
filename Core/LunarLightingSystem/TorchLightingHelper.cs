@@ -2,60 +2,6 @@
 
 namespace Stellamod.Core.LunarLightingSystem
 {
-    /*
-    public class RemoveTileRenderingEdit : ModSystem
-    {
-        public override void OnModLoad()
-        {
-            base.OnModLoad();
-
-            On_Main.DoDraw_WallsAndBlacks += NoWallsAndBlacks;
-            On_Main.DrawTiles += NoTilesDraw;
-            On_Main.RenderTiles += NoTileRender;
-            On_Main.RenderTiles2 += NoTileRender2;
-            On_Main.DoDraw_Tiles_Solid += NoDrawTiles;
-            On_Main.DoDraw_Tiles_NonSolid += NoDrawTiles;   
-        }
-
-        private void NoDrawTiles(On_Main.orig_DoDraw_Tiles_NonSolid orig, Main self)
-        {
-       
-        }
-
-        public override void OnModUnload()
-        {
-            base.OnModUnload();
-            On_Main.DoDraw_WallsAndBlacks -= NoWallsAndBlacks;
-            On_Main.DrawTiles -= NoTilesDraw;
-            On_Main.RenderTiles -= NoTileRender;
-            On_Main.RenderTiles2 -= NoTileRender2;
-            On_Main.DoDraw_Tiles_Solid -= NoDrawTiles;
-            On_Main.DoDraw_Tiles_NonSolid -= NoDrawTiles;
-        }
-        private void NoWallsAndBlacks(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
-        {
-
-        }
-
-        private void NoTilesDraw(On_Main.orig_DrawTiles orig, Main self, bool solidLayer, bool forRenderTargets, bool intoRenderTargets, int waterStyleOverride)
-        {
-
-        }
-        private void NoDrawTiles(On_Main.orig_DoDraw_Tiles_Solid orig, Main self)
-        {
-      
-        }
-
-        private void NoTileRender2(On_Main.orig_RenderTiles2 orig, Main self)
-        {
-
-        }
-
-        private void NoTileRender(On_Main.orig_RenderTiles orig, Main self)
-        {
-
-        }
-    }*/
 
     public static class TorchLightingHelper
     {
