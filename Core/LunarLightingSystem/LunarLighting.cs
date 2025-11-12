@@ -5,7 +5,6 @@ using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Effects;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem
@@ -13,19 +12,13 @@ namespace Stellamod.Core.LunarLightingSystem
     [Autoload(Side = ModSide.Client)]
     public class LunarLighting : ModSystem
     {
-        private static float _overSunTimer;
-        private static float _daylightFadeTimer;
         private static Color _backLightColor;
-
         private static Vector2 _previousScreenSize;
         private static RenderTarget2D _accumulatedLightRT;
 
         private static bool _initAtlas;
         private static RenderTarget2D _pointLightRT;
         private static RenderTarget2D _tempLightMapAtlasRT;
-
-        private static PointLight _sunPointLight;
-        private static PointLight _playerPointLight;
 
         private static List<ILightEmitter> _emitters;
         private static List<IBackLightModifier> _backLightModifiers;
@@ -43,10 +36,6 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             _backLightModifiers = new List<IBackLightModifier>();
             _emitters = new List<ILightEmitter>();
-
-            _sunPointLight = new PointLight(Vector2.Zero, Color.White, 1, 100, 300000);
-            _playerPointLight = new PointLight(Vector2.Zero, Color.White, 1, 100);
-
             ResizeRenderTarget(true);
 
             On_OverlayManager.Draw += DrawLights;
@@ -83,8 +72,6 @@ namespace Stellamod.Core.LunarLightingSystem
             orig(self, spriteBatch, layer, beginSpriteBatch);
         }
 
-
-
         private static void DrawToScreen()
         {
             if (!ShouldRender())
@@ -102,6 +89,7 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.Draw(_tempLightMapAtlasRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
             spriteBatch.End();
         }
+
         private static void DrawAccumulatedLightMapToScreen()
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -118,7 +106,7 @@ namespace Stellamod.Core.LunarLightingSystem
             Texture2D glowTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SoftGlow").Value;
             Vector2 drawOrigin = glowTexture.Size() / 2f;
 
-            for(int i = 0; i < PointLightManager.MAX_POINT_LIGHTS; i++)
+            for (int i = 0; i < PointLightManager.MAX_POINT_LIGHTS; i++)
             {
                 if (PointLightManager.LightStates[i] == PointLightState.INACTIVE)
                     continue;
@@ -137,6 +125,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             spriteBatch.End();
         }
+
         private static void PreviewLightMaps()
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -223,16 +212,6 @@ namespace Stellamod.Core.LunarLightingSystem
             }
         }
 
-        private static bool IsLightingTooFar(PointLight pointLight)
-        {
-            if (!pointLight.IsReallyVisible())
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         private static bool ShouldRender()
         {
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
@@ -275,9 +254,9 @@ namespace Stellamod.Core.LunarLightingSystem
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-            
-            
-            for(int i = 0; i < PointLightManager.MAX_POINT_LIGHTS; i++)
+
+
+            for (int i = 0; i < PointLightManager.MAX_POINT_LIGHTS; i++)
             {
                 //These lights won't be iterated over/drawn
                 switch (PointLightManager.LightStates[i])
