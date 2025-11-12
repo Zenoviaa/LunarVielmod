@@ -9676,6 +9676,11 @@ TargetBoard1Item: {
 }
 
 TreeGrower: {
+	Tooltip: ""
 	DisplayName: Tree Grower
+}
+
+TreeGrower2: {
+	DisplayName: Tree Grower2
 	Tooltip: ""
 }

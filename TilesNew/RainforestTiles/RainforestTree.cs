@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
 using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.GameContent.Creative;
+using Terraria.GameContent.Metadata;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -21,37 +23,42 @@ namespace Stellamod.TilesNew.RainforestTiles
 
         public override void SetStaticDefaults()
         {
-            TileObjectData.newTile.RandomStyleRange = 3;
-            TileObjectData.newTile.StyleHorizontal = true;
-
-            var bottomAnchor = new AnchorData(Terraria.Enums.AnchorType.SolidTile, 1, 0);
-
-            Main.tileTable[Type] = true;
-            Main.tileSolidTop[Type] = false;
-            Main.tileNoAttach[Type] = true;
-            Main.tileLavaDeath[Type] = true;
-            Main.tileFrameImportant[Type] = true;
-            TileID.Sets.DisableSmartCursor[Type] = true;
-            TileID.Sets.IgnoredByNpcStepUp[Type] = true; // This line makes NPCs not try to step up this tile during their movement. Only use this for furniture with solid tops.
-
-            AdjTiles = new int[] { TileID.Bookcases };
             Main.tileFrameImportant[Type] = true;
             Main.tileNoAttach[Type] = true;
             Main.tileLavaDeath[Type] = true;
-            TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
-            TileObjectData.newTile.Height = 2;
+
             TileObjectData.newTile.Width = 1;
-
-            TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16 };
-            TileObjectData.newTile.StyleWrapLimit = 2; //not really necessary but allows me to add more subtypes of chairs below the example chair texture
-            TileObjectData.newTile.StyleMultiplier = 2; //same as above
+            TileObjectData.newTile.Height = 2;
+            TileObjectData.newTile.Origin = new Point16(0, 1);
+            TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile, TileObjectData.newTile.Width, 0);
+            TileObjectData.newTile.UsesCustomCanPlace = true;
+            TileObjectData.newTile.CoordinateHeights = [16, 16];
+            TileObjectData.newTile.CoordinateWidth = 16;
+            TileObjectData.newTile.CoordinatePadding = 2;
+            TileObjectData.newTile.AnchorValidTiles = [TileID.Dirt, TileID.Mud];
             TileObjectData.newTile.StyleHorizontal = true;
-            TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
-            TileObjectData.addTile(Type);
-            LocalizedText name = CreateMapEntryName();
+            TileObjectData.newTile.DrawFlipHorizontal = true;
+            TileObjectData.newTile.WaterPlacement = LiquidPlacement.NotAllowed;
+            TileObjectData.newTile.LavaDeath = true;
+            TileObjectData.newTile.RandomStyleRange = 3;
+            TileObjectData.newTile.StyleMultiplier = 3;
 
-            // name.SetDefault("Alcaology Station");
-            AddMapEntry(new Color(126, 200, 59), name);
+            //TileObjectData.newSubTile.CopyFrom(TileObjectData.newTile);
+            //TileObjectData.newSubTile.AnchorValidTiles = [ModContent.TileType<ExampleSand>()];
+            //TileObjectData.addSubTile(1);
+
+            TileObjectData.addTile(Type);
+
+            AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Sapling"));
+
+            TileID.Sets.TreeSapling[Type] = true;
+            TileID.Sets.CommonSapling[Type] = true;
+            TileID.Sets.SwaysInWindBasic[Type] = true;
+            TileMaterials.SetForTileId(Type, TileMaterials._materialsByName["Plant"]); // Make this tile interact with golf balls in the same way other plants do
+
+            DustType = ModContent.DustType<Sparkle>();
+
+            AdjTiles = [TileID.Saplings];
         }
 
         public override void RandomUpdate(int i, int j)
@@ -67,6 +74,7 @@ namespace Stellamod.TilesNew.RainforestTiles
             { // still needs testing but should be fast enough
                 return;
             }
+
             if (!VeilGen.IsRainforestTreeGround(i - 1, j + 3, 4))
                 return;
 
@@ -424,8 +432,7 @@ namespace Stellamod.TilesNew.RainforestTiles
             Item.consumable = true;
             Item.createTile = ModContent.TileType<RainforestTreeSapling>();
         }
-        // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-
-
     }
+
+
 }
