@@ -756,9 +756,6 @@ namespace Stellamod.Core.LunarLightingSystem
         private static void CreateAtlasRectangles()
         {
             _freeAtlasRectangles = new Queue<Rectangle>();
-            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            graphicsDevice.SetRenderTarget(_tempLightMapAtlasRT);
-            graphicsDevice.Clear(Color.Transparent);
             int pSize = MaxPointLightSize / DownSamples;
             int maxX = MaxAtlasSize / pSize;
             int maxY = MaxAtlasSize / pSize;
