@@ -607,7 +607,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             Vector2 sunPosition = Main.Camera.Center + new Vector2(0, 0);
             _sunPointLight.position = sunPosition;
-            _sunPointLight.color = SunColor;
+            _sunPointLight.color = SunColor * interpolant;
             _sunPointLight.radius = 1500;
             _sunPointLight.intensity = 1 * interpolant;
             _sunPointLight.extraRenders = 4;
