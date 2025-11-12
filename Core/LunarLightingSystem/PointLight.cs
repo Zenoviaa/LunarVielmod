@@ -5,11 +5,15 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Threading;
 using Stellamod.Core.Shaders;
 using System;
+
+using System.Threading.Tasks;
 using Terraria;
+using Terraria.Graphics.Light;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
+
     public class PointLight
     {
         private bool _needsUpdating;
@@ -34,7 +38,6 @@ namespace Stellamod.Core.LunarLightingSystem
         public Color color;
         public float intensity;
         public float radius;
-        public int extraRenders;
 
         public Vector2 directionOverride;
         public VertexPositionColorTexture[] lightVertices;
@@ -59,7 +62,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         public void Update()
         {
-           
+
             CastLight();
             CastShadow();
             _needsUpdating = false;
@@ -76,7 +79,7 @@ namespace Stellamod.Core.LunarLightingSystem
             cameraBottomRight += new Vector2(128);
             return position.X >= cameraTopLeft.X && position.X <= cameraBottomRight.X && position.Y >= cameraTopLeft.Y && position.Y <= cameraBottomRight.Y;
         }
-        
+
         public bool IsReallyVisible()
         {
             Vector2 cameraCenterWorld = Main.Camera.Center;
@@ -403,7 +406,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             int IndexOf(Vector2 lightWorldPosition)
             {
-                
+
                 Vector2 localPosition = lightWorldPosition - position;
 
                 //Since textures start from the top left and this draws from the cente
@@ -452,18 +455,18 @@ namespace Stellamod.Core.LunarLightingSystem
                     if (index >= 0 && index < lightingData.Length)
                     {
                         lightingData[index] = lightColor * lightStrength;
-                      
+
                     }
 
                 }
             }
-            for(int i = 0; i < numRays; i++)
+            for (int i = 0; i < numRays; i++)
             {
-                CastRay(i);   
+                CastRay(i);
             }
 
 
-          
+
             Texture2D lightMap = new Texture2D(Main.graphics.GraphicsDevice, textureSize, textureSize);
             lightMap.SetData(lightingData);
             return lightMap;
