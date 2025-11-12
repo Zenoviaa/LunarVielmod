@@ -627,7 +627,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private static void BakePointLights()
         {
             int bakedThisFrame = 0;
-            int maxPointLightsToBakePerFrame = 5;
+            int maxPointLightsToBakePerFrame = 1;
 
             foreach (var kvp in _pointLights)
             {
