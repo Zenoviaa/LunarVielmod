@@ -9674,3 +9674,8 @@ TargetBoard1Item: {
 	DisplayName: Target Board1 Item
 	Tooltip: ""
 }
+
+TreeGrower: {
+	DisplayName: Tree Grower
+	Tooltip: ""
+}
