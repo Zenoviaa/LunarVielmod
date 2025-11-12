@@ -735,7 +735,7 @@ namespace Stellamod.Core.LunarLightingSystem
                 Rectangle rectangleToUse = _freeAtlasRectangles.Dequeue();
                 pointLight.atlasRectangle = rectangleToUse;
                 pointLight.shouldBeBaked = false;
-                Console.WriteLine($"Baked Point Light {pointLight.name} to {rectangleToUse}");
+              //  Console.WriteLine($"Baked Point Light {pointLight.name} to {rectangleToUse}");
             }
             else
             {
