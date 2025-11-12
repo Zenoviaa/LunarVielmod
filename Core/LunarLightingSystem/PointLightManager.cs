@@ -2,11 +2,13 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Threading;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -220,12 +222,13 @@ namespace Stellamod.Core.LunarLightingSystem
 
             FindPointLightSourcesFromTiles();
 
-            //Process all point lights in parallel
             //Since we're using a data oriented structure this is now thread safe! We wouldn't have been able to do that before
-            for (int i = 0; i < MAX_POINT_LIGHTS; i++)
-            {
-                ProcessLight(i);
-            }
+            FastParallel.For(0, MAX_POINT_LIGHTS, delegate (int start, int end, object context) {
+                for (int j = start; j < end; j++)
+                {
+                    ProcessLight(j);
+                }
+            }); 
         }
 
         public static Matrix CreateLightViewMatrix(Vector2 position, float radius)
@@ -345,11 +348,6 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.End();
             graphicsDevice.SetRenderTarget(null);
             graphicsDevice.ScissorRectangle = oldScissor;
-            /*
-            Color[] pixlData = new Color[pointLightRenderTarget.Width * pointLightRenderTarget.Height];
-            pointLightRenderTarget.GetData(pixlData);
-            lightMapAtlasRenderTarget.SetData(0, destinationRect, pixlData, 0, pixlData.Length);
-            */
 
             //Set the light to active
             LightStates[index] = PointLightState.ACTIVE;
