@@ -2,25 +2,21 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Threading;
 using Stellamod.Core.Shaders;
 using System;
-
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.Graphics.Light;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
 
-    public class PointLight
+    public class LegacyPointLight
     {
         private bool _needsUpdating;
         private int _index;
         private int _primitiveCount;
         public const int Max_Shadow_Vertex_Count = 12 * 1000;
-        public PointLight(Vector2 position, Color color, float intensity, float radius, int maxShadowVertexCount = Max_Shadow_Vertex_Count)
+        public LegacyPointLight(Vector2 position, Color color, float intensity, float radius, int maxShadowVertexCount = Max_Shadow_Vertex_Count)
         {
             _needsUpdating = true;
             this.position = position;
