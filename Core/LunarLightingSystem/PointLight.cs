@@ -58,6 +58,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         public void Update()
         {
+           
             CastLight();
             CastShadow();
             _needsUpdating = false;
@@ -73,6 +74,17 @@ namespace Stellamod.Core.LunarLightingSystem
             Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
             cameraTopLeft -= new Vector2(128);
             cameraBottomRight += new Vector2(128);
+            return position.X >= cameraTopLeft.X && position.X <= cameraBottomRight.X && position.Y >= cameraTopLeft.Y && position.Y <= cameraBottomRight.Y;
+        }
+        public bool IsReallyVisible()
+        {
+            Vector2 cameraCenterWorld = Main.Camera.Center;
+            Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+            Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+
+            float range = 512;
+            cameraTopLeft -= new Vector2(range);
+            cameraBottomRight += new Vector2(range);
             return position.X >= cameraTopLeft.X && position.X <= cameraBottomRight.X && position.Y >= cameraTopLeft.Y && position.Y <= cameraBottomRight.Y;
         }
 
@@ -257,6 +269,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         public void BakeLight()
         {
+            shouldBeBaked = false;
             GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
             var shader = PointLightShader.Instance;
             shader.Apply();
@@ -272,6 +285,7 @@ namespace Stellamod.Core.LunarLightingSystem
             CullMode oldCullMode = graphicsDevice.RasterizerState.CullMode;
             SamplerState originalSamplerState = graphicsDevice.SamplerStates[0];
 
+            graphicsDevice.DepthStencilState = DepthStencilState.None;
             graphicsDevice.RasterizerState.CullMode = CullMode.None;
             graphicsDevice.BlendState = BlendState.Additive;
             graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;

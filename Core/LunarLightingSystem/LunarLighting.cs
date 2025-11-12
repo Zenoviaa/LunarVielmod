@@ -12,6 +12,7 @@ using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static log4net.Appender.ColoredConsoleAppender;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
@@ -99,12 +100,14 @@ namespace Stellamod.Core.LunarLightingSystem
         private static RenderTarget2D _pointLightRT;
         private static RenderTarget2D _lightMapAtlasRT;
         private static RenderTarget2D _tempLightMapAtlasRT;
+        private static Texture2D _lightMapAtlasTexture;
         private static Queue<Rectangle> _freeAtlasRectangles;
 
         private static PointLight _sunPointLight;
         private static PointLight _playerPointLight;
         private static Dictionary<Point, PointLight> _pointLights;
 
+        private static List<PointLight> _lightsToKill;
         private static List<ILightEmitter> _emitters;
         private static List<IBackLightModifier> _backLightModifiers;
 
@@ -121,6 +124,7 @@ namespace Stellamod.Core.LunarLightingSystem
         public const int Max_Ambient_Lights = 2000;
         public override void Load()
         {
+            _lightsToKill = new List<PointLight>();
             _backLightModifiers = new List<IBackLightModifier>();
             _emitters = new List<ILightEmitter>();
            
@@ -155,12 +159,16 @@ namespace Stellamod.Core.LunarLightingSystem
         public override void ClearWorld()
         {
             base.ClearWorld();
+            ClearLightingData();
+        }
+
+        private static void ClearLightingData()
+        {
             _pointLights.Clear();
             _emitters.Clear();
             _backLightModifiers.Clear();
             ClearAmbientLights();
         }
-
         private void NoAddLight(On_Lighting.orig_AddLight_Vector2_float_float_float orig, Vector2 position, float r, float g, float b)
         {
             /*
@@ -219,8 +227,6 @@ namespace Stellamod.Core.LunarLightingSystem
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
 
 
-
-           
             spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
 
@@ -228,29 +234,10 @@ namespace Stellamod.Core.LunarLightingSystem
 
             spriteBatch.End();
 
-
-            if (Main.mouseRight && Main.mouseRightRelease)
-            {
-                CreateAtlasRectangles();
-                _pointLights.Clear();
-                Console.WriteLine("Clear Atlas");
-            } else
-            {
-
-                BakePointLights();
-            }
-                //Testing
-                /*
-              spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            BakePointLights();
 
 
-
-              spriteBatch.Draw(_lightMapAtlasRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
-
-              spriteBatch.End();
-                 */
-
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
          
             Texture2D glowTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SoftGlow").Value;
             Vector2 drawOrigin = glowTexture.Size() / 2f;
@@ -333,6 +320,16 @@ namespace Stellamod.Core.LunarLightingSystem
             }
         }
 
+        private static bool IsLightingTooFar(PointLight pointLight)
+        {
+            if (!pointLight.IsReallyVisible())
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         private static void CalculatePointLightSources()
         {
 
@@ -358,6 +355,21 @@ namespace Stellamod.Core.LunarLightingSystem
 
             Point topLeftTile = cameraTopLeft.ToTileCoordinates();
             Point bottomRightTile = cameraBottomRight.ToTileCoordinates();
+
+            _lightsToKill.Clear();
+            foreach (var kvp in _pointLights)
+            {
+                PointLight pointLight = kvp.Value;
+                if (IsLightingTooFar(pointLight))
+                {
+                    _lightsToKill.Add(pointLight);
+                }
+            }
+
+            foreach(var item in _lightsToKill)
+            {
+                UnBake(item);
+            }
 
             for (int x = topLeftTile.X; x < bottomRightTile.X; x++)
             {
@@ -391,12 +403,7 @@ namespace Stellamod.Core.LunarLightingSystem
                             myLight.Update();
                         }
                     } 
-                    else if (!TileID.Sets.Torch[tile.TileType] && _pointLights.ContainsKey(lightTilePoint))
-                    {
 
-                        //Removing lights that no longer exist :p
-                        _pointLights.Remove(lightTilePoint);
-                    }
 
                     if (tile.LiquidType == LiquidID.Lava)
                     {
@@ -449,6 +456,15 @@ namespace Stellamod.Core.LunarLightingSystem
 
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             SpriteBatch spriteBatch = Main.spriteBatch;
+
+
+            if (Main.mouseRight && Main.mouseRightRelease)
+            {
+
+            }
+
+
+
             _updateTimer--;
             if (_updateTimer <= -1)
                 _updateTimer = -1;
@@ -621,7 +637,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private static void BakePointLights()
         {
             int bakedThisFrame = 0;
-            int maxPointLightsToBakePerFrame = 3;
+            int maxPointLightsToBakePerFrame = 1;
 
             foreach (var kvp in _pointLights)
             {
@@ -663,7 +679,7 @@ namespace Stellamod.Core.LunarLightingSystem
             Vector2 drawOrigin = atlasRectangle.Size() / 2f;
             float scale = DownSamples;
     
-            spriteBatch.Draw(_lightMapAtlasRT, pointLight.position - Main.screenPosition, atlasRectangle, Color.White, 0, drawOrigin, scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(_tempLightMapAtlasRT, pointLight.position - Main.screenPosition, atlasRectangle, Color.White, 0, drawOrigin, scale, SpriteEffects.None, 0);
         }
 
         private static void RenderPointLightRealtime(PointLight pointLight)
@@ -696,9 +712,18 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.End();
             graphicsDevice.SetRenderTarget(null);
         }
+        private static void UnBake(PointLight pointLight)
+        {
+            if (pointLight.atlasRectangle == Rectangle.Empty)
+                return;
 
+            _freeAtlasRectangles.Enqueue(pointLight.atlasRectangle);
+        }
         private static void BakePointLight(PointLight pointLight)
         {
+            if (!pointLight.shouldBeBaked)
+                return;
+
             _updateTimer = 5;
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -706,22 +731,21 @@ namespace Stellamod.Core.LunarLightingSystem
             graphicsDevice.SetRenderTarget(_pointLightRT);
             graphicsDevice.Clear(Color.Black);
             pointLight.BakeLight();
-            graphicsDevice.SetRenderTarget(_tempLightMapAtlasRT);
 
+            graphicsDevice.SetRenderTarget(_tempLightMapAtlasRT);
+    
             SetAtlasRectangle(pointLight);
             Rectangle rectangle = pointLight.atlasRectangle;
             Vector2 location = new Vector2(rectangle.X, rectangle.Y);
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+
+  
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(_pointLightRT, location, null, Color.White, 0, Vector2.Zero, 1 / (float)DownSamples, SpriteEffects.None, 0);
             spriteBatch.End();
         }
 
         private static void SetAtlasRectangle(PointLight pointLight)
         {
-            //Just incase
-            if (!pointLight.shouldBeBaked)
-                return;
-
             //So what do we do if there's no free rectangles?
             if(_freeAtlasRectangles.Count > 0)
             {
@@ -749,7 +773,7 @@ namespace Stellamod.Core.LunarLightingSystem
                     SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
             _tempLightMapAtlasRT = new RenderTarget2D(Main.graphics.GraphicsDevice, MaxAtlasSize, MaxAtlasSize, false,
                   SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
-
+            _lightMapAtlasTexture = new Texture2D(Main.graphics.GraphicsDevice, MaxAtlasSize, MaxAtlasSize, false, SurfaceFormat.Color);
             CreateAtlasRectangles();
             _initAtlas = true;
         }
@@ -757,12 +781,13 @@ namespace Stellamod.Core.LunarLightingSystem
         private static void CreateAtlasRectangles()
         {
             _freeAtlasRectangles = new Queue<Rectangle>();
-
+            Color[] black = new Color[_lightMapAtlasTexture.Width * _lightMapAtlasTexture.Height];
+            _lightMapAtlasTexture.SetData(0, null, black, 0, black.Length);
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             graphicsDevice.SetRenderTarget(_lightMapAtlasRT);
             graphicsDevice.Clear(Color.Black);
             graphicsDevice.SetRenderTarget(_tempLightMapAtlasRT);
-            graphicsDevice.Clear(Color.Black);
+            graphicsDevice.Clear(Color.Transparent);
             int pSize = MaxPointLightSize / DownSamples;
             int maxX = MaxAtlasSize / pSize;
             int maxY = MaxAtlasSize / pSize;
