@@ -76,10 +76,20 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             if (!ShouldRender())
                 return;
+            if (Main.mouseMiddle && Main.mouseMiddleRelease)
+            {
+                Main.mouseMiddleRelease = false;
+                GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+                graphicsDevice.SetRenderTarget(_tempLightMapAtlasRT);
+                graphicsDevice.Clear(Color.Transparent);
+
+            }
+
+
             //PreviewLightMaps();
             DrawAccumulatedLightMapToScreen();
             DrawSoftGlows();
-            //DrawAtlasToScreen();
+          //  DrawAtlasToScreen();
         }
 
         private static void DrawAtlasToScreen()
@@ -253,6 +263,7 @@ namespace Stellamod.Core.LunarLightingSystem
             SunLightManager.RenderSunLight();
 
             SpriteBatch spriteBatch = Main.spriteBatch;
+            var effect = PointLightSoftenShader.Instance.Effect;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
 
@@ -273,7 +284,9 @@ namespace Stellamod.Core.LunarLightingSystem
                 Vector2 position = pointLightData.position;
                 Vector2 drawOrigin = atlasRectangle.Size() / 2f;
                 float scale = PointLightManager.POINT_LIGHT_DOWN_SAMPLES;
-                spriteBatch.Draw(_tempLightMapAtlasRT, position - Main.screenPosition, atlasRectangle, Color.White, 0, drawOrigin, scale, SpriteEffects.None, 0);
+
+                for(int k = 0; k < 1; k++)
+                    spriteBatch.Draw(_tempLightMapAtlasRT, position - Main.screenPosition, atlasRectangle, Color.White, 0, drawOrigin, scale, SpriteEffects.None, 0);
             }
 
             spriteBatch.End();

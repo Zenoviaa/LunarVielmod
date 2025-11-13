@@ -94,10 +94,10 @@ namespace Stellamod.Core.DungeonGeneration
     [Flags]
     public enum Door
     {
-        Left,
-        Right,
-        Up,
-        Down
+        Left = 0,
+        Right = 1,
+        Up = 2,
+        Down = 4
     }
     public class DoorSerializer : TagSerializer<Door, TagCompound>
     {

@@ -147,3 +147,8 @@ DisableMinimapDraws: {
 	Tooltip: ""
 	Label: Disable Minimap Draws
 }
+
+DisableTileRendering: {
+	Label: Disable Tile Rendering
+	Tooltip: ""
+}

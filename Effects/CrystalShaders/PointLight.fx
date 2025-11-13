@@ -40,10 +40,10 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     baseUV *= 2.0;
     float dist = length(float2(baseUV.x, baseUV.y));
     
-    float attenuation = 1.0f - dist;
-    diffuseLight.rgb += lightColor * lightIntensity * attenuation;
-    diffuseLight *= attenuation;
-    return diffuseLight;
+    float attenuation = lerp(1.0, 0.0, saturate(dist));
+    diffuseLight.rgb += lightColor * attenuation;
+   
+    return diffuseLight * attenuation;
 }
 
 

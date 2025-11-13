@@ -146,7 +146,8 @@ namespace Stellamod.Core.LunarLightingSystem
                         {
                             Vector2 position = lightTilePoint.ToWorldCoordinates();
                             Color lightColor = Lighting.GetColor(x, y);
-                            PointLightData pointLightData = new PointLightData(lightColor, position, 1f, 800);
+                            lightColor.A = 1;
+                            PointLightData pointLightData = new PointLightData(lightColor, position, 0.5f, 800);
                             int index = AddPointLight(pointLightData);
                             if (index == -1)
                                 continue;
@@ -204,7 +205,7 @@ namespace Stellamod.Core.LunarLightingSystem
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
             if (!config.BeamingLights)
                 return;
-
+ 
 
             //The last index in the array is reserved for the player light and needs to update every frame
             //So it'll update first, and will always be active, it should never bake, it's a special light
@@ -214,7 +215,7 @@ namespace Stellamod.Core.LunarLightingSystem
             playerLightData.intensity = 1;
             playerLightData.radius = GetPlayerLightRadius();
             LightStates[MAX_POINT_LIGHTS - 1] = PointLightState.CUSTOM;
-
+            ProcessLight(MAX_POINT_LIGHTS - 1);
             //We don't need to check for lights every single frame either
             //It won't be noticeable doing this every few frames instead
             if (Main.GameUpdateCount % 4 != 0)
@@ -325,6 +326,7 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.Draw(pointLightRenderTarget, Vector2.Zero, Color.White);
             spriteBatch.End();
         }
+
         public static void BakeLight(int index, RenderTarget2D pointLightRenderTarget, RenderTarget2D lightMapAtlasRenderTarget)
         {
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
@@ -335,16 +337,22 @@ namespace Stellamod.Core.LunarLightingSystem
             BakeLightToRenderTarget(index);
 
             graphicsDevice.SetRenderTarget(lightMapAtlasRenderTarget);
+         
 
             Rectangle destinationRect = LightAtlasRectangles[index];
             Vector2 location = destinationRect.Location.ToVector2();
 
             Rectangle oldScissor = graphicsDevice.ScissorRectangle;
             graphicsDevice.ScissorRectangle = destinationRect;
-   
+
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, ScissorRasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(pointLightRenderTarget, location, null, Color.White, 0, Vector2.Zero, 1 / (float)POINT_LIGHT_DOWN_SAMPLES, SpriteEffects.None, 0);
+            spriteBatch.End();
+
+          
+            spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply, SamplerState.PointClamp, null, ScissorRasterizer, PointLightSoftenShader.Instance.Effect, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Draw(pointLightRenderTarget, destinationRect, null, Color.White);
             spriteBatch.End();
             graphicsDevice.SetRenderTarget(null);
             graphicsDevice.ScissorRectangle = oldScissor;

@@ -9684,3 +9684,8 @@ TreeGrower2: {
 	DisplayName: Tree Grower2
 	Tooltip: ""
 }
+
+DungeonGenerationTester: {
+	Tooltip: ""
+	DisplayName: Dungeon Generation Tester
+}
