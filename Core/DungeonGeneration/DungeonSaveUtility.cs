@@ -90,6 +90,7 @@ namespace Stellamod.Core.DungeonGeneration
             for (int r = 0; r < rectangles.Length; r++)
             {
                 Rectangle rectangle = rectangles[r];
+                Dust.QuickBox(rectangle.TopLeft(), rectangle.BottomRight(), 64, Color.White, (Dust d) => { });
                 Point bottomLeft = new Point(rectangle.Left, rectangle.Bottom);
                 Point topRight = new Point(rectangle.Right, rectangle.Top);
 
