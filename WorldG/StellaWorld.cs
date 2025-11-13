@@ -36,6 +36,7 @@ using Stellamod.Tiles.Veil;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.Biomes;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
@@ -248,7 +249,18 @@ namespace Stellamod.WorldG
                 if (!structures.CanPlace(rectangle))
                     continue;
 
-
+                //Override dungeon variables
+                GenVars.dungeonLocation = point.X;
+                GenVars.dungeonX = point.X;
+                GenVars.dungeonY = point.Y;
+            
+                //Spawn old man
+                int npcType = NPCID.OldMan;
+                int num297 = NPC.NewNPC(new EntitySource_WorldGen(), point.X, point.Y, npcType);
+                Main.npc[num297].homeTileX = Main.spawnTileX;
+                Main.npc[num297].homeTileY = Main.spawnTileY;
+                Main.npc[num297].direction = 1;
+                Main.npc[num297].homeless = true;
                 for (int r = 0; r < map.Length; r++)
                 {
                     Room room = map[r];
@@ -262,6 +274,7 @@ namespace Stellamod.WorldG
                     bottomLeft.Y += tileY;
                     bottomLeft.Y -= map[0].bounds.Height;
                     Structurizer.ReadStruct(bottomLeft, room.prefab, tileBlend);
+                    Structurizer.TryPlaceAndProtectStructure(bottomLeft, room.prefab);
                 }
                 placed = true;
             }
@@ -1590,7 +1603,7 @@ namespace Stellamod.WorldG
             progress.Message = "Moving the dungeon, smh";
 
             //GenVars.dungeonLocation is the x value of the dungeon
-            GenVars.dungeonLocation = Main.maxTilesX - 1000;
+          
         }
 
         private void WorldGenFabledTrees(GenerationProgress progress, GameConfiguration configuration)
