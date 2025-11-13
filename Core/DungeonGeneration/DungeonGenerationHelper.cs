@@ -6,13 +6,28 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 namespace Stellamod.Core.DungeonGeneration
 {
+    public class AnchorTopRight : DoorItem
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            doorToPlace = Door.AnchorTopRight;
+        }
+    }
+    public class AnchorBottomLeft : DoorItem
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            doorToPlace = Door.AnchorBottomLeft;
+        }
+    }
     public class DoorLeft : DoorItem
     {
         public override void SetDefaults()
@@ -97,8 +112,11 @@ namespace Stellamod.Core.DungeonGeneration
         Left = 0,
         Right = 1,
         Up = 2,
-        Down = 4
+        Down = 4,
+        AnchorBottomLeft = 8,
+        AnchorTopRight = 16
     }
+
     public class DoorSerializer : TagSerializer<Door, TagCompound>
     {
         public override Door Deserialize(TagCompound tag)
@@ -225,12 +243,18 @@ namespace Stellamod.Core.DungeonGeneration
                 case Door.Down:
                     yOffset = 96;
                     break;
+                case Door.AnchorBottomLeft:
+                    yOffset = 128;
+                    break;
+                case Door.AnchorTopRight:
+                    yOffset = 160;
+                    break;
             }
             Rectangle frame = new Rectangle(0, yOffset, 32, 32);
             return frame;
         }
-  
-       
+
+
         /// <summary>
         /// Saves a door structure to the stream
         /// </summary>
