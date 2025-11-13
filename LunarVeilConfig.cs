@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Xna.Framework;
 using System;
 using System.ComponentModel;
 using Terraria;
@@ -13,13 +14,43 @@ namespace Stellamod
         {
             base.OnModLoad();
             On_Main.DrawToMap_Section += NoMapSection;
+            On_Main.DrawWaters += NoWaterDraw;
+            On_Main.DrawTileInWater += NoTileWaterDraw;
+            On_Main.DoDraw_Waterfalls += NoWaterfallDraw;
         }
-
         public override void OnModUnload()
         {
             base.OnModUnload();
             On_Main.DrawToMap_Section -= NoMapSection;
+            On_Main.DrawWaters -= NoWaterDraw;
+            On_Main.DrawTileInWater -= NoTileWaterDraw;
+            On_Main.DoDraw_Waterfalls -= NoWaterfallDraw;
         }
+
+        private void NoWaterfallDraw(On_Main.orig_DoDraw_Waterfalls orig, Main self)
+        {
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (config.DisableWaterRendering)
+                return;
+            orig(self);
+        }
+
+        private void NoTileWaterDraw(On_Main.orig_DrawTileInWater orig, Vector2 drawOffset, int x, int y)
+        {
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (config.DisableWaterRendering)
+                return;
+            orig(drawOffset, x, y);
+        }
+
+        private void NoWaterDraw(On_Main.orig_DrawWaters orig, Main self, bool isBackground)
+        {
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (config.DisableWaterRendering)
+                return;
+            orig(self, isBackground);
+        }
+
 
         private void NoMapSection(On_Main.orig_DrawToMap_Section orig, Main self, int secX, int secY)
         {
@@ -138,5 +169,6 @@ namespace Stellamod
         public bool NoLightingEveryFrameOverride;
         public bool DisableMinimapDraws;
         public bool DisableTileRendering;
+        public bool DisableWaterRendering;
     }
 }
