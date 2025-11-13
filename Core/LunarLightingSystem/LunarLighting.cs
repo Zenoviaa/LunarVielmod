@@ -76,14 +76,6 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             if (!ShouldRender())
                 return;
-            if (Main.mouseMiddle && Main.mouseMiddleRelease)
-            {
-                Main.mouseMiddleRelease = false;
-                GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-                graphicsDevice.SetRenderTarget(_tempLightMapAtlasRT);
-                graphicsDevice.Clear(Color.Transparent);
-
-            }
 
 
             //PreviewLightMaps();
