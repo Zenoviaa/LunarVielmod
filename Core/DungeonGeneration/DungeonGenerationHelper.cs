@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,6 +11,22 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.Core.DungeonGeneration
 {
+    public class Boss : DoorItem
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            doorToPlace = Door.Boss;
+        }
+    }
+    public class Start : DoorItem
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            doorToPlace = Door.Start;
+        }
+    }
     public class AnchorTopRight : DoorItem
     {
         public override void SetDefaults()
@@ -105,41 +120,7 @@ namespace Stellamod.Core.DungeonGeneration
             return false;
         }
     }
-
-    [Flags]
-    public enum Door
-    {
-        Left = 0,
-        Right = 1,
-        Up = 2,
-        Down = 4,
-        AnchorBottomLeft = 8,
-        AnchorTopRight = 16
-    }
-
-    public struct PlacedDoor
-    {
-        public Point point;
-        public Door door;
-      
-    }
-
-    public class DoorSerializer : TagSerializer<Door, TagCompound>
-    {
-        public override Door Deserialize(TagCompound tag)
-        {
-            return (Door)tag.Get<int>("door");
-        }
-
-        public override TagCompound Serialize(Door value)
-        {
-            return new TagCompound
-            {
-                ["door"] = (int)value
-            };
-        }
-    }
-
+   
     public class DungeonGenerationHelper : ModSystem
     {
         public const string FileExtension = ".drs";
@@ -158,9 +139,14 @@ namespace Stellamod.Core.DungeonGeneration
             On_Main.DrawDust -= DrawDebug;
         }
 
+        
         private void DrawDebug(On_Main.orig_DrawDust orig, Main self)
         {
             orig(self);
+            if (_doorsInWorld.Count <= 0)
+                return;
+
+
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(SpriteSortMode.Deferred,
                 BlendState.AlphaBlend,
@@ -276,6 +262,12 @@ namespace Stellamod.Core.DungeonGeneration
                 case Door.AnchorTopRight:
                     yOffset = 160;
                     break;
+                case Door.Start:
+                    yOffset = 192;
+                    break;
+                case Door.Boss:
+                    yOffset = 224;
+                    break;
             }
             Rectangle frame = new Rectangle(0, yOffset, 32, 32);
             return frame;
@@ -339,7 +331,27 @@ namespace Stellamod.Core.DungeonGeneration
                 PlaceDoorInWorld(point, door);
             }
         }
+        public static PlacedDoor[] DoorsFromStream(Stream stream)
+        {
 
+            List<PlacedDoor> placedDoors = new List<PlacedDoor>();
+            //Read the nested tag compound or whatever
+            TagCompound root = TagIO.FromStream(stream, compressed: true);
+            foreach (var tag in root)
+            {
+                TagCompound element = (TagCompound)tag.Value;
+                int xOffset = element.Get<int>("_x");
+                int yOffset = element.Get<int>("_y");
+                Door door = element.Get<Door>("_door");
+                PlacedDoor placedDoor = new PlacedDoor
+                {
+                    door = door,
+                    point = new Point(xOffset, yOffset)
+                };
+                placedDoors.Add(placedDoor);    
+            }
+            return placedDoors.ToArray();
+        }
         public override void ClearWorld()
         {
             base.ClearWorld();

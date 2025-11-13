@@ -1,11 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Colosseum.Common;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;
@@ -126,7 +123,7 @@ namespace Stellamod.Core.DungeonGeneration
     public class DungeonGenerationTester : ModItem
     {
         private int _useIndex;
-  
+
         public override void SetStaticDefaults()
         {
             /* Tooltip.SetDefault("Meatballs" +
@@ -169,23 +166,74 @@ namespace Stellamod.Core.DungeonGeneration
         public bool isConnected;
     }
 
+    public enum RoomType : byte
+    {
+        Start=0,
+        Boss=1
+    }
     public class Room
     {
         public Rectangle bounds;
         public Doorway[] doors;
-        public Door doorsFlag;
+        public DoorsFlag doorsFlag;
         public int connectionCount;
-        public Room previousRoom;
+        public string prefab;
+        public RoomType roomType;
+        public Room()
+        {
+
+        }
+
+        public Room(string prefab, Rectangle bounds, PlacedDoor[] placedDoors)
+        {
+            this.prefab = prefab;
+            this.bounds = bounds;
+            doors = new Doorway[placedDoors.Length];
+            doorsFlag = DoorsFlag.None;
+            for(int d = 0; d < doors.Length; d++)
+            {
+                doors[d].localX = placedDoors[d].point.X;
+
+                //This looks weird, but we need to invert the Y because it places from bottom left not top left
+                //And this system works with regular rectangles
+                doors[d].localY = bounds.Height - placedDoors[d].point.Y;
+                doors[d].door = placedDoors[d].door;
+                switch (doors[d].door)
+                {
+                    case Door.Left:
+                        doorsFlag |= DoorsFlag.Left; 
+                        break;
+                    case Door.Right:
+                        doorsFlag |= DoorsFlag.Right;
+                        break;
+                    case Door.Up:
+                        doorsFlag |= DoorsFlag.Up;
+                        break;
+                    case Door.Down:
+                        doorsFlag |= DoorsFlag.Down;
+                        break;
+                    case Door.Start:
+                        roomType = RoomType.Start;
+                        break;
+                    case Door.Boss:
+                        roomType = RoomType.Boss;
+                        break;
+                }
+            }
+        }
+
         public Room Clone()
         {
             Room room = new Room();
             room.bounds = bounds;
             room.doors = new Doorway[doors.Length];
-            for(int i = 0; i < room.doors.Length; i++)
+            for (int i = 0; i < room.doors.Length; i++)
             {
                 room.doors[i] = doors[i];
             }
             room.doorsFlag = doorsFlag;
+            room.prefab = prefab;
+            room.roomType = roomType;
             return room;
         }
 
@@ -323,10 +371,10 @@ namespace Stellamod.Core.DungeonGeneration
             UnifiedRandom random = new UnifiedRandom();
             Room roomToSpam = new Room();
             roomToSpam.bounds = new Rectangle(0, 0, 16, 16);
-            roomToSpam.doorsFlag = Door.Left | Door.Right | Door.Up | Door.Down;
+            roomToSpam.doorsFlag = DoorsFlag.Left | DoorsFlag.Right | DoorsFlag.Up | DoorsFlag.Down;
 
             roomToSpam.doors = new Doorway[4];
-            for(int i = 0; i < roomToSpam.doors.Length; i++)
+            for (int i = 0; i < roomToSpam.doors.Length; i++)
             {
                 roomToSpam.doors[i] = new Doorway();
             }
@@ -351,7 +399,7 @@ namespace Stellamod.Core.DungeonGeneration
             return Generate(prefabs, random);
         }
 
-    
+
 
         //So how do we want to generate the dungeon?
         public static Room[] Generate(Room[] prefabs, UnifiedRandom random)
@@ -361,7 +409,7 @@ namespace Stellamod.Core.DungeonGeneration
             //Before we do anything lets create a lookup table of rooms that have doors
             //That'll make the room hunt easier
             Room[][] roomLookup = new Room[4][];
- 
+
 
             List<Room> leftDoorsList = new List<Room>();
             List<Room> rightDoorsList = new List<Room>();
@@ -369,7 +417,7 @@ namespace Stellamod.Core.DungeonGeneration
             List<Room> downDoorsList = new List<Room>();
             for (int i = 0; i < prefabs.Length; i++)
             {
-                Room  prefab = prefabs[i];
+                Room prefab = prefabs[i];
                 if (prefab.doorsFlag.HasFlag(Door.Left))
                 {
                     leftDoorsList.Add(prefab);
@@ -415,7 +463,7 @@ namespace Stellamod.Core.DungeonGeneration
             Room startingRoom = GetRandomRoom(prefabs, random).Clone();
             map.Add(startingRoom);
             canHorizontalFromt.Add(true);
-     
+
 
             //Just incase we want to backtrack
             int maxAttempts = 100000;
@@ -424,7 +472,7 @@ namespace Stellamod.Core.DungeonGeneration
 
             bool HasOverlapWithMap(Rectangle rectangle)
             {
-                for(int i = 0; i < map.Count; i++)
+                for (int i = 0; i < map.Count; i++)
                 {
                     Rectangle otherBounds = map[i].bounds;
                     if (rectangle.Intersects(otherBounds))
@@ -442,7 +490,7 @@ namespace Stellamod.Core.DungeonGeneration
                 if (map.Count >= roomCount)
                     break;
 
-                if(map.Count < snakeLength)
+                if (map.Count < snakeLength)
                 {
                     if (currentRoom.connectionCount >= 3)
                     {
@@ -482,7 +530,6 @@ namespace Stellamod.Core.DungeonGeneration
                     nextRoom.ConnectTo(currentRoom, ref doorWay);
                     map.Add(nextRoom);
 
-                    nextRoom.previousRoom = currentRoom;
                     previousRoom = currentRoom;
                     currentRoom = nextRoom;
 
@@ -525,7 +572,7 @@ namespace Stellamod.Core.DungeonGeneration
                         continue;
                     if (doorWay.isConnected)
                         continue;
-    
+
                     Room nextRoom = GetRandomRoomWithOppositeDoor(roomLookup, random, doorWay.door).Clone();
                     ref Doorway otherDoorway = ref nextRoom.doors[nextRoom.GetOppositeDoorway(doorWay.door)];
                     nextRoom.MoveTo(currentRoom, ref doorWay);
@@ -535,7 +582,7 @@ namespace Stellamod.Core.DungeonGeneration
                     nextRoom.ConnectTo(currentRoom, ref doorWay);
                     map.Add(nextRoom);
 
-                    nextRoom.previousRoom = currentRoom;
+
                     previousRoom = currentRoom;
                     currentRoom = nextRoom;
                     canHorizontalFromt.Add(true);

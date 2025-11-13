@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Colosseum.Common;
 using System;
@@ -48,7 +49,7 @@ namespace Stellamod.Core.DungeonGeneration
     }
 
     /// <summary>
-    /// Helper class for saving the new dungeon generation
+    /// Helper class for saving/loading the new dungeon generation
     /// </summary>
     public static class DungeonSaveUtility
     {
@@ -96,7 +97,7 @@ namespace Stellamod.Core.DungeonGeneration
 
                 //Order by just their x distance, on need to consider y
                 //If we consider y we may have a rare bug where it uses a different point
-                List<PlacedDoor> orderedPoints = topRight.OrderBy(x => MathF.Abs(x.point.Y - anchor.point.Y)).ToList();
+                List<PlacedDoor> orderedPoints = topRight.OrderBy(x => MathF.Abs(x.point.X - anchor.point.X)).ToList();
 
                 //Remove all elements that are either to the left or below this, because that would be an invalid room
                 //So this guarantees it gets the closest one that is above/right of it
@@ -142,6 +143,41 @@ namespace Stellamod.Core.DungeonGeneration
                 TriggerStructurizer.SaveStruct(structurePath, bottomLeft, topRight);
                 TileEntityStructurizer.SaveStruct(structurePath, bottomLeft, topRight);
             }
+        }
+
+        /// <summary>
+        /// Returns an array of all prefabs from the dungeon files
+        /// </summary>
+        /// <returns></returns>
+        public static Room[] ReadDungeonPrefabsFromFiles()
+        {
+            Mod mod = Stellamod.Instance;
+            List<Room> rooms = new List<Room>();
+            foreach (var file in mod.GetFileNames())
+            {
+                //Dungeon file
+                if (file.Contains(DungeonGenerationHelper.FileExtension))
+                {
+                    string structureFile = file.Replace(DungeonGenerationHelper.FileExtension, ".str");
+                    string prefab = structureFile.Replace(".str", string.Empty);
+
+                    Rectangle rectangle = default;
+                    using (var stream = mod.GetFileStream(structureFile))
+                    {
+                        rectangle = Structurizer.ReadRectangle(stream); 
+                    }
+                    PlacedDoor[] placedDoors;
+                    using (var stream = mod.GetFileStream(file))
+                    {
+                        placedDoors = DungeonGenerationHelper.DoorsFromStream(stream);
+                    }
+
+                   
+                    Room room = new Room(prefab, rectangle, placedDoors);
+                    rooms.Add(room);
+                }
+            }
+            return rooms.ToArray();
         }
     }
 }
