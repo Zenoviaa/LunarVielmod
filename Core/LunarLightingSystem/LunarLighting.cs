@@ -79,7 +79,7 @@ namespace Stellamod.Core.LunarLightingSystem
             //PreviewLightMaps();
             DrawAccumulatedLightMapToScreen();
             DrawSoftGlows();
-            DrawAtlasToScreen();
+            //DrawAtlasToScreen();
         }
 
         private static void DrawAtlasToScreen()
