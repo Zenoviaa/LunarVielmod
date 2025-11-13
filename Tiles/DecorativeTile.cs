@@ -14,6 +14,12 @@ namespace Stellamod.Tiles
         public override void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
         {
             base.KillTile(i, j, type, ref fail, ref effectOnly, ref noItem);
+            if (effectOnly)
+                return;
+            if (fail)
+                return;
+
+
             Tile tile = Main.tile[i, j];
             if (tile.WallType != 0)
             {
@@ -192,7 +198,7 @@ namespace Stellamod.Tiles
             StructureTexture = GetType().FullName + "_S";
             StructureTexture = StructureTexture.Replace(".", "/");
             Main.wallHouse[Type] = false;
-
+ 
             AddMapEntry(new Color(200, 200, 200));
         }
 
