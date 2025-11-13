@@ -117,6 +117,13 @@ namespace Stellamod.Core.DungeonGeneration
         AnchorTopRight = 16
     }
 
+    public struct PlacedDoor
+    {
+        public Point point;
+        public Door door;
+      
+    }
+
     public class DoorSerializer : TagSerializer<Door, TagCompound>
     {
         public override Door Deserialize(TagCompound tag)
@@ -170,6 +177,26 @@ namespace Stellamod.Core.DungeonGeneration
                 spriteBatch.Draw(arrowTexture, drawPosition, frame, Color.White, 0, drawOrigin, 1, SpriteEffects.None, 0);
             }
             spriteBatch.End();
+        }
+
+        /// <summary>
+        /// Gets all anchors that are placed in the world
+        /// </summary>
+        /// <returns></returns>
+        public static PlacedDoor[] GetAnchors()
+        {
+            List < PlacedDoor> anchors = new List<PlacedDoor>();
+            foreach(var kvp in _doorsInWorld)
+            {
+                PlacedDoor placedDoor = new PlacedDoor
+                {
+                    point = kvp.Key,
+                    door = kvp.Value
+                };
+                if(placedDoor.door == Door.AnchorBottomLeft || placedDoor.door == Door.AnchorTopRight)
+                    anchors.Add(placedDoor);
+            }
+            return anchors.ToArray();
         }
 
         public static bool DoorInRectangle(Point bottomLeft, Point topRight)
