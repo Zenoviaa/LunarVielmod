@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;
@@ -460,14 +461,25 @@ namespace Stellamod.Core.DungeonGeneration
             List<Room> map = new List<Room>();
             List<bool> canHorizontalFromt = new List<bool>();
 
-            Room startingRoom = GetRandomRoom(prefabs, random).Clone();
+            Room startingRoom = prefabs[0];
+         
+            for (int i = 0; i < prefabs.Length; i++)
+            {
+                Room room = prefabs[i];
+                if (room.roomType == RoomType.Start)
+                {
+                    startingRoom = room.Clone();
+                    break;
+                }
+            }
+
             map.Add(startingRoom);
             canHorizontalFromt.Add(true);
 
 
             //Just incase we want to backtrack
             int maxAttempts = 100000;
-            int direction = 0;
+            int direction = 1;
             int directionCounter = 0;
 
             bool HasOverlapWithMap(Rectangle rectangle)
@@ -590,6 +602,47 @@ namespace Stellamod.Core.DungeonGeneration
 
 
 
+            }
+
+
+            //Place boss room
+
+            Room bossRoom = prefabs[0];
+            for (int i = 0; i < prefabs.Length; i++)
+            {
+                Room room = prefabs[i];
+                if (room.roomType == RoomType.Boss)
+                {
+                    bossRoom = room.Clone();
+                    break;
+                }
+            }
+
+           
+            List<Room> orderedRooms = map.OrderBy(x => x.bounds.Location.Y).ToList();
+            for(int i = orderedRooms.Count - 1; i >= 0; i--)
+            {
+
+                Room roomToCheck = orderedRooms[i];
+                int doorWayIndex = roomToCheck.GetRandomDoorway(random);
+                ref Doorway doorWay = ref roomToCheck.doors[doorWayIndex];
+                if (doorWay.isConnected)
+                    continue;
+
+                int opp = bossRoom.GetOppositeDoorway(doorWay.door);
+                if(opp == -1)
+                {
+                    continue;
+                }
+
+                ref Doorway otherDoorway = ref bossRoom.doors[opp];
+                bossRoom.MoveTo(roomToCheck, ref doorWay);
+                if (HasOverlapWithMap(bossRoom.bounds))
+                    continue;
+
+                bossRoom.ConnectTo(roomToCheck, ref doorWay);
+                map.Add(bossRoom);
+                break;
             }
 
             return map.ToArray();
