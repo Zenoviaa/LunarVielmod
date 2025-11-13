@@ -33,6 +33,7 @@ using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
 using Stellamod.Tiles.Illuria;
 using Stellamod.Tiles.Veil;
+using Stellamod.TilesNew.MothlightTiles;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -222,7 +223,7 @@ namespace Stellamod.WorldG
             while (!placed && attempts++ < 10000000)
             {
                 int centerX = Main.maxTilesX - Main.maxTilesX / 6;
-                int smx = WorldGen.genRand.Next(centerX - 1500, centerX + 1500);
+                int smx = WorldGen.genRand.Next(centerX - 250, centerX + 250);
                 int smy = ((int)(Main.worldSurface - 200));
 
                 // We go down until we hit a solid tile or go under the world's surface
@@ -249,6 +250,17 @@ namespace Stellamod.WorldG
                 if (!structures.CanPlace(rectangle))
                     continue;
 
+
+    
+                int width = rectangle.Width;
+                width -= 50;
+                int height = rectangle.Height;
+
+
+                Point rectanglePoint = point;
+                rectanglePoint.X -= width / 2;
+                rectanglePoint.Y += 30;
+                WorldUtils.Gen(rectanglePoint, new Shapes.Rectangle(width, height), new Actions.SetTile((ushort)ModContent.TileType<MothlightBrick>()));
                 //Override dungeon variables
                 GenVars.dungeonLocation = point.X;
                 GenVars.dungeonX = point.X;
@@ -257,8 +269,8 @@ namespace Stellamod.WorldG
                 //Spawn old man
                 int npcType = NPCID.OldMan;
                 int num297 = NPC.NewNPC(new EntitySource_WorldGen(), point.X, point.Y, npcType);
-                Main.npc[num297].homeTileX = Main.spawnTileX;
-                Main.npc[num297].homeTileY = Main.spawnTileY;
+                Main.npc[num297].homeTileX = point.X;
+                Main.npc[num297].homeTileY = point.Y;
                 Main.npc[num297].direction = 1;
                 Main.npc[num297].homeless = true;
                 for (int r = 0; r < map.Length; r++)

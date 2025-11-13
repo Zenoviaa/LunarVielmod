@@ -434,13 +434,8 @@ namespace Stellamod.Core.DungeonGeneration
 
 
 
-        //So how do we want to generate the dungeon?
-        public static Room[] Generate(Room[] prefabs, UnifiedRandom random)
+        public static Room[][] CreateRoomLookup(Room[] prefabs)
         {
-
-
-            //Before we do anything lets create a lookup table of rooms that have doors
-            //That'll make the room hunt easier
             Room[][] roomLookup = new Room[4][];
 
 
@@ -472,7 +467,16 @@ namespace Stellamod.Core.DungeonGeneration
             roomLookup[1] = rightDoorsList.ToArray();
             roomLookup[2] = upDoorsList.ToArray();
             roomLookup[3] = downDoorsList.ToArray();
+            return roomLookup;
+        }
+        //So how do we want to generate the dungeon?
+        public static Room[] Generate(Room[] prefabs, UnifiedRandom random)
+        {
 
+        
+            //Before we do anything lets create a lookup table of rooms that have doors
+            //That'll make the room hunt easier
+            Room[][] roomLookup = CreateRoomLookup(prefabs);
 
           
             //This function will take an array of prefabs and then output a map.
@@ -718,7 +722,25 @@ namespace Stellamod.Core.DungeonGeneration
                 break;
             }
 
+
+
+
+
+            if (!DoesBossRoomExist(map))
+            {
+                return Generate(prefabs, random);
+            }
             return map.ToArray();
+        }
+        public static bool DoesBossRoomExist(List<Room> map)
+        {
+            for(int m = 0; m < map.Count; m++)
+            {
+                Room room = map[m];
+                if (room.roomType == RoomType.Boss)
+                    return true;
+            }
+            return false;
         }
     }
 }
