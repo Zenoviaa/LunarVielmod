@@ -15,11 +15,10 @@ namespace Stellamod.TilesNew.MothlightTiles
             Main.tileSolid[Type] = true;
             Main.tileMerge[Type][Type] = true;
             Main.tileBlockLight[Type] = true;
-            Main.tileMerge[TileID.Mud][Type] = true;
-            Main.tileMerge[TileID.ClayBlock][Type] = true;
             Main.tileBlendAll[Type] = true;
             Main.tileLighted[Type] = true;
             Main.tileBlockLight[Type] = true;
+            TileID.Sets.CanBeClearedDuringOreRunner[Type] = false;
             LocalizedText name = CreateMapEntryName();
             AddMapEntry(new Color(178, 163, 190), name);
 

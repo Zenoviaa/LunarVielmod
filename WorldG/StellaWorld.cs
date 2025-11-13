@@ -223,7 +223,7 @@ namespace Stellamod.WorldG
             while (!placed && attempts++ < 10000000)
             {
                 int centerX = Main.maxTilesX - Main.maxTilesX / 6;
-                int smx = WorldGen.genRand.Next(centerX - 250, centerX + 250);
+                int smx = WorldGen.genRand.Next(centerX, centerX + 500);
                 int smy = ((int)(Main.worldSurface - 200));
 
                 // We go down until we hit a solid tile or go under the world's surface
@@ -276,7 +276,7 @@ namespace Stellamod.WorldG
                 Point oldManPoint = point;
                 oldManPoint.X += 10;
                 oldManPoint.Y -= 20;
-
+                
                 int npcType = NPCID.OldMan;
                 int num297 = NPC.NewNPC(new EntitySource_WorldGen(), oldManPoint.X, oldManPoint.Y, npcType);
                 Main.npc[num297].homeTileX = oldManPoint.X;
