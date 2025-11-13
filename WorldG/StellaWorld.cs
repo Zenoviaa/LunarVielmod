@@ -260,7 +260,14 @@ namespace Stellamod.WorldG
                 Point rectanglePoint = point;
                 rectanglePoint.X -= width / 2;
                 rectanglePoint.Y += 30;
-                WorldUtils.Gen(rectanglePoint, new Shapes.Rectangle(width, height), new Actions.SetTile((ushort)ModContent.TileType<MothlightBrick>()));
+
+                WorldUtils.Gen(rectanglePoint, new Shapes.Rectangle(width, height),
+                   Actions.Chain(
+                        new Actions.ClearTile(),
+                        new Actions.ClearWall(),
+                        new Actions.SetTile((ushort)ModContent.TileType<MothlightBrick>()))
+                   );
+
                 //Override dungeon variables
                 GenVars.dungeonLocation = point.X;
                 GenVars.dungeonX = point.X;
