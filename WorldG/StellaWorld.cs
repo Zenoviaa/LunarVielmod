@@ -267,17 +267,20 @@ namespace Stellamod.WorldG
                         new Actions.ClearWall(),
                         new Actions.SetTile((ushort)ModContent.TileType<MothlightBrick>()))
                    );
-
                 //Override dungeon variables
                 GenVars.dungeonLocation = point.X;
                 GenVars.dungeonX = point.X;
                 GenVars.dungeonY = point.Y;
-            
+
                 //Spawn old man
+                Point oldManPoint = point;
+                oldManPoint.X += 10;
+                oldManPoint.Y -= 20;
+
                 int npcType = NPCID.OldMan;
-                int num297 = NPC.NewNPC(new EntitySource_WorldGen(), point.X, point.Y, npcType);
-                Main.npc[num297].homeTileX = point.X;
-                Main.npc[num297].homeTileY = point.Y;
+                int num297 = NPC.NewNPC(new EntitySource_WorldGen(), oldManPoint.X, oldManPoint.Y, npcType);
+                Main.npc[num297].homeTileX = oldManPoint.X;
+                Main.npc[num297].homeTileY = oldManPoint.Y;
                 Main.npc[num297].direction = 1;
                 Main.npc[num297].homeless = true;
                 for (int r = 0; r < map.Length; r++)
