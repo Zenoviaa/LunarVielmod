@@ -22,6 +22,7 @@ namespace Stellamod.Core.LunarLightingSystem
         public const int POINT_LIGHT_MAX_SHADOW_VERTEX_COUNT = 12000;
         public const int POINT_LIGHT_DOWN_SAMPLES = 4;
         public const int POINT_LIGHT_TEXTURE_SIZE = 800;
+        public const int MAX_ATLAS_SIZE = 2000;
 
 
         //Set up our data for all of our point lights
@@ -91,13 +92,15 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             int x = 0, y = 0;
             int pointLightSize = POINT_LIGHT_TEXTURE_SIZE / POINT_LIGHT_DOWN_SAMPLES;
+            int numLightsPer = MAX_ATLAS_SIZE / pointLightSize;
+
             for(int i = 0; i < MAX_POINT_LIGHTS; i++)
             {
                 PointLightVertices[i] = new VertexPositionColorTexture[POINT_LIGHT_VERTEX_COUNT];
                 ShadowVertices[i] = new VertexPositionColor[POINT_LIGHT_MAX_SHADOW_VERTEX_COUNT];
                 LightAtlasRectangles[i] = new Rectangle(x * pointLightSize, y * pointLightSize, pointLightSize, pointLightSize);
                 y++;
-                if(y >= 5)
+                if(y >= numLightsPer)
                 {
                     y = 0;
                     x++;
@@ -245,59 +248,53 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private static void RenderLight(int index, Matrix matrix)
         {
+            //First we need to get our data
             ref PointLightData pointLightData = ref PointLights[index];
             ref VertexPositionColorTexture[] lightVertices = ref PointLightVertices[index];
             ref VertexPositionColor[] shadowVertices = ref ShadowVertices[index];
             int primitiveCount = ShadowPrimitiveCount[index];
+
+
             GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
-            var shader = PointLightShader.Instance;
-            shader.Apply();
-
-            shader.TransformMatrix = matrix;
-            foreach (var pass in shader.Effect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-            }
-
-
-            BlendState originalBlendState = graphicsDevice.BlendState;
-            CullMode oldCullMode = graphicsDevice.RasterizerState.CullMode;
-            SamplerState originalSamplerState = graphicsDevice.SamplerStates[0];
-
             graphicsDevice.DepthStencilState = DepthStencilState.None;
             graphicsDevice.RasterizerState.CullMode = CullMode.None;
             graphicsDevice.BlendState = BlendState.Additive;
             graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
 
-            graphicsDevice.DrawUserPrimitives(
-              PrimitiveType.TriangleList, lightVertices, 0, lightVertices.Length / 3);
+            //Apply the shader now that the graphics device is ready
+            //I think the black square issue was just a race condition with the graphics state?
+            var shader = PointLightShader.Instance;
+            shader.TransformMatrix = matrix;
+            foreach (EffectPass pass in shader.Effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                // Set this _after_ Apply, otherwise EffectParameters override it!
+                graphicsDevice.Textures[0] = null;
+                graphicsDevice.DrawUserPrimitives(
+                  PrimitiveType.TriangleList, lightVertices, 0, lightVertices.Length / 3);
 
-            graphicsDevice.RasterizerState.CullMode = oldCullMode;
-            graphicsDevice.BlendState = originalBlendState;
-            graphicsDevice.SamplerStates[0] = originalSamplerState;
+            }
+
 
 
             if (primitiveCount <= 0)
                 return;
 
-            var shadowShader = TileShadowShader.Instance;
-            shadowShader.Apply();
-            shadowShader.TransformMatrix = matrix;
-            foreach (var pass in shadowShader.Effect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-            }
-
-
-            graphicsDevice.RasterizerState.CullMode = CullMode.None;
             graphicsDevice.BlendState = BlendState.AlphaBlend;
 
-            graphicsDevice.DrawUserPrimitives(
-              PrimitiveType.TriangleList, shadowVertices, 0, primitiveCount);
+            var shadowShader = TileShadowShader.Instance;
+            shadowShader.TransformMatrix = matrix;
+            foreach (EffectPass pass in shadowShader.Effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                // Set this _after_ Apply, otherwise EffectParameters override it!
+                graphicsDevice.Textures[0] = null;
+                graphicsDevice.DrawUserPrimitives(
+                      PrimitiveType.TriangleList, shadowVertices, 0, primitiveCount);
 
-            graphicsDevice.RasterizerState.CullMode = oldCullMode;
-            graphicsDevice.BlendState = originalBlendState;
-            graphicsDevice.SamplerStates[0] = originalSamplerState;
+            }
+
+     
         }
         
         private static void RenderLight(int index)
