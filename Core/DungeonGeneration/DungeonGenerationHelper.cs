@@ -331,6 +331,18 @@ namespace Stellamod.Core.DungeonGeneration
                 PlaceDoorInWorld(point, door);
             }
         }
+        public static void ReadStruct(string Path, Point bottomLeft)
+        {
+            var Mod = Stellamod.Instance;
+            string path = Path + FileExtension;
+            if (!Mod.FileExists(path))
+                return;
+            using (var stream = Mod.GetFileStream(path))
+            {
+                ReadStruct(stream, bottomLeft);
+            }
+
+        }
         public static PlacedDoor[] DoorsFromStream(Stream stream)
         {
 

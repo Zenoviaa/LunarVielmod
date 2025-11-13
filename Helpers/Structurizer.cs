@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.DungeonGeneration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -359,6 +360,7 @@ namespace Stellamod.Helpers
             int[] indices = ReadStruct(stream, BottomLeft, tileBlend);
             TriggerStructurizer.ReadStruct(Path, BottomLeft);
             TileEntityStructurizer.ReadStruct(Path, BottomLeft);
+            DungeonGenerationHelper.ReadStruct(Path, BottomLeft);
             return indices;
 
         }
