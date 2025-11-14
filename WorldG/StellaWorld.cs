@@ -273,7 +273,7 @@ namespace Stellamod.WorldG
                     bottomLeft.Y += tileY;
                     bottomLeft.Y -= map[0].bounds.Height;
                     Structurizer.ReadStruct(bottomLeft, room.prefab, tileBlend);
-                    Structurizer.TryPlaceAndProtectStructure(bottomLeft, room.prefab);
+                    Structurizer.ProtectStructure(bottomLeft, room.prefab);
                 }
                 placed = true;
             }

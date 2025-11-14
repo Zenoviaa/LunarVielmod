@@ -163,3 +163,8 @@ UseLunarLightingEngine: {
 	Tooltip: ""
 	Label: Use Lunar Lighting Engine
 }
+
+DisableBackgroundForReal: {
+	Label: Disable Background For Real
+	Tooltip: ""
+}
