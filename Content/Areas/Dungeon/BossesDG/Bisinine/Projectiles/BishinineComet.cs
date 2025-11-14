@@ -334,10 +334,12 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     ModContent.DustType<GlowSparkleDust>(), newColor: Color.Gray, Scale: Main.rand.NextFloat(0f, 0.5f) * Size);
                 d.velocity *= 0;
             }
-            if (Timer >= 300 * Size)
+
+            if(Timer >= 240)
             {
                 Projectile.tileCollide = true;
             }
+
             if (Main.rand.NextBool(6))
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,

@@ -197,7 +197,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 spriteBatch.Draw(texture, oldDrawPos, null, fadeColor, Projectile.oldRot[i], drawOrigin, drawScale, spriteEffects, 0f);
             }
 
-            spriteBatch.Draw(texture, drawPos, null, Color.Gray.MultiplyRGB(lightColor) * _alpha, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+            spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(lightColor) * _alpha, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
             return false;
         }
 
