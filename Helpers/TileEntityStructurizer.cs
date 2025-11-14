@@ -43,7 +43,7 @@ namespace Stellamod.Helpers
 
             if (root.Count == 0)
             {
-                Main.NewText("No Tile Entity Structure Here");
+                DebugHelper.NewTextOnlyInTesting("No Tile Entity Structure Here");
                 return;
             }
 
@@ -54,7 +54,7 @@ namespace Stellamod.Helpers
             //Save the tag compound to the file
             TagIO.ToStream(root, stream, compress: true);
             stream.Flush();
-            Main.NewText("Tile Entity Structure Saved");
+            DebugHelper.NewTextOnlyInTesting("Tile Entity Structure Saved");
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Stellamod.Helpers
                 int yOffset = element.Get<int>("_y");
                 string type = element.Get<string>("_type");
                 ModTileEntity template = ModContent.Find<ModTileEntity>(Mod.Name + "/" + type);
-                Main.NewText("Construct Tile Entity " + template.Name);
+                DebugHelper.NewTextOnlyInTesting("Construct Tile Entity " + template.Name);
 
                 Point16 point = new Point16(bottomLeft.X + xOffset, bottomLeft.Y - yOffset);
                 Dust.QuickBox(new Vector2(point.X, point.Y) * 16, new Vector2(point.X + 1, point.Y + 1) * 16, 2, Color.Red, null);

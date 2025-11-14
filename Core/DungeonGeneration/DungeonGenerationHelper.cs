@@ -306,7 +306,7 @@ namespace Stellamod.Core.DungeonGeneration
             //Save the tag compound to the file
             TagIO.ToStream(root, stream, compress: true);
             stream.Flush();
-            Main.NewText("Doors Structure Saved");
+            DebugHelper.NewTextOnlyInTesting("Doors Structure Saved");
         }
 
         /// <summary>
@@ -325,7 +325,7 @@ namespace Stellamod.Core.DungeonGeneration
                 int xOffset = element.Get<int>("_x");
                 int yOffset = element.Get<int>("_y");
                 Door door = element.Get<Door>("_door");
-                Main.NewText("Construct Door Entity " + door.ToString());
+                DebugHelper.NewTextOnlyInTesting("Construct Door Entity " + door.ToString());
 
                 Point point = new Point(bottomLeft.X + xOffset, bottomLeft.Y - yOffset);
                 PlaceDoorInWorld(point, door);

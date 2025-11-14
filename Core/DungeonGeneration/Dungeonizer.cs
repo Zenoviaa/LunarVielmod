@@ -539,7 +539,6 @@ namespace Stellamod.Core.DungeonGeneration
                 //Once we hit the max room count... yeah
                 if (map.Count >= roomCount)
                 {
-                    Console.WriteLine("Success");
                     break;
                 }
 

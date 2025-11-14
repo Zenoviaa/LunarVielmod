@@ -504,7 +504,8 @@ namespace Stellamod.Helpers
                     }
                 }
             }
-            Main.NewText("Structure Saved");
+
+            DebugHelper.NewTextOnlyInTesting("Structure Saved");
         }
 
     

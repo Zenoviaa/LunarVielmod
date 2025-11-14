@@ -48,7 +48,7 @@ namespace Stellamod.Helpers
 
             if (root.Count == 0)
             {
-                Main.NewText("No Trigger Structure Here");
+                DebugHelper.NewTextOnlyInTesting("No Trigger Structure Here");
                 return;
             }
 
@@ -59,7 +59,7 @@ namespace Stellamod.Helpers
             //Save the tag compound to the file
             TagIO.ToStream(root, stream, compress: true);
             stream.Flush();
-            Main.NewText("Trigger Structure Saved");
+            DebugHelper.NewTextOnlyInTesting("Trigger Structure Saved");
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Stellamod.Helpers
                 }
                 Point point = new Point(bottomLeft.X + xOffset, bottomLeft.Y - yOffset);
                 triggerManager.PlaceTrigger(point, trigger);
-                Main.NewText("Construct Trigger " + trigger);
+                DebugHelper.NewTextOnlyInTesting("Construct Trigger " + trigger);
 
                 Dust.QuickBox(new Vector2(point.X, point.Y) * 16, new Vector2(point.X + 1, point.Y + 1) * 16, 2, Color.Red, null);
             }
