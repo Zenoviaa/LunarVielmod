@@ -1,4 +1,5 @@
-﻿using Stellamod.UI.DialogueTowning;
+﻿using Stellamod.UI.Dialogue;
+using Stellamod.UI.DialogueTowning;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -21,6 +22,8 @@ namespace Stellamod.Core.DialogueSystem
                     _dialogueActor.dialogue.OnComplete();
                     _hasCompleted = true;
                     _dialogueActor = null;
+                    DialogueTowningUISystem uiSystem = ModContent.GetInstance<DialogueTowningUISystem>();
+                    uiSystem.CloseUI();
                 }
                 else
                 {
@@ -37,6 +40,7 @@ namespace Stellamod.Core.DialogueSystem
             dialogue.OnStart();
             _dialogueActor = new DialogueActor(dialogue);
             _dialogueActor.ProgressLine();
+
         }
     }
     public class DialogueActor
