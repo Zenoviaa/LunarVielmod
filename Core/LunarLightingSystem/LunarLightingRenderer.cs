@@ -5,27 +5,21 @@ using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Effects;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
-    [Autoload(Side = ModSide.Client)]
-    public class LunarLighting : ModSystem
-    {
-        private static float _overSunTimer;
-        private static float _daylightFadeTimer;
-        private static Color _backLightColor;
 
+    [Autoload(Side = ModSide.Client)]
+    public class LunarLightingRenderer : ModSystem
+    {
+        private static Color _backLightColor;
         private static Vector2 _previousScreenSize;
         private static RenderTarget2D _accumulatedLightRT;
 
         private static bool _initAtlas;
         private static RenderTarget2D _pointLightRT;
         private static RenderTarget2D _tempLightMapAtlasRT;
-
-        private static PointLight _sunPointLight;
-        private static PointLight _playerPointLight;
 
         private static List<ILightEmitter> _emitters;
         private static List<IBackLightModifier> _backLightModifiers;
@@ -36,17 +30,12 @@ namespace Stellamod.Core.LunarLightingSystem
         public static Color BackLightColor;
         public static Color SunColor;
         public static Vector3 AmbientLight;
-
-        public static int MaxAtlasSize => 2000;
         public const int Max_Ambient_Lights = 2000;
         public override void Load()
         {
+      
             _backLightModifiers = new List<IBackLightModifier>();
             _emitters = new List<ILightEmitter>();
-
-            _sunPointLight = new PointLight(Vector2.Zero, Color.White, 1, 100, 300000);
-            _playerPointLight = new PointLight(Vector2.Zero, Color.White, 1, 100);
-
             ResizeRenderTarget(true);
 
             On_OverlayManager.Draw += DrawLights;
@@ -83,12 +72,12 @@ namespace Stellamod.Core.LunarLightingSystem
             orig(self, spriteBatch, layer, beginSpriteBatch);
         }
 
-
-
         private static void DrawToScreen()
         {
             if (!ShouldRender())
                 return;
+
+
             //PreviewLightMaps();
             DrawAccumulatedLightMapToScreen();
             DrawSoftGlows();
@@ -99,9 +88,12 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-            spriteBatch.Draw(_tempLightMapAtlasRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+
+            Rectangle screenRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+            spriteBatch.Draw(_tempLightMapAtlasRT, screenRectangle, Color.White);
             spriteBatch.End();
         }
+
         private static void DrawAccumulatedLightMapToScreen()
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -118,7 +110,7 @@ namespace Stellamod.Core.LunarLightingSystem
             Texture2D glowTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SoftGlow").Value;
             Vector2 drawOrigin = glowTexture.Size() / 2f;
 
-            for(int i = 0; i < PointLightManager.MAX_POINT_LIGHTS; i++)
+            for (int i = 0; i < PointLightManager.MAX_POINT_LIGHTS; i++)
             {
                 if (PointLightManager.LightStates[i] == PointLightState.INACTIVE)
                     continue;
@@ -137,6 +129,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             spriteBatch.End();
         }
+
         private static void PreviewLightMaps()
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -176,6 +169,9 @@ namespace Stellamod.Core.LunarLightingSystem
         public override void PostUpdateTime()
         {
             base.PostUpdateTime();
+
+
+
             BackLightColor = Color.Black;
             if (Main.LocalPlayer.ZoneUnderworldHeight)
             {
@@ -223,16 +219,6 @@ namespace Stellamod.Core.LunarLightingSystem
             }
         }
 
-        private static bool IsLightingTooFar(PointLight pointLight)
-        {
-            if (!pointLight.IsReallyVisible())
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         private static bool ShouldRender()
         {
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
@@ -274,10 +260,11 @@ namespace Stellamod.Core.LunarLightingSystem
             SunLightManager.RenderSunLight();
 
             SpriteBatch spriteBatch = Main.spriteBatch;
+            var effect = PointLightSoftenShader.Instance.Effect;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-            
-            
-            for(int i = 0; i < PointLightManager.MAX_POINT_LIGHTS; i++)
+
+
+            for (int i = 0; i < PointLightManager.MAX_POINT_LIGHTS; i++)
             {
                 //These lights won't be iterated over/drawn
                 switch (PointLightManager.LightStates[i])
@@ -294,7 +281,9 @@ namespace Stellamod.Core.LunarLightingSystem
                 Vector2 position = pointLightData.position;
                 Vector2 drawOrigin = atlasRectangle.Size() / 2f;
                 float scale = PointLightManager.POINT_LIGHT_DOWN_SAMPLES;
-                spriteBatch.Draw(_tempLightMapAtlasRT, position - Main.screenPosition, atlasRectangle, Color.White, 0, drawOrigin, scale, SpriteEffects.None, 0);
+
+                for (int k = 0; k < 1; k++)
+                    spriteBatch.Draw(_tempLightMapAtlasRT, position - Main.screenPosition, atlasRectangle, Color.White, 0, drawOrigin, scale, SpriteEffects.None, 0);
             }
 
             spriteBatch.End();
@@ -344,82 +333,10 @@ namespace Stellamod.Core.LunarLightingSystem
             graphicsDevice.SetRenderTarget(null);
         }
 
-        private static void RenderLights()
-        {
-            /*
-            if (!ShouldRender())
-                return;
-
-            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-
-
-            // CalculateLightingData();
-            CalculatePointLightSources();
-
-            BakePointLights();
-            //Mask drawing
-            //Clear the final light render target
-            graphicsDevice.SetRenderTarget(_accumulatedLightRT);
-            graphicsDevice.Clear(BackLightColor);
-            RenderPointLights();
-
-            _playerPointLight.position = Main.LocalPlayer.Center;
-            _playerPointLight.color = new Color(GetPlayerLightColor());
-            _playerPointLight.intensity = 1;
-            _playerPointLight.radius = GetPlayerLightRadius();
-            _playerPointLight.name = "Player Light";
-            _playerPointLight.Update();
-            RenderPointLightRealtime(_playerPointLight);
-            RenderSun();
-
-            _emitters.Clear();
-            foreach (var proj in Main.ActiveProjectiles)
-            {
-                if (proj.ModProjectile is ILightEmitter emitter)
-                {
-                    _emitters.Add(emitter);
-                }
-            }
-
-            if (_emitters.Count > 0)
-            {
-                //Draw additional lights
-                foreach (ILightEmitter emitter in _emitters)
-                {
-                    graphicsDevice.SetRenderTarget(_pointLightRT);
-                    graphicsDevice.Clear(Color.Black);
-                    emitter.RenderLight(spriteBatch);
-
-                    graphicsDevice.SetRenderTarget(_accumulatedLightRT);
-                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-                    spriteBatch.Draw(_pointLightRT, Vector2.Zero, Color.White);
-                    spriteBatch.End();
-                }
-            }
-
-
-            if (_ambientLightIndex > 0)
-            {
-                Texture2D glowMask = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SoftGlow").Value;
-                Vector2 drawOrigin = glowMask.Size() / 2f;
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-                for (int i = 0; i < _ambientLightIndex; i++)
-                {
-                    TileAmbientLight ambientLight = _ambientLights[i];
-                    spriteBatch.Draw(glowMask, ambientLight.position - Main.screenPosition, null, ambientLight.color, 0, drawOrigin, 2 * ambientLight.radius / 64f, SpriteEffects.None, 0);
-                }
-                spriteBatch.End();
-            }
-
-            graphicsDevice.SetRenderTarget(null);
-            */
-        }
-
 
         private static void InitAtlas()
         {
-            _tempLightMapAtlasRT = new RenderTarget2D(Main.graphics.GraphicsDevice, MaxAtlasSize, MaxAtlasSize, false,
+            _tempLightMapAtlasRT = new RenderTarget2D(Main.graphics.GraphicsDevice, PointLightManager.MAX_ATLAS_SIZE, PointLightManager.MAX_ATLAS_SIZE, false,
                   SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
             _initAtlas = true;
         }

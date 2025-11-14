@@ -1,4 +1,5 @@
 using Stellamod.Core.ArmorReforge;
+using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.QuestSystem;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -7,6 +8,11 @@ namespace Stellamod.Helpers
 {
     public static class LangText
     {
+        public static string Dialogue(BaseDialogue dialogue, string Path)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.TownDialogue.{dialogue.Name}." + Path);
+        }
+
         public static string Quest(Quest quest, string Path)
         {
             return Language.GetTextValue($"Mods.Stellamod.Quests.{quest.Name}." + Path);

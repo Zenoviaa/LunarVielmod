@@ -51,6 +51,14 @@ namespace Stellamod.Core.Shaders
             }
         }
 
+        public void ApplyPassesFromEffect()
+        {
+            foreach (var pass in Effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+            }
+        }
+
         public void ApplyToEffect()
         {
         

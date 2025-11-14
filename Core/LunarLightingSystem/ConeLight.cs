@@ -10,11 +10,11 @@ namespace Stellamod.Core.LunarLightingSystem
     {
         public Color lightColor;
         private VertexPositionColorTexture[] _vertices;
-        private PointLight _pointLight;
+        private LegacyPointLight _pointLight;
         public ConeLight()
         {
             _vertices = new VertexPositionColorTexture[12];
-            _pointLight = new PointLight(Vector2.Zero, Color.White, 1, 100, 1800);
+            _pointLight = new LegacyPointLight(Vector2.Zero, Color.White, 1, 100, 1800);
         }
 
 

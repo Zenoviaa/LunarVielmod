@@ -4,6 +4,7 @@ using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
 using Stellamod.Content.Items.Materials;
+using Stellamod.Core.DungeonGeneration;
 using Stellamod.Core.SilkSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
@@ -32,9 +33,11 @@ using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
 using Stellamod.Tiles.Illuria;
 using Stellamod.Tiles.Veil;
+using Stellamod.TilesNew.MothlightTiles;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.Biomes;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
@@ -72,6 +75,7 @@ namespace Stellamod.WorldG
 
 
 
+            DisableGenTask(tasks, "Dungeon");
             DisableGenTask(tasks, "Wavy Caves");
             DisableGenTask(tasks, "Living Trees");
             DisableGenTask(tasks, "Dirt Layer Caves");
@@ -146,6 +150,7 @@ namespace Stellamod.WorldG
                 tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
                 tasks.Insert(MorrowGen + 11, new PassLegacy("Icey Caverns", WorldGenIceCaverns));
                 tasks.Insert(MorrowGen + 12, new PassLegacy("World Gen Ice Ores", WorldGenGlisteningOre));
+                tasks.Insert(MorrowGen + 13, new PassLegacy("World Gen Misty Dungeon", GenerateMistyDungeon));
             }
 
             int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
@@ -185,6 +190,117 @@ namespace Stellamod.WorldG
             }
         }
 
+        private void GenerateMistyDungeon(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Mistying the Dungeon";
+            Room[] prefabs = DungeonSaveUtility.ReadDungeonPrefabsFromFiles();
+            Room[] map = Dungeonizer.Generate(prefabs, Main.rand);
+            int[] tileBlend = new int[]
+            {
+                TileID.RubyGemspark
+            };
+            Point topLeft = Point.Zero;
+            Point bottomRight = Point.Zero;
+            for (int r = 0; r < map.Length; r++)
+            {
+                Room room = map[r];
+                if (topLeft.X > room.bounds.Left)
+                    topLeft.X = room.bounds.Left;
+                if (topLeft.Y > room.bounds.Top)
+                    topLeft.Y = room.bounds.Top;
+
+                if (bottomRight.X < room.bounds.Right)
+                    bottomRight.X = room.bounds.Right;
+                if (bottomRight.Y < room.bounds.Bottom)
+                    bottomRight.Y = room.bounds.Bottom;
+            }
+            Rectangle rectangle = new Rectangle(topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y);
+
+            //Look for a spot to place it
+            //We're placing it on the right side of the world ig
+            bool placed = false;
+            int attempts = 0;
+            while (!placed && attempts++ < 10000000)
+            {
+                int centerX = Main.maxTilesX - Main.maxTilesX / 6;
+                int smx = WorldGen.genRand.Next(centerX, centerX + 500);
+                int smy = ((int)(Main.worldSurface - 200));
+
+                // We go down until we hit a solid tile or go under the world's surface
+                while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
+                {
+                    smy++;
+                }
+
+                // If we went under the world's surface, try again
+                if (smy > Main.worldSurface - 20)
+                {
+                    continue;
+                }
+
+                Point point = new Point(smx, smy);
+                Point vectorToOrigin = (point - rectangle.Top().ToPoint());
+                rectangle.Location += vectorToOrigin;
+
+                //Just a failsafe
+                while (rectangle.Right().X >= Main.maxTilesX)
+                    rectangle.Location -= new Point(32, 0);
+
+                StructureMap structures = GenVars.structures;
+                if (!structures.CanPlace(rectangle))
+                    continue;
+
+
+    
+                int width = rectangle.Width;
+                width -= 50;
+                int height = rectangle.Height;
+
+
+                Point rectanglePoint = point;
+                rectanglePoint.X -= width / 2;
+                rectanglePoint.Y += 30;
+
+                WorldUtils.Gen(rectanglePoint, new Shapes.Rectangle(width, height),
+                   Actions.Chain(
+                        new Actions.ClearTile(),
+                        new Actions.ClearWall(),
+                        new Actions.SetTile((ushort)ModContent.TileType<MothlightBrick>()))
+                   );
+                //Override dungeon variables
+                GenVars.dungeonLocation = point.X;
+                GenVars.dungeonX = point.X;
+                GenVars.dungeonY = point.Y;
+
+                //Spawn old man
+                Point oldManPoint = point;
+                oldManPoint.X += 10;
+                oldManPoint.Y -= 20;
+                
+                int npcType = NPCID.OldMan;
+                int num297 = NPC.NewNPC(new EntitySource_WorldGen(), oldManPoint.X, oldManPoint.Y, npcType);
+                Main.npc[num297].homeTileX = oldManPoint.X;
+                Main.npc[num297].homeTileY = oldManPoint.Y;
+                Main.npc[num297].direction = 1;
+                Main.npc[num297].homeless = true;
+                for (int r = 0; r < map.Length; r++)
+                {
+                    Room room = map[r];
+                    Point bottomLeft = room.bounds.BottomLeft().ToPoint();
+                    Point offset = rectangle.Top().ToPoint();
+                    Vector2 mouseWorld = Main.MouseWorld;
+                    int tileX = offset.X;
+                    int tileY = offset.Y;
+
+                    bottomLeft.X += tileX;
+                    bottomLeft.Y += tileY;
+                    bottomLeft.Y -= map[0].bounds.Height;
+                    Structurizer.ReadStruct(bottomLeft, room.prefab, tileBlend);
+                    Structurizer.TryPlaceAndProtectStructure(bottomLeft, room.prefab);
+                }
+                placed = true;
+            }
+        }
         private void LockDesert(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Full Desert Rework";
@@ -1509,7 +1625,7 @@ namespace Stellamod.WorldG
             progress.Message = "Moving the dungeon, smh";
 
             //GenVars.dungeonLocation is the x value of the dungeon
-            GenVars.dungeonLocation = Main.maxTilesX - 1000;
+          
         }
 
         private void WorldGenFabledTrees(GenerationProgress progress, GameConfiguration configuration)

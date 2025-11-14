@@ -14,6 +14,12 @@ namespace Stellamod.Tiles
         public override void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
         {
             base.KillTile(i, j, type, ref fail, ref effectOnly, ref noItem);
+            if (effectOnly)
+                return;
+            if (fail)
+                return;
+
+
             Tile tile = Main.tile[i, j];
             if (tile.WallType != 0)
             {
@@ -54,8 +60,8 @@ namespace Stellamod.Tiles
         }
 
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
-        {    
-            if(SpecialWall != null)
+        {
+            if (SpecialWall != null)
             {
                 if (Main.HoverItem.type == Type)
                     SpecialDecorativeWall.drawBig = true;
@@ -85,10 +91,10 @@ namespace Stellamod.Tiles
         public override void PostDrawTiles()
         {
             base.PostDrawTiles();
-             
+
             SpriteBatch spriteBatch = Main.spriteBatch;
             Player player = Main.LocalPlayer;
-            if(player.HeldItem.ModItem is DecorativeWallItem decorativeWallItem)
+            if (player.HeldItem.ModItem is DecorativeWallItem decorativeWallItem)
             {
                 Vector2 mouseWorld = Main.MouseWorld;
                 int i = (int)(mouseWorld.X / 16f);
@@ -132,14 +138,15 @@ namespace Stellamod.Tiles
 
                         Vector2 drawPos = new Vector2(x, y) * 16;
                         Color drawColor = Color.Red;
-           
+
                         spriteBatch.Draw(TextureAssets.Tile[0].Value, drawPos - Main.screenPosition, frame, drawColor, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
                     }
                 }
-                        spriteBatch.End();
+
+                spriteBatch.End();
             }
-           
-            
+
+
         }
     }
     public abstract class BaseSpecialWall : ModWall

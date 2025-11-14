@@ -30,7 +30,7 @@ namespace Stellamod.Content.Areas.Dungeon
 
         }
 
-        public override bool IsBiomeActive(Player player) => BiomeTileCounts.InMistyDungeon;
+        public override bool IsBiomeActive(Player player) => BiomeTileCounts.InMistyDungeon && !player.ZoneOverworldHeight;
         public override string BestiaryIcon => base.BestiaryIcon;
         public override string BackgroundPath => base.BackgroundPath;
         public override Color? BackgroundColor => base.BackgroundColor;

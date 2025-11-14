@@ -1193,6 +1193,11 @@ StarterCard: {
 	Tooltip: "\n"
 }
 
+Start: {
+	DisplayName: Start
+	Tooltip: ""
+}
+
 WCIgniter: {
 	DisplayName: Wild Card
 	Tooltip: "\n"
@@ -9378,6 +9383,11 @@ BossBarrierBlockItem: {
 	Tooltip: ""
 }
 
+Boss: {
+	DisplayName: Boss
+	Tooltip: ""
+}
+
 GodraySpawnerItem: {
 	DisplayName: Godray Spawner Item
 	Tooltip: ""
@@ -9683,4 +9693,24 @@ TreeGrower: {
 TreeGrower2: {
 	DisplayName: Tree Grower2
 	Tooltip: ""
+}
+
+DungeonGenerationTester: {
+	Tooltip: ""
+	DisplayName: Dungeon Generation Tester
+}
+
+DungeonSaveHelper: {
+	Tooltip: ""
+	DisplayName: Dungeon Save Helper
+}
+
+AnchorTopRight: {
+	Tooltip: ""
+	DisplayName: Anchor Top Right
+}
+
+AnchorBottomLeft: {
+	Tooltip: ""
+	DisplayName: Anchor Bottom Left
 }

@@ -22,6 +22,7 @@ namespace Stellamod.Core.LunarLightingSystem
         public const int POINT_LIGHT_MAX_SHADOW_VERTEX_COUNT = 12000;
         public const int POINT_LIGHT_DOWN_SAMPLES = 4;
         public const int POINT_LIGHT_TEXTURE_SIZE = 800;
+        public const int MAX_ATLAS_SIZE = 2000;
 
 
         //Set up our data for all of our point lights
@@ -91,13 +92,15 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             int x = 0, y = 0;
             int pointLightSize = POINT_LIGHT_TEXTURE_SIZE / POINT_LIGHT_DOWN_SAMPLES;
+            int numLightsPer = MAX_ATLAS_SIZE / pointLightSize;
+
             for(int i = 0; i < MAX_POINT_LIGHTS; i++)
             {
                 PointLightVertices[i] = new VertexPositionColorTexture[POINT_LIGHT_VERTEX_COUNT];
                 ShadowVertices[i] = new VertexPositionColor[POINT_LIGHT_MAX_SHADOW_VERTEX_COUNT];
                 LightAtlasRectangles[i] = new Rectangle(x * pointLightSize, y * pointLightSize, pointLightSize, pointLightSize);
                 y++;
-                if(y >= 5)
+                if(y >= numLightsPer)
                 {
                     y = 0;
                     x++;
@@ -112,7 +115,7 @@ namespace Stellamod.Core.LunarLightingSystem
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
             Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
 
-            float range = 1000;
+            const float range = 1000;
             cameraTopLeft -= new Vector2(range);
             cameraBottomRight += new Vector2(range);
             return position.X >= cameraTopLeft.X && position.X <= cameraBottomRight.X && position.Y >= cameraTopLeft.Y && position.Y <= cameraBottomRight.Y;
@@ -124,7 +127,7 @@ namespace Stellamod.Core.LunarLightingSystem
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
             Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
 
-            float range = 256;
+            const float range = 256;
             cameraTopLeft -= new Vector2(range);
             cameraBottomRight += new Vector2(range);
 
@@ -146,7 +149,8 @@ namespace Stellamod.Core.LunarLightingSystem
                         {
                             Vector2 position = lightTilePoint.ToWorldCoordinates();
                             Color lightColor = Lighting.GetColor(x, y);
-                            PointLightData pointLightData = new PointLightData(lightColor, position, 1f, 800);
+                            lightColor.A = 1;
+                            PointLightData pointLightData = new PointLightData(lightColor, position, 0.5f, 800);
                             int index = AddPointLight(pointLightData);
                             if (index == -1)
                                 continue;
@@ -204,7 +208,7 @@ namespace Stellamod.Core.LunarLightingSystem
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
             if (!config.BeamingLights)
                 return;
-
+ 
 
             //The last index in the array is reserved for the player light and needs to update every frame
             //So it'll update first, and will always be active, it should never bake, it's a special light
@@ -214,7 +218,7 @@ namespace Stellamod.Core.LunarLightingSystem
             playerLightData.intensity = 1;
             playerLightData.radius = GetPlayerLightRadius();
             LightStates[MAX_POINT_LIGHTS - 1] = PointLightState.CUSTOM;
-
+            ProcessLight(MAX_POINT_LIGHTS - 1);
             //We don't need to check for lights every single frame either
             //It won't be noticeable doing this every few frames instead
             if (Main.GameUpdateCount % 4 != 0)
@@ -244,59 +248,53 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private static void RenderLight(int index, Matrix matrix)
         {
+            //First we need to get our data
             ref PointLightData pointLightData = ref PointLights[index];
             ref VertexPositionColorTexture[] lightVertices = ref PointLightVertices[index];
             ref VertexPositionColor[] shadowVertices = ref ShadowVertices[index];
             int primitiveCount = ShadowPrimitiveCount[index];
+
+
             GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
-            var shader = PointLightShader.Instance;
-            shader.Apply();
-
-            shader.TransformMatrix = matrix;
-            foreach (var pass in shader.Effect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-            }
-
-
-            BlendState originalBlendState = graphicsDevice.BlendState;
-            CullMode oldCullMode = graphicsDevice.RasterizerState.CullMode;
-            SamplerState originalSamplerState = graphicsDevice.SamplerStates[0];
-
             graphicsDevice.DepthStencilState = DepthStencilState.None;
             graphicsDevice.RasterizerState.CullMode = CullMode.None;
             graphicsDevice.BlendState = BlendState.Additive;
             graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
 
-            graphicsDevice.DrawUserPrimitives(
-              PrimitiveType.TriangleList, lightVertices, 0, lightVertices.Length / 3);
+            //Apply the shader now that the graphics device is ready
+            //I think the black square issue was just a race condition with the graphics state?
+            var shader = PointLightShader.Instance;
+            shader.TransformMatrix = matrix;
+            foreach (EffectPass pass in shader.Effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                // Set this _after_ Apply, otherwise EffectParameters override it!
+                graphicsDevice.Textures[0] = null;
+                graphicsDevice.DrawUserPrimitives(
+                  PrimitiveType.TriangleList, lightVertices, 0, lightVertices.Length / 3);
 
-            graphicsDevice.RasterizerState.CullMode = oldCullMode;
-            graphicsDevice.BlendState = originalBlendState;
-            graphicsDevice.SamplerStates[0] = originalSamplerState;
+            }
+
 
 
             if (primitiveCount <= 0)
                 return;
 
-            var shadowShader = TileShadowShader.Instance;
-            shadowShader.Apply();
-            shadowShader.TransformMatrix = matrix;
-            foreach (var pass in shadowShader.Effect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-            }
-
-
-            graphicsDevice.RasterizerState.CullMode = CullMode.None;
             graphicsDevice.BlendState = BlendState.AlphaBlend;
 
-            graphicsDevice.DrawUserPrimitives(
-              PrimitiveType.TriangleList, shadowVertices, 0, primitiveCount);
+            var shadowShader = TileShadowShader.Instance;
+            shadowShader.TransformMatrix = matrix;
+            foreach (EffectPass pass in shadowShader.Effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                // Set this _after_ Apply, otherwise EffectParameters override it!
+                graphicsDevice.Textures[0] = null;
+                graphicsDevice.DrawUserPrimitives(
+                      PrimitiveType.TriangleList, shadowVertices, 0, primitiveCount);
 
-            graphicsDevice.RasterizerState.CullMode = oldCullMode;
-            graphicsDevice.BlendState = originalBlendState;
-            graphicsDevice.SamplerStates[0] = originalSamplerState;
+            }
+
+     
         }
         
         private static void RenderLight(int index)
@@ -325,6 +323,7 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.Draw(pointLightRenderTarget, Vector2.Zero, Color.White);
             spriteBatch.End();
         }
+
         public static void BakeLight(int index, RenderTarget2D pointLightRenderTarget, RenderTarget2D lightMapAtlasRenderTarget)
         {
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
@@ -335,16 +334,22 @@ namespace Stellamod.Core.LunarLightingSystem
             BakeLightToRenderTarget(index);
 
             graphicsDevice.SetRenderTarget(lightMapAtlasRenderTarget);
+         
 
             Rectangle destinationRect = LightAtlasRectangles[index];
             Vector2 location = destinationRect.Location.ToVector2();
 
             Rectangle oldScissor = graphicsDevice.ScissorRectangle;
             graphicsDevice.ScissorRectangle = destinationRect;
-   
+
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, ScissorRasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(pointLightRenderTarget, location, null, Color.White, 0, Vector2.Zero, 1 / (float)POINT_LIGHT_DOWN_SAMPLES, SpriteEffects.None, 0);
+            spriteBatch.End();
+
+          
+            spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply, SamplerState.PointClamp, null, ScissorRasterizer, PointLightSoftenShader.Instance.Effect, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Draw(pointLightRenderTarget, destinationRect, null, Color.White);
             spriteBatch.End();
             graphicsDevice.SetRenderTarget(null);
             graphicsDevice.ScissorRectangle = oldScissor;
