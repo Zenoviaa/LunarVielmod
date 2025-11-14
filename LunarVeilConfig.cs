@@ -14,6 +14,7 @@ namespace Stellamod
         public override void OnModLoad()
         {
             base.OnModLoad();
+            On_Main.DrawSurfaceBG += NoSurfaceBG;
             On_Main.DrawBackground += NoBackground;
             On_Main.DrawToMap_Section += NoMapSection;
             On_Main.DrawWaters += NoWaterDraw;
@@ -23,11 +24,20 @@ namespace Stellamod
         public override void OnModUnload()
         {
             base.OnModUnload();
+            On_Main.DrawSurfaceBG -= NoSurfaceBG;
             On_Main.DrawBackground -= NoBackground;
             On_Main.DrawToMap_Section -= NoMapSection;
             On_Main.DrawWaters -= NoWaterDraw;
             On_Main.DrawTileInWater -= NoTileWaterDraw;
             On_Main.DoDraw_Waterfalls -= NoWaterfallDraw;
+        }
+
+        private void NoSurfaceBG(On_Main.orig_DrawSurfaceBG orig, Main self)
+        {
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (config.DisableBackgroundForReal)
+                return;
+            orig(self);
         }
 
         private void NoBackground(On_Main.orig_DrawBackground orig, Main self)
