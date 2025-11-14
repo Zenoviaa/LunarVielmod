@@ -14,6 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
+
     [Autoload(Side = ModSide.Client)]
     public class PointLightManager : ModSystem
     {
@@ -142,7 +143,7 @@ namespace Stellamod.Core.LunarLightingSystem
                         continue;
                     Tile tile = Main.tile[x, y];
                     Point lightTilePoint = new Point(x, y);
-                    if (TileID.Sets.Torch[tile.TileType])
+                    if (LightingSets.PointLitTiles[tile.TileType])
                     {
 
                         if (!EmittingTiles[lightTilePoint.X, lightTilePoint.Y] )
