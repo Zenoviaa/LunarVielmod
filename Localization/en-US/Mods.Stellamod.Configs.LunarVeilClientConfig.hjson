@@ -6,6 +6,7 @@ Headers: {
 	UI: UI
 	Experiment: Experiment Header
 	Lighting: Lighting Header
+	Experimental: Experimental Header
 }
 
 VanillaTexturesToggle: {
@@ -151,4 +152,14 @@ DisableMinimapDraws: {
 DisableTileRendering: {
 	Label: Disable Tile Rendering
 	Tooltip: ""
+}
+
+DisableWaterRendering: {
+	Tooltip: ""
+	Label: Disable Water Rendering
+}
+
+UseLunarLightingEngine: {
+	Tooltip: ""
+	Label: Use Lunar Lighting Engine
 }

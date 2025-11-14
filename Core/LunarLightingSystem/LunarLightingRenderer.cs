@@ -9,8 +9,9 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
+
     [Autoload(Side = ModSide.Client)]
-    public class LunarLighting : ModSystem
+    public class LunarLightingRenderer : ModSystem
     {
         private static Color _backLightColor;
         private static Vector2 _previousScreenSize;
@@ -32,6 +33,7 @@ namespace Stellamod.Core.LunarLightingSystem
         public const int Max_Ambient_Lights = 2000;
         public override void Load()
         {
+            _lightingEngine = new LunarLightingEngine();
             _backLightModifiers = new List<IBackLightModifier>();
             _emitters = new List<ILightEmitter>();
             ResizeRenderTarget(true);
@@ -167,6 +169,9 @@ namespace Stellamod.Core.LunarLightingSystem
         public override void PostUpdateTime()
         {
             base.PostUpdateTime();
+
+
+
             BackLightColor = Color.Black;
             if (Main.LocalPlayer.ZoneUnderworldHeight)
             {
@@ -277,7 +282,7 @@ namespace Stellamod.Core.LunarLightingSystem
                 Vector2 drawOrigin = atlasRectangle.Size() / 2f;
                 float scale = PointLightManager.POINT_LIGHT_DOWN_SAMPLES;
 
-                for(int k = 0; k < 1; k++)
+                for (int k = 0; k < 1; k++)
                     spriteBatch.Draw(_tempLightMapAtlasRT, position - Main.screenPosition, atlasRectangle, Color.White, 0, drawOrigin, scale, SpriteEffects.None, 0);
             }
 
@@ -328,7 +333,7 @@ namespace Stellamod.Core.LunarLightingSystem
             graphicsDevice.SetRenderTarget(null);
         }
 
-   
+
         private static void InitAtlas()
         {
             _tempLightMapAtlasRT = new RenderTarget2D(Main.graphics.GraphicsDevice, PointLightManager.MAX_ATLAS_SIZE, PointLightManager.MAX_ATLAS_SIZE, false,

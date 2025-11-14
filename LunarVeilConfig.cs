@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.ComponentModel;
 using Terraria;
+using Terraria.Graphics.Light;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
@@ -21,6 +22,7 @@ namespace Stellamod
         public override void OnModUnload()
         {
             base.OnModUnload();
+ 
             On_Main.DrawToMap_Section -= NoMapSection;
             On_Main.DrawWaters -= NoWaterDraw;
             On_Main.DrawTileInWater -= NoTileWaterDraw;
@@ -162,13 +164,17 @@ namespace Stellamod
         public float AmmoBarY = 50;
 
 
+        [Header("Experimental")]
+        [DefaultValue(false)]
+        public bool UseLunarLightingEngine;
 
-    
-
-        [Header("Experiment")]
-        public bool NoLightingEveryFrameOverride;
+        [DefaultValue(false)]
         public bool DisableMinimapDraws;
+
+        [DefaultValue(false)]
         public bool DisableTileRendering;
+
+        [DefaultValue(false)]
         public bool DisableWaterRendering;
     }
 }

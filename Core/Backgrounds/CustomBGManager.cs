@@ -24,7 +24,7 @@ namespace Stellamod.Core.Backgrounds
             {
                 LightStrength = 0.01f;
             }
-            LunarLighting.AmbientLight = Color.White.ToVector3();
+            LunarLightingRenderer.AmbientLight = Color.White.ToVector3();
      
         }
     }

@@ -95,7 +95,7 @@ namespace Stellamod.Assets.Biomes
             if (Main.netMode == NetmodeID.Server)
                 return;
 
-            LunarLighting.AddBackLight(this);
+            LunarLightingRenderer.AddBackLight(this);
         }
         public override void OnLeave(Player player)
         {
@@ -104,7 +104,7 @@ namespace Stellamod.Assets.Biomes
             if (Main.netMode == NetmodeID.Server)
                 return;
 
-            LunarLighting.RemoveBackLight(this);
+            LunarLightingRenderer.RemoveBackLight(this);
         }
 
         public void ModifyBackLight(ref Color backLightColor)
