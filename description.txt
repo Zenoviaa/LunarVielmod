@@ -96,7 +96,7 @@ This update is a very nicely sized update to how Lunar veil is played. This will
 Pretty much an overhaul to how it was played before, and if you didn't like it before and voiced your complaints, well go and try it again!
 
 
--- BOSSES!!!! NEW BOSSES!! 15 new bosses...
+-- BOSSES!!!! NEW BOSSES!! 14 new bosses...
 
 Lunar veil has recieved it's final bosss...... drummrolllllll
 
@@ -117,17 +117,16 @@ Lunar veil has recieved it's final bosss...... drummrolllllll
 - Prime Punker,
 - Descending Twins,
 - Steamroller,
-- Secret Boss apart of a questline?
 
 
 
 
 -- New additions
 200+ weapons reworked
-30+ New weapons added!
+50+ New weapons added!
 
 
-- New biomes Wonderous Darkspace, Mothlight Manor, Fallen Illuria
+- New biomes Wonderous Darkspace, Mothlight Manor, Fallen Illuria, Misty Dungeon
 - Xixian Flask system
 - New dialogues for our npcs with custom portraits for some extra life.
 - Integrated Dodge??? No more steali for you...
