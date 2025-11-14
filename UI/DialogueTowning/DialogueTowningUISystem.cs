@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
@@ -7,13 +6,11 @@ using Stellamod.Core.QuestSystem;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Stellamod.UI.DialogueTowning
 {
@@ -46,7 +43,7 @@ namespace Stellamod.UI.DialogueTowning
         public override void OnModLoad()
         {
             base.OnModLoad();
-       
+
             _userInterface = new UserInterface();
             dialogueTowningUIState = new DialogueTowningUIState();
             dialogueTowningUIState.Activate();
@@ -122,7 +119,7 @@ namespace Stellamod.UI.DialogueTowning
             OpenUI();
             SoundStyle? talkingSound = null;
             dialogueTowningUIState.dialogueTownUI.ResetText();
-            dialogueTowningUIState.dialogueTownUI.LocalizedText = dialogue.GetLine(lineNumber); 
+            dialogueTowningUIState.dialogueTownUI.LocalizedText = dialogue.GetLine(lineNumber);
             dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
         }
 
