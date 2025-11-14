@@ -11,9 +11,11 @@ namespace Stellamod
 {
     public class ExperimentalConfigs : ModSystem
     {
+        private static int _count;
         public override void OnModLoad()
         {
             base.OnModLoad();
+
             On_Main.DrawSurfaceBG += NoSurfaceBG;
             On_Main.DrawBackground += NoBackground;
             On_Main.DrawToMap_Section += NoMapSection;
@@ -21,6 +23,7 @@ namespace Stellamod
             On_Main.DrawTileInWater += NoTileWaterDraw;
             On_Main.DoDraw_Waterfalls += NoWaterfallDraw;
         }
+
         public override void OnModUnload()
         {
             base.OnModUnload();
@@ -31,6 +34,7 @@ namespace Stellamod
             On_Main.DrawTileInWater -= NoTileWaterDraw;
             On_Main.DoDraw_Waterfalls -= NoWaterfallDraw;
         }
+
 
         private void NoSurfaceBG(On_Main.orig_DrawSurfaceBG orig, Main self)
         {

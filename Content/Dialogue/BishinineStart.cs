@@ -20,7 +20,7 @@ namespace Stellamod.Content.Dialogue
         public override void OnComplete()
         {
             base.OnComplete();
-            Console.WriteLine("g");
+       
             if (Main.netMode != NetmodeID.MultiplayerClient)
             {
                 int index = NPC.FindFirstNPC(ModContent.NPCType<BishinineIdle>());

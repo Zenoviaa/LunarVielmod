@@ -3,6 +3,7 @@ using ReLogic.Content;
 using Stellamod.Helpers;
 using System;
 using System.Linq;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.DialogueSystem
@@ -31,6 +32,7 @@ namespace Stellamod.Core.DialogueSystem
 
         public static Asset<Texture2D> LoadPortrait(PortraitType type)
         {
+
             return PortraitAssets[(byte)type];
         }
 
