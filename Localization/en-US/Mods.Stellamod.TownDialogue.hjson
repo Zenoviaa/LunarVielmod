@@ -36,3 +36,49 @@ MysteriousPlacesIV: This is placeholder text, wow!
 MysteriousPlacesV: This is placeholder text, wow!
 DaedusOpenChat1: This is placeholder text
 DaedusIdleChat1: This is placeholder text
+
+BishinineStart: {
+	Line0:
+		'''
+		[PORTRAIT=Bishinine]
+		Sneaking up on me now are you?
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Bishinine]
+		Well. No matter...
+		You've been going around making a name for yourself you know?
+		'''
+	Line2:
+		'''
+		[PORTRAIT=Bishinine]
+		Ereshy is gonna really like it if I tear you to shreds, maybe even big brother will compliment me!
+		'''
+	Line3:
+		'''
+		[PORTRAIT=Bishinine]
+		She might even talk to me again!!
+		'''
+	Line4:
+		'''
+		[PORTRAIT=Bishinine]
+		You hear that? That means you gotta go!
+		'''
+	Line5:
+		'''
+		[PORTRAIT=Bishinine]
+		Not like you stand a chance against one of Illuria's Great Generals anyways. Let alone the Royals...
+		'''
+	Line6:
+		'''
+		[PORTRAIT=Bishinine]
+		Running is useless, I am the fastest and most deadly of the generals...
+		'''
+	Line7:
+		'''
+		[PORTRAIT=Bishinine]
+		Prepare yourself!
+		'''
+}
+
+BaseDialogue.Line0: ""

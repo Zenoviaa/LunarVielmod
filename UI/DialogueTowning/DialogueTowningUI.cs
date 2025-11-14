@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Core.DialogueSystem;
 using Stellamod.Helpers;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -11,6 +13,7 @@ namespace Stellamod.UI.DialogueTowning
 {
     public class DialogueTowningUI : UIPanel
     {
+        private string _localizedText;
         private float _timer;
         private int _textIndex;
         private UIText _text;
@@ -21,7 +24,19 @@ namespace Stellamod.UI.DialogueTowning
 
 
         public float TimeBetweenTexts { get; set; } = 0.015f;
-        public string LocalizedText { get; set; }
+        public string LocalizedText
+        {
+            get
+            {
+                return _localizedText;
+            }
+            set
+            {
+                _localizedText = value;
+                ParseCommands(ref _localizedText);
+            }
+        }
+
         public SoundStyle? TalkingSound { get; set; } = null;
         public Asset<Texture2D> Portrait { get; set; }
         public Vector2 Offset { get; set; }
@@ -65,6 +80,7 @@ namespace Stellamod.UI.DialogueTowning
                 _timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (_timer >= TimeBetweenTexts)
                 {
+
                     string realText = LocalizedText.Substring(0, _textIndex);
                     //Set text to white space
                     for (int i = 0; i < 128; i++)
@@ -75,7 +91,8 @@ namespace Stellamod.UI.DialogueTowning
                     _text.SetText(realText);
                     _textIndex++;
                     _timer = 0;
-                    SoundEngine.PlaySound(TalkingSound);
+                    if(_textIndex % 3 == 0)
+                        SoundEngine.PlaySound(TalkingSound);
                 }
             }
         }
@@ -121,20 +138,38 @@ namespace Stellamod.UI.DialogueTowning
             return _textIndex > LocalizedText.Length;
         }
 
+        public void ParseCommands(ref string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return;
+
+            while (text.Contains("["))
+            {
+                int indexOfLeftBracket = text.IndexOf("[") + 1;
+                int indexOfEqual = text.IndexOf('=', indexOfLeftBracket) + 1;
+                string command = text.Substring(indexOfLeftBracket, indexOfEqual - indexOfLeftBracket - 1);
+
+                int indexOfRightBracket = text.IndexOf(']', indexOfLeftBracket) + 1;
+                string action = text.Substring(indexOfEqual, indexOfRightBracket - indexOfEqual - 1);
+
+                Console.WriteLine(command);
+                Console.WriteLine(action);
+                switch (command)
+                {
+                    case "PORTRAIT":
+                        PortraitType portraitType = PortraitLoader.NameToType(action);
+                        Portrait = PortraitLoader.LoadPortrait(portraitType);
+                        break;
+                }
+
+                text = text.Substring(indexOfRightBracket, text.Length - indexOfRightBracket);
+            }
+        }
         public void ResetText()
         {
 
             _text.SetText(string.Empty);
             _textIndex = 0;
-        }
-
-        public void ResetText(string text, string portrait, float timeBetweenTexts = 0.015f, SoundStyle? talkingSound = null)
-        {
-            _text.SetText(string.Empty);
-            _textIndex = 0;
-            LocalizedText = LangText.TownDialogue(text);
-            TalkingSound = talkingSound;
-            Portrait = ModContent.Request<Texture2D>(DialogueTowningUISystem.RootTexturePath + portrait);
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)

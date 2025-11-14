@@ -33,7 +33,7 @@ namespace Stellamod.Core.LunarLightingSystem
         public const int Max_Ambient_Lights = 2000;
         public override void Load()
         {
-            _lightingEngine = new LunarLightingEngine();
+      
             _backLightModifiers = new List<IBackLightModifier>();
             _emitters = new List<ILightEmitter>();
             ResizeRenderTarget(true);

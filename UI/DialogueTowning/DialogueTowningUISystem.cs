@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core;
+using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.QuestSystem;
 using Stellamod.Helpers;
 using System;
@@ -12,6 +13,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Stellamod.UI.DialogueTowning
 {
@@ -29,7 +31,7 @@ namespace Stellamod.UI.DialogueTowning
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
         private Vector2 _talkWorld;
-        private bool _killUi;
+
         private Vector2 StartDrawOffset => new Vector2(-200, 0);
         private Vector2 EndDrawOffset => new Vector2(0, 0);
 
@@ -92,7 +94,6 @@ namespace Stellamod.UI.DialogueTowning
                 dialogueTowningUIState.dialogueTownButtonsUI.AddButton(pair.Item1, pair.Item2);
             }
 
-            _killUi = true;
             OpenUI();
             dialogueTowningUIState.dialogueTownUI.ResetText();
             dialogueTowningUIState.dialogueTownUI.LocalizedText = LangText.TownDialogue(text);
@@ -115,6 +116,15 @@ namespace Stellamod.UI.DialogueTowning
             dialogueTowningUIState.dialogueTownUI.Portrait = ModContent.Request<Texture2D>(RootTexturePath + $"{portrait}");
         }
 
+        public void ChatWith(BaseDialogue dialogue, int lineNumber)
+        {
+            _talkWorld = Main.LocalPlayer.position;
+            OpenUI();
+            SoundStyle? talkingSound = null;
+            dialogueTowningUIState.dialogueTownUI.ResetText();
+            dialogueTowningUIState.dialogueTownUI.LocalizedText = dialogue.GetLine(lineNumber); 
+            dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
+        }
 
         public void ChatWith(VeilTownNPC veilTownNPC)
         {
@@ -267,12 +277,6 @@ namespace Stellamod.UI.DialogueTowning
                         return true;
                     },
                     InterfaceScaleType.UI));
-            }
-
-            GameInterfaceLayer layer = layers.FirstOrDefault(x => x.Name == "Vanilla: NPC / Sign Dialog");
-            if (layer is not null && _killUi)
-            {
-                layers.Remove(layer);
             }
         }
     }

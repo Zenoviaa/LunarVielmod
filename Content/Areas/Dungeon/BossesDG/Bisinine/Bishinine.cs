@@ -70,8 +70,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         private AIState _nextState;
 
         private float _squishTimer;
-        private Vector2 _startSquishScale;
-        private Vector2 _squishScale;
+        private Vector2 _startSquishScale = Vector2.One;
+        private Vector2 _squishScale = Vector2.One;
         private Vector2 _deathCenter;
         private Vector2 _teleportCenter;
         private Color _outlineColor;
