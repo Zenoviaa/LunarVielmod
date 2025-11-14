@@ -134,7 +134,7 @@ namespace Stellamod
             AshotiTempleCount = tileCounts[TileID.LihzahrdBrick];
             MineshaftTileCount = tileCounts[ModContent.TileType<RobedCatastoneBlock>()];
             ColosseumCount = tileCounts[ModContent.TileType<ChiseledSandstoneT>()];
-            MothlightCount = tileCounts[ModContent.TileType<MothlightBrick>()];
+   //         MothlightCount = tileCounts[ModContent.TileType<MothlightBrick>()];
             DarkspaceCount = tileCounts[TileID.Granite];
         }
     }

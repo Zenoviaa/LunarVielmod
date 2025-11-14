@@ -87,21 +87,21 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 _lightningHitPos = Projectile.position + new Vector2(0, BeamLength);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(_lightningHitPos, 1024, 32);
                 var part = FXUtil.GlowCircleBoom(_lightningHitPos,
-                    innerColor: Color.White,
+                    innerColor: Color.Gray,
                     glowColor: Color.Blue,
                     outerGlowColor: Color.Black, duration: 12, baseSize: 0.14f);
                 part.Scale *= 2;
 
 
                 var part2 = FXUtil.GlowCircleBoom(_lightningHitPos,
-                      innerColor: Color.White,
+                      innerColor: Color.Gray,
                       glowColor: Color.Blue,
                       outerGlowColor: Color.Black, duration: 12, baseSize: 0.14f);
                 part2.Scale *= 5;
                 for (float f = 0; f < 32; f++)
                 {
                     Dust.NewDustPerfect(_lightningHitPos, DustID.Torch,
-                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.White, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Gray, Main.rand.NextFloat(1f, 3f)).noGravity = true;
                 }
 
 
@@ -113,7 +113,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     Vector2 offset = rot.ToRotationVector2() * Main.rand.NextFloat(32, 64);
                     Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(2, 15);
                     var particle = FXUtil.GlowCircleDetailedBoom1(_lightningHitPos + offset,
-                        innerColor: Color.White,
+                        innerColor: Color.Gray,
                         glowColor: Color.Blue,
                         outerGlowColor: Color.Black,
                         baseSize: Main.rand.NextFloat(0.03f, 0.1f),
@@ -132,7 +132,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     pVelocity *= Main.rand.NextFloat(0.5f, 2f);
                     var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
                     FXUtil.GlowFragmentParticle(position, pVelocity,
-                        innerColor: Color.White,
+                        innerColor: Color.Gray,
                         outerColor: Color.Blue,
                         fadeToColor: Color.Purple,
                         distortOut: true);
@@ -158,7 +158,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 }
 
                 var sear = Particle.NewParticle<SearParticle>(_lightningHitPos, Vector2.Zero);
-                sear.innerColor = Color.White;
+                sear.innerColor = Color.Gray;
                 sear.outerColor = Color.Blue;
                 sear.fadeToColor = Color.Black;
                 for (int i = 0; i < BeamPoints.Length; i++)
@@ -189,7 +189,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             if (Timer == 42)
             {
                 var part = FXUtil.GlowCircleBoom(_lightningHitPos,
-                                  innerColor: Color.White,
+                                  innerColor: Color.Gray,
                                   glowColor: Color.Blue,
                                   outerGlowColor: Color.Black, duration: 6, baseSize: 0.12f);
             }
@@ -200,7 +200,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             if (Timer == 52)
             {
                 var part = FXUtil.GlowCircleBoom(_lightningHitPos,
-                                  innerColor: Color.White,
+                                  innerColor: Color.Gray,
                                   glowColor: Color.Blue,
                                   outerGlowColor: Color.Black, duration: 6, baseSize: 0.07f);
             }
@@ -275,7 +275,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             LightningShader lightningShader = LightningShader.Instance;
             lightningShader.Time = _lightningTime;
             lightningShader.Power = _lightningPower;
-            lightningShader.InnerColor = Color.White;
+            lightningShader.InnerColor = Color.Gray;
             lightningShader.OuterColor = Color.Blue;
             TrailDrawer.Draw(spriteBatch, BeamPoints, LightningColorFunction, LightningWidthFunction, lightningShader);
             TrailDrawer.Draw(spriteBatch, BeamPoints, LightningColorFunction, LightningWidthFunction, lightningShader);
@@ -290,7 +290,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
 
         private Color LightningColorFunction(float completionRatio)
         {
-            Color lerpColor = Color.Lerp(Color.White, Color.Blue, (Timer - 30f) / 30f);
+            Color lerpColor = Color.Lerp(Color.Gray, Color.Blue, (Timer - 30f) / 30f);
             return Color.Lerp(Color.Transparent, lerpColor, EasingFunction.QuadraticBump(completionRatio)); ;
         }
 

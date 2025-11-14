@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.Dialogue;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Dialogue;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.TriggersSystem.Triggers;
@@ -103,6 +104,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         public override void AI()
         {
+            DrawOffset = new Vector2(0, 8);
             NPC.spriteDirection = -NPC.direction;
             if (NPC.AnyNPCs(ModContent.NPCType<Bishinine>()))
             {

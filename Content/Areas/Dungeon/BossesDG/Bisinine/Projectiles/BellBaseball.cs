@@ -73,7 +73,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 vel = vel.RotatedByRandom(MathHelper.ToRadians(45));
                 Vector2 position = Projectile.Center;
                 position += Main.rand.NextVector2Circular(32, 32);
-                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), vel, newColor: Color.White, Scale: Main.rand.NextFloat(0.2f, 2f));
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), vel, newColor: Color.Gray, Scale: Main.rand.NextFloat(0.2f, 2f));
 
                 if (Main.rand.NextBool(4))
                 {
@@ -161,7 +161,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 if(Timer % 5 == 0)
                 {
                     Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 
-                        ModContent.DustType<GlowSparkleDust>(), newColor: Color.White, Scale: Main.rand.NextFloat(0f, 1f));
+                        ModContent.DustType<GlowSparkleDust>(), newColor: Color.Gray, Scale: Main.rand.NextFloat(0f, 1f));
                 }
             }
 
@@ -218,7 +218,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
 
             FXUtil.ShakeCamera(target.Center, 1024, 32);
             FXUtil.GlowCircleBoom(target.Center,
-                innerColor: Color.White,
+                innerColor: Color.Gray,
                 glowColor: Color.Black,
                 outerGlowColor: Color.Black, duration: 25, baseSize: 0.24f);
         }
@@ -239,12 +239,12 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 Vector2 oldDrawPos = oldPos - Main.screenPosition;
                 float f = i;
                 float interpolant = f / (float)Projectile.oldPos.Length;
-                Color fadeColor = Color.Lerp(Color.White, Color.Transparent, interpolant) * 0.25f;
+                Color fadeColor = Color.Lerp(Color.Gray, Color.Transparent, interpolant) * 0.25f;
                 oldDrawPos += Projectile.Size / 2f;
                 spriteBatch.Draw(texture, oldDrawPos, null, fadeColor, Projectile.oldRot[i], drawOrigin, drawScale, spriteEffects, 0f);
             }
 
-            spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(lightColor), drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+            spriteBatch.Draw(texture, drawPos, null, Color.Gray.MultiplyRGB(lightColor), drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
             return false;
         }
  

@@ -14,6 +14,7 @@ namespace Stellamod
         public override void OnModLoad()
         {
             base.OnModLoad();
+            On_Main.DrawBackground += NoBackground;
             On_Main.DrawToMap_Section += NoMapSection;
             On_Main.DrawWaters += NoWaterDraw;
             On_Main.DrawTileInWater += NoTileWaterDraw;
@@ -22,11 +23,19 @@ namespace Stellamod
         public override void OnModUnload()
         {
             base.OnModUnload();
- 
+            On_Main.DrawBackground -= NoBackground;
             On_Main.DrawToMap_Section -= NoMapSection;
             On_Main.DrawWaters -= NoWaterDraw;
             On_Main.DrawTileInWater -= NoTileWaterDraw;
             On_Main.DoDraw_Waterfalls -= NoWaterfallDraw;
+        }
+
+        private void NoBackground(On_Main.orig_DrawBackground orig, Main self)
+        {
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (config.DisableBackgroundForReal)
+                return;
+            orig(self);
         }
 
         private void NoWaterfallDraw(On_Main.orig_DoDraw_Waterfalls orig, Main self)
@@ -167,6 +176,8 @@ namespace Stellamod
         [Header("Experimental")]
         [DefaultValue(false)]
         public bool UseLunarLightingEngine;
+        [DefaultValue(false)]
+        public bool DisableBackgroundForReal;
 
         [DefaultValue(false)]
         public bool DisableMinimapDraws;

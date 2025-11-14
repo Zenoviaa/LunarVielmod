@@ -39,6 +39,7 @@ namespace Stellamod.UI.DialogueTowning
 
         public int WhosTalking { get; set; }
         public static string RootTexturePath => "Stellamod/UI/DialogueTowning/";
+        public static string RootPortraitTexturePath => typeof(BaseDialogue).DirectoryHere() + "/";
         public override int uiSlot => -1;
         public override void OnModLoad()
         {
@@ -95,7 +96,9 @@ namespace Stellamod.UI.DialogueTowning
             dialogueTowningUIState.dialogueTownUI.ResetText();
             dialogueTowningUIState.dialogueTownUI.LocalizedText = LangText.TownDialogue(text);
             dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
-            dialogueTowningUIState.dialogueTownUI.Portrait = ModContent.Request<Texture2D>(RootTexturePath + $"{portrait}");
+
+
+            SetPortrait(portrait);
             _talkWorld = Main.LocalPlayer.position;
             WhosTalking = townNPC.NPC.type;
         }
@@ -110,7 +113,7 @@ namespace Stellamod.UI.DialogueTowning
             dialogueTowningUIState.dialogueTownUI.ResetText();
             dialogueTowningUIState.dialogueTownUI.LocalizedText = LangText.TownDialogue(text);
             dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
-            dialogueTowningUIState.dialogueTownUI.Portrait = ModContent.Request<Texture2D>(RootTexturePath + $"{portrait}");
+            SetPortrait(portrait);
         }
 
         public void ChatWith(BaseDialogue dialogue, int lineNumber)
@@ -133,9 +136,14 @@ namespace Stellamod.UI.DialogueTowning
             dialogueTowningUIState.dialogueTownUI.ResetText();
             dialogueTowningUIState.dialogueTownUI.LocalizedText = LangText.TownDialogue(text);
             dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
-            dialogueTowningUIState.dialogueTownUI.Portrait = ModContent.Request<Texture2D>(RootTexturePath + $"{portrait}");
+            SetPortrait(portrait);
         }
 
+        public void SetPortrait(string portrait)
+        {
+            portrait = portrait.Replace("Portrait", string.Empty);
+            dialogueTowningUIState.dialogueTownUI.Portrait = ModContent.Request<Texture2D>(RootPortraitTexturePath + $"{portrait}");
+        }
         public override void UpdateUI(GameTime gameTime)
         {
             Duration = 1f;

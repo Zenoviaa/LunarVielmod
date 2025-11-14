@@ -7,7 +7,6 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -93,16 +92,16 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             Timer++;
             if (Timer == 1)
             {
-                var p = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.UnitY, Color.White, Scale: 0.5f);
+                var p = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.UnitY, Color.Gray, Scale: 0.5f);
 
-              for(float f = 0; f < 16; f++)
+                for (float f = 0; f < 16; f++)
                 {
                     Vector2 velocity = -Vector2.UnitY;
                     velocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
                     velocity *= Main.rand.NextFloat(1, 35);
-                    if(Main.rand.NextBool(16))
-                        Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), velocity, newColor: Color.GhostWhite, Scale: Main.rand.NextFloat(0.5f, 2));
-                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowSparkleDust>(), velocity, newColor: Color.GhostWhite, Scale: Main.rand.NextFloat(0.5f, 2));
+                    if (Main.rand.NextBool(16))
+                        Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), velocity, newColor: Color.Gray, Scale: Main.rand.NextFloat(0.5f, 2));
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowSparkleDust>(), velocity, newColor: Color.Gray, Scale: Main.rand.NextFloat(0.5f, 2));
                     if (Main.rand.NextBool(8))
                     {
                         FXUtil.GlowStretch(Projectile.Center, velocity * 3);
@@ -110,7 +109,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 }
 
             }
-            if(Timer % 15 == 0)
+            if (Timer % 15 == 0)
             {
                 Vector2 velocity = -Vector2.UnitY;
                 velocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
@@ -127,7 +126,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             Color fadeColor = Color.Yellow;
             fadeColor *= EasingFunction.InOutSine(Timer / 2f);
 
-            Color flameColor = Color.Lerp(Color.White, Color.Lerp(Color.Blue, Color.Purple, ExtraMath.Osc(0f, 1f, speed: 8, offset: Projectile.whoAmI)), completionRatio) * EasingFunction.QuadraticBump(completionRatio);
+            Color flameColor = Color.Lerp(Color.Gray, Color.Lerp(Color.Blue, Color.Purple, ExtraMath.Osc(0f, 1f, speed: 8, offset: Projectile.whoAmI)), completionRatio) * EasingFunction.QuadraticBump(completionRatio);
             Color finalColor = Color.Lerp(fadeColor, flameColor, Timer / 40f);
             finalColor *= _pillarFlameScale;
             finalColor *= EasingFunction.QuadraticBump(Timer / 180f);
@@ -158,7 +157,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
 
             Texture2D bloomLineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
             Vector2 bloomLineOrigin = new Vector2(bloomLineTexture.Width / 2, bloomLineTexture.Height);
-            Color glowDrawColor = Color.Lerp(Color.White, Color.LightBlue, ExtraMath.Osc(0f, 1f, speed: 32));
+            Color glowDrawColor = Color.Lerp(Color.Gray, Color.LightBlue, ExtraMath.Osc(0f, 1f, speed: 32));
             glowDrawColor *= _bloomLine;
             glowDrawColor.A = 0;
             spriteBatch.Draw(bloomLineTexture, drawPosition, null, glowDrawColor, 0, bloomLineOrigin, drawScale * EasingFunction.InOutSine(Timer / 30f), SpriteEffects.None, 0);
@@ -168,12 +167,12 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             BlackFireShader shader = BlackFireShader.Instance;
             shader.PrimaryTexture = TrailRegistry.WhispyTrail;
             shader.PrimaryTexture2 = TrailRegistry.StarTrail;
-            shader.InnerColor = Color.Lerp(Color.Black, Color.White,  MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / 170f)));
+            shader.InnerColor = Color.Lerp(Color.Black, Color.Gray, MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / 170f)));
             shader.OuterColor = Color.Lerp(Color.Blue, Color.Purple, ExtraMath.Osc(0f, 1f, speed: 4, offset: Projectile.whoAmI));
             shader.Distortion = MathHelper.Lerp(0.6f, 0.2f, EasingFunction.InOutSine(Timer / 30f)) * MathHelper.Lerp(1, 0, EasingFunction.InOutExpo(Timer / 90f));
             shader.Time = _flameTimer;
             TrailDrawer.Draw(spriteBatch, _spikePos, ColorFunction, WidthFunction, shader, Projectile.Size / 2f);
-      
+
             return false;
         }
         public override void OnKill(int timeLeft)

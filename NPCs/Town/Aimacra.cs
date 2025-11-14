@@ -72,18 +72,7 @@ namespace Stellamod.NPCs.Town
             ; // < Mind the semicolon!
         }
 
-        // Current state
 
-
-        // Current frame
-        public int frameCounter;
-        // Current frame's progress
-        public int frameTick;
-        // Current state's timer
-        public float timer;
-
-        // AI counter
-        public int counter;
         public override void SetDefaults()
         {
             NPC.townNPC = true; // Sets NPC to be a Town NPC
@@ -99,7 +88,7 @@ namespace Stellamod.NPCs.Town
             NPC.knockBackResist = 0.5f;
             AnimationType = NPCID.Guide;
             SpawnAtPoint = true;
-
+            NoSpecialInteract = true;
 
         }
         public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
@@ -125,23 +114,8 @@ namespace Stellamod.NPCs.Town
             });
         }
         public override bool CanTownNPCSpawn(int numTownNPCs)
-        { // Requirements for the town NPC to spawn.
-            for (int k = 0; k < Main.maxPlayers; k++)
-            {
-                Player player = Main.player[k];
-                if (!player.active)
-                {
-                    continue;
-                }
-
-                // Player has to have either an ExampleItem or an ExampleBlock in order for the NPC to spawn
-                if (DownedBossSystem.downedStoneGolemBoss)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+        {
+            return DownedBossSystem.downedStoneGolemBoss;
         }
 
 
@@ -216,8 +190,6 @@ namespace Stellamod.NPCs.Town
             return new List<string>() {
                 "Aimacra",
                 "Aimacra",
-                "Aimacra"
-
             };
         }
 
@@ -235,29 +207,11 @@ namespace Stellamod.NPCs.Town
         {
             if (firstButton)
             {
-                // We want 3 different functionalities for chat buttons, so we use HasItem to change button 1 between a shop and upgrade action.
-
-                //if (Main.LocalPlayer.HasItem(ItemID.HiveBackpack))
-                //{
-                //	SoundEngine.PlaySound(SoundID.Item37); // Reforge/Anvil sound
-
-                //	Main.npcChatText = $"I upgraded your {Lang.GetItemNameValue(ItemID.HiveBackpack)} to a {Lang.GetItemNameValue(ModContent.ItemType<WaspNest>())}";
-
-                //	int hiveBackpackItemIndex = Main.LocalPlayer.FindItem(ItemID.HiveBackpack);
-                //	var entitySource = NPC.GetSource_GiftOrReward();
-
-                //	Main.LocalPlayer.inventory[hiveBackpackItemIndex].TurnToAir();
-                //	Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<WaspNest>());
-
-                //	return;
-                //}
-
                 shop = ShopName;
             }
 
             if (!firstButton)
             {
-
                 Player player = Main.LocalPlayer;
                 WeightedRandom<string> chat = new WeightedRandom<string>();
 
@@ -267,24 +221,6 @@ namespace Stellamod.NPCs.Town
                 Main.npcChatText = LangText.Chat(this, "Special" + Main.rand.Next(1, 11));
             }
         }
-
-
-        public void ResetTimers()
-        {
-            timer = 0;
-            frameCounter = 0;
-            frameTick = 0;
-        }
-
-
-
-
-
-
-
-
-
-
 
         public override void ModifyActiveShop(string shopName, Item[] items)
         {

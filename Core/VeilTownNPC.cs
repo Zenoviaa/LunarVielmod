@@ -23,6 +23,8 @@ namespace Stellamod.Core
         public bool HasTownDialogue { get; set; }
         public bool SpawnAtPoint { get; set; }
         public bool OnlyInteract { get; set; }
+        public bool NoSpecialInteract { get; set; }
+        public Vector2 DrawOffset { get; set; }
         public virtual string QuestMarkTexture => "Stellamod/Core/QuestSystem/QuestMark";
 
         public virtual void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
@@ -32,6 +34,8 @@ namespace Stellamod.Core
 
         public virtual void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
+            if (NoSpecialInteract)
+                return;
             if (!_drawOutlines)
                 return;
             _drawOutlines = false;
@@ -42,6 +46,7 @@ namespace Stellamod.Core
             Vector2 drawPos = NPC.Center - Main.screenPosition;
             float yDiff = MathF.Abs(NPC.frame.Size().Y - NPC.Size.Y);
             drawPos.Y -= yDiff/2;
+            drawPos += DrawOffset;
 
             Vector2 drawOrigin = NPC.frame.Size() / 2f;
             float drawRotation = NPC.rotation;
@@ -64,11 +69,14 @@ namespace Stellamod.Core
         
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            if(NoSpecialInteract)
+                return PreDraw(spriteBatch, screenPos, drawColor);
             string texturePath = Texture;
             Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
             Vector2 drawPos = NPC.Center - Main.screenPosition;
             float yDiff = MathF.Abs(NPC.frame.Size().Y - NPC.Size.Y);
             drawPos.Y -= yDiff/2;
+            drawPos += DrawOffset;
 
             Vector2 drawOrigin = NPC.frame.Size() / 2f;
             float drawRotation = NPC.rotation;
@@ -87,6 +95,9 @@ namespace Stellamod.Core
 
         public override bool PreHoverInteract(bool mouseIntersects)
         {
+            if (NoSpecialInteract)
+                return PreHoverInteract(mouseIntersects);
+
             bool isClose = Vector2.Distance(Main.LocalPlayer.Center, NPC.Center) < 200;
             if (!isClose)
                 return false;
@@ -197,6 +208,9 @@ namespace Stellamod.Core
 
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            if (NoSpecialInteract)
+                return;
+
             base.PostDraw(spriteBatch, screenPos, drawColor);
             if (HasQuestAvailable())
             {

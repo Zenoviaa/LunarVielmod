@@ -63,7 +63,7 @@ namespace Stellamod.WorldG
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
             //We don't need this for now
-            int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Lakes"));
+            int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Micro Biomes"));
             int RoyalGen = tasks.FindIndex(genpass => genpass.Name.Equals("Corruption"));
 
             //Disable Some Passes
@@ -72,8 +72,6 @@ namespace Stellamod.WorldG
             DisableGenTask(tasks, "Mount Caves");
             DisableGenTask(tasks, "Surface Caves");
             DisableGenTask(tasks, "Mountain Caves");
-
-
 
             DisableGenTask(tasks, "Dungeon");
             DisableGenTask(tasks, "Wavy Caves");
@@ -119,38 +117,23 @@ namespace Stellamod.WorldG
 
             }
 
-            /*
-			int beachGen = tasks.FindIndex(x => x.Name.Equals("Beaches"));
-			if(beachGen != -1)
-			{
-                tasks.Insert(beachGen + 1, new PassLegacy("Marble Caves 2", WorldGenDock));
-            }*/
-
-            if (RoyalGen != -1)
-            {
-
-                tasks.Insert(RoyalGen + 1, new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
-
-            }
-            //Replace Terrain Pass
 
             if (MorrowGen != -1)
             {
-                tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Abysm", WorldGenAbysm));
-                tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Abysm Caves", NewCaveFormationAbysm));
-                //    tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Virulent", WorldGenVirulent));
-                //    tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Virulent Caves", WorldGenVirulentCaves));
-                tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
-                tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-                tasks.Insert(MorrowGen + 5, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
-                tasks.Insert(MorrowGen + 6, new PassLegacy("World Gen Illuria", WorldGenIlluria));
-                tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
-                tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
-                tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-                tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
-                tasks.Insert(MorrowGen + 11, new PassLegacy("Icey Caverns", WorldGenIceCaverns));
-                tasks.Insert(MorrowGen + 12, new PassLegacy("World Gen Ice Ores", WorldGenGlisteningOre));
-                tasks.Insert(MorrowGen + 13, new PassLegacy("World Gen Misty Dungeon", GenerateMistyDungeon));
+                tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
+                tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Abysm", WorldGenAbysm));
+                tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Abysm Caves", NewCaveFormationAbysm));
+                tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
+                tasks.Insert(MorrowGen + 5, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
+                tasks.Insert(MorrowGen + 6, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
+                tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Illuria", WorldGenIlluria));
+                tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
+                tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
+                tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
+                tasks.Insert(MorrowGen + 11, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
+                tasks.Insert(MorrowGen + 12, new PassLegacy("Icey Caverns", WorldGenIceCaverns));
+                tasks.Insert(MorrowGen + 13, new PassLegacy("World Gen Ice Ores", WorldGenGlisteningOre));
+                tasks.Insert(MorrowGen + 14, new PassLegacy("World Gen Misty Dungeon", GenerateMistyDungeon));
             }
 
             int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
@@ -245,15 +228,9 @@ namespace Stellamod.WorldG
                 //Just a failsafe
                 while (rectangle.Right().X >= Main.maxTilesX)
                     rectangle.Location -= new Point(32, 0);
-
-                StructureMap structures = GenVars.structures;
-                if (!structures.CanPlace(rectangle))
-                    continue;
-
-
     
                 int width = rectangle.Width;
-                width -= 50;
+                width -= 150;
                 int height = rectangle.Height;
 
 
@@ -276,7 +253,7 @@ namespace Stellamod.WorldG
                 Point oldManPoint = point;
                 oldManPoint.X += 10;
                 oldManPoint.Y -= 20;
-                
+  
                 int npcType = NPCID.OldMan;
                 int num297 = NPC.NewNPC(new EntitySource_WorldGen(), oldManPoint.X, oldManPoint.Y, npcType);
                 Main.npc[num297].homeTileX = oldManPoint.X;
@@ -434,8 +411,8 @@ namespace Stellamod.WorldG
                         WorldUtils.Gen(point, new Shapes.Circle(size / 2, size / 2),
                             new Actions.SetLiquid(LiquidID.Shimmer));
 
-
                     }
+
                     if (genRand.NextBool(10))
                     {
                         int x = (int)cavePosition.X;
@@ -448,8 +425,6 @@ namespace Stellamod.WorldG
 
                         WorldUtils.Gen(point, new Shapes.Circle(size / 2, size / 2),
                             new Actions.SetLiquid(LiquidID.Shimmer));
-
-
                     }
                 }
 
@@ -4691,23 +4666,9 @@ namespace Stellamod.WorldG
                     continue;
                 }
                 Tile tile = Main.tile[smx, smy];
-                // If the type of the tile we are placing the tower on doesn't match what we want, try again
-                if ((tile.TileType == TileID.Grass))
-                {
-                    continue;
-                }
 
                 int smxx = smx;
                 int smyy = smy;
-                // place the Rogue
-                //	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-                //Main.npc[num].homeTileX = -1;
-                //	Main.npc[num].homeTileY = -1;
-                //	Main.npc[num].direction = 1;
-                //	Main.npc[num].homeless = true;
-
-
-
                 for (int da = 0; da < 1; da++)
                 {
                     pointAlcadthingy = new Point(smx - 10, smyy + 3);
@@ -4718,12 +4679,7 @@ namespace Stellamod.WorldG
                     WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 400, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
                     WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 600, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
 
-
-
-
-
                     Point Loc = new Point(smx + 20, smyy + 10);
-
                     rectangle.Location = Loc;
                     NPCs.Town.AlcadSpawnSystem.AlcadTile = Loc;
                     Structurizer.ProtectStructure(Loc, "Struct/Alcad/RoyalCapital3");
@@ -4731,8 +4687,6 @@ namespace Stellamod.WorldG
                     {
                         TileID.RubyGemspark
                     };
-
-
 
                     int[] ChestIndexs = Structurizer.ReadStruct(Loc, "Struct/Alcad/RoyalCapital3", tileBlend);
                     foreach (int chestIndex in ChestIndexs)

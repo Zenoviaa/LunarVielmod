@@ -191,13 +191,13 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 Vector2 oldDrawPos = oldPos - Main.screenPosition;
                 float f = i;
                 float interpolant = f / (float)Projectile.oldPos.Length;
-                Color fadeColor = Color.Lerp(Color.White, Color.Transparent, interpolant) * 0.03f;
+                Color fadeColor = Color.Lerp(Color.Gray, Color.Transparent, interpolant) * 0.03f;
                 oldDrawPos += Projectile.Size / 2f;
                 fadeColor *= _alpha;
                 spriteBatch.Draw(texture, oldDrawPos, null, fadeColor, Projectile.oldRot[i], drawOrigin, drawScale, spriteEffects, 0f);
             }
 
-            spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(lightColor) * _alpha, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+            spriteBatch.Draw(texture, drawPos, null, Color.Gray.MultiplyRGB(lightColor) * _alpha, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
             return false;
         }
 

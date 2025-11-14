@@ -99,7 +99,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
         }
         private Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * _alpha;
+            return Color.Lerp(Color.Gray, Color.Transparent, completionRatio) * _alpha;
         }
 
         private float WidthFunction(float completionRatio)
@@ -133,7 +133,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 Vector2 oldDrawPos = oldPos - Main.screenPosition;
                 float f = i;
                 float interpolant = f / (float)Projectile.oldPos.Length;
-                Color fadeColor = Color.Lerp(Color.White, Color.Transparent, interpolant) * 0.15f;
+                Color fadeColor = Color.Lerp(Color.Gray, Color.Transparent, interpolant) * 0.15f;
                 fadeColor *= _alpha;
                 oldDrawPos += Projectile.Size / 2f;
                 spriteBatch.Draw(texture, oldDrawPos, null, fadeColor, Projectile.oldRot[i], drawOrigin, drawScale, spriteEffects, 0f);
@@ -141,7 +141,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
 
             Texture2D starTexture = ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect).Value;
             Vector2 sdrawOrigin = starTexture.Size() / 2f;
-            Color cometColor = Color.GhostWhite * _alpha;
+            Color cometColor = Color.Gray * _alpha;
             cometColor.A = 0;
 
             for (int i = 0; i < Projectile.oldPos.Length; i++)
@@ -150,13 +150,13 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 Vector2 oldDrawPos = oldPos - Main.screenPosition;
                 float f = i;
                 float interpolant = f / (float)Projectile.oldPos.Length;
-                Color fadeColor = Color.Lerp(Color.White, Color.Blue, interpolant) * 0.1f;
+                Color fadeColor = Color.Lerp(Color.Gray, Color.Blue, interpolant) * 0.1f;
                 fadeColor *= (1.0f - interpolant);
                 fadeColor.A = 0;
                 oldDrawPos += Projectile.Size / 2f;
                 spriteBatch.Draw(starTexture, oldDrawPos, null, fadeColor, Projectile.oldRot[i], sdrawOrigin, Projectile.scale * 1.5f, SpriteEffects.None, 0f);
             }
-            spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(lightColor) * _alpha, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+            spriteBatch.Draw(texture, drawPos, null, Color.Gray.MultiplyRGB(lightColor) * _alpha, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
             return false;
         }
         public override void OnKill(int timeLeft)

@@ -44,7 +44,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
 
         private Color LightningColorFunction(float completionRatio)
         {
-            Color lerpColor = Color.Lerp(Color.White, Color.Blue, Timer / 30f);
+            Color lerpColor = Color.Lerp(Color.Gray, Color.Blue, Timer / 30f);
             lerpColor *= MathHelper.Lerp(1f, 0f, EasingFunction.InOutExpo(Timer / 60f));
             return Color.Lerp(Color.Transparent, lerpColor, EasingFunction.QuadraticBump(completionRatio)); ;
         }
@@ -55,8 +55,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             LightningShader lightningShader = LightningShader.Instance;
             lightningShader.Time = _lightningTime;
             lightningShader.Power = _lightningPower;
-            lightningShader.InnerColor = Color.White;
-            lightningShader.OuterColor = Color.GhostWhite;
+            lightningShader.InnerColor = Color.Gray;
+            lightningShader.OuterColor = Color.DarkGray;
             TrailDrawer.Draw(spriteBatch, _lightningPoints, LightningColorFunction, LightningWidthFunction, lightningShader);
            
             TrailDrawer.Draw(spriteBatch, _lightningPoints, LightningColorFunction, LightningWidthFunction, lightningShader);
@@ -97,7 +97,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 p.outerColor = Color.Black;
 
                 var sear = Particle.NewParticle<SearParticle>(Projectile.Center, Vector2.Zero);
-                sear.innerColor = Color.White;
+                sear.innerColor = Color.Gray;
                 sear.outerColor = Color.Blue;
                 sear.fadeToColor = Color.Black;
                 FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
@@ -109,7 +109,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     Vector2 pos = Projectile.Center;
                     pos += Main.rand.NextVector2Circular(80, 80);
                     var zap = Particle.NewParticle<ZapParticle>(pos, Vector2.UnitY.RotatedByRandom(10) * Main.rand.NextFloat(2, 15));
-                    zap.innerColor = Color.White;
+                    zap.innerColor = Color.Gray;
                     zap.outerColor = Color.Blue;
                     zap.fadeToColor = Color.Black;
                     zap.Scale *= Main.rand.NextFloat(0f, 0.5f);
@@ -138,7 +138,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                         FXUtil.ShakeCamera(Projectile.Center, 1024, 32);
                         _drawLightning = true; 
                         var p3 = FXUtil.GlowCircleBoom(Projectile.Center,
-                           innerColor: Color.White,
+                           innerColor: Color.Gray,
                            glowColor: Color.LightBlue,
                            outerGlowColor: Color.DarkBlue, duration: 15, baseSize: .09f);
                         p3.Scale *= 4;
@@ -156,13 +156,13 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
 
                 var part = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
                 part.fadeToColor = Color.Black;
-                part.outerColor = Color.GhostWhite;
+                part.outerColor = Color.Gray;
                 part.noStretch = true;
                 part.shrink = true;
 
                 var part2 = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
                 part2.fadeToColor = Color.Black;
-                part2.outerColor = Color.GhostWhite;
+                part2.outerColor = Color.Gray;
                 part2.noStretch = true;
                 part2.color *= 0.5f;
                 for (float f = 0; f < 5; f++)
@@ -170,7 +170,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     Vector2 vel = Main.rand.NextVector2Circular(16, 16);
                     vel.Y -= 10;
                     var d = Dust.NewDustPerfect(Projectile.Center,
-                        ModContent.DustType<GlowSparkleDust>(), newColor: Color.White, Scale: Main.rand.NextFloat(0f, 2f) , Velocity: vel);
+                        ModContent.DustType<GlowSparkleDust>(), newColor: Color.Gray, Scale: Main.rand.NextFloat(0f, 2f) , Velocity: vel);
 
                 }
                 var soundStyle = AssetRegistry.Sounds.Stars.Starsingle5;
@@ -178,7 +178,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
                 float boomSize = Main.rand.NextFloat(0.06f, 0.08f);
                 FXUtil.GlowCircleBoom(Projectile.Center,
-                   innerColor: Color.White,
+                   innerColor: Color.Gray,
                    glowColor: Color.LightBlue,
                    outerGlowColor: Color.DarkBlue, duration: 15, baseSize: boomSize * 2);
             }
@@ -211,7 +211,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 if (Timer == 42)
                 {
                     var part = FXUtil.GlowCircleBoom(Projectile.Center,
-                                      innerColor: Color.White,
+                                      innerColor: Color.Gray,
                                       glowColor: Color.GhostWhite,
                                       outerGlowColor: Color.Blue, duration: 6, baseSize: 0.12f);
                 }
@@ -222,7 +222,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 if (Timer == 52)
                 {
                     var part = FXUtil.GlowCircleBoom(Projectile.Center,
-                                      innerColor: Color.White,
+                                      innerColor: Color.Gray,
                                       glowColor: Color.GhostWhite,
                                       outerGlowColor: Color.Blue, duration: 6, baseSize: 0.07f);
                 }
@@ -331,7 +331,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             if (Timer % 10 == 0)
             {
                 var d = Dust.NewDustPerfect(Projectile.Center,
-                    ModContent.DustType<GlowSparkleDust>(), newColor: Color.White, Scale: Main.rand.NextFloat(0f, 0.5f) * Size);
+                    ModContent.DustType<GlowSparkleDust>(), newColor: Color.Gray, Scale: Main.rand.NextFloat(0f, 0.5f) * Size);
                 d.velocity *= 0;
             }
             if (Timer >= 300 * Size)
@@ -341,7 +341,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             if (Main.rand.NextBool(6))
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
-                    DustID.GemDiamond, newColor: Color.White, Scale: Main.rand.NextFloat(0f, 0.5f) * Size);
+                    DustID.GemDiamond, newColor: Color.Gray, Scale: Main.rand.NextFloat(0f, 0.5f) * Size);
 
             }
             Size *= 0.9985f;
@@ -352,7 +352,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
         }
         private Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.White, Color.Transparent, completionRatio);
+            return Color.Lerp(Color.Gray, Color.Transparent, completionRatio);
         }
 
         private float WidthFunction(float completionRatio)
@@ -375,7 +375,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
             Texture2D starTexture = ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect).Value;
             Vector2 drawOrigin = starTexture.Size() / 2f;
-            Color cometColor = Color.GhostWhite;
+            Color cometColor = Color.Gray;
             cometColor.A = 0;
 
             for (int i = 0; i < Projectile.oldPos.Length; i++)
@@ -384,7 +384,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 Vector2 oldDrawPos = oldPos - Main.screenPosition;
                 float f = i;
                 float interpolant = f / (float)Projectile.oldPos.Length;
-                Color fadeColor = Color.Lerp(Color.White, Color.Blue, interpolant) * 0.05f;
+                Color fadeColor = Color.Lerp(Color.Gray, Color.Blue, interpolant) * 0.05f;
                 fadeColor *= (1.0f - interpolant);
                 fadeColor.A = 0;
                 oldDrawPos += Projectile.Size / 2f;

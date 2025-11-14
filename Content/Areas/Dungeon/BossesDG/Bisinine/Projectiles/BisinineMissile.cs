@@ -75,13 +75,13 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             if(Timer % 10 == 0)
             {
                 var d = Dust.NewDustPerfect(Projectile.Center,
-                    ModContent.DustType<GlowSparkleDust>(), newColor: Color.White, Scale: Main.rand.NextFloat(0f, 0.5f));
+                    ModContent.DustType<GlowSparkleDust>(), newColor: Color.Gray, Scale: Main.rand.NextFloat(0f, 0.5f));
                 d.velocity *= 0;
             }
             if(Main.rand.NextBool(6))
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
-                    DustID.GemDiamond, newColor: Color.White, Scale: Main.rand.NextFloat(0f, 0.5f));
+                    DustID.GemDiamond, newColor: Color.Gray, Scale: Main.rand.NextFloat(0f, 0.5f));
 
             }
             if (_target == null || _target.dead)
@@ -121,7 +121,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
         }
         private Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.White, Color.LightCyan, completionRatio) * EasingFunction.QuadraticBump(completionRatio) * 0.5f;
+            return Color.Lerp(Color.Gray, Color.LightCyan, completionRatio) * EasingFunction.QuadraticBump(completionRatio) * 0.5f;
         }
 
         private float WidthFunction(float completionRatio)
@@ -132,7 +132,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
         private void DrawTrail()
         {
             BlackFireShader shader = BlackFireShader.Instance;
-            shader.InnerColor = Color.White;
+            shader.InnerColor = Color.Gray;
             shader.OuterColor = Color.Blue;
             TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, ColorFunction, WidthFunction, shader, Projectile.Size / 2f);
         }
@@ -142,7 +142,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             string texturePath = TextureRegistry.ZuiEffect;
             Texture2D starTexture = ModContent.Request<Texture2D>(texturePath).Value;
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
-            Color drawColor = Color.Lerp(Color.White, Color.Lerp(Color.White, Color.Blue, 0.5f), ExtraMath.Osc(0f, 1f, speed: 12));
+            Color drawColor = Color.Lerp(Color.Gray, Color.Lerp(Color.Gray, Color.Blue, 0.5f), ExtraMath.Osc(0f, 1f, speed: 12));
             drawColor *= 0.5f;
             drawColor.A = 0;
             Vector2 drawOrigin = starTexture.Size() / 2f;
@@ -162,7 +162,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 Vector2 oldDrawPos = oldPos - Main.screenPosition;
                 float f = i;
                 float interpolant = f / (float)Projectile.oldPos.Length;
-                Color fadeColor = Color.Lerp(Color.GhostWhite, Color.Lerp(Color.White, Color.Blue, 0.8f) * 0.2f, interpolant) * 0.05f;
+                Color fadeColor = Color.Lerp(Color.GhostWhite, Color.Lerp(Color.Gray, Color.Blue, 0.8f) * 0.2f, interpolant) * 0.05f;
                 oldDrawPos += Projectile.Size / 2f;
                 spriteBatch.Draw(starTexture, oldDrawPos, null, fadeColor,0, drawOrigin, scale * 1.5f, SpriteEffects.None, 0f);
             }
@@ -184,7 +184,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             var part = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
             part.Scale *= 0.5f;
             part.fadeToColor = Color.Black;
-            part.outerColor = Color.GhostWhite;
+            part.outerColor = Color.Gray;
             part.noStretch = true;
 
             for (float f = 0; f <16; f++)
@@ -197,7 +197,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             SoundEngine.PlaySound(SoundID.Item9, Projectile.position);
             float boomSize = Main.rand.NextFloat(0.06f, 0.08f);
             FXUtil.GlowCircleBoom(Projectile.Center,
-               innerColor: Color.White,
+               innerColor: Color.Gray,
                glowColor: Color.LightBlue,
                outerGlowColor: Color.DarkBlue, duration: 15, baseSize: boomSize * 2);
         }

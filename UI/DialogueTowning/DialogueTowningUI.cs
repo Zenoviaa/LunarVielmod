@@ -152,8 +152,7 @@ namespace Stellamod.UI.DialogueTowning
                 int indexOfRightBracket = text.IndexOf(']', indexOfLeftBracket) + 1;
                 string action = text.Substring(indexOfEqual, indexOfRightBracket - indexOfEqual - 1);
 
-                Console.WriteLine(command);
-                Console.WriteLine(action);
+
                 switch (command)
                 {
                     case "PORTRAIT":
