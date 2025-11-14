@@ -96,7 +96,7 @@ namespace Stellamod.Core
         public override bool PreHoverInteract(bool mouseIntersects)
         {
             if (NoSpecialInteract)
-                return PreHoverInteract(mouseIntersects);
+                return base.PreHoverInteract(mouseIntersects);
 
             bool isClose = Vector2.Distance(Main.LocalPlayer.Center, NPC.Center) < 200;
             if (!isClose)
