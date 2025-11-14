@@ -143,13 +143,13 @@ namespace Stellamod.Core.LunarLightingSystem
                         continue;
                     Tile tile = Main.tile[x, y];
                     Point lightTilePoint = new Point(x, y);
-                    if (LightingSets.PointLitTiles[tile.TileType])
+                    if (LightingSets.PointLitTiles[tile.TileType].A > 0)
                     {
 
                         if (!EmittingTiles[lightTilePoint.X, lightTilePoint.Y] )
                         {
                             Vector2 position = lightTilePoint.ToWorldCoordinates();
-                            Color lightColor = Lighting.GetColor(x, y);
+                            Color lightColor = LightingSets.PointLitTiles[tile.TileType];
                             lightColor.A = 1;
                             PointLightData pointLightData = new PointLightData(lightColor, position, 0.5f, 800);
                             int index = AddPointLight(pointLightData);

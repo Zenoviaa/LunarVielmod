@@ -6,9 +6,9 @@ namespace Stellamod.Core.LunarLightingSystem
 {
     public class LightingSets : ModSystem 
     {
-        public static Color[] EmissiveHeldItems;
-        public static Color[] PointLitTiles;
-        public static Color[] GlowingTiles;
+        public static Color[] EmissiveHeldItems = ItemID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
+        public static Color[] PointLitTiles = ItemID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
+        public static Color[] GlowingTiles = ItemID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
         public override void SetupContent()
         {
             EmissiveHeldItems = ItemID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
@@ -45,13 +45,12 @@ namespace Stellamod.Core.LunarLightingSystem
             {
                 if (TileID.Sets.Torch[i])
                 {
-                    TileLoader.item
                     PointLitTiles[i] = Color.White;
                 }
 
             }
 
-            PointLitTiles[TileID.tor]
+
             base.SetupContent();
         }
 
