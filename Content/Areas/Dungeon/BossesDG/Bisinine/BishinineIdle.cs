@@ -1,6 +1,7 @@
 ﻿using Stellamod.Content.Dialogue;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
+using Stellamod.Core.TriggersSystem.Triggers;
 using Stellamod.Helpers;
 using Stellamod.UI.CauldronSystem;
 using System;
@@ -14,7 +15,8 @@ using Terraria.ModLoader;
 namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 {
 
-    public class BishinineIdle : VeilTownNPC
+    public class BishinineIdle : VeilTownNPC,
+        INPCSpawnCondition
     {
         public override void SetStaticDefaults()
         {
@@ -32,7 +34,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         {
             NPC.friendly = true; // NPC Will not attack player
             NPC.width = 54;
-            NPC.height = 118;
+            NPC.height = 106;
             NPC.aiStyle = 0;
             NPC.damage = 90;
             NPC.defense = 42;
@@ -106,6 +108,11 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             {
                 NPC.Kill();
             }
+        }
+
+        public bool CanSpawn()
+        {
+            return !NPC.AnyNPCs(ModContent.NPCType<Bishinine>()) && !DownedBossSystem.downedBishinineBoss;
         }
     }
 }

@@ -1994,5 +1994,12 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             spriteBatch.Draw(texture, down, NPC.frame, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
         }
         #endregion
+
+
+        public override void OnKill()
+        {
+            base.OnKill();
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedBishinineBoss, -1);
+        }
     }
 }

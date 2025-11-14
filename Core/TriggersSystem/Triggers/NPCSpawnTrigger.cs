@@ -11,6 +11,10 @@ using Terraria.ModLoader.UI.Elements;
 
 namespace Stellamod.Core.TriggersSystem.Triggers
 {
+    public interface INPCSpawnCondition
+    {
+        bool CanSpawn();
+    }
     public class NPCSpawnTrigger :
         Trigger,
         ISaveData,
@@ -53,6 +57,11 @@ namespace Stellamod.Core.TriggersSystem.Triggers
                 return false;
             if (NPC.AnyNPCs(_modNPC.Type))
                 return false;
+            if(_modNPC is INPCSpawnCondition spawnCondition)
+            {
+                if (!spawnCondition.CanSpawn())
+                    return false;
+            }
 
             bool allPlayersFar = true;
 

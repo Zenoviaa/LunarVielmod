@@ -46,6 +46,10 @@ namespace Stellamod.Helpers
         public static bool downedEreshBoss = false;
         public static bool downedLumiBoss = false;
         public static bool downedVoidBoss = false;
+        public static bool downedBishinineBoss = false;
+        public static bool downedSkullrunnerBoss = false;
+        public static bool downedMinervaBoss = false;
+        public static bool downedRavagerBoss = false;
 
         public static void ResetFlags()
         {
@@ -82,6 +86,11 @@ namespace Stellamod.Helpers
             downedLumiBoss = false;
             downedVoidBoss = false;
             downedCommanderGintziaBoss = false;
+
+            downedBishinineBoss = false;
+            downedSkullrunnerBoss = false;
+            downedMinervaBoss = false;
+            downedRavagerBoss = false;
         }
 
         public override void ClearWorld()
@@ -125,6 +134,10 @@ namespace Stellamod.Helpers
             tag["downedVoidBoss"] = downedVoidBoss;
             tag["downedIrradiaBoss"] = downedIrradiaBoss;
             tag["downedCommanderGintziaBoss"] = downedCommanderGintziaBoss;
+            tag["downedBishinineBoss"] = downedBishinineBoss;
+            tag["downedRavagerBoss"] = downedRavagerBoss;
+            tag["downedSkullrunnerBoss"] = downedSkullrunnerBoss;
+            tag["downedMinervaBoss"] = downedMinervaBoss;
         }
 
         public override void LoadWorldData(TagCompound tag)
@@ -162,6 +175,11 @@ namespace Stellamod.Helpers
             downedVoidBoss = tag.GetBool("downedVoidBoss");
             downedIrradiaBoss = tag.GetBool("downedIrradiaBoss");
             downedCommanderGintziaBoss = tag.GetBool("downedCommanderGintziaBoss");
+
+            downedBishinineBoss = tag.GetBool("downedBishinineBoss");
+            downedRavagerBoss = tag.GetBool("downedRavagerBoss");
+            downedMinervaBoss = tag.GetBool("downedMinervaBoss");
+            downedSkullrunnerBoss = tag.GetBool("downedSkullrunnerBoss");
         }
 
         public override void NetSend(BinaryWriter writer)
@@ -214,6 +232,13 @@ namespace Stellamod.Helpers
                 [5] = downedIrradiaBoss,
                 [6] = downedRekBoss,
                 [7] = downedCommanderGintziaBoss
+            }); 
+            writer.Write(new BitsByte
+            {
+                [0] = downedBishinineBoss,
+                [1] = downedRavagerBoss,
+                [2] = downedMinervaBoss,
+                [3] = downedSkullrunnerBoss,
             });
         }
 
@@ -259,6 +284,12 @@ namespace Stellamod.Helpers
             downedIrradiaBoss = flags[5];
             downedRekBoss = flags[6];
             downedCommanderGintziaBoss = flags[7];
+
+            flags = reader.ReadByte();
+            downedBishinineBoss = flags[0];
+            downedRavagerBoss = flags[1];
+            downedMinervaBoss = flags[2];
+            downedSkullrunnerBoss = flags[3];
         }
     }
 }
