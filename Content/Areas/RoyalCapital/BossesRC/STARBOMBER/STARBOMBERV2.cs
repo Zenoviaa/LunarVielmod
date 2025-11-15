@@ -24,7 +24,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
     public enum RotationStyle : byte
     {
         Inverse=0,
-        Forward=1
+        Forward=1,
+        InverseLerp=2
     }
 
 
@@ -105,10 +106,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         {
             legData.footPosition = targetFootPosition;
             legData.timer = 0f;
-            legData.duration = 30f;
+            legData.duration = 10;
             legData.startWalkPosition = legData.footPosition;
             legData.endWalkPosition = targetFootPosition;
-            legData.rotationStyle = RotationStyle.Forward;
+              legData.rotationStyle = RotationStyle.Forward;
         }
 
         public void CalculateWalkAngles(ref LegData legData, Armature leg)
@@ -129,7 +130,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
             if (legData.timer >= legData.duration)
             {
-                legData.rotationStyle = RotationStyle.Inverse;
+                legData.timer = 0f;
+                legData.duration /= 2;
+                legData.startWalkPosition = leg.GetEndEffector();
+                legData.rotationStyle = RotationStyle.InverseLerp;
             }
         }
 
@@ -137,6 +141,18 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         {
             switch (legData.rotationStyle)
             {
+                case RotationStyle.InverseLerp:
+                    legData.timer++;
+                    float time = legData.duration;
+                    float completionRatio = legData.timer / time;
+                    Vector2 position = Vector2.Lerp(legData.startWalkPosition, legData.footPosition, completionRatio);
+                    leg.IK(legData.rootPosition, position);
+                    if(legData.timer >= time)
+                    {
+                        legData.timer = 0;
+                        legData.rotationStyle = RotationStyle.Inverse;
+                    }
+                    break;
                 case RotationStyle.Inverse:
 
                     leg.IK(legData.rootPosition, legData.footPosition);
@@ -674,11 +690,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Vector2 groundPoint = FindGround();
             if (NPC.direction == 1)
             {
-                return groundPoint - Vector2.UnitX * StandRange + new Vector2(NPC.direction * StandRange / 1.5f, 0);
+                return groundPoint - Vector2.UnitX * StandRange + new Vector2(NPC.direction * StandRange, 0);
             }
             else
             {
-                return groundPoint - Vector2.UnitX * StandRange;
+                return groundPoint - Vector2.UnitX * StandRange * 0.85f;
             }
         }
 
@@ -687,11 +703,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Vector2 groundPoint = FindGround();
             if(NPC.direction == -1)
             {
-                return groundPoint + Vector2.UnitX * StandRange + new Vector2(NPC.direction * StandRange / 1.5f, 0);
+                return groundPoint + Vector2.UnitX * StandRange + new Vector2(NPC.direction * StandRange, 0);
             }
             else
             {
-                return groundPoint + Vector2.UnitX * StandRange;
+                return groundPoint + Vector2.UnitX * StandRange * 0.85f;
 
             }
        
@@ -768,8 +784,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             if (Timer == 1)
             {
                 NPC.TargetClosest();
-                NPC.direction = TargetDirection;
+
             }
+            NPC.direction = TargetDirection;
 
             if (!_namePlate)
             {
@@ -798,8 +815,19 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             ApplyStandingYVelocity();
 
             //Walk?
-            float targetX = NPC.direction * 1.5f;
-            NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetX, 0.1f);
+            float xDist = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
+            if(xDist > StandRange)
+            {
+                float speed = MathHelper.Lerp(4f, 7f, MathHelper.Clamp(xDist / 16f, 0f, 1f));
+                float targetX = NPC.direction * speed;
+                NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetX, 0.1f);
+
+            }
+            else
+            {
+                float targetX = NPC.direction * 2f;
+                NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetX, 0.1f);
+            }
 
 
             if (Timer >= timeToWait)
@@ -880,6 +908,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private void AI_MachineGunLoop()
         {
             Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+            }
             HeldGun = MachineGun;
             GunPosition = GunHoistPosition;
             TargetOutlineColor = Color.Yellow;
@@ -1552,6 +1585,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private void AI_MissileLauncherLoop()
         {
             Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+            }
             HeldGun = MissileLauncher;
             GunPosition = GunHoistPosition;
             TargetOutlineColor = Color.Yellow;
@@ -1624,6 +1662,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
                 HeldGun.drawColor = Color.Lerp(HeldGun.drawColor, Color.White, 0.1f);
             }
+            NPC.rotation = MathHelper.Lerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.1f);
             ApplyStandingYVelocity();
             if (Timer >= 240)
             {

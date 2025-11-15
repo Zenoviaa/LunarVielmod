@@ -21,14 +21,7 @@ namespace Stellamod.Core.InverseKinematics
 
         public void IK(Vector2 rootPosition, Vector2 targetPosition)
         {
-            timer++;
-            if (timer >= 30f)
-            {
-                oldTargetPosition = targetPosition;
-                timer = 30f;
-            }
-      
-            targetPosition = Vector2.Lerp(oldTargetPosition, targetPosition, timer / 30f);
+        
             //So the issue with this solver is that 
             //1. it doesn't actually find a solution, it just goes to the nearest possible point,
             //Even if there is no solution it'll go to the next best spot, which may be desired in some cases
@@ -55,9 +48,13 @@ namespace Stellamod.Core.InverseKinematics
 
            
         }
+
+        public Vector2 GetEndEffector()
+        {
+            return segments[segments.Length - 1].b;
+        }
         public void FK(Vector2 rootPosition)
         {
-            timer = 0;
             int total = segments.Length;
             Segment end = segments[total - 1];
             end.Update();
