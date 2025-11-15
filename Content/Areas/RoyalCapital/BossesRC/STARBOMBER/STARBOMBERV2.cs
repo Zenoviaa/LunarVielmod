@@ -176,11 +176,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             UpdateLeg(ref rightLegData, RightLeg);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Texture2D[] textures, Color drawColor)
         {
             //Debug drawing
-            LeftLeg.Draw(spriteBatch);
-            RightLeg.Draw(spriteBatch);
+            LeftLeg.DrawLikeLeg(spriteBatch, textures, drawColor);
+            RightLeg.DrawLikeLeg(spriteBatch, textures, drawColor);
         }
     }
     public class STARBOMBERGUN
@@ -478,6 +478,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         public Vector2 LeftFootPosition;
         public Vector2 RightFootPosition;
         public float StandRange;
+
+        public Texture2D[] LegTextures;
+        public Asset<Texture2D> ThighTexture => ModContent.Request<Texture2D>(Texture + "_Thigh");
+        public Asset<Texture2D> KneeTexture => ModContent.Request<Texture2D>(Texture + "_Knee");
+        public Asset<Texture2D> LegTexture => ModContent.Request<Texture2D>(Texture + "_Leg");
+        public Asset<Texture2D> FootTexture => ModContent.Request<Texture2D>(Texture + "_Foot");
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
@@ -1811,7 +1817,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
 
-            Legs.Draw(spriteBatch);
+            LegTextures ??= new Texture2D[4];
+            LegTextures[0] = ThighTexture.Value;
+            LegTextures[1] = KneeTexture.Value;
+            LegTextures[2] = LegTexture.Value;
+            LegTextures[3] = FootTexture.Value;
+            Legs.Draw(spriteBatch, LegTextures, drawColor);
             spriteBatch.Draw(texture, drawPos, null, drawColor, NPC.rotation, drawOrigin, NPC.scale, SpriteEffects.None, 0);
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

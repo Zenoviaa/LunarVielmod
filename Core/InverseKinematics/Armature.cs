@@ -94,5 +94,45 @@ namespace Stellamod.Core.InverseKinematics
                 segments[i].Draw(spriteBatch);
             }
         }
+
+        public void DrawLikeLeg(SpriteBatch spriteBatch, Texture2D[] textures, Color drawColor)
+        {
+            Texture2D thighTexture = textures[0];
+            Texture2D kneeTexture = textures[1];
+            Texture2D legTexture = textures[2];
+            Texture2D footTexture = textures[3];
+
+
+            Segment legSegment = segments[segments.Length - 1];
+            Segment thighSegment = segments[0];
+
+            //Draw Thight
+            Draw(spriteBatch, thighTexture, thighSegment.a, thighSegment.angle, drawColor);
+
+            //Draw Foot
+            DrawCenetered(spriteBatch, footTexture, legSegment.b, 0, drawColor);
+
+            //Draw Leg
+            Draw(spriteBatch, legTexture, legSegment.a, legSegment.angle, drawColor);
+
+            //Draw Knee
+            DrawCenetered(spriteBatch, kneeTexture, thighSegment.b, thighSegment.angle, drawColor);
+        }
+
+
+        public void DrawCenetered(SpriteBatch spriteBatch, Texture2D texture, Vector2 position, float angle, Color drawColor)
+        {
+            Vector2 drawPosition = position - Main.screenPosition;
+            Vector2 drawOrigin = texture.Size() / 2f;
+            Vector2 drawScale = Vector2.One;
+            spriteBatch.Draw(texture, drawPosition, null, drawColor, angle, drawOrigin, drawScale, SpriteEffects.None, 0);
+        }
+        public void Draw(SpriteBatch spriteBatch, Texture2D texture, Vector2 position, float angle, Color drawColor)
+        {
+            Vector2 drawPosition = position - Main.screenPosition;
+            Vector2 drawOrigin = new Vector2(0f, texture.Height / 2f);
+            Vector2 drawScale = Vector2.One;
+            spriteBatch.Draw(texture, drawPosition, null, drawColor, angle, drawOrigin, drawScale, SpriteEffects.None, 0);
+        }
     }
 }

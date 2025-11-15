@@ -50,6 +50,7 @@ namespace Stellamod.Helpers
 
             return false;
         }
+
         public static Player FindClosestPlayer(Vector2 position, float maxDetectDistance)
         {
             Player closestPlayer = null;
