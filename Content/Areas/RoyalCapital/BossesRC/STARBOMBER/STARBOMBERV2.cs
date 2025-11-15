@@ -120,6 +120,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
     public class STARBOMBERV2 : ScarletBoss,
         IDrawOutlines
     {
+        private float _afterImageTime;
         private float _oscTimer;
         private bool _legsUp;
         private bool _contactDamage;
@@ -314,6 +315,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         {
             base.SetStaticDefaults();
             Main.npcFrameCount[NPC.type] = 1;
+            NPCID.Sets.TrailCacheLength[NPC.type] = 16;
+            NPCID.Sets.TrailingMode[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             NPCID.Sets.BossBestiaryPriority.Add(Type);
         }
@@ -380,7 +383,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                     SwitchState(AIState.Despawn);
                 }
             }
-     
+            NPCID.Sets.TrailCacheLength[NPC.type] = 16;
+            NPCID.Sets.TrailingMode[Type] = 3;
+
             HeldGun?.Update();
             _oscTimer++;
             float osc = _oscTimer * 0.05f;
@@ -481,14 +486,24 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
             SwitchState(_patternManager.NextPattern());
-            SwitchState(AIState.MachineGun_Start);
+            SwitchState(AIState.CrashJump_Start);
         }
 
 
         #region Walking Code
+        private void SnapLegs()
+        {
+            LeftFootPosition = LeftLeg.segments[1].b;
+            RightFootPosition = RightLeg.segments[1].b;
+        }
         private void StretchLegs()
         {
+            SnapLegs();
+            Vector2 newPosition = FindNewLeftFoot();
+            MoveFoot(ref _leftFootWalkInstruction, LeftFootPosition, newPosition);
 
+            Vector2 newPosition2 = FindNewRightFoot();
+            MoveFoot(ref _rightFootWalkInstruction, RightFootPosition, newPosition2);
         }
         private void SetInitialAngles()
         {
@@ -530,6 +545,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         {
             if (_legsUp)
             {
+                //Lerp to default rotations
+                float range = 196;
+                LeftFootPosition = NPC.Center - Vector2.UnitX * range + Vector2.UnitY * 32;
+                RightFootPosition = NPC.Center + Vector2.UnitX * range + Vector2.UnitY * 32;
                 return;
             }
 
@@ -556,8 +575,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         }
         private void SolveLegs()
         {
+
             SetConstraints();
             MoveLegs();
+
             LeftLeg.Solve(LeftLegRootPosition, LeftFootPosition);
             RightLeg.Solve(RightLegRootPosition, RightFootPosition);
 
@@ -692,6 +713,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             {
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
+                StretchLegs();
             }
 
             HeldGun = null;
@@ -704,7 +726,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             NPC.noTileCollide = true;
             NPC.noGravity = true;
             float targetRotation = NPC.velocity.X * 0.05f;
-            NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.01f);
+            NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.03f);
+            NPC.rotation = MathHelper.WrapAngle(NPC.rotation);
             StandRange = MathHelper.Lerp(StandRange, 256, 0.1f);
 
 
@@ -921,13 +944,19 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Timer++;
             if (Timer == 1)
             {
+                SoundStyle tireSound = new SoundStyle("Stellamod/Assets/Sounds/STARBOMBERWAKE");
+                tireSound.PitchVariance = 0.15f;
+                SoundEngine.PlaySound(tireSound, NPC.position);
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
             }
 
             _legsUp = true;
+            NPC.velocity.X *= 0.9f;
+            NPC.noGravity = false;
+            NPC.noTileCollide = false;
             float prepTime = 90f;
-            if (Timer >= prepTime)
+            if (Timer >= prepTime && NPC.collideY)
             {
                 SwitchState(AIState.LegUpSpin_Loop);
             }
@@ -935,6 +964,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
         private void AI_LegUpSpinLoop()
         {
+      
             _contactDamage = true;
             TargetOutlineColor = Color.Red;
             Timer++;
@@ -946,17 +976,19 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             _legsUp = true;
 
 
-            float spinTime = 80f;
-            float spinSpeed = 15;
+            float spinTime = 45;
+            float spinSpeed = 40;
             float targetSpinVelocity = NPC.direction * spinSpeed;
 
-            NPC.rotation = NPC.velocity.X * 0.05f;
+            NPC.rotation = NPC.velocity.X * 0.015f;
             if (Timer >= spinTime / 2f)
             {
-                NPC.velocity.X *= 0.98f;
+                NPC.velocity.X *= 0.94f;
+                _afterImageTime *= 0.9f;
             }
             else
             {
+                _afterImageTime = MathHelper.Lerp(_afterImageTime, 1f, 0.1f);
                 NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetSpinVelocity, 0.1f);
             }
 
@@ -964,7 +996,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             {
                 Timer = 0;
                 AttackCycle++;
-                if (AttackCycle >= 3)
+                if (AttackCycle >= 9)
                 {
                     SwitchState(AIState.LegUpSpin_End);
                 }
@@ -976,7 +1008,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             _contactDamage = false;
             TargetOutlineColor = Color.Transparent;
             Timer++;
+            if(Timer == 1)
+            {
+                StretchLegs();
+            }
             _legsUp = false;
+            NPC.velocity.X *= 0.94f;
             if (Timer >= 60)
             {
                 SwitchState(AIState.Idle);
@@ -995,7 +1032,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             {
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
-                NPC.velocity.Y = -20;
+                NPC.velocity.Y = -15;
             }
 
 
@@ -1009,12 +1046,15 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             TargetOutlineColor = Color.Yellow;
             Timer++;
             _legsUp = true;
+            _afterImageTime = MathHelper.Lerp(_afterImageTime, 0.3f, 0.1f);
             if (Timer == 1)
             {
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
 
             }
+            NPC.noTileCollide = false;
+            NPC.noGravity = false;
             float targetVelocity = NPC.direction * 5;
             NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetVelocity, 0.01f);
             if (NPC.collideY && Timer >= 10)
@@ -1028,6 +1068,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Timer++;
             if (Timer == 1)
             {
+                NPC.velocity.X = NPC.direction * 25;
+                var part = FXUtil.GlowCircleBoom(NPC.Center, Color.Pink, Color.Purple, Color.Blue);
+                part.Scale *= 8f; 
+                
+                part = FXUtil.GlowCircleBoom(NPC.Center, Color.Pink, Color.Purple, Color.Blue);
+                part.Scale *= 3f;
                 ShakeModSystem.Shake = 2;
                 SoundStyle boom = SoundID.DD2_ExplosiveTrapExplode;
                 boom.PitchVariance = 0.3f;
@@ -1080,7 +1126,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger"), NPC.position);
 
-                FXUtil.ShakeCamera(NPC.position, 1024, 16);
+                FXUtil.ShakeCamera(NPC.position, 2000, 64);
                 FXUtil.PunchCamera(NPC.position, Vector2.UnitY, 8, 8, 8);
                 if (MultiplayerHelper.IsHost)
                 {
@@ -1089,8 +1135,22 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 }
             }
 
-            _legsUp = false;
-            SwitchState(AIState.Idle);
+            if(Timer % 8 == 0)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<TSmokeDust>(), Scale: Main.rand.NextFloat(0.5f, 1f));
+            }
+            _afterImageTime = MathHelper.Lerp(_afterImageTime, 0.8f, 0.1f);
+            TargetOutlineColor = Color.Red;
+            _contactDamage = true;
+            NPC.rotation += NPC.velocity.X * 0.025f;
+            NPC.velocity.X *= 0.98f;
+
+            if(MathF.Abs(NPC.velocity.X) <= 1f)
+            {
+                _legsUp = false;
+                SwitchState(AIState.Idle);
+            }
+            
         }
         #endregion
 
@@ -1215,8 +1275,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             float eased = EasingFunction.InOutSine(interpolant);
             Vector2 gunHoistPosition = Vector2.Lerp(NPC.Center, GunHoistPosition, eased);
             GunPosition = gunHoistPosition;
-            GunDirection = AimGun();
+            GunDirection = Vector2.Lerp(GunDirection, Vector2.UnitY, 0.01f);
+            GunVDirection = 1;
 
+            NPC.velocity.X *= 0.99f;
+            ApplyStandingYVelocity();
             if (Timer >= prepTime)
             {
                 SwitchState(AIState.MissileLauncher_Loop);
@@ -1230,15 +1293,33 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             GunPosition = GunHoistPosition;
             TargetOutlineColor = Color.Yellow;
 
-            if (Timer % 32 == 0 && Timer < 120)
+            if(AttackCycle == 2)
             {
-                if (MultiplayerHelper.IsHost)
+                if (Timer % 24 == 0 && Timer < 120)
                 {
-                    Projectile.NewProjectile(SourceFromThis, GunMuzzlePosition, GunDirection,
-                        ModContent.ProjectileType<StarMissile>(), StarMissileDamage, 1, Main.myPlayer);
+                    if (MultiplayerHelper.IsHost)
+                    {
+                        Projectile.NewProjectile(SourceFromThis, GunMuzzlePosition, GunDirection * 7,
+                            ModContent.ProjectileType<StarMissile>(), StarMissileDamage, 1, Main.myPlayer);
+                    }
+                    NPC.velocity.X = -NPC.direction * 1;
+                    HeldGun.Recoil();
                 }
-                GunDirection = AimGun();
-                HeldGun.Recoil();
+
+            }
+            else
+            {
+                if (Timer % 48 == 0 && Timer < 120)
+                {
+                    if (MultiplayerHelper.IsHost)
+                    {
+                        Projectile.NewProjectile(SourceFromThis, GunMuzzlePosition, GunDirection * 7,
+                            ModContent.ProjectileType<StarMissile>(), StarMissileDamage, 1, Main.myPlayer);
+                    }
+                    NPC.velocity.X = -NPC.direction * 1;
+                    HeldGun.Recoil();
+                }
+
             }
 
 
@@ -1251,17 +1332,40 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
             if (Timer >= 120)
             {
+                if(AttackCycle != 2)
+                    NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, NPC.direction * 4, 0.1f);
+                GunDirection = Vector2.Lerp(GunDirection, AimGun(), 0.005f);
+                GunVDirection = 1;
+
+                HeldGun.drawColor = Color.Lerp(HeldGun.drawColor, _gunSilhouetteColor, 0.1f);
                 if (Timer % 8 == 0)
                 {
                     Dust.NewDust(GunPosition, 4, 4, ModContent.DustType<TSmokeDust>(), newColor: Color.DarkGray,
                         Scale: Main.rand.NextFloat(0.5f, 1f));
                 }
-            }
 
+                if (Timer % 16 == 0)
+                {
+                    Particle.NewParticle<EmberParticle>(GunPosition, Main.rand.NextVector2Circular(1, 4), newColor: Color.Red);
+                    if (Main.rand.NextBool(2))
+                    {
+                        Particle.NewParticle<ZapParticle>(GunPosition + Main.rand.NextVector2Circular(8, 8), Main.rand.NextVector2Circular(1, 1), newColor: Color.Pink, Scale: Main.rand.NextFloat(0.5f, 0.66f));
+                    }
+                }
+            }
+            else
+            {
+                NPC.velocity.X *= 0.99f;
+                GunDirection = Vector2.Lerp(GunDirection, AimGun(), 0.1f);
+                GunVDirection = 1;
+
+                HeldGun.drawColor = Color.Lerp(HeldGun.drawColor, Color.White, 0.1f);
+            }
+            ApplyStandingYVelocity();
             if (Timer >= 240)
             {
                 AttackCycle++;
-                if (AttackCycle >= 2)
+                if (AttackCycle >= 3)
                 {
                     SwitchState(AIState.MissileLauncher_End);
                 }
@@ -1280,6 +1384,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             TargetOutlineColor = Color.Transparent;
             if (Timer == 1)
             {
+                SoundStyle tireSound = new SoundStyle("Stellamod/Assets/Sounds/STARWAVE");
+                tireSound.PitchVariance = 0.15f;
+                tireSound.Pitch = -0.5f;
+                SoundEngine.PlaySound(tireSound, NPC.position);
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
             }
@@ -1293,10 +1401,17 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             float eased = EasingFunction.InOutSine(interpolant);
             Vector2 gunHoistPosition = Vector2.Lerp(GunHoistPosition, NPC.Center, eased);
             GunPosition = gunHoistPosition;
-            GunDirection = -Vector2.Lerp(GunDirection, -Vector2.UnitY, 0.1f);
+            GunDirection = Vector2.Lerp(GunDirection, Vector2.UnitY, 0.1f);
+            if (Timer == prepTime)
+            {
+                FXUtil.GlowCircleBoom(gunHoistPosition + Vector2.UnitY * 40, Color.White, Color.Pink, Color.Blue);
+            }
+
+            NPC.velocity.X *= 0.9f;
+            ApplyStandingYVelocity();
             if (Timer >= prepTime)
             {
-                SwitchState(AIState.MachineGun_Loop);
+                SwitchState(AIState.Idle);
             }
         }
 
@@ -1382,11 +1497,26 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
         private void DrawBody(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            LeftLeg.Draw(spriteBatch);
-            RightLeg.Draw(spriteBatch);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPos = NPC.Center - screenPos;
             Vector2 drawOrigin = texture.Size() / 2f;
+            for (int i = 0; i < NPC.oldPos.Length; i++)
+            {
+                Vector2 oldPos = NPC.oldPos[i];
+                Vector2 oldDrawPos = oldPos - Main.screenPosition;
+
+                float f = i;
+                float interpolant = f / (float)NPC.oldPos.Length;
+                Color fadeColor = Color.Lerp(Color.White, Color.Transparent, interpolant) * 0.25f;
+                fadeColor *= _afterImageTime;
+                oldDrawPos += NPC.Size / 2f;
+                spriteBatch.Draw(texture, oldDrawPos, NPC.frame, fadeColor, NPC.oldRot[i], drawOrigin, NPC.scale, SpriteEffects.None, 0f);
+            }
+
+
+            LeftLeg.Draw(spriteBatch);
+            RightLeg.Draw(spriteBatch);
+ 
             spriteBatch.Draw(texture, drawPos, null, drawColor, NPC.rotation, drawOrigin, NPC.scale, SpriteEffects.None, 0);
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

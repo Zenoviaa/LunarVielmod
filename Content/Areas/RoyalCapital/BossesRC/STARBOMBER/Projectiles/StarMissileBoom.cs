@@ -18,7 +18,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
             Projectile.height = 128;
             Projectile.penetrate = -1;
             Projectile.hostile = true;
-            Projectile.timeLeft = 15;
+            Projectile.timeLeft = 5;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
         }
@@ -28,6 +28,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
             Timer++;
             if (Timer == 1)
             {
+                var boom = FXUtil.GlowCircleBoom(Projectile.Center, Color.Pink, Color.Purple, Color.Blue);
+                boom.Scale *= 2f;
                 FXUtil.GlowCircleDetailedBoom1(Projectile.Center, Color.Pink, Color.Purple, Color.DarkBlue);
                 var part2 = FXUtil.GlowCircleDetailedBoom1(Projectile.Center, Color.Pink, Color.Purple, Color.DarkBlue);
                 part2.Scale *= 0.5f;
@@ -37,7 +39,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
                     Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), randVelocity,
                         newColor: Color.Pink, Scale: Main.rand.NextFloat(0.2f, 0.8f));
                 }
-                FXUtil.ShakeCamera(Projectile.position, 1024, 8);
+                FXUtil.ShakeCamera(Projectile.position, 1024, 16);
                 SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/STARGROP");
                 explosionSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(explosionSound, Projectile.position);

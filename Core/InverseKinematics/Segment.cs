@@ -70,7 +70,7 @@ namespace Stellamod.Core.InverseKinematics
                     //Go the opposite way if outside of range of motion
                     float oldAngle = angle;
                     float diff = newAngle - oldAngle;
-                    angle -= diff;
+                    angle -= diff * 0.5f;
                 }
             } else
             {

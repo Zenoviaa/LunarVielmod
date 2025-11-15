@@ -52,6 +52,14 @@ namespace Stellamod.Core.InverseKinematics
                 segment.angle = segment.rootDirection.ToRotation();
             }
         }
+        public void LerpDefaults()
+        {
+            for (int i = 0; i < segments.Length; i++)
+            {
+                Segment segment = segments[i];
+                segment.angle = MathHelper.Lerp(segment.angle, segment.rootDirection.ToRotation(), 0.1f);
+            }
+        }
         public void Draw(SpriteBatch spriteBatch)
         {
             for (int i = 0; i < segments.Length; i++)
