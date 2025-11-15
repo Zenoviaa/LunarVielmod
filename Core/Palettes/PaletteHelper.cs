@@ -185,13 +185,13 @@ namespace Stellamod.Core.Palettes
         public static Color FindNearestColorInPalette(Color originalColor, Color[] palette)
         {
             Color selectedColor = palette[0];
-            float dist = ColorDistance4(originalColor, selectedColor);
+            float dist = ColorDistance(originalColor, selectedColor);
             float currentDist;
 
             // For loop with the same loops than the color palette.
             for (int i = 1; i < palette.Length; i++)
             {
-                currentDist = ColorDistance4(originalColor, palette[i]);
+                currentDist = ColorDistance(originalColor, palette[i]);
                 //Branchless way to do this
                 //We want to avoid using if-statements in shaders if possible, as creating branches GREATLY slows them down
                 //We can evaluate a check like this to a 0 or 1, and since only 1 can be true we can invert it simply :) 
