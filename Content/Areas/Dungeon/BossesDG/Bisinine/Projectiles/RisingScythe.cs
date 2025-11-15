@@ -212,6 +212,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             drawOrigin = new Vector2(texture.Width / 2f, 0f);
             Color glowColor = Color.White;
             glowColor *= _lineAlpha;
+            glowColor *= 0.5f;
             glowColor.A = 0;
             drawScale = new Vector2(0.2f, 1f);
             spriteBatch.Draw(texture, drawPos, null, glowColor, 0, drawOrigin, drawScale, spriteEffects, 0f);

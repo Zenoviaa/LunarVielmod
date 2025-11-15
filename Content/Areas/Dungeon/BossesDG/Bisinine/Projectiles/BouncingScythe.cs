@@ -49,7 +49,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<GlowSparkleDust>(), newColor: Color.White, Scale: 0.5f);
             }
-            Player target = PlayerHelper.FindClosestPlayer(Projectile.position, 4000);
+            Player target = PlayerHelper.FindClosestPlayer(Projectile.position, 40000);
             if (target != null)
             {
                 float targetX = target.Center.X < Projectile.Center.X ? -17 : 17;
