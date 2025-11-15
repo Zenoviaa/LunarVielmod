@@ -28,6 +28,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
         private float _alpha;
         private float _lineAlpha;
         private Vector2 _squishScale;
+        private Vector2 _spawnPoint;
+
         private Color _outlineColor;
         private ref float Timer => ref Projectile.ai[0];
         private ref float BounceCount => ref Projectile.ai[1];
@@ -74,6 +76,11 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 Projectile.netUpdate = true;
             }
 
+            if(_spawnPoint == Vector2.Zero)
+            {
+                _spawnPoint = Projectile.Center;
+
+            }
             if(BounceCount >= 2)
             {
                 Timer++;
@@ -108,7 +115,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     Projectile.tileCollide = true;
                 }
             }
-                _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
+               
+            _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
 
             if(BounceCount > 0)
             {
@@ -132,7 +140,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             {
                 if (this.OwnedByLocalClient() && BounceCount == 0)
                 {
-                    Player target = PlayerHelper.FindClosestPlayer(Projectile.position, 2000);
+                    Player target = PlayerHelper.FindClosestPlayer(Projectile.position, 40000);
                     if (target != null)
                     {
                         _bounceDirection = target.Center.X < Projectile.Center.X ? -1 : 1;
@@ -212,10 +220,11 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             drawOrigin = new Vector2(texture.Width / 2f, 0f);
             Color glowColor = Color.White;
             glowColor *= _lineAlpha;
-            glowColor *= 0.5f;
+            glowColor *= 0.3f;
             glowColor.A = 0;
-            drawScale = new Vector2(0.2f, 1f);
-            spriteBatch.Draw(texture, drawPos, null, glowColor, 0, drawOrigin, drawScale, spriteEffects, 0f);
+            drawScale = new Vector2(0.2f, 0.45f);
+            drawScale.Y *= _lineAlpha;
+            spriteBatch.Draw(texture, _spawnPoint - Main.screenPosition, null, glowColor, 0, drawOrigin, drawScale, spriteEffects, 0f);
 
             return false;
         }
@@ -411,7 +420,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     Vector2 pos = Projectile.Center;
                     pos.Y -= 600;
 
-                    Player target = PlayerHelper.FindClosestPlayer(Projectile.position, 2000);
+                    Player target = PlayerHelper.FindClosestPlayer(Projectile.position, 80000);
                     if(target != null)
                     {
                         pos.X = target.Center.X + Main.rand.NextFloat(-1000, 1000);
