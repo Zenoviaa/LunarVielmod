@@ -1,0 +1,1408 @@
+﻿using Accord;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles;
+using Stellamod.Core;
+using Stellamod.Core.InverseKinematics;
+using Stellamod.Core.Particles;
+using Stellamod.Core.Shaders;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
+using Stellamod.UI.Systems;
+using Stellamod.Visual.Particles;
+using System;
+using System.IO;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
+{
+    public class STARBOMBERGUN
+    {
+        private float _recoilTimer;
+        private Vector2 _lastPosition;
+        public STARBOMBERGUN(string texturePath)
+        {
+            TextureAsset = ModContent.Request<Texture2D>(texturePath);
+            drawScale = Vector2.One;
+            recoilDistance = 24;
+            drawColor = Color.White;
+        }
+        public Asset<Texture2D> TextureAsset;
+        public Vector2 drawScale;
+        public float recoilDistance;
+        public Color drawColor;
+        public Vector2 GetMuzzlePosition(Vector2 anchorPosition, Vector2 direction)
+        {
+            Vector2 muzzlePosition = anchorPosition + direction * 96;
+            muzzlePosition -= direction * recoilDistance;
+            return muzzlePosition;
+        }
+
+        public Vector2 GetRecoilOffset(Vector2 direction)
+        {
+            float progress = _recoilTimer / 8f;
+            return -direction * progress * recoilDistance;
+        }
+        public void Recoil()
+        {
+            _recoilTimer = 8;
+            FXUtil.ShakeCamera(_lastPosition, 256, 8);
+        }
+
+        public void Update()
+        {
+            if (_recoilTimer > 0)
+            {
+                _recoilTimer--;
+            }
+        }
+
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, Vector2 direction, Color lightColor)
+        {
+            _lastPosition = position;
+            Vector2 drawPosition = position - Main.screenPosition;
+            drawPosition += GetRecoilOffset(direction);
+
+            float recoilAmount = _recoilTimer / 8f;
+            Color finalColor = drawColor.MultiplyRGB(lightColor);
+            Vector2 drawOrigin = new Vector2(0, TextureAsset.Height() / 2f);
+            Vector2 finalScale = drawScale;
+            finalScale += Vector2.One * recoilAmount * 0.1f;
+            float rotation = direction.ToRotation();
+            float angle = MathHelper.WrapAngle(rotation);
+            SpriteEffects spriteEffects = SpriteEffects.None;
+            if (direction.X < 0)
+            {
+                spriteEffects = SpriteEffects.FlipVertically;
+                drawOrigin.Y = TextureAsset.Height() - drawOrigin.Y;
+            }
+            spriteBatch.Draw(TextureAsset.Value, drawPosition, null, finalColor, rotation, drawOrigin, finalScale, spriteEffects, 0);
+
+
+            Color glowColor = Color.White;
+            glowColor.A = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                spriteBatch.Draw(TextureAsset.Value, drawPosition, null, glowColor * recoilAmount, rotation, drawOrigin, finalScale, spriteEffects, 0);
+
+            }
+            glowColor = Color.Red;
+            glowColor.A = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                spriteBatch.Draw(TextureAsset.Value, drawPosition, null, glowColor * recoilAmount, rotation, drawOrigin, finalScale, spriteEffects, 0);
+
+            }
+        }
+
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 position, Vector2 direction, Color lightColor)
+        {
+            Draw(spriteBatch, position - Vector2.UnitY * 2, direction, lightColor);
+            Draw(spriteBatch, position + Vector2.UnitY * 2, direction, lightColor);
+            Draw(spriteBatch, position - Vector2.UnitX * 2, direction, lightColor);
+            Draw(spriteBatch, position + Vector2.UnitX * 2, direction, lightColor);
+        }
+    }
+
+
+    public struct FootWalkInstruction
+    {
+    
+        public Vector2 start;
+        public Vector2 end;
+        public float timer;
+        public float duration;
+    }
+    public class STARBOMBERV2 : ScarletBoss,
+        IDrawOutlines
+    {
+        private float _oscTimer;
+        private bool _legsUp;
+        private bool _contactDamage;
+        private Color _outlineColor;
+        private Vector2 _groundPoint;
+
+        private FootWalkInstruction _leftFootWalkInstruction;
+        private FootWalkInstruction _rightFootWalkInstruction;
+
+        private Vector2 _targetWalkPosition;
+        private PatternManager<AIState> _patternManager;
+
+        private STARBOMBERGUN _machineGun;
+        private STARBOMBERGUN _missileLauncher;
+        private STARBOMBERGUN _sniperRifle;
+        private STARBOMBERGUN _whistleGun;
+        private STARBOMBERGUN _wingSniper;
+        private Armature _leg1;
+        private Armature _leg2;
+        private Color _gunSilhouetteColor;
+
+        private enum AIState
+        {
+            Spawn,
+            Idle,
+            MachineGun_Start,
+            MachineGun_Loop,
+            MachineGun_End,
+
+            LegUpSpin_Start,
+            LegUpSpin_Loop,
+            LegUpSpin_End,
+
+            WalkUpStomp_Start,
+            WalkUpStomp_Stomp,
+            WalkUpStomp_End,
+
+            MissileLauncher_Start,
+            MissileLauncher_Loop,
+            MissileLauncher_End,
+
+            SteamWhistle_Start,
+            SteamWhistle_Loop,
+            SteamWhistle_End,
+
+            WingTimeSnipe_Start,
+            WingTimeSnipe_End,
+
+            CrashJump_Start,
+            CrashJump_Loop,
+            CrashJump_Crash,
+            Despawn,
+            Death
+        }
+
+        private Armature LeftLeg
+        {
+            get
+            {
+                if(_leg1 == null)
+                {
+                    _leg1 = new Armature();
+                    SetConstraints();
+                    SetInitialAngles();
+                }
+   
+                return _leg1;
+            }
+        }
+
+        private Armature RightLeg
+        {
+            get
+            {
+                if(_leg2 == null)
+                {
+                    _leg2 = new Armature();
+                    SetConstraints();
+                    SetInitialAngles();
+                }
+    
+          
+                return _leg2;
+            }
+        }
+
+        private float LegRadius => 80;
+        private Vector2 LeftLegRootPosition
+        {
+            get
+            {
+                return NPC.Center - Vector2.UnitX * LegRadius;
+            }
+        }
+        private Vector2 RightLegRootPosition
+        {
+            get
+            {
+                return NPC.Center + Vector2.UnitX * LegRadius;
+            }
+        }
+
+        private int WalkUpStompDamage => 100;
+        private int SteamLaserDamage => 200;
+        private int CrashDamage => 70;
+        private int StarMissileDamage => 50;
+        private int MachineGunDamage => 30;
+        private int WingSnipeDamage => 150;
+        private ref float Timer => ref NPC.ai[0];
+        private Color TargetOutlineColor;
+        private AIState State
+        {
+            get => (AIState)NPC.ai[1];
+            set => NPC.ai[1] = (float)value;
+        }
+
+        private ref float AttackCycle => ref NPC.ai[2];
+        public STARBOMBERGUN MachineGun
+        {
+            get
+            {
+                _machineGun ??= new STARBOMBERGUN(Texture + "_MachineGun");
+                return _machineGun;
+            }
+        }
+
+
+        public STARBOMBERGUN SniperRifle
+        {
+            get
+            {
+                _sniperRifle ??= new STARBOMBERGUN(Texture + "_SniperRifle");
+                return _sniperRifle;
+            }
+        }
+
+
+        public STARBOMBERGUN MissileLauncher
+        {
+            get
+            {
+                _missileLauncher ??= new STARBOMBERGUN(Texture + "_MissileLauncher");
+                return _missileLauncher;
+            }
+        }
+        public STARBOMBERGUN WhistleGun
+        {
+            get
+            {
+                _whistleGun ??= new STARBOMBERGUN(Texture + "_WhistleGun");
+                return _whistleGun;
+            }
+        }
+
+        public STARBOMBERGUN WingSniper
+        {
+            get
+            {
+                _wingSniper ??= new STARBOMBERGUN(Texture + "_WingSniper");
+                return _wingSniper;
+            }
+        }
+
+        public STARBOMBERGUN HeldGun;
+        public Vector2 GunHoistPosition
+        {
+            get
+            {
+                return NPC.Center + Vector2.UnitY * 96 * GunVDirection;
+            }
+        }
+        public Vector2 GunMuzzlePosition
+        {
+            get
+            {
+                return HeldGun.GetMuzzlePosition(GunPosition, GunDirection);
+            }
+        }
+
+        public Vector2 GunPosition;
+        public Vector2 GunDirection;
+        public float GunVDirection;
+        public float StandHeight;
+        public Vector2 LeftFootPosition;
+        public Vector2 RightFootPosition;
+        public float StandRange;
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
+        }
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            Main.npcFrameCount[NPC.type] = 1;
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
+        }
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            NPC.width = 128;
+            NPC.height = 128;
+            NPC.damage = 100;
+            NPC.defense = 14;
+            NPC.lifeMax = 6000;
+            NPC.scale = 1f;
+            NPC.aiStyle = -1;
+
+            NPC.value = Item.buyPrice(gold: 5);
+            NPC.knockBackResist = 0f;
+            NPC.boss = true;
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
+            NPC.npcSlots = 30f;
+
+            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Boss6");
+            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/VoidHit") with { PitchVariance = 0.1f };
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/VoidDead1") with { PitchVariance = 0.1f };
+        }
+
+        private void SwitchState(AIState state)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                Timer = 0;
+                State = state;
+                NPC.netUpdate = true;
+            }
+        }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.WriteVector2(_targetWalkPosition);
+            writer.Write(_legsUp);
+            writer.Write(_contactDamage);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            _targetWalkPosition = reader.ReadVector2();
+            _legsUp = reader.ReadBoolean();
+            _contactDamage = reader.ReadBoolean();
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            _gunSilhouetteColor = Color.Lerp(Color.White, Color.Black, 0.75f);
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+            if (!NPC.HasValidTarget)
+            {
+                NPC.TargetClosest();
+                if (!NPC.HasValidTarget && State != AIState.Despawn)
+                {
+                    SwitchState(AIState.Despawn);
+                }
+            }
+     
+            HeldGun?.Update();
+            _oscTimer++;
+            float osc = _oscTimer * 0.05f;
+            float i = (MathF.Sin(osc) + 0.5f) / 0.5f;
+            StandHeight = MathHelper.Lerp(232, 256,  i);
+            switch (State)
+            {
+                case AIState.Despawn:
+                    AI_Despawn();
+                    break;
+                case AIState.Spawn:
+                    AI_Spawn();
+                    break;
+                case AIState.Idle:
+                    AI_Idle();
+                    break;
+                case AIState.MachineGun_Start:
+                    AI_MachineGunStart();
+                    break;
+                case AIState.MachineGun_Loop:
+                    AI_MachineGunLoop();
+                    break;
+                case AIState.MachineGun_End:
+                    AI_MachineGunEnd();
+                    break;
+                case AIState.LegUpSpin_Start:
+                    AI_LegUpSpinStart();
+                    break;
+                case AIState.LegUpSpin_Loop:
+                    AI_LegUpSpinLoop();
+                    break;
+                case AIState.LegUpSpin_End:
+                    AI_LegUpSpinEnd();
+                    break;
+                case AIState.CrashJump_Start:
+                    AI_CrashJumpStart();
+                    break;
+                case AIState.CrashJump_Loop:
+                    AI_CrashJumpLoop();
+                    break;
+                case AIState.CrashJump_Crash:
+                    AI_CrashJumpCrash();
+                    break;
+                case AIState.WalkUpStomp_Start:
+                    AI_WalkUpStompStart();
+                    break;
+                case AIState.WalkUpStomp_Stomp:
+                    AI_WalkUpStompStomp();
+                    break;
+                case AIState.WalkUpStomp_End:
+                    AI_WalkUpStompEnd();
+                    break;
+                case AIState.SteamWhistle_Start:
+                    AI_SteamWhistleStart();
+                    break;
+                case AIState.SteamWhistle_Loop:
+                    AI_SteamWhistleLoop();
+                    break;
+                case AIState.SteamWhistle_End:
+                    AI_SteamWhistleEnd();
+                    break;
+                case AIState.MissileLauncher_Start:
+                    AI_MissileLauncherStart();
+                    break;
+                case AIState.MissileLauncher_Loop:
+                    AI_MissileLauncherLoop();
+                    break;
+                case AIState.MissileLauncher_End:
+                    AI_MissileLauncherEnd();
+                    break;
+                case AIState.WingTimeSnipe_Start:
+                    AI_WingTimeSnipeStart();
+                    break;
+                case AIState.WingTimeSnipe_End:
+                    AI_WingTimeSnipeEnd();
+                    break;
+                case AIState.Death:
+                    AI_Death();
+                    break;
+            }
+            SolveLegs();
+        }
+
+        private void ChooseAttack()
+        {
+            if (!MultiplayerHelper.IsHost)
+                return;
+            if (_patternManager == null)
+            {
+                _patternManager = new PatternManager<AIState>(
+                    new Tuple<AIState, float>(AIState.MachineGun_Start, 1.0f),
+                    new Tuple<AIState, float>(AIState.LegUpSpin_Start, 1.0f),
+                    new Tuple<AIState, float>(AIState.WalkUpStomp_Start, 1.0f),
+                    new Tuple<AIState, float>(AIState.MissileLauncher_Start, 1.0f),
+                    new Tuple<AIState, float>(AIState.SteamWhistle_Start, 1.0f),
+                    new Tuple<AIState, float>(AIState.CrashJump_Start, 1.0f));
+
+            }
+
+            SwitchState(_patternManager.NextPattern());
+            SwitchState(AIState.MachineGun_Start);
+        }
+
+
+        #region Walking Code
+        private void StretchLegs()
+        {
+
+        }
+        private void SetInitialAngles()
+        {
+            LeftLeg.SetDefaults();
+            RightLeg.SetDefaults();
+        }
+        private void SetConstraints()
+        {
+            LeftLeg.segments[0].rootDirection = -Vector2.UnitX;
+            LeftLeg.segments[0].rangeOfMotion = -0.5f;
+        
+            RightLeg.segments[0].rootDirection = Vector2.UnitX;
+            RightLeg.segments[0].rangeOfMotion = -0.5f;
+
+
+            float downRangeOfMotion = -0.5f;
+            LeftLeg.segments[1].rootDirection = Vector2.UnitY;
+            LeftLeg.segments[1].rangeOfMotion = downRangeOfMotion;
+
+            RightLeg.segments[1].rootDirection = Vector2.UnitY;
+            RightLeg.segments[1].rangeOfMotion = downRangeOfMotion;
+
+        }
+
+        private void UpdateWalkCycle(ref FootWalkInstruction instruction, ref Vector2 footPosition)
+        {
+            instruction.timer++;
+            float progress = instruction.timer / instruction.duration;
+            float stepHeight = MathHelper.Lerp(0f, 90, EasingFunction.QuadraticBump(progress));
+
+            Vector2 start = instruction.start;
+            start.Y -= stepHeight;
+            Vector2 end = instruction.end;
+            end.Y -= stepHeight;
+            Vector2 newFootPosition = Vector2.Lerp(start, end, progress);
+            footPosition = newFootPosition;
+        }
+        private void MoveLegs()
+        {
+            if (_legsUp)
+            {
+                return;
+            }
+
+
+            if (_leftFootWalkInstruction.timer < _leftFootWalkInstruction.duration)
+            {
+                UpdateWalkCycle(ref _leftFootWalkInstruction, ref LeftFootPosition);
+            }
+            else if (!IsLeftFootValid())
+            {
+                Vector2 newPosition = FindNewLeftFoot();
+                MoveFoot(ref _leftFootWalkInstruction, LeftFootPosition, newPosition);
+            }
+
+            if (_rightFootWalkInstruction.timer < _rightFootWalkInstruction.duration)
+            {
+                UpdateWalkCycle(ref _rightFootWalkInstruction, ref RightFootPosition);
+            }
+            else if (!IsRightFootValid())
+            {
+                Vector2 newPosition = FindNewRightFoot();
+                MoveFoot(ref _rightFootWalkInstruction, RightFootPosition, newPosition);
+            }
+        }
+        private void SolveLegs()
+        {
+            SetConstraints();
+            MoveLegs();
+            LeftLeg.Solve(LeftLegRootPosition, LeftFootPosition);
+            RightLeg.Solve(RightLegRootPosition, RightFootPosition);
+
+            //Check foot X to center x
+
+
+        }
+
+        private void MoveFoot(ref FootWalkInstruction instruction, Vector2 newPosition)
+        {
+            instruction.timer = 0f;
+            instruction.start = LeftFootPosition;
+            instruction.end = newPosition;
+            instruction.duration = 30;
+        }
+        private void MoveFoot(ref FootWalkInstruction instruction, Vector2 startPosition, Vector2 newPosition)
+        {
+            instruction.timer = 0f;
+            instruction.start = startPosition;
+            instruction.end = newPosition;
+
+            float duration = MathF.Min(Vector2.Distance(startPosition, newPosition) / 8f, 30f);
+            instruction.duration = duration;
+        }
+        private bool IsLeftFootValid()
+        {
+            float xDist = MathF.Abs(LeftFootPosition.X - NPC.Center.X);
+            return xDist > 32 && xDist <= StandRange + 32;
+        }
+
+        private bool IsRightFootValid()
+        {
+            float xDist = MathF.Abs(RightFootPosition.X - NPC.Center.X);
+            return xDist > 32 && xDist <= StandRange + 32;
+
+        }
+        private Vector2 FindNewLeftFoot()
+        {
+            Vector2 groundPoint = FindGround();
+            if (NPC.direction == 1)
+            {
+                return groundPoint - Vector2.UnitX * StandRange + new Vector2(NPC.direction * StandRange / 1.5f, 0);
+            }
+            else
+            {
+                return groundPoint - Vector2.UnitX * StandRange;
+
+            }
+        }
+
+        private Vector2 FindNewRightFoot()
+        {
+            Vector2 groundPoint = FindGround();
+            if(NPC.direction == -1)
+            {
+                return groundPoint + Vector2.UnitX * StandRange + new Vector2(NPC.direction * StandRange / 1.5f, 0);
+            }
+            else
+            {
+                return groundPoint + Vector2.UnitX * StandRange;
+
+            }
+       
+        }
+
+        private Vector2 FindGround()
+        {
+            Vector2 groundPoint = CollisionHelper.RayCast(NPC.Center, Vector2.UnitY, 2000, 3);
+            return groundPoint;
+        }
+
+        private void SetTargetWalkPosition(Vector2 targetPosition)
+        {
+            _targetWalkPosition = targetPosition;
+            NPC.netUpdate = true;
+        }
+
+
+        #endregion
+
+        private Vector2 AimGun()
+        {
+            Vector2 aimDirection = (MyTarget.Center - GunPosition).SafeNormalize(Vector2.Zero);
+            return aimDirection;
+        }
+
+        private void AI_Despawn()
+        {
+            TargetOutlineColor = Color.Transparent;
+            Timer++;
+            float interpolant = Timer / 60f;
+            float ease = EasingFunction.InOutSine(interpolant);
+            NPC.scale = MathHelper.Lerp(1f, 0f, ease);
+            if (Timer >= 60f)
+            {
+                NPC.active = false;
+            }
+        }
+
+        private void AI_Spawn()
+        {
+            Timer++;
+            if (Timer >= 60)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+
+        private void ApplyStandingYVelocity()
+        {
+            Vector2 groundPoint = FindGround();
+            float distanceToGround = Vector2.Distance(NPC.Center, groundPoint);
+            if (distanceToGround > StandHeight)
+            {
+                NPC.velocity.Y += 0.5f;
+            }
+            else if (distanceToGround < StandHeight / 2f)
+            {
+                NPC.velocity.Y -= 0.5f;
+            }
+            else
+            {
+                float yOscVelocity = MathF.Sin(_oscTimer * 0.02f) * 0.5f;
+                NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, yOscVelocity, 0.1f);
+            }
+
+        }
+        private void AI_Idle()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+            }
+
+            HeldGun = null;
+
+            //Set some defaults
+            GunVDirection = -1;
+            _contactDamage = false;
+            AttackCycle = 0;
+
+            NPC.noTileCollide = true;
+            NPC.noGravity = true;
+            float targetRotation = NPC.velocity.X * 0.05f;
+            NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.01f);
+            StandRange = MathHelper.Lerp(StandRange, 256, 0.1f);
+
+
+            //Fun hover code
+            //Also make sure we get bro to the ground
+            float timeToWait = 300;
+            ApplyStandingYVelocity();
+
+            //Walk?
+            float targetX = NPC.direction * 1.5f;
+            NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetX, 0.1f);
+
+
+            if (Timer >= timeToWait)
+            {
+                ChooseAttack();
+            }
+        }
+        private void AI_Death()
+        {
+            Timer++;
+        }
+
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            base.HitEffect(hit);
+            if (NPC.life <= 0 && State != AIState.Death)
+            {
+                NPC.life = 1;
+                SwitchState(AIState.Death);
+            }
+
+
+            if (NPC.life <= 0)
+            {
+                NPC.life = 1;
+            }
+        }
+
+        #region MachineGunAttack
+        private void AI_MachineGunStart()
+        {
+            //Pulls out a machine gun and starts shootin,
+            //you have to dodge through it pretty often and run away
+
+            //I think i'll make this attack just like sweeping
+            Timer++;
+            //We using the machine gun brah
+            HeldGun = MachineGun;
+            TargetOutlineColor = Color.Yellow;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+
+                SoundStyle starGun = new SoundStyle("Stellamod/Assets/Sounds/STARGUN");
+                starGun.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(starGun, NPC.Center);
+
+            }
+
+
+            float prepTime = 90f;
+
+            //Summon the gun        
+            //I think it's easier if all of star bombers guns just come from him and aren't projectiles                 
+            //Yeah that'll be better, let's represent them
+            float interpolant = Timer / prepTime;
+            float eased = EasingFunction.InOutSine(interpolant);
+            Vector2 gunHoistPosition = Vector2.Lerp(NPC.Center, GunHoistPosition, eased);
+            GunPosition = gunHoistPosition;
+            GunDirection = Vector2.Lerp(GunDirection, Vector2.UnitY, 0.01f);
+            GunVDirection = 1;
+
+
+            NPC.velocity.X *= 0.99f;
+
+            ApplyStandingYVelocity();
+            if (Timer >= prepTime)
+            {
+                SwitchState(AIState.MachineGun_Loop);
+            }
+        }
+
+        private void AI_MachineGunLoop()
+        {
+            Timer++;
+            HeldGun = MachineGun;
+            GunPosition = GunHoistPosition;
+            TargetOutlineColor = Color.Yellow;
+
+            Vector2 directionToTarget = (MyTarget.Center - GunPosition).SafeNormalize(Vector2.Zero);
+            float dp = Vector2.Dot(GunDirection, directionToTarget);
+            if (Timer % 8 == 0 && Timer < 120 && dp > 0.8f)
+            {
+
+                NPC.velocity.X = -NPC.direction * 1;
+                if (MultiplayerHelper.IsHost)
+                {
+                    int type = ModContent.ProjectileType<MachineGunBullet>();
+                    Projectile.NewProjectile(SourceFromThis, GunMuzzlePosition, GunDirection * 7,
+                     type, MachineGunDamage, 1, Main.myPlayer);
+                }
+
+                HeldGun.Recoil();
+            }
+
+
+            if (Timer == 120)
+            {
+                SoundStyle tireSound = new SoundStyle("Stellamod/Assets/Sounds/STARWAVE");
+                tireSound.PitchVariance = 0.15f;
+                SoundEngine.PlaySound(tireSound, NPC.position);
+            }
+
+            if (Timer >= 120)
+            {
+                NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, NPC.direction * 4, 0.1f);
+                GunDirection = Vector2.Lerp(GunDirection, AimGun(), 0.005f);
+                GunVDirection = 1;
+
+                HeldGun.drawColor = Color.Lerp(HeldGun.drawColor, _gunSilhouetteColor, 0.1f);
+                if (Timer % 8 == 0)
+                {
+                    Dust.NewDust(GunPosition, 4, 4, ModContent.DustType<TSmokeDust>(), newColor: Color.DarkGray,
+                        Scale: Main.rand.NextFloat(0.5f, 1f));
+                }
+
+                if (Timer % 16 == 0)
+                {
+                    Particle.NewParticle<EmberParticle>(GunPosition, Main.rand.NextVector2Circular(1, 4), newColor: Color.Red);
+                    if (Main.rand.NextBool(2))
+                    {
+                        Particle.NewParticle<ZapParticle>(GunPosition + Main.rand.NextVector2Circular(8, 8), Main.rand.NextVector2Circular(1, 1), newColor: Color.Pink, Scale: Main.rand.NextFloat(0.5f, 0.66f));
+                    }
+                }
+            }
+            else
+            {
+                NPC.velocity.X *= 0.99f;
+                GunDirection = Vector2.Lerp(GunDirection, AimGun(), 0.1f);
+                GunVDirection = 1;
+
+                HeldGun.drawColor = Color.Lerp(HeldGun.drawColor, Color.White, 0.1f);
+            }
+
+            ApplyStandingYVelocity();
+            if (Timer >= 240)
+            {
+                AttackCycle++;
+                if (AttackCycle >= 3)
+                {
+                    SwitchState(AIState.MachineGun_End);
+                }
+                else
+                {
+                    //This looks weird, but we're just restarting the state lol
+                    SwitchState(AIState.MachineGun_Loop);
+                }
+            }
+        }
+
+        private void AI_MachineGunEnd()
+        {
+            Timer++;
+            HeldGun = MachineGun;
+            TargetOutlineColor = Color.Transparent;
+            if (Timer == 1)
+            {
+                SoundStyle tireSound = new SoundStyle("Stellamod/Assets/Sounds/STARWAVE");
+                tireSound.PitchVariance = 0.15f;
+                tireSound.Pitch = -0.5f;
+                SoundEngine.PlaySound(tireSound, NPC.position);
+                NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+            }
+
+            float prepTime = 90f;
+
+            //Summon the gun        
+            //I think it's easier if all of star bombers guns just come from him and aren't projectiles                 
+            //Yeah that'll be better, let's represent them
+            float interpolant = Timer / prepTime;
+            float eased = EasingFunction.InOutSine(interpolant);
+            Vector2 gunHoistPosition = Vector2.Lerp(GunHoistPosition, NPC.Center, eased);
+            GunPosition = gunHoistPosition;
+            GunDirection = Vector2.Lerp(GunDirection, Vector2.UnitY, 0.1f);
+            if (Timer == prepTime)
+            {
+                FXUtil.GlowCircleBoom(gunHoistPosition + Vector2.UnitY * 40, Color.White, Color.Pink, Color.Blue);
+            }
+
+            NPC.velocity.X *= 0.9f;
+            ApplyStandingYVelocity();
+            if (Timer >= prepTime)
+            {
+
+                SwitchState(AIState.Idle);
+            }
+        }
+
+        #endregion
+
+
+        #region LegUpSpin
+        private void AI_LegUpSpinStart()
+        {
+            /*
+             * 
+             * Legs go up and his head drops to the ground, 
+             * starts spinning and spins across the floor really fast
+             */
+            TargetOutlineColor = Color.Yellow;
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+            }
+
+            _legsUp = true;
+            float prepTime = 90f;
+            if (Timer >= prepTime)
+            {
+                SwitchState(AIState.LegUpSpin_Loop);
+            }
+        }
+
+        private void AI_LegUpSpinLoop()
+        {
+            _contactDamage = true;
+            TargetOutlineColor = Color.Red;
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+            }
+            _legsUp = true;
+
+
+            float spinTime = 80f;
+            float spinSpeed = 15;
+            float targetSpinVelocity = NPC.direction * spinSpeed;
+
+            NPC.rotation = NPC.velocity.X * 0.05f;
+            if (Timer >= spinTime / 2f)
+            {
+                NPC.velocity.X *= 0.98f;
+            }
+            else
+            {
+                NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetSpinVelocity, 0.1f);
+            }
+
+            if (Timer >= spinTime)
+            {
+                Timer = 0;
+                AttackCycle++;
+                if (AttackCycle >= 3)
+                {
+                    SwitchState(AIState.LegUpSpin_End);
+                }
+            }
+        }
+
+        private void AI_LegUpSpinEnd()
+        {
+            _contactDamage = false;
+            TargetOutlineColor = Color.Transparent;
+            Timer++;
+            _legsUp = false;
+            if (Timer >= 60)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+        #endregion
+
+
+        #region Crash Jump
+        private void AI_CrashJumpStart()
+        {
+            TargetOutlineColor = Color.Yellow;
+            Timer++;
+            _legsUp = true;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+                NPC.velocity.Y = -20;
+            }
+
+
+            NPC.noTileCollide = false;
+            NPC.noGravity = false;
+            SwitchState(AIState.CrashJump_Loop);
+        }
+
+        private void AI_CrashJumpLoop()
+        {
+            TargetOutlineColor = Color.Yellow;
+            Timer++;
+            _legsUp = true;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+
+            }
+            float targetVelocity = NPC.direction * 5;
+            NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetVelocity, 0.01f);
+            if (NPC.collideY && Timer >= 10)
+            {
+                SwitchState(AIState.CrashJump_Crash);
+            }
+        }
+
+        private void AI_CrashJumpCrash()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                ShakeModSystem.Shake = 2;
+                SoundStyle boom = SoundID.DD2_ExplosiveTrapExplode;
+                boom.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(boom, NPC.position);
+                for (int i = 0; i < 16; i++)
+                {
+                    float radius = 150;
+                    Vector2 offset = Vector2.UnitX * Main.rand.Next(-1, 1);
+                    offset *= Main.rand.NextFloat(1f, radius);
+                    offset += new Vector2(radius / 2, 0);
+
+                    Vector2 velocity = Vector2.UnitX * Main.rand.Next(-1, 1);
+                    velocity *= Main.rand.NextFloat(1f, 2f);
+                    var p = Particle.NewBlackParticle<BlackSmokeParticle>(NPC.Bottom + offset, velocity, Color.DarkGray);
+                    p.Scale *= 0.25f;
+                    p.color *= 0.5f;
+                    p.fadeToColor = Color.Black;
+                    p.innerColor = Color.DarkGray;
+                    p.outerColor = Color.Black;
+                }
+
+                FXUtil.GlowCircleBoom(NPC.Bottom,
+                   innerColor: Color.White,
+                   glowColor: Color.Black,
+                   outerGlowColor: Color.Black, duration: 25, baseSize: 0.24f);
+                for (float i = 0; i < 4; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(240);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(NPC.Bottom,
+                        innerColor: Color.White,
+                        glowColor: Color.Black,
+                        outerGlowColor: Color.Black,
+                        baseSize: 0.24f);
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
+
+                for (int i = 0; i < 7; i++)
+                {
+                    Vector2 velocity = -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(30)) * Main.rand.NextFloat(15f, 35f);
+                    var particle = FXUtil.GlowStretch(NPC.Bottom, velocity);
+                    particle.InnerColor = Color.White;
+                    particle.GlowColor = Color.LightCyan;
+                    particle.OuterGlowColor = Color.Black;
+                    particle.Duration = Main.rand.NextFloat(25, 50);
+                    particle.BaseSize = Main.rand.NextFloat(0.045f, 0.09f);
+                    particle.VectorScale *= 0.5f;
+                }
+
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger"), NPC.position);
+
+                FXUtil.ShakeCamera(NPC.position, 1024, 16);
+                FXUtil.PunchCamera(NPC.position, Vector2.UnitY, 8, 8, 8);
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(SourceFromThis, NPC.Bottom, Vector2.Zero,
+                        ModContent.ProjectileType<StompCrashBoom>(), CrashDamage, 1, Main.myPlayer);
+                }
+            }
+
+            _legsUp = false;
+            SwitchState(AIState.Idle);
+        }
+        #endregion
+
+
+        #region Walk Up Stomp
+        private void AI_WalkUpStompStart()
+        {
+
+        }
+
+        private void AI_WalkUpStompStomp()
+        {
+
+        }
+
+        private void AI_WalkUpStompEnd()
+        {
+
+        }
+
+        #endregion
+
+
+        #region Steam Whistle
+        private void AI_SteamWhistleStart()
+        {
+            /*
+             * Steam whistle attack where he charges a big beam and
+             * blasts it at you with high precision (sniper and one shot)
+             */
+
+            Timer++;
+            //We using the machine gun brah
+            HeldGun = WhistleGun;
+            TargetOutlineColor = Color.Yellow;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+
+                SoundStyle starGun = new SoundStyle("Stellamod/Assets/Sounds/STARLAUGH");
+                starGun.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(starGun, NPC.Center);
+
+            }
+
+
+            float prepTime = 90f;
+
+            //Summon the gun        
+            //I think it's easier if all of star bombers guns just come from him and aren't projectiles                 
+            //Yeah that'll be better, let's represent them
+            float interpolant = Timer / prepTime;
+            float eased = EasingFunction.InOutSine(interpolant);
+            Vector2 gunHoistPosition = Vector2.Lerp(NPC.Center, GunHoistPosition, eased);
+            GunPosition = gunHoistPosition;
+            GunDirection = AimGun();
+
+            if (Timer >= prepTime * 2f)
+            {
+                SwitchState(AIState.MachineGun_Loop);
+            }
+        }
+        private void AI_SteamWhistleLoop()
+        {
+            Timer++;
+            HeldGun = WhistleGun;
+            GunPosition = GunHoistPosition;
+            if (Timer == 1)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(SourceFromThis, GunMuzzlePosition, GunDirection,
+                        ModContent.ProjectileType<SteamLaser>(), SteamLaserDamage, 1, Main.myPlayer);
+                }
+            }
+
+            if (Timer >= 120)
+            {
+                SwitchState(AIState.SteamWhistle_End);
+            }
+        }
+        private void AI_SteamWhistleEnd()
+        {
+            Timer++;
+            if (Timer >= 90)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+        #endregion
+
+
+        #region Missile Launcher
+
+        private void AI_MissileLauncherStart()
+        {
+            /*
+             * Pulls out a missile launcher that shoots slightly homing missiles
+             */
+            Timer++;
+            //We using the machine gun brah
+            HeldGun = MissileLauncher;
+            TargetOutlineColor = Color.Yellow;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+
+                SoundStyle starGun = new SoundStyle("Stellamod/Assets/Sounds/STARGUN");
+                starGun.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(starGun, NPC.Center);
+            }
+
+
+            float prepTime = 90f;
+
+            //Summon the gun        
+            //I think it's easier if all of star bombers guns just come from him and aren't projectiles                 
+            //Yeah that'll be better, let's represent them
+            float interpolant = Timer / prepTime;
+            float eased = EasingFunction.InOutSine(interpolant);
+            Vector2 gunHoistPosition = Vector2.Lerp(NPC.Center, GunHoistPosition, eased);
+            GunPosition = gunHoistPosition;
+            GunDirection = AimGun();
+
+            if (Timer >= prepTime)
+            {
+                SwitchState(AIState.MissileLauncher_Loop);
+            }
+        }
+
+        private void AI_MissileLauncherLoop()
+        {
+            Timer++;
+            HeldGun = MissileLauncher;
+            GunPosition = GunHoistPosition;
+            TargetOutlineColor = Color.Yellow;
+
+            if (Timer % 32 == 0 && Timer < 120)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(SourceFromThis, GunMuzzlePosition, GunDirection,
+                        ModContent.ProjectileType<StarMissile>(), StarMissileDamage, 1, Main.myPlayer);
+                }
+                GunDirection = AimGun();
+                HeldGun.Recoil();
+            }
+
+
+            if (Timer == 120)
+            {
+                SoundStyle tireSound = new SoundStyle("Stellamod/Assets/Sounds/STARWAVE");
+                tireSound.PitchVariance = 0.15f;
+                SoundEngine.PlaySound(tireSound, NPC.position);
+            }
+
+            if (Timer >= 120)
+            {
+                if (Timer % 8 == 0)
+                {
+                    Dust.NewDust(GunPosition, 4, 4, ModContent.DustType<TSmokeDust>(), newColor: Color.DarkGray,
+                        Scale: Main.rand.NextFloat(0.5f, 1f));
+                }
+            }
+
+            if (Timer >= 240)
+            {
+                AttackCycle++;
+                if (AttackCycle >= 2)
+                {
+                    SwitchState(AIState.MissileLauncher_End);
+                }
+                else
+                {
+                    SwitchState(AIState.MissileLauncher_Loop);
+                }
+
+            }
+        }
+
+        private void AI_MissileLauncherEnd()
+        {
+            Timer++;
+            HeldGun = MissileLauncher;
+            TargetOutlineColor = Color.Transparent;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+            }
+
+            float prepTime = 90f;
+
+            //Summon the gun        
+            //I think it's easier if all of star bombers guns just come from him and aren't projectiles                 
+            //Yeah that'll be better, let's represent them
+            float interpolant = Timer / prepTime;
+            float eased = EasingFunction.InOutSine(interpolant);
+            Vector2 gunHoistPosition = Vector2.Lerp(GunHoistPosition, NPC.Center, eased);
+            GunPosition = gunHoistPosition;
+            GunDirection = -Vector2.Lerp(GunDirection, -Vector2.UnitY, 0.1f);
+            if (Timer >= prepTime)
+            {
+                SwitchState(AIState.MachineGun_Loop);
+            }
+        }
+
+
+        #endregion
+
+
+        #region Wing Time Snipe
+
+        private void AI_WingTimeSnipeStart()
+        {
+            Timer++;
+            //We using the machine gun brah
+            HeldGun = WingSniper;
+            TargetOutlineColor = Color.Yellow;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+
+                SoundStyle starGun = new SoundStyle("Stellamod/Assets/Sounds/STARGUN");
+                starGun.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(starGun, NPC.Center);
+
+            }
+
+
+            float prepTime = 90f;
+
+            //Summon the gun        
+            //I think it's easier if all of star bombers guns just come from him and aren't projectiles                 
+            //Yeah that'll be better, let's represent them
+            float interpolant = Timer / prepTime;
+            float eased = EasingFunction.InOutSine(interpolant);
+            Vector2 gunHoistPosition = Vector2.Lerp(NPC.Center, GunHoistPosition, eased);
+            GunPosition = gunHoistPosition;
+            GunDirection = AimGun();
+
+            if (Timer >= prepTime)
+            {
+                SwitchState(AIState.WingTimeSnipe_End);
+            }
+        }
+
+        private void AI_WingTimeSnipeEnd()
+        {
+            Timer++;
+            HeldGun = WingSniper;
+            TargetOutlineColor = Color.Yellow;
+            GunPosition = GunHoistPosition;
+            if (Timer == 1 && MultiplayerHelper.IsHost)
+            {
+                Projectile.NewProjectile(SourceFromThis, GunMuzzlePosition, GunDirection,
+                    ModContent.ProjectileType<WingSnipe>(), WingSnipeDamage, 1, Main.myPlayer);
+            }
+
+            if (Timer >= 120)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+        #endregion
+
+        public override void OnKill()
+        {
+            base.OnKill();
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedSTARBoss, -1);
+        }
+
+        private void DrawHeldGun(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (HeldGun == null)
+                return;
+            Vector2 position = GunPosition;
+            Vector2 direction = GunDirection;
+            HeldGun.Draw(spriteBatch, position, direction, drawColor);
+        }
+
+        private void DrawLeg(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+
+        }
+
+        private void DrawBody(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            LeftLeg.Draw(spriteBatch);
+            RightLeg.Draw(spriteBatch);
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawPos = NPC.Center - screenPos;
+            Vector2 drawOrigin = texture.Size() / 2f;
+            spriteBatch.Draw(texture, drawPos, null, drawColor, NPC.rotation, drawOrigin, NPC.scale, SpriteEffects.None, 0);
+        }
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            DrawHeldGun(spriteBatch, screenPos, drawColor);
+            DrawBody(spriteBatch, screenPos, drawColor);
+            return false;
+        }
+
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            float outlineOffset = 2;
+            DrawBody(spriteBatch, screenPos - Vector2.UnitX * outlineOffset, _outlineColor);
+            DrawBody(spriteBatch, screenPos + Vector2.UnitX * outlineOffset, _outlineColor);
+            DrawBody(spriteBatch, screenPos - Vector2.UnitY * outlineOffset, _outlineColor);
+            DrawBody(spriteBatch, screenPos + Vector2.UnitY * outlineOffset, _outlineColor);
+        }
+    }
+}

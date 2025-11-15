@@ -1,4 +1,4 @@
-
+﻿
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\tModLoader.targets" />
   <PropertyGroup>
@@ -718,6 +718,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Textures\Menu\" />
+    <Folder Include="Content\Areas\RoyalCapital\NewFolder\" />
     <Folder Include="Items\Armors\Daedia\" />
     <Folder Include="Items\Weapons\Melee\Safunai\Kaevine\" />
     <Folder Include="NPCs\Event\Gintzearmy\BossGintze\" />

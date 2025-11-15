@@ -26,6 +26,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas.Projectiles
         public override void AI()
         {
             base.AI();
+
             Timer++;
             if (Timer == 1)
             {
