@@ -26,6 +26,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
         private float _bounceDirection;
         private float _randScale;
         private float _alpha;
+        private float _lineAlpha;
         private Vector2 _squishScale;
         private Color _outlineColor;
         private ref float Timer => ref Projectile.ai[0];
@@ -109,6 +110,14 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             }
                 _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
 
+            if(BounceCount > 0)
+            {
+                _lineAlpha *= 0.8f;
+            }
+            else
+            {
+                _lineAlpha = MathHelper.Lerp(_lineAlpha, 1f, 0.5f);
+            }
             if (Main.rand.NextBool(8))
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<GlowSparkleDust>(), newColor: Color.White, Scale: 0.5f);
@@ -198,6 +207,15 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             }
 
             spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(lightColor) * _alpha, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+
+            texture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
+            drawOrigin = new Vector2(texture.Width / 2f, 0f);
+            Color glowColor = Color.White;
+            glowColor *= _lineAlpha;
+            glowColor.A = 0;
+            drawScale = new Vector2(0.2f, 1f);
+            spriteBatch.Draw(texture, drawPos, null, glowColor, 0, drawOrigin, drawScale, spriteEffects, 0f);
+
             return false;
         }
 

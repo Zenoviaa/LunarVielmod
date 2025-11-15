@@ -1900,6 +1900,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             {
                 SwitchState(state);
             }
+            SwitchState(AIState.BellFall_Start);
         }
         #endregion
 
