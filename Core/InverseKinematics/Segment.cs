@@ -9,7 +9,8 @@ namespace Stellamod.Core.InverseKinematics
 {
     public class Segment
     {
-        public Segment(Vector2 position, float length, float angle)
+        public 
+            Segment(Vector2 position, float length, float angle)
         {
             a = position;
             this.length = length;
@@ -67,10 +68,7 @@ namespace Stellamod.Core.InverseKinematics
                 }
                 else
                 {
-                    //Go the opposite way if outside of range of motion
-                    float oldAngle = angle;
-                    float diff = newAngle - oldAngle;
-                    angle -= diff * 0.5f;
+
                 }
             } else
             {
