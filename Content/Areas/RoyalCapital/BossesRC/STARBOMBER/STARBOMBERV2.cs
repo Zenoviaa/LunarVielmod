@@ -21,6 +21,152 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 {
+    public enum RotationStyle : byte
+    {
+        Inverse=0,
+        Forward=1
+    }
+
+
+    public struct LegData
+    {
+        public Vector2 startWalkPosition;
+        public Vector2 endWalkPosition;
+        public Vector2 rootPosition;
+        public Vector2 footPosition;
+        public float timer;
+        public float duration;
+        public RotationStyle rotationStyle;
+    }
+    public class STARBOMBERLegs
+    {
+        private Armature _leg1;
+        private Armature _leg2;
+
+        public Armature LeftLeg
+        {
+            get
+            {
+                if (_leg1 == null)
+                {
+                    _leg1 = new Armature();
+                    SetConstraints();
+                    SetInitialAngles();
+                }
+
+                return _leg1;
+            }
+        }
+
+        public Armature RightLeg
+        {
+            get
+            {
+                if (_leg2 == null)
+                {
+                    _leg2 = new Armature();
+                    SetConstraints();
+                    SetInitialAngles();
+                }
+
+
+                return _leg2;
+            }
+        }
+
+
+        public LegData leftLegData;
+        public LegData rightLegData;
+        private void SetInitialAngles()
+        {
+            LeftLeg.SetDefaults();
+            RightLeg.SetDefaults();
+        }
+
+        private void SetConstraints()
+        {
+            LeftLeg.segments[0].rootDirection = -Vector2.UnitY.RotatedBy(-MathHelper.ToRadians(30));
+            LeftLeg.segments[0].rangeOfMotion = 0f;
+
+            RightLeg.segments[0].rootDirection = -Vector2.UnitY.RotatedBy(MathHelper.ToRadians(30));
+            RightLeg.segments[0].rangeOfMotion = 0f;
+
+
+            float downRangeOfMotion = -0.5f;
+            LeftLeg.segments[1].rootDirection = Vector2.UnitY;
+            LeftLeg.segments[1].rangeOfMotion = downRangeOfMotion;
+
+            RightLeg.segments[1].rootDirection = Vector2.UnitY;
+            RightLeg.segments[1].rangeOfMotion = downRangeOfMotion;
+
+        }
+
+        public void MoveFoot(ref LegData legData, Vector2 targetFootPosition)
+        {
+            legData.footPosition = targetFootPosition;
+            legData.timer = 0f;
+            legData.duration = 30f;
+            legData.startWalkPosition = legData.footPosition;
+            legData.endWalkPosition = targetFootPosition;
+            legData.rotationStyle = RotationStyle.Forward;
+        }
+
+        public void CalculateWalkAngles(ref LegData legData, Armature leg)
+        {
+            legData.timer++;
+            float progress = legData.timer / legData.duration;
+
+            //Maybe some easing to help it out
+            progress = Easing.InOutSine(progress);
+
+            //Lerp to the default angles
+            float newAngle = leg.segments[0].GetDefaultAngle();
+            leg.segments[0].angle = Utils.AngleLerp(leg.segments[0].oldAngle, newAngle, progress);
+
+            newAngle = leg.segments[1].GetDefaultAngle();
+            leg.segments[1].angle = Utils.AngleLerp(leg.segments[1].oldAngle, newAngle, progress);
+
+
+            if (legData.timer >= legData.duration)
+            {
+                legData.rotationStyle = RotationStyle.Inverse;
+            }
+        }
+
+        public void UpdateLeg(ref LegData legData, Armature leg)
+        {
+            switch (legData.rotationStyle)
+            {
+                case RotationStyle.Inverse:
+
+                    leg.IK(legData.rootPosition, legData.footPosition);
+                    break;
+                case RotationStyle.Forward:
+                    CalculateWalkAngles(ref legData, leg);
+                    leg.FK(legData.rootPosition);
+                    break;
+            }
+        }
+
+        public bool IsValidFootPosition(ref LegData legData, float centerX, float standRange)
+        {
+            float xDist = MathF.Abs(legData.footPosition.X - centerX);
+            return xDist > 32 && xDist <= standRange + 32;
+        }
+
+        public void Update()
+        {
+            UpdateLeg(ref leftLegData, LeftLeg);
+            UpdateLeg(ref rightLegData, RightLeg);
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            //Debug drawing
+            LeftLeg.Draw(spriteBatch);
+            RightLeg.Draw(spriteBatch);
+        }
+    }
     public class STARBOMBERGUN
     {
         private float _primeTimer;
@@ -149,14 +295,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
     }
 
 
-    public struct FootWalkInstruction
-    {
-    
-        public Vector2 start;
-        public Vector2 end;
-        public float timer;
-        public float duration;
-    }
     public class STARBOMBERV2 : ScarletBoss,
         IDrawOutlines
     {
@@ -165,13 +303,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private bool _legsUp;
         private bool _contactDamage;
         private bool _namePlate;
-        private bool _forceValidMovement;
+
         private Color _outlineColor;
         private Vector2 _startFootPosition;
         private Vector2 _impactFootPosition;
-
-        private FootWalkInstruction _leftFootWalkInstruction;
-        private FootWalkInstruction _rightFootWalkInstruction;
 
         private Vector2 _targetWalkPosition;
         private PatternManager<AIState> _patternManager;
@@ -181,11 +316,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private STARBOMBERGUN _sniperRifle;
         private STARBOMBERGUN _whistleGun;
         private STARBOMBERGUN _wingSniper;
-        private Armature _leg1;
-        private Armature _leg2;
-
-        private ArmatureV2 _leg3;
-
+        private STARBOMBERLegs _legs;
      
         private Color _gunSilhouetteColor;
 
@@ -223,37 +354,14 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Death
         }
 
-        private Armature LeftLeg
+        private STARBOMBERLegs Legs
         {
             get
             {
-                if(_leg1 == null)
-                {
-                    _leg1 = new Armature();
-                    SetConstraints();
-                    SetInitialAngles();
-                }
-   
-                return _leg1;
+                _legs ??= new STARBOMBERLegs();
+                return _legs;
             }
         }
-
-        private Armature RightLeg
-        {
-            get
-            {
-                if(_leg2 == null)
-                {
-                    _leg2 = new Armature();
-                    SetConstraints();
-                    SetInitialAngles();
-                }
-    
-          
-                return _leg2;
-            }
-        }
-
         private float LegRadius => 80;
         private Vector2 LeftLegRootPosition
         {
@@ -514,8 +622,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                     AI_Death();
                     break;
             }
-            SolveLegs();
+
+            UpdateLegs();
         }
+
+
 
         private void ChooseAttack()
         {
@@ -538,131 +649,26 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
 
         #region Walking Code
-        private void SnapLegs()
+        private void UpdateLegs()
         {
-            LeftFootPosition = LeftLeg.segments[1].b;
-            RightFootPosition = RightLeg.segments[1].b;
-        }
-        private void StretchLegs()
-        {
-            SnapLegs();
-            Vector2 newPosition = FindNewLeftFoot();
-            MoveFoot(ref _leftFootWalkInstruction, LeftFootPosition, newPosition);
-
-            Vector2 newPosition2 = FindNewRightFoot();
-            MoveFoot(ref _rightFootWalkInstruction, RightFootPosition, newPosition2);
-        }
-        private void SetInitialAngles()
-        {
-            LeftLeg.SetDefaults();
-            RightLeg.SetDefaults();
-        }
-        private void SetConstraints()
-        {
-            LeftLeg.segments[0].rootDirection = -Vector2.UnitX;
-            LeftLeg.segments[0].rangeOfMotion = 0.5f;
-        
-            RightLeg.segments[0].rootDirection = Vector2.UnitX;
-            RightLeg.segments[0].rangeOfMotion = 0.5f;
-
-
-            float downRangeOfMotion = -0.5f;
-            LeftLeg.segments[1].rootDirection = Vector2.UnitY;
-            LeftLeg.segments[1].rangeOfMotion = downRangeOfMotion;
-
-            RightLeg.segments[1].rootDirection = Vector2.UnitY;
-            RightLeg.segments[1].rangeOfMotion = downRangeOfMotion;
-
+            Legs.leftLegData.rootPosition = LeftLegRootPosition;
+            Legs.rightLegData.rootPosition = RightLegRootPosition;
+            Legs.Update();
+            UpdateWalkCycle();
         }
 
-        private void UpdateWalkCycle(ref FootWalkInstruction instruction, ref Vector2 footPosition)
+        private void UpdateWalkCycle()
         {
-            instruction.timer++;
-            float progress = instruction.timer / instruction.duration;
-            float stepHeight = MathHelper.Lerp(0f, 90, EasingFunction.QuadraticBump(progress));
-
-            Vector2 start = instruction.start;
-            start.Y -= stepHeight;
-            Vector2 end = instruction.end;
-            end.Y -= stepHeight;
-            Vector2 newFootPosition = Vector2.Lerp(start, end, progress);
-            footPosition = newFootPosition;
-        }
-        private void MoveLegs()
-        {
-            if (_legsUp)
+            if (!Legs.IsValidFootPosition(ref Legs.leftLegData, NPC.Center.X, StandRange) && Legs.leftLegData.rotationStyle == RotationStyle.Inverse)
             {
-                //Lerp to default rotations
-                float range = 196;
-                LeftFootPosition = NPC.Center - Vector2.UnitX * range + Vector2.UnitY * 32;
-                RightFootPosition = NPC.Center + Vector2.UnitX * range + Vector2.UnitY * 32;
-                return;
+                Legs.MoveFoot(ref Legs.leftLegData, FindNewLeftFoot());
             }
-
-            if (!_forceValidMovement)
+            if (!Legs.IsValidFootPosition(ref Legs.rightLegData, NPC.Center.X, StandRange) && Legs.rightLegData.rotationStyle == RotationStyle.Inverse)
             {
-                if (_leftFootWalkInstruction.timer < _leftFootWalkInstruction.duration)
-                {
-                    UpdateWalkCycle(ref _leftFootWalkInstruction, ref LeftFootPosition);
-                }
-                else if (!IsLeftFootValid())
-                {
-                    Vector2 newPosition = FindNewLeftFoot();
-                    MoveFoot(ref _leftFootWalkInstruction, LeftFootPosition, newPosition);
-                }
-
-                if (_rightFootWalkInstruction.timer < _rightFootWalkInstruction.duration)
-                {
-                    UpdateWalkCycle(ref _rightFootWalkInstruction, ref RightFootPosition);
-                }
-                else if (!IsRightFootValid())
-                {
-                    Vector2 newPosition = FindNewRightFoot();
-                    MoveFoot(ref _rightFootWalkInstruction, RightFootPosition, newPosition);
-                }
+                Legs.MoveFoot(ref Legs.rightLegData, FindNewRightFoot());
             }
-            else
-            {
-
-            }
-
-
-        }
-        private void SolveLegs()
-        {
-
-            SetConstraints();
-            MoveLegs();
-
-            LeftLeg.Solve(LeftLegRootPosition, LeftFootPosition);
-            RightLeg.Solve(RightLegRootPosition, RightFootPosition);
-
-            //Check foot X to center x
-
-
         }
 
-        private void MoveFoot(ref FootWalkInstruction instruction, Vector2 startPosition, Vector2 newPosition)
-        {
-            instruction.timer = 0f;
-            instruction.start = startPosition;
-            instruction.end = newPosition;
-
-            float duration = MathF.Min(Vector2.Distance(startPosition, newPosition) / 8f, 30f);
-            instruction.duration = duration;
-        }
-        private bool IsLeftFootValid()
-        {
-            float xDist = MathF.Abs(LeftFootPosition.X - NPC.Center.X);
-            return xDist > 32 && xDist <= StandRange + 32;
-        }
-
-        private bool IsRightFootValid()
-        {
-            float xDist = MathF.Abs(RightFootPosition.X - NPC.Center.X);
-            return xDist > 32 && xDist <= StandRange + 32;
-
-        }
         private Vector2 FindNewLeftFoot()
         {
             Vector2 groundPoint = FindGround();
@@ -673,7 +679,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             else
             {
                 return groundPoint - Vector2.UnitX * StandRange;
-
             }
         }
 
@@ -764,7 +769,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             {
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
-                StretchLegs();
             }
 
             if (!_namePlate)
@@ -773,7 +777,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 _namePlate = true;
             }
             HeldGun = null;
-            _forceValidMovement = false;
+
 
             //Set some defaults
             GunVDirection = -1;
@@ -1069,10 +1073,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             _contactDamage = false;
             TargetOutlineColor = Color.Transparent;
             Timer++;
-            if(Timer == 1)
-            {
-                StretchLegs();
-            }
             _legsUp = false;
             NPC.velocity.X *= 0.94f;
             if (Timer >= 60)
@@ -1251,7 +1251,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         {
             Timer++;
             TargetOutlineColor = Color.Yellow;
-            _forceValidMovement = true;
+
             if(Timer == 1)
             {
 
@@ -1294,7 +1294,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Timer++;
 
             TargetOutlineColor = Color.Red;
-            _forceValidMovement = true;
+
             _afterImageTime *= 0.9f;
             float time = 14f;
             float progress = Timer / time;
@@ -1772,10 +1772,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
 
-            LeftLeg.Draw(spriteBatch);
-            RightLeg.Draw(spriteBatch);
-
-            _leg3?.Draw(spriteBatch, RightLegRootPosition);
+            Legs.Draw(spriteBatch);
             spriteBatch.Draw(texture, drawPos, null, drawColor, NPC.rotation, drawOrigin, NPC.scale, SpriteEffects.None, 0);
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

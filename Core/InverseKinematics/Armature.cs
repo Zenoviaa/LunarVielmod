@@ -16,9 +16,19 @@ namespace Stellamod.Core.InverseKinematics
                 segments[i] = new Segment(segments[i - 1], 200, 0);
             }
         }
+        public Vector2 oldTargetPosition;
+        public float timer;
 
-        public void Solve(Vector2 rootPosition, Vector2 targetPosition)
+        public void IK(Vector2 rootPosition, Vector2 targetPosition)
         {
+            timer++;
+            if (timer >= 30f)
+            {
+                oldTargetPosition = targetPosition;
+                timer = 30f;
+            }
+      
+            targetPosition = Vector2.Lerp(oldTargetPosition, targetPosition, timer / 30f);
             //So the issue with this solver is that 
             //1. it doesn't actually find a solution, it just goes to the nearest possible point,
             //Even if there is no solution it'll go to the next best spot, which may be desired in some cases
@@ -34,6 +44,26 @@ namespace Stellamod.Core.InverseKinematics
             {
                 Segment segment = segments[i];
                 segment.Follow(segments[i + 1]);
+                segment.Update();
+            }
+
+            segments[0].SetA(rootPosition);
+            for (int i = 1; i < total; i++)
+            {
+                segments[i].SetA(segments[i - 1].b);
+            }
+
+           
+        }
+        public void FK(Vector2 rootPosition)
+        {
+            timer = 0;
+            int total = segments.Length;
+            Segment end = segments[total - 1];
+            end.Update();
+            for (int i = total - 2; i >= 0; i--)
+            {
+                Segment segment = segments[i];
                 segment.Update();
             }
 
