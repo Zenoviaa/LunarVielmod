@@ -164,6 +164,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private float _oscTimer;
         private bool _legsUp;
         private bool _contactDamage;
+        private bool _namePlate;
         private bool _forceValidMovement;
         private Color _outlineColor;
         private Vector2 _startFootPosition;
@@ -559,10 +560,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private void SetConstraints()
         {
             LeftLeg.segments[0].rootDirection = -Vector2.UnitX;
-            LeftLeg.segments[0].rangeOfMotion = -0.5f;
+            LeftLeg.segments[0].rangeOfMotion = 0.5f;
         
             RightLeg.segments[0].rootDirection = Vector2.UnitX;
-            RightLeg.segments[0].rangeOfMotion = -0.5f;
+            RightLeg.segments[0].rangeOfMotion = 0.5f;
 
 
             float downRangeOfMotion = -0.5f;
@@ -766,6 +767,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 StretchLegs();
             }
 
+            if (!_namePlate)
+            {
+                ShowNamePlate();
+                _namePlate = true;
+            }
             HeldGun = null;
             _forceValidMovement = false;
 

@@ -33,6 +33,7 @@ namespace Stellamod.Core.InverseKinematics
         public float angle;
         public Vector2 rootDirection;
         public float rangeOfMotion;
+        public bool correct;
 
         public void SetA(Vector2 pos)
         {
@@ -69,13 +70,15 @@ namespace Stellamod.Core.InverseKinematics
                 else
                 {
 
+                    angle = MathHelper.Lerp(angle, rootDirection.ToRotation(), 0.01f);
                 }
             } else
             {
                 angle = newAngle;
             }
 
-            direction.Normalize();
+
+ 
             direction *= length;
             direction *= -1;
             a = target + direction;
