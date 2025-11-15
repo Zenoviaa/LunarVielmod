@@ -139,7 +139,7 @@ namespace Stellamod.Core.Palettes
             bool rustyPaletteActive = (MyPlayer.ZoneGovheil || MyPlayer.ZoneAcid) && clientConfig.PaletteShadersToggle;
             bool hellPaletteActive = ((clientConfig.VanillaBiomesPaletteShadersToggle && Player.ZoneUnderworldHeight) || (MyPlayer.ZoneCinder || MyPlayer.ZoneDrakonic) && clientConfig.PaletteShadersToggle);
 
-            if (Player.GetModPlayer<MyPlayer>().ZoneCinder || Player.GetModPlayer<MyPlayer>().ZoneDrakonic)
+            if (Player.GetModPlayer<MyPlayer>().ZoneWonder)
                 hellPaletteActive = false;
                 
             bool royalCapitalPaletteActive = MyPlayer.ZoneAlcadzia && clientConfig.PaletteShadersToggle;

@@ -1,7 +1,8 @@
-﻿using Accord;
+﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.InverseKinematics;
@@ -22,6 +23,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 {
     public class STARBOMBERGUN
     {
+        private float _primeTimer;
         private float _recoilTimer;
         private Vector2 _lastPosition;
         public STARBOMBERGUN(string texturePath)
@@ -35,6 +37,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         public Vector2 drawScale;
         public float recoilDistance;
         public Color drawColor;
+        public float aimingReticle;
+        public Color aimingReticleColor;
         public Vector2 GetMuzzlePosition(Vector2 anchorPosition, Vector2 direction)
         {
             Vector2 muzzlePosition = anchorPosition + direction * 96;
@@ -53,8 +57,21 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             FXUtil.ShakeCamera(_lastPosition, 256, 8);
         }
 
+        public void Prime()
+        {
+            _primeTimer = 45f;
+            SoundStyle primeSound = new SoundStyle("Stellamod/Assets/Sounds/MiniPistol2");
+            primeSound.PitchVariance = 0.2f;
+            SoundEngine.PlaySound(primeSound, _lastPosition); 
+            var part = Particle.NewParticle<GlowDonutParticle>(_lastPosition, Vector2.Zero, Color.White);
+            part.Scale *= 4;
+            part.shrink = true;
+            part.noStretch = true;
+        }
         public void Update()
         {
+            if (_primeTimer > 0)
+                _primeTimer--;
             if (_recoilTimer > 0)
             {
                 _recoilTimer--;
@@ -66,6 +83,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             _lastPosition = position;
             Vector2 drawPosition = position - Main.screenPosition;
             drawPosition += GetRecoilOffset(direction);
+
+            float primeProgress = _primeTimer / 45f;
+            drawPosition += Main.rand.NextVector2Circular(4, 4) * primeProgress;
 
             float recoilAmount = _recoilTimer / 8f;
             Color finalColor = drawColor.MultiplyRGB(lightColor);
@@ -95,9 +115,29 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             for (int i = 0; i < 3; i++)
             {
                 spriteBatch.Draw(TextureAsset.Value, drawPosition, null, glowColor * recoilAmount, rotation, drawOrigin, finalScale, spriteEffects, 0);
-
             }
+            if(_primeTimer > 0)
+            {
+                glowColor = Color.Red;
+                glowColor *= primeProgress;
+                glowColor.A = 0;
+                for (int i = 0; i < 3; i++)
+                {
+                    spriteBatch.Draw(TextureAsset.Value, drawPosition, null, glowColor, rotation, drawOrigin, finalScale, spriteEffects, 0);
+
+                }
+            }
+
+
+            Color aimingLineColor = aimingReticleColor;
+            aimingLineColor *= aimingReticle;
+            aimingReticleColor.A = 0;
+            Texture2D aimingLine = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
+            Vector2 lineOrigin = new Vector2(aimingLine.Size().X / 2f, 0f);
+            Vector2 lineScale = new Vector2(0.01f, 1f);
+            spriteBatch.Draw(aimingLine, drawPosition, null, aimingLineColor, rotation - MathHelper.PiOver2, lineOrigin, lineScale, SpriteEffects.None, 0);
         }
+        
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 position, Vector2 direction, Color lightColor)
         {
@@ -125,7 +165,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private bool _legsUp;
         private bool _contactDamage;
         private Color _outlineColor;
-        private Vector2 _groundPoint;
 
         private FootWalkInstruction _leftFootWalkInstruction;
         private FootWalkInstruction _rightFootWalkInstruction;
@@ -383,14 +422,15 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                     SwitchState(AIState.Despawn);
                 }
             }
-            NPCID.Sets.TrailCacheLength[NPC.type] = 16;
-            NPCID.Sets.TrailingMode[Type] = 3;
+  
 
+            _afterImageTime *= 0.9f;
             HeldGun?.Update();
             _oscTimer++;
             float osc = _oscTimer * 0.05f;
             float i = (MathF.Sin(osc) + 0.5f) / 0.5f;
             StandHeight = MathHelper.Lerp(232, 256,  i);
+
             switch (State)
             {
                 case AIState.Despawn:
@@ -486,7 +526,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
             SwitchState(_patternManager.NextPattern());
-            SwitchState(AIState.CrashJump_Start);
+            SwitchState(AIState.SteamWhistle_Start);
         }
 
 
@@ -663,6 +703,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         {
             Vector2 aimDirection = (MyTarget.Center - GunPosition).SafeNormalize(Vector2.Zero);
             return aimDirection;
+        }
+
+        private void PrimeReticle()
+        {
+
         }
 
         private void AI_Despawn()
@@ -1207,11 +1252,44 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             float eased = EasingFunction.InOutSine(interpolant);
             Vector2 gunHoistPosition = Vector2.Lerp(NPC.Center, GunHoistPosition, eased);
             GunPosition = gunHoistPosition;
-            GunDirection = AimGun();
+       
+            NPC.velocity.X *= 0.99f;
+            ApplyStandingYVelocity();
+            if(Timer >= prepTime)
+            {
+                HeldGun.aimingReticleColor = Color.Red;
+                HeldGun.aimingReticle = MathHelper.Lerp(0f, 1f, (Timer - prepTime) / prepTime);
+                HeldGun.drawColor = Color.Lerp(HeldGun.drawColor, Color.White, 0.1f);
+                GunDirection = Vector2.Lerp(GunDirection, AimGun(), 0.1f);
+                GunVDirection = 1;
+            }
+            else
+            {
+                GunDirection = Vector2.Lerp(GunDirection, Vector2.UnitY, 0.01f);
+                GunVDirection = 1;
 
+
+            }
+            if (Timer % 8 == 0)
+            {
+                Vector2 randOffset = Main.rand.NextVector2CircularEdge(64, 64);
+                Vector2 spawnPos = GunPosition + randOffset;
+                Vector2 velocity = (GunPosition - spawnPos).SafeNormalize(Vector2.Zero);
+                Particle.NewParticle<EmberParticle>(spawnPos, velocity, Scale: 0.5f);
+            }
+
+            if (Timer % 16 == 0)
+            {
+                Vector2 randOffset = Main.rand.NextVector2CircularEdge(64, 64);
+                Vector2 spawnPos = GunPosition + randOffset;
+                Vector2 velocity = (GunPosition - spawnPos).SafeNormalize(Vector2.Zero);
+                Particle.NewParticle<ZapParticle>(spawnPos, velocity, Scale: 0.5f);
+                SoundStyle zapSound = SoundID.DD2_LightningBugZap;
+                SoundEngine.PlaySound(zapSound, GunPosition);
+            }
             if (Timer >= prepTime * 2f)
             {
-                SwitchState(AIState.MachineGun_Loop);
+                SwitchState(AIState.SteamWhistle_Loop);
             }
         }
         private void AI_SteamWhistleLoop()
@@ -1219,15 +1297,51 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Timer++;
             HeldGun = WhistleGun;
             GunPosition = GunHoistPosition;
-            if (Timer == 1)
+            if(Timer == 1)
             {
+                HeldGun.Prime();
+            }
+            HeldGun.aimingReticle = MathHelper.Lerp(1f, 0f, Timer / 60f);
+            if (Timer == 60)
+            {
+                NPC.velocity.X = -NPC.direction * 5;
                 if (MultiplayerHelper.IsHost)
                 {
-                    Projectile.NewProjectile(SourceFromThis, GunMuzzlePosition, GunDirection,
+                    Projectile.NewProjectile(SourceFromThis, GunMuzzlePosition, GunDirection * Vector2.Distance(GunMuzzlePosition, MyTarget.Center),
                         ModContent.ProjectileType<SteamLaser>(), SteamLaserDamage, 1, Main.myPlayer);
                 }
+                SoundStyle tireSound = new SoundStyle("Stellamod/Assets/Sounds/STARWAVE");
+                tireSound.PitchVariance = 0.15f;
+                SoundEngine.PlaySound(tireSound, NPC.position);
+                HeldGun.Recoil();
+            }
+ 
+            if (Timer >= 60)
+            {
+                NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, NPC.direction * 4, 0.1f);
+                GunDirection = Vector2.Lerp(GunDirection, AimGun(), 0.005f);
+                GunVDirection = 1;
+
+                HeldGun.drawColor = Color.Lerp(HeldGun.drawColor, _gunSilhouetteColor, 0.1f);
+                if (Timer % 8 == 0)
+                {
+                    Dust.NewDust(GunPosition, 4, 4, ModContent.DustType<TSmokeDust>(), newColor: Color.DarkGray,
+                        Scale: Main.rand.NextFloat(0.5f, 1f));
+                }
+
+                if (Timer % 16 == 0)
+                {
+                    Particle.NewParticle<EmberParticle>(GunPosition, Main.rand.NextVector2Circular(1, 4), newColor: Color.Red);
+                    if (Main.rand.NextBool(2))
+                    {
+                        Particle.NewParticle<ZapParticle>(GunPosition + Main.rand.NextVector2Circular(8, 8), Main.rand.NextVector2Circular(1, 1), newColor: Color.Pink, Scale: Main.rand.NextFloat(0.5f, 0.66f));
+                    }
+                }
+
+
             }
 
+            ApplyStandingYVelocity();
             if (Timer >= 120)
             {
                 SwitchState(AIState.SteamWhistle_End);
@@ -1236,6 +1350,33 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private void AI_SteamWhistleEnd()
         {
             Timer++;
+            TargetOutlineColor = Color.Transparent;
+            if (Timer == 1)
+            {
+                SoundStyle tireSound = new SoundStyle("Stellamod/Assets/Sounds/STARWAVE");
+                tireSound.PitchVariance = 0.15f;
+                tireSound.Pitch = -0.5f;
+                SoundEngine.PlaySound(tireSound, NPC.position);
+                NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+            }
+            float prepTime = 90f;
+
+            //Summon the gun        
+            //I think it's easier if all of star bombers guns just come from him and aren't projectiles                 
+            //Yeah that'll be better, let's represent them
+            float interpolant = Timer / prepTime;
+            float eased = EasingFunction.InOutSine(interpolant);
+            Vector2 gunHoistPosition = Vector2.Lerp(GunHoistPosition, NPC.Center, eased);
+            GunPosition = gunHoistPosition;
+            GunDirection = Vector2.Lerp(GunDirection, Vector2.UnitY, 0.1f);
+            if (Timer == prepTime)
+            {
+                FXUtil.GlowCircleBoom(gunHoistPosition + Vector2.UnitY * 40, Color.White, Color.Pink, Color.Blue);
+            }
+
+            NPC.velocity.X *= 0.9f;
+            ApplyStandingYVelocity();
             if (Timer >= 90)
             {
                 SwitchState(AIState.Idle);
@@ -1490,11 +1631,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             HeldGun.Draw(spriteBatch, position, direction, drawColor);
         }
 
-        private void DrawLeg(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-
-        }
-
         private void DrawBody(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
@@ -1528,6 +1664,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
+            if (HeldGun == null)
+                return;
+            Vector2 position = GunPosition;
+            Vector2 direction = GunDirection;
+            HeldGun.DrawOutlines(spriteBatch, position, direction, _outlineColor);
             float outlineOffset = 2;
             DrawBody(spriteBatch, screenPos - Vector2.UnitX * outlineOffset, _outlineColor);
             DrawBody(spriteBatch, screenPos + Vector2.UnitX * outlineOffset, _outlineColor);
