@@ -707,7 +707,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
         private void PrimeReticle()
         {
-
+            if (MultiplayerHelper.IsHost)
+            {
+                Projectile.NewProjectile(SourceFromThis, MyTarget.Center, Vector2.Zero,
+                    ModContent.ProjectileType<AimingReticle>(), 1, 0, Main.myPlayer);
+            }
         }
 
         private void AI_Despawn()
@@ -1299,6 +1303,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             GunPosition = GunHoistPosition;
             if(Timer == 1)
             {
+                PrimeReticle();
                 HeldGun.Prime();
             }
             HeldGun.aimingReticle = MathHelper.Lerp(1f, 0f, Timer / 60f);
