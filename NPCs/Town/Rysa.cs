@@ -147,7 +147,7 @@ namespace Stellamod.NPCs.Town
         public override void AddShops()
         {
             var npcShop = new NPCShop(Type, ShopName)
-            .Add(new Item(ItemID.Mace) { shopCustomPrice = Item.buyPrice(gold: 5) })
+            .Add(new Item(ItemID.Mace) { shopCustomPrice = Item.buyPrice(gold: 5) });
             npcShop.Register(); // Name of this shop t
         }
     }
