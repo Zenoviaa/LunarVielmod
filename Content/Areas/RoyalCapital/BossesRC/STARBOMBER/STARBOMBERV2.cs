@@ -355,18 +355,21 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
         }
         private float LegRadius => 80;
+
+        private Vector2 _leftLegOffset;
+        private Vector2 _rightLegOffset;
         private Vector2 LeftLegRootPosition
         {
             get
             {
-                return NPC.Center - Vector2.UnitX * LegRadius;
+                return NPC.Center - Vector2.UnitX * LegRadius + _leftLegOffset;
             }
         }
         private Vector2 RightLegRootPosition
         {
             get
             {
-                return NPC.Center + Vector2.UnitX * LegRadius;
+                return NPC.Center + Vector2.UnitX * LegRadius + _rightLegOffset;
             }
         }
         private float SpinSpeed;
@@ -992,6 +995,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Timer++;
             if(Timer == 1)
             {
+                _playedSound = false;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/STARDEATH"));
             }
 
@@ -1006,6 +1010,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             _deathLerp = Timer / 462f;
             SpinSpeed = MathHelper.Lerp(1f, 16, _deathLerp);
             TargetOutlineColor = Color.Lerp(Color.Transparent, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 4));
+
             if (Timer >= 462)
             {
                 MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
@@ -1016,12 +1021,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                         ModContent.ProjectileType<STARBOMBERBOOM>(), 50, 2, Main.myPlayer);
                 }
 
-                for (int i = 0; i < 48; i++)
+                for (int i = 0; i < 16; i++)
                 {
                     Dust.NewDustPerfect(NPC.Center, ModContent.DustType<TSmokeDust>(),
                         (Vector2.One * Main.rand.Next(5, 15)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
                 }
-                for (float f = 0; f < 24; f++)
+                for (float f = 0; f < 12; f++)
                 {
                     Vector2 v = Main.rand.NextVector2Circular(128, 128);
                     FXUtil.GlowStretch(NPC.Center, velocity);
@@ -1039,8 +1044,24 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             NPC.noGravity = false;
             NPC.velocity.X *= 0.8f;
             NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
-       
-            ApplyStandingYVelocity();
+
+            if (_playedSound)
+            {
+                _leftLegOffset.Y += MathHelper.Lerp(0.5f, 2f, Timer / 30f);
+                _leftLegOffset.X -= 0.1f;
+                _rightLegOffset.Y += MathHelper.Lerp(0.3f, 2f, Timer / 30f);
+                _rightLegOffset.X += 0.1f;
+            }
+            if (NPC.collideY && !_playedSound)
+            {
+                _leftLegOffset.Y -= 2;
+                _rightLegOffset.Y -= 2;
+                SoundStyle clanker = AssetRegistry.Sounds.STARBOMBER.HeavyCrush;
+                clanker.PitchVariance = 0.5f;
+                SoundEngine.PlaySound(clanker, NPC.position);
+                FXUtil.ShakeCamera(NPC.position, 1024, 8);
+                _playedSound = true;
+            }
         }
 
         public override void HitEffect(NPC.HitInfo hit)
@@ -1351,7 +1372,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 {
                     var part = FXUtil.GlowCircleDetailedBoom1(NPC.Bottom, Color.Yellow, Color.Orange, Color.DarkRed);
                     part.Scale *= 0.5f;
-                    part.Rotation = Main.rand.NextFloat(-1f, 1f)
+                    part.Rotation = Main.rand.NextFloat(-1f, 1f);
                 }
             }
             NPC.velocity.Y -= 0.1f;
