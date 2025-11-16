@@ -1349,8 +1349,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetSpinVelocity, 0.3f);
                 if(Timer % 5 == 0)
                 {
-                    Dust.NewDustPerfect(NPC.Bottom, 
-                        ModContent.DustType<GlowDust>(), Vector2.Zero, Scale: Main.rand.NextFloat(0.5f, 1f), newColor: Color.Pink);
+                    var part = FXUtil.GlowCircleDetailedBoom1(NPC.Bottom, Color.Yellow, Color.Orange, Color.DarkRed);
+                    part.Scale *= 0.5f;
+                    part.Rotation = Main.rand.NextFloat(-1f, 1f);
                 }
             }
             NPC.velocity.Y -= 0.1f;
