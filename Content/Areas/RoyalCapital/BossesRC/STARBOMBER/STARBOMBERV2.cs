@@ -466,8 +466,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             NPC.npcSlots = 30f;
 
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Boss6");
-            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/VoidHit") with { PitchVariance = 0.1f };
-            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/VoidDead1") with { PitchVariance = 0.1f };
+            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f, Pitch = -0.5f};
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f };
         }
 
         public override void FindFrame(int frameHeight)
@@ -920,10 +920,53 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private void AI_Death()
         {
             Timer++;
-            if (Timer >= 180)
+            if(Timer == 1)
             {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/STARDEATH"));
+            }
+
+            if(Timer % 5 == 0)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<TSmokeDust>(), newColor: Color.Gray);
+
+            }
+
+            Vector2 velocity = Main.rand.NextVector2Circular(64, 64);
+
+            if (Timer >= 462)
+            {
+                MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
+                myPlayer.ShakeAtPosition(NPC.position, 6000, 128);
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                        ModContent.ProjectileType<STARBOMBERBOOM>(), 50, 2, Main.myPlayer);
+                }
+
+                for (int i = 0; i < 48; i++)
+                {
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<TSmokeDust>(),
+                        (Vector2.One * Main.rand.Next(5, 15)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
+                }
+                for (float f = 0; f < 24; f++)
+                {
+                    Vector2 v = Main.rand.NextVector2Circular(128, 128);
+                    FXUtil.GlowStretch(NPC.Center, velocity);
+                }
+                FXUtil.ShakeCamera(NPC.position, 1024, 8);
+                ShakeModSystem.Shake = 8;
+                var p = FXUtil.GlowCircleBoom(NPC.Center, Color.Pink, Color.Purple, Color.Blue);
+                p.Scale *= 12;
+                //Death Effect here
                 NPC.Kill();
             }
+
+            _legsState = LegsState.LegsUp;
+            NPC.noTileCollide = false;
+            NPC.noGravity = false;
+            NPC.velocity.X *= 0.8f;
+            NPC.rotation *= 0.9f;
+            ApplyStandingYVelocity();
         }
 
         public override void HitEffect(NPC.HitInfo hit)
