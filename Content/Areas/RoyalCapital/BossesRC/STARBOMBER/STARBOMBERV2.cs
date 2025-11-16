@@ -264,6 +264,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private bool _contactDamage;
         private bool _namePlate;
         private bool _playedSound;
+        private bool[] _requestLegMovement = new bool[4];
         private LegsState _legsState;
         private int _starFieldFrameCounter;
         private int _starFieldFrameTick;
@@ -659,7 +660,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
             SwitchState(_patternManager.NextPattern());
-         //   SwitchState(AIState.LegUpSpin_Start);
         }
 
 
@@ -672,6 +672,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             StandRange *= 0.5f;
             NPC.direction = 0;
 
+            for(int i = 0; i < _requestLegMovement.Length; i++)
+            {
+                _requestLegMovement[i] = true;
+            }
+
             Legs.MoveFoot(ref Legs.leftLegData, FindNewLeftFoot());
             Legs.MoveFoot(ref Legs.rightLegData, FindNewRightFoot());
             Legs2.MoveFoot(ref Legs2.leftLegData, FindNewLeftFoot2());
@@ -679,6 +684,18 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             NPC.direction = oldDirection;
             StandRange = oldStandRange;
         }
+
+        private bool NeedToMoveLeg(STARBOMBERLegs legs, ref LegData legData, float xCenter, ref bool stretchLegs)
+        {
+            if (legs.IsValidFootPosition(ref legData, xCenter, StandRange) && !stretchLegs)
+                return false;
+            if (legData.rotationStyle != RotationStyle.Inverse)
+                return false;
+            if (!legs.CanMoveFoot())
+                return false;
+            return true;
+        }
+
         private void UpdateLegs()
         {
             Legs.leftLegData.rootPosition = LeftLegRootPosition;
@@ -700,25 +717,25 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                         Legs2.rightLegData.rotationStyle = RotationStyle.Inverse;
 
                     }
-                    if (!Legs.IsValidFootPosition(ref Legs.leftLegData, LeftLegRootPosition.X, StandRange) && 
-                        Legs.leftLegData.rotationStyle == RotationStyle.Inverse && Legs.CanMoveFoot())
+                    if (NeedToMoveLeg(Legs, ref Legs.leftLegData, LeftLegRootPosition.X, ref _requestLegMovement[0]))
                     {
                         Legs.MoveFoot(ref Legs.leftLegData, FindNewLeftFoot());
+                        _requestLegMovement[0] = false;
                     }
-                    if (!Legs.IsValidFootPosition(ref Legs.rightLegData, RightLegRootPosition.X, StandRange) 
-                        && Legs.rightLegData.rotationStyle == RotationStyle.Inverse && Legs.CanMoveFoot())
+                    if (NeedToMoveLeg(Legs, ref Legs.rightLegData, RightLegRootPosition.X, ref _requestLegMovement[1]))
                     {
                         Legs.MoveFoot(ref Legs.rightLegData, FindNewRightFoot());
+                        _requestLegMovement[1] = false;
                     }
-                    if (!Legs2.IsValidFootPosition(ref Legs2.leftLegData, LeftLegRootPosition.X, StandRange) 
-                        && Legs2.leftLegData.rotationStyle == RotationStyle.Inverse && Legs2.CanMoveFoot())
+                    if (NeedToMoveLeg(Legs2, ref Legs2.leftLegData, LeftLegRootPosition.X, ref _requestLegMovement[2]))
                     {
                         Legs2.MoveFoot(ref Legs2.leftLegData, FindNewLeftFoot2());
+                        _requestLegMovement[2] = false;
                     }
-                    if (!Legs2.IsValidFootPosition(ref Legs2.rightLegData, RightLegRootPosition.X, StandRange)
-                        && Legs2.rightLegData.rotationStyle == RotationStyle.Inverse && Legs2.CanMoveFoot())
+                    if (NeedToMoveLeg(Legs2, ref Legs2.rightLegData, RightLegRootPosition.X, ref _requestLegMovement[3]))
                     {
                         Legs2.MoveFoot(ref Legs2.rightLegData, FindNewRightFoot2());
+                        _requestLegMovement[3] = false;
                     }
                     break;
 
