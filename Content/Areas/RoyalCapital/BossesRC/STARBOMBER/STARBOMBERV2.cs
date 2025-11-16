@@ -2368,7 +2368,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
                 float f = i;
                 float interpolant = f / (float)NPC.oldPos.Length;
-                Color fadeColor = Color.Lerp(Color.White, Color.Transparent, interpolant) * 0.25f;
+                Color fadeColor = Color.Lerp(Color.White, Color.Transparent, interpolant);
                 fadeColor *= _afterImageTime;
                 oldDrawPos += NPC.Size / 2f;
                 spriteBatch.Draw(texture, oldDrawPos, NPC.frame, fadeColor, NPC.oldRot[i], drawOrigin, NPC.scale, SpriteEffects.None, 0f);
