@@ -456,7 +456,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             NPC.height = 128;
             NPC.damage = 100;
             NPC.defense = 14;
-            NPC.lifeMax = 6000;
+            NPC.lifeMax = 20000;
             NPC.scale = 1f;
             NPC.aiStyle = -1;
 
@@ -641,7 +641,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
             SwitchState(_patternManager.NextPattern());
-            SwitchState(AIState.WalkUpStomp_Start);
+            SwitchState(AIState.CrashJump_Start);
         }
 
 
@@ -1369,12 +1369,19 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 SoundStyle jumpSound = AssetRegistry.Sounds.STARBOMBER.Ommove2;
                 jumpSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(jumpSound, NPC.position);
+
+                SoundStyle fallSound = AssetRegistry.Sounds.Bishinine.BishinineFastfall;
+                fallSound.PitchVariance = 0.1f;
+                fallSound.Pitch = -0.5f;
+                SoundEngine.PlaySound(fallSound, NPC.position);
             }
+
+
             if(Timer < 80)
             {
                 _legsState = LegsState.Limp;
                 NPC.noGravity = false;
-                OffsetCameraModifier.FocusTargetOffset = -Vector2.UnitY * 300;
+                OffsetCameraModifier.FocusTargetOffset = -Vector2.UnitY * 400;
             }
             else if (NPC.velocity.Y > 0)
             {
@@ -1388,6 +1395,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                     var p = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
                     var p2 = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY * 4);
                     p2.Scale *= 0.5f;
+                }
+                if(Timer % 2 == 0)
+                {
+                    Dust.NewDust(NPC.position, NPC.width, NPC.height
+                        , ModContent.DustType<GlyphDust>(), newColor: Color.Pink, Scale: Main.rand.NextFloat(0.5f, 1f));
                 }
             }
              
@@ -1414,7 +1426,13 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 crashSoun.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(crashSoun, NPC.position);
 
-   
+
+                var d1 = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+                d1.Scale *= 4;
+                var d2 = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+                d2.Scale *= 8;
+
+
                 var part = FXUtil.GlowCircleBoom(NPC.Center, Color.Pink, Color.Purple, Color.Blue);
                 part.Scale *= 8f;
 
@@ -1474,18 +1492,65 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger"), NPC.position);
 
                 FXUtil.ShakeCamera(NPC.position, 2000, 100);
-                FXUtil.PunchCamera(NPC.position, Vector2.UnitY, 8, 8, 8);
+                FXUtil.PunchCamera(NPC.position, Vector2.UnitY, 32, 8, 8);
                 if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(SourceFromThis, NPC.Bottom, Vector2.Zero,
                         ModContent.ProjectileType<StompCrashBoom>(), CrashDamage, 1, Main.myPlayer);
                 }
+                if (MultiplayerHelper.IsHost)
+                {
+                    Vector2 velocity = Vector2.UnitX * 5;
+                    Projectile.NewProjectile(SourceFromThis, _impactFootPosition, velocity,
+                        ModContent.ProjectileType<STARSHOTT>(), StarMissileDamage, 1, Main.myPlayer);
+                    Projectile.NewProjectile(SourceFromThis, _impactFootPosition, -velocity,
+                        ModContent.ProjectileType<STARSHOTT>(), StarMissileDamage, 1, Main.myPlayer);
+
+                    Projectile.NewProjectile(SourceFromThis, _impactFootPosition, Vector2.Zero,
+                        ModContent.ProjectileType<StarMissileBoom>(), StarMissileDamage, 1, Main.myPlayer);
+                }
+
+                for (int i = 0; i < 2; i++)
+                {
+                    Vector2 rvelocity = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
+                    rvelocity = rvelocity.RotatedByRandom(MathHelper.ToRadians(24));
+                    rvelocity *= 2;
+
+                    Gore.NewGore(SourceFromThis, NPC.Bottom, rvelocity,
+                        ModContent.GoreType<FableRock1>());
+
+                    rvelocity = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
+                    rvelocity = rvelocity.RotatedByRandom(MathHelper.ToRadians(24));
+
+                    Gore.NewGore(SourceFromThis, NPC.Bottom, rvelocity,
+                        ModContent.GoreType<FableRock2>());
+
+                    rvelocity = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
+                    rvelocity = rvelocity.RotatedByRandom(MathHelper.ToRadians(24));
+
+                    Gore.NewGore(SourceFromThis, NPC.Bottom, rvelocity,
+                        ModContent.GoreType<FableRock3>());
+
+                    rvelocity = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
+                    rvelocity = rvelocity.RotatedByRandom(MathHelper.ToRadians(24));
+
+                    Gore.NewGore(SourceFromThis, NPC.Bottom, rvelocity,
+                        ModContent.GoreType<FableRock4>());
+                }
+                for(float f = 0; f < 3; f++)
+                {
+                    float completionRatio = f / 4f;
+                    var sear = Particle.NewParticle<SearParticle>(NPC.Bottom, Vector2.Zero);
+                    sear.Scale *= MathHelper.Lerp(2f, 4f, completionRatio);
+                }
+         
             }
 
             if (Timer % 4 == 0)
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>(), Scale: Main.rand.NextFloat(0.5f, 1f));
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<TSmokeDust>(), Scale: Main.rand.NextFloat(0.5f, 1f));
+                Particle.NewParticle<ZapParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), Main.rand.NextVector2Circular(4, 4), newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
             }
 
             TargetOutlineColor = Color.Red;

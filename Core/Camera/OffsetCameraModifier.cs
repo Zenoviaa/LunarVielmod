@@ -17,7 +17,7 @@ namespace Stellamod.Core.Camera
         {
             _cameraOffset = Vector2.Lerp(_cameraOffset, FocusTargetOffset, 0.1f);
             FocusTargetOffset = Vector2.Zero;
-            cameraPosition.CameraPosition = cameraPosition.OriginalCameraPosition + _cameraOffset; 
+            cameraPosition.CameraPosition = cameraPosition.CameraPosition + _cameraOffset; 
         }
     }
 }
