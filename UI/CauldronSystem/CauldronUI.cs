@@ -34,7 +34,7 @@ namespace Stellamod.UI.CauldronSystem
         {
             base.OnInitialize();
             Width.Pixels = 248;
-            Height.Pixels = 208;
+            Height.Pixels = 100;
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
             BackgroundColor = Color.Transparent;
@@ -63,18 +63,21 @@ namespace Stellamod.UI.CauldronSystem
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
 
-            moldSlot.Left.Pixels = 22;
-            moldSlot.Top.Pixels = 16;
-            materialSlot.Left.Pixels = moldSlot.Left.Pixels + 156;
-            materialSlot.Top.Pixels = moldSlot.Top.Pixels;
+            moldSlot.Left.Pixels = 0;
+            moldSlot.Top.Pixels = Height.Pixels - 32;
+
+            materialSlot.Left.Pixels = (Width.Pixels / 2) - 68 / 2;
+            materialSlot.Top.Pixels = 48;
 
             cauldronPot.Left.Pixels = moldSlot.Left.Pixels + 64;
             cauldronPot.Top.Pixels = moldSlot.Top.Pixels + 64;
+
+            _bigPot.Left.Pixels = (Width.Pixels / 2) - (68);
+            _bigPot.Top.Pixels = -32;
         }
     }
 }

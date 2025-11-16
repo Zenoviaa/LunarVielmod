@@ -13,7 +13,6 @@ namespace Stellamod.UI.CauldronSystem
 {
     public class CauldronMoldSlot : UIElement
     {
-        private Item _prevItem;
         private readonly int _context;
         private readonly float _scale;
 
@@ -21,9 +20,6 @@ namespace Stellamod.UI.CauldronSystem
         public Func<Item, bool> ValidItemFunc;
 
         public event Action<int> OnEmptyMouseover;
-
-        private int timer = 0;
-
         public CauldronMoldSlot(int context = ItemSlot.Context.BankItem, float scale = 1f)
         {
             _context = context;
@@ -50,8 +46,10 @@ namespace Stellamod.UI.CauldronSystem
         {
             if (Valid(Main.mouseItem))
             {
-                _prevItem = Item;
-                ItemSlot.Handle(ref Item, _context);
+                if(Main.mouseLeft && Main.mouseLeftRelease)
+                {
+                    ItemSlot.Handle(ref Item, _context);
+                }
             }
         }
 

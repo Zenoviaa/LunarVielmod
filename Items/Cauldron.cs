@@ -152,7 +152,12 @@ namespace Stellamod.Items
             _brews.Add(brew);
             return brew;
         }
-
+        private List<CauldronBrew> GetPossibleBrews(List<int> molds, int material, int materialCount)
+        {
+            List<CauldronBrew> possibleBrews = _brews.Where
+                (x => molds.Contains(x.mold) && x.material == material && materialCount >= x.materialAmount).ToList();
+            return possibleBrews;
+        }
         private List<CauldronBrew> GetPossibleBrews(int mold, int material, int materialCount)
         {
             List<CauldronBrew> possibleBrews = _brews.Where
@@ -248,10 +253,6 @@ namespace Stellamod.Items
         {
             return _brews.Find(x => x.material == itemType || x.mold == itemType) != null;
         }
-        public bool CanBrewSomething(Item mold, Item material)
-        {
-            return CanBrewSomething(mold.type, material.type, material.stack);
-        }
 
         public bool CanBrewSomething(int mold, int material, int materialCount)
         {
@@ -259,18 +260,33 @@ namespace Stellamod.Items
         }
 
 
-        public CauldronBrew Craft(Item mold, Item material)
+        public bool IsAir(Item[] molds)
+        {
+            for(int i = 0; i < molds.Length; i++)
+            {
+                if (!molds[i].IsAir)
+                    return false;
+            }
+            return true;
+        }
+        public CauldronBrew Craft(Item[] molds, Item material)
         {
             //Get all possible crafts
             List<CauldronBrew> possibleBrews;
-            if (mold.IsAir)
+            if (IsAir(molds))
             {
                 //No mold, get something random
                 possibleBrews = GetPossibleBrews(material.type, material.stack);
             }
             else
             {
-                possibleBrews = GetPossibleBrews(mold.type, material.type, material.stack);
+                List<int> moldTypes = new List<int>();
+                foreach(Item mold in molds)
+                {
+                    moldTypes.Add(mold.type);
+                }
+
+                possibleBrews = GetPossibleBrews(moldTypes, material.type, material.stack);
             }
 
             if (possibleBrews.Count == 0)
@@ -303,7 +319,13 @@ namespace Stellamod.Items
 
             //Get the result
             CauldronBrew result = random;
-            mold.stack -= 1;
+            for(int i = 0; i < molds.Length; i++)
+            {
+                if (result.mold != molds[i])
+                    continue;
+                molds[i].stack -= 1;
+            }
+
             material.stack -= result.materialAmount;
 
 
