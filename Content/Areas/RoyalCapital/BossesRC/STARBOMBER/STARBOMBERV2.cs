@@ -662,6 +662,20 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             SwitchState(_patternManager.NextPattern());
         }
 
+        private void SpawnSteamParticle()
+        {
+            Vector2 spawnPosition = NPC.Top;
+            spawnPosition.X += Main.rand.NextFloat(-64, 64);
+
+            Vector2 spawnVelocity = Vector2.Zero;
+            spawnVelocity.Y = Main.rand.NextFloat(-1f, 1f);
+
+            float spawnScale = Main.rand.NextFloat(0.75f, 1f);
+            var steamParticle = Particle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
+            steamParticle.innerColor = Color.DarkGray;
+            steamParticle.outerColor = Color.Black;
+            steamParticle.fadeToColor = Color.Black;
+        }
 
         #region Walking Code
 
@@ -1069,6 +1083,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
             }
 
+            if(Timer % 5 == 0)
+            {
+                SpawnSteamParticle();
+            }
 
             float prepTime = 90f;
 
@@ -1153,7 +1171,13 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 GunVDirection = 1;
 
                 HeldGun.drawColor = Color.Lerp(HeldGun.drawColor, _gunSilhouetteColor, 0.1f);
-                if (Timer % 8 == 0)
+
+                if (Timer % 5 == 0)
+                {
+                    SpawnSteamParticle();
+                }
+
+                if (Timer % 16 == 0)
                 {
                     Dust.NewDust(GunPosition, 4, 4, ModContent.DustType<TSmokeDust>(), newColor: Color.DarkGray,
                         Scale: Main.rand.NextFloat(0.5f, 1f));
@@ -1382,6 +1406,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 jumpPrepare.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(jumpPrepare, NPC.position);
                 _playedSound = false;
+            }
+
+            if (Timer % 5 == 0)
+            {
+                SpawnSteamParticle();
             }
 
             if (!_playedSound && NPC.collideY)
@@ -1637,6 +1666,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 SoundEngine.PlaySound(ohMove5, NPC.position);
             }
 
+            if (Timer % 5 == 0)
+            {
+                SpawnSteamParticle();
+            }
             float speed = 5f;
             float targetVelocityX = TargetDirection * speed;
             float xDiff = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
@@ -1674,6 +1707,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 //Move 1 leg
                 Legs.MoveFoot(ref Legs.rightLegData, NPC.Center + new Vector2(200, 0));
             }
+
+            if (Timer % 5 == 0)
+            {
+                SpawnSteamParticle();
+            }
+
             OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -64);
             _afterImageTime = MathHelper.Lerp(_afterImageTime, 0.5f, 0.1f);
             NPC.velocity.X *= 0.9f;
@@ -1883,6 +1922,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
 
             }
+
+            if (Timer % 5 == 0)
+            {
+                SpawnSteamParticle();
+            }
+
             if (Timer % 8 == 0)
             {
                 Vector2 randOffset = Main.rand.NextVector2CircularEdge(64, 64);
@@ -1916,6 +1961,14 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 HeldGun.Prime();
             }
             HeldGun.aimingReticle = MathHelper.Lerp(1f, 0f, Timer / 60f);
+            if(Timer < 60)
+            {
+                if (Timer % 5 == 0)
+                {
+                    SpawnSteamParticle();
+                }
+            }
+
             if (Timer == 60)
             {
                 NPC.velocity.X = -NPC.direction * 5;
@@ -2027,6 +2080,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 SoundEngine.PlaySound(starGun, NPC.Center);
             }
 
+            if (Timer % 5 == 0)
+            {
+                SpawnSteamParticle();
+            }
 
             float prepTime = 90f;
 
@@ -2112,7 +2169,14 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 GunVDirection = 1;
 
                 HeldGun.drawColor = Color.Lerp(HeldGun.drawColor, _gunSilhouetteColor, 0.1f);
-                if (Timer % 8 == 0)
+
+
+                if (Timer % 5 == 0)
+                {
+                    SpawnSteamParticle();
+                }
+
+                if (Timer % 16 == 0)
                 {
                     Dust.NewDust(GunPosition, 4, 4, ModContent.DustType<TSmokeDust>(), newColor: Color.DarkGray,
                         Scale: Main.rand.NextFloat(0.5f, 1f));
