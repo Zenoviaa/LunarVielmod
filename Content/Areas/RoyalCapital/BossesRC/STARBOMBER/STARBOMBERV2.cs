@@ -487,8 +487,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             NPC.npcSlots = 30f;
 
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Boss6");
-            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f, Pitch = -0.5f};
-            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f };
+            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.3f};
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.3f };
         }
 
         public override void FindFrame(int frameHeight)
@@ -1351,7 +1351,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 {
                     var part = FXUtil.GlowCircleDetailedBoom1(NPC.Bottom, Color.Yellow, Color.Orange, Color.DarkRed);
                     part.Scale *= 0.5f;
-                    part.Rotation = Main.rand.NextFloat(-1f, 1f);
+                    part.Rotation = Main.rand.NextFloat(-1f, 1f)
                 }
             }
             NPC.velocity.Y -= 0.1f;
