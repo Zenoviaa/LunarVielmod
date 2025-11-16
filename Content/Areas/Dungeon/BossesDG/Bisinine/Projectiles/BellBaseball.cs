@@ -48,10 +48,13 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             base.SetStaticDefaults();
             ProjectileID.Sets.TrailCacheLength[Type] = 16;
             ProjectileID.Sets.TrailingMode[Type] = 3;
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 1000;
+
         }
         public override void SetDefaults()
         {
             base.SetDefaults();
+
             Projectile.width = 52;
             Projectile.height = 52;
             Projectile.tileCollide = false;
@@ -92,7 +95,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
         public override void AI()
         {
             base.AI();
-            _targetPlayer = PlayerHelper.FindClosestPlayer(Projectile.position, 8000);
+            _targetPlayer = PlayerHelper.FindClosestPlayer(Projectile.position, 80000);
             _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             Timer++;

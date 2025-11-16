@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -16,11 +18,12 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
         public override void SetDefaults()
         {
             Projectile.friendly = false;
-            Projectile.width = 444;
-            Projectile.height = 232;
+            Projectile.hostile = true;
+            Projectile.width = 64;
+            Projectile.height = 64;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 16;
-            Projectile.scale = 0.6f;
+            Projectile.scale = 1;
             Projectile.tileCollide = false;
         }
 
@@ -32,30 +35,18 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 
         public override void AI()
         {
-
-            Vector3 RGB = new(0.89f, 2.53f, 2.55f);
-            // The multiplication here wasn't doing anything
-            Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+            Projectile.velocity *= 1.2f;
             Projectile.rotation = Projectile.velocity.ToRotation();
-        }
-
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return new Color(200, 200, 200, 0) * (1f - Projectile.alpha / 50f);
-        }
-
-        public override bool PreAI()
-        {
-
-            if (++Projectile.frameCounter >= 2)
+            Projectile.frameCounter++;
+            if(Projectile.frameCounter >= 2)
             {
                 Projectile.frameCounter = 0;
-                if (++Projectile.frame >= 8)
+                Projectile.frame++;
+                if(Projectile.frame >= 8)
                 {
                     Projectile.frame = 0;
                 }
             }
-            return true;
         }
 
 
@@ -63,6 +54,19 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
         {
             behindNPCs.Add(index);
             behindProjectiles.Add(index);
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawPosition = Projectile.Center - Main.screenPosition;
+            Rectangle frame = Projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Color drawColor = Color.White;
+            drawColor.A = 0;
+            spriteBatch.Draw(texture, drawPosition, frame, drawColor);
+            return false;
         }
     }
 

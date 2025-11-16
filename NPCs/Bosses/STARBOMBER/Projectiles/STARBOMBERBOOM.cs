@@ -31,7 +31,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 
         public override void AI()
         {
-
+            Projectile.scale = 2;
             Vector3 RGB = new(0.89f, 2.53f, 2.55f);
             // The multiplication here wasn't doing anything
             Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);

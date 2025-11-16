@@ -50,10 +50,11 @@ namespace Stellamod.Helpers
 
             return false;
         }
+
         public static Player FindClosestPlayer(Vector2 position, float maxDetectDistance)
         {
             Player closestPlayer = null;
-            float closestDistance = 1000;
+            float closestDistance = float.MaxValue;
             foreach (var player in Main.ActivePlayers)
             {
                 float distance = Vector2.Distance(position, player.Center);

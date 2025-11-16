@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SteelSeries.GameSense;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -81,6 +82,84 @@ namespace Stellamod.Core.Palettes
             }
         }
 
+        public static Vector3 RGBToLab(Color rgb)
+        {
+            Vector3 RGB = Vector3.Zero;
+
+
+            void RGBThing(ref float v, float input)
+            {
+                float value = input / 255f;
+
+                if (value > 0.04045f)
+                    value = MathF.Pow(((value + 0.055f) / 1.055f), 2.4f);
+                else
+                {
+                    value = value / 12.92f;
+                }
+
+
+                v = value * 100;
+            }
+            RGBThing(ref RGB.X, rgb.R);
+            RGBThing(ref RGB.Y, rgb.G);
+            RGBThing(ref RGB.Z, rgb.B);
+
+            Vector3 XYZ = Vector3.Zero;
+
+            float X = RGB.X * 0.4124f + RGB.Y * 0.3576f + RGB.Z * 0.1805f;
+            float Y = RGB.X * 0.2126f + RGB.Y * 0.7152f + RGB.Z * 0.0722f;
+            float Z = RGB.X * 0.0193f + RGB.Y * 0.1192f + RGB.Z * 0.9505f;
+
+
+            XYZ.X = MathF.Round(X, 4);
+            XYZ.Y = MathF.Round(Y, 4);
+            XYZ.Z = MathF.Round(Z, 4);
+
+            XYZ.X = XYZ.X / 95.047f;
+            XYZ.Y = XYZ.Y / 100.0f;
+            XYZ.Z = XYZ.Z / 108.883f;  
+
+           
+            void XYZThing(ref float v)
+            {
+                if (v > 0.008856)
+                    v = MathF.Pow(v, 0.3333333333333333f);
+                else
+                    v = (7.787f * v) + (16f / 116f);
+            }
+
+
+            XYZThing(ref XYZ.X);
+            XYZThing(ref XYZ.Y);
+            XYZThing(ref XYZ.Z);
+
+            Vector3 Lab = Vector3.Zero;
+            Lab.X = (116 * XYZ.Y) - 16;
+            Lab.Y = 500 * (XYZ.X - XYZ.Y);
+            Lab.Z = 200 * (XYZ.Y - XYZ.Z);
+
+            Lab.X = MathF.Round(Lab.X, 4);
+            Lab.Y = MathF.Round(Lab.Y, 4);
+            Lab.Z = MathF.Round(Lab.Z, 4);
+            return Lab;
+        }
+
+        public static float ColorDistance4(Color a, Color b)
+        {
+            Vector3 lab1 = RGBToLab(a);
+            Vector3 lab2 = RGBToLab(b);
+
+
+            float d = MathF.Sqrt((MathF.Pow(lab1.X - lab2.X, 2) + MathF.Pow(lab1.Y - lab2.Y, 2) + MathF.Pow(lab1.Z - lab2.Z, 2)));
+            return d;
+        }
+        public static float ColorDistance3(Color a, Color b)
+        {
+            float d = 0.3f * MathF.Pow(b.R - a.R, 2f) + 0.59f * MathF.Pow(b.G - a.G, 2f) + 0.11f * MathF.Pow(b.B - a.B, 2f);
+
+            return d;
+        }
 
         /// <summary>
         /// Returns the distance between two colors

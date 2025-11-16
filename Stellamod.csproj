@@ -1,4 +1,4 @@
-
+﻿
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\tModLoader.targets" />
   <PropertyGroup>
@@ -6,23 +6,27 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Remove="Content\Areas\RoyalCapital\NewFolder\**" />
     <AdditionalFiles Remove="Items\Accessories\Shields\**" />
     <AdditionalFiles Remove="Items\Banners\**" />
     <AdditionalFiles Remove="Items\Blocks\**" />
     <AdditionalFiles Remove="Projectiles\FX\**" />
     <AdditionalFiles Remove="Projectiles\Hostile\**" />
+    <Compile Remove="Content\Areas\RoyalCapital\NewFolder\**" />
     <Compile Remove="FX\**" />
     <Compile Remove="Items\Accessories\Shields\**" />
     <Compile Remove="Items\Banners\**" />
     <Compile Remove="Items\Blocks\**" />
     <Compile Remove="Projectiles\FX\**" />
     <Compile Remove="Projectiles\Hostile\**" />
+    <EmbeddedResource Remove="Content\Areas\RoyalCapital\NewFolder\**" />
     <EmbeddedResource Remove="FX\**" />
     <EmbeddedResource Remove="Items\Accessories\Shields\**" />
     <EmbeddedResource Remove="Items\Banners\**" />
     <EmbeddedResource Remove="Items\Blocks\**" />
     <EmbeddedResource Remove="Projectiles\FX\**" />
     <EmbeddedResource Remove="Projectiles\Hostile\**" />
+    <None Remove="Content\Areas\RoyalCapital\NewFolder\**" />
     <None Remove="FX\**" />
     <None Remove="Items\Accessories\Shields\**" />
     <None Remove="Items\Banners\**" />
