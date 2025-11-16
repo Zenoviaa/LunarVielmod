@@ -243,6 +243,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private float _realSpinSpeed;
         private float _afterImageTime;
         private float _oscTimer;
+        private float _deathLerp;
 
         private bool _contactDamage;
         private bool _namePlate;
@@ -253,6 +254,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
         private Color _outlineColor;
         private Color _gunOutlineColor;
+        private Vector2 _shakeOffset;
         private Vector2 _startFootPosition;
         private Vector2 _impactFootPosition;
         private Vector2[] _lightningPos;
@@ -528,7 +530,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                     SwitchState(AIState.Despawn);
                 }
             }
-
+            _shakeOffset *= 0.9f;
             _realSpinSpeed = MathHelper.Lerp(_realSpinSpeed, SpinSpeed, 0.1f);
             _afterImageTime *= 0.9f;
             HeldGun?.Update();
@@ -829,6 +831,16 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private void AI_Spawn()
         {
             Timer++;
+            if (Timer == 1)
+            {
+                StretchLegs();
+            }
+
+
+            _legsState = LegsState.Walk;
+            NPC.velocity.X *= 0.9f;
+            NPC.rotation = 0;
+            ApplyStandingYVelocity();
             if (Timer >= 60)
             {
                 SwitchState(AIState.Idle);
@@ -862,10 +874,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 NPC.TargetClosest();
 
             }
-            if(Timer == 5)
-            {
-                StretchLegs();
-            }
+        
             NPC.direction = TargetDirection;
 
             if (!_namePlate)
@@ -928,11 +937,14 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             if(Timer % 5 == 0)
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<TSmokeDust>(), newColor: Color.Gray);
-
+                NPC.rotation = _shakeOffset.ToRotation();
             }
 
             Vector2 velocity = Main.rand.NextVector2Circular(64, 64);
-
+            _shakeOffset = Main.rand.NextVector2Circular(24 * _deathLerp, 24 * _deathLerp);
+            _deathLerp = Timer / 462f;
+            SpinSpeed = MathHelper.Lerp(1f, 16, _deathLerp);
+            TargetOutlineColor = Color.Lerp(Color.Transparent, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 4));
             if (Timer >= 462)
             {
                 MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
@@ -965,7 +977,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             NPC.noTileCollide = false;
             NPC.noGravity = false;
             NPC.velocity.X *= 0.8f;
-            NPC.rotation *= 0.9f;
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
+       
             ApplyStandingYVelocity();
         }
 
@@ -1675,6 +1688,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 SoundStyle crush = AssetRegistry.Sounds.STARBOMBER.HeavyCrush;
                 crush.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(crush, NPC.position);
+
+
+                var p = Particle.NewParticle<GlowDonutParticle>(Legs.rightLegData.footPosition, Vector2.UnitY);
+                p.Scale *= 5;
             }
 
             StandHeight *= 0.5f;
@@ -2158,6 +2175,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPos = NPC.Center - screenPos;
+            drawPos += _shakeOffset;
             Vector2 drawOrigin = NPC.frame.Size() / 2f;
             for (int i = 0; i < NPC.oldPos.Length; i++)
             {
@@ -2184,6 +2202,20 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0);
             Legs.Draw(spriteBatch, LegTextures, drawColor);
 
+            if(_deathLerp > 0)
+            {
+                drawColor = Color.Red;
+                drawColor.A = 0;
+                drawColor *= ExtraMath.Osc(0f, 1f, speed: 32);
+
+                Color startGlowColor = Color.Yellow;
+                startGlowColor.A = 0;
+
+                Color glowColor = Color.Lerp(startGlowColor, drawColor, _deathLerp);
+                glowColor *= _deathLerp;
+                spriteBatch.Draw(texture, drawPos, NPC.frame, glowColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos, NPC.frame, glowColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0);
+            }
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
