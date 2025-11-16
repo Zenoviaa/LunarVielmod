@@ -76,6 +76,10 @@ namespace Stellamod.Core.Foggy
             orig(self);
             if (doDraws)
             {
+
+                if (_fogIndex.Count <= 0)
+                    return;
+
                 var texture = TextureRegistry.Clouds6;
                 SpriteBatch spriteBatch = Main.spriteBatch;
 
