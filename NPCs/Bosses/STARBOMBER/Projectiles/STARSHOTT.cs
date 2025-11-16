@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -47,22 +49,24 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
             }
         }
 
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 50f);
-        }
-
-        public override bool PreAI()
-        {
-
-            return true;
-        }
-
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
             behindNPCs.Add(index);
             behindProjectiles.Add(index);
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawPosition = Projectile.Center - Main.screenPosition;
+            Rectangle frame = Projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Color drawColor = Color.White;
+            drawColor.A = 0;
+            spriteBatch.Draw(texture, drawPosition, frame, drawColor);
+            return false;
         }
     }
 
