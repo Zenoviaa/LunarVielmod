@@ -74,14 +74,14 @@ namespace Stellamod.UI.CauldronSystem
             moldSlot.Left.Pixels = 0;
             moldSlot.Top.Pixels = Height.Pixels - 32;
 
-            moldSlot2.Left.Pixels = Width.Pixels - 32;
+            moldSlot2.Left.Pixels = Width.Pixels - 40;
             moldSlot2.Top.Pixels = Height.Pixels - 32;
 
             materialSlot.Left.Pixels = (Width.Pixels / 2) - 68 / 2;
             materialSlot.Top.Pixels = 48;
 
-            cauldronPot.Left.Pixels = moldSlot.Left.Pixels + 64;
-            cauldronPot.Top.Pixels = moldSlot.Top.Pixels + 64;
+            cauldronPot.Left.Pixels = 16;
+            cauldronPot.Top.Pixels = 4;
 
             _bigPot.Left.Pixels = (Width.Pixels / 2) - (68);
             _bigPot.Top.Pixels = -32;
