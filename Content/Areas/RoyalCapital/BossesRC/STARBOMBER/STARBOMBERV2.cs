@@ -10,11 +10,14 @@ using Stellamod.Core.InverseKinematics;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
+using Stellamod.Gores;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -107,6 +110,21 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             legData.endWalkPosition = targetFootPosition;
             legData.rotationStyle = RotationStyle.ForwardWalk;
         }
+        public void MoveFootBeeline(ref LegData legData, Vector2 targetFootPosition, float duration)
+        {
+            SoundStyle walkingStartSound = AssetRegistry.Sounds.STARBOMBER.STARWALK;
+            walkingStartSound.PitchVariance = 0.3f;
+            walkingStartSound.Volume = 0.25f;
+            SoundEngine.PlaySound(walkingStartSound, targetFootPosition);
+
+    
+            legData.timer = 0f;
+            legData.duration = duration;
+            legData.startWalkPosition = legData.footPosition;
+            legData.endWalkPosition = targetFootPosition;
+            legData.rotationStyle = RotationStyle.InverseLerp;
+    
+        }
 
         public void CalculateWalkAngles(ref LegData legData, Armature leg)
         {
@@ -157,6 +175,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             {
                 case RotationStyle.InverseLerp:
                     legData.timer++;
+    
                     float time = legData.duration;
                     float completionRatio = legData.timer / time;
                     completionRatio = Easing.InOutSine(completionRatio);
@@ -620,7 +639,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
             SwitchState(_patternManager.NextPattern());
-            SwitchState(AIState.CrashJump_Start);
+            SwitchState(AIState.WalkUpStomp_Start);
         }
 
 
@@ -632,14 +651,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             float oldStandRange = StandRange;
             StandRange *= 0.5f;
             NPC.direction = 0;
-
-            /*
-            Legs.leftLegData.footPosition = Legs.LeftLeg.GetEndEffector();
-            Legs.rightLegData.footPosition = Legs.RightLeg.GetEndEffector();
-            Legs2.leftLegData.footPosition = Legs2.LeftLeg.GetEndEffector();
-            Legs2.rightLegData.footPosition = Legs2.RightLeg.GetEndEffector();
-            */
-
 
             Legs.MoveFoot(ref Legs.leftLegData, FindNewLeftFoot());
             Legs.MoveFoot(ref Legs.rightLegData, FindNewRightFoot());
@@ -1431,7 +1442,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             {
                 SwitchState(AIState.Idle);
             }
-
+           
         }
         #endregion
 
@@ -1445,6 +1456,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             {
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
+                SoundStyle ohMove5 = AssetRegistry.Sounds.STARBOMBER.Ommove5;
+                ohMove5.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(ohMove5, NPC.position);
             }
 
             float speed = 5f;
@@ -1461,7 +1475,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
             ApplyStandingYVelocity();
-            if (AttackCycle >= 1)
+            if (AttackCycle >= 1 || Timer >= 120)
             {
                 SwitchState(AIState.WalkUpStomp_Stomp);
             }
@@ -1471,7 +1485,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         {
             Timer++;
             TargetOutlineColor = Color.Yellow;
-
+            TargetGunOutlineColor = Color.Transparent;
+            _legsState = LegsState.Walk;
             if (Timer == 1)
             {
 
@@ -1480,28 +1495,19 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
 
-
-
-
+                //Move 1 leg
+                Legs.MoveFoot(ref Legs.rightLegData, NPC.Center + new Vector2(200, 0));
             }
+            OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -64);
             _afterImageTime = MathHelper.Lerp(_afterImageTime, 0.5f, 0.1f);
-            Vector2 groundPoint = FindGround();
-            Vector2 offset = -Vector2.UnitY * 80;
-            offset += Vector2.UnitX * NPC.direction * 164;
-            if (NPC.direction == 1)
-            {
-
-                RightFootPosition = Vector2.Lerp(RightFootPosition, MyTarget.Top + offset, 0.1f);
-                LeftFootPosition = Vector2.Lerp(LeftFootPosition, groundPoint, 0.1f);
-            }
-            else if (NPC.direction == -1)
-            {
-                RightFootPosition = Vector2.Lerp(RightFootPosition, groundPoint, 0.1f);
-                LeftFootPosition = Vector2.Lerp(LeftFootPosition, MyTarget.Top + offset, 0.1f);
-            }
             NPC.velocity.X *= 0.9f;
             ApplyStandingYVelocity();
 
+            if(Timer % 5 == 0)
+            {
+                var p = Particle.NewParticle<ZapParticle>(Legs.rightLegData.footPosition, Main.rand.NextVector2Circular(1, 1));
+                p.Scale *= Main.rand.NextFloat(0.5f, 1f);
+            }
             if (Timer >= 90f)
             {
                 SwitchState(AIState.WalkUpStomp_End);
@@ -1514,41 +1520,121 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Timer++;
 
             TargetOutlineColor = Color.Red;
+            TargetGunOutlineColor = Color.Transparent;
 
+            _legsState = LegsState.Freeze;
             _afterImageTime *= 0.9f;
-            float time = 14f;
-            float progress = Timer / time;
-            progress = EasingFunction.InOutSine(progress);
-            if (NPC.direction == 1)
-            {
-                if (Timer == 1)
-                {
-                    _startFootPosition = RightFootPosition;
-                    _impactFootPosition = MyTarget.Center;
-                }
-                RightFootPosition = Vector2.Lerp(_startFootPosition, _impactFootPosition, progress);
-            }
-            else if (NPC.direction == -1)
-            {
-                if (Timer == 1)
-                {
-                    _startFootPosition = LeftFootPosition;
-                    _impactFootPosition = MyTarget.Center;
-                }
-                LeftFootPosition = Vector2.Lerp(_startFootPosition, _impactFootPosition, progress);
-            }
 
+            float time = 24f;
+            float progress = Timer / time;
+
+            float inEasing = EasingFunction.InExpo(progress);
+            progress = EasingFunction.InOutSine(progress);
+            if(Timer == 1)
+            {
+                Vector2 groundPoint = FindGround();
+                groundPoint += new Vector2(200, 0);
+                _impactFootPosition = groundPoint;
+
+
+                Legs.rightLegData.startWalkPosition = Legs.rightLegData.footPosition;
+            }
+            if(Timer % 6 == 0)
+            {
+                var p = Particle.NewParticle<GlowDonutParticle>(Legs.rightLegData.footPosition, Vector2.UnitY);
+                var p2 = Particle.NewParticle<GlowDonutParticle>(Legs.rightLegData.footPosition, Vector2.UnitY * 4);
+                p2.Scale *= 0.5f;
+            }
+            SpinSpeed = MathHelper.Lerp(1f, 3f, progress);
+
+            Legs.rightLegData.rotationStyle = RotationStyle.Inverse;
+            Legs.rightLegData.footPosition = Vector2.Lerp(Legs.rightLegData.startWalkPosition, _impactFootPosition, inEasing);
+            ShakeModSystem.Shake = 4;
+            OffsetCameraModifier.FocusTargetOffset = new Vector2(0, 100);
             if (Timer == time)
             {
+                ShakeModSystem.Shake = 16;
                 if (MultiplayerHelper.IsHost)
                 {
+                    Vector2 velocity = Vector2.UnitX * 22;
+                    for(float f = 0; f < 4; f++)
+                    {
+                        float completionRatio = f / 4f;
+                        Projectile.NewProjectile(SourceFromThis, _impactFootPosition, velocity * completionRatio,
+                            ModContent.ProjectileType<STARSHOTT>(), StarMissileDamage, 1, Main.myPlayer);
+                        Projectile.NewProjectile(SourceFromThis, _impactFootPosition, -velocity * completionRatio,
+                            ModContent.ProjectileType<STARSHOTT>(), StarMissileDamage, 1, Main.myPlayer);
+                    }
+
                     Projectile.NewProjectile(SourceFromThis, _impactFootPosition, Vector2.Zero,
                         ModContent.ProjectileType<StarMissileBoom>(), StarMissileDamage, 1, Main.myPlayer);
                 }
+                for (int i = 0; i < 1; i++)
+                {
+                    Vector2 rvelocity = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
+                    rvelocity = rvelocity.RotatedByRandom(MathHelper.ToRadians(24));
+                    rvelocity *= 2;
+
+                    Gore.NewGore(SourceFromThis, _impactFootPosition, rvelocity,
+                        ModContent.GoreType<FableRock1>());
+
+                    rvelocity = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
+                    rvelocity = rvelocity.RotatedByRandom(MathHelper.ToRadians(24));
+
+                    Gore.NewGore(SourceFromThis, _impactFootPosition, rvelocity,
+                        ModContent.GoreType<FableRock2>());
+
+                    rvelocity = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
+                    rvelocity = rvelocity.RotatedByRandom(MathHelper.ToRadians(24));
+
+                    Gore.NewGore(SourceFromThis, _impactFootPosition, rvelocity,
+                        ModContent.GoreType<FableRock3>());
+
+                    rvelocity = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
+                    rvelocity = rvelocity.RotatedByRandom(MathHelper.ToRadians(24));
+
+                    Gore.NewGore(SourceFromThis, _impactFootPosition, rvelocity,
+                        ModContent.GoreType<FableRock4>());
+                }
+                var sear = Particle.NewParticle<SearParticle>(_impactFootPosition, Vector2.Zero);
+
+                for (int i = 0; i < 16; i++)
+                {
+                    float radius = 150;
+                    Vector2 offset = Vector2.UnitX * Main.rand.Next(-1, 1);
+                    offset *= Main.rand.NextFloat(1f, radius);
+                    offset += new Vector2(radius / 2, 0);
+
+                    Vector2 velocity = Vector2.UnitX * Main.rand.Next(-1, 1);
+                    velocity *= Main.rand.NextFloat(1f, 2f);
+                    Dust.NewDustPerfect(NPC.Bottom + offset, ModContent.DustType<Dusts.TSmokeDust>(), velocity, 0, Color.Black * 0.5f,
+                        Main.rand.NextFloat(0.3f, 0.7f));
+                }
+                for (int i = 0; i < 7; i++)
+                {
+                    Dust.NewDustPerfect(_impactFootPosition, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Yellow, 1f).noGravity = true;
+                }
+
+                for (int i = 0; i < 7; i++)
+                {
+                    Dust.NewDustPerfect(_impactFootPosition, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Orange, 1f).noGravity = true;
+                }
+                var circleFlare = Particle.NewParticle<GlowDonutParticle>(Legs.rightLegData.footPosition, Vector2.UnitY);
+                circleFlare.noStretch = true;
+                circleFlare.Scale *= 4;
+                circleFlare.shrink = true;
+                FXUtil.GlowCircleBoom(_impactFootPosition,
+                    innerColor: Color.White,
+                    glowColor: Color.Yellow,
+                    outerGlowColor: Color.Red, duration: 25, baseSize: 0.28f);
                 FXUtil.ShakeCamera(_impactFootPosition, 1024, 8);
+                FXUtil.PunchCamera(NPC.position, Vector2.UnitY, 8, 8, 8);
+                SoundStyle crush = AssetRegistry.Sounds.STARBOMBER.HeavyCrush;
+                crush.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(crush, NPC.position);
             }
 
-
+            StandHeight *= 0.5f;
             NPC.velocity.X *= 0.9f;
             ApplyStandingYVelocity();
             if (Timer >= time)
