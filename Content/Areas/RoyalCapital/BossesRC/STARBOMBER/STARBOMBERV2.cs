@@ -641,7 +641,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
             SwitchState(_patternManager.NextPattern());
-            SwitchState(AIState.CrashJump_Start);
+          //  SwitchState(AIState.CrashJump_Start);
         }
 
 
