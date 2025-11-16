@@ -110,7 +110,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
             legData.footPosition = targetFootPosition;
             legData.timer = 0f;
-            legData.duration = 24;
+            legData.duration = 22;
             legData.startWalkPosition = legData.footPosition;
             legData.endWalkPosition = targetFootPosition;
             legData.rotationStyle = RotationStyle.ForwardWalk;
@@ -265,6 +265,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private bool _namePlate;
         private bool _playedSound;
         private bool[] _requestLegMovement = new bool[4];
+        private bool _aggroed;
         private LegsState _legsState;
         private int _starFieldFrameCounter;
         private int _starFieldFrameTick;
@@ -528,6 +529,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             writer.WriteVector2(_targetWalkPosition);
             writer.Write(_contactDamage);
             writer.Write((byte)_legsState);
+            writer.Write(_aggroed);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -536,11 +538,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             _targetWalkPosition = reader.ReadVector2();
             _contactDamage = reader.ReadBoolean();
             _legsState = (LegsState)reader.ReadByte();
+            _aggroed = reader.ReadBoolean();
         }
 
         public override void AI()
         {
-            base.AI();
+         
             _gunSilhouetteColor = Color.Lerp(Color.White, Color.Black, 0.75f);
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             _gunOutlineColor = Color.Lerp(_gunOutlineColor, TargetGunOutlineColor, 0.1f);
@@ -559,7 +562,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             _oscTimer++;
             float osc = _oscTimer * 0.05f;
             float i = (MathF.Sin(osc) + 0.5f) / 0.5f;
-            StandHeight = MathHelper.Lerp(300, 333, i);
+            StandHeight = MathHelper.Lerp(270, 300, i);
             MyTarget.AddBuff(ModContent.BuffType<BurnedWings>(), 2);
             if (NPC.collideX)
             {
@@ -642,6 +645,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
             UpdateLegs();
+            base.AI();
         }
 
 
@@ -671,7 +675,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             spawnPosition.X += Main.rand.NextFloat(-64, 64);
 
             Vector2 spawnVelocity = Vector2.Zero;
-            spawnVelocity.Y = Main.rand.NextFloat(-1f, 1f);
+            spawnVelocity.Y = Main.rand.NextFloat(-10, -1f);
 
             float spawnScale = Main.rand.NextFloat(0.75f, 1f);
             var steamParticle = Particle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
@@ -689,15 +693,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             StandRange *= 0.5f;
             NPC.direction = 0;
 
-            for(int i = 0; i < _requestLegMovement.Length; i++)
-            {
-                _requestLegMovement[i] = true;
-            }
+            _requestLegMovement[0] = Legs.leftLegData.rotationStyle == RotationStyle.Inverse ? true : false;
+            _requestLegMovement[1] = Legs.rightLegData.rotationStyle == RotationStyle.Inverse ? true : false;
+            _requestLegMovement[2] = Legs2.leftLegData.rotationStyle == RotationStyle.Inverse ? true : false;
+            _requestLegMovement[3] = Legs2.rightLegData.rotationStyle == RotationStyle.Inverse ? true : false;
 
-            Legs.MoveFoot(ref Legs.leftLegData, FindNewLeftFoot());
-            Legs.MoveFoot(ref Legs.rightLegData, FindNewRightFoot());
-            Legs2.MoveFoot(ref Legs2.leftLegData, FindNewLeftFoot2());
-            Legs2.MoveFoot(ref Legs2.rightLegData, FindNewRightFoot2());
             NPC.direction = oldDirection;
             StandRange = oldStandRange;
         }
@@ -708,9 +708,19 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 return false;
             if (legData.rotationStyle != RotationStyle.Inverse)
                 return false;
-            if (!legs.CanMoveFoot())
+            if (LegsInMotionCount() >= 3)
                 return false;
             return true;
+        }
+
+        private int LegsInMotionCount()
+        {
+            int count = 0;
+            count += Legs.leftLegData.rotationStyle == RotationStyle.ForwardWalk ? 1 : 0;
+            count += Legs.rightLegData.rotationStyle == RotationStyle.ForwardWalk ? 1 : 0;
+            count += Legs2.leftLegData.rotationStyle == RotationStyle.ForwardWalk ? 1 : 0;
+            count += Legs2.rightLegData.rotationStyle == RotationStyle.ForwardWalk ? 1 : 0;
+            return count;
         }
 
         private void UpdateLegs()
@@ -727,15 +737,19 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 case LegsState.Walk:
                     if(Legs.leftLegData.rotationStyle == RotationStyle.Forward)
                     {
-                   
+
+  
                         Legs.leftLegData.rotationStyle = RotationStyle.Inverse;
                         Legs.rightLegData.rotationStyle = RotationStyle.Inverse;
                         Legs2.leftLegData.rotationStyle = RotationStyle.Inverse;
                         Legs2.rightLegData.rotationStyle = RotationStyle.Inverse;
 
                     }
+
+
                     if (NeedToMoveLeg(Legs, ref Legs.leftLegData, LeftLegRootPosition.X, ref _requestLegMovement[0]))
                     {
+                 
                         Legs.MoveFoot(ref Legs.leftLegData, FindNewLeftFoot());
                         _requestLegMovement[0] = false;
                     }
@@ -893,18 +907,27 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
         private void AI_Spawn()
         {
+
             Timer++;
             if (Timer == 1)
             {
                 StretchLegs();
             }
 
+            if(Timer % 10 == 0)
+            {
+                SpawnSteamParticle();
+            }
 
             _legsState = LegsState.Walk;
+            StandRange = MathHelper.Lerp(StandRange, 290, 0.1f);
             NPC.velocity.X *= 0.9f;
             NPC.rotation = 0;
-            ApplyStandingYVelocity();
-            if (Timer >= 60)
+            NPC.noTileCollide = false;
+            NPC.noGravity = false;
+            NPC.boss = false;
+            //ApplyStandingYVelocity();
+            if (_aggroed)
             {
                 SwitchState(AIState.Idle);
             }
@@ -931,6 +954,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         }
         private void AI_Idle()
         {
+            NPC.boss = true;
             Timer++;
             if (Timer == 1)
             {
@@ -1048,10 +1072,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             if (_playedSound)
             {
                 //Lets make them legs fall off
-                float lerp = MathHelper.Clamp(Timer / 30f, 0f, 1f);
-                _leftLegOffset.Y += MathHelper.SmoothStep(-0.5f, 2f, lerp);
+                float lerp = MathHelper.Clamp(Timer / 240f, 0f, 1f);
+                _leftLegOffset.Y += MathHelper.SmoothStep(-10, 25, lerp);
                 _leftLegOffset.X -= 0.1f;
-                _rightLegOffset.Y += MathHelper.SmoothStep(-0.3f, 2f, lerp);
+                _rightLegOffset.Y += MathHelper.SmoothStep(-10, 25, lerp);
                 _rightLegOffset.X += 0.1f;
             }
             if (NPC.collideY && !_playedSound)
@@ -1067,6 +1091,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         public override void HitEffect(NPC.HitInfo hit)
         {
             base.HitEffect(hit);
+            if (!_aggroed)
+            {
+                _aggroed = true;
+                NPC.netUpdate = true;
+            }
+     
             if (NPC.life <= 0 && State != AIState.Death)
             {
                 NPC.life = 1;

@@ -21,6 +21,7 @@ namespace Stellamod.Core
             base.SetDefaults();
             NPC.boss = true;
         }
+   
         public Player MyTarget => Main.player[NPC.target];
         public float FacingDirectionToTarget => MyTarget.Center.X < NPC.Center.X ? -1 : 1;
         public int TargetDirection => (int)FacingDirectionToTarget;
@@ -39,7 +40,15 @@ namespace Stellamod.Core
             if (Main.netMode == NetmodeID.Server)
                 return;
 
+            if (!NPC.boss)
+                return;
+
             ModContent.GetInstance<BossHealthbarSystem>().Add(this);
+        }
+
+        public override bool CheckActive()
+        {
+            return false;
         }
 
         public virtual bool CanFight()

@@ -65,7 +65,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
             SpriteBatch spriteBatch = Main.spriteBatch;
             Color drawColor = Color.White;
             drawColor.A = 0;
-            spriteBatch.Draw(texture, drawPosition, frame, drawColor);
+            spriteBatch.Draw(texture, drawPosition, frame, drawColor, Projectile.rotation, drawOrigin, Vector2.One, SpriteEffects.None, 0);
             return false;
         }
     }
