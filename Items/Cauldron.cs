@@ -321,7 +321,7 @@ namespace Stellamod.Items
             CauldronBrew result = random;
             for(int i = 0; i < molds.Length; i++)
             {
-                if (result.mold != molds[i])
+                if (result.mold != molds[i].type)
                     continue;
                 molds[i].stack -= 1;
             }

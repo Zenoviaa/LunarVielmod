@@ -79,16 +79,6 @@ namespace Stellamod.UI.CauldronSystem
             if (Item.stack > 1)
                 ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, Item.stack.ToString(),
                     centerPos + new Vector2(10f, 26f) * _scale, Color.White, 0f, Vector2.Zero, new Vector2(_scale), -1f, _scale);
-            if (contains && Item.IsAir)
-            {
-                timer++;
-                OnEmptyMouseover?.Invoke(timer);
-            }
-            else if (!contains)
-            {
-                timer = 0;
-            }
-
             Main.inventoryScale = oldScale;
         }
     }

@@ -131,11 +131,16 @@ namespace Stellamod.UI.CauldronSystem
             Player player = Main.LocalPlayer;
             int item = player.QuickSpawnItem(player.GetSource_FromThis(), result.result, result.yield);
 
-
-            if (mold.IsAir)
+ 
+            if (molds[0].IsAir)
             {
                 cauldronUIState.cauldronUI.moldSlot.Item = new Item();
                 cauldronUIState.cauldronUI.moldSlot.Item.SetDefaults(0);
+            }
+            if (molds[1].IsAir)
+            {
+                cauldronUIState.cauldronUI.moldSlot2.Item = new Item();
+                cauldronUIState.cauldronUI.moldSlot2.Item.SetDefaults(0);
             }
             if (material.IsAir)
             {
