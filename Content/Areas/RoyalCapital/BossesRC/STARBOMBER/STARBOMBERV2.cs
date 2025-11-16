@@ -1047,15 +1047,15 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
             if (_playedSound)
             {
-                _leftLegOffset.Y += MathHelper.Lerp(0.5f, 2f, Timer / 30f);
+                //Lets make them legs fall off
+                float lerp = MathHelper.Clamp(Timer / 30f, 0f, 1f);
+                _leftLegOffset.Y += MathHelper.SmoothStep(-0.5f, 2f, lerp);
                 _leftLegOffset.X -= 0.1f;
-                _rightLegOffset.Y += MathHelper.Lerp(0.3f, 2f, Timer / 30f);
+                _rightLegOffset.Y += MathHelper.SmoothStep(-0.3f, 2f, lerp);
                 _rightLegOffset.X += 0.1f;
             }
             if (NPC.collideY && !_playedSound)
             {
-                _leftLegOffset.Y -= 2;
-                _rightLegOffset.Y -= 2;
                 SoundStyle clanker = AssetRegistry.Sounds.STARBOMBER.HeavyCrush;
                 clanker.PitchVariance = 0.5f;
                 SoundEngine.PlaySound(clanker, NPC.position);
