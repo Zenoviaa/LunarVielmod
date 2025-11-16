@@ -11,6 +11,7 @@ namespace Stellamod.UI.CauldronSystem
     {
         private UIPanel _panel;
         private UIImage _background;
+        private UIImage _bigPot;
         public CauldronMoldSlot moldSlot;
         public CauldronMaterialSlot materialSlot;
         public CauldronPot cauldronPot;
@@ -24,7 +25,9 @@ namespace Stellamod.UI.CauldronSystem
         public CauldronUI()
         {
             Asset<Texture2D> backgroundTexture = ModContent.Request<Texture2D>("Stellamod/UI/CauldronSystem/CauldronBackground");
+            Asset<Texture2D> bigPotTexture = ModContent.Request<Texture2D>("Stellamod/UI/CauldronSystem/BigCauldronPot");
             _background = new UIImage(backgroundTexture);
+            _bigPot = new UIImage(bigPotTexture);
         }
 
         public override void OnInitialize()
@@ -53,6 +56,8 @@ namespace Stellamod.UI.CauldronSystem
 
             cauldronPot = new CauldronPot();
             _panel.Append(cauldronPot);
+
+            _panel.Append(_bigPot);
         }
 
         public override void Update(GameTime gameTime)
