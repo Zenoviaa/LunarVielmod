@@ -79,7 +79,7 @@ namespace Stellamod.NPCs.Town
         public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
         {
             spawner.structureToSpawnIn = "Struct/Overworld/WitchTown";
-            spawner.spawnTileOffset = new Point(90, -35);
+            spawner.spawnTileOffset = new Point(175, -20);
         }
 
         public override void FindFrame(int frameHeight)
