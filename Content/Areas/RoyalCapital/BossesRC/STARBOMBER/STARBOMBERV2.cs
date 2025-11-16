@@ -10,6 +10,7 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
@@ -18,6 +19,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 {
@@ -335,6 +337,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
     public class STARBOMBERV2 : ScarletBoss,
         IDrawOutlines
     {
+        private float _gunHoldInterpolant;
         private float _realSpinSpeed;
         private float _afterImageTime;
         private float _oscTimer;
@@ -349,7 +352,22 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private Color _gunOutlineColor;
         private Vector2 _startFootPosition;
         private Vector2 _impactFootPosition;
-
+        private Vector2[] _lightningPos;
+        private Vector2[] LightningPos
+        {
+            get
+            {
+                _lightningPos ??= new Vector2[32];
+                for (int i = 0; i < _lightningPos.Length; i++)
+                {
+                    float f = i;
+                    float length = _lightningPos.Length;
+                    float completionRatio = f / length;
+                    _lightningPos[i] = Vector2.Lerp(NPC.Center, GunHoistPosition + Vector2.UnitY * 48, completionRatio);
+                }
+                return _lightningPos;
+            }
+        }
         private Vector2 _targetWalkPosition;
         private PatternManager<AIState> _patternManager;
 
@@ -1007,13 +1025,13 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             //I think it's easier if all of star bombers guns just come from him and aren't projectiles                 
             //Yeah that'll be better, let's represent them
             float interpolant = Timer / prepTime;
-            float eased = EasingFunction.InOutSine(interpolant);
-            Vector2 gunHoistPosition = Vector2.Lerp(NPC.Center, GunHoistPosition, eased);
+            _gunHoldInterpolant = EasingFunction.InOutSine(interpolant);
+            Vector2 gunHoistPosition = Vector2.Lerp(NPC.Center, GunHoistPosition, _gunHoldInterpolant);
             GunPosition = gunHoistPosition;
             GunDirection = Vector2.Lerp(GunDirection, Vector2.UnitY, 0.01f);
             GunVDirection = 1;
 
-            HeldGun.drawColor = Color.Lerp(Color.Transparent, Color.White, eased);
+            HeldGun.drawColor = Color.Lerp(Color.Transparent, Color.White, _gunHoldInterpolant);
             NPC.velocity.X *= 0.9f;
 
             ApplyStandingYVelocity();
@@ -1150,15 +1168,15 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             //I think it's easier if all of star bombers guns just come from him and aren't projectiles                 
             //Yeah that'll be better, let's represent them
             float interpolant = Timer / prepTime;
-            float eased = EasingFunction.InOutSine(interpolant);
-            Vector2 gunHoistPosition = Vector2.Lerp(GunHoistPosition, NPC.Center, eased);
+            _gunHoldInterpolant =MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(interpolant));
+            Vector2 gunHoistPosition = Vector2.Lerp(NPC.Center, GunHoistPosition, _gunHoldInterpolant);
             GunPosition = gunHoistPosition;
             GunDirection = Vector2.Lerp(GunDirection, Vector2.UnitY, 0.1f);
             if (Timer == prepTime)
             {
                 FXUtil.GlowCircleBoom(gunHoistPosition + Vector2.UnitY * 40, Color.White, Color.Pink, Color.Blue);
             }
-            HeldGun.drawColor = Color.Lerp(Color.White, Color.Transparent, eased);
+            HeldGun.drawColor = Color.Lerp(Color.Transparent, Color.White, _gunHoldInterpolant);
 
             NPC.velocity.X *= 0.9f;
             ApplyStandingYVelocity();
@@ -1933,10 +1951,31 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             if (HeldGun == null)
                 return;
             Vector2 position = GunPosition;
+            position.Y += ExtraMath.Osc(-8f, 8f, speed: 2);
             Vector2 direction = GunDirection;
             HeldGun.Draw(spriteBatch, position, direction, drawColor);
+            DrawHeldLightning(spriteBatch, screenPos, drawColor);
+        }
+        private Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.Transparent, Color.Gray, EasingFunction.QuadraticBump(completionRatio)) * _gunHoldInterpolant;
         }
 
+        private float WidthFunction(float completionRatio)
+        {
+            return 64;
+        }
+        private void DrawHeldLightning(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            BlackFireShader shader = BlackFireShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.WhispyTrail;
+            shader.PrimaryTexture2 = TrailRegistry.StarTrail;
+            shader.InnerColor = Color.Lerp(Color.Black, Color.Red, ExtraMath.Osc(0f, 1f, speed: 2));
+            shader.OuterColor = Color.Lerp(Color.Blue, Color.Purple, ExtraMath.Osc(0f, 1f, speed: 2));
+            shader.Distortion = 0.2f;
+            shader.Time = Main.GlobalTimeWrappedHourly * 4;
+            TrailDrawer.Draw(spriteBatch, LightningPos, ColorFunction, WidthFunction, shader);
+        }
         private void DrawBody(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
@@ -1982,6 +2021,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             if (HeldGun == null)
                 return;
             Vector2 position = GunPosition;
+            position.Y += ExtraMath.Osc(-8f, 8f, speed: 2);
+
             Vector2 direction = GunDirection;
             HeldGun.DrawOutlines(spriteBatch, position, direction, _gunOutlineColor);
             float outlineOffset = 2;
@@ -1990,7 +2031,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             DrawBody(spriteBatch, screenPos - Vector2.UnitY * outlineOffset, _outlineColor);
             DrawBody(spriteBatch, screenPos + Vector2.UnitY * outlineOffset, _outlineColor);
             Legs.DrawOutlines(spriteBatch, LegTextures, _outlineColor);
-
             Legs2.DrawOutlines(spriteBatch, LegTextures, _outlineColor);
         }
   
