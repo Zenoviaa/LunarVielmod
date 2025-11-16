@@ -922,3 +922,8 @@ SpectralMinion: {
 	DisplayName: Spectral Minion
 	Description: A goofy goober
 }
+
+BurnedWings: {
+	DisplayName: Burned Wings
+	Description: Mods.Stellamod.Buffs.BurnedWings.Description
+}

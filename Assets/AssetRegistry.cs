@@ -37,6 +37,20 @@ namespace Stellamod.Assets
         public static class Sounds
         {
             private static string Path => "Stellamod/Assets/Sounds/";
+            public static class STARBOMBER
+            {
+                public static SoundStyle Ommove5 = new SoundStyle($"{Path}STARBOMBER/Ommove5");
+                public static SoundStyle Ommove4 = new SoundStyle($"{Path}STARBOMBER/Ommove4");
+                public static SoundStyle Ommove3 = new SoundStyle($"{Path}STARBOMBER/Ommove3");
+                public static SoundStyle Ommove2 = new SoundStyle($"{Path}STARBOMBER/Ommove2");
+                public static SoundStyle Ommove1 = new SoundStyle($"{Path}STARBOMBER/Ommove1");
+                public static SoundStyle Heavyspin = new SoundStyle($"{Path}STARBOMBER/Heavyspin");
+                public static SoundStyle HeavyCrush = new SoundStyle($"{Path}STARBOMBER/HeavyCrush");
+                public static SoundStyle STARRAILGUN = new SoundStyle($"{Path}STARBOMBER/STARRAILGUN");
+                public static SoundStyle STARWALK = new SoundStyle($"{Path}STARBOMBER/STARWALK");
+                public static SoundStyle STARSTEP = new SoundStyle($"{Path}STARBOMBER/STARSTEP");
+            }
+
             public static class Bishinine
             {
                 public static SoundStyle Bigballchargepart = new SoundStyle($"{Path}Bishinine/Bigballchargepart");

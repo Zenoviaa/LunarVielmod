@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
@@ -54,16 +55,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
             Timer++;
             if (Timer == 1)
             {
-                switch (Main.rand.Next(2))
-                {
-                    case 0:
-                        SoundEngine.PlaySound(SoundRegistry.Niivi_LaserBlast1, Projectile.position);
-                        break;
-                    case 1:
-                        SoundEngine.PlaySound(SoundRegistry.Niivi_LaserBlast2, Projectile.position);
-                        break;
-                }
-    
+                SoundStyle railgun = AssetRegistry.Sounds.STARBOMBER.STARRAILGUN;
+                railgun.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(railgun, Projectile.position);
+
                 for (int i = 0; i < 14; i++)
                 {
                     Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Pink, 1f).noGravity = true;

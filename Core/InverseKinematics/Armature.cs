@@ -10,10 +10,10 @@ namespace Stellamod.Core.InverseKinematics
         public Armature()
         {
             segments = new Segment[2];
-            segments[0] = new Segment(new Vector2(300, 300), 100, 0);
+            segments[0] = new Segment(new Vector2(300, 300), 158, 0);
             for (int i = 1; i < segments.Length; i++)
             {
-                segments[i] = new Segment(segments[i - 1], 200, 0);
+                segments[i] = new Segment(segments[i - 1], 158, 0);
             }
         }
         public Vector2 oldTargetPosition;
@@ -109,14 +109,50 @@ namespace Stellamod.Core.InverseKinematics
             //Draw Thight
             Draw(spriteBatch, thighTexture, thighSegment.a, thighSegment.angle, drawColor);
 
-            //Draw Foot
-            DrawCenetered(spriteBatch, footTexture, legSegment.b, 0, drawColor);
-
+      
             //Draw Leg
-            Draw(spriteBatch, legTexture, legSegment.a, legSegment.angle, drawColor);
+            Draw(spriteBatch, legTexture, legSegment.a, legSegment.angle, drawColor);     
+            
+            //Draw Foot
+            DrawCenetered(spriteBatch, footTexture, legSegment.b, MathHelper.PiOver2, drawColor);
 
             //Draw Knee
             DrawCenetered(spriteBatch, kneeTexture, thighSegment.b, thighSegment.angle, drawColor);
+            DrawCenetered(spriteBatch, kneeTexture, thighSegment.a, thighSegment.angle, drawColor);
+        }
+        public void DrawLikeLegOutlines(SpriteBatch spriteBatch, Texture2D[] textures, Color drawColor)
+        {
+            float outlineOffset = 2;
+            DrawLeg(spriteBatch, textures, drawColor, Vector2.UnitX * outlineOffset);
+            DrawLeg(spriteBatch, textures, drawColor, -Vector2.UnitX * outlineOffset);
+            DrawLeg(spriteBatch, textures, drawColor, Vector2.UnitY * outlineOffset);
+            DrawLeg(spriteBatch, textures, drawColor, -Vector2.UnitY * outlineOffset);
+        }
+
+        private void DrawLeg(SpriteBatch spriteBatch, Texture2D[] textures, Color drawColor, Vector2 withOffset)
+        {
+            Texture2D thighTexture = textures[0];
+            Texture2D kneeTexture = textures[1];
+            Texture2D legTexture = textures[2];
+            Texture2D footTexture = textures[3];
+
+
+            Segment legSegment = segments[segments.Length - 1];
+            Segment thighSegment = segments[0];
+
+            //Draw Thight
+            Draw(spriteBatch, thighTexture, thighSegment.a + withOffset, thighSegment.angle, drawColor);
+
+
+            //Draw Leg
+            Draw(spriteBatch, legTexture, legSegment.a + withOffset, legSegment.angle, drawColor);
+
+            //Draw Foot
+            DrawCenetered(spriteBatch, footTexture, legSegment.b + withOffset, MathHelper.PiOver2, drawColor);
+
+            //Draw Knee
+            DrawCenetered(spriteBatch, kneeTexture, thighSegment.b + withOffset, thighSegment.angle, drawColor);
+            DrawCenetered(spriteBatch, kneeTexture, thighSegment.a + withOffset, thighSegment.angle, drawColor);
         }
 
 
