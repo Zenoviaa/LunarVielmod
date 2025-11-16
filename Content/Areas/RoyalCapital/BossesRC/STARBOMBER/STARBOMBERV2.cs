@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles;
+using Stellamod.Content.Buffs;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.InverseKinematics;
@@ -354,9 +355,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private float SpinSpeed;
 
         private int WalkUpStompDamage => 100;
-        private int SteamLaserDamage => 200;
+        private int SteamLaserDamage => 150;
         private int CrashDamage => 70;
-        private int StarMissileDamage => 50;
+        private int StarMissileDamage => 30;
         private int MachineGunDamage => 30;
         private int WingSnipeDamage => 150;
         private ref float Timer => ref NPC.ai[0];
@@ -455,8 +456,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             NPC.width = 128;
             NPC.height = 128;
             NPC.damage = 100;
-            NPC.defense = 14;
-            NPC.lifeMax = 20000;
+            NPC.defense = 20;
+            NPC.lifeMax = 18000;
             NPC.scale = 1f;
             NPC.aiStyle = -1;
 
@@ -538,7 +539,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             float osc = _oscTimer * 0.05f;
             float i = (MathF.Sin(osc) + 0.5f) / 0.5f;
             StandHeight = MathHelper.Lerp(300, 333, i);
-
+            MyTarget.AddBuff(ModContent.BuffType<BurnedWings>(), 2);
             if (NPC.collideX)
             {
                 Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);

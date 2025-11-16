@@ -17,8 +17,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
         {
             Projectile.friendly = false;
             Projectile.hostile = true;
-            Projectile.width = 444;
-            Projectile.height = 232;
+            Projectile.width = 64;
+            Projectile.height = 64;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 16;
             Projectile.scale = 1;
