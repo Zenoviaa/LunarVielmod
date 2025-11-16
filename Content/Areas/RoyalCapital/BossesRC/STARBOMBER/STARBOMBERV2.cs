@@ -97,6 +97,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
         }
 
+        public bool CanMoveFoot()
+        {
+            return leftLegData.rotationStyle != RotationStyle.ForwardWalk && rightLegData.rotationStyle != RotationStyle.ForwardWalk;
+        }
         public void MoveFoot(ref LegData legData, Vector2 targetFootPosition)
         {
             SoundStyle walkingStartSound = AssetRegistry.Sounds.STARBOMBER.STARWALK;
@@ -176,10 +180,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         {
             //Lerp to the default angles
             float newAngle = leg.segments[0].GetDefaultAngle();
-            leg.segments[0].angle = Utils.AngleLerp(leg.segments[0].angle, thighAngle, 0.1f);
-
+            leg.segments[0].angle = Utils.AngleLerp(leg.segments[0].angle, thighAngle, 0.05f);
             newAngle = leg.segments[1].GetDefaultAngle();
-            leg.segments[1].angle = Utils.AngleLerp(leg.segments[1].angle, kneeAngle, 0.1f);
+            leg.segments[1].angle = Utils.AngleLerp(leg.segments[1].angle, kneeAngle, 0.05f);
         }
 
         public void UpdateLeg(ref LegData legData, Armature leg)
@@ -270,6 +273,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private Vector2 _shakeOffset;
         private Vector2 _startFootPosition;
         private Vector2 _impactFootPosition;
+        private Vector2 _squishScale;
         private Vector2[] _lightningPos;
         private Vector2[] LightningPos
         {
@@ -465,8 +469,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         public override void SetDefaults()
         {
             base.SetDefaults();
+            _squishScale = Vector2.One;
             NPC.width = 128;
-            NPC.height = 128;
+            NPC.height = 200;
             NPC.damage = 100;
             NPC.defense = 20;
             NPC.lifeMax = 18000;
@@ -654,7 +659,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
             SwitchState(_patternManager.NextPattern());
-          //  SwitchState(AIState.CrashJump_Start);
+            SwitchState(AIState.LegUpSpin_Start);
         }
 
 
@@ -695,19 +700,23 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                         Legs2.rightLegData.rotationStyle = RotationStyle.Inverse;
 
                     }
-                    if (!Legs.IsValidFootPosition(ref Legs.leftLegData, LeftLegRootPosition.X, StandRange) && Legs.leftLegData.rotationStyle == RotationStyle.Inverse)
+                    if (!Legs.IsValidFootPosition(ref Legs.leftLegData, LeftLegRootPosition.X, StandRange) && 
+                        Legs.leftLegData.rotationStyle == RotationStyle.Inverse && Legs.CanMoveFoot())
                     {
                         Legs.MoveFoot(ref Legs.leftLegData, FindNewLeftFoot());
                     }
-                    if (!Legs.IsValidFootPosition(ref Legs.rightLegData, RightLegRootPosition.X, StandRange) && Legs.rightLegData.rotationStyle == RotationStyle.Inverse)
+                    if (!Legs.IsValidFootPosition(ref Legs.rightLegData, RightLegRootPosition.X, StandRange) 
+                        && Legs.rightLegData.rotationStyle == RotationStyle.Inverse && Legs.CanMoveFoot())
                     {
                         Legs.MoveFoot(ref Legs.rightLegData, FindNewRightFoot());
                     }
-                    if (!Legs2.IsValidFootPosition(ref Legs2.leftLegData, LeftLegRootPosition.X, StandRange) && Legs2.leftLegData.rotationStyle == RotationStyle.Inverse)
+                    if (!Legs2.IsValidFootPosition(ref Legs2.leftLegData, LeftLegRootPosition.X, StandRange) 
+                        && Legs2.leftLegData.rotationStyle == RotationStyle.Inverse && Legs2.CanMoveFoot())
                     {
                         Legs2.MoveFoot(ref Legs2.leftLegData, FindNewLeftFoot2());
                     }
-                    if (!Legs2.IsValidFootPosition(ref Legs2.rightLegData, RightLegRootPosition.X, StandRange) && Legs2.rightLegData.rotationStyle == RotationStyle.Inverse)
+                    if (!Legs2.IsValidFootPosition(ref Legs2.rightLegData, RightLegRootPosition.X, StandRange)
+                        && Legs2.rightLegData.rotationStyle == RotationStyle.Inverse && Legs2.CanMoveFoot())
                     {
                         Legs2.MoveFoot(ref Legs2.rightLegData, FindNewRightFoot2());
                     }
@@ -727,17 +736,17 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                     LeftFootPosition = Legs.leftLegData.footPosition;
                     RightFootPosition = Legs.rightLegData.footPosition;
 
-                    float leftThighAngle = -Vector2.UnitY.RotatedBy(MathHelper.ToRadians(-45)).ToRotation();
-                    float leftKneeAngle = Vector2.UnitY.RotatedBy(MathHelper.ToRadians(45)).ToRotation();
+                    float leftThighAngle = MathHelper.ToRadians(-100);
+                    float leftKneeAngle = MathHelper.ToRadians(-10);
 
-                    float rightThighAngle = Vector2.UnitY.RotatedBy(MathHelper.ToRadians(-45)).ToRotation();
-                    float rightKneeAngle = -Vector2.UnitY.RotatedBy(MathHelper.ToRadians(-45)).ToRotation();
+                    float rightThighAngle =  MathHelper.ToRadians(-70);
+                    float rightKneeAngle = MathHelper.ToRadians(-130);
 
                     Legs.ConstantLerpAngles(Legs.LeftLeg, leftThighAngle, leftKneeAngle);
                     Legs.ConstantLerpAngles(Legs.RightLeg, rightThighAngle, rightKneeAngle);
 
-                    Legs2.ConstantLerpAngles(Legs.LeftLeg, leftThighAngle, leftKneeAngle);
-                    Legs2.ConstantLerpAngles(Legs.RightLeg, rightThighAngle, rightKneeAngle);
+                    Legs2.ConstantLerpAngles(Legs2.LeftLeg, leftThighAngle, leftKneeAngle);
+                    Legs2.ConstantLerpAngles(Legs2.RightLeg, rightThighAngle, rightKneeAngle);
                     break;
 
                 case LegsState.Limp:
@@ -904,6 +913,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
             HeldGun = null;
             _legsState = LegsState.Walk;
+            _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
 
             //Set some defaults
             GunVDirection = -1;
@@ -916,7 +926,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             float targetRotation = NPC.velocity.X * 0.05f;
             NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.03f);
             NPC.rotation = MathHelper.WrapAngle(NPC.rotation);
-            StandRange = MathHelper.Lerp(StandRange, 300, 0.1f);
+            StandRange = MathHelper.Lerp(StandRange, 290, 0.1f);
             TargetGunOutlineColor = Color.Transparent;
             TargetOutlineColor = Color.Transparent;
 
@@ -1267,33 +1277,40 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Timer++;
             if (Timer == 1)
             {
+                _squishScale = new Vector2(1.1f, 0.9f);
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
                 SoundStyle spin = AssetRegistry.Sounds.STARBOMBER.Heavyspin;
                 SoundEngine.PlaySound(spin, NPC.position);
             }
+            _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
 
-            float spinTime = 65;
-            float spinSpeed = 30;
+            float spinTime = 150;
+            float spinSpeed = 34;
             float targetSpinVelocity = NPC.direction * spinSpeed;
 
             SpinSpeed = MathHelper.Lerp(3, 0.2f, Timer / spinTime);
-            NPC.rotation = NPC.velocity.X * 0.0025f;
-            if(Timer == 40)
+            NPC.rotation = NPC.velocity.X * 0.025f;
+            if(Timer == 25)
             {
                 SoundStyle spin = AssetRegistry.Sounds.STARBOMBER.Ommove1;
                 spin.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(spin, NPC.position);
             }
-            if (Timer >= spinTime / 2f)
+            if (Timer >= spinTime / 4f)
             {
-                NPC.velocity.X *= 0.94f;
+                NPC.velocity.X *= 0.92f;
                 _afterImageTime *= 0.9f;
             }
             else
             {
                 _afterImageTime = MathHelper.Lerp(_afterImageTime, 1f, 0.1f);
                 NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetSpinVelocity, 0.3f);
+                if(Timer % 5 == 0)
+                {
+                    Dust.NewDustPerfect(NPC.Bottom, 
+                        ModContent.DustType<GlowDust>(), Vector2.Zero, Scale: Main.rand.NextFloat(0.5f, 1f), newColor: Color.Pink);
+                }
             }
             NPC.velocity.Y -= 0.1f;
 
@@ -1301,7 +1318,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             {
                 Timer = 0;
                 AttackCycle++;
-                if (AttackCycle >= 6)
+                if (AttackCycle >= 5)
                 {
                     SwitchState(AIState.LegUpSpin_End);
                 }
@@ -1440,6 +1457,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Timer++;
             if (Timer == 1)
             {
+                _squishScale = new Vector2(1f, 0.75f);
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
                 SoundStyle crashSoun = AssetRegistry.Sounds.STARBOMBER.HeavyCrush;
@@ -1574,7 +1592,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
             TargetOutlineColor = Color.Red;
-        
+            _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
             NPC.rotation += NPC.velocity.X * 0.025f;
             NPC.velocity.X = MathHelper.Lerp(NPC.direction * 32, 0, Timer / 100f);
 
@@ -2284,7 +2302,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
             Legs2.Draw(spriteBatch, LegTextures, drawColor.MultiplyRGB(Color.Lerp(Color.White, Color.Black, 0.7f)));
 
-            spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor, NPC.rotation, drawOrigin, NPC.scale * 2 * _squishScale, SpriteEffects.None, 0);
             Legs.Draw(spriteBatch, LegTextures, drawColor);
 
             if(_deathLerp > 0)
