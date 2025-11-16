@@ -19,8 +19,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
     public class MachineGunBullet : ScarletProjectile,
         IDrawOutlines
     {
-        private ref float Timer => ref Projectile.ai[0];
 
+        private ref float Timer => ref Projectile.ai[0];
+        private ref float Distance => ref Projectile.ai[1];
+        private ref float TraveledDistance => ref Projectile.ai[2];
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -35,9 +37,18 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
         public override void AI()
         {
             base.AI();
+
+            TraveledDistance += Vector2.Distance(Projectile.position, Projectile.oldPosition);
+            if(TraveledDistance >= Distance)
+            {
+                Projectile.Kill();
+            }
             Projectile.scale = 0.5f;
             Timer++;
-
+            if(Timer == 1)
+            {
+                TraveledDistance = 0;
+            }
             if (Timer == 1)
             {
                 SoundStyle shootSound = new SoundStyle("Stellamod/Assets/Sounds/STARSHOOT");

@@ -342,6 +342,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private bool _contactDamage;
         private bool _namePlate;
         private bool _freezeWalkCycle;
+        private int _starFieldFrameCounter;
+        private int _starFieldFrameTick;
 
         private Color _outlineColor;
         private Color _gunOutlineColor;
@@ -353,7 +355,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
         private STARBOMBERGUN _machineGun;
         private STARBOMBERGUN _missileLauncher;
-        private STARBOMBERGUN _sniperRifle;
         private STARBOMBERGUN _whistleGun;
         private STARBOMBERGUN _wingSniper;
         private STARBOMBERLegs _legs;
@@ -454,17 +455,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
         }
 
-
-        public STARBOMBERGUN SniperRifle
-        {
-            get
-            {
-                _sniperRifle ??= new STARBOMBERGUN(Texture + "_SniperRifle");
-                return _sniperRifle;
-            }
-        }
-
-
         public STARBOMBERGUN MissileLauncher
         {
             get
@@ -507,12 +497,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
         }
 
+        public Vector2 LeftFootPosition;
+        public Vector2 RightFootPosition;
         public Vector2 GunPosition;
         public Vector2 GunDirection;
         public float GunVDirection;
         public float StandHeight;
-        public Vector2 LeftFootPosition;
-        public Vector2 RightFootPosition;
         public float StandRange;
 
         public Texture2D[] LegTextures;
@@ -520,10 +510,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         public Asset<Texture2D> KneeTexture => ModContent.Request<Texture2D>(Texture + "_Knee");
         public Asset<Texture2D> LegTexture => ModContent.Request<Texture2D>(Texture + "_Leg");
         public Asset<Texture2D> FootTexture => ModContent.Request<Texture2D>(Texture + "_Foot");
+        public Asset<Texture2D> StarfieldTexture => ModContent.Request<Texture2D>(Texture + "_Starfield");
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
         }
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -1054,9 +1046,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 NPC.velocity.X = -NPC.direction * 0.5f;
                 if (MultiplayerHelper.IsHost)
                 {
+                    float distanceToShoot = Vector2.Distance(GunMuzzlePosition, MyTarget.Center) + 64;
+                    distanceToShoot *= MathHelper.Clamp(Timer / 60f, 0f, 1f);
                     int type = ModContent.ProjectileType<MachineGunBullet>();
                     Projectile.NewProjectile(SourceFromThis, GunMuzzlePosition, GunDirection * 7,
-                     type, MachineGunDamage, 1, Main.myPlayer);
+                     type, MachineGunDamage, 1, Main.myPlayer, ai1: distanceToShoot);
                 }
 
                 HeldGun.Recoil();
@@ -1110,7 +1104,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 _freezeWalkCycle = true;
                 SpinSpeed = 0.25f;
                 NPC.velocity.X *= 0.99f;
-                GunDirection = Vector2.Lerp(GunDirection, AimGun(), 0.1f);
+                GunDirection = Vector2.Lerp(GunDirection, AimGun(), 0.05f);
                 GunVDirection = 1;
 
                 HeldGun.drawColor = Color.Lerp(HeldGun.drawColor, Color.White, 0.1f);
@@ -1931,6 +1925,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedSTARBoss, -1);
         }
 
+
+        #region Draw Code
+
         private void DrawHeldGun(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (HeldGun == null)
@@ -1996,5 +1993,28 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
             Legs2.DrawOutlines(spriteBatch, LegTextures, _outlineColor);
         }
+  
+        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            float starFieldColorProgress = ExtraMath.Osc(0f, 0.45f);
+            Texture2D texture = StarfieldTexture.Value;
+            Rectangle animationFrame = texture.AnimationFrame(ref _starFieldFrameCounter, ref _starFieldFrameTick, 1, 30, true);
+            Color starFieldDrawColor = Color.White;
+            starFieldDrawColor.A = 0;
+            starFieldDrawColor *= 0.3f;
+            starFieldDrawColor *= ExtraMath.Osc(0.5f, 1f);
+            float starFieldScale = 1.5f;
+            float starFieldRotation = 0;
+
+            Vector2 starFieldDrawPos = NPC.Center - screenPos;
+            spriteBatch.Draw(texture, starFieldDrawPos, animationFrame, starFieldDrawColor, starFieldRotation,
+                animationFrame.Size() / 2, starFieldScale, SpriteEffects.None, 0);
+
+            starFieldDrawColor = Color.White;
+            starFieldDrawColor.A = 0;
+       
+            starFieldDrawColor *= ExtraMath.Osc(0.5f, 1f);
+        }
+        #endregion
     }
 }
