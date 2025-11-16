@@ -341,6 +341,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private bool _legsUp;
         private bool _contactDamage;
         private bool _namePlate;
+        private bool _freezeWalkCycle;
 
         private Color _outlineColor;
         private Color _gunOutlineColor;
@@ -495,7 +496,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         {
             get
             {
-                return NPC.Center + Vector2.UnitY * 128 * GunVDirection;
+                return NPC.Center + Vector2.UnitY * 170 * GunVDirection;
             }
         }
         public Vector2 GunMuzzlePosition
@@ -620,7 +621,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             _oscTimer++;
             float osc = _oscTimer * 0.05f;
             float i = (MathF.Sin(osc) + 0.5f) / 0.5f;
-            StandHeight = MathHelper.Lerp(232, 256,  i);
+            StandHeight = MathHelper.Lerp(300, 333,  i);
 
             switch (State)
             {
@@ -755,6 +756,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
         private void UpdateWalkCycle()
         {
+            if (_freezeWalkCycle)
+                return;
+
             if (!Legs.IsValidFootPosition(ref Legs.leftLegData, LeftLegRootPosition.X, StandRange) && Legs.leftLegData.rotationStyle == RotationStyle.Inverse)
             {
                 Legs.MoveFoot(ref Legs.leftLegData, FindNewLeftFoot());
@@ -805,6 +809,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         {
             Vector2 groundPoint = FindGround();
             float range = StandRange * 0.75f;
+            groundPoint.Y -= 16;
             if (NPC.direction == 1)
             {
                 return groundPoint - Vector2.UnitX * range + new Vector2(NPC.direction * StandRange, 0);
@@ -819,6 +824,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         {
             Vector2 groundPoint = FindGround();
             float range = StandRange * 0.75f;
+            groundPoint.Y -= 16;
             if (NPC.direction == -1)
             {
                 return groundPoint + Vector2.UnitX * range + new Vector2(NPC.direction * StandRange, 0);
@@ -911,7 +917,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 _namePlate = true;
             }
             HeldGun = null;
-
+            _freezeWalkCycle = false;
 
             //Set some defaults
             GunVDirection = -1;
@@ -1038,14 +1044,14 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             HeldGun.muzzleOffset = 140;
             GunPosition = GunHoistPosition;
             TargetOutlineColor = Color.Yellow;
-
+   
  
             Vector2 directionToTarget = (MyTarget.Center - GunPosition).SafeNormalize(Vector2.Zero);
             float dp = Vector2.Dot(GunDirection, directionToTarget);
-            if (Timer % 8 == 0 && Timer < 120 && dp > 0.8f)
+            if (Timer % 6 == 0 && Timer < 120 && dp > 0.8f)
             {
                 TargetGunOutlineColor = Color.Red;
-                NPC.velocity.X = -NPC.direction * 1;
+                NPC.velocity.X = -NPC.direction * 0.5f;
                 if (MultiplayerHelper.IsHost)
                 {
                     int type = ModContent.ProjectileType<MachineGunBullet>();
@@ -1067,6 +1073,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
             if (Timer >= 120)
             {
+                _freezeWalkCycle = false;
                 TargetGunOutlineColor = Color.Yellow;
                 SpinSpeed = 1;
          
@@ -1100,6 +1107,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
             else
             {
+                _freezeWalkCycle = true;
                 SpinSpeed = 0.25f;
                 NPC.velocity.X *= 0.99f;
                 GunDirection = Vector2.Lerp(GunDirection, AimGun(), 0.1f);
@@ -1986,7 +1994,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             DrawBody(spriteBatch, screenPos + Vector2.UnitY * outlineOffset, _outlineColor);
             Legs.DrawOutlines(spriteBatch, LegTextures, _outlineColor);
 
-            Legs2.DrawOutlines(spriteBatch, LegTextures, _outlineColor.MultiplyRGB(Color.Lerp(Color.White, Color.Black, 0.7f)));
+            Legs2.DrawOutlines(spriteBatch, LegTextures, _outlineColor);
         }
     }
 }
