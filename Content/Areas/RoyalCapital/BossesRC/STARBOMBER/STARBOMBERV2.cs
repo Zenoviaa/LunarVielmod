@@ -731,7 +731,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
             SwitchState(_patternManager.NextPattern());
-            SwitchState(AIState.MachineGun_Start);
+            SwitchState(AIState.MissileLauncher_Start);
         }
 
 
@@ -952,7 +952,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             float xDist = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
             if(xDist > StandRange)
             {
-                float speed = MathHelper.Lerp(1, 2, MathHelper.Clamp(xDist / 16f, 0f, 1f));
+                float speed = MathHelper.Lerp(2, 3, MathHelper.Clamp(xDist / 16f, 0f, 1f));
                 float targetX = NPC.direction * speed;
                 NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetX, 0.1f);
 
@@ -1710,9 +1710,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Timer++;
             //We using the machine gun brah
             HeldGun = MissileLauncher;
+            TargetGunOutlineColor = Color.Yellow;
             TargetOutlineColor = Color.Yellow;
             if (Timer == 1)
             {
+                StretchLegs();
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
 
@@ -1728,13 +1730,14 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             //I think it's easier if all of star bombers guns just come from him and aren't projectiles                 
             //Yeah that'll be better, let's represent them
             float interpolant = Timer / prepTime;
-            float eased = EasingFunction.InOutSine(interpolant);
-            Vector2 gunHoistPosition = Vector2.Lerp(NPC.Center, GunHoistPosition, eased);
+            _gunHoldInterpolant = EasingFunction.InOutSine(interpolant);
+            Vector2 gunHoistPosition = Vector2.Lerp(NPC.Center, GunHoistPosition, _gunHoldInterpolant);
             GunPosition = gunHoistPosition;
             GunDirection = Vector2.Lerp(GunDirection, Vector2.UnitY, 0.01f);
             GunVDirection = 1;
 
-            NPC.velocity.X *= 0.99f;
+            HeldGun.drawColor = Color.Lerp(Color.Transparent, Color.White, _gunHoldInterpolant);
+            NPC.velocity.X *= 0.9f;
             ApplyStandingYVelocity();
             if (Timer >= prepTime)
             {
@@ -1751,6 +1754,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 NPC.direction = TargetDirection;
             }
             HeldGun = MissileLauncher;
+            HeldGun.muzzleOffset = 140;
             GunPosition = GunHoistPosition;
             TargetOutlineColor = Color.Yellow;
 
@@ -1758,12 +1762,13 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             {
                 if (Timer % 24 == 0 && Timer < 120)
                 {
+                    TargetGunOutlineColor = Color.Red;
                     if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(SourceFromThis, GunMuzzlePosition, GunDirection * 7,
                             ModContent.ProjectileType<StarMissile>(), StarMissileDamage, 1, Main.myPlayer);
                     }
-                    NPC.velocity.X = -NPC.direction * 1;
+                    NPC.velocity.X = -NPC.direction * 0.5f;
                     HeldGun.Recoil();
                 }
 
@@ -1772,12 +1777,13 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             {
                 if (Timer % 48 == 0 && Timer < 120)
                 {
+                    TargetGunOutlineColor = Color.Red;
                     if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(SourceFromThis, GunMuzzlePosition, GunDirection * 7,
                             ModContent.ProjectileType<StarMissile>(), StarMissileDamage, 1, Main.myPlayer);
                     }
-                    NPC.velocity.X = -NPC.direction * 1;
+                    NPC.velocity.X = -NPC.direction * 0.5f;
                     HeldGun.Recoil();
                 }
 
@@ -1786,6 +1792,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
             if (Timer == 120)
             {
+                StretchLegs();
                 SoundStyle tireSound = new SoundStyle("Stellamod/Assets/Sounds/STARWAVE");
                 tireSound.PitchVariance = 0.15f;
                 SoundEngine.PlaySound(tireSound, NPC.position);
@@ -1793,7 +1800,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
             if (Timer >= 120)
             {
-                if(AttackCycle != 2)
+                _freezeWalkCycle = false;
+                TargetGunOutlineColor = Color.Yellow;
+                if (AttackCycle != 2)
                     NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, NPC.direction * 4, 0.1f);
                 GunDirection = Vector2.Lerp(GunDirection, AimGun(), 0.005f);
                 GunVDirection = 1;
@@ -1816,13 +1825,14 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
             else
             {
-                NPC.velocity.X *= 0.99f;
+                _freezeWalkCycle = true;
+                NPC.velocity.X *= 0.9f;
                 GunDirection = Vector2.Lerp(GunDirection, AimGun(), 0.1f);
                 GunVDirection = 1;
-
                 HeldGun.drawColor = Color.Lerp(HeldGun.drawColor, Color.White, 0.1f);
             }
-            NPC.rotation = MathHelper.Lerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.1f);
+
+            NPC.rotation = MathHelper.Lerp(NPC.rotation, NPC.velocity.X * 0.025f, 0.1f);
             ApplyStandingYVelocity();
             if (Timer >= 240)
             {
@@ -1860,14 +1870,15 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             //I think it's easier if all of star bombers guns just come from him and aren't projectiles                 
             //Yeah that'll be better, let's represent them
             float interpolant = Timer / prepTime;
-            float eased = EasingFunction.InOutSine(interpolant);
-            Vector2 gunHoistPosition = Vector2.Lerp(GunHoistPosition, NPC.Center, eased);
+            _gunHoldInterpolant = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(interpolant));
+            Vector2 gunHoistPosition = Vector2.Lerp(NPC.Center, GunHoistPosition, _gunHoldInterpolant);
             GunPosition = gunHoistPosition;
             GunDirection = Vector2.Lerp(GunDirection, Vector2.UnitY, 0.1f);
             if (Timer == prepTime)
             {
                 FXUtil.GlowCircleBoom(gunHoistPosition + Vector2.UnitY * 40, Color.White, Color.Pink, Color.Blue);
             }
+            HeldGun.drawColor = Color.Lerp(Color.Transparent, Color.White, _gunHoldInterpolant);
 
             NPC.velocity.X *= 0.9f;
             ApplyStandingYVelocity();
