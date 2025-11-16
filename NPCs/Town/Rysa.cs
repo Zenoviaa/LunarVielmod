@@ -13,6 +13,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Town
@@ -74,6 +75,19 @@ namespace Stellamod.NPCs.Town
             NPC.dontTakeDamageFromHostiles = true;
             SpawnAtPoint = true;
             HasTownDialogue = true;
+        }
+        public override void SetChatButtons(ref string button, ref string button2)
+        { // What the chat buttons are when you open up the chat UI
+            button2 = Language.GetTextValue("LegacyInterface.28");
+            button = LangText.Chat(this, "Button");
+        }
+
+        public override void OnChatButtonClicked(bool firstButton, ref string shop)
+        {
+            if (!firstButton)
+            {
+                shop = ShopName;
+            }
         }
 
         public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
