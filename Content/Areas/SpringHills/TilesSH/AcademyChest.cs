@@ -12,7 +12,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
-namespace Stellamod.Items.Placeable.Illurian
+namespace Stellamod.Content.Areas.SpringHills.TilesSH
 {
     public class AcademyChestItem : ModItem
     {
