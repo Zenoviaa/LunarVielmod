@@ -731,7 +731,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
             SwitchState(_patternManager.NextPattern());
-            SwitchState(AIState.MissileLauncher_Start);
+            SwitchState(AIState.SteamWhistle_Start);
         }
 
 
@@ -865,7 +865,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         {
             if (MultiplayerHelper.IsHost)
             {
-                Projectile.NewProjectile(SourceFromThis, MyTarget.Center, Vector2.Zero,
+                Projectile.NewProjectile(SourceFromThis, GunHoistPosition + GunDirection * 1200, Vector2.Zero,
                     ModContent.ProjectileType<AimingReticle>(), 1, 0, Main.myPlayer);
             }
         }
@@ -1172,11 +1172,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Vector2 gunHoistPosition = Vector2.Lerp(NPC.Center, GunHoistPosition, _gunHoldInterpolant);
             GunPosition = gunHoistPosition;
             GunDirection = Vector2.Lerp(GunDirection, Vector2.UnitY, 0.1f);
+            HeldGun.drawColor = Color.Lerp(Color.Transparent, Color.White, _gunHoldInterpolant);
             if (Timer == prepTime)
             {
                 FXUtil.GlowCircleBoom(gunHoistPosition + Vector2.UnitY * 40, Color.White, Color.Pink, Color.Blue);
             }
-            HeldGun.drawColor = Color.Lerp(Color.Transparent, Color.White, _gunHoldInterpolant);
+
 
             NPC.velocity.X *= 0.9f;
             ApplyStandingYVelocity();
@@ -1547,6 +1548,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             TargetOutlineColor = Color.Yellow;
             if (Timer == 1)
             {
+                StretchLegs();
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
 
@@ -1563,18 +1565,23 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             //I think it's easier if all of star bombers guns just come from him and aren't projectiles                 
             //Yeah that'll be better, let's represent them
             float interpolant = Timer / prepTime;
-            float eased = EasingFunction.InOutSine(interpolant);
-            Vector2 gunHoistPosition = Vector2.Lerp(NPC.Center, GunHoistPosition, eased);
+            _gunHoldInterpolant = EasingFunction.InOutSine(interpolant);
+            Vector2 gunHoistPosition = Vector2.Lerp(NPC.Center, GunHoistPosition, _gunHoldInterpolant);
             GunPosition = gunHoistPosition;
-       
-            NPC.velocity.X *= 0.99f;
+            GunDirection = Vector2.Lerp(GunDirection, Vector2.UnitY, 0.01f);
+            GunVDirection = 1;
+
+            NPC.velocity.X *= 0.9f;
+            NPC.rotation *= 0.9f;
+            SpinSpeed = 2;
+
             ApplyStandingYVelocity();
             if(Timer >= prepTime)
             {
                 HeldGun.aimingReticleColor = Color.Red;
                 HeldGun.aimingReticle = MathHelper.Lerp(0f, 1f, (Timer - prepTime) / prepTime);
                 HeldGun.drawColor = Color.Lerp(HeldGun.drawColor, Color.White, 0.1f);
-                GunDirection = Vector2.Lerp(GunDirection, AimGun(), 0.1f);
+                GunDirection = Vector2.Lerp(GunDirection, AimGun(), 0.3f);
                 GunVDirection = 1;
             }
             else
@@ -1633,6 +1640,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
  
             if (Timer >= 60)
             {
+                SpinSpeed = 1;
                 NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, NPC.direction * 4, 0.1f);
                 GunDirection = Vector2.Lerp(GunDirection, AimGun(), 0.005f);
                 GunVDirection = 1;
@@ -1656,6 +1664,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
             }
 
+            NPC.velocity.X *= 0.9f;
+
             ApplyStandingYVelocity();
             if (Timer >= 120)
             {
@@ -1664,6 +1674,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         }
         private void AI_SteamWhistleEnd()
         {
+            SpinSpeed = 0.25f;
             Timer++;
             TargetOutlineColor = Color.Transparent;
             if (Timer == 1)
@@ -1681,10 +1692,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             //I think it's easier if all of star bombers guns just come from him and aren't projectiles                 
             //Yeah that'll be better, let's represent them
             float interpolant = Timer / prepTime;
-            float eased = EasingFunction.InOutSine(interpolant);
-            Vector2 gunHoistPosition = Vector2.Lerp(GunHoistPosition, NPC.Center, eased);
+            _gunHoldInterpolant = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(interpolant));
+            Vector2 gunHoistPosition = Vector2.Lerp(NPC.Center, GunHoistPosition, _gunHoldInterpolant);
             GunPosition = gunHoistPosition;
             GunDirection = Vector2.Lerp(GunDirection, Vector2.UnitY, 0.1f);
+            HeldGun.drawColor = Color.Lerp(Color.Transparent, Color.White, _gunHoldInterpolant);
             if (Timer == prepTime)
             {
                 FXUtil.GlowCircleBoom(gunHoistPosition + Vector2.UnitY * 40, Color.White, Color.Pink, Color.Blue);
