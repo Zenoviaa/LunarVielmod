@@ -1501,12 +1501,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 if (MultiplayerHelper.IsHost)
                 {
                     Vector2 velocity = Vector2.UnitX * 5;
-                    Projectile.NewProjectile(SourceFromThis, _impactFootPosition, velocity,
+                    Projectile.NewProjectile(SourceFromThis, NPC.Bottom, velocity,
                         ModContent.ProjectileType<STARSHOTT>(), StarMissileDamage, 1, Main.myPlayer);
-                    Projectile.NewProjectile(SourceFromThis, _impactFootPosition, -velocity,
+                    Projectile.NewProjectile(SourceFromThis, NPC.Bottom, -velocity,
                         ModContent.ProjectileType<STARSHOTT>(), StarMissileDamage, 1, Main.myPlayer);
 
-                    Projectile.NewProjectile(SourceFromThis, _impactFootPosition, Vector2.Zero,
+                    Projectile.NewProjectile(SourceFromThis, NPC.Bottom, Vector2.Zero,
                         ModContent.ProjectileType<StarMissileBoom>(), StarMissileDamage, 1, Main.myPlayer);
                 }
 
