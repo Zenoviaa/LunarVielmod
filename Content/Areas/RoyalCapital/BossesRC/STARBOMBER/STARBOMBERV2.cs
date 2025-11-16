@@ -161,6 +161,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             newAngle = leg.segments[1].GetDefaultAngle();
             leg.segments[1].angle = Utils.AngleLerp(leg.segments[1].angle, newAngle, 0.1f);
         }
+
         public void ConstantLerpToStraightAngles(Armature leg)
         {
             //Lerp to the default angles
@@ -170,6 +171,17 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             newAngle = leg.segments[1].GetDefaultAngle();
             leg.segments[1].angle = Utils.AngleLerp(leg.segments[1].angle, Vector2.UnitY.ToRotation(), 0.2f);
         }
+
+        public void ConstantLerpAngles(Armature leg, float thighAngle, float kneeAngle)
+        {
+            //Lerp to the default angles
+            float newAngle = leg.segments[0].GetDefaultAngle();
+            leg.segments[0].angle = Utils.AngleLerp(leg.segments[0].angle, thighAngle, 0.1f);
+
+            newAngle = leg.segments[1].GetDefaultAngle();
+            leg.segments[1].angle = Utils.AngleLerp(leg.segments[1].angle, kneeAngle, 0.1f);
+        }
+
         public void UpdateLeg(ref LegData legData, Armature leg)
         {
             switch (legData.rotationStyle)
@@ -715,10 +727,17 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                     LeftFootPosition = Legs.leftLegData.footPosition;
                     RightFootPosition = Legs.rightLegData.footPosition;
 
-                    Legs.ConstantLerpToDefaultAngles( Legs.LeftLeg);
-                    Legs.ConstantLerpToDefaultAngles(Legs.RightLeg);
-                    Legs2.ConstantLerpToDefaultAngles(Legs2.LeftLeg);
-                    Legs2.ConstantLerpToDefaultAngles(Legs2.RightLeg);
+                    float leftThighAngle = -Vector2.UnitY.RotatedBy(MathHelper.ToRadians(-45)).ToRotation();
+                    float leftKneeAngle = Vector2.UnitY.RotatedBy(MathHelper.ToRadians(45)).ToRotation();
+
+                    float rightThighAngle = Vector2.UnitY.RotatedBy(MathHelper.ToRadians(-45)).ToRotation();
+                    float rightKneeAngle = -Vector2.UnitY.RotatedBy(MathHelper.ToRadians(-45)).ToRotation();
+
+                    Legs.ConstantLerpAngles(Legs.LeftLeg, leftThighAngle, leftKneeAngle);
+                    Legs.ConstantLerpAngles(Legs.RightLeg, rightThighAngle, rightKneeAngle);
+
+                    Legs2.ConstantLerpAngles(Legs.LeftLeg, leftThighAngle, leftKneeAngle);
+                    Legs2.ConstantLerpAngles(Legs.RightLeg, rightThighAngle, rightKneeAngle);
                     break;
 
                 case LegsState.Limp:
