@@ -16,6 +16,7 @@ using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Projectiles.Magic;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
@@ -29,6 +30,32 @@ using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Town
 {
+    public class RescueNPCSystem : ModSystem
+    {
+        public bool rescuedGinztel;
+        public override void NetSend(BinaryWriter writer)
+        {
+            base.NetSend(writer);
+            writer.Write(rescuedGinztel);
+        }
+
+        public override void NetReceive(BinaryReader reader)
+        {
+            base.NetReceive(reader);
+            rescuedGinztel = reader.ReadBoolean();
+        }
+
+        public override void SaveWorldData(TagCompound tag)
+        {
+            base.SaveWorldData(tag);
+            tag["rescuedGinztel"] = rescuedGinztel;
+        }
+        public override void LoadWorldData(TagCompound tag)
+        {
+            base.LoadWorldData(tag);
+            rescuedGinztel = tag.GetBool("rescuedGinztel");
+        }
+    }
     // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
     [AutoloadHead]
     public class Ginztel : ModNPC
@@ -107,6 +134,13 @@ namespace Stellamod.NPCs.Town
             AnimationType = NPCID.Guide;
         }
 
+        public override void AI()
+        {
+            base.AI();
+            RescueNPCSystem npcSystem = ModContent.GetInstance<RescueNPCSystem>();
+            npcSystem.rescuedGinztel = true;
+        }
+
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
@@ -177,23 +211,8 @@ namespace Stellamod.NPCs.Town
         }
 
         public override bool CanTownNPCSpawn(int numTownNPCs)
-        { // Requirements for the town NPC to spawn.
-            for (int k = 0; k < Main.maxPlayers; k++)
-            {
-                Player player = Main.player[k];
-                if (!player.active)
-                {
-                    continue;
-                }
-
-                // Player has to have either an ExampleItem or an ExampleBlock in order for the NPC to spawn
-                if (DownedBossSystem.downedGintzlBoss)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+        {
+            return ModContent.GetInstance<RescueNPCSystem>().rescuedGinztel;
         }
 
         // Example Person needs a house built out of Stellamod tiles. You can delete this whole method in your townNPC for the regular house conditions.

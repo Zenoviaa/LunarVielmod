@@ -1267,3 +1267,18 @@ BellBaseball.DisplayName: Bell Baseball
 BishinineIdle.DisplayName: Bishinine Idle
 STARBOMBERV2.DisplayName: STARBOMBER
 Rysa.DisplayName: Rysa
+
+BoundGinztel: {
+	TownNPCMood: {
+		Princess_LovesNPC: I like {NPCName}.
+		LikeNPC_Princess: I like {NPCName}.
+		HateCrowded: I hate how crowded I am.
+		DislikeCrowded: I dislike how crowded I am.
+		LoveSpace: I love having so much space.
+		FarFromHome: I am too far from home.
+		NoHome: I hate not having a home.
+		Content: I am content.
+	}
+
+	DisplayName: Bound Ginztel
+}
