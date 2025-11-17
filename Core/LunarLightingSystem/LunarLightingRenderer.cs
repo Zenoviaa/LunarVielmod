@@ -257,7 +257,7 @@ namespace Stellamod.Core.LunarLightingSystem
                         TileAmbientLight ambientLight = new TileAmbientLight();
                         ambientLight.color = Color.Red;
                         ambientLight.position = lightTilePoint.ToWorldCoordinates();
-                        ambientLight.radius = 32;
+                        ambientLight.radius = 64;
                         AddAmbientLight(ambientLight);
                     }
                  
