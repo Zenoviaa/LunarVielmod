@@ -353,7 +353,7 @@ namespace Stellamod.Core.LunarLightingSystem
             }
 
             ClearAmbientLights();
-            FindAmbientLights();
+       //     FindAmbientLights();
 
             if (_ambientLightIndex > 0)
             {

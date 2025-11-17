@@ -17,7 +17,7 @@ namespace Stellamod.Core.Waters
                 LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
 
                 //Don't show if not in underworld
-                if (!Main.LocalPlayer.ZoneUnderworldHeight)
+                if (!Main.LocalPlayer.ZoneUnderworldHeight && !Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneCinder && !Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneDrakonic)
                     return false;
                 
                 if (!clientConfig.LiquidsToggle)
