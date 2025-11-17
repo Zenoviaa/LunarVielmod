@@ -40,6 +40,7 @@ namespace Stellamod.Core.LunarLightingSystem
             RegisterTorchColor(ItemID.JungleTorch);
             RegisterTorchColor(ItemID.MushroomTorch);
             RegisterTorchColor(ItemID.ShimmerTorch);
+         
             GlowingTiles[TileID.MushroomGrass] = Color.LightBlue;
             for(int i = 0; i < TileID.Sets.Torch.Length; i++)
             {
