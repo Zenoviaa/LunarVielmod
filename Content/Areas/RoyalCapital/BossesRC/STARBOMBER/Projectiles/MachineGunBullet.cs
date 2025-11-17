@@ -32,7 +32,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
             Projectile.penetrate = -1;
             Projectile.timeLeft = 600;
             Projectile.extraUpdates = 5;
-            Projectile.hostile = true;
+            Projectile.hostile = false;
         }
         public override void AI()
         {
@@ -48,6 +48,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
             if(Timer == 1)
             {
                 TraveledDistance = 0;
+            }
+            if(TraveledDistance >= Distance / 1.2f)
+            {
+                Projectile.hostile = true;
             }
             if (Timer == 1)
             {

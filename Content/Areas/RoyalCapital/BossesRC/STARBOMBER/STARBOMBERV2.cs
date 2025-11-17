@@ -357,6 +357,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         }
         private float LegRadius => 80;
 
+        private Vector2 _gunShootTargetPosition;
+        private Vector2 _gunShootTrackingVelocity;
         private Vector2 _leftLegOffset;
         private Vector2 _rightLegOffset;
         private Vector2 LeftLegRootPosition
@@ -1166,7 +1168,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Timer++;
             if (Timer == 1)
             {
-
+                _gunShootTargetPosition = GunMuzzlePosition;
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
             }
@@ -1175,17 +1177,20 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             GunPosition = GunHoistPosition;
             TargetOutlineColor = Color.Yellow;
 
+            Vector2 newVelocity = ProjectileHelper.SimpleHomingVelocity(_gunShootTargetPosition, MyTarget.Center, _gunShootTrackingVelocity, degreesToRotate: 3);
+            _gunShootTrackingVelocity = newVelocity;
+            _gunShootTargetPosition += _gunShootTrackingVelocity;
 
             Vector2 directionToTarget = (MyTarget.Center - GunPosition).SafeNormalize(Vector2.Zero);
             float dp = Vector2.Dot(GunDirection, directionToTarget);
             if (Timer % 6 == 0 && Timer < 120 && dp > 0.8f)
             {
+
                 TargetGunOutlineColor = Color.Red;
                 NPC.velocity.X = -NPC.direction * 0.5f;
                 if (MultiplayerHelper.IsHost)
                 {
-                    float distanceToShoot = Vector2.Distance(GunMuzzlePosition, MyTarget.Center) + 64;
-                    distanceToShoot *= MathHelper.Clamp(Timer / 60f, 0f, 1f);
+                    float distanceToShoot = Vector2.Distance(GunMuzzlePosition, _gunShootTargetPosition) + 64;
                     int type = ModContent.ProjectileType<MachineGunBullet>();
                     Projectile.NewProjectile(SourceFromThis, GunMuzzlePosition, GunDirection * 7,
                      type, MachineGunDamage, 1, Main.myPlayer, ai1: distanceToShoot);
@@ -2026,7 +2031,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 NPC.velocity.X = -NPC.direction * 5;
                 if (MultiplayerHelper.IsHost)
                 {
-                    Projectile.NewProjectile(SourceFromThis, GunMuzzlePosition, GunDirection * Vector2.Distance(GunMuzzlePosition, MyTarget.Center),
+                    Projectile.NewProjectile(SourceFromThis, GunMuzzlePosition, GunDirection * 1200,
                         ModContent.ProjectileType<SteamLaser>(), SteamLaserDamage, 1, Main.myPlayer);
                 }
                 SoundStyle tireSound = new SoundStyle("Stellamod/Assets/Sounds/STARWAVE");
